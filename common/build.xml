@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!--
+=================================================
+             onCourseCommon build file
+=================================================
+-->
+<project name="onCourseCommon" default="build" basedir=".">
+
+	<property file="../build.properties"/>
+	<import file="../build.xml"/>
+
+	<path id="jarCommonDependencies.path">
+		<fileset id="commonIncludedLibFiles" dir="${common.lib.dir}">
+			<include name="log4j.jar"/>
+			<include name="jmdns.jar" />
+			<include name="commons-lang.jar"/>
+			<include name="mail.jar"/>
+			<include name="cayenne-client.jar"/>
+			<include name="commons-httpclient.jar" />
+			<include name="cayenne-tools.jar" />
+		</fileset>
+	</path>
+
+	<target name="build" description="Compile source.">
+		<mkdir dir="${classes.dir}"/>
+		<javac
+			source="${javac.source}"
+			target="${javac.target}"
+			srcdir="${common.src.dir}"
+			destdir="${common.classes.dir}"
+			deprecation="false"
+			debug="true"
+			debuglevel="source,lines">
+			<classpath refid="allLibraries.path" />
+		</javac>
+	</target>
+	
+	<target name="clean" description="clean up">
+		<delete dir="${common.classes.dir}"/>
+		<mkdir dir="${common.classes.dir}"/>
+	</target>
+		
+	<!--
+	=================================
+	target: javadocs
+	=================================
+	-->
+	<target name="javadocs" description="Generate API Javadocs">
+		<delete dir="${common.javadoc.dir}"/>
+		<mkdir dir="${common.javadoc.dir}"/>
+		
+		<javadoc
+			classpathref="test.classpath"
+			defaultexcludes="yes"
+			breakiterator="yes"
+			use="yes"
+			private="yes"
+			windowtitle="onCourse"
+			doctitle="ish javadocs"
+			bottom="ish group copyright 1992 - 2008. All rights reserved."
+			destdir="${common.javadoc.dir}">
+			
+			<fileset dir="${common.project.dir}" defaultexcludes="yes">
+				<include name="src/**/*.java"/>
+				<include name="tests/**/*.java"/>
+		    </fileset>
+		
+			<link href="http://java.sun.com/j2ee/1.4/docs/api/"/>
+			<link href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+			<link href="http://logging.apache.org/log4j/docs/api/"/>
+			<link href="http://jakarta.apache.org/log4j/docs/api/"/>
+			<link href="http://cayenne.apache.org/doc/api/" />
+		</javadoc>
+	</target>
+	
+	<!--
+	=================================
+	target: junit test
+	=================================
+	-->
+	<target name="test" depends="clean, build" description="Run junit tests">
+
+		<property environment="env"/>
+		<property name="junit.bin" location="classes"/>
+		<property name="junit.reports" location="dist/reports"/>
+		
+		<!-- Remove previous tests -->
+		<delete dir="${junit.reports}"/>
+		<mkdir dir="${junit.reports}"/>
+		
+		<path id="test.classpath">
+			<path refid="allLibraries.path" />
+			<fileset id="junitFile" dir="${common.lib.dir}">
+				<include name="junit.jar"/>
+			</fileset>
+			<pathelement location="${common.classes.dir}"/>
+		</path>
+				
+		<!-- compile JUnit test classes -->
+		<javac
+			source="${javac.source}"
+			target="${javac.target}"
+			srcdir="tests"
+			destdir="${junit.bin}"
+			deprecation="true"
+			debug="true"
+			debuglevel="source,lines">
+			<classpath refid="test.classpath"/>
+		</javac>
+		
+		<junit fork="yes" printsummary="yes" haltonfailure="no">
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.reports}" >
+				<fileset dir="${junit.bin}">
+					<include name="**/*Test*.class" />
+				</fileset>
+			</batchtest>
+			
+			<classpath>
+				<path refid="test.classpath"/>
+				<pathelement location="${junit.bin}"/>
+			</classpath>
+		</junit>
+	</target>
+	
+</project>

@@ -1,0 +1,281 @@
+<?xml version="1.0"?>
+
+<!--
+====================================================
+              Angel shared build include
+====================================================
+-->
+<project name="oncourse global" default="build" basedir=".">
+	
+	<property file="./build.properties"/>
+	<property environment="env"/>
+	<dirname property="include.basedir" file="${ant.file.imported}"/>
+    
+	<path id="allLibraries.path">
+		<fileset id="allLibraries.files" dir="${common.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="${trunk.lib.dir}/exe4j/bin/ant.jar" />
+	
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+		<classpath>
+			<pathelement location="${antlib.dir}/findbugs/findbugs-ant.jar"/>
+		</classpath>
+	</taskdef>
+	
+	<taskdef name="classycle" classname="classycle.ant.ReportTask">
+		<classpath>
+			<pathelement location="${antlib.dir}/classycle/classycle.jar"/>
+		</classpath>
+	</taskdef>
+	
+	<taskdef name="cgen" classname="org.apache.cayenne.tools.CayenneGenerator">
+		<classpath refid="allLibraries.path" />
+	</taskdef>
+	
+	<target name="--getsvnVersion">
+		<echo message="getting version for dir: ${trunk.dir}"/>
+		<echo message="os == ${os.name}"/>
+		<!-- If OS is Mac OS X, FreeBSD or Linux, run this target -->
+		<exec executable="/usr/bin/env" spawn="false" dir="${trunk.dir}" output="${trunk.dir}/svnVersion.temp" failifexecutionfails="true" os="Mac OS X, Linux, FreeBSD">
+			<env key="PATH" path="${env.PATH}"/>
+			<arg value="svnversion"/>
+			<arg value="."/>
+		</exec>
+		<!-- If OS is Windows Vista, Windows XP, Windows 2000 or Windows 2003, run this target -->
+		<exec executable="cmd.exe" spawn="false" dir="${trunk.dir}" output="${trunk.dir}/svnVersion.temp" failifexecutionfails="true" os="Windows Vista, Windows XP, Windows 2000, Windows 2003, Windows NT">
+			<env key="PATH" path="${env.PATH}"/>
+			<arg value="svnversion"/>
+			<arg value="."/>
+		</exec>
+		<loadfile property="svnVersion" srcFile="${trunk.dir}/svnVersion.temp" failonerror="true">
+			<filterchain>
+				<striplinebreaks/>
+			</filterchain>
+		</loadfile>
+		<delete file="${trunk.dir}/svnVersion.temp"/>
+	</target>
+	
+	
+	<target name="findbugs" depends="buildjar">
+		<findbugs home="${trunk.lib.dir}/ant/findbugs"
+			output="html" 
+			outputFile="${distribution.dir}/findbugs.html" 
+			jvmargs="-Xmx512m"
+			excludeFilter = "${trunk.lib.dir}/ant/findbugs/config.xml"
+			reportLevel="low"
+			effort="max"
+			stylesheet="fancy.xsl">
+			<sourcePath path="${src.dir}" />
+			<auxClasspath>
+				<path refid="allLibraries.path"/>
+			</auxClasspath>
+			<class location="${product.jar}" />
+		</findbugs>
+	</target>
+	
+	
+	<target name="classycle">
+	    <classycle reportFile="${distribution.dir}/classycle.xml"
+			title="onCourse classcyle">
+			<fileset dir="${trunk.dir}">
+	        	<include name="${product.jar}"/>
+			</fileset>
+	    </classycle>
+		<copy overwrite="true" todir="${distribution.dir}">
+			<fileset file="${trunk.lib.dir}/ant/classycle/reportXMLtoHTML.xsl"/>
+		</copy>
+		<copy overwrite="true" todir="${distribution.dir}/images">
+			<fileset dir="${trunk.lib.dir}/ant/classycle/images"/>
+		</copy>
+	</target>
+	
+	<target name="buildJarWithDependencies" depends="--getsvnVersion, build">
+	    <mkdir dir="${distribution.dir}/readyToJar" />
+	    
+		<unjar dest="${distribution.dir}/readyToJar" overwrite="true">
+			<fileset refid="requiredLibraries.files"/>
+		</unjar>
+
+
+        <!-- delete unwanted files from jars -->
+		<delete includeEmptyDirs="true" failonerror="false">
+
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar/dotemplates/"/>
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar" includes="license/"/>
+            <!-- files added by Cayenne.jar -->
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar" includes="license*"/>
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar" includes="apache.license"/>
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar" includes="build.xml"/>
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar" includes="overview.html"/>
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar" includes="ant/"/>
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar/META-INF/maven"/>
+			<fileset casesensitive="false" dir="${distribution.dir}/readyToJar/META-INF">
+				<include name="NOTICE*"/>
+				<include name="README*"/>
+				<include name="LICENSE*"/>
+				<include name="MANIFEST*"/>
+				<include name="COPYRIGHT*"/>
+				<include name="BRUNO*"/>
+				<include name="INDEX.LIST"/>
+				<include name="SIGNED.*"/>
+				<include name="SUN_MICR.*"/> <!-- We need to unsign jar if we want to use it unjared. -->
+				<include name="zigbert.*"/>
+			</fileset>
+		</delete>
+		
+		<copy overwrite="true" todir="${distribution.dir}/readyToJar">
+			<fileset dir="${classes.dir}"/>
+		</copy>
+		
+		<jar destfile="${product.jar}" basedir="${distribution.dir}/readyToJar" update="no" duplicate="fail" compress="true" index="true">
+			<manifest>
+				<attribute name="Manifest-Version" value="1.2"/>
+				<attribute name="Main-Class" value="${main.class}"/>
+				<attribute name="ClientServer-WedVersion" value="${clientServerWedVersion}"/>
+				<attribute name="Implementation-Version" value="${svnVersion}"/>
+				<attribute name="Friendly-ClientVersion" value="${client.version.number}"/>
+				<attribute name="Friendly-ServerVersion" value="${server.version.number}"/>
+        	</manifest>
+		</jar>
+		<delete dir="${distribution.dir}/readyToJar"/>
+	</target>
+    
+    
+	<target name="buildjar" depends="--getsvnVersion, build">
+	    <mkdir dir="${distribution.dir}" />
+		<jar destfile="${product.jar}" basedir="${classes.dir}" update="no" duplicate="fail" compress="true" index="true">
+			<manifest>
+				<attribute name="Manifest-Version" value="1.2"/>
+				<attribute name="Main-Class" value="${main.class}"/>
+				<attribute name="ClientServer-WedVersion" value="${clientServerWedVersion}"/>
+				<attribute name="Implementation-Version" value="${svnVersion}"/>
+				<attribute name="Friendly-ClientVersion" value="${client.version.number}"/>
+				<attribute name="Friendly-ServerVersion" value="${server.version.number}"/>
+        	</manifest>
+		</jar>
+	</target>
+		
+	<property name="docdir" value="javadocs"/>
+	
+
+	<!--
+	=================================
+	target: javadocs
+	=================================
+	-->
+	<target name="javadocs" description="Generate API Javadocs">
+		<mkdir  dir = "${docdir}"/>
+		
+		<echo message="---> generating common javadocs" />
+		<ant antfile="build.xml" target="javadocs" dir="${basedir}/common" inheritall="false"/>
+		<echo message="---> done" />
+		<echo message="---> generating client javadocs" />
+		<ant antfile="build.xml" target="javadocs" dir="${basedir}/client" inheritall="false"/>
+		<echo message="---> done" />
+		<echo message="---> generating server javadocs" />
+		<ant antfile="build.xml" target="javadocs" dir="${basedir}/server" inheritall="false"/>
+		<echo message="---> done" />
+		
+		<copy file="docs/index-javadocs.html" toFile="${docdir}/index.html"/>
+		
+		<copy todir="${docdir}/common">
+			<fileset dir="common/${common.javadoc.dir}"/>
+		</copy>
+		<delete dir="common/${common.javadoc.dir}"/>
+		
+		<copy todir="${docdir}/client">
+			<fileset dir="client/${client.javadoc.dir}"/>
+		</copy>
+		<delete dir="client/${client.javadoc.dir}"/>
+		
+		<copy todir="${docdir}/server">
+			<fileset dir="server/${server.javadoc.dir}"/>
+		</copy>
+		<delete dir="server/${server.javadoc.dir}"/>
+		
+	</target>
+	
+	<!--
+	=================================
+	target: svn-props
+	=================================
+	-->
+	<target name="svn-props" description="Fix svn properties for the repository">
+		<exec executable="/bin/bash" spawn="false">
+			<arg value="-c" />
+			<arg value='for i in `find . -name *.java`; do svn propset svn:keywords "LastChangedBy Revision Date" $i; done'/>
+		</exec>
+	</target>
+	
+	
+	<!--
+	=================================
+	target: upload
+	Currently not working...
+	=================================
+	-->
+	<target name="upload" description="This uploads the final release files ready for download">
+		<fail message="You must build all the releases first for client and server on both platforms.">
+			<condition>
+				<or>
+					<not>
+						<available file="server/dist/${server.zip}"/>
+					</not>
+					<not>
+						<available file="server/dist/${server.dmg}"/>
+					</not>
+					<not>
+						<available file="client/dist/${client.zip}"/>
+					</not>
+					<not>
+						<available file="client/dist/${client.dmg}"/>
+					</not>
+					<not>
+						<available file="client/dist/${client.jar}"/>
+					</not>
+				</or>
+			</condition>
+		</fail>
+		
+		<input
+		message="All files are to uploaded for public deployment. This is not reversible. Proceed?"
+		validargs="no,yes"
+		addproperty="do.proceed"
+		/>
+		<condition property="do.abort">
+			<equals arg1="no" arg2="${do.proceed}"/>
+		</condition>
+		<fail if="do.abort">Upload aborted by user.</fail>
+		
+		<input message="Please enter ftp password:" addproperty="ftp.password"/>
+
+		<ftp 
+			server="dash.ish.com.au"
+			userid="ari" 
+			password="${ftp.password}"
+			binary="yes" 
+			action="put"
+			passive="yes"
+			remotedir="ish-static/onCourse-demo">
+			<fileset file="client/dist/${client.jar}"/>
+		</ftp>
+		
+		<ftp 
+			server="dash.ish.com.au"
+			userid="ari" 
+			password="${ftp.password}"
+			binary="yes" 
+			action="put"
+			passive="yes"
+			remotedir="ish-static/downloads">
+			<fileset file="server/dist/${server.zip}"/>
+			<fileset file="server/dist/${server.dmg}"/>
+			<fileset file="client/dist/${client.zip}"/>
+			<fileset file="client/dist/${client.dmg}"/>
+		</ftp>
+	</target>
+	
+</project>

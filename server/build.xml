@@ -1,0 +1,909 @@
+<?xml version="1.0"?>
+<!--
+=================================================
+			 Angel server build file.
+=================================================
+-->
+<project name="oncourse server" default="build" basedir=".">
+	<property file="../build.properties" />
+    <import file="../build.xml"/>
+    	
+	<!-- NOTE: It's probably a good idea to keep important libraries at the
+	end of this list as they might internally contain versions of
+	the libraries we are including anyway that they've been compiled
+	against. -->
+	<path id="requiredLibraries.path">
+		<fileset id="requiredLibraries.files" dir="${common.lib.dir}">
+			<!-- include name="org-jdesktop-layout.jar" /-->
+			<include name="activation.jar" />
+			<include name="mail.jar" />
+			<include name="commons-collections.jar" />
+			<include name="commons-lang.jar" />
+			<include name="log4j.jar" />
+			<include name="foxtrot.jar" />
+			<include name="swing-layout.jar" />
+			<include name="mysql-connector-java.jar"/>
+			<include name="mssql-jdbc.jar"/>
+			<include name="ojdbc14.jar"/>
+			<include name="saxon.jar"/>
+			<include name="saxon9-dom.jar"/>
+			
+			<!-- Xerxes http://xerces.apache.org/ -->
+			<include name="xercesImpl.jar" />
+			<include name="xml-apis.jar" />
+			<include name="jdom.jar" />
+			<include name="jaxen.jar" />
+
+			<!-- Axis -->
+			<include name="axis-saaj.jar" />
+			<include name="commons-logging.jar" />
+			<include name="commons-discovery.jar" />
+			<include name="axis-jaxrpc.jar" />
+			<include name="axis.jar" />
+			<include name="qname.jar" />
+			<include name="wsdl4j.jar" />
+
+			<!-- Axis compression helpers: still needed at runtime though disabled -->
+			<include name="commons-codec.jar" />
+			<include name="commons-httpclient.jar" />
+
+			<!-- Cayenne -->
+			<include name="cayenne-server.jar" />
+			<include name="hessian.jar" />
+			<include name="ashwood.jar" />
+			<include name="velocity.jar" />
+			<include name="vpp.jar" />
+						
+			<include name="avalon-logkit.jar" />
+			<include name="oro.jar" />
+			<include name="commons-lang.jar" />
+
+			<include name="jmdns.jar" />
+
+			<include name="servlet.jar" />
+			
+			<!-- Derby -->
+			<include name="derby.jar" />
+			<include name="derbyclient.jar" />
+			<include name="derbynet.jar" />
+
+			<!-- Jetty -->
+			<include name="jetty.jar" />
+			<include name="jetty-util.jar" />
+			
+			<!-- Jasper -->
+			<include name="jdt-compiler.jar" />
+		</fileset>
+	</path>
+	
+	
+	<taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"> 
+			<classpath refid="allLibraries.path" />
+	</taskdef>
+
+	<property name="product.jar" value="${distribution.dir}/${server.jar}"/>
+	<property name="main.class" value="ish.oncourse.server.AngelServer"/>
+	
+	<!--
+	=================================
+	special tasks
+	=================================
+	-->
+
+
+	<target name="prepareSampleData" description="Deletes all the reference data from the database on localhost">
+		<java maxmemory="${server.maxmemory}" fork="true" classname="org.apache.derby.tools.ij">
+			<arg value="${server.resource.dir}/prepareSampleData.sql" />
+			<classpath>
+				<path location="${lib.dir}/derbytools.jar" />
+				<path refid="allLibraries.path" />
+			</classpath>
+		</java>
+		<zip destfile="${server.resource.dir}/sampleData.zip" update="false">
+			<fileset dir="${user.home}/Desktop">
+				<include name="onCourse.iocdata/**" />
+				<exclude name="onCourse.iocdata/derby.log" />
+				<exclude name="onCourse.iocdata/onCourse/BACKUP.HISTORY" />
+			</fileset>
+		</zip>
+	</target>
+
+	<!--
+		- - - - - - - - - - - - - - - -
+		Build common
+		- - - - - - - - - - - - - - - -
+	-->
+	<target name="--build-common">
+		<ant antfile="${common.ant.script}" target="build" inheritall="false"/>
+	</target>
+	<!--
+	=================================
+	target: build
+	=================================
+	-->
+	<target name="build" description="Compile source." depends="--build-common, --CayenneClassGenerator, --buildresources">
+	    <copy overwrite="true" todir="${classes.dir}">
+			<fileset dir="${common.classes.dir}"/>
+		</copy>
+		<javac
+		    source="${javac.source}"
+			target="${javac.target}"
+			srcdir="${src.dir}"
+			destdir="${classes.dir}"
+			deprecation="false"
+			debug="true"
+			debuglevel="source,lines">
+			<classpath refid="allLibraries.path" />
+		</javac>
+	</target>
+
+	<target name="--CayenneClassGenerator"  depends ="--build-common">
+		<cgen map="${basedir}/${cayenne.map.dir}/AngelMap.map.xml"
+		    destDir="${src.dir}"
+		    superpkg="ish.oncourse.server.cayenne.glue"
+		    overwrite="true"
+		    template="${basedir}/${cayenne.template.dir}/subclass.vm"
+		    supertemplate="${basedir}/${cayenne.template.dir}/superclass.vm"
+	    />
+		<cgen map="${cayenne.map.dir}/AngelMap.map.xml"
+		    destDir="${src.dir}"
+		    superpkg="ish.oncourse.cayenne.glue"
+		    template="${cayenne.template.dir}/client-subclass-serverside.vm"
+		    supertemplate="${cayenne.template.dir}/client-superclass-serverside.vm"
+		    client="true"
+		    overwrite="true"
+		/>
+	</target>
+
+	<target name="--buildresources" description="copies bundled resources to output directory">
+		<copy overwrite="true" todir="${classes.dir}">
+			<fileset dir="${server.project.dir}">
+				<include name="resources/schema/**" />
+				<include name="resources/images/**" />
+				<include name="resources/log_properties/**" />
+				<include name="resources/ssl/sslcert.keystore" />
+				<include name="resources/ssl/clientserverkeystore" />
+				<exclude name="resources/schema/referenceData/modules.txt" />
+				<exclude name="resources/schema/referenceData/qualifications.txt" />
+				<exclude name="resources/schema/referenceData/trainingpackages.txt" />
+			</fileset>
+			<fileset dir="${resource.dir}/">
+				<include name="sslcert.keystore" />
+				<include name="clientserverkeystore" />
+			</fileset>
+			<fileset dir="${cayenne.map.dir}" includes="*.xml" />
+			<!-- enables soap compression... -->
+			<fileset file="${server.resource.dir}/client-config.wsdd" />
+		</copy>
+		<copy overwrite="true" todir="${classes.dir}/resources">
+			<fileset file="${server.resource.dir}/sampleData.zip" />
+		</copy>
+	</target>
+	
+	<target name="--clean-test">
+		<delete verbose="true">
+			<fileset dir="${server.test.dir}" includes="**/*.class" />
+		</delete>
+	</target>
+	<target name="--compile-test" depends="--clean-test, build">
+		<javac srcdir="${server.test.dir}" verbose="true" debug="true" source="${javac.source}" target="${javac.target}">
+			<classpath refid="test.classpath" />
+		</javac>
+	</target>
+
+
+
+	<!--
+	=================================
+	target: RetrieveWillowStubs
+	=================================
+	-->
+	<target name="RetrieveWillowStubs" description="Pull the wsdl from the server and rewrite the soap classes">
+		<taskdef resource="axis-tasks.properties">
+			<classpath refid="allLibraries.path" />
+		</taskdef>
+		<axis-wsdl2java all="true" output="${src.dir}" verbose="true" url="${angel.soap.server.url}DataPopulationService?WSDL">
+			<mapping namespace="${angel.soap.server.namespace1}/ws/DataPopulationService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/1/ws/DataPopulationService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/2/ws/DataPopulationService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/3/ws/DataPopulationService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/4/ws/DataPopulationService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace2}/ws/DataPopulationService" package="au.com.ish.oncourseservices.v3.stubs" />
+		</axis-wsdl2java>
+		<axis-wsdl2java all="true" output="${src.dir}" verbose="true" url="${angel.soap.server.url}InboundService?WSDL">
+			<mapping namespace="${angel.soap.server.namespace1}/ws/InboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/1/ws/InboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/2/ws/InboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/3/ws/InboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/4/ws/InboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace2}/ws/InboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+		</axis-wsdl2java>
+		<axis-wsdl2java all="true" output="${src.dir}" verbose="true" url="${angel.soap.server.url}OutboundService?WSDL">
+			<mapping namespace="${angel.soap.server.namespace1}/ws/OutboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/1/ws/OutboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/2/ws/OutboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/3/ws/OutboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/4/ws/OutboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace2}/ws/OutboundService" package="au.com.ish.oncourseservices.v3.stubs" />
+		</axis-wsdl2java>
+		<axis-wsdl2java all="true" output="${src.dir}" verbose="true" url="${angel.soap.server.url}TransactionService?WSDL">
+			<mapping namespace="${angel.soap.server.namespace1}/ws/TransactionService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/1/ws/TransactionService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/2/ws/TransactionService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/3/ws/TransactionService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace1}/4/ws/TransactionService" package="au.com.ish.oncourseservices.v3.stubs" />
+			<mapping namespace="${angel.soap.server.namespace2}/ws/TransactionService" package="au.com.ish.oncourseservices.v3.stubs" />
+		</axis-wsdl2java>
+		<replaceregexp flags="g">
+			<regexp pattern='\"http://[^/]+/cgi-bin/WebObjects/(.+)\.woa/-?(\d+/)?ws/([^"]+)\"' />
+			<substitution expression='ish.oncourse.server.services.ReplicationManager.SoapBaseUrl() + "\3"' />
+			<fileset dir="${src.dir}/au/com/ish/oncourseservices" casesensitive="no">
+				<include name="**/*.java" />
+			</fileset>
+		</replaceregexp>
+		<antcall target="--fixWillowStubs" />
+	</target>
+	
+	<target name="--fixWillowStubs" description="Fixes array handlers for soap stubs after regeneration">
+		<!--
+			 fix generated arrays as documented by IBM
+			http://publib.boulder.ibm.com/infocenter/wpc/v5r3m2/index.jsp?topic=/com.ibm.wpc.doc/javaapi/japi6.html
+			
+			Summary of fixes:
+			1) Arrays should have elemField.setMaxOccursUnbounded(true);
+			2) Arrays need array bean setter/getter helpers to access the elements of the array
+			   as otherwise it only thinks there's one element in the array!
+			3) primitive array types (such as byte) need elemField.setNillable(false);
+		 -->
+		<path id="groovy.classpath">
+			<fileset id="groovy.all.files" dir="${common.lib.dir}">
+				<include name="groovy-all.jar" />
+			</fileset>
+		</path>
+		<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy" classpathref="groovy.classpath"/>
+		
+		<!--
+		 	stubsFound is the project ref arg to the script
+		 -->
+		<fileset id="stubsfound" dir="${src.dir}/au/com/ish/oncourseservices/v3">
+			<include name="**/*.java"/>
+		</fileset>
+		<groovy src="${basedir}/resources/utilities/stubsfix.groovy" />
+	</target>
+	
+	
+	<!--
+	=================================
+	target: javadocs
+	=================================
+	-->
+	<target name="javadocs" description="Generate API Javadocs" depends="build">
+		<delete dir="${server.javadoc.dir}" />
+		<mkdir dir="${server.javadoc.dir}" />
+		<javadoc classpathref="test.classpath" defaultexcludes="yes" breakiterator="yes" use="yes" private="yes" windowtitle="Angel" doctitle="ish javadocs" bottom="ish group copyright 1992 - 2008. All rights reserved." destdir="${server.javadoc.dir}" packagenames="ish.oncourse.server.*">
+			
+			<fileset dir="${server.project.dir}" defaultexcludes="yes">
+				<include name="src/**/*.java" />
+				<include name="tests/**/*.java" />
+		    </fileset>
+					
+			<link href="http://java.sun.com/j2ee/1.4/docs/api/" />
+			<link href="http://java.sun.com/j2se/1.4.2/docs/api/" />
+			<link href="http://logging.apache.org/log4j/docs/api/" />
+			<link href="http://jakarta.apache.org/log4j/docs/api/" />
+			<link href="http://cayenne.apache.org/doc/api/" />
+			<link offline="true" href="http://intranet.ish.com.au/javadoc/angel/common/" packagelistLoc="${common.javadoc.dir}" />
+		</javadoc>
+	</target>
+	
+	<!--
+	=================================
+	target: run the server from jar with all dependencies bundled
+	=================================
+	-->
+	<target name="run" description="alias for local-test for safety purposes!"  depends="local-test"></target>
+
+	<!--
+	=================================
+	target: avetmiss update
+	=================================
+	-->
+	<target name="avetmiss" description="new avetmiss update">
+		<javac
+			source="${javac.source}"
+			target="${javac.target}"
+			destdir="${classes.dir}"
+			deprecation="false"
+			debug="true"
+			debuglevel="source,lines">
+			<src path="${src.dir}"/>
+			<src path="${server.utilities.dir}"/>
+			<classpath refid="allLibraries.path" />
+		</javac>
+		<java classname="NewUpdateAvetmiss" fork="yes">
+			<arg path="${server.resource.dir}"/>
+			<classpath>
+				<path location="${server.classes.dir}" />
+				<path refid="allLibraries.path" />
+				<path path="${classes.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
+	
+	<target name="debug" description="Run the server from a jar">
+		<property name="runtime.soap.url" value="http://delish.ish.com.au/cgi-bin/WebObjects/onCourseServices.woa/ws/" />
+		<property name="debug.flag" value="true" />
+		<antcall target="--debug" />
+	</target>
+	
+	<target name="local-test">
+		<property name="runtime.soap.url" value="${angel.soap.server.url.local}" />
+		<property name="runtime.soap.disabled" value="true" />
+		<property name="debug.flag" value="true" />
+		<property name="runtime.soap.debug" value="true" />
+		<property name="replication.batchsize" value="5" />
+		<property name="disable_datasanity" value="true" />
+		<antcall target="--run" />
+	</target>
+	
+	<target name="local-simulate">
+		<property name="runtime.soap.url" value="${angel.soap.server.url.local}" />
+		<property name="runtime.soap.disabled" value="true" />
+		<property name="debug.flag" value="false" />
+		<property name="runtime.soap.debug" value="false" />
+		<property name="replication.batchsize" value="5" />
+		<property name="disable_datasanity" value="true" />
+		<antcall target="--run" />
+	</target>
+	
+	<target name="local-junit">
+		<property name="runtime.soap.url" value="${angel.soap.server.url.local}" />
+		<property name="debug.flag" value="true" />
+		<property name="runtime.soap.debug" value="true" />
+		<property name="replication.batchsize" value="10" />
+		<property name="payment_gateway_test" value="true" />
+		<antcall target="--run" />
+	</target>
+	
+	<target name="run-headless">
+		<property name="runtime.soap.url" value="${angel.soap.server.url.local}" />
+		<property name="debug.flag" value="true" />
+		<property name="runtime.soap.debug" value="true" />
+		<property name="replication.batchsize" value="10" />
+		<property name="headless" value="true"/>
+		<property name="runtime.angelwillowreplication.disabled" value="true" />
+		<antcall target="--run" />
+	</target>
+		
+	<target name="dburi-test" depends="buildjar">
+		<property name="runtime.soap.url" value="${angel.soap.server.url.local}" />
+		<property name="debug.flag" value="true" />
+		<property name="runtime.soap.debug" value="true" />
+		<property name="replication.batchsize" value="10" />
+		<property name="runtime.soap.debug" value="false" />
+		<property name="dburi" value=""/>
+		
+		<echo message="replication.batchsize = ${replication.batchsize}" />
+		<java maxmemory="${server.maxmemory}" fork="true" classname="ish.oncourse.server.AngelServer">
+			<arg value="DEBUG=${debug.flag}" />
+			<arg value="REPLICATION_DEBUG=${runtime.soap.debug}" />
+			<arg value="DBURI=${dburi}" />
+			<arg value="-Dwillow_service=${runtime.soap.url}" />
+			<arg value="-Dreplication.batchsize=${replication.batchsize}" />
+			<!--arg value="-agentlib:yjpagent"/-->
+			<classpath>
+				<path location="${distribution.dir}/${server.jar}" />
+				<path refid="allLibraries.path" />
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="delish-test">
+		<property name="runtime.soap.url" value="http://delish.ish.com.au/cgi-bin/WebObjects/onCourseServicesDev.woa/ws/" />
+		<property name="runtime.soap.debug" value="true" />
+		<property name="debug.flag" value="true" />
+		<antcall target="--run" />
+	</target>
+	
+	<target name="delish-simulate">
+		<property name="runtime.soap.url" value="http://delish.ish.com.au/cgi-bin/WebObjects/onCourseServicesDev.woa/ws/" />
+		<property name="runtime.soap.debug" value="false" />
+		<property name="debug.flag" value="false" />
+		<antcall target="--run" />
+	</target>
+	
+	<target name="deploy-test">
+		<property name="runtime.soap.url" value="http://oncourse-replicate.ish.com.au/cgi-bin/WebObjects/onCourseServices.woa/ws/" />
+		<property name="runtime.soap.debug" value="true" />
+		<property name="runtime.soap.disabled" value="true" />
+		<property name="debug.flag" value="true" />
+		<property name="runtime.angelwillowreplication.disabled" value="true" />
+		<antcall target="--run" />
+	</target>
+	
+	<target name="deploy-simulate">
+		<property name="runtime.soap.url" value="http://oncourse-replicate.ish.com.au/cgi-bin/WebObjects/onCourseServices.woa/ws/" />
+		<property name="runtime.soap.debug" value="false" />
+		<property name="runtime.soap.disabled" value="true" />
+		<property name="runtime.angelwillowreplication.disabled" value="true" />
+		<property name="debug.flag" value="false" />
+		<antcall target="--run" />
+	</target>
+	
+	<target name="--run" depends="buildjar">
+		<property name="runtime.soap.debug" value="false" />
+		<property name="runtime.soap.disabled" value="false" />
+		<echo message="replication.batchsize = ${replication.batchsize}" />
+		<property name="dburi" value=""/>
+		<property name="headless" value="false"/>
+		<property name="payment_gateway_test" value="true"/>
+		<property name="disable_datasanity" value="false"/>
+		<property name="runtime.angelwillowreplication.disabled" value="false" />
+		<echo message="jvm version: ${java.version}" />
+		<java maxmemory="${server.maxmemory}" fork="true" classname="ish.oncourse.server.AngelServer">
+			<arg value="DEBUG=${debug.flag}" />
+			<arg value="REPLICATION_DEBUG=${runtime.soap.debug}" />
+			<arg value="REPLICATION_DISABLED=${runtime.soap.disabled}" />
+			<arg value="ANGELWILLOW_REPLICATION_DISABLED=${runtime.angelwillowreplication.disabled}" />
+			<arg value="-DDataSanityCheck.disabled=${disable_datasanity}" />
+			<arg value="-Dwillow_service=${runtime.soap.url}" />
+			<arg value="-Dreplication.batchsize=${replication.batchsize}" />
+			<arg value="DBURI=${dburi}" />
+			<arg value="HEADLESS=${headless}"/>
+			<arg value="PAYMENT_GATEWAY_TEST=${payment_gateway_test}"/>
+			<!--arg value="-agentlib:yjpagent"/-->
+			<classpath>
+				<path location="${distribution.dir}/${server.jar}" />
+				<path refid="allLibraries.path" />
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="--debug" depends="buildjar">
+			<property name="runtime.soap.debug" value="false" />
+			<property name="runtime.soap.disabled" value="false" />
+			<property name="runtime.angelwillowreplication.disabled" value="true" />
+			<java maxmemory="${server.maxmemory}" fork="true" classname="ish.oncourse.server.AngelServer">
+				<arg value="DEBUG=${debug.flag}" />
+				<arg value="REPLICATION_DEBUG=${runtime.soap.debug}" />
+				<arg value="REPLICATION_DISABLED=${runtime.soap.disabled}" />
+				<arg value="ANGELWILLOW_REPLICATION_DISABLED=${runtime.angelwillowreplication.disabled}" />
+				<arg value="-Dwillow_service=${runtime.soap.url}" />
+				<jvmarg value="-Xdebug" />
+				<jvmarg value="-Xrunjdwp:server=y,transport=dt_socket,address=4142,suspend=n" />
+				<classpath>
+					<path location="${distribution.dir}/${server.jar}" />
+					<path refid="allLibraries.path" />
+				</classpath>
+			</java>
+		</target>
+	
+	<!--
+	=================================
+	target: run the server from jar with all dependencies bundled
+	=================================
+	-->
+	<target name="runbundledjar" description="Run the server from a jar" depends="buildjar">
+		<java maxmemory="${server.maxmemory}" fork="true" jar="${distribution.dir}/${server.jar}">
+			<arg value="DEBUG=true" />
+			<arg value="-Dwillow_service=http://delish.ish.com.au/cgi-bin/WebObjects/onCourseServices.woa/ws/" />
+		</java>
+	</target>
+	
+	<!--
+	=================================
+	target: createbundle-osx
+	=================================
+	-->
+	<target name="createbundle-osx" description="build OSX deployment" depends="buildjar">
+		<taskdef name="jarbundler" classpath="${antlib.dir}/jarbundler.jar" classname="net.sourceforge.jarbundler.JarBundler">
+			<classpath>
+			    <path refid="allLibraries.path" />
+			</classpath>
+		</taskdef>
+
+		<delete dir="${distribution.dir}/${server.osxapp}" />
+		
+		<!--available OSX options are documented here:
+			http://developer.apple.com/documentation/Java/Conceptual/JavaPropVMInfoRef/JavaPropVMInfoRef.pdf
+			and JarBundler is here: http://informagen.com/JarBundler/ -->
+		<jarbundler dir="${distribution.dir}" verbose="true" name="onCourse server"
+			 mainclass="ish.oncourse.server.AngelServer" icon="${server.resource.dir}/packaging/macosx/onCourseServer.icns"
+			 bundleid="au.ish.com.oncourse.server" version="${server.version}" build="${server.version} (${svnVersion})"
+			 infostring="onCourse server ${server.version}, build ${svnVersion}" shortname="onCourse server" 
+			jvmversion="1.5+" signature="ishS" type="APPL" vmoptions="-Xmx${server.maxmemory}" stubfile="onCourseServer">
+			<javaproperty name="apple.laf.useScreenMenuBar" value="true" /> <!-- single menu -->
+			<javaproperty name="JFileChooser.packageIsTraversable" value="true" />
+			<javaproperty name="JFileChooser.appBundleIsTraversable" value="true" />
+			<javaproperty name="apple.awt.antialiasing" value="true" /> <!-- use anti-aliasing when rendering graphics -->
+			<javaproperty name="apple.awt.textantialiasing" value="true" /> <!-- use anti-aliasing when rendering text -->
+			<javaproperty name="apple.awt.showGrowBox" value="true" /> <!--Show the Aqua resize (grow) box -->
+			
+			<documenttype name="onCourse server data file" extensions="iocdata" ostypes="ishS" bundle="true" 
+				iconFile="${server.resource.dir}/packaging/macosx/onCourseDocument.icns" role="Editor" />
+			
+			<jarfileset dir="${distribution.dir}" includes="${server.jar}" />
+			<jarfileset refid="requiredLibraries.files" />
+		</jarbundler>
+		
+	</target>
+	
+	<!--
+	=================================
+	target: test
+	=================================
+	-->
+	<target name="test" description="junit tests" depends="clean, build">
+	
+		<property name="junit.bin" location="classes" />
+		<property name="junit.reports" location="dist/reports" />
+		
+		<!-- Remove previous tests -->
+		<delete dir="${junit.reports}" />
+		<mkdir dir="${junit.reports}" />
+		
+		<path id="test.classpath">
+			<path refid="allLibraries.path" />
+			<fileset id="junitFile" dir="${common.lib.dir}">
+				<include name="junit.jar" />
+			</fileset>
+			<pathelement location="${classes.dir}" />
+		</path>
+				
+		<!-- compile JUnit test classes -->
+		<javac source="${javac.source}" target="${javac.target}" srcdir="tests" destdir="${junit.bin}" deprecation="true" debug="true" debuglevel="source,lines">
+			<classpath refid="test.classpath" />
+		</javac>
+		
+<!--
+		<echoproperties destfile="dist/my.properties"/>
+		<echoproperties>
+		  <propertyset>
+		    <propertyref prefix="java."/>
+		  </propertyset>
+		</echoproperties>
+		<echoproperties>
+		  <propertyset>
+		    <propertyref prefix="client."/>
+		  </propertyset>
+		</echoproperties>
+		<echoproperties>
+		  <propertyset>
+		    <propertyref prefix="server."/>
+		  </propertyset>
+		</echoproperties>
+		<echoproperties>
+		  <propertyset>
+		    <propertyref prefix="common."/>
+		  </propertyset>
+		</echoproperties> -->
+		<junit fork="yes" printsummary="yes" haltonfailure="no">
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.reports}">
+				<fileset dir="${junit.bin}">
+					<include name="**/*Test.class" />
+				</fileset>
+			</batchtest>
+			
+			<classpath>
+				<path refid="test.classpath" />
+				<pathelement location="${junit.bin}" />
+			</classpath>
+		</junit>
+	</target>
+	
+	<!--
+		=================================
+		target: itest
+		=================================
+		-->
+		<target name="itest" description="intergration tests" depends="clean, build">
+			<property environment="env" />
+			<property name="itest.bin" location="classes" />
+			<property name="itest.reports" location="dist/reports" />
+			
+			<!-- Remove previous tests -->
+			<delete dir="${itest.reports}" />
+			<mkdir dir="${itest.reports}" />
+
+			<path id="test.classpath">
+				<path refid="allLibraries.path" />
+				<fileset id="junitFile" dir="${common.lib.dir}">
+					<include name="junit.jar" />
+				</fileset>
+				<pathelement location="${classes.dir}" />
+			</path>
+					
+			<!-- compile JUnit test classes -->
+			<javac source="${javac.source}" target="${javac.target}" srcdir="itests" destdir="${itest.bin}" deprecation="true" debug="true" debuglevel="source,lines">
+				<classpath refid="test.classpath" />
+			</javac>
+			
+			<junit fork="yes" printsummary="yes" haltonfailure="no">
+				<formatter type="xml" />
+				<batchtest fork="yes" todir="${itest.reports}">
+					<fileset dir="${itest.bin}">
+						<include name="**/*Test.class" />
+					</fileset>
+				</batchtest>
+				
+				<classpath>
+					<path refid="test.classpath" />
+					<pathelement location="${itest.bin}" />
+				</classpath>
+			</junit>
+		</target>
+	
+	<!--
+	=================================
+	target: clean
+	=================================
+	-->
+	<target name="clean" description="clean up">
+		<delete dir="${classes.dir}" />
+		<mkdir dir="${classes.dir}"/>
+		<ant antfile="${common.ant.script}" target="clean" inheritall="false"/>
+	</target>
+	
+	<!--
+	=================================
+	target: release-unix
+	=================================
+	-->
+	<target name="release-unix" description="Create a tar.gz archive for unixes such as linux and solaris" depends="clean, buildJarWithDependencies">
+		<mkdir dir="${distribution.dir}/onCourse" />
+		<copy overwrite="true" todir="${distribution.dir}/onCourse">
+			<fileset dir="${distribution.dir}">
+				<include name="onCourseServer.jar" />
+			</fileset>
+			<fileset dir="${server.resource.dir}/packaging/unix">
+				<include name="onCourseServer.sh" />
+			</fileset>
+			<fileset dir="${server.resource.dir}/packaging/unix">
+				<include name="log.properties" />
+			</fileset>
+		</copy>
+		<tar destfile="${distribution.dir}/onCourseServer.tar">
+			<tarfileset dir="${distribution.dir}/onCourse" prefix="onCourse" preserveLeadingSlashes="true">
+			</tarfileset>
+		</tar>
+		<gzip zipfile="${distribution.dir}/onCourseServer.tar.gz" src="${distribution.dir}/onCourseServer.tar"/>
+		<delete dir="${distribution.dir}/onCourse"/>	
+		<delete file="${distribution.dir}/onCourseServer.tar"/>	
+	</target>
+
+	<!--
+	=================================
+	target: release-osx
+	=================================
+	-->
+	<target name="release-osx" description="create OSX dmg ready for release" depends="clean, createbundle-osx">
+		<property name="tempImage" value="${distribution.dir}/onCourseServer-temp.dmg" />
+		<property name="finalImage" value="${distribution.dir}/onCourseServer.dmg" />
+		<property name="assembyDir" value="${distribution.dir}/onCourseServer" />
+		
+		<!--prepare-->
+		<delete dir="${assembyDir}" />
+		<mkdir dir="${assembyDir}" />
+		
+		<!--assemble pieces-->
+		<move todir="${assembyDir}" file="${distribution.dir}/${server.osxapp}" />
+		<copy overwrite="true" file="${server.resource.dir}/packaging/macosx/dmg.DS_Store" tofile="${assembyDir}/.DS_Store" />
+		<copy overwrite="true" file="${server.resource.dir}/packaging/macosx/dmg.background.png" tofile="${assembyDir}/background.png" />
+		<exec executable="/Developer/Tools/SetFile">
+			<arg line="-a V ${assembyDir}/background.png" />
+		</exec>
+		
+		<delete file="${tempImage}" />
+		<delete file="${finalImage}" />
+		
+		<exec executable="hdiutil">
+			<arg line="makehybrid -hfs -hfs-openfolder onCourseServer -o ${tempImage} ${assembyDir}" />
+		</exec>
+		<exec executable="hdiutil">
+			<arg line="convert -format UDZO -imagekey 7 -o ${finalImage} ${tempImage}" />
+		</exec>
+		
+		<!-- cleanup -->
+		<delete file="${tempImage}" />
+		<delete dir="${assembyDir}" />
+	</target>
+	
+	<!--
+	=================================
+	target: createbundle-win
+	=================================
+	-->
+	<target name="createbundle-win" description="create Windows executable" depends="clean, buildJarWithDependencies">
+	    <exe4j projectfile="${server.resource.dir}/packaging/windows/server.exe4j" release="${server.version.windows}"/>
+	</target>
+	<!--
+	=================================
+	target: release-win
+	=================================
+	-->
+        <target name="release-win" description="create Windows installer ready for release" depends="createbundle-win">
+	    <exec executable="makensis">
+		  <arg line="${server.resource.dir}/packaging/windows/server-mui.nsi"/>
+	    </exec>
+	    <move file="${server.resource.dir}/packaging/windows/onCourseServer-installer.exe" todir="${distribution.dir}"/>
+	    <delete  dir="${distribution.dir}/onCourse" />
+	</target>
+
+    
+    <target name="release-muiwin" description="create Windows installer ready for release">
+	    <exec executable="makensis">
+		  <arg line="${server.resource.dir}/packaging/windows/server-mui.nsi"/>
+	    </exec>
+	    <move file="${server.resource.dir}/packaging/windows/onCourseServer-installer.exe" todir="${distribution.dir}"/>
+	    <delete  dir="${distribution.dir}/onCourse" />
+	</target> 
+	<!--
+	=================================
+	target: createbundle-winservice
+	=================================
+	-->
+	<target name="createbundle-winservice" description="create an executable capable of being 
+a windows service" depends="clean, buildJarWithDependencies">
+	    <exe4j projectfile="${server.resource.dir}/packaging/windows/service.exe4j" />	
+	</target>
+   
+	<!--
+	=================================
+	target: release-winservice
+	=================================
+	-->
+	<target name="release-winservice" description="create an installer that will install as a service" depends="createbundle-winservice">
+	<exec executable="makensis">
+		  <arg line="${server.resource.dir}/packaging/windows/service-mui.nsi"/>
+	    </exec>
+	    <move file="${server.resource.dir}/packaging/windows/onCourseService-installer.exe" todir="${distribution.dir}"/>
+	    <delete  dir="${distribution.dir}/onCourse" />   
+	</target>
+	<!-- The following target is to test/tweak the NSIS without depending on the buildjar target. Assumes that a jar
+exists in dist already, allowing NSIS tweaks to proceed without rebuilding the jar.-->
+	<target name="release-muiwinservice" description="create Windows installer ready for release">
+	    <exec executable="makensis">
+		  <arg line="${server.resource.dir}/packaging/windows/service-mui.nsi"/>
+	    </exec>
+	    <move file="${server.resource.dir}/packaging/windows/onCourseService-installer.exe" todir="${distribution.dir}"/>
+	    <delete  dir="${distribution.dir}/onCourse" />
+	</target> 
+
+	<!--
+	=================================
+	target: release-freebsd
+	=================================
+	-->
+	<target name="release-freebsd" description="create freebsd pkg ready for release" depends="clean, buildJarWithDependencies">
+		<mkdir dir="${distribution.dir}/addToJar" />
+		
+		<jar destfile="${distribution.dir}/${server.jar}" update="true" basedir="${distribution.dir}/addToJar/" duplicate="fail" compress="true" index="true" />
+		<delete dir="${distribution.dir}/addToJar" />
+		
+		<!-- Create a tmp directory and put the +COMMENT,+CONTENTS,
+		   +DESC,+DISPLAY freebsd pkg files. It should also contain
+		   a subdirectory called on onCourse with two files onCourseServer
+	   	- which is the start/stop script and onCourseServer.jar -->
+		
+		<mkdir dir="${distribution.dir}/freebsd" />
+		<copy overwrite="true" todir="${distribution.dir}/freebsd">
+			<fileset dir="${server.resource.dir}/packaging/freebsd" />
+		</copy>
+		<mkdir dir="${distribution.dir}/freebsd/onCourse/" />
+		<copy overwrite="true" todir="${distribution.dir}/freebsd/onCourse/">
+			<fileset dir="${distribution.dir}">
+				<include name="onCourseServer.jar" />
+			</fileset>
+		</copy>
+		<copy overwrite="true" file="${distribution.dir}/freebsd/onCourseServer" tofile="${distribution.dir}/freebsd/onCourse/onCourseServer" />
+		<!--Calculate hashes of all files and replace tokens in +CONTENTS
+		   +COMMENT file needs to have it's version number replaced first
+		   as it's md5 sum will have to go into the +CONTENTS file-->
+		<replace file="${distribution.dir}/freebsd/+COMMENT" value="${server.unix.pkgversion}">
+			<replacetoken>@onCourse.version@</replacetoken> 
+		</replace>
+		<checksum file="${distribution.dir}/freebsd/+COMMENT" property="hash_comment" />
+		<checksum file="${distribution.dir}/freebsd/+DESC" property="hash_desc" />
+		<checksum file="${distribution.dir}/freebsd/+DISPLAY" property="hash_display" />
+		<checksum file="${distribution.dir}/freebsd/onCourse/onCourseServer.jar" property="hash_onCourseServer.jar" />  
+		<checksum file="${distribution.dir}/freebsd/onCourse/onCourseServer" property="hash_onCourseServer" />	
+		
+		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${server.unix.pkgversion}">
+			<replacetoken>@onCourse.version@</replacetoken>
+		</replace>
+		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_onCourseServer.jar}">
+			<replacetoken>@hash_onCourseServer.jar@</replacetoken>
+		</replace>
+		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_onCourseServer}">
+			<replacetoken>@hash_onCourseServer@</replacetoken>
+		</replace>
+		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_comment}">
+			<replacetoken>@hash_comment@</replacetoken>
+		</replace>
+		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_desc}">
+			<replacetoken>@hash_desc@</replacetoken>
+		</replace>
+		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_display}">
+			<replacetoken>@hash_display@</replacetoken>
+		</replace>
+		<!-- Create a tgz or gz package-->
+		<tar tarfile="${distribution.dir}/onCourseServer.tar" basedir="${distribution.dir}/freebsd" />
+		<gzip zipfile="${distribution.dir}/onCourseServer.tgz" src="${distribution.dir}/onCourseServer.tar" />
+		
+		<delete dir="${distribution.dir}/freebsd" />
+		<delete file="${distribution.dir}/onCourseServer.tar" />
+	</target>
+	
+	<!--
+	    =================================
+	 	target: buildJasperReports
+	 	=================================
+	 -->
+	<target name="buildJasperReports" description="Compile jasper files." depends="--build-common, --CayenneClassGenerator">
+		<!-- Compile ish reports-->
+		<jrc>
+			<src>
+				<fileset dir="${jasper.report.dir}" >
+					<exclude name="**/*.png"/>
+					<exclude name="**/*.pdf"/>
+					<exclude name="**/*.zip"/>
+				</fileset>
+			</src>
+			<classpath>
+				<path refid="allLibraries.path"/>
+				<pathelement location="${common.classes.dir}"/>
+			</classpath>
+		</jrc>
+		
+		<!-- now custom reports-->
+		<jrc>
+			<src>
+				<fileset dir="${jasper.customReport.dir}" >
+					<exclude name="**/*.png"/>
+					<exclude name="**/*.pdf"/>
+					<exclude name="**/*.zip"/>
+				</fileset>
+			</src>
+			<classpath>
+				<path refid="allLibraries.path"/>
+				<pathelement location="${common.classes.dir}"/>
+			</classpath>
+		</jrc>
+		
+	</target>
+	
+	<!--
+		    =================================
+		 	target: cleanJasperReports
+		 	=================================
+		 -->
+		<target name="cleanJasperReports" description="Clean jasper files">
+			<!-- Delete compiled ish reports-->
+			<delete verbose="true">
+					<fileset dir="${jasper.report.dir}" includes="**/*.jasper" />
+			</delete>
+			<!-- now custom reports-->
+			<delete verbose="true">
+					<fileset dir="${jasper.customReport.dir}" includes="**/*.jasper" />
+			</delete>
+		</target>
+	
+	<!--
+			    =================================
+			 	target: cleanBuildJasperReports
+			 	=================================
+			 -->
+			<target name="cleanBuildJasperReports" description="Clean jasper files, then build them from scratch" depends="cleanJasperReports, buildJasperReports">
+				
+			</target>
+	
+	<!--
+    =================================
+ 	target: release-all
+ 	=================================
+ 	-->
+ 	<target name="release-all" description="create all production builds" depends="clean, cleanJasperReports, --build-common, --CayenneClassGenerator, buildJasperReports, release-osx, release-win, release-winservice, release-freebsd, release-unix">
+ 	</target>
+</project>
