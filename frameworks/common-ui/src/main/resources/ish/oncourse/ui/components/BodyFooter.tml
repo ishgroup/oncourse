@@ -1,0 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <div id="footer">
+    <p>Copyright &copy; 2007-${year}
+      ${collegeName}
+      and
+      <a href="http://www.ish.com.au/copyright.html" title="ish copyright notice" class="popup">ish</a>, all rights reserved. 
+    </p>
+    <p>
+      <a href="http://www.ish.com.au/oncourse" class="popup"><img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse" /></a>
+    </p>
+  </div>
+</t:container>

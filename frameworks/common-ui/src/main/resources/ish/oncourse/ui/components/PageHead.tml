@@ -1,0 +1,11 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
+  <link rel="shortcut icon" type="image/ico" href="/s/img/favicon.ico" />
+  <title>${title}</title>
+  <link t:type="ui/cssassetgroup" group="literal:application" media="literal:screen, projection" />
+  <link href="/s/css/jquery-ui-theme/ui.all.css" rel="stylesheet" type="text/css" />
+  <link t:type="ui/cssassetgroup" group="literal:static" media="literal:screen, projection" />
+  <link t:type="ui/cssassetgroup" group="literal:printer" media="literal:print" />
+  <link t:type="ui/cssassetgroup" group="literal:custom" media="literal:screen, projection" />
+</t:container>
