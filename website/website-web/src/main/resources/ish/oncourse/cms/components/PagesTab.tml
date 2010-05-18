@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<li class="pages selected"><a href="#">Pages</a>
+		<ul class="clear clearfix nav_cms_sub">
+			<li class=""><a href="#">New Page</a>			
+				<div class="menu_dropdown">
+						<div class="menu_header">
+						</div>
+						 <t:form clientValidation="false">				
+							<div class="form_question">
+								<label>Page name</label>
+<!--								<input t:type="textfield" t:id="pageName" type="text" value="${next.name}" ></input>-->
+							</div>						
+							<div class="menu_footer">
+								<t:submit t:id="newpage" value="Create Page &#187;"/>
+							</div>
+						 </t:form>
+				</div>	
+			</li>
+			<li class=""><a href="">Page Options</a>
+				<div class="menu_dropdown">
+						<div class="menu_header">
+						</div>
+						
+						<div class="form_question">
+							<label>Page Status</label>
+							<input type="checkbox"></input>This page is <em>Live</em> and viewable on the website. 
+						</div>								
+						<div class="form_question">
+							<input type="checkbox"></input><label>This page appears in the navigation as:</label>
+							<div class="breadcrumbs"><span>Home</span> &#8594; <span>About the Company</span> &#8594;
+								<span><input type="text"  value="Menu Name"></input></span></div>
+						</div>						
+						<div class="form_question">
+							<label>Nav Menu URL</label> <input type="text" value="http://www.cce.usyd.edu.au/pagename"></input>
+							<ul id="alias_list">
+								<li>http://www.cce.usyd.edu.au/contact_us <span class="delete_button">&#8855;</span></li>
+								<li>http://www.cce.usyd.edu.au/about_us <span class="delete_button">&#8855;</span></li>
+								<li>http://www.cce.usyd.edu.au/contact <span class="delete_button">&#8855;</span></li>
+							</ul>
+						</div>
+						<div class="form_question">
+							<input type="checkbox"></input>
+							<label>Permanently delete this page</label>
+							
+							<input type="submit" value="Delete page" style="opacity: 0.2;"></input>
+						</div>
+							
+						<div class="menu_footer">
+							<input type="submit" class="pos" value="Save Settings &#187;"></input>
+						</div>
+				</div>		
+			</li>
+			<li class=""><a href="#">Styling</a>
+				<div class="menu_dropdown">
+						<div class="menu_header">
+						</div>
+						
+						<div class="form_question">
+							<label style="width: 100%">Theme used</label>
+							<button class="prev clear">&lt;&lt;</button>
+							<button class="next">&gt;&gt;</button>
+							        
+							<div class="anyClass">
+							    <ul>
+							        <li><img src="/s/img/themes/1col.png" alt="" width="100" height="100" ></img></li>
+							        <li><img src="/s/img/themes/2col.png" alt="" width="100" height="100" ></img></li>
+							        <li><img src="/s/img/themes/3col.png" alt="" width="100" height="100" ></img></li>
+							    </ul>
+							</div>
+						</div>	
+						
+						<div class="form_question">
+							<span>Show Advanced CSS options</span>
+						</div>
+							
+						<div class="menu_footer">
+							<input type="submit" class="pos" value="Save Styling &#187;"></input>
+						</div>
+				</div>		
+			</li>					
+			<li class=""><a href="">Tags</a>
+				<div class="menu_dropdown">
+					<div class="menu_header">
+					</div>
+					
+					<div class="form_question">
+					<h4 class="no_margin">This page is tagged as:</h4>
+					* Sydney Uni<p>
+					* FOr internationals</p>
+					</div>
+						
+					<div class="menu_footer">
+						<input type="submit" class="pos" value="Save Tags &#187;"></input>
+					</div>
+				</div>		
+			</li>					
+		</ul>			
+	</li>
+</t:container>

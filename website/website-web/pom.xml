@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>website</artifactId>
+		<groupId>ish.oncourse</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>website-web</artifactId>
+	<packaging>war</packaging>
+	<name>Website Web Module</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>ish.oncourse</groupId>
+			<artifactId>website-services</artifactId>
+			<version>${version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ish.oncourse</groupId>
+			<artifactId>common-ui</artifactId>
+			<version>${version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.got5</groupId>
+			<artifactId>tapestry5-jquery</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<!-- Activate explicitly in Eclipse -->
+			<id>eclipse</id>
+			<dependencies>
+				<dependency>
+					<groupId>ish.tapestry</groupId>
+					<artifactId>jetty-launcher</artifactId>
+					<version>${version}</version>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+    </properties>
+</project>
