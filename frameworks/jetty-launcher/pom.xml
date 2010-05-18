@@ -4,11 +4,11 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>oncourse-cms</artifactId>
+		<artifactId>frameworks</artifactId>
 		<groupId>ish.oncourse</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>ish.tapestry</groupId>
+	<groupId>oncourse</groupId>
 	<artifactId>jetty-launcher</artifactId>
 	<name>Jetty Launcher</name>
 
