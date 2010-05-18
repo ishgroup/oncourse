@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<prerequisites>
-		<maven>2.0.9</maven>
-	</prerequisites>
+
+	<parent>
+		<artifactId>parent</artifactId>
+		<groupId>ish.oncourse</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 
 	<artifactId>oncourse-cms</artifactId>
 	<groupId>ish.oncourse</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>onCourse CMS (Content Management System)</name>
-	<description>Parent POM of the onCourse CMS.
-	</description>
+	<name>onCourse CMS</name>
+	<description>Parent POM of the onCourse Content Management System</description>
 
 	<modules>
-		<module>jetty-launcher</module>
 		<module>cms-services</module>
-		<module>cms-ui</module>
 		<module>cms-web</module>
-  </modules>
+	</modules>
 
 	<build>
 		<pluginManagement>
@@ -39,24 +41,6 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-	    <plugins>
-	        <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-compiler-plugin</artifactId>
-	            <version>2.0.2</version>
-	            <configuration>
-	                <encoding>${project.build.sourceEncoding}</encoding>
-	            </configuration>
-	        </plugin>
-	        <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-resources-plugin</artifactId>
-	            <version>2.2</version>
-	            <configuration>
-	                <encoding>${project.build.sourceEncoding}</encoding>
-	            </configuration>
-	        </plugin>
-	    </plugins>
 	</build>
 
 	<dependencyManagement>
@@ -153,129 +137,8 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<repositories>
-		<repository>
-			<id>ish-mirror-releases</id>
-			<name>ish Maven2 internal Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/internal</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-mirror-snapshots</id>
-			<name>ish Maven2 Snapshot Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-3rdparty-releases</id>
-			<name>ish Maven2 3rdparty Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-3rdparty-releases
-			</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-3rdparty-snapshots</id>
-			<name>ish Maven2 3rd Party Snapshots Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-3rdparty-snapshots
-			</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-releases</id>
-			<name>ish Maven2 ish-releases Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-snapshots</id>
-			<name>ish Maven2 ish-snapshots Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>ish-mirror-repo</id>
-			<name>ish Maven2 internal Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/internal</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-		<pluginRepository>
-			<id>ish-mirror-snapshots</id>
-			<name>ish Maven2 snapshots Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<distributionManagement>
-		<repository>
-			<id>maven-repo.ish.com.au/internal-releases</id>
-			<name>ish Maven2 internal Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>maven-repo.ish.com.au/internal-snapshots</id>
-			<name>ish Maven2 Snapshot Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-snapshots/
-			</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<ciManagement>
-		<system>hudson</system>
-		<url>http://hudson.ish.com.au/</url>
-		<notifiers>
-			<notifier>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnSuccess>false</sendOnSuccess>
-				<sendOnWarning>false</sendOnWarning>
-			</notifier>
-		</notifiers>
-	</ciManagement>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>
