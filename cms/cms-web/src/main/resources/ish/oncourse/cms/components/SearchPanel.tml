@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<li class="search_panel ">
+		<form class="clearfix">
+			<input type="text" value="Search" class="right"></input>
+			<ul class="clear right"><li><a href="#">Show all</a></li><li><a href="#">Recently added</a></li><li><a href="#">Recently edited</a></li></ul>
+		</form>
+		<div id="tabs" class="results">
+			<ul id="results_filter" class="no_list_style">
+				<li class="pages_bg"><a href="#tabs-1">Pages (32)</a></li>
+				<li class="theme_bg unselected"><a href="#tabs-2">Themes (2)</a></li>
+				<li class="blocks_bg unselected"><a href="#tabs-3">Blocks (1)</a></li>
+			</ul>
+			<div id="tabs-1">
+				<ul id="results_list" class="">
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada</a></li>
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada</a></li>
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada</a></li>
+				</ul>					
+			</div>
+			<div id="tabs-2">
+				<ul id="results_list" class="">
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada</a></li>
+				</ul>					
+			</div>
+			<div id="tabs-3">
+				<ul id="results_list" class="">
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada Senectus et netus et malesuada</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+					<li class=""><a href="#">Senectus et netus et malesuada</a></li>
+					<li class=""><a href="#">Pellentesque habitant</a></li>
+					<li class=""><a href="#">Morbi tristique</a></li>
+				</ul>					
+			</div>										
+		</div>
+		<a href="#" id="search_panel_close">Close</a>
+	</li>
+</t:container>

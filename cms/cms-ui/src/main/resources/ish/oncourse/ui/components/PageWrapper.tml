@@ -1,0 +1,11 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" lang="en">
+  <head>
+    <head t:type="ui/pagehead" />
+    <t:extension-point id="headBottom" />
+  </head>
+  <body t:type="any" class="internal-page" id="prop:bodyId">
+    <t:extension-point id="bodyTop" />
+    <div t:type="ui/bodylayout"><t:body /> </div>
+  </body>
+</html>

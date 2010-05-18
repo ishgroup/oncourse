@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<li class="theme"><a href="">Themes</a>
+		<ul class="clear clearfix nav_cms_sub hidden">
+			<li>
+				<a href="">New Theme</a>
+				<div class="menu_dropdown">
+						<div class="menu_header"></div>
+	
+						<div class="form_question">
+							<label style="width: 100%">
+								Theme to use
+							</label>
+							<button class="prev clear">
+								&lt;&lt;
+							</button>
+							<button class="next">
+								&gt;&gt;
+							</button>
+	
+							<div class="anyClass">
+								<ul>
+									<li>
+										<img
+											src="/s/img/themes/1col.png" alt="" width="100"
+											height="100"></img>
+									</li>
+									<li>
+										<img
+											src="/s/img/themes/2col.png" alt="" width="100"
+											height="100"></img>
+									</li>
+									<li>
+										<img
+											src="/s/img/themes/3col.png" alt="" width="100"
+											height="100"></img>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="form_question">
+							<label>Theme name</label>
+							<input type="text"></input>
+						</div>
+	
+	
+						<div class="menu_footer">
+							<input type="submit" class="pos"
+								value="Create Theme &#187;"></input>
+						</div>
+				</div>
+			</li>
+			<li class="">
+				<a href="">Theme Options</a>
+			</li>
+			<li class=""><a href="#">Styling</a>
+				<div class="menu_dropdown">
+					<div class="menu_header">
+					</div>
+					
+					<div class="form_question">
+						<label style="width: 100%">Layout used</label>
+						<button class="prev clear">&lt;&lt;</button>
+						<button class="next">&gt;&gt;</button>
+						        
+						<div class="anyClass">
+						    <ul>
+						        <li><img src="/s/img/themes/1col.png" alt="" width="100" height="100" ></img></li>
+						        <li><img src="/s/img/themes/2col.png" alt="" width="100" height="100" ></img></li>
+						        <li><img src="/s/img/themes/3col.png" alt="" width="100" height="100" ></img></li>
+						    </ul>
+						</div>
+					</div>	
+					
+					<div class="form_question">
+						<span>Show Advanced CSS options</span>
+					</div>
+						
+					<div class="menu_footer">
+						<input type="submit" class="pos" value="Save Styling &#187;"></input>
+					</div>
+				</div>		
+			</li>					
+	</ul>									
+</li>
+</t:container>
