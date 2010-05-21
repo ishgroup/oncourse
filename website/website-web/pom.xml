@@ -9,6 +9,7 @@
 	</parent>
 
 	<artifactId>website-web</artifactId>
+	<groupId>ish.oncourse</groupId>
 	<packaging>war</packaging>
 	<name>Website Web Module</name>
 
@@ -26,11 +27,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.tapestry</groupId>
-			<artifactId>tapestry-core</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.got5</groupId>
 			<artifactId>tapestry5-jquery</artifactId>
 		</dependency>
@@ -39,12 +35,11 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
-
 	</dependencies>
 
 	<profiles>
