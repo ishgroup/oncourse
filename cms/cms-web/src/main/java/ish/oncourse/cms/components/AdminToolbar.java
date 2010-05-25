@@ -1,4 +1,4 @@
-package ish.oncourse.cms.web.components;
+package ish.oncourse.cms.components;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
-import ish.oncourse.cms.web.pages.Login;
+import ish.oncourse.cms.pages.Login;
 import ish.oncourse.cms.services.security.IAuthenticationService;
 import ish.oncourse.cms.services.security.annotations.Protected;
 

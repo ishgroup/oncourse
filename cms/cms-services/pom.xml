@@ -20,13 +20,13 @@
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-services</artifactId>
-			<version>${version}</version>
 		</dependency>
 
 		<dependency>
 			<artifactId>cayenne-server</artifactId>
 			<groupId>org.apache.cayenne</groupId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.objectstyle.ashwood</groupId>
 			<artifactId>ashwood</artifactId>
@@ -61,28 +61,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.cayenne.plugins</groupId>
-				<artifactId>maven-cayenne-plugin</artifactId>
-				<configuration>
-					<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml
-					</map>
-					<destDir>${project.build.sourceDirectory}</destDir>
-					<superPkg>ish.oncourse.model.auto</superPkg>
-				</configuration>
-				<executions>
-					<execution>
-						<id>cgen</id>
-						<goals>
-							<goal>cgen</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

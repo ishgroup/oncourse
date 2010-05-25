@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.cms.web.pages;
+package ish.oncourse.cms.pages;
 
 /**
  *

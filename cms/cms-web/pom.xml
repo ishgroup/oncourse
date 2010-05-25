@@ -13,16 +13,20 @@
 	<name>CMS Web</name>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>ish.oncourse</groupId>
+			<artifactId>common-services</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>cms-services</artifactId>
-			<version>${version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-ui</artifactId>
-			<version>${version}</version>
 		</dependency>
 
 		<dependency>
@@ -59,4 +63,5 @@
     <properties>
         <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
     </properties>
+	
 </project>

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.cms.web.components;
+package ish.oncourse.cms.components;
 
 /**
  *

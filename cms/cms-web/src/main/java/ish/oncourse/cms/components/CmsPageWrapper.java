@@ -1,4 +1,4 @@
-package ish.oncourse.cms.web.components;
+package ish.oncourse.cms.components;
 
 import ish.oncourse.ui.components.PageWrapper;
 

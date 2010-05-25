@@ -1,8 +1,8 @@
-package ish.oncourse.cms.web.components;
+package ish.oncourse.cms.components;
 
 import org.apache.tapestry5.annotations.InjectPage;
 
-import ish.oncourse.cms.web.pages.NewPage;
+import ish.oncourse.cms.pages.NewPage;
 import org.apache.tapestry5.annotations.Property;
 
 public class PagesTab {

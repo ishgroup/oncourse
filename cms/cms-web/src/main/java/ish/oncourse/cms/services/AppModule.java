@@ -1,4 +1,4 @@
-package ish.oncourse.cms.web;
+package ish.oncourse.cms.services;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -15,9 +15,9 @@ import ish.oncourse.cms.services.security.AuthenticationService;
 import ish.oncourse.cms.services.security.ComponentAccessDispatcher;
 import ish.oncourse.cms.services.security.IAuthenticationService;
 import ish.oncourse.cms.services.security.PageAccessDispatcher;
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.ui.services.UIModule;
 
-import ish.oncourse.services.ServiceModule;
 
 
 /**
