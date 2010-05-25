@@ -1,10 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:extend xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
   <t:replace id="headBottom">
-    <link t:type="ui/cssassetgroup" group="literal:admin" media="literal:screen, projection" />
+
+	<link rel="stylesheet" type="text/css" media="all" href="css/reset.css"/>
+
+	<link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen, projection"/>
+	<link rel="stylesheet" href="./css/print.css" type="text/css" media="print"/>
+	<!--[if IE]>
+	<link rel="stylesheet" href="./css/ie.css" type="text/css" media="screen, projection"/>
+	<![endif]-->
+	<link rel="stylesheet" href="./css/style.css" type="text/css" media="screen, projection"/>
+	<link rel="stylesheet" href="./css/site.css" type="text/css" media="screen, projection"/>
+
+	<link rel="stylesheet" href="./css/admin.css" type="text/css" media="screen, projection"/>
+
+	<link rel="stylesheet" href="./jquery.treeview.css" type="text/css" media="screen, projection"/>
+
+	  <link t:type="ui/cssassetgroup" group="literal:admin" media="literal:screen, projection" />
   	<script t:type="ui/jsassetgroup" group="literal:admin" />
   </t:replace>
   <t:replace id="bodyTop">
-    <div t:type="webadminbar"/>
+    <div t:type="admintoolbar"/>
   </t:replace>
 </t:extend>

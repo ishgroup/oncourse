@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 	http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -15,11 +16,13 @@
 	<name>CMS Services</name>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-services</artifactId>
 			<version>${version}</version>
 		</dependency>
+
 		<dependency>
 			<artifactId>cayenne-server</artifactId>
 			<groupId>org.apache.cayenne</groupId>
@@ -28,26 +31,32 @@
 			<groupId>org.objectstyle.ashwood</groupId>
 			<artifactId>ashwood</artifactId>
 		</dependency>
+
 		<dependency>
 			<artifactId>commons-collections</artifactId>
 			<groupId>commons-collections</groupId>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-core</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.opensymphony.oscache</groupId>
 			<artifactId>oscache</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

@@ -3,15 +3,15 @@
 <div id="admin_toolbar">
 		<div id="nav_cms" class="clearfix">
 			<ul class="left">
-				<li t:type="pagestab"/>
-				<li t:type="themestab"/>		
+<!--				<li t:type="pagestab"/>
+				<li t:type="themestab"/>		-->
 				<li t:type="sitemaptab"/>
 				<li t:type="dashboardtab"/>
 			</ul>
 			<ul id="system_links" class="right">
 				<li><a href="">Help</a></li>
 				<li><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
-				<li t:type="searchpanel"/>
+<!--				<li t:type="searchpanel"/>-->
 			</ul>
 			<div id="nav_cms_sub_contents" class="clear clearfix"></div>	
 		</div>	
