@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	metadata-complete="true" version="2.5">
 
-	<display-name>oncourse-cms</display-name>
+	<display-name>website</display-name>
 
 	<context-param>
 		<param-name>tapestry.app-package</param-name>
-		<param-value>ish.oncourse.cms</param-value>
+		<param-value>ish.oncourse.website</param-value>
 	</context-param>
 
 	<filter>

@@ -48,7 +48,7 @@
 			<id>eclipse</id>
 			<dependencies>
 				<dependency>
-					<groupId>ish.tapestry</groupId>
+					<groupId>ish.oncourse</groupId>
 					<artifactId>jetty-launcher</artifactId>
 					<version>${version}</version>
 					<scope>runtime</scope>
