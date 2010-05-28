@@ -1,12 +1,10 @@
-package ish.oncourse.ui.components;
+package ish.oncourse.website.pages;
 
 import ish.oncourse.services.node.IWebNodeService;
 
-import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class BodyLayout {
+public class Index {
 	@Inject
-	@Property
 	private IWebNodeService webNodeService;
 }

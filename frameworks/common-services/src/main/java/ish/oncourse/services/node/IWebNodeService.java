@@ -10,4 +10,10 @@ public interface IWebNodeService {
 	 * Returns all web nodes for the current site or current college.
 	 */
 	List<WebNode> getNodes();
+	
+	/**
+	 * Returns home page for current site.
+	 * @return
+	 */
+	WebNode getHomePage();
 }

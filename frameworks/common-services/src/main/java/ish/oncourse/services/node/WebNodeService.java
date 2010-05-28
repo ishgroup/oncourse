@@ -43,4 +43,7 @@ public class WebNodeService implements IWebNodeService {
 		return cayenneService.sharedContext().performQuery(query);
 	}
 
+	public WebNode getHomePage() {
+		return webSiteService.getCurrentSite().getHomePage();
+	}
 }

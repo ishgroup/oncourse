@@ -5,10 +5,7 @@ import ish.oncourse.ui.services.UIModule;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.services.Dispatcher;
 import org.got5.tapestry5.clientresources.ClientResourcesConstants;
 import org.got5.tapestry5.jquery.JQueryClientResourcesConstants;
 import org.got5.tapestry5.jquery.services.JQueryModule;
@@ -25,16 +22,5 @@ public class AppModule {
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(ClientResourcesConstants.JAVASCRIPT_STACK,
 				JQueryClientResourcesConstants.JAVASCRIPT_STACK_JQUERY);
-	}
-
-	/**
-	 * Contribute access control checker.
-	 */
-	public void contributeMasterDispatcher(
-			OrderedConfiguration<Dispatcher> configuration,
-			@InjectService("PageAccessDispatcher") Dispatcher pageAccessDispatcher) {
-
-		configuration.add("PageAccessDispatcher", pageAccessDispatcher,
-				"before:PageRender");
 	}
 }
