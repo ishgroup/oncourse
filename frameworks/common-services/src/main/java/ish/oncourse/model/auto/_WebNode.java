@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeBlockVisibility;
+import ish.oncourse.model.WebNodeContent;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 
@@ -19,8 +19,6 @@ import ish.oncourse.model.WebSite;
 public abstract class _WebNode extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String CONTENT_PROPERTY = "content";
-    public static final String CONTENT_TEXTILE_PROPERTY = "contentTextile";
     public static final String CREATED_PROPERTY = "created";
     public static final String DELETED_PROPERTY = "deleted";
     public static final String MENU_ALIAS_ID_PROPERTY = "menuAliasID";
@@ -34,8 +32,8 @@ public abstract class _WebNode extends CayenneDataObject {
     public static final String WEB_NAVIGABLE_PROPERTY = "webNavigable";
     public static final String WEB_VISIBLE_PROPERTY = "webVisible";
     public static final String WEIGHTING_PROPERTY = "weighting";
-    public static final String BLOCK_VISIBILITIES_PROPERTY = "blockVisibilities";
     public static final String CHILDREN_PROPERTY = "children";
+    public static final String CONTENTS_PROPERTY = "contents";
     public static final String PARENT_PROPERTY = "parent";
     public static final String SITE_PROPERTY = "site";
     public static final String TYPE_PROPERTY = "type";
@@ -47,20 +45,6 @@ public abstract class _WebNode extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
-    }
-
-    public void setContent(String content) {
-        writeProperty("content", content);
-    }
-    public String getContent() {
-        return (String)readProperty("content");
-    }
-
-    public void setContentTextile(String contentTextile) {
-        writeProperty("contentTextile", contentTextile);
-    }
-    public String getContentTextile() {
-        return (String)readProperty("contentTextile");
     }
 
     public void setCreated(Date created) {
@@ -154,18 +138,6 @@ public abstract class _WebNode extends CayenneDataObject {
         return (Integer)readProperty("weighting");
     }
 
-    public void addToBlockVisibilities(WebNodeBlockVisibility obj) {
-        addToManyTarget("blockVisibilities", obj, true);
-    }
-    public void removeFromBlockVisibilities(WebNodeBlockVisibility obj) {
-        removeToManyTarget("blockVisibilities", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebNodeBlockVisibility> getBlockVisibilities() {
-        return (List<WebNodeBlockVisibility>)readProperty("blockVisibilities");
-    }
-
-
     public void addToChildren(WebNode obj) {
         addToManyTarget("children", obj, true);
     }
@@ -175,6 +147,18 @@ public abstract class _WebNode extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebNode> getChildren() {
         return (List<WebNode>)readProperty("children");
+    }
+
+
+    public void addToContents(WebNodeContent obj) {
+        addToManyTarget("contents", obj, true);
+    }
+    public void removeFromContents(WebNodeContent obj) {
+        removeToManyTarget("contents", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WebNodeContent> getContents() {
+        return (List<WebNodeContent>)readProperty("contents");
     }
 
 

@@ -9,6 +9,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 
 /**
@@ -26,6 +27,7 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final String DELETED_PROPERTY = "deleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
+    public static final String SITE_KEY_PROPERTY = "siteKey";
     public static final String SSL_HOST_NAME_PROPERTY = "sslHostName";
     public static final String BLOCKS_PROPERTY = "blocks";
     public static final String CHILD_SITES_PROPERTY = "childSites";
@@ -33,6 +35,7 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final String HOME_PAGE_PROPERTY = "homePage";
     public static final String NODES_PROPERTY = "nodes";
     public static final String PARENT_SITE_PROPERTY = "parentSite";
+    public static final String TEMPLATES_PROPERTY = "templates";
     public static final String WEB_HOST_NAMES_PROPERTY = "webHostNames";
 
     public static final String ID_PK_COLUMN = "id";
@@ -84,6 +87,13 @@ public abstract class _WebSite extends CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty("name");
+    }
+
+    public void setSiteKey(String siteKey) {
+        writeProperty("siteKey", siteKey);
+    }
+    public String getSiteKey() {
+        return (String)readProperty("siteKey");
     }
 
     public void setSslHostName(String sslHostName) {
@@ -153,6 +163,15 @@ public abstract class _WebSite extends CayenneDataObject {
 
     public WebSite getParentSite() {
         return (WebSite)readProperty("parentSite");
+    }
+
+
+    public void setTemplates(WebNodeType templates) {
+        setToOneTarget("templates", templates, true);
+    }
+
+    public WebNodeType getTemplates() {
+        return (WebNodeType)readProperty("templates");
     }
 
 

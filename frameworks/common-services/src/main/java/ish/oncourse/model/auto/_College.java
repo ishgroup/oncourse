@@ -11,7 +11,6 @@ import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.model.WebTheme;
 import ish.oncourse.model.WillowUser;
 
 /**
@@ -22,6 +21,7 @@ import ish.oncourse.model.WillowUser;
  */
 public abstract class _College extends CayenneDataObject {
 
+    public static final String COLLEGE_KEY_PROPERTY = "collegeKey";
     public static final String CREATED_PROPERTY = "created";
     public static final String DELETED_PROPERTY = "deleted";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
@@ -46,11 +46,17 @@ public abstract class _College extends CayenneDataObject {
     public static final String TAGGABLE_TAGS_PROPERTY = "taggableTags";
     public static final String TAGGABLES_PROPERTY = "taggables";
     public static final String TAGS_PROPERTY = "tags";
-    public static final String THEMES_PROPERTY = "themes";
     public static final String USERS_PROPERTY = "users";
     public static final String WEB_HOST_NAMES_PROPERTY = "webHostNames";
 
     public static final String ID_PK_COLUMN = "id";
+
+    public void setCollegeKey(String collegeKey) {
+        writeProperty("collegeKey", collegeKey);
+    }
+    public String getCollegeKey() {
+        return (String)readProperty("collegeKey");
+    }
 
     public void setCreated(Date created) {
         writeProperty("created", created);
@@ -242,18 +248,6 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Tag> getTags() {
         return (List<Tag>)readProperty("tags");
-    }
-
-
-    public void addToThemes(WebTheme obj) {
-        addToManyTarget("themes", obj, true);
-    }
-    public void removeFromThemes(WebTheme obj) {
-        removeToManyTarget("themes", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebTheme> getThemes() {
-        return (List<WebTheme>)readProperty("themes");
     }
 
 
