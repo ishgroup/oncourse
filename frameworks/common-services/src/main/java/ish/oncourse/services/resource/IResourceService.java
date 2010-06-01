@@ -8,7 +8,7 @@ public interface IResourceService {
 	 * @return a Tapestry 5 template override resource for the current web host
 	 * name.
 	 */
-	PrivateResource getT5Resource(String fileName);
+	PrivateResource getTemplateResource(String fileName);
 
 	/**
 	 * @param fileName config file name

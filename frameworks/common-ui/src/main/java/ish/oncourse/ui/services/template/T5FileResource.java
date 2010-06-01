@@ -24,7 +24,7 @@ class T5FileResource extends AbstractResource {
 
 	public URL toURL() {
 		try {
-			return file.toURL();
+			return file.toURI().toURL();
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("Error getting file URL", e);
 		}

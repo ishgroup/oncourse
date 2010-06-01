@@ -15,7 +15,7 @@ public class ResourceService implements IResourceService {
 
 	private final static String DEFAULTS_FOLDER = "defaults";
 
-	private final static String T5_FOLDER = "t5";
+	private final static String LAYOUT_FOLDER = "layouts";
 	private final static String CONFIGS_FOLDER = "config";
 	private final static String WEB_FOLDER = "s";
 	private final static String WEBSERVERRESOURCES_FOLDER = "WebServerResources";
@@ -80,8 +80,8 @@ public class ResourceService implements IResourceService {
 		}
 	}
 
-	public PrivateResource getT5Resource(String fileName) {
-		return new FileResource(T5_FOLDER, fileName);
+	public PrivateResource getTemplateResource(String fileName) {
+		return new FileResource(LAYOUT_FOLDER, fileName);
 	}
 
 	public PrivateResource getConfigResource(String fileName) {
