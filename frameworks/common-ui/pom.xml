@@ -13,7 +13,7 @@
 
 	<artifactId>common-ui</artifactId>
 	<packaging>jar</packaging>
-	<name>onCourse UI Framework</name>
+	<name>onCourse Common UI Framework</name>
 
 	<dependencies>
 		<dependency>

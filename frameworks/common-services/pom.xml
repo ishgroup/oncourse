@@ -13,7 +13,7 @@
 	<artifactId>common-services</artifactId>
 	<groupId>ish.oncourse</groupId>
 	<packaging>jar</packaging>
-	<name>onCourse Service Framework</name>
+	<name>onCourse Common Service Framework</name>
 
 	<dependencies>
 		<dependency>
