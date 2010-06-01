@@ -163,7 +163,6 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="regionKey" type="VARCHAR" length="25"/>
 		<db-attribute name="webNodeId" type="BIGINT"/>
-		<db-attribute name="webNodeTypeId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="WebNodeContentWebBlock" catalog="oncourse_realdata_willow_college">
 		<db-attribute name="webBlockId" type="BIGINT" isMandatory="true"/>
@@ -361,7 +360,6 @@
 		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
-		<obj-attribute name="webNodeTypeId" type="java.lang.Long" db-attribute-path="webNodeTypeId"/>
 	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -498,8 +496,14 @@
 	<db-relationship name="type" source="WebNode" target="WebNodeType" toMany="false">
 		<db-attribute-pair source="webNodeTypeID" target="id"/>
 	</db-relationship>
+	<db-relationship name="untitledRel" source="WebNode" target="WebNodeContent" toMany="true">
+		<db-attribute-pair source="id" target="webNodeId"/>
+	</db-relationship>
 	<db-relationship name="blockContents" source="WebNodeContent" target="WebNodeContentWebBlock" toMany="true">
 		<db-attribute-pair source="id" target="webNodeId"/>
+	</db-relationship>
+	<db-relationship name="node" source="WebNodeContent" target="WebNode" toMany="false">
+		<db-attribute-pair source="webNodeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="block" source="WebNodeContentWebBlock" target="WebBlock" toMany="false">
 		<db-attribute-pair source="webBlockId" target="id"/>
@@ -571,6 +575,7 @@
 	<obj-relationship name="site" source="WebNode" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="type" source="WebNode" target="WebNodeType" deleteRule="Nullify" db-relationship-path="type"/>
 	<obj-relationship name="blocks" source="WebNodeContent" target="WebBlock" deleteRule="Nullify" db-relationship-path="blockContents.block"/>
+	<obj-relationship name="node" source="WebNodeContent" target="WebNode" deleteRule="Nullify" db-relationship-path="node"/>
 	<obj-relationship name="nodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="nodes"/>
 	<obj-relationship name="site" source="WebNodeType" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="blocks" source="WebSite" target="WebBlock" deleteRule="Deny" db-relationship-path="blocks"/>
