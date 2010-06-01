@@ -58,7 +58,7 @@ public class AssetGroupServiceTest extends Assert {
 				};
 			}
 			
-			public PrivateResource getT5Resource(String fileName) {
+			public PrivateResource getTemplateResource(String fileName) {
 				throw new UnsupportedOperationException();
 			}
 		};

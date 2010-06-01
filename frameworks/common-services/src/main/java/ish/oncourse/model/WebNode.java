@@ -34,15 +34,11 @@ public class WebNode extends _WebNode {
 	 * @return All web-navigable web-visible child nodes for this node.
 	 */
 	public List<WebNode> navigableChildNodes() {
-		Expression expr = ExpressionFactory.matchExp(
-				WebNode.WEB_NAVIGABLE_PROPERTY, true).orExp(
-				ExpressionFactory
-						.matchExp(WebNode.WEB_NAVIGABLE_PROPERTY, null))
-				.andExp(
-						ExpressionFactory.matchExp(
-								WebNode.WEB_VISIBLE_PROPERTY, true).orExp(
-								ExpressionFactory.matchExp(
-										WebNode.WEB_VISIBLE_PROPERTY, null)));
+		Expression expr = ExpressionFactory.matchExp(WebNode.WEB_NAVIGABLE_PROPERTY, true)
+				.andExp(ExpressionFactory.matchExp(WebNode.WEB_VISIBLE_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false)
+						.orExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, null))
+				);
 
 		return expr.filterObjects(getChildren());
 	}

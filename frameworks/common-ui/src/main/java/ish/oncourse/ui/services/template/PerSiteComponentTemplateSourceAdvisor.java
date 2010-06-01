@@ -121,7 +121,7 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 		String path = t5BaseResource.getPath();
 		if (path.startsWith(overridablePath)) {
-			PrivateResource resource = resourceService.getT5Resource(path
+			PrivateResource resource = resourceService.getTemplateResource(path
 					.substring(overridablePath.length()));
 
 			// extract the resource file on the spot, to (1) check whether it
@@ -145,7 +145,7 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 	private String createTemplateKey(String componentName) {
 		return PerSiteComponentTemplateSourceAdvisor.class.getSimpleName() + ":"
-				+ webSiteService.getCurrentSite().getCode() + "@"
+				+ webSiteService.getCurrentSite().getSiteIdentifier() + "@"
 				+ componentName;
 	}
 }

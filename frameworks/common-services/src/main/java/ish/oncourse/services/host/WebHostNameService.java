@@ -11,18 +11,17 @@ import org.apache.tapestry5.services.Request;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.services.persistence.ICayenneService;
 
+
 @Scope("perthread")
 public class WebHostNameService implements IWebHostNameService {
 
 	private static final String WEB_HOST_CACHE_GROUP = "webhosts";
 
-	@Inject
-	private Request request;
-
-	@Inject
-	private ICayenneService cayenneService;
+	@Inject private Request request;
+	@Inject private ICayenneService cayenneService;
 
 	private transient WebHostName webHostName;
+
 
 	public WebHostName getCurrentWebHostName() {
 
@@ -50,7 +49,7 @@ public class WebHostNameService implements IWebHostNameService {
 			if (webHostName == null) {
 				throw new IllegalStateException(
 						"Can't determine web host name for server name: '"
-								+ serverName + "'");
+						+ serverName + "'");
 			}
 		}
 
