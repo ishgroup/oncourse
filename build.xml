@@ -154,6 +154,7 @@
 				<attribute name="Implementation-Version" value="${svnVersion}"/>
 				<attribute name="Friendly-ClientVersion" value="${client.version.number}"/>
 				<attribute name="Friendly-ServerVersion" value="${server.version.number}"/>
+				<attribute name="License" value="${license.bypass}"/>
         	</manifest>
 		</jar>
 	</target>
