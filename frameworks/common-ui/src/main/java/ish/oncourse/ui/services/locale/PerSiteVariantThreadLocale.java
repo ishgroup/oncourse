@@ -33,7 +33,7 @@ public class PerSiteVariantThreadLocale implements ThreadLocale {
 		notNull(locale, "locale");
 
 		if (this.locale != locale) {
-			String code = webSiteService.getCurrentSite().getCode();
+			String code = webSiteService.getCurrentWebSite().getCode();
 			this.locale = new Locale(locale.getLanguage(), locale.getCountry(),
 					code);
 		}

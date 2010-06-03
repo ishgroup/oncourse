@@ -1,5 +1,7 @@
 package ish.oncourse.services.site;
 
+import ish.oncourse.model.College;
+import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.services.site.IWebSiteService;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +21,7 @@ public class MockWebSiteService implements IWebSiteService {
 		return Collections.emptyList();
 	}
 
-	public WebSite getCurrentSite() {
+	public WebSite getCurrentWebSite() {
 		WebSite site = new WebSite();
 		site.setCode(siteCode);
 		return site;
@@ -27,6 +29,22 @@ public class MockWebSiteService implements IWebSiteService {
 	
 	public List<WebBlock> getActiveBlocks(String regionKey) {
 		return Collections.emptyList();
+	}
+
+	public College getCurrentCollege() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	public CollegeDomain getCurrentDomain() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	public String getResourceFolderName() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	public WebBlock getWebBlockForName(String name) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 }

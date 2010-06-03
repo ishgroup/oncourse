@@ -1,5 +1,6 @@
 package ish.oncourse.ui.services.template;
 
+import ish.oncourse.model.WebNode;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Locale;
@@ -22,7 +23,14 @@ import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.site.IWebSiteService;
+import org.apache.tapestry5.services.Request;
 
+
+/**
+ * Template source advisor for custom template location resolution.
+ *
+ * @author Various
+ */
 public class PerSiteComponentTemplateSourceAdvisor implements
 		IComponentTemplateSourceAdvisor {
 
@@ -38,9 +46,12 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 	@Inject
 	private transient IResourceService resourceService;
 
-	private String overridablePackage;
+	@Inject
+	private transient Request request;
 
+	private String overridablePackage;
 	private String overridablePath;
+
 
 	public PerSiteComponentTemplateSourceAdvisor() {
 		String sampleComponentClass = PageWrapper.class.getName();
@@ -49,7 +60,8 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 		overridablePath = overridablePackage.replace('.', '/');
 	}
 
-	public void advice(MethodAdviceReceiver receiver) {
+
+	public void advise(MethodAdviceReceiver receiver) {
 
 		final String methodName = "getTemplate";
 
@@ -68,8 +80,7 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 			public void advise(Invocation invocation) {
 
-				ComponentModel model = (ComponentModel) invocation
-						.getParameter(0);
+				ComponentModel model = (ComponentModel) invocation.getParameter(0);
 
 				ComponentTemplate template = overriddenTemplate(model);
 
@@ -94,6 +105,7 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 		return cacheService.get(key,
 				new CachedObjectProvider<ComponentTemplate>() {
+
 					public ComponentTemplate create() {
 						return createOverriddenTemplate(componentModel);
 					}
@@ -114,15 +126,17 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 	private Resource locateTemplateResource(ComponentModel model) {
 
-		// for now ignoring the Locale...
+		// TODO: for now ignoring the Locale...
 
-		Resource t5BaseResource = model.getBaseResource().withExtension(
+		// FIXME: MSW 2010/06/03 We need to intercept requests for CMS pages and
+		// extract the templateKey from associated WebNode record.
+
+		Resource templateBaseResource = model.getBaseResource().withExtension(
 				InternalConstants.TEMPLATE_EXTENSION);
 
-		String path = t5BaseResource.getPath();
+		String path = templateBaseResource.getPath();
 		if (path.startsWith(overridablePath)) {
-			PrivateResource resource = resourceService.getTemplateResource(path
-					.substring(overridablePath.length()));
+			PrivateResource resource = resourceService.getTemplateResource("", path.substring(overridablePath.length()));
 
 			// extract the resource file on the spot, to (1) check whether it
 			// exists and (2) to avoid indeterministic behavior later on when
@@ -145,7 +159,7 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 	private String createTemplateKey(String componentName) {
 		return PerSiteComponentTemplateSourceAdvisor.class.getSimpleName() + ":"
-				+ webSiteService.getCurrentSite().getSiteIdentifier() + "@"
+				+ webSiteService.getCurrentWebSite().getSiteIdentifier() + "@"
 				+ componentName;
 	}
 }

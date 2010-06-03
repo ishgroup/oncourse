@@ -1,8 +1,5 @@
 package ish.oncourse.services.assetgroup;
 
-import ish.oncourse.services.assetgroup.AssetGroupService;
-import ish.oncourse.services.assetgroup.AssetGroupCollection;
-import ish.oncourse.services.assetgroup.AssetType;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
@@ -14,6 +11,7 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.MockResource;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
+
 
 public class AssetGroupServiceTest extends Assert {
 
@@ -42,6 +40,10 @@ public class AssetGroupServiceTest extends Assert {
 					public File getFile() {
 						throw new UnsupportedOperationException();
 					}
+
+					public boolean exists() {
+						throw new UnsupportedOperationException();
+					}
 				};
 			}
 
@@ -58,7 +60,8 @@ public class AssetGroupServiceTest extends Assert {
 				};
 			}
 			
-			public PrivateResource getTemplateResource(String fileName) {
+			public PrivateResource getTemplateResource(String templateKey,
+					String fileName) {
 				throw new UnsupportedOperationException();
 			}
 		};

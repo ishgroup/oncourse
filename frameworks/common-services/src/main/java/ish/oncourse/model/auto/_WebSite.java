@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.WebBlock;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
@@ -32,11 +32,11 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final String BLOCKS_PROPERTY = "blocks";
     public static final String CHILD_SITES_PROPERTY = "childSites";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String DOMAINS_PROPERTY = "domains";
     public static final String HOME_PAGE_PROPERTY = "homePage";
     public static final String NODES_PROPERTY = "nodes";
     public static final String PARENT_SITE_PROPERTY = "parentSite";
     public static final String TEMPLATES_PROPERTY = "templates";
-    public static final String WEB_HOST_NAMES_PROPERTY = "webHostNames";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -136,6 +136,18 @@ public abstract class _WebSite extends CayenneDataObject {
     }
 
 
+    public void addToDomains(CollegeDomain obj) {
+        addToManyTarget("domains", obj, true);
+    }
+    public void removeFromDomains(CollegeDomain obj) {
+        removeToManyTarget("domains", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CollegeDomain> getDomains() {
+        return (List<CollegeDomain>)readProperty("domains");
+    }
+
+
     public void setHomePage(WebNode homePage) {
         setToOneTarget("homePage", homePage, true);
     }
@@ -172,18 +184,6 @@ public abstract class _WebSite extends CayenneDataObject {
 
     public WebNodeType getTemplates() {
         return (WebNodeType)readProperty("templates");
-    }
-
-
-    public void addToWebHostNames(WebHostName obj) {
-        addToManyTarget("webHostNames", obj, true);
-    }
-    public void removeFromWebHostNames(WebHostName obj) {
-        removeToManyTarget("webHostNames", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebHostName> getWebHostNames() {
-        return (List<WebHostName>)readProperty("webHostNames");
     }
 
 

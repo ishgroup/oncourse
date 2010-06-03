@@ -79,7 +79,7 @@ public class Index {
 	}
 
 	public boolean isSiteSelected() {
-		return webSiteService.getCurrentSite() != null;
+		return webSiteService.getCurrentWebSite() != null;
 	}
 
 	public void onActionFromAddPage() {

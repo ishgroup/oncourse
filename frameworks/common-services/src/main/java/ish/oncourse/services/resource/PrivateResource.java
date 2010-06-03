@@ -31,4 +31,11 @@ public interface PrivateResource {
 	 *             for missing files.
 	 */
 	File getFile() throws IllegalStateException;
+
+	/**
+	 * Tests to see if this resource exists on disk.
+	 *
+	 * @return true if resource exists, false otherwise
+	 */
+	boolean exists();
 }

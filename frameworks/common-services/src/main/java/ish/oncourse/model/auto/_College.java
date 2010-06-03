@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TagGroupRequirement;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WillowUser;
 
@@ -41,13 +41,13 @@ public abstract class _College extends CayenneDataObject {
     public static final String WEB_SERVICES_PASS_PROPERTY = "webServicesPass";
     public static final String WEB_SERVICES_SECURITY_CODE_PROPERTY = "webServicesSecurityCode";
     public static final String WEB_SITE_PAYMENTS_ENABLED_PROPERTY = "webSitePaymentsEnabled";
+    public static final String DOMAINS_PROPERTY = "domains";
     public static final String SITES_PROPERTY = "sites";
     public static final String TAG_GROUP_REQUIREMENTS_PROPERTY = "tagGroupRequirements";
     public static final String TAGGABLE_TAGS_PROPERTY = "taggableTags";
     public static final String TAGGABLES_PROPERTY = "taggables";
     public static final String TAGS_PROPERTY = "tags";
     public static final String USERS_PROPERTY = "users";
-    public static final String WEB_HOST_NAMES_PROPERTY = "webHostNames";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -191,6 +191,18 @@ public abstract class _College extends CayenneDataObject {
         return (Boolean)readProperty("webSitePaymentsEnabled");
     }
 
+    public void addToDomains(CollegeDomain obj) {
+        addToManyTarget("domains", obj, true);
+    }
+    public void removeFromDomains(CollegeDomain obj) {
+        removeToManyTarget("domains", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CollegeDomain> getDomains() {
+        return (List<CollegeDomain>)readProperty("domains");
+    }
+
+
     public void addToSites(WebSite obj) {
         addToManyTarget("sites", obj, true);
     }
@@ -260,18 +272,6 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WillowUser> getUsers() {
         return (List<WillowUser>)readProperty("users");
-    }
-
-
-    public void addToWebHostNames(WebHostName obj) {
-        addToManyTarget("webHostNames", obj, true);
-    }
-    public void removeFromWebHostNames(WebHostName obj) {
-        removeToManyTarget("webHostNames", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebHostName> getWebHostNames() {
-        return (List<WebHostName>)readProperty("webHostNames");
     }
 
 

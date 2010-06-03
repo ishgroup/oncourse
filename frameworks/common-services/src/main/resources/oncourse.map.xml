@@ -269,6 +269,18 @@
 		<obj-attribute name="webServicesSecurityCode" type="java.lang.String" db-attribute-path="webServicesSecurityCode"/>
 		<obj-attribute name="webSitePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebSitePaymentsEnabled"/>
 	</obj-entity>
+	<obj-entity name="CollegeDomain" className="ish.oncourse.model.CollegeDomain" dbEntityName="CollegeDomain">
+		<obj-attribute name="aliasedDomainID" type="java.lang.Long" db-attribute-path="aliasedDomainID"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="deleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
+		<obj-attribute name="googleAnalyticsAccount" type="java.lang.String" db-attribute-path="googleAnalyticsAccount"/>
+		<obj-attribute name="googleDirectionsFrom" type="java.lang.String" db-attribute-path="googleDirectionsFrom"/>
+		<obj-attribute name="googleMapsKey" type="java.lang.String" db-attribute-path="googleMapsKey"/>
+		<obj-attribute name="hasSSL" type="java.lang.Integer" db-attribute-path="hasSSL"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="subsiteCode" type="java.lang.String" db-attribute-path="subsiteCode"/>
+	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.model.Tag" dbEntityName="Tag">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -323,18 +335,6 @@
 		<obj-attribute name="isDeleted" type="java.lang.Integer" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-	</obj-entity>
-	<obj-entity name="WebHostName" className="ish.oncourse.model.WebHostName" dbEntityName="CollegeDomain">
-		<obj-attribute name="aliasedDomainID" type="java.lang.Long" db-attribute-path="aliasedDomainID"/>
-		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="deleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
-		<obj-attribute name="googleAnalyticsAccount" type="java.lang.String" db-attribute-path="googleAnalyticsAccount"/>
-		<obj-attribute name="googleDirectionsFrom" type="java.lang.String" db-attribute-path="googleDirectionsFrom"/>
-		<obj-attribute name="googleMapsKey" type="java.lang.String" db-attribute-path="googleMapsKey"/>
-		<obj-attribute name="hasSSL" type="java.lang.Integer" db-attribute-path="hasSSL"/>
-		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="subsiteCode" type="java.lang.String" db-attribute-path="subsiteCode"/>
 	</obj-entity>
 	<obj-entity name="WebNode" className="ish.oncourse.model.WebNode" dbEntityName="WebNode">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -547,13 +547,15 @@
 	<db-relationship name="college" source="WillowUser" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<obj-relationship name="domains" source="College" target="CollegeDomain" deleteRule="Deny" db-relationship-path="webHostNames"/>
 	<obj-relationship name="sites" source="College" target="WebSite" deleteRule="Deny" db-relationship-path="websites"/>
 	<obj-relationship name="tagGroupRequirements" source="College" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="taggrouprequirements"/>
 	<obj-relationship name="taggableTags" source="College" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggabletags"/>
 	<obj-relationship name="taggables" source="College" target="Taggable" deleteRule="Deny" db-relationship-path="taggables"/>
 	<obj-relationship name="tags" source="College" target="Tag" deleteRule="Deny" db-relationship-path="tags"/>
 	<obj-relationship name="users" source="College" target="WillowUser" deleteRule="Deny" db-relationship-path="users"/>
-	<obj-relationship name="webHostNames" source="College" target="WebHostName" deleteRule="Deny" db-relationship-path="webHostNames"/>
+	<obj-relationship name="college" source="CollegeDomain" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="site" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="taggabletags" source="Tag" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggabletags"/>
 	<obj-relationship name="taggrouprequirements" source="Tag" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="taggrouprequirements"/>
@@ -567,8 +569,6 @@
 	<obj-relationship name="site" source="WebBlock" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="type" source="WebBlock" target="WebBlockType" deleteRule="Nullify" db-relationship-path="type"/>
 	<obj-relationship name="blocks" source="WebBlockType" target="WebBlock" deleteRule="Deny" db-relationship-path="blocks"/>
-	<obj-relationship name="college" source="WebHostName" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="site" source="WebHostName" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="children" source="WebNode" target="WebNode" deleteRule="Deny" db-relationship-path="children"/>
 	<obj-relationship name="contents" source="WebNode" target="WebNodeContent" deleteRule="Cascade" db-relationship-path="contents"/>
 	<obj-relationship name="parent" source="WebNode" target="WebNode" deleteRule="Nullify" db-relationship-path="parent"/>
@@ -581,11 +581,11 @@
 	<obj-relationship name="blocks" source="WebSite" target="WebBlock" deleteRule="Deny" db-relationship-path="blocks"/>
 	<obj-relationship name="childSites" source="WebSite" target="WebSite" deleteRule="Deny" db-relationship-path="childSites"/>
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="domains" source="WebSite" target="CollegeDomain" deleteRule="Deny" db-relationship-path="webHostNames"/>
 	<obj-relationship name="homePage" source="WebSite" target="WebNode" deleteRule="Nullify" db-relationship-path="homePage"/>
 	<obj-relationship name="nodes" source="WebSite" target="WebNode" deleteRule="Deny" db-relationship-path="nodes"/>
 	<obj-relationship name="parentSite" source="WebSite" target="WebSite" deleteRule="Nullify" db-relationship-path="parentSite"/>
 	<obj-relationship name="templates" source="WebSite" target="WebNodeType" deleteRule="Nullify" db-relationship-path="templates"/>
-	<obj-relationship name="webHostNames" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="webHostNames"/>
 	<obj-relationship name="tag" source="WebTagged" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="college" source="WillowUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 </data-map>

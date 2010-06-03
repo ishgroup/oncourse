@@ -2,12 +2,13 @@ package ish.oncourse.services.environment;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.services.host.IWebHostNameService;
+import ish.oncourse.services.site.IWebSiteService;
+
 
 public class EnvironmentService implements IEnvironmentService {
 
 	@Inject
-	private IWebHostNameService webHostNameService;
+	private IWebSiteService siteService;
 
 	public String getApplicationName() {
 		// TODO hardcoded

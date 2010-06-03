@@ -18,4 +18,8 @@ public class MockResource implements Resource {
 		throw new UnsupportedOperationException();
 	}
 
+	public boolean exists() {
+		throw new UnsupportedOperationException();
+	}
+
 }

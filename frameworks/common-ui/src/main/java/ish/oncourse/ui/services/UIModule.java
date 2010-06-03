@@ -22,6 +22,7 @@ import ish.oncourse.ui.services.template.PerSiteComponentTemplateSourceAdvisor;
 
 import ish.oncourse.services.persistence.ICayenneService;
 
+
 /**
  * A Tapestry IoC module definition of the common components library.
  */
@@ -30,8 +31,7 @@ public class UIModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IComponentTemplateSourceAdvisor.class,
 				PerSiteComponentTemplateSourceAdvisor.class);
-		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class)
-				.withId("Override");
+		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class).withId("Override");
 	}
 
 	public void contributeServiceOverride(
@@ -43,8 +43,8 @@ public class UIModule {
 	@Match("ComponentTemplateSource")
 	public void adviseGetTemplate(IComponentTemplateSourceAdvisor advisor,
 			MethodAdviceReceiver receiver) {
-		advisor.advice(receiver);
-	};
+		advisor.advise(receiver);
+	}
 
 	public void contributeComponentClassResolver(
 			Configuration<LibraryMapping> configuration) {

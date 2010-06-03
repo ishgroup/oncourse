@@ -1,7 +1,5 @@
 package ish.oncourse.ui.components;
 
-import java.util.Collection;
-
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -10,6 +8,11 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.services.site.IWebSiteService;
 
+
+// TODO: MSW 2010/06/03 The WebBlocks are defined within the Textile content
+// of the WebNode.
+// The WebNode will identify the injected WebBlock by its name. There should only
+// be one WebBlock per WebSite with that name.
 public class WebRegionDisplay {
 
 	@Property
@@ -22,9 +25,9 @@ public class WebRegionDisplay {
 	@Inject
 	private IWebSiteService webSiteService;
 
-	public Collection<WebBlock> getBlocks() {
+	public WebBlock getBlock() {
 
-		return webSiteService.getActiveBlocks(regionKey);
+		return webSiteService.getWebBlockForName(regionKey);
 	}
 
 	public String getRegionId() {

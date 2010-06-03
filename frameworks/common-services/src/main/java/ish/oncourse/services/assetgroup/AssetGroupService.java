@@ -13,7 +13,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.cache.CachedObjectProvider;
 import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.host.IWebHostNameService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.resource.IResourceService;
 
 public class AssetGroupService implements IAssetGroupService {
@@ -25,11 +25,12 @@ public class AssetGroupService implements IAssetGroupService {
 	private IResourceService resourceService;
 
 	@Inject
-	private ICacheService cacheService;
+	private IWebSiteService siteService;
 
 	@Inject
-	private IWebHostNameService webHostNameService;
+	private ICacheService cacheService;
 
+	
 	public AssetGroupService() {
 		groupLinePattern = Pattern.compile("^([\\w]+):");
 		assetLinePattern = Pattern.compile("(\\[([\\w]+)\\])?(.*)$");
@@ -119,7 +120,7 @@ public class AssetGroupService implements IAssetGroupService {
 
 	private String createKeyForAssetTypeCollection(AssetType type) {
 		return AssetGroupService.class.getName() + ":"
-				+ webHostNameService.getCurrentWebHostName().getName() + "@"
+				+ siteService.getResourceFolderName() + "@"
 				+ type.name();
 	}
 

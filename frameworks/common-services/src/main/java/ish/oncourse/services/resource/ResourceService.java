@@ -13,7 +13,7 @@ import ish.oncourse.services.site.IWebSiteService;
 
 public class ResourceService implements IResourceService {
 
-	private final static String DEFAULTS_FOLDER = "defaults";
+	private final static String DEFAULT_FOLDER = "default";
 
 	private final static String LAYOUT_FOLDER = "layouts";
 	private final static String CONFIGS_FOLDER = "config";
@@ -23,12 +23,12 @@ public class ResourceService implements IResourceService {
 	private final File customComponentsRoot;
 	private final File customComponentsDefaultsRoot;
 	private final File[] noCustomFolderDefaultsRoot;
+	private IWebSiteService siteService;
 
-	private IWebSiteService webSiteService;
 
-
-	public ResourceService(@Inject IPropertyService propertyService,
-			@Inject IWebSiteService webSiteService) {
+	public ResourceService(
+			@Inject IPropertyService propertyService,
+			@Inject IWebSiteService siteService) {
 
 		String customComponentsPath = propertyService
 				.string(Property.CustomComponentsPath);
@@ -52,7 +52,7 @@ public class ResourceService implements IResourceService {
 		}
 
 		customComponentsDefaultsRoot = new File(customComponentsRoot,
-				DEFAULTS_FOLDER);
+				DEFAULT_FOLDER);
 
 		if (!customComponentsDefaultsRoot.isDirectory()) {
 			throw new IllegalStateException(
@@ -62,7 +62,7 @@ public class ResourceService implements IResourceService {
 
 		noCustomFolderDefaultsRoot = new File[] { customComponentsDefaultsRoot };
 
-		this.webSiteService = webSiteService;
+		this.siteService = siteService;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ResourceService implements IResourceService {
 	 */
 	private File[] getResourceRoots() {
 
-		String siteFolder = webSiteService.getCurrentSite().getSiteIdentifier();
+		String siteFolder = siteService.getResourceFolderName();
 
 		if (siteFolder != null) {
 			return new File[] { new File(customComponentsRoot, siteFolder),
@@ -80,8 +80,18 @@ public class ResourceService implements IResourceService {
 		}
 	}
 
-	public PrivateResource getTemplateResource(String fileName) {
-		return new FileResource(LAYOUT_FOLDER, fileName);
+	public PrivateResource getTemplateResource(String templateKey, String fileName) {
+		FileResource resource = new FileResource(
+				LAYOUT_FOLDER + File.separator + templateKey,
+				fileName);
+
+		if (!resource.exists()) {
+			resource = new FileResource(
+					LAYOUT_FOLDER + File.separator + ResourceService.DEFAULT_FOLDER,
+					fileName);
+		}
+
+		return resource;
 	}
 
 	public PrivateResource getConfigResource(String fileName) {
@@ -181,6 +191,19 @@ public class ResourceService implements IResourceService {
 			} catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
+		}
+
+		public boolean exists() {
+			boolean exists = false;
+
+			for (File root : getResourceRoots()) {
+				if (new File(root, folder + File.separator + fileName).exists()) {
+					exists = true;
+					break;
+				}
+			}
+
+			return exists;
 		}
 	}
 }

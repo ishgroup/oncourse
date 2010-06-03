@@ -9,8 +9,8 @@ import org.apache.tapestry5.services.ApplicationStateManager;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.WillowUser;
-import ish.oncourse.services.college.ICollegeService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 
 public class AuthenticationService implements IAuthenticationService {
 
@@ -18,7 +18,7 @@ public class AuthenticationService implements IAuthenticationService {
 	private ICayenneService cayenneService;
 
 	@Inject
-	private ICollegeService collegeService;
+	private IWebSiteService siteService;
 
 	@Inject
 	// 'applicationStateManager' is needed to look up user objects as session
@@ -35,7 +35,7 @@ public class AuthenticationService implements IAuthenticationService {
 			return AutenticationStatus.EMPTY_PASSWORD;
 		}
 
-		College college = collegeService.getCurrentCollege();
+		College college = siteService.getCurrentCollege();
 
 		SelectQuery query = new SelectQuery(WillowUser.class);
 

@@ -9,17 +9,14 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.college.ICollegeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+
 
 public class WebNodeService implements IWebNodeService {
 
 	@Inject
 	private IWebSiteService webSiteService;
-
-	@Inject
-	private ICollegeService collegeService;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -28,12 +25,12 @@ public class WebNodeService implements IWebNodeService {
 
 		SelectQuery query = new SelectQuery(WebNode.class);
 
-		WebSite site = webSiteService.getCurrentSite();
+		WebSite site = webSiteService.getCurrentWebSite();
 		if (site == null) {
 
-			query.andQualifier(ExpressionFactory.matchExp(WebNode.SITE_PROPERTY
-					+ "." + WebSite.COLLEGE_PROPERTY, collegeService
-					.getCurrentCollege()));
+			query.andQualifier(ExpressionFactory.matchExp(
+					WebNode.SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+					webSiteService.getCurrentCollege()));
 		} else {
 			query.andQualifier(ExpressionFactory.matchExp(
 					WebNode.SITE_PROPERTY, site));
@@ -44,6 +41,6 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getHomePage() {
-		return webSiteService.getCurrentSite().getHomePage();
+		return webSiteService.getCurrentWebSite().getHomePage();
 	}
 }

@@ -3,7 +3,7 @@ package ish.oncourse.ui.components;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.services.college.ICollegeService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.environment.IEnvironmentService;
 
 public class PageHead {
@@ -12,10 +12,10 @@ public class PageHead {
 	private IEnvironmentService environmentService;
 
 	@Inject
-	private ICollegeService collegeService;
+	private IWebSiteService siteService;
 
 	public String getTitle() {
-		return collegeService.getCurrentCollege().getName();
+		return siteService.getCurrentCollege().getName();
 	}
 
 	public String getMetaGeneratorContent() {
