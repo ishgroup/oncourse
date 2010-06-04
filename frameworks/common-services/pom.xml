@@ -41,6 +41,10 @@
 			<artifactId>tapestry-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry5-annotations</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.opensymphony.oscache</groupId>
 			<artifactId>oscache</artifactId>
 		</dependency>

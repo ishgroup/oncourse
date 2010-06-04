@@ -5,10 +5,13 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Match;
+import org.apache.tapestry5.ioc.services.Coercion;
+import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.RequestFilter;
@@ -19,9 +22,10 @@ import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.ui.services.template.IComponentTemplateSourceAdvisor;
 import ish.oncourse.ui.services.template.PerSiteComponentTemplateSourceAdvisor;
+import ish.oncourse.ui.services.template.T5FileResource;
 
 import ish.oncourse.services.persistence.ICayenneService;
-
+import ish.oncourse.services.resource.PrivateResource;
 
 /**
  * A Tapestry IoC module definition of the common components library.
@@ -31,7 +35,8 @@ public class UIModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IComponentTemplateSourceAdvisor.class,
 				PerSiteComponentTemplateSourceAdvisor.class);
-		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class).withId("Override");
+		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class)
+				.withId("Override");
 	}
 
 	public void contributeServiceOverride(
@@ -72,5 +77,16 @@ public class UIModule {
 	public RequestFilter buildLogFilter(Logger log,
 			RequestGlobals requestGlobals) {
 		return new LogFilter(log, requestGlobals);
+	}
+
+	public static void contributeTypeCoercer(
+			Configuration<CoercionTuple> configuration) {
+		configuration.add(new CoercionTuple<PrivateResource, Resource>(
+				PrivateResource.class, Resource.class,
+				new Coercion<PrivateResource, Resource>() {
+					public Resource coerce(PrivateResource input) {
+						return new T5FileResource(input.getFile());
+					}
+				}));
 	}
 }

@@ -16,4 +16,10 @@ public interface IWebNodeService {
 	 * @return
 	 */
 	WebNode getHomePage();
+	
+	/**
+	 * Returns the current page active page.
+	 * @return
+	 */
+	WebNode getCurrentPage();
 }

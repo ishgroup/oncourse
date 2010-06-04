@@ -1,11 +1,17 @@
 package ish.oncourse.ui.services.template;
 
-import ish.oncourse.model.WebNode;
+import ish.oncourse.services.cache.CacheGroup;
+import ish.oncourse.services.cache.CachedObjectProvider;
+import ish.oncourse.services.cache.ICacheService;
+import ish.oncourse.services.resource.IResourceService;
+import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.ui.components.PageWrapper;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.internal.parser.ComponentTemplate;
 import org.apache.tapestry5.internal.services.TemplateParser;
 import org.apache.tapestry5.ioc.Invocation;
@@ -14,21 +20,11 @@ import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.model.ComponentModel;
-
-import ish.oncourse.ui.components.PageWrapper;
-
-import ish.oncourse.services.cache.CacheGroup;
-import ish.oncourse.services.cache.CachedObjectProvider;
-import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.resource.PrivateResource;
-import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.services.Request;
-
 
 /**
  * Template source advisor for custom template location resolution.
- *
+ * 
  * @author Various
  */
 public class PerSiteComponentTemplateSourceAdvisor implements
@@ -52,14 +48,12 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 	private String overridablePackage;
 	private String overridablePath;
 
-
 	public PerSiteComponentTemplateSourceAdvisor() {
 		String sampleComponentClass = PageWrapper.class.getName();
 		overridablePackage = sampleComponentClass.substring(0,
 				sampleComponentClass.lastIndexOf('.') + 1);
 		overridablePath = overridablePackage.replace('.', '/');
 	}
-
 
 	public void advise(MethodAdviceReceiver receiver) {
 
@@ -80,7 +74,8 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 			public void advise(Invocation invocation) {
 
-				ComponentModel model = (ComponentModel) invocation.getParameter(0);
+				ComponentModel model = (ComponentModel) invocation
+						.getParameter(0);
 
 				ComponentTemplate template = overriddenTemplate(model);
 
@@ -132,11 +127,12 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 		// extract the templateKey from associated WebNode record.
 
 		Resource templateBaseResource = model.getBaseResource().withExtension(
-				InternalConstants.TEMPLATE_EXTENSION);
+				"tml");
 
 		String path = templateBaseResource.getPath();
 		if (path.startsWith(overridablePath)) {
-			PrivateResource resource = resourceService.getTemplateResource("", path.substring(overridablePath.length()));
+			PrivateResource resource = resourceService.getTemplateResource("",
+					path.substring(overridablePath.length()));
 
 			// extract the resource file on the spot, to (1) check whether it
 			// exists and (2) to avoid indeterministic behavior later on when
@@ -158,8 +154,8 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 	}
 
 	private String createTemplateKey(String componentName) {
-		return PerSiteComponentTemplateSourceAdvisor.class.getSimpleName() + ":"
-				+ webSiteService.getCurrentWebSite().getSiteIdentifier() + "@"
-				+ componentName;
+		return PerSiteComponentTemplateSourceAdvisor.class.getSimpleName()
+				+ ":" + webSiteService.getCurrentWebSite().getSiteIdentifier()
+				+ "@" + componentName;
 	}
 }

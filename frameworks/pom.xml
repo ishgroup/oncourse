@@ -123,12 +123,12 @@
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-core</artifactId>
-				<version>5.1.0.5</version>
+				<version>${tapestry5version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
-				<artifactId>tapestry-annotations</artifactId>
-				<version>5.0.11</version>
+				<artifactId>tapestry5-annotations</artifactId>
+				<version>${tapestry5version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.got5</groupId>
@@ -157,6 +157,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<tapestry5version>5.1.0.5</tapestry5version>
+		<!--tapestry5version>5.2.0-SNAPSHOT</tapestry5version-->
 	</properties>
 
 </project>

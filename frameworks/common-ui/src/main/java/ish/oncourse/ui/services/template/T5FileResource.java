@@ -7,7 +7,7 @@ import java.net.URL;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.internal.util.AbstractResource;
 
-class T5FileResource extends AbstractResource {
+public class T5FileResource extends AbstractResource {
 
 	private File file;
 
