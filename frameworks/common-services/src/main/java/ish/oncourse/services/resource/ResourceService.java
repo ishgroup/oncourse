@@ -9,6 +9,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import org.apache.log4j.Logger;
 
 
 public class ResourceService implements IResourceService {
@@ -24,6 +25,8 @@ public class ResourceService implements IResourceService {
 	private final File customComponentsDefaultsRoot;
 	private final File[] noCustomFolderDefaultsRoot;
 	private IWebSiteService siteService;
+
+	private static final Logger logger = Logger.getLogger(ResourceService.class);
 
 
 	public ResourceService(
@@ -81,6 +84,7 @@ public class ResourceService implements IResourceService {
 	}
 
 	public PrivateResource getTemplateResource(String templateKey, String fileName) {
+
 		FileResource resource = new FileResource(
 				LAYOUT_FOLDER + File.separator + templateKey,
 				fileName);

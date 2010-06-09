@@ -89,8 +89,8 @@ public class ResourceServiceTest extends Assert {
 		PrivateResource dummyConf = resourceService
 				.getConfigResource("dummy.conf");
 		assertNotNull(dummyConf);
-		assertEquals(root.toURL().toExternalForm()
-				+ "defaults/config/dummy.conf", dummyConf.getPrivateUrl()
+		assertEquals(root.toURI().toURL().toExternalForm()
+				+ "default/config/dummy.conf", dummyConf.getPrivateUrl()
 				.toExternalForm());
 
 		MockWebSiteService webSiteService2 = new MockWebSiteService();
@@ -101,7 +101,7 @@ public class ResourceServiceTest extends Assert {
 		PrivateResource dummyConf2 = resourceService
 				.getConfigResource("dummy.conf");
 		assertNotNull(dummyConf2);
-		assertEquals(root.toURL().toExternalForm()
+		assertEquals(root.toURI().toURL().toExternalForm()
 				+ "testcollege/config/dummy.conf", dummyConf2.getPrivateUrl()
 				.toExternalForm());
 	}

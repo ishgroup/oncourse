@@ -29,11 +29,13 @@
 			<artifactId>common-ui</artifactId>
 		</dependency>
 
+<!-- Commenting out as it works only with Tapestry 5.1
 		<dependency>
 			<groupId>org.got5</groupId>
 			<artifactId>tapestry5-jquery</artifactId>
 		</dependency>
-		
+-->
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>

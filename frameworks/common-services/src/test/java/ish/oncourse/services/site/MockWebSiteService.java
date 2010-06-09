@@ -40,7 +40,7 @@ public class MockWebSiteService implements IWebSiteService {
 	}
 
 	public String getResourceFolderName() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		return getCurrentWebSite().getCode();
 	}
 
 	public WebBlock getWebBlockForName(String name) {

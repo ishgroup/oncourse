@@ -20,6 +20,8 @@ import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.model.ComponentModel;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.apache.tapestry5.services.Request;
 
 /**
@@ -29,6 +31,15 @@ import org.apache.tapestry5.services.Request;
  */
 public class PerSiteComponentTemplateSourceAdvisor implements
 		IComponentTemplateSourceAdvisor {
+
+	// TODO MSW 2010/06/04 This is a quick prototype for determining whether 
+	//      we should lookup overrides and templates
+	private static final String OVERRIDABLE_PATH_PREFIX = "ish/";
+	private static final Collection<String> TEMPLATABLE_PAGES;
+	static {
+		TEMPLATABLE_PAGES = new ArrayList<String>();
+		TEMPLATABLE_PAGES.add("webnode");
+	}
 
 	@Inject
 	private transient ICacheService cacheService;
@@ -129,10 +140,16 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 		Resource templateBaseResource = model.getBaseResource().withExtension(
 				"tml");
 
-		String path = templateBaseResource.getPath();
-		if (path.startsWith(overridablePath)) {
-			PrivateResource resource = resourceService.getTemplateResource("",
-					path.substring(overridablePath.length()));
+		String requestPath = request.getPath();
+		String contextPath = request.getContextPath();
+
+		String templatePath = templateBaseResource.getPath();
+		String templatePage = templatePath.substring(overridablePath.length());
+		String templateFolder = "";
+
+		if (templatePath.startsWith(overridablePath)) {
+			PrivateResource resource = resourceService.getTemplateResource(
+					templateFolder, templatePage);
 
 			// extract the resource file on the spot, to (1) check whether it
 			// exists and (2) to avoid indeterministic behavior later on when
@@ -151,6 +168,14 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 		}
 
 		return null;
+	}
+
+	private boolean isOverridable(String resourcePath) {
+		return resourcePath.startsWith(OVERRIDABLE_PATH_PREFIX);
+	}
+
+	private boolean isTemplatable(String pageName) {
+		return TEMPLATABLE_PAGES.contains(pageName.toLowerCase());
 	}
 
 	private String createTemplateKey(String componentName) {
