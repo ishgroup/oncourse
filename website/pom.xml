@@ -37,7 +37,7 @@
 				<plugin>
 					<groupId>org.apache.cayenne.plugins</groupId>
 					<artifactId>maven-cayenne-plugin</artifactId>
-					<version>3.0B1</version>
+					<version>3.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -45,101 +45,26 @@
 
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
-				<groupId>org.apache.cayenne</groupId>
-				<artifactId>cayenne-server</artifactId>
-				<version>3.0</version>
+				<groupId>ish.oncourse</groupId>
+				<artifactId>website-services</artifactId>
+				<version>${version}</version>
 			</dependency>
+
 			<dependency>
-				<groupId>org.objectstyle.ashwood</groupId>
-				<artifactId>ashwood</artifactId>
-				<version>2.0</version>
+				<groupId>ish.oncourse</groupId>
+				<artifactId>common-ui</artifactId>
+				<version>${version}</version>
 			</dependency>
+
 			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-				<version>3.2.1</version>
+				<artifactId>common-services</artifactId>
+				<groupId>ish.oncourse</groupId>
+				<version>${version}</version>
 			</dependency>
-			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>2.4</version>
-			</dependency>
-			<dependency>
-				<groupId>velocity</groupId>
-				<artifactId>velocity</artifactId>
-				<version>1.3.1</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				<version>1.1.1</version>
-				<exclusions>
-					<exclusion>
-						<groupId>log4j</groupId>
-						<artifactId>log4j</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>logkit</groupId>
-						<artifactId>logkit</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>junit</groupId>
-						<artifactId>junit</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>avalon-framework</groupId>
-						<artifactId>avalon-framework</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>servlet-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.15</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.tapestry</groupId>
-				<artifactId>tapestry-core</artifactId>
-				<version>${tapestry5version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.tapestry</groupId>
-				<artifactId>tapestry5-annotations</artifactId>
-				<version>5.1.0.5</version>
-			</dependency>
-			<dependency>
-				<groupId>org.got5</groupId>
-				<artifactId>tapestry5-jquery</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.opensymphony.oscache</groupId>
-				<artifactId>oscache</artifactId>
-				<version>2.4.1</version>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.5</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>2.5</version>
-				<scope>provided</scope>
-			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tapestry5version>5.2.0-SNAPSHOT</tapestry5version>
-	</properties>
 
 </project>

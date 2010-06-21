@@ -19,7 +19,6 @@
 		<dependency>
 			<artifactId>common-services</artifactId>
 			<groupId>ish.oncourse</groupId>
-			<version>${version}</version>
 		</dependency>
 	</dependencies>
 </project>

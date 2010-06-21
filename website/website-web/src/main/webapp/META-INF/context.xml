@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/">
+<Context antiJARLocking="true" path="/oncourse-website">
   <ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
 </Context>

@@ -17,13 +17,11 @@
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>website-services</artifactId>
-			<version>${version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-ui</artifactId>
-			<version>${version}</version>
 		</dependency>
 
 <!-- Commenting out as it works only with Tapestry 5.1
