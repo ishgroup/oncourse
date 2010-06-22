@@ -73,6 +73,9 @@
 			
 			<!-- Jasper -->
 			<include name="jdt-compiler.jar" />
+			<include name="commons-digester.jar" />
+			<include name="commons-beanutils.jar" />
+						
 			
 			<include name="jasperreports.jar" />
 		</fileset>
