@@ -2,7 +2,6 @@ package ish.oncourse.cms.pages;
 
 import java.util.List;
 
-import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
