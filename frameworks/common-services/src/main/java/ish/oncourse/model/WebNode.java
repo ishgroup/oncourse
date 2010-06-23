@@ -52,13 +52,11 @@ public class WebNode extends _WebNode {
 	/**
 	 * @return All web-navigable web-visible child nodes for this node.
 	 */
-	public List<WebNode> navigableChildNodes() {
+	public List<WebNode> getNavigableChildNodes() {
 		Expression expr = ExpressionFactory.matchExp(WebNode.WEB_NAVIGABLE_PROPERTY, true)
 				.andExp(ExpressionFactory.matchExp(WebNode.PUBLISHED_PROPERTY, true))
 				.andExp(ExpressionFactory.matchExp(WebNode.WEB_VISIBLE_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false)
-						.orExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, null))
-				);
+				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false));
 
 		return expr.filterObjects(getChildren());
 	}

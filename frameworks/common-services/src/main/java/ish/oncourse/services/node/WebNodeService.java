@@ -69,8 +69,7 @@ public class WebNodeService implements IWebNodeService {
 				.andExp(ExpressionFactory.matchExp(WebNode.PUBLISHED_PROPERTY, true))
 				.andExp(ExpressionFactory.matchExp(WebNode.WEB_NAVIGABLE_PROPERTY, true))
 				.andExp(ExpressionFactory.matchExp(WebNode.WEB_VISIBLE_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false)
-						.orExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, null)));
+				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false));
 		
 		return expression;
 	}
