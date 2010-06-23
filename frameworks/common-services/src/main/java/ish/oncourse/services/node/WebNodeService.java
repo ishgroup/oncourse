@@ -59,10 +59,19 @@ public class WebNodeService implements IWebNodeService {
 
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		return (site == null) ? 
+		Expression expression = (site == null) ?
 			ExpressionFactory.matchExp(
 					WebNode.SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 					webSiteService.getCurrentCollege())
 			: ExpressionFactory.matchExp(WebNode.SITE_PROPERTY, site);
+
+		expression = expression
+				.andExp(ExpressionFactory.matchExp(WebNode.PUBLISHED_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.WEB_NAVIGABLE_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.WEB_VISIBLE_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false)
+						.orExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, null)));
+		
+		return expression;
 	}
 }
