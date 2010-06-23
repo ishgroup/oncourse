@@ -28,10 +28,12 @@ public class WebNodeService implements IWebNodeService {
 
 	static final String PAGE_NAME_PARAMETER = "p";
 
+
+	@SuppressWarnings("unchecked")
 	public List<WebNode> getNodes() {
 		SelectQuery query = new SelectQuery(WebNode.class);
 		query.andQualifier(siteQualifier());
-		query.addOrdering(WebNode.NAME_PROPERTY, SortOrder.ASCENDING);
+		query.addOrdering(WebNode.WEIGHTING_PROPERTY, SortOrder.ASCENDING);
 		return cayenneService.sharedContext().performQuery(query);
 	}
 
@@ -43,10 +45,11 @@ public class WebNodeService implements IWebNodeService {
 		String p = request.getParameter(PAGE_NAME_PARAMETER);
 		SelectQuery query = new SelectQuery(WebNode.class);
 		query.andQualifier(siteQualifier());
-		query
-				.andQualifier(ExpressionFactory.matchExp(WebNode.NAME_PROPERTY,
-						p));
-		query.andQualifier(ExpressionFactory.matchExp(WebNode.TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY, "Page"));
+		query.andQualifier(
+				ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, p));
+		query.andQualifier(
+				ExpressionFactory.matchExp(WebNode.TYPE_PROPERTY + "."
+						+ WebNodeType.NAME_PROPERTY, "Page"));
 		
 		List<WebNode> nodes = cayenneService.sharedContext()
 				.performQuery(query);
@@ -56,9 +59,10 @@ public class WebNodeService implements IWebNodeService {
 
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		return (site == null) ? ExpressionFactory.matchExp(
-				WebNode.SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege()) : ExpressionFactory
-				.matchExp(WebNode.SITE_PROPERTY, site);
+		return (site == null) ? 
+			ExpressionFactory.matchExp(
+					WebNode.SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+					webSiteService.getCurrentCollege())
+			: ExpressionFactory.matchExp(WebNode.SITE_PROPERTY, site);
 	}
 }

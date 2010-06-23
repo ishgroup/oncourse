@@ -1,11 +1,14 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebNode;
+import java.util.ArrayList;
 
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
+
 
 public class WebNode extends _WebNode {
 
@@ -28,6 +31,22 @@ public class WebNode extends _WebNode {
 			s = DEFAULT_PAGE_TITLE;
 		}
 		return s.trim().replaceAll("\\s", "+");
+	}
+
+	@Override
+    public List<WebNode> getChildren() {
+		List<WebNode> children = super.getChildren();
+		List<Ordering> orderings = new ArrayList<Ordering>();
+
+		Ordering order = new Ordering();
+		order.setSortSpecString(WebNode.WEIGHTING_PROPERTY);
+		order.setAscending();
+
+		orderings.add(order);
+
+		Ordering.orderList(children, orderings);
+
+		return children;
 	}
 
 	/**
