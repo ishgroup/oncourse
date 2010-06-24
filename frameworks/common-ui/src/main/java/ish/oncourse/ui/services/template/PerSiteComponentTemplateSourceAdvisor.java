@@ -20,8 +20,7 @@ import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.model.ComponentModel;
-import java.util.ArrayList;
-import java.util.Collection;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.services.Request;
 
 /**
@@ -32,15 +31,9 @@ import org.apache.tapestry5.services.Request;
 public class PerSiteComponentTemplateSourceAdvisor implements
 		IComponentTemplateSourceAdvisor {
 
-	// TODO MSW 2010/06/04 This is a quick prototype for determining whether 
-	//      we should lookup overrides and templates
-	private static final String OVERRIDABLE_PATH_PREFIX = "ish/";
-	private static final Collection<String> TEMPLATABLE_PAGES;
-	static {
-		TEMPLATABLE_PAGES = new ArrayList<String>();
-		TEMPLATABLE_PAGES.add("webnode");
-	}
-
+	private static final Logger LOGGER = Logger.getLogger(
+			PerSiteComponentTemplateSourceAdvisor.class);
+	
 	@Inject
 	private transient ICacheService cacheService;
 
@@ -58,6 +51,7 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 
 	private String overridablePackage;
 	private String overridablePath;
+
 
 	public PerSiteComponentTemplateSourceAdvisor() {
 		String sampleComponentClass = PageWrapper.class.getName();
@@ -91,8 +85,10 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 				ComponentTemplate template = overriddenTemplate(model);
 
 				if (template != null) {
+					LOGGER.debug("Override Template invoked");
 					invocation.overrideResult(template);
 				} else {
+					LOGGER.debug("Original Template invoked");
 					invocation.proceed();
 				}
 			}
@@ -103,6 +99,13 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 			final ComponentModel componentModel) {
 
 		String componentName = componentModel.getComponentClassName();
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Retrieve template for component class name : "
+					+ componentName + ", if starts with : "
+					+ overridablePackage);
+		}
+
 		if (!componentName.startsWith(overridablePackage)) {
 			return null;
 		}
@@ -168,14 +171,6 @@ public class PerSiteComponentTemplateSourceAdvisor implements
 		}
 
 		return null;
-	}
-
-	private boolean isOverridable(String resourcePath) {
-		return resourcePath.startsWith(OVERRIDABLE_PATH_PREFIX);
-	}
-
-	private boolean isTemplatable(String pageName) {
-		return TEMPLATABLE_PAGES.contains(pageName.toLowerCase());
 	}
 
 	private String createTemplateKey(String componentName) {

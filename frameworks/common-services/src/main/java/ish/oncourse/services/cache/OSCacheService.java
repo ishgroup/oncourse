@@ -8,8 +8,11 @@ import org.apache.cayenne.cache.QueryCache;
 import com.opensymphony.oscache.base.CacheEntry;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import org.apache.log4j.Logger;
 
 public class OSCacheService implements ICacheService {
+
+	private static final Logger LOGGER = Logger.getLogger(OSCacheService.class);
 
 	private ExtendedGeneralCacheAdministrator cache;
 	private OSQueryCache cayenneCache;
@@ -45,6 +48,12 @@ public class OSCacheService implements ICacheService {
 			
 			refreshPeriod = cayenneCache.getRrefreshPeriod(cacheGroupNames[0]);
 			cron = cayenneCache.getCronExpression(cacheGroupNames[0]);
+		}
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Attempting to retrieve resource with key '"
+					+ key + "' from cache (refreshPeriod: " + refreshPeriod
+					+ ", cron: " + cron + ")");
 		}
 
 		try {
