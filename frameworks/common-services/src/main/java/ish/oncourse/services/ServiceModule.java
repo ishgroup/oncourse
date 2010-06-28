@@ -27,7 +27,6 @@ import ish.oncourse.services.site.WebSiteService;
 public class ServiceModule {
 
 	public static void bind(ServiceBinder binder) {
-
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(ICacheService.class, OSCacheService.class);
 		binder.bind(ICayenneService.class, CayenneService.class);

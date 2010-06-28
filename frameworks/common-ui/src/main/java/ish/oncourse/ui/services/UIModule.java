@@ -1,15 +1,19 @@
 package ish.oncourse.ui.services;
 
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.ui.services.filter.LogFilter;
+import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
+import ish.oncourse.ui.services.template.T5FileResource;
+
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
@@ -18,23 +22,12 @@ import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.slf4j.Logger;
 
-import ish.oncourse.ui.services.filter.LogFilter;
-import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
-import ish.oncourse.ui.services.template.IComponentTemplateSourceAdvisor;
-import ish.oncourse.ui.services.template.PerSiteComponentTemplateSourceAdvisor;
-import ish.oncourse.ui.services.template.T5FileResource;
-
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.resource.PrivateResource;
-
 /**
  * A Tapestry IoC module definition of the common components library.
  */
 public class UIModule {
 
 	public static void bind(ServiceBinder binder) {
-		binder.bind(IComponentTemplateSourceAdvisor.class,
-				PerSiteComponentTemplateSourceAdvisor.class);
 		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class)
 				.withId("Override");
 	}
@@ -44,13 +37,7 @@ public class UIModule {
 			@Local ThreadLocale override) {
 		configuration.add(ThreadLocale.class, override);
 	}
-
-	@Match("ComponentTemplateSource")
-	public void adviseGetTemplate(IComponentTemplateSourceAdvisor advisor,
-			MethodAdviceReceiver receiver) {
-		advisor.advise(receiver);
-	}
-
+	
 	public void contributeComponentClassResolver(
 			Configuration<LibraryMapping> configuration) {
 		configuration.add(new LibraryMapping("ui", "ish.oncourse.ui"));
