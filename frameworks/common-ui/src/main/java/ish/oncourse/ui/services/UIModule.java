@@ -4,6 +4,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
+import ish.oncourse.ui.services.template.IComponentTemplateSourceAdvisor;
+import ish.oncourse.ui.services.template.PerSiteComponentTemplateSourceAdvisor;
 import ish.oncourse.ui.services.template.T5FileResource;
 
 import org.apache.tapestry5.SymbolConstants;
@@ -26,8 +28,10 @@ import org.slf4j.Logger;
  * A Tapestry IoC module definition of the common components library.
  */
 public class UIModule {
-
+	
 	public static void bind(ServiceBinder binder) {
+		binder.bind(IComponentTemplateSourceAdvisor.class,
+				PerSiteComponentTemplateSourceAdvisor.class);
 		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class)
 				.withId("Override");
 	}
