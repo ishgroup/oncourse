@@ -65,11 +65,12 @@ public abstract class _College extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         writeProperty("deleted", deleted);
     }
-    public Boolean getDeleted() {
-        return (Boolean)readProperty("deleted");
+	public boolean isDeleted() {
+        Boolean value = (Boolean)readProperty("deleted");
+        return (value != null) ? value.booleanValue() : false;
     }
 
     public void setFirstRemoteAuthentication(Date firstRemoteAuthentication) {
@@ -128,39 +129,44 @@ public abstract class _College extends CayenneDataObject {
         return (Long)readProperty("primaryDomainID");
     }
 
-    public void setRequiresAvetmiss(Boolean requiresAvetmiss) {
+    public void setRequiresAvetmiss(boolean requiresAvetmiss) {
         writeProperty("requiresAvetmiss", requiresAvetmiss);
     }
-    public Boolean getRequiresAvetmiss() {
-        return (Boolean)readProperty("requiresAvetmiss");
+	public boolean isRequiresAvetmiss() {
+        Boolean value = (Boolean)readProperty("requiresAvetmiss");
+        return (value != null) ? value.booleanValue() : false;
     }
 
-    public void setSslEnabled(Boolean sslEnabled) {
+    public void setSslEnabled(boolean sslEnabled) {
         writeProperty("sslEnabled", sslEnabled);
     }
-    public Boolean getSslEnabled() {
-        return (Boolean)readProperty("sslEnabled");
+	public boolean isSslEnabled() {
+        Boolean value = (Boolean)readProperty("sslEnabled");
+        return (value != null) ? value.booleanValue() : false;
     }
 
-    public void setTestingWebServicePayments(Boolean testingWebServicePayments) {
+    public void setTestingWebServicePayments(boolean testingWebServicePayments) {
         writeProperty("testingWebServicePayments", testingWebServicePayments);
     }
-    public Boolean getTestingWebServicePayments() {
-        return (Boolean)readProperty("testingWebServicePayments");
+	public boolean isTestingWebServicePayments() {
+        Boolean value = (Boolean)readProperty("testingWebServicePayments");
+        return (value != null) ? value.booleanValue() : false;
     }
 
-    public void setTestingWebSitePayments(Boolean testingWebSitePayments) {
+    public void setTestingWebSitePayments(boolean testingWebSitePayments) {
         writeProperty("testingWebSitePayments", testingWebSitePayments);
     }
-    public Boolean getTestingWebSitePayments() {
-        return (Boolean)readProperty("testingWebSitePayments");
+	public boolean isTestingWebSitePayments() {
+        Boolean value = (Boolean)readProperty("testingWebSitePayments");
+        return (value != null) ? value.booleanValue() : false;
     }
 
-    public void setWebServicePaymentsEnabled(Boolean webServicePaymentsEnabled) {
+    public void setWebServicePaymentsEnabled(boolean webServicePaymentsEnabled) {
         writeProperty("webServicePaymentsEnabled", webServicePaymentsEnabled);
     }
-    public Boolean getWebServicePaymentsEnabled() {
-        return (Boolean)readProperty("webServicePaymentsEnabled");
+	public boolean isWebServicePaymentsEnabled() {
+        Boolean value = (Boolean)readProperty("webServicePaymentsEnabled");
+        return (value != null) ? value.booleanValue() : false;
     }
 
     public void setWebServicesLogin(String webServicesLogin) {
@@ -184,11 +190,12 @@ public abstract class _College extends CayenneDataObject {
         return (String)readProperty("webServicesSecurityCode");
     }
 
-    public void setWebSitePaymentsEnabled(Boolean webSitePaymentsEnabled) {
+    public void setWebSitePaymentsEnabled(boolean webSitePaymentsEnabled) {
         writeProperty("webSitePaymentsEnabled", webSitePaymentsEnabled);
     }
-    public Boolean getWebSitePaymentsEnabled() {
-        return (Boolean)readProperty("webSitePaymentsEnabled");
+	public boolean isWebSitePaymentsEnabled() {
+        Boolean value = (Boolean)readProperty("webSitePaymentsEnabled");
+        return (value != null) ? value.booleanValue() : false;
     }
 
     public void addToDomains(CollegeDomain obj) {

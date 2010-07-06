@@ -1,5 +1,13 @@
 package ish.oncourse.cms.components;
 
+import ish.oncourse.cms.pages.Login;
+import ish.oncourse.cms.services.security.IAuthenticationService;
+import ish.oncourse.cms.services.security.annotations.Protected;
+import ish.oncourse.model.WebSite;
+import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.util.PersistentSelectModel;
+
 import java.io.IOException;
 
 import org.apache.tapestry5.SelectModel;
@@ -9,15 +17,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
-
-import ish.oncourse.cms.pages.Login;
-import ish.oncourse.cms.services.security.IAuthenticationService;
-import ish.oncourse.cms.services.security.annotations.Protected;
-
-import ish.oncourse.model.WebSite;
-import ish.oncourse.services.environment.IEnvironmentService;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.util.PersistentSelectModel;
 
 @Protected
 @IncludeJavaScriptLibrary ("AdminToolbar.js")

@@ -64,6 +64,140 @@
 		<db-attribute name="subsiteCode" type="VARCHAR" length="128"/>
 		<db-attribute name="webSiteID" type="BIGINT" length="19"/>
 	</db-entity>
+	<db-entity name="Contact">
+		<db-attribute name="businessPhoneNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="cookieHash" type="VARCHAR" length="64"/>
+		<db-attribute name="countryID" type="BIGINT"/>
+		<db-attribute name="dateOfBirth" type="DATE"/>
+		<db-attribute name="emailAddress" type="VARCHAR" length="512"/>
+		<db-attribute name="familyName" type="VARCHAR" length="256"/>
+		<db-attribute name="faxNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="givenName" type="VARCHAR" length="256"/>
+		<db-attribute name="homePhoneNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="id" type="BIGINT"/>
+		<db-attribute name="isCompany" type="BIT"/>
+		<db-attribute name="isMale" type="BIT"/>
+		<db-attribute name="isMarketingViaEmailAllowed" type="BIT"/>
+		<db-attribute name="isMarketingViaPostAllowed" type="BIT"/>
+		<db-attribute name="isMarketingViaSMSAllowed" type="BIT"/>
+		<db-attribute name="mobilePhoneNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="password" type="VARCHAR" length="16"/>
+		<db-attribute name="postcode" type="VARCHAR" length="32"/>
+		<db-attribute name="state" type="VARCHAR" length="32"/>
+		<db-attribute name="street" type="VARCHAR" length="512"/>
+		<db-attribute name="studentID" type="BIGINT"/>
+		<db-attribute name="suburb" type="VARCHAR" length="128"/>
+		<db-attribute name="taxFileNumber" type="VARCHAR" length="64"/>
+		<db-attribute name="tutorID" type="BIGINT"/>
+		<db-attribute name="uniqueCode" type="VARCHAR" length="16"/>
+	</db-entity>
+	<db-entity name="Course">
+		<db-attribute name="allowWaitingList" type="TINYINT"/>
+		<db-attribute name="code" type="VARCHAR" length="16"/>
+		<db-attribute name="detail" type="CLOB"/>
+		<db-attribute name="detail_textile" type="CLOB"/>
+		<db-attribute name="fieldOfEducation" type="VARCHAR" length="128"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isSufficientForQualification" type="TINYINT"/>
+		<db-attribute name="isVETCourse" type="TINYINT"/>
+		<db-attribute name="isWebVisible" type="TINYINT"/>
+		<db-attribute name="name" type="VARCHAR" length="512"/>
+		<db-attribute name="nominalHours" type="FLOAT"/>
+		<db-attribute name="qualificationId" type="BIGINT"/>
+		<db-attribute name="searchText" type="CLOB"/>
+	</db-entity>
+	<db-entity name="CourseClass">
+		<db-attribute name="code" type="VARCHAR" length="32"/>
+		<db-attribute name="countOfSessions" type="INTEGER" length="11"/>
+		<db-attribute name="courseId" type="BIGINT"/>
+		<db-attribute name="deliveryMode" type="INTEGER"/>
+		<db-attribute name="detail" type="CLOB"/>
+		<db-attribute name="detail_textile" type="CLOB"/>
+		<db-attribute name="endDate" type="TIMESTAMP"/>
+		<db-attribute name="feeExGst" type="DECIMAL"/>
+		<db-attribute name="feeGst" type="DECIMAL"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isCancelled" type="BIT"/>
+		<db-attribute name="isWebVisible" type="BIT"/>
+		<db-attribute name="materials" type="CLOB"/>
+		<db-attribute name="materials_textile" type="CLOB"/>
+		<db-attribute name="maximumPlaces" type="INTEGER" length="11"/>
+		<db-attribute name="minimumPlaces" type="INTEGER" length="11"/>
+		<db-attribute name="minutesPerSession" type="INTEGER" length="11"/>
+		<db-attribute name="roomId" type="BIGINT"/>
+		<db-attribute name="sessionDetail" type="CLOB"/>
+		<db-attribute name="sessionDetail_textile" type="CLOB"/>
+		<db-attribute name="startDate" type="TIMESTAMP"/>
+		<db-attribute name="startingMinutePerSession" type="INTEGER"/>
+		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
+	</db-entity>
+	<db-entity name="Room">
+		<db-attribute name="capacity" type="INTEGER" length="11"/>
+		<db-attribute name="directions" type="CLOB"/>
+		<db-attribute name="directions_textile" type="CLOB"/>
+		<db-attribute name="facilities" type="CLOB"/>
+		<db-attribute name="facilities_textile" type="CLOB"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" length="512"/>
+		<db-attribute name="siteId" type="BIGINT"/>
+	</db-entity>
+	<db-entity name="Session">
+		<db-attribute name="courseClassId" type="BIGINT"/>
+		<db-attribute name="endTimestamp" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="markerID" type="BIGINT"/>
+		<db-attribute name="roomId" type="BIGINT"/>
+		<db-attribute name="startTimestamp" type="TIMESTAMP"/>
+		<db-attribute name="timeZone" type="VARCHAR" length="64"/>
+	</db-entity>
+	<db-entity name="Site">
+		<db-attribute name="countryId" type="BIGINT"/>
+		<db-attribute name="drivingDirections" type="CLOB"/>
+		<db-attribute name="drivingDirections_textile" type="CLOB"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isWebVisible" type="SMALLINT"/>
+		<db-attribute name="latitude" type="DECIMAL"/>
+		<db-attribute name="longitude" type="DECIMAL"/>
+		<db-attribute name="name" type="VARCHAR" length="512"/>
+		<db-attribute name="postcode" type="VARCHAR" length="16"/>
+		<db-attribute name="publicTransportDirections" type="CLOB"/>
+		<db-attribute name="publicTransportDirections_textile" type="CLOB"/>
+		<db-attribute name="specialInstructions" type="CLOB"/>
+		<db-attribute name="specialInstructions_textile" type="CLOB"/>
+		<db-attribute name="state" type="VARCHAR" length="256"/>
+		<db-attribute name="street" type="CLOB"/>
+		<db-attribute name="suburb" type="CLOB"/>
+		<db-attribute name="timeZone" type="VARCHAR" length="64"/>
+	</db-entity>
+	<db-entity name="Student" catalog="willow_college">
+		<db-attribute name="birthDate" type="DATE" length="10"/>
+		<db-attribute name="concessionType" type="INTEGER" length="10"/>
+		<db-attribute name="cookieHash" type="VARCHAR" length="64"/>
+		<db-attribute name="countryOfBirthId" type="BIGINT" length="19"/>
+		<db-attribute name="disabilityType" type="INTEGER" length="10"/>
+		<db-attribute name="email" type="VARCHAR" length="256"/>
+		<db-attribute name="englishProficiency" type="INTEGER" length="10"/>
+		<db-attribute name="fax" type="VARCHAR" length="32"/>
+		<db-attribute name="firstName" type="VARCHAR" length="128"/>
+		<db-attribute name="highestSchoolLevel" type="INTEGER" length="10"/>
+		<db-attribute name="homePhone" type="VARCHAR" length="32"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="indigenousStatus" type="INTEGER" length="10"/>
+		<db-attribute name="isMale" type="SMALLINT" length="5"/>
+		<db-attribute name="isOverseasClient" type="SMALLINT" length="5"/>
+		<db-attribute name="isStillAtSchool" type="SMALLINT" length="5"/>
+		<db-attribute name="labourForceType" type="INTEGER" length="10"/>
+		<db-attribute name="languageId" type="BIGINT" length="19"/>
+		<db-attribute name="lastName" type="VARCHAR" length="128"/>
+		<db-attribute name="mobilePhone" type="VARCHAR" length="32"/>
+		<db-attribute name="password" type="VARCHAR" length="16"/>
+		<db-attribute name="postcode" type="VARCHAR" length="16"/>
+		<db-attribute name="priorEducationCode" type="INTEGER" length="10"/>
+		<db-attribute name="street" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="suburb" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="workPhone" type="VARCHAR" length="32"/>
+		<db-attribute name="yearSchoolCompleted" type="INTEGER" length="10"/>
+	</db-entity>
 	<db-entity name="Tag" catalog="oncourse_realdata_willow_college">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
@@ -110,6 +244,24 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="tagId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="taggableId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="Tutor">
+		<db-attribute name="companyName" type="VARCHAR" length="256"/>
+		<db-attribute name="cookieHash" type="VARCHAR" length="64"/>
+		<db-attribute name="dateFinished" type="TIMESTAMP"/>
+		<db-attribute name="dateStarted" type="TIMESTAMP"/>
+		<db-attribute name="email" type="VARCHAR" length="128"/>
+		<db-attribute name="faxNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="firstName" type="VARCHAR" length="128"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isCompany" type="BIT"/>
+		<db-attribute name="isMale" type="BIT"/>
+		<db-attribute name="lastName" type="VARCHAR" length="128"/>
+		<db-attribute name="mobileNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="password" type="VARCHAR" length="16"/>
+		<db-attribute name="phoneNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="resume" type="CLOB"/>
+		<db-attribute name="resume_textile" type="CLOB"/>
 	</db-entity>
 	<db-entity name="WebBlock" catalog="oncourse_realdata_willow_college">
 		<db-attribute name="angelId" type="BIGINT"/>
@@ -227,14 +379,15 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="password" type="VARCHAR" length="16"/>
 	</db-entity>
-	<obj-entity name="BinaryInfo" className="ish.oncourse.model.BinaryInfo" dbEntityName="BinaryInfo">
-		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="byteSize"/>
-		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
-		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="pixelHeight" type="java.lang.Integer" db-attribute-path="pixelHeight"/>
-		<obj-attribute name="pixelWidth" type="java.lang.Integer" db-attribute-path="pixelWidth"/>
-		<obj-attribute name="referenceNumber" type="java.lang.Integer" db-attribute-path="referenceNumber"/>
-		<obj-attribute name="webVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
+	<obj-entity name="BinaryInfo" superEntityName="Taggable" className="ish.oncourse.model.BinaryInfo" dbEntityName="Taggable" exclude-superclass-listeners="true">
+		<qualifier><![CDATA[entityType = "BinaryInfo"]]></qualifier>
+		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="binaryInfos.byteSize"/>
+		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="binaryInfos.mimeType"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="binaryInfos.name"/>
+		<obj-attribute name="pixelHeight" type="java.lang.Integer" db-attribute-path="binaryInfos.pixelHeight"/>
+		<obj-attribute name="pixelWidth" type="java.lang.Integer" db-attribute-path="binaryInfos.pixelWidth"/>
+		<obj-attribute name="referenceNumber" type="java.lang.Integer" db-attribute-path="binaryInfos.referenceNumber"/>
+		<obj-attribute name="webVisible" type="boolean" db-attribute-path="binaryInfos.isWebVisible"/>
 	</obj-entity>
 	<obj-entity name="BinaryInfoRelation" className="ish.oncourse.model.BinaryInfoRelation" dbEntityName="BinaryInfoRelation">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -250,7 +403,7 @@
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College">
 		<obj-attribute name="collegeKey" type="java.lang.String" db-attribute-path="collegeKey"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="deleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
+		<obj-attribute name="deleted" type="boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
 		<obj-attribute name="lastRemoteAuthentication" type="java.util.Date" db-attribute-path="lastRemoteAuthentication"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -259,15 +412,15 @@
 		<obj-attribute name="paymentGatewayAccount" type="java.lang.String" db-attribute-path="paymentGatewayAccount"/>
 		<obj-attribute name="paymentGatewayPass" type="java.lang.String" db-attribute-path="paymentGatewayPass"/>
 		<obj-attribute name="primaryDomainID" type="java.lang.Long" db-attribute-path="primaryDomainID"/>
-		<obj-attribute name="requiresAvetmiss" type="java.lang.Boolean" db-attribute-path="requiresAvetmiss"/>
-		<obj-attribute name="sslEnabled" type="java.lang.Boolean" db-attribute-path="isSslEnabled"/>
-		<obj-attribute name="testingWebServicePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebServicePayments"/>
-		<obj-attribute name="testingWebSitePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebSitePayments"/>
-		<obj-attribute name="webServicePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebServicePaymentsEnabled"/>
+		<obj-attribute name="requiresAvetmiss" type="boolean" db-attribute-path="requiresAvetmiss"/>
+		<obj-attribute name="sslEnabled" type="boolean" db-attribute-path="isSslEnabled"/>
+		<obj-attribute name="testingWebServicePayments" type="boolean" db-attribute-path="isTestingWebServicePayments"/>
+		<obj-attribute name="testingWebSitePayments" type="boolean" db-attribute-path="isTestingWebSitePayments"/>
+		<obj-attribute name="webServicePaymentsEnabled" type="boolean" db-attribute-path="isWebServicePaymentsEnabled"/>
 		<obj-attribute name="webServicesLogin" type="java.lang.String" db-attribute-path="webServicesLogin"/>
 		<obj-attribute name="webServicesPass" type="java.lang.String" db-attribute-path="webServicesPass"/>
 		<obj-attribute name="webServicesSecurityCode" type="java.lang.String" db-attribute-path="webServicesSecurityCode"/>
-		<obj-attribute name="webSitePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebSitePaymentsEnabled"/>
+		<obj-attribute name="webSitePaymentsEnabled" type="boolean" db-attribute-path="isWebSitePaymentsEnabled"/>
 	</obj-entity>
 	<obj-entity name="CollegeDomain" className="ish.oncourse.model.CollegeDomain" dbEntityName="CollegeDomain">
 		<obj-attribute name="aliasedDomainID" type="java.lang.Long" db-attribute-path="aliasedDomainID"/>
@@ -280,6 +433,141 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="subsiteCode" type="java.lang.String" db-attribute-path="subsiteCode"/>
+	</obj-entity>
+	<obj-entity name="Contact" superEntityName="Taggable" className="ish.oncourse.model.Contact" dbEntityName="Taggable">
+		<qualifier><![CDATA[entityType = "Contact"]]></qualifier>
+		<obj-attribute name="businessPhoneNumber" type="java.lang.String" db-attribute-path="contacts.businessPhoneNumber"/>
+		<obj-attribute name="company" type="boolean" db-attribute-path="contacts.isCompany"/>
+		<obj-attribute name="cookieHash" type="java.lang.String" db-attribute-path="contacts.cookieHash"/>
+		<obj-attribute name="countryID" type="java.lang.Long" db-attribute-path="contacts.countryID"/>
+		<obj-attribute name="dateOfBirth" type="java.util.Date" db-attribute-path="contacts.dateOfBirth"/>
+		<obj-attribute name="emailAddress" type="java.lang.String" db-attribute-path="contacts.emailAddress"/>
+		<obj-attribute name="familyName" type="java.lang.String" db-attribute-path="contacts.familyName"/>
+		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="contacts.faxNumber"/>
+		<obj-attribute name="givenName" type="java.lang.String" db-attribute-path="contacts.givenName"/>
+		<obj-attribute name="homePhoneNumber" type="java.lang.String" db-attribute-path="contacts.homePhoneNumber"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="male" type="boolean" db-attribute-path="contacts.isMale"/>
+		<obj-attribute name="marketingViaEmailAllowed" type="boolean" db-attribute-path="contacts.isMarketingViaEmailAllowed"/>
+		<obj-attribute name="marketingViaPostAllowed" type="boolean" db-attribute-path="contacts.isMarketingViaPostAllowed"/>
+		<obj-attribute name="marketingViaSMSAllowed" type="boolean" db-attribute-path="contacts.isMarketingViaSMSAllowed"/>
+		<obj-attribute name="mobilePhoneNumber" type="java.lang.String" db-attribute-path="contacts.mobilePhoneNumber"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="contacts.password"/>
+		<obj-attribute name="postcode" type="java.lang.String" db-attribute-path="contacts.postcode"/>
+		<obj-attribute name="state" type="java.lang.String" db-attribute-path="contacts.state"/>
+		<obj-attribute name="street" type="java.lang.String" db-attribute-path="contacts.street"/>
+		<obj-attribute name="studentID" type="java.lang.Long" db-attribute-path="contacts.studentID"/>
+		<obj-attribute name="suburb" type="java.lang.String" db-attribute-path="contacts.suburb"/>
+		<obj-attribute name="taxFileNumber" type="java.lang.String" db-attribute-path="contacts.taxFileNumber"/>
+		<obj-attribute name="tutorID" type="java.lang.Long" db-attribute-path="contacts.tutorID"/>
+		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="contacts.uniqueCode"/>
+	</obj-entity>
+	<obj-entity name="Course" superEntityName="Taggable" className="ish.oncourse.model.Course" dbEntityName="Taggable">
+		<qualifier><![CDATA[entityType = "Course"]]></qualifier>
+		<obj-attribute name="VETCourse" type="boolean" db-attribute-path="courses.isVETCourse"/>
+		<obj-attribute name="allowWaitingList" type="boolean" db-attribute-path="courses.allowWaitingList"/>
+		<obj-attribute name="code" type="java.lang.String" db-attribute-path="courses.code"/>
+		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="courses.detail"/>
+		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="courses.detail_textile"/>
+		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="courses.fieldOfEducation"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="courses.name"/>
+		<obj-attribute name="nominalHours" type="java.lang.Float" db-attribute-path="courses.nominalHours"/>
+		<obj-attribute name="qualificationId" type="java.lang.Long" db-attribute-path="courses.qualificationId"/>
+		<obj-attribute name="searchText" type="java.lang.String" db-attribute-path="courses.searchText"/>
+		<obj-attribute name="sufficientForQualification" type="boolean" db-attribute-path="courses.isSufficientForQualification"/>
+		<obj-attribute name="webVisible" type="boolean" db-attribute-path="courses.isWebVisible"/>
+	</obj-entity>
+	<obj-entity name="CourseClass" superEntityName="Taggable" className="ish.oncourse.model.CourseClass" dbEntityName="Taggable">
+		<qualifier><![CDATA[entityType = "CourseClass"]]></qualifier>
+		<obj-attribute name="cancelled" type="boolean" db-attribute-path="courseClasses.isCancelled"/>
+		<obj-attribute name="code" type="java.lang.String" db-attribute-path="courseClasses.code"/>
+		<obj-attribute name="countOfSessions" type="java.lang.Integer" db-attribute-path="courseClasses.countOfSessions"/>
+		<obj-attribute name="courseId" type="java.lang.Long" db-attribute-path="courseClasses.courseId"/>
+		<obj-attribute name="deliveryMode" type="java.lang.Integer" db-attribute-path="courseClasses.deliveryMode"/>
+		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="courseClasses.detail"/>
+		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="courseClasses.detail_textile"/>
+		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="courseClasses.endDate"/>
+		<obj-attribute name="feeExGst" type="java.math.BigDecimal" db-attribute-path="courseClasses.feeExGst"/>
+		<obj-attribute name="feeGst" type="java.math.BigDecimal" db-attribute-path="courseClasses.feeGst"/>
+		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="courseClasses.materials"/>
+		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="courseClasses.materials_textile"/>
+		<obj-attribute name="maximumPlaces" type="java.lang.Integer" db-attribute-path="courseClasses.maximumPlaces"/>
+		<obj-attribute name="minimumPlaces" type="java.lang.Integer" db-attribute-path="courseClasses.minimumPlaces"/>
+		<obj-attribute name="minutesPerSession" type="java.lang.Integer" db-attribute-path="courseClasses.minutesPerSession"/>
+		<obj-attribute name="roomId" type="java.lang.Long" db-attribute-path="courseClasses.roomId"/>
+		<obj-attribute name="sessionDetail" type="java.lang.String" db-attribute-path="courseClasses.sessionDetail"/>
+		<obj-attribute name="sessionDetailTextile" type="java.lang.String" db-attribute-path="courseClasses.sessionDetail_textile"/>
+		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="courseClasses.startDate"/>
+		<obj-attribute name="startingMinutePerSession" type="java.lang.Integer" db-attribute-path="courseClasses.startingMinutePerSession"/>
+		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="courseClasses.timeZone"/>
+		<obj-attribute name="webVisible" type="boolean" db-attribute-path="courseClasses.isWebVisible"/>
+	</obj-entity>
+	<obj-entity name="Room" superEntityName="Taggable" className="ish.oncourse.model.Room" dbEntityName="Taggable">
+		<qualifier><![CDATA[entityType = "Session"]]></qualifier>
+		<obj-attribute name="capacity" type="java.lang.Integer" db-attribute-path="rooms.capacity"/>
+		<obj-attribute name="directions" type="java.lang.String" db-attribute-path="rooms.directions"/>
+		<obj-attribute name="directionsTextile" type="java.lang.String" db-attribute-path="rooms.directions_textile"/>
+		<obj-attribute name="facilities" type="java.lang.String" db-attribute-path="rooms.facilities"/>
+		<obj-attribute name="facilitiesTextile" type="java.lang.String" db-attribute-path="rooms.facilities_textile"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="rooms.name"/>
+		<obj-attribute name="siteId" type="java.lang.Long" db-attribute-path="rooms.siteId"/>
+	</obj-entity>
+	<obj-entity name="Session" superEntityName="Taggable" className="ish.oncourse.model.Session" dbEntityName="Session">
+		<qualifier><![CDATA[entityType = "Session"]]></qualifier>
+		<obj-attribute name="courseClassId" type="java.lang.Long" db-attribute-path="courseClassId"/>
+		<obj-attribute name="endTimestamp" type="java.util.Date" db-attribute-path="endTimestamp"/>
+		<obj-attribute name="markerID" type="java.lang.Long" db-attribute-path="markerID"/>
+		<obj-attribute name="roomId" type="java.lang.Long" db-attribute-path="roomId"/>
+		<obj-attribute name="startTimestamp" type="java.util.Date" db-attribute-path="startTimestamp"/>
+		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
+	</obj-entity>
+	<obj-entity name="Site" superEntityName="Taggable" className="ish.oncourse.model.Site" dbEntityName="Taggable">
+		<qualifier><![CDATA[entityType = "Site"]]></qualifier>
+		<obj-attribute name="countryId" type="java.lang.Long" db-attribute-path="sites.countryId"/>
+		<obj-attribute name="drivingDirections" type="java.lang.String" db-attribute-path="sites.drivingDirections"/>
+		<obj-attribute name="drivingDirectionsTextile" type="java.lang.String" db-attribute-path="sites.drivingDirections_textile"/>
+		<obj-attribute name="isWebVisible" type="java.lang.Short" db-attribute-path="sites.isWebVisible"/>
+		<obj-attribute name="latitude" type="java.math.BigDecimal" db-attribute-path="sites.latitude"/>
+		<obj-attribute name="longitude" type="java.math.BigDecimal" db-attribute-path="sites.longitude"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="sites.name"/>
+		<obj-attribute name="postcode" type="java.lang.String" db-attribute-path="sites.postcode"/>
+		<obj-attribute name="publicTransportDirections" type="java.lang.String" db-attribute-path="sites.publicTransportDirections"/>
+		<obj-attribute name="publicTransportDirectionsTextile" type="java.lang.String" db-attribute-path="sites.publicTransportDirections_textile"/>
+		<obj-attribute name="specialInstructions" type="java.lang.String" db-attribute-path="sites.specialInstructions"/>
+		<obj-attribute name="specialInstructionsTextile" type="java.lang.String" db-attribute-path="sites.specialInstructions_textile"/>
+		<obj-attribute name="state" type="java.lang.String" db-attribute-path="sites.state"/>
+		<obj-attribute name="street" type="java.lang.String" db-attribute-path="sites.street"/>
+		<obj-attribute name="suburb" type="java.lang.String" db-attribute-path="sites.suburb"/>
+		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="sites.timeZone"/>
+	</obj-entity>
+	<obj-entity name="Student" superEntityName="Taggable" className="ish.oncourse.model.Student" dbEntityName="Taggable">
+		<qualifier><![CDATA[entityType = "Student"]]></qualifier>
+		<obj-attribute name="birthDate" type="java.util.Date" db-attribute-path="students.birthDate"/>
+		<obj-attribute name="concessionType" type="java.lang.Integer" db-attribute-path="students.concessionType"/>
+		<obj-attribute name="cookieHash" type="java.lang.String" db-attribute-path="students.cookieHash"/>
+		<obj-attribute name="countryOfBirthId" type="java.lang.Long" db-attribute-path="students.countryOfBirthId"/>
+		<obj-attribute name="disabilityType" type="java.lang.Integer" db-attribute-path="students.disabilityType"/>
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="students.email"/>
+		<obj-attribute name="englishProficiency" type="java.lang.Integer" db-attribute-path="students.englishProficiency"/>
+		<obj-attribute name="fax" type="java.lang.String" db-attribute-path="students.fax"/>
+		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="students.firstName"/>
+		<obj-attribute name="highestSchoolLevel" type="java.lang.Integer" db-attribute-path="students.highestSchoolLevel"/>
+		<obj-attribute name="homePhone" type="java.lang.String" db-attribute-path="students.homePhone"/>
+		<obj-attribute name="indigenousStatus" type="java.lang.Integer" db-attribute-path="students.indigenousStatus"/>
+		<obj-attribute name="labourForceType" type="java.lang.Integer" db-attribute-path="students.labourForceType"/>
+		<obj-attribute name="languageId" type="java.lang.Long" db-attribute-path="students.languageId"/>
+		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="students.lastName"/>
+		<obj-attribute name="male" type="boolean" db-attribute-path="students.isMale"/>
+		<obj-attribute name="mobilePhone" type="java.lang.String" db-attribute-path="students.mobilePhone"/>
+		<obj-attribute name="overseasClient" type="boolean" db-attribute-path="students.isOverseasClient"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="students.password"/>
+		<obj-attribute name="postcode" type="java.lang.String" db-attribute-path="students.postcode"/>
+		<obj-attribute name="priorEducationCode" type="java.lang.Integer" db-attribute-path="students.priorEducationCode"/>
+		<obj-attribute name="stillAtSchool" type="boolean" db-attribute-path="students.isStillAtSchool"/>
+		<obj-attribute name="street" type="java.lang.String" db-attribute-path="students.street"/>
+		<obj-attribute name="suburb" type="java.lang.String" db-attribute-path="students.suburb"/>
+		<obj-attribute name="workPhone" type="java.lang.String" db-attribute-path="students.workPhone"/>
+		<obj-attribute name="yearSchoolCompleted" type="java.lang.Integer" db-attribute-path="students.yearSchoolCompleted"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.model.Tag" dbEntityName="Tag">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -317,6 +605,24 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="deleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
+	<obj-entity name="Tutor" superEntityName="Taggable" className="ish.oncourse.model.Tutor" dbEntityName="Taggable">
+		<qualifier><![CDATA[entityType = "Tutor"]]></qualifier>
+		<obj-attribute name="company" type="boolean" db-attribute-path="tutors.isCompany"/>
+		<obj-attribute name="companyName" type="java.lang.String" db-attribute-path="tutors.companyName"/>
+		<obj-attribute name="cookieHash" type="java.lang.String" db-attribute-path="tutors.cookieHash"/>
+		<obj-attribute name="dateFinished" type="java.util.Date" db-attribute-path="tutors.dateFinished"/>
+		<obj-attribute name="dateStarted" type="java.util.Date" db-attribute-path="tutors.dateStarted"/>
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="tutors.email"/>
+		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="tutors.faxNumber"/>
+		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="tutors.firstName"/>
+		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="tutors.lastName"/>
+		<obj-attribute name="male" type="boolean" db-attribute-path="tutors.isMale"/>
+		<obj-attribute name="mobileNumber" type="java.lang.String" db-attribute-path="tutors.mobileNumber"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="tutors.password"/>
+		<obj-attribute name="phoneNumber" type="java.lang.String" db-attribute-path="tutors.phoneNumber"/>
+		<obj-attribute name="resume" type="java.lang.String" db-attribute-path="tutors.resume"/>
+		<obj-attribute name="resumeTextile" type="java.lang.String" db-attribute-path="tutors.resume_textile"/>
 	</obj-entity>
 	<obj-entity name="WebBlock" className="ish.oncourse.model.WebBlock" dbEntityName="WebBlock">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -409,6 +715,9 @@
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 		<obj-attribute name="superUser" type="java.lang.Boolean" db-attribute-path="isSuperUser"/>
 	</obj-entity>
+	<db-relationship name="taggable" source="BinaryInfo" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
 	<db-relationship name="taggables" source="College" target="Taggable" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -436,6 +745,24 @@
 	<db-relationship name="site" source="CollegeDomain" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteID" target="id"/>
 	</db-relationship>
+	<db-relationship name="taggable" source="Contact" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggable" source="Course" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggable" source="CourseClass" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggable" source="Room" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggable" source="Site" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggable" source="Student" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Tag" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -454,11 +781,35 @@
 	<db-relationship name="tag" source="TagGroupRequirement" target="Tag" toMany="false">
 		<db-attribute-pair source="tagId" target="id"/>
 	</db-relationship>
+	<db-relationship name="binaryInfos" source="Taggable" target="BinaryInfo" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Taggable" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="contacts" source="Taggable" target="Contact" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="courseClasses" source="Taggable" target="CourseClass" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="courses" source="Taggable" target="Course" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="rooms" source="Taggable" target="Room" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="sites" source="Taggable" target="Site" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="students" source="Taggable" target="Student" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
 	<db-relationship name="taggabletags" source="Taggable" target="TaggableTag" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="taggableId"/>
+	</db-relationship>
+	<db-relationship name="tutors" source="Taggable" target="Tutor" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="TaggableTag" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -468,6 +819,9 @@
 	</db-relationship>
 	<db-relationship name="taggable" source="TaggableTag" target="Taggable" toMany="false">
 		<db-attribute-pair source="taggableId" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggable" source="Tutor" target="Taggable" toMany="false">
+		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
 	<db-relationship name="site" source="WebBlock" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteID" target="id"/>

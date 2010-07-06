@@ -18,7 +18,7 @@ public enum LaunchProperties {
 
 	ISH_DS_USER_NAME("root"),
 
-	ISH_DS_PASSWORD("willow_test");
+	ISH_DS_PASSWORD("test");
 
 	private String defaultValue;
 
