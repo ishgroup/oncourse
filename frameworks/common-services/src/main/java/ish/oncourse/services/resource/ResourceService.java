@@ -73,14 +73,15 @@ public class ResourceService implements IResourceService {
 	 */
 	private File[] getResourceRoots() {
 
+		File[] resourceRoots = noCustomFolderDefaultsRoot;
 		String siteFolder = siteService.getResourceFolderName();
 
 		if (siteFolder != null) {
-			return new File[] { new File(customComponentsRoot, siteFolder),
+			resourceRoots = new File[] { new File(customComponentsRoot, siteFolder),
 					customComponentsDefaultsRoot };
-		} else {
-			return noCustomFolderDefaultsRoot;
 		}
+
+		return resourceRoots;
 	}
 
 	public PrivateResource getTemplateResource(String templateKey, String fileName) {
@@ -89,10 +90,24 @@ public class ResourceService implements IResourceService {
 				LAYOUT_FOLDER + File.separator + templateKey,
 				fileName);
 
+		if (logger.isDebugEnabled()) {
+			logger.debug("Getting template resource for templateKey:["
+					+ templateKey + "] and fileName:[" + fileName
+					+ "] - private resource URL:[" + resource.getPrivateUrl()
+					+ "]");
+		}
+
 		if (!resource.exists()) {
 			resource = new FileResource(
 					LAYOUT_FOLDER + File.separator + ResourceService.DEFAULT_FOLDER,
 					fileName);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Getting template resource for templateKey:["
+						+ templateKey + "] and fileName:[" + fileName
+						+ "] - private resource URL:[" + resource.getPrivateUrl()
+						+ "]");
+			}
+
 		}
 
 		return resource;
