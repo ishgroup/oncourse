@@ -327,6 +327,7 @@
 		<db-attribute name="isDeleted" type="BOOLEAN"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
+		<db-attribute name="templateKey" type="VARCHAR" length="50"/>
 		<db-attribute name="webSiteId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="WebSite" catalog="oncourse_realdata_willow_college">
@@ -673,6 +674,7 @@
 		<obj-attribute name="deleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="templateKey" type="java.lang.String" db-attribute-path="templateKey"/>
 	</obj-entity>
 	<obj-entity name="WebSite" className="ish.oncourse.model.WebSite" dbEntityName="WebSite">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

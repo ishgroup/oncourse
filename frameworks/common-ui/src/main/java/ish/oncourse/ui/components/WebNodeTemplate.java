@@ -66,7 +66,7 @@ public class WebNodeTemplate {
 	}
 
 	public PrivateResource getSelectedTemplate() {
-		return resourceService.getTemplateResource(node.getType().getName(),
+		return resourceService.getTemplateResource(node.getType().getTemplateKey(),
 				"WebNode.tmp");
 	}
 

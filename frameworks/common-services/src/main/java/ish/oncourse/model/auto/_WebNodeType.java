@@ -21,6 +21,7 @@ public abstract class _WebNodeType extends CayenneDataObject {
     public static final String DELETED_PROPERTY = "deleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
+    public static final String TEMPLATE_KEY_PROPERTY = "templateKey";
     public static final String NODES_PROPERTY = "nodes";
     public static final String SITE_PROPERTY = "site";
 
@@ -59,6 +60,13 @@ public abstract class _WebNodeType extends CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty("name");
+    }
+
+    public void setTemplateKey(String templateKey) {
+        writeProperty("templateKey", templateKey);
+    }
+    public String getTemplateKey() {
+        return (String)readProperty("templateKey");
     }
 
     public void addToNodes(WebNode obj) {

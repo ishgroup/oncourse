@@ -19,7 +19,12 @@ public interface IWebNodeService {
 	
 	/**
 	 * Returns the current page active page.
-	 * @return
+	 *
+	 * Note that this method relies on the injected
+	 * {@link org.apache.tapestry5.services.Request} object.
+	 * 
+	 * @return the current page
 	 */
 	WebNode getCurrentPage();
+
 }
