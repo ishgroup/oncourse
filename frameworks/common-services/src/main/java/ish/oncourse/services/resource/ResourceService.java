@@ -93,7 +93,6 @@ public class ResourceService implements IResourceService {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Getting template resource for templateKey:["
 					+ templateKey + "] and fileName:[" + fileName
-					+ "] - private resource URL:[" + resource.getPrivateUrl()
 					+ "]");
 		}
 
@@ -104,7 +103,6 @@ public class ResourceService implements IResourceService {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Getting template resource for templateKey:["
 						+ templateKey + "] and fileName:[" + fileName
-						+ "] - private resource URL:[" + resource.getPrivateUrl()
 						+ "]");
 			}
 
