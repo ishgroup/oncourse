@@ -1,5 +1,7 @@
 package ish.oncourse.ui.components;
 
+import java.net.URLEncoder;
+
 import ish.oncourse.model.WebNode;
 
 import org.apache.tapestry5.annotations.AfterRender;
