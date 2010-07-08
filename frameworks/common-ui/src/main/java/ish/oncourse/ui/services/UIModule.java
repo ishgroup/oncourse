@@ -4,7 +4,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
-import ish.oncourse.ui.services.template.PerSiteComponentTemplateSourceAdvice;
+import ish.oncourse.ui.services.template.ComponentTemplateLocatorAdvice;
 import ish.oncourse.ui.services.template.T5FileResource;
 
 import java.lang.reflect.Method;
@@ -12,7 +12,6 @@ import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.internal.services.ComponentTemplateSource;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.MethodAdvice;
@@ -30,6 +29,7 @@ import org.apache.tapestry5.model.ComponentModel;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.RequestGlobals;
+import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
 
 /**
  * A Tapestry IoC module definition of the common components library.
@@ -41,18 +41,17 @@ public class UIModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class)
 				.withId("Override");
-		binder.bind(MethodAdvice.class,
-				PerSiteComponentTemplateSourceAdvice.class).withId(
-				"PerSiteComponentTemplateSourceAdvice");
+		binder.bind(MethodAdvice.class, ComponentTemplateLocatorAdvice.class)
+				.withId("ComponentTemplateLocatorAdvice");
 	}
 
-	@Match("ComponentTemplateSource")
+	@Match("ComponentTemplateLocator")
 	public static void adviseComponentTemplateSource(
 			MethodAdviceReceiver receiver,
-			@InjectService(value = "PerSiteComponentTemplateSourceAdvice") MethodAdvice sourceAdvice) {
+			@InjectService(value = "ComponentTemplateLocatorAdvice") MethodAdvice sourceAdvice) {
 		try {
-			Method method = ComponentTemplateSource.class.getMethod(
-					"getTemplate", ComponentModel.class, Locale.class);
+			Method method = ComponentTemplateLocator.class.getMethod(
+					"locateTemplate", ComponentModel.class, Locale.class);
 			receiver.adviseMethod(method, sourceAdvice);
 		} catch (Exception e) {
 			LOGGER.error("Unable to advise getTemplate method.", e);
