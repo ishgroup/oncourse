@@ -18,7 +18,7 @@ import org.apache.tapestry5.internal.util.RenderableAsBlock;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.runtime.RenderCommand;
 
-import com.howardlewisship.tapx.core.dynamic.BlockSource;
+import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 
 public class WebNodeTemplate {
@@ -30,7 +30,7 @@ public class WebNodeTemplate {
 	private DynamicTemplate template;
 
 	@Parameter("BlockSource")
-	private BlockSource blockSource;
+	private DynamicDelegate blockSource;
 
 	@Inject
 	private IResourceService resourceService;
@@ -38,10 +38,10 @@ public class WebNodeTemplate {
 	@Inject
 	private ComponentResources componentResources;
 
-	public BlockSource getBlockSource() {
+	public DynamicDelegate getBlockSource() {
 		final List<WebNodeContent> contents = node.getContents();
 
-		return new BlockSource() {
+		return new DynamicDelegate() {
 			public Block getBlock(String regionKey) {
 				
 				Block block = componentResources.getBlockParameter(regionKey);
@@ -61,6 +61,11 @@ public class WebNodeTemplate {
 						writer.writeRaw(nodeContent.getContent());
 					}
 				});
+			}
+
+			// TODO: Implement - this is due to the recent API change in tapX
+			public Object getExpressionRoot() {
+				throw new UnsupportedOperationException("Not supported yet.");
 			}
 		};
 	}
