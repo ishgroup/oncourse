@@ -16,6 +16,11 @@ public class AppModule {
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
+
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
+
+		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
+		configuration.add(SymbolConstants.COMPACT_JSON, "false");
+
 	}
 }

@@ -16,9 +16,16 @@ public class AppModule {
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
+
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
-// TODO: Reinstate when Tapestry-jQuery suports 5.2
-//		configuration.add(ClientResourcesConstants.JAVASCRIPT_STACK,
-//				JQueryClientResourcesConstants.JAVASCRIPT_STACK_JQUERY);
+		configuration.add(SymbolConstants.COMPACT_JSON, "false");
+		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
+
+		// TODO: Reinstate when Tapestry-jQuery suports 5.2
+/*
+		configuration.add(
+				ClientResourcesConstants.JAVASCRIPT_STACK,
+				JQueryClientResourcesConstants.JAVASCRIPT_STACK_JQUERY);
+ */
 	}
 }

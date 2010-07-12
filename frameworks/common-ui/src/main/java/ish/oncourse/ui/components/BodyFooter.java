@@ -8,6 +8,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.format.FormatName;
 import ish.oncourse.services.format.IFormatService;
 
+
 public class BodyFooter {
 
 	@Inject

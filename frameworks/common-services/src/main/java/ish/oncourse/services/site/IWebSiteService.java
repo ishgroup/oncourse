@@ -47,4 +47,6 @@ public interface IWebSiteService {
 	 * @return
 	 */
 	WebBlock getWebBlockForName(String name);
+	
+	String getHomeLink();
 }

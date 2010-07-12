@@ -37,6 +37,11 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
+	 <dependency>
+	  <groupId>joda-time</groupId>
+	  <artifactId>joda-time</artifactId>
+	  <version>1.6</version>
+	 </dependency>
 	</dependencies>
 
 </project>

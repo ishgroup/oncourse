@@ -129,4 +129,8 @@ public class WebSiteService implements IWebSiteService {
 		// WebBlock is found? We expect only one web block per site per name.
 		return (allBlocks.isEmpty()) ? null : allBlocks.get(0);
 	}
+
+	public String getHomeLink() {
+		return request.getContextPath() + "/";
+	}
 }

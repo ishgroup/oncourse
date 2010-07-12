@@ -14,10 +14,12 @@
 	<name>Website Web Module</name>
 
 	<dependencies>
+<!-- At present, this module has no custom functionality - removing
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>website-services</artifactId>
 		</dependency>
+-->
 
 		<dependency>
 			<groupId>ish.oncourse</groupId>
