@@ -77,6 +77,7 @@
 			<fileset dir="${common.classes.dir}"/>
 		</copy>
 		<javac
+			includeantruntime="false"
 		    source="${javac.source}"
 			target="${javac.target}"
 			srcdir="${src.dir}"
@@ -228,6 +229,7 @@
 				
 		<!-- compile JUnit test classes -->
 		<javac
+			includeantruntime="false"
 			source="${javac.source}"
 			target="${javac.target}"
 			srcdir="tests"
@@ -277,6 +279,7 @@
 					
 			<!-- compile JUnit test classes -->
 			<javac
+				includeantruntime="false"
 				source="${javac.source}"
 				target="${javac.target}"
 				srcdir="tests"

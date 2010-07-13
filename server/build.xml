@@ -131,6 +131,7 @@
 			<fileset dir="${common.classes.dir}"/>
 		</copy>
 		<javac
+			includeantruntime="false"
 		    source="${javac.source}"
 			target="${javac.target}"
 			srcdir="${src.dir}"
@@ -191,7 +192,7 @@
 		</delete>
 	</target>
 	<target name="--compile-test" depends="--clean-test, build">
-		<javac srcdir="${server.test.dir}" verbose="true" debug="true" source="${javac.source}" target="${javac.target}">
+		<javac includeantruntime="false" srcdir="${server.test.dir}" verbose="true" debug="true" source="${javac.source}" target="${javac.target}">
 			<classpath refid="test.classpath" />
 		</javac>
 	</target>
@@ -315,6 +316,7 @@
 	-->
 	<target name="avetmiss" description="new avetmiss update">
 		<javac
+			includeantruntime="false"
 			source="${javac.source}"
 			target="${javac.target}"
 			destdir="${classes.dir}"
@@ -557,7 +559,7 @@
 		</path>
 				
 		<!-- compile JUnit test classes -->
-		<javac source="${javac.source}" target="${javac.target}" srcdir="tests" destdir="${junit.bin}" deprecation="true" debug="true" debuglevel="source,lines">
+		<javac includeantruntime="false" source="${javac.source}" target="${javac.target}" srcdir="tests" destdir="${junit.bin}" deprecation="true" debug="true" debuglevel="source,lines">
 			<classpath refid="test.classpath" />
 		</javac>
 		
@@ -621,7 +623,7 @@
 			</path>
 					
 			<!-- compile JUnit test classes -->
-			<javac source="${javac.source}" target="${javac.target}" srcdir="itests" destdir="${itest.bin}" deprecation="true" debug="true" debuglevel="source,lines">
+			<javac includeantruntime="false" source="${javac.source}" target="${javac.target}" srcdir="itests" destdir="${itest.bin}" deprecation="true" debug="true" debuglevel="source,lines">
 				<classpath refid="test.classpath" />
 			</javac>
 			
