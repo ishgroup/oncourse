@@ -11,7 +11,7 @@ import ish.oncourse.util.PersistentSelectModel;
 import java.io.IOException;
 
 import org.apache.tapestry5.SelectModel;
-import org.apache.tapestry5.annotations.IncludeJavaScriptLibrary;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -19,7 +19,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
 @Protected
-@IncludeJavaScriptLibrary ("AdminToolbar.js")
+@Import(library="AdminToolbar.js")
 public class AdminToolbar {
 	
 	@Inject
@@ -48,6 +48,10 @@ public class AdminToolbar {
 	public String getAdminDivClass() {
 		return environmentService.isTransientEnvironment() ? "admin blownaway"
 				: "admin";
+	}
+
+	public Boolean getIsLoggedIn() {
+		return authenticationService.getUser() != null;
 	}
 
 	public String getUserFirstName() {

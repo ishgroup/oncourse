@@ -1,32 +1,44 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html t:type="ui/pagewrapper" title="login" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-  <div id="web-admin-content">
-    <div id="AdminLogin">
-      <h2>Administrator Login</h2>
-      <t:form t:id="loginform">  
-        <t:errors class="'error'"/>
-        <fieldset class="form-fields">
-          <p>
-            <t:label for="email">Login Name 
-              <em title="This field is required">*</em>
-            </t:label>
-            <span class="valid"><t:textfield t:id="email" class="focus-this input-fixed" value="email" /></span>
-          </p>
-          <p>
-            <t:label for="password">Password 
-              <em title="This field is required">*</em>
-            </t:label>
-            <span class="valid"><t:passwordfield t:id="password" class="input-fixed" value="password" /></span>
-          </p>
-          <p class="note">
-            <span class="note">
-              <strong class="alert">Note</strong>: Fields marked with an 
-              <em>*</em>
-              are required.</span>
-          </p>
-          <p class="login"><t:submit value="Log in" /></p>
-        </fieldset>
-      </t:form>
-    </div>
-  </div>
+<html t:type="cmspagewrapper" title="login" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div id="web-admin-content">
+
+		<div id="AdminLogin">
+			<h2>Administrator Login</h2>
+
+			<form t:id="loginForm">
+
+				<t:errors class="'error'"/>
+
+				<fieldset class="form-fields">
+					<p>
+						<t:label for="email">Login Name
+							<em title="This field is required">*</em>
+						</t:label>
+						<span class="valid">
+							<input t:type="TextField" t:id="email" t:validate="required,minlength=3" size="30"/>
+						</span>
+					</p>
+
+					<p>
+						<t:label for="password">Password
+							<em title="This field is required">*</em>
+						</t:label>
+						<span class="valid">
+							<input t:type="PasswordField" t:id="password" t:validate="required,minlength=3" size="30"/>
+						</span>
+					</p>
+
+					<p class="note">
+						<span class="note">
+							<strong class="alert">Note</strong>: Fields marked with an <em>*</em> are required.
+						</span>
+					</p>
+
+					<p class="login">
+						<input type="submit" value="Log in"/>
+					</p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
 </html>

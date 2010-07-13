@@ -7,16 +7,21 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.cms.services.security.AutenticationStatus;
+import ish.oncourse.cms.services.security.AuthenticationStatus;
 import ish.oncourse.cms.services.security.IAuthenticationService;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.corelib.components.PasswordField;
+import org.apache.tapestry5.corelib.components.TextField;
 
 /**
  * CMS login page.
  */
 public class Login {
 
-	@Property
 	@Persist
+	@Property
 	private String email;
 
 	@Property
@@ -25,23 +30,41 @@ public class Login {
 	@Component
 	private Form loginForm;
 
-	@InjectPage
-	private Index defaultReturnPage;
+	@InjectComponent("email")
+	private TextField emailField;
+
+	@InjectComponent("password")
+	private PasswordField passwordField;
 
 	@Inject
 	private IAuthenticationService authenticationService;
 
-	Object onSuccess() {
-		AutenticationStatus status = authenticationService.authenticate(email,
-				password);
 
-		if (status == AutenticationStatus.SUCCESS) {
-			return defaultReturnPage;
+	Object onSuccess() {
+
+		// TODO: What if there is a user logged in?
+
+		if (StringUtils.isBlank(email)) {
+			loginForm.recordError(emailField, "Please enter your login name");
+		}
+		if (StringUtils.isBlank(password)) {
+			loginForm.recordError(passwordField, "Please enter your password");
 		}
 
-		loginForm.recordError(status.name());
+		if (! loginForm.getHasErrors()) {
+			AuthenticationStatus status = authenticationService.authenticate(
+					email, password);
 
-		return this;
+			if (status == AuthenticationStatus.NO_MATCHING_USER) {
+				loginForm.recordError("Login unsucessful! Invalid login name or password");
+			} else if (status == AuthenticationStatus.MORE_THAN_ONE_USER) {
+				loginForm.recordError("Login unsuccessful! There is a problem with your account, please contact the college for support (MU)");
+			} else if (status != AuthenticationStatus.SUCCESS) {
+				loginForm.recordError("Login unsuccessful! " + status.name());
+			}
+		}
+
+		return (loginForm.getHasErrors()) ? this : Index.class;
 	}
 
 }

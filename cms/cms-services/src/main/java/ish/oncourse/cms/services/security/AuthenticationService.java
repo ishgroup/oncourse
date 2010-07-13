@@ -12,6 +12,7 @@ import ish.oncourse.model.WillowUser;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
+
 public class AuthenticationService implements IAuthenticationService {
 
 	@Inject
@@ -20,19 +21,18 @@ public class AuthenticationService implements IAuthenticationService {
 	@Inject
 	private IWebSiteService siteService;
 
-	@Inject
+
 	// 'applicationStateManager' is needed to look up user objects as session
 	// state can not be injected in the services
+	@Inject
 	private ApplicationStateManager applicationStateManager;
 
-	public AutenticationStatus authenticate(String userName, String password) {
 
-		if (userName == null || userName.length() == 0) {
-			return AutenticationStatus.EMPTY_USER_NAME;
-		}
+	public AuthenticationStatus authenticate(String userName, String password) {
 
-		if (password == null || password.length() == 0) {
-			return AutenticationStatus.EMPTY_PASSWORD;
+		if ((userName == null || userName.length() == 0)
+				|| (password == null || password.length() == 0)) {
+			 return AuthenticationStatus.INVALID_CREDENTIALS;
 		}
 
 		College college = siteService.getCurrentCollege();
@@ -49,20 +49,19 @@ public class AuthenticationService implements IAuthenticationService {
 		query.andQualifier(ExpressionFactory.matchExp(
 				WillowUser.PASSWORD_PROPERTY, password));
 
-		List<WillowUser> users = cayenneService.newContext()
-				.performQuery(query);
+		@SuppressWarnings("unchecked")
+		List<WillowUser> users = cayenneService.newContext().performQuery(query);
 
-		if (users.isEmpty()) {
-			return AutenticationStatus.NO_MATCHING_USER;
+		AuthenticationStatus status = AuthenticationStatus.NO_MATCHING_USER;
+
+		if ((users != null) && (users.size() == 1)) {
+			applicationStateManager.set(WillowUser.class, users.get(0));
+			status = AuthenticationStatus.SUCCESS;
+		} else if ((users != null) && (users.size() > 1)) {
+			status = AuthenticationStatus.MORE_THAN_ONE_USER;
 		}
 
-		if (users.size() > 1) {
-			return AutenticationStatus.MORE_THAN_ONE_USER;
-		}
-
-		applicationStateManager.set(WillowUser.class, users.get(0));
-
-		return AutenticationStatus.SUCCESS;
+		return status;
 	}
 
 	public WillowUser getUser() {

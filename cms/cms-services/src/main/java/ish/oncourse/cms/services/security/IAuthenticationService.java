@@ -2,6 +2,7 @@ package ish.oncourse.cms.services.security;
 
 import ish.oncourse.model.WillowUser;
 
+
 public interface IAuthenticationService {
 
 	/**
@@ -10,8 +11,13 @@ public interface IAuthenticationService {
 	 * authenticated, a corresponding WillowUser object is stored in the session
 	 * behind the scenes, so subsequent calls to {@link #getUser()} wil return
 	 * it.
+	 *
+	 * @param userName
+	 * @param password
+	 * @return Authentication status
 	 */
-	AutenticationStatus authenticate(String userName, String password);
+	AuthenticationStatus authenticate(String userName, String password);
+
 
 	/**
 	 * Returns current session user for authenticated sessions, or null for

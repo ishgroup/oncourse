@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 <div id="admin_toolbar">
 		<div id="nav_cms" class="clearfix">
+<t:if test="isLoggedIn">
 			<ul class="left">
 <!--				<li t:type="pagestab"/>
 				<li t:type="themestab"/>		-->
@@ -13,43 +14,17 @@
 				<li><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
 <!--				<li t:type="searchpanel"/>-->
 			</ul>
+	<p:else>
+			<ul class="left">
+			</ul>
+			<ul id="system_links" class="right">
+				<li><a href="">Help</a></li>
+				<li><a href="/cms-web/login">Log in</a></li>
+			</ul>
+	</p:else>
+</t:if>
 			<div id="nav_cms_sub_contents" class="clear clearfix"></div>	
 		</div>	
 </div>
+
 </t:container>
-
-<!--
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <div id="webeditorcontrol" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div t:type="any" t:id="admin" class="prop:adminDivClass">
-      <div id="admin-logo">&nbsp;</div>
-      <span class="welcome">onCourse 
-        <strong>admin</strong>
-        &nbsp; Welcome ${userFirstName}</span>
-      <span class="logout">
-        <t:actionLink t:id="logout" class="logout">log out</t:actionLink>
-      </span>
-      <t:if test="multipleSites">
-        <t:form class="select_site">
-          <span>Web Site: 
-            <t:select name="site" model="sites" value="selectedSite" />
-            <t:submit value="Go" />
-          </span>
-        </t:form>
-      </t:if>
-      <ul class="extras menu sf-js-enabled sf-shadow">
-        <li class="editPage editPageNoPages">
-          <span class="disabled"> Select a web page to edit it</span>
-        </li>
-        <li class="pages">
-          <span class="here">Pages</span>
-        </li>
-        <li class="showBlocks showBlocksActive activeadmin">
-          <a href="/portal/blocks" class="blocks"> Blocks </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</t:container> -->
