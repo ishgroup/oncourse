@@ -1,6 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <div id="sidebar" class="span-6 last">
-	Sidebar
-  	<div t:type="ui/webregiondisplay" regionKey="literal:left"></div>
-  </div>
+	<div id="sidebar" class="span-6 last">
+		<div t:type="ui/webregiondisplay" regionKey="literal:left"></div>
+	</div>
 </t:container>

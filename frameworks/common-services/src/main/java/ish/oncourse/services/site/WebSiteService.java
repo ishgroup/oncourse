@@ -24,26 +24,31 @@ public class WebSiteService implements IWebSiteService {
 
 	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
 	private static final String DEFAULT_FOLDER_NAME = "default";
-
 	@Inject
 	private Request request;
-
 	@Inject
 	private ICayenneService cayenneService;
-
 	private transient CollegeDomain collegeDomain;
-	private final Expression activeBlocksFilter;
-
+	private final Expression activeBlocksNameFilter;
+	private final Expression activeBlocksRegionFilter;
 
 	public WebSiteService() {
 
-		String activeBlocksExp = String.format(
+		String activeBlocksNameExp = String.format(
 				"%s = $name and (%s = null or %s = false)",
 				WebBlock.NAME_PROPERTY,
 				WebBlock.DELETED_PROPERTY,
 				WebBlock.DELETED_PROPERTY);
 
-		activeBlocksFilter = Expression.fromString(activeBlocksExp);
+		activeBlocksNameFilter = Expression.fromString(activeBlocksNameExp);
+
+		String activeBlocksRegionExp = String.format(
+				"%s = $regionKey and (%s = null or %s = false)",
+				WebBlock.REGION_KEY_PROPERTY,
+				WebBlock.DELETED_PROPERTY,
+				WebBlock.DELETED_PROPERTY);
+
+		activeBlocksRegionFilter = Expression.fromString(activeBlocksRegionExp);
 	}
 
 	public CollegeDomain getCurrentDomain() {
@@ -113,6 +118,21 @@ public class WebSiteService implements IWebSiteService {
 		return getCurrentCollege().getSites();
 	}
 
+	public List<WebBlock> getWebBlocksForRegion(String regionKey) {
+
+		List<WebBlock> allBlocks = getCurrentWebSite().getBlocks();
+		if (allBlocks.isEmpty()) {
+			return null;
+		}
+
+		Expression filter = activeBlocksRegionFilter.expWithParameters(
+				Collections.singletonMap(WebBlock.REGION_KEY_PROPERTY, regionKey));
+
+		allBlocks = filter.filterObjects(allBlocks);
+
+		return (allBlocks.isEmpty()) ? null : allBlocks;
+	}
+
 	public WebBlock getWebBlockForName(String name) {
 
 		List<WebBlock> allBlocks = getCurrentWebSite().getBlocks();
@@ -120,7 +140,7 @@ public class WebSiteService implements IWebSiteService {
 			return null;
 		}
 
-		Expression filter = activeBlocksFilter.expWithParameters(
+		Expression filter = activeBlocksNameFilter.expWithParameters(
 				Collections.singletonMap(WebBlock.NAME_PROPERTY, name));
 
 		allBlocks = filter.filterObjects(allBlocks);

@@ -10,16 +10,18 @@
 				<li t:type="dashboardtab"/>
 			</ul>
 			<ul id="system_links" class="right">
+				<li>Welcome ${userFirstName}</li>
 				<li><a href="">Help</a></li>
 				<li><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
 <!--				<li t:type="searchpanel"/>-->
 			</ul>
 	<p:else>
 			<ul class="left">
+				<li><a href="/cms-web/login">Log in</a></li>
 			</ul>
 			<ul id="system_links" class="right">
 				<li><a href="">Help</a></li>
-				<li><a href="/cms-web/login">Log in</a></li>
+				<li></li>
 			</ul>
 	</p:else>
 </t:if>

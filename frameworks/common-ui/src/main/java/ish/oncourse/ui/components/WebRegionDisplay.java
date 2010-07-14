@@ -7,6 +7,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.services.site.IWebSiteService;
+import java.util.List;
 
 
 // TODO: MSW 2010/06/03 The WebBlocks are defined within the Textile content
@@ -15,8 +16,8 @@ import ish.oncourse.services.site.IWebSiteService;
 // be one WebBlock per WebSite with that name.
 public class WebRegionDisplay {
 
-	@Property
 	@Parameter
+	@Property
 	private String regionKey;
 
 	@Property
@@ -25,9 +26,8 @@ public class WebRegionDisplay {
 	@Inject
 	private IWebSiteService webSiteService;
 
-	public WebBlock getBlock() {
-
-		return webSiteService.getWebBlockForName(regionKey);
+	public List<WebBlock> getBlocks() {
+		return webSiteService.getWebBlocksForRegion(regionKey);
 	}
 
 	public String getRegionId() {
@@ -35,6 +35,6 @@ public class WebRegionDisplay {
 	}
 
 	public String getBlockId() {
-		return "block" + DataObjectUtils.intPKForObject(block);
+		return "block_" + DataObjectUtils.intPKForObject(block);
 	}
 }

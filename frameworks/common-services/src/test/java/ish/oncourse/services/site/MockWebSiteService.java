@@ -42,6 +42,10 @@ public class MockWebSiteService implements IWebSiteService {
 		return getCurrentWebSite().getCode();
 	}
 
+	public List<WebBlock> getWebBlocksForRegion(String regionKey) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
 	public WebBlock getWebBlockForName(String name) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

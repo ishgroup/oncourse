@@ -1,9 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <div t:type="any" id="prop:regionId" class="regionDisplay">
-    <t:loop source="blocks" value="block">
-      <div t:type="any" id="prop:blockId" class="blockDisplay">
-        <div t:type="ui/webblockdisplay" displayedBlock="block"></div>
-      </div>
-    </t:loop>
-  </div>
+	<div t:type="any" id="prop:regionId" class="regionDisplay">
+		<t:loop source="blocks" value="block">
+			<div t:type="any" id="prop:blockId" class="blockDisplay">
+				<div t:type="ui/webblockdisplay" displayedBlock="block"></div>
+			</div>
+		</t:loop>
+	</div>
 </t:container>

@@ -1,11 +1,12 @@
 package ish.oncourse.services.site;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.CollegeDomain;
 import java.util.List;
 
+import ish.oncourse.model.College;
+import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.model.WebSite;
+
 
 public interface IWebSiteService {
 
@@ -40,6 +41,15 @@ public interface IWebSiteService {
 	String getResourceFolderName();
 
 	/**
+	 * Get WebBlock matching the regionKey and linked to the current site.
+	 *
+	 * @param regionKey - the region
+	 *
+	 * @return list matching of web blocks
+	 */
+	List<WebBlock> getWebBlocksForRegion(String regionKey);
+
+	/**
 	 * Get WebBlock matching the name and linked to the current site.
 	 *
 	 * @param name the name of the block
@@ -47,6 +57,6 @@ public interface IWebSiteService {
 	 * @return
 	 */
 	WebBlock getWebBlockForName(String name);
-	
+
 	String getHomeLink();
 }
