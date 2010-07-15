@@ -1,7 +1,5 @@
 package ish.oncourse.ui.services.locale;
 
-import static org.apache.tapestry5.ioc.internal.util.Defense.notNull;
-
 import java.util.Locale;
 
 import org.apache.tapestry5.ioc.ScopeConstants;
@@ -30,7 +28,9 @@ public class PerSiteVariantThreadLocale implements ThreadLocale {
 
 	public void setLocale(Locale locale) {
 
-		notNull(locale, "locale");
+		if (locale == null) {
+			throw new IllegalArgumentException("Locale is null");
+		}
 
 		if (this.locale != locale) {
 			String code = webSiteService.getCurrentWebSite().getCode();
