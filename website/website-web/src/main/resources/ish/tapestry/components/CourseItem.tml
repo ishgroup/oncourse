@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="course_item">
+		<h4><a href="/course/ardr2">${course.name}</a></h4>
+		<p class="description">${course.detail}</p>
+	</div>
+	<t:loop source="" value="">
+	
+	</t:loop>
+	<div class="waiting-list">
+		<a>
+			If there isn't a class to suit you, please the waiting list.
+		</a>
+	</div>
+</t:container>

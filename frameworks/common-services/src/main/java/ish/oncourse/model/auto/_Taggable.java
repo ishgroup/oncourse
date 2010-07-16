@@ -61,12 +61,15 @@ public abstract class _Taggable extends CayenneDataObject {
         return (Date)readProperty("modified");
     }
 
-    public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+    public void addToCollege(College obj) {
+        addToManyTarget("college", obj, true);
     }
-
-    public College getCollege() {
-        return (College)readProperty("college");
+    public void removeFromCollege(College obj) {
+        removeToManyTarget("college", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<College> getCollege() {
+        return (List<College>)readProperty("college");
     }
 
 

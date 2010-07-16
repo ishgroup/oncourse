@@ -6,6 +6,8 @@ import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.cache.OSCacheService;
+import ish.oncourse.services.course.CourseService;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
@@ -36,5 +38,6 @@ public class ServiceModule {
 		binder.bind(IWebSiteService.class, WebSiteService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IFormatService.class, FormatService.class);
+		binder.bind(ICourseService.class, CourseService.class);
 	}
 }

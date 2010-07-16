@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.util.Map;
+
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Taggable;
 
 /**
@@ -22,6 +25,7 @@ public abstract class _Course extends Taggable {
     public static final String SEARCH_TEXT_PROPERTY = "searchText";
     public static final String SUFFICIENT_FOR_QUALIFICATION_PROPERTY = "sufficientForQualification";
     public static final String WEB_VISIBLE_PROPERTY = "webVisible";
+    public static final String CLASSES_PROPERTY = "classes";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -112,5 +116,11 @@ public abstract class _Course extends Taggable {
         Boolean value = (Boolean)readProperty("webVisible");
         return (value != null) ? value.booleanValue() : false;
     }
+
+    @SuppressWarnings("unchecked")
+    public Map<Long, CourseClass> getClasses() {
+        return (Map<Long, CourseClass>)readProperty("classes");
+    }
+
 
 }
