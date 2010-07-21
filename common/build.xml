@@ -24,6 +24,7 @@
 	<target name="build" description="Compile source.">
 		<mkdir dir="${classes.dir}"/>
 		<javac
+		        includeantruntime="false"
 			source="${javac.source}"
 			target="${javac.target}"
 			srcdir="${common.src.dir}"
@@ -98,6 +99,7 @@
 				
 		<!-- compile JUnit test classes -->
 		<javac
+		        includeantruntime="false"
 			source="${javac.source}"
 			target="${javac.target}"
 			srcdir="tests"
