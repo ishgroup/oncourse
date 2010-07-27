@@ -4,7 +4,7 @@
 		<h4><a href="/course/ardr2">${course.name}</a></h4>
 		<p class="description">${course.detail}</p>
 	</div>
-	<t:loop source="" value="">
+	<t:loop source="course.classes" value="courseClass">
 	
 	</t:loop>
 	<div class="waiting-list">
