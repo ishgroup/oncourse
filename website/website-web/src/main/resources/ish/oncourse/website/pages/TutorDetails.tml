@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="tutors_details">
+	<h2>${object.firstName} ${object.lastName}</h2>
+		<t:if t:test="${hasResume}>0">
+			<h4>Resume</h4>
+  			${object.resume}
+		</t:if>
+	<!--Commented untile the tutor roles will be available-->
+		<!--t:if t:test="${object.currentVisibleTutorRoles.count}>0">
+			<h4>Classes</h4>
+    		<div class="tutors_classes">
+    			<t:loop source="${object.currentVisibleTutorRoles}" value="role">
+     				<t:if condition="${role.hasCourseClass}">
+        				<t:if condition="${role.courseClass.isWebVisible}">
+           					<t:actionlink t:id="class" context="role.courseClass.id">${role.courseClass.uniqueIdentifier} ${tutorRoleItem.courseClass.course.name"}</t:actionlink>
+        				</t:if>
+      				</t:if>
+    			</t:loop>
+    		</div>  
+    
+		</t:if-->
+	</div>
+</t:container>
+

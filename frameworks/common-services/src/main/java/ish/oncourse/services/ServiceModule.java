@@ -22,6 +22,8 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
+import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.services.tutor.TutorService;
 
 /**
  * A Tapestry IoC module definition for all common services.
@@ -39,5 +41,6 @@ public class ServiceModule {
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IFormatService.class, FormatService.class);
 		binder.bind(ICourseService.class, CourseService.class);
+		binder.bind(ITutorService.class, TutorService.class);
 	}
 }
