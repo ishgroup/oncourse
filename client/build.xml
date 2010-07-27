@@ -111,6 +111,7 @@
 			<fileset dir="${client.project.dir}">
 				<include name="resources/images/**"/>
 				<include name="resources/cal/**"/>
+				<include name="resources/eula.html"/>
 				<include name="resources/log_properties/**"/>
 				<include name="resources/ssl/clientserverkeystore" />
 				<include name="resources/content-types.properties" />
