@@ -263,6 +263,19 @@
 		<db-attribute name="resume" type="CLOB"/>
 		<db-attribute name="resume_textile" type="CLOB"/>
 	</db-entity>
+	<db-entity name="TutorRole">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="courseClassId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="dateConfirmed" type="TIMESTAMP"/>
+		<db-attribute name="detail" type="CLOB"/>
+		<db-attribute name="detail_textile" type="CLOB"/>
+		<db-attribute name="isConfirmed" type="BIT"/>
+		<db-attribute name="isDeleted" type="BIT"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="tutorId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="WebBlock" catalog="oncourse_realdata_willow_college">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="content" type="VARCHAR" length="16777215"/>
@@ -630,6 +643,17 @@
 		<obj-attribute name="resume" type="java.lang.String" db-attribute-path="tutors.resume"/>
 		<obj-attribute name="resumeTextile" type="java.lang.String" db-attribute-path="tutors.resume_textile"/>
 	</obj-entity>
+	<obj-entity name="TutorRole" className="ish.oncourse.model.TutorRole" dbEntityName="TutorRole">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="dateConfirmed" type="java.util.Date" db-attribute-path="dateConfirmed"/>
+		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
+		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
+		<obj-attribute name="isConfirmed" type="java.lang.Boolean" db-attribute-path="isConfirmed"/>
+		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
 	<obj-entity name="WebBlock" className="ish.oncourse.model.WebBlock" dbEntityName="WebBlock">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
@@ -773,9 +797,6 @@
 	<db-relationship name="taggable" source="CourseClass" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="untitledRel" source="CourseClass" target="Taggable" toMany="true">
-		<db-attribute-pair source="courseId" target="id"/>
-	</db-relationship>
 	<db-relationship name="taggable" source="Room" target="Taggable" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
@@ -839,6 +860,9 @@
 	<db-relationship name="taggabletags" source="Taggable" target="TaggableTag" toMany="true">
 		<db-attribute-pair source="id" target="taggableId"/>
 	</db-relationship>
+	<db-relationship name="tutorRoles" source="Taggable" target="TutorRole" toMany="false">
+		<db-attribute-pair source="id" target="tutorId"/>
+	</db-relationship>
 	<db-relationship name="tutors" source="Taggable" target="Tutor" toMany="true">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
@@ -851,8 +875,11 @@
 	<db-relationship name="taggable" source="TaggableTag" target="Taggable" toMany="false">
 		<db-attribute-pair source="taggableId" target="id"/>
 	</db-relationship>
-	<db-relationship name="taggable" source="Tutor" target="Taggable" toMany="false">
+	<db-relationship name="taggable" source="Tutor" target="Taggable" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="tutor" source="TutorRole" target="Tutor" toMany="false">
+		<db-attribute-pair source="tutorId" target="id"/>
 	</db-relationship>
 	<db-relationship name="site" source="WebBlock" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteID" target="id"/>
