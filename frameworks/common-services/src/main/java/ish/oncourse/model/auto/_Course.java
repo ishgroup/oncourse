@@ -1,6 +1,6 @@
 package ish.oncourse.model.auto;
 
-import java.util.Map;
+import java.util.List;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Taggable;
@@ -117,9 +117,15 @@ public abstract class _Course extends Taggable {
         return (value != null) ? value.booleanValue() : false;
     }
 
+    public void addToClasses(CourseClass obj) {
+        addToManyTarget("classes", obj, true);
+    }
+    public void removeFromClasses(CourseClass obj) {
+        removeToManyTarget("classes", obj, true);
+    }
     @SuppressWarnings("unchecked")
-    public Map<Long, CourseClass> getClasses() {
-        return (Map<Long, CourseClass>)readProperty("classes");
+    public List<CourseClass> getClasses() {
+        return (List<CourseClass>)readProperty("classes");
     }
 
 

@@ -1,11 +1,13 @@
 package ish.oncourse.website.pages;
 
+import ish.oncourse.model.Tutor;
+import ish.oncourse.model.TutorRole;
+import ish.oncourse.services.tutor.ITutorService;
+
+import java.util.List;
+
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import ish.oncourse.model.Tutor;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.tutor.ITutorService;
 
 public class TutorDetails {
 	@Inject
@@ -17,26 +19,42 @@ public class TutorDetails {
 	void onActivate(long id) {
 		tutor = tutorService.getTutorById(id);
 	}
-
+	
 	public Tutor getTutor() {
 		return tutor;
 	}
 
-	// TODO this part is for testing while there will be real functional
-	@Inject
-	private ICayenneService cayenneService;
+	private TutorRole role;
 
-	public Tutor getObject() {
-		Tutor tutor = cayenneService.sharedContext().newObject(Tutor.class);
-
-		tutor.setFirstName("firstName");
-		tutor.setLastName("lastName");
-		tutor.setResume("Resume Resume Resume");
-		
-		return tutor;
+	public boolean getTutorFound() {
+		return tutor != null;
 	}
 
 	public boolean getHasResume() {
-		return true;
+		return !"".equals(tutor.getResume());
 	}
+
+	public boolean getHasRoles() {
+		return !tutorService.getCurrentVisibleTutorRoles(tutor).isEmpty();
+	}
+
+	public List<TutorRole> getCurrentVisibleTutorRoles() {
+		return tutorService.getCurrentVisibleTutorRoles(tutor);
+	}
+
+	/**
+	 * @return the role
+	 */
+	public TutorRole getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role
+	 *            the role to set
+	 */
+	public void setRole(TutorRole role) {
+		this.role = role;
+	}
+
 }

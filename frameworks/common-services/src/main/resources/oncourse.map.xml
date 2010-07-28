@@ -496,7 +496,6 @@
 		<obj-attribute name="cancelled" type="boolean" db-attribute-path="courseClasses.isCancelled"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="courseClasses.code"/>
 		<obj-attribute name="countOfSessions" type="java.lang.Integer" db-attribute-path="courseClasses.countOfSessions"/>
-		<obj-attribute name="courseId" type="java.lang.Long" db-attribute-path="courseClasses.courseId"/>
 		<obj-attribute name="deliveryMode" type="java.lang.Integer" db-attribute-path="courseClasses.deliveryMode"/>
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="courseClasses.detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="courseClasses.detail_textile"/>
@@ -779,19 +778,10 @@
 	<db-relationship name="taggable" source="Contact" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="classes" source="Course" target="CourseClass" toMany="false">
-		<db-attribute-pair source="id" target="courseId"/>
-	</db-relationship>
 	<db-relationship name="taggable" source="Course" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="classCourse" source="CourseClass" target="Course" toMany="true">
-		<db-attribute-pair source="courseId" target="id"/>
-	</db-relationship>
-	<db-relationship name="classesCourse" source="CourseClass" target="Taggable" toMany="true">
-		<db-attribute-pair source="courseId" target="id"/>
-	</db-relationship>
-	<db-relationship name="course" source="CourseClass" target="Course" toMany="true">
+	<db-relationship name="course" source="CourseClass" target="Taggable" toMany="false">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggable" source="CourseClass" target="Taggable" toMany="false">
@@ -830,7 +820,7 @@
 	<db-relationship name="binaryInfos" source="Taggable" target="BinaryInfo" toMany="true">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="classes" source="Taggable" target="CourseClass" toMany="false">
+	<db-relationship name="classes" source="Taggable" target="CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
 	<db-relationship name="classesTutorRoles" source="Taggable" target="TutorRole" toMany="true">
@@ -881,11 +871,11 @@
 	<db-relationship name="taggable" source="Tutor" target="Taggable" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="tutor" source="TutorRole" target="Tutor" toMany="false">
-		<db-attribute-pair source="tutorId" target="id"/>
-	</db-relationship>
-	<db-relationship name="tutorRolesClasses" source="TutorRole" target="Taggable" toDependentPK="true" toMany="true">
+	<db-relationship name="courseClass" source="TutorRole" target="Taggable" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="tutor" source="TutorRole" target="Taggable" toDependentPK="true" toMany="false">
+		<db-attribute-pair source="tutorId" target="id"/>
 	</db-relationship>
 	<db-relationship name="site" source="WebBlock" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteID" target="id"/>
@@ -974,8 +964,9 @@
 	<obj-relationship name="users" source="College" target="WillowUser" deleteRule="Deny" db-relationship-path="users"/>
 	<obj-relationship name="college" source="CollegeDomain" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="site" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
-	<obj-relationship name="classes" source="Course" target="CourseClass" collection-type="java.util.Map" map-key="courseId" deleteRule="Deny" db-relationship-path="classes.classesCourse"/>
-	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Nullify" db-relationship-path="classesTutorRoles"/>
+	<obj-relationship name="classes" source="Course" target="CourseClass" deleteRule="Cascade" db-relationship-path="classes.taggable"/>
+	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Deny" db-relationship-path="classes.taggable"/>
+	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Cascade" db-relationship-path="classesTutorRoles"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="taggabletags" source="Tag" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggabletags"/>
 	<obj-relationship name="taggrouprequirements" source="Tag" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="taggrouprequirements"/>
@@ -986,7 +977,9 @@
 	<obj-relationship name="college" source="TaggableTag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="tag" source="TaggableTag" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="taggable" source="TaggableTag" target="Taggable" deleteRule="Nullify" db-relationship-path="taggable"/>
-	<obj-relationship name="tutorRoles" source="Tutor" target="TutorRole" deleteRule="Nullify" db-relationship-path="tutorRoles"/>
+	<obj-relationship name="tutorRoles" source="Tutor" target="TutorRole" deleteRule="Cascade" db-relationship-path="tutorRoles"/>
+	<obj-relationship name="courseClass" source="TutorRole" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="tutor" source="TutorRole" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
 	<obj-relationship name="site" source="WebBlock" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="type" source="WebBlock" target="WebBlockType" deleteRule="Nullify" db-relationship-path="type"/>
 	<obj-relationship name="blocks" source="WebBlockType" target="WebBlock" deleteRule="Deny" db-relationship-path="blocks"/>

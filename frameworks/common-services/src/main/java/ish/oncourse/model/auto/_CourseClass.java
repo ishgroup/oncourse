@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import ish.oncourse.model.Course;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TutorRole;
 
@@ -18,7 +19,6 @@ public abstract class _CourseClass extends Taggable {
     public static final String CANCELLED_PROPERTY = "cancelled";
     public static final String CODE_PROPERTY = "code";
     public static final String COUNT_OF_SESSIONS_PROPERTY = "countOfSessions";
-    public static final String COURSE_ID_PROPERTY = "courseId";
     public static final String DELIVERY_MODE_PROPERTY = "deliveryMode";
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
@@ -37,6 +37,7 @@ public abstract class _CourseClass extends Taggable {
     public static final String STARTING_MINUTE_PER_SESSION_PROPERTY = "startingMinutePerSession";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String WEB_VISIBLE_PROPERTY = "webVisible";
+    public static final String COURSE_PROPERTY = "course";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
 
     public static final String ID_PK_COLUMN = "id";
@@ -61,13 +62,6 @@ public abstract class _CourseClass extends Taggable {
     }
     public Integer getCountOfSessions() {
         return (Integer)readProperty("countOfSessions");
-    }
-
-    public void setCourseId(Long courseId) {
-        writeProperty("courseId", courseId);
-    }
-    public Long getCourseId() {
-        return (Long)readProperty("courseId");
     }
 
     public void setDeliveryMode(Integer deliveryMode) {
@@ -196,6 +190,18 @@ public abstract class _CourseClass extends Taggable {
         Boolean value = (Boolean)readProperty("webVisible");
         return (value != null) ? value.booleanValue() : false;
     }
+
+    public void addToCourse(Course obj) {
+        addToManyTarget("course", obj, true);
+    }
+    public void removeFromCourse(Course obj) {
+        removeToManyTarget("course", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Course> getCourse() {
+        return (List<Course>)readProperty("course");
+    }
+
 
     public void addToTutorRoles(TutorRole obj) {
         addToManyTarget("tutorRoles", obj, true);
