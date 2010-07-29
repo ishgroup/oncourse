@@ -166,7 +166,6 @@
 	<target name="clean" description="Cleans client">
 		<delete dir="${classes.dir}"/>
 		<mkdir dir="${classes.dir}"/>
-		<ant antfile="${ant.file.global}" target="clean" inheritall="false"/>
 	</target>
 <!--
 	=================================

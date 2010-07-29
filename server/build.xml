@@ -649,7 +649,6 @@
 	<target name="clean" description="clean up">
 		<delete dir="${classes.dir}" />
 		<mkdir dir="${classes.dir}"/>
-		<ant antfile="${ant.file.global}" target="clean" inheritall="false"/>
 	</target>
 	
 	<!--
