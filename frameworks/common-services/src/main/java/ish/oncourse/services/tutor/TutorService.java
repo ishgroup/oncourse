@@ -4,6 +4,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,8 +19,12 @@ public class TutorService implements ITutorService{
 	@Inject
 	private ICayenneService cayenneService;
 	
+	@Inject
+    private IWebSiteService webSiteService;
+	
 	public Tutor getTutorById(Long tutorId) {
-		SelectQuery query = new SelectQuery(Tutor.class, ExpressionFactory.matchExp(Tutor.ID_PK_COLUMN, tutorId));
+		SelectQuery query = new SelectQuery(Tutor.class, ExpressionFactory.matchExp(Tutor.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())
+				.andExp(ExpressionFactory.matchExp(Tutor.ID_PK_COLUMN, tutorId)));
 		List<Tutor> result = cayenneService.sharedContext().performQuery(query);
 		return result!=null&&!result.isEmpty()?result.get(0):null;
 	}
