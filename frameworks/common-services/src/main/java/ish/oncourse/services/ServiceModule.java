@@ -22,6 +22,8 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
+import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
 
@@ -40,6 +42,7 @@ public class ServiceModule {
 		binder.bind(IWebSiteService.class, WebSiteService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IFormatService.class, FormatService.class);
+		binder.bind(ITextileConverter.class, TextileConverter.class);
 		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(ITutorService.class, TutorService.class);
 	}
