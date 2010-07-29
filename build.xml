@@ -11,7 +11,6 @@
 	<property file="${global.basedir}/build.properties"/>
   
 	<property environment="env"/>
-	<dirname property="include.basedir" file="${ant.file.imported}"/>
     
 	<path id="allLibraries.path">
 		<fileset id="allLibraries.files" dir="${common.lib.dir}">
@@ -20,14 +19,12 @@
 	</path>
 	
 	<taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="${global.lib.dir}/exe4j/bin/ant.jar" />
-	
-	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${global.lib.dir}/ant/findbugs/findbugs-ant.jar" />
-	
-	<taskdef name="classycle" classname="classycle.ant.ReportTask" classpath="${global.lib.dir}/ant/classycle/classycle.jar" />
-	
+
 	<taskdef name="cgen" classname="org.apache.cayenne.tools.CayenneGenerator">
 		<classpath refid="allLibraries.path" />
 	</taskdef>
+	
+	<!-- ==================================================== -->
 	
 	<target name="--getsvnVersion">
 		<echo message="getting version for dir: ${global.basedir}"/>
@@ -52,6 +49,7 @@
 		<delete file="${global.basedir}/svnVersion.temp"/>
 	</target>
 	
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${global.lib.dir}/ant/findbugs/findbugs-ant.jar" />
 	<target name="findbugs" depends="buildjar">
 		<findbugs home="${global.lib.dir}/ant/findbugs"
 			output="html" 
@@ -69,7 +67,7 @@
 		</findbugs>
 	</target>
 	
-	
+	<taskdef name="classycle" classname="classycle.ant.ReportTask" classpath="${global.lib.dir}/ant/classycle/classycle.jar" />
 	<target name="classycle">
 	    <classycle reportFile="${distribution.dir}/classycle.xml"
 			title="onCourse classcyle">
@@ -83,6 +81,10 @@
 		<copy overwrite="true" todir="${distribution.dir}/images">
 			<fileset dir="${global.lib.dir}/ant/classycle/images"/>
 		</copy>
+	</target>
+	
+	<target name="build">
+		<!-- dummy target which is overridden by the targets in client, common and server -->
 	</target>
 	
 	<target name="buildJarWithDependencies" depends="--getsvnVersion, build">
@@ -162,7 +164,7 @@
 	=================================
 	-->
 	<target name="javadocs" description="Generate API Javadocs">
-		<mkdir  dir = "${docdir}"/>
+		<mkdir dir = "${docdir}"/>
 		
 		<echo message="---> generating common javadocs" />
 		<ant antfile="build.xml" target="javadocs" dir="${basedir}/common" inheritall="false"/>
@@ -208,50 +210,26 @@
 	
 	<!--
 	=================================
-	target: upload
-	Currently not working...
+	target: upload-ftp
 	=================================
 	-->
-	<target name="upload" description="This uploads the final release files ready for download">
-		<fail message="You must build all the releases first for client and server on both platforms.">
-			<condition>
-				<or>
-					<not>
-						<available file="server/dist/${server.zip}"/>
-					</not>
-					<not>
-						<available file="server/dist/${server.dmg}"/>
-					</not>
-					<not>
-						<available file="client/dist/${client.zip}"/>
-					</not>
-					<not>
-						<available file="client/dist/${client.dmg}"/>
-					</not>
-					<not>
-						<available file="client/dist/${client.jar}"/>
-					</not>
-				</or>
-			</condition>
-		</fail>
+	<target name="--upload-ftp" description="This uploads the final release files ready for download">
+		<ftp 
+			server="ftp.ish.com.au"
+			userid="${env.ftpUser}"
+			password="${env.ftpPass}"
+			action="mkdir"
+			remotedir="ish-static/onCourse/${client.version.number}"/>
 
 		<ftp 
 			server="ftp.ish.com.au"
-			userid="ari" 
-			password="!hsi0737"
-			action="mkdir"
-			remotedir="ish-static/onCourse/test">
-		</ftp>
-				
-		<ftp 
-			server="ftp.ish.com.au"
-			userid="ari" 
-			password="!hsi0737"
+			userid="${env.ftpUser}"
+			password="${env.ftpPass}"
 			binary="yes" 
 			action="put"
 			passive="yes"
-			remotedir="ish-static/onCourse-demo">
-			<fileset file="server/dist/${server.dmg}"/>
+			remotedir="ish-static/onCourse/${client.version.number}">
+			<fileset refid="upload.files"/>
 		</ftp>
 	</target>
 	

@@ -71,7 +71,7 @@
 	=================================
 	-->
 	<target name="build" description="Compile source." depends="--CayenneClassGenerator, --buildresources, --getsvnVersion">
-		<ant antfile="${common.ant.script}" target="build" inheritall="false"/>
+		<ant antfile="${ant.file.global}" target="build" inheritall="false"/>
 		<copy overwrite="true" todir="${classes.dir}">
 			<fileset dir="${common.classes.dir}"/>
 		</copy>
@@ -166,7 +166,7 @@
 	<target name="clean" description="Cleans client">
 		<delete dir="${classes.dir}"/>
 		<mkdir dir="${classes.dir}"/>
-		<ant antfile="${common.ant.script}" target="clean" inheritall="false"/>
+		<ant antfile="${ant.file.global}" target="clean" inheritall="false"/>
 	</target>
 <!--
 	=================================
@@ -425,10 +425,20 @@
 
 	
 	<!--
-    	=================================
-    	target: release-all
-    	=================================
-    	-->
-    	<target name="release-all" description="create all production builds" depends="release-osx, release-win">
-    	</target>
+	=================================
+	target: release-all
+	=================================
+	-->
+	<target name="release-all" description="create all production builds" depends="release-osx, release-win">
+	</target>
+	
+	<!-- You have to call this target like this "ant -lib ../lib/ant/commons-net.jar upload" -->
+	<target name="upload" description="This uploads the final release files ready for download">
+		<fileset id="upload.files" dir="${client.distribution.dir}">
+			<include name="${client.dmg}"/>
+			<include name="${client.zip}"/>
+		</fileset>
+		<ant antfile="${ant.file.global}" inheritRefs="true" target="--upload-ftp"/>
+	</target>
+	
 </project>
