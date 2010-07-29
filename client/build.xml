@@ -4,8 +4,7 @@
             Angel client build file
 ====================================================
 -->
-<project name="oncourse client" default="build" basedir=".">
-	<property file="../build.properties"/>
+<project name="client" default="build" basedir=".">
 	<import file="../build.xml"/>
 	
 <!-- NOTE: It's probably a good idea to keep important libraries at the
@@ -329,7 +328,7 @@
 	=================================
 	-->
 	<target name="createbundle-osx" description="build OSX deployment" depends="buildjar">
-		<taskdef name="jarbundler" classpath="${antlib.dir}/jarbundler.jar" classname="net.sourceforge.jarbundler.JarBundler">
+		<taskdef name="jarbundler" classpath="${global.lib.dir}/ant/jarbundler.jar" classname="net.sourceforge.jarbundler.JarBundler">
 			<classpath>
 				<path refid="allLibraries.path"/>
 			</classpath>
@@ -371,9 +370,9 @@
 	=================================
 	-->
 	<target name="release-osx" description="create OSX dmg ready for release" depends="clean, createbundle-osx">
-		<property name="tempImage" value="${distribution.dir}/onCourse-temp.dmg"/>
-		<property name="finalImage" value="${distribution.dir}/onCourse.dmg"/>
-		<property name="assembyDir" value="${distribution.dir}/onCourse"/>
+		<property name="tempImage" value="${client.distribution.dir}/onCourse-temp.dmg"/>
+		<property name="finalImage" value="${client.distribution.dir}/onCourse.dmg"/>
+		<property name="assembyDir" value="${client.distribution.dir}/onCourse"/>
 
         <!--prepare-->
 		<delete dir="${assembyDir}"/>
@@ -418,10 +417,10 @@
 	-->
 	<target name="release-win" description="create Windows installer ready for release" depends="createbundle-win">
 	    <exec executable="makensis">
-		  <arg line="resources/packaging/windows/client-mui.nsi"/>
+		  <arg line="${client.resource.dir}/packaging/windows/client-mui.nsi"/>
 	    </exec>
-	    <move file="resources/packaging/windows/onCourse-installer.exe" todir="${distribution.dir}"/>
-	    <delete dir="${distribution.dir}/onCourse"/>
+	    <move file="${client.resource.dir}/packaging/windows/onCourse-installer.exe" todir="${distribution.dir}"/>
+	    <delete dir="${client.distribution.dir}/onCourse"/>
 	</target>
 
 	

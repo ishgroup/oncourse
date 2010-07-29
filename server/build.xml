@@ -5,8 +5,7 @@
 =================================================
 -->
 <project name="oncourse server" default="build" basedir=".">
-	<property file="../build.properties" />
-    <import file="../build.xml"/>
+	<import file="../build.xml"/>
     	
 	<!-- NOTE: It's probably a good idea to keep important libraries at the
 	end of this list as they might internally contain versions of
@@ -86,7 +85,7 @@
 			<classpath refid="allLibraries.path" />
 	</taskdef>
 
-	<property name="product.jar" value="${distribution.dir}/${server.jar}"/>
+	<property name="product.jar" value="${server.distribution.dir}/${server.jar}"/>
 	<property name="main.class" value="ish.oncourse.server.AngelServer"/>
 	
 	<!--
@@ -144,12 +143,12 @@
 	</target>
 
 	<target name="--CayenneClassGenerator"  depends ="--build-common">
-		<cgen map="${basedir}/${cayenne.map.dir}/AngelMap.map.xml"
+		<cgen map="${cayenne.map.dir}/AngelMap.map.xml"
 		    destDir="${src.dir}"
 		    superpkg="ish.oncourse.server.cayenne.glue"
 		    overwrite="true"
-		    template="${basedir}/${cayenne.template.dir}/subclass.vm"
-		    supertemplate="${basedir}/${cayenne.template.dir}/superclass.vm"
+		    template="${cayenne.template.dir}/subclass.vm"
+		    supertemplate="${cayenne.template.dir}/superclass.vm"
 	    />
 		<cgen map="${cayenne.map.dir}/AngelMap.map.xml"
 		    destDir="${src.dir}"
@@ -274,7 +273,7 @@
 		<fileset id="stubsfound" dir="${src.dir}/au/com/ish/oncourseservices/v3">
 			<include name="**/*.java"/>
 		</fileset>
-		<groovy src="${basedir}/resources/utilities/stubsfix.groovy" />
+		<groovy src="${server.resource.dir}/utilities/stubsfix.groovy" />
 	</target>
 	
 	
@@ -400,7 +399,7 @@
 			<arg value="-Dreplication.batchsize=${replication.batchsize}" />
 			<!--arg value="-agentlib:yjpagent"/-->
 			<classpath>
-				<path location="${distribution.dir}/${server.jar}" />
+				<path location="${server.distribution.dir}/${server.jar}" />
 				<path refid="allLibraries.path" />
 			</classpath>
 		</java>
@@ -461,7 +460,7 @@
 			<arg value="PAYMENT_GATEWAY_TEST=${payment_gateway_test}"/>
 			<!--arg value="-agentlib:yjpagent"/-->
 			<classpath>
-				<path location="${distribution.dir}/${server.jar}" />
+				<path location="${server.distribution.dir}/${server.jar}" />
 				<path refid="allLibraries.path" />
 			</classpath>
 		</java>
@@ -480,7 +479,7 @@
 				<jvmarg value="-Xdebug" />
 				<jvmarg value="-Xrunjdwp:server=y,transport=dt_socket,address=4142,suspend=n" />
 				<classpath>
-					<path location="${distribution.dir}/${server.jar}" />
+					<path location="${server.distribution.dir}/${server.jar}" />
 					<path refid="allLibraries.path" />
 				</classpath>
 			</java>
@@ -492,7 +491,7 @@
 	=================================
 	-->
 	<target name="runbundledjar" description="Run the server from a jar" depends="buildjar">
-		<java maxmemory="${server.maxmemory}" fork="true" jar="${distribution.dir}/${server.jar}">
+		<java maxmemory="${server.maxmemory}" fork="true" jar="${server.distribution.dir}/${server.jar}">
 			<arg value="DEBUG=true" />
 			<arg value="-Dwillow_service=http://delish.ish.com.au/cgi-bin/WebObjects/onCourseServices.woa/ws/" />
 		</java>
@@ -504,18 +503,18 @@
 	=================================
 	-->
 	<target name="createbundle-osx" description="build OSX deployment" depends="buildjar">
-		<taskdef name="jarbundler" classpath="${antlib.dir}/jarbundler.jar" classname="net.sourceforge.jarbundler.JarBundler">
+		<taskdef name="jarbundler" classpath="${global.lib.dir}/ant/jarbundler.jar" classname="net.sourceforge.jarbundler.JarBundler">
 			<classpath>
 			    <path refid="allLibraries.path" />
 			</classpath>
 		</taskdef>
 
-		<delete dir="${distribution.dir}/${server.osxapp}" />
+		<delete dir="${server.distribution.dir}/${server.osxapp}" />
 		
 		<!--available OSX options are documented here:
 			http://developer.apple.com/documentation/Java/Conceptual/JavaPropVMInfoRef/JavaPropVMInfoRef.pdf
 			and JarBundler is here: http://informagen.com/JarBundler/ -->
-		<jarbundler dir="${distribution.dir}" verbose="true" name="onCourse server"
+		<jarbundler dir="${server.distribution.dir}" verbose="true" name="onCourse server"
 			 mainclass="ish.oncourse.server.AngelServer" icon="${server.resource.dir}/packaging/macosx/onCourseServer.icns"
 			 bundleid="au.ish.com.oncourse.server" version="${server.version}" build="${server.version} (${svnVersion})"
 			 infostring="onCourse server ${server.version}, build ${svnVersion}" shortname="onCourse server" 
@@ -530,7 +529,7 @@
 			<documenttype name="onCourse server data file" extensions="iocdata" ostypes="ishS" bundle="true" 
 				iconFile="${server.resource.dir}/packaging/macosx/onCourseDocument.icns" role="Editor" />
 			
-			<jarfileset dir="${distribution.dir}" includes="${server.jar}" />
+			<jarfileset dir="${server.distribution.dir}" includes="${server.jar}" />
 			<jarfileset refid="requiredLibraries.files" />
 		</jarbundler>
 		
@@ -659,9 +658,9 @@
 	=================================
 	-->
 	<target name="release-unix" description="Create a tar.gz archive for unixes such as linux and solaris" depends="clean, buildJarWithDependencies">
-		<mkdir dir="${distribution.dir}/onCourse" />
-		<copy overwrite="true" todir="${distribution.dir}/onCourse">
-			<fileset dir="${distribution.dir}">
+		<mkdir dir="${server.distribution.dir}/onCourse" />
+		<copy overwrite="true" todir="${server.distribution.dir}/onCourse">
+			<fileset dir="${server.distribution.dir}">
 				<include name="onCourseServer.jar" />
 			</fileset>
 			<fileset dir="${server.resource.dir}/packaging/unix">
@@ -671,13 +670,13 @@
 				<include name="log.properties" />
 			</fileset>
 		</copy>
-		<tar destfile="${distribution.dir}/onCourseServer.tar">
-			<tarfileset dir="${distribution.dir}/onCourse" prefix="onCourse" preserveLeadingSlashes="true">
+		<tar destfile="${server.distribution.dir}/onCourseServer.tar">
+			<tarfileset dir="${server.distribution.dir}/onCourse" prefix="onCourse" preserveLeadingSlashes="true">
 			</tarfileset>
 		</tar>
-		<gzip zipfile="${distribution.dir}/onCourseServer.tar.gz" src="${distribution.dir}/onCourseServer.tar"/>
-		<delete dir="${distribution.dir}/onCourse"/>	
-		<delete file="${distribution.dir}/onCourseServer.tar"/>	
+		<gzip zipfile="${server.distribution.dir}/onCourseServer.tar.gz" src="${server.distribution.dir}/onCourseServer.tar"/>
+		<delete dir="${server.distribution.dir}/onCourse"/>	
+		<delete file="${server.distribution.dir}/onCourseServer.tar"/>	
 	</target>
 
 	<!--
@@ -686,16 +685,16 @@
 	=================================
 	-->
 	<target name="release-osx" description="create OSX dmg ready for release" depends="clean, createbundle-osx">
-		<property name="tempImage" value="${distribution.dir}/onCourseServer-temp.dmg" />
-		<property name="finalImage" value="${distribution.dir}/onCourseServer.dmg" />
-		<property name="assembyDir" value="${distribution.dir}/onCourseServer" />
+		<property name="tempImage" value="${server.distribution.dir}/onCourseServer-temp.dmg" />
+		<property name="finalImage" value="${server.distribution.dir}/onCourseServer.dmg" />
+		<property name="assembyDir" value="${server.distribution.dir}/onCourseServer" />
 		
 		<!--prepare-->
 		<delete dir="${assembyDir}" />
 		<mkdir dir="${assembyDir}" />
 		
 		<!--assemble pieces-->
-		<move todir="${assembyDir}" file="${distribution.dir}/${server.osxapp}" />
+		<move todir="${assembyDir}" file="${server.distribution.dir}/${server.osxapp}" />
 		<copy overwrite="true" file="${server.resource.dir}/packaging/macosx/dmg.DS_Store" tofile="${assembyDir}/.DS_Store" />
 		<copy overwrite="true" file="${server.resource.dir}/packaging/macosx/dmg.background.png" tofile="${assembyDir}/background.png" />
 		<exec executable="/Developer/Tools/SetFile">
@@ -730,12 +729,12 @@
 	target: release-win
 	=================================
 	-->
-        <target name="release-win" description="create Windows installer ready for release" depends="createbundle-win">
+	<target name="release-win" description="create Windows installer ready for release" depends="createbundle-win">
 	    <exec executable="makensis">
-		  <arg line="${server.resource.dir}/packaging/windows/server-mui.nsi"/>
+			<arg line="${server.resource.dir}/packaging/windows/server-mui.nsi"/>
 	    </exec>
-	    <move file="${server.resource.dir}/packaging/windows/onCourseServer-installer.exe" todir="${distribution.dir}"/>
-	    <delete  dir="${distribution.dir}/onCourse" />
+	    <move file="${server.resource.dir}/packaging/windows/onCourseServer-installer.exe" todir="${server.distribution.dir}"/>
+	    <delete  dir="${server.distribution.dir}/onCourse" />
 	</target>
 
     
@@ -743,16 +742,15 @@
 	    <exec executable="makensis">
 		  <arg line="${server.resource.dir}/packaging/windows/server-mui.nsi"/>
 	    </exec>
-	    <move file="${server.resource.dir}/packaging/windows/onCourseServer-installer.exe" todir="${distribution.dir}"/>
-	    <delete  dir="${distribution.dir}/onCourse" />
+	    <move file="${server.resource.dir}/packaging/windows/onCourseServer-installer.exe" todir="${server.distribution.dir}"/>
+	    <delete  dir="${server.distribution.dir}/onCourse" />
 	</target> 
 	<!--
 	=================================
 	target: createbundle-winservice
 	=================================
 	-->
-	<target name="createbundle-winservice" description="create an executable capable of being 
-a windows service" depends="clean, buildJarWithDependencies">
+	<target name="createbundle-winservice" description="create an executable capable of being a windows service" depends="clean, buildJarWithDependencies">
 	    <exe4j projectfile="${server.resource.dir}/packaging/windows/service.exe4j" />	
 	</target>
    
@@ -762,11 +760,11 @@ a windows service" depends="clean, buildJarWithDependencies">
 	=================================
 	-->
 	<target name="release-winservice" description="create an installer that will install as a service" depends="createbundle-winservice">
-	<exec executable="makensis">
-		  <arg line="${server.resource.dir}/packaging/windows/service-mui.nsi"/>
-	    </exec>
-	    <move file="${server.resource.dir}/packaging/windows/onCourseService-installer.exe" todir="${distribution.dir}"/>
-	    <delete  dir="${distribution.dir}/onCourse" />   
+		<exec executable="makensis">
+			<arg line="${server.resource.dir}/packaging/windows/service-mui.nsi"/>
+		</exec>
+	    <move file="${server.resource.dir}/packaging/windows/onCourseService-installer.exe" todir="${server.distribution.dir}"/>
+	    <delete  dir="${server.distribution.dir}/onCourse" />   
 	</target>
 	<!-- The following target is to test/tweak the NSIS without depending on the buildjar target. Assumes that a jar
 exists in dist already, allowing NSIS tweaks to proceed without rebuilding the jar.-->
@@ -774,8 +772,8 @@ exists in dist already, allowing NSIS tweaks to proceed without rebuilding the j
 	    <exec executable="makensis">
 		  <arg line="${server.resource.dir}/packaging/windows/service-mui.nsi"/>
 	    </exec>
-	    <move file="${server.resource.dir}/packaging/windows/onCourseService-installer.exe" todir="${distribution.dir}"/>
-	    <delete  dir="${distribution.dir}/onCourse" />
+	    <move file="${server.resource.dir}/packaging/windows/onCourseService-installer.exe" todir="${server.distribution.dir}"/>
+	    <delete  dir="${server.distribution.dir}/onCourse" />
 	</target> 
 
 	<!--
@@ -784,63 +782,63 @@ exists in dist already, allowing NSIS tweaks to proceed without rebuilding the j
 	=================================
 	-->
 	<target name="release-freebsd" description="create freebsd pkg ready for release" depends="clean, buildJarWithDependencies">
-		<mkdir dir="${distribution.dir}/addToJar" />
+		<mkdir dir="${server.distribution.dir}/addToJar" />
 		
-		<jar destfile="${distribution.dir}/${server.jar}" update="true" basedir="${distribution.dir}/addToJar/" duplicate="fail" compress="true" index="true" />
-		<delete dir="${distribution.dir}/addToJar" />
+		<jar destfile="${server.distribution.dir}/${server.jar}" update="true" basedir="${server.distribution.dir}/addToJar/" duplicate="fail" compress="true" index="true" />
+		<delete dir="${server.distribution.dir}/addToJar" />
 		
 		<!-- Create a tmp directory and put the +COMMENT,+CONTENTS,
 		   +DESC,+DISPLAY freebsd pkg files. It should also contain
 		   a subdirectory called on onCourse with two files onCourseServer
 	   	- which is the start/stop script and onCourseServer.jar -->
 		
-		<mkdir dir="${distribution.dir}/freebsd" />
-		<copy overwrite="true" todir="${distribution.dir}/freebsd">
+		<mkdir dir="${server.distribution.dir}/freebsd" />
+		<copy overwrite="true" todir="${server.distribution.dir}/freebsd">
 			<fileset dir="${server.resource.dir}/packaging/freebsd" />
 		</copy>
-		<mkdir dir="${distribution.dir}/freebsd/onCourse/" />
-		<copy overwrite="true" todir="${distribution.dir}/freebsd/onCourse/">
-			<fileset dir="${distribution.dir}">
+		<mkdir dir="${server.distribution.dir}/freebsd/onCourse/" />
+		<copy overwrite="true" todir="${server.distribution.dir}/freebsd/onCourse/">
+			<fileset dir="${server.distribution.dir}">
 				<include name="onCourseServer.jar" />
 			</fileset>
 		</copy>
-		<copy overwrite="true" file="${distribution.dir}/freebsd/onCourseServer" tofile="${distribution.dir}/freebsd/onCourse/onCourseServer" />
+		<copy overwrite="true" file="${server.distribution.dir}/freebsd/onCourseServer" tofile="${server.distribution.dir}/freebsd/onCourse/onCourseServer" />
 		<!--Calculate hashes of all files and replace tokens in +CONTENTS
 		   +COMMENT file needs to have it's version number replaced first
 		   as it's md5 sum will have to go into the +CONTENTS file-->
-		<replace file="${distribution.dir}/freebsd/+COMMENT" value="${server.unix.pkgversion}">
+		<replace file="${server.distribution.dir}/freebsd/+COMMENT" value="${server.unix.pkgversion}">
 			<replacetoken>@onCourse.version@</replacetoken> 
 		</replace>
-		<checksum file="${distribution.dir}/freebsd/+COMMENT" property="hash_comment" />
-		<checksum file="${distribution.dir}/freebsd/+DESC" property="hash_desc" />
-		<checksum file="${distribution.dir}/freebsd/+DISPLAY" property="hash_display" />
-		<checksum file="${distribution.dir}/freebsd/onCourse/onCourseServer.jar" property="hash_onCourseServer.jar" />  
-		<checksum file="${distribution.dir}/freebsd/onCourse/onCourseServer" property="hash_onCourseServer" />	
+		<checksum file="${server.distribution.dir}/freebsd/+COMMENT" property="hash_comment" />
+		<checksum file="${server.distribution.dir}/freebsd/+DESC" property="hash_desc" />
+		<checksum file="${server.distribution.dir}/freebsd/+DISPLAY" property="hash_display" />
+		<checksum file="${server.distribution.dir}/freebsd/onCourse/onCourseServer.jar" property="hash_onCourseServer.jar" />  
+		<checksum file="${server.distribution.dir}/freebsd/onCourse/onCourseServer" property="hash_onCourseServer" />	
 		
-		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${server.unix.pkgversion}">
+		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${server.unix.pkgversion}">
 			<replacetoken>@onCourse.version@</replacetoken>
 		</replace>
-		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_onCourseServer.jar}">
+		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${hash_onCourseServer.jar}">
 			<replacetoken>@hash_onCourseServer.jar@</replacetoken>
 		</replace>
-		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_onCourseServer}">
+		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${hash_onCourseServer}">
 			<replacetoken>@hash_onCourseServer@</replacetoken>
 		</replace>
-		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_comment}">
+		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${hash_comment}">
 			<replacetoken>@hash_comment@</replacetoken>
 		</replace>
-		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_desc}">
+		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${hash_desc}">
 			<replacetoken>@hash_desc@</replacetoken>
 		</replace>
-		<replace file="${distribution.dir}/freebsd/+CONTENTS" value="${hash_display}">
+		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${hash_display}">
 			<replacetoken>@hash_display@</replacetoken>
 		</replace>
 		<!-- Create a tgz or gz package-->
-		<tar tarfile="${distribution.dir}/onCourseServer.tar" basedir="${distribution.dir}/freebsd" />
-		<gzip zipfile="${distribution.dir}/onCourseServer.tgz" src="${distribution.dir}/onCourseServer.tar" />
+		<tar tarfile="${server.distribution.dir}/onCourseServer.tar" basedir="${server.distribution.dir}/freebsd" />
+		<gzip zipfile="${server.distribution.dir}/onCourseServer.tgz" src="${server.distribution.dir}/onCourseServer.tar" />
 		
-		<delete dir="${distribution.dir}/freebsd" />
-		<delete file="${distribution.dir}/onCourseServer.tar" />
+		<delete dir="${server.distribution.dir}/freebsd" />
+		<delete file="${server.distribution.dir}/onCourseServer.tar" />
 	</target>
 	
 	<!--

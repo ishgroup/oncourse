@@ -5,9 +5,11 @@
               Angel shared build include
 ====================================================
 -->
-<project name="oncourse global" default="build" basedir=".">
+<project name="global" default="build" basedir=".">
 	
-	<property file="./build.properties"/>
+	<dirname property="global.basedir" file="${ant.file.global}"/>
+	<property file="${global.basedir}/build.properties"/>
+  
 	<property environment="env"/>
 	<dirname property="include.basedir" file="${ant.file.imported}"/>
     
@@ -17,54 +19,45 @@
 		</fileset>
 	</path>
 	
-	<taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="${trunk.lib.dir}/exe4j/bin/ant.jar" />
+	<taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="${global.lib.dir}/exe4j/bin/ant.jar" />
 	
-	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
-		<classpath>
-			<pathelement location="${antlib.dir}/findbugs/findbugs-ant.jar"/>
-		</classpath>
-	</taskdef>
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${global.lib.dir}/ant/findbugs/findbugs-ant.jar" />
 	
-	<taskdef name="classycle" classname="classycle.ant.ReportTask">
-		<classpath>
-			<pathelement location="${antlib.dir}/classycle/classycle.jar"/>
-		</classpath>
-	</taskdef>
+	<taskdef name="classycle" classname="classycle.ant.ReportTask" classpath="${global.lib.dir}/ant/classycle/classycle.jar" />
 	
 	<taskdef name="cgen" classname="org.apache.cayenne.tools.CayenneGenerator">
 		<classpath refid="allLibraries.path" />
 	</taskdef>
 	
 	<target name="--getsvnVersion">
-		<echo message="getting version for dir: ${trunk.dir}"/>
+		<echo message="getting version for dir: ${global.basedir}"/>
 		<echo message="os == ${os.name}"/>
 		<!-- If OS is Mac OS X, FreeBSD or Linux, run this target -->
-		<exec executable="/usr/bin/env" spawn="false" dir="${trunk.dir}" output="${trunk.dir}/svnVersion.temp" failifexecutionfails="true" os="Mac OS X, Linux, FreeBSD">
+		<exec executable="/usr/bin/env" spawn="false" dir="${global.basedir}" output="${global.basedir}/svnVersion.temp" failifexecutionfails="true" os="Mac OS X, Linux, FreeBSD">
 			<env key="PATH" path="${env.PATH}"/>
 			<arg value="svnversion"/>
 			<arg value="."/>
 		</exec>
 		<!-- If OS is Windows Vista, Windows XP, Windows 2000 or Windows 2003, run this target -->
-		<exec executable="cmd.exe" spawn="false" dir="${trunk.dir}" output="${trunk.dir}/svnVersion.temp" failifexecutionfails="true" os="Windows Vista, Windows XP, Windows 2000, Windows 2003, Windows NT">
+		<exec executable="cmd.exe" spawn="false" dir="${global.basedir}" output="${global.basedir}/svnVersion.temp" failifexecutionfails="true" os="Windows Vista, Windows XP, Windows 2000, Windows 2003, Windows NT">
 			<env key="PATH" path="${env.PATH}"/>
 			<arg value="svnversion"/>
 			<arg value="."/>
 		</exec>
-		<loadfile property="svnVersion" srcFile="${trunk.dir}/svnVersion.temp" failonerror="true">
+		<loadfile property="svnVersion" srcFile="${global.basedir}/svnVersion.temp" failonerror="true">
 			<filterchain>
 				<striplinebreaks/>
 			</filterchain>
 		</loadfile>
-		<delete file="${trunk.dir}/svnVersion.temp"/>
+		<delete file="${global.basedir}/svnVersion.temp"/>
 	</target>
 	
-	
 	<target name="findbugs" depends="buildjar">
-		<findbugs home="${trunk.lib.dir}/ant/findbugs"
+		<findbugs home="${global.lib.dir}/ant/findbugs"
 			output="html" 
 			outputFile="${distribution.dir}/findbugs.html" 
 			jvmargs="-Xmx512m"
-			excludeFilter = "${trunk.lib.dir}/ant/findbugs/config.xml"
+			excludeFilter = "${global.lib.dir}/ant/findbugs/config.xml"
 			reportLevel="low"
 			effort="max"
 			stylesheet="fancy.xsl">
@@ -80,15 +73,15 @@
 	<target name="classycle">
 	    <classycle reportFile="${distribution.dir}/classycle.xml"
 			title="onCourse classcyle">
-			<fileset dir="${trunk.dir}">
+			<fileset dir="${global.basedir}">
 	        	<include name="${product.jar}"/>
 			</fileset>
 	    </classycle>
 		<copy overwrite="true" todir="${distribution.dir}">
-			<fileset file="${trunk.lib.dir}/ant/classycle/reportXMLtoHTML.xsl"/>
+			<fileset file="${global.lib.dir}/ant/classycle/reportXMLtoHTML.xsl"/>
 		</copy>
 		<copy overwrite="true" todir="${distribution.dir}/images">
-			<fileset dir="${trunk.lib.dir}/ant/classycle/images"/>
+			<fileset dir="${global.lib.dir}/ant/classycle/images"/>
 		</copy>
 	</target>
 	
@@ -241,42 +234,24 @@
 				</or>
 			</condition>
 		</fail>
-		
-		<input
-		message="All files are to uploaded for public deployment. This is not reversible. Proceed?"
-		validargs="no,yes"
-		addproperty="do.proceed"
-		/>
-		<condition property="do.abort">
-			<equals arg1="no" arg2="${do.proceed}"/>
-		</condition>
-		<fail if="do.abort">Upload aborted by user.</fail>
-		
-		<input message="Please enter ftp password:" addproperty="ftp.password"/>
 
 		<ftp 
-			server="dash.ish.com.au"
+			server="ftp.ish.com.au"
 			userid="ari" 
-			password="${ftp.password}"
+			password="!hsi0737"
+			action="mkdir"
+			remotedir="ish-static/onCourse/test">
+		</ftp>
+				
+		<ftp 
+			server="ftp.ish.com.au"
+			userid="ari" 
+			password="!hsi0737"
 			binary="yes" 
 			action="put"
 			passive="yes"
 			remotedir="ish-static/onCourse-demo">
-			<fileset file="client/dist/${client.jar}"/>
-		</ftp>
-		
-		<ftp 
-			server="dash.ish.com.au"
-			userid="ari" 
-			password="${ftp.password}"
-			binary="yes" 
-			action="put"
-			passive="yes"
-			remotedir="ish-static/downloads">
-			<fileset file="server/dist/${server.zip}"/>
 			<fileset file="server/dist/${server.dmg}"/>
-			<fileset file="client/dist/${client.zip}"/>
-			<fileset file="client/dist/${client.dmg}"/>
 		</ftp>
 	</target>
 	

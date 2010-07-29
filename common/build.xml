@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <!--
 =================================================
-             onCourseCommon build file
+             Angel common build file
 =================================================
 -->
-<project name="onCourseCommon" default="build" basedir=".">
+<project name="common" default="build" basedir=".">
 
-	<property file="../build.properties"/>
 	<import file="../build.xml"/>
 
 	<path id="jarCommonDependencies.path">
