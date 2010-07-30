@@ -118,7 +118,7 @@
 		- - - - - - - - - - - - - - - -
 	-->
 	<target name="--build-common">
-		<ant antfile="${ant.file.global}" target="build" inheritall="false"/>
+		<ant antfile="${common.project.dir}/build.xml" target="build" inheritall="false"/>
 	</target>
 	<!--
 	=================================
@@ -540,7 +540,7 @@
 	target: test
 	=================================
 	-->
-	<target name="test" description="junit tests" depends="clean, build">
+	<target name="test" description="junit tests" depends="clean, build, buildJasperReports">
 	
 		<property name="junit.bin" location="classes" />
 		<property name="junit.reports" location="dist/reports" />
@@ -646,7 +646,7 @@
 	target: clean
 	=================================
 	-->
-	<target name="clean" description="clean up">
+	<target name="clean" description="clean up" depends="cleanJasperReports">
 		<delete dir="${classes.dir}" />
 		<mkdir dir="${classes.dir}"/>
 	</target>
@@ -908,7 +908,7 @@ exists in dist already, allowing NSIS tweaks to proceed without rebuilding the j
  	target: release-all
  	=================================
  	-->
- 	<target name="release-all" description="create all production builds" depends="clean, cleanJasperReports, --build-common, --CayenneClassGenerator, buildJasperReports, release-osx, release-win, release-winservice, release-freebsd, release-unix">
+ 	<target name="release-all" description="create all production builds" depends="clean, --build-common, --CayenneClassGenerator, release-osx, release-win, release-winservice, release-freebsd, release-unix">
  	</target>
 
 	<!-- You have to call this target like this "ant -lib ../lib/ant/commons-net.jar upload" -->
