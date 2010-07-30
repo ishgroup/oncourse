@@ -216,8 +216,8 @@
 	<target name="--upload-ftp" description="This uploads the final release files ready for download">
 		<ftp 
 			server="ftp.ish.com.au"
-			userid="${env.ftpUser}"
-			password="${env.ftpPass}"
+			userid="${ftpUser}"
+			password="${ftpPass}"
 			action="mkdir"
 			remotedir="ish-static/onCourse/${client.version.number}"/>
 
