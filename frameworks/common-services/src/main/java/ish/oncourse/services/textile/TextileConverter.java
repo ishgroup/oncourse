@@ -10,6 +10,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
@@ -18,34 +19,36 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private ICayenneService cayenneService;
-	
+
 	@Inject
-    private IWebSiteService webSiteService;
-	
+	private IWebSiteService webSiteService;
+
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
 	public String convert(String content) throws ValidationException {
 		String regex = "[{]((block)|(course)|(tags)|(page)|(video)|(image))([^}]*)[}]";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(content);
+		String result = content;
 		ValidationErrors errors = new ValidationErrors();
 		College currentCollege = webSiteService.getCurrentCollege();
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		
+
 		while (matcher.find()) {
 			String tag = matcher.group();
 			IRenderer renderer = getRendererForTag(tag);
 			if (renderer != null) {
-				String replacement = renderer.render(tag, errors, sharedContext, currentCollege);
+				String replacement = renderer.render(tag, errors,
+						sharedContext, currentCollege);
 				if (!errors.hasFailures() && replacement != null) {
-					content = content.replaceFirst(regex, replacement);
+					result = result.replace(tag, replacement);
 				}
 			}
 		}
 		if (errors.hasFailures()) {
 			throw new ValidationException(errors);
 		}
-		return content;
+		return result;
 	}
 
 	private IRenderer getRendererForTag(String tag) {

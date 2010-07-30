@@ -396,6 +396,7 @@
 	<obj-entity name="BinaryInfo" superEntityName="Taggable" className="ish.oncourse.model.BinaryInfo" dbEntityName="Taggable" exclude-superclass-listeners="true">
 		<qualifier><![CDATA[entityType = "BinaryInfo"]]></qualifier>
 		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="binaryInfos.byteSize"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="binaryInfos.id"/>
 		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="binaryInfos.mimeType"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="binaryInfos.name"/>
 		<obj-attribute name="pixelHeight" type="java.lang.Integer" db-attribute-path="binaryInfos.pixelHeight"/>

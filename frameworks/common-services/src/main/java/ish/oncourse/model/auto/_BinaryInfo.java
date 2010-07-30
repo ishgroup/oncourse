@@ -11,6 +11,7 @@ import ish.oncourse.model.Taggable;
 public abstract class _BinaryInfo extends Taggable {
 
     public static final String BYTE_SIZE_PROPERTY = "byteSize";
+    public static final String ID_PROPERTY = "id";
     public static final String MIME_TYPE_PROPERTY = "mimeType";
     public static final String NAME_PROPERTY = "name";
     public static final String PIXEL_HEIGHT_PROPERTY = "pixelHeight";
@@ -25,6 +26,13 @@ public abstract class _BinaryInfo extends Taggable {
     }
     public Long getByteSize() {
         return (Long)readProperty("byteSize");
+    }
+
+    public void setId(Long id) {
+        writeProperty("id", id);
+    }
+    public Long getId() {
+        return (Long)readProperty("id");
     }
 
     public void setMimeType(String mimeType) {
