@@ -435,7 +435,7 @@
 	<target name="upload" description="This uploads the final release files ready for download">
 		<fileset id="upload.files" dir="${client.distribution.dir}">
 			<include name="${client.dmg}"/>
-			<include name="${client.zip}"/>
+			<include name="${client.wininstaller}"/>
 		</fileset>
 		<ant antfile="${ant.file.global}" inheritRefs="true" target="--upload-ftp"/>
 	</target>
