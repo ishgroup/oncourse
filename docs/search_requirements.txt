@@ -59,3 +59,9 @@ Implemented as per the existing site: that is, no page numbers but just a 'more'
 Speed
 -----
 Results for the type-ahead need to be generated to the user in under 0.5 second for a system under load. For the search results page, response within 3 seconds is acceptable, 1 second good (not including data transfer and page drawing). Search is an important page of these sites.
+
+Production environment
+----------------------
+It is essential that this service be reliable. If an external service is to be used (such as Solr) then consideration about how to create a cluster of services needs to be had. If the service is embedded and the index local, then consideration about how to synchronise this index between application servers is important (rsync?).
+
+Another important factor is investigating how we will be writing the index. Updating of the relevant data happens through the Willow services application, so it could be in charge of adding objects to the index or to a queue for periodic indexing. It is not important that the index be completely up to date, but within 30 minutes would be nice and no more than 60 minutes essential.
