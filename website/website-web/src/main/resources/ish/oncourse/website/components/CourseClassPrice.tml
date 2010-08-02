@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:if test="hasFee">
+		<span>
+			<t:output value="courseClass.feeGst" format="feeFormat"/>
+		</span>
+		<t:if test="hasDiscountValue">
+			<t:output value="discountedFee" format="feeFormat" />
+		</t:if>
+		<!--  
+		<span class="gst">(<t:if test="$isTaxExempt">inc </t:if> <acronym title="Goods and Services Tax">GST</acronym>
+		<t:if test="$isTaxExempt">exempt</t:if> )</span>
+		<t:loop source="$discountsWithConcessions" value="$discountItem">
+			<span class="discount-price">/</span>
+			<acronym class="discount-price" title="${discountItem.name}">
+				<t:output value="discountItemFeeIncTax" format="feeFormat" /></acronym>
+		</t:loop>
+		-->
+		<p:else>
+			<acronym title="To Be Advised">TBA</acronym>
+		</p:else>
+	</t:if>
+</t:container>

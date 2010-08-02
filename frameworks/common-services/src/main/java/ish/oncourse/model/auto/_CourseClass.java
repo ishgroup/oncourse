@@ -6,6 +6,7 @@ import java.util.List;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TutorRole;
@@ -32,7 +33,6 @@ public abstract class _CourseClass extends Taggable {
     public static final String MAXIMUM_PLACES_PROPERTY = "maximumPlaces";
     public static final String MINIMUM_PLACES_PROPERTY = "minimumPlaces";
     public static final String MINUTES_PER_SESSION_PROPERTY = "minutesPerSession";
-    public static final String ROOM_ID_PROPERTY = "roomId";
     public static final String SESSION_DETAIL_PROPERTY = "sessionDetail";
     public static final String SESSION_DETAIL_TEXTILE_PROPERTY = "sessionDetailTextile";
     public static final String START_DATE_PROPERTY = "startDate";
@@ -41,6 +41,7 @@ public abstract class _CourseClass extends Taggable {
     public static final String WEB_VISIBLE_PROPERTY = "webVisible";
     public static final String COURSE_PROPERTY = "course";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
+    public static final String ROOM_PROPERTY = "room";
     public static final String SESSIONS_PROPERTY = "sessions";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
 
@@ -145,13 +146,6 @@ public abstract class _CourseClass extends Taggable {
         return (Integer)readProperty("minutesPerSession");
     }
 
-    public void setRoomId(Long roomId) {
-        writeProperty("roomId", roomId);
-    }
-    public Long getRoomId() {
-        return (Long)readProperty("roomId");
-    }
-
     public void setSessionDetail(String sessionDetail) {
         writeProperty("sessionDetail", sessionDetail);
     }
@@ -219,6 +213,12 @@ public abstract class _CourseClass extends Taggable {
     }
 
 
+
+    public Room getRoom() {
+        return (Room)readProperty("room");
+    }
+
+
     public void addToSessions(Session obj) {
         addToManyTarget("sessions", obj, true);
     }
@@ -231,12 +231,15 @@ public abstract class _CourseClass extends Taggable {
     }
 
 
-    public void setTutorRoles(TutorRole tutorRoles) {
-        setToOneTarget("tutorRoles", tutorRoles, true);
+    public void addToTutorRoles(TutorRole obj) {
+        addToManyTarget("tutorRoles", obj, true);
     }
-
-    public TutorRole getTutorRoles() {
-        return (TutorRole)readProperty("tutorRoles");
+    public void removeFromTutorRoles(TutorRole obj) {
+        removeToManyTarget("tutorRoles", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<TutorRole> getTutorRoles() {
+        return (List<TutorRole>)readProperty("tutorRoles");
     }
 
 

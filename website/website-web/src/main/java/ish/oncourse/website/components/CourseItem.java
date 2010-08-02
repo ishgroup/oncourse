@@ -35,4 +35,8 @@ public class CourseItem {
 
 		return msg;
 	}
+	
+	public String getMoreLink() {
+		return "/course/" + course.getCode();
+	}
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<a title="Show venue details" class="tooltip">Show venue details #TODO</a>
+	<t:if test="notWithRoomName">
+		<t:if test="hasRoomName">
+				<t:output value="room.name"/>
+		</t:if>
+	</t:if>
+	<t:if test="hasSiteName">
+		<t:if test="notWithRoomName"> - </t:if>
+		<t:output value="room.site.name" />
+		<span>
+			<t:output value="room.site.street"  />
+			<t:output value="room.site.suburb"  />
+			<t:output value="room.site.postcode"  />
+		</span>
+    </t:if>
+</t:container>

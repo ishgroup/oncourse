@@ -1,5 +1,6 @@
 package ish.oncourse.model.auto;
 
+import ish.oncourse.model.Site;
 import ish.oncourse.model.Taggable;
 
 /**
@@ -17,6 +18,7 @@ public abstract class _Room extends Taggable {
     public static final String FACILITIES_TEXTILE_PROPERTY = "facilitiesTextile";
     public static final String NAME_PROPERTY = "name";
     public static final String SITE_ID_PROPERTY = "siteId";
+    public static final String SITE_PROPERTY = "site";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -68,5 +70,11 @@ public abstract class _Room extends Taggable {
     public Long getSiteId() {
         return (Long)readProperty("siteId");
     }
+
+
+    public Site getSite() {
+        return (Site)readProperty("site");
+    }
+
 
 }
