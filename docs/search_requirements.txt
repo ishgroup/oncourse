@@ -22,6 +22,15 @@ Note that the items in the above list will require the indexing of data from Cou
 
 Searching on text fields needs to be flexible enough to allow for 'contains in' or 'starts with' searches. For example, when typing a suburb name, course code or course-class code only simple 'starts with' searches are required. When searching on course name or description, a contains in search will be required which also incorporates word stemming and thesaurus operations.
 
+Distance
+--------
+The user is allowed to type a suburb name in order to get a typeahead dropdown of suburbs (see http://www.sydneycommunitycollege.com.au in the top right search and try "glebe"). We already restrict the search to a certain state (in which the college is located) to avoid pulling in too many choices. For example, there is a Glebe in NSW and one in TAS but only the NSW one is shown.
+
+We already have the latitude and longitude of the centre of every postcode in Australia in an existing database. These pages seem relevant.
+
+https://issues.apache.org/jira/browse/SOLR-773
+http://www.nsshutdown.com/projects/lucene/whitepaper/locallucene_v2.html
+
 
 Types of search results
 -----------------------
