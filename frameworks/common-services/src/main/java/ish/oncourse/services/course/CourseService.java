@@ -27,5 +27,4 @@ public class CourseService implements ICourseService {
 		q.andQualifier(ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 		return cayenneService.sharedContext().performQuery(q);
 	}
-
 }

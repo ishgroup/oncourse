@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Session;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TutorRole;
 
@@ -38,6 +40,8 @@ public abstract class _CourseClass extends Taggable {
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String WEB_VISIBLE_PROPERTY = "webVisible";
     public static final String COURSE_PROPERTY = "course";
+    public static final String ENROLMENTS_PROPERTY = "enrolments";
+    public static final String SESSIONS_PROPERTY = "sessions";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
 
     public static final String ID_PK_COLUMN = "id";
@@ -203,15 +207,36 @@ public abstract class _CourseClass extends Taggable {
     }
 
 
-    public void addToTutorRoles(TutorRole obj) {
-        addToManyTarget("tutorRoles", obj, true);
+    public void addToEnrolments(Enrolment obj) {
+        addToManyTarget("enrolments", obj, true);
     }
-    public void removeFromTutorRoles(TutorRole obj) {
-        removeToManyTarget("tutorRoles", obj, true);
+    public void removeFromEnrolments(Enrolment obj) {
+        removeToManyTarget("enrolments", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<TutorRole> getTutorRoles() {
-        return (List<TutorRole>)readProperty("tutorRoles");
+    public List<Enrolment> getEnrolments() {
+        return (List<Enrolment>)readProperty("enrolments");
+    }
+
+
+    public void addToSessions(Session obj) {
+        addToManyTarget("sessions", obj, true);
+    }
+    public void removeFromSessions(Session obj) {
+        removeToManyTarget("sessions", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Session> getSessions() {
+        return (List<Session>)readProperty("sessions");
+    }
+
+
+    public void setTutorRoles(TutorRole tutorRoles) {
+        setToOneTarget("tutorRoles", tutorRoles, true);
+    }
+
+    public TutorRole getTutorRoles() {
+        return (TutorRole)readProperty("tutorRoles");
     }
 
 

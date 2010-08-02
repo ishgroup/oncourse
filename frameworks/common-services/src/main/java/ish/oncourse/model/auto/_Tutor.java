@@ -1,7 +1,6 @@
 package ish.oncourse.model.auto;
 
 import java.util.Date;
-import java.util.List;
 
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TutorRole;
@@ -140,15 +139,12 @@ public abstract class _Tutor extends Taggable {
         return (String)readProperty("resumeTextile");
     }
 
-    public void addToTutorRoles(TutorRole obj) {
-        addToManyTarget("tutorRoles", obj, true);
+    public void setTutorRoles(TutorRole tutorRoles) {
+        setToOneTarget("tutorRoles", tutorRoles, true);
     }
-    public void removeFromTutorRoles(TutorRole obj) {
-        removeToManyTarget("tutorRoles", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<TutorRole> getTutorRoles() {
-        return (List<TutorRole>)readProperty("tutorRoles");
+
+    public TutorRole getTutorRoles() {
+        return (TutorRole)readProperty("tutorRoles");
     }
 
 

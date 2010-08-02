@@ -131,6 +131,22 @@
 		<db-attribute name="startingMinutePerSession" type="INTEGER"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
 	</db-entity>
+	<db-entity name="Enrolment">
+		<db-attribute name="angelId" type="INTEGER"/>
+		<db-attribute name="collegeId" type="INTEGER"/>
+		<db-attribute name="combinedDiscountExTax" type="DECIMAL"/>
+		<db-attribute name="courseClassId" type="INTEGER"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="discountId" type="BIGINT"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isDeleted" type="BIT"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="paymentId" type="INTEGER"/>
+		<db-attribute name="reasonForStudy" type="INTEGER"/>
+		<db-attribute name="source" type="VARCHAR" length="1"/>
+		<db-attribute name="status" type="INTEGER"/>
+		<db-attribute name="studentId" type="INTEGER"/>
+	</db-entity>
 	<db-entity name="Room">
 		<db-attribute name="capacity" type="INTEGER" length="11"/>
 		<db-attribute name="directions" type="CLOB"/>
@@ -516,6 +532,20 @@
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="courseClasses.timeZone"/>
 		<obj-attribute name="webVisible" type="boolean" db-attribute-path="courseClasses.isWebVisible"/>
 	</obj-entity>
+	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
+		<obj-attribute name="angelId" type="java.lang.Integer" db-attribute-path="angelId"/>
+		<obj-attribute name="collegeId" type="java.lang.Integer" db-attribute-path="collegeId"/>
+		<obj-attribute name="combinedDiscountExTax" type="java.math.BigDecimal" db-attribute-path="combinedDiscountExTax"/>
+		<obj-attribute name="courseClassId" type="java.lang.Integer" db-attribute-path="courseClassId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="discountId" type="java.lang.Long" db-attribute-path="discountId"/>
+		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="paymentId" type="java.lang.Integer" db-attribute-path="paymentId"/>
+		<obj-attribute name="reasonForStudy" type="java.lang.Integer" db-attribute-path="reasonForStudy"/>
+		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
+		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
+	</obj-entity>
 	<obj-entity name="Room" superEntityName="Taggable" className="ish.oncourse.model.Room" dbEntityName="Taggable">
 		<qualifier><![CDATA[entityType = "Session"]]></qualifier>
 		<obj-attribute name="capacity" type="java.lang.Integer" db-attribute-path="rooms.capacity"/>
@@ -749,6 +779,9 @@
 	<db-relationship name="taggable" source="BinaryInfo" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="enrolments" source="College" target="Enrolment" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="taggables" source="College" target="Taggable" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -788,8 +821,20 @@
 	<db-relationship name="taggable" source="CourseClass" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="college" source="Enrolment" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="courseClass" source="Enrolment" target="Taggable" toMany="false">
+		<db-attribute-pair source="courseClassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="student" source="Enrolment" target="Taggable" toMany="false">
+		<db-attribute-pair source="studentId" target="id"/>
+	</db-relationship>
 	<db-relationship name="taggable" source="Room" target="Taggable" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="sessionCourseClass" source="Session" target="Taggable" toMany="false">
+		<db-attribute-pair source="courseClassId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggable" source="Session" target="Taggable" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="id"/>
@@ -818,46 +863,55 @@
 	<db-relationship name="tag" source="TagGroupRequirement" target="Tag" toMany="false">
 		<db-attribute-pair source="tagId" target="id"/>
 	</db-relationship>
-	<db-relationship name="binaryInfos" source="Taggable" target="BinaryInfo" toMany="true">
+	<db-relationship name="binaryInfos" source="Taggable" target="BinaryInfo" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
 	<db-relationship name="classes" source="Taggable" target="CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
-	<db-relationship name="classesTutorRoles" source="Taggable" target="TutorRole" toMany="true">
+	<db-relationship name="classesTutorRoles" source="Taggable" target="TutorRole" toMany="false">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
-	<db-relationship name="college" source="Taggable" target="College" toMany="true">
+	<db-relationship name="college" source="Taggable" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="contacts" source="Taggable" target="Contact" toMany="true">
+	<db-relationship name="contacts" source="Taggable" target="Contact" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="courseClasses" source="Taggable" target="CourseClass" toMany="true">
+	<db-relationship name="courseClassEnrolments" source="Taggable" target="Enrolment" toMany="true">
+		<db-attribute-pair source="id" target="courseClassId"/>
+	</db-relationship>
+	<db-relationship name="courseClassSessions" source="Taggable" target="Session" toMany="true">
+		<db-attribute-pair source="id" target="courseClassId"/>
+	</db-relationship>
+	<db-relationship name="courseClasses" source="Taggable" target="CourseClass" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="courses" source="Taggable" target="Course" toMany="true">
+	<db-relationship name="courses" source="Taggable" target="Course" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="rooms" source="Taggable" target="Room" toMany="true">
+	<db-relationship name="enrolments" source="Taggable" target="Enrolment" toMany="true">
+		<db-attribute-pair source="id" target="studentId"/>
+	</db-relationship>
+	<db-relationship name="rooms" source="Taggable" target="Room" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="sessions" source="Taggable" target="Session" toMany="true">
+	<db-relationship name="sessions" source="Taggable" target="Session" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="sites" source="Taggable" target="Site" toMany="true">
+	<db-relationship name="sites" source="Taggable" target="Site" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="students" source="Taggable" target="Student" toMany="true">
+	<db-relationship name="students" source="Taggable" target="Student" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggabletags" source="Taggable" target="TaggableTag" toMany="true">
 		<db-attribute-pair source="id" target="taggableId"/>
 	</db-relationship>
-	<db-relationship name="tutorRoles" source="Taggable" target="TutorRole" toMany="true">
+	<db-relationship name="tutorRoles" source="Taggable" target="TutorRole" toMany="false">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
-	<db-relationship name="tutors" source="Taggable" target="Tutor" toMany="true">
+	<db-relationship name="tutors" source="Taggable" target="Tutor" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="TaggableTag" target="College" toMany="false">
@@ -967,7 +1021,12 @@
 	<obj-relationship name="site" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="classes" source="Course" target="CourseClass" deleteRule="Cascade" db-relationship-path="classes.taggable"/>
 	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Deny" db-relationship-path="classes.taggable"/>
+	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Nullify" db-relationship-path="courseClassEnrolments"/>
+	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="courseClassSessions.sessionCourseClass"/>
 	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Cascade" db-relationship-path="classesTutorRoles"/>
+	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="taggabletags" source="Tag" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggabletags"/>
 	<obj-relationship name="taggrouprequirements" source="Tag" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="taggrouprequirements"/>

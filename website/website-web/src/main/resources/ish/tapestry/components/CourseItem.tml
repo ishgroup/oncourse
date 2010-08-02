@@ -1,11 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div class="course_item">
+	<div class="new_course_item small_class_detail clearfix">
 		<h4><a href="/course/ardr2">${course.name}</a></h4>
-		<p class="description">${course.detail}</p>
+		<p class="description">${course.detail}[<a href="${'/course/' + course.code}"><strong>More</strong></a>]</p>
+		<h5>${availMesg}</h5>
 	</div>
-	<t:loop source="course.classes" value="courseClass">
-	
+	<t:loop source="course.enrollableClasses" value="courseClass">
+		<span t:type="courseclassitem" courseClass="courseClass"/> 
 	</t:loop>
 	<div class="waiting-list">
 		<a>
