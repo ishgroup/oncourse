@@ -1,10 +1,8 @@
 package ish.oncourse.services.textile;
 
 import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.College;
+import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.util.ValidationErrors;
-
-import org.apache.cayenne.ObjectContext;
 
 public class ImageTextileRenderer extends AbstractRenderer {
 
@@ -13,29 +11,32 @@ public class ImageTextileRenderer extends AbstractRenderer {
 	}
 
 	public String render(String tag, ValidationErrors errors,
-			ObjectContext context, College currentCollege) {
-		tag = super.render(tag, errors, context, currentCollege);
+			IBinaryDataService binaryDataService) {
+		tag = super.render(tag, errors, binaryDataService);
 		if (!errors.hasFailures()) {
 			BinaryInfo imageBinaryInfo = null;
 			if (tag.matches(TextileUtil.IMAGE_ID_REGEXP)) {
 				String id = TextileUtil.getValueInFirstQuots(tag);
-				imageBinaryInfo = TextileUtil.getImageBinaryInfo(context,
-						BinaryInfo.ID_PK_COLUMN, Long.valueOf(id),
-						currentCollege);
+				imageBinaryInfo = binaryDataService.getBinaryInfo(
+						BinaryInfo.ID_PK_COLUMN, Long.valueOf(id));
 			} else if (tag.matches(TextileUtil.IMAGE_NAME_REGEXP)) {
 				String name = TextileUtil.getValueInFirstQuots(tag);
-				imageBinaryInfo = TextileUtil.getImageBinaryInfo(context,
-						BinaryInfo.NAME_PROPERTY, name, currentCollege);
+				imageBinaryInfo = binaryDataService.getBinaryInfo(
+						BinaryInfo.NAME_PROPERTY, name);
 			}
 
 			// TODO replace this by reading BinaryData content
+			////////////////////////////////
 			String extension = imageBinaryInfo.getMimeType().replace("image/",
 					"");
 			if ("jpeg".equals(extension)) {
 				extension = "jpg";
 			}
-			// TODO get the path for the real image
 			String path = imageBinaryInfo.getName() + "." + extension;
+			//////////////////////////////
+
+			// the image content will be displayed by ImageServlet
+			path = "/servlet/image?id=" + imageBinaryInfo.getId();
 			tag = "<img src=\"" + path + "\"/>";
 		}
 		return tag;

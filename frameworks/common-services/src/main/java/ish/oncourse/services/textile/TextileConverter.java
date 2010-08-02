@@ -1,27 +1,20 @@
 package ish.oncourse.services.textile;
 
+import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.util.ValidationException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import ish.oncourse.model.College;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.util.ValidationErrors;
-import ish.oncourse.util.ValidationException;
 
 public class TextileConverter implements ITextileConverter {
 
-	@Inject
-	private ICayenneService cayenneService;
-
-	@Inject
-	private IWebSiteService webSiteService;
+	@Inject 
+	private IBinaryDataService binaryDataService;
 
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
@@ -31,15 +24,13 @@ public class TextileConverter implements ITextileConverter {
 		Matcher matcher = pattern.matcher(content);
 		String result = content;
 		ValidationErrors errors = new ValidationErrors();
-		College currentCollege = webSiteService.getCurrentCollege();
-		ObjectContext sharedContext = cayenneService.sharedContext();
+		
 
 		while (matcher.find()) {
 			String tag = matcher.group();
 			IRenderer renderer = getRendererForTag(tag);
 			if (renderer != null) {
-				String replacement = renderer.render(tag, errors,
-						sharedContext, currentCollege);
+				String replacement = renderer.render(tag, errors, binaryDataService);
 				if (!errors.hasFailures() && replacement != null) {
 					result = result.replace(tag, replacement);
 				}

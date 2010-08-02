@@ -1,9 +1,9 @@
 package ish.oncourse.services;
 
-import org.apache.tapestry5.ioc.ServiceBinder;
-
 import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
+import ish.oncourse.services.binary.BinaryDataService;
+import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.cache.OSCacheService;
 import ish.oncourse.services.course.CourseService;
@@ -27,6 +27,8 @@ import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
 
+import org.apache.tapestry5.ioc.ServiceBinder;
+
 /**
  * A Tapestry IoC module definition for all common services.
  */
@@ -43,7 +45,9 @@ public class ServiceModule {
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IFormatService.class, FormatService.class);
 		binder.bind(ITextileConverter.class, TextileConverter.class);
+		binder.bind(IBinaryDataService.class, BinaryDataService.class);
 		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(ITutorService.class, TutorService.class);
 	}
+
 }

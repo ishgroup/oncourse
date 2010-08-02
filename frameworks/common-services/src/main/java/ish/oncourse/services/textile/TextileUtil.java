@@ -1,14 +1,5 @@
 package ish.oncourse.services.textile;
 
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.College;
-
-import java.util.List;
-
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 
 public class TextileUtil {
 
@@ -24,21 +15,4 @@ public class TextileUtil {
 		return tag.split(QUOT_REGEXP)[1];
 	}
 
-	public static BinaryInfo getImageBinaryInfo(ObjectContext context,
-			String searchProperty, Object value, College college) {
-
-		Expression qualifier = ExpressionFactory.matchExp(
-				BinaryInfo.COLLEGE_PROPERTY, college);
-		if (BinaryInfo.ID_PK_COLUMN.equals(searchProperty)) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					BinaryInfo.ID_PROPERTY, value));
-		} else if (BinaryInfo.NAME_PROPERTY.equals(searchProperty)) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					BinaryInfo.NAME_PROPERTY, value));
-		}
-		SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);
-		List<BinaryInfo> listResult = context.performQuery(query);
-		return listResult != null && !listResult.isEmpty() ? listResult.get(0)
-				: null;
-	}
 }
