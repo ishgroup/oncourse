@@ -29,14 +29,16 @@
 	<target name="--getsvnVersion">
 		<echo message="getting version for dir: ${global.basedir}"/>
 		<echo message="os == ${os.name}"/>
+		
 		<!-- If OS is Mac OS X, FreeBSD or Linux, run this target -->
 		<exec executable="/usr/bin/env" spawn="false" dir="${global.basedir}" output="${global.basedir}/svnVersion.temp" failifexecutionfails="true" os="Mac OS X, Linux, FreeBSD">
-			<env key="PATH" path="${env.PATH}"/>
-			<arg value="svnversion"/>
-			<arg value="."/>
+		<env key="PATH" path="${env.PATH}"/>
+		<arg value="svnversion"/>
+		<arg value="."/>
 		</exec>
+		
 		<!-- If OS is Windows Vista, Windows XP, Windows 2000 or Windows 2003, run this target -->
-		<exec executable="cmd.exe" spawn="false" dir="${global.basedir}" output="${global.basedir}/svnVersion.temp" failifexecutionfails="true" os="Windows Vista, Windows XP, Windows 2000, Windows 2003, Windows NT">
+		<exec executable="cmd.exe" spawn="false" dir="${global.basedir}" output="${global.basedir}/svnVersion.temp" failifexecutionfails="true" os="Windows Vista, Windows XP, Windows 2000, Windows 2003, Windows NT, Windows 7">
 			<env key="PATH" path="${env.PATH}"/>
 			<arg value="svnversion"/>
 			<arg value="."/>
