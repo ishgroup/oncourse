@@ -65,12 +65,21 @@
 	  </clover-report>
 	</target>
 <!--
+
 	=================================
-	target	Build common
-        =================================
+	target: build-common
+	=================================
   -->
 	<target name="--build-common">
 		<ant antfile="${common.project.dir}/build.xml" target="build" inheritall="false"/>
+	</target>
+<!--
+	=================================
+	target: clean-common
+	=================================
+	-->
+	<target name="--clean-common">
+		<ant antfile="${common.project.dir}/build.xml" target="clean" inheritall="false"/>
 	</target>
     <!--
 	=================================
@@ -170,7 +179,7 @@
 	target: clean
 	=================================
 	-->
-	<target name="clean" description="Cleans client">
+	<target name="clean" depends="--clean--common" description="Cleans client">
 		<delete dir="${classes.dir}"/>
 		<mkdir dir="${classes.dir}"/>
 	</target>

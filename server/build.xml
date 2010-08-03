@@ -113,12 +113,21 @@
 	</target>
 
 	<!--
-		- - - - - - - - - - - - - - - -
-		Build common
-		- - - - - - - - - - - - - - - -
+	=================================
+	target: build-common
+	=================================
 	-->
 	<target name="--build-common">
 		<ant antfile="${common.project.dir}/build.xml" target="build" inheritall="false"/>
+	</target>
+
+	<!--
+	=================================
+	target: clean-common
+	=================================
+	-->
+	<target name="--clean-common">
+		<ant antfile="${common.project.dir}/build.xml" target="clean" inheritall="false"/>
 	</target>
 	<!--
 	=================================
@@ -646,7 +655,7 @@
 	target: clean
 	=================================
 	-->
-	<target name="clean" description="clean up" depends="cleanJasperReports">
+	<target name="clean" description="clean up" depends="cleanJasperReports,--clean-common">
 		<delete dir="${classes.dir}" />
 		<mkdir dir="${classes.dir}"/>
 	</target>
