@@ -67,6 +67,10 @@ public class WebNodeTemplate {
 			public Object getExpressionRoot() {
 				throw new UnsupportedOperationException("Not supported yet.");
 			}
+
+			public ComponentResources getComponentResources() {
+				return null;
+			}
 		};
 	}
 
