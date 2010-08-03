@@ -64,20 +64,27 @@
 	     </current>
 	  </clover-report>
 	</target>
-
+<!--
+	=================================
+	target	Build common
+        =================================
+  -->
+	<target name="--build-common">
+		<ant antfile="${common.project.dir}/build.xml" target="build" inheritall="false"/>
+	</target>
     <!--
 	=================================
 	target: build
 	=================================
 	-->
-	<target name="build" description="Compile source." depends="--CayenneClassGenerator, --buildresources, --getsvnVersion">
+	<target name="build" description="Compile source." depends="--build-common, --CayenneClassGenerator, --buildresources, --getsvnVersion">
 		<ant antfile="${ant.file.global}" target="build" inheritall="false"/>
 		<copy overwrite="true" todir="${classes.dir}">
 			<fileset dir="${common.classes.dir}"/>
 		</copy>
 		<javac
-			includeantruntime="false"
-		    source="${javac.source}"
+		        includeantruntime="false"
+		        source="${javac.source}"
 			target="${javac.target}"
 			srcdir="${src.dir}"
 			destdir="${classes.dir}"
