@@ -11,7 +11,7 @@ public class Course extends _Course {
 
 		for (CourseClass courseClass : getClasses()) {
 			if (!courseClass.isCancelled()
-					&& !courseClass.isAvailableEnrolmentPlaces()) {
+					&& courseClass.isAvailableEnrolmentPlaces()) {
 				list.add(courseClass);
 			}
 		}

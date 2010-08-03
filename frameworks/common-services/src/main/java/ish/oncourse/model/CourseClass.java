@@ -18,8 +18,8 @@ import org.apache.commons.lang.time.DateUtils;
 public class CourseClass extends _CourseClass {
 
 	public Integer getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Integer) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN)
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN)).intValue()
 				: null;
 	}
 
@@ -169,4 +169,9 @@ public class CourseClass extends _CourseClass {
 		}
 		return false;
 	}
+	
+	public TimeZone getClassTimeZone(){
+		return TimeZone.getTimeZone(getTimeZone());
+	}
+	
 }

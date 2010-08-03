@@ -1,6 +1,7 @@
 package ish.oncourse.website.components;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -17,7 +18,7 @@ public class CourseItem {
 	private Course course;
 
 	@Property
-	private CourseClassItem courseClass;
+	private CourseClass courseClass;
 
 	public String getAvailMsg() {
 		int numberOfClasses = course.getEnrollableClasses().size();
@@ -25,9 +26,7 @@ public class CourseItem {
 
 		if (numberOfClasses <= 0) {
 			msg = messages.get("noClasses");
-		}
-
-		if (numberOfClasses == 1) {
+		}else if (numberOfClasses == 1) {
 			msg = messages.get("oneClass");
 		} else {
 			msg = messages.format("someClasses", numberOfClasses);

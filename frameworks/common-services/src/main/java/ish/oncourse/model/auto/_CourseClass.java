@@ -213,12 +213,6 @@ public abstract class _CourseClass extends Taggable {
     }
 
 
-    public void addToSessions(Session obj) {
-        addToManyTarget("sessions", obj, true);
-    }
-    public void removeFromSessions(Session obj) {
-        removeToManyTarget("sessions", obj, true);
-    }
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
         return (List<Session>)readProperty("sessions");

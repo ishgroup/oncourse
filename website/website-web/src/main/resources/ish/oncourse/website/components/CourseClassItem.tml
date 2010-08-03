@@ -4,7 +4,7 @@
 		<ul class="class_timetable" title="View calendar">
 			<t:if t:test="courseClass.hasSessions">
 				<li class="class_date">
-					<a class="timeline" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" timezone="10"><span t:type="ui/DateRangeDisplay" date1="courseClass.startDate" date2="courseClass.endDate" timezone="courseClass.timeZone"/></a>
+					<a class="timeline" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" timezone="10"><span t:type="ui/DateRangeDisplay" date1="courseClass.startDate" date2="courseClass.endDate" timezone="courseClass.classTimeZone"/></a>
 				</li>
 				<li class="class_time">
 					<a class="timeline" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" timezone="10">
@@ -22,12 +22,11 @@
 					<li class="class_session">
             			<a class="timeline" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" timezone="10">
              				 ${courseClass.sessions.size()} sessions, 
-              				 ${courseClass.totalDurationHours}
-              				 ${courseClass.totalDurationHours} <t:output value="courseClass.totalDurationHours" format="hoursFormat"/> hours total </a>
+              				 <t:output value="courseClass.totalDurationHours" format="hoursFormat"/> hours total </a>
           			</li>
 				</t:if>
 				<p:else>
-					<li class="class_date"><span t:type="ui/DateRangeDisplay" date1="courseClass.startDate" date2="courseClass.endDate" timezone="courseClass.timeZone" /></li>
+					<li class="class_date"><span t:type="ui/DateRangeDisplay" date1="courseClass.startDate" date2="courseClass.endDate" timezone="courseClass.classTimeZone" /></li>
 			        <li class="class_time">
 			          <span style="text-transform: lowercase;">
 			            <span t:type="ui/willowText" escapeHTML="false" value="courseClass.startDate" dateformat="~#m = object.startDate.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="courseClass.timeZone" valueWhenEmpty="TBA" />
