@@ -12,7 +12,7 @@
 	
 	<servlet>
     	<servlet-name>Image</servlet-name>
-    	<servlet-class>ish.oncourse.website.my.ImageServlet</servlet-class>
+    	<servlet-class>ish.oncourse.website.servlet.ImageServlet</servlet-class>
     </servlet> 
     
     <servlet-mapping>
