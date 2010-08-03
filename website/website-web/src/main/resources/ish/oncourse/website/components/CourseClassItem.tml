@@ -9,9 +9,9 @@
 				<li class="class_time">
 					<a class="timeline" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" timezone="10">
            				<span style="text-transform: lowercase;">
-           					 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.startTimestamp" dateformat="~#m = object.firstSession.startTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="$object.timeZone" valueWhenEmpty="TBA"/>
+           					 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.startTimestamp" dateformat="~#m = object.firstSession.startTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="courseClass.timeZone" valueWhenEmpty="TBA"/>
              				 &ndash; 
-             				 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.endTimestamp" dateformat="~#m = object.firstSession.endTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="$object.timeZone" valueWhenEmpty="TBA"/>
+             				 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.endTimestamp" dateformat="~#m = object.firstSession.endTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="courseClass.timeZone" valueWhenEmpty="TBA"/>
             			</span>
             			<t:if t:test="courseClass.hasManySessions">
             				<span class="class_session_exp">(<t:if test="courseClass.sessionsHaveDifferentTimes">first session<p:else>all sessions</p:else></t:if>)</span>
@@ -44,7 +44,7 @@
 	      		<t:if test="hasSiteSuburb">
 	      			<dd>TBA</dd>
 	      			<p:else>
-	      				<a href="#" onclick="javascript:showSiteOnMap('${courseClass.room.site.id}')" title="Show venue on map" class="tooltip"> <t:output value="courseClass.room.site.suburb" /> </a>
+	      				<a href="#" onclick="javascript:showSiteOnMap('${courseClass.room.site.id}')" title="Show venue on map" class="tooltip">${courseClass.room.site.suburb}</a>
 	      			</p:else>
 	      		</t:if>
 	      		<p:else>
@@ -55,7 +55,7 @@
 	      <t:if test="hasTutorRoles">
 	      	<li class="class_tutor">
 	      		<t:loop source="courseClass.tutorRoles" value="tutorRole" index="index">
-	      			<a class="tutorlink tooltip nyromodal tutorlink ${index}" href="/Refresh/tutor?x=Detail&amp;id1=${tutorRole.tutor.id}&amp;z=z&amp;wrap=false" title="View tutor profile"><t:output value="tutorRole.tutor.fullName"/></a>
+	      			<a class="tutorlink tooltip nyromodal tutorlink ${index}" href="/Refresh/tutor?x=Detail&amp;id1=${tutorRole.tutor.id}&amp;z=z&amp;wrap=false" title="View tutor profile">${tutorRole.tutor.fullName}</a>
 	      		</t:loop>
         	</li>
 	      </t:if>
@@ -66,10 +66,10 @@
          </t:if>
     </ul>
     <t:body />
-    <t:if test="isTutorPortal">
+    <t:if test="tutorPortal">
       <span t:type="CourseClassShortlistControl" courseClass="courseClass" />
     </t:if>
-    <t:if test="$object.detail.length">
+    <t:if test="courseClass.detail">
       <div class="detail_for_class" id="detail_for_class_${courseClass.id}" style="clear:both;">
         <p class="class_detail"><t:outputraw value="courseClass.detail"/></p>
       </div>
@@ -81,7 +81,7 @@
           <div class="bubble_middle bubble_content clearfix">
             <t:if test="courseClass.availableEnrolmentPlaces">
               <span t:type="CourseClassPlacesAvailable" courseClass="courseClass" />
-              <t:if test="~#n=object.room.site.name,#n!=null and !'online'.equals(#n.toLowerCase)"> at <t:output value="courseClass.room.site.name" /></t:if>. 
+              <t:if test="hasSiteName"> at ${courseClass.room.site.name}</t:if>. 
               <p:else>
               	<span t:type="WaitingListItem" courseClass="courseClass" /> 
             	<br style="clear:left;"/>
@@ -92,7 +92,7 @@
             </div>
             <div class="course-link">
               <a>More about 
-                <em><t:output value="courseClass.course.name" /></em>...</a>
+                <em>${courseClass.course.name}</em>...</a>
             </div>
           </div>
           <div class="bubble_bottom clearfix">&nbsp;</div>
@@ -100,8 +100,8 @@
         </div>
       </div>
       <!-- sessions for all classes, displayed for tutor portal, hidden otherwise -->
-      <t:if test="courseClass.anyTimelineableSessions">
-        <div id="sessions_for_class_${courseClass.id}" class="~'sessions_for_class${sessionForClass}"> <span t:type="TimetableEvents" displayedObjects="$object.timelineableSessions.@sort.room.site.name,startTimestamp" headerLabels="When,Time,Where" cssTableClass="session-table" cssEvenRowClass="tr-even" cssOddRowClass="tr-odd" dateFormat="EEE dd MMM yyyy" timeFormat="hh:mma" /> </div>
+      <t:if test="courseClass.hasAnyTimelineableSessions">
+        <div id="sessions_for_class_${courseClass.id}" class="~'sessions_for_class${sessionForClass}"> <span t:type="TimetableEvents" displayedObjects="courseClass.timelineableSessions.@sort.room.site.name,startTimestamp" headerLabels="When,Time,Where" cssTableClass="session-table" cssEvenRowClass="tr-even" cssOddRowClass="tr-odd" dateFormat="EEE dd MMM yyyy" timeFormat="hh:mma" /> </div>
       </t:if>
     </t:if>		
 </div>

@@ -869,7 +869,7 @@
 	<db-relationship name="taggable" source="Course" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="course" source="CourseClass" target="Taggable" toMany="false">
+	<db-relationship name="course" source="CourseClass" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
 	<db-relationship name="room" source="CourseClass" target="Room" toMany="false">
@@ -877,6 +877,9 @@
 	</db-relationship>
 	<db-relationship name="taggable" source="CourseClass" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="CourseClass" target="CourseClass" toMany="true">
+		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -1089,7 +1092,7 @@
 	<obj-relationship name="college" source="CollegeDomain" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="site" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="classes" source="Course" target="CourseClass" deleteRule="Cascade" db-relationship-path="classes.taggable"/>
-	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Deny" db-relationship-path="classes.taggable"/>
+	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Nullify" db-relationship-path="courseClasses.course.taggable"/>
 	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Nullify" db-relationship-path="courseClassEnrolments"/>
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="courseClasses.room.taggable"/>
 	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="courseClassSessions.sessionCourseClass"/>

@@ -117,12 +117,6 @@ public abstract class _Course extends Taggable {
         return (value != null) ? value.booleanValue() : false;
     }
 
-    public void addToClasses(CourseClass obj) {
-        addToManyTarget("classes", obj, true);
-    }
-    public void removeFromClasses(CourseClass obj) {
-        removeToManyTarget("classes", obj, true);
-    }
     @SuppressWarnings("unchecked")
     public List<CourseClass> getClasses() {
         return (List<CourseClass>)readProperty("classes");

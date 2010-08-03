@@ -14,11 +14,11 @@ public class CourseClassItem {
 	@Parameter
 	@Property
 	private CourseClass courseClass;
-	
+
 	@Parameter
 	@Property
 	private boolean excludePrice;
-	
+
 	@Parameter
 	@Property
 	private boolean excludeShortlistControl;
@@ -66,5 +66,10 @@ public class CourseClassItem {
 
 	public Format getHoursFormat() {
 		return this.hoursFormat;
+	}
+
+	public boolean isHasSiteName() {
+		return courseClass.getRoom().getSite().getName() != null
+				&& !"online".equals(courseClass.getRoom().getSite().getName());
 	}
 }

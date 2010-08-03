@@ -157,10 +157,16 @@ public class CourseClass extends _CourseClass {
 	}
 
 	public String getUniqueIdentifier() {
-		return getCourseForClass() + "-" + getCode();
+		return getCourse() + "-" + getCode();
 	}
 
-	public Course getCourseForClass() {
-		return getCourse().get(0);
+	public boolean isHasAnyTimelineableSessions() {
+		for (Session session : getSessions()) {
+
+			if (session.hasStartAndEndTimestamps()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

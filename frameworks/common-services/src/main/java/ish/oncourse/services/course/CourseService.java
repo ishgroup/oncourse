@@ -25,6 +25,7 @@ public class CourseService implements ICourseService {
 	public List<Course> getCourses() {
 		SelectQuery q = new SelectQuery(Course.class);
 		q.andQualifier(ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
+		q.setFetchLimit(30);
 		return cayenneService.sharedContext().performQuery(q);
 	}
 }
