@@ -35,8 +35,7 @@ public class BinaryDataService implements IBinaryDataService {
 		}
 		SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);
 		List<BinaryInfo> listResult = sharedContext.performQuery(query);
-		return listResult != null && !listResult.isEmpty() ? listResult.get(0)
-				: null;
+		return !listResult.isEmpty() ? listResult.get(0) : null;
 	}
 
 }
