@@ -179,7 +179,7 @@
 	target: clean
 	=================================
 	-->
-	<target name="clean" depends="--clean--common" description="Cleans client">
+	<target name="clean" depends="--clean-common" description="Cleans client">
 		<delete dir="${classes.dir}"/>
 		<mkdir dir="${classes.dir}"/>
 	</target>
