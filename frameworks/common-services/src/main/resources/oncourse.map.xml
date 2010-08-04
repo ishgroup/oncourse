@@ -319,6 +319,18 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="tutorId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
 	</db-entity>
+	<db-entity name="WaitingList">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="courseId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="detail" type="CLOB"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isDeleted" type="BIT"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="potentialStudents" type="INTEGER"/>
+		<db-attribute name="studentId" type="BIGINT"/>
+	</db-entity>
 	<db-entity name="WebBlock" catalog="oncourse_realdata_willow_college">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="content" type="VARCHAR" length="16777215"/>
@@ -735,6 +747,15 @@
 		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
+	<obj-entity name="WaitingList" className="ish.oncourse.model.WaitingList" dbEntityName="WaitingList">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
+		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="potentialStudents" type="java.lang.Integer" db-attribute-path="potentialStudents"/>
+	</obj-entity>
 	<obj-entity name="WebBlock" className="ish.oncourse.model.WebBlock" dbEntityName="WebBlock">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
@@ -962,6 +983,9 @@
 	<db-relationship name="courses" source="Taggable" target="Course" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="coursesWaitingLists" source="Taggable" target="WaitingList" toMany="true">
+		<db-attribute-pair source="id" target="courseId"/>
+	</db-relationship>
 	<db-relationship name="enrolments" source="Taggable" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
@@ -977,10 +1001,13 @@
 	<db-relationship name="students" source="Taggable" target="Student" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="studentsWaitingLists" source="Taggable" target="WaitingList" toMany="true">
+		<db-attribute-pair source="id" target="studentId"/>
+	</db-relationship>
 	<db-relationship name="taggabletags" source="Taggable" target="TaggableTag" toMany="true">
 		<db-attribute-pair source="id" target="taggableId"/>
 	</db-relationship>
-	<db-relationship name="tutorRoles" source="Taggable" target="TutorRole" toMany="false">
+	<db-relationship name="tutorRoles" source="Taggable" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
 	<db-relationship name="tutors" source="Taggable" target="Tutor" toMany="false">
@@ -1003,6 +1030,12 @@
 	</db-relationship>
 	<db-relationship name="tutor" source="TutorRole" target="Taggable" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="tutorId" target="id"/>
+	</db-relationship>
+	<db-relationship name="course" source="WaitingList" target="Taggable" toMany="false">
+		<db-attribute-pair source="courseId" target="id"/>
+	</db-relationship>
+	<db-relationship name="student" source="WaitingList" target="Taggable" toMany="false">
+		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
 	<db-relationship name="site" source="WebBlock" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteID" target="id"/>
@@ -1092,6 +1125,7 @@
 	<obj-relationship name="college" source="CollegeDomain" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="site" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="classes" source="Course" target="CourseClass" deleteRule="Cascade" db-relationship-path="classes.taggable"/>
+	<obj-relationship name="waitingLists" source="Course" target="WaitingList" deleteRule="Cascade" db-relationship-path="coursesWaitingLists"/>
 	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Nullify" db-relationship-path="courseClasses.course.taggable"/>
 	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Nullify" db-relationship-path="courseClassEnrolments"/>
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="courseClasses.room.taggable"/>
@@ -1102,6 +1136,7 @@
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="rooms.site.taggable"/>
+	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Cascade" db-relationship-path="studentsWaitingLists"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="taggabletags" source="Tag" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggabletags"/>
 	<obj-relationship name="taggrouprequirements" source="Tag" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="taggrouprequirements"/>
@@ -1115,6 +1150,8 @@
 	<obj-relationship name="tutorRoles" source="Tutor" target="TutorRole" deleteRule="Cascade" db-relationship-path="tutorRoles"/>
 	<obj-relationship name="courseClass" source="TutorRole" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="tutor" source="TutorRole" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
+	<obj-relationship name="course" source="WaitingList" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
+	<obj-relationship name="student" source="WaitingList" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="site" source="WebBlock" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="type" source="WebBlock" target="WebBlockType" deleteRule="Nullify" db-relationship-path="type"/>
 	<obj-relationship name="blocks" source="WebBlockType" target="WebBlock" deleteRule="Deny" db-relationship-path="blocks"/>
