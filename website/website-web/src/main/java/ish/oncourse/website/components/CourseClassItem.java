@@ -69,7 +69,7 @@ public class CourseClassItem {
 	}
 
 	public boolean isHasSiteName() {
-		return courseClass.getRoom().getSite().getName() != null
+		return isHasSite() && courseClass.getRoom().getSite().getName() != null
 				&& !"online".equals(courseClass.getRoom().getSite().getName());
 	}
 }

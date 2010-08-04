@@ -866,10 +866,13 @@
 	<db-relationship name="taggable" source="Contact" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="classes" source="Course" target="CourseClass" toMany="true">
+		<db-attribute-pair source="id" target="courseId"/>
+	</db-relationship>
 	<db-relationship name="taggable" source="Course" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
-	<db-relationship name="course" source="CourseClass" target="CourseClass" toMany="false">
+	<db-relationship name="course" source="CourseClass" target="Course" toMany="false">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
 	<db-relationship name="room" source="CourseClass" target="Room" toMany="false">
@@ -877,9 +880,6 @@
 	</db-relationship>
 	<db-relationship name="taggable" source="CourseClass" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
-	</db-relationship>
-	<db-relationship name="untitledRel" source="CourseClass" target="CourseClass" toMany="true">
-		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>

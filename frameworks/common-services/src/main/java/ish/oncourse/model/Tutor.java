@@ -5,8 +5,8 @@ import ish.oncourse.model.auto._Tutor;
 public class Tutor extends _Tutor {
 
 	public Integer getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Integer) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN)
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN)).intValue()
 				: null;
 	}
 

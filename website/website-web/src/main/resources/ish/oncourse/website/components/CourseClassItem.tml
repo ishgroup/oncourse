@@ -73,16 +73,16 @@
         <p class="class_detail"><t:outputraw value="courseClass.detail"/></p>
       </div>
     </t:if>
-    <t:if test="courseClass.cancelled">
+    <t:if test="${courseClass.cancelled}" negate="true">
       <div class="bubbleInfo">
         <div class="tooltip_popup enrol_tooltip">
           <div class="bubble_top bubble_content clearfix"><span t:type="ClassTimingDisplay" courseClass="courseClass" /></div>
           <div class="bubble_middle bubble_content clearfix">
             <t:if test="courseClass.availableEnrolmentPlaces">
               <span t:type="CourseClassPlacesAvailable" courseClass="courseClass" />
-              <t:if test="hasSiteName"> at ${courseClass.room.site.name}</t:if>. 
+              <t:if test="hasSiteName"> at ${courseClass.room.site.name}.</t:if>
               <p:else>
-              	<span t:type="WaitingListItem" courseClass="courseClass" /> 
+              	<span t:type="WaitingListItem" courseClass="courseClass" course="courseClass.course"/> 
             	<br style="clear:left;"/>
               </p:else>
             </t:if>
@@ -90,7 +90,7 @@
               <a href="">Print this class...</a>
             </div>
             <div class="course-link">
-              <a>More about 
+              <a href="">More about 
                 <em>${courseClass.course.name}</em>...</a>
             </div>
           </div>
@@ -100,7 +100,10 @@
       </div>
       <!-- sessions for all classes, displayed for tutor portal, hidden otherwise -->
       <t:if test="courseClass.hasAnyTimelineableSessions">
-        <div id="sessions_for_class_${courseClass.id}" class="~'sessions_for_class${sessionForClass}"> <span t:type="TimetableEvents" displayedObjects="courseClass.timelineableSessions.@sort.room.site.name,startTimestamp" headerLabels="When,Time,Where" cssTableClass="session-table" cssEvenRowClass="tr-even" cssOddRowClass="tr-odd" dateFormat="EEE dd MMM yyyy" timeFormat="hh:mma" /> </div>
+        <div id="sessions_for_class_${courseClass.id}" class="~'sessions_for_class${sessionForClass}"> 
+        	<span t:type="TimetableEvents" displayedObjects="courseClass.timelineableSessions.@sort.room.site.name,startTimestamp"
+        	 headerLabels="When,Time,Where" cssTableClass="session-table" cssEvenRowClass="tr-even" cssOddRowClass="tr-odd" 
+        	 dateFormat="EEE dd MMM yyyy" timeFormat="hh:mma" /> </div>
       </t:if>
     </t:if>		
 </div>

@@ -8,9 +8,5 @@
 	<t:loop source="course.enrollableClasses" value="courseClass">
 		<span t:type="courseclassitem" courseClass="courseClass"/> 
 	</t:loop>
-	<div class="waiting-list">
-		<a>
-			If there isn't a class to suit you, please the waiting list.
-		</a>
-	</div>
+	<t:if t:test="course.allowWaitingList"><span t:type="WaitingListItem" course="course"/> </t:if>
 </t:container>
