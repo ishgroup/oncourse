@@ -1,3 +1,74 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<ul id="~'m'+${courseClass.id}" class="class_options noprint">
+		<t:if t:test="hasSecureParentPage">
+			<!-- TODO find an equivalent -->
+			<!--
+				wo:ISHKeyValueConditional key="myCookies.shortlist.ids"
+				key1="object.id.toString" value="$object.id.toString"> <li
+				class="shortlisted"><wo:link action="$removeClassAction">Remove from
+				order</wo:link></li> </wo:ISHKeyValueConditional
+			-->
+			<p:else>
+				<t:if t:test="courseClass.cancelled" negate="true">
+					<t:if t:test="enrolled" negate="true">
+						<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+							<t:if t:test="myCollegePaymentGatewayEnabled">
+								<li class="class_enrol">
+									<a href="enrolNow?secure=$enrolNowLinkIsSecure&amp;addShortlist=${courseClass.id}">Enrol Now</a>
+								</li>
+							</t:if>
+							<p:else>
+								<li class="class_full">No places</li>
+							</p:else>
+						</t:if>
+
+					</t:if>
+					<p:else>
+						<li class="class_cancelled">Class was cancelled</li>
+					</p:else>
+				</t:if>
+				<!-- TODO find an equivalent -->
+				<!-- wo:ISHKeyValueConditional key="myCookies.shortlist.ids"
+					key1="$object.id.toString" value="$object.id.toString">
+					<li class="shortlisted">
+						<wo:DynamicDirectAction refresh="$true"
+							key="shortlist" add="$false" object="$object" id="$object.id"
+							idPrefix="c">
+							Remove from order
+				</wo:DynamicDirectAction>
+					</li>
+				</wo:ISHKeyValueConditional>
+				<wo:ISHKeyValueConditional negate="$true"
+					key="myCookies.shortlist.ids" key1="$object.id.toString" value="$object.id.toString">
+					<wo:if condition="$object.isCancelled" negate="$true">
+						<wo:if condition="$hasPlacesAvailable">
+							<wo:if condition="$myCollege.paymentGatewayEnabled">
+								<li class="class_addorder addshortlist">
+									<wo:DynamicDirectAction refresh="$true"
+										key="shortlist" add="$true" object="$object" id="$object.id"
+										idPrefix="c">Add to order</wo:DynamicDirectAction>
+								</li>
+							</wo:if>
+						</wo:if>
+					</wo:if>
+				</wo:ISHKeyValueConditional-->
+
+
+			</p:else>
+		</t:if>
+
+		<t:if t:test="courseClass.cancelled" negate="true">
+			<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+				<li class="class_emailfriend">
+					<a class="nyromodaliframe"
+						href="~'/tellAFriend?wrap=true&amp;code=${courseClass.course.code}-${courseClass.code}"
+						target="_blank">
+						Email to a friend</a>
+				</li>
+			</t:if>
+		</t:if>
+
+	</ul>
 </t:container>

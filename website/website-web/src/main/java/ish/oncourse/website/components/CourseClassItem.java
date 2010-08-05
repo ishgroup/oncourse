@@ -57,7 +57,7 @@ public class CourseClassItem {
 	}
 
 	public boolean isTutorPortal() {
-		return false;
+		return true;
 	}
 
 	public String getSessionForClass() {

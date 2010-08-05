@@ -3,6 +3,7 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.WaitingList;
@@ -41,6 +42,7 @@ public abstract class _Student extends Taggable {
     public static final String SUBURB_PROPERTY = "suburb";
     public static final String WORK_PHONE_PROPERTY = "workPhone";
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
+    public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
@@ -230,6 +232,18 @@ public abstract class _Student extends Taggable {
     public Integer getYearSchoolCompleted() {
         return (Integer)readProperty("yearSchoolCompleted");
     }
+
+    public void addToEnrolments(Enrolment obj) {
+        addToManyTarget("enrolments", obj, true);
+    }
+    public void removeFromEnrolments(Enrolment obj) {
+        removeToManyTarget("enrolments", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Enrolment> getEnrolments() {
+        return (List<Enrolment>)readProperty("enrolments");
+    }
+
 
     public void addToStudentConcessions(StudentConcession obj) {
         addToManyTarget("studentConcessions", obj, true);

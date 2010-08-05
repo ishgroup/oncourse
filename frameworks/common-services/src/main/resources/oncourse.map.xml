@@ -1277,6 +1277,7 @@
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="rooms.site.taggable"/>
+	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolments"/>
 	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Cascade" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Cascade" db-relationship-path="studentsWaitingLists"/>
 	<obj-relationship name="concessionType" source="StudentConcession" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
