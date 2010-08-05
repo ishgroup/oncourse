@@ -468,13 +468,41 @@
 			<arg value="DBURI=${dburi}" />
 			<arg value="HEADLESS=${headless}"/>
 			<arg value="PAYMENT_GATEWAY_TEST=${payment_gateway_test}"/>
-			<jvmarg value="-agentlib:yjpagent"/>
 			<classpath>
 				<path location="${server.distribution.dir}/${server.jar}" />
 				<path refid="allLibraries.path" />
 			</classpath>
 		</java>
 	</target>
+	
+	<target name="--profile" depends="buildjar">
+			<property name="runtime.soap.debug" value="false" />
+			<property name="runtime.soap.disabled" value="false" />
+			<echo message="replication.batchsize = ${replication.batchsize}" />
+			<property name="dburi" value=""/>
+			<property name="headless" value="false"/>
+			<property name="payment_gateway_test" value="true"/>
+			<property name="disable_datasanity" value="false"/>
+			<property name="runtime.angelwillowreplication.disabled" value="false" />
+			<echo message="jvm version: ${java.version}" />
+			<java maxmemory="${server.maxmemory}" fork="true" classname="ish.oncourse.server.AngelServer">
+				<arg value="DEBUG=${debug.flag}" />
+				<arg value="REPLICATION_DEBUG=${runtime.soap.debug}" />
+				<arg value="REPLICATION_DISABLED=${runtime.soap.disabled}" />
+				<arg value="ANGELWILLOW_REPLICATION_DISABLED=${runtime.angelwillowreplication.disabled}" />
+				<arg value="-DDataSanityCheck.disabled=${disable_datasanity}" />
+				<arg value="-Dwillow_service=${runtime.soap.url}" />
+				<arg value="-Dreplication.batchsize=${replication.batchsize}" />
+				<arg value="DBURI=${dburi}" />
+				<arg value="HEADLESS=${headless}"/>
+				<arg value="PAYMENT_GATEWAY_TEST=${payment_gateway_test}"/>
+				<jvmarg value="-agentlib:yjpagent"/>
+				<classpath>
+					<path location="${server.distribution.dir}/${server.jar}" />
+					<path refid="allLibraries.path" />
+				</classpath>
+			</java>
+		</target>
 	
 	<target name="--debug" depends="buildjar">
 			<property name="runtime.soap.debug" value="false" />

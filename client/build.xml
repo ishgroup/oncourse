@@ -190,9 +190,7 @@
 	-->
 	<target name="run" description="Run the client" depends="build">
 		<java classname="ish.oncourse.AngelApp" maxmemory="${client.maxmemory}" fork="true">
-			<!--jvmarg value="-agentlib:shark"/-->
 			<jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
-			<jvmarg value="-agentlib:yjpagent"/>
 			<arg value="DEBUG=true"/>
 			<classpath>
 				<path path="${classes.dir}"/>
@@ -200,6 +198,24 @@
 			</classpath>
 		</java>
 	</target>
+
+	<!--
+		=================================
+		target: profile
+		=================================
+		-->
+		<target name="profile" description="Profile the client" depends="build">
+			<java classname="ish.oncourse.AngelApp" maxmemory="${client.maxmemory}" fork="true">
+				<!--jvmarg value="-agentlib:shark"/-->
+				<jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
+				<jvmarg value="-agentlib:yjpagent"/>
+				<arg value="DEBUG=true"/>
+				<classpath>
+					<path path="${classes.dir}"/>
+					<path refid="requiredLibraries.path"/>
+				</classpath>
+			</java>
+		</target>
 	
 	<!--
 	=================================
