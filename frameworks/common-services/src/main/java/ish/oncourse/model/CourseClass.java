@@ -2,13 +2,16 @@ package ish.oncourse.model;
 
 import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._CourseClass;
+import ish.oncourse.util.ISHTimestampUtilities;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -17,6 +20,8 @@ import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.time.DateUtils;
 
 public class CourseClass extends _CourseClass {
+
+	private Set<String> daysOfWeek;
 
 	public Integer getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
@@ -201,6 +206,41 @@ public class CourseClass extends _CourseClass {
 	public boolean isGstExempt() {
 		BigDecimal feeGst = getFeeGst();
 		return feeGst == null || Money.ZERO.compareTo(feeGst) == 0;
+	}
+
+	/**
+	 * @return an array of all the days of the week on which sessions occur for
+	 *         this class
+	 */
+	public Set<String> getDaysOfWeek() {
+		if (daysOfWeek == null) {
+			if (getSessions().size() > 0) {
+				ArrayList<String> days = new ArrayList<String>();
+				for (Session s : getSessions()) {
+					days.add(ISHTimestampUtilities.dayOfWeek(s
+							.getStartTimestamp(), true, TimeZone.getTimeZone(s
+							.getTimeZone())));
+				}
+				daysOfWeek = ISHTimestampUtilities.uniqueDaysInOrder(days);
+			} else {
+				// no sessions recorded, so guess from class start / finish time
+				daysOfWeek = new HashSet<String>();
+				if (getStartDate() != null) {
+					daysOfWeek.add(ISHTimestampUtilities.dayOfWeek(
+							getStartDate(), true, TimeZone
+									.getTimeZone(getTimeZone())));
+
+				}
+				if (getEndDate() != null) {
+					daysOfWeek.add(ISHTimestampUtilities.dayOfWeek(
+							getEndDate(), true, TimeZone
+									.getTimeZone(getTimeZone())));
+
+				}
+
+			}
+		}
+		return daysOfWeek;
 	}
 
 }
