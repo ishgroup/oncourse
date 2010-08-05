@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 
 import java.math.BigDecimal;
@@ -169,9 +170,37 @@ public class CourseClass extends _CourseClass {
 		}
 		return false;
 	}
-	
-	public TimeZone getClassTimeZone(){
+
+	public TimeZone getClassTimeZone() {
 		return TimeZone.getTimeZone(getTimeZone());
 	}
-	
+
+	public boolean hasFeeIncTax() {
+		BigDecimal fee = getFeeIncGst();
+		return fee != null && Money.ZERO.toBigDecimal().compareTo(fee) < 0;
+	}
+
+	public BigDecimal getFeeIncGst() {
+		BigDecimal feeGst = getFeeGst();
+		BigDecimal feeExGst = getFeeExGst();
+		if (feeGst == null || feeExGst == null) {
+			return feeExGst;
+		}
+		return feeExGst.add(feeGst);
+	}
+
+	public BigDecimal getTaxMultiplier() {
+		if (getFeeGst() == null || Money.ZERO.compareTo(getFeeGst()) >= 0) {
+			return Money.ONE;
+		}
+
+		// TODO grab correct rate from onCourse later
+		return new BigDecimal("1.10");
+	}
+
+	public boolean isGstExempt() {
+		BigDecimal feeGst = getFeeGst();
+		return feeGst == null || Money.ZERO.compareTo(feeGst) == 0;
+	}
+
 }

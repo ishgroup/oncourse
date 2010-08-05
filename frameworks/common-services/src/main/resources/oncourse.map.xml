@@ -64,6 +64,21 @@
 		<db-attribute name="subsiteCode" type="VARCHAR" length="128"/>
 		<db-attribute name="webSiteID" type="BIGINT" length="19"/>
 	</db-entity>
+	<db-entity name="ConcessionType">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="credentialExpiryDays" type="INTEGER"/>
+		<db-attribute name="hasConcessionNumber" type="BIT"/>
+		<db-attribute name="hasExpiryDate" type="INTEGER"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isConcession" type="BIT"/>
+		<db-attribute name="isDeleted" type="BIT"/>
+		<db-attribute name="isEnabled" type="BIT"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" length="256"/>
+		<db-attribute name="requiresCredentialCheck" type="BIT"/>
+	</db-entity>
 	<db-entity name="Contact">
 		<db-attribute name="businessPhoneNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="cookieHash" type="VARCHAR" length="64"/>
@@ -158,6 +173,22 @@
 		<db-attribute name="validFrom" type="TIMESTAMP"/>
 		<db-attribute name="validTo" type="TIMESTAMP"/>
 	</db-entity>
+	<db-entity name="DiscountConcessionType">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT"/>
+		<db-attribute name="concessionTypeId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="DiscountCourseClass">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="courseClassId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+	</db-entity>
 	<db-entity name="Enrolment">
 		<db-attribute name="angelId" type="INTEGER"/>
 		<db-attribute name="collegeId" type="INTEGER"/>
@@ -240,6 +271,21 @@
 		<db-attribute name="suburb" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="workPhone" type="VARCHAR" length="32"/>
 		<db-attribute name="yearSchoolCompleted" type="INTEGER" length="10"/>
+	</db-entity>
+	<db-entity name="StudentConcession">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="authorisationExpiresOn" type="TIMESTAMP"/>
+		<db-attribute name="autorisedOn" type="TIMESTAMP"/>
+		<db-attribute name="collegeId" type="BIGINT"/>
+		<db-attribute name="concessionNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="concessionTypeId" type="BIGINT"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="expiresOn" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="isDeleted" type="BIT"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="studentId" type="BIGINT"/>
+		<db-attribute name="timezone" type="VARCHAR" length="32"/>
 	</db-entity>
 	<db-entity name="Tag" catalog="oncourse_realdata_willow_college">
 		<db-attribute name="angelId" type="BIGINT"/>
@@ -504,6 +550,20 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="subsiteCode" type="java.lang.String" db-attribute-path="subsiteCode"/>
 	</obj-entity>
+	<obj-entity name="ConcessionType" className="ish.oncourse.model.ConcessionType" dbEntityName="ConcessionType">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="credentialExpiryDays" type="java.lang.Integer" db-attribute-path="credentialExpiryDays"/>
+		<obj-attribute name="hasConcessionNumber" type="java.lang.Boolean" db-attribute-path="hasConcessionNumber"/>
+		<obj-attribute name="hasExpiryDate" type="java.lang.Integer" db-attribute-path="hasExpiryDate"/>
+		<obj-attribute name="isConcession" type="java.lang.Boolean" db-attribute-path="isConcession"/>
+		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
+		<obj-attribute name="isEnabled" type="java.lang.Boolean" db-attribute-path="isEnabled"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="requiresCredentialCheck" type="java.lang.Boolean" db-attribute-path="requiresCredentialCheck"/>
+	</obj-entity>
 	<obj-entity name="Contact" superEntityName="Taggable" className="ish.oncourse.model.Contact" dbEntityName="Taggable">
 		<qualifier><![CDATA[entityType = "Contact"]]></qualifier>
 		<obj-attribute name="businessPhoneNumber" type="java.lang.String" db-attribute-path="contacts.businessPhoneNumber"/>
@@ -595,6 +655,16 @@
 		<obj-attribute name="validFrom" type="java.util.Date" db-attribute-path="validFrom"/>
 		<obj-attribute name="validTo" type="java.util.Date" db-attribute-path="validTo"/>
 	</obj-entity>
+	<obj-entity name="DiscountConcessionType" className="ish.oncourse.model.DiscountConcessionType" dbEntityName="DiscountConcessionType">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
+	<obj-entity name="DiscountCourseClass" className="ish.oncourse.model.DiscountCourseClass" dbEntityName="DiscountCourseClass">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
 	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
 		<obj-attribute name="angelId" type="java.lang.Integer" db-attribute-path="angelId"/>
 		<obj-attribute name="collegeId" type="java.lang.Integer" db-attribute-path="collegeId"/>
@@ -680,6 +750,18 @@
 		<obj-attribute name="suburb" type="java.lang.String" db-attribute-path="students.suburb"/>
 		<obj-attribute name="workPhone" type="java.lang.String" db-attribute-path="students.workPhone"/>
 		<obj-attribute name="yearSchoolCompleted" type="java.lang.Integer" db-attribute-path="students.yearSchoolCompleted"/>
+	</obj-entity>
+	<obj-entity name="StudentConcession" className="ish.oncourse.model.StudentConcession" dbEntityName="StudentConcession">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="authorisationExpiresOn" type="java.util.Date" db-attribute-path="authorisationExpiresOn"/>
+		<obj-attribute name="autorisedOn" type="java.util.Date" db-attribute-path="autorisedOn"/>
+		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
+		<obj-attribute name="concessionNumber" type="java.lang.String" db-attribute-path="concessionNumber"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="expiresOn" type="java.util.Date" db-attribute-path="expiresOn"/>
+		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="timezone" type="java.lang.String" db-attribute-path="timezone"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.model.Tag" dbEntityName="Tag">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -851,6 +933,12 @@
 	<db-relationship name="taggable" source="BinaryInfo" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="concessionTypes" source="College" target="DiscountConcessionType" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="courseClassDiscounts" source="College" target="DiscountCourseClass" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="discounts" source="College" target="Discount" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -884,6 +972,12 @@
 	<db-relationship name="site" source="CollegeDomain" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteID" target="id"/>
 	</db-relationship>
+	<db-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" toMany="true">
+		<db-attribute-pair source="id" target="concessionTypeId"/>
+	</db-relationship>
+	<db-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" toMany="true">
+		<db-attribute-pair source="id" target="concessionTypeId"/>
+	</db-relationship>
 	<db-relationship name="taggable" source="Contact" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
@@ -904,6 +998,30 @@
 	</db-relationship>
 	<db-relationship name="college" source="Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="courseClassDiscounts" source="Discount" target="DiscountCourseClass" toMany="true">
+		<db-attribute-pair source="id" target="discountId"/>
+	</db-relationship>
+	<db-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" toDependentPK="true" toMany="true">
+		<db-attribute-pair source="id" target="discountId"/>
+	</db-relationship>
+	<db-relationship name="college" source="DiscountConcessionType" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" toDependentPK="true" toMany="false">
+		<db-attribute-pair source="concessionTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="discount" source="DiscountConcessionType" target="Discount" toMany="false">
+		<db-attribute-pair source="discountId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="DiscountCourseClass" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="courseClass" source="DiscountCourseClass" target="Taggable" toMany="false">
+		<db-attribute-pair source="courseClassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="discount" source="DiscountCourseClass" target="Discount" toMany="false">
+		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="Enrolment" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -938,6 +1056,12 @@
 	<db-relationship name="taggable" source="Student" target="Taggable" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="concessionType" source="StudentConcession" target="ConcessionType" toMany="false">
+		<db-attribute-pair source="concessionTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="student" source="StudentConcession" target="Taggable" toMany="false">
+		<db-attribute-pair source="studentId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Tag" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -971,6 +1095,9 @@
 	<db-relationship name="contacts" source="Taggable" target="Contact" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
 	</db-relationship>
+	<db-relationship name="courseClassDiscounts" source="Taggable" target="DiscountCourseClass" toMany="true">
+		<db-attribute-pair source="id" target="courseClassId"/>
+	</db-relationship>
 	<db-relationship name="courseClassEnrolments" source="Taggable" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
@@ -997,6 +1124,9 @@
 	</db-relationship>
 	<db-relationship name="sites" source="Taggable" target="Site" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="studentConcessions" source="Taggable" target="StudentConcession" toMany="true">
+		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
 	<db-relationship name="students" source="Taggable" target="Student" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
@@ -1124,19 +1254,33 @@
 	<obj-relationship name="users" source="College" target="WillowUser" deleteRule="Deny" db-relationship-path="users"/>
 	<obj-relationship name="college" source="CollegeDomain" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="site" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="site"/>
+	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Cascade" db-relationship-path="discountConcessionTypes"/>
+	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="classes" source="Course" target="CourseClass" deleteRule="Cascade" db-relationship-path="classes.taggable"/>
 	<obj-relationship name="waitingLists" source="Course" target="WaitingList" deleteRule="Cascade" db-relationship-path="coursesWaitingLists"/>
 	<obj-relationship name="course" source="CourseClass" target="Course" deleteRule="Nullify" db-relationship-path="courseClasses.course.taggable"/>
+	<obj-relationship name="courseClassDiscounts" source="CourseClass" target="DiscountCourseClass" deleteRule="Cascade" db-relationship-path="courseClassDiscounts"/>
 	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Nullify" db-relationship-path="courseClassEnrolments"/>
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="courseClasses.room.taggable"/>
 	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="courseClassSessions.taggable"/>
 	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Cascade" db-relationship-path="classesTutorRoles"/>
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="courseClassDiscounts" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="courseClassDiscounts"/>
+	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
+	<obj-relationship name="college" source="DiscountConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
+	<obj-relationship name="discount" source="DiscountConcessionType" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
+	<obj-relationship name="college" source="DiscountCourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="courseClass" source="DiscountCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="discount" source="DiscountCourseClass" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="rooms.site.taggable"/>
+	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Cascade" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Cascade" db-relationship-path="studentsWaitingLists"/>
+	<obj-relationship name="concessionType" source="StudentConcession" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
+	<obj-relationship name="student" source="StudentConcession" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="taggabletags" source="Tag" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggabletags"/>
 	<obj-relationship name="taggrouprequirements" source="Tag" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="taggrouprequirements"/>

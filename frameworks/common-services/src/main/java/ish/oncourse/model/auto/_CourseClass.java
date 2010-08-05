@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
@@ -40,6 +41,7 @@ public abstract class _CourseClass extends Taggable {
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String WEB_VISIBLE_PROPERTY = "webVisible";
     public static final String COURSE_PROPERTY = "course";
+    public static final String COURSE_CLASS_DISCOUNTS_PROPERTY = "courseClassDiscounts";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String ROOM_PROPERTY = "room";
     public static final String SESSIONS_PROPERTY = "sessions";
@@ -192,6 +194,18 @@ public abstract class _CourseClass extends Taggable {
 
     public Course getCourse() {
         return (Course)readProperty("course");
+    }
+
+
+    public void addToCourseClassDiscounts(DiscountCourseClass obj) {
+        addToManyTarget("courseClassDiscounts", obj, true);
+    }
+    public void removeFromCourseClassDiscounts(DiscountCourseClass obj) {
+        removeToManyTarget("courseClassDiscounts", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiscountCourseClass> getCourseClassDiscounts() {
+        return (List<DiscountCourseClass>)readProperty("courseClassDiscounts");
     }
 
 
