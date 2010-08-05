@@ -212,9 +212,10 @@
 	=================================
 	-->
 	<target name="profile" description="Profile the client" depends="build">
+
 		<java fork="true" maxmemory="${client.maxmemory}" classname="ish.oncourse.AngelApp" dir="${classes.dir}">
-			<arg value="DEBUG=true"/>
-			<arg value="-agentlib:yjpagent"/>
+		        <arg value="DEBUG=true"/>
+			<!--jvmarg value="-agentlib:yjpagent"/-->
 			<classpath>
 				<path path="${classes.dir}"/>
 				<path refid="requiredLibraries.path"/>

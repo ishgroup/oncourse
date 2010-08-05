@@ -406,7 +406,8 @@
 			<arg value="DBURI=${dburi}" />
 			<arg value="-Dwillow_service=${runtime.soap.url}" />
 			<arg value="-Dreplication.batchsize=${replication.batchsize}" />
-			<!--arg value="-agentlib:yjpagent"/-->
+			
+			<!--jvmarg value="-agentlib:yjpagent"/-->
 			<classpath>
 				<path location="${server.distribution.dir}/${server.jar}" />
 				<path refid="allLibraries.path" />
@@ -467,7 +468,7 @@
 			<arg value="DBURI=${dburi}" />
 			<arg value="HEADLESS=${headless}"/>
 			<arg value="PAYMENT_GATEWAY_TEST=${payment_gateway_test}"/>
-			<!--arg value="-agentlib:yjpagent"/-->
+			<!--jvmarg value="-agentlib:yjpagent"/-->
 			<classpath>
 				<path location="${server.distribution.dir}/${server.jar}" />
 				<path refid="allLibraries.path" />
