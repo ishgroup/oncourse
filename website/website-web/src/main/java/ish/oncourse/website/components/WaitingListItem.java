@@ -84,7 +84,7 @@ public class WaitingListItem {
 	public boolean isHasMoreAvailablePlaces() {
 		int places = 0;
 		for (CourseClass courseClass : course.getEnrollableClasses()) {
-			places += courseClass.availableEnrolmentPlaces();
+			places += courseClass.getAvailableEnrolmentPlaces();
 		}
 		return places > 0;
 	}

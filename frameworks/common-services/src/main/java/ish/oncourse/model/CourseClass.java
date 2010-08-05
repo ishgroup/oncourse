@@ -133,11 +133,11 @@ public class CourseClass extends _CourseClass {
 		return list.get(0);
 	}
 
-	public boolean isAvailableEnrolmentPlaces() {
-		return availableEnrolmentPlaces() > 0;
+	public boolean isHasAvailableEnrolmentPlaces() {
+		return getAvailableEnrolmentPlaces() > 0;
 	}
 
-	public int availableEnrolmentPlaces() {
+	public int getAvailableEnrolmentPlaces() {
 		int result = -1;
 		if (getMaximumPlaces() != null && getMaximumPlaces() > 0) {
 			int validEnrolment = validEnrolmentsCount();
