@@ -192,6 +192,7 @@
 		<java classname="ish.oncourse.AngelApp" maxmemory="${client.maxmemory}" fork="true">
 			<!--jvmarg value="-agentlib:shark"/-->
 			<jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
+			<jvmarg value="-agentlib:yjpagent"/>
 			<arg value="DEBUG=true"/>
 			<classpath>
 				<path path="${classes.dir}"/>
@@ -206,22 +207,6 @@
 	=================================
 	-->
 	<target name="cleanAndRun" depends="clean,build,run"/>
-<!--
-	=================================
-	target: profile
-	=================================
-	-->
-	<target name="profile" description="Profile the client" depends="build">
-
-		<java fork="true" maxmemory="${client.maxmemory}" classname="ish.oncourse.AngelApp" dir="${classes.dir}">
-		        <arg value="DEBUG=true"/>
-			<!--jvmarg value="-agentlib:yjpagent"/-->
-			<classpath>
-				<path path="${classes.dir}"/>
-				<path refid="requiredLibraries.path"/>
-			</classpath>
-		</java>
-	</target>
 <!--
 	=================================
 	target: test
