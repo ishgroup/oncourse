@@ -680,7 +680,7 @@
 		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
 	</obj-entity>
 	<obj-entity name="Room" superEntityName="Taggable" className="ish.oncourse.model.Room" dbEntityName="Taggable">
-		<qualifier><![CDATA[entityType = "Session"]]></qualifier>
+		<qualifier><![CDATA[entityType = "Room"]]></qualifier>
 		<obj-attribute name="capacity" type="java.lang.Integer" db-attribute-path="rooms.capacity"/>
 		<obj-attribute name="directions" type="java.lang.String" db-attribute-path="rooms.directions"/>
 		<obj-attribute name="directionsTextile" type="java.lang.String" db-attribute-path="rooms.directions_textile"/>
@@ -691,10 +691,8 @@
 	</obj-entity>
 	<obj-entity name="Session" superEntityName="Taggable" className="ish.oncourse.model.Session" dbEntityName="Taggable">
 		<qualifier><![CDATA[entityType = "Session"]]></qualifier>
-		<obj-attribute name="courseClassId" type="java.lang.Long" db-attribute-path="sessions.courseClassId"/>
 		<obj-attribute name="endTimestamp" type="java.util.Date" db-attribute-path="sessions.endTimestamp"/>
 		<obj-attribute name="markerID" type="java.lang.Long" db-attribute-path="sessions.markerID"/>
-		<obj-attribute name="roomId" type="java.lang.Long" db-attribute-path="sessions.roomId"/>
 		<obj-attribute name="startTimestamp" type="java.util.Date" db-attribute-path="sessions.startTimestamp"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="sessions.timeZone"/>
 		<attribute-override name="angelId" db-attribute-path="angelId"/>
@@ -1035,11 +1033,17 @@
 	<db-relationship name="courseClasses" source="Room" target="CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="roomId"/>
 	</db-relationship>
+	<db-relationship name="sessions" source="Room" target="Session" toMany="true">
+		<db-attribute-pair source="id" target="roomId"/>
+	</db-relationship>
 	<db-relationship name="site" source="Room" target="Site" toMany="false">
 		<db-attribute-pair source="siteId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggable" source="Room" target="Taggable" toDependentPK="true" toMany="false">
 		<db-attribute-pair source="id" target="id"/>
+	</db-relationship>
+	<db-relationship name="room" source="Session" target="Room" toMany="false">
+		<db-attribute-pair source="roomId" target="id"/>
 	</db-relationship>
 	<db-relationship name="sessionCourseClass" source="Session" target="Taggable" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
@@ -1276,7 +1280,10 @@
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
+	<obj-relationship name="sessions" source="Room" target="Session" deleteRule="Deny" db-relationship-path="sessions.room.sessions.taggable"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="rooms.site.taggable"/>
+	<obj-relationship name="courseClass" source="Session" target="CourseClass" deleteRule="Nullify" db-relationship-path="sessions.sessionCourseClass"/>
+	<obj-relationship name="room" source="Session" target="Room" deleteRule="Nullify" db-relationship-path="sessions.room.taggable"/>
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolments"/>
 	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Cascade" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Cascade" db-relationship-path="studentsWaitingLists"/>

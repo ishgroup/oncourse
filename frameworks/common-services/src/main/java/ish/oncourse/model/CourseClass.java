@@ -171,7 +171,6 @@ public class CourseClass extends _CourseClass {
 
 	public boolean isHasAnyTimelineableSessions() {
 		for (Session session : getSessions()) {
-
 			if (session.hasStartAndEndTimestamps()) {
 				return true;
 			}
@@ -322,4 +321,18 @@ public class CourseClass extends _CourseClass {
 		return latest;
 	}
 
+	/**
+	 * @return all sessions that satisfy hasStartAndEndTimestamps
+	 * @see Session#hasStartAndEndTimestamps()
+	 */
+	public List<Session> getTimelineableSessions() {
+		List<Session> classSessions = getSessions();
+		List<Session> validSessions = new ArrayList<Session>();
+		for (Session s : classSessions) {
+			if (s.hasStartAndEndTimestamps()) {
+				validSessions.add(s);
+			}
+		}
+		return validSessions;
+	}
 }

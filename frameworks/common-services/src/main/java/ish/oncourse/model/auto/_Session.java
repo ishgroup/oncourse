@@ -2,6 +2,8 @@ package ish.oncourse.model.auto;
 
 import java.util.Date;
 
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Room;
 import ish.oncourse.model.Taggable;
 
 /**
@@ -12,21 +14,14 @@ import ish.oncourse.model.Taggable;
  */
 public abstract class _Session extends Taggable {
 
-    public static final String COURSE_CLASS_ID_PROPERTY = "courseClassId";
     public static final String END_TIMESTAMP_PROPERTY = "endTimestamp";
     public static final String MARKER_ID_PROPERTY = "markerID";
-    public static final String ROOM_ID_PROPERTY = "roomId";
     public static final String START_TIMESTAMP_PROPERTY = "startTimestamp";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
+    public static final String COURSE_CLASS_PROPERTY = "courseClass";
+    public static final String ROOM_PROPERTY = "room";
 
     public static final String ID_PK_COLUMN = "id";
-
-    public void setCourseClassId(Long courseClassId) {
-        writeProperty("courseClassId", courseClassId);
-    }
-    public Long getCourseClassId() {
-        return (Long)readProperty("courseClassId");
-    }
 
     public void setEndTimestamp(Date endTimestamp) {
         writeProperty("endTimestamp", endTimestamp);
@@ -42,13 +37,6 @@ public abstract class _Session extends Taggable {
         return (Long)readProperty("markerID");
     }
 
-    public void setRoomId(Long roomId) {
-        writeProperty("roomId", roomId);
-    }
-    public Long getRoomId() {
-        return (Long)readProperty("roomId");
-    }
-
     public void setStartTimestamp(Date startTimestamp) {
         writeProperty("startTimestamp", startTimestamp);
     }
@@ -62,5 +50,17 @@ public abstract class _Session extends Taggable {
     public String getTimeZone() {
         return (String)readProperty("timeZone");
     }
+
+
+    public CourseClass getCourseClass() {
+        return (CourseClass)readProperty("courseClass");
+    }
+
+
+
+    public Room getRoom() {
+        return (Room)readProperty("room");
+    }
+
 
 }

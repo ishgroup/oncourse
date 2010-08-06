@@ -1,5 +1,8 @@
 package ish.oncourse.model.auto;
 
+import java.util.List;
+
+import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Taggable;
 
@@ -18,6 +21,7 @@ public abstract class _Room extends Taggable {
     public static final String FACILITIES_TEXTILE_PROPERTY = "facilitiesTextile";
     public static final String NAME_PROPERTY = "name";
     public static final String SITE_ID_PROPERTY = "siteId";
+    public static final String SESSIONS_PROPERTY = "sessions";
     public static final String SITE_PROPERTY = "site";
 
     public static final String ID_PK_COLUMN = "id";
@@ -70,6 +74,12 @@ public abstract class _Room extends Taggable {
     public Long getSiteId() {
         return (Long)readProperty("siteId");
     }
+
+    @SuppressWarnings("unchecked")
+    public List<Session> getSessions() {
+        return (List<Session>)readProperty("sessions");
+    }
+
 
 
     public Site getSite() {

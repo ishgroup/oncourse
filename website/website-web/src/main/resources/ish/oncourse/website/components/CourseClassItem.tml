@@ -100,10 +100,10 @@
       </div>
       <!-- sessions for all classes, displayed for tutor portal, hidden otherwise -->
       <t:if test="courseClass.hasAnyTimelineableSessions">
-        <div id="sessions_for_class_${courseClass.id}" class="~'sessions_for_class${sessionForClass}"> 
-        	<span t:type="TimetableEvents" displayedObjects="courseClass.timelineableSessions.@sort.room.site.name,startTimestamp"
-        	 headerLabels="When,Time,Where" cssTableClass="session-table" cssEvenRowClass="tr-even" cssOddRowClass="tr-odd" 
-        	 dateFormat="EEE dd MMM yyyy" timeFormat="hh:mma" /> </div>
+        <div id="sessions_for_class_${courseClass.id}" class="sessions_for_class${sessionForClass}"> 
+        	<span t:type="TimetableEvents" displayedObjects="sortedTimelineableSessions"
+        	 headerLabels="timetableLabels" cssTableClass="cssTableClass" cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass" 
+        	 dateFormat="dateFormat" timeFormat="timeFormat" /> </div>
       </t:if>
     </t:if>		
 </div>
