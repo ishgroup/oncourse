@@ -30,6 +30,7 @@
 			binary="yes" 
 			action="put"
 			passive="yes"
+		        depends="yes"
 			remotedir="ish-static/onCourse/doc/${version.major}">
 			<fileset refid="upload.files"/>
 		</ftp>
