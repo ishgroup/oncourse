@@ -48,6 +48,7 @@
 	target: upload-ftp
 	=================================
 	-->
+	<!-- You have to call this target like this "ant -lib ../../lib/ant/commons-net.jar:../../lib/ant/jakarta-oro.jar upload" -->
 	<target name="upload-ftp" description="This uploads the documentation to the ish web site">
 		<fileset id="upload.files" dir="html">
 			<include name="**/*"/>

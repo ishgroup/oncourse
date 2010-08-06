@@ -949,7 +949,7 @@ exists in dist already, allowing NSIS tweaks to proceed without rebuilding the j
  	<target name="release-all" description="create all production builds" depends="clean, --build-common, --CayenneClassGenerator, release-osx, release-win, release-winservice, release-freebsd, release-unix">
  	</target>
 
-	<!-- You have to call this target like this "ant -lib ../lib/ant/commons-net.jar upload" -->
+	<!-- You have to call this target like this "ant -lib ../../lib/ant/commons-net.jar:../../lib/ant/jakarta-oro.jar upload" -->
 	<target name="upload" description="This uploads the final release files ready for download">
 		<fileset id="upload.files" dir="${server.distribution.dir}">
 			<include name="${server.dist.osx}"/>
