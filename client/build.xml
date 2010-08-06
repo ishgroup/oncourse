@@ -357,8 +357,8 @@
 		and JarBundler is here: http://informagen.com/JarBundler/ -->
 		<jarbundler dir="${distribution.dir}" verbose="true" name="onCourse"
 		    mainclass="ish.oncourse.AngelApp" icon="${client.resource.dir}/onCourse.icns"
-		    bundleid="au.ish.com.oncourse.client" version="${client.version}" build="${client.version} (${svnVersion})"
-		    infostring="onCourse client ${client.version}, build ${svnVersion}" shortname="onCourse"
+		    bundleid="au.ish.com.oncourse.client" version="release ${version.number}" build="${version.number} (${svnVersion})"
+		    infostring="onCourse client ${version.number}, build ${svnVersion}" shortname="onCourse"
 		    jvmversion="1.4+" signature="ishO" type="APPL" vmoptions="-Xmx${client.maxmemory}" showplist="false" stubfile="onCourseClient">
 			<javaproperty name="apple.laf.useScreenMenuBar" value="true"/> <!-- single menu -->
 			<javaproperty name="JFileChooser.packageIsTraversable" value="true"/>

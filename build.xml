@@ -223,7 +223,7 @@
 			action="mkdir"
 			remotedir="ish-static/onCourse/${version.number}"/>
 
-                <ftp 
+		<ftp 
 			server="ftp.ish.com.au"
 			userid="${ftpUser}"
 			password="${ftpPass}"

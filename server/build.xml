@@ -554,8 +554,8 @@
 			and JarBundler is here: http://informagen.com/JarBundler/ -->
 		<jarbundler dir="${server.distribution.dir}" verbose="true" name="onCourse server"
 			 mainclass="ish.oncourse.server.AngelServer" icon="${server.resource.dir}/packaging/macosx/onCourseServer.icns"
-			 bundleid="au.ish.com.oncourse.server" version="${server.version}" build="${server.version} (${svnVersion})"
-			 infostring="onCourse server ${server.version}, build ${svnVersion}" shortname="onCourse server" 
+			 bundleid="au.ish.com.oncourse.server" version="release ${version.number}" build="${version.number} (${svnVersion})"
+			 infostring="onCourse server ${version.number}, build ${svnVersion}" shortname="onCourse server" 
 			jvmversion="1.5+" signature="ishS" type="APPL" vmoptions="-Xmx${server.maxmemory}" stubfile="onCourseServer">
 			<javaproperty name="apple.laf.useScreenMenuBar" value="true" /> <!-- single menu -->
 			<javaproperty name="JFileChooser.packageIsTraversable" value="true" />
@@ -843,7 +843,7 @@ exists in dist already, allowing NSIS tweaks to proceed without rebuilding the j
 		<!--Calculate hashes of all files and replace tokens in +CONTENTS
 		   +COMMENT file needs to have it's version number replaced first
 		   as it's md5 sum will have to go into the +CONTENTS file-->
-		<replace file="${server.distribution.dir}/freebsd/+COMMENT" value="${server.unix.pkgversion}">
+		<replace file="${server.distribution.dir}/freebsd/+COMMENT" value="${version.number}">
 			<replacetoken>@onCourse.version@</replacetoken> 
 		</replace>
 		<checksum file="${server.distribution.dir}/freebsd/+COMMENT" property="hash_comment" />
@@ -852,7 +852,7 @@ exists in dist already, allowing NSIS tweaks to proceed without rebuilding the j
 		<checksum file="${server.distribution.dir}/freebsd/onCourse/onCourseServer.jar" property="hash_onCourseServer.jar" />  
 		<checksum file="${server.distribution.dir}/freebsd/onCourse/onCourseServer" property="hash_onCourseServer" />	
 		
-		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${server.unix.pkgversion}">
+		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${version.number}">
 			<replacetoken>@onCourse.version@</replacetoken>
 		</replace>
 		<replace file="${server.distribution.dir}/freebsd/+CONTENTS" value="${hash_onCourseServer.jar}">
