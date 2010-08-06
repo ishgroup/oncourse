@@ -5,25 +5,22 @@
 ====================================================
 -->
 <project name="docbook" default="build" basedir=".">
-	<import file="../../build.xml"/>
-	
-
-
-	<!--
+  <!--
 	=================================
 	target: upload-ftp
 	=================================
 	-->
 	<target name="upload-ftp" description="This uploads the final release files ready for download">
 	  <fileset id="upload.files" dir="html">
-			<include name="*.html"/>
+			<include name="*"/>
+			<exclude name=".svn"/>
 		</fileset>
 		<ftp 
 			server="ftp.ish.com.au"
 			userid="${ftpUser}"
 			password="${ftpPass}"
 			action="mkdir"
-			remotedir="ish-static/onCourse/doc/${version.major}"/>
+			remotedir="ish-static/onCourse/doc/2.0"/>
 
                 <ftp 
 			server="ftp.ish.com.au"
@@ -32,7 +29,7 @@
 			binary="yes" 
 			action="put"
 			passive="yes"
-			remotedir="ish-static/onCourse/doc/${version.major}">
+			remotedir="ish-static/onCourse/doc/2.0">
 			<fileset refid="upload.files"/>
 		</ftp>
 	</target>
