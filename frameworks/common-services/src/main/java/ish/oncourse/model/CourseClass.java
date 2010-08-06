@@ -21,6 +21,9 @@ import org.apache.commons.lang.time.DateUtils;
 
 public class CourseClass extends _CourseClass {
 
+	public static final int EARLIEST_END_FOR_EVENING = 18;
+	public static final int LATEST_START_FOR_DAYTIME = 18;
+
 	private Set<String> daysOfWeek;
 
 	public Integer getId() {
@@ -241,6 +244,82 @@ public class CourseClass extends _CourseClass {
 			}
 		}
 		return daysOfWeek;
+	}
+
+	public boolean isDaytime() {
+		Integer earliest = getEarliestSessionStartHour();
+		// current definition is that any session that starts before 6 pm is
+		// daytime
+		if (earliest == null) {
+			Calendar t = Calendar.getInstance(TimeZone
+					.getTimeZone(getTimeZone()));
+			// no sessions, so guess from start and end dates
+			if (getStartDate() != null) {
+				t.setTime(getStartDate());
+				if (t.get(Calendar.HOUR_OF_DAY) < EARLIEST_END_FOR_EVENING) {
+					return true;
+				}
+			}
+			if (getEndDate() != null) {
+				t.setTime(getEndDate());
+				if (t.get(Calendar.HOUR_OF_DAY) < EARLIEST_END_FOR_EVENING) {
+					return true;
+				}
+			}
+			return false;
+		}
+		return earliest != null && earliest < LATEST_START_FOR_DAYTIME;
+	}
+
+	public Integer getEarliestSessionStartHour() {
+		Integer earliest = null;
+		for (Session session : getSessions()) {
+			Calendar start = Calendar.getInstance();
+			start.setTime(session.getStartTimestamp());
+			Integer sessionStartHour = start.get(Calendar.HOUR_OF_DAY);
+			if (sessionStartHour < earliest) {
+				earliest = sessionStartHour;
+			}
+		}
+		return earliest;
+	}
+
+	public boolean isEvening() {
+		Integer latest = getLatestSessionEndHour();
+		// current definition is that any session that ends on or after 6 pm is
+		// evening
+		if (latest == null) {
+			Calendar t = Calendar.getInstance(TimeZone
+					.getTimeZone(getTimeZone()));
+			// no sessions, so guess from start and end dates
+			if (getStartDate() != null) {
+				t.setTime(getStartDate());
+				if (t.get(Calendar.HOUR_OF_DAY) >= EARLIEST_END_FOR_EVENING) {
+					return true;
+				}
+			}
+			if (getEndDate() != null) {
+				t.setTime(getEndDate());
+				if (t.get(Calendar.HOUR_OF_DAY) >= EARLIEST_END_FOR_EVENING) {
+					return true;
+				}
+			}
+			return false;
+		}
+		return latest >= EARLIEST_END_FOR_EVENING;
+	}
+
+	public Integer getLatestSessionEndHour() {
+		Integer latest = null;
+		for (Session session : getSessions()) {
+			Calendar end = Calendar.getInstance();
+			end.setTime(session.getEndTimestamp());
+			Integer sessionEndHour = end.get(Calendar.HOUR_OF_DAY);
+			if (sessionEndHour > latest) {
+				latest = sessionEndHour;
+			}
+		}
+		return latest;
 	}
 
 }

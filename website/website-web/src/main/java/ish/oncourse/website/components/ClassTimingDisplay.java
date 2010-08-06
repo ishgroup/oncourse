@@ -61,9 +61,9 @@ public class ClassTimingDisplay {
 																		 * from
 																		 * AbstractSearchListingView
 																		 * :
-																		 * isSearchingWeekday
-																		 * (),
 																		 * isSearchingWeekend
+																		 * (),
+																		 * isSearchingWeekday
 																		 * ()
 																		 */,
 						this.stringListItem);
@@ -102,28 +102,27 @@ public class ClassTimingDisplay {
 	}
 
 	public String getDaytimeClass() {
-		boolean flag = true;// TODO Boolean.TRUE.equals( courseClass.isDaytime()
-							// );
+		boolean flag = Boolean.TRUE.equals(courseClass.isDaytime());
 		return "timing-daytime match-10 timing-daytime-"
 				+ cssClassSuffix(flag, false, false/*
 													 * TODO implement methods
 													 * from
 													 * AbstractSearchListingView
-													 * : isSearchingWeekday(),
-													 * isSearchingWeekend()
+													 * : isSearchingDayTime(),
+													 * isSearchingEveningTime()
 													 */);
 	}
 
 	public String getEveningClass() {
-		boolean flag = true;// TODO Boolean.TRUE.equals( getObject().isEvening()
-							// );
+		boolean flag = Boolean.TRUE.equals(courseClass.isEvening());
 		return "timing-evening match-10 timing-evening-"
 				+ cssClassSuffix(flag, false, false/*
 													 * TODO implement methods
 													 * from
 													 * AbstractSearchListingView
-													 * : isSearchingWeekday(),
-													 * isSearchingWeekend()
+													 * :
+													 * isSearchingEveningTime(),
+													 * isSearchingDayTime()
 													 */);
 	}
 }
