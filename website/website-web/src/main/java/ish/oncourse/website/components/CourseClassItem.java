@@ -68,6 +68,11 @@ public class CourseClassItem {
 	}
 
 	public boolean isTutorPortal() {
+		// if ( context().page() instanceof TutorClasses )
+		// {
+		// return ( ( TutorClasses )context().page() ).isTutor();
+		// }
+		// return false;
 		return true;
 	}
 

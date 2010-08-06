@@ -97,20 +97,7 @@ public class WaitingListItem {
 			return null;
 		}
 		try {
-			// TODO implement the method in studentService:
-			// public WaitingList activeWaitingListForCourse( Course course )
-			// {
-			// NSArray waits = waitingLists( WaitingList.COURSE.eq( course
-			// ).and( EOQualifier.qualifierWithQualifierFormat(
-			// "not (isDeleted > 0)", null ) ), true );
-			// if ( waits.count() > 0 )
-			// {
-			// return ( WaitingList )waits.lastObject();
-			// }
-			// return null;
-			// }
-
-			// return student.activeWaitingListForCourse( course );
+			return student.getActiveWaitingListForCourse( course );
 		} catch (Exception e) {
 			// ignore
 		}
@@ -125,8 +112,7 @@ public class WaitingListItem {
 			return null;
 		}
 		try {
-			// TODO implement the method in studentService
-			// return student.activeWaitingListForCourse( course );
+			 return student.getActiveWaitingListForCourse( course );
 		} catch (Exception e) {
 			// ignore
 		}

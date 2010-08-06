@@ -45,20 +45,29 @@ public class Student extends _Student {
 		if (enrolments == null || enrolments.size() == 0) {
 			return new ArrayList<Enrolment>();
 		}
-		Expression qualifier = ExpressionFactory
-				.matchExp(Enrolment.STATUS_PROPERTY, 0/*
-													 * TODO
-													 * Payment.STATUS_SUCCEEDED
-													 */)
-				.andExp(
-						ExpressionFactory
-								.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "."
-										+ CourseClass.CANCELLED_PROPERTY, false))
-				.andExp(
-						ExpressionFactory.matchExp(
-								Enrolment.COURSE_CLASS_PROPERTY + "."
-										+ CourseClass.DELETED_PROPERTY, false));
+		Expression qualifier = ExpressionFactory.matchExp(
+				Enrolment.STATUS_PROPERTY, 0/*
+											 * TODO Payment.STATUS_SUCCEEDED
+											 */).andExp(
+				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY
+						+ "." + CourseClass.CANCELLED_PROPERTY, false)).andExp(
+				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY
+						+ "." + CourseClass.DELETED_PROPERTY, false));
 		return qualifier.filterObjects(enrolments);
+	}
+
+	public WaitingList getActiveWaitingListForCourse(Course course) {
+
+		List<WaitingList> waits = getWaitingLists();
+		Expression qualifier = ExpressionFactory.matchExp(
+				WaitingList.COURSE_PROPERTY, course).andExp(
+				ExpressionFactory.matchExp(WaitingList.IS_DELETED_PROPERTY,
+						false));
+		waits = qualifier.filterObjects(waits);
+		if (waits.size() > 0) {
+			return (WaitingList) waits.get(waits.size() - 1);
+		}
+		return null;
 	}
 
 }
