@@ -14,7 +14,7 @@ public class ImageTextileValidator implements IValidator {
 			errors
 					.addFailure("The image tag '"
 							+ tag
-							+ "' doesn't match nor {image:id=\"id\"}, nor {image:name=\"name\"}");
+							+ "' doesn't match nor {image id:\"id\"}, nor {image name:\"name\"}");
 		}
 	}
 
