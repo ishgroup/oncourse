@@ -424,7 +424,7 @@
 	=================================
 	-->
 	<target name="createbundle-win" description="create Windows executable" depends="clean, buildJarWithDependencies">
-		    <exe4j projectfile="${client.resource.dir}/packaging/windows/client.exe4j" release="${client.version.windows}"/>
+		    <exe4j projectfile="${client.resource.dir}/packaging/windows/client.exe4j" release="${version.windows}"/>
 	</target>
        
 	<!--
