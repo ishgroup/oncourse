@@ -133,8 +133,8 @@
 				<attribute name="Main-Class" value="${main.class}"/>
 				<attribute name="ClientServer-WedVersion" value="${clientServerWedVersion}"/>
 				<attribute name="Implementation-Version" value="${svnVersion}"/>
-				<attribute name="Friendly-ClientVersion" value="${client.version.number}"/>
-				<attribute name="Friendly-ServerVersion" value="${server.version.number}"/>
+				<attribute name="Friendly-ClientVersion" value="${version.number}"/>
+				<attribute name="Friendly-ServerVersion" value="${version.number}"/>
 				<attribute name="License" value="${license.bypass}"/>
         	</manifest>
 		</jar>
@@ -150,8 +150,8 @@
 				<attribute name="Main-Class" value="${main.class}"/>
 				<attribute name="ClientServer-WedVersion" value="${clientServerWedVersion}"/>
 				<attribute name="Implementation-Version" value="${svnVersion}"/>
-				<attribute name="Friendly-ClientVersion" value="${client.version.number}"/>
-				<attribute name="Friendly-ServerVersion" value="${server.version.number}"/>
+				<attribute name="Friendly-ClientVersion" value="${version.number}"/>
+				<attribute name="Friendly-ServerVersion" value="${version.number}"/>
 				<attribute name="License" value="${license.bypass}"/>
         	</manifest>
 		</jar>
@@ -221,7 +221,7 @@
 			userid="${ftpUser}"
 			password="${ftpPass}"
 			action="mkdir"
-			remotedir="ish-static/onCourse/${client.version.number}"/>
+			remotedir="ish-static/onCourse/${version.number}"/>
 
                 <ftp 
 			server="ftp.ish.com.au"
@@ -230,7 +230,7 @@
 			binary="yes" 
 			action="put"
 			passive="yes"
-			remotedir="ish-static/onCourse/${client.version.number}">
+			remotedir="ish-static/onCourse/${version.number}">
 			<fileset refid="upload.files"/>
 		</ftp>
 	</target>

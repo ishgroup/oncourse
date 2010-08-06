@@ -475,7 +475,7 @@
 		</java>
 	</target>
 	
-	<target name="--profile" depends="buildjar">
+	<target name="profile" depends="buildjar">
 			<property name="runtime.soap.debug" value="false" />
 			<property name="runtime.soap.disabled" value="false" />
 			<echo message="replication.batchsize = ${replication.batchsize}" />
