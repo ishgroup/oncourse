@@ -10,8 +10,8 @@ public class ImageTextileRenderer extends AbstractRenderer {
 		validator = new ImageTextileValidator();
 	}
 
-	public String render(String tag, ValidationErrors errors,
-			IBinaryDataService binaryDataService) {
+	public String render(String tag, ValidationErrors errors, Object dataService) {
+		IBinaryDataService binaryDataService = (IBinaryDataService) dataService;
 		tag = super.render(tag, errors, binaryDataService);
 		if (!errors.hasFailures()) {
 			BinaryInfo imageBinaryInfo = null;
@@ -26,14 +26,14 @@ public class ImageTextileRenderer extends AbstractRenderer {
 			}
 
 			// TODO replace this by reading BinaryData content
-			////////////////////////////////
+			// //////////////////////////////
 			String extension = imageBinaryInfo.getMimeType().replace("image/",
 					"");
 			if ("jpeg".equals(extension)) {
 				extension = "jpg";
 			}
 			String path = imageBinaryInfo.getName() + "." + extension;
-			//////////////////////////////
+			// ////////////////////////////
 
 			// the image content will be displayed by ImageServlet
 			path = "/servlet/image?id=" + imageBinaryInfo.getId();

@@ -16,6 +16,8 @@ public class TextileConverter implements ITextileConverter {
 	@Inject 
 	private IBinaryDataService binaryDataService;
 
+	private Object dataService;
+	
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
 	public String convert(String content) throws ValidationException {
@@ -30,7 +32,7 @@ public class TextileConverter implements ITextileConverter {
 			String tag = matcher.group();
 			IRenderer renderer = getRendererForTag(tag);
 			if (renderer != null) {
-				String replacement = renderer.render(tag, errors, binaryDataService);
+				String replacement = renderer.render(tag, errors, dataService);
 				if (!errors.hasFailures() && replacement != null) {
 					result = result.replace(tag, replacement);
 				}
@@ -63,7 +65,11 @@ public class TextileConverter implements ITextileConverter {
 	private IRenderer createRendererForType(TextileType type) {
 		switch (type) {
 		case IMAGE:
+			dataService = binaryDataService;
 			return new ImageTextileRenderer();
+		case BLOCK:
+			//TODO define service for the block textiles
+			return new BlockTextileRenderer();
 		}
 		return null;
 	}

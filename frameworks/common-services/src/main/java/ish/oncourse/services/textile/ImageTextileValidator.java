@@ -7,10 +7,10 @@ import ish.oncourse.util.ValidationErrors;
 public class ImageTextileValidator implements IValidator {
 
 	public void validate(String tag, ValidationErrors errors,
-			IBinaryDataService binaryDataService) {
+			Object dataService) {
 		tag = tag.replaceAll(" ", "");
 
-		if (getImageBinaryInfoByTag(tag, errors, binaryDataService) == null) {
+		if (getImageBinaryInfoByTag(tag, errors, dataService) == null) {
 			errors
 					.addFailure("The image tag '"
 							+ tag
@@ -19,7 +19,8 @@ public class ImageTextileValidator implements IValidator {
 	}
 
 	public BinaryInfo getImageBinaryInfoByTag(String tag,
-			ValidationErrors errors, IBinaryDataService binaryDataService) {
+			ValidationErrors errors, Object dataService) {
+		IBinaryDataService binaryDataService = (IBinaryDataService) dataService;
 		BinaryInfo result = null;
 		if (tag.matches(TextileUtil.IMAGE_ID_REGEXP)) {
 			String id = TextileUtil.getValueInFirstQuots(tag);
