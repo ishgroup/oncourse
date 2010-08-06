@@ -5,14 +5,51 @@
 ====================================================
 -->
 <project name="docbook" default="build" basedir=".">
-   <import file="../../build.xml"/>
-  <!--
+	<import file="../../build.xml"/>
+
+	<property name="xml.input" value="manual/oncourse-manual.xml"/>
+
+	<target name="clean">
+		<delete dir="html"/>
+		<mkdir dir="html"/>
+		<delete dir="pdf"/>
+		<mkdir dir="pdf"/>
+	</target>
+	
+	<target name="html" description="Build the html documentation">
+		<copy overwrite="true" preservelastmodified="true" file="stylesheets/ish.css" todir="html/css/"/>
+		<copy overwrite="true" preservelastmodified="true" todir="html/images">
+			<fileset dir="manual/images"/>
+		</copy>
+		<exec executable="xsltproc">
+			<arg line="--output html/oncourse-manual.html"/>
+			<arg line="--xinclude"/>
+			<arg line="stylesheets/html.xsl ${xml.input}"/>
+		</exec>
+	</target>
+	
+	<target name="pdf" description="Build the pdf documentation">
+		<exec executable="xsltproc">
+			<arg line="--output pdf/oncourse-manual.fo"/>
+			<arg line="--xinclude"/>
+			<arg line="stylesheets/pdf.xsl ${xml.input}"/>
+		</exec>
+		<exec executable="fop">
+			<arg line="-fo pdf/oncourse-manual.fo"/>
+			<arg line="-pdf pdf/oncourse-manual.pdf"/>
+		</exec>
+		<delete file="pdf/oncourse-manual.fo"/>
+	</target>
+	
+	<target name="build" description="Build the pdf and html documentation" depends="pdf, html"/>
+		
+	<!--
 	=================================
 	target: upload-ftp
 	=================================
 	-->
-	<target name="upload-ftp" description="This uploads the final release files ready for download">
-	  <fileset id="upload.files" dir="html">
+	<target name="upload-ftp" description="This uploads the documentation to the ish web site">
+		<fileset id="upload.files" dir="html">
 			<include name="**/*"/>
 			<exclude name=".svn"/>
 		</fileset>
@@ -21,17 +58,18 @@
 			userid="${ftpUser}"
 			password="${ftpPass}"
 			action="mkdir"
-			remotedir="ish-static/onCourse/doc/${version.major}"/>
+			remotedir="ish-static/onCourse/doc/${version.major}"
+		/>
 
-                <ftp 
+		<ftp 
 			server="ftp.ish.com.au"
 			userid="${ftpUser}"
 			password="${ftpPass}"
 			binary="yes" 
 			action="put"
 			passive="yes"
-		        depends="yes"
-		        remotedir="ish-static/onCourse/doc/${version.major}">
+			depends="yes"
+			remotedir="ish-static/onCourse/doc/${version.major}">
 			<fileset refid="upload.files"/>
 		</ftp>
 	</target>
