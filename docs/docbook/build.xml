@@ -21,7 +21,7 @@
 			userid="${ftpUser}"
 			password="${ftpPass}"
 			action="mkdir"
-			remotedir="ish-static/onCourse/doc/${version.major}{"/>
+			remotedir="ish-static/onCourse/doc/${version.major}"/>
 
                 <ftp 
 			server="ftp.ish.com.au"
