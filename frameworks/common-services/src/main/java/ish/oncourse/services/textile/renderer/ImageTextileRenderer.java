@@ -1,7 +1,9 @@
-package ish.oncourse.services.textile;
+package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.validator.ImageTextileValidator;
 import ish.oncourse.util.ValidationErrors;
 
 public class ImageTextileRenderer extends AbstractRenderer {

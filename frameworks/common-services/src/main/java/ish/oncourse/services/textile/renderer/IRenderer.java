@@ -1,4 +1,4 @@
-package ish.oncourse.services.textile;
+package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.util.ValidationErrors;
 

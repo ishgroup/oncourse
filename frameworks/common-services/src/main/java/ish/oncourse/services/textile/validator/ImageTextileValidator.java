@@ -1,15 +1,14 @@
-package ish.oncourse.services.textile;
+package ish.oncourse.services.textile.validator;
 
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 
 public class ImageTextileValidator implements IValidator {
 
 	public void validate(String tag, ValidationErrors errors,
 			Object dataService) {
-		tag = tag.replaceAll(" ", "");
-
 		if (getImageBinaryInfoByTag(tag, errors, dataService) == null) {
 			errors
 					.addFailure("The image tag '"

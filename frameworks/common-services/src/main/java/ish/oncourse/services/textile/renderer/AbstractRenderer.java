@@ -1,5 +1,6 @@
-package ish.oncourse.services.textile;
+package ish.oncourse.services.textile.renderer;
 
+import ish.oncourse.services.textile.validator.IValidator;
 import ish.oncourse.util.ValidationErrors;
 
 public abstract class AbstractRenderer implements IRenderer {

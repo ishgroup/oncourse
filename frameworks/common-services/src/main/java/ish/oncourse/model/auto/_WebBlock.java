@@ -20,6 +20,7 @@ public abstract class _WebBlock extends CayenneDataObject {
     public static final String CONTENT_TEXTILE_PROPERTY = "contentTextile";
     public static final String CREATED_PROPERTY = "created";
     public static final String DELETED_PROPERTY = "deleted";
+    public static final String ID_PROPERTY = "id";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String REGION_KEY_PROPERTY = "regionKey";
@@ -62,6 +63,13 @@ public abstract class _WebBlock extends CayenneDataObject {
     }
     public Boolean getDeleted() {
         return (Boolean)readProperty("deleted");
+    }
+
+    public void setId(Long id) {
+        writeProperty("id", id);
+    }
+    public Long getId() {
+        return (Long)readProperty("id");
     }
 
     public void setModified(Date modified) {

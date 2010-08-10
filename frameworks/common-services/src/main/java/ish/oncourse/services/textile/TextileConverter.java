@@ -1,6 +1,10 @@
 package ish.oncourse.services.textile;
 
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.block.IWebBlockService;
+import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
+import ish.oncourse.services.textile.renderer.IRenderer;
+import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
 
@@ -13,11 +17,14 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class TextileConverter implements ITextileConverter {
 
-	@Inject 
+	@Inject
 	private IBinaryDataService binaryDataService;
 
+	@Inject
+	private IWebBlockService webBlockService;
+
 	private Object dataService;
-	
+
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
 	public String convert(String content) throws ValidationException {
@@ -26,7 +33,6 @@ public class TextileConverter implements ITextileConverter {
 		Matcher matcher = pattern.matcher(content);
 		String result = content;
 		ValidationErrors errors = new ValidationErrors();
-		
 
 		while (matcher.find()) {
 			String tag = matcher.group();
@@ -68,7 +74,7 @@ public class TextileConverter implements ITextileConverter {
 			dataService = binaryDataService;
 			return new ImageTextileRenderer();
 		case BLOCK:
-			//TODO define service for the block textiles
+			dataService = webBlockService;
 			return new BlockTextileRenderer();
 		}
 		return null;
