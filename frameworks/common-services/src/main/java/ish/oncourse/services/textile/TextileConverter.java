@@ -7,8 +7,6 @@ import ish.oncourse.services.textile.renderer.IRenderer;
 import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
 import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
 import ish.oncourse.util.ValidationErrors;
-import ish.oncourse.util.ValidationException;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -28,13 +26,12 @@ public class TextileConverter implements ITextileConverter {
 
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
-	public String convert(String content) throws ValidationException {
+	public String convert(String content, ValidationErrors errors){
 		String regex = "[{]((block)|(course)|(tags)|(page)|(video)|(image))([^}]*)[}]";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(content);
 		String result = content;
-		ValidationErrors errors = new ValidationErrors();
-
+		
 		while (matcher.find()) {
 			String tag = matcher.group();
 			IRenderer renderer = getRendererForTag(tag);
@@ -45,9 +42,7 @@ public class TextileConverter implements ITextileConverter {
 				}
 			}
 		}
-		if (errors.hasFailures()) {
-			throw new ValidationException(errors);
-		}
+
 		return result;
 	}
 

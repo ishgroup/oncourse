@@ -1,7 +1,7 @@
 package ish.oncourse.services.textile;
 
-import ish.oncourse.util.ValidationException;
+import ish.oncourse.util.ValidationErrors;
 
 public interface ITextileConverter {
-	String convert(String content) throws ValidationException;
+	String convert(String content, ValidationErrors errors);
 }
