@@ -5,6 +5,7 @@ import ish.oncourse.services.block.IWebBlockService;
 import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
 import ish.oncourse.services.textile.renderer.IRenderer;
 import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
+import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
 
@@ -76,6 +77,9 @@ public class TextileConverter implements ITextileConverter {
 		case BLOCK:
 			dataService = webBlockService;
 			return new BlockTextileRenderer();
+		case VIDEO:
+			dataService = binaryDataService;
+			return new VideoTextileRenderer();
 		}
 		return null;
 	}

@@ -11,13 +11,13 @@
 	</context-param>
 	
 	<servlet>
-    	<servlet-name>Image</servlet-name>
-    	<servlet-class>ish.oncourse.website.servlet.ImageServlet</servlet-class>
+    	<servlet-name>BinaryData</servlet-name>
+    	<servlet-class>ish.oncourse.website.servlet.BinaryDataServlet</servlet-class>
     </servlet> 
     
     <servlet-mapping>
-    	<servlet-name>Image</servlet-name>
-    	<url-pattern>/servlet/image</url-pattern>
+    	<servlet-name>BinaryData</servlet-name>
+    	<url-pattern>/servlet/binarydata</url-pattern>
     </servlet-mapping> 
      
 	<filter>

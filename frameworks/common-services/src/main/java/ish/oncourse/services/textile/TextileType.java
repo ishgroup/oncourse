@@ -1,7 +1,9 @@
 package ish.oncourse.services.textile;
 
 public enum TextileType {
-	IMAGE("\\{image([^}]*)}"), BLOCK("\\{block([^}]*)}");
+	IMAGE("\\{image([^}]*)}"), 
+	VIDEO("\\{video([^}]*)}"), 
+	BLOCK("\\{block([^}]*)}");
 	
 	private String regexp;
 	

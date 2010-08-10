@@ -18,7 +18,7 @@ import org.apache.tapestry5.internal.services.ResponseImpl;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.services.RequestGlobals;
 
-public class ImageServlet extends HttpServlet {
+public class BinaryDataServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -43,14 +43,14 @@ public class ImageServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		RequestGlobals requestGlobals = getService(RequestGlobals.class);
-		
+
 		requestGlobals.storeServletRequestResponse(req, resp);
-		
+
 		requestGlobals.storeRequestResponse(new RequestImpl(req, req
 				.getCharacterEncoding(),
 				new DefaultSessionPersistedObjectAnalyzer()), new ResponseImpl(
 				resp));
-		
+
 		super.service(req, resp);
 	}
 
