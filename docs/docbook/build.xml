@@ -21,7 +21,7 @@
 			<fileset dir="manual/images"/>
 		</copy>
 		<exec executable="xsltproc">
-			
+			<arg line="--output dist/manual/"/>
 			<arg line="--xinclude"/>
 			<arg line="stylesheets/html.xsl ${manual.input}"/>
 		</exec>
@@ -30,7 +30,7 @@
 			<fileset dir="manual-web/images"/>
 		</copy>
 		<exec executable="xsltproc">
-			
+			<arg line="--output dist/web/"/>
 			<arg line="--xinclude"/>
 			<arg line="stylesheets/html.xsl ${web.input}"/>
 		</exec>
