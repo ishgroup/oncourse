@@ -7,38 +7,46 @@
 <project name="docbook" default="build" basedir=".">
 	<import file="../../build.xml"/>
 
-	<property name="xml.input" value="manual/oncourse-manual.xml"/>
-
+	<property name="manual.input" value="manual/oncourse-manual.xml"/>
+	<property name="web.input" value="manual-web/website_administration.xml"/>
 	<target name="clean">
-		<delete dir="html"/>
-		<mkdir dir="html"/>
-		<delete dir="pdf"/>
-		<mkdir dir="pdf"/>
+		<delete dir="dist"/>
+		<mkdir dir="dist/web"/>
+		<mkdir dir="dist/manual" />
 	</target>
 	
 	<target name="html" description="Build the html documentation">
-		<copy overwrite="true" preservelastmodified="true" file="stylesheets/ish.css" todir="html/css/"/>
-		<copy overwrite="true" preservelastmodified="true" todir="html/images">
+		<copy overwrite="true" preservelastmodified="true" file="stylesheets/ish.css" todir="dist/manual/css/"/>
+		<copy overwrite="true" preservelastmodified="true" todir="dist/manual/images">
 			<fileset dir="manual/images"/>
 		</copy>
 		<exec executable="xsltproc">
-			<arg line="--output html/oncourse-manual.html"/>
+			
 			<arg line="--xinclude"/>
-			<arg line="stylesheets/html.xsl ${xml.input}"/>
+			<arg line="stylesheets/html.xsl ${manual.input}"/>
+		</exec>
+		<copy overwrite="true" preservelastmodified="true" file="stylesheets/ish.css" todir="dist/web/css/"/>
+		<copy overwrite="true" preservelastmodified="true" todir="dist/web/images">
+			<fileset dir="manual-web/images"/>
+		</copy>
+		<exec executable="xsltproc">
+			
+			<arg line="--xinclude"/>
+			<arg line="stylesheets/html.xsl ${web.input}"/>
 		</exec>
 	</target>
 	
 	<target name="pdf" description="Build the pdf documentation">
 		<exec executable="xsltproc">
-			<arg line="--output pdf/oncourse-manual.fo"/>
+			<arg line="--output dist/manual/oncourse-manual.fo"/>
 			<arg line="--xinclude"/>
-			<arg line="stylesheets/pdf.xsl ${xml.input}"/>
+			<arg line="stylesheets/pdf.xsl ${manual.input}"/>
 		</exec>
 		<exec executable="fop">
-			<arg line="-fo pdf/oncourse-manual.fo"/>
-			<arg line="-pdf pdf/oncourse-manual.pdf"/>
+			<arg line="-fo dist/manual/oncourse-manual.fo"/>
+			<arg line="-pdf dist/manual/oncourse-manual.pdf"/>
 		</exec>
-		<delete file="pdf/oncourse-manual.fo"/>
+		<delete file="dist/manual/oncourse-manual.fo"/>
 	</target>
 	
 	<target name="build" description="Build the pdf and html documentation" depends="pdf, html"/>
@@ -50,7 +58,7 @@
 	-->
 	<!-- You have to call this target like this "ant -lib ../../lib/ant/commons-net.jar:../../lib/ant/jakarta-oro.jar upload" -->
 	<target name="upload-ftp" description="This uploads the documentation to the ish web site">
-		<fileset id="upload.files" dir="html">
+		<fileset id="upload.files" dir="dist">
 			<include name="**/*"/>
 			<exclude name=".svn"/>
 		</fileset>
