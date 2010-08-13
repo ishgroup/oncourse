@@ -24,6 +24,7 @@
 		<module>cms</module>
 		<module>frameworks</module>
 		<module>website</module>
+		<module>searchapp</module>
 	</modules>
 
 

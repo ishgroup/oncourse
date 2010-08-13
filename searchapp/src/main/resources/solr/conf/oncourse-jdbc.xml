@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+    <dataSource name="onCourseDS" driver="com.mysql.jdbc.Driver"
+                url="jdbc:mysql://localhost:3306/willow_test" user="root" password="test"
+                readOnly="true" autoCommit="false"/>
+    <document>
+        <entity name="course" dataSource="onCourseDS"
+                query="select id, name, detail, code from course" pk="id">
+			<field name="id" column="id"/>
+			<field name="name" column="name"  />
+			<field name="detail" column="detail"  />
+            <field name="course_code" column="code"  />
+            <entity name="courseClass" query="select cc.id, cc.code from courseclass cc where courseid='${course.id}'" dataSource="onCourseDS" pk="cc.id">
+                <field name="id" column="cc.id"/>
+                <field name="class_code" column="cc.code"/>
+                <entity name="tutor" query="select t.firstName, t.lastName from tutor t
+                    inner join tutorrole tr on t.id = tr.tutorId
+                    inner join courseclass cc on tr.courseClassId=cc.id where cc.id='${courseClass.id}'" dataSource="onCourseDS">
+                    <field name="first_name" column="t.firstName"/>
+                    <field name="last_name" column="t.lastName"/>
+                </entity>
+            </entity>
+        </entity>
+    </document>
+</dataConfig>
