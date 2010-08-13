@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+
+	<t:if t:test="hasMapItemList">
+		<!--
+			TODO <t:if t:test="$hasTag"><t:output object="$tag"
+			displayKey="detail" escapeHTML="$false" /></t:if>
+		-->
+
+
+		<div id="focus-map" class="collapse">
+			<t:if t:test="hasLocation">
+			<div id="directions" class="blockwrap">
+
+					<t:if t:test="hideDirections" negate="true">
+						<h3 class="blockhead">Directions</h3>
+						<form id="getdir" onsubmit="dirLoad(); return false;" method="post">
+							<dl class="details">
+								<dt>From:</dt>
+								<dd>
+									<input type="text" size="25" id="from" name="from"
+										value="${directionsFrom}" />
+									<input name="submit" type="submit" value="Get Directions!"
+										class="getDirections" />
+								</dd>
+							</dl>
+						</form>
+
+						<div id="dirtxt" class="column left"></div>
+						<div id="${dirMapId}" class="column right mapCollapsed"></div>
+					</t:if>
+				</div>
+				<t:if t:test="${collapseLocationMap}">
+					<p class="showLocationMap">
+						<a href="">Show location map</a>
+					</p>
+				</t:if>
+				<div id="location" class="${locationClass}">
+					<h3 class="blockhead">Location</h3>
+					<div id="${mapClass}" style="width:500px; height:500px"></div>
+				</div>
+				
+				<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"/>
+				<script type="text/javascript" src="js/gmap.js"/>
+				<script type="text/javascript">
+					var vLatitude = "${mapPositionLatitude}";
+					var vLongitude = "${mapPositionLongitude}";
+					var near ="${searchingNear}";
+					var vSiteAddress = "${address}";
+					var vFrom ="${directionsFrom}";
+					var showNearMarker ="${hasGlobalPosition}";
+					var showMapItems = "${showMapItems}";
+					var latlng = new google.maps.LatLng(vLatitude,vLongitude);
+					var map;
+					var loadMap=mapLoad("${mapClass}",${sitesArray});
+				</script>	
+			</t:if>
+		</div>
+	</t:if>
+</t:container>

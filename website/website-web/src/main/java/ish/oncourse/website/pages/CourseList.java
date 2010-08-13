@@ -7,6 +7,7 @@ import java.util.Set;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.course.ICourseService;
 
@@ -34,8 +35,8 @@ public class CourseList {
 		Set<Site> sites = new HashSet<Site>();
 		for (Course course : courses) {
 			for (CourseClass courseClass : course.getClasses()) {
-				if (courseClass.getRoom() != null) {
-					sites.add(courseClass.getRoom().getSite());
+				for(Session s:courseClass.getSessions()){
+					sites.add(s.getRoom().getSite());
 				}
 			}
 		}
