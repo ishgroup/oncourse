@@ -16,7 +16,9 @@
 	</target>
 	
 	<target name="html" description="Build the html documentation">
-		<copy overwrite="true" preservelastmodified="true" file="stylesheets/ish.css" todir="dist/manual/css/"/>
+		<copy overwrite="true" preservelastmodified="true" todir="dist/manual/css/">
+			<fileset dir="css"/>
+		</copy>
 		<copy overwrite="true" preservelastmodified="true" todir="dist/manual/images">
 			<fileset dir="manual/images"/>
 		</copy>
@@ -25,7 +27,10 @@
 			<arg line="--xinclude"/>
 			<arg line="stylesheets/html.xsl ${manual.input}"/>
 		</exec>
-		<copy overwrite="true" preservelastmodified="true" file="stylesheets/ish.css" todir="dist/web/css/"/>
+		
+		<copy overwrite="true" preservelastmodified="true" todir="dist/web/css/">
+			<fileset dir="css"/>
+		</copy>
 		<copy overwrite="true" preservelastmodified="true" todir="dist/web/images">
 			<fileset dir="manual-web/images"/>
 		</copy>
