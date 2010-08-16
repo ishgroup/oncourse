@@ -279,7 +279,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tapestry5version>5.2.0-SNAPSHOT</tapestry5version>
+		<tapestry5version>5.2.0</tapestry5version>
 	</properties>
 
 </project>
