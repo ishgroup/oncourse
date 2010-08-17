@@ -12,6 +12,7 @@ public class ImageTextileRenderer extends AbstractRenderer {
 		validator = new ImageTextileValidator();
 	}
 
+	@Override
 	public String render(String tag, ValidationErrors errors, Object dataService) {
 		IBinaryDataService binaryDataService = (IBinaryDataService) dataService;
 		tag = super.render(tag, errors, binaryDataService);
@@ -38,7 +39,7 @@ public class ImageTextileRenderer extends AbstractRenderer {
 			// ////////////////////////////
 
 			// the image content will be displayed by ImageServlet
-			path = "/servlet/image?id=" + imageBinaryInfo.getId();
+			path = "/servlet/image?id=" + imageBinaryInfo.getObjectId();
 			tag = "<img src=\"" + path + "\"/>";
 		}
 		return tag;

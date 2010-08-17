@@ -19,16 +19,15 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.time.DateUtils;
 
+
 public class CourseClass extends _CourseClass {
 
 	public static final int EARLIEST_END_FOR_EVENING = 18;
 	public static final int LATEST_START_FOR_DAYTIME = 18;
-
 	private Set<String> daysOfWeek;
 
 	public Integer getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN)).intValue()
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId().getIdSnapshot().get(ID_PK_COLUMN)).intValue()
 				: null;
 	}
 
@@ -54,8 +53,7 @@ public class CourseClass extends _CourseClass {
 
 		Integer totalMinutes = getTotalDurationMinutes();
 		if (totalMinutes != null) {
-			result = BigDecimal.valueOf(totalMinutes.longValue()).setScale(2)
-					.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP);
+			result = BigDecimal.valueOf(totalMinutes.longValue()).setScale(2).divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP);
 		}
 		return result;
 	}
@@ -65,9 +63,9 @@ public class CourseClass extends _CourseClass {
 	 *         end times
 	 */
 	public boolean isSessionsHaveDifferentTimes() {
-		List<Session> sessions = ExpressionFactory.matchExp(
-				Session.DELETED_PROPERTY, null).orExp(
-				ExpressionFactory.matchExp(Session.DELETED_PROPERTY, false))
+		List<Session> sessions = ExpressionFactory
+				.matchExp(Session.IS_DELETED_PROPERTY, null)
+				.orExp(ExpressionFactory.matchExp(Session.IS_DELETED_PROPERTY, false))
 				.filterObjects(getSessions());
 
 		if (sessions.size() > 1) {
@@ -85,8 +83,8 @@ public class CourseClass extends _CourseClass {
 
 			for (int i = 0, count = sessions.size(); i < count; i++) {
 				Session session = sessions.get(i);
-				Date sessionStart = session.getStartTimestamp();
-				Date sessionEnd = session.getEndTimestamp();
+				Date sessionStart = session.getStartDate();
+				Date sessionEnd = session.getEndDate();
 
 				if (i == 0) {
 					if (sessionStart != null) {
@@ -131,13 +129,12 @@ public class CourseClass extends _CourseClass {
 	}
 
 	public Session getFirstSession() {
-		if (getSessions().size() == 0) {
+		if (getSessions().isEmpty()) {
 			return null;
 		}
 
 		List<Session> list = new ArrayList<Session>(getSessions());
-		new Ordering(Session.START_TIMESTAMP_PROPERTY, SortOrder.ASCENDING)
-				.orderList(list);
+		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(list);
 		return list.get(0);
 	}
 
@@ -156,8 +153,7 @@ public class CourseClass extends _CourseClass {
 
 	public int validEnrolmentsCount() {
 		int result = ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY,
-				ISHPayment.STATUSES_LEGIT).filterObjects(getEnrolments())
-				.size();
+				ISHPayment.STATUSES_LEGIT).filterObjects(getEnrolments()).size();
 		return Math.max(0, result);
 	}
 
@@ -171,7 +167,7 @@ public class CourseClass extends _CourseClass {
 
 	public boolean isHasAnyTimelineableSessions() {
 		for (Session session : getSessions()) {
-			if (session.hasStartAndEndTimestamps()) {
+			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
 				return true;
 			}
 		}
@@ -219,9 +215,10 @@ public class CourseClass extends _CourseClass {
 			if (getSessions().size() > 0) {
 				ArrayList<String> days = new ArrayList<String>();
 				for (Session s : getSessions()) {
-					days.add(ISHTimestampUtilities.dayOfWeek(s
-							.getStartTimestamp(), true, TimeZone.getTimeZone(s
-							.getTimeZone())));
+					days.add(ISHTimestampUtilities.dayOfWeek(
+							s.getStartDate(),
+							true,
+							TimeZone.getTimeZone(s.getTimeZone())));
 				}
 				daysOfWeek = ISHTimestampUtilities.uniqueDaysInOrder(days);
 			} else {
@@ -229,14 +226,12 @@ public class CourseClass extends _CourseClass {
 				daysOfWeek = new HashSet<String>();
 				if (getStartDate() != null) {
 					daysOfWeek.add(ISHTimestampUtilities.dayOfWeek(
-							getStartDate(), true, TimeZone
-									.getTimeZone(getTimeZone())));
+							getStartDate(), true, TimeZone.getTimeZone(getTimeZone())));
 
 				}
 				if (getEndDate() != null) {
 					daysOfWeek.add(ISHTimestampUtilities.dayOfWeek(
-							getEndDate(), true, TimeZone
-									.getTimeZone(getTimeZone())));
+							getEndDate(), true, TimeZone.getTimeZone(getTimeZone())));
 
 				}
 
@@ -250,8 +245,7 @@ public class CourseClass extends _CourseClass {
 		// current definition is that any session that starts before 6 pm is
 		// daytime
 		if (earliest == null) {
-			Calendar t = Calendar.getInstance(TimeZone
-					.getTimeZone(getTimeZone()));
+			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 			// no sessions, so guess from start and end dates
 			if (getStartDate() != null) {
 				t.setTime(getStartDate());
@@ -274,7 +268,7 @@ public class CourseClass extends _CourseClass {
 		Integer earliest = null;
 		for (Session session : getSessions()) {
 			Calendar start = Calendar.getInstance();
-			start.setTime(session.getStartTimestamp());
+			start.setTime(session.getStartDate());
 			Integer sessionStartHour = start.get(Calendar.HOUR_OF_DAY);
 			if (sessionStartHour < earliest) {
 				earliest = sessionStartHour;
@@ -288,8 +282,7 @@ public class CourseClass extends _CourseClass {
 		// current definition is that any session that ends on or after 6 pm is
 		// evening
 		if (latest == null) {
-			Calendar t = Calendar.getInstance(TimeZone
-					.getTimeZone(getTimeZone()));
+			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 			// no sessions, so guess from start and end dates
 			if (getStartDate() != null) {
 				t.setTime(getStartDate());
@@ -312,7 +305,7 @@ public class CourseClass extends _CourseClass {
 		Integer latest = null;
 		for (Session session : getSessions()) {
 			Calendar end = Calendar.getInstance();
-			end.setTime(session.getEndTimestamp());
+			end.setTime(session.getEndDate());
 			Integer sessionEndHour = end.get(Calendar.HOUR_OF_DAY);
 			if (sessionEndHour > latest) {
 				latest = sessionEndHour;
@@ -328,9 +321,9 @@ public class CourseClass extends _CourseClass {
 	public List<Session> getTimelineableSessions() {
 		List<Session> classSessions = getSessions();
 		List<Session> validSessions = new ArrayList<Session>();
-		for (Session s : classSessions) {
-			if (s.hasStartAndEndTimestamps()) {
-				validSessions.add(s);
+		for (Session session : classSessions) {
+			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
+				validSessions.add(session);
 			}
 		}
 		return validSessions;

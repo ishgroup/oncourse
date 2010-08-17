@@ -15,6 +15,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 
+
 public class CourseClassItem {
 	@Parameter
 	@Property
@@ -101,8 +102,7 @@ public class CourseClassItem {
 				int siteNameComparison = o1.getRoom().getSite().getName()
 						.compareTo(o2.getRoom().getSite().getName());
 				if (siteNameComparison == 0) {
-					return o1.getStartTimestamp().compareTo(
-							o2.getStartTimestamp());
+					return o1.getStartDate().compareTo(o2.getStartDate());
 				}
 				return siteNameComparison;
 			}

@@ -37,16 +37,16 @@ public class WebSiteService implements IWebSiteService {
 		String activeBlocksNameExp = String.format(
 				"%s = $name and (%s = null or %s = false)",
 				WebBlock.NAME_PROPERTY,
-				WebBlock.DELETED_PROPERTY,
-				WebBlock.DELETED_PROPERTY);
+				WebBlock.IS_DELETED_PROPERTY,
+				WebBlock.IS_DELETED_PROPERTY);
 
 		activeBlocksNameFilter = Expression.fromString(activeBlocksNameExp);
 
 		String activeBlocksRegionExp = String.format(
 				"%s = $regionKey and (%s = null or %s = false)",
 				WebBlock.REGION_KEY_PROPERTY,
-				WebBlock.DELETED_PROPERTY,
-				WebBlock.DELETED_PROPERTY);
+				WebBlock.IS_DELETED_PROPERTY,
+				WebBlock.IS_DELETED_PROPERTY);
 
 		activeBlocksRegionFilter = Expression.fromString(activeBlocksRegionExp);
 	}
@@ -59,9 +59,9 @@ public class WebSiteService implements IWebSiteService {
 
 			SelectQuery query = new SelectQuery(CollegeDomain.class);
 			query.andQualifier(ExpressionFactory.matchExp(
-					CollegeDomain.DELETED_PROPERTY, null));
+					CollegeDomain.IS_DELETED_PROPERTY, null));
 			query.orQualifier(ExpressionFactory.matchExp(
-					CollegeDomain.DELETED_PROPERTY, false));
+					CollegeDomain.IS_DELETED_PROPERTY, false));
 			query.andQualifier(ExpressionFactory.matchExp(
 					CollegeDomain.NAME_PROPERTY, serverName));
 
@@ -97,7 +97,7 @@ public class WebSiteService implements IWebSiteService {
 
 		if (getCurrentDomain() != null) {
 			folderName = getCurrentDomain().getCollege().getCollegeKey();
-			String siteKey = getCurrentDomain().getSite().getSiteKey();
+			String siteKey = getCurrentDomain().getWebSite().getSiteKey();
 			if ((siteKey != null) && !("".equals(siteKey))) {
 				folderName += "_" + siteKey;
 			}
@@ -107,7 +107,7 @@ public class WebSiteService implements IWebSiteService {
 	}
 
 	public WebSite getCurrentWebSite() {
-		return getCurrentDomain().getSite();
+		return getCurrentDomain().getWebSite();
 	}
 
 	public College getCurrentCollege() {
@@ -115,12 +115,12 @@ public class WebSiteService implements IWebSiteService {
 	}
 
 	public List<WebSite> getAvailableSites() {
-		return getCurrentCollege().getSites();
+		return getCurrentCollege().getWebSites();
 	}
 
 	public List<WebBlock> getWebBlocksForRegion(String regionKey) {
 
-		List<WebBlock> allBlocks = getCurrentWebSite().getBlocks();
+		List<WebBlock> allBlocks = getCurrentWebSite().getWebBlocks();
 		if (allBlocks.isEmpty()) {
 			return null;
 		}
@@ -135,7 +135,7 @@ public class WebSiteService implements IWebSiteService {
 
 	public WebBlock getWebBlockForName(String name) {
 
-		List<WebBlock> allBlocks = getCurrentWebSite().getBlocks();
+		List<WebBlock> allBlocks = getCurrentWebSite().getWebBlocks();
 		if (allBlocks.isEmpty()) {
 			return null;
 		}

@@ -1,7 +1,5 @@
 package ish.oncourse.ui.components;
 
-import java.net.URLEncoder;
-
 import ish.oncourse.model.WebNode;
 
 import org.apache.tapestry5.annotations.AfterRender;
@@ -47,8 +45,9 @@ public class MenuItem {
     @AfterRender
     void after() {
         // set the currentNode to the parent after render (pop the stack)
-        if (node.getParent() != null)
-            node = node.getParent();
+        if (node.getParentNode() != null) {
+            node = node.getParentNode();
+		}
     }
 
     public WebNode getNode() {

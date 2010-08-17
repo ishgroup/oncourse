@@ -16,6 +16,7 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 
+
 public class CourseClassPrice {
 
 	@Parameter
@@ -100,8 +101,7 @@ public class CourseClassPrice {
 	public List<Discount> getDiscountsWithConcessions() {
 		if (this.discountsWithConcessions == null) {
 			List<Discount> discounts = new ArrayList<Discount>();
-			for (DiscountCourseClass dcc : courseClass
-					.getCourseClassDiscounts()) {
+			for (DiscountCourseClass dcc : courseClass.getDiscountCourseClasses()) {
 				if (dcc.getDiscount() == null
 						|| dcc.getDiscount().getDiscountConcessionTypes() == null) {
 					continue;

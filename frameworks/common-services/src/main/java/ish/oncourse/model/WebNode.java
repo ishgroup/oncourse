@@ -15,11 +15,11 @@ public class WebNode extends _WebNode {
 	static final String DEFAULT_PAGE_TITLE = "New Page";
 
 	public String getPath() {
-		if (getParent() == null || getParent() == getSite().getHomePage()) {
+		if (getParentNode() == null || getParentNode() == getWebSite().getHomePage()) {
 			return "/" + getUrlShortName();
 		}
 
-		return getParent().getPath() + "/" + getUrlShortName();
+		return getParentNode().getPath() + "/" + getUrlShortName();
 	}
 
 	public String getUrlShortName() {
@@ -34,8 +34,8 @@ public class WebNode extends _WebNode {
 	}
 
 	@Override
-    public List<WebNode> getChildren() {
-		List<WebNode> children = super.getChildren();
+    public List<WebNode> getWebNodes() {
+		List<WebNode> children = super.getWebNodes();
 		List<Ordering> orderings = new ArrayList<Ordering>();
 
 		Ordering order = new Ordering();
@@ -53,11 +53,11 @@ public class WebNode extends _WebNode {
 	 * @return All web-navigable web-visible child nodes for this node.
 	 */
 	public List<WebNode> getNavigableChildNodes() {
-		Expression expr = ExpressionFactory.matchExp(WebNode.WEB_NAVIGABLE_PROPERTY, true)
-				.andExp(ExpressionFactory.matchExp(WebNode.PUBLISHED_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.WEB_VISIBLE_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false));
+		Expression expr = ExpressionFactory.matchExp(WebNode.IS_WEB_NAVIGABLE_PROPERTY, true)
+				.andExp(ExpressionFactory.matchExp(WebNode.IS_PUBLISHED_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.IS_WEB_VISIBLE_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.IS_DELETED_PROPERTY, false));
 
-		return expr.filterObjects(getChildren());
+		return expr.filterObjects(getWebNodes());
 	}
 }

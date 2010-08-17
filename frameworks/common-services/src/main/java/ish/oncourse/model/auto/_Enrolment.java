@@ -1,12 +1,16 @@
 package ish.oncourse.model.auto;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountEnrolment;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.Outcome;
 import ish.oncourse.model.Student;
 
 /**
@@ -18,49 +22,27 @@ import ish.oncourse.model.Student;
 public abstract class _Enrolment extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
-    public static final String COMBINED_DISCOUNT_EX_TAX_PROPERTY = "combinedDiscountExTax";
-    public static final String COURSE_CLASS_ID_PROPERTY = "courseClassId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DISCOUNT_ID_PROPERTY = "discountId";
     public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
-    public static final String PAYMENT_ID_PROPERTY = "paymentId";
     public static final String REASON_FOR_STUDY_PROPERTY = "reasonForStudy";
     public static final String SOURCE_PROPERTY = "source";
     public static final String STATUS_PROPERTY = "status";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
+    public static final String DISCOUNT_PROPERTY = "discount";
+    public static final String DISCOUNT_ENROLMENTS_PROPERTY = "discountEnrolments";
+    public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
+    public static final String OUTCOMES_PROPERTY = "outcomes";
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setAngelId(Integer angelId) {
+    public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
     }
-    public Integer getAngelId() {
-        return (Integer)readProperty("angelId");
-    }
-
-    public void setCollegeId(Integer collegeId) {
-        writeProperty("collegeId", collegeId);
-    }
-    public Integer getCollegeId() {
-        return (Integer)readProperty("collegeId");
-    }
-
-    public void setCombinedDiscountExTax(BigDecimal combinedDiscountExTax) {
-        writeProperty("combinedDiscountExTax", combinedDiscountExTax);
-    }
-    public BigDecimal getCombinedDiscountExTax() {
-        return (BigDecimal)readProperty("combinedDiscountExTax");
-    }
-
-    public void setCourseClassId(Integer courseClassId) {
-        writeProperty("courseClassId", courseClassId);
-    }
-    public Integer getCourseClassId() {
-        return (Integer)readProperty("courseClassId");
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
     }
 
     public void setCreated(Date created) {
@@ -68,13 +50,6 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setDiscountId(Long discountId) {
-        writeProperty("discountId", discountId);
-    }
-    public Long getDiscountId() {
-        return (Long)readProperty("discountId");
     }
 
     public void setIsDeleted(Boolean isDeleted) {
@@ -89,13 +64,6 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
     public Date getModified() {
         return (Date)readProperty("modified");
-    }
-
-    public void setPaymentId(Integer paymentId) {
-        writeProperty("paymentId", paymentId);
-    }
-    public Integer getPaymentId() {
-        return (Integer)readProperty("paymentId");
     }
 
     public void setReasonForStudy(Integer reasonForStudy) {
@@ -134,6 +102,51 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     public CourseClass getCourseClass() {
         return (CourseClass)readProperty("courseClass");
+    }
+
+
+    public void setDiscount(Discount discount) {
+        setToOneTarget("discount", discount, true);
+    }
+
+    public Discount getDiscount() {
+        return (Discount)readProperty("discount");
+    }
+
+
+    public void addToDiscountEnrolments(DiscountEnrolment obj) {
+        addToManyTarget("discountEnrolments", obj, true);
+    }
+    public void removeFromDiscountEnrolments(DiscountEnrolment obj) {
+        removeToManyTarget("discountEnrolments", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiscountEnrolment> getDiscountEnrolments() {
+        return (List<DiscountEnrolment>)readProperty("discountEnrolments");
+    }
+
+
+    public void addToInvoiceLines(InvoiceLine obj) {
+        addToManyTarget("invoiceLines", obj, true);
+    }
+    public void removeFromInvoiceLines(InvoiceLine obj) {
+        removeToManyTarget("invoiceLines", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<InvoiceLine> getInvoiceLines() {
+        return (List<InvoiceLine>)readProperty("invoiceLines");
+    }
+
+
+    public void addToOutcomes(Outcome obj) {
+        addToManyTarget("outcomes", obj, true);
+    }
+    public void removeFromOutcomes(Outcome obj) {
+        removeToManyTarget("outcomes", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Outcome> getOutcomes() {
+        return (List<Outcome>)readProperty("outcomes");
     }
 
 

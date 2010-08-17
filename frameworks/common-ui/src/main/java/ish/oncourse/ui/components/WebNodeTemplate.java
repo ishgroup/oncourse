@@ -39,7 +39,7 @@ public class WebNodeTemplate {
 	private ComponentResources componentResources;
 
 	public DynamicDelegate getBlockSource() {
-		final List<WebNodeContent> contents = node.getContents();
+		final List<WebNodeContent> contents = node.getWebNodeContents();
 
 		return new DynamicDelegate() {
 			public Block getBlock(String regionKey) {
@@ -75,7 +75,7 @@ public class WebNodeTemplate {
 	}
 
 	public PrivateResource getSelectedTemplate() {
-		return resourceService.getTemplateResource(node.getType().getTemplateKey(),
+		return resourceService.getTemplateResource(node.getWebNodeType().getTemplateKey(),
 				"WebNode.tmp");
 	}
 

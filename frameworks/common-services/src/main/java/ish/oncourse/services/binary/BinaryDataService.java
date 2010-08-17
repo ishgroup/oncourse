@@ -28,12 +28,13 @@ public class BinaryDataService implements IBinaryDataService {
 				BinaryInfo.COLLEGE_PROPERTY, currentCollege);
 		if (BinaryInfo.ID_PK_COLUMN.equals(searchProperty)) {
 			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					BinaryInfo.ID_PROPERTY, value));
+					BinaryInfo.ID_PK_COLUMN, value));
 		} else if (BinaryInfo.NAME_PROPERTY.equals(searchProperty)) {
 			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
 					BinaryInfo.NAME_PROPERTY, value));
 		}
 		SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);
+		@SuppressWarnings("unchecked")
 		List<BinaryInfo> listResult = sharedContext.performQuery(query);
 		return !listResult.isEmpty() ? listResult.get(0) : null;
 	}

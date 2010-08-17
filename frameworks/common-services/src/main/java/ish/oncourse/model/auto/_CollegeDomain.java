@@ -1,10 +1,12 @@
 package ish.oncourse.model.auto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.WebSite;
 
 /**
@@ -15,40 +17,27 @@ import ish.oncourse.model.WebSite;
  */
 public abstract class _CollegeDomain extends CayenneDataObject {
 
-    public static final String ALIASED_DOMAIN_ID_PROPERTY = "aliasedDomainID";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DELETED_PROPERTY = "deleted";
     public static final String GOOGLE_ANALYTICS_ACCOUNT_PROPERTY = "googleAnalyticsAccount";
     public static final String GOOGLE_DIRECTIONS_FROM_PROPERTY = "googleDirectionsFrom";
-    public static final String GOOGLE_MAPS_KEY_PROPERTY = "googleMapsKey";
     public static final String HAS_SSL_PROPERTY = "hasSSL";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String SUBSITE_CODE_PROPERTY = "subsiteCode";
+    public static final String ALIASED_DOMAIN_PROPERTY = "aliasedDomain";
     public static final String COLLEGE_PROPERTY = "college";
-    public static final String SITE_PROPERTY = "site";
+    public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
+    public static final String COLLEGES_PROPERTY = "colleges";
+    public static final String WEB_SITE_PROPERTY = "webSite";
 
     public static final String ID_PK_COLUMN = "id";
-
-    public void setAliasedDomainID(Long aliasedDomainID) {
-        writeProperty("aliasedDomainID", aliasedDomainID);
-    }
-    public Long getAliasedDomainID() {
-        return (Long)readProperty("aliasedDomainID");
-    }
 
     public void setCreated(Date created) {
         writeProperty("created", created);
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setDeleted(Boolean deleted) {
-        writeProperty("deleted", deleted);
-    }
-    public Boolean getDeleted() {
-        return (Boolean)readProperty("deleted");
     }
 
     public void setGoogleAnalyticsAccount(String googleAnalyticsAccount) {
@@ -65,18 +54,18 @@ public abstract class _CollegeDomain extends CayenneDataObject {
         return (String)readProperty("googleDirectionsFrom");
     }
 
-    public void setGoogleMapsKey(String googleMapsKey) {
-        writeProperty("googleMapsKey", googleMapsKey);
-    }
-    public String getGoogleMapsKey() {
-        return (String)readProperty("googleMapsKey");
-    }
-
-    public void setHasSSL(Integer hasSSL) {
+    public void setHasSSL(Boolean hasSSL) {
         writeProperty("hasSSL", hasSSL);
     }
-    public Integer getHasSSL() {
-        return (Integer)readProperty("hasSSL");
+    public Boolean getHasSSL() {
+        return (Boolean)readProperty("hasSSL");
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
+    }
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {
@@ -100,6 +89,15 @@ public abstract class _CollegeDomain extends CayenneDataObject {
         return (String)readProperty("subsiteCode");
     }
 
+    public void setAliasedDomain(CollegeDomain aliasedDomain) {
+        setToOneTarget("aliasedDomain", aliasedDomain, true);
+    }
+
+    public CollegeDomain getAliasedDomain() {
+        return (CollegeDomain)readProperty("aliasedDomain");
+    }
+
+
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
     }
@@ -109,12 +107,36 @@ public abstract class _CollegeDomain extends CayenneDataObject {
     }
 
 
-    public void setSite(WebSite site) {
-        setToOneTarget("site", site, true);
+    public void addToCollegeDomains(CollegeDomain obj) {
+        addToManyTarget("collegeDomains", obj, true);
+    }
+    public void removeFromCollegeDomains(CollegeDomain obj) {
+        removeToManyTarget("collegeDomains", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CollegeDomain> getCollegeDomains() {
+        return (List<CollegeDomain>)readProperty("collegeDomains");
     }
 
-    public WebSite getSite() {
-        return (WebSite)readProperty("site");
+
+    public void addToColleges(College obj) {
+        addToManyTarget("colleges", obj, true);
+    }
+    public void removeFromColleges(College obj) {
+        removeToManyTarget("colleges", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<College> getColleges() {
+        return (List<College>)readProperty("colleges");
+    }
+
+
+    public void setWebSite(WebSite webSite) {
+        setToOneTarget("webSite", webSite, true);
+    }
+
+    public WebSite getWebSite() {
+        return (WebSite)readProperty("webSite");
     }
 
 

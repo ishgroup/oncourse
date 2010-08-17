@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tutor;
 
@@ -16,14 +17,14 @@ import ish.oncourse.model.Tutor;
 public abstract class _TutorRole extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
+    public static final String CONFIRMED_DATE_PROPERTY = "confirmedDate";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DATE_CONFIRMED_PROPERTY = "dateConfirmed";
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
     public static final String IS_CONFIRMED_PROPERTY = "isConfirmed";
     public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String TUTOR_PROPERTY = "tutor";
 
@@ -37,11 +38,11 @@ public abstract class _TutorRole extends CayenneDataObject {
         return (Long)readProperty("angelId");
     }
 
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
+    public void setConfirmedDate(Date confirmedDate) {
+        writeProperty("confirmedDate", confirmedDate);
     }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
+    public Date getConfirmedDate() {
+        return (Date)readProperty("confirmedDate");
     }
 
     public void setCreated(Date created) {
@@ -49,13 +50,6 @@ public abstract class _TutorRole extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setDateConfirmed(Date dateConfirmed) {
-        writeProperty("dateConfirmed", dateConfirmed);
-    }
-    public Date getDateConfirmed() {
-        return (Date)readProperty("dateConfirmed");
     }
 
     public void setDetail(String detail) {
@@ -92,6 +86,15 @@ public abstract class _TutorRole extends CayenneDataObject {
     public Date getModified() {
         return (Date)readProperty("modified");
     }
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
+    }
+
 
     public void setCourseClass(CourseClass courseClass) {
         setToOneTarget("courseClass", courseClass, true);

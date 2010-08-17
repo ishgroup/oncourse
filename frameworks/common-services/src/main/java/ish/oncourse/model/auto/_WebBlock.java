@@ -1,10 +1,12 @@
 package ish.oncourse.model.auto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.WebBlockType;
+import ish.oncourse.model.WebNodeContentWebBlock;
 import ish.oncourse.model.WebSite;
 
 /**
@@ -19,14 +21,14 @@ public abstract class _WebBlock extends CayenneDataObject {
     public static final String CONTENT_PROPERTY = "content";
     public static final String CONTENT_TEXTILE_PROPERTY = "contentTextile";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DELETED_PROPERTY = "deleted";
-    public static final String ID_PROPERTY = "id";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String REGION_KEY_PROPERTY = "regionKey";
     public static final String WEIGHTING_PROPERTY = "weighting";
-    public static final String SITE_PROPERTY = "site";
-    public static final String TYPE_PROPERTY = "type";
+    public static final String WEB_BLOCK_TYPE_PROPERTY = "webBlockType";
+    public static final String WEB_NODE_CONTENT_WEB_BLOCKS_PROPERTY = "webNodeContentWebBlocks";
+    public static final String WEB_SITE_PROPERTY = "webSite";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -58,18 +60,11 @@ public abstract class _WebBlock extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setDeleted(Boolean deleted) {
-        writeProperty("deleted", deleted);
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
     }
-    public Boolean getDeleted() {
-        return (Boolean)readProperty("deleted");
-    }
-
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {
@@ -100,21 +95,33 @@ public abstract class _WebBlock extends CayenneDataObject {
         return (Integer)readProperty("weighting");
     }
 
-    public void setSite(WebSite site) {
-        setToOneTarget("site", site, true);
+    public void setWebBlockType(WebBlockType webBlockType) {
+        setToOneTarget("webBlockType", webBlockType, true);
     }
 
-    public WebSite getSite() {
-        return (WebSite)readProperty("site");
+    public WebBlockType getWebBlockType() {
+        return (WebBlockType)readProperty("webBlockType");
     }
 
 
-    public void setType(WebBlockType type) {
-        setToOneTarget("type", type, true);
+    public void addToWebNodeContentWebBlocks(WebNodeContentWebBlock obj) {
+        addToManyTarget("webNodeContentWebBlocks", obj, true);
+    }
+    public void removeFromWebNodeContentWebBlocks(WebNodeContentWebBlock obj) {
+        removeToManyTarget("webNodeContentWebBlocks", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WebNodeContentWebBlock> getWebNodeContentWebBlocks() {
+        return (List<WebNodeContentWebBlock>)readProperty("webNodeContentWebBlocks");
     }
 
-    public WebBlockType getType() {
-        return (WebBlockType)readProperty("type");
+
+    public void setWebSite(WebSite webSite) {
+        setToOneTarget("webSite", webSite, true);
+    }
+
+    public WebSite getWebSite() {
+        return (WebSite)readProperty("webSite");
     }
 
 

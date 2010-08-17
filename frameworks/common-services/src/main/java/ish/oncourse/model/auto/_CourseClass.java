@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.CayenneDataObject;
+
+import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
-import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TutorRole;
 
 /**
@@ -18,30 +20,35 @@ import ish.oncourse.model.TutorRole;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _CourseClass extends Taggable {
+public abstract class _CourseClass extends CayenneDataObject {
 
-    public static final String CANCELLED_PROPERTY = "cancelled";
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CODE_PROPERTY = "code";
     public static final String COUNT_OF_SESSIONS_PROPERTY = "countOfSessions";
+    public static final String CREATED_PROPERTY = "created";
     public static final String DELIVERY_MODE_PROPERTY = "deliveryMode";
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String FEE_EX_GST_PROPERTY = "feeExGst";
     public static final String FEE_GST_PROPERTY = "feeGst";
+    public static final String IS_CANCELLED_PROPERTY = "isCancelled";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
+    public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MATERIALS_PROPERTY = "materials";
     public static final String MATERIALS_TEXTILE_PROPERTY = "materialsTextile";
     public static final String MAXIMUM_PLACES_PROPERTY = "maximumPlaces";
     public static final String MINIMUM_PLACES_PROPERTY = "minimumPlaces";
     public static final String MINUTES_PER_SESSION_PROPERTY = "minutesPerSession";
+    public static final String MODIFIED_PROPERTY = "modified";
     public static final String SESSION_DETAIL_PROPERTY = "sessionDetail";
     public static final String SESSION_DETAIL_TEXTILE_PROPERTY = "sessionDetailTextile";
     public static final String START_DATE_PROPERTY = "startDate";
     public static final String STARTING_MINUTE_PER_SESSION_PROPERTY = "startingMinutePerSession";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
-    public static final String WEB_VISIBLE_PROPERTY = "webVisible";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_PROPERTY = "course";
-    public static final String COURSE_CLASS_DISCOUNTS_PROPERTY = "courseClassDiscounts";
+    public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String ROOM_PROPERTY = "room";
     public static final String SESSIONS_PROPERTY = "sessions";
@@ -49,12 +56,11 @@ public abstract class _CourseClass extends Taggable {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setCancelled(boolean cancelled) {
-        writeProperty("cancelled", cancelled);
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
     }
-	public boolean isCancelled() {
-        Boolean value = (Boolean)readProperty("cancelled");
-        return (value != null) ? value.booleanValue() : false;
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
     }
 
     public void setCode(String code) {
@@ -69,6 +75,13 @@ public abstract class _CourseClass extends Taggable {
     }
     public Integer getCountOfSessions() {
         return (Integer)readProperty("countOfSessions");
+    }
+
+    public void setCreated(Date created) {
+        writeProperty("created", created);
+    }
+    public Date getCreated() {
+        return (Date)readProperty("created");
     }
 
     public void setDeliveryMode(Integer deliveryMode) {
@@ -113,6 +126,27 @@ public abstract class _CourseClass extends Taggable {
         return (BigDecimal)readProperty("feeGst");
     }
 
+    public void setIsCancelled(Boolean isCancelled) {
+        writeProperty("isCancelled", isCancelled);
+    }
+    public Boolean getIsCancelled() {
+        return (Boolean)readProperty("isCancelled");
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
+    }
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
+    }
+
+    public void setIsWebVisible(Boolean isWebVisible) {
+        writeProperty("isWebVisible", isWebVisible);
+    }
+    public Boolean getIsWebVisible() {
+        return (Boolean)readProperty("isWebVisible");
+    }
+
     public void setMaterials(String materials) {
         writeProperty("materials", materials);
     }
@@ -146,6 +180,13 @@ public abstract class _CourseClass extends Taggable {
     }
     public Integer getMinutesPerSession() {
         return (Integer)readProperty("minutesPerSession");
+    }
+
+    public void setModified(Date modified) {
+        writeProperty("modified", modified);
+    }
+    public Date getModified() {
+        return (Date)readProperty("modified");
     }
 
     public void setSessionDetail(String sessionDetail) {
@@ -183,29 +224,33 @@ public abstract class _CourseClass extends Taggable {
         return (String)readProperty("timeZone");
     }
 
-    public void setWebVisible(boolean webVisible) {
-        writeProperty("webVisible", webVisible);
-    }
-	public boolean isWebVisible() {
-        Boolean value = (Boolean)readProperty("webVisible");
-        return (value != null) ? value.booleanValue() : false;
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
     }
 
+    public College getCollege() {
+        return (College)readProperty("college");
+    }
+
+
+    public void setCourse(Course course) {
+        setToOneTarget("course", course, true);
+    }
 
     public Course getCourse() {
         return (Course)readProperty("course");
     }
 
 
-    public void addToCourseClassDiscounts(DiscountCourseClass obj) {
-        addToManyTarget("courseClassDiscounts", obj, true);
+    public void addToDiscountCourseClasses(DiscountCourseClass obj) {
+        addToManyTarget("discountCourseClasses", obj, true);
     }
-    public void removeFromCourseClassDiscounts(DiscountCourseClass obj) {
-        removeToManyTarget("courseClassDiscounts", obj, true);
+    public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
+        removeToManyTarget("discountCourseClasses", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<DiscountCourseClass> getCourseClassDiscounts() {
-        return (List<DiscountCourseClass>)readProperty("courseClassDiscounts");
+    public List<DiscountCourseClass> getDiscountCourseClasses() {
+        return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
     }
 
 
@@ -221,12 +266,21 @@ public abstract class _CourseClass extends Taggable {
     }
 
 
+    public void setRoom(Room room) {
+        setToOneTarget("room", room, true);
+    }
 
     public Room getRoom() {
         return (Room)readProperty("room");
     }
 
 
+    public void addToSessions(Session obj) {
+        addToManyTarget("sessions", obj, true);
+    }
+    public void removeFromSessions(Session obj) {
+        removeToManyTarget("sessions", obj, true);
+    }
     @SuppressWarnings("unchecked")
     public List<Session> getSessions() {
         return (List<Session>)readProperty("sessions");

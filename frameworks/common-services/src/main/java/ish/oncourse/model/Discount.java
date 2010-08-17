@@ -17,6 +17,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
+
 public class Discount extends _Discount {
 
 	private static final Logger LOG = Logger.getLogger(Discount.class);
@@ -54,6 +55,7 @@ public class Discount extends _Discount {
 		return discountsForAbstractType(discounts, aClass);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected static <T extends Discount> List<T> discountsForAbstractType(
 			List<T> discounts, CayenneDataObject obj) {
 		if (!(obj instanceof CourseClass) && !(obj instanceof Enrolment)) {
@@ -71,28 +73,23 @@ public class Discount extends _Discount {
 
 		// calculate combined discount
 		List<T> discountsToCombine = ExpressionFactory.matchExp(
-				Discount.COMBINATION_TYPE_PROPERTY, COMBINATION_ANY)
-				.filterObjects(localDiscounts);
+				Discount.COMBINATION_TYPE_PROPERTY, COMBINATION_ANY).filterObjects(localDiscounts);
 		LOG.debug("discountsToCombine.count " + discountsToCombine.size());
 		BigDecimal resultCombined = Money.ZERO.toBigDecimal();
 		Iterator<T> iteratorForCombined = discountsToCombine.iterator();
 		while (iteratorForCombined.hasNext()) {
 			Discount d = iteratorForCombined.next();
 			if (obj instanceof Enrolment) {
-				resultCombined = resultCombined.add(d
-						.valueForEnrolment((Enrolment) obj));
+				resultCombined = resultCombined.add(d.valueForEnrolment((Enrolment) obj));
 			} else if (obj instanceof CourseClass) {
-				resultCombined = resultCombined.add(d
-						.valueForCourseClass((CourseClass) obj));
+				resultCombined = resultCombined.add(d.valueForCourseClass((CourseClass) obj));
 			}
 		}
 		List<T> discountsNotToCombine = ExpressionFactory.matchExp(
-				Discount.COMBINATION_TYPE_PROPERTY, COMBINATION_NONE)
-				.filterObjects(localDiscounts);
+				Discount.COMBINATION_TYPE_PROPERTY, COMBINATION_NONE).filterObjects(localDiscounts);
 
-		LOG
-				.debug("discountsNotToCombine.count "
-						+ discountsNotToCombine.size());
+		LOG.debug("discountsNotToCombine.count "
+				+ discountsNotToCombine.size());
 		BigDecimal resultNotCombined = Money.ZERO.toBigDecimal();
 		T notCombinedDiscount = null;
 		Iterator<T> iteratorForNotCombined = discountsNotToCombine.iterator();
@@ -142,11 +139,10 @@ public class Discount extends _Discount {
 				}
 				if (isEligible && hasStudentAgeOperator()
 						&& getStudentAge() != null) {
-					if (enrolment.getStudent().getBirthDate() == null) {
+					if (enrolment.getStudent().getContact().getDateOfBirth() == null) {
 						isEligible = false;
 					} else {
-						int enrolmentAge = enrolment.getStudent()
-								.getYearsOfAge();
+						int enrolmentAge = enrolment.getStudent().getYearsOfAge();
 						int discountAge = getStudentAge();
 						int diff = enrolmentAge - discountAge;
 						if (">".equals(getStudentAgeOperator()) && diff <= 0
@@ -164,9 +160,8 @@ public class Discount extends _Discount {
 				}
 			}
 			if (isEligible && hasStudentPostcodes()) {
-				List<String> postcodes = Arrays.asList(getStudentPostcodes()
-						.split("\\s*,\\s"));
-				if (postcodes.indexOf(enrolment.getStudent().getPostcode()) == -1) {
+				List<String> postcodes = Arrays.asList(getStudentPostcodes().split("\\s*,\\s"));
+				if (postcodes.indexOf(enrolment.getStudent().getContact().getPostcode()) == -1) {
 					isEligible = false;
 				}
 			}
@@ -175,14 +170,12 @@ public class Discount extends _Discount {
 				Calendar timestamp = Calendar.getInstance();
 				timestamp.set(0, 0, days, 0, 0, 0);
 				Expression qualifier = ExpressionFactory.matchExp(
-						Enrolment.STUDENT_PROPERTY, enrolment.getStudent())
-						.andExp(
-								ExpressionFactory.greaterOrEqualExp(
-										Enrolment.CREATED_PROPERTY, timestamp
-												.getTime())).andExp(
-								ExpressionFactory.inExp(
-										Enrolment.STATUS_PROPERTY,
-										ISHPayment.STATUSES_LEGIT));
+						Enrolment.STUDENT_PROPERTY, enrolment.getStudent()).andExp(
+						ExpressionFactory.greaterOrEqualExp(
+						Enrolment.CREATED_PROPERTY, timestamp.getTime())).andExp(
+						ExpressionFactory.inExp(
+						Enrolment.STATUS_PROPERTY,
+						ISHPayment.STATUSES_LEGIT));
 				// TODO get the count by some another way
 				int count = enrolment.getObjectContext().performQuery(
 						new SelectQuery(Enrolment.class, qualifier)).size();
@@ -197,8 +190,7 @@ public class Discount extends _Discount {
 				}
 
 				List<ConcessionType> stypes = new ArrayList<ConcessionType>();
-				for (StudentConcession sc : enrolment.getStudent()
-						.getStudentConcessions()) {
+				for (StudentConcession sc : enrolment.getStudent().getStudentConcessions()) {
 					stypes.add(sc.getConcessionType());
 				}
 
@@ -237,11 +229,10 @@ public class Discount extends _Discount {
 				LOG.debug("class - " + courseClass.getUniqueIdentifier()
 						+ " discounting...");
 				LOG.debug("class discounts:"
-						+ courseClass.getCourseClassDiscounts());
+						+ courseClass.getDiscountCourseClasses());
 			}
 			List<Discount> discounts = new ArrayList<Discount>();
-			for (DiscountCourseClass dcc : courseClass
-					.getCourseClassDiscounts()) {
+			for (DiscountCourseClass dcc : courseClass.getDiscountCourseClasses()) {
 				discounts.add(dcc.getDiscount());
 			}
 			if (discounts.contains(this)) {

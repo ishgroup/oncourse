@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 
@@ -17,14 +18,14 @@ public abstract class _StudentConcession extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String AUTHORISATION_EXPIRES_ON_PROPERTY = "authorisationExpiresOn";
-    public static final String AUTORISED_ON_PROPERTY = "autorisedOn";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
+    public static final String AUTHORISED_ON_PROPERTY = "authorisedOn";
     public static final String CONCESSION_NUMBER_PROPERTY = "concessionNumber";
     public static final String CREATED_PROPERTY = "created";
     public static final String EXPIRES_ON_PROPERTY = "expiresOn";
     public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
-    public static final String TIMEZONE_PROPERTY = "timezone";
+    public static final String TIME_ZONE_PROPERTY = "timeZone";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
     public static final String STUDENT_PROPERTY = "student";
 
@@ -44,18 +45,11 @@ public abstract class _StudentConcession extends CayenneDataObject {
         return (Date)readProperty("authorisationExpiresOn");
     }
 
-    public void setAutorisedOn(Date autorisedOn) {
-        writeProperty("autorisedOn", autorisedOn);
+    public void setAuthorisedOn(Date authorisedOn) {
+        writeProperty("authorisedOn", authorisedOn);
     }
-    public Date getAutorisedOn() {
-        return (Date)readProperty("autorisedOn");
-    }
-
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
-    }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
+    public Date getAuthorisedOn() {
+        return (Date)readProperty("authorisedOn");
     }
 
     public void setConcessionNumber(String concessionNumber) {
@@ -93,12 +87,21 @@ public abstract class _StudentConcession extends CayenneDataObject {
         return (Date)readProperty("modified");
     }
 
-    public void setTimezone(String timezone) {
-        writeProperty("timezone", timezone);
+    public void setTimeZone(String timeZone) {
+        writeProperty("timeZone", timeZone);
     }
-    public String getTimezone() {
-        return (String)readProperty("timezone");
+    public String getTimeZone() {
+        return (String)readProperty("timeZone");
     }
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
+    }
+
 
     public void setConcessionType(ConcessionType concessionType) {
         setToOneTarget("concessionType", concessionType, true);

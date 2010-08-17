@@ -1,7 +1,6 @@
 package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.model.WebBlock;
-import ish.oncourse.model.WebTagged;
 import ish.oncourse.services.block.IWebBlockService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.BlockTextileValidator;
@@ -22,10 +21,6 @@ public class BlockTextileRenderer extends AbstractRenderer {
 				String name = TextileUtil.getValueInFirstQuots(tag);
 				webBlock = webBlockDataService.getWebBlock(
 						WebBlock.NAME_PROPERTY, name);
-			} else if (tag.matches(TextileUtil.BLOCK_TAG_REGEXP)) {
-				String tagName = TextileUtil.getValueInFirstQuots(tag);
-				webBlock = webBlockDataService.getWebBlock(
-						WebTagged.TAG_PROPERTY, tagName);
 			}
 
 			tag = webBlock.getContent();

@@ -55,7 +55,7 @@ public class WebNodeService implements IWebNodeService {
 				ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, pageName));
 		query.andQualifier(
 				ExpressionFactory.matchExp(
-						WebNode.TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
+						WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
 						WEB_NODE_PAGE_TYPE_KEY));
 
 		@SuppressWarnings("unchecked")
@@ -78,15 +78,15 @@ public class WebNodeService implements IWebNodeService {
 		WebSite site = webSiteService.getCurrentWebSite();
 		Expression expression = (site == null) ?
 			ExpressionFactory.matchExp(
-					WebNode.SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+					WebNode.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 					webSiteService.getCurrentCollege())
-			: ExpressionFactory.matchExp(WebNode.SITE_PROPERTY, site);
+			: ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY, site);
 
 		expression = expression
-				.andExp(ExpressionFactory.matchExp(WebNode.PUBLISHED_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.WEB_NAVIGABLE_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.WEB_VISIBLE_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.DELETED_PROPERTY, false));
+				.andExp(ExpressionFactory.matchExp(WebNode.IS_PUBLISHED_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.IS_WEB_NAVIGABLE_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.IS_WEB_VISIBLE_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(WebNode.IS_DELETED_PROPERTY, false));
 		
 		return expression;
 	}

@@ -12,11 +12,11 @@
   <t:loop source = "displayedObjects" value = "event" index = "listIndex">
    	<tr class="cssRowClass">
    
-      <td><t:output value = "event.startTimestamp" format = "itemDateFormatter" /></td>
+      <td><t:output value = "event.startDate" format = "itemDateFormatter" /></td>
       <td>
-        <t:output value = "event.startTimestamp" format = "itemTimeFormatter" />
-        <t:if test = "hasItemEndTimestamp">
-        	- <t:output value = "event.endTimestamp" format = "itemTimeFormatter" />
+        <t:output value = "event.startDate" format = "itemTimeFormatter" />
+        <t:if test = "hasItemEndDate">
+        	- <t:output value = "event.endDate" format = "itemTimeFormatter" />
         	</t:if>
       </td>
       <td><span t:type="RoomLocation" room="event.room" withRoomName="true" /> </td>

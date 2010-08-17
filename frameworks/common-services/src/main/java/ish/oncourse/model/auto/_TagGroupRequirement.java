@@ -18,10 +18,10 @@ public abstract class _TagGroupRequirement extends CayenneDataObject {
     public static final String ALLOWS_MULTIPLE_TAGS_PROPERTY = "allowsMultipleTags";
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DELETED_PROPERTY = "deleted";
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
+    public static final String IS_REQUIRED_PROPERTY = "isRequired";
     public static final String MODIFIED_PROPERTY = "modified";
-    public static final String REQUIRED_PROPERTY = "required";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String TAG_PROPERTY = "tag";
 
@@ -48,13 +48,6 @@ public abstract class _TagGroupRequirement extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setDeleted(Boolean deleted) {
-        writeProperty("deleted", deleted);
-    }
-    public Boolean getDeleted() {
-        return (Boolean)readProperty("deleted");
-    }
-
     public void setEntityIdentifier(String entityIdentifier) {
         writeProperty("entityIdentifier", entityIdentifier);
     }
@@ -62,18 +55,25 @@ public abstract class _TagGroupRequirement extends CayenneDataObject {
         return (String)readProperty("entityIdentifier");
     }
 
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
+    }
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
+    }
+
+    public void setIsRequired(Boolean isRequired) {
+        writeProperty("isRequired", isRequired);
+    }
+    public Boolean getIsRequired() {
+        return (Boolean)readProperty("isRequired");
+    }
+
     public void setModified(Date modified) {
         writeProperty("modified", modified);
     }
     public Date getModified() {
         return (Date)readProperty("modified");
-    }
-
-    public void setRequired(Boolean required) {
-        writeProperty("required", required);
-    }
-    public Boolean getRequired() {
-        return (Boolean)readProperty("required");
     }
 
     public void setCollege(College college) {

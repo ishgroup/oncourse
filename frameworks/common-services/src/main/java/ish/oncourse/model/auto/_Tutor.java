@@ -3,7 +3,13 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import ish.oncourse.model.Taggable;
+import org.apache.cayenne.CayenneDataObject;
+
+import ish.oncourse.model.Attendance;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.MessagePerson;
+import ish.oncourse.model.Session;
+import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.TutorRole;
 
 /**
@@ -12,118 +18,66 @@ import ish.oncourse.model.TutorRole;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Tutor extends Taggable {
+public abstract class _Tutor extends CayenneDataObject {
 
-    public static final String COMPANY_PROPERTY = "company";
-    public static final String COMPANY_NAME_PROPERTY = "companyName";
-    public static final String COOKIE_HASH_PROPERTY = "cookieHash";
-    public static final String DATE_FINISHED_PROPERTY = "dateFinished";
-    public static final String DATE_STARTED_PROPERTY = "dateStarted";
-    public static final String EMAIL_PROPERTY = "email";
-    public static final String FAX_NUMBER_PROPERTY = "faxNumber";
-    public static final String FIRST_NAME_PROPERTY = "firstName";
-    public static final String LAST_NAME_PROPERTY = "lastName";
-    public static final String MALE_PROPERTY = "male";
-    public static final String MOBILE_NUMBER_PROPERTY = "mobileNumber";
-    public static final String PASSWORD_PROPERTY = "password";
-    public static final String PHONE_NUMBER_PROPERTY = "phoneNumber";
+    public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String COLLEGE_ID_PROPERTY = "collegeId";
+    public static final String CREATED_PROPERTY = "created";
+    public static final String FINISH_DATE_PROPERTY = "finishDate";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
+    public static final String MODIFIED_PROPERTY = "modified";
     public static final String RESUME_PROPERTY = "resume";
     public static final String RESUME_TEXTILE_PROPERTY = "resumeTextile";
+    public static final String START_DATE_PROPERTY = "startDate";
+    public static final String ATTENDANCES_PROPERTY = "attendances";
+    public static final String CONTACT_PROPERTY = "contact";
+    public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
+    public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
+    public static final String SESSIONS_PROPERTY = "sessions";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setCompany(boolean company) {
-        writeProperty("company", company);
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
     }
-	public boolean isCompany() {
-        Boolean value = (Boolean)readProperty("company");
-        return (value != null) ? value.booleanValue() : false;
-    }
-
-    public void setCompanyName(String companyName) {
-        writeProperty("companyName", companyName);
-    }
-    public String getCompanyName() {
-        return (String)readProperty("companyName");
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
     }
 
-    public void setCookieHash(String cookieHash) {
-        writeProperty("cookieHash", cookieHash);
+    public void setCollegeId(Long collegeId) {
+        writeProperty("collegeId", collegeId);
     }
-    public String getCookieHash() {
-        return (String)readProperty("cookieHash");
-    }
-
-    public void setDateFinished(Date dateFinished) {
-        writeProperty("dateFinished", dateFinished);
-    }
-    public Date getDateFinished() {
-        return (Date)readProperty("dateFinished");
+    public Long getCollegeId() {
+        return (Long)readProperty("collegeId");
     }
 
-    public void setDateStarted(Date dateStarted) {
-        writeProperty("dateStarted", dateStarted);
+    public void setCreated(Date created) {
+        writeProperty("created", created);
     }
-    public Date getDateStarted() {
-        return (Date)readProperty("dateStarted");
-    }
-
-    public void setEmail(String email) {
-        writeProperty("email", email);
-    }
-    public String getEmail() {
-        return (String)readProperty("email");
+    public Date getCreated() {
+        return (Date)readProperty("created");
     }
 
-    public void setFaxNumber(String faxNumber) {
-        writeProperty("faxNumber", faxNumber);
+    public void setFinishDate(Date finishDate) {
+        writeProperty("finishDate", finishDate);
     }
-    public String getFaxNumber() {
-        return (String)readProperty("faxNumber");
-    }
-
-    public void setFirstName(String firstName) {
-        writeProperty("firstName", firstName);
-    }
-    public String getFirstName() {
-        return (String)readProperty("firstName");
+    public Date getFinishDate() {
+        return (Date)readProperty("finishDate");
     }
 
-    public void setLastName(String lastName) {
-        writeProperty("lastName", lastName);
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
     }
-    public String getLastName() {
-        return (String)readProperty("lastName");
-    }
-
-    public void setMale(boolean male) {
-        writeProperty("male", male);
-    }
-	public boolean isMale() {
-        Boolean value = (Boolean)readProperty("male");
-        return (value != null) ? value.booleanValue() : false;
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        writeProperty("mobileNumber", mobileNumber);
+    public void setModified(Date modified) {
+        writeProperty("modified", modified);
     }
-    public String getMobileNumber() {
-        return (String)readProperty("mobileNumber");
-    }
-
-    public void setPassword(String password) {
-        writeProperty("password", password);
-    }
-    public String getPassword() {
-        return (String)readProperty("password");
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        writeProperty("phoneNumber", phoneNumber);
-    }
-    public String getPhoneNumber() {
-        return (String)readProperty("phoneNumber");
+    public Date getModified() {
+        return (Date)readProperty("modified");
     }
 
     public void setResume(String resume) {
@@ -139,6 +93,70 @@ public abstract class _Tutor extends Taggable {
     public String getResumeTextile() {
         return (String)readProperty("resumeTextile");
     }
+
+    public void setStartDate(Date startDate) {
+        writeProperty("startDate", startDate);
+    }
+    public Date getStartDate() {
+        return (Date)readProperty("startDate");
+    }
+
+    public void addToAttendances(Attendance obj) {
+        addToManyTarget("attendances", obj, true);
+    }
+    public void removeFromAttendances(Attendance obj) {
+        removeToManyTarget("attendances", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Attendance> getAttendances() {
+        return (List<Attendance>)readProperty("attendances");
+    }
+
+
+    public void setContact(Contact contact) {
+        setToOneTarget("contact", contact, true);
+    }
+
+    public Contact getContact() {
+        return (Contact)readProperty("contact");
+    }
+
+
+    public void addToMessagePeople(MessagePerson obj) {
+        addToManyTarget("messagePeople", obj, true);
+    }
+    public void removeFromMessagePeople(MessagePerson obj) {
+        removeToManyTarget("messagePeople", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<MessagePerson> getMessagePeople() {
+        return (List<MessagePerson>)readProperty("messagePeople");
+    }
+
+
+    public void addToSessionTutors(SessionTutor obj) {
+        addToManyTarget("sessionTutors", obj, true);
+    }
+    public void removeFromSessionTutors(SessionTutor obj) {
+        removeToManyTarget("sessionTutors", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<SessionTutor> getSessionTutors() {
+        return (List<SessionTutor>)readProperty("sessionTutors");
+    }
+
+
+    public void addToSessions(Session obj) {
+        addToManyTarget("sessions", obj, true);
+    }
+    public void removeFromSessions(Session obj) {
+        removeToManyTarget("sessions", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Session> getSessions() {
+        return (List<Session>)readProperty("sessions");
+    }
+
 
     public void addToTutorRoles(TutorRole obj) {
         addToManyTarget("tutorRoles", obj, true);

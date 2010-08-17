@@ -20,12 +20,13 @@ import org.apache.tapestry5.services.RequestGlobals;
 
 public class BinaryDataServlet extends HttpServlet {
 
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
 		IBinaryDataService service = getService(IBinaryDataService.class);
 
-		BinaryInfo binaryInfo = service.getBinaryInfo(BinaryInfo.ID_PROPERTY,
+		BinaryInfo binaryInfo = service.getBinaryInfo(BinaryInfo.ID_PK_COLUMN,
 				req.getParameter("id"));
 
 		resp.setContentType(binaryInfo.getMimeType());

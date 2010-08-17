@@ -14,8 +14,8 @@ public class WebSite extends _WebSite {
 	/**
 	 * @return true if this WebSite has a parent WebSite, false otherwise
 	 */
-	public boolean hasParentSite() {
-		return getParentSite() != null;
+	public boolean hasParentWebSite() {
+		return getParentWebSite() != null;
 	}
 
 	/**

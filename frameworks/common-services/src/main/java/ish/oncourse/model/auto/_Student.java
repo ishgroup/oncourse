@@ -3,9 +3,15 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.CayenneDataObject;
+
+import ish.oncourse.model.Attendance;
+import ish.oncourse.model.Certificate;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.MessagePerson;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.Taggable;
 import ish.oncourse.model.WaitingList;
 
 /**
@@ -14,45 +20,48 @@ import ish.oncourse.model.WaitingList;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Student extends Taggable {
+public abstract class _Student extends CayenneDataObject {
 
-    public static final String BIRTH_DATE_PROPERTY = "birthDate";
+    public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
-    public static final String COOKIE_HASH_PROPERTY = "cookieHash";
     public static final String COUNTRY_OF_BIRTH_ID_PROPERTY = "countryOfBirthId";
+    public static final String CREATED_PROPERTY = "created";
     public static final String DISABILITY_TYPE_PROPERTY = "disabilityType";
-    public static final String EMAIL_PROPERTY = "email";
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
-    public static final String FAX_PROPERTY = "fax";
-    public static final String FIRST_NAME_PROPERTY = "firstName";
     public static final String HIGHEST_SCHOOL_LEVEL_PROPERTY = "highestSchoolLevel";
-    public static final String HOME_PHONE_PROPERTY = "homePhone";
     public static final String INDIGENOUS_STATUS_PROPERTY = "indigenousStatus";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
+    public static final String IS_OVERSEAS_CLIENT_PROPERTY = "isOverseasClient";
+    public static final String IS_STILL_AT_SCHOOL_PROPERTY = "isStillAtSchool";
     public static final String LABOUR_FORCE_TYPE_PROPERTY = "labourForceType";
     public static final String LANGUAGE_ID_PROPERTY = "languageId";
-    public static final String LAST_NAME_PROPERTY = "lastName";
-    public static final String MALE_PROPERTY = "male";
-    public static final String MOBILE_PHONE_PROPERTY = "mobilePhone";
-    public static final String OVERSEAS_CLIENT_PROPERTY = "overseasClient";
-    public static final String PASSWORD_PROPERTY = "password";
-    public static final String POSTCODE_PROPERTY = "postcode";
+    public static final String MODIFIED_PROPERTY = "modified";
     public static final String PRIOR_EDUCATION_CODE_PROPERTY = "priorEducationCode";
-    public static final String STILL_AT_SCHOOL_PROPERTY = "stillAtSchool";
-    public static final String STREET_PROPERTY = "street";
-    public static final String SUBURB_PROPERTY = "suburb";
-    public static final String WORK_PHONE_PROPERTY = "workPhone";
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
+    public static final String ATTENDANCES_PROPERTY = "attendances";
+    public static final String CERTIFICATES_PROPERTY = "certificates";
+    public static final String CONTACT_PROPERTY = "contact";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
+    public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
+    public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setBirthDate(Date birthDate) {
-        writeProperty("birthDate", birthDate);
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
     }
-    public Date getBirthDate() {
-        return (Date)readProperty("birthDate");
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
+    }
+
+    public void setCollegeId(Long collegeId) {
+        writeProperty("collegeId", collegeId);
+    }
+    public Long getCollegeId() {
+        return (Long)readProperty("collegeId");
     }
 
     public void setConcessionType(Integer concessionType) {
@@ -62,18 +71,18 @@ public abstract class _Student extends Taggable {
         return (Integer)readProperty("concessionType");
     }
 
-    public void setCookieHash(String cookieHash) {
-        writeProperty("cookieHash", cookieHash);
-    }
-    public String getCookieHash() {
-        return (String)readProperty("cookieHash");
-    }
-
     public void setCountryOfBirthId(Long countryOfBirthId) {
         writeProperty("countryOfBirthId", countryOfBirthId);
     }
     public Long getCountryOfBirthId() {
         return (Long)readProperty("countryOfBirthId");
+    }
+
+    public void setCreated(Date created) {
+        writeProperty("created", created);
+    }
+    public Date getCreated() {
+        return (Date)readProperty("created");
     }
 
     public void setDisabilityType(Integer disabilityType) {
@@ -83,32 +92,11 @@ public abstract class _Student extends Taggable {
         return (Integer)readProperty("disabilityType");
     }
 
-    public void setEmail(String email) {
-        writeProperty("email", email);
-    }
-    public String getEmail() {
-        return (String)readProperty("email");
-    }
-
     public void setEnglishProficiency(Integer englishProficiency) {
         writeProperty("englishProficiency", englishProficiency);
     }
     public Integer getEnglishProficiency() {
         return (Integer)readProperty("englishProficiency");
-    }
-
-    public void setFax(String fax) {
-        writeProperty("fax", fax);
-    }
-    public String getFax() {
-        return (String)readProperty("fax");
-    }
-
-    public void setFirstName(String firstName) {
-        writeProperty("firstName", firstName);
-    }
-    public String getFirstName() {
-        return (String)readProperty("firstName");
     }
 
     public void setHighestSchoolLevel(Integer highestSchoolLevel) {
@@ -118,18 +106,32 @@ public abstract class _Student extends Taggable {
         return (Integer)readProperty("highestSchoolLevel");
     }
 
-    public void setHomePhone(String homePhone) {
-        writeProperty("homePhone", homePhone);
-    }
-    public String getHomePhone() {
-        return (String)readProperty("homePhone");
-    }
-
     public void setIndigenousStatus(Integer indigenousStatus) {
         writeProperty("indigenousStatus", indigenousStatus);
     }
     public Integer getIndigenousStatus() {
         return (Integer)readProperty("indigenousStatus");
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
+    }
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
+    }
+
+    public void setIsOverseasClient(Boolean isOverseasClient) {
+        writeProperty("isOverseasClient", isOverseasClient);
+    }
+    public Boolean getIsOverseasClient() {
+        return (Boolean)readProperty("isOverseasClient");
+    }
+
+    public void setIsStillAtSchool(Boolean isStillAtSchool) {
+        writeProperty("isStillAtSchool", isStillAtSchool);
+    }
+    public Boolean getIsStillAtSchool() {
+        return (Boolean)readProperty("isStillAtSchool");
     }
 
     public void setLabourForceType(Integer labourForceType) {
@@ -146,48 +148,11 @@ public abstract class _Student extends Taggable {
         return (Long)readProperty("languageId");
     }
 
-    public void setLastName(String lastName) {
-        writeProperty("lastName", lastName);
+    public void setModified(Date modified) {
+        writeProperty("modified", modified);
     }
-    public String getLastName() {
-        return (String)readProperty("lastName");
-    }
-
-    public void setMale(boolean male) {
-        writeProperty("male", male);
-    }
-	public boolean isMale() {
-        Boolean value = (Boolean)readProperty("male");
-        return (value != null) ? value.booleanValue() : false;
-    }
-
-    public void setMobilePhone(String mobilePhone) {
-        writeProperty("mobilePhone", mobilePhone);
-    }
-    public String getMobilePhone() {
-        return (String)readProperty("mobilePhone");
-    }
-
-    public void setOverseasClient(boolean overseasClient) {
-        writeProperty("overseasClient", overseasClient);
-    }
-	public boolean isOverseasClient() {
-        Boolean value = (Boolean)readProperty("overseasClient");
-        return (value != null) ? value.booleanValue() : false;
-    }
-
-    public void setPassword(String password) {
-        writeProperty("password", password);
-    }
-    public String getPassword() {
-        return (String)readProperty("password");
-    }
-
-    public void setPostcode(String postcode) {
-        writeProperty("postcode", postcode);
-    }
-    public String getPostcode() {
-        return (String)readProperty("postcode");
+    public Date getModified() {
+        return (Date)readProperty("modified");
     }
 
     public void setPriorEducationCode(Integer priorEducationCode) {
@@ -197,41 +162,45 @@ public abstract class _Student extends Taggable {
         return (Integer)readProperty("priorEducationCode");
     }
 
-    public void setStillAtSchool(boolean stillAtSchool) {
-        writeProperty("stillAtSchool", stillAtSchool);
-    }
-	public boolean isStillAtSchool() {
-        Boolean value = (Boolean)readProperty("stillAtSchool");
-        return (value != null) ? value.booleanValue() : false;
-    }
-
-    public void setStreet(String street) {
-        writeProperty("street", street);
-    }
-    public String getStreet() {
-        return (String)readProperty("street");
-    }
-
-    public void setSuburb(String suburb) {
-        writeProperty("suburb", suburb);
-    }
-    public String getSuburb() {
-        return (String)readProperty("suburb");
-    }
-
-    public void setWorkPhone(String workPhone) {
-        writeProperty("workPhone", workPhone);
-    }
-    public String getWorkPhone() {
-        return (String)readProperty("workPhone");
-    }
-
     public void setYearSchoolCompleted(Integer yearSchoolCompleted) {
         writeProperty("yearSchoolCompleted", yearSchoolCompleted);
     }
     public Integer getYearSchoolCompleted() {
         return (Integer)readProperty("yearSchoolCompleted");
     }
+
+    public void addToAttendances(Attendance obj) {
+        addToManyTarget("attendances", obj, true);
+    }
+    public void removeFromAttendances(Attendance obj) {
+        removeToManyTarget("attendances", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Attendance> getAttendances() {
+        return (List<Attendance>)readProperty("attendances");
+    }
+
+
+    public void addToCertificates(Certificate obj) {
+        addToManyTarget("certificates", obj, true);
+    }
+    public void removeFromCertificates(Certificate obj) {
+        removeToManyTarget("certificates", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Certificate> getCertificates() {
+        return (List<Certificate>)readProperty("certificates");
+    }
+
+
+    public void setContact(Contact contact) {
+        setToOneTarget("contact", contact, true);
+    }
+
+    public Contact getContact() {
+        return (Contact)readProperty("contact");
+    }
+
 
     public void addToEnrolments(Enrolment obj) {
         addToManyTarget("enrolments", obj, true);
@@ -242,6 +211,30 @@ public abstract class _Student extends Taggable {
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
         return (List<Enrolment>)readProperty("enrolments");
+    }
+
+
+    public void addToMessagePeople(MessagePerson obj) {
+        addToManyTarget("messagePeople", obj, true);
+    }
+    public void removeFromMessagePeople(MessagePerson obj) {
+        removeToManyTarget("messagePeople", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<MessagePerson> getMessagePeople() {
+        return (List<MessagePerson>)readProperty("messagePeople");
+    }
+
+
+    public void addToPaymentsIn(PaymentIn obj) {
+        addToManyTarget("paymentsIn", obj, true);
+    }
+    public void removeFromPaymentsIn(PaymentIn obj) {
+        removeToManyTarget("paymentsIn", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<PaymentIn> getPaymentsIn() {
+        return (List<PaymentIn>)readProperty("paymentsIn");
     }
 
 

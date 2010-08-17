@@ -34,7 +34,7 @@ public class CourseList {
 	public Collection<Site> getMapSites() {
 		Set<Site> sites = new HashSet<Site>();
 		for (Course course : courses) {
-			for (CourseClass courseClass : course.getClasses()) {
+			for (CourseClass courseClass : course.getCourseClasses()) {
 				for(Session s:courseClass.getSessions()){
 					sites.add(s.getRoom().getSite());
 				}

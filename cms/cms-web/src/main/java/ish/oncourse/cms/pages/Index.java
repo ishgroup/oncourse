@@ -49,17 +49,17 @@ public class Index {
 	}
 
 	public String getNodeParentLink() {
-		WebNode parent = node.getParent();
-		return parent != null ? "/page/" + node.getParent().getNodeNumber()
+		WebNode parent = node.getParentNode();
+		return parent != null ? "/page/" + node.getParentNode().getNodeNumber()
 				: null;
 	}
 
 	public boolean isNodeHasChildren() {
-		return node.getChildren().size() > 0;
+		return node.getWebNodes().size() > 0;
 	}
 
 	public String getNodeChildrenLabel() {
-		int count = node.getChildren().size();
+		int count = node.getWebNodes().size();
 		return count > 1 ? count + " children" : count + " child";
 	}
 
@@ -69,8 +69,8 @@ public class Index {
 
 	public WebNodeStatus getNodeStatus() {
 		// TODO: make WebNode return this?
-		if (node.getWebVisible() != null && node.getWebVisible()) {
-			return node.getPublished() != null && node.getPublished() ? WebNodeStatus.published
+		if (node.getIsWebVisible() != null && node.getIsWebVisible()) {
+			return node.getIsPublished() != null && node.getIsPublished() ? WebNodeStatus.published
 					: WebNodeStatus.unpublished;
 		} else {
 			return WebNodeStatus.deleted;

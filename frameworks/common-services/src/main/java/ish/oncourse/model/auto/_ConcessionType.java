@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.StudentConcession;
 
@@ -17,7 +18,6 @@ import ish.oncourse.model.StudentConcession;
 public abstract class _ConcessionType extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CREATED_PROPERTY = "created";
     public static final String CREDENTIAL_EXPIRY_DAYS_PROPERTY = "credentialExpiryDays";
     public static final String HAS_CONCESSION_NUMBER_PROPERTY = "hasConcessionNumber";
@@ -28,6 +28,7 @@ public abstract class _ConcessionType extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String REQUIRES_CREDENTIAL_CHECK_PROPERTY = "requiresCredentialCheck";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
 
@@ -38,13 +39,6 @@ public abstract class _ConcessionType extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
-    }
-
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
-    }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
     }
 
     public void setCreated(Date created) {
@@ -68,11 +62,11 @@ public abstract class _ConcessionType extends CayenneDataObject {
         return (Boolean)readProperty("hasConcessionNumber");
     }
 
-    public void setHasExpiryDate(Integer hasExpiryDate) {
+    public void setHasExpiryDate(Boolean hasExpiryDate) {
         writeProperty("hasExpiryDate", hasExpiryDate);
     }
-    public Integer getHasExpiryDate() {
-        return (Integer)readProperty("hasExpiryDate");
+    public Boolean getHasExpiryDate() {
+        return (Boolean)readProperty("hasExpiryDate");
     }
 
     public void setIsConcession(Boolean isConcession) {
@@ -116,6 +110,15 @@ public abstract class _ConcessionType extends CayenneDataObject {
     public Boolean getRequiresCredentialCheck() {
         return (Boolean)readProperty("requiresCredentialCheck");
     }
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
+    }
+
 
     public void addToDiscountConcessionTypes(DiscountConcessionType obj) {
         addToManyTarget("discountConcessionTypes", obj, true);

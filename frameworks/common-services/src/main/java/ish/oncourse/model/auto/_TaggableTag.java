@@ -18,7 +18,7 @@ public abstract class _TaggableTag extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DELETED_PROPERTY = "deleted";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String TAG_PROPERTY = "tag";
@@ -41,11 +41,11 @@ public abstract class _TaggableTag extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setDeleted(Boolean deleted) {
-        writeProperty("deleted", deleted);
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
     }
-    public Boolean getDeleted() {
-        return (Boolean)readProperty("deleted");
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

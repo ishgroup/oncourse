@@ -79,7 +79,7 @@ public class TimetableEvents {
 		return format;
 	}
 
-	public boolean isHasItemEndTimestamp() {
-		return event.getEndTimestamp() != null;
+	public boolean isHasItemEndDate() {
+		return event.getEndDate() != null;
 	}
 }

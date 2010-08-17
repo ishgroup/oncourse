@@ -20,7 +20,7 @@ public abstract class _WebBlockType extends CayenneDataObject {
     public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
-    public static final String BLOCKS_PROPERTY = "blocks";
+    public static final String WEB_BLOCKS_PROPERTY = "webBlocks";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -38,11 +38,11 @@ public abstract class _WebBlockType extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setIsDeleted(Integer isDeleted) {
+    public void setIsDeleted(Boolean isDeleted) {
         writeProperty("isDeleted", isDeleted);
     }
-    public Integer getIsDeleted() {
-        return (Integer)readProperty("isDeleted");
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {
@@ -59,15 +59,15 @@ public abstract class _WebBlockType extends CayenneDataObject {
         return (String)readProperty("name");
     }
 
-    public void addToBlocks(WebBlock obj) {
-        addToManyTarget("blocks", obj, true);
+    public void addToWebBlocks(WebBlock obj) {
+        addToManyTarget("webBlocks", obj, true);
     }
-    public void removeFromBlocks(WebBlock obj) {
-        removeToManyTarget("blocks", obj, true);
+    public void removeFromWebBlocks(WebBlock obj) {
+        removeToManyTarget("webBlocks", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<WebBlock> getBlocks() {
-        return (List<WebBlock>)readProperty("blocks");
+    public List<WebBlock> getWebBlocks() {
+        return (List<WebBlock>)readProperty("webBlocks");
     }
 
 

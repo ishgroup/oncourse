@@ -38,7 +38,7 @@ public class VideoTextileValidator implements IValidator {
 					"width", "height");
 			Long id = Long.valueOf(tagParams.get("id"));
 			BinaryInfo video = ((IBinaryDataService) dataService)
-					.getBinaryInfo(BinaryInfo.ID_PROPERTY, id);
+					.getBinaryInfo(BinaryInfo.ID_PK_COLUMN, id);
 			if (video == null) {
 				errors.addFailure("There's no video with such an id: " + id);
 			}

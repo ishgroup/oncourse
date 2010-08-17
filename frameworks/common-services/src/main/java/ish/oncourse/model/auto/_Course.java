@@ -1,9 +1,13 @@
 package ish.oncourse.model.auto;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.CayenneDataObject;
+
+import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Taggable;
+import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.WaitingList;
 
 /**
@@ -12,39 +16,43 @@ import ish.oncourse.model.WaitingList;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Course extends Taggable {
+public abstract class _Course extends CayenneDataObject {
 
-    public static final String VETCOURSE_PROPERTY = "VETCourse";
     public static final String ALLOW_WAITING_LIST_PROPERTY = "allowWaitingList";
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CODE_PROPERTY = "code";
+    public static final String CREATED_PROPERTY = "created";
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
+    public static final String IS_SUFFICIENT_FOR_QUALIFICATION_PROPERTY = "isSufficientForQualification";
+    public static final String IS_VETCOURSE_PROPERTY = "isVETCourse";
+    public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
+    public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String NOMINAL_HOURS_PROPERTY = "nominalHours";
     public static final String QUALIFICATION_ID_PROPERTY = "qualificationId";
     public static final String SEARCH_TEXT_PROPERTY = "searchText";
-    public static final String SUFFICIENT_FOR_QUALIFICATION_PROPERTY = "sufficientForQualification";
-    public static final String WEB_VISIBLE_PROPERTY = "webVisible";
-    public static final String CLASSES_PROPERTY = "classes";
+    public static final String COLLEGE_PROPERTY = "college";
+    public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
+    public static final String COURSE_MODULES_PROPERTY = "courseModules";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setVETCourse(boolean VETCourse) {
-        writeProperty("VETCourse", VETCourse);
-    }
-	public boolean isVETCourse() {
-        Boolean value = (Boolean)readProperty("VETCourse");
-        return (value != null) ? value.booleanValue() : false;
-    }
-
-    public void setAllowWaitingList(boolean allowWaitingList) {
+    public void setAllowWaitingList(Boolean allowWaitingList) {
         writeProperty("allowWaitingList", allowWaitingList);
     }
-	public boolean isAllowWaitingList() {
-        Boolean value = (Boolean)readProperty("allowWaitingList");
-        return (value != null) ? value.booleanValue() : false;
+    public Boolean getAllowWaitingList() {
+        return (Boolean)readProperty("allowWaitingList");
+    }
+
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
     }
 
     public void setCode(String code) {
@@ -52,6 +60,13 @@ public abstract class _Course extends Taggable {
     }
     public String getCode() {
         return (String)readProperty("code");
+    }
+
+    public void setCreated(Date created) {
+        writeProperty("created", created);
+    }
+    public Date getCreated() {
+        return (Date)readProperty("created");
     }
 
     public void setDetail(String detail) {
@@ -73,6 +88,41 @@ public abstract class _Course extends Taggable {
     }
     public String getFieldOfEducation() {
         return (String)readProperty("fieldOfEducation");
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
+    }
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
+    }
+
+    public void setIsSufficientForQualification(Boolean isSufficientForQualification) {
+        writeProperty("isSufficientForQualification", isSufficientForQualification);
+    }
+    public Boolean getIsSufficientForQualification() {
+        return (Boolean)readProperty("isSufficientForQualification");
+    }
+
+    public void setIsVETCourse(Boolean isVETCourse) {
+        writeProperty("isVETCourse", isVETCourse);
+    }
+    public Boolean getIsVETCourse() {
+        return (Boolean)readProperty("isVETCourse");
+    }
+
+    public void setIsWebVisible(Boolean isWebVisible) {
+        writeProperty("isWebVisible", isWebVisible);
+    }
+    public Boolean getIsWebVisible() {
+        return (Boolean)readProperty("isWebVisible");
+    }
+
+    public void setModified(Date modified) {
+        writeProperty("modified", modified);
+    }
+    public Date getModified() {
+        return (Date)readProperty("modified");
     }
 
     public void setName(String name) {
@@ -103,25 +153,36 @@ public abstract class _Course extends Taggable {
         return (String)readProperty("searchText");
     }
 
-    public void setSufficientForQualification(boolean sufficientForQualification) {
-        writeProperty("sufficientForQualification", sufficientForQualification);
-    }
-	public boolean isSufficientForQualification() {
-        Boolean value = (Boolean)readProperty("sufficientForQualification");
-        return (value != null) ? value.booleanValue() : false;
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
     }
 
-    public void setWebVisible(boolean webVisible) {
-        writeProperty("webVisible", webVisible);
-    }
-	public boolean isWebVisible() {
-        Boolean value = (Boolean)readProperty("webVisible");
-        return (value != null) ? value.booleanValue() : false;
+    public College getCollege() {
+        return (College)readProperty("college");
     }
 
+
+    public void addToCourseClasses(CourseClass obj) {
+        addToManyTarget("courseClasses", obj, true);
+    }
+    public void removeFromCourseClasses(CourseClass obj) {
+        removeToManyTarget("courseClasses", obj, true);
+    }
     @SuppressWarnings("unchecked")
-    public List<CourseClass> getClasses() {
-        return (List<CourseClass>)readProperty("classes");
+    public List<CourseClass> getCourseClasses() {
+        return (List<CourseClass>)readProperty("courseClasses");
+    }
+
+
+    public void addToCourseModules(CourseModule obj) {
+        addToManyTarget("courseModules", obj, true);
+    }
+    public void removeFromCourseModules(CourseModule obj) {
+        removeToManyTarget("courseModules", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CourseModule> getCourseModules() {
+        return (List<CourseModule>)readProperty("courseModules");
     }
 
 

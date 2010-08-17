@@ -18,11 +18,13 @@ public abstract class _Taggable extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DELETED_PROPERTY = "deleted";
-    public static final String ENTITY_TYPE_PROPERTY = "entityType";
+    public static final String ENTITY_ANGEL_ID_PROPERTY = "entityAngelId";
+    public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
+    public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
+    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String COLLEGE_PROPERTY = "college";
-    public static final String TAGGABLETAGS_PROPERTY = "taggabletags";
+    public static final String TAGGABLE_TAGS_PROPERTY = "taggableTags";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -40,18 +42,32 @@ public abstract class _Taggable extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setDeleted(Boolean deleted) {
-        writeProperty("deleted", deleted);
+    public void setEntityAngelId(Long entityAngelId) {
+        writeProperty("entityAngelId", entityAngelId);
     }
-    public Boolean getDeleted() {
-        return (Boolean)readProperty("deleted");
+    public Long getEntityAngelId() {
+        return (Long)readProperty("entityAngelId");
     }
 
-    public void setEntityType(String entityType) {
-        writeProperty("entityType", entityType);
+    public void setEntityIdentifier(String entityIdentifier) {
+        writeProperty("entityIdentifier", entityIdentifier);
     }
-    public String getEntityType() {
-        return (String)readProperty("entityType");
+    public String getEntityIdentifier() {
+        return (String)readProperty("entityIdentifier");
+    }
+
+    public void setEntityWillowId(Long entityWillowId) {
+        writeProperty("entityWillowId", entityWillowId);
+    }
+    public Long getEntityWillowId() {
+        return (Long)readProperty("entityWillowId");
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        writeProperty("isDeleted", isDeleted);
+    }
+    public Boolean getIsDeleted() {
+        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {
@@ -70,15 +86,15 @@ public abstract class _Taggable extends CayenneDataObject {
     }
 
 
-    public void addToTaggabletags(TaggableTag obj) {
-        addToManyTarget("taggabletags", obj, true);
+    public void addToTaggableTags(TaggableTag obj) {
+        addToManyTarget("taggableTags", obj, true);
     }
-    public void removeFromTaggabletags(TaggableTag obj) {
-        removeToManyTarget("taggabletags", obj, true);
+    public void removeFromTaggableTags(TaggableTag obj) {
+        removeToManyTarget("taggableTags", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<TaggableTag> getTaggabletags() {
-        return (List<TaggableTag>)readProperty("taggabletags");
+    public List<TaggableTag> getTaggableTags() {
+        return (List<TaggableTag>)readProperty("taggableTags");
     }
 
 
