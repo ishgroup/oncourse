@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+
 public class WebNodeService implements IWebNodeService {
 
 	private static final Logger LOGGER = Logger.getLogger(
@@ -30,6 +31,7 @@ public class WebNodeService implements IWebNodeService {
 	@Inject
 	private Request request;
 
+	static final String NODE_NUMBER_PARAMETER = "n";
 	static final String PAGE_NAME_PARAMETER = "p";
 	static final String WEB_NODE_PAGE_TYPE_KEY = "Page";
 
@@ -47,31 +49,51 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getCurrentPage() {
-		String pageName = request.getParameter(PAGE_NAME_PARAMETER);
+
+		WebNode result = null;
 
 		SelectQuery query = new SelectQuery(WebNode.class);
 		query.andQualifier(siteQualifier());
-		query.andQualifier(
-				ExpressionFactory.matchExp(WebNode.NAME_PROPERTY, pageName));
-		query.andQualifier(
-				ExpressionFactory.matchExp(
-						WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
-						WEB_NODE_PAGE_TYPE_KEY));
+		query.andQualifier(ExpressionFactory.matchExp(
+				WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
+				WEB_NODE_PAGE_TYPE_KEY));
 
-		@SuppressWarnings("unchecked")
-		List<WebNode> nodes = cayenneService.sharedContext()
-				.performQuery(query);
-
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Found " + nodes.size() + " nodes for query : " + query);
+		if (request.getParameter(NODE_NUMBER_PARAMETER) != null) {
+			try {
+				Integer nodeNumber = Integer.parseInt(request.getParameter(NODE_NUMBER_PARAMETER));
+				query.andQualifier(ExpressionFactory.matchExp(
+						WebNode.NODE_NUMBER_PROPERTY, nodeNumber));
+			} catch(Exception e) {
+				query = null;
+			}
+		} else if (request.getParameter(PAGE_NAME_PARAMETER) != null) {
+			String nodeName = request.getParameter(PAGE_NAME_PARAMETER);
+			if ((nodeName != null) && !("".equals(nodeName))) {
+				query.andQualifier(ExpressionFactory.matchExp(
+						WebNode.NAME_PROPERTY, nodeName));
+			} else {
+				query = null;
+			}
 		}
-		
-		if (nodes.size() > 1) {
-			LOGGER.error("Expected one WebNode record, found " + nodes.size()
-					+ " for query : " + query);
+
+		if (query != null) {
+			@SuppressWarnings("unchecked")
+			List<WebNode> nodes = cayenneService.sharedContext()
+					.performQuery(query);
+
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Found " + nodes.size() + " nodes for query : " + query);
+			}
+
+			if (nodes.size() > 1) {
+				LOGGER.error("Expected one WebNode record, found " + nodes.size()
+						+ " for query : " + query);
+			}
+
+			result = (nodes.size() == 1) ? nodes.get(0) : null;
 		}
 
-		return (nodes.size() == 1) ? nodes.get(0) : null;
+		return result;
 	}
 
 	private Expression siteQualifier() {
