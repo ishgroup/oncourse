@@ -95,7 +95,7 @@ public class UIModule {
 	}
 
 	public static void contributeTypeCoercer(
-			Configuration<CoercionTuple> configuration) {
+			Configuration<CoercionTuple<PrivateResource, Resource>> configuration) {
 		configuration.add(new CoercionTuple<PrivateResource, Resource>(
 				PrivateResource.class, Resource.class,
 				new Coercion<PrivateResource, Resource>() {

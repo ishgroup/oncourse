@@ -16,8 +16,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>onCourse Parent POM</name>
-	<description>Parent POM of the onCourse applications.
-	</description>
+	<description>Parent POM of the onCourse applications.</description>
 
 
 	<modules>
@@ -50,9 +49,21 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-upload</artifactId>
+				<version>${tapestry5version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.got5</groupId>
 				<artifactId>tapestry5-jquery</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.1.0-SNAPSHOT</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.tapestry</groupId>
+						<artifactId>tapestry-upload</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -123,6 +134,12 @@
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>1.2.15</version>
+			</dependency>
+
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>1.6</version>
 			</dependency>
 
 			<dependency>
@@ -212,6 +229,17 @@
 			<id>ish-snapshots</id>
 			<name>ish Maven2 ish-snapshots Repository</name>
 			<url>http://archiva.ish.com.au/archiva/repository/ish-snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>snapshots</id>
+			<name>ish Maven2 snapshots Repository</name>
+			<url>http://archiva.ish.com.au/archiva/repository/snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>

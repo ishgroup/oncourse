@@ -252,17 +252,17 @@ INSERT INTO willow_college.WaitingListSite (siteId, waitingListId)
 	WHERE siteId IN (SELECT id FROM Site WHERE collegeId = @collegeId)
 		AND waitingListId IN (SELECT id FROM WaitingList WHERE collegeId = @collegeId);
 INSERT INTO willow_college.WebSite (angelId, code, collegeId, created, defaultUrlPath, homePageId, id, isDeleted, modified, name, parentWebSiteId, siteKey, sslHostName)
-	SELECT angelId, code, collegeId, created, defaultUrlPath, homePageId, id, isDeleted, modified, name, parentWebSiteId, @siteKey, sslHostName
+	SELECT angelId, code, collegeId, created, defaultUrlPath, homePageId, id, isDeleted, modified, name, parentWebSiteId, '', sslHostName
 	FROM oncourse_realdata_willow_college.WebSite WHERE isDeleted = 0 AND collegeId = @collegeId;
 INSERT INTO willow_college.WebBlockType (angelId, created, id, isDeleted, modified, name)
 	SELECT angelId, created, id, isDeleted, modified, name
- 	FROM oncourse_realdata_willow_college.WebBlockType WHERE isDeleted = 0 AND id NOT IN (SELECT id FROM oncourse_realdata_willow_college.WebBlockType);
+ 	FROM oncourse_realdata_willow_college.WebBlockType WHERE isDeleted = 0 AND id NOT IN (SELECT id FROM willow_college.WebBlockType);
 INSERT INTO willow_college.WebBlock (angelId, content, content_textile, created, id, isDeleted, modified, name, regionKey, webBlockTypeId, webSiteId, weighting)
 	SELECT angelId, content, content_textile, created, id, isDeleted, modified, name, regionKey, webBlockTypeID, webSiteID, weighting
 	FROM oncourse_realdata_willow_college.WebBlock WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM WebSite WHERE collegeId = @collegeId);
 INSERT INTO willow_college.WebNodeType (angelId, created, defaultWebThemeID, id, isDeleted, modified, name)
 	SELECT angelId, created, defaultWebThemeID, id, isDeleted, modified, name
- 	FROM oncourse_realdata_willow_college.WebNodeType WHERE isDeleted = 0 AND id NOT IN (SELECT id FROM oncourse_realdata_willow_college.WebNodeType);
+ 	FROM oncourse_realdata_willow_college.WebNodeType WHERE isDeleted = 0 AND id NOT IN (SELECT id FROM willow_college.WebNodeType);
 INSERT INTO willow_college.WebNode (angelId, created, id, isDeleted, isPublished, isRssFeed, isWebNavigable, isWebVisible, menuAliasId, modified, name, nodeNumber, parentNodeID, savedByUserId, shortName, webNodeTypeId, webSiteId, weighting)
 	SELECT angelId, created, id, isDeleted, isPublished, isRssFeed, isWebNavigable, isWebVisible, menuAliasId, modified, name, nodeNumber, parentNodeID, savedByUserId, shortName, webNodeTypeId, webSiteId, weighting
 	FROM oncourse_realdata_willow_college.WebNode WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM WebSite WHERE collegeId = @collegeId);
@@ -274,7 +274,7 @@ INSERT INTO willow_college.WebTheme (id, collegeId, angelId, isDeleted, name, th
 	FROM oncourse_realdata_willow_college.WebTheme WHERE isDeleted = 0 AND collegeId = @collegeId;
 INSERT INTO willow_college.WebURLAlias (angelId, created, id, isDeleted, modified, urlPath, webNodeId, webSiteId)
 	SELECT angelId, created, id, isDeleted, modified, urlPath, webNodeId, webSiteId
-	FROM oncourse_realdata_willow_college.WebURLAlias WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM WebSite WHERE collegeId = @collegeId);
+	FROM oncourse_realdata_willow_college.WebTheme WHERE isDeleted = 0 AND (collegeId is null or collegeId = @collegeId) AND id NOT IN (SELECT id FROM willow_college.WebTheme);
 INSERT INTO willow_college.WillowUser (angelId, collegeId, created, email, failedLoginCount, firstName, flag1, id, isActive, isDeleted, isSuperUser, lastFailedLogin, lastLogin, lastName, modified, password, passwordHash)
 	SELECT angelId, collegeId, created, email, failedLoginCount, firstName, flag1, id, isActive, isDeleted, isSuperUser, lastFailedLogin, lastLogin, lastName, modified, password, null
 	FROM oncourse_realdata_willow_college.WillowUser WHERE collegeId = @collegeId;

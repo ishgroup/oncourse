@@ -29,13 +29,6 @@
 			<artifactId>common-ui</artifactId>
 		</dependency>
 
-<!-- Commenting out as it works only with Tapestry 5.1
-		<dependency>
-			<groupId>org.got5</groupId>
-			<artifactId>tapestry5-jquery</artifactId>
-		</dependency>
--->
-
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -44,6 +37,16 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-upload</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.got5</groupId>
+			<artifactId>tapestry5-jquery</artifactId>
 		</dependency>
 
 	</dependencies>

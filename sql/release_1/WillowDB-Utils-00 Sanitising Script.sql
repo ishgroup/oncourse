@@ -219,13 +219,6 @@ delete t from WebNode t
 where 
     c.collegeKey not in ('east', 'scc' ) or c.collegeKey is null;
 
--- WebNodeType
-delete t from WebNodeType t
-    join WebSite ws on t.webSiteId = ws.id
-    join College c on ws.collegeId = c.id
-where 
-    c.collegeKey not in ('east', 'scc' ) or c.collegeKey is null;
-
 -- WebBlock
 delete t from WebBlock t
     join WebSite ws on t.webSiteId = ws.id
@@ -284,7 +277,7 @@ where
     c.collegeKey not in ('east', 'scc' ) or c.collegeKey is null;
 
 insert into CollegeDomain (aliasedDomainID, collegeId, created, googleAnalyticsAccount, googleDirectionsFrom, hasSSL, isDeleted, modified, name, subsiteCode, webSiteID)
-values (null, 10, now(), 'UA-1134422-2', null, null, 0, 0, now(), 'scc.jetty.oncourse.net.au', null, 13);
+values (null, 10, now(), 'UA-1134422-2', null, 0, 0, now(), 'scc.jetty.oncourse.net.au', null, 13);
 
 update College set
       billingCode = collegeKey
