@@ -39,8 +39,7 @@ public class ResourceService implements IResourceService {
 		String customComponentsPath = "";
 		try {
 			Context ctx = new InitialContext();
-			Context env = (Context) ctx.lookup("java:comp/env");
-			customComponentsPath = (String) env.lookup(Property.CustomComponentsPath.name());
+			customComponentsPath = (String) ctx.lookup("java:comp/env/" + Property.CustomComponentsPath.name());
 			if (logger.isInfoEnabled()) {
 				logger.info("CustomComponentsPath configured through JNDI to: " + customComponentsPath);
 			}
