@@ -9,6 +9,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 
 
@@ -33,8 +36,23 @@ public class ResourceService implements IResourceService {
 			@Inject IPropertyService propertyService,
 			@Inject IWebSiteService siteService) {
 
-		String customComponentsPath = propertyService
-				.string(Property.CustomComponentsPath);
+		String customComponentsPath = "";
+		try {
+			Context ctx = new InitialContext();
+			Context env = (Context) ctx.lookup("java:comp/env");
+			customComponentsPath = (String) env.lookup(Property.CustomComponentsPath.name());
+			if (logger.isInfoEnabled()) {
+				logger.info("CustomComponentsPath configured through JNDI to: " + customComponentsPath);
+			}
+		} catch(NamingException ne) {
+			logger.warn("CustomComponentsPath not defined by JNDI, falling to secondary config", ne);
+		}
+
+		if ((customComponentsPath == null) || ("".equals(customComponentsPath))) {
+			customComponentsPath = propertyService
+					.string(Property.CustomComponentsPath);
+		}
+
 
 		if (customComponentsPath == null) {
 			throw new IllegalStateException("Undefined property: "
