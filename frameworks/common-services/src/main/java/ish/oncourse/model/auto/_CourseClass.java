@@ -23,6 +23,7 @@ import ish.oncourse.model.TutorRole;
 public abstract class _CourseClass extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String CANCELLED_PROPERTY = "cancelled";
     public static final String CODE_PROPERTY = "code";
     public static final String COUNT_OF_SESSIONS_PROPERTY = "countOfSessions";
     public static final String CREATED_PROPERTY = "created";
@@ -32,7 +33,6 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String FEE_EX_GST_PROPERTY = "feeExGst";
     public static final String FEE_GST_PROPERTY = "feeGst";
-    public static final String IS_CANCELLED_PROPERTY = "isCancelled";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MATERIALS_PROPERTY = "materials";
     public static final String MATERIALS_TEXTILE_PROPERTY = "materialsTextile";
@@ -60,6 +60,14 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
+    }
+
+    public void setCancelled(boolean cancelled) {
+        writeProperty("cancelled", cancelled);
+    }
+	public boolean isCancelled() {
+        Boolean value = (Boolean)readProperty("cancelled");
+        return (value != null) ? value.booleanValue() : false;
     }
 
     public void setCode(String code) {
@@ -123,13 +131,6 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public BigDecimal getFeeGst() {
         return (BigDecimal)readProperty("feeGst");
-    }
-
-    public void setIsCancelled(Boolean isCancelled) {
-        writeProperty("isCancelled", isCancelled);
-    }
-    public Boolean getIsCancelled() {
-        return (Boolean)readProperty("isCancelled");
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {

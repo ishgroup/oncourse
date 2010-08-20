@@ -7,19 +7,22 @@ import ish.oncourse.util.ValidationErrors;
 
 public class ImageTextileValidator implements IValidator {
 
-	public void validate(String tag, ValidationErrors errors,
-			Object dataService) {
-		if (getImageBinaryInfoByTag(tag, errors, dataService) == null) {
-			errors
-					.addFailure("The image tag '"
-							+ tag
-							+ "' doesn't match nor {image id:\"id\"}, nor {image name:\"name\"}");
+	private IBinaryDataService binaryDataService;
+
+	public ImageTextileValidator(IBinaryDataService binaryDataService) {
+		this.binaryDataService = binaryDataService;
+	}
+
+	public void validate(String tag, ValidationErrors errors) {
+		if (getImageBinaryInfoByTag(tag, errors) == null) {
+			errors.addFailure("The image tag '"
+					+ tag
+					+ "' doesn't match nor {image id:\"id\"}, nor {image name:\"name\"}");
 		}
 	}
 
 	public BinaryInfo getImageBinaryInfoByTag(String tag,
-			ValidationErrors errors, Object dataService) {
-		IBinaryDataService binaryDataService = (IBinaryDataService) dataService;
+			ValidationErrors errors) {
 		BinaryInfo result = null;
 		if (tag.matches(TextileUtil.IMAGE_ID_REGEXP)) {
 			String id = TextileUtil.getValueInFirstQuots(tag);

@@ -22,6 +22,8 @@ import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
+import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -51,6 +53,7 @@ public class ServiceModule {
 		binder.bind(IBinaryDataService.class, BinaryDataService.class);
 		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(ITutorService.class, TutorService.class);
+		binder.bind(ISearchService.class, SearchService.class);
 	}
 
 }

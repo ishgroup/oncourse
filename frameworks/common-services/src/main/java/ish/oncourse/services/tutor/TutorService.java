@@ -16,7 +16,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-
 public class TutorService implements ITutorService {
 
 	@Inject
@@ -26,16 +25,20 @@ public class TutorService implements ITutorService {
 
 	/**
 	 * Tutor lookup based on their ID.
-	 *
-	 * @param tutorId record ID
+	 * 
+	 * @param tutorId
+	 *            record ID
 	 * @return Tutor if found or null
 	 */
 	public Tutor getTutorById(Long tutorId) {
 		SelectQuery query = new SelectQuery(Tutor.class,
-				ExpressionFactory.matchExp(
-						Tutor.CONTACT_PROPERTY + "." + Contact.COLLEGE_PROPERTY,
-						webSiteService.getCurrentCollege())
-					.andExp(ExpressionFactory.matchExp(Tutor.ID_PK_COLUMN, tutorId)));
+				ExpressionFactory
+						.matchExp(
+								Tutor.CONTACT_PROPERTY + "."
+										+ Contact.COLLEGE_PROPERTY,
+								webSiteService.getCurrentCollege()).andExp(
+								ExpressionFactory.matchExp(Tutor.ID_PK_COLUMN,
+										tutorId)));
 		@SuppressWarnings("unchecked")
 		List<Tutor> result = cayenneService.sharedContext().performQuery(query);
 
@@ -49,19 +52,33 @@ public class TutorService implements ITutorService {
 		calendar.set(Calendar.SECOND, 0);
 
 		Expression validRolesQualifier = ExpressionFactory
-				.matchExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.IS_CANCELLED_PROPERTY, false)
-				.andExp(ExpressionFactory.noMatchExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.END_DATE_PROPERTY, null));
+				.matchExp(
+						TutorRole.COURSE_CLASS_PROPERTY + "."
+								+ CourseClass.CANCELLED_PROPERTY, false)
+				.andExp(ExpressionFactory.matchExp(
+						TutorRole.COURSE_CLASS_PROPERTY + "."
+								+ CourseClass.CANCELLED_PROPERTY, false))
+				.andExp(ExpressionFactory.noMatchExp(
+						TutorRole.COURSE_CLASS_PROPERTY + "."
+								+ CourseClass.END_DATE_PROPERTY, null));
 
-		Expression qualifier = validRolesQualifier
-				.andExp(ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, tutor)
-				.andExp(ExpressionFactory.matchExp(TutorRole.IS_CONFIRMED_PROPERTY, true))
-				.andExp(ExpressionFactory.greaterOrEqualExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.END_DATE_PROPERTY, calendar.getTime()))
-				.andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.IS_WEB_VISIBLE_PROPERTY, true)));
+		Expression qualifier = validRolesQualifier.andExp(ExpressionFactory
+				.matchExp(TutorRole.TUTOR_PROPERTY, tutor)
+				.andExp(ExpressionFactory.matchExp(
+						TutorRole.IS_CONFIRMED_PROPERTY, true))
+				.andExp(ExpressionFactory.greaterOrEqualExp(
+						TutorRole.COURSE_CLASS_PROPERTY + "."
+								+ CourseClass.END_DATE_PROPERTY,
+						calendar.getTime()))
+				.andExp(ExpressionFactory.matchExp(
+						TutorRole.COURSE_CLASS_PROPERTY + "."
+								+ CourseClass.IS_WEB_VISIBLE_PROPERTY, true)));
 		SelectQuery query = new SelectQuery(TutorRole.class, qualifier);
 
 		@SuppressWarnings("unchecked")
-		List<TutorRole> result = cayenneService.sharedContext().performQuery(query);
-		
+		List<TutorRole> result = cayenneService.sharedContext().performQuery(
+				query);
+
 		return result == null ? new ArrayList<TutorRole>() : result;
 	}
 }
