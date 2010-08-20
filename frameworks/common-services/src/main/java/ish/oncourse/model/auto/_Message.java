@@ -20,7 +20,6 @@ public abstract class _Message extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String EMAIL_BODY_PROPERTY = "emailBody";
     public static final String EMAIL_SUBJECT_PROPERTY = "emailSubject";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String SMS_TEXT_PROPERTY = "smsText";
     public static final String COLLEGE_PROPERTY = "college";
@@ -54,13 +53,6 @@ public abstract class _Message extends CayenneDataObject {
     }
     public String getEmailSubject() {
         return (String)readProperty("emailSubject");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

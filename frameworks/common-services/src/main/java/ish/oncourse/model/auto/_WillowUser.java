@@ -24,7 +24,6 @@ public abstract class _WillowUser extends CayenneDataObject {
     public static final String FIRST_NAME_PROPERTY = "firstName";
     public static final String FLAG1_PROPERTY = "flag1";
     public static final String IS_ACTIVE_PROPERTY = "isActive";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_SUPER_USER_PROPERTY = "isSuperUser";
     public static final String LAST_FAILED_LOGIN_PROPERTY = "lastFailedLogin";
     public static final String LAST_LOGIN_PROPERTY = "lastLogin";
@@ -85,13 +84,6 @@ public abstract class _WillowUser extends CayenneDataObject {
     }
     public Boolean getIsActive() {
         return (Boolean)readProperty("isActive");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsSuperUser(Boolean isSuperUser) {

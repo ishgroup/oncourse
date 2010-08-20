@@ -289,6 +289,12 @@ update College set
     , isWebSitePaymentsEnabled = 0
     , isTestingWebSitePayments = 1;
 
+insert into CollegeDomain 
+  (collegeId, webSiteId, aliasedDomainId, isDeleted, hasSSL, created, modified, name, googleAnalyticsAccount, googleDirectionsFrom, subsiteCode) 
+  select collegeId, webSiteId, aliasedDomainId, isDeleted, hasSSL, created, modified, 'scc.jetty.oncourse.net.au', googleAnalyticsAccount, googleDirectionsFrom, subsiteCode
+  from CollegeDomain 
+  where name = 'scc.local.oncourse.net.au';
+  
 set foreign_key_checks = 1 ;
 
 

@@ -18,7 +18,6 @@ public abstract class _NotificationTemplate extends CayenneDataObject {
     public static final String ALLOWED_IN_TEXTILE_TAGS_PROPERTY = "allowedInTextileTags";
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MESSAGE_PROPERTY = "message";
     public static final String MIME_TYPE_PROPERTY = "mimeType";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -54,13 +53,6 @@ public abstract class _NotificationTemplate extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setMessage(String message) {

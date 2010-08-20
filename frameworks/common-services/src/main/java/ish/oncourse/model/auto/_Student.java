@@ -31,7 +31,6 @@ public abstract class _Student extends CayenneDataObject {
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
     public static final String HIGHEST_SCHOOL_LEVEL_PROPERTY = "highestSchoolLevel";
     public static final String INDIGENOUS_STATUS_PROPERTY = "indigenousStatus";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_OVERSEAS_CLIENT_PROPERTY = "isOverseasClient";
     public static final String IS_STILL_AT_SCHOOL_PROPERTY = "isStillAtSchool";
     public static final String LABOUR_FORCE_TYPE_PROPERTY = "labourForceType";
@@ -111,13 +110,6 @@ public abstract class _Student extends CayenneDataObject {
     }
     public Integer getIndigenousStatus() {
         return (Integer)readProperty("indigenousStatus");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsOverseasClient(Boolean isOverseasClient) {

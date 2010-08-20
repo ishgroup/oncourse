@@ -23,7 +23,6 @@ public abstract class _Session extends CayenneDataObject {
     public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CREATED_PROPERTY = "created";
     public static final String END_DATE_PROPERTY = "endDate";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String START_DATE_PROPERTY = "startDate";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
@@ -61,13 +60,6 @@ public abstract class _Session extends CayenneDataObject {
     }
     public Date getEndDate() {
         return (Date)readProperty("endDate");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

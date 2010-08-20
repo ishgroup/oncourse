@@ -23,7 +23,6 @@ public abstract class _ConcessionType extends CayenneDataObject {
     public static final String HAS_CONCESSION_NUMBER_PROPERTY = "hasConcessionNumber";
     public static final String HAS_EXPIRY_DATE_PROPERTY = "hasExpiryDate";
     public static final String IS_CONCESSION_PROPERTY = "isConcession";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_ENABLED_PROPERTY = "isEnabled";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
@@ -74,13 +73,6 @@ public abstract class _ConcessionType extends CayenneDataObject {
     }
     public Boolean getIsConcession() {
         return (Boolean)readProperty("isConcession");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsEnabled(Boolean isEnabled) {

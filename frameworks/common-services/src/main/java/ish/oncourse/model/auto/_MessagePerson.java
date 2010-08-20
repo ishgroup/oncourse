@@ -21,7 +21,6 @@ public abstract class _MessagePerson extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DESTINATION_ADDRESS_PROPERTY = "destinationAddress";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NUMBER_OF_ATTEMPTS_PROPERTY = "numberOfAttempts";
     public static final String RESPONSE_PROPERTY = "response";
@@ -55,13 +54,6 @@ public abstract class _MessagePerson extends CayenneDataObject {
     }
     public String getDestinationAddress() {
         return (String)readProperty("destinationAddress");
-    }
-
-    public void setIsDeleted(Short isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Short getIsDeleted() {
-        return (Short)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

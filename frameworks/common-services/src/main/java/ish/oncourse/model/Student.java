@@ -46,9 +46,7 @@ public class Student extends _Student {
 											 * TODO Payment.STATUS_SUCCEEDED
 											 */).andExp(
 				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY
-						+ "." + CourseClass.IS_CANCELLED_PROPERTY, false)).andExp(
-				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY
-						+ "." + CourseClass.IS_DELETED_PROPERTY, false));
+						+ "." + CourseClass.IS_CANCELLED_PROPERTY, false));
 		return qualifier.filterObjects(enrolments);
 	}
 
@@ -56,9 +54,7 @@ public class Student extends _Student {
 
 		List<WaitingList> waits = getWaitingLists();
 		Expression qualifier = ExpressionFactory.matchExp(
-				WaitingList.COURSE_PROPERTY, course).andExp(
-				ExpressionFactory.matchExp(WaitingList.IS_DELETED_PROPERTY,
-						false));
+				WaitingList.COURSE_PROPERTY, course);
 		waits = qualifier.filterObjects(waits);
 		if (waits.size() > 0) {
 			return waits.get(waits.size() - 1);

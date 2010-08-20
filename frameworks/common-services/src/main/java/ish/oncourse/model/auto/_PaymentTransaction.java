@@ -15,7 +15,6 @@ import ish.oncourse.model.PaymentIn;
 public abstract class _PaymentTransaction extends CayenneDataObject {
 
     public static final String CREATED_PROPERTY = "created";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_FINALISED_PROPERTY = "isFinalised";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String RESPONSE_PROPERTY = "response";
@@ -29,13 +28,6 @@ public abstract class _PaymentTransaction extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsFinalised(Boolean isFinalised) {

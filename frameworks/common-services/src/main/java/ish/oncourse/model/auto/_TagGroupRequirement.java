@@ -19,7 +19,6 @@ public abstract class _TagGroupRequirement extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_REQUIRED_PROPERTY = "isRequired";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String COLLEGE_PROPERTY = "college";
@@ -53,13 +52,6 @@ public abstract class _TagGroupRequirement extends CayenneDataObject {
     }
     public String getEntityIdentifier() {
         return (String)readProperty("entityIdentifier");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsRequired(Boolean isRequired) {

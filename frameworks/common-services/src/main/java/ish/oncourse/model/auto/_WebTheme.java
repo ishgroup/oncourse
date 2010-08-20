@@ -20,7 +20,6 @@ public abstract class _WebTheme extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String DESCRIPTION_PROPERTY = "description";
     public static final String DESCRIPTION_TEXTILE_PROPERTY = "descriptionTextile";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String THEME_KEY_PROPERTY = "themeKey";
@@ -55,13 +54,6 @@ public abstract class _WebTheme extends CayenneDataObject {
     }
     public String getDescriptionTextile() {
         return (String)readProperty("descriptionTextile");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

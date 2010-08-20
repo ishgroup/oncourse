@@ -7,7 +7,6 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeContent;
-import ish.oncourse.model.WebNodeTag;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
@@ -23,7 +22,6 @@ public abstract class _WebNode extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_PUBLISHED_PROPERTY = "isPublished";
     public static final String IS_RSS_FEED_PROPERTY = "isRssFeed";
     public static final String IS_WEB_NAVIGABLE_PROPERTY = "isWebNavigable";
@@ -37,7 +35,6 @@ public abstract class _WebNode extends CayenneDataObject {
     public static final String PARENT_NODE_PROPERTY = "parentNode";
     public static final String SAVED_BY_USER_PROPERTY = "savedByUser";
     public static final String WEB_NODE_CONTENTS_PROPERTY = "webNodeContents";
-    public static final String WEB_NODE_TAGS_PROPERTY = "webNodeTags";
     public static final String WEB_NODE_TYPE_PROPERTY = "webNodeType";
     public static final String WEB_NODES_PROPERTY = "webNodes";
     public static final String WEB_SITE_PROPERTY = "webSite";
@@ -58,13 +55,6 @@ public abstract class _WebNode extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsPublished(Boolean isPublished) {
@@ -164,18 +154,6 @@ public abstract class _WebNode extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebNodeContent> getWebNodeContents() {
         return (List<WebNodeContent>)readProperty("webNodeContents");
-    }
-
-
-    public void addToWebNodeTags(WebNodeTag obj) {
-        addToManyTarget("webNodeTags", obj, true);
-    }
-    public void removeFromWebNodeTags(WebNodeTag obj) {
-        removeToManyTarget("webNodeTags", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebNodeTag> getWebNodeTags() {
-        return (List<WebNodeTag>)readProperty("webNodeTags");
     }
 
 

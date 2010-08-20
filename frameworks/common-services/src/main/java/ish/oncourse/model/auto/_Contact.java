@@ -33,7 +33,6 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String GIVEN_NAME_PROPERTY = "givenName";
     public static final String HOME_PHONE_NUMBER_PROPERTY = "homePhoneNumber";
     public static final String IS_COMPANY_PROPERTY = "isCompany";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_MALE_PROPERTY = "isMale";
     public static final String IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY = "isMarketingViaEmailAllowed";
     public static final String IS_MARKETING_VIA_POST_ALLOWED_PROPERTY = "isMarketingViaPostAllowed";
@@ -140,13 +139,6 @@ public abstract class _Contact extends CayenneDataObject {
     }
     public Boolean getIsCompany() {
         return (Boolean)readProperty("isCompany");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsMale(Boolean isMale) {

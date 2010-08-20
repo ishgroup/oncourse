@@ -33,7 +33,6 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String FEE_EX_GST_PROPERTY = "feeExGst";
     public static final String FEE_GST_PROPERTY = "feeGst";
     public static final String IS_CANCELLED_PROPERTY = "isCancelled";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MATERIALS_PROPERTY = "materials";
     public static final String MATERIALS_TEXTILE_PROPERTY = "materialsTextile";
@@ -131,13 +130,6 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public Boolean getIsCancelled() {
         return (Boolean)readProperty("isCancelled");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {

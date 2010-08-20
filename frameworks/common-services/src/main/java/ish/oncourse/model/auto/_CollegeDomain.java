@@ -21,7 +21,6 @@ public abstract class _CollegeDomain extends CayenneDataObject {
     public static final String GOOGLE_ANALYTICS_ACCOUNT_PROPERTY = "googleAnalyticsAccount";
     public static final String GOOGLE_DIRECTIONS_FROM_PROPERTY = "googleDirectionsFrom";
     public static final String HAS_SSL_PROPERTY = "hasSSL";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String SUBSITE_CODE_PROPERTY = "subsiteCode";
@@ -59,13 +58,6 @@ public abstract class _CollegeDomain extends CayenneDataObject {
     }
     public Boolean getHasSSL() {
         return (Boolean)readProperty("hasSSL");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

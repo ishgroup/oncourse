@@ -23,7 +23,6 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String REASON_FOR_STUDY_PROPERTY = "reasonForStudy";
     public static final String SOURCE_PROPERTY = "source";
@@ -50,13 +49,6 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

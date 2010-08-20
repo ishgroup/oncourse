@@ -35,18 +35,12 @@ public class WebSiteService implements IWebSiteService {
 	public WebSiteService() {
 
 		String activeBlocksNameExp = String.format(
-				"%s = $name and (%s = null or %s = false)",
-				WebBlock.NAME_PROPERTY,
-				WebBlock.IS_DELETED_PROPERTY,
-				WebBlock.IS_DELETED_PROPERTY);
+				"%s = $name", WebBlock.NAME_PROPERTY);
 
 		activeBlocksNameFilter = Expression.fromString(activeBlocksNameExp);
 
 		String activeBlocksRegionExp = String.format(
-				"%s = $regionKey and (%s = null or %s = false)",
-				WebBlock.REGION_KEY_PROPERTY,
-				WebBlock.IS_DELETED_PROPERTY,
-				WebBlock.IS_DELETED_PROPERTY);
+				"%s = $regionKey", WebBlock.REGION_KEY_PROPERTY);
 
 		activeBlocksRegionFilter = Expression.fromString(activeBlocksRegionExp);
 	}
@@ -58,10 +52,6 @@ public class WebSiteService implements IWebSiteService {
 			String serverName = request.getServerName().toLowerCase();
 
 			SelectQuery query = new SelectQuery(CollegeDomain.class);
-			query.andQualifier(ExpressionFactory.matchExp(
-					CollegeDomain.IS_DELETED_PROPERTY, null));
-			query.orQualifier(ExpressionFactory.matchExp(
-					CollegeDomain.IS_DELETED_PROPERTY, false));
 			query.andQualifier(ExpressionFactory.matchExp(
 					CollegeDomain.NAME_PROPERTY, serverName));
 

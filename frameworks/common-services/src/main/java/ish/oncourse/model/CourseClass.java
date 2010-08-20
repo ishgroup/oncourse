@@ -63,12 +63,8 @@ public class CourseClass extends _CourseClass {
 	 *         end times
 	 */
 	public boolean isSessionsHaveDifferentTimes() {
-		List<Session> sessions = ExpressionFactory
-				.matchExp(Session.IS_DELETED_PROPERTY, null)
-				.orExp(ExpressionFactory.matchExp(Session.IS_DELETED_PROPERTY, false))
-				.filterObjects(getSessions());
 
-		if (sessions.size() > 1) {
+		if (getSessions().size() > 1) {
 			TimeZone timezone = null;
 			{
 				String timezoneName = "Australia/Sydney";
@@ -81,8 +77,8 @@ public class CourseClass extends _CourseClass {
 			Calendar startCalendar = null;
 			Calendar endCalendar = null;
 
-			for (int i = 0, count = sessions.size(); i < count; i++) {
-				Session session = sessions.get(i);
+			for (int i = 0, count = getSessions().size(); i < count; i++) {
+				Session session = getSessions().get(i);
 				Date sessionStart = session.getStartDate();
 				Date sessionEnd = session.getEndDate();
 

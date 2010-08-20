@@ -49,9 +49,7 @@ public class TutorService implements ITutorService {
 		calendar.set(Calendar.SECOND, 0);
 
 		Expression validRolesQualifier = ExpressionFactory
-				.matchExp(TutorRole.TUTOR_PROPERTY + "." + Tutor.IS_DELETED_PROPERTY, false)
-				.andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.IS_CANCELLED_PROPERTY, false))
-				.andExp(ExpressionFactory.matchExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.IS_DELETED_PROPERTY, false))
+				.matchExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.IS_CANCELLED_PROPERTY, false)
 				.andExp(ExpressionFactory.noMatchExp(TutorRole.COURSE_CLASS_PROPERTY + "." + CourseClass.END_DATE_PROPERTY, null));
 
 		Expression qualifier = validRolesQualifier

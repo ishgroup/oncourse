@@ -20,7 +20,6 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
     public static final String ENTITY_ANGEL_ID_PROPERTY = "entityAngelId";
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
     public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String BINARY_INFO_PROPERTY = "binaryInfo";
     public static final String COLLEGE_PROPERTY = "college";
@@ -60,13 +59,6 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
     }
     public Long getEntityWillowId() {
         return (Long)readProperty("entityWillowId");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

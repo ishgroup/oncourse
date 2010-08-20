@@ -22,7 +22,6 @@ public abstract class _PaymentOut extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String CREDIT_CARD_CVV_PROPERTY = "creditCardCVV";
     public static final String CREDIT_CARD_TYPE_PROPERTY = "creditCardType";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PAYMENT_IN_TXN_REFERENCE_PROPERTY = "paymentInTxnReference";
     public static final String SOURCE_PROPERTY = "source";
@@ -60,13 +59,6 @@ public abstract class _PaymentOut extends CayenneDataObject {
     }
     public String getCreditCardType() {
         return (String)readProperty("creditCardType");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

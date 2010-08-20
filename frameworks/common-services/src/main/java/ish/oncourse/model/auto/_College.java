@@ -58,7 +58,6 @@ public abstract class _College extends CayenneDataObject {
     public static final String COLLEGE_KEY_PROPERTY = "collegeKey";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String IS_SSL_ENABLED_PROPERTY = "isSslEnabled";
     public static final String IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY = "isTestingWebServicePayments";
     public static final String IS_TESTING_WEB_SITE_PAYMENTS_PROPERTY = "isTestingWebSitePayments";
@@ -145,13 +144,6 @@ public abstract class _College extends CayenneDataObject {
     }
     public Date getFirstRemoteAuthentication() {
         return (Date)readProperty("firstRemoteAuthentication");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setIsSslEnabled(Boolean isSslEnabled) {

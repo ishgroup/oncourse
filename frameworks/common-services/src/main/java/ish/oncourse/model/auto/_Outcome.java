@@ -22,7 +22,6 @@ public abstract class _Outcome extends CayenneDataObject {
     public static final String DELIVERY_MODE_PROPERTY = "deliveryMode";
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String FUNDING_SOURCE_PROPERTY = "fundingSource";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String MODULE_ID_PROPERTY = "moduleId";
     public static final String PRIOR_LEARNING_ID_PROPERTY = "priorLearningId";
@@ -68,13 +67,6 @@ public abstract class _Outcome extends CayenneDataObject {
     }
     public Integer getFundingSource() {
         return (Integer)readProperty("fundingSource");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

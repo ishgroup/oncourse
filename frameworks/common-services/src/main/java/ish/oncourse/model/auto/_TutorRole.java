@@ -22,7 +22,6 @@ public abstract class _TutorRole extends CayenneDataObject {
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
     public static final String IS_CONFIRMED_PROPERTY = "isConfirmed";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
@@ -71,13 +70,6 @@ public abstract class _TutorRole extends CayenneDataObject {
     }
     public Boolean getIsConfirmed() {
         return (Boolean)readProperty("isConfirmed");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

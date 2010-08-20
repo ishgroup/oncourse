@@ -22,7 +22,6 @@ public abstract class _StudentConcession extends CayenneDataObject {
     public static final String CONCESSION_NUMBER_PROPERTY = "concessionNumber";
     public static final String CREATED_PROPERTY = "created";
     public static final String EXPIRES_ON_PROPERTY = "expiresOn";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String COLLEGE_PROPERTY = "college";
@@ -71,13 +70,6 @@ public abstract class _StudentConcession extends CayenneDataObject {
     }
     public Date getExpiresOn() {
         return (Date)readProperty("expiresOn");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

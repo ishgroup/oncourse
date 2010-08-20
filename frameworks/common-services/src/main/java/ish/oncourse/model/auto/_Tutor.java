@@ -24,7 +24,6 @@ public abstract class _Tutor extends CayenneDataObject {
     public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CREATED_PROPERTY = "created";
     public static final String FINISH_DATE_PROPERTY = "finishDate";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String RESUME_PROPERTY = "resume";
     public static final String RESUME_TEXTILE_PROPERTY = "resumeTextile";
@@ -64,13 +63,6 @@ public abstract class _Tutor extends CayenneDataObject {
     }
     public Date getFinishDate() {
         return (Date)readProperty("finishDate");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

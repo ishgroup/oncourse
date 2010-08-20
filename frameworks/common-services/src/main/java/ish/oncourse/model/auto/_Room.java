@@ -25,7 +25,6 @@ public abstract class _Room extends CayenneDataObject {
     public static final String DIRECTIONS_TEXTILE_PROPERTY = "directionsTextile";
     public static final String FACILITIES_PROPERTY = "facilities";
     public static final String FACILITIES_TEXTILE_PROPERTY = "facilitiesTextile";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String COLLEGE_PROPERTY = "college";
@@ -82,13 +81,6 @@ public abstract class _Room extends CayenneDataObject {
     }
     public String getFacilitiesTextile() {
         return (String)readProperty("facilitiesTextile");
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Boolean getIsDeleted() {
-        return (Boolean)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

@@ -21,7 +21,6 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="mimeType" type="VARCHAR" length="512"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -39,7 +38,6 @@
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<db-entity name="Certificate" catalog="willow_college">
@@ -50,7 +48,6 @@
 		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
 		<db-attribute name="fundingSource" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isQualification" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="printedWhen" type="TIMESTAMP" length="19"/>
@@ -100,7 +97,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isSslEnabled" type="BIT"/>
 		<db-attribute name="isTestingWebServicePayments" type="BIT"/>
 		<db-attribute name="isTestingWebSitePayments" type="BIT"/>
@@ -127,7 +123,6 @@
 		<db-attribute name="googleDirectionsFrom" type="VARCHAR" length="256"/>
 		<db-attribute name="hasSSL" type="BIT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="subsiteCode" type="VARCHAR" length="128"/>
@@ -142,7 +137,6 @@
 		<db-attribute name="hasExpiryDate" type="BIT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="isConcession" type="BIT"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isEnabled" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="256"/>
@@ -163,7 +157,6 @@
 		<db-attribute name="homePhoneNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="isCompany" type="BIT"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isMale" type="BIT"/>
 		<db-attribute name="isMarketingViaEmailAllowed" type="BIT"/>
 		<db-attribute name="isMarketingViaPostAllowed" type="BIT"/>
@@ -191,7 +184,6 @@
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isSufficientForQualification" type="BIT"/>
 		<db-attribute name="isVETCourse" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
@@ -216,7 +208,6 @@
 		<db-attribute name="feeGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="isCancelled" type="BIT"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="materials" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="materials_textile" type="LONGVARCHAR" length="16777215"/>
@@ -249,7 +240,6 @@
 		<db-attribute name="discountRate" type="DECIMAL" length="4" scale="2"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="isCodeRequired" type="BIT"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="maximumDiscount" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="minimumDiscount" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -291,7 +281,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="discountId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
 		<db-attribute name="source" type="VARCHAR" length="1"/>
@@ -354,7 +343,6 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="page" type="VARCHAR" length="64"/>
 		<db-attribute name="userId" type="BIGINT" length="19"/>
@@ -366,7 +354,6 @@
 		<db-attribute name="emailBody" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="emailSubject" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="smsText" type="LONGVARCHAR" length="16777215"/>
 	</db-entity>
@@ -377,7 +364,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="destinationAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="SMALLINT" length="5"/>
 		<db-attribute name="messageId" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="numberOfAttempts" type="INTEGER" length="10"/>
@@ -393,7 +379,6 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="message" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="64"/>
@@ -406,7 +391,6 @@
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="message" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="mimeType" type="VARCHAR" length="64"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -422,7 +406,6 @@
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="fundingSource" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="moduleId" type="BIGINT" length="19"/>
 		<db-attribute name="priorLearningId" type="BIGINT" length="19"/>
@@ -441,7 +424,6 @@
 		<db-attribute name="creditCardNumber" type="VARCHAR" length="32"/>
 		<db-attribute name="creditCardType" type="VARCHAR" length="8"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="source" type="VARCHAR" length="1"/>
 		<db-attribute name="status" type="INTEGER" length="10"/>
@@ -455,7 +437,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="paymentInId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
@@ -467,7 +448,6 @@
 		<db-attribute name="creditCardCVV" type="VARCHAR" length="4"/>
 		<db-attribute name="creditCardType" type="VARCHAR" length="8"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="paymentInTxnReference" type="VARCHAR" length="16"/>
 		<db-attribute name="source" type="VARCHAR" length="1"/>
@@ -477,7 +457,6 @@
 	<db-entity name="PaymentOutTransaction" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isFinalised" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="paymentOutId" type="BIGINT" length="19"/>
@@ -487,7 +466,6 @@
 	<db-entity name="PaymentTransaction" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isFinalised" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="paymentId" type="BIGINT" length="19"/>
@@ -500,7 +478,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="explanation" type="VARCHAR" length="10000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="sqlType" type="INTEGER" length="10"/>
@@ -524,7 +501,6 @@
 		<db-attribute name="facilities" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="facilities_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="siteId" type="BIGINT" length="19"/>
@@ -536,7 +512,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="markerId" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="roomId" type="BIGINT" length="19"/>
@@ -560,7 +535,6 @@
 		<db-attribute name="drivingDirections" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="drivingDirections_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="latitude" type="DECIMAL" length="12" scale="8"/>
 		<db-attribute name="longitude" type="DECIMAL" length="12" scale="8"/>
@@ -587,7 +561,6 @@
 		<db-attribute name="highestSchoolLevel" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="indigenousStatus" type="INTEGER" length="10"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isOverseasClient" type="BIT"/>
 		<db-attribute name="isStillAtSchool" type="BIT"/>
 		<db-attribute name="labourForceType" type="INTEGER" length="10"/>
@@ -606,7 +579,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="expiresOn" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
@@ -618,7 +590,6 @@
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isTagGroup" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -635,7 +606,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" length="64"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isRequired" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="tagId" type="BIGINT" length="19"/>
@@ -648,14 +618,12 @@
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<db-entity name="TaggableTag" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="tagId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="taggableId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
@@ -666,7 +634,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="finishDate" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="resume" type="LONGVARCHAR" length="2147483647"/>
 		<db-attribute name="resume_textile" type="LONGVARCHAR" length="2147483647"/>
@@ -681,7 +648,6 @@
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="isConfirmed" type="BIT"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="tutorId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 	</db-entity>
@@ -692,7 +658,6 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="potentialStudents" type="INTEGER" length="10"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
@@ -707,7 +672,6 @@
 		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="regionKey" type="VARCHAR" length="128"/>
@@ -715,15 +679,10 @@
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="weighting" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
-	<db-entity name="WebBlockTag" catalog="willow_college">
-		<db-attribute name="tagId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="webBlockId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-	</db-entity>
 	<db-entity name="WebBlockType" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 	</db-entity>
@@ -731,7 +690,6 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isPublished" type="BIT"/>
 		<db-attribute name="isRssFeed" type="BIT"/>
 		<db-attribute name="isWebNavigable" type="BIT"/>
@@ -760,16 +718,11 @@
 		<db-attribute name="webBlockId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="webNodeContentId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="WebNodeTag" catalog="willow_college">
-		<db-attribute name="tagId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="webNodeId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-	</db-entity>
 	<db-entity name="WebNodeType" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="defaultWebThemeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="numberOfRegions" type="INTEGER" length="10"/>
@@ -784,7 +737,6 @@
 		<db-attribute name="defaultUrlPath" type="VARCHAR" length="512"/>
 		<db-attribute name="homePageId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="parentWebSiteId" type="BIGINT" length="19"/>
@@ -798,7 +750,6 @@
 		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="description_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="themeKey" type="VARCHAR" length="128"/>
@@ -807,7 +758,6 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="urlPath" type="VARCHAR" length="512"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
@@ -823,7 +773,6 @@
 		<db-attribute name="flag1" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="isActive" type="BIT"/>
-		<db-attribute name="isDeleted" type="BIT"/>
 		<db-attribute name="isSuperUser" type="BIT"/>
 		<db-attribute name="lastFailedLogin" type="TIMESTAMP" length="19"/>
 		<db-attribute name="lastLogin" type="TIMESTAMP" length="19"/>
@@ -842,7 +791,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="byteSize"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -857,7 +805,6 @@
 		<obj-attribute name="entityAngelId" type="java.lang.Long" db-attribute-path="entityAngelId"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="entityWillowId" type="java.lang.Long" db-attribute-path="entityWillowId"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="Certificate" className="ish.oncourse.model.Certificate" dbEntityName="Certificate">
@@ -866,7 +813,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="fundingSource" type="java.lang.Integer" db-attribute-path="fundingSource"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isQualification" type="java.lang.Boolean" db-attribute-path="isQualification"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="printedWhen" type="java.util.Date" db-attribute-path="printedWhen"/>
@@ -907,7 +853,6 @@
 		<obj-attribute name="collegeKey" type="java.lang.String" db-attribute-path="collegeKey"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isSslEnabled" type="java.lang.Boolean" db-attribute-path="isSslEnabled"/>
 		<obj-attribute name="isTestingWebServicePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebServicePayments"/>
 		<obj-attribute name="isTestingWebSitePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebSitePayments"/>
@@ -930,7 +875,6 @@
 		<obj-attribute name="googleAnalyticsAccount" type="java.lang.String" db-attribute-path="googleAnalyticsAccount"/>
 		<obj-attribute name="googleDirectionsFrom" type="java.lang.String" db-attribute-path="googleDirectionsFrom"/>
 		<obj-attribute name="hasSSL" type="java.lang.Boolean" db-attribute-path="hasSSL"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="subsiteCode" type="java.lang.String" db-attribute-path="subsiteCode"/>
@@ -942,7 +886,6 @@
 		<obj-attribute name="hasConcessionNumber" type="java.lang.Boolean" db-attribute-path="hasConcessionNumber"/>
 		<obj-attribute name="hasExpiryDate" type="java.lang.Boolean" db-attribute-path="hasExpiryDate"/>
 		<obj-attribute name="isConcession" type="java.lang.Boolean" db-attribute-path="isConcession"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isEnabled" type="java.lang.Boolean" db-attribute-path="isEnabled"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
@@ -961,7 +904,6 @@
 		<obj-attribute name="givenName" type="java.lang.String" db-attribute-path="givenName"/>
 		<obj-attribute name="homePhoneNumber" type="java.lang.String" db-attribute-path="homePhoneNumber"/>
 		<obj-attribute name="isCompany" type="java.lang.Boolean" db-attribute-path="isCompany"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isMale" type="java.lang.Boolean" db-attribute-path="isMale"/>
 		<obj-attribute name="isMarketingViaEmailAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaEmailAllowed"/>
 		<obj-attribute name="isMarketingViaPostAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaPostAllowed"/>
@@ -985,7 +927,6 @@
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isSufficientForQualification" type="java.lang.Boolean" db-attribute-path="isSufficientForQualification"/>
 		<obj-attribute name="isVETCourse" type="java.lang.Boolean" db-attribute-path="isVETCourse"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
@@ -1007,7 +948,6 @@
 		<obj-attribute name="feeExGst" type="java.math.BigDecimal" db-attribute-path="feeExGst"/>
 		<obj-attribute name="feeGst" type="java.math.BigDecimal" db-attribute-path="feeGst"/>
 		<obj-attribute name="isCancelled" type="java.lang.Boolean" db-attribute-path="isCancelled"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="materials_textile"/>
@@ -1035,7 +975,6 @@
 		<obj-attribute name="discountAmount" type="java.math.BigDecimal" db-attribute-path="discountAmount"/>
 		<obj-attribute name="discountRate" type="java.math.BigDecimal" db-attribute-path="discountRate"/>
 		<obj-attribute name="isCodeRequired" type="java.lang.Boolean" db-attribute-path="isCodeRequired"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="maximumDiscount" type="java.math.BigDecimal" db-attribute-path="maximumDiscount"/>
 		<obj-attribute name="minimumDiscount" type="java.math.BigDecimal" db-attribute-path="minimumDiscount"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1066,7 +1005,6 @@
 	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="reasonForStudy" type="java.lang.Integer" db-attribute-path="reasonForStudy"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
@@ -1115,7 +1053,6 @@
 	<obj-entity name="Log" className="ish.oncourse.model.Log" dbEntityName="Log">
 		<obj-attribute name="action" type="java.lang.String" db-attribute-path="action"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="page" type="java.lang.String" db-attribute-path="page"/>
 	</obj-entity>
@@ -1124,7 +1061,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="emailBody" type="java.lang.String" db-attribute-path="emailBody"/>
 		<obj-attribute name="emailSubject" type="java.lang.String" db-attribute-path="emailSubject"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="smsText" type="java.lang.String" db-attribute-path="smsText"/>
 	</obj-entity>
@@ -1132,7 +1068,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="destinationAddress" type="java.lang.String" db-attribute-path="destinationAddress"/>
-		<obj-attribute name="isDeleted" type="java.lang.Short" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
@@ -1143,7 +1078,6 @@
 	<obj-entity name="MessageTemplate" className="ish.oncourse.model.MessageTemplate" dbEntityName="MessageTemplate">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="message" type="java.lang.String" db-attribute-path="message"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
@@ -1154,7 +1088,6 @@
 		<obj-attribute name="allowedInTextileTags" type="java.lang.Boolean" db-attribute-path="allowedInTextileTags"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="message" type="java.lang.String" db-attribute-path="message"/>
 		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1167,7 +1100,6 @@
 		<obj-attribute name="deliveryMode" type="java.lang.Integer" db-attribute-path="deliveryMode"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="fundingSource" type="java.lang.Integer" db-attribute-path="fundingSource"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="moduleId" type="java.lang.Long" db-attribute-path="moduleId"/>
 		<obj-attribute name="priorLearningId" type="java.lang.Long" db-attribute-path="priorLearningId"/>
@@ -1183,7 +1115,6 @@
 		<obj-attribute name="creditCardName" type="java.lang.String" db-attribute-path="creditCardName"/>
 		<obj-attribute name="creditCardNumber" type="java.lang.String" db-attribute-path="creditCardNumber"/>
 		<obj-attribute name="creditCardType" type="java.lang.String" db-attribute-path="creditCardType"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
 		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
@@ -1194,7 +1125,6 @@
 		<obj-attribute name="amount" type="java.math.BigDecimal" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="PaymentOut" className="ish.oncourse.model.PaymentOut" dbEntityName="PaymentOut">
@@ -1202,7 +1132,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditCardCVV" type="java.lang.String" db-attribute-path="creditCardCVV"/>
 		<obj-attribute name="creditCardType" type="java.lang.String" db-attribute-path="creditCardType"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="paymentInTxnReference" type="java.lang.String" db-attribute-path="paymentInTxnReference"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
@@ -1211,7 +1140,6 @@
 	</obj-entity>
 	<obj-entity name="PaymentOutTransaction" className="ish.oncourse.model.PaymentOutTransaction" dbEntityName="PaymentOutTransaction">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isFinalised" type="java.lang.Boolean" db-attribute-path="isFinalised"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
@@ -1219,7 +1147,6 @@
 	</obj-entity>
 	<obj-entity name="PaymentTransaction" className="ish.oncourse.model.PaymentTransaction" dbEntityName="PaymentTransaction">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isFinalised" type="java.lang.Boolean" db-attribute-path="isFinalised"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
@@ -1229,7 +1156,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="explanation" type="java.lang.String" db-attribute-path="explanation"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="sqlType" type="java.lang.Integer" db-attribute-path="sqlType"/>
@@ -1249,7 +1175,6 @@
 		<obj-attribute name="directionsTextile" type="java.lang.String" db-attribute-path="directions_textile"/>
 		<obj-attribute name="facilities" type="java.lang.String" db-attribute-path="facilities"/>
 		<obj-attribute name="facilitiesTextile" type="java.lang.String" db-attribute-path="facilities_textile"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
@@ -1258,7 +1183,6 @@
 		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
@@ -1275,7 +1199,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="drivingDirections" type="java.lang.String" db-attribute-path="drivingDirections"/>
 		<obj-attribute name="drivingDirectionsTextile" type="java.lang.String" db-attribute-path="drivingDirections_textile"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="latitude" type="java.math.BigDecimal" db-attribute-path="latitude"/>
 		<obj-attribute name="longitude" type="java.math.BigDecimal" db-attribute-path="longitude"/>
@@ -1301,7 +1224,6 @@
 		<obj-attribute name="englishProficiency" type="java.lang.Integer" db-attribute-path="englishProficiency"/>
 		<obj-attribute name="highestSchoolLevel" type="java.lang.Integer" db-attribute-path="highestSchoolLevel"/>
 		<obj-attribute name="indigenousStatus" type="java.lang.Integer" db-attribute-path="indigenousStatus"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isOverseasClient" type="java.lang.Boolean" db-attribute-path="isOverseasClient"/>
 		<obj-attribute name="isStillAtSchool" type="java.lang.Boolean" db-attribute-path="isStillAtSchool"/>
 		<obj-attribute name="labourForceType" type="java.lang.Integer" db-attribute-path="labourForceType"/>
@@ -1317,7 +1239,6 @@
 		<obj-attribute name="concessionNumber" type="java.lang.String" db-attribute-path="concessionNumber"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="expiresOn" type="java.util.Date" db-attribute-path="expiresOn"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>
@@ -1326,7 +1247,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isTagGroup" type="java.lang.Boolean" db-attribute-path="isTagGroup"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1340,7 +1260,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isRequired" type="java.lang.Boolean" db-attribute-path="isRequired"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
@@ -1350,13 +1269,11 @@
 		<obj-attribute name="entityAngelId" type="java.lang.Long" db-attribute-path="entityAngelId"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="entityWillowId" type="java.lang.Long" db-attribute-path="entityWillowId"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="TaggableTag" className="ish.oncourse.model.TaggableTag" dbEntityName="TaggableTag">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="Tutor" className="ish.oncourse.model.Tutor" dbEntityName="Tutor">
@@ -1364,7 +1281,6 @@
 		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="finishDate" type="java.util.Date" db-attribute-path="finishDate"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="resume" type="java.lang.String" db-attribute-path="resume"/>
 		<obj-attribute name="resumeTextile" type="java.lang.String" db-attribute-path="resume_textile"/>
@@ -1377,14 +1293,12 @@
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
 		<obj-attribute name="isConfirmed" type="java.lang.Boolean" db-attribute-path="isConfirmed"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="WaitingList" className="ish.oncourse.model.WaitingList" dbEntityName="WaitingList">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="potentialStudents" type="java.lang.Integer" db-attribute-path="potentialStudents"/>
 	</obj-entity>
@@ -1395,25 +1309,20 @@
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
 		<obj-attribute name="contentTextile" type="java.lang.String" db-attribute-path="content_textile"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
 		<obj-attribute name="weighting" type="java.lang.Integer" db-attribute-path="weighting"/>
 	</obj-entity>
-	<obj-entity name="WebBlockTag" className="ish.oncourse.model.WebBlockTag" dbEntityName="WebBlockTag">
-	</obj-entity>
 	<obj-entity name="WebBlockType" className="ish.oncourse.model.WebBlockType" dbEntityName="WebBlockType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
 	<obj-entity name="WebNode" className="ish.oncourse.model.WebNode" dbEntityName="WebNode">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isPublished" type="java.lang.Boolean" db-attribute-path="isPublished"/>
 		<obj-attribute name="isRssFeed" type="java.lang.Boolean" db-attribute-path="isRssFeed"/>
 		<obj-attribute name="isWebNavigable" type="java.lang.Boolean" db-attribute-path="isWebNavigable"/>
@@ -1434,12 +1343,9 @@
 	</obj-entity>
 	<obj-entity name="WebNodeContentWebBlock" className="ish.oncourse.model.WebNodeContentWebBlock" dbEntityName="WebNodeContentWebBlock">
 	</obj-entity>
-	<obj-entity name="WebNodeTag" className="ish.oncourse.model.WebNodeTag" dbEntityName="WebNodeTag">
-	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="numberOfRegions" type="java.lang.Integer" db-attribute-path="numberOfRegions"/>
@@ -1450,7 +1356,6 @@
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="defaultUrlPath" type="java.lang.String" db-attribute-path="defaultUrlPath"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="siteKey" type="java.lang.String" db-attribute-path="siteKey"/>
@@ -1461,7 +1366,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="descriptionTextile" type="java.lang.String" db-attribute-path="description_textile"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="themeKey" type="java.lang.String" db-attribute-path="themeKey"/>
@@ -1469,7 +1373,6 @@
 	<obj-entity name="WebUrlAlias" className="ish.oncourse.model.WebUrlAlias" dbEntityName="WebURLAlias">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="urlPath" type="java.lang.String" db-attribute-path="urlPath"/>
 	</obj-entity>
@@ -1481,7 +1384,6 @@
 		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="firstName"/>
 		<obj-attribute name="flag1" type="java.lang.Integer" db-attribute-path="flag1"/>
 		<obj-attribute name="isActive" type="java.lang.Boolean" db-attribute-path="isActive"/>
-		<obj-attribute name="isDeleted" type="java.lang.Boolean" db-attribute-path="isDeleted"/>
 		<obj-attribute name="isSuperUser" type="java.lang.Boolean" db-attribute-path="isSuperUser"/>
 		<obj-attribute name="lastFailedLogin" type="java.util.Date" db-attribute-path="lastFailedLogin"/>
 		<obj-attribute name="lastLogin" type="java.util.Date" db-attribute-path="lastLogin"/>
@@ -1967,9 +1869,6 @@
 	<db-relationship name="waitingListSites" source="Site" target="WaitingListSite" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
-	<db-relationship name="webBlockTags" source="Site" target="WebBlockTag" toDependentPK="true" toMany="true">
-		<db-attribute-pair source="id" target="webBlockId"/>
-	</db-relationship>
 	<db-relationship name="attendances" source="Student" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
@@ -2017,12 +1916,6 @@
 	</db-relationship>
 	<db-relationship name="tags" source="Tag" target="Tag" toMany="true">
 		<db-attribute-pair source="id" target="parentId"/>
-	</db-relationship>
-	<db-relationship name="webBlockTags" source="Tag" target="WebBlockTag" toDependentPK="true" toMany="true">
-		<db-attribute-pair source="id" target="tagId"/>
-	</db-relationship>
-	<db-relationship name="webNodeTags" source="Tag" target="WebNodeTag" toDependentPK="true" toMany="true">
-		<db-attribute-pair source="id" target="tagId"/>
 	</db-relationship>
 	<db-relationship name="college" source="TagGroupRequirement" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -2099,12 +1992,6 @@
 	<db-relationship name="webSite" source="WebBlock" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="tag" source="WebBlockTag" target="Tag" toMany="false">
-		<db-attribute-pair source="tagId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webBlock" source="WebBlockTag" target="Site" toMany="false">
-		<db-attribute-pair source="webBlockId" target="id"/>
-	</db-relationship>
 	<db-relationship name="webBlocks" source="WebBlockType" target="WebBlock" toMany="true">
 		<db-attribute-pair source="id" target="webBlockTypeId"/>
 	</db-relationship>
@@ -2115,9 +2002,6 @@
 		<db-attribute-pair source="savedByUserId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webNodeContents" source="WebNode" target="WebNodeContent" toMany="true">
-		<db-attribute-pair source="id" target="webNodeId"/>
-	</db-relationship>
-	<db-relationship name="webNodeTags" source="WebNode" target="WebNodeTag" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="webNodeId"/>
 	</db-relationship>
 	<db-relationship name="webNodeType" source="WebNode" target="WebNodeType" toMany="false">
@@ -2146,12 +2030,6 @@
 	</db-relationship>
 	<db-relationship name="webNodeContent" source="WebNodeContentWebBlock" target="WebNodeContent" toMany="false">
 		<db-attribute-pair source="webNodeContentId" target="id"/>
-	</db-relationship>
-	<db-relationship name="tag" source="WebNodeTag" target="Tag" toMany="false">
-		<db-attribute-pair source="tagId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webNode" source="WebNodeTag" target="WebNode" toMany="false">
-		<db-attribute-pair source="webNodeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="defaultWebTheme" source="WebNodeType" target="WebTheme" toMany="false">
 		<db-attribute-pair source="defaultWebThemeId" target="id"/>
@@ -2369,7 +2247,6 @@
 	<obj-relationship name="college" source="Site" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="rooms" source="Site" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
 	<obj-relationship name="waitingListSites" source="Site" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
-	<obj-relationship name="webBlockTags" source="Site" target="WebBlockTag" deleteRule="Deny" db-relationship-path="webBlockTags"/>
 	<obj-relationship name="attendances" source="Student" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="certificates" source="Student" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
@@ -2386,8 +2263,6 @@
 	<obj-relationship name="tagGroupRequirements" source="Tag" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="tagGroupRequirements"/>
 	<obj-relationship name="taggableTags" source="Tag" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggableTags"/>
 	<obj-relationship name="tags" source="Tag" target="Tag" deleteRule="Deny" db-relationship-path="tags"/>
-	<obj-relationship name="webBlockTags" source="Tag" target="WebBlockTag" deleteRule="Deny" db-relationship-path="webBlockTags"/>
-	<obj-relationship name="webNodeTags" source="Tag" target="WebNodeTag" deleteRule="Deny" db-relationship-path="webNodeTags"/>
 	<obj-relationship name="college" source="TagGroupRequirement" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="tag" source="TagGroupRequirement" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="college" source="Taggable" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -2413,13 +2288,10 @@
 	<obj-relationship name="webBlockType" source="WebBlock" target="WebBlockType" deleteRule="Nullify" db-relationship-path="webBlockType"/>
 	<obj-relationship name="webNodeContentWebBlocks" source="WebBlock" target="WebNodeContentWebBlock" deleteRule="Deny" db-relationship-path="webNodeContentWebBlocks"/>
 	<obj-relationship name="webSite" source="WebBlock" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="tag" source="WebBlockTag" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
-	<obj-relationship name="webBlock" source="WebBlockTag" target="Site" deleteRule="Nullify" db-relationship-path="webBlock"/>
 	<obj-relationship name="webBlocks" source="WebBlockType" target="WebBlock" deleteRule="Deny" db-relationship-path="webBlocks"/>
 	<obj-relationship name="parentNode" source="WebNode" target="WebNode" deleteRule="Nullify" db-relationship-path="parentNode"/>
 	<obj-relationship name="savedByUser" source="WebNode" target="WillowUser" deleteRule="Nullify" db-relationship-path="savedByUser"/>
 	<obj-relationship name="webNodeContents" source="WebNode" target="WebNodeContent" deleteRule="Deny" db-relationship-path="webNodeContents"/>
-	<obj-relationship name="webNodeTags" source="WebNode" target="WebNodeTag" deleteRule="Deny" db-relationship-path="webNodeTags"/>
 	<obj-relationship name="webNodeType" source="WebNode" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
 	<obj-relationship name="webNodes" source="WebNode" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 	<obj-relationship name="webSite" source="WebNode" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
@@ -2429,8 +2301,6 @@
 	<obj-relationship name="webNodeContentWebBlocks" source="WebNodeContent" target="WebNodeContentWebBlock" deleteRule="Deny" db-relationship-path="webNodeContentWebBlocks"/>
 	<obj-relationship name="webBlock" source="WebNodeContentWebBlock" target="WebBlock" deleteRule="Nullify" db-relationship-path="webBlock"/>
 	<obj-relationship name="webNodeContent" source="WebNodeContentWebBlock" target="WebNodeContent" deleteRule="Nullify" db-relationship-path="webNodeContent"/>
-	<obj-relationship name="tag" source="WebNodeTag" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
-	<obj-relationship name="webNode" source="WebNodeTag" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="defaultWebTheme" source="WebNodeType" target="WebTheme" deleteRule="Nullify" db-relationship-path="defaultWebTheme"/>
 	<obj-relationship name="webNodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 	<obj-relationship name="webSite" source="WebNodeType" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
