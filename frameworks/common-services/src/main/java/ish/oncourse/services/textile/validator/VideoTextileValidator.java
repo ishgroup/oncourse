@@ -9,13 +9,19 @@ import ish.oncourse.util.ValidationErrors;
 
 public class VideoTextileValidator implements IValidator {
 
-	public void validate(String tag, ValidationErrors errors, Object dataService) {
+	private IBinaryDataService binaryDataService;
+
+	public VideoTextileValidator(IBinaryDataService binaryDataService) {
+		super();
+		this.binaryDataService = binaryDataService;
+	}
+
+	public void validate(String tag, ValidationErrors errors) {
 		boolean valid = true;
 		if (!tag.matches(TextileUtil.VIDEO_TEMPLATE_EXP)) {
-			errors
-					.addFailure("The tag: "
-							+ tag
-							+ " doesn't match pattern {video id:\"digit_number\" height:\"digit_number\" width:\"digit_number\"}");
+			errors.addFailure("The tag: "
+					+ tag
+					+ " doesn't match pattern {video id:\"digit_number\" height:\"digit_number\" width:\"digit_number\"}");
 			valid = false;
 		}
 		if (tag.split("id:").length != 2) {
@@ -37,13 +43,13 @@ public class VideoTextileValidator implements IValidator {
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag, "id",
 					"width", "height");
 			Long id = Long.valueOf(tagParams.get("id"));
-			BinaryInfo video = ((IBinaryDataService) dataService)
-					.getBinaryInfo(BinaryInfo.ID_PK_COLUMN, id);
+
+			BinaryInfo video = binaryDataService.getBinaryInfo(
+					BinaryInfo.ID_PK_COLUMN, id);
+
 			if (video == null) {
 				errors.addFailure("There's no video with such an id: " + id);
 			}
 		}
-
 	}
-
 }

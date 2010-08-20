@@ -5,5 +5,5 @@ package ish.oncourse.services.property;
  */
 public enum Property {
 
-	CustomComponentsPath
+	CustomComponentsPath, SolrUrl
 }

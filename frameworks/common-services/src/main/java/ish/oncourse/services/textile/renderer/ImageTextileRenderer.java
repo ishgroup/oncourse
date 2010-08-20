@@ -7,15 +7,17 @@ import ish.oncourse.services.textile.validator.ImageTextileValidator;
 import ish.oncourse.util.ValidationErrors;
 
 public class ImageTextileRenderer extends AbstractRenderer {
-
-	public ImageTextileRenderer() {
-		validator = new ImageTextileValidator();
+	
+	private IBinaryDataService binaryDataService;
+	
+	public ImageTextileRenderer(IBinaryDataService binaryDataService) {
+		this.binaryDataService = binaryDataService;
+		validator = new ImageTextileValidator(binaryDataService);
 	}
 
 	@Override
-	public String render(String tag, ValidationErrors errors, Object dataService) {
-		IBinaryDataService binaryDataService = (IBinaryDataService) dataService;
-		tag = super.render(tag, errors, binaryDataService);
+	public String render(String tag, ValidationErrors errors) {
+		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
 			BinaryInfo imageBinaryInfo = null;
 			if (tag.matches(TextileUtil.IMAGE_ID_REGEXP)) {

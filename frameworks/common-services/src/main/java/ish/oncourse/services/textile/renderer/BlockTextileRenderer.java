@@ -8,13 +8,14 @@ import ish.oncourse.util.ValidationErrors;
 
 public class BlockTextileRenderer extends AbstractRenderer {
 
-	public BlockTextileRenderer() {
-		validator = new BlockTextileValidator();
+	private IWebBlockService webBlockDataService;
+
+	public BlockTextileRenderer(IWebBlockService webBlockDataService) {
+		validator = new BlockTextileValidator(webBlockDataService);
 	}
 
-	public String render(String tag, ValidationErrors errors, Object dataService) {
-		IWebBlockService webBlockDataService = (IWebBlockService) dataService;
-		tag = super.render(tag, errors, webBlockDataService);
+	public String render(String tag, ValidationErrors errors) {
+		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
 			WebBlock webBlock = null;
 			if (tag.matches(TextileUtil.BLOCK_NAME_REGEXP)) {
@@ -27,5 +28,4 @@ public class BlockTextileRenderer extends AbstractRenderer {
 		}
 		return tag;
 	}
-
 }

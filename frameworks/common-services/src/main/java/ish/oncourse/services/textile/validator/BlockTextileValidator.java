@@ -7,18 +7,21 @@ import ish.oncourse.util.ValidationErrors;
 
 public class BlockTextileValidator implements IValidator {
 
-	public void validate(String tag, ValidationErrors errors, Object dataService) {
-		if (getWebBlockByTag(tag, errors, dataService) == null) {
-			errors
-					.addFailure("The block tag '"
-							+ tag
-							+ "' doesn't match nor {block name:\"name\"}, nor {block tag:\"tag\"}");
+	private IWebBlockService webBlockDataService;
+
+	public BlockTextileValidator(IWebBlockService webBlockDataService) {
+		this.webBlockDataService = webBlockDataService;
+	}
+
+	public void validate(String tag, ValidationErrors errors) {
+		if (getWebBlockByTag(tag, errors) == null) {
+			errors.addFailure("The block tag '"
+					+ tag
+					+ "' doesn't match nor {block name:\"name\"}, nor {block tag:\"tag\"}");
 		}
 	}
 
-	public WebBlock getWebBlockByTag(String tag, ValidationErrors errors,
-			Object dataService) {
-		IWebBlockService webBlockDataService = (IWebBlockService) dataService;
+	public WebBlock getWebBlockByTag(String tag, ValidationErrors errors) {
 		WebBlock result = null;
 		if (tag.matches(TextileUtil.BLOCK_NAME_REGEXP)) {
 			String name = TextileUtil.getValueInFirstQuots(tag);

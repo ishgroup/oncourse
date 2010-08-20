@@ -927,6 +927,7 @@
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isSufficientForQualification" type="java.lang.Boolean" db-attribute-path="isSufficientForQualification"/>
 		<obj-attribute name="isVETCourse" type="java.lang.Boolean" db-attribute-path="isVETCourse"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
@@ -938,6 +939,7 @@
 	</obj-entity>
 	<obj-entity name="CourseClass" className="ish.oncourse.model.CourseClass" dbEntityName="CourseClass">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="cancelled" type="boolean" db-attribute-path="isCancelled"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="countOfSessions" type="java.lang.Integer" db-attribute-path="countOfSessions"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -947,7 +949,6 @@
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="feeExGst" type="java.math.BigDecimal" db-attribute-path="feeExGst"/>
 		<obj-attribute name="feeGst" type="java.math.BigDecimal" db-attribute-path="feeGst"/>
-		<obj-attribute name="isCancelled" type="java.lang.Boolean" db-attribute-path="isCancelled"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="materials_textile"/>
