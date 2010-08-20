@@ -2,18 +2,19 @@ package ish.oncourse.services.textile.renderer;
 
 import java.util.Map;
 
+import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.VideoTextileValidator;
 import ish.oncourse.util.ValidationErrors;
 
 public class VideoTextileRenderer extends AbstractRenderer {
 
-	public VideoTextileRenderer() {
-		validator = new VideoTextileValidator();
+	public VideoTextileRenderer(IBinaryDataService binaryDataService) {
+		validator = new VideoTextileValidator(binaryDataService);
 	}
 
 	public String render(String tag, ValidationErrors errors, Object dataService) {
-		tag = super.render(tag, errors, dataService);
+		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag, "id",
 					"width", "height");

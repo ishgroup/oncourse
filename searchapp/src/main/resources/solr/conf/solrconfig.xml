@@ -290,7 +290,7 @@
 		</lst>
 	</requestHandler>
 
-	<requestHandler name="/admin/dataimport"
+	<requestHandler name="/dataimport"
 		class="org.apache.solr.handler.dataimport.DataImportHandler">
 		<lst name="defaults">
 			<str name="config">oncourse-jdbc.xml</str>
