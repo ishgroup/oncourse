@@ -7,9 +7,8 @@ public abstract class AbstractRenderer implements IRenderer {
 	
 	protected IValidator validator;
 
-	public String render(String tag, ValidationErrors errors, Object dataService) {
-		validator.validate(tag, errors, dataService);
+	public String render(String tag, ValidationErrors errors) {
+		validator.validate(tag, errors);
 		return tag;
 	}
-	
 }

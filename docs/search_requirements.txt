@@ -110,3 +110,9 @@ Another important factor is investigating how we will be writing the index. Upda
 
 -- Solution
   Solr delta-import command. Use SQL to locate modified entities by timestamp. Requires HTTP GET to http://localhost:8983/solr/dataimport?command=delta-import to spawn index update. We can use either cron job which makes HTTP GET or callback in Cayenne for instantly triggered update or other notification mechanism (Cayenne callback JMS) depending on which infrastructure components is already in place.
+
+
+
+
+http://www.sydneycommunitycollege.com.au/courses?near=SURRY+HILLS+2010&price=100&day=weekday&time=daytime&s=dance&subject=
+http://www.sydneycommunitycollege.com.au/courses?near=&price=&day=&time=&s=dance&subject=

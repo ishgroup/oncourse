@@ -21,22 +21,20 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private IWebBlockService webBlockService;
-
-	private Object dataService;
-
+	
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
-	public String convert(String content, ValidationErrors errors){
+	public String convert(String content, ValidationErrors errors) {
 		String regex = "[{]((block)|(course)|(tags)|(page)|(video)|(image))([^}]*)[}]";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(content);
 		String result = content;
-		
+
 		while (matcher.find()) {
 			String tag = matcher.group();
 			IRenderer renderer = getRendererForTag(tag);
 			if (renderer != null) {
-				String replacement = renderer.render(tag, errors, dataService);
+				String replacement = renderer.render(tag, errors);
 				if (!errors.hasFailures() && replacement != null) {
 					result = result.replace(tag, replacement);
 				}
@@ -67,14 +65,11 @@ public class TextileConverter implements ITextileConverter {
 	private IRenderer createRendererForType(TextileType type) {
 		switch (type) {
 		case IMAGE:
-			dataService = binaryDataService;
-			return new ImageTextileRenderer();
+			return new ImageTextileRenderer(binaryDataService);
 		case BLOCK:
-			dataService = webBlockService;
-			return new BlockTextileRenderer();
+			return new BlockTextileRenderer(webBlockService);
 		case VIDEO:
-			dataService = binaryDataService;
-			return new VideoTextileRenderer();
+			return new VideoTextileRenderer(binaryDataService);
 		}
 		return null;
 	}
