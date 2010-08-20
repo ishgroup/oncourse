@@ -97,7 +97,6 @@ public class CourseClassItem {
 	public List<Session> getSortedTimelineableSessions() {
 		List<Session> sessions = courseClass.getTimelineableSessions();
 		Collections.sort(sessions, new Comparator<Session>() {
-
 			public int compare(Session o1, Session o2) {
 				int siteNameComparison = o1.getRoom().getSite().getName()
 						.compareTo(o2.getRoom().getSite().getName());

@@ -8,5 +8,5 @@
 	<t:loop source="course.enrollableClasses" value="courseClass">
 		<span t:type="courseclassitem" courseClass="courseClass"/> 
 	</t:loop>
-	<t:if t:test="course.allowWaitingList"><span t:type="WaitingListItem" course="course"/> </t:if>
+	<t:if t:test="course.allowWaitingList"><span t:type="WaitingListItem" course="course"/></t:if>
 </t:container>

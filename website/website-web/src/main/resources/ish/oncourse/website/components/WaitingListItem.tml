@@ -44,17 +44,17 @@
 										<dt>First Name:</dt>
 										<dd>
 											<t:textfield t:id="WaitlistFirstName"
-												t:value="sessionWaitingList.student.firstName" />
+												t:value="sessionWaitingList.student.contact.givenName" />
 										</dd>
 										<dt>Last Name:</dt>
 										<dd>
 											<t:textfield t:id="WaitlistLastName"
-												t:value="sessionWaitingList.student.lastName" />
+												t:value="sessionWaitingList.student.contact.familyName" />
 										</dd>
 										<dt>E-Mail address:</dt>
 										<dd>
 											<t:textfield t:id="WaitlistEmail"
-												t:value="sessionWaitingList.student.email" />
+												t:value="sessionWaitingList.student.contact.emailAddress" />
 										</dd>
 									</t:if>
 									<dt>

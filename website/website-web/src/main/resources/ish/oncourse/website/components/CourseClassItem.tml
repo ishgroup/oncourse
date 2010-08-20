@@ -9,9 +9,9 @@
 				<li class="class_time">
 					<a class="timeline" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" timezone="10">
            				<span style="text-transform: lowercase;">
-           					 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.startTimestamp" dateformat="~#m = object.firstSession.startTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="courseClass.timeZone" valueWhenEmpty="TBA"/>
+           					 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.startDate" dateformat="~#m = object.firstSession.startTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="courseClass.timeZone" valueWhenEmpty="TBA"/>
              				 &ndash; 
-             				 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.endTimestamp" dateformat="~#m = object.firstSession.endTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="courseClass.timeZone" valueWhenEmpty="TBA"/>
+             				 <span t:type="ui/willowtext" escapingHTML="false" value="courseClass.firstSession.endDate" dateformat="~#m = object.firstSession.endTimestamp.minuteOfHour, (#m==0 ? 'ha' : 'h:mma')" timezone="courseClass.timeZone" valueWhenEmpty="TBA"/>
             			</span>
             			<t:if t:test="courseClass.hasManySessions">
             				<span class="class_session_exp">(<t:if test="courseClass.sessionsHaveDifferentTimes">first session<p:else>all sessions</p:else></t:if>)</span>
