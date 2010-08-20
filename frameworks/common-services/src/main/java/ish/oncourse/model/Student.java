@@ -10,9 +10,7 @@ import ish.oncourse.model.auto._Student;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
-
 public class Student extends _Student {
-
 
 	/**
 	 * @return the number of years since the contact's birth date.
@@ -22,10 +20,8 @@ public class Student extends _Student {
 		Integer age = null;
 
 		if ((getContact() == null) || (getContact().getDateOfBirth() == null)) {
-			Period interval = new Period(
-					getContact().getDateOfBirth().getTime(),
-					System.currentTimeMillis(),
-					PeriodType.years());
+			Period interval = new Period(getContact().getDateOfBirth()
+					.getTime(), System.currentTimeMillis(), PeriodType.years());
 			age = interval.getYears();
 		}
 
@@ -41,12 +37,14 @@ public class Student extends _Student {
 		if ((enrolments == null) || (enrolments.isEmpty())) {
 			return new ArrayList<Enrolment>();
 		}
+
 		Expression qualifier = ExpressionFactory.matchExp(
 				Enrolment.STATUS_PROPERTY, 0/*
 											 * TODO Payment.STATUS_SUCCEEDED
 											 */).andExp(
 				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY
-						+ "." + CourseClass.IS_CANCELLED_PROPERTY, false));
+						+ "." + CourseClass.CANCELLED_PROPERTY, false));
+
 		return qualifier.filterObjects(enrolments);
 	}
 
