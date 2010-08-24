@@ -10,7 +10,7 @@
 
 	<artifactId>cms-web</artifactId>
 	<packaging>war</packaging>
-	<name>CMS Web</name>
+	<name>CMS Web App</name>
 
 	<dependencies>
 

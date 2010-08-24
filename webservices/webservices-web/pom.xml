@@ -11,7 +11,7 @@
 	<artifactId>webservices-web</artifactId>
 	<groupId>ish.oncourse</groupId>
 	<packaging>war</packaging>
-	<name>WebServices Web Module</name>
+	<name>WebServices Web App</name>
 
 	<dependencies>
 
