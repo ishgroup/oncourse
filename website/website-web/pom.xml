@@ -41,6 +41,10 @@
 			<artifactId>tapestry5-jquery</artifactId>
 		</dependency>
 	-->
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+		</dependency>
 
 	</dependencies>
 
