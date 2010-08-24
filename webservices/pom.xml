@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>parent</artifactId>
+		<groupId>ish.oncourse</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>webservices</artifactId>
+	<groupId>ish.oncourse</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>WebServices Parent</name>
+	<description>Parent POM of the onCourse Web Services application</description>
+
+	<modules>
+		<module>webservices-services</module>
+		<module>webservices-web</module>
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.5</source>
+						<target>1.5</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.cayenne.plugins</groupId>
+					<artifactId>maven-cayenne-plugin</artifactId>
+					<version>3.0</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>ish.oncourse</groupId>
+				<artifactId>common-services</artifactId>
+				<version>${version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ish.oncourse</groupId>
+				<artifactId>webservices-services</artifactId>
+				<version>${version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+</project>
