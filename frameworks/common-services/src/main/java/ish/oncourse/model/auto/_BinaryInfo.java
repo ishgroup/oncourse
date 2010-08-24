@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
 
@@ -26,6 +27,7 @@ public abstract class _BinaryInfo extends CayenneDataObject {
     public static final String PIXEL_HEIGHT_PROPERTY = "pixelHeight";
     public static final String PIXEL_WIDTH_PROPERTY = "pixelWidth";
     public static final String REFERENCE_NUMBER_PROPERTY = "referenceNumber";
+    public static final String BINARY_DATA_PROPERTY = "binaryData";
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
     public static final String COLLEGE_PROPERTY = "college";
 
@@ -100,6 +102,18 @@ public abstract class _BinaryInfo extends CayenneDataObject {
     public Integer getReferenceNumber() {
         return (Integer)readProperty("referenceNumber");
     }
+
+    public void addToBinaryData(BinaryData obj) {
+        addToManyTarget("binaryData", obj, true);
+    }
+    public void removeFromBinaryData(BinaryData obj) {
+        removeToManyTarget("binaryData", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<BinaryData> getBinaryData() {
+        return (List<BinaryData>)readProperty("binaryData");
+    }
+
 
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
         addToManyTarget("binaryInfoRelations", obj, true);
