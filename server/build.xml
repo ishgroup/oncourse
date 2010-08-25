@@ -476,8 +476,10 @@
 	</target>
 	
 	<target name="profile" depends="buildjar">
+
+	                <property name="runtime.soap.url" value="${angel.soap.server.url.local}" />
 			<property name="runtime.soap.debug" value="false" />
-			<property name="runtime.soap.disabled" value="false" />
+			<property name="runtime.soap.disabled" value="true" />
 			<echo message="replication.batchsize = ${replication.batchsize}" />
 			<property name="dburi" value=""/>
 			<property name="headless" value="false"/>
@@ -705,6 +707,9 @@
 			</fileset>
 			<fileset dir="${server.resource.dir}/packaging/unix">
 				<include name="log.properties" />
+			</fileset>
+			<fileset dir="${server.resource.dir}/packaging/unix">
+				<include name="onCourse.cfg" />
 			</fileset>
 		</copy>
 		<tar destfile="${server.distribution.dir}/onCourseServer.tar">
