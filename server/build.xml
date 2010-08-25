@@ -704,11 +704,7 @@
 			</fileset>
 			<fileset dir="${server.resource.dir}/packaging/unix">
 				<include name="onCourseServer.sh" />
-			</fileset>
-			<fileset dir="${server.resource.dir}/packaging/unix">
 				<include name="log.properties" />
-			</fileset>
-			<fileset dir="${server.resource.dir}/packaging/unix">
 				<include name="onCourse.cfg" />
 			</fileset>
 		</copy>
