@@ -4,6 +4,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -28,6 +29,11 @@ public class CourseService implements ICourseService {
 	}
 
 	public List<Course> loadByIds(List<String> ids) {
+		
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
 		EJBQLQuery q = new EJBQLQuery(
 				"select c from Course c where c.id IN (:ids)");
 

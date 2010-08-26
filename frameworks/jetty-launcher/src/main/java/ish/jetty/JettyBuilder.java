@@ -17,7 +17,7 @@ public class JettyBuilder {
 	protected int port;
 	protected String context;
 
-	protected String dataSourceName;
+	protected String[] dataSourceNames;
 	protected DataSourceFactory dataSourceFactory;
 
 	public Server toServer() {
@@ -27,15 +27,18 @@ public class JettyBuilder {
 		connector.setPort(port);
 
 		server.addConnector(connector);
-		Resource connectionPool;
-		try {
-			connectionPool = new Resource(dataSourceName, dataSourceFactory
-					.getDataSource());
-		} catch (NamingException e) {
-			throw new RuntimeException("Error creating DataSource", e);
-		}
 
-		server.addBean(connectionPool);
+		for (String dataSourceName : dataSourceNames) {
+			Resource connectionPool;
+			try {
+				connectionPool = new Resource(dataSourceName,
+						dataSourceFactory.getDataSource());
+			} catch (NamingException e) {
+				throw new RuntimeException("Error creating DataSource", e);
+			}
+
+			server.addBean(connectionPool);
+		}
 
 		WebAppContext webappContext = new WebAppContext();
 		webappContext.setContextPath(context);
@@ -61,8 +64,8 @@ public class JettyBuilder {
 		this.context = context;
 	}
 
-	public void setDataSourceName(String dataSourceName) {
-		this.dataSourceName = dataSourceName;
+	public void setDataSourceNames(String... dataSourceName) {
+		this.dataSourceNames = dataSourceName;
 	}
 
 	public void setDataSourceFactory(String dataSourceFactory) throws Exception {

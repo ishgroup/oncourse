@@ -14,7 +14,12 @@ public class JettyLauncher {
 				.getValue());
 		jettyBuilder.setPort(LaunchProperties.ISH_WEB_PORT.getValue());
 		jettyBuilder.setContext(LaunchProperties.ISH_WEB_CONTEXT.getValue());
-		jettyBuilder.setDataSourceName(LaunchProperties.ISH_DS_NAME.getValue());
+
+		jettyBuilder.setDataSourceNames(
+				LaunchProperties.ISH_DS_ONCOURSE.getValue(),
+				LaunchProperties.ISH_DS_ONCOURSE_BINARY.getValue(),
+				LaunchProperties.ISH_DS_ONCOURSE_REFERENCE.getValue());
+
 		jettyBuilder.setWar(getWar());
 
 		Server server = jettyBuilder.toServer();

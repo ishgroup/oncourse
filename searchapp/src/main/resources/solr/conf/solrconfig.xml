@@ -200,6 +200,7 @@
 			<str name="carrot.algorithm">org.carrot2.clustering.stc.STCClusteringAlgorithm</str>
 		</lst>
 	</searchComponent>
+	
 	<requestHandler name="/clustering" enable="${solr.clustering.enabled:false}"
 		class="solr.SearchHandler">
 		<lst name="defaults">

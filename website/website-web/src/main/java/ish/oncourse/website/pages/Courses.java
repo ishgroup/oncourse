@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.tapestry5.annotations.Property;
@@ -23,7 +24,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class Courses {
-
+	
+	private static final Logger LOGGER = Logger.getLogger(Courses.class);
+	
 	@Inject
 	private ICourseService courseService;
 
@@ -59,6 +62,8 @@ public class Courses {
 	
 	private List<Course> searchCourses() {
 		QueryResponse resp = searchService.searchCourses(buildSearchParams());
+		
+		LOGGER.info(String.format("The number of courses found: %s", resp.getResults().size()));
 		
 		List<String> ids = new ArrayList<String>(resp.getResults().size());
 		

@@ -10,7 +10,11 @@ public enum LaunchProperties {
 
 	ISH_WEB_CONTEXT("/"),
 
-	ISH_DS_NAME("jdbc/oncourse"),
+	ISH_DS_ONCOURSE("jdbc/oncourse"),
+
+	ISH_DS_ONCOURSE_BINARY("jdbc/oncourse_binary"),
+
+	ISH_DS_ONCOURSE_REFERENCE("jdbc/oncourse_reference"),
 
 	ISH_DS_FACTORY(MySQLDataSourceFactory.class.getName()),
 

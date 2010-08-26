@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
     <dataSource name="onCourseDS" driver="com.mysql.jdbc.Driver"
-                url="jdbc:mysql://localhost:3306/willow_college" user="root" password="test"
+                url="jdbc:mysql://localhost:3306/" user="root" password="test"
                 readOnly="true" autoCommit="false"/>
     <document>
         <entity name="course" dataSource="onCourseDS"
-                query="select id, name, detail, code, collegeId from course" pk="id">
+                query="select id, name, detail, code, collegeId from willow_college.course" pk="id">
+			
 			<field name="id" column="id"/>
+			<field name="doctype" column="doctype" template="course"/>
 			<field name="name" column="name"  />
 			<field name="detail" column="detail"  />
             <field name="course_code" column="code"  />
             <field name="collegeId" column="collegeId" />
-            <entity name="courseClass" query="select cc.id, cc.code from courseclass cc where courseid='${course.id}'" dataSource="onCourseDS" pk="cc.id">
+            
+            <entity name="courseClass" query="select cc.id, cc.code from willow_college.courseclass cc where courseid='${course.id}'" dataSource="onCourseDS" pk="cc.id">
                 <field name="id" column="cc.id"/>
                 <field name="class_code" column="cc.code"/>
-                <entity name="site" query="select s.suburb, s.latitude, s.longitude, s.postcode from site s inner join room r 
-                	on r.siteId=s.id inner join courseclass cc on cc.roomId=r.id where cc.id='${courseClass.id}'
-                	union select s.suburb, s.latitude, s.longitude, s.postcode from site s inner join room r on r.siteId=s.id 
-                	inner join session ss on ss.roomId=r.id inner join courseclass cc on cc.id=ss.courseClassId where cc.id='${courseClass.id}'">
-                	<field name="location" template="${s.latitude},${s.longitude}"/>
+                
+                <entity name="site" dataSource="onCourseDS" query="select s.suburb, s.latitude, s.longitude, s.postcode from willow_college.site s inner join willow_college.room r 
+                	on r.siteId=s.id inner join willow_college.courseclass cc on cc.roomId=r.id where cc.id='${courseClass.id}'
+                	union select s.suburb, s.latitude, s.longitude, s.postcode from willow_college.site s inner join willow_college.room r on r.siteId=s.id 
+                	inner join willow_college.session ss on ss.roomId=r.id inner join willow_college.courseclass cc on cc.id=ss.courseClassId where cc.id='${courseClass.id}'">
+                	<field name="location" column="LOCATION" template="${s.latitude},${s.longitude}"/>
                 	<field name="postcode" column="s.postcode"/>
                 	<field name="suburb" column="s.suburb"/>
                 </entity>
-                <entity name="tutor" query="select c.givenName, c.familyName from contact c inner join tutor t on c.tutorId = t.id
-                    inner join tutorrole tr on t.id = tr.tutorId
-                    inner join courseclass cc on tr.courseClassId=cc.id where cc.id='${courseClass.id}'" dataSource="onCourseDS">
-                    <field name="full_name" template="${t.givenName} ${t.familyName}"/>
+                
+                <entity name="tutor" dataSource="onCourseDS" query="select c.givenName, c.familyName from willow_college.contact c inner join willow_college.tutor t on c.tutorId = t.id
+                    inner join willow_college.tutorrole tr on t.id = tr.tutorId
+                    inner join willow_college.courseclass cc on tr.courseClassId=cc.id where cc.id='${courseClass.id}'">
+                    <field column="TUTOR" name="tutor" template="${t.givenName} ${t.familyName}"/>
                 </entity>
-                <entity name="session" query="select s.startDate, s.endDate from session s inner join courseclass cc on s.courseClassId=cc.id where cc.id='${courseClass.id}'">
+                
+                <entity name="classSession" dataSource="onCourseDS" query="select s.startDate, s.endDate from willow_college.session s inner join willow_college.courseclass cc on s.courseClassId=cc.id where cc.id='${courseClass.id}'">
                 	<field name="startDate" column="s.startDate"/>
                 	<field name="endDate" column="s.endDate"/>
                 </entity>
             </entity>
+        </entity>
+        
+        <entity name="location" dataSource="onCourseDS" query="select postcode, suburb, lat, lon from willow_reference.postcode_db" pk="postcode">
+        	<field name="doctype" column="doctype" template="location"/>
+        	<field name="postcode" column="postcode"/>
+        	<field name="suburb" column="suburb"/>
+        	<field name="lat" column="lat"/>
+        	<field name="lon" column="lon"/>
         </entity>
     </document>
 </dataConfig>
