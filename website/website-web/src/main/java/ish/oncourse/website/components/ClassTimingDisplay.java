@@ -1,7 +1,7 @@
 package ish.oncourse.website.components;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.util.ISHTimestampUtilities;
+import ish.oncourse.utils.TimestampUtilities;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,18 +18,18 @@ public class ClassTimingDisplay {
 	private String stringListItem;
 
 	public List<String> getWeekdays() {
-		return ISHTimestampUtilities.DaysOfWorkingWeekNames;
+		return TimestampUtilities.DaysOfWorkingWeekNames;
 	}
 
 	public List<String> getWeekendDays() {
-		return ISHTimestampUtilities.DaysOfWeekendNames;
+		return TimestampUtilities.DaysOfWeekendNames;
 	}
 
 	public String getWeekdayListItemClass() {
 		return "timing-weekday timing-"
 				+ this.stringListItem
 				+ " match-8 match-"
-				+ (ISHTimestampUtilities.DaysOfWorkingWeekNames
+				+ (TimestampUtilities.DaysOfWorkingWeekNames
 						.indexOf(stringListItem) + 1)
 				+ " timing-"
 				+ cssClassSuffix(courseClass.getDaysOfWeek(), false, false/*
@@ -51,7 +51,7 @@ public class ClassTimingDisplay {
 		return "timing-weekend timing-"
 				+ stringListItem
 				+ " match-9 match-"
-				+ (ISHTimestampUtilities.DaysOfWeekendNames
+				+ (TimestampUtilities.DaysOfWeekendNames
 						.indexOf(stringListItem) + 6)
 				+ " timing-"
 				+ cssClassSuffix(courseClass.getDaysOfWeek(), false, false/*

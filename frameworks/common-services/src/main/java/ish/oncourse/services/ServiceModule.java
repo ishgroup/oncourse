@@ -6,8 +6,6 @@ import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.block.IWebBlockService;
 import ish.oncourse.services.block.WebBlockService;
-import ish.oncourse.model.services.cache.ICacheService;
-import ish.oncourse.model.services.cache.OSCacheService;
 import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.environment.EnvironmentService;
@@ -16,8 +14,6 @@ import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
-import ish.oncourse.services.persistence.CayenneService;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.resource.IResourceService;
@@ -40,8 +36,6 @@ public class ServiceModule {
 
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
-		binder.bind(ICacheService.class, OSCacheService.class);
-		binder.bind(ICayenneService.class, CayenneService.class);
 		binder.bind(IEnvironmentService.class, EnvironmentService.class);
 		binder.bind(IPropertyService.class, PropertyService.class);
 		binder.bind(IResourceService.class, ResourceService.class);

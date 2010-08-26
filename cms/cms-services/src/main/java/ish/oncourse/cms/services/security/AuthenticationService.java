@@ -9,7 +9,7 @@ import org.apache.tapestry5.services.ApplicationStateManager;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.WillowUser;
-import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 

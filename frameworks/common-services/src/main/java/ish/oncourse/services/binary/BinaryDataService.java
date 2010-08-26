@@ -10,7 +10,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
-import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 public class BinaryDataService implements IBinaryDataService {

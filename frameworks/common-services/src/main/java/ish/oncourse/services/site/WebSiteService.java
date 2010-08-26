@@ -11,7 +11,7 @@ import org.apache.tapestry5.ioc.annotations.Scope;
 
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;

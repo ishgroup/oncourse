@@ -1,4 +1,4 @@
-package ish.oncourse.services.persistence;
+package ish.oncourse.model.services.persistence;
 
 import org.apache.cayenne.ObjectContext;
 

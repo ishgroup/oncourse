@@ -54,6 +54,12 @@
 
 			<dependency>
 				<groupId>ish.oncourse</groupId>
+				<artifactId>common-model</artifactId>
+				<version>${version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ish.oncourse</groupId>
 				<artifactId>common-ui</artifactId>
 				<version>${version}</version>
 			</dependency>

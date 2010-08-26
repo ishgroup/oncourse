@@ -17,6 +17,11 @@
 
 		<dependency>
 			<groupId>ish.oncourse</groupId>
+			<artifactId>common-model</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ish.oncourse</groupId>
 			<artifactId>common-ui</artifactId>
 		</dependency>
 

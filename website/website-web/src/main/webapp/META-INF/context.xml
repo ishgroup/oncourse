@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/website-web">
 	<ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
+	<ResourceLink global="jdbc/oncourse_binary" name="jdbc/oncourse_binary" type="javax.sql.DataSource"/>
+	<ResourceLink global="jdbc/oncourse_reference" name="jdbc/oncourse_reference" type="javax.sql.DataSource"/>
 	<Environment name="CustomComponentsPath" value="/Users/Shared/willow/active/custom" type="java.lang.String" override="false"/>
 </Context>

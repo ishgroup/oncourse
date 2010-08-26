@@ -1,5 +1,6 @@
 package ish.oncourse.cms.services;
 
+import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.ui.services.UIModule;
 
@@ -12,7 +13,10 @@ import org.got5.tapestry5.jquery.services.JQueryModule;
  * The module that is automatically included as part of the Tapestry IoC
  * registry.
  */
-@SubModule( { ServiceModule.class, CMSServiceModule.class, UIModule.class, JQueryModule.class })
+@SubModule( { 
+	ModelModule.class, ServiceModule.class, CMSServiceModule.class,
+	UIModule.class, JQueryModule.class
+})
 public class AppModule {
 
 	public static void contributeApplicationDefaults(

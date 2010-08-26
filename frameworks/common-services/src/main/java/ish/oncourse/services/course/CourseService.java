@@ -1,7 +1,7 @@
 package ish.oncourse.services.course;
 
 import ish.oncourse.model.Course;
-import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;

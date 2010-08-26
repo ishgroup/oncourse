@@ -10,7 +10,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 public class WebBlockService implements IWebBlockService {

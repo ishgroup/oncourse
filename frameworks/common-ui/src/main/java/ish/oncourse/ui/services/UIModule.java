@@ -1,6 +1,6 @@
 package ish.oncourse.ui.services;
 
-import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
