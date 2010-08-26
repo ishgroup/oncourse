@@ -1,4 +1,4 @@
-package ish.oncourse.services.cache;
+package ish.oncourse.model.services.cache;
 
 /**
  * An enum defining possible cache groups. If we start using adhoc cache groups,

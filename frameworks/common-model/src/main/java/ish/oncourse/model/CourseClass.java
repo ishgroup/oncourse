@@ -2,7 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._CourseClass;
-import ish.oncourse.util.ISHTimestampUtilities;
+import ish.oncourse.utils.TimestampUtilities;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -211,22 +211,22 @@ public class CourseClass extends _CourseClass {
 			if (getSessions().size() > 0) {
 				ArrayList<String> days = new ArrayList<String>();
 				for (Session s : getSessions()) {
-					days.add(ISHTimestampUtilities.dayOfWeek(
+					days.add(TimestampUtilities.dayOfWeek(
 							s.getStartDate(),
 							true,
 							TimeZone.getTimeZone(s.getTimeZone())));
 				}
-				daysOfWeek = ISHTimestampUtilities.uniqueDaysInOrder(days);
+				daysOfWeek = TimestampUtilities.uniqueDaysInOrder(days);
 			} else {
 				// no sessions recorded, so guess from class start / finish time
 				daysOfWeek = new HashSet<String>();
 				if (getStartDate() != null) {
-					daysOfWeek.add(ISHTimestampUtilities.dayOfWeek(
+					daysOfWeek.add(TimestampUtilities.dayOfWeek(
 							getStartDate(), true, TimeZone.getTimeZone(getTimeZone())));
 
 				}
 				if (getEndDate() != null) {
-					daysOfWeek.add(ISHTimestampUtilities.dayOfWeek(
+					daysOfWeek.add(TimestampUtilities.dayOfWeek(
 							getEndDate(), true, TimeZone.getTimeZone(getTimeZone())));
 
 				}

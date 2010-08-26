@@ -16,7 +16,7 @@
 
 		<dependency>
 			<groupId>ish.oncourse</groupId>
-			<artifactId>common-services</artifactId>
+			<artifactId>common-model</artifactId>
 		</dependency>
 
 		<dependency>

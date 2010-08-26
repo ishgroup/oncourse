@@ -6,7 +6,7 @@ import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.conf.Configuration;
 import org.apache.cayenne.conf.DefaultConfiguration;
 
-import ish.oncourse.services.cache.ICacheService;
+import ish.oncourse.model.services.cache.ICacheService;
 
 public class CayenneService implements ICayenneService {
 

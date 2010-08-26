@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.services.cache.CacheGroup;
-import ish.oncourse.services.cache.CachedObjectProvider;
-import ish.oncourse.services.cache.ICacheService;
+import ish.oncourse.model.services.cache.CacheGroup;
+import ish.oncourse.model.services.cache.CachedObjectProvider;
+import ish.oncourse.model.services.cache.ICacheService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.resource.IResourceService;
 

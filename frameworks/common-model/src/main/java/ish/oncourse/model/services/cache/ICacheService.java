@@ -1,4 +1,4 @@
-package ish.oncourse.services.cache;
+package ish.oncourse.model.services.cache;
 
 import org.apache.cayenne.cache.QueryCache;
 

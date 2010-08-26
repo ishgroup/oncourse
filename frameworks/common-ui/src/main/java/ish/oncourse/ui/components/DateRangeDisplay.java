@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.util.ISHTimestampUtilities;
+import ish.oncourse.utils.TimestampUtilities;
 
 import java.util.Date;
 import java.util.TimeZone;
@@ -23,33 +23,33 @@ public class DateRangeDisplay {
 	private TimeZone timeZone;
 
 	public String getDisplayedRange() {
-		String year = ISHTimestampUtilities.userPresentableDate(date1,
+		String year = TimestampUtilities.userPresentableDate(date1,
 				this.yearformat, timeZone);
 
-		String startDay = ISHTimestampUtilities.userPresentableDate(date1,
+		String startDay = TimestampUtilities.userPresentableDate(date1,
 				"DDD yyyy", timeZone);
-		String finishDay = ISHTimestampUtilities.userPresentableDate(date2,
+		String finishDay = TimestampUtilities.userPresentableDate(date2,
 				"DDD yyyy", timeZone);
 
 		if (startDay.equals(finishDay)) {
-			return ISHTimestampUtilities.userPresentableDate(date1,
+			return TimestampUtilities.userPresentableDate(date1,
 					this.singleDateformat, timeZone)
 					+ " " + year;
 		}
 
 		StringBuffer buff = new StringBuffer();
 		buff.append(
-				ISHTimestampUtilities.userPresentableDate(date1,
+				TimestampUtilities.userPresentableDate(date1,
 						this.doubleDateformat, timeZone)).append(" ");
 
-		String year2 = ISHTimestampUtilities.userPresentableDate(date2,
+		String year2 = TimestampUtilities.userPresentableDate(date2,
 				this.yearformat, timeZone);
 
 		if (!year.equals(year2)) {
 			buff.append(year).append(" ");
 		}
 		buff.append(" &#8211; ").append(
-				ISHTimestampUtilities.userPresentableDate(date2,
+				TimestampUtilities.userPresentableDate(date2,
 						this.doubleDateformat, timeZone));
 
 		buff.append(" ").append(year2);

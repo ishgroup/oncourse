@@ -18,16 +18,22 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>com.howardlewisship</groupId>
-			<artifactId>tapx-core</artifactId>
+			<groupId>ish.oncourse</groupId>
+			<artifactId>common-model</artifactId>
+			<version>${version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-services</artifactId>
 			<version>${version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.howardlewisship</groupId>
+			<artifactId>tapx-core</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>

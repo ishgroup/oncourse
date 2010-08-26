@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 	http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -16,76 +17,68 @@
 	<name>onCourse Common Service Framework</name>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>ish.oncourse</groupId>
+			<artifactId>common-model</artifactId>
+			<version>${version}</version>
+		</dependency>
+
 		<dependency>
 			<artifactId>cayenne-server</artifactId>
 			<groupId>org.apache.cayenne</groupId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.objectstyle.ashwood</groupId>
 			<artifactId>ashwood</artifactId>
 		</dependency>
+
 		<dependency>
 			<artifactId>commons-collections</artifactId>
 			<groupId>commons-collections</groupId>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-core</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry5-annotations</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.opensymphony.oscache</groupId>
-			<artifactId>oscache</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
 		</dependency>
+
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.cayenne.plugins</groupId>
-				<artifactId>maven-cayenne-plugin</artifactId>
-				<configuration>
-					<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml
-					</map>
-					<destDir>${project.build.sourceDirectory}</destDir>
-					<superPkg>ish.oncourse.model.auto</superPkg>
-				</configuration>
-				<executions>
-					<execution>
-						<id>cgen</id>
-						<goals>
-							<goal>cgen</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

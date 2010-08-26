@@ -277,7 +277,11 @@ where
     c.collegeKey not in ('east', 'scc' ) or c.collegeKey is null;
 
 insert into CollegeDomain (aliasedDomainID, collegeId, created, googleAnalyticsAccount, googleDirectionsFrom, hasSSL, isDeleted, modified, name, subsiteCode, webSiteID)
-values (null, 10, now(), 'UA-1134422-2', null, 0, 0, now(), 'scc.jetty.oncourse.net.au', null, 13);
+values 
+	  (null, 10, now(), 'UA-1134422-2', null, 0, 0, now(), 'scc.test1.oncourse.net.au', null, 13)
+	, (null, 10, now(), 'UA-1134422-2', null, 0, 0, now(), 'scc.staging1.oncourse.net.au', null, 13)
+	, (null, 10, now(), 'UA-1134422-2', null, 0, 0, now(), 'scc.live1.oncourse.net.au', null, 13)
+	, (null, 10, now(), 'UA-1134422-2', null, 0, 0, now(), 'scc.jetty.oncourse.net.au', null, 13);
 
 update College set
       billingCode = collegeKey

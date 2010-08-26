@@ -1,10 +1,10 @@
 //
-// ISHTimestampUtilities.java
+// TimestampUtilities.java
 // ISHWebObjects
 //
 // Copyright (c) 2005 ISH Group Pty Ltd. All rights reserved.
 //
-package ish.oncourse.util;
+package ish.oncourse.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +26,7 @@ import java.util.TimeZone;
  * @version 1.0
  */
 
-public class ISHTimestampUtilities {
+public class TimestampUtilities {
 
 	private static final List<String> _DateFormats = Arrays
 			.asList(new String[] { "dMMyy", "dMMyyyy", "d/MM/yy", "d/MM/yyyy",
@@ -234,7 +234,7 @@ public class ISHTimestampUtilities {
 
 	/**
 	 * @return the days of week abbreviated names.
-	 * @see ISHTimestampUtilities#DaysOfWeekAbbreviated.
+	 * @see TimestampUtilities#DaysOfWeekAbbreviated.
 	 */
 	public static List<String> daysOfWeekAbbreviatedNames() {
 		return DaysOfWeekAbbreviatedNames;
@@ -242,7 +242,7 @@ public class ISHTimestampUtilities {
 
 	/**
 	 * @return the days of week unabbreviated names
-	 * @see ISHTimestampUtilities#DaysOfWeek.
+	 * @see TimestampUtilities#DaysOfWeek.
 	 */
 	public static List<String> daysOfWeekNames() {
 		return DaysOfWeekNames;
@@ -517,7 +517,7 @@ public class ISHTimestampUtilities {
 	 * @param days
 	 *            - the days to order
 	 * @return the set of days in the default order
-	 * @see ISHTimestampUtilities#DaysOfWeek
+	 * @see TimestampUtilities#DaysOfWeek
 	 */
 	public static Set<String> uniqueDaysInOrder(List<String> days) {
 		Set<String> daysInOrder = new LinkedHashSet<String>(daysOfWeekNames());

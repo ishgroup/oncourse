@@ -2,10 +2,10 @@ package ish.oncourse.cms.services;
 
 import org.apache.tapestry5.ioc.ServiceBinder;
 
+import ish.oncourse.model.services.cache.ICacheService;
+import ish.oncourse.model.services.cache.OSCacheService;
 import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
-import ish.oncourse.services.cache.ICacheService;
-import ish.oncourse.services.cache.OSCacheService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
@@ -21,7 +21,7 @@ import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 
-/**
+/**̛
  * A Tapestry IoC module definition for all common services.
  */
 public class ServiceModule {
