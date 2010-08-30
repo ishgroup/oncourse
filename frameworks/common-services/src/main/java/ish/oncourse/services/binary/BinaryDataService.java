@@ -8,6 +8,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
 import ish.oncourse.model.services.persistence.ICayenneService;
@@ -37,6 +38,16 @@ public class BinaryDataService implements IBinaryDataService {
 		@SuppressWarnings("unchecked")
 		List<BinaryInfo> listResult = sharedContext.performQuery(query);
 		return !listResult.isEmpty() ? listResult.get(0) : null;
+	}
+
+	public BinaryData getBinaryData(BinaryInfo binaryInfo) {
+		SelectQuery query = new SelectQuery(BinaryData.class, ExpressionFactory
+				.matchExp(BinaryData.BINARY_INFO_PROPERTY, binaryInfo));
+		
+		@SuppressWarnings("unchecked")
+		List<BinaryData> result = cayenneService.sharedContext().performQuery(
+				query);
+		return !result.isEmpty() ? result.get(0) : null;
 	}
 
 }

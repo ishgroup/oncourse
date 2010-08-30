@@ -18,7 +18,12 @@ public enum LaunchProperties {
 
 	ISH_DS_FACTORY(MySQLDataSourceFactory.class.getName()),
 
-	ISH_DS_URL("jdbc:mysql://localhost:3306/willow_college"),
+	ISH_DS_ONCOURSE_URL("jdbc:mysql://localhost:3306/willow_college"),
+
+	ISH_DS_ONCOURSE_BINARY_URL("jdbc:mysql://localhost:3306/willow_binary"),
+
+	ISH_DS_ONCOURSE_REFERENCE_URL(
+			"jdbc:mysql://localhost:3306/willow_reference"),
 
 	ISH_DS_USER_NAME("root"),
 
@@ -35,5 +40,14 @@ public enum LaunchProperties {
 	 */
 	public String getValue() {
 		return System.getProperty(name(), defaultValue);
+	}
+
+	public static LaunchProperties getByValue(String value) {
+		for (LaunchProperties property : values()) {
+			if (property.defaultValue.equals(value)) {
+				return property;
+			}
+		}
+		return null;
 	}
 }

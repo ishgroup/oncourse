@@ -31,9 +31,9 @@ public class BinaryDataServlet extends HttpServlet {
 
 		resp.setContentType(binaryInfo.getMimeType());
 		OutputStream out = resp.getOutputStream();
+		
 
-		// TODO get the content from BinaryData
-		byte[] content = new byte[1024];
+		byte[] content = service.getBinaryData(binaryInfo).getContent();
 		out.write(content);
 
 		out.close();

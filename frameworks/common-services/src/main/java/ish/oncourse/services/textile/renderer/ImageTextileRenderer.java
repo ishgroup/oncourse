@@ -7,9 +7,9 @@ import ish.oncourse.services.textile.validator.ImageTextileValidator;
 import ish.oncourse.util.ValidationErrors;
 
 public class ImageTextileRenderer extends AbstractRenderer {
-	
+
 	private IBinaryDataService binaryDataService;
-	
+
 	public ImageTextileRenderer(IBinaryDataService binaryDataService) {
 		this.binaryDataService = binaryDataService;
 		validator = new ImageTextileValidator(binaryDataService);
@@ -30,18 +30,7 @@ public class ImageTextileRenderer extends AbstractRenderer {
 						BinaryInfo.NAME_PROPERTY, name);
 			}
 
-			// TODO replace this by reading BinaryData content
-			// //////////////////////////////
-			String extension = imageBinaryInfo.getMimeType().replace("image/",
-					"");
-			if ("jpeg".equals(extension)) {
-				extension = "jpg";
-			}
-			String path = imageBinaryInfo.getName() + "." + extension;
-			// ////////////////////////////
-
-			// the image content will be displayed by ImageServlet
-			path = "/servlet/image?id=" + imageBinaryInfo.getObjectId();
+			String path = "/servlet/binarydata?id=" + imageBinaryInfo.getId();
 			tag = "<img src=\"" + path + "\"/>";
 		}
 		return tag;

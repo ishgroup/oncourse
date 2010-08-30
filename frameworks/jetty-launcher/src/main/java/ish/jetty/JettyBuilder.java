@@ -32,7 +32,7 @@ public class JettyBuilder {
 			Resource connectionPool;
 			try {
 				connectionPool = new Resource(dataSourceName,
-						dataSourceFactory.getDataSource());
+						dataSourceFactory.getDataSource(dataSourceName));
 			} catch (NamingException e) {
 				throw new RuntimeException("Error creating DataSource", e);
 			}

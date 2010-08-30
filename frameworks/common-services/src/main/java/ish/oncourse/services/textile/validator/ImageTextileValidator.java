@@ -15,9 +15,10 @@ public class ImageTextileValidator implements IValidator {
 
 	public void validate(String tag, ValidationErrors errors) {
 		if (getImageBinaryInfoByTag(tag, errors) == null) {
-			errors.addFailure("The image tag '"
-					+ tag
-					+ "' doesn't match nor {image id:\"id\"}, nor {image name:\"name\"}");
+			errors
+					.addFailure("The image tag '"
+							+ tag
+							+ "' doesn't match nor {image id:\"id\"}, nor {image name:\"name\"}");
 		}
 	}
 
@@ -38,6 +39,9 @@ public class ImageTextileValidator implements IValidator {
 			if (result == null) {
 				errors.addFailure("There's no image with the name: " + name);
 			}
+		}
+		if (binaryDataService.getBinaryData(result) == null) {
+			errors.addFailure("This image's content is missed");
 		}
 		return result;
 	}
