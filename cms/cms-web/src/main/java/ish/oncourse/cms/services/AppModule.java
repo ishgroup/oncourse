@@ -7,7 +7,7 @@ import ish.oncourse.ui.services.UIModule;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.got5.tapestry5.jquery.services.JQueryModule;
+//import org.got5.tapestry5.jquery.services.JQueryModule;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -15,7 +15,7 @@ import org.got5.tapestry5.jquery.services.JQueryModule;
  */
 @SubModule( { 
 	ModelModule.class, ServiceModule.class, CMSServiceModule.class,
-	UIModule.class, JQueryModule.class
+	UIModule.class /*, JQueryModule.class */
 })
 public class AppModule {
 

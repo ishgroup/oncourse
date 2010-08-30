@@ -22,7 +22,7 @@
 	<modules>
 		<module>cms</module>
 		<module>frameworks</module>
-		<module>webservices</module>
+<!--		<module>webservices</module>-->
 		<module>website</module>
 		<module>searchapp</module>
 	</modules>
