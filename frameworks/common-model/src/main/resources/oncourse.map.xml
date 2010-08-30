@@ -1405,9 +1405,6 @@
 	<db-relationship name="student" source="Attendance" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="binaryData" source="BinaryInfo" target="BinaryData" toMany="true">
-		<db-attribute-pair source="id" target="binaryInfoId"/>
-	</db-relationship>
 	<db-relationship name="binaryInfoRelations" source="BinaryInfo" target="BinaryInfoRelation" toMany="true">
 		<db-attribute-pair source="id" target="binaryInfoId"/>
 	</db-relationship>
@@ -2096,7 +2093,6 @@
 	<obj-relationship name="marker" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
 	<obj-relationship name="session" source="Attendance" target="Session" deleteRule="Nullify" db-relationship-path="session"/>
 	<obj-relationship name="student" source="Attendance" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
-	<obj-relationship name="binaryData" source="BinaryInfo" target="BinaryData" deleteRule="Deny" db-relationship-path="binaryData"/>
 	<obj-relationship name="binaryInfoRelations" source="BinaryInfo" target="BinaryInfoRelation" deleteRule="Deny" db-relationship-path="binaryInfoRelations"/>
 	<obj-relationship name="college" source="BinaryInfo" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="binaryInfo" source="BinaryInfoRelation" target="BinaryInfo" deleteRule="Nullify" db-relationship-path="binaryInfo"/>
