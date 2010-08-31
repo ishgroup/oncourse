@@ -1,0 +1,46 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<link rel="stylesheet" type="text/css" href="/css/ui-lightness/jquery-ui-1.8.4.custom.css"/>
+	<script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
+	
+	<input id="autocomplete" /><input id="search" type="submit" value="Search"/>
+	
+	<style type="text/css">
+		.ui-autocomplete-category {
+			font-weight:bold;
+			padding:.2em .4em;
+			margin:.8em 0 .2em;
+			line-height:1.5;
+		}
+	</style>
+	
+	<script type="text/javascript">
+			$.widget("custom.catcomplete", $.ui.autocomplete, {
+				_renderMenu: function(ul, items) {
+					var self = this, currentCategory = "";
+					$.each(items, function( index, item ) {
+						if (item.category != currentCategory ) {
+							ul.append('<li class="ui-autocomplete-category">' + item.category + '</li>');
+							currentCategory = item.category;
+						}
+						self._renderItem(ul, item);
+					});
+				},
+				_renderItem: function( ul, item) {
+					return $('<li></li>')
+						.data('item.autocomplete', item)
+						.append( $('<a href="/courses"></a>').text(item.label))
+						.appendTo( ul );
+				}
+			});
+	
+		 	$(document).ready(function() {
+		 		$('input#autocomplete').catcomplete({delay: 0, minLength: 3, source: '/servlet/autosuggest', select: function(event, ui) { window.location = ui.item.href; }});
+						
+			 	$("input#search").click(function() {
+					window.location = '/courses?' + $.param({start:0, rows:20, s:$("input#autocomplete").val()});
+				});
+			});
+	</script>
+	
+</t:container>
