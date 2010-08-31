@@ -11,7 +11,7 @@
 	<artifactId>website-web</artifactId>
 	<groupId>ish.oncourse</groupId>
 	<packaging>war</packaging>
-	<name>Web Site Web Module</name>
+	<name>Web Site Web App</name>
 
 	<dependencies>
 
