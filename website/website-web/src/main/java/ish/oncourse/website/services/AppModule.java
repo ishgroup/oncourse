@@ -33,6 +33,7 @@ public class AppModule {
 	
 	public static void contributeIgnoredPathsFilter(Configuration<String> configuration){
 	    configuration.add("/servlet/binarydata");
+	    configuration.add("/servlet/autosuggest");
 	}
 	
 }

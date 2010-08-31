@@ -14,15 +14,17 @@
 	<name>Web Site Web App</name>
 
 	<dependencies>
-
+	
 		<dependency>
 			<groupId>ish.oncourse</groupId>
-			<artifactId>common-model</artifactId>
+			<artifactId>common-services</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-ui</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>

@@ -107,35 +107,34 @@
 
 
 	<fields>
-		<field name="id" type="string" indexed="true" stored="true"/>
-		
-		<field name="doctype" type="string" indexed="true" stored="true" />
-		
+		<field name="id" type="string" indexed="true" stored="true" required="true"/>
+		<field name="doctype" type="string" indexed="true" stored="true" required="true"/>
+				
 		<field name="collegeId" type="int" indexed="true" stored="true"/>
 		
-		<field name="name" type="textgen" indexed="true" stored="true"
-			omitNorms="true" />
-		
-		<field name="detail" type="html" indexed="true" stored="true" />
-		
-		<field name="course_code" type="string" indexed="true" stored="true" />
-		<field name="class_code" type="string" indexed="true" stored="true" />
-		
-		<field name="full_name" type="textgen" indexed="true" stored="true"
+		<field name="course_name" type="textgen" indexed="true" stored="true"
 			omitNorms="true" />
 			
-		<field name="tutor" type="string" indexed="true" stored="true"/>
+		<field name="course_detail" type="text" indexed="true" stored="true" />
+		<field name="course_code" type="string" indexed="true" stored="true" />
+		<field name="class_code" type="string" indexed="true" stored="true" multiValued="true"/>
 		
-		<field name="startDate" type="date" indexed="true" stored="true"/>
-		<field name="endDate" type="date" indexed="true" stored="true"/>
+		<field name="course_tutor" type="textgen" indexed="true" stored="true" multiValued="true"/>
 		
-		<field name="postcode" type="string" indexed="true" stored="true" />
-		<field name="suburb" type="string" indexed="true" stored="true" />
+		<field name="course_startDate" type="date" indexed="true" stored="true" multiValued="true"/>
+		<field name="course_endDate" type="date" indexed="true" stored="true" multiValued="true"/>
+		
+		<field name="course_postcode" type="string" indexed="true" stored="true" multiValued="true"/>
+		<field name="course_suburb" type="string" indexed="true" stored="true" multiValued="true"/>
+		
+		<field name="location_suburb" type="textgen" indexed="true" stored="true"/>
+		<field name="location_state" type="textgen" indexed="true" stored="true" />
+		<field name="location_postcode" type="textgen" indexed="true" stored="true"/>
 		
 	</fields>
 
 	<uniqueKey>id</uniqueKey>
-	<defaultSearchField>name</defaultSearchField>
+	<defaultSearchField>course_name</defaultSearchField>
 	<solrQueryParser defaultOperator="OR" />
 
 </schema>

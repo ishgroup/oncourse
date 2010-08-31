@@ -6,13 +6,12 @@ import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SearchParam;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -24,15 +23,18 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class Courses {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(Courses.class);
-	
+
+	private static final int START_DEFAULT = 0;
+	private static final int ROWS_DEFAULT = 20;
+
 	@Inject
 	private ICourseService courseService;
 
 	@Inject
 	private ISearchService searchService;
-	
+
 	@Inject
 	private Request request;
 
@@ -45,9 +47,10 @@ public class Courses {
 	@SetupRender
 	public void beforeRender() {
 		this.courses = (request.getParameterNames().size() == 0) ? courseService
-				.getCourses() : searchCourses();
+				.getCourses()
+				: searchCourses();
 	}
-	
+
 	public Collection<Site> getMapSites() {
 		Set<Site> sites = new HashSet<Site>();
 		for (Course course : courses) {
@@ -59,14 +62,19 @@ public class Courses {
 		}
 		return sites;
 	}
-	
+
 	private List<Course> searchCourses() {
-		QueryResponse resp = searchService.searchCourses(buildSearchParams());
-		
-		LOGGER.info(String.format("The number of courses found: %s", resp.getResults().size()));
-		
+		String query = request.getParameter(SearchParam.s.name());
+		int start = getIntParam(SearchParam.start.name(), START_DEFAULT);
+		int rows = getIntParam(SearchParam.rows.name(), ROWS_DEFAULT);
+
+		QueryResponse resp = searchService.searchCourses(query, start, rows);
+
+		LOGGER.info(String.format("The number of courses found: %s", resp
+				.getResults().size()));
+
 		List<String> ids = new ArrayList<String>(resp.getResults().size());
-		
+
 		for (SolrDocument doc : resp.getResults()) {
 			ids.add((String) doc.getFieldValue("id"));
 		}
@@ -74,11 +82,13 @@ public class Courses {
 		return courseService.loadByIds(ids);
 	}
 
-	private Map<String, String> buildSearchParams() {
-		Map<String, String> m = new HashMap<String, String>();
-		for (String s : request.getParameterNames()) {
-			m.put(s, request.getParameter(s));
+	private static int getIntParam(String s, int def) {
+		int start = def;
+		try {
+			start = (s != null) ? Integer.parseInt(s) : start;
+		} catch (Exception e) {
 		}
-		return m;
+
+		return start;
 	}
 }
