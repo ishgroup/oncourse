@@ -81,6 +81,17 @@ public class TextileUtil {
 			}
 		}
 	}
+	
+	public static void checkRequiredParams(String tag,
+			ValidationErrors errors, String... params) {
+		for (String param : params) {
+			if (!hasRequiredParam(tag, param)) {
+				errors.addFailure("The tag: " + tag
+						+ " doesn't have the required \""
+						+ param.replace(":", "") + "\" attribute");
+			}
+		}
+	}
 
 	/**
 	 * Returns false in there no param in tag, true otherwise

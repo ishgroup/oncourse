@@ -23,14 +23,8 @@ public class BlockTextileValidator implements IValidator {
 							+ tag
 							+ " doesn't match pattern {block name:\"My Block\" tag:\"tag name\"}");
 		}
-		if (tag.split(TextileUtil.PARAM_NAME).length > 2) {
-			errors.addFailure("The tag: " + tag
-					+ " can't contain more than one \"name\" attribute");
-		}
-		if (tag.split(TextileUtil.BLOCK_PARAM_TAG).length > 2) {
-			errors.addFailure("The tag: " + tag
-					+ " can't contain more than one \"tag\" attribute");
-		}
+		TextileUtil.checkParamsUniquence(tag, errors,TextileUtil.PARAM_NAME, TextileUtil.BLOCK_PARAM_TAG);
+
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 				TextileUtil.PARAM_NAME, TextileUtil.BLOCK_PARAM_TAG);
 
