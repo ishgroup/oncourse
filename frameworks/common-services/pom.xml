@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-model</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>

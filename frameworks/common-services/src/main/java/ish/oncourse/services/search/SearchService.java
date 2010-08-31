@@ -1,7 +1,6 @@
 package ish.oncourse.services.search;
 
-import java.util.Map;
-
+import ish.oncourse.model.College;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
@@ -16,9 +15,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class SearchService implements ISearchService {
 
 	private static final Logger LOGGER = Logger.getLogger(SearchService.class);
-
-	private static final int START_DEFAULT = 0;
-	private static final int ROWS_DEFAULT = 20;
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -42,26 +38,21 @@ public class SearchService implements ISearchService {
 		return solrServer;
 	}
 
-	public QueryResponse searchCourses(Map<String, String> params) {
+	public QueryResponse searchCourses(String query, int start, int rows) {
 		try {
 			SolrQuery q = new SolrQuery();
-			
+
 			q.addFilterQuery(String.format("(collegeId:%s)", webSiteService
 					.getCurrentCollege().getId()));
+
+			q.addFilterQuery("doctype:course");
+			q.setQueryType("dismax");
 			
-			q.addFilterQuery("(doctype:course)");
-
-			q.setQuery(params.get(SearchParam.s.name()));
-			q.setFields("name", "course_code", "class_code", "detail");
-
-			int start = getIntParam(params.get(SearchParam.start.name()),
-					START_DEFAULT);
-			
-			int rows = getIntParam(params.get(SearchParam.rows.name()),
-					ROWS_DEFAULT);
-
 			q.setStart(start);
 			q.setRows(rows);
+			q.setIncludeScore(true);
+
+			q.setQuery(query.toLowerCase());
 
 			return getSolrServer().query(q);
 		} catch (Exception e) {
@@ -70,14 +61,40 @@ public class SearchService implements ISearchService {
 		}
 	}
 
-	private int getIntParam(String s, int def) {
-		int start = def;
+	public QueryResponse autoSuggest(String term) {
 		try {
-			start = (s != null) ? Integer.parseInt(s) : start;
+			term = term.toLowerCase() + "*";
+
+			College college = webSiteService.getCurrentCollege();
+
+			SolrQuery q = new SolrQuery();
+			q.setParam("q.op", "OR");
+
+			String query = String
+					.format(
+							"(course_name:%s && collegeId:%s) || ((location_suburb:%s location_postcode:%s) && (%s))",
+							term, String.valueOf(college.getId()), term, term, buildStateQualifier(college));
+
+			q.setQuery(query);
+
+			return getSolrServer().query(q);
 		} catch (Exception e) {
-			LOGGER.warn("Unparsable start param.", e);
+			LOGGER.error("Failed to search courses.", e);
+			throw new SearchException("Unable to find courses.", e);
+		}
+	}
+
+	private static String buildStateQualifier(College college) {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("(");
+
+		for (String state : college.getCollegeSiteStates()) {
+			builder.append("location_state:").append(state).append(" ");
 		}
 
-		return start;
+		builder.append(")");
+
+		return builder.toString();
 	}
 }
