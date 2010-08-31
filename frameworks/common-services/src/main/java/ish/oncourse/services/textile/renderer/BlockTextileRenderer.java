@@ -12,6 +12,7 @@ public class BlockTextileRenderer extends AbstractRenderer {
 
 	public BlockTextileRenderer(IWebBlockService webBlockDataService) {
 		validator = new BlockTextileValidator(webBlockDataService);
+		this.webBlockDataService = webBlockDataService;
 	}
 
 	public String render(String tag, ValidationErrors errors) {

@@ -4,6 +4,8 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeContent;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.ValidationErrors;
 
 import java.util.List;
 
@@ -34,22 +36,25 @@ public class WebNodeTemplate {
 
 	@Inject
 	private IResourceService resourceService;
-	
+
 	@Inject
 	private ComponentResources componentResources;
+
+	@Inject
+	private ITextileConverter textileConverter;
 
 	public DynamicDelegate getBlockSource() {
 		final List<WebNodeContent> contents = node.getWebNodeContents();
 
 		return new DynamicDelegate() {
 			public Block getBlock(String regionKey) {
-				
+
 				Block block = componentResources.getBlockParameter(regionKey);
-				
+
 				if (block != null) {
 					return block;
 				}
-				
+
 				final Expression expr = ExpressionFactory.matchExp(
 						WebNodeContent.REGION_KEY_PROPERTY, regionKey);
 
@@ -58,7 +63,8 @@ public class WebNodeTemplate {
 
 				return new RenderableAsBlock(new Renderable() {
 					public void render(MarkupWriter writer) {
-						writer.writeRaw(nodeContent.getContent());
+						writer.writeRaw(textileConverter.convert(nodeContent
+								.getContent(), new ValidationErrors()));
 					}
 				});
 			}
@@ -75,14 +81,14 @@ public class WebNodeTemplate {
 	}
 
 	public PrivateResource getSelectedTemplate() {
-		return resourceService.getTemplateResource(node.getWebNodeType().getTemplateKey(),
-				"WebNode.tmp");
+		return resourceService.getTemplateResource(node.getWebNodeType()
+				.getTemplateKey(), "WebNode.tmp");
 	}
 
 	RenderCommand beginRender() {
 		return template.createRenderCommand(blockSource);
 	}
-	
+
 	public DynamicTemplate getTemplate() {
 		return template;
 	}
