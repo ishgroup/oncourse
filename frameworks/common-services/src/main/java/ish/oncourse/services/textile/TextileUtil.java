@@ -1,5 +1,7 @@
 package ish.oncourse.services.textile;
 
+import ish.oncourse.util.ValidationErrors;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +14,16 @@ public class TextileUtil {
 	public static final String DIGIT_ATTR_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)("+QUOT_REGEXP+")";
 	public static final String STR_WITH_WHITESPACE= "("+QUOT_REGEXP+")((\\w|\\s)+)("+QUOT_REGEXP+")";
 	public static final String STR_IN_QUOTS= "("+QUOT_REGEXP+")((\\w)+)("+QUOT_REGEXP+")";
-	public static final String IMAGE_NAME_REGEXP = "\\{image name:"+STR_WITH_WHITESPACE+"}";
-	public static final String IMAGE_ID_REGEXP = "\\{image id:"+DIGIT_ATTR_IN_QUOTS+"}";
+	public static final String IMAGE_REGEXP = "\\{image( ((name:"+STR_WITH_WHITESPACE+")|(id:"
+												+DIGIT_ATTR_IN_QUOTS+")|(align:("
+												+QUOT_REGEXP+")(right|left|center)("+QUOT_REGEXP+"))|(caption:"
+												+STR_WITH_WHITESPACE+")|(link:"
+												+"(((\\w)|(\\W))+))|(title:"
+												+STR_IN_QUOTS+")|(width:"
+												+DIGIT_ATTR_IN_QUOTS+")|(height:"
+												+DIGIT_ATTR_IN_QUOTS+")|(class:"+STR_IN_QUOTS+"))){1,9}}";
+	
 	public static final String BLOCK_REGEXP = "\\{block( ((name:"+STR_WITH_WHITESPACE+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
-	public static final String BLOCK_TAG_REGEXP = "\\{block tag:"+STR_WITH_WHITESPACE+"}";
 	public static final String VIDEO_TEMPLATE_EXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+DIGIT_ATTR_IN_QUOTS+")|(height:"+DIGIT_ATTR_IN_QUOTS+"))){1,4}}";
 	public static final String PARAM_ID="id:";
 	public static final String PARAM_WIDTH = "width:";
@@ -23,6 +31,11 @@ public class TextileUtil {
 	public static final String PARAM_NAME = "name:";
 	public static final String VIDEO_PARAM_TYPE = "type:";
 	public static final String BLOCK_PARAM_TAG = "tag:";
+	public static final String IMAGE_PARAM_ALIGH = "align:";
+	public static final String IMAGE_PARAM_CAPTION = "caption:";
+	public static final String IMAGE_PARAM_LINK = "link:";
+	public static final String IMAGE_PARAM_CLASS = "class:";
+	public static final String IMAGE_PARAM_TITLE = "title:";
 	
 	/**
 	 * @param tag
@@ -42,4 +55,45 @@ public class TextileUtil {
 		return params;
 	}
 
+	/**
+	 * Returns false in there are more than one param in tag, true otherwise(for
+	 * non-required params)
+	 * 
+	 * @param tag
+	 * @param param
+	 * @return
+	 */
+	public static boolean isUniqueParam(String tag, String param) {
+		int splittedByAttr = tag.split(param).length;
+		if (splittedByAttr > 2) {
+			return false;
+		}
+		return true;
+	}
+
+	public static void checkParamsUniquence(String tag,
+			ValidationErrors errors, String... params) {
+		for (String param : params) {
+			if (!isUniqueParam(tag, param)) {
+				errors.addFailure("The tag: " + tag
+						+ " can't contain more than one \""
+						+ param.replace(":", "") + "\" attribute");
+			}
+		}
+	}
+
+	/**
+	 * Returns false in there no param in tag, true otherwise
+	 * 
+	 * @param tag
+	 * @param param
+	 * @return
+	 */
+	public static boolean hasRequiredParam(String tag, String param) {
+		int splittedByAttr = tag.split(param).length;
+		if (splittedByAttr < 2) {
+			return false;
+		}
+		return true;
+	}
 }
