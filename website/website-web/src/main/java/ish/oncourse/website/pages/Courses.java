@@ -10,8 +10,10 @@ import ish.oncourse.services.search.SearchParam;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -65,10 +67,19 @@ public class Courses {
 
 	private List<Course> searchCourses() {
 		String query = request.getParameter(SearchParam.s.name());
-		int start = getIntParam(SearchParam.start.name(), START_DEFAULT);
-		int rows = getIntParam(SearchParam.rows.name(), ROWS_DEFAULT);
-
-		QueryResponse resp = searchService.searchCourses(query, start, rows);
+		
+		int start = getIntParam("start", START_DEFAULT);
+		int rows = getIntParam("rows", ROWS_DEFAULT);
+		
+		Map<String, String> params = new HashMap<String, String>();
+		
+		for (SearchParam name : SearchParam.values()) {
+			if (request.getParameter(name.name()) != null) {
+				params.put(name.name(), request.getParameter(name.name()));
+			}
+		}
+		
+		QueryResponse resp = searchService.searchCourses(params, start, rows);
 
 		LOGGER.info(String.format("The number of courses found: %s", resp
 				.getResults().size()));

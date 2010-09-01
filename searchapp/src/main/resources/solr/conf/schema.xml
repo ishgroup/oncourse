@@ -2,6 +2,9 @@
 
 <schema name="oncourse" version="1.2">
 	<types>
+		<fieldType name="location" class="solr.PointType" dimension="2" subFieldType="double"/>
+		<fieldType name="latLon" class="solr.LatLonType" subFieldSuffix="_latLon"/>
+			
 		<fieldType name="string" class="solr.StrField"
 			sortMissingLast="true" omitNorms="true" />
 		<fieldType name="boolean" class="solr.BoolField"
@@ -123,6 +126,9 @@
 		
 		<field name="course_startDate" type="date" indexed="true" stored="true" multiValued="true"/>
 		<field name="course_endDate" type="date" indexed="true" stored="true" multiValued="true"/>
+		
+		<field name="dayName" type="string" indexed="true" stored="true" multiValued="true"/>
+		<field name="dayType" type="string" indexed="true" stored="true" multiValued="true"/>
 		
 		<field name="course_postcode" type="string" indexed="true" stored="true" multiValued="true"/>
 		<field name="course_suburb" type="string" indexed="true" stored="true" multiValued="true"/>

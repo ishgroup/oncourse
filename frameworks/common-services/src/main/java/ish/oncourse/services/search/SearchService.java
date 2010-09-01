@@ -1,5 +1,7 @@
 package ish.oncourse.services.search;
 
+import java.util.Map;
+
 import ish.oncourse.model.College;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
@@ -38,7 +40,7 @@ public class SearchService implements ISearchService {
 		return solrServer;
 	}
 
-	public QueryResponse searchCourses(String query, int start, int rows) {
+	public QueryResponse searchCourses(Map<String, String> params, int start, int rows) {
 		try {
 			SolrQuery q = new SolrQuery();
 
@@ -52,7 +54,7 @@ public class SearchService implements ISearchService {
 			q.setRows(rows);
 			q.setIncludeScore(true);
 
-			q.setQuery(query.toLowerCase());
+			q.setQuery(params.get(SearchParam.s.name()).toLowerCase());
 
 			return getSolrServer().query(q);
 		} catch (Exception e) {

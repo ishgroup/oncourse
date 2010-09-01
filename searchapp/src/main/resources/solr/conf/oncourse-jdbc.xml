@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
-	
+
 	<dataSource name="onCourseDS" driver="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://localhost:3306/" user="root" password="test"
 		readOnly="true" autoCommit="false" />
@@ -9,18 +9,18 @@
 		<entity name="course" dataSource="onCourseDS"
 			query="select id, 'course' as type, name, detail, code, collegeId from willow_college.course"
 			pk="id" transformer="HTMLStripTransformer">
-			
+
 			<field name="id" column="id" />
-			<field name="doctype" column="type"/>
+			<field name="doctype" column="type" />
 			<field name="course_name" column="name" />
-			<field name="course_detail" column="detail" stripHTML="true"/>
+			<field name="course_detail" column="detail" stripHTML="true" />
 			<field name="course_code" column="code" />
 			<field name="collegeId" column="collegeId" />
 
 			<entity name="courseClass"
 				query="select cc.id, cc.code from willow_college.courseclass cc where courseid='${course.id}'"
 				dataSource="onCourseDS" pk="cc.id">
-				
+
 				<field name="id" column="cc.id" />
 				<field name="class_code" column="cc.code" />
 
@@ -29,7 +29,7 @@
                 	on r.siteId=s.id inner join willow_college.courseclass cc on cc.roomId=r.id where cc.id='${courseClass.id}'
                 	union select s.suburb, s.latitude, s.longitude, s.postcode from willow_college.site s inner join willow_college.room r on r.siteId=s.id 
                 	inner join willow_college.session ss on ss.roomId=r.id inner join willow_college.courseclass cc on cc.id=ss.courseClassId where cc.id='${courseClass.id}'">
-					
+
 					<field name="lat" column="s.latitude" />
 					<field name="lon" column="s.longitude" />
 					<field name="course_postcode" column="s.postcode" />
@@ -44,17 +44,19 @@
 				</entity>
 
 				<entity name="classSession" dataSource="onCourseDS"
-					query="select s.startDate, s.endDate from willow_college.session s inner join willow_college.courseclass cc on s.courseClassId=cc.id where cc.id='${courseClass.id}'">
+					query="select s.startDate, s.endDate, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from willow_college.session s inner join willow_college.courseclass cc on s.courseClassId=cc.id where cc.id='${courseClass.id}'">
 					<field name="course_startDate" column="s.startDate" />
 					<field name="course_endDate" column="s.endDate" />
+					<field name="dayName" column="dayName"/>
+					<field name="dayType" column="dayType"/>
 				</entity>
 			</entity>
 		</entity>
 
 		<entity name="location" dataSource="onCourseDS"
 			query="select suburb, 'location' as type, state, postcode, lat, lon, CONCAT(CAST(postcode AS CHAR), suburb) as id from willow_reference.postcode_db">
-			<field name="id" column="id"/> 
-			<field name="doctype" column="type"/>
+			<field name="id" column="id" />
+			<field name="doctype" column="type" />
 			<field name="location_suburb" column="suburb" />
 			<field name="location_state" column="state" />
 			<field name="location_postcode" column="postcode" />

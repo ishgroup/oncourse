@@ -96,10 +96,10 @@
 			<str name="defType">dismax</str>
 			<str name="echoParams">explicit</str>
 			<float name="tie">0.01</float>
-			<str name="qf">course_name^5 course_code^5 course_suburb^2 course_postcode^2 class_code^2 course_tutor^2 detail^1</str>
-			<str name="pf">course_name^5 course_code^5 course_suburb^2 course_postcode^2 class_code^2 course_tutor^2 detail^1</str>
+			<str name="qf">course_name^5 course_code^5 course_suburb^2 course_postcode^2 class_code^2 course_tutor^2 dayName^2 dayType^2 detail^1</str>
+			<str name="pf">course_name^5 course_code^5 course_suburb^2 course_postcode^2 class_code^2 course_tutor^2 dayName^2 dayType^2 detail^1</str>
 			<str name="bf"></str>
-			<str name="fl">course_name, course_code, course_suburb, course_postcode, class_code, course_tutor, detail</str>
+			<str name="fl">course_name, course_code, course_suburb, course_postcode, class_code, course_tutor, dayName, dayType, detail</str>
 			<str name="mm">2&lt;-1 5&lt;-2 6&lt;90% </str>
 			<int name="ps">100</int>
 			<str name="q.alt">*:*</str>
