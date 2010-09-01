@@ -1,16 +1,15 @@
 package ish.oncourse.services.textile.renderer;
 
-import java.util.Map;
-
-import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.VideoTextileValidator;
 import ish.oncourse.util.ValidationErrors;
 
+import java.util.Map;
+
 public class VideoTextileRenderer extends AbstractRenderer {
 
-	public VideoTextileRenderer(IBinaryDataService binaryDataService) {
-		validator = new VideoTextileValidator(binaryDataService);
+	public VideoTextileRenderer() {
+		validator = new VideoTextileValidator();
 	}
 
 	public String render(String tag, ValidationErrors errors) {

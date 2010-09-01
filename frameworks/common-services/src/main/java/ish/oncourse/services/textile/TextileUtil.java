@@ -23,7 +23,7 @@ public class TextileUtil {
 												+DIGIT_ATTR_IN_QUOTS+")|(class:"+STR_IN_QUOTS+"))){1,9}}";
 	
 	public static final String BLOCK_REGEXP = "\\{block( ((name:"+STR_WITH_WHITESPACE+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
-	public static final String VIDEO_TEMPLATE_EXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+DIGIT_ATTR_IN_QUOTS+")|(height:"+DIGIT_ATTR_IN_QUOTS+"))){1,4}}";
+	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+DIGIT_ATTR_IN_QUOTS+")|(height:"+DIGIT_ATTR_IN_QUOTS+"))){1,4}}";
 	public static final String COURSE_REGEXP = "\\{course( ((code:"+STR_IN_QUOTS+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
 	
 	public static final String PARAM_ID="id:";

@@ -2,18 +2,13 @@ package ish.oncourse.services.textile.validator;
 
 import java.util.Map;
 
-import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 
 public class VideoTextileValidator implements IValidator {
 
-	public VideoTextileValidator(IBinaryDataService binaryDataService) {
-		super();
-	}
-
 	public void validate(String tag, ValidationErrors errors) {
-		if (!tag.matches(TextileUtil.VIDEO_TEMPLATE_EXP)) {
+		if (!tag.matches(TextileUtil.VIDEO_REGEXP)) {
 			errors
 					.addFailure("The tag: "
 							+ tag

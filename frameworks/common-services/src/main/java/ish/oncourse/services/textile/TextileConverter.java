@@ -86,7 +86,7 @@ public class TextileConverter implements ITextileConverter {
 		case BLOCK:
 			return new BlockTextileRenderer(webBlockService);
 		case VIDEO:
-			return new VideoTextileRenderer(null);
+			return new VideoTextileRenderer();
 		case COURSE:
 			return new CourseTextileRenderer(courseService, cache, requestGlobals,  pageResponseRenderer);
 		}
