@@ -41,4 +41,13 @@ public class CourseService implements ICourseService {
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
+
+	@SuppressWarnings("unchecked")
+	public Course getCurrentCourseByCode(String code) {
+		SelectQuery q = new SelectQuery(Course.class);
+		q.andQualifier(ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY,
+				webSiteService.getCurrentCollege()).andExp(ExpressionFactory.matchExp(Course.CODE_PROPERTY, code)));
+		List<Course>result = cayenneService.sharedContext().performQuery(q);
+		return !result.isEmpty()?result.get(0):null;
+	}
 }

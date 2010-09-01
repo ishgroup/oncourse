@@ -39,10 +39,10 @@ public class BlockTextileRenderer extends AbstractRenderer {
 		if (!errors.hasFailures()) {
 			WebBlock webBlock = null;
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					TextileUtil.PARAM_NAME, TextileUtil.BLOCK_PARAM_TAG);
+					TextileUtil.PARAM_NAME, TextileUtil.PARAM_TAG);
 
 			String name = tagParams.get(TextileUtil.PARAM_NAME);
-			String tagParam = tagParams.get(TextileUtil.BLOCK_PARAM_TAG);
+			String tagParam = tagParams.get(TextileUtil.PARAM_TAG);
 			if (name != null) {
 				webBlock = webBlockDataService.getWebBlock(WebBlock.NAME_PROPERTY,
 						name);
