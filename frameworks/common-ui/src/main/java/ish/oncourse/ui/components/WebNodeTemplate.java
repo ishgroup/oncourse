@@ -6,6 +6,7 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.util.ValidationException;
 
 import java.util.List;
 
@@ -63,8 +64,16 @@ public class WebNodeTemplate {
 
 				return new RenderableAsBlock(new Renderable() {
 					public void render(MarkupWriter writer) {
+						ValidationErrors errors = new ValidationErrors();
 						writer.writeRaw(textileConverter.convert(nodeContent
-								.getContent(), new ValidationErrors()));
+								.getContent(), errors));
+						if(errors.hasFailures()){
+							try {
+								throw new ValidationException(errors);
+							} catch (ValidationException e) {
+								e.printStackTrace();
+							}
+						}
 					}
 				});
 			}

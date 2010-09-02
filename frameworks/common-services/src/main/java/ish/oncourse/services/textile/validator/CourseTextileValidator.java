@@ -18,17 +18,17 @@ public class CourseTextileValidator implements IValidator {
 	public void validate(String tag, ValidationErrors errors) {
 		if(!tag.matches(TextileUtil.COURSE_REGEXP)){
 			errors
-			.addFailure("The image tag '"
+			.addFailure("The course tag '"
 					+ tag
-					+ "' doesn't match {course code:\"code\" tag:\"tag\"}");
+					+ "' doesn't match {course code:\"code\" tag:\"tag\" enrollable:\"true|false\"}");
 		}
 		
-		TextileUtil.checkParamsUniquence(tag, errors,TextileUtil.COURSE_PARAM_CODE, TextileUtil.PARAM_TAG);
+		TextileUtil.checkParamsUniquence(tag, errors,TextileUtil.COURSE_PARAM_CODE, TextileUtil.PARAM_TAG, TextileUtil.COURSE_PARAM_ENROLLABLE);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 				TextileUtil.COURSE_PARAM_CODE);
 		String code = tagParams.get(TextileUtil.COURSE_PARAM_CODE);
 		if(code!=null){
-			Course course = courseService.getCurrentCourseByCode(code);
+			Course course = courseService.getCourse(Course.CODE_PROPERTY, code);
 			if(course==null){
 				errors
 				.addFailure("There are no course with such a code:"+code);

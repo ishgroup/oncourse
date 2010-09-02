@@ -1,5 +1,6 @@
 package ish.oncourse.services.textile.renderer;
 
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.model.Course;
@@ -42,7 +43,7 @@ import org.apache.tapestry5.services.Response;
  * are no advanced search parameters, this will be ignored.
  * </pre>
  */
-// TODO deal with the template,enrollable and currentsSearch attributes (left
+// TODO deal with the template, tag and currentsSearch attributes (left
 // not implemented)
 public class CourseTextileRenderer extends AbstractRenderer {
 
@@ -67,31 +68,44 @@ public class CourseTextileRenderer extends AbstractRenderer {
 		if (!errors.hasFailures()) {
 			Request request = requestGlobals.getRequest();
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					TextileUtil.COURSE_PARAM_CODE);
+					TextileUtil.COURSE_PARAM_CODE,
+					TextileUtil.COURSE_PARAM_ENROLLABLE);
 			String code = tagParams.get(TextileUtil.COURSE_PARAM_CODE);
-			Course course;
+			String enrollable = tagParams
+					.get(TextileUtil.COURSE_PARAM_ENROLLABLE);
+			Course course = null;
 			if (code != null) {
-				course = courseService.getCurrentCourseByCode(code);
+				course = courseService.getCourse(Course.CODE_PROPERTY, code);
+			} else if (enrollable != null) {
+				Boolean enrollableValue = Boolean.valueOf(enrollable);
+				List<Course> courses = courseService
+						.getCourses(enrollableValue);
+				if (!courses.isEmpty()) {
+					course = courses.get(0);
+				}
 			} else {
-				course = courseService.getCourses().get(0);
+				course = courseService.getCourse(null, null);
 			}
-			request.setAttribute("course", course);
+			if (course != null) {
+				request.setAttribute("course", course);
 
-			Response response = requestGlobals.getResponse();
-			GetStrResponseWrapper wrapper = new GetStrResponseWrapper(response);
+				Response response = requestGlobals.getResponse();
+				GetStrResponseWrapper wrapper = new GetStrResponseWrapper(
+						response);
 
-			requestGlobals.storeRequestResponse(request, wrapper);
-			Page page = cache.get("CourseDetails");
+				requestGlobals.storeRequestResponse(request, wrapper);
+				Page page = cache.get("CourseDetails");
 
-			try {
-				pageResponseRenderer.renderPageResponse(page);
-			} catch (Exception e) {
-				e.printStackTrace();
+				try {
+					pageResponseRenderer.renderPageResponse(page);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				requestGlobals.storeRequestResponse(request, response);
+
+				tag = wrapper.getResponseString();
 			}
-
-			requestGlobals.storeRequestResponse(request, response);
-
-			tag = wrapper.getResponseString();
 		}
 		return tag;
 

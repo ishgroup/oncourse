@@ -29,6 +29,7 @@ import ish.oncourse.util.ValidationErrors;
  * 
  * </pre>
  */
+//TODO "tag" attribute is ignored now
 public class BlockTextileRenderer extends AbstractRenderer {
 
 	private IWebBlockService webBlockDataService;

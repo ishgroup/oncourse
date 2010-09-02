@@ -24,7 +24,7 @@ public class TextileUtil {
 	
 	public static final String BLOCK_REGEXP = "\\{block( ((name:"+STR_WITH_WHITESPACE+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
 	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+DIGIT_ATTR_IN_QUOTS+")|(height:"+DIGIT_ATTR_IN_QUOTS+"))){1,4}}";
-	public static final String COURSE_REGEXP = "\\{course( ((code:"+STR_IN_QUOTS+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
+	public static final String COURSE_REGEXP = "\\{course( ((code:"+STR_IN_QUOTS+")|(tag:"+STR_WITH_WHITESPACE+")|(enrollable:("+QUOT_REGEXP+")(true|false)("+QUOT_REGEXP+")))){0,3}}";
 	
 	public static final String PARAM_ID="id:";
 	public static final String PARAM_WIDTH = "width:";
@@ -41,6 +41,7 @@ public class TextileUtil {
 	public static final String IMAGE_PARAM_TITLE = "title:";
 	
 	public static final String COURSE_PARAM_CODE = "code:";
+	public static final String COURSE_PARAM_ENROLLABLE = "enrollable:";
 	
 	public static final String VIDEO_WIDTH_DEFAULT = "425";
 	public static final String VIDEO_HEIGHT_DEFAULT = "344";

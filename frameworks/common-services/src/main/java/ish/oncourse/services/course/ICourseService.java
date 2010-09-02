@@ -7,5 +7,6 @@ import ish.oncourse.model.Course;
 public interface ICourseService {
 	List<Course> getCourses();
 	List<Course> loadByIds(List<String> ids);
-	Course getCurrentCourseByCode(String code);
+	Course getCourse(String searchProperty, Object value);
+	List<Course> getCourses(boolean enrollable);
 }
