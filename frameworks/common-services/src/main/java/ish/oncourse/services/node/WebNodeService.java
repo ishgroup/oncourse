@@ -111,4 +111,14 @@ public class WebNodeService implements IWebNodeService {
 		
 		return expression;
 	}
+
+	public WebNode getNode(String searchProperty, Object value) {
+		SelectQuery query = new SelectQuery(WebNode.class);
+		query.andQualifier(siteQualifier());
+		if(searchProperty!=null){
+			query.andQualifier(ExpressionFactory.matchDbExp(searchProperty, value));
+		}
+		List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
+		return !nodes.isEmpty()?nodes.get(0):null;
+	}
 }

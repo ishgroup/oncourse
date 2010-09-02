@@ -3,10 +3,12 @@ package ish.oncourse.services.textile;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.block.IWebBlockService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
 import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
 import ish.oncourse.services.textile.renderer.IRenderer;
 import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
+import ish.oncourse.services.textile.renderer.PageTextileRenderer;
 import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -28,6 +30,9 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private ICourseService courseService;
+	
+	@Inject
+	private IWebNodeService webNodeService;
 
 	@Inject
 	private IPageRenderer pageRenderer;
@@ -81,6 +86,8 @@ public class TextileConverter implements ITextileConverter {
 			return new VideoTextileRenderer();
 		case COURSE:
 			return new CourseTextileRenderer(courseService, pageRenderer);
+		case PAGE:
+			return new PageTextileRenderer(webNodeService, pageRenderer);
 		}
 		return null;
 	}

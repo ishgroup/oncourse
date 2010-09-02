@@ -27,4 +27,6 @@ public interface IWebNodeService {
 	 */
 	WebNode getCurrentPage();
 
+	WebNode getNode(String searchProperty, Object value);
+
 }

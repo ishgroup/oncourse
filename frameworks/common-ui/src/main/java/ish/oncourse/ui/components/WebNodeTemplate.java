@@ -5,10 +5,13 @@ import ish.oncourse.model.WebNodeContent;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -64,14 +67,22 @@ public class WebNodeTemplate {
 
 				return new RenderableAsBlock(new Renderable() {
 					public void render(MarkupWriter writer) {
-						ValidationErrors errors = new ValidationErrors();
-						writer.writeRaw(textileConverter.convert(nodeContent
-								.getContent(), errors));
-						if(errors.hasFailures()){
-							try {
-								throw new ValidationException(errors);
-							} catch (ValidationException e) {
-								e.printStackTrace();
+						String content = nodeContent.getContent();
+
+						Pattern pattern = Pattern
+								.compile(TextileUtil.TEXTILE_REGEXP);
+						Matcher matcher = pattern.matcher(content);
+
+						if (matcher.find()) {
+							ValidationErrors errors = new ValidationErrors();
+							writer.writeRaw(textileConverter.convert(content, errors));
+
+							if (errors.hasFailures()) {
+								try {
+									throw new ValidationException(errors);
+								} catch (ValidationException e) {
+									e.printStackTrace();
+								}
 							}
 						}
 					}
