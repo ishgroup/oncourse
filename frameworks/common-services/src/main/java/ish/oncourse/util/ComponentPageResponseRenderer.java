@@ -19,7 +19,7 @@ import org.apache.tapestry5.services.MarkupWriterFactory;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-public class ComponentPageResponseRenderer implements IPageResponseRenderer {
+public class ComponentPageResponseRenderer implements IComponentPageResponseRenderer {
 
 	@Inject
 	private PageMarkupRenderer markupRenderer;

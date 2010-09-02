@@ -8,16 +8,15 @@ import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
 import ish.oncourse.services.textile.renderer.IRenderer;
 import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
 import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
-import ish.oncourse.util.IPageResponseRenderer;
+import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.tapestry5.internal.services.RequestPageCache;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.RequestGlobals;
 
 public class TextileConverter implements ITextileConverter {
 
@@ -26,19 +25,13 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private IWebBlockService webBlockService;
-	
+
 	@Inject
 	private ICourseService courseService;
-	
+
 	@Inject
-	private RequestPageCache cache;
-	
-	@Inject
-	private RequestGlobals requestGlobals;
-	
-	@Inject
-	private IPageResponseRenderer pageResponseRenderer;
-	
+	private IPageRenderer pageRenderer;
+
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
 	public String convert(String content, ValidationErrors errors) {
@@ -87,7 +80,7 @@ public class TextileConverter implements ITextileConverter {
 		case VIDEO:
 			return new VideoTextileRenderer();
 		case COURSE:
-			return new CourseTextileRenderer(courseService, cache, requestGlobals,  pageResponseRenderer);
+			return new CourseTextileRenderer(courseService, pageRenderer);
 		}
 		return null;
 	}

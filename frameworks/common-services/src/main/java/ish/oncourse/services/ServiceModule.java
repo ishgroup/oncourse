@@ -27,7 +27,9 @@ import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
-import ish.oncourse.util.IPageResponseRenderer;
+import ish.oncourse.util.IComponentPageResponseRenderer;
+import ish.oncourse.util.IPageRenderer;
+import ish.oncourse.util.PageRenderer;
 
 import org.apache.tapestry5.ioc.ServiceBinder;
 
@@ -41,7 +43,7 @@ public class ServiceModule {
 		binder.bind(IEnvironmentService.class, EnvironmentService.class);
 		binder.bind(IPropertyService.class, PropertyService.class);
 		binder.bind(IResourceService.class, ResourceService.class);
-		binder.bind(IPageResponseRenderer.class, ComponentPageResponseRenderer.class);
+		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(IWebSiteService.class, WebSiteService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IWebBlockService.class, WebBlockService.class);
@@ -51,6 +53,7 @@ public class ServiceModule {
 		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(ITutorService.class, TutorService.class);
 		binder.bind(ISearchService.class, SearchService.class);
+		binder.bind(IPageRenderer.class, PageRenderer.class);
 	}
 
 }

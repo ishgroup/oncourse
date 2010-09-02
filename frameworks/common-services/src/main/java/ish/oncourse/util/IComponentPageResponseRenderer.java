@@ -4,6 +4,6 @@ import java.io.IOException;
 
 import org.apache.tapestry5.internal.structure.Page;
 
-public interface IPageResponseRenderer{
+public interface IComponentPageResponseRenderer{
 	void renderPageResponse(Page page) throws IOException;
 }

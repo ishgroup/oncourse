@@ -1,21 +1,15 @@
 package ish.oncourse.services.textile.renderer;
 
-import java.util.List;
-import java.util.Map;
-
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.CourseTextileValidator;
-import ish.oncourse.util.GetStrResponseWrapper;
-import ish.oncourse.util.IPageResponseRenderer;
+import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 
-import org.apache.tapestry5.internal.services.RequestPageCache;
-import org.apache.tapestry5.internal.structure.Page;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestGlobals;
-import org.apache.tapestry5.services.Response;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Displays a single course, using either the defined template or the default
@@ -48,17 +42,12 @@ import org.apache.tapestry5.services.Response;
 public class CourseTextileRenderer extends AbstractRenderer {
 
 	private ICourseService courseService;
-	private RequestPageCache cache;
-	private RequestGlobals requestGlobals;
-	private IPageResponseRenderer pageResponseRenderer;
-
-	public CourseTextileRenderer(ICourseService courseService,
-			RequestPageCache cache, RequestGlobals requestGlobals,
-			IPageResponseRenderer pageResponseRenderer) {
+	
+	private IPageRenderer pageRenderer;
+	
+	public CourseTextileRenderer(ICourseService courseService, IPageRenderer pageRenderer) {
 		this.courseService = courseService;
-		this.cache = cache;
-		this.requestGlobals = requestGlobals;
-		this.pageResponseRenderer = pageResponseRenderer;
+		this.pageRenderer = pageRenderer;
 		validator = new CourseTextileValidator(courseService);
 	}
 
@@ -66,7 +55,7 @@ public class CourseTextileRenderer extends AbstractRenderer {
 	public String render(String tag, ValidationErrors errors) {
 		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
-			Request request = requestGlobals.getRequest();
+			
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					TextileUtil.COURSE_PARAM_CODE,
 					TextileUtil.COURSE_PARAM_ENROLLABLE);
@@ -87,24 +76,9 @@ public class CourseTextileRenderer extends AbstractRenderer {
 				course = courseService.getCourse(null, null);
 			}
 			if (course != null) {
-				request.setAttribute("course", course);
-
-				Response response = requestGlobals.getResponse();
-				GetStrResponseWrapper wrapper = new GetStrResponseWrapper(
-						response);
-
-				requestGlobals.storeRequestResponse(request, wrapper);
-				Page page = cache.get("CourseDetails");
-
-				try {
-					pageResponseRenderer.renderPageResponse(page);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				requestGlobals.storeRequestResponse(request, response);
-
-				tag = wrapper.getResponseString();
+				Map<String, Object> parameters=new HashMap<String, Object>();
+				parameters.put("course", course);
+				tag = pageRenderer.renderPage("CourseDetails", parameters);
 			}
 		}
 		return tag;
