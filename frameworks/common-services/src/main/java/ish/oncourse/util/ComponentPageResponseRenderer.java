@@ -10,7 +10,6 @@ import org.apache.tapestry5.ValidationDecorator;
 import org.apache.tapestry5.internal.services.DocumentLinker;
 import org.apache.tapestry5.internal.services.PageContentTypeAnalyzer;
 import org.apache.tapestry5.internal.services.PageMarkupRenderer;
-import org.apache.tapestry5.internal.services.PageResponseRendererImpl;
 import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ClientBehaviorSupport;

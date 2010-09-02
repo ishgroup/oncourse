@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 public class TextileUtil {
-
+	public static final String TEXTILE_REGEXP = "[{]((block)|(course)|(tags)|(page)|(video)|(image))([^}]*)[}]";
 	public static final String QUOT_REGEXP = "\"|&#8220;|&#8221;";
 	public static final String DIGIT_ATTR_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)("+QUOT_REGEXP+")";
 	public static final String STR_WITH_WHITESPACE= "("+QUOT_REGEXP+")((\\w|\\s)+)("+QUOT_REGEXP+")";

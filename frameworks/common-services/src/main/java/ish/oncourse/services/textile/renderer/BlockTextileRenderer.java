@@ -1,12 +1,16 @@
 package ish.oncourse.services.textile.renderer;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.services.block.IWebBlockService;
+import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.BlockTextileValidator;
 import ish.oncourse.util.ValidationErrors;
+
 /**
  * Displays content from a single WebBlock, either by name or randomly from a
  * tag
@@ -29,9 +33,13 @@ public class BlockTextileRenderer extends AbstractRenderer {
 
 	private IWebBlockService webBlockDataService;
 
-	public BlockTextileRenderer(IWebBlockService webBlockDataService) {
+	private ITextileConverter converter;
+
+	public BlockTextileRenderer(IWebBlockService webBlockDataService,
+			ITextileConverter converter) {
 		validator = new BlockTextileValidator(webBlockDataService);
 		this.webBlockDataService = webBlockDataService;
+		this.converter = converter;
 	}
 
 	public String render(String tag, ValidationErrors errors) {
@@ -44,21 +52,27 @@ public class BlockTextileRenderer extends AbstractRenderer {
 			String name = tagParams.get(TextileUtil.PARAM_NAME);
 			String tagParam = tagParams.get(TextileUtil.PARAM_TAG);
 			if (name != null) {
-				webBlock = webBlockDataService.getWebBlock(WebBlock.NAME_PROPERTY,
-						name);
+				webBlock = webBlockDataService.getWebBlock(
+						WebBlock.NAME_PROPERTY, name);
 			} else {
 				if (tagParam != null) {
 					/*
 					 * webBlock =
 					 * webBlockDataService.getWebBlock(WebBlock.TAG_PROPERTY,
-					 * tagParam); 
+					 * tagParam);
 					 */
-				}else{
-					webBlock = webBlockDataService.getWebBlock(null,null);
+				} else {
+					webBlock = webBlockDataService.getWebBlock(null, null);
 				}
 			}
-
-			tag = webBlock.getContent();
+			String result = webBlock.getContent();
+			Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
+			Matcher matcher = pattern.matcher(result);
+			if (matcher.find()&&!errors.hasFailures()) {
+				tag = converter.convert(result, errors);
+			} else {
+				tag = result;
+			}
 		}
 		return tag;
 	}

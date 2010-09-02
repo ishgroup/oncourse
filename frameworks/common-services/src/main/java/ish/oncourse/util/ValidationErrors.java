@@ -26,8 +26,9 @@ public class ValidationErrors implements Serializable {
 		if (failure == null) {
 			throw new IllegalArgumentException("failure cannot be null.");
 		}
-
-		failures.add(failure);
+		if (!failures.contains(failure)) {
+			failures.add(failure);
+		}
 	}
 
 	/**

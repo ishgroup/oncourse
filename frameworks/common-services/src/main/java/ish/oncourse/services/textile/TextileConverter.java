@@ -42,8 +42,7 @@ public class TextileConverter implements ITextileConverter {
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
 	public String convert(String content, ValidationErrors errors) {
-		String regex = "[{]((block)|(course)|(tags)|(page)|(video)|(image))([^}]*)[}]";
-		Pattern pattern = Pattern.compile(regex);
+		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 		Matcher matcher = pattern.matcher(content);
 		String result = content;
 
@@ -84,7 +83,7 @@ public class TextileConverter implements ITextileConverter {
 		case IMAGE:
 			return new ImageTextileRenderer(binaryDataService);
 		case BLOCK:
-			return new BlockTextileRenderer(webBlockService);
+			return new BlockTextileRenderer(webBlockService, this);
 		case VIDEO:
 			return new VideoTextileRenderer();
 		case COURSE:
