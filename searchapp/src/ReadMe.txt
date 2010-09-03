@@ -9,3 +9,15 @@ To Start server:
 To Stop server:
 
     mvn jetty:stop
+    
+
+Build index from database:
+	
+	GET request to http://{solr_url}/solr/dataimport?command=full-import
+
+
+Run webapp project:
+
+	add JVM paam -Dsolr.server=http://localhost:8081/solr
+	
+	
