@@ -21,7 +21,10 @@ import ish.oncourse.cms.services.security.IAuthenticationService;
  */
 public class Login {
 
+	/** Cookie to identify user is using the CMS. Do not change as the string literal is used by Apache rewrite rules!*/
 	public static final String CMS_COOKIE_NAME = "cms";
+
+	/** CMS Cookie timeout value.*/
 	public static final int CMS_COOKIE_AGE = 3600;
 
 	@Persist
