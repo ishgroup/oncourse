@@ -1,24 +1,28 @@
 package ish.oncourse.cms.pages;
 
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.PasswordField;
+import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Cookies;
 
 import ish.oncourse.cms.services.security.AuthenticationStatus;
 import ish.oncourse.cms.services.security.IAuthenticationService;
-import java.util.List;
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.corelib.components.PasswordField;
-import org.apache.tapestry5.corelib.components.TextField;
+
 
 /**
  * CMS login page.
  */
 public class Login {
+
+	public static final String CMS_COOKIE_NAME = "cms";
+	public static final int CMS_COOKIE_AGE = 3600;
 
 	@Persist
 	@Property
@@ -35,6 +39,9 @@ public class Login {
 
 	@InjectComponent("password")
 	private PasswordField passwordField;
+
+	@Inject
+	private Cookies cookies;
 
 	@Inject
 	private IAuthenticationService authenticationService;
@@ -61,6 +68,8 @@ public class Login {
 				loginForm.recordError("Login unsuccessful! There is a problem with your account, please contact the college for support (MU)");
 			} else if (status != AuthenticationStatus.SUCCESS) {
 				loginForm.recordError("Login unsuccessful! " + status.name());
+				cookies.writeCookieValue(CMS_COOKIE_NAME, CMS_COOKIE_NAME,
+						CMS_COOKIE_AGE);
 			}
 		}
 

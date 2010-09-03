@@ -17,6 +17,7 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.PersistentSelectModel;
+import org.apache.tapestry5.services.Cookies;
 
 
 @Protected
@@ -35,11 +36,15 @@ public class AdminToolbar {
 	@Inject
 	private Request request;
 
+	@Inject
+	private Cookies cookies;
+
 	@Property
 	private WebSite selectedSite;
 
 	@InjectPage
 	private Login loginPage;
+
 
 	public SelectModel getSites() {
 		return new PersistentSelectModel(webSiteService.getAvailableSites(),
@@ -52,7 +57,13 @@ public class AdminToolbar {
 	}
 
 	public Boolean getIsLoggedIn() {
-		return authenticationService.getUser() != null;
+		boolean isLoggedIn = authenticationService.getUser() != null;
+		if (isLoggedIn) {
+			cookies.writeCookieValue(Login.CMS_COOKIE_NAME,
+					Login.CMS_COOKIE_NAME, Login.CMS_COOKIE_AGE);
+		}
+
+		return isLoggedIn;
 	}
 
 	public String getUserFirstName() {
@@ -66,6 +77,7 @@ public class AdminToolbar {
 	public Object onActionFromLogout() throws IOException {
 
 		Session session = request.getSession(false);
+		cookies.removeCookieValue(Login.CMS_COOKIE_NAME);
 
 		if (session != null) {
 			session.invalidate();
