@@ -72,11 +72,10 @@ public class WebNodeTemplate {
 						Pattern pattern = Pattern
 								.compile(TextileUtil.TEXTILE_REGEXP);
 						Matcher matcher = pattern.matcher(content);
-
+						String text = content;
 						if (matcher.find()) {
 							ValidationErrors errors = new ValidationErrors();
-							writer.writeRaw(textileConverter.convert(content, errors));
-
+							text = textileConverter.convert(content, errors);
 							if (errors.hasFailures()) {
 								try {
 									throw new ValidationException(errors);
@@ -85,6 +84,7 @@ public class WebNodeTemplate {
 								}
 							}
 						}
+						writer.writeRaw(text);
 					}
 				});
 			}

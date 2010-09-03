@@ -58,7 +58,9 @@ public class WebNodeService implements IWebNodeService {
 				WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
 				WEB_NODE_PAGE_TYPE_KEY));
 
-		if (request.getParameter(NODE_NUMBER_PARAMETER) != null) {
+		if(request.getAttribute(NODE)!=null){
+			return (WebNode) request.getAttribute(NODE);
+		}else if (request.getParameter(NODE_NUMBER_PARAMETER) != null) {
 			try {
 				Integer nodeNumber = Integer.parseInt(request.getParameter(NODE_NUMBER_PARAMETER));
 				query.andQualifier(ExpressionFactory.matchExp(
@@ -75,7 +77,6 @@ public class WebNodeService implements IWebNodeService {
 				query = null;
 			}
 		}
-
 		if (query != null) {
 			@SuppressWarnings("unchecked")
 			List<WebNode> nodes = cayenneService.sharedContext()

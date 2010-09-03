@@ -6,6 +6,7 @@ import ish.oncourse.model.WebNode;
 
 public interface IWebNodeService {
 
+	String NODE = "node";
 	/**
 	 * Returns all web nodes for the current site or current college.
 	 */

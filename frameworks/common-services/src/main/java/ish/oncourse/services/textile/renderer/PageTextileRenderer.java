@@ -5,6 +5,7 @@ import java.util.Map;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.PageTextileValidator;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -16,7 +17,7 @@ import ish.oncourse.util.ValidationErrors;
  * <pre>
  * Example: 
  * 
- * {page template:&quot;Page with intro&quot; code:&quot;123&quot; tag:&quot;tag name&quot; } 
+ * {page template:&quot;Page with intro&quot; code:&quot;123&quot;} 
  * 
  * The parameters are as follows: 
  * 
@@ -25,11 +26,10 @@ import ish.oncourse.util.ValidationErrors;
  * code: if 123 is specified, only the page with that node number will be displayed.
  * Otherwise, a random page will be displayed. 
  * 
- * tag: if specified, the random choice is restricted to pages with this tag.
  * 
  * </pre>
  */
-//TODO implement the template and tag attibutes
+//TODO implement the template attribute
 public class PageTextileRenderer extends AbstractRenderer {
 
 	private IWebNodeService webNodeService;
@@ -47,12 +47,20 @@ public class PageTextileRenderer extends AbstractRenderer {
 	public String render(String tag, ValidationErrors errors) {
 		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
-			//TODO getReal number from attributes
-			WebNode page = webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY, Integer.valueOf(492));
-			if (page  != null) {
+			WebNode node=null;
+			Map<String, String> tagParams = TextileUtil.getTagParams(tag,TextileUtil.PAGE_CODE_PARAM);
+			String code=tagParams.get(TextileUtil.PAGE_CODE_PARAM);
+			
+			if(code!=null){
+				node = webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY, Integer.valueOf(code));
+			}else{
+				node = webNodeService.getNode(null, null);
+			}
+			if (node  != null) {
 				Map<String, Object> parameters=new HashMap<String, Object>();
-				parameters.put("node", page);
-				tag = pageRenderer.renderPage("WebNodePage", parameters);
+				parameters.put(IWebNodeService.NODE, node);
+				tag = pageRenderer.renderPage("Page", parameters);
+				
 			}
 		}
 		return tag;
