@@ -71,11 +71,11 @@ public class Courses {
 		int start = getIntParam("start", START_DEFAULT);
 		int rows = getIntParam("rows", ROWS_DEFAULT);
 		
-		Map<String, String> params = new HashMap<String, String>();
+		Map<SearchParam, String> params = new HashMap<SearchParam, String>();
 		
 		for (SearchParam name : SearchParam.values()) {
 			if (request.getParameter(name.name()) != null) {
-				params.put(name.name(), request.getParameter(name.name()));
+				params.put(name, request.getParameter(name.name()));
 			}
 		}
 		

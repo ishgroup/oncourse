@@ -12,8 +12,8 @@
 
 			<field name="id" column="id" />
 			<field name="doctype" column="type" />
-			<field name="course_name" column="name" />
-			<field name="course_detail" column="detail" stripHTML="true" />
+			<field name="name" column="name" />
+			<field name="detail" column="detail" stripHTML="true" />
 			<field name="course_code" column="code" />
 			<field name="collegeId" column="collegeId" />
 
@@ -25,43 +25,43 @@
 				<field name="class_code" column="cc.code" />
 
 				<entity name="site" dataSource="onCourseDS"
-					query="select s.suburb, s.latitude, s.longitude, s.postcode from willow_college.site s inner join willow_college.room r 
+					query="select s.suburb, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, s.postcode from willow_college.site s inner join willow_college.room r 
                 	on r.siteId=s.id inner join willow_college.courseclass cc on cc.roomId=r.id where cc.id='${courseClass.id}'
-                	union select s.suburb, s.latitude, s.longitude, s.postcode from willow_college.site s inner join willow_college.room r on r.siteId=s.id 
+                	union select s.suburb, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as geohash, s.postcode from willow_college.site s inner join willow_college.room r on r.siteId=s.id 
                 	inner join willow_college.session ss on ss.roomId=r.id inner join willow_college.courseclass cc on cc.id=ss.courseClassId where cc.id='${courseClass.id}'">
-
-					<field name="lat" column="s.latitude" />
-					<field name="lon" column="s.longitude" />
-					<field name="course_postcode" column="s.postcode" />
-					<field name="course_suburb" column="s.suburb" />
+					
+					<field name="loc" column="loc" />	
+					<field name="postcode" column="s.postcode" />
+					<field name="suburb" column="s.suburb" />
 				</entity>
 
 				<entity name="tutor" dataSource="onCourseDS" transformer="TemplateTransformer"
 					query="select c.givenName, c.familyName from willow_college.contact c inner join willow_college.tutor t on c.tutorId = t.id
                     inner join willow_college.tutorrole tr on t.id = tr.tutorId
                     inner join willow_college.courseclass cc on tr.courseClassId=cc.id where cc.id='${courseClass.id}'">
-					<field column="TUTOR" name="course_tutor" template="${t.givenName} ${t.familyName}" />
+					<field column="TUTOR" name="tutor" template="${t.givenName} ${t.familyName}" />
 				</entity>
 
 				<entity name="classSession" dataSource="onCourseDS"
-					query="select s.startDate, s.endDate, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from willow_college.session s inner join willow_college.courseclass cc on s.courseClassId=cc.id where cc.id='${courseClass.id}'">
-					<field name="course_startDate" column="s.startDate" />
-					<field name="course_endDate" column="s.endDate" />
+					query="select s.startDate, s.endDate, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from willow_college.session s inner join willow_college.courseclass cc on s.courseClassId=cc.id where cc.id='${courseClass.id}'">
+					<field name="startDate" column="s.startDate" />
+					<field name="endDate" column="s.endDate" />
 					<field name="dayName" column="dayName"/>
 					<field name="dayType" column="dayType"/>
+					<field name="time" column="time"/>
 				</entity>
 			</entity>
 		</entity>
 
-		<entity name="location" dataSource="onCourseDS"
-			query="select suburb, 'location' as type, state, postcode, lat, lon, CONCAT(CAST(postcode AS CHAR), suburb) as id from willow_reference.postcode_db">
+		<entity name="place" dataSource="onCourseDS"
+			query="select suburb, 'place' as type, state, postcode, CONCAT(CAST(postcode AS CHAR), suburb) as id, CONCAT(CAST(lat AS CHAR), ',', CAST(lon AS CHAR)) as loc from willow_reference.postcode_db">
 			<field name="id" column="id" />
 			<field name="doctype" column="type" />
-			<field name="location_suburb" column="suburb" />
-			<field name="location_state" column="state" />
-			<field name="location_postcode" column="postcode" />
-			<field name="location_lat" column="lat" />
-			<field name="location_lon" column="lon" />
+			<field name="suburb" column="suburb" />
+			<field name="state" column="state" />
+			<field name="postcode" column="postcode" />
+			
+			<field name="loc" column="loc" />
 		</entity>
 	</document>
 </dataConfig>

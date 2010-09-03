@@ -1,18 +1,25 @@
 package ish.oncourse.website.servlet;
 
+import ish.oncourse.services.search.Field;
 import ish.oncourse.services.search.ISearchService;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+import org.apache.lucene.spatial.geohash.GeoHashUtils;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 
 public class AutoSuggestServlet extends ServiceAwareServlet {
+
+	private static final Logger LOGGER = Logger
+			.getLogger(AutoSuggestServlet.class);
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -28,10 +35,10 @@ public class AutoSuggestServlet extends ServiceAwareServlet {
 		int i = 0, j = suggestions.getResults().size() - 1;
 
 		for (SolrDocument doc : suggestions.getResults()) {
-			String doctype = (String) doc.get("doctype");
+			String doctype = (String) doc.get(Field.DOCTYPE);
 			if ("course".equalsIgnoreCase(doctype)) {
 				jsonArray.put(j--, buildCourse(doc));
-			} else if ("location".equalsIgnoreCase(doctype)) {
+			} else if ("place".equalsIgnoreCase(doctype)) {
 				jsonArray.put(i++, buildLocation(doc));
 			}
 		}
@@ -42,18 +49,25 @@ public class AutoSuggestServlet extends ServiceAwareServlet {
 
 	private JSONObject buildCourse(SolrDocument doc) {
 		JSONObject obj = new JSONObject();
-		obj.put("label", doc.get("course_name"));
+		obj.put("label", doc.get(Field.NAME));
 		obj.put("category", "Courses");
-		obj.put("href", "/courses?id=" + doc.get("id"));
+		obj.put("href", "/courses?id=" + doc.get(Field.ID));
 		return obj;
 	}
 
 	private JSONObject buildLocation(SolrDocument doc) {
 		JSONObject obj = new JSONObject();
-		obj.put("label", doc.get("location_suburb") + " "
-				+ doc.get("location_postcode"));
+		
+		String[] points = ((String) doc.get(Field.LOCATION)).split(",");
+		String geohash = GeoHashUtils.encode(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
+		
+		String suburb = ((List<String>) doc.get(Field.SUBURB)).get(0);
+		String postcode = ((List<String>) doc.get(Field.POSTCODE)).get(0);
+		
+		obj.put("label",  suburb + " " + postcode);
 		obj.put("category", "Show courses near...");
-		obj.put("href", "/courses?near=" + doc.get("postcode"));
+		obj.put("href", "/courses?near=" + geohash);
+		
 		return obj;
 	}
 }

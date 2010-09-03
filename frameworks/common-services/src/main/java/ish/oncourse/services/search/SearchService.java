@@ -1,13 +1,12 @@
 package ish.oncourse.services.search;
 
-import java.util.Map;
-
 import ish.oncourse.model.College;
-import ish.oncourse.services.property.IPropertyService;
-import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
+import org.apache.lucene.spatial.geohash.GeoHashUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
@@ -21,16 +20,13 @@ public class SearchService implements ISearchService {
 	@Inject
 	private IWebSiteService webSiteService;
 
-	@Inject
-	private IPropertyService propertyService;
-
 	private SolrServer solrServer;
 
 	private SolrServer getSolrServer() {
 		if (solrServer == null) {
 			try {
 				CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(
-						propertyService.string(Property.SolrUrl));
+						System.getProperty("solr.server"));
 				solrServer = httpSolrServer;
 			} catch (Exception e) {
 				throw new RuntimeException("Unable to connect to solr server.",
@@ -40,21 +36,48 @@ public class SearchService implements ISearchService {
 		return solrServer;
 	}
 
-	public QueryResponse searchCourses(Map<String, String> params, int start, int rows) {
+	public QueryResponse searchCourses(Map<SearchParam, String> params,
+			int start, int rows) {
 		try {
+
 			SolrQuery q = new SolrQuery();
 
-			q.addFilterQuery(String.format("(collegeId:%s)", webSiteService
-					.getCurrentCollege().getId()));
-
+			q.addFilterQuery(String.format("(" + Field.COLLEGE_ID + ":%s)",
+					webSiteService.getCurrentCollege().getId()));
+			
 			q.addFilterQuery("doctype:course");
-			q.setQueryType("dismax");
+			
+			//for text only searches use dismax parser
+			if (params.size() == 1 && params.get(SearchParam.s) != null) {
+				q.setQueryType("dismax");
+				q.setQuery(params.get(SearchParam.s).toLowerCase());
+			}
+			else {
+				StringBuilder qString = new StringBuilder();
+				if (params.containsKey(SearchParam.day)) {
+					String day = params.get(SearchParam.day);
+					qString.append(String.format("(dayName:%s || dayType:%s)", day, day)).append(" ");
+				}
+				
+				if (params.containsKey(SearchParam.time)) {
+					String time = params.get(SearchParam.time);
+					qString.append("time:" + time).append(" ");
+				}
+				
+				if (params.containsKey(SearchParam.near)) {
+					String near = params.get(SearchParam.near);
+					double[] points = GeoHashUtils.decode(near);
+					qString.append("{!sfilt fl=loc}");
+					q.setParam("pt", String.valueOf(points[0]) + "," + String.valueOf(points[1]));
+					q.setParam("d", "1");
+				}
+				
+				q.setQuery(qString.toString());
+			}
 			
 			q.setStart(start);
 			q.setRows(rows);
 			q.setIncludeScore(true);
-
-			q.setQuery(params.get(SearchParam.s.name()).toLowerCase());
 
 			return getSolrServer().query(q);
 		} catch (Exception e) {
@@ -71,11 +94,19 @@ public class SearchService implements ISearchService {
 
 			SolrQuery q = new SolrQuery();
 			q.setParam("q.op", "OR");
-
+			q.setParam("wt", "javabin");
+			
+			/*(name:%s && collegeId:%s) || ((doctype:place suburb:%s postcode:%s) && (%s))
 			String query = String
 					.format(
-							"(course_name:%s && collegeId:%s) || ((location_suburb:%s location_postcode:%s) && (%s))",
-							term, String.valueOf(college.getId()), term, term, buildStateQualifier(college));
+							"(name:%s && collegeId:%s) || ((doctype:place suburb:%s postcode:%s) && (%s))",
+							term, String.valueOf(college.getId()), term, term,
+							buildStateQualifier(college));*/
+			
+			String query = String
+			.format(
+					"(name:%s && collegeId:%s) || ((doctype:place suburb:%s postcode:%s))",
+					term, String.valueOf(college.getId()), term, term);
 
 			q.setQuery(query);
 
@@ -92,7 +123,7 @@ public class SearchService implements ISearchService {
 		builder.append("(");
 
 		for (String state : college.getCollegeSiteStates()) {
-			builder.append("location_state:").append(state).append(" ");
+			builder.append(Field.STATE).append(":").append(state).append(" ");
 		}
 
 		builder.append(")");
