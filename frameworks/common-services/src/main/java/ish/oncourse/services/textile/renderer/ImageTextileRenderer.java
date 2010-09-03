@@ -26,13 +26,15 @@ public class ImageTextileRenderer extends AbstractRenderer {
 					TextileUtil.PARAM_ID, TextileUtil.PARAM_NAME,
 					TextileUtil.IMAGE_PARAM_ALIGH,
 					TextileUtil.IMAGE_PARAM_CAPTION,
+					TextileUtil.IMAGE_PARAM_ALT,
 					TextileUtil.IMAGE_PARAM_LINK,
 					TextileUtil.IMAGE_PARAM_TITLE, TextileUtil.PARAM_WIDTH,
 					TextileUtil.PARAM_HEIGHT, TextileUtil.IMAGE_PARAM_CLASS);
 			String id = tagParams.get(TextileUtil.PARAM_ID);
 			String name = tagParams.get(TextileUtil.PARAM_NAME);
 			String align = tagParams.get(TextileUtil.IMAGE_PARAM_ALIGH);
-			String alt = tagParams.get(TextileUtil.IMAGE_PARAM_CAPTION);
+			String alt = tagParams.get(TextileUtil.IMAGE_PARAM_ALT);
+			String caption = tagParams.get(TextileUtil.IMAGE_PARAM_CAPTION);
 			String link = tagParams.get(TextileUtil.IMAGE_PARAM_LINK);
 			String title = tagParams.get(TextileUtil.IMAGE_PARAM_TITLE);
 			String width = tagParams.get(TextileUtil.PARAM_WIDTH);
@@ -68,6 +70,9 @@ public class ImageTextileRenderer extends AbstractRenderer {
 				additionalParams += " class=\"" + cssClass + "\" ";
 			}
 			String img = "<img src=\"" + path + "\" " + additionalParams + "/>";
+			if (caption != null) {
+				img = "<div>" + img + "<br/>" + caption + "</div>";
+			}
 			if (link != null) {
 				tag = "<a href=\"" + link + "\">" + img + "</a>";
 			} else {

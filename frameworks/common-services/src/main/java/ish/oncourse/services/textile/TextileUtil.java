@@ -8,22 +8,23 @@ import java.util.Map;
 
 public class TextileUtil {
 	public static final String TEXTILE_REGEXP = "[{]((block)|(course)|(tags)|(page)|(video)|(image))([^}]*)[}]";
-	public static final String QUOT_REGEXP = "\"|&#8220;|&#8221;";
-	public static final String DIGIT_ATTR_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)("+QUOT_REGEXP+")";
+	public static final String QUOT_REGEXP = "\"|&#8220;|&#8221;|Ò|Ó";
+	public static final String PIXELS_ATTR_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)(px)?("+QUOT_REGEXP+")";
 	public static final String STR_WITH_WHITESPACE= "("+QUOT_REGEXP+")((\\w|\\s)+)("+QUOT_REGEXP+")";
 	public static final String STR_IN_QUOTS= "("+QUOT_REGEXP+")((\\w)+)("+QUOT_REGEXP+")";
 	
 	public static final String IMAGE_REGEXP = "\\{image( ((name:"+STR_WITH_WHITESPACE+")|(id:"
-												+DIGIT_ATTR_IN_QUOTS+")|(align:("
+												+PIXELS_ATTR_IN_QUOTS+")|(align:("
 												+QUOT_REGEXP+")(right|left|center)("+QUOT_REGEXP+"))|(caption:"
+												+STR_WITH_WHITESPACE+")|(alt:"
 												+STR_WITH_WHITESPACE+")|(link:"
 												+"(((\\w)|(\\W))+))|(title:"
 												+STR_IN_QUOTS+")|(width:"
-												+DIGIT_ATTR_IN_QUOTS+")|(height:"
-												+DIGIT_ATTR_IN_QUOTS+")|(class:"+STR_IN_QUOTS+"))){1,9}}";
+												+PIXELS_ATTR_IN_QUOTS+")|(height:"
+												+PIXELS_ATTR_IN_QUOTS+")|(class:"+STR_IN_QUOTS+"))){1,10}}";
 	
 	public static final String BLOCK_REGEXP = "\\{block( ((name:"+STR_WITH_WHITESPACE+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
-	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+DIGIT_ATTR_IN_QUOTS+")|(height:"+DIGIT_ATTR_IN_QUOTS+"))){1,4}}";
+	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+PIXELS_ATTR_IN_QUOTS+")|(height:"+PIXELS_ATTR_IN_QUOTS+"))){1,4}}";
 	public static final String COURSE_REGEXP = "\\{course( ((code:"+STR_IN_QUOTS+")|(tag:"+STR_WITH_WHITESPACE+")|(enrollable:("+QUOT_REGEXP+")(true|false)("+QUOT_REGEXP+")))){0,3}}";
 	
 	public static final String PARAM_ID="id:";
@@ -36,6 +37,7 @@ public class TextileUtil {
 	
 	public static final String IMAGE_PARAM_ALIGH = "align:";
 	public static final String IMAGE_PARAM_CAPTION = "caption:";
+	public static final String IMAGE_PARAM_ALT = "alt:";
 	public static final String IMAGE_PARAM_LINK = "link:";
 	public static final String IMAGE_PARAM_CLASS = "class:";
 	public static final String IMAGE_PARAM_TITLE = "title:";

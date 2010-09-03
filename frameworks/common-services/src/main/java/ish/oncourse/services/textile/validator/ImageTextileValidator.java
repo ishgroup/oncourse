@@ -22,7 +22,7 @@ public class ImageTextileValidator implements IValidator {
 					.addFailure("The image tag '"
 							+ tag
 							+ "' doesn't match {image id:\"id\" name:\"name\" align:\"right|left|center\" "
-							+ "caption:\"your caption\" link:\"link\" title:\"title\" width:\"digit\" height:\"digit\" class:\"cssClass\"}");
+							+ "caption:\"your caption\" alt:\"your alt\" link:\"link\" title:\"title\" width:\"digit\" height:\"digit\" class:\"cssClass\"}");
 		}
 		if (!TextileUtil.hasRequiredParam(tag, TextileUtil.PARAM_ID)
 				&& !TextileUtil.hasRequiredParam(tag, TextileUtil.PARAM_NAME)) {
@@ -33,7 +33,7 @@ public class ImageTextileValidator implements IValidator {
 		}
 		TextileUtil.checkParamsUniquence(tag, errors, TextileUtil.PARAM_ID,
 				TextileUtil.PARAM_NAME, TextileUtil.IMAGE_PARAM_ALIGH,
-				TextileUtil.IMAGE_PARAM_CAPTION, TextileUtil.IMAGE_PARAM_LINK,
+				TextileUtil.IMAGE_PARAM_CAPTION, TextileUtil.IMAGE_PARAM_ALT, TextileUtil.IMAGE_PARAM_LINK,
 				TextileUtil.IMAGE_PARAM_TITLE, TextileUtil.PARAM_WIDTH,
 				TextileUtil.PARAM_HEIGHT, TextileUtil.IMAGE_PARAM_CLASS);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
