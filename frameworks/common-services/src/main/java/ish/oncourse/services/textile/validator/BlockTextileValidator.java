@@ -21,32 +21,21 @@ public class BlockTextileValidator implements IValidator {
 			errors
 					.addFailure("The tag: "
 							+ tag
-							+ " doesn't match pattern {block name:\"My Block\" tag:\"tag name\"}");
+							+ " doesn't match pattern {block name:\"My Block\"}");
 		}
-		TextileUtil.checkParamsUniquence(tag, errors,TextileUtil.PARAM_NAME, TextileUtil.PARAM_TAG);
+		TextileUtil.checkParamsUniquence(tag, errors,TextileUtil.PARAM_NAME);
 
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				TextileUtil.PARAM_NAME, TextileUtil.PARAM_TAG);
+				TextileUtil.PARAM_NAME);
 
 		String name = tagParams.get(TextileUtil.PARAM_NAME);
-		String tagParam = tagParams.get(TextileUtil.PARAM_TAG);
 		if (name != null) {
 			result = webBlockDataService.getWebBlock(WebBlock.NAME_PROPERTY,
 					name);
 			if (result == null) {
 				errors.addFailure("There's no block with the name: " + name);
 			}
-		} else {
-			if (tagParam != null) {
-				/*
-				 * result =
-				 * webBlockDataService.getWebBlock(WebBlock.TAG_PROPERTY,
-				 * tagParam); if (result == null) {
-				 * errors.addFailure("There's no block tagged with the tag: " +
-				 * tagParam); }
-				 */
-			}
-		}
+		} 
 	}
 
 }

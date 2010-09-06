@@ -18,18 +18,15 @@ import ish.oncourse.util.ValidationErrors;
  * <pre>
  * Example: 
  * 
- * {block name:&quot;My Block&quot; tag:&quot;tag name&quot; } 
+ * {block name:&quot;My Block&quot;} 
  * 
  * The parameters are as follows: 
  * 
  * name: the name of the WebBlock to display.
- * Otherwise, a random WebBlock will be displayed. 
- * 
- * tag: if specified, the random choice is restricted to WebBlocks with this tag.
+ * Otherwise, a random WebBlock will be displayed.
  * 
  * </pre>
  */
-//TODO "tag" attribute is ignored now
 public class BlockTextileRenderer extends AbstractRenderer {
 
 	private IWebBlockService webBlockDataService;
@@ -48,31 +45,28 @@ public class BlockTextileRenderer extends AbstractRenderer {
 		if (!errors.hasFailures()) {
 			WebBlock webBlock = null;
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					TextileUtil.PARAM_NAME, TextileUtil.PARAM_TAG);
+					TextileUtil.PARAM_NAME);
 
 			String name = tagParams.get(TextileUtil.PARAM_NAME);
-			String tagParam = tagParams.get(TextileUtil.PARAM_TAG);
 			if (name != null) {
 				webBlock = webBlockDataService.getWebBlock(
 						WebBlock.NAME_PROPERTY, name);
 			} else {
-				if (tagParam != null) {
-					/*
-					 * webBlock =
-					 * webBlockDataService.getWebBlock(WebBlock.TAG_PROPERTY,
-					 * tagParam);
-					 */
-				} else {
-					webBlock = webBlockDataService.getWebBlock(null, null);
-				}
+				webBlock = webBlockDataService.getWebBlock(null, null);
 			}
-			String result = webBlock.getContent();
-			Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
-			Matcher matcher = pattern.matcher(result);
-			if (matcher.find()&&!errors.hasFailures()) {
-				tag = converter.convert(result, errors);
+
+			if (webBlock != null) {
+				String result = webBlock.getContent();
+
+				Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
+				Matcher matcher = pattern.matcher(result);
+				if (matcher.find() && !errors.hasFailures()) {
+					tag = converter.convert(result, errors);
+				} else {
+					tag = result;
+				}
 			} else {
-				tag = result;
+				tag = "";
 			}
 		}
 		return tag;
