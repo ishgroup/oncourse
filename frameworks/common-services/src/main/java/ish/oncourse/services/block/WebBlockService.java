@@ -26,9 +26,9 @@ public class WebBlockService implements IWebBlockService {
 		ObjectContext sharedContext = cayenneService.sharedContext();
 		Expression qualifier = ExpressionFactory.matchExp(
 				WebBlock.WEB_SITE_PROPERTY, currentSite);
-		if (WebBlock.NAME_PROPERTY.equals(searchProperty)) {
+		if (searchProperty != null) {
 			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					WebBlock.NAME_PROPERTY, value));
+					searchProperty, value));
 		}
 		SelectQuery query = new SelectQuery(WebBlock.class, qualifier);
 		@SuppressWarnings("unchecked")
