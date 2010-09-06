@@ -26,6 +26,7 @@ public class OSCacheService implements ICacheService {
 		return cayenneCache;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T get(String key, CachedObjectProvider<T> objectProvider,
 			CacheGroup... cacheGroups) {
 

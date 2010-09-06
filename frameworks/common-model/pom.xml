@@ -45,7 +45,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.opensymphony.oscache</groupId>
+			<groupId>opensymphony</groupId>
 			<artifactId>oscache</artifactId>
 		</dependency>
 
