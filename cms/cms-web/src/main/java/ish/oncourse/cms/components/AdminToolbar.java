@@ -60,7 +60,7 @@ public class AdminToolbar {
 		boolean isLoggedIn = authenticationService.getUser() != null;
 		if (isLoggedIn) {
 			cookies.writeCookieValue(Login.CMS_COOKIE_NAME,
-					Login.CMS_COOKIE_NAME, Login.CMS_COOKIE_AGE);
+					Login.CMS_COOKIE_NAME, "/");
 		}
 
 		return isLoggedIn;

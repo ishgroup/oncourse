@@ -71,8 +71,7 @@ public class Login {
 				loginForm.recordError("Login unsuccessful! There is a problem with your account, please contact the college for support (MU)");
 			} else if (status != AuthenticationStatus.SUCCESS) {
 				loginForm.recordError("Login unsuccessful! " + status.name());
-				cookies.writeCookieValue(CMS_COOKIE_NAME, CMS_COOKIE_NAME,
-						CMS_COOKIE_AGE);
+				cookies.writeCookieValue(CMS_COOKIE_NAME, CMS_COOKIE_NAME, "/");
 			}
 		}
 
