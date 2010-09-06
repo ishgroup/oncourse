@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<!-- If viewing in IE6, let's send them a gentle reminder to upgrade -->
+
+<!--[if IE 6]>
+	<div id="ie6_upgrade_message">
+		<h4>We've noticed you're using Internet Explorer 6...</h4>
+		<p>IE6 is a bit old, and may not properly show you the best parts of this website. We recommend that you upgrade to one of the following browsers:</p>
+		<ul>
+			<li><a href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">Internet Explorer 8</a></li>
+			<li><a href="http://www.getfirefox.com/">Firefox</a></li>
+			<li><a href="http://www.apple.com/safari/download/">Safari</a></li>
+		</ul>
+	</div>
+<![endif]-->
+
+<div id="login_area">Already a student or tutor? <a href="/login">Sign in to MySCC</a></div>
+<div id="header">
+	<h1><a href="${homeLink}">${collegeName}</a></h1>
+	
+	<div id="site_toolbar">
+		[webobject name="CourseSearchForm"/]
+		[wo:DynamicCookieView cookieKey = "shortlist" entityName = "CourseClass" /]
+	</div>
+</div>
+</t:container>
