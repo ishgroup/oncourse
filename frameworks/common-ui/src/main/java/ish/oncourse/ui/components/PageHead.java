@@ -33,6 +33,13 @@ public class PageHead {
 			buff.append('r');
 			buff.append(scmVersion);
 		}
+		
+		String ciVersion = environmentService.getCiVersion();
+		if (!StringUtils.isEmpty(ciVersion)) {
+			buff.append(StringUtils.isEmpty(buildServerID) ? ' ' : '/');
+			buff.append('r');
+			buff.append(ciVersion);
+		}
 		return buff.toString();
 	}
 }

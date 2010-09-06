@@ -9,4 +9,6 @@ public interface IEnvironmentService {
 	String getScmVersion();
 
 	boolean isTransientEnvironment();
+	
+	String getCiVersion();
 }
