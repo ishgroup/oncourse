@@ -4,11 +4,13 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.block.IWebBlockService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
 import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
 import ish.oncourse.services.textile.renderer.IRenderer;
 import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
 import ish.oncourse.services.textile.renderer.PageTextileRenderer;
+import ish.oncourse.services.textile.renderer.TagsTextileRenderer;
 import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -36,6 +38,9 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private IPageRenderer pageRenderer;
+	
+	@Inject
+	private ITagService tagService;
 
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
@@ -88,6 +93,8 @@ public class TextileConverter implements ITextileConverter {
 			return new CourseTextileRenderer(courseService, pageRenderer);
 		case PAGE:
 			return new PageTextileRenderer(webNodeService, pageRenderer);
+		case TAGS:
+			return new TagsTextileRenderer(tagService);
 		}
 		return null;
 	}

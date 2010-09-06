@@ -5,7 +5,8 @@ public enum TextileType {
 	VIDEO("\\{video([^}]*)}"), 
 	BLOCK("\\{block([^}]*)}"),
 	COURSE("\\{course([^}]*)}"),
-	PAGE("\\{page([^}]*)}");
+	PAGE("\\{page([^}]*)}"),
+	TAGS("\\{tags([^}]*)}");
 	
 	private String regexp;
 	
