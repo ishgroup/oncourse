@@ -27,12 +27,9 @@ public class BinaryDataService implements IBinaryDataService {
 		ObjectContext sharedContext = cayenneService.sharedContext();
 		Expression qualifier = ExpressionFactory.matchExp(
 				BinaryInfo.COLLEGE_PROPERTY, currentCollege);
-		if (BinaryInfo.ID_PK_COLUMN.equals(searchProperty)) {
+		if (searchProperty != null) {
 			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					BinaryInfo.ID_PK_COLUMN, value));
-		} else if (BinaryInfo.NAME_PROPERTY.equals(searchProperty)) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					BinaryInfo.NAME_PROPERTY, value));
+					searchProperty, value));
 		}
 		SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);
 		@SuppressWarnings("unchecked")
@@ -43,7 +40,7 @@ public class BinaryDataService implements IBinaryDataService {
 	public BinaryData getBinaryData(BinaryInfo binaryInfo) {
 		SelectQuery query = new SelectQuery(BinaryData.class, ExpressionFactory
 				.matchExp(BinaryData.BINARY_INFO_PROPERTY, binaryInfo));
-		
+
 		@SuppressWarnings("unchecked")
 		List<BinaryData> result = cayenneService.sharedContext().performQuery(
 				query);
