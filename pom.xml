@@ -27,7 +27,24 @@
     	<module>portal</module>
   </modules>
 
-
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <manifest>
+            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+          </manifest>
+          <archive>
+            <manifestEntries>
+            <Implementation-Version>${BUILD_NUMBER}</Implementation-Version>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+        
 	<dependencyManagement>
 		<dependencies>
 
@@ -180,6 +197,12 @@
 				<version>2.5</version>
 				<scope>provided</scope>
 			</dependency>
+
+      <dependency>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-war-plugin</artifactId>
+      	<version>3.0</version>
+      </dependency>
 
 		</dependencies>
 	</dependencyManagement>
