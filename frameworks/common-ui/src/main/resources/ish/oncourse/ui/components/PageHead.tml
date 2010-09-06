@@ -8,4 +8,5 @@
   <link t:type="ui/cssassetgroup" group="literal:static" media="literal:screen, projection" />
   <link t:type="ui/cssassetgroup" group="literal:printer" media="literal:print" />
   <link t:type="ui/cssassetgroup" group="literal:custom" media="literal:screen, projection" />
+  <script t:type="ui/jsassetgroup" group="literal:frameworks"/>
 </t:container>
