@@ -43,13 +43,13 @@ public class ImageTextileRenderer extends AbstractRenderer {
 
 			if (id != null) {
 				imageBinaryInfo = binaryDataService.getBinaryInfo(
-						BinaryInfo.ID_PK_COLUMN, Long.valueOf(id));
+						BinaryInfo.REFERENCE_NUMBER_PROPERTY, Integer.valueOf(id));
 			} else if (name != null) {
 				imageBinaryInfo = binaryDataService.getBinaryInfo(
 						BinaryInfo.NAME_PROPERTY, name);
 			}
 
-			String path = "/servlet/binarydata?id=" + imageBinaryInfo.getId();
+			String path = "/servlet/binarydata?id=" + imageBinaryInfo.getReferenceNumber();
 			String additionalParams = "";
 			if (align != null) {
 				additionalParams += " align=\"" + align + "\" ";

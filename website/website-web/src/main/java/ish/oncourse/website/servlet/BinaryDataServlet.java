@@ -17,7 +17,7 @@ public class BinaryDataServlet extends ServiceAwareServlet {
 
 		IBinaryDataService service = getService(IBinaryDataService.class);
 
-		BinaryInfo binaryInfo = service.getBinaryInfo(BinaryInfo.ID_PK_COLUMN,
+		BinaryInfo binaryInfo = service.getBinaryInfo(BinaryInfo.REFERENCE_NUMBER_PROPERTY,
 				req.getParameter("id"));
 
 		resp.setContentType(binaryInfo.getMimeType());

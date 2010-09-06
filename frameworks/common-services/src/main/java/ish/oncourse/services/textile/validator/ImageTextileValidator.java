@@ -41,8 +41,8 @@ public class ImageTextileValidator implements IValidator {
 		String id = tagParams.get(TextileUtil.PARAM_ID);
 		String name = tagParams.get(TextileUtil.PARAM_NAME);
 		if (id != null) {
-			result = binaryDataService.getBinaryInfo(BinaryInfo.ID_PK_COLUMN,
-					Long.valueOf(id));
+			result = binaryDataService.getBinaryInfo(BinaryInfo.REFERENCE_NUMBER_PROPERTY,
+					Integer.valueOf(id));
 			if (result == null) {
 				errors.addFailure("There's no image with the id: " + id);
 			}
