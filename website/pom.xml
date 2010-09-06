@@ -19,7 +19,6 @@
 	<description>Parent POM of the onCourse Website</description>
 
 	<modules>
-		<module>website-services</module>
 		<module>website-web</module>
 	</modules>
 
