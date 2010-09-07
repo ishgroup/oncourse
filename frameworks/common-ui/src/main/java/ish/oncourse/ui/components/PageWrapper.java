@@ -12,8 +12,9 @@ public class PageWrapper {
 	private ComponentResources componentResources;
 
 	public String getBodyId() {
-		// TODO: andrus, Nov 14, 2009 - there's more to it than this, see Willow
-		// PageWrapper
+		// FIXME: MSW 7-Sep-2010 The Body ID logic needs to be more complex.
+		// Suggestion - use Entity name + _ + entityID
+		// For pages which are more generic or don't represent a single entity do ???
 		return componentResources.getPageName();
 	}
 }
