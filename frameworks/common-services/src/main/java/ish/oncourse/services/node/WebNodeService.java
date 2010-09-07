@@ -32,7 +32,7 @@ public class WebNodeService implements IWebNodeService {
 	private Request request;
 
 	static final String NODE_NUMBER_PARAMETER = "n";
-	static final String PAGE_NAME_PARAMETER = "p";
+	static final String PAGE_PATH_PARAMETER = "p";
 	static final String WEB_NODE_PAGE_TYPE_KEY = "Page";
 
 
@@ -68,12 +68,26 @@ public class WebNodeService implements IWebNodeService {
 			} catch(Exception e) {
 				query = null;
 			}
-		} else if (request.getParameter(PAGE_NAME_PARAMETER) != null) {
-			String nodeName = request.getParameter(PAGE_NAME_PARAMETER);
-			if ((nodeName != null) && !("".equals(nodeName))) {
-				query.andQualifier(ExpressionFactory.matchExp(
-						WebNode.NAME_PROPERTY, nodeName));
-			} else {
+		} else if (request.getParameter(PAGE_PATH_PARAMETER) != null) {
+			String pagePath = request.getParameter(PAGE_PATH_PARAMETER);
+			if ( !("".equals(pagePath))) {
+				String[]nodes=pagePath.split("/");
+				int length = nodes.length;
+				for(int i=0;i<length;i++){
+					String path = "";
+					for(int j=0;j<length-1-i;j++){
+						path+=WebNode.PARENT_NODE_PROPERTY+".";
+					}
+				
+					String shortNamePath = path+WebNode.SHORT_NAME_PROPERTY;
+					String namePath = path+WebNode.NAME_PROPERTY;
+					String value = ("%"+nodes[i]+"%").replaceAll("[+]", " ").replaceAll("[|]","/");
+					query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(shortNamePath, value)
+						.orExp(ExpressionFactory.matchExp(shortNamePath, null)
+							.andExp(ExpressionFactory.likeIgnoreCaseExp(namePath, value)
+						)));
+				}
+			}else{
 				query = null;
 			}
 		}

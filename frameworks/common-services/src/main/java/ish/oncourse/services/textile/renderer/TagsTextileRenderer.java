@@ -4,6 +4,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.validator.TagsTextileValidator;
 import ish.oncourse.util.ValidationErrors;
+
 /**
  * Displays a tree of tags links
  * 
@@ -29,10 +30,10 @@ import ish.oncourse.util.ValidationErrors;
  * 
  * name: allows you to query for a named branch "WITHIN" the "Subjects" tree and display that.
  * 
- * If none of the attributes is specified, it displays the whole tree with Course entity type. 
+ * If none of the attributes is specified, it displays the whole tree with Course entity type.
  * </pre>
  */
-//TODO implement all the attributes - now only the {tags} form works
+// TODO implement all the attributes - now only the {tags} form works
 public class TagsTextileRenderer extends AbstractRenderer {
 
 	private ITagService tagService;
@@ -78,11 +79,12 @@ public class TagsTextileRenderer extends AbstractRenderer {
 	public String getLink(Tag subTag) {
 		String link = "";
 		while (subTag.getParent() != null) {
-			link = "/" + subTag.getName().toLowerCase().replace(" ", "+")
-					+ link;
-			subTag=subTag.getParent();
+			String shortName = subTag.getShortName();
+			String name = shortName != null ? shortName : subTag.getName();
+			link = "/" + name.replaceAll(" ", "+").replaceAll("/", "|") + link;
+			subTag = subTag.getParent();
 		}
-		link = "/courses" + link;
+		link = "/page?p=" + link;
 		return link;
 	}
 }

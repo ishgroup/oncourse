@@ -30,7 +30,7 @@ public class WebNode extends _WebNode {
 		if (s == null) {
 			s = DEFAULT_PAGE_TITLE;
 		}
-		return s.trim().replaceAll("\\s", "+");
+		return s.trim().replaceAll(" ", "+").replaceAll("/","|");
 	}
 
 	@Override
