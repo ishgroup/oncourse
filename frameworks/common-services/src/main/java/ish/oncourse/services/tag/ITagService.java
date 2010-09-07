@@ -5,4 +5,7 @@ import ish.oncourse.model.Tag;
 public interface ITagService {
 
 	Tag getRootTag();
+
+	Tag getTag(String searchProperty, Object value);
+	
 }

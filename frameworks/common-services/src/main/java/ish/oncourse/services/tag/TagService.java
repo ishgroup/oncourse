@@ -21,20 +21,28 @@ public class TagService implements ITagService {
 	private IWebSiteService webSiteService;
 
 	public Tag getRootTag() {
-		ObjectContext sharedContext = cayenneService.sharedContext();
 		// TODO get root tag not by harcoded name
-		Expression qualifier = getSiteQualifier().andExp(
-				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, "Subjects"));
-		SelectQuery query = new SelectQuery(Tag.class, qualifier);
-		@SuppressWarnings("unchecked")
-		List<Tag> listResult = sharedContext.performQuery(query);
-		return !listResult.isEmpty() ? listResult.get(0) : null;
+		return getTag(Tag.NAME_PROPERTY, "Subjects");
 	}
 
 	private Expression getSiteQualifier() {
 		College currentCollege = webSiteService.getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY,
-				currentCollege);
+				currentCollege).andExp(
+				ExpressionFactory.matchExp(Tag.IS_WEB_VISIBLE_PROPERTY, true));
 		return qualifier;
+	}
+
+	public Tag getTag(String searchProperty, Object value) {
+		ObjectContext sharedContext = cayenneService.sharedContext();
+		Expression qualifier = getSiteQualifier();
+		if (searchProperty != null) {
+			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
+					searchProperty, value));
+		}
+		SelectQuery query = new SelectQuery(Tag.class, qualifier);
+		@SuppressWarnings("unchecked")
+		List<Tag> listResult = sharedContext.performQuery(query);
+		return !listResult.isEmpty() ? listResult.get(0) : null;
 	}
 }

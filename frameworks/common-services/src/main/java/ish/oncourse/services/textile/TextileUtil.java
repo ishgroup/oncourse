@@ -9,6 +9,7 @@ import java.util.Map;
 public class TextileUtil {
 	public static final String TEXTILE_REGEXP = "[{]((block)|(course)|(tags)|(page)|(video)|(image))([^}]*)[}]";
 	public static final String QUOT_REGEXP = "\"|&#8220;|&#8221;|Ò|Ó";
+	public static final String BOOLEAN_IN_QUOTS = "("+QUOT_REGEXP+")(true|false)("+QUOT_REGEXP+")";
 	public static final String PIXELS_ATTR_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)(px)?("+QUOT_REGEXP+")";
 	public static final String DIGIT_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)("+QUOT_REGEXP+")";
 	public static final String STR_WITH_WHITESPACE= "("+QUOT_REGEXP+")((\\w|\\s)+)("+QUOT_REGEXP+")";
@@ -26,8 +27,12 @@ public class TextileUtil {
 	
 	public static final String BLOCK_REGEXP = "\\{block( ((name:"+STR_WITH_WHITESPACE+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
 	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+PIXELS_ATTR_IN_QUOTS+")|(height:"+PIXELS_ATTR_IN_QUOTS+"))){1,4}}";
-	public static final String COURSE_REGEXP = "\\{course( ((code:"+STR_IN_QUOTS+")|(tag:"+STR_WITH_WHITESPACE+")|(enrollable:("+QUOT_REGEXP+")(true|false)("+QUOT_REGEXP+")))){0,3}}";
+	public static final String COURSE_REGEXP = "\\{course( ((code:" + STR_IN_QUOTS + ")|(tag:" + STR_WITH_WHITESPACE + ")|(enrollable:" + BOOLEAN_IN_QUOTS + "))){0,3}}";
 	public static final String PAGE_REGEXP = "\\{page( ((code:"+DIGIT_IN_QUOTS+"))){0,1}}";
+	public static final String TAGS_REGEXP="\\{tags( ((entityType:"+STR_WITH_WHITESPACE+")|(maxLevels:"
+													+DIGIT_IN_QUOTS+")|(showtopdetail:"
+													+BOOLEAN_IN_QUOTS+")|(isFiltered:"
+													+BOOLEAN_IN_QUOTS+")|(name:"+STR_WITH_WHITESPACE+"))){0,6}}";
 	
 	public static final String PARAM_ID="id:";
 	public static final String PARAM_WIDTH = "width:";
@@ -51,6 +56,11 @@ public class TextileUtil {
 	public static final String VIDEO_HEIGHT_DEFAULT = "344";
 	
 	public static final String PAGE_CODE_PARAM = "code:";
+	
+	public static final String TAGS_ENTITY_TYPE_PARAM = "entityType:";
+	public static final String TAGS_MAX_LEVELS_PARAM = "maxLevels:";
+	public static final String TAGS_SHOW_DETAIL_PARAM = "showtopdetail:";
+	public static final String TAGS_FILTERED_PARAM = "isFiltered:";
 	
 	/**
 	 * @param tag
