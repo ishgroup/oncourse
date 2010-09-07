@@ -1,20 +1,19 @@
 package ish.oncourse.services.environment;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import ish.oncourse.services.site.IWebSiteService;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Manifest;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.services.site.IWebSiteService;
-
-
 public class EnvironmentService implements IEnvironmentService {
 
 	@Inject
 	private IWebSiteService siteService;
+
+	private String ciVersion;
 
 	public String getApplicationName() {
 		// TODO hardcoded
@@ -42,30 +41,39 @@ public class EnvironmentService implements IEnvironmentService {
 		// || host.getName().contains("staging.oncourse");
 		return true;
 	}
+
 	/**
 	 * Getter for the CI Build Number.
-	 *
-	 * <p>Attempts to read the CI Build Number form the Manifest file. Looks for
-	 * the 'Implementation-Version' environment variable.</p>
-	 *
+	 * 
+	 * <p>
+	 * Attempts to read the CI Build Number form the Manifest file. Looks for
+	 * the 'Implementation-Version' environment variable.
+	 * </p>
+	 * 
 	 * @return CI version number as String
 	 */
 	public String getCiVersion() {
-		String ciVersion = "n/a";
-		Manifest manifest = null;
+		if (ciVersion == null) {
+			synchronized (this) {
+				ciVersion = "";
+				Manifest manifest = null;
 
-		try {
-			InputStream is = new BufferedInputStream(new FileInputStream("/META-INF/MANIFEST.MF"));
-			try {
-				manifest = new Manifest(is);
-				ciVersion = manifest.getMainAttributes().getValue("Implementation-Version");
-			} finally {
-				is.close();
+				try {
+					InputStream is = Thread.currentThread()
+							.getContextClassLoader().getResourceAsStream(
+									"META-INF/MANIFEST.MF");
+					try {
+						manifest = new Manifest(is);
+						ciVersion = manifest.getMainAttributes().getValue(
+								"Implementation-Version");
+					} finally {
+						is.close();
+					}
+				} catch (IOException e) {
+
+				}
 			}
-		} catch (IOException e) {
-			
 		}
-
 		return ciVersion;
 	}
 
