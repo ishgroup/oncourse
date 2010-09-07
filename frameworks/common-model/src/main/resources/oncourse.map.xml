@@ -1326,6 +1326,7 @@
 	<obj-entity name="WebNode" className="ish.oncourse.model.WebNode" dbEntityName="WebNode">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isPublished" type="java.lang.Boolean" db-attribute-path="isPublished"/>
 		<obj-attribute name="isRssFeed" type="java.lang.Boolean" db-attribute-path="isRssFeed"/>
 		<obj-attribute name="isWebNavigable" type="java.lang.Boolean" db-attribute-path="isWebNavigable"/>

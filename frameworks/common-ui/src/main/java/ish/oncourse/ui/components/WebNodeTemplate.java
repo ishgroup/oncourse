@@ -116,4 +116,11 @@ public class WebNodeTemplate {
 	public void setTemplate(DynamicTemplate template) {
 		this.template = template;
 	}
+
+	/**
+	 * @return the node
+	 */
+	public WebNode getNode() {
+		return node;
+	}
 }

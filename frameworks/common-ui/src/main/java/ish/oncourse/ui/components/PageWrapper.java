@@ -8,13 +8,28 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  */
 public class PageWrapper {
 
+	private static final String WEB_NODE_COMPONENT_NAME = "webNodeTemplate";
+	private static final String WEB_NODE_PAGE_NAME = "Page";
+	private static final String MAIN_PAGE_NAME = "Main";
+	private static final String REAL_MAIN_PAGE_NAME = "Index";
+	
 	@Inject
 	private ComponentResources componentResources;
 
 	public String getBodyId() {
-		// FIXME: MSW 7-Sep-2010 The Body ID logic needs to be more complex.
-		// Suggestion - use Entity name + _ + entityID
-		// For pages which are more generic or don't represent a single entity do ???
-		return componentResources.getPageName();
+		
+		String pageName = componentResources.getPageName();
+		
+		if (REAL_MAIN_PAGE_NAME.equals(pageName)) {
+			return MAIN_PAGE_NAME;
+		} else if (WEB_NODE_PAGE_NAME.equals(pageName)) {
+			Long nodeNumber = ((WebNodeTemplate) componentResources
+					.getPage().getComponentResources().getEmbeddedComponent(
+							WEB_NODE_COMPONENT_NAME)).getNode().getId();
+			return pageName + nodeNumber;
+		}
+
+		return pageName;
+
 	}
 }

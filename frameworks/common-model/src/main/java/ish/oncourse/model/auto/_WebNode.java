@@ -22,6 +22,7 @@ public abstract class _WebNode extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
+    public static final String ID_PROPERTY = "id";
     public static final String IS_PUBLISHED_PROPERTY = "isPublished";
     public static final String IS_RSS_FEED_PROPERTY = "isRssFeed";
     public static final String IS_WEB_NAVIGABLE_PROPERTY = "isWebNavigable";
@@ -55,6 +56,13 @@ public abstract class _WebNode extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setId(Long id) {
+        writeProperty("id", id);
+    }
+    public Long getId() {
+        return (Long)readProperty("id");
     }
 
     public void setIsPublished(Boolean isPublished) {
