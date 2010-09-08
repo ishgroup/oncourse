@@ -147,7 +147,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			// Course is default entity type
 			entityType = "courses";
 		}
-		link = "/page?p=" + entityType + link;
+		link = "/" + entityType + link;
 		return link;
 	}
 }
