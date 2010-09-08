@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
 
-	<dataSource name="onCourseDS" type="JdbcDataSource" jndiName="jdbc/oncourse"/>
+	<dataSource name="onCourseDS" type="JdbcDataSource" jndiName="java:comp/env/jdbc/oncourse"/>
 
 	<document>
 		<entity name="course" dataSource="onCourseDS"
