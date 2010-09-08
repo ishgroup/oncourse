@@ -56,10 +56,7 @@ public class Page {
 		} else if (request.getParameter(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
 			String pagePath = request.getParameter(IWebNodeService.PAGE_PATH_PARAMETER);
 			node = webNodeService.getNodeForNodeName(pagePath);
-		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
-			String pagePath = request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER).toString();
-			node = webNodeService.getNodeForNodeName(pagePath);
-		}
+		} 
 
 		return node;
 	}
