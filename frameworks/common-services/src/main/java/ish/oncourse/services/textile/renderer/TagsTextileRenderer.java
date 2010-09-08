@@ -24,7 +24,7 @@ import ish.oncourse.util.ValidationErrors;
  * 
  * maxLevels: parameter that shows how deep we want to render the tree 
  * 
- * isShowDetail: if true, the top level tags will display their detail text if they have
+ * showtopdetail: if true, the top level tags will display their detail text if they have
  * any.
  * 
  * isHidingTopLevelTags: if true, the top level tag is not displayed
@@ -62,52 +62,69 @@ public class TagsTextileRenderer extends AbstractRenderer {
 					TextileUtil.TAGS_ENTITY_TYPE_PARAM,
 					TextileUtil.TAGS_MAX_LEVELS_PARAM,
 					TextileUtil.TAGS_SHOW_DETAIL_PARAM,
+					TextileUtil.TAGS_HIDE_TOP_LEVEL,
 					TextileUtil.TAGS_FILTERED_PARAM, TextileUtil.PARAM_NAME);
 			String entityType = tagParams
 					.get(TextileUtil.TAGS_ENTITY_TYPE_PARAM);
 			String maxLevels = tagParams.get(TextileUtil.TAGS_MAX_LEVELS_PARAM);
 			String showDetails = tagParams
 					.get(TextileUtil.TAGS_SHOW_DETAIL_PARAM);
+			String hideTopLevel = tagParams.get(TextileUtil.TAGS_HIDE_TOP_LEVEL);
 			String filteredParam = tagParams
 					.get(TextileUtil.TAGS_FILTERED_PARAM);
 			String paramName = tagParams.get(TextileUtil.PARAM_NAME);
 
 			Tag parentTag = null;
 			if (paramName != null) {
-				// TODO may be there should be "path" processing
 				parentTag = tagService.getTag(Tag.NAME_PROPERTY, paramName);
+				if(hideTopLevel == null){
+					hideTopLevel="false";
+				}
 			} else {
 				parentTag = tagService.getRootTag();
+				hideTopLevel="true";
 			}
 			if (parentTag != null) {
 				return getResult(parentTag, entityType,
-						maxLevels != null ? Integer.valueOf(maxLevels) : null,
+						maxLevels != null ? Integer.valueOf(maxLevels) : 1,
 						showDetails != null ? Boolean.valueOf(showDetails)
-								: null,
-						filteredParam != null ? Boolean.valueOf(filteredParam)
-								: null);
+								: null,Boolean.valueOf(hideTopLevel), filteredParam != null ? Boolean
+								.valueOf(filteredParam) : null);
 			}
 		}
 		return "";
 	}
 
 	public String getResult(Tag parentTag, String entityType,
-			Integer maxLevels, Boolean showDetails, 
-			Boolean filteredParam) {
+			Integer maxLevels, Boolean showDetails, Boolean hideTopLevel, Boolean filteredParam) {
 		String result = "";
+		if(!hideTopLevel){
+			result += "<div class=\"tagGroup\"><ul><li id=\"" + parentTag.getId() + "\"><h2><a href=\""
+					+ getLink(parentTag, entityType) + "\">" + parentTag.getName()
+					+ "</a></h2>";
+		}
 		result += "<div class=\"tagGroup\"><ul>";
 		for (Tag subTag : parentTag.getWebVisibleTags()) {
 			result += "<li id=\"" + subTag.getId() + "\"><h2><a href=\""
-					+ getLink(subTag, entityType) + "\">" + subTag.getName() + "</a></h2>";
-			if(Boolean.TRUE.equals(showDetails)&&subTag.getDetail()!=null){
-				result+="<div class=\"taggroup_detail\">"+subTag.getDetail()+"</div>";
+					+ getLink(subTag, entityType) + "\">" + subTag.getName()
+					+ "</a></h2>";
+			if (Boolean.TRUE.equals(showDetails) && subTag.getDetail() != null) {
+				result += "<div class=\"taggroup_detail\">"
+						+ subTag.getDetail() + "</div>";
 			}
-			if (!subTag.getWebVisibleTags().isEmpty()&&(maxLevels==null||maxLevels>0)) {
-				result += getResult(subTag, entityType, maxLevels==null? null:maxLevels-1, showDetails, filteredParam);
+			if (!subTag.getWebVisibleTags().isEmpty()
+					&& (maxLevels == null || maxLevels > 0)) {
+				result += getResult(subTag, entityType,
+						maxLevels == null ? null : maxLevels - 1, showDetails, true,
+						filteredParam);
 			}
 			result += "</li>";
 		}
+		
 		result += "</ul></div>";
+		if(!hideTopLevel){
+			result += "</li></ul></div>";
+		}
 		return result;
 	}
 
@@ -119,17 +136,18 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			link = "/" + name.replaceAll(" ", "+").replaceAll("/", "|") + link;
 			subTag = subTag.getParent();
 		}
-		if(entityType!=null){
-			//TODO add the calculation of plural entity name for all the taggable entities 
-			if(entityType.equals(Course.class.getSimpleName())){
-				entityType="courses";
+		if (entityType != null) {
+			// TODO add the calculation of plural entity name for all the
+			// taggable entities
+			if (entityType.equals(Course.class.getSimpleName())) {
+				entityType = "courses";
 			}
 		}
-		if(entityType==null){
-			//Course is default entity type
-			entityType="courses";
+		if (entityType == null) {
+			// Course is default entity type
+			entityType = "courses";
 		}
-		link = "/page?p="+ entityType + link;
+		link = "/page?p=" + entityType + link;
 		return link;
 	}
 }

@@ -31,6 +31,7 @@ public class TextileUtil {
 	public static final String PAGE_REGEXP = "\\{page( ((code:"+DIGIT_IN_QUOTS+"))){0,1}}";
 	public static final String TAGS_REGEXP="\\{tags( ((entityType:"+STR_WITH_WHITESPACE+")|(maxLevels:"
 													+DIGIT_IN_QUOTS+")|(showtopdetail:"
+													+BOOLEAN_IN_QUOTS+")|(isHidingTopLevelTags:"
 													+BOOLEAN_IN_QUOTS+")|(isFiltered:"
 													+BOOLEAN_IN_QUOTS+")|(name:"+STR_WITH_WHITESPACE+"))){0,6}}";
 	
@@ -60,6 +61,7 @@ public class TextileUtil {
 	public static final String TAGS_ENTITY_TYPE_PARAM = "entityType:";
 	public static final String TAGS_MAX_LEVELS_PARAM = "maxLevels:";
 	public static final String TAGS_SHOW_DETAIL_PARAM = "showtopdetail:";
+	public static final String TAGS_HIDE_TOP_LEVEL = "isHidingTopLevelTags:";
 	public static final String TAGS_FILTERED_PARAM = "isFiltered:";
 	
 	/**

@@ -20,12 +20,12 @@ public class TagsTextileValidator implements IValidator {
 			errors
 			.addFailure("The {tags} tag '"
 					+ tag
-					+ "' doesn't match {tags entityType:\"Course\" maxLevels:\"digit\" showtopdetail:\"true|false\"" +
+					+ "' doesn't match {tags entityType:\"Course\" maxLevels:\"digit\" showtopdetail:\"true|false\" isHidingTopLevelTags:\"true|false\"" +
 							" isFiltered:\"true|false\" name:\"name\" }");
 		}
 		
 		TextileUtil.checkParamsUniquence(tag, errors,TextileUtil.TAGS_ENTITY_TYPE_PARAM, TextileUtil.TAGS_MAX_LEVELS_PARAM,
-				TextileUtil.TAGS_SHOW_DETAIL_PARAM, TextileUtil.TAGS_FILTERED_PARAM, TextileUtil.PARAM_NAME);
+				TextileUtil.TAGS_SHOW_DETAIL_PARAM, TextileUtil.TAGS_HIDE_TOP_LEVEL, TextileUtil.TAGS_FILTERED_PARAM, TextileUtil.PARAM_NAME);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 				TextileUtil.PARAM_NAME, TextileUtil.TAGS_ENTITY_TYPE_PARAM);
 		String name = tagParams.get(TextileUtil.PARAM_NAME);
