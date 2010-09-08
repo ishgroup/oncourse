@@ -1,19 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<a title="Show venue details" class="tooltip" href="#" onclick="zoomMapForSite(${room.site.id})">
-		Show venue details
-		<t:if test="notWithRoomName">
+	<a title="Show venue details" class="tooltip" href="${link}"
+		onclick="zoomMapForSite(${room.site.id})">
+		<t:if test="withRoomName">
 			<t:if test="hasRoomName">${room.name}</t:if>
 		</t:if>
 		<t:if test="hasSiteName">
-			<t:if test="notWithRoomName"> - </t:if>
+			<t:if test="withRoomName"> - </t:if>
 			${room.site.name}
-			<span>
-				${room.site.street}
-				${room.site.suburb}
-				${room.site.postcode}
-		</span>
+			<t:if t:test="withSiteAddress">
+				<span>
+					${room.site.street}
+					${room.site.suburb}
+					${room.site.postcode}
+				</span>
+			</t:if>
 		</t:if>
 	</a>
 </t:container>

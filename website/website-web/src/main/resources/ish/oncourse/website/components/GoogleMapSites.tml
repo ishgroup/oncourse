@@ -38,7 +38,7 @@
 				</t:if>
 				<div id="location" class="${locationClass}">
 					<h3 class="blockhead">Location</h3>
-					<div id="${mapClass}" style="width:500px; height:500px"></div>
+					<div id="${mapClass}"></div>
 				</div>
 				
 				<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"/>

@@ -128,7 +128,7 @@ public class GoogleMapSites {
 	}
 
 	public boolean isCollapseLocationMap() {
-		return true;
+		return false;
 	}
 
 	public String getLocationClass() {

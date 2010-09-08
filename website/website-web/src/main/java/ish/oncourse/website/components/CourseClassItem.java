@@ -74,11 +74,11 @@ public class CourseClassItem {
 		// return ( ( TutorClasses )context().page() ).isTutor();
 		// }
 		// return false;
-		return true;
+		return false;
 	}
 
 	public String getSessionForClass() {
-		return (isTutorPortal()) ? "" : "hidden";
+		return "sessions_for_class"+(isTutorPortal() ? "" : " hidden");
 	}
 
 	public Format getHoursFormat() {
@@ -127,5 +127,9 @@ public class CourseClassItem {
 
 	public String getTimeFormat() {
 		return "hh:mma";
+	}
+	
+	public String getTimedateClass(){
+		return "class_timedate" + (courseClass.isHasSessions() ? " tooltip" : "");
 	}
 }
