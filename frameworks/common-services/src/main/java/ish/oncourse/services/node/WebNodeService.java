@@ -19,8 +19,7 @@ import org.apache.tapestry5.services.Request;
 
 public class WebNodeService implements IWebNodeService {
 
-	private static final Logger LOGGER = Logger.getLogger(
-			WebNodeService.class);
+	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -30,10 +29,6 @@ public class WebNodeService implements IWebNodeService {
 
 	@Inject
 	private Request request;
-
-	static final String NODE_NUMBER_PARAMETER = "n";
-	static final String PAGE_PATH_PARAMETER = "p";
-	static final String WEB_NODE_PAGE_TYPE_KEY = "Page";
 
 
 	@SuppressWarnings("unchecked")
@@ -48,53 +43,60 @@ public class WebNodeService implements IWebNodeService {
 		return webSiteService.getCurrentWebSite().getHomePage();
 	}
 
-	public WebNode getCurrentPage() {
-
-		WebNode result = null;
-
+	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
 		SelectQuery query = new SelectQuery(WebNode.class);
 		query.andQualifier(siteQualifier());
 		query.andQualifier(ExpressionFactory.matchExp(
 				WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
 				WEB_NODE_PAGE_TYPE_KEY));
+		query.andQualifier(ExpressionFactory.matchExp(
+				WebNode.NODE_NUMBER_PROPERTY, nodeNumber));
 
-		if(request.getAttribute(NODE)!=null){
-			return (WebNode) request.getAttribute(NODE);
-		}else if (request.getParameter(NODE_NUMBER_PARAMETER) != null) {
-			try {
-				Integer nodeNumber = Integer.parseInt(request.getParameter(NODE_NUMBER_PARAMETER));
-				query.andQualifier(ExpressionFactory.matchExp(
-						WebNode.NODE_NUMBER_PROPERTY, nodeNumber));
-			} catch(Exception e) {
-				query = null;
-			}
-		} else if (request.getParameter(PAGE_PATH_PARAMETER) != null) {
-			String pagePath = request.getParameter(PAGE_PATH_PARAMETER);
-			if ( !("".equals(pagePath))) {
-				String[]nodes=pagePath.split("/");
-				int length = nodes.length;
-				for(int i=0;i<length;i++){
-					String path = "";
-					for(int j=0;j<length-1-i;j++){
-						path+=WebNode.PARENT_NODE_PROPERTY+".";
-					}
-				
-					String shortNamePath = path+WebNode.SHORT_NAME_PROPERTY;
-					String namePath = path+WebNode.NAME_PROPERTY;
-					String value = ("%"+nodes[i]+"%").replaceAll("[+]", " ").replaceAll("[|]","/");
-					query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(shortNamePath, value)
+		@SuppressWarnings("unchecked")
+		List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Found " + nodes.size() + " nodes for query : " + query);
+		}
+
+		if (nodes.size() > 1) {
+			LOGGER.error("Expected one WebNode record, found " + nodes.size()
+					+ " for query : " + query);
+		}
+
+		return (nodes.size() == 1) ? nodes.get(0) : null;
+	}
+
+	public WebNode getNodeForNodeName(String nodeName) {
+		WebNode result = null;
+
+		if ( !("".equals(nodeName))) {
+			SelectQuery query = new SelectQuery(WebNode.class);
+			query.andQualifier(siteQualifier());
+			query.andQualifier(ExpressionFactory.matchExp(
+					WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
+					WEB_NODE_PAGE_TYPE_KEY));
+
+			String[] names = nodeName.split("/");
+			int length = names.length;
+			for (int i = 0; i < length; i++) {
+
+				String path = "";
+				for (int j = 0; j < length - 1 - i; j++) {
+					path += WebNode.PARENT_NODE_PROPERTY + ".";
+				}
+
+				String shortNamePath = path + WebNode.SHORT_NAME_PROPERTY;
+				String namePath = path + WebNode.NAME_PROPERTY;
+				String value = ("%" + names[i] + "%").replaceAll("[+]", " ").replaceAll("[|]", "/");
+				query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(shortNamePath, value)
 						.orExp(ExpressionFactory.matchExp(shortNamePath, null)
 							.andExp(ExpressionFactory.likeIgnoreCaseExp(namePath, value)
-						)));
-				}
-			}else{
-				query = null;
+				)));
 			}
-		}
-		if (query != null) {
+
 			@SuppressWarnings("unchecked")
-			List<WebNode> nodes = cayenneService.sharedContext()
-					.performQuery(query);
+			List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
 
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Found " + nodes.size() + " nodes for query : " + query);
@@ -106,6 +108,28 @@ public class WebNodeService implements IWebNodeService {
 			}
 
 			result = (nodes.size() == 1) ? nodes.get(0) : null;
+		}
+
+		return result;
+	}
+
+	public WebNode getCurrentPage() {
+
+		WebNode result = null;
+
+		if(request.getAttribute(NODE)!=null){
+			return (WebNode) request.getAttribute(NODE);
+		} else if (request.getParameter(NODE_NUMBER_PARAMETER) != null) {
+			try {
+				Integer nodeNumber = Integer.parseInt(request.getParameter(NODE_NUMBER_PARAMETER));
+				result = getNodeForNodeNumber(nodeNumber);
+			} catch(Exception e) {
+				LOGGER.debug("Unable to convert node number to integer: "
+						+ request.getParameter(NODE_NUMBER_PARAMETER));
+			}
+		} else if (request.getParameter(PAGE_PATH_PARAMETER) != null) {
+			String pagePath = request.getParameter(PAGE_PATH_PARAMETER);
+			result = getNodeForNodeName(pagePath);
 		}
 
 		return result;
@@ -133,6 +157,7 @@ public class WebNodeService implements IWebNodeService {
 		if(searchProperty!=null){
 			query.andQualifier(ExpressionFactory.matchDbExp(searchProperty, value));
 		}
+		@SuppressWarnings("unchecked")
 		List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
 		return !nodes.isEmpty()?nodes.get(0):null;
 	}
