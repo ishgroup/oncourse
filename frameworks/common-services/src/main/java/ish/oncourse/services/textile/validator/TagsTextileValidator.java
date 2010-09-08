@@ -31,8 +31,7 @@ public class TagsTextileValidator implements IValidator {
 		String name = tagParams.get(TextileUtil.PARAM_NAME);
 		String entityType = tagParams.get(TextileUtil.TAGS_ENTITY_TYPE_PARAM);
 		if(name!=null){
-			//TODO may be there should be "path" processing
-			Tag tagObj = tagService.getTag(Tag.NAME_PROPERTY,  name);
+			Tag tagObj = tagService.getSubTagByName(name);
 			if(tagObj==null){
 				errors
 				.addFailure("There are no tag with such a name:"+name);

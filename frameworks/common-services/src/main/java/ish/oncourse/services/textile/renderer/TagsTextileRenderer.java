@@ -76,7 +76,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 
 			Tag parentTag = null;
 			if (paramName != null) {
-				parentTag = tagService.getTag(Tag.NAME_PROPERTY, paramName);
+				parentTag = tagService.getSubTagByName(paramName);
 				if(hideTopLevel == null){
 					hideTopLevel="false";
 				}

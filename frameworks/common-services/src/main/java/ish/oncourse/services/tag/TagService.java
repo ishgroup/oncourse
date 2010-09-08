@@ -45,4 +45,33 @@ public class TagService implements ITagService {
 		List<Tag> listResult = sharedContext.performQuery(query);
 		return !listResult.isEmpty() ? listResult.get(0) : null;
 	}
+	
+	public List<Tag> getTags(String searchProperty, Object value) {
+		ObjectContext sharedContext = cayenneService.sharedContext();
+		Expression qualifier = getSiteQualifier();
+		if (searchProperty != null) {
+			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
+					searchProperty, value));
+		}
+		SelectQuery query = new SelectQuery(Tag.class, qualifier);
+		return sharedContext.performQuery(query);
+	}
+
+	public Tag getSubTagByName(String name) {
+		Tag rootTag = getRootTag();
+		List<Tag> tags = getTags(Tag.NAME_PROPERTY, name);
+		for(Tag tag:tags){
+			Tag parent = tag;
+			if(parent.equals(rootTag)){
+				return tag;
+			}
+			while(parent.getParent()!=null){
+				parent = parent.getParent();
+				if(parent.equals(rootTag)){
+					return tag;
+				}
+			}
+		}
+		return null;
+	}
 }
