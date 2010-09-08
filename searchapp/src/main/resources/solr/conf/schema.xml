@@ -2,9 +2,10 @@
 
 <schema name="oncourse" version="1.2">
 	<types>
-		<fieldType name="location" class="solr.PointType" dimension="2" subFieldType="double"/>
-		<fieldtype name="geohash" class="solr.GeoHashField"/>
-			
+		<fieldType name="location" class="solr.PointType" dimension="2"
+			subFieldType="double" />
+		<fieldtype name="geohash" class="solr.GeoHashField" />
+
 		<fieldType name="string" class="solr.StrField"
 			sortMissingLast="true" omitNorms="true" />
 		<fieldType name="boolean" class="solr.BoolField"
@@ -19,11 +20,15 @@
 			precisionStep="0" omitNorms="true" positionIncrementGap="0" />
 		<fieldType name="double" class="solr.TrieDoubleField"
 			precisionStep="0" omitNorms="true" positionIncrementGap="0" />
-			
-		<fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+
+		<fieldType name="tdouble" class="solr.TrieDoubleField"
+			precisionStep="8" omitNorms="true" positionIncrementGap="0" />
 
 		<fieldType name="date" class="solr.TrieDateField" omitNorms="true"
 			precisionStep="0" positionIncrementGap="0" />
+
+		<fieldType name="sfloat" class="solr.SortableFloatField"
+			sortMissingLast="true" omitNorms="true" />
 
 		<fieldType name="text" class="solr.TextField"
 			positionIncrementGap="100">
@@ -83,36 +88,53 @@
 
 
 	<fields>
-		<field name="id" type="string" indexed="true" stored="true" required="true"/>
-		<field name="doctype" type="string" indexed="true" stored="true" required="true"/>
-				
-		<field name="collegeId" type="int" indexed="true" stored="true"/>
-		
+		<field name="id" type="string" indexed="true" stored="true"
+			required="true" />
+
+		<field name="doctype" type="string" indexed="false" stored="true"
+			required="true" />
+
+		<field name="collegeId" type="int" indexed="false" stored="true" />
+
 		<field name="name" type="textgen" indexed="true" stored="true"
-			omitNorms="true" />
-			
-		<field name="detail" type="text" indexed="true" stored="true" />
-		<field name="course_code" type="string" indexed="true" stored="true" />
-		<field name="class_code" type="string" indexed="true" stored="true" multiValued="true"/>
-		
-		<field name="tutor" type="textgen" indexed="true" stored="true" multiValued="true"/>
-		
-		<field name="startDate" type="date" indexed="true" stored="true" multiValued="true"/>
-		<field name="endDate" type="date" indexed="true" stored="true" multiValued="true"/>
-		
-		<field name="dayName" type="string" indexed="true" stored="true" multiValued="true"/>
-		<field name="dayType" type="string" indexed="true" stored="true" multiValued="true"/>
-		<field name="time" type="string" indexed="true" stored="true" multiValued="true"/>
-		
-		<field name="postcode" type="string" indexed="true" stored="true" multiValued="true"/>
-		<field name="suburb" type="textgen" indexed="true" stored="true" multiValued="true"/>
-		<field name="state" type="textgen" indexed="true" stored="true" multiValued="true"/>
-		
-		<field name="loc" type="location" indexed="true" stored="true"/>
+			omitNorms="true" boost="10.0" />
+
+		<field name="course_code" type="string" indexed="true" stored="true"
+			boost="10.0" />
+
+		<field name="class_code" type="string" indexed="true" stored="true"
+			multiValued="true" boost="10.0" />
+
+		<field name="detail" type="text" indexed="true" stored="true"
+			boost="1.0" />
+
+		<field name="tutor" type="textgen" indexed="true" stored="true"
+			multiValued="true" boost="5.0" />
+
+		<field name="dayName" type="string" indexed="true" stored="true"
+			boost="5.0" />
+
+		<field name="dayType" type="string" indexed="true" stored="true"
+			multiValued="true" boost="5.0" />
+
+		<field name="time" type="string" indexed="true" stored="true"
+			multiValued="true" boost="5.0" />
+
+		<field name="postcode" type="string" indexed="true" stored="true"/>
+
+		<field name="suburb" type="textgen" indexed="true" stored="true" />
+
+		<field name="state" type="textgen" indexed="true" stored="true" />
+
+		<field name="price" type="sfloat" indexed="true" stored="true" />
+
+		<field name="loc" type="location" indexed="true" stored="true" />
+		<field name="lat_rad" type="tdouble" indexed="true" stored="true"/> 
+		<field name="lon_rad" type="tdouble" indexed="true" stored="true"/>
 	</fields>
 
 	<uniqueKey>id</uniqueKey>
 	<defaultSearchField>name</defaultSearchField>
-	<solrQueryParser defaultOperator="AND" />
+	<solrQueryParser defaultOperator="OR" />
 
 </schema>

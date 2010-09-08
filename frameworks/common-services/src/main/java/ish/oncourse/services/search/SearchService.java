@@ -42,39 +42,47 @@ public class SearchService implements ISearchService {
 
 			SolrQuery q = new SolrQuery();
 
+			/*
 			q.addFilterQuery(String.format("(" + Field.COLLEGE_ID + ":%s)",
 					webSiteService.getCurrentCollege().getId()));
-			
+
 			q.addFilterQuery("doctype:course");
-			
-			//for text only searches use dismax parser
+			*/
+
+			// for text only searches use dismax parser
 			if (params.size() == 1 && params.get(SearchParam.s) != null) {
 				q.setQueryType("dismax");
 				q.setQuery(params.get(SearchParam.s).toLowerCase());
-			}
-			else {
+			} else {
 				StringBuilder qString = new StringBuilder();
 				if (params.containsKey(SearchParam.day)) {
 					String day = params.get(SearchParam.day);
-					qString.append(String.format("(dayName:%s || dayType:%s)", day, day)).append(" ");
+					qString.append(
+							String.format("(dayName:%s || dayType:%s)", day,
+									day)).append(" ");
 				}
-				
+
 				if (params.containsKey(SearchParam.time)) {
 					String time = params.get(SearchParam.time);
 					qString.append("time:" + time).append(" ");
 				}
-				
+
 				if (params.containsKey(SearchParam.near)) {
+					//{!frange}hsin(0.57, -1.3, lat_rad, lon_rad, 3963.205)
+					
 					String near = params.get(SearchParam.near);
 					double[] points = GeoHashUtils.decode(near);
 					qString.append("{!sfilt fl=loc}");
-					q.setParam("pt", String.valueOf(points[0]) + "," + String.valueOf(points[1]));
+					q.setParam(
+							"pt",
+							String.valueOf(points[0]) + ","
+									+ String.valueOf(points[1]));
 					q.setParam("d", "1");
 				}
-				
+
 				q.setQuery(qString.toString());
 			}
-			
+
 			q.setStart(start);
 			q.setRows(rows);
 			q.setIncludeScore(true);
@@ -93,20 +101,12 @@ public class SearchService implements ISearchService {
 			College college = webSiteService.getCurrentCollege();
 
 			SolrQuery q = new SolrQuery();
-			q.setParam("q.op", "OR");
 			q.setParam("wt", "javabin");
-			
-			/*(name:%s && collegeId:%s) || ((doctype:place suburb:%s postcode:%s) && (%s))
+
 			String query = String
-					.format(
-							"(name:%s && collegeId:%s) || ((doctype:place suburb:%s postcode:%s) && (%s))",
+					.format("(name:%s collegeId:%s) || ((doctype:place suburb:%s postcode:%s) && (%s))",
 							term, String.valueOf(college.getId()), term, term,
-							buildStateQualifier(college));*/
-			
-			String query = String
-			.format(
-					"(name:%s && collegeId:%s) || ((doctype:place suburb:%s postcode:%s))",
-					term, String.valueOf(college.getId()), term, term);
+							buildStateQualifier(college));
 
 			q.setQuery(query);
 

@@ -51,17 +51,15 @@
   <!-- Otherwise it will continue to the old servlets -->
   
   <servlet>
-    <servlet-name>SolrServer</servlet-name>
-    <display-name>Solr</display-name>
     <description>Solr Server</description>
+    <servlet-name>SolrServer</servlet-name>
     <servlet-class>org.apache.solr.servlet.SolrServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet>
-    <servlet-name>SolrUpdate</servlet-name>
-    <display-name>SolrUpdate</display-name>
     <description>Solr Update Handler</description>
+    <servlet-name>SolrUpdate</servlet-name>
     <servlet-class>org.apache.solr.servlet.SolrUpdateServlet</servlet-class>
     <load-on-startup>2</load-on-startup>
   </servlet>
@@ -111,7 +109,7 @@
   </mime-mapping>
 	
 	<welcome-file-list>
-		<welcome-file>/</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

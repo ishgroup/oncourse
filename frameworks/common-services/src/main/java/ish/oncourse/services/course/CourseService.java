@@ -7,6 +7,7 @@ import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,16 +34,18 @@ public class CourseService implements ICourseService {
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
-	public List<Course> loadByIds(List<String> ids) {
+	public List<Course> loadByIds(Object... ids) {
 
-		if (ids.isEmpty()) {
+		if (ids.length == 0) {
 			return Collections.emptyList();
 		}
+
+		List<Object> params = Arrays.asList(ids);
 
 		EJBQLQuery q = new EJBQLQuery(
 				"select c from Course c where c.id IN (:ids)");
 
-		q.setParameter("ids", ids);
+		q.setParameter("ids", params);
 
 		return cayenneService.sharedContext().performQuery(q);
 	}

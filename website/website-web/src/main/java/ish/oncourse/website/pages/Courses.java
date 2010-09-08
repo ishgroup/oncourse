@@ -90,7 +90,7 @@ public class Courses {
 			ids.add((String) doc.getFieldValue("id"));
 		}
 
-		return courseService.loadByIds(ids);
+		return courseService.loadByIds(ids.toArray());
 	}
 
 	private static int getIntParam(String s, int def) {

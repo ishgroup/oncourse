@@ -4,10 +4,10 @@
 	<dataSource name="onCourseDS" driver="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://localhost:3306/" user="root" password="test"
 		readOnly="true" autoCommit="false" />
-		
+
 	<document>
 		<entity name="course" dataSource="onCourseDS"
-			query="select id, 'course' as type, name, detail, code, collegeId from willow_college.course"
+			query="select id, 'course' as type, name, detail, code, collegeId from willow_college.course where isDeleted=0"
 			pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
@@ -17,40 +17,73 @@
 			<field name="course_code" column="code" />
 			<field name="collegeId" column="collegeId" />
 
-			<entity name="courseClass"
-				query="select cc.id, cc.code from willow_college.courseclass cc where courseid='${course.id}'"
-				dataSource="onCourseDS" pk="cc.id">
-
-				<field name="id" column="cc.id" />
-				<field name="class_code" column="cc.code" />
-
-				<entity name="site" dataSource="onCourseDS"
-					query="select s.suburb, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, s.postcode from willow_college.site s inner join willow_college.room r 
-                	on r.siteId=s.id inner join willow_college.courseclass cc on cc.roomId=r.id where cc.id='${courseClass.id}'
-                	union select s.suburb, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as geohash, s.postcode from willow_college.site s inner join willow_college.room r on r.siteId=s.id 
-                	inner join willow_college.session ss on ss.roomId=r.id inner join willow_college.courseclass cc on cc.id=ss.courseClassId where cc.id='${courseClass.id}'">
-					
-					<field name="loc" column="loc" />	
-					<field name="postcode" column="s.postcode" />
-					<field name="suburb" column="s.suburb" />
-				</entity>
-
-				<entity name="tutor" dataSource="onCourseDS" transformer="TemplateTransformer"
-					query="select c.givenName, c.familyName from willow_college.contact c inner join willow_college.tutor t on c.tutorId = t.id
+			<entity name="tutor" dataSource="onCourseDS" transformer="TemplateTransformer"
+				query="select distinct ct.givenName, ct.familyName from willow_college.contact ct 
+					inner join willow_college.tutor t on ct.tutorId = t.id
                     inner join willow_college.tutorrole tr on t.id = tr.tutorId
-                    inner join willow_college.courseclass cc on tr.courseClassId=cc.id where cc.id='${courseClass.id}'">
-					<field column="TUTOR" name="tutor" template="${t.givenName} ${t.familyName}" />
-				</entity>
-
-				<entity name="classSession" dataSource="onCourseDS"
-					query="select s.startDate, s.endDate, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from willow_college.session s inner join willow_college.courseclass cc on s.courseClassId=cc.id where cc.id='${courseClass.id}'">
-					<field name="startDate" column="s.startDate" />
-					<field name="endDate" column="s.endDate" />
-					<field name="dayName" column="dayName"/>
-					<field name="dayType" column="dayType"/>
-					<field name="time" column="time"/>
-				</entity>
+                    inner join willow_college.courseclass cc on tr.courseClassId=cc.id 
+                    inner join willow_college.course c on cc.courseId=c.id where c.id='${course.id}'
+                    and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+				<field column="TUTOR" name="tutor" template="${t.givenName} ${t.familyName}" />
 			</entity>
+
+			<entity name="dayName" dataSource="onCourseDS"
+				query="select distinct lower(dayname(s.startDate)) as dayName from willow_college.session s 
+				inner join willow_college.courseclass cc on s.courseClassId=cc.id 
+				inner join willow_college.course c on cc.courseId=c.id where c.id='${course.id}'
+				and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+				<field name="dayName" column="dayName" />
+			</entity>
+
+			<entity name="dayType" dataSource="onCourseDS"
+				query="select distinct IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from willow_college.session s 
+				inner join willow_college.courseclass cc on s.courseClassId=cc.id 
+				inner join willow_college.course c on cc.courseId=c.id where c.id='${course.id}'
+				and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+				<field name="dayType" column="dayType" />
+			</entity>
+
+			<entity name="dayType" dataSource="onCourseDS"
+				query="select distinct IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from willow_college.session s 
+				inner join willow_college.courseclass cc on s.courseClassId=cc.id 
+				inner join willow_college.course c on cc.courseId=c.id where c.id='${course.id}'
+				and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+				<field name="time" column="time" />
+			</entity>
+
+			<entity name="location" dataSource="onCourseDS"
+				query="select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc,
+				    PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from willow_college.site s 
+					inner join willow_college.room r on r.siteId=s.id 
+					inner join willow_college.courseclass cc on cc.roomId=r.id 
+					inner join willow_college.course c on cc.courseId=c.id where c.id='${course.id}'
+					and cc.isCancelled=0 and cc.startDate >= CURDATE() 
+                	group by s.suburb, s.postcode
+                	union 
+                	select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, 
+                		PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from willow_college.site s 
+                	inner join willow_college.room r on r.siteId=s.id 
+                	inner join willow_college.session ss on ss.roomId=r.id 
+                	inner join willow_college.courseclass cc on cc.id=ss.courseClassId
+                	inner join willow_college.course c on cc.courseId=c.id where c.id='${course.id}'
+                	and cc.isCancelled=0 and cc.startDate >= CURDATE()
+                	group by s.suburb, s.postcode">
+				<field name="loc" column="loc" />
+				<field name="postcode" column="s.postcode" />
+				<field name="suburb" column="s.suburb" />
+				<field name="lat_rad" column="lat_rad"/> 
+				<field name="lon_rad" column="lon_rad"/>
+			</entity>
+
+
+			<entity name="courseClassCode"
+				query="select cc.code from willow_college.courseclass cc where courseid='${course.id}' 
+						and cc.isCancelled=0 and cc.startDate >= CURDATE()"
+				dataSource="onCourseDS">
+				<field name="class_code" column="cc.code" />
+				<field name="price" column="cc.feeExGst" />
+			</entity>
+
 		</entity>
 
 		<entity name="place" dataSource="onCourseDS"
@@ -60,7 +93,6 @@
 			<field name="suburb" column="suburb" />
 			<field name="state" column="state" />
 			<field name="postcode" column="postcode" />
-			
 			<field name="loc" column="loc" />
 		</entity>
 	</document>

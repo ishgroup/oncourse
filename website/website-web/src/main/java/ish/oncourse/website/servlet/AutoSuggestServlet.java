@@ -51,7 +51,7 @@ public class AutoSuggestServlet extends ServiceAwareServlet {
 		JSONObject obj = new JSONObject();
 		obj.put("label", doc.get(Field.NAME));
 		obj.put("category", "Courses");
-		obj.put("href", "/courses?id=" + doc.get(Field.ID));
+		obj.put("href", "/coursedetails?id=" + doc.get(Field.ID));
 		return obj;
 	}
 

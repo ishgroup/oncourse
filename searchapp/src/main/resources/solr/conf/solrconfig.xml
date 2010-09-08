@@ -7,9 +7,7 @@
 	<lib dir="../../contrib/clustering/lib/downloads/" />
 	<lib dir="../../contrib/clustering/lib/" />
 	<lib dir="/total/crap/dir/ignored" />
-
-	<dataDir>${solr.data.dir:./solr/data}</dataDir>
-
+	
 	<indexDefaults>
 		<useCompoundFile>false</useCompoundFile>
 		<mergeFactor>10</mergeFactor>
@@ -95,10 +93,10 @@
 			<str name="defType">dismax</str>
 			<str name="echoParams">explicit</str>
 			<float name="tie">0.01</float>
-			<str name="qf">course_name^5 course_code^5 suburb^3 postcode^3 class_code^3 course_tutor^3 dayName^3 dayType^3 detail^1</str>
-			<str name="pf">course_name^5 course_code^5 suburb^3 postcode^3 class_code^3 course_tutor^3 dayName^3 dayType^3 detail^1</str>
+			<str name="qf">name^10 course_code^10 class_code^10 suburb^5 postcode^5 course_tutor^5 dayName^5 dayType^5 detail^1</str>
+			<str name="pf">name^10 course_code^10 class_code^10 suburb^5 postcode^5 course_tutor^5 dayName^5 dayType^5 detail^1</str>
 			<str name="bf"></str>
-			<str name="fl">course_name, course_code, course_suburb, course_postcode, class_code, course_tutor, dayName, dayType, detail</str>
+			<str name="fl">name course_code class_code suburb postcode course_tutor dayName dayType detail</str>
 			<str name="mm">2&lt;-25% 9&lt;-3</str>
 			<int name="ps">100</int>
 			<str name="q.alt">*:*</str>
