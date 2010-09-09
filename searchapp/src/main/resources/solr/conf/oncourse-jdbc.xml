@@ -6,7 +6,7 @@
 
 	<document>
 		<entity name="course" dataSource="onCourseDS"
-			query="select id, 'course' as type, name, detail, code, collegeId from course where isDeleted=0"
+			query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0"
 			pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
@@ -17,7 +17,7 @@
 			<field name="collegeId" column="collegeId" />
 
 			<entity name="tutor" dataSource="onCourseDS" transformer="TemplateTransformer"
-				query="select distinct ct.givenName, ct.familyName from contact ct 
+				query="select distinct ct.givenName, ct.familyName from Contact ct 
 					inner join tutor t on ct.tutorId = t.id
                     inner join tutorrole tr on t.id = tr.tutorId
                     inner join courseclass cc on tr.courseClassId=cc.id 
@@ -27,7 +27,7 @@
 			</entity>
 
 			<entity name="dayName" dataSource="onCourseDS"
-				query="select distinct lower(dayname(s.startDate)) as dayName from session s 
+				query="select distinct lower(dayname(s.startDate)) as dayName from Session s 
 				inner join courseclass cc on s.courseClassId=cc.id 
 				inner join course c on cc.courseId=c.id where c.id='${course.id}'
 				and cc.isCancelled=0 and cc.startDate >= CURDATE()">
@@ -35,7 +35,7 @@
 			</entity>
 
 			<entity name="dayType" dataSource="onCourseDS"
-				query="select distinct IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from session s 
+				query="select distinct IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from Session s 
 				inner join courseclass cc on s.courseClassId=cc.id 
 				inner join course c on cc.courseId=c.id where c.id='${course.id}'
 				and cc.isCancelled=0 and cc.startDate >= CURDATE()">
@@ -43,7 +43,7 @@
 			</entity>
 
 			<entity name="dayType" dataSource="onCourseDS"
-				query="select distinct IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from session s 
+				query="select distinct IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s 
 				inner join courseclass cc on s.courseClassId=cc.id 
 				inner join course c on cc.courseId=c.id where c.id='${course.id}'
 				and cc.isCancelled=0 and cc.startDate >= CURDATE()">
@@ -52,7 +52,7 @@
 
 			<entity name="location" dataSource="onCourseDS"
 				query="select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc,
-				    PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from site s 
+				    PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from Site s 
 					inner join room r on r.siteId=s.id 
 					inner join courseclass cc on cc.roomId=r.id 
 					inner join course c on cc.courseId=c.id where c.id='${course.id}'
@@ -60,7 +60,7 @@
                 	group by s.suburb, s.postcode
                 	union 
                 	select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, 
-                		PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from site s 
+                		PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from Site s 
                 	inner join room r on r.siteId=s.id 
                 	inner join session ss on ss.roomId=r.id 
                 	inner join courseclass cc on cc.id=ss.courseClassId
@@ -76,7 +76,7 @@
 
 
 			<entity name="courseClassCode"
-				query="select cc.code from courseclass cc where courseid='${course.id}' 
+				query="select cc.code from CourseClass cc where courseid='${course.id}' 
 						and cc.isCancelled=0 and cc.startDate >= CURDATE()"
 				dataSource="onCourseDS">
 				<field name="class_code" column="cc.code" />
