@@ -1,4 +1,4 @@
-package ish.oncourse.website.components;
+package ish.oncourse.ui.components;
 
 import java.text.DecimalFormat;
 import java.text.Format;

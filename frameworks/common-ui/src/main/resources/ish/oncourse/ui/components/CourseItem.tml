@@ -15,10 +15,10 @@
 		<h5>${availMsg}</h5>
 
 		<t:loop source="course.enrollableClasses" value="courseClass">
-			<span t:type="courseclassitem" courseClass="courseClass" />
+			<span t:type="ui/courseclassitem" courseClass="courseClass" />
 		</t:loop>
 		<t:if t:test="course.allowWaitingList">
-			<span t:type="WaitingListItem" course="course" />
+			<span t:type="ui/WaitingListItem" course="course" />
 		</t:if>
 	</div>
 </t:container>

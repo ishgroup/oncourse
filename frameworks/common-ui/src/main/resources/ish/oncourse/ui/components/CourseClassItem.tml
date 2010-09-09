@@ -67,7 +67,7 @@
 					</t:if>
 					<p:else>
 						<t:if test="hasSite">
-							<span t:type="roomLocation" room="courseClass.room"
+							<span t:type="ui/roomLocation" room="courseClass.room"
 								withRoomName="false" disabledLink="false" />
 							<p:else>TBA</p:else>
 						</t:if>
@@ -87,14 +87,14 @@
 			<t:if test="excludePrice">
 				<p:else>
 					<li>
-						<span t:type="CourseClassPrice" courseClass="courseClass" />
+						<span t:type="ui/CourseClassPrice" courseClass="courseClass" />
 					</li>
 				</p:else>
 			</t:if>
 		</ul>
 		<t:body />
 		<t:if test="tutorPortal" negate="true">
-			<span t:type="CourseClassShortlistControl" courseClass="courseClass" />
+			<span t:type="ui/CourseClassShortlistControl" courseClass="courseClass" />
 		</t:if>
 		<t:if test="courseClass.detail">
 			<div class="detail_for_class" id="detail_for_class_${courseClass.id}"
@@ -108,14 +108,14 @@
 			<div class="bubbleInfo">
 				<div class="tooltip_popup enrol_tooltip">
 					<div class="bubble_top bubble_content clearfix">
-						<span t:type="ClassTimingDisplay" courseClass="courseClass" />
+						<span t:type="ui/ClassTimingDisplay" courseClass="courseClass" />
 					</div>
 					<div class="bubble_middle bubble_content clearfix">
 						<t:if test="courseClass.availableEnrolmentPlaces">
-							<span t:type="CourseClassPlacesAvailable" courseClass="courseClass" />
+							<span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass" />
 							<t:if test="hasSiteName"> at ${courseClass.room.site.name}.</t:if>
 							<p:else>
-								<span t:type="WaitingListItem" courseClass="courseClass"
+								<span t:type="ui/WaitingListItem" courseClass="courseClass"
 									course="courseClass.course" />
 								<br style="clear:left;" />
 							</p:else>
@@ -141,7 +141,7 @@
 			-->
 			<t:if test="courseClass.hasAnyTimelineableSessions">
 				<div id="sessions_for_class_${courseClass.id}" class="${sessionForClass}">
-					<span t:type="TimetableEvents" displayedObjects="sortedTimelineableSessions"
+					<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
 						headerLabels="timetableLabels" cssTableClass="cssTableClass"
 						cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"
 						dateFormat="dateFormat" timeFormat="timeFormat" />

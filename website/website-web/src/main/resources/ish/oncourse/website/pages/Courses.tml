@@ -2,14 +2,14 @@
 <html t:type="ui/pagewrapper" title="${title}"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<!-- TODO implement SearchCriteria component-->
-	<span t:type="quicksearch" />
+	<span t:type="ui/quicksearch" />
 	<div id="toggle-results-map">
       <a href="#" class="toggle_locations">Locations</a>
     </div>
-	<span t:type="GoogleMapSites" sites="mapSites" />
+	<span t:type="ui/GoogleMapSites" sites="mapSites" />
 	<div class="post-collapse">
 		<t:loop source="courses" value="course">
-			<span t:type="courseitem" course="course" />
+			<span t:type="ui/courseitem" course="course" />
 		</t:loop>
 	</div>
 </html>

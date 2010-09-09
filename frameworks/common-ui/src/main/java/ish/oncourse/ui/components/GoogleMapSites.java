@@ -1,4 +1,4 @@
-package ish.oncourse.website.components;
+package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Site;
 

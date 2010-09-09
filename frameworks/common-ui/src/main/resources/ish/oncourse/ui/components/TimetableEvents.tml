@@ -19,7 +19,7 @@
         	- <t:output value = "event.endDate" format = "itemTimeFormatter" />
         	</t:if>
       </td>
-      <td><span t:type="RoomLocation" room="event.room" withRoomName="true" /> </td>
+      <td><span t:type="ui/RoomLocation" room="event.room" withRoomName="true" /> </td>
     </tr>
   </t:loop>
 
