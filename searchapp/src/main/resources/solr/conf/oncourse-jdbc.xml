@@ -6,8 +6,7 @@
 
 	<document>
 		<entity name="course" dataSource="onCourseDS"
-			query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0"
-			pk="id" transformer="HTMLStripTransformer">
+			query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0" pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
 			<field name="doctype" column="type" />
