@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
-
 	<dataSource name="onCourseDS" type="JdbcDataSource" jndiName="java:comp/env/jdbc/oncourse"/>
 	<dataSource name="onCourseRef" type="JdbcDataSource" jndiName="java:comp/env/jdbc/oncourse_reference"/>
 
