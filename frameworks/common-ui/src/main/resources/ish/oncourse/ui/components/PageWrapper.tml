@@ -11,7 +11,7 @@
 		<head t:type="ui/pagehead" />
 		<t:extension-point id="headBottom" />
 	</head>
-	<body t:type="any" class="internal-page" id="prop:bodyId">
+	<body t:type="any" class="prop:bodyClass" id="prop:bodyId">
 		<t:extension-point id="bodyTop" />
 		<div t:type="ui/bodylayout">
 			<t:body />
