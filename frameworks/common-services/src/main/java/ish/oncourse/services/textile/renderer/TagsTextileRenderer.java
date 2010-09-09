@@ -69,7 +69,8 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			String maxLevels = tagParams.get(TextileUtil.TAGS_MAX_LEVELS_PARAM);
 			String showDetails = tagParams
 					.get(TextileUtil.TAGS_SHOW_DETAIL_PARAM);
-			String hideTopLevel = tagParams.get(TextileUtil.TAGS_HIDE_TOP_LEVEL);
+			String hideTopLevel = tagParams
+					.get(TextileUtil.TAGS_HIDE_TOP_LEVEL);
 			String filteredParam = tagParams
 					.get(TextileUtil.TAGS_FILTERED_PARAM);
 			String paramName = tagParams.get(TextileUtil.PARAM_NAME);
@@ -77,37 +78,37 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			Tag parentTag = null;
 			if (paramName != null) {
 				parentTag = tagService.getSubTagByName(paramName);
-				if(hideTopLevel == null){
-					hideTopLevel="false";
+				if (hideTopLevel == null) {
+					hideTopLevel = "false";
 				}
 			} else {
 				parentTag = tagService.getRootTag();
-				hideTopLevel="true";
+				hideTopLevel = "true";
 			}
 			if (parentTag != null) {
 				return getResult(parentTag, entityType,
 						maxLevels != null ? Integer.valueOf(maxLevels) : 1,
 						showDetails != null ? Boolean.valueOf(showDetails)
-								: null,Boolean.valueOf(hideTopLevel), filteredParam != null ? Boolean
-								.valueOf(filteredParam) : null);
+								: null, Boolean.valueOf(hideTopLevel),
+						filteredParam != null ? Boolean.valueOf(filteredParam)
+								: null, 0);
 			}
 		}
 		return "";
 	}
 
 	public String getResult(Tag parentTag, String entityType,
-			Integer maxLevels, Boolean showDetails, Boolean hideTopLevel, Boolean filteredParam) {
+			Integer maxLevels, Boolean showDetails, Boolean hideTopLevel,
+			Boolean filteredParam, Integer level) {
 		String result = "";
-		if(!hideTopLevel){
-			result += "<div class=\"tagGroup\"><ul><li id=\"" + parentTag.getId() + "\"><h2><a href=\""
-					+ getLink(parentTag, entityType) + "\">" + parentTag.getName()
-					+ "</a></h2>";
+		if (!hideTopLevel) {
+			result += "<div class=\"taggroup\"><ul>"
+					+ listOpening(entityType, parentTag, true);
 		}
-		result += "<div class=\"tagGroup\"><ul>";
+		result += "<div class=\"taggroup\"><ul>";
 		for (Tag subTag : parentTag.getWebVisibleTags()) {
-			result += "<li id=\"" + subTag.getId() + "\"><h2><a href=\""
-					+ getLink(subTag, entityType) + "\">" + subTag.getName()
-					+ "</a></h2>";
+			result += listOpening(entityType, subTag, hideTopLevel
+					&& level == 0);
 			if (Boolean.TRUE.equals(showDetails) && subTag.getDetail() != null) {
 				result += "<div class=\"taggroup_detail\">"
 						+ subTag.getDetail() + "</div>";
@@ -115,15 +116,28 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			if (!subTag.getWebVisibleTags().isEmpty()
 					&& (maxLevels == null || maxLevels > 0)) {
 				result += getResult(subTag, entityType,
-						maxLevels == null ? null : maxLevels - 1, showDetails, true,
-						filteredParam);
+						maxLevels == null ? null : maxLevels - 1, showDetails,
+						true, filteredParam, level + 1);
 			}
 			result += "</li>";
 		}
-		
+
 		result += "</ul></div>";
-		if(!hideTopLevel){
+		if (!hideTopLevel) {
 			result += "</li></ul></div>";
+		}
+		return result;
+	}
+
+	private String listOpening(String entityType, Tag tag, Boolean inHeaders) {
+		String result = "<li id=\"t" + tag.getId() + "\">";
+		if (inHeaders) {
+			result += "<h2>";
+		}
+		result += "<a href=\"" + getLink(tag, entityType) + "\">"
+				+ tag.getName() + "</a>";
+		if (inHeaders) {
+			result += "</h2>";
 		}
 		return result;
 	}

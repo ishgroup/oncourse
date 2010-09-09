@@ -28,7 +28,7 @@ public class PageWrapper {
 			Long nodeNumber = ((WebNodeTemplate) componentResources
 					.getPage().getComponentResources().getEmbeddedComponent(
 							WEB_NODE_COMPONENT_NAME)).getNode().getId();
-			return pageName + nodeNumber;
+			return pageName.toLowerCase() + nodeNumber;
 		}else if(COURSES_PAGE_REAL_NAME.equals(pageName)){
 			return COURSES_PAGE_NAME;
 		}
