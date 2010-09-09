@@ -7,6 +7,8 @@
 	<lib dir="../../contrib/clustering/lib/downloads/" />
 	<lib dir="../../contrib/clustering/lib/" />
 	<lib dir="/total/crap/dir/ignored" />
+
+    <dataDir>/var/onCourse/solr/data</dataDir>
 	
 	<indexDefaults>
 		<useCompoundFile>false</useCompoundFile>

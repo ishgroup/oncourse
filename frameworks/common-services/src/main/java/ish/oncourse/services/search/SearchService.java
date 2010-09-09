@@ -2,9 +2,6 @@ package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.apache.lucene.spatial.geohash.GeoHashUtils;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -13,121 +10,116 @@ import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.Map;
+
 public class SearchService implements ISearchService {
 
-	private static final Logger LOGGER = Logger.getLogger(SearchService.class);
+    private static final Logger LOGGER = Logger.getLogger(SearchService.class);
 
-	@Inject
-	private IWebSiteService webSiteService;
+    @Inject
+    private IWebSiteService webSiteService;
 
-	private SolrServer solrServer;
+    private SolrServer solrServer;
 
-	private SolrServer getSolrServer() {
-		if (solrServer == null) {
-			try {
-				CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(
-						System.getProperty("solr.server"));
-				solrServer = httpSolrServer;
-			} catch (Exception e) {
-				throw new RuntimeException("Unable to connect to solr server.",
-						e);
-			}
-		}
-		return solrServer;
-	}
+    private SolrServer getSolrServer() {
+        if (solrServer == null) {
+            try {
+                CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(
+                        System.getProperty("solr.server"));
+                solrServer = httpSolrServer;
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to connect to solr server.",
+                        e);
+            }
+        }
+        return solrServer;
+    }
 
-	public QueryResponse searchCourses(Map<SearchParam, String> params,
-			int start, int rows) {
-		try {
+    public QueryResponse searchCourses(Map<SearchParam, String> params,
+                                       int start, int rows) {
+        try {
 
-			SolrQuery q = new SolrQuery();
+            String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
 
-			/*
-			q.addFilterQuery(String.format("(" + Field.COLLEGE_ID + ":%s)",
-					webSiteService.getCurrentCollege().getId()));
+            SolrQuery q = new SolrQuery();
+            q.setParam("fl", "id, name");
+            q.setStart(start);
+            q.setRows(rows);
+            q.setIncludeScore(true);
 
-			q.addFilterQuery("doctype:course");
-			*/
+            q.setParam("fq", String.format("collegeId:%s doctype:course", collegeId));
 
-			// for text only searches use dismax parser
-			if (params.size() == 1 && params.get(SearchParam.s) != null) {
-				q.setQueryType("dismax");
-				q.setQuery(params.get(SearchParam.s).toLowerCase());
-			} else {
-				StringBuilder qString = new StringBuilder();
-				if (params.containsKey(SearchParam.day)) {
-					String day = params.get(SearchParam.day);
-					qString.append(
-							String.format("(dayName:%s || dayType:%s)", day,
-									day)).append(" ");
-				}
 
-				if (params.containsKey(SearchParam.time)) {
-					String time = params.get(SearchParam.time);
-					qString.append("time:" + time).append(" ");
-				}
+            if (params.size() == 1 && params.get(SearchParam.s) != null) {
+                q.setQueryType("dismax");
+                q.setQuery(params.get(SearchParam.s).toLowerCase());
+            } else {
+                StringBuilder qString = new StringBuilder();
+                if (params.containsKey(SearchParam.day)) {
+                    String day = params.get(SearchParam.day);
+                    qString.append(
+                            String.format("(dayName:%s || dayType:%s)", day,
+                                    day)).append(" ");
+                }
 
-				if (params.containsKey(SearchParam.near)) {
-					//{!frange}hsin(0.57, -1.3, lat_rad, lon_rad, 3963.205)
-					
-					String near = params.get(SearchParam.near);
-					double[] points = GeoHashUtils.decode(near);
-					qString.append("{!sfilt fl=loc}");
-					q.setParam(
-							"pt",
-							String.valueOf(points[0]) + ","
-									+ String.valueOf(points[1]));
-					q.setParam("d", "1");
-				}
+                if (params.containsKey(SearchParam.time)) {
+                    String time = params.get(SearchParam.time);
+                    qString.append("time:" + time).append(" ");
+                }
 
-				q.setQuery(qString.toString());
-			}
+                if (params.containsKey(SearchParam.near)) {
+                    String near = params.get(SearchParam.near);
+                    double[] points = GeoHashUtils.decode(near);
+                    qString.append("{!sfilt fl=course_loc}");
+                    q.setParam(
+                            "pt",
+                            String.valueOf(points[0]) + ","
+                                    + String.valueOf(points[1]));
+                    q.setParam("d", "10");
+                }
 
-			q.setStart(start);
-			q.setRows(rows);
-			q.setIncludeScore(true);
+                q.setQuery(qString.toString());
+            }
 
-			return getSolrServer().query(q);
-		} catch (Exception e) {
-			LOGGER.error("Failed to search courses.", e);
-			throw new SearchException("Unable to find courses.", e);
-		}
-	}
 
-	public QueryResponse autoSuggest(String term) {
-		try {
-			term = term.toLowerCase() + "*";
+            return getSolrServer().query(q);
+        } catch (Exception e) {
+            LOGGER.error("Failed to search courses.", e);
+            throw new SearchException("Unable to find courses.", e);
+        }
+    }
 
-			College college = webSiteService.getCurrentCollege();
+    public QueryResponse autoSuggest(String term) {
+        try {
 
-			SolrQuery q = new SolrQuery();
-			q.setParam("wt", "javabin");
+            College college = webSiteService.getCurrentCollege();
+            String collegeId = String.valueOf(college.getId());
+            
+            SolrQuery q = new SolrQuery();
+            q.setParam("wt", "javabin");
 
-			String query = String
-					.format("(name:%s collegeId:%s) || ((doctype:place suburb:%s postcode:%s) && (%s))",
-							term, String.valueOf(college.getId()), term, term,
-							buildStateQualifier(college));
+            StringBuilder query = new StringBuilder();
 
-			q.setQuery(query);
+            String[] terms = term.split("\\s");
+            for (int i = 0; i < terms.length; i++) {
+                String t = terms[i].toLowerCase() + "*";
 
-			return getSolrServer().query(q);
-		} catch (Exception e) {
-			LOGGER.error("Failed to search courses.", e);
-			throw new SearchException("Unable to find courses.", e);
-		}
-	}
+                query.append(String
+                        .format("(name:%s && collegeId:%s)", t, collegeId)).append("||");
 
-	private static String buildStateQualifier(College college) {
-		StringBuilder builder = new StringBuilder();
+                query.append(String.format("(doctype:place suburb:%s postcode:%s) ", t, t));
+                
+                if (i + 1 != terms.length) {
+                     query.append(" || ");
+                }
+            }
 
-		builder.append("(");
+            q.setQuery(query.toString());
 
-		for (String state : college.getCollegeSiteStates()) {
-			builder.append(Field.STATE).append(":").append(state).append(" ");
-		}
-
-		builder.append(")");
-
-		return builder.toString();
-	}
+            return getSolrServer().query(q);
+        } catch (Exception e) {
+            LOGGER.error("Failed to search courses.", e);
+            throw new SearchException("Unable to find courses.", e);
+        }
+    }
 }

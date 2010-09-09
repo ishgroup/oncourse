@@ -1,10 +1,8 @@
 package ish.oncourse.website.servlet;
 
-import ish.oncourse.services.search.Field;
 import ish.oncourse.services.search.ISearchService;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +33,16 @@ public class AutoSuggestServlet extends ServiceAwareServlet {
 		int i = 0, j = suggestions.getResults().size() - 1;
 
 		for (SolrDocument doc : suggestions.getResults()) {
-			String doctype = (String) doc.get(Field.DOCTYPE);
-			if ("course".equalsIgnoreCase(doctype)) {
-				jsonArray.put(j--, buildCourse(doc));
-			} else if ("place".equalsIgnoreCase(doctype)) {
-				jsonArray.put(i++, buildLocation(doc));
+            String doctype = (String) doc.get("doctype");
+            if ("course".equalsIgnoreCase(doctype)) {
+				jsonArray.put(i++, buildCourse(doc));
+			}
+		}
+
+        for (SolrDocument doc : suggestions.getResults()) {
+            String doctype = (String) doc.get("doctype");
+            if ("place".equalsIgnoreCase(doctype)) {
+				jsonArray.put( buildLocation(doc));
 			}
 		}
 
@@ -49,20 +52,20 @@ public class AutoSuggestServlet extends ServiceAwareServlet {
 
 	private JSONObject buildCourse(SolrDocument doc) {
 		JSONObject obj = new JSONObject();
-		obj.put("label", doc.get(Field.NAME));
+		obj.put("label", doc.get("name"));
 		obj.put("category", "Courses");
-		obj.put("href", "/coursedetails?id=" + doc.get(Field.ID));
+		obj.put("href", "/coursedetails?id=" + doc.get("id"));
 		return obj;
 	}
 
 	private JSONObject buildLocation(SolrDocument doc) {
 		JSONObject obj = new JSONObject();
 		
-		String[] points = ((String) doc.get(Field.LOCATION)).split(",");
+		String[] points = ((String) doc.get("loc")).split(",");
 		String geohash = GeoHashUtils.encode(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
-		
-		String suburb = ((List<String>) doc.get(Field.SUBURB)).get(0);
-		String postcode = ((List<String>) doc.get(Field.POSTCODE)).get(0);
+
+		String suburb = (String) doc.get("suburb");
+		String postcode = (String) doc.get("postcode");
 		
 		obj.put("label",  suburb + " " + postcode);
 		obj.put("category", "Show courses near...");
