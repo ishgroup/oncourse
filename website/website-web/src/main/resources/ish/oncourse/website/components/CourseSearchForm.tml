@@ -1,0 +1,23 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<div class="box span-5 noprint" id="search_box">
+		<h3>
+			<span>Search</span>
+		</h3>
+		<t:form t:id="search" name="search">
+			<t:textField t:id="s" class="quicksearch" size="15"
+				t:value="searchValue"></t:textField>
+			<t:submit t:id="find" value="Go!" class="find" />
+		</t:form>
+		<!-- wo:SearchInputs /-->
+		<div class="advanced-search-button clearafter">
+			<a class="show-advanced-search">
+				<span>More options</span>
+			</a>
+		</div>
+		<!--  TODO implement SeartInputs component-->
+		<div class="quicksearch-wrap-container">
+			<div class="quicksearch-wrap"></div>
+		</div>
+	</div>
+</t:container>

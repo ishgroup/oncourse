@@ -19,7 +19,7 @@
 	<h1><a href="${homeLink}">${collegeName}</a></h1>
 	
 	<div id="site_toolbar">
-		[webobject name="CourseSearchForm"/]
+		<span t:type="CourseSearchForm"/>
 		[wo:DynamicCookieView cookieKey = "shortlist" entityName = "CourseClass" /]
 	</div>
 </div>
