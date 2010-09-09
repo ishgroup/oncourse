@@ -5,5 +5,15 @@ package ish.oncourse.services.property;
  */
 public enum Property {
 
-	CustomComponentsPath, SolrUrl
+	CustomComponentsPath("CustomComponentsPath"), SolrServer("solr.server");
+
+    private String value;
+
+    private Property(String value) {
+       this.value = value;
+    }
+
+    public String value() {
+        return value;
+    }
 }

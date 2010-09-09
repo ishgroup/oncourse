@@ -52,7 +52,7 @@ public class PropertyService implements IPropertyService {
 			throw new NullPointerException("Null property");
 		}
 
-		return properties.get(property.name());
+		return properties.get(property.value());
 	}
 
 }

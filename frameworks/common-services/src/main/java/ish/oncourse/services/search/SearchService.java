@@ -1,6 +1,8 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
+import ish.oncourse.services.property.IPropertyService;
+import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.log4j.Logger;
 import org.apache.lucene.spatial.geohash.GeoHashUtils;
@@ -10,27 +12,56 @@ import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.util.Map;
 
 public class SearchService implements ISearchService {
 
-    private static final Logger LOGGER = Logger.getLogger(SearchService.class);
+    private static final Logger logger = Logger.getLogger(SearchService.class);
 
     @Inject
     private IWebSiteService webSiteService;
+
+    @Inject
+    private IPropertyService propertyService;
 
     private SolrServer solrServer;
 
     private SolrServer getSolrServer() {
         if (solrServer == null) {
+
             try {
-                CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(
-                        System.getProperty("solr.server"));
+                String solrURL = null;
+
+                try {
+                    Context ctx = new InitialContext();
+                    solrURL = (String) ctx.lookup("java:comp/env/" + Property.SolrServer.value());
+                    if (logger.isInfoEnabled()) {
+                        logger.info("SolrUrl configured through JNDI to: " + solrURL);
+                    }
+                } catch (NamingException ne) {
+                    logger.warn("SolrUrl not defined by JNDI, falling to secondary config", ne);
+                }
+
+                solrURL = (solrURL == null) ? propertyService.string(Property.SolrServer) : solrURL;
+                solrURL = (solrURL == null) ? System.getProperty(Property.SolrServer.value()) : solrURL;
+
+                if (solrURL == null) {
+                    throw new IllegalStateException("Undefined property: "
+                            + Property.SolrServer);
+                }
+
+                CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(solrURL);
+
                 solrServer = httpSolrServer;
+
             } catch (Exception e) {
                 throw new RuntimeException("Unable to connect to solr server.",
                         e);
             }
+
         }
         return solrServer;
     }
@@ -84,7 +115,7 @@ public class SearchService implements ISearchService {
 
             return getSolrServer().query(q);
         } catch (Exception e) {
-            LOGGER.error("Failed to search courses.", e);
+            logger.error("Failed to search courses.", e);
             throw new SearchException("Unable to find courses.", e);
         }
     }
@@ -94,7 +125,7 @@ public class SearchService implements ISearchService {
 
             College college = webSiteService.getCurrentCollege();
             String collegeId = String.valueOf(college.getId());
-            
+
             SolrQuery q = new SolrQuery();
             q.setParam("wt", "javabin");
 
@@ -108,9 +139,9 @@ public class SearchService implements ISearchService {
                         .format("(name:%s && collegeId:%s)", t, collegeId)).append("||");
 
                 query.append(String.format("(doctype:place suburb:%s postcode:%s) ", t, t));
-                
+
                 if (i + 1 != terms.length) {
-                     query.append(" || ");
+                    query.append(" || ");
                 }
             }
 
@@ -118,7 +149,7 @@ public class SearchService implements ISearchService {
 
             return getSolrServer().query(q);
         } catch (Exception e) {
-            LOGGER.error("Failed to search courses.", e);
+            logger.error("Failed to search courses.", e);
             throw new SearchException("Unable to find courses.", e);
         }
     }
