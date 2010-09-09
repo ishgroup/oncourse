@@ -6,9 +6,10 @@
 	<lib dir="../../dist/" regex="apache-solr-clustering-\d.*\.jar" />
 	<lib dir="../../contrib/clustering/lib/downloads/" />
 	<lib dir="../../contrib/clustering/lib/" />
-	<lib dir="/total/crap/dir/ignored" />
 
     <dataDir>/var/onCourse/solr/data</dataDir>
+	
+	<dataDir>${SOLR_DATA}</dataDir>
 	
 	<indexDefaults>
 		<useCompoundFile>false</useCompoundFile>
@@ -65,8 +66,7 @@
 					<str name="rows">10</str>
 				</lst>
 				<lst>
-					<str name="q">static firstSearcher warming query from
-						solrconfig.xml</str>
+					<str name="q">static firstSearcher warming query from solrconfig.xml</str>
 				</lst>
 			</arr>
 		</listener>
