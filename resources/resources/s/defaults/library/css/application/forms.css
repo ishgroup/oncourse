@@ -1,0 +1,320 @@
+/*****************
+
+Filename: forms.css (Default)
+Purpose: Affects the styling of forms and other input elements used in the enrolment/registration process.
+Notes:
+
+
+- Table of Contents -
+* Forms 
+* Discounts and Concessions
+* Helpers
+* Enrolment forms
+* Status/Error Messages and Notes
+* Login panel
+
+****************/
+
+/* FORMS */
+
+fieldset { padding:1.4em; margin: 0 0 1.5em 0; border: 1px solid #ccc; }
+legend { font-weight: bold; font-size:1.2em; }
+label { font-weight: bold; }
+textarea, input[type='text'], input[type='password'], select { border: 1px solid #ccc; background: #fff; }
+textarea:hover, input[type='text']:hover, input[type='password']:hover, select:hover { border-color: #aaa; }
+textarea:focus, input[type='text']:focus, input[type='password']:focus, select:focus { border-color: #888; outline: 2px solid #ffffaa; }
+input, select { cursor: pointer; }
+input[type='text'],input[type='password'] { cursor: text; }
+
+
+/* 
+ABOVE represents the ideal defaults
+
+BELOW are the originals styles used by onCourse. Ideally these will get moved above the line as it's integrated back into the source. 
+*/
+
+
+/* Forms */
+form fieldset div.radio-list input {
+	margin-top: 0.5em;
+}
+form fieldset div.radio-list br {
+	clear: none;
+	font-size: 2em;
+}
+form fieldset div.radio-list label, #content form fieldset div.radio-list label {
+	width: auto;
+	padding-right: 0;
+}
+.btnhidden {
+	position: absolute;
+	top: -8000px;
+}
+.conditions {
+	margin-left: 220px;
+}
+
+/* Discounts and Concessions
+----------------------------------------- */
+dt.discount-price-title, .discount-price, dt.concession-price-title, dd.concession-price {
+	color: #999999;
+	font-style: italic;
+	font-weight: normal;
+}
+dt.concession-price-title, dd.concession-price {
+	display: none;
+	visibility: hidden;
+}
+
+#studentConcessions input.concession-button {
+	float: left;
+	margin-left: 120px;
+	margin-top: 60px;
+}
+
+a.concession-button {
+	float: left;
+	margin: 60px 0 0 20px;
+	padding: 0;
+}
+
+span.fee-disabled { text-decoration: line-through; color: #ccc; }
+span.fee-discounted { color: #992211; }
+
+
+	/* Forms */
+	
+	
+	label {
+		display: block;
+		width: 160px;
+		margin: 2px;
+		padding: 3px;
+		float: left;
+	}
+	
+	p.fieldset-intro { margin-left: 165px; }
+	
+	#content label {
+		text-align: right;
+		width: 180px;
+		padding-right: 20px;
+	}
+	
+	input.input-fixed {
+		width: auto;
+		padding: 3px;
+		border: 1px solid #DDDDDD;
+		background-color: #F5F5F5;
+	}
+	
+	form br {
+		clear: left;
+	}
+	
+	/* TWB */
+	form.textileform p {text-align:left;}
+	form label {display:inline; width:40%;}
+	span.valid {width:40%; position:relative; }
+	span.validate {width:40%; position:relative;}
+	span.validate-text {	
+		display:block;	position:absolute; right:-240px; top:-0.2em; 
+	}
+	
+	form.textileform span.validate-text {	
+		display:inline;	position:relative;
+	}
+	
+	form.textileform input, form.textileform textarea {	
+		display:inline;	position:relative;
+	}
+
+	form.textileform fieldset.textileform-radiogroup label {	
+		display:inline;	position:relative; width: auto; float: none; text-align:left; 
+	}
+
+.hint, .reason {display:block; 
+		width: 220px;
+		margin: 0 0 0 10px;
+		padding: 3px;
+		background-color: #FEF0F0;
+		border: 1px solid #FCC5C5;
+		font-size: 90%;
+		font-weight: bold;
+		margin-bottom:-1.5em;
+	}
+
+	.hint { background-color: #FDF6D6; border: 1px solid #F9E99C; }
+	.hidden-text {display:none;}
+	
+	/* Helpers */
+	
+	fieldset span.blocker, form p { display: block; position: relative; clear:both; }
+	
+	.reason-pointer, .hint-pointer {
+		display: block;
+		width: 12px;
+		height: 15px;
+		/**/
+		position: absolute;
+		top: 2px;
+		left: 0px;
+		/**/
+		background-image: url('../images/message-pointers.gif');
+		background-position: top right;
+		background-repeat: no-repeat;
+	}
+	
+
+		.hint-pointer { background-position: 50% 0; }
+	
+	.validate input.input-fixed { background-color: #FEF0F0; }
+	
+	div.validate { margin: 0 0 -11px 0;}
+	
+	.user-details { margin: 0 0 0 0 !important; padding: 0 0 0 0 !important; }
+	
+	.description {
+		display: block;
+		font-size: 90%;
+		color: #666666;
+	}
+		
+	
+	#studentform fieldset,
+	#paymentform fieldset,
+	#enrolmentform fieldset,
+	#enrolmentform fieldset,
+	#loginform fieldset {
+		margin: 0 0 20px 0;
+		padding: 10px 20px 10px 0;
+		/*background: url(/s/img/panel-wide-btm.png) no-repeat 0 100%;*/
+		border: 1px solid silver;
+		border-radius: 8px;
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+	}
+	
+/* Forms used during the enrolment process */
+
+h2 span.useremail { color:#778899; margin:0 0.2em; }
+.payments { border: none; width: 100%; margin-bottom: 20px; }
+
+.payments thead th {
+color:#334455;
+font-size:150%;
+font-weight:normal;
+
+text-align:left;	
+padding: 0;
+width: 100%;
+border: none;
+border-bottom:3px solid #CCCCCC;
+}
+
+.payments thead th span {
+color:#AAAAAA;
+font-size:70%;
+}
+
+.payments tbody td em {
+color:#888888;
+font-size:90%;
+font-style:normal;
+margin-left:0px;
+}
+
+.payments tbody td { border-right: none; border-bottom:1px solid #D6D6D6;}
+
+.payments div { margin-bottom: 0; }
+
+.payments tbody.totals tr {
+background:#F7F7F7 none repeat scroll 0 0;
+border-top:2px solid #D6D6D6;
+}
+
+table.payments tbody td.alignright { padding: 0; text-align: right; width: 80px; }
+table.payments tbody.totals td { padding: 0; border-top:1px solid #D6D6D6; font-weight: bold;} 
+
+span#addstudent, span#questionnaire {
+background:transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
+margin:0 0 0 8px;
+padding:5px 0 5px 24px;
+}
+
+.btn {
+background:#FFFFFF url(/s/img/button.png) repeat-x scroll 0 50%;
+border-color:#DCDCDC #B6B6B6 #B6B6B6 #DCDCDC;
+border-style:solid;
+border-width:2px;
+}
+
+div#content form#enrolmentform table.payments label { padding: 0; text-align: left; width: 100%; }
+div#content form#enrolmentform table.payments em { margin:25px; }
+div#content form#enrolmentform table.payments tbody td.alignright, div#content form#enrolmentform table.payments tbody.totals td#total { padding: 4px 10px; }
+div#content form#enrolmentform table.payments tbody.totals span#addstudent:hover { cursor: pointer; }
+
+/* Status/Error Messages and Notes */
+
+.message, .error, .validation {
+	background-color: pink;
+	padding:.4em .8em;margin-bottom:1.6em;border:1px solid #ddd; -moz-border-radius:8px; -webkit-border-radius:8px; -border-radius:8px;
+}
+
+.message { background-color: #EEF6FF; border-color: #A3E0F0; color: #0066AA; }
+.error, .validation { background-color: #FEF0F0; border-color: #FCC5C5; color: #990000;  }
+
+div.message p { margin-bottom: 0px; color: #0066AA; }
+.error p, .validation p { margin: 0px; color: #990000; }
+
+.note {
+color:#777777;
+font-size:90%;
+line-height:1.6em;
+margin:0.5em;
+padding:0;
+}
+
+.reason-pointer, .hint-pointer {
+background-image:url(../../images/message-pointers.gif);
+background-position:right top;
+background-repeat:no-repeat;
+display:block;
+height:15px;
+left:0;
+position:absolute;
+top:2px;
+width:12px;
+}
+
+.note strong {
+color:#333333;
+}
+
+.alert 	{ background:transparent url(/s/img/alert.png) no-repeat scroll 0 0;
+padding-left:18px; }
+
+div.form-controls {
+margin:1em 0 1em 11.5em;
+padding:0 20px;
+}
+		
+/*  Forms
+------------------------------------------- */
+input.hiddenSubmit, form.textileform input[type='hidden'] {display: none;}	
+
+/* style for the default text in form fields that gets removed when you focus on that field */
+input.defaultTextActive {color:silver;}
+
+/* Admin login panel
+------------------------------------------- */
+div#AdminLogin {
+	background: url(../../images/ishAdminLogo.png) no-repeat 10px 20px;
+	padding-left: 140px;
+}
+
+div#AdminLogin p.login, div#AdminLogin p.note {
+	text-align: center;
+}
+
+
