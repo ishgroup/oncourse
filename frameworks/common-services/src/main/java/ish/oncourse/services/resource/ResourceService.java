@@ -14,7 +14,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 
-
 public class ResourceService implements IResourceService {
 
 	private final static String DEFAULT_FOLDER = "default";
@@ -29,29 +28,32 @@ public class ResourceService implements IResourceService {
 	private final File[] noCustomFolderDefaultsRoot;
 	private IWebSiteService siteService;
 
-	private static final Logger logger = Logger.getLogger(ResourceService.class);
+	private static final Logger logger = Logger
+			.getLogger(ResourceService.class);
 
-
-	public ResourceService(
-			@Inject IPropertyService propertyService,
+	public ResourceService(@Inject IPropertyService propertyService,
 			@Inject IWebSiteService siteService) {
 
 		String customComponentsPath = "";
 		try {
 			Context ctx = new InitialContext();
-			customComponentsPath = (String) ctx.lookup("java:comp/env/" + Property.CustomComponentsPath.value());
+			customComponentsPath = (String) ctx.lookup("java:comp/env/"
+					+ Property.CustomComponentsPath.value());
 			if (logger.isInfoEnabled()) {
-				logger.info("CustomComponentsPath configured through JNDI to: " + customComponentsPath);
+				logger.info("CustomComponentsPath configured through JNDI to: "
+						+ customComponentsPath);
 			}
-		} catch(NamingException ne) {
-			logger.warn("CustomComponentsPath not defined by JNDI, falling to secondary config", ne);
+		} catch (NamingException ne) {
+			logger
+					.warn(
+							"CustomComponentsPath not defined by JNDI, falling to secondary config",
+							ne);
 		}
 
 		if ((customComponentsPath == null) || ("".equals(customComponentsPath))) {
 			customComponentsPath = propertyService
 					.string(Property.CustomComponentsPath);
 		}
-
 
 		if (customComponentsPath == null) {
 			throw new IllegalStateException("Undefined property: "
@@ -94,33 +96,31 @@ public class ResourceService implements IResourceService {
 		String siteFolder = siteService.getResourceFolderName();
 
 		if (siteFolder != null) {
-			resourceRoots = new File[] { new File(customComponentsRoot, siteFolder),
+			resourceRoots = new File[] {
+					new File(customComponentsRoot, siteFolder),
 					customComponentsDefaultsRoot };
 		}
 
 		return resourceRoots;
 	}
 
-	public PrivateResource getTemplateResource(String templateKey, String fileName) {
+	public PrivateResource getTemplateResource(String templateKey,
+			String fileName) {
 
-		FileResource resource = new FileResource(
-				LAYOUT_FOLDER + File.separator + templateKey,
-				fileName);
+		FileResource resource = new FileResource(LAYOUT_FOLDER + File.separator
+				+ templateKey, fileName);
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Getting template resource for templateKey:["
-					+ templateKey + "] and fileName:[" + fileName
-					+ "]");
+					+ templateKey + "] and fileName:[" + fileName + "]");
 		}
 
 		if (!resource.exists()) {
-			resource = new FileResource(
-					LAYOUT_FOLDER + File.separator + ResourceService.DEFAULT_FOLDER,
-					fileName);
+			resource = new FileResource(LAYOUT_FOLDER + File.separator
+					+ ResourceService.DEFAULT_FOLDER, fileName);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Getting template resource for templateKey:["
-						+ templateKey + "] and fileName:[" + fileName
-						+ "]");
+						+ templateKey + "] and fileName:[" + fileName + "]");
 			}
 
 		}
@@ -153,7 +153,8 @@ public class ResourceService implements IResourceService {
 	}
 
 	private Resource getFrameworkResource(String framework, String fileName) {
-		String path = "Frameworks/" + framework + ".framework/"
+		String path = "Frameworks/" + framework + ".framework"
+				+ ("".equals(WEBSERVERRESOURCES_FOLDER) ? "" : "/")
 				+ WEBSERVERRESOURCES_FOLDER;
 		return new PublicFileResource(WEB_FOLDER, path, fileName);
 	}

@@ -48,12 +48,12 @@ public class ResourceServiceTest extends Assert {
 
 		Resource r2 = resourceService.getWebResource("app", "x/some.css");
 		assertNotNull(r2);
-		assertEquals("/s/WebServerResources/x/some.css", r2.getPublicUrl());
+		assertEquals("/s/x/some.css", r2.getPublicUrl());
 
 		Resource r3 = resourceService.getWebResource("Ajax", "x/some.css");
 		assertNotNull(r3);
 		assertEquals(
-				"/s/Frameworks/Ajax.framework/WebServerResources/x/some.css",
+				"/s/Frameworks/Ajax.framework/x/some.css",
 				r3.getPublicUrl());
 	}
 
