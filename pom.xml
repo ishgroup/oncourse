@@ -25,6 +25,7 @@
 		<module>searchapp</module>
     	<module>enrol</module>
     	<module>portal</module>
+    	<module>asset</module>
   </modules>
 
   <build>
