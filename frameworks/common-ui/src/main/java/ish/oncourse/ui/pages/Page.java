@@ -1,4 +1,4 @@
-package ish.oncourse.website.pages;
+package ish.oncourse.ui.pages;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Component;

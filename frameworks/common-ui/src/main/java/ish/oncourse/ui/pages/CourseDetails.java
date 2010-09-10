@@ -1,4 +1,4 @@
-package ish.oncourse.website.pages;
+package ish.oncourse.ui.pages;
 
 import java.util.List;
 

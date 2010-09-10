@@ -22,7 +22,7 @@ public class ResourceService implements IResourceService {
 	private final static String LAYOUT_FOLDER = "layouts";
 	private final static String CONFIGS_FOLDER = "config";
 	private final static String WEB_FOLDER = "s";
-	private final static String WEBSERVERRESOURCES_FOLDER = "WebServerResources";
+	private final static String WEBSERVERRESOURCES_FOLDER = "";
 
 	private final File customComponentsRoot;
 	private final File customComponentsDefaultsRoot;

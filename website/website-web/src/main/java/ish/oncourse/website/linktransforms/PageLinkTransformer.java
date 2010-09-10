@@ -29,6 +29,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
 	private static final Pattern REGEX_NODE_PATTERN = Pattern.compile("/page/(\\d++)");
+	private static final Pattern COURSES_PATTERN = Pattern.compile("/courses(/(\\w++))?");
+	private static final Pattern PAGE_PATTERN = Pattern.compile("/page(/(\\w++))?");
 
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -48,13 +50,26 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			if (nodeNumber != null) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
 				PageRenderRequestParameters newRequest = new PageRenderRequestParameters(
-						"Page", new EmptyEventContext(), false);
+						"ui/Page", new EmptyEventContext(), false);
 				LOGGER.info("Rewrite InBound: Matched page node! Path: '" + path + "', Node: '" + nodeNumber + "'");
 
 				return newRequest;
 			}
 		}
+		
+		if(COURSES_PATTERN.matcher(path).find()){
+			PageRenderRequestParameters newRequest = new PageRenderRequestParameters(
+					"ui/Courses", new EmptyEventContext(), false);
+			
+			return newRequest;
+		}
 
+		if(PAGE_PATTERN.matcher(path).find()){
+			PageRenderRequestParameters newRequest = new PageRenderRequestParameters(
+					"ui/Page", new EmptyEventContext(), false);
+			
+			return newRequest;
+		}
 		return null;
 	}
 
