@@ -1,94 +1,98 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
 
-	<dataSource name="onCourseDS" type="JdbcDataSource" jndiName="java:comp/env/jdbc/oncourse"/>
-	<dataSource name="onCourseRef" type="JdbcDataSource" jndiName="java:comp/env/jdbc/oncourse_reference"/>
+    <dataSource name="onCourseDS" type="JdbcDataSource" jndiName="java:comp/env/jdbc/oncourse"/>
+    <dataSource name="onCourseRef" type="JdbcDataSource" jndiName="java:comp/env/jdbc/oncourse_reference"/>
 
-	<document>
-		<entity name="course" dataSource="onCourseDS"
-			query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0"
-				pk="id" transformer="HTMLStripTransformer">
+    <document>
+        <entity name="course" dataSource="onCourseDS"
+            query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0"
+                pk="id" transformer="HTMLStripTransformer">
 
-			<field name="id" column="id" />
-			<field name="doctype" column="type" />
-			<field name="name" column="name" />
-			<field name="detail" column="detail" stripHTML="true" />
-			<field name="course_code" column="code" />
-			<field name="collegeId" column="collegeId" />
+            <field name="id" column="id" />
+            <field name="doctype" column="type" />
+            <field name="name" column="name" />
+            <field name="detail" column="detail" stripHTML="true" />
+            <field name="course_code" column="code" />
+            <field name="collegeId" column="collegeId" />
 
-			<entity name="tutor" dataSource="onCourseDS" transformer="TemplateTransformer"
-				query="select distinct ct.givenName, ct.familyName from contact ct 
-					inner join tutor t on ct.tutorId = t.id
-                    inner join tutorrole tr on t.id = tr.tutorId
-                    inner join courseclass cc on tr.courseClassId=cc.id 
-                    inner join course c on cc.courseId=c.id where c.id='${course.id}'
-                    and cc.isCancelled=0">
-				<field column="TUTOR" name="tutor" template="${t.givenName} ${t.familyName}" />
-			</entity>
+            <entity name="tutor" dataSource="onCourseDS" transformer="TemplateTransformer"
+                query="select distinct ct.givenName, ct.familyName from Contact ct
+                    inner join Tutor t on ct.tutorId = t.id
+           inner join TutorRole tr on t.id = tr.tutorId
+           inner join CourseClass cc on tr.courseClassId=cc.id
+           inner join Course c on cc.courseId=c.id where c.id='${course.id}'
+           and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+                <field column="TUTOR" name="tutor" template="${t.givenName} ${t.familyName}" />
+            </entity>
 
-			<entity name="dayName" dataSource="onCourseDS"
-				query="select distinct lower(dayname(s.startDate)) as dayName from session s 
-				inner join courseclass cc on s.courseClassId=cc.id 
-				inner join course c on cc.courseId=c.id where c.id='${course.id}'
-				and cc.isCancelled=0">
-				<field name="dayName" column="dayName" />
-			</entity>
+            <entity name="dayName" dataSource="onCourseDS"
+                query="select distinct lower(dayname(s.startDate)) as dayName from Session s
+                inner join CourseClass cc on s.courseClassId=cc.id
+                inner join Course c on cc.courseId=c.id where c.id='${course.id}'
+                and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+                <field name="dayName" column="dayName" />
+            </entity>
 
-			<entity name="dayType" dataSource="onCourseDS"
-				query="select distinct IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from session s 
-				inner join courseclass cc on s.courseClassId=cc.id 
-				inner join course c on cc.courseId=c.id where c.id='${course.id}'
-				and cc.isCancelled=0">
-				<field name="dayType" column="dayType" />
-			</entity>
+            <entity name="dayType" dataSource="onCourseDS"
+                query="select distinct IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from Session s
+                inner join CourseClass cc on s.courseClassId=cc.id
+                inner join Course c on cc.courseId=c.id where c.id='${course.id}'
+                and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+                <field name="dayType" column="dayType" />
+            </entity>
 
-			<entity name="dayType" dataSource="onCourseDS"
-				query="select distinct IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from session s 
-				inner join courseclass cc on s.courseClassId=cc.id 
-				inner join course c on cc.courseId=c.id where c.id='${course.id}'
-				and cc.isCancelled=0">
-				<field name="time" column="time" />
-			</entity>
+            <entity name="dayType" dataSource="onCourseDS"
+                query="select distinct IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s
+                inner join CourseClass cc on s.courseClassId=cc.id
+                inner join Course c on cc.courseId=c.id where c.id='${course.id}'
+                and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+                <field name="time" column="time" />
+            </entity>
 
-			<entity name="location" dataSource="onCourseDS"
-				query="select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from site s
-					inner join room r on r.siteId=s.id 
-					inner join courseclass cc on cc.roomId=r.id 
-					inner join course c on cc.courseId=c.id where c.id='${course.id}'
-					and cc.isCancelled=0 
-                	group by s.suburb, s.postcode
-                	union 
-                	select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from site s 
-                	inner join room r on r.siteId=s.id 
-                	inner join session ss on ss.roomId=r.id 
-                	inner join courseclass cc on cc.id=ss.courseClassId
-                	inner join course c on cc.courseId=c.id where c.id='${course.id}'
-                	and cc.isCancelled=0
-                	group by s.suburb, s.postcode">
-				<field name="course_loc" column="loc" />
-				<field name="course_postcode" column="s.postcode" />
-				<field name="course_suburb" column="s.suburb" />
-			</entity>
+            <entity name="location" dataSource="onCourseDS"
+                query="select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc,
+                    PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from Site s
+                    inner join Room r on r.siteId=s.id
+                    inner join CourseClass cc on cc.roomId=r.id
+                    inner join Course c on cc.courseId=c.id where c.id='${course.id}'
+                    and cc.isCancelled=0 and cc.startDate >= CURDATE()
+            group by s.suburb, s.postcode
+            union
+            select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc,
+                PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from Site s
+            inner join Room r on r.siteId=s.id
+            inner join Session ss on ss.roomId=r.id
+            inner join CourseClass cc on cc.id=ss.courseClassId
+            inner join Course c on cc.courseId=c.id where c.id='${course.id}'
+            and cc.isCancelled=0 and cc.startDate >= CURDATE()
+            group by s.suburb, s.postcode">
+                <field name="loc" column="loc" />
+                <field name="postcode" column="s.postcode" />
+                <field name="suburb" column="s.suburb" />
+                <field name="lat_rad" column="lat_rad"/>
+                <field name="lon_rad" column="lon_rad"/>
+            </entity>
 
 
-			<entity name="courseClassCode"
-				query="select cc.code from courseclass cc where courseid='${course.id}' 
-						and cc.isCancelled=0"
-				dataSource="onCourseDS">
-				<field name="class_code" column="cc.code" />
-				<field name="price" column="cc.feeExGst" />
-			</entity>
+            <entity name="courseClassCode"
+                query="select cc.code from CourseClass cc where courseid='${course.id}'
+                        and cc.isCancelled=0 and cc.startDate >= CURDATE()"
+                dataSource="onCourseDS">
+                <field name="class_code" column="cc.code" />
+                <field name="price" column="cc.feeExGst" />
+            </entity>
 
-		</entity>
+        </entity>
 
-		<entity name="place" dataSource="onCourseRef"
-			query="select suburb, 'place' as type, state, postcode, CONCAT(CAST(postcode AS CHAR), suburb) as id, CONCAT(CAST(lat AS CHAR), ',', CAST(lon AS CHAR)) as loc from postcode_db">
-			<field name="id" column="id" />
-			<field name="doctype" column="type" />
-			<field name="suburb" column="suburb" />
-			<field name="state" column="state" />
-			<field name="postcode" column="postcode" />
-			<field name="loc" column="loc" />
-		</entity>
-	</document>
+        <entity name="place" dataSource="onCourseRef"
+            query="select suburb, 'place' as type, state, postcode, CONCAT(CAST(postcode AS CHAR), suburb) as id, CONCAT(CAST(lat AS CHAR), ',', CAST(lon AS CHAR)) as loc from postcode_db">
+            <field name="id" column="id" />
+            <field name="doctype" column="type" />
+            <field name="suburb" column="suburb" />
+            <field name="state" column="state" />
+            <field name="postcode" column="postcode" />
+            <field name="loc" column="loc" />
+        </entity>
+    </document>
 </dataConfig>
