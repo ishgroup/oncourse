@@ -1,0 +1,28 @@
+/* default; Displayed only to Internet Explorer */
+
+div#content {clear:both; z-index: 0;}
+
+div#nav, div#nav ul {zoom:1; position:relative; z-index:200;}
+
+form#search {zoom:1;}
+
+
+
+div#sidebar, div#search_box, div#sidebar div#shortlist *, div#sidebar div#shortlist, div#sidebar div#tokens, div#sidebar div#login_box, div#sidebar div#tokens *, div#sidebar div#login_box * { z-index: 0; position: static; }
+
+div#wrap div#content div.post-collapse div.new_course_item div.class_details div.bubbleInfo div.tooltip_popup
+div#content_container div#content div.post-collapse div.new_course_item div.class_details div.bubbleInfo div.tooltip_popup
+	 { z-index:8000; right: -420px; top: -35px;}
+
+div#wrap div#content div.new_course_item div.class_details div.bubbleInfo div.tooltip_popup,
+div#content_container div#content div.new_course_item div.class_details div.bubbleInfo div.tooltip_popup
+{ z-index:8000; right: -270px; top: -25px; }
+
+div#search_box { zoom: 1; }
+
+div.advanced-search-button { position: relative; }
+
+div#wrap div#content div.new_course_item ul.class_locationtutor { width: 40%; }
+div#wrap div#content div.new_course_item ul.class_options { width: 170px; }
+
+div.advanced-search-button, a.show-advanced-search, div.advanced-search-button span { clear: both; z-index: 0; position: static;}

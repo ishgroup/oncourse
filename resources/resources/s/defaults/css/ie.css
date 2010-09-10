@@ -1,0 +1,71 @@
+/* 
+	Site:    ish onCourse
+	Title:   IE Fixes (default)
+	Author:  Bruce Martin, design@brucemartin.net
+	Date:    February 2007
+*/
+
+body {
+	font-size: x-small; /* IE5 Win */
+  	voice-family: "\"}\""; 
+  	voice-family: inherit;
+  	font-size: small;
+	}
+html>body { font-size: small; } /* Opera */
+
+/*\*/
+* html #wrap,
+* html #content,
+* html #nav ul,
+* html #nav li,
+* html #nav li li a,
+* html #taggroup ul,
+* html .batch,
+* html .blockwrap,
+* html .blockhead,
+* html .blockbody,
+* html .blockdetail,
+* html .course { height: 1%; }
+
+*+html #wrap,
+*+html #content,
+*+html #nav ul,
+*+html #nav li,
+*+html #nav li li a,
+*+html #taggroup ul,
+*+html .batch,
+*+html .blockwrap,
+*+html .blockhead,
+*+html .blockbody,
+*+html .blockdetail,
+*+html .course { height: 1%; }
+
+* html #nav { padding: 0; }
+
+* html #taggroup li { display: inline; }
+* html #taggroup li li { display: block; }
+*+html #taggroup li { display: inline; }
+*+html #taggroup li li { display: block; }
+
+* html #nav ul li a:hover,
+* html #nav ul li a.active { background: #777; }
+* html #nav ul li:hover, 
+* html #nav ul li li:hover, 
+* html #nav ul li li li:hover,
+* html #nav ul li ul { background: #999; }
+
+/**/
+	
+/*\*//*/
+#wrap,
+#content,
+#nav ul,
+#taggroup ul,
+.batch,
+.blockwrap,
+.blockhead,
+.blockbody,
+.blockdetail,
+.course { display: inline-table; }
+/**/
+

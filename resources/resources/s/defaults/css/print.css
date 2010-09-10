@@ -1,0 +1,28 @@
+/* 
+	Site:    Default
+	Title:   Print styles
+	Author:  Bruce Martin, design@brucemartin.net
+	Date:    February 2007
+*/
+
+body {
+	font-family: Verdana, sans-serif;
+	font-size: 12pt;
+	}
+
+h1, h2, h3 {
+	font-family: "Trebuchet MS", Verdana, sans-serif;
+	}
+
+#nav, hr, #skip {
+	display: none;
+	}
+	
+a:link, a:visited {
+	color: grey;
+	}	
+
+/* print URLs after link text */
+#content a:link:after, #content a:visited:after {
+	content: " (" attr(href) ") ";
+	}
