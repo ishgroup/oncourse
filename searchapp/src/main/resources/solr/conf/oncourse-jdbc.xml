@@ -22,7 +22,7 @@
            inner join TutorRole tr on t.id = tr.tutorId
            inner join CourseClass cc on tr.courseClassId=cc.id
            inner join Course c on cc.courseId=c.id where c.id='${course.id}'
-           and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+           and cc.isCancelled=0">
                 <field column="TUTOR" name="tutor" template="${t.givenName} ${t.familyName}" />
             </entity>
 
@@ -30,7 +30,7 @@
                 query="select distinct lower(dayname(s.startDate)) as dayName from Session s
                 inner join CourseClass cc on s.courseClassId=cc.id
                 inner join Course c on cc.courseId=c.id where c.id='${course.id}'
-                and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+                and cc.isCancelled=0">
                 <field name="dayName" column="dayName" />
             </entity>
 
@@ -38,7 +38,7 @@
                 query="select distinct IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType from Session s
                 inner join CourseClass cc on s.courseClassId=cc.id
                 inner join Course c on cc.courseId=c.id where c.id='${course.id}'
-                and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+                and cc.isCancelled=0">
                 <field name="dayType" column="dayType" />
             </entity>
 
@@ -46,32 +46,28 @@
                 query="select distinct IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s
                 inner join CourseClass cc on s.courseClassId=cc.id
                 inner join Course c on cc.courseId=c.id where c.id='${course.id}'
-                and cc.isCancelled=0 and cc.startDate >= CURDATE()">
+                and cc.isCancelled=0">
                 <field name="time" column="time" />
             </entity>
 
             <entity name="location" dataSource="onCourseDS"
-                query="select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc,
-                    PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from Site s
+                query="select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
                     inner join Room r on r.siteId=s.id
                     inner join CourseClass cc on cc.roomId=r.id
                     inner join Course c on cc.courseId=c.id where c.id='${course.id}'
-                    and cc.isCancelled=0 and cc.startDate >= CURDATE()
-            group by s.suburb, s.postcode
-            union
-            select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc,
-                PI()*s.latitude/180 as lat_rad, PI()*s.longitude/180 as lon_rad from Site s
-            inner join Room r on r.siteId=s.id
-            inner join Session ss on ss.roomId=r.id
-            inner join CourseClass cc on cc.id=ss.courseClassId
-            inner join Course c on cc.courseId=c.id where c.id='${course.id}'
-            and cc.isCancelled=0 and cc.startDate >= CURDATE()
-            group by s.suburb, s.postcode">
-                <field name="loc" column="loc" />
-                <field name="postcode" column="s.postcode" />
-                <field name="suburb" column="s.suburb" />
-                <field name="lat_rad" column="lat_rad"/>
-                <field name="lon_rad" column="lon_rad"/>
+                    and cc.isCancelled=0
+            		group by s.suburb, s.postcode
+            	union
+            		select s.suburb, s.postcode, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+		            inner join Room r on r.siteId=s.id
+		            inner join Session ss on ss.roomId=r.id
+		            inner join CourseClass cc on cc.id=ss.courseClassId
+		            inner join Course c on cc.courseId=c.id where c.id='${course.id}'
+		            and cc.isCancelled=0
+		            group by s.suburb, s.postcode">
+                <field name="course_loc" column="loc" />
+               	<field name="course_postcode" column="s.postcode" />
+                <field name="course_suburb" column="s.suburb" />
             </entity>
 
 

@@ -133,7 +133,7 @@ public class SearchService implements ISearchService {
 
             String[] terms = term.split("\\s");
             for (int i = 0; i < terms.length; i++) {
-                String t = terms[i].toLowerCase() + "*";
+                String t = terms[i].toLowerCase().trim() + "*";
 
                 query.append(String
                         .format("(name:%s && collegeId:%s)", t, collegeId)).append("||");
