@@ -1,0 +1,30 @@
+/* Term 4 Specific CSS */
+
+#header h1 { background-color: rgba(224, 2, 136, 0.4); }
+	#header h1:hover { background-color: rgba(175, 3, 107, 0.95); }
+
+#login_area { color: #690240; text-shadow: #FC50B8 1px 1px 0px; }
+
+div#nav.dropdown > ul > li { background-color: #ed73bb; }
+
+div#shortlist { height: 53px; background-color: rgb(254, 225, 243); background-color: rgba(254, 225, 243, 0.75); }
+div#shortlist div#shortlist_classes { background: rgb(224, 2, 136) url(/s/img/shortlist_bg_top.png) top repeat-x; background: rgba(224, 2, 136, 0.95) url(/s/img/shortlist_bg_top.png) top repeat-x; }
+
+div#block322 > div.taggroup > ul > li > h2, #category_navigation ul li, #newsfeed_container h2 { background-color: #DE0488; }
+
+body.internal-page h2.webnodename { background-color: #fce2ed; height: 25px; top: 26px; } 
+
+div#block322 > .taggroup > ul > li .taggroup > ul > li > a { color: #E00288; }
+	div#block322 > .taggroup > ul > li .taggroup > ul > li > a:hover { color: #FD0299; }
+
+div#content div.new_course_item h4 a { color: #E00288; }
+	div#content div.new_course_item h4 a:hover { color: #FD0299; }
+	
+div#course_detail > h2 > span, div.post-collapse div.new_course_item > h4 span, #DetailPage #content > h2.clearfix span a, 
+body.internal-page div#course_detail > h2, body.internal-page div#course_detail > h3, body.internal-page div.webnodecontent > h2, body.internal-page div.webnodecontent > h3 { color: #E00288; font-weight: 100; }
+
+div#shortlist div#actions a, div#shortlist div#info span { color: #00aeef; }
+div#shortlist div#info p { color: #de0488; }
+div#shortlist div#shortlist_classes ul.menu li.onshortlist:hover, div#shortlist div#shortlist_classes ul.menu li.onshortlist-x:hover { background: #A70165; }
+
+#search_box input#find { background-color: #00aeef; }
