@@ -97,8 +97,7 @@ public class AssetGroupService implements IAssetGroupService {
 						Matcher assetLineMatcher = assetLinePattern
 								.matcher(line);
 
-						if (assetLineMatcher.find()) {
-
+						if (assetLineMatcher.find()&&assetLineMatcher.groupCount()==3) {
 							String framework = assetLineMatcher.group(2);
 							String path = assetLineMatcher.group(3);
 
