@@ -6,11 +6,7 @@
 		</h4>
 		<p class="description">
 			<t:outputraw value="${courseDetail}" />
-			[
-			<a href="${moreLink}">
-				<strong>More</strong>
-			</a>
-			]
+			[<a href="${moreLink}"><strong>More</strong></a>]
 		</p>
 		<h5>${availMsg}</h5>
 

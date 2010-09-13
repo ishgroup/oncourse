@@ -3,21 +3,21 @@
 	xmlns:p="tapestry:parameter">
 	<span class="timing-display">
 		<t:loop source="weekdays" value="stringListItem">
-			<span class="weekdayListItemClass">
+			<span class="${weekdayListItemClass}">
 				${dayListItemLabel}
 			</span>
 		</t:loop>
 		<t:loop source="weekendDays" value="stringListItem" >
-			<span class="weekendListItemClass">
+			<span class="${weekendListItemClass}">
 				${dayListItemLabel}
 			</span>
 		</t:loop>
 	</span>
 	<span class="timing-display">
-		<span class="daytimeClass">
+		<span class="${daytimeClass}">
 			<img src="/s/img/blank.png"/>
 		</span>
-		<span class="eveningClass">
+		<span class="${eveningClass}">
 			<img src="/s/img/blank.png"/>
 		</span>
 	</span>

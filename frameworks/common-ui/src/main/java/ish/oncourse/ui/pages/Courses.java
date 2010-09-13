@@ -19,8 +19,12 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -29,7 +33,7 @@ public class Courses {
 	private static final Logger LOGGER = Logger.getLogger(Courses.class);
 
 	private static final int START_DEFAULT = 0;
-	private static final int ROWS_DEFAULT = 20;
+	private static final int ROWS_DEFAULT = 10;
 
 	@Inject
 	private ICourseService courseService;
@@ -46,11 +50,31 @@ public class Courses {
 	@Property
 	private Course course;
 
+	@Property
+	@Persist
+	private Integer coursesCount;
+
+	@Property
+	private Integer itemIndex;
+
 	@SetupRender
 	public void beforeRender() {
 		this.courses = (request.getParameterNames().size() == 0) ? courseService
-				.getCourses()
+				.getCourses(START_DEFAULT, ROWS_DEFAULT)
 				: searchCourses();
+		this.coursesCount = courseService.getCoursesCount();
+		this.itemIndex = courses.size();
+	}
+
+	@InjectComponent
+	private Zone coursesZone;
+
+	@OnEvent(component = "showMoreCourses")
+	Object onActionFromShowMoreCourses() {
+		courses.addAll(courseService.getCourses(itemIndex, ROWS_DEFAULT));
+		itemIndex = courses.size();
+
+		return coursesZone.getBody();
 	}
 
 	public Collection<Site> getMapSites() {
@@ -67,18 +91,18 @@ public class Courses {
 
 	private List<Course> searchCourses() {
 		String query = request.getParameter(SearchParam.s.name());
-		
-		int start = getIntParam("start", START_DEFAULT);
-		int rows = getIntParam("rows", ROWS_DEFAULT);
-		
+
+		int start = getIntParam(request.getParameter("start"), START_DEFAULT);
+		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
+
 		Map<SearchParam, String> params = new HashMap<SearchParam, String>();
-		
+
 		for (SearchParam name : SearchParam.values()) {
 			if (request.getParameter(name.name()) != null) {
 				params.put(name, request.getParameter(name.name()));
 			}
 		}
-		
+
 		QueryResponse resp = searchService.searchCourses(params, start, rows);
 
 		LOGGER.info(String.format("The number of courses found: %s", resp
@@ -91,6 +115,14 @@ public class Courses {
 		}
 
 		return courseService.loadByIds(ids.toArray());
+	}
+
+	public boolean isHasAnyItems() {
+		return !courses.isEmpty();
+	}
+
+	public boolean isHasMoreItems() {
+		return itemIndex < coursesCount;
 	}
 
 	private static int getIntParam(String s, int def) {

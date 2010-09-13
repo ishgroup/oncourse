@@ -20,11 +20,7 @@
 						</span>
 						<t:if t:test="courseClass.hasManySessions">
 							<span class="class_session_exp">
-								(<t:if test="courseClass.sessionsHaveDifferentTimes">
-									first session
-									<p:else>all sessions</p:else>
-								</t:if>
-								)
+								(<t:if test="courseClass.sessionsHaveDifferentTimes">first session<p:else>all sessions</p:else></t:if>)
 							</span>
 						</t:if>
 					</a>

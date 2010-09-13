@@ -11,6 +11,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class CourseItem {
 
+	private static final String COURSES_PAGE_NAME = "ui/Courses";
+
 	@Inject
 	private Messages messages;
 
@@ -44,7 +46,7 @@ public class CourseItem {
 	}
 
 	public String getCourseDetail() {
-		if ("Courses".equals(componentResources.getPageName())) {
+		if (COURSES_PAGE_NAME.equalsIgnoreCase(componentResources.getPageName())) {
 			String result = course.getDetail().substring(0, 410);
 			int closingExpanded = result.lastIndexOf("</");
 			int closingCollapsed = result.lastIndexOf("/>");

@@ -26,12 +26,26 @@ public class CourseService implements ICourseService {
 	@Inject
 	private IWebSiteService webSiteService;
 
-	public List<Course> getCourses() {
+	public List<Course> getCourses(Integer startDefault, Integer rowsDefault) {
 		SelectQuery q = new SelectQuery(Course.class);
-		q.andQualifier(ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege()));
-		q.setFetchLimit(30);
+		q.andQualifier(getSiteQualifier());
+		if (startDefault == null) {
+			startDefault = START_DEFAULT;
+		}
+		if (rowsDefault == null) {
+			rowsDefault = ROWS_DEFAULT;
+		}
+		q.setFetchOffset(startDefault);
+		q.setFetchLimit(rowsDefault);
 		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	/**
+	 * @return
+	 */
+	private Expression getSiteQualifier() {
+		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY,
+				webSiteService.getCurrentCollege());
 	}
 
 	public List<Course> loadByIds(Object... ids) {
@@ -67,7 +81,7 @@ public class CourseService implements ICourseService {
 
 	public List<Course> getCourses(boolean enrollable) {
 		List<Course> result = new ArrayList<Course>();
-		List<Course> courses = getCourses();
+		List<Course> courses = getCourses(null, null);
 		if (enrollable) {
 			for (Course course : courses) {
 				if (!course.getEnrollableClasses().isEmpty()) {
@@ -82,5 +96,11 @@ public class CourseService implements ICourseService {
 			}
 		}
 		return result;
+	}
+
+	public Integer getCoursesCount() {
+		return ((Number) cayenneService.sharedContext().performQuery(
+				new EJBQLQuery("select count(c) from Course c where "
+						+ getSiteQualifier().toEJBQL("c"))).get(0)).intValue();
 	}
 }

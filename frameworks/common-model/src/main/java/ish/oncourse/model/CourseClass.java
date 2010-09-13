@@ -266,7 +266,7 @@ public class CourseClass extends _CourseClass {
 			Calendar start = Calendar.getInstance();
 			start.setTime(session.getStartDate());
 			Integer sessionStartHour = start.get(Calendar.HOUR_OF_DAY);
-			if (sessionStartHour < earliest) {
+			if (earliest!=null && sessionStartHour < earliest) {
 				earliest = sessionStartHour;
 			}
 		}
@@ -303,7 +303,7 @@ public class CourseClass extends _CourseClass {
 			Calendar end = Calendar.getInstance();
 			end.setTime(session.getEndDate());
 			Integer sessionEndHour = end.get(Calendar.HOUR_OF_DAY);
-			if (sessionEndHour > latest) {
+			if (latest!=null && sessionEndHour > latest) {
 				latest = sessionEndHour;
 			}
 		}

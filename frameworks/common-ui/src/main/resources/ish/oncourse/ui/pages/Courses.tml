@@ -4,12 +4,27 @@
 	<!-- TODO implement SearchCriteria component-->
 	<span t:type="ui/quicksearch" />
 	<div id="toggle-results-map">
-      <a href="#" class="toggle_locations">Locations</a>
-    </div>
-	<span t:type="ui/GoogleMapSites" sites="mapSites" />
-	<div class="post-collapse">
-		<t:loop source="courses" value="course">
-			<span t:type="ui/courseitem" course="course" />
-		</t:loop>
+		<a href="#" class="toggle_locations">Locations</a>
 	</div>
+	<span t:type="ui/GoogleMapSites" sites="mapSites" />
+
+	<t:if t:test="hasAnyItems" negate="true">
+		<h2>no results</h2>
+		<p:else>
+			<div class="post-collapse">
+				<t:zone t:id="coursesZone" id="coursesZone">
+					<t:loop source="courses" value="course">
+						<span t:type="ui/courseitem" course="course" />
+					</t:loop>
+
+					<t:if t:test="hasMoreItems">
+						<t:actionLink t:id="showMoreCourses" zone="coursesZone">
+							<p class="more-results">show more сourses...</p>
+						</t:actionLink>
+					</t:if>
+				</t:zone>
+			</div>
+
+		</p:else>
+	</t:if>
 </html>
