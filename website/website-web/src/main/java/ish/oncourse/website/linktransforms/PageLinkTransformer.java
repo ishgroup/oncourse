@@ -10,6 +10,7 @@ import ish.oncourse.services.node.IWebNodeService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
@@ -28,9 +29,48 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
-	private static final Pattern REGEX_NODE_PATTERN = Pattern.compile("/page/(\\d++)");
-	private static final Pattern COURSES_PATTERN = Pattern.compile("/courses(/(\\w++))?");
-	private static final Pattern PAGE_PATTERN = Pattern.compile("/page(/(\\w++))?");
+	
+	/**
+	 * courses/arts/drama
+	 * Show course list page, optionally filtered by the subject tag identified by arts -> drama
+	 */
+	private static final Pattern COURSES_PATTERN = Pattern.compile("/courses(/(\\w+))?");
+	
+	/**
+	 * course/ABC
+	 * Show course detail for the cource with code ABC
+	 */
+	private static final Pattern COURSE_PATTERN = Pattern.compile("/course/(\\w+)");
+	
+	/**
+	 * class/ABC-123
+	 * Show the class detail for the CourseClass with code ABC-123
+	 */
+	private static final Pattern CLASS_PATTERN = Pattern.compile("/class/(\\w+)");
+
+	/**
+	 * page/123
+	 * This is always available for every webpage, even if it doesn't have a URL alias
+	 */
+	private static final Pattern PAGENUM_PATTERN = Pattern.compile("/page/(\\d+)");
+
+	/**
+	 * sites
+	 * Show the site list for all sites
+	 */
+	private static final Pattern SITES_PATTERN = Pattern.compile("/sites");
+
+	/**
+	 * site/200
+	 * Show the site detail for the site with angel id of 200
+	 */
+	private static final Pattern SITE_PATTERN = Pattern.compile("/site(/(\\d+))?");
+	
+	/**
+	 * tutor/123
+	 * Show the tutor detail for the tutor with angel id of 123
+	 */
+	private static final Pattern TUTOR_PATTERN = Pattern.compile("/tutor/(\\d+)");
 
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -41,36 +81,56 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 		final String path = request.getPath();
-
+		Matcher matcher;
+		
 		LOGGER.info("Rewrite InBound: path is: " + path);
-		Matcher matcher = REGEX_NODE_PATTERN.matcher(path);
 
+		/* These are currently ordered from most likely to be encountered, to least */
+		
+		matcher = COURSES_PATTERN.matcher(path);
+		if (matcher.find()) {
+			return new PageRenderRequestParameters("ui/Courses", new EmptyEventContext(), false);
+		}
+		
+		matcher = COURSE_PATTERN.matcher(path);
+		if (matcher.find()) {
+			String courseCode = matcher.group(1);
+			throw new NotImplementedException("course");
+		}
+		
+		matcher = CLASS_PATTERN.matcher(path);
+		if (matcher.find()) {
+			String courseClassCode = matcher.group(1);
+			throw new NotImplementedException("class");
+		}
+		
+		matcher = PAGENUM_PATTERN.matcher(path);
 		if (matcher.find()) {
 			String nodeNumber = matcher.group(1);
 			if (nodeNumber != null) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
-				PageRenderRequestParameters newRequest = new PageRenderRequestParameters(
-						"ui/Page", new EmptyEventContext(), false);
-				LOGGER.info("Rewrite InBound: Matched page node! Path: '" + path + "', Node: '" + nodeNumber + "'");
-
-				return newRequest;
+				return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
 			}
 		}
+
+		matcher = SITES_PATTERN.matcher(path);
+		if (matcher.find()) {
+			throw new NotImplementedException("sites");
+		}
 		
-		if(COURSES_PATTERN.matcher(path).find()){
-			PageRenderRequestParameters newRequest = new PageRenderRequestParameters(
-					"ui/Courses", new EmptyEventContext(), false);
-			
-			return newRequest;
+		matcher = SITE_PATTERN.matcher(path);
+		if (matcher.find()) {
+			throw new NotImplementedException("site");
+		}
+		
+		matcher = TUTOR_PATTERN.matcher(path);
+		if (matcher.find()) {
+			throw new NotImplementedException("tutor");
 		}
 
-		if(PAGE_PATTERN.matcher(path).find()){
-			PageRenderRequestParameters newRequest = new PageRenderRequestParameters(
-					"ui/Page", new EmptyEventContext(), false);
-			
-			return newRequest;
-		}
-		return null;
+		
+		// If we match no other pattern we need to look up the page in the list of URL aliases
+		throw new NotImplementedException("URL alias");
 	}
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
