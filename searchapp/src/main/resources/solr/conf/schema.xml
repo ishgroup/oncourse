@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <schema name="oncourse" version="1.2">
     <types>
         <fieldType name="location" class="solr.PointType" dimension="2"
@@ -64,6 +63,7 @@
                    positionIncrementGap="100">
             <analyzer type="index">
                 <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+                <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
                 <filter class="solr.StopFilterFactory" ignoreCase="true"
                         words="stopwords.txt" enablePositionIncrements="true"/>
                 <filter class="solr.WordDelimiterFilterFactory"
@@ -110,14 +110,8 @@
         <field name="tutor" type="textgen" indexed="true" stored="true"
                multiValued="true" boost="5.0"/>
 
-        <field name="dayName" type="string" indexed="true" stored="true"
-               boost="5.0"/>
-
-        <field name="dayType" type="string" indexed="true" stored="true"
-               multiValued="true" boost="5.0"/>
-
-        <field name="time" type="string" indexed="true" stored="true"
-               multiValued="true" boost="5.0"/>
+        <field name="when" type="textgen" indexed="true" stored="true"
+                multiValued="true" boost="5.0"/>
 
         <field name="course_loc" type="location" indexed="true" stored="true" multiValued="true" boost="5.0"/>
         <field name="course_suburb" type="textgen" indexed="true" stored="true" multiValued="true" boost="5.0"/>
@@ -128,8 +122,8 @@
         <field name="state" type="textgen" indexed="true" stored="true" />
         <field name="loc" type="location" indexed="true" stored="true" />
         <field name="postcode" type="string" indexed="true" stored="true" boost="10"/>
-
-
+		
+        <field name="tag" type="textgen" indexed="true" stored="true" multiValued="true" boost="5.0"/>
     </fields>
 
     <uniqueKey>id</uniqueKey>
