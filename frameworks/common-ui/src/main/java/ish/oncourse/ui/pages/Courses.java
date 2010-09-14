@@ -45,6 +45,7 @@ public class Courses {
 	private Request request;
 
 	@Property
+	@Persist
 	private List<Course> courses;
 
 	@Property
@@ -55,6 +56,7 @@ public class Courses {
 	private Integer coursesCount;
 
 	@Property
+	@Persist
 	private Integer itemIndex;
 
 	@SetupRender
@@ -73,7 +75,6 @@ public class Courses {
 	Object onActionFromShowMoreCourses() {
 		courses.addAll(courseService.getCourses(itemIndex, ROWS_DEFAULT));
 		itemIndex = courses.size();
-
 		return coursesZone.getBody();
 	}
 
