@@ -36,13 +36,13 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * subject tag identified by arts -> drama
 	 */
 	private static final Pattern COURSES_PATTERN = Pattern
-			.compile("/courses(/(\\w+))?");
+			.compile("/courses(/)?(\\w+)?");
 
 	/**
 	 * course/ABC Show course detail for the cource with code ABC
 	 */
 	private static final Pattern COURSE_PATTERN = Pattern
-			.compile("/course/(\\w+)");
+			.compile("/course/((\\w|\\s)+)");
 
 	/**
 	 * class/ABC-123 Show the class detail for the CourseClass with code ABC-123
@@ -115,8 +115,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = COURSE_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			String courseCode = matcher.group(1);
-			throw new NotImplementedException("course");
+			String courseCode = path.substring(path.lastIndexOf("/")+1);
+			request.setAttribute("courseCode", courseCode);
+			return new PageRenderRequestParameters("ui/CourseDetails",
+					new EmptyEventContext(), false);
 		}
 
 		matcher = CLASS_PATTERN.matcher(path);

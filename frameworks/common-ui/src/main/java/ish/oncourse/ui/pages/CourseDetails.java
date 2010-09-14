@@ -21,12 +21,12 @@ public class CourseDetails {
 
 	void beginRender() {
 		String id = request.getParameter("id");
-
+		String code = (String) request.getAttribute("courseCode");
 		if (id != null) {
 			List<Course> courses = courseService.loadByIds(id);
 			course = (courses.size() > 0) ? courses.get(0) : null;
-		} else {
-			course = (Course) request.getAttribute("course");
+		} else if(code!=null){
+			course = courseService.getCourse(Course.CODE_PROPERTY, code.toUpperCase());
 		}
 	}
 }

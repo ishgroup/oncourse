@@ -14,6 +14,8 @@ public class PageWrapper {
 	private static final String WEB_NODE_PAGE_NAME = "ui/Page";
 	private static final String MAIN_PAGE_NAME = "Main";
 	private static final String MAIN_PAGE_REAL_NAME = "Index";
+	private static final String COURSE_PAGE_NAME = "DetailsPage";
+	private static final String COURSE_PAGE_REAL_NAME = "ui/CourseDetails";
 
 	@Inject
 	private ComponentResources componentResources;
@@ -31,6 +33,8 @@ public class PageWrapper {
 			return pageName.toLowerCase().replaceFirst("ui/", "") + nodeNumber;
 		} else if (COURSES_PAGE_REAL_NAME.equals(pageName)) {
 			return COURSES_PAGE_NAME;
+		} else if (COURSE_PAGE_REAL_NAME.equals(pageName)) {
+			return COURSE_PAGE_NAME;
 		}
 
 		return pageName;

@@ -3,7 +3,6 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 
-import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
@@ -22,9 +21,10 @@ public class CourseItem {
 
 	@Property
 	private CourseClass courseClass;
-
-	@Inject
-	private ComponentResources componentResources;
+	
+	@Parameter
+	@Property
+	private boolean isList;
 
 	public String getAvailMsg() {
 		int numberOfClasses = course.getEnrollableClasses().size();
@@ -46,7 +46,7 @@ public class CourseItem {
 	}
 
 	public String getCourseDetail() {
-		if (COURSES_PAGE_NAME.equalsIgnoreCase(componentResources.getPageName())) {
+		if (isList) {
 			String result = course.getDetail().substring(0, 410);
 			int closingExpanded = result.lastIndexOf("</");
 			int closingCollapsed = result.lastIndexOf("/>");
@@ -63,6 +63,14 @@ public class CourseItem {
 			return result + "...";
 		} else {
 			return course.getDetail();
+		}
+	}
+	
+	public String getCourseItemClass(){
+		if(isList){
+			return "new_course_item small_class_detail clearfix";
+		}else{
+			return "new_course_item";
 		}
 	}
 }

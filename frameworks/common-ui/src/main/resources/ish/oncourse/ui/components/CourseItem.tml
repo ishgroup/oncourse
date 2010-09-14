@@ -1,20 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div class="new_course_item small_class_detail clearfix">
-		<h4>
-			<a href="/course/${course.code}">${course.name}</a>
-		</h4>
-		<p class="description">
-			<t:outputraw value="${courseDetail}" />
-			[<a href="${moreLink}"><strong>More</strong></a>]
-		</p>
-		<h5>${availMsg}</h5>
+	<t:if t:test="isList" negate="true">
+		<h2 class="clearfix">
+			<span>${course.name}</span>
+		</h2>
+	</t:if>
 
+	<div class="${courseItemClass}">
+		<t:if t:test="isList">
+			<h4>
+				<a href="/course/${course.code}">${course.name}</a>
+			</h4>
+			<p class="description">
+				<t:outputraw value="${courseDetail}" />
+				[<a href="${moreLink}"><strong>More</strong></a>]
+			</p>
+			<h5>${availMsg}</h5>
+		</t:if>
 		<t:loop source="course.enrollableClasses" value="courseClass">
 			<span t:type="ui/courseclassitem" courseClass="courseClass" />
 		</t:loop>
 		<t:if t:test="course.allowWaitingList">
 			<span t:type="ui/WaitingListItem" course="course" />
 		</t:if>
+		<t:if t:test="isList" negate="true">
+			<p>
+				<t:outputraw value="${courseDetail}" />
+			</p>
+		</t:if>
 	</div>
+
 </t:container>
