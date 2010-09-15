@@ -71,12 +71,22 @@ public class CourseService implements ICourseService {
 		Expression qualifier = ExpressionFactory.matchExp(
 				BinaryInfo.COLLEGE_PROPERTY, currentCollege);
 		if (searchProperty != null) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					searchProperty, value));
+			if (searchProperty.equals(Course.CODE_PROPERTY)) {
+				qualifier = qualifier.andExp(getSearchStringPropertyQualifier(
+						searchProperty, value));
+			} else {
+				qualifier = qualifier.andExp(ExpressionFactory.matchExp(
+						searchProperty, value));
+			}
 		}
 		SelectQuery q = new SelectQuery(Course.class, qualifier);
 		List<Course> result = sharedContext.performQuery(q);
 		return !result.isEmpty() ? result.get(0) : null;
+	}
+
+	public Expression getSearchStringPropertyQualifier(String searchProperty,
+			Object value) {
+		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
 	}
 
 	public List<Course> getCourses(boolean enrollable) {

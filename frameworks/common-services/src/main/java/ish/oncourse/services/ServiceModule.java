@@ -8,6 +8,8 @@ import ish.oncourse.services.block.IWebBlockService;
 import ish.oncourse.services.block.WebBlockService;
 import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.courseclass.CourseClassService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
@@ -53,6 +55,7 @@ public class ServiceModule {
 		binder.bind(ITextileConverter.class, TextileConverter.class);
 		binder.bind(IBinaryDataService.class, BinaryDataService.class);
 		binder.bind(ICourseService.class, CourseService.class);
+		binder.bind(ICourseClassService.class, CourseClassService.class);
 		binder.bind(ITutorService.class, TutorService.class);
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(IPageRenderer.class, PageRenderer.class);

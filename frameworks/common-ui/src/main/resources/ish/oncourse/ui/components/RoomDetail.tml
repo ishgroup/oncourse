@@ -1,0 +1,40 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<h2><t:outputraw value="room.site.name"/></h2>
+
+	<dl class="details" id="room-details">
+		<dt>Room</dt>
+		<dd>
+			<t:if t:test="hasName">
+				${room.name}
+ 			</t:if>
+		</dd>
+		<t:if t:test="hasAddress">
+			<dt>Address</dt>
+			<dd>
+				${room.site.street}
+				${room.site.suburb}
+				<t:if t:test="hasPostCode">
+					${room.site.postcode}
+			</t:if>
+			</dd>
+		</t:if>
+
+		<t:if t:test="hasDrivingDirections">
+
+			<dt>Directions</dt>
+			<dd>${room.site.drivingDirections}</dd>
+
+		</t:if>
+		<t:if t:test="hasPublicTransportDirections">
+			<dt>Public Transport</dt>
+			<dd>${room.site.publicTransportDirections}</dd>
+		</t:if>
+		<span style="clear: both; display: block;"></span>
+		<t:if t:test="hasSpecialInstructions">
+			<dt>Instructions</dt>
+			<dd>${room.site.specialInstructions}</dd>
+		</t:if>
+	</dl>
+	<span t:type="ui/GoogleMapSites" sites="mapSites" showDirections="true" />
+</t:container>

@@ -25,8 +25,8 @@ public class CourseDetails {
 		if (id != null) {
 			List<Course> courses = courseService.loadByIds(id);
 			course = (courses.size() > 0) ? courses.get(0) : null;
-		} else if(code!=null){
-			course = courseService.getCourse(Course.CODE_PROPERTY, code.toUpperCase());
+		} else if (code != null) {
+			course = courseService.getCourse(Course.CODE_PROPERTY, code);
 		}
 	}
 }

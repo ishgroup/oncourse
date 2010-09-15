@@ -48,7 +48,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * class/ABC-123 Show the class detail for the CourseClass with code ABC-123
 	 */
 	private static final Pattern CLASS_PATTERN = Pattern
-			.compile("/class/(\\w+)");
+			.compile("/class/((\\w|\\s)+)-((\\w|\\s)+)");
 
 	/**
 	 * page/123 This is always available for every webpage, even if it doesn't
@@ -115,7 +115,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = COURSE_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			String courseCode = path.substring(path.lastIndexOf("/")+1);
+			String courseCode = path.substring(path.lastIndexOf("/") + 1);
 			request.setAttribute("courseCode", courseCode);
 			return new PageRenderRequestParameters("ui/CourseDetails",
 					new EmptyEventContext(), false);
@@ -123,8 +123,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = CLASS_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			String courseClassCode = matcher.group(1);
-			throw new NotImplementedException("class");
+			String courseClassCode = path.substring(path.lastIndexOf("/") + 1);
+			request.setAttribute("courseClassCode", courseClassCode);
+			return new PageRenderRequestParameters("ui/CourseClassDetails",
+					new EmptyEventContext(), false);
 		}
 
 		matcher = PAGENUM_PATTERN.matcher(path);

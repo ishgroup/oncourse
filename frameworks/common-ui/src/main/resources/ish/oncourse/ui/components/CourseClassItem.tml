@@ -117,10 +117,10 @@
 							</p:else>
 						</t:if>
 						<div class="class-link">
-							<a href="">Print this class...</a>
+							<a href="/class/${courseClass.course.code}-${courseClass.code}">Print this class...</a>
 						</div>
 						<div class="course-link">
-							<a href="">
+							<a href="/course/${courseClass.course.code}">
 								More about
 								<em>${courseClass.course.name}</em>
 								...

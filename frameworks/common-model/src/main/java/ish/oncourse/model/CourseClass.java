@@ -324,4 +324,8 @@ public class CourseClass extends _CourseClass {
 		}
 		return validSessions;
 	}
+	
+	public boolean isHasRoom() {
+		return getRoom() != null;
+	}
 }

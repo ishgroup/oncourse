@@ -24,6 +24,17 @@ public class GoogleMapSites {
 	@Property
 	private Double mapPositionLongitude;
 
+	@Parameter
+	private boolean showDirections;
+	
+	@Parameter
+	@Property
+	private boolean collapseLocationMap;
+	
+	@Parameter
+	@Property
+	private boolean showDirectionsMap;
+	
 	@SetupRender
 	public void beforeRender() {
 		sitesArray = new ArrayList<List<Object>>();
@@ -112,7 +123,7 @@ public class GoogleMapSites {
 	}
 
 	public boolean isHideDirections() {
-		return true;
+		return !showDirections;
 	}
 
 	public boolean isShowLocationMap() {
@@ -127,13 +138,10 @@ public class GoogleMapSites {
 		return isShowDirectionsMap() ? "dirmap" : "dirmapDelayed";
 	}
 
-	public boolean isCollapseLocationMap() {
-		return false;
-	}
 
 	public String getLocationClass() {
 		return "blockwrap"
-				+ ((isCollapseLocationMap()) ? " collapsedLocationMap" : "");
+				+ ((collapseLocationMap) ? " collapsedLocationMap" : "");
 	}
 
 	public String getMapClass() {
