@@ -16,7 +16,7 @@
 			<div class="post-collapse">
 				<t:zone t:id="coursesZone" id="coursesZone">
 					<t:loop source="courses" value="course">
-						<span t:type="ui/courseitem" course="course" isList="true"/>
+						<span t:type="ui/courseitem" linkToLocationsMap="true" course="course" isList="true"/>
 					</t:loop>
 
 					<t:if t:test="hasMoreItems">

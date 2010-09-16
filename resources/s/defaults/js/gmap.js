@@ -59,6 +59,8 @@ function attachMessage(map, marker, content) {
 }
 
 function zoomMapForSite(siteId){
+    $j('#focus-map').show();
+    $j("body").animate({ scrollTop: 0 }, "slow"); 
 	var siteMarker=getSiteMarkerBySiteId(siteId);
 	if(siteMarker==null){
 		alert("There's no such a site on current map");

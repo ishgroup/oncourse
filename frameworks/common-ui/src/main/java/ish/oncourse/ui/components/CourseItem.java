@@ -25,6 +25,10 @@ public class CourseItem {
 	@Parameter
 	@Property
 	private boolean isList;
+	
+	@Parameter
+	@Property
+	private boolean linkToLocationsMap;
 
 	public String getAvailMsg() {
 		int numberOfClasses = course.getEnrollableClasses().size();

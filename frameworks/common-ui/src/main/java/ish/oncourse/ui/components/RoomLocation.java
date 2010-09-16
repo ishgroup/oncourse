@@ -31,7 +31,7 @@ public class RoomLocation {
 				&& !"".equals(room.getSite().getName());
 	}
 
-	public String getLink() {
-		return disabledLink ? "" : "#";
+	public String getMapLink() {
+		return disabledLink ? "" : withRoomName?"/room/"+room.getAngelId():"/site/"+room.getSite().getAngelId();
 	}
 }

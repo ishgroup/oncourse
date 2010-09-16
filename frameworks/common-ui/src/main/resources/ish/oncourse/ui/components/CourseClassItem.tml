@@ -52,11 +52,11 @@
 		<ul class="class_locationtutor">
 			<li class="class_location">
 				<t:if test="hasLinkToLocation">
-					<t:if test="hasSiteSuburb">
+					<t:if test="hasSiteSuburb" negate="true">
 						<dd>TBA</dd>
 						<p:else>
 							<a href="#"
-								onclick="javascript:showSiteOnMap('${courseClass.room.site.id}')"
+								onclick="zoomMapForSite(${courseClass.room.site.id})"
 								title="Show venue on map" class="tooltip">${courseClass.room.site.suburb}
 							</a>
 						</p:else>
@@ -80,7 +80,7 @@
 					</t:loop>
 				</li>
 			</t:if>
-			<t:if test="excludePrice">
+			<t:if test="excludePrice" negate="true">
 				<p:else>
 					<li>
 						<span t:type="ui/CourseClassPrice" courseClass="courseClass" />

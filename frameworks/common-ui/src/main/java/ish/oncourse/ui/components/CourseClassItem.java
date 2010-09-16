@@ -8,13 +8,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.TutorRole;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-
 
 public class CourseClassItem {
 	@Parameter
@@ -39,6 +39,14 @@ public class CourseClassItem {
 
 	private List<String> timetableLabels;
 
+	@Parameter
+	@Property
+	private boolean isList;
+
+	@Parameter
+	@Property
+	private boolean linkToLocationsMap;
+
 	@SetupRender
 	public void beforeRender() {
 		this.hoursFormat = new DecimalFormat("0.#");
@@ -58,14 +66,15 @@ public class CourseClassItem {
 	}
 
 	public boolean isHasLinkToLocation() {
-		return false; // ~linkToLocationsMap and isListPage
+		return linkToLocationsMap && isList;
 	}
 
 	public boolean isHasSiteSuburb() {
-		return courseClass.getRoom() != null
-				&& courseClass.getRoom().getSite() != null
-				&& courseClass.getRoom().getSite().getSuburb() != null
-				&& !"".equals(courseClass.getRoom().getSite().getSuburb());
+		Room room = courseClass.getRoom();
+		return room != null
+				&& room.getSite() != null
+				&& room.getSite().getSuburb() != null
+				&& !"".equals(room.getSite().getSuburb());
 	}
 
 	public boolean isTutorPortal() {
@@ -78,7 +87,7 @@ public class CourseClassItem {
 	}
 
 	public String getSessionForClass() {
-		return "sessions_for_class"+(isTutorPortal() ? "" : " hidden");
+		return "sessions_for_class" + (isTutorPortal() ? "" : " hidden");
 	}
 
 	public Format getHoursFormat() {
@@ -128,8 +137,9 @@ public class CourseClassItem {
 	public String getTimeFormat() {
 		return "hh:mma";
 	}
-	
-	public String getTimedateClass(){
-		return "class_timedate" + (courseClass.isHasSessions() ? " tooltip" : "");
+
+	public String getTimedateClass() {
+		return "class_timedate"
+				+ (courseClass.isHasSessions() ? " tooltip" : "");
 	}
 }

@@ -15,6 +15,10 @@ public class RoomDetail {
 	@Property
 	private Room room;
 
+	@Parameter
+	@Property
+	private boolean collapseLocationMap;
+	
 	public boolean isHasName() {
 		String name = room.getName();
 		return isStringNotEmpty(name)
