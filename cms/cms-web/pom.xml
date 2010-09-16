@@ -62,7 +62,7 @@
 	</profiles>
 
 	<build>
-		<finalName>website-web</finalName>
+		<finalName>cms</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>

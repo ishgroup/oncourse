@@ -45,6 +45,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<finalName>asset</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

@@ -26,6 +26,10 @@
 		</dependency>
 
 	</dependencies>
+	
+	<build>
+		<finalName>services</finalName>
+	</build>
 
 	<profiles>
 		<profile>

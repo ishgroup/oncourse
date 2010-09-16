@@ -74,7 +74,7 @@
 	</profiles>
 	
 	<build>
-		<finalName>website-web</finalName>
+		<finalName>web</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
