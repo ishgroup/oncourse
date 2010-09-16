@@ -1,32 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-<div id="admin_toolbar">
-		<div id="nav_cms" class="clearfix">
-<t:if test="isLoggedIn">
-			<ul class="left">
-<!--				<li t:type="pagestab"/>
-				<li t:type="themestab"/>		-->
-				<li t:type="sitemaptab"/>
-				<li t:type="dashboardtab"/>
-			</ul>
-			<ul id="system_links" class="right">
-				<li>Welcome ${userFirstName}</li>
-				<li><a href="">Help</a></li>
-				<li><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
-<!--				<li t:type="searchpanel"/>-->
-			</ul>
-	<p:else>
-			<ul class="left">
-				<li><a href="/cms-web/login">Log in</a></li>
-			</ul>
-			<ul id="system_links" class="right">
-				<li><a href="">Help</a></li>
-				<li></li>
-			</ul>
-	</p:else>
-</t:if>
-			<div id="nav_cms_sub_contents" class="clear clearfix"></div>	
-		</div>	
-</div>
-
+	<div id="cms_nav" class="clearfix">
+		<ul id="cms_actions" class="left">
+			<li class="pages selected"><a href="">Create Page</a></li>
+			<li class="theme"><a href="" style="color: #999 !important;">Edit Page</a></li>
+			<li class="blocks"><a href="">Blocks</a></li>			
+			<li class="sitemap"><a href="">Options</a></li>
+		</ul>
+		<ul id="cms_links" class="right toolbar">
+			<li><a href="">Help</a></li>
+			<li><a href="">Logout</a></li>
+		</ul>
+	</div>
 </t:container>

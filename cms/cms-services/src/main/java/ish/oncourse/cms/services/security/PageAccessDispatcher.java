@@ -21,7 +21,6 @@ public class PageAccessDispatcher implements Dispatcher {
 	public boolean dispatch(Request request, Response response)
 			throws IOException {
 
-		boolean doDispatch = false;
 		String path = request.getPath();
 		if (path.equals("")) {
 			return false;
@@ -62,11 +61,12 @@ public class PageAccessDispatcher implements Dispatcher {
 
 		// redirect to login
 		if (!loginPage && authenticationService.getUser() == null) {
-			response.sendRedirect(request.getContextPath() + "/" + LOGIN_PAGE);
+			String loginPath = "http://" + request.getServerName() + request.getContextPath() + "/" + LOGIN_PAGE;
+			response.sendRedirect(loginPath);
 			hasAccess = true;
 		} else if (loginPage && authenticationService.getUser() != null) {
-			// redirect to auth home page
-			response.sendRedirect(request.getContextPath() + "/");
+			String homePage = "http://" + request.getServerName() + request.getContextPath() + "/";
+			response.sendRedirect(homePage);
 			hasAccess = true;
 		}
 

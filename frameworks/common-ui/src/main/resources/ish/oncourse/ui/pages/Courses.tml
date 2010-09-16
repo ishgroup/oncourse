@@ -2,7 +2,9 @@
 <html t:type="ui/pagewrapper" title="${title}"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<!-- TODO implement SearchCriteria component-->
+	
 	<span t:type="ui/quicksearch" />
+	
 	<div id="toggle-results-map">
 		<a href="#" class="toggle_locations">Locations</a>
 	</div>
