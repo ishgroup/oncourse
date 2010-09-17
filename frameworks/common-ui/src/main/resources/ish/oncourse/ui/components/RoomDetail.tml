@@ -36,5 +36,7 @@
 			<dd>${room.site.specialInstructions}</dd>
 		</t:if>
 	</dl>
-	<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap" />
+	<t:if t:test="room.site.hasCoordinates">
+		<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap" />
+	</t:if>
 </t:container>

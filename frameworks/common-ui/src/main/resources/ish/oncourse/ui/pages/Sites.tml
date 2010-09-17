@@ -7,7 +7,7 @@
 			<li>
 				<h3>${site.name}</h3>
 				<div class="site_map_links">
-					<t:if t:test="site.hasCoordinats">
+					<t:if t:test="site.hasCoordinates">
 						<span>
 							<a href="#" onclick="zoomMapForSite(${site.id})" title="click to show on the map above"
 								class="class_location">show on map</a>

@@ -39,7 +39,7 @@ public class GoogleDirections {
 	public void beforeRender() {
 		sitesArray = new ArrayList<List<Object>>();
 		for (Site item : sites) {
-			if (item.isHasCoordinats()) {
+			if (item.isHasCoordinates()) {
 				List<Object> element = new ArrayList<Object>();
 				element.add(item.getLatitude().doubleValue());
 				element.add(item.getLongitude().doubleValue());

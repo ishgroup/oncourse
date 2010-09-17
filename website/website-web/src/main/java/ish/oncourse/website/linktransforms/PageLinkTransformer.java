@@ -54,7 +54,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	/**
 	 * site/200 Show the site detail for the site with angel id of 200
 	 */
-	private static final Pattern SITE_PATTERN = Pattern.compile("/site(/(\\d+))?");
+	private static final Pattern SITE_PATTERN = Pattern.compile("/site/(\\d+)");
 
 	/**
 	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
@@ -132,7 +132,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = SITE_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			throw new NotImplementedException("site");
+			String siteId = path.substring(path.lastIndexOf("/") + 1);
+			request.setAttribute("siteId", siteId);
+			return new PageRenderRequestParameters("ui/SiteDetails", new EmptyEventContext(), false);
 		}
 
 		matcher = TUTOR_PATTERN.matcher(path);

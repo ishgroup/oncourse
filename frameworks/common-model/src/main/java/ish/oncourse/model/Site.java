@@ -9,7 +9,7 @@ public class Site extends _Site {
 				: null;
 	}
 
-	public boolean isHasCoordinats() {
+	public boolean isHasCoordinates() {
 		return getLatitude() != null && getLongitude() != null;
 	}
 }
