@@ -1,0 +1,119 @@
+/*****************
+
+Filename: loggedin.css
+Purpose: Styles the tutor/student portal log-ins
+Notes:
+
+
+- Table of Contents -
+* Class roll
+* Attendance
+* Concessions
+* Student enrolments
+
+****************/
+
+/* Class Roll
+------------------------------------ */
+
+table.student-roll {border:1px solid gray; width: 100%;}
+table.student-roll tr, table.student-roll td, table.student-roll th {border:none;}
+table.student-roll th {background-color:#eeeeff;}
+table.student-roll th, table.student-roll td {padding: 2px;}
+tr.row_odd {background-color:#f0f0f0;}
+
+/* Attendance 
+------------------------------------ */
+div.markAttendance {padding:0; margin:0;}
+div.markAttendance span, div.markAttendance a, div.allAttendance a {
+width:16px; height:16px; padding-left:6px; padding-right:6px; border:1px solid white; background-repeat: no-repeat; margin:0;
+}
+div.markAttendance span.unmarked, div.allAttendance a.unmarked {
+ 	background-image:url(../images/question_grey.png);
+}
+div.markAttendance a.unmarked {
+ 	background-image:url(../images/tiny_dot.png);
+}
+div.markAttendance a.unmarked:hover, div.allAttendance a.unmarked:hover {
+ 	background-image:url(../images/question_grey_frame.png);
+}
+div.markAttendance span.attended, div.allAttendance a.attended {
+ 	background-image:url(../images/attended.png);
+}
+div.markAttendance a.attended {
+ 	background-image:url(../images/tiny_dot.png);
+}
+div.markAttendance a.attended:hover, div.allAttendance a.attended:hover {
+ 	background-image:url(../images/attended.png);
+}
+div.markAttendance span.withReason, div.allAttendance a.withReason { 	
+	background-image:url(../images/absent.png);
+}
+div.markAttendance a.withReason {
+ 	background-image:url(../images/tiny_dot.png);
+}
+div.markAttendance a.withReason:hover, div.allAttendance a.withReason:hover {
+ 	background-image:url(../images/absent.png);
+}
+div.markAttendance span.withoutReason, div.allAttendance a.withoutReason {
+ 	background-image:url(../images/no_reason.png);
+}
+div.markAttendance a.withoutReason:hover, div.allAttendance a.withoutReason:hover {
+ 	background-image:url(../images/no_reason.png);
+}
+div.markAttendance a.withoutReason {
+ 	background-image:url(../images/tiny_dot.png);
+}
+
+/* Concessions
+--------------------------------------------- */
+table.concessionEditor {width: 50em;}
+table.concessionEditor em {color:rgb(153,0,0); font-style:normal;}
+table.concessionEditor span.hint,
+table.concessionEditor span.reason {
+	position: absolute;
+	left: 500px;
+	width: 200px;
+	margin-top: -3px;
+	font-size: 95%;
+	color: #444;
+	padding: 2px 10px 3px;
+	background: #FFC;
+	border: 1px solid #C93;
+}
+table.concessionEditor span.hint .hint-pointer,
+table.concessionEditor span.reason .reason-pointer {
+	position: absolute;
+	left: -10px;
+	top: 1px;
+	width: 10px;
+	height: 19px;
+	background: url(../img/hint.png) 0 0 no-repeat;
+}
+table.concessionEditor span.reason {
+	color: #900;
+	background: #FBEEEE;
+	border: 1px solid #933;
+}
+table.concessionEditor span.reason .reason-pointer {
+	background: url(../img/reason.png) 0 0 no-repeat;
+}
+table.concessionEditor .validate span.hint {
+	display: none;
+}
+
+td.erxEditDate {
+width:30em;
+}
+
+td.erxEditDate img {display:inline;}
+
+td.concessionTitle, td.concessionNumber {
+width:15em;
+}
+
+/*  Student Enrolment
+------------------------------- */
+ul.course-outcomes li {list-style-image: none; background: none;}
+ul.course-outcomes span.outcome-code {display:inline-block; width:6em;}
+ul.course-outcomes span.module-title {font-weight:bold; padding-left:2em; padding-right: 2em;}
