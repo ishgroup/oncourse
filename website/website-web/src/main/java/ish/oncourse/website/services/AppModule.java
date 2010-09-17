@@ -1,10 +1,9 @@
-package ish.oncourse.website.services;
+/*
+ * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
 
-import ish.oncourse.model.services.ModelModule;
-import ish.oncourse.services.ServiceModule;
-import ish.oncourse.ui.services.UIModule;
-import ish.oncourse.website.linktransforms.PageLinkTransformer;
-import ish.oncourse.website.linktransforms.URLRewriteRequestFilter;
+package ish.oncourse.website.services;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
@@ -16,6 +15,12 @@ import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.HttpServletRequestFilter;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
+
+import ish.oncourse.model.services.ModelModule;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.ui.services.UIModule;
+import ish.oncourse.website.linktransforms.PageLinkTransformer;
+import ish.oncourse.website.linktransforms.URLRewriteRequestFilter;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC registry.

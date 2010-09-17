@@ -1,13 +1,18 @@
-package ish.oncourse.website.servlet;
+/*
+ * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
 
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.services.binary.IBinaryDataService;
+package ish.oncourse.website.servlet;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.services.binary.IBinaryDataService;
 
 public class BinaryDataServlet extends ServiceAwareServlet {
 

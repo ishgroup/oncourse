@@ -1,6 +1,9 @@
-package ish.oncourse.website.servlet;
+/*
+ * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
 
-import ish.oncourse.services.search.ISearchService;
+package ish.oncourse.website.servlet;
 
 import java.io.IOException;
 
@@ -13,6 +16,8 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
+
+import ish.oncourse.services.search.ISearchService;
 
 public class AutoSuggestServlet extends ServiceAwareServlet {
 
