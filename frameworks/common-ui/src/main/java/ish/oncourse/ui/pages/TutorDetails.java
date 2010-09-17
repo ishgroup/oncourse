@@ -7,25 +7,31 @@ import ish.oncourse.services.tutor.ITutorService;
 import java.util.List;
 
 import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class TutorDetails {
 	@Inject
 	private ITutorService tutorService;
 
-	@Persist
-	private Tutor tutor;
-
-	void onActivate(long id) {
-		tutor = tutorService.getTutorById(id);
-	}
+	@Inject
+	private Request request;
 	
-	public Tutor getTutor() {
-		return tutor;
-	}
-
+	@Persist
+	@Property
+	private Tutor tutor;
+	
+	@Property
 	private TutorRole role;
 
+	@SetupRender
+	public void beforeRender() {
+		String id = (String) request.getAttribute("tutorId");
+		tutor = tutorService.getTutorById(Long.valueOf(id));
+	}
+	
 	public boolean getTutorFound() {
 		return tutor != null;
 	}
@@ -40,21 +46,6 @@ public class TutorDetails {
 
 	public List<TutorRole> getCurrentVisibleTutorRoles() {
 		return tutorService.getCurrentVisibleTutorRoles(tutor);
-	}
-
-	/**
-	 * @return the role
-	 */
-	public TutorRole getRole() {
-		return role;
-	}
-
-	/**
-	 * @param role
-	 *            the role to set
-	 */
-	public void setRole(TutorRole role) {
-		this.role = role;
 	}
 
 }

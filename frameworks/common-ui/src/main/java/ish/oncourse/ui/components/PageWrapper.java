@@ -20,6 +20,7 @@ public class PageWrapper {
 	private static final String COURSE_PAGE_REAL_NAME = "ui/CourseDetails";
 	private static final String COURSE_CLASS_PAGE_REAL_NAME = "ui/CourseClassDetails";
 	private static final String SITE_PAGE_REAL_NAME = "ui/SiteDetails";
+	private static final String TUTOR_PAGE_REAL_NAME = "ui/TutorDetails";
 
 	@Inject
 	private ComponentResources componentResources;
@@ -39,7 +40,8 @@ public class PageWrapper {
 			return COURSES_PAGE_NAME;
 		} else if (COURSE_PAGE_REAL_NAME.equals(pageName)
 				|| COURSE_CLASS_PAGE_REAL_NAME.equals(pageName)
-				|| SITE_PAGE_REAL_NAME.equals(pageName)) {
+				|| SITE_PAGE_REAL_NAME.equals(pageName)
+				|| TUTOR_PAGE_REAL_NAME.equals(pageName)) {
 			return DETAILS_PAGE_NAME;
 		} else if (SITES_PAGE_REAL_NAME.equals(pageName)) {
 			return SITES_PAGE_NAME;

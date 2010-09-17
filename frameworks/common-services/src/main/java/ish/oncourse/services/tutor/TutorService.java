@@ -37,7 +37,7 @@ public class TutorService implements ITutorService {
 								Tutor.CONTACT_PROPERTY + "."
 										+ Contact.COLLEGE_PROPERTY,
 								webSiteService.getCurrentCollege()).andExp(
-								ExpressionFactory.matchExp(Tutor.ID_PK_COLUMN,
+								ExpressionFactory.matchExp(Tutor.ANGEL_ID_PROPERTY,
 										tutorId)));
 		@SuppressWarnings("unchecked")
 		List<Tutor> result = cayenneService.sharedContext().performQuery(query);

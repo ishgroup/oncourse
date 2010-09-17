@@ -139,7 +139,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = TUTOR_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			throw new NotImplementedException("tutor");
+			String tutorId = path.substring(path.lastIndexOf("/") + 1);
+			request.setAttribute("tutorId", tutorId);
+			return new PageRenderRequestParameters("ui/TutorDetails", new EmptyEventContext(), false);
 		}
 
 		matcher = SITEMAP_PATTERN.matcher(path);

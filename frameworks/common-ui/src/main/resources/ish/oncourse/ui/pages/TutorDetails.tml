@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<html t:type="ui/pagewrapper" title="${title}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="tutors_details">
 		<t:if t:test="${tutorFound}">
 			<h2>${tutor.fullName}</h2>
@@ -12,12 +12,14 @@
 				<h4>Classes</h4>
 				<div class="tutors_classes">
 					<t:loop t:source="currentVisibleTutorRoles" t:value="role">
-						<t:actionlink t:id="class" context="role.courseClass.recordId">${role.courseClass.uniqueIdentifier} ${role.courseClass.courseForClass.name}</t:actionlink>
+						<span>
+							<a href="/class/${role.courseClass.uniqueIdentifier}">${role.courseClass.uniqueIdentifier} ${role.courseClass.course.name}</a>
+						</span>
 					</t:loop>
 				</div>
 
 			</t:if>
 		</t:if>
 	</div>
-</t:container>
+</html>
 
