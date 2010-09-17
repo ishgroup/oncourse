@@ -16,12 +16,10 @@ import org.apache.tapestry5.json.JSONObject;
 
 public class AutoSuggestServlet extends ServiceAwareServlet {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(AutoSuggestServlet.class);
+	private static final Logger LOGGER = Logger.getLogger(AutoSuggestServlet.class);
 
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		ISearchService searchService = getService(ISearchService.class);
 
@@ -33,16 +31,16 @@ public class AutoSuggestServlet extends ServiceAwareServlet {
 		int i = 0, j = suggestions.getResults().size() - 1;
 
 		for (SolrDocument doc : suggestions.getResults()) {
-            String doctype = (String) doc.get("doctype");
-            if ("course".equalsIgnoreCase(doctype)) {
+			String doctype = (String) doc.get("doctype");
+			if ("course".equalsIgnoreCase(doctype)) {
 				jsonArray.put(i++, buildCourse(doc));
 			}
 		}
 
-        for (SolrDocument doc : suggestions.getResults()) {
-            String doctype = (String) doc.get("doctype");
-            if ("place".equalsIgnoreCase(doctype)) {
-				jsonArray.put( buildLocation(doc));
+		for (SolrDocument doc : suggestions.getResults()) {
+			String doctype = (String) doc.get("doctype");
+			if ("place".equalsIgnoreCase(doctype)) {
+				jsonArray.put(buildLocation(doc));
 			}
 		}
 
@@ -60,17 +58,17 @@ public class AutoSuggestServlet extends ServiceAwareServlet {
 
 	private JSONObject buildLocation(SolrDocument doc) {
 		JSONObject obj = new JSONObject();
-		
+
 		String[] points = ((String) doc.get("loc")).split(",");
 		String geohash = GeoHashUtils.encode(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
 
 		String suburb = (String) doc.get("suburb");
 		String postcode = (String) doc.get("postcode");
-		
-		obj.put("label",  suburb + " " + postcode);
+
+		obj.put("label", suburb + " " + postcode);
 		obj.put("category", "Show courses near...");
 		obj.put("href", "/courses?near=" + geohash);
-		
+
 		return obj;
 	}
 }

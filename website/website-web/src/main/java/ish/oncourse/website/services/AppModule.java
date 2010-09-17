@@ -18,39 +18,33 @@ import org.apache.tapestry5.services.HttpServletRequestFilter;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 /**
- * The module that is automatically included as part of the Tapestry IoC
- * registry.
+ * The module that is automatically included as part of the Tapestry IoC registry.
  */
 @SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
 public class AppModule {
 
 	private static final Logger LOGGER = Logger.getLogger(AppModule.class);
 
-	public static void contributeApplicationDefaults(
-			MappedConfiguration<String, String> configuration) {
+	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
 
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
 	}
 
-	public static void contributeIgnoredPathsFilter(
-			Configuration<String> configuration) {
+	public static void contributeIgnoredPathsFilter(Configuration<String> configuration) {
 		configuration.add("/servlet/binarydata");
 		configuration.add("/servlet/autosuggest");
 	}
 
 	@Contribute(PageRenderLinkTransformer.class)
 	@Primary
-	public static void provideURLRewriting(
-			OrderedConfiguration<PageRenderLinkTransformer> configuration) {
+	public static void provideURLRewriting(OrderedConfiguration<PageRenderLinkTransformer> configuration) {
 		configuration.addInstance("PageLinkRule", PageLinkTransformer.class);
 	}
 
-	public static void contributeHttpServletRequestHandler(
-			OrderedConfiguration<HttpServletRequestFilter> configuration) {
-		configuration.addInstance("URLRewriteFilter",
-				URLRewriteRequestFilter.class);
+	public static void contributeHttpServletRequestHandler(OrderedConfiguration<HttpServletRequestFilter> configuration) {
+		configuration.addInstance("URLRewriteFilter", URLRewriteRequestFilter.class);
 	}
 
 }

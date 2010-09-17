@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 public class URLRewriteRequestWrapper extends HttpServletRequestWrapper {
-	
+
 	private static final String EMPTY_STR = "";
 	private static final String WEB_FOLDER_PATH = "/web";
 
@@ -22,8 +22,7 @@ public class URLRewriteRequestWrapper extends HttpServletRequestWrapper {
 	public String getPathInfo() {
 		// TODO Auto-generated method stub
 		String pathInfo = super.getPathInfo();
-		return pathInfo == null ? null : pathInfo.replace(WEB_FOLDER_PATH,
-				EMPTY_STR);
+		return pathInfo == null ? null : pathInfo.replace(WEB_FOLDER_PATH, EMPTY_STR);
 	}
 
 	/*
@@ -35,8 +34,7 @@ public class URLRewriteRequestWrapper extends HttpServletRequestWrapper {
 	public String getServletPath() {
 		// TODO Auto-generated method stub
 		String servletPath = super.getServletPath();
-		return servletPath == null ? null : servletPath.replace(
-				WEB_FOLDER_PATH, EMPTY_STR);
+		return servletPath == null ? null : servletPath.replace(WEB_FOLDER_PATH, EMPTY_STR);
 	}
 
 }

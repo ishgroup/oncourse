@@ -12,17 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 public class BinaryDataServlet extends ServiceAwareServlet {
 
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		IBinaryDataService service = getService(IBinaryDataService.class);
 
-		BinaryInfo binaryInfo = service.getBinaryInfo(BinaryInfo.REFERENCE_NUMBER_PROPERTY,
-				req.getParameter("id"));
+		BinaryInfo binaryInfo = service.getBinaryInfo(BinaryInfo.REFERENCE_NUMBER_PROPERTY, req.getParameter("id"));
 
 		resp.setContentType(binaryInfo.getMimeType());
 		OutputStream out = resp.getOutputStream();
-		
 
 		byte[] content = service.getBinaryData(binaryInfo).getContent();
 		out.write(content);
