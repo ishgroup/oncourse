@@ -5,8 +5,6 @@
 
 package ish.oncourse.website.linktransforms;
 
-import ish.oncourse.services.node.IWebNodeService;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,9 +20,8 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
-/**
- * @author marek
- */
+import ish.oncourse.services.node.IWebNodeService;
+
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
@@ -64,9 +61,12 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	private static final Pattern TUTOR_PATTERN = Pattern.compile("/tutor/(\\d+)");
 
-	private static final String HOME_PAGE_PATH = "/";
+	/**
+	 * /sitemap.xml Google specific sitemap file.
+	 */
+	private static final Pattern SITEMAP_PATTERN = Pattern.compile("/sitemap\\.xml");
 
-	private static final String ASSETS_PATH = "/assets";
+	private static final String HOME_PAGE_PATH = "/";
 
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -79,9 +79,13 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 		final String path = request.getPath();
-		// TODO remove checking on servlets because it will be replaced with
-		// assets module
-		if (HOME_PAGE_PATH.equals(path) || path.startsWith(ASSETS_PATH) || path.startsWith("/servlet")) {
+
+		// TODO remove the next test since it will be replaced with separate application
+		if (path.startsWith("/assets") || path.startsWith("/servlet")) {
+			return null;
+		}
+
+		if (HOME_PAGE_PATH.equals(path)) {
 			return null;
 		}
 
@@ -90,11 +94,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		LOGGER.info("Rewrite InBound: path is: " + path);
 
 		/*
-		 * These are currently ordered from most likely to be encountered, to least
+		 * For speed these are currently ordered from most likely to be encountered, to least.
 		 */
 
 		matcher = COURSES_PATTERN.matcher(path);
-
 		if (matcher.matches()) {
 
 			return new PageRenderRequestParameters("ui/Courses", new EmptyEventContext(), false);
@@ -134,6 +137,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 
 		matcher = TUTOR_PATTERN.matcher(path);
+		if (matcher.matches()) {
+			throw new NotImplementedException("tutor");
+		}
+
+		matcher = SITEMAP_PATTERN.matcher(path);
 		if (matcher.matches()) {
 			throw new NotImplementedException("tutor");
 		}
