@@ -9,13 +9,19 @@ import org.apache.tapestry5.annotations.Property;
 
 public class GoogleMapSites {
 
-	@Parameter(required=true)
+	@Parameter(required = true)
 	@Property
 	private Collection<Site> sites;
+
+	@Parameter
+	@Property
+	private boolean collapsed;
 
 	public boolean isHasMapItemList() {
 		return !sites.isEmpty();
 	}
 
-
+	public String getFocusMapClass() {
+		return collapsed ? "collapse" : "non-collapse";
+	}
 }

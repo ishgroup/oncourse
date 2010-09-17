@@ -8,4 +8,8 @@ public class Site extends _Site {
 				.getIdSnapshot().get(ID_PK_COLUMN)).intValue()
 				: null;
 	}
+
+	public boolean isHasCoordinats() {
+		return getLatitude() != null && getLongitude() != null;
+	}
 }

@@ -9,7 +9,7 @@
 		-->
 
 
-		<div id="focus-map" class="collapse">
+		<div id="focus-map" class="${focusMapClass}">
 			<span t:type="ui/GoogleDirections" sites="sites"/>
 		</div>
 	</t:if>

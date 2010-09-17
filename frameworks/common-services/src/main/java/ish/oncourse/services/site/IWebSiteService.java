@@ -4,6 +4,7 @@ import java.util.List;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.CollegeDomain;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.model.WebSite;
 
@@ -59,4 +60,6 @@ public interface IWebSiteService {
 	WebBlock getWebBlockForName(String name);
 
 	String getHomeLink();
+	
+	List<Site> getCollegeSites();
 }

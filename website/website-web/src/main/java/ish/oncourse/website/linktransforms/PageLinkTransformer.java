@@ -99,7 +99,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = COURSES_PATTERN.matcher(path);
 		if (matcher.matches()) {
-
 			return new PageRenderRequestParameters("ui/Courses", new EmptyEventContext(), false);
 		}
 
@@ -128,7 +127,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = SITES_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			throw new NotImplementedException("sites");
+			return new PageRenderRequestParameters("ui/Sites", new EmptyEventContext(), false);
 		}
 
 		matcher = SITE_PATTERN.matcher(path);

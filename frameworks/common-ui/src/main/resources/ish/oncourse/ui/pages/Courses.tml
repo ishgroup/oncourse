@@ -8,7 +8,7 @@
 	<div id="toggle-results-map">
 		<a href="#" class="toggle_locations">Locations</a>
 	</div>
-	<span t:type="ui/GoogleMapSites" sites="mapSites" />
+	<span t:type="ui/GoogleMapSites" sites="mapSites" collapsed="true"/>
 
 	<t:if t:test="hasAnyItems" negate="true">
 		<h2>no results</h2>

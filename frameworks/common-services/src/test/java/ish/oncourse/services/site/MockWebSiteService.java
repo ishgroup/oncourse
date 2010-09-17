@@ -2,6 +2,8 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.CollegeDomain;
+import ish.oncourse.model.Site;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -51,6 +53,10 @@ public class MockWebSiteService implements IWebSiteService {
 	}
 
 	public String getHomeLink() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	public List<Site> getCollegeSites() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

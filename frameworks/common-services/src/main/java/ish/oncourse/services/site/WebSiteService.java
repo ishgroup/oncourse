@@ -2,6 +2,8 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.CollegeDomain;
+import ish.oncourse.model.Site;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -142,5 +144,9 @@ public class WebSiteService implements IWebSiteService {
 
 	public String getHomeLink() {
 		return request.getContextPath() + "/";
+	}
+
+	public List<Site> getCollegeSites() {
+		return getCurrentCollege().getSites();
 	}
 }

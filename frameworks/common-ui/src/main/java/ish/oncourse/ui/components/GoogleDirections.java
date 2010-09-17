@@ -11,7 +11,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 
 public class GoogleDirections {
-	
+
 	@Parameter
 	private Collection<Site> sites;
 
@@ -39,18 +39,19 @@ public class GoogleDirections {
 	public void beforeRender() {
 		sitesArray = new ArrayList<List<Object>>();
 		for (Site item : sites) {
-			List<Object> element = new ArrayList<Object>();
-			element.add(item.getLatitude().doubleValue());
-			element.add(item.getLongitude().doubleValue());
-			element.add("\"" + item.getName() + "\"");
-			element.add("\"" + item.getSuburb() + "\"");
-			element.add(item.getId());
-			sitesArray.add(element);
+			if (item.isHasCoordinats()) {
+				List<Object> element = new ArrayList<Object>();
+				element.add(item.getLatitude().doubleValue());
+				element.add(item.getLongitude().doubleValue());
+				element.add("\"" + item.getName() + "\"");
+				element.add("\"" + item.getSuburb() + "\"");
+				element.add(item.getId());
+				sitesArray.add(element);
+			}
 		}
 		setupMapPosition();
 	}
 
-	
 	public void setupMapPosition() {
 
 		double avLat = 0;
@@ -145,4 +146,3 @@ public class GoogleDirections {
 	}
 
 }
-	
