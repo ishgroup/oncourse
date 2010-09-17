@@ -55,6 +55,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * site/200 Show the site detail for the site with angel id of 200
 	 */
 	private static final Pattern SITE_PATTERN = Pattern.compile("/site/(\\d+)");
+	
+	/**
+	 * room/200 Show the room detail for the room with angel id of 200
+	 */
+	private static final Pattern ROOM_PATTERN = Pattern.compile("/room/(\\d+)");
 
 	/**
 	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
@@ -136,6 +141,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			request.setAttribute("siteId", siteId);
 			return new PageRenderRequestParameters("ui/SiteDetails", new EmptyEventContext(), false);
 		}
+		
+		matcher = ROOM_PATTERN.matcher(path);
+		if (matcher.matches()) {
+			throw new NotImplementedException("room");
+		}
 
 		matcher = TUTOR_PATTERN.matcher(path);
 		if (matcher.matches()) {
@@ -146,7 +156,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = SITEMAP_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			throw new NotImplementedException("tutor");
+			throw new NotImplementedException("sitemap");
 		}
 
 		// If we match no other pattern we need to look up the page in the list
