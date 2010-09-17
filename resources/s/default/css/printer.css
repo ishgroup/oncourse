@@ -1,0 +1,82 @@
+/*! 
+ generated 2009-08-17 06:02:25 Etc/GMT as defined in /873/custom/defaults/config/css.conf
+*//* Earlier output file date: 2009-07-27 23:09:24 Etc/GMT*/
+
+/*********** print.css *************/
+/* -------------------------------------------------------------- 
+  
+ Hartija Css Print  Framework
+   * Version:   0.8 (2008-03-10)
+	 
+-------------------------------------------------------------- */
+
+body { 
+width:100% !important border: 1px solid red;;
+margin:0 !important;
+padding:0 !important;
+line-height: 1.4;
+word-spacing:1.1pt;
+letter-spacing:0.2pt; font-family: Garamond,"Times New Roman", serif; color: #000; background: none; font-size: 10pt; }
+
+/*Headings */
+h1,h2,h3,h4,h5,h6 { font-family: Helvetica, Arial, sans-serif; margin-bottom: 0px; }
+
+div#header:before { font-size:15pt; content: "Community Knowledge Network - www.communityed.education.tas.gov.au";}
+div#header { border-bottom: 1px solid #444; margin-bottom: 10px; }
+h1{ display: none; }
+
+h2:first-child, h2:first-child a {font-size:22pt; color: #000; font-variant: small-caps; margin-bottom: 24px; text-decoration: none; margin: 3px 0; }
+h2{font-size:17pt;}
+h3{font-size:15pt; color:#707070;}
+h4,h5,h6{font-size:12pt;}
+
+code { font: 10pt Courier, monospace; } 
+blockquote { margin: 1.3em; padding: 1em;  font-size: 10pt; }
+hr { background-color: #ccc; }
+
+/* Images */
+img { float: left; margin: 1em 1.5em 1.5em 0; }
+a img { border: none; }
+
+/* Links */
+a:link, a:visited { background: transparent; font-weight: 700; text-decoration: underline;color:#333; }
+a:link[href^="http://"]:after, a[href^="http://"]:visited:after { content: " (" attr(href) ") "; font-size: 90%; }
+a[href^="http://"] {color:#000; }
+
+/* Table */
+table { margin: 1px; text-align:left; }
+th { border-bottom: 1px solid #333;  font-weight: bold; }
+td { border-bottom: 1px solid #333; }
+th,td { padding: 4px 10px 4px 0; }
+tfoot { font-style: italic; }
+caption { background: #fff; margin-bottom:2em; text-align:left; }
+thead {display: table-header-group;}
+tr {page-break-inside: avoid;} 
+
+/*hide various parts from the site
+*/
+
+div#nav-wrap, div#sub_content, div.extra, p.timeliner, h2.adult_edu_logo, a#main_url, div.class-info-link, span.timing-display, div.course-class-description, div.course-class-list-item ul.menu, div.waitinglist-block, p.more-results
+{display:none;}
+
+div#search_query div { display: inline; }
+div.course-list-item { clear: both; }
+div.course-list-item div.course-class-list-item > h3 { font-size: 10pt; }
+
+div.main { margin: 20px auto; width: 100%; }
+div.course-info dt, dl.details dt { font-weight: bold; width: 20%; clear: both; padding-left: 0%;}
+div.course-info dl dd, div.course-info dl dt, dl.details dd, dl.details dt { border: 0px dashed #444; font-size: 12px; float: left; }
+div.course-info dl:after, dl.details:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+dl.details, table.session-table { width: 100%; font-size: 12px; clear: both; }
+
+table.session-table td { padding: 4px; }
+table.session-table tr th { background-color: #fff; border-bottom: 1px solid black; }
+table.session-table tbody tr:nth-child(odd) {
+  background-color: #F4F7FA;
+}
+
+
+div#footer { clear: both; margin-top: 30px; border-top: 1px solid #444; display: none; }
+div#footer > a { display: none; }
+div#footer > a img { display: block; }
+div#footer div#region_footer p > a:last-child { display: none; }
