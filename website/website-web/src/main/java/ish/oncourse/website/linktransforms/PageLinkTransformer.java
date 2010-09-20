@@ -144,7 +144,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		
 		matcher = ROOM_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			throw new NotImplementedException("room");
+			String roomId = path.substring(path.lastIndexOf("/") + 1);
+			request.setAttribute("roomId", roomId);
+			return new PageRenderRequestParameters("ui/RoomDetails", new EmptyEventContext(), false);
 		}
 
 		matcher = TUTOR_PATTERN.matcher(path);

@@ -20,6 +20,8 @@ import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
+import ish.oncourse.services.room.IRoomService;
+import ish.oncourse.services.room.RoomService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -60,6 +62,7 @@ public class ServiceModule {
 		binder.bind(ICourseClassService.class, CourseClassService.class);
 		binder.bind(ITutorService.class, TutorService.class);
 		binder.bind(ISitesService.class, SitesService.class);
+		binder.bind(IRoomService.class, RoomService.class);
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(IPageRenderer.class, PageRenderer.class);
 		binder.bind(ITagService.class, TagService.class);
