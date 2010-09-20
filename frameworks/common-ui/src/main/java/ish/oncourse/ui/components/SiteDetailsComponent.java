@@ -8,49 +8,63 @@ import java.util.List;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 
-public class RoomDetail {
-
-	@Parameter(required = true)
+public class SiteDetailsComponent {
+	@Parameter
 	@Property
 	private Room room;
 
 	@Parameter
 	@Property
+	private Site site;
+
+	@Parameter
+	@Property
 	private boolean collapseLocationMap;
-	
+
 	public boolean isHasName() {
+		if(room==null){
+			return false;
+		}
 		String name = room.getName();
 		return isStringNotEmpty(name)
 				&& !"*default*".equals(name.trim().toLowerCase());
 	}
 
+	@SetupRender
+	public void beforeRender() {
+		if (room != null) {
+			site = room.getSite();
+		}
+	}
+
 	public boolean isHasAddress() {
-		String street = room.getSite().getStreet();
-		String suberb = room.getSite().getSuburb();
+		String street = site.getStreet();
+		String suberb = site.getSuburb();
 		return isStringNotEmpty(street) && isStringNotEmpty(suberb);
 	}
 
 	public boolean isHasPostCode() {
-		String postcode = room.getSite().getPostcode();
+		String postcode = site.getPostcode();
 		return isStringNotEmpty(postcode);
 	}
 
 	public boolean isHasDrivingDirections() {
-		return isStringNotEmpty(room.getSite().getDrivingDirections());
+		return isStringNotEmpty(site.getDrivingDirections());
 	}
 
 	public boolean isHasPublicTransportDirections() {
-		return isStringNotEmpty(room.getSite().getPublicTransportDirections());
+		return isStringNotEmpty(site.getPublicTransportDirections());
 	}
 
 	public boolean isHasSpecialInstructions() {
-		return isStringNotEmpty(room.getSite().getSpecialInstructions());
+		return isStringNotEmpty(site.getSpecialInstructions());
 	}
 
 	public List<Site> getMapSites() {
 		List<Site> sites = new ArrayList<Site>(1);
-		sites.add(room.getSite());
+		sites.add(site);
 		return sites;
 	}
 

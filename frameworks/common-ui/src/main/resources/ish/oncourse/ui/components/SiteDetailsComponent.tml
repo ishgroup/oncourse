@@ -1,21 +1,25 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<h2><t:outputraw value="room.site.name"/></h2>
+	<h2>
+		<t:outputraw value="site.name" />
+	</h2>
 
 	<dl class="details" id="room-details">
-		<dt>Room</dt>
-		<dd>
-			<t:if t:test="hasName">
-				${room.name}
+		<t:if t:test="room">
+			<dt>Room</dt>
+			<dd>
+				<t:if t:test="hasName">
+					${room.name}
  			</t:if>
-		</dd>
+			</dd>
+		</t:if>
 		<t:if t:test="hasAddress">
 			<dt>Address</dt>
 			<dd>
-				${room.site.street}
-				${room.site.suburb}
+				${site.street}
+				${site.suburb}
 				<t:if t:test="hasPostCode">
-					${room.site.postcode}
+					${site.postcode}
 			</t:if>
 			</dd>
 		</t:if>
@@ -23,20 +27,21 @@
 		<t:if t:test="hasDrivingDirections">
 
 			<dt>Directions</dt>
-			<dd>${room.site.drivingDirections}</dd>
+			<dd>${site.drivingDirections}</dd>
 
 		</t:if>
 		<t:if t:test="hasPublicTransportDirections">
 			<dt>Public Transport</dt>
-			<dd>${room.site.publicTransportDirections}</dd>
+			<dd>${site.publicTransportDirections}</dd>
 		</t:if>
 		<span style="clear: both; display: block;"></span>
 		<t:if t:test="hasSpecialInstructions">
 			<dt>Instructions</dt>
-			<dd>${room.site.specialInstructions}</dd>
+			<dd>${site.specialInstructions}</dd>
 		</t:if>
 	</dl>
-	<t:if t:test="room.site.hasCoordinates">
-		<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap" />
+	<t:if t:test="site.hasCoordinates">
+		<span t:type="ui/GoogleDirections" sites="mapSites"
+			showDirections="true" collapseLocationMap="collapseLocationMap" />
 	</t:if>
 </t:container>

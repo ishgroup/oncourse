@@ -15,7 +15,7 @@
 		<t:outputraw value="${courseClassDetail}" />
 		<t:if t:test="${courseClass.hasRoom}">
 			<h3>Location</h3>
-			<span t:type="ui/RoomDetail" room="courseClass.room"
+			<span t:type="ui/SiteDetailsComponent" room="courseClass.room"
 				collapseLocationMap="true" />
 		</t:if>
 		<div class="blockdetail">
