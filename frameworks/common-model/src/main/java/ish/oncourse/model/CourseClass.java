@@ -158,7 +158,7 @@ public class CourseClass extends _CourseClass {
 	}
 
 	public String getUniqueIdentifier() {
-		return getCourse() + "-" + getCode();
+		return getCourse().getCode() + "-" + getCode();
 	}
 
 	public boolean isHasAnyTimelineableSessions() {

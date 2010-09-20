@@ -1,9 +1,11 @@
 package ish.oncourse.services.sites;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -42,5 +44,11 @@ public class SitesService implements ISitesService {
 	 */
 	private Expression getAvailabilityQualifier() {
 		return ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true);
+	}
+	
+	public Date getLatestModifiedDate() {
+		return (Date) cayenneService.sharedContext().performQuery(
+				new EJBQLQuery("select max(s.modified) from Site s where "
+						+ getSiteQualifier().andExp(getAvailabilityQualifier()).toEJBQL("s"))).get(0);
 	}
 }

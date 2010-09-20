@@ -2,6 +2,7 @@ package ish.oncourse.services.tutor;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.services.persistence.ICayenneService;
@@ -9,10 +10,12 @@ import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -80,5 +83,25 @@ public class TutorService implements ITutorService {
 				query);
 
 		return result == null ? new ArrayList<TutorRole>() : result;
+	}
+
+	/**
+	 * @return
+	 */
+	private Expression getSiteQualifier() {
+		return ExpressionFactory.matchExp(Tutor.CONTACT_PROPERTY + "."
+				+ Contact.COLLEGE_PROPERTY, webSiteService.getCurrentCollege());
+	}
+
+	public Date getLatestModifiedDate() {
+		return (Date) cayenneService.sharedContext().performQuery(
+				new EJBQLQuery("select max(t.modified) from Tutor t where "
+						+ getSiteQualifier().toEJBQL("t"))).get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Tutor> getTutors() {
+		SelectQuery query = new SelectQuery(Tutor.class, getSiteQualifier());
+		return cayenneService.sharedContext().performQuery(query);
 	}
 }

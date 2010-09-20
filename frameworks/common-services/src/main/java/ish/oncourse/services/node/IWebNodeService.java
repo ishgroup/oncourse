@@ -1,5 +1,6 @@
 package ish.oncourse.services.node;
 
+import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.WebNode;
@@ -57,4 +58,5 @@ public interface IWebNodeService {
 	 */
 	WebNode getNode(String searchProperty, Object value);
 
+	Date getLatestModifiedDate();
 }

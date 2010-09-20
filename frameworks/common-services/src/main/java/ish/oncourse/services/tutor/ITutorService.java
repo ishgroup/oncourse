@@ -1,5 +1,6 @@
 package ish.oncourse.services.tutor;
 
+import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.Tutor;
@@ -11,4 +12,7 @@ public interface ITutorService {
 	
 	List<TutorRole> getCurrentVisibleTutorRoles(Tutor tutor);
 	
+	Date getLatestModifiedDate();
+
+	List<Tutor> getTutors();
 }

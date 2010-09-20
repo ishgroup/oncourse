@@ -3,12 +3,14 @@ package ish.oncourse.services.course;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
@@ -47,7 +49,12 @@ public class CourseService implements ICourseService {
 		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege());
 	}
-
+	/**
+	 * @return
+	 */
+	private Expression getAvailabilityQualifier() {
+		return ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true);
+	}
 	public List<Course> loadByIds(Object... ids) {
 
 		if (ids.length == 0) {
@@ -112,5 +119,11 @@ public class CourseService implements ICourseService {
 		return ((Number) cayenneService.sharedContext().performQuery(
 				new EJBQLQuery("select count(c) from Course c where "
 						+ getSiteQualifier().toEJBQL("c"))).get(0)).intValue();
+	}
+
+	public Date getLatestModifiedDate() {
+		return (Date) cayenneService.sharedContext().performQuery(
+				new EJBQLQuery("select max(c.modified) from Course c where "
+						+ getSiteQualifier().andExp(getAvailabilityQualifier()).toEJBQL("c"))).get(0);
 	}
 }

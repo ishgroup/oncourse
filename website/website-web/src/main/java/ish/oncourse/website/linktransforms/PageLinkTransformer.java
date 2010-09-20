@@ -158,7 +158,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = SITEMAP_PATTERN.matcher(path);
 		if (matcher.matches()) {
-			throw new NotImplementedException("sitemap");
+			return new PageRenderRequestParameters("ui/SitemapXML", new EmptyEventContext(), false);
 		}
 
 		// If we match no other pattern we need to look up the page in the list

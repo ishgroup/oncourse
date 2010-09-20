@@ -1,5 +1,6 @@
 package ish.oncourse.services.course;
 
+import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.Course;
@@ -13,4 +14,5 @@ public interface ICourseService {
 	Course getCourse(String searchProperty, Object value);
 	List<Course> getCourses(boolean enrollable);
 	Integer getCoursesCount();
+	Date getLatestModifiedDate();
 }

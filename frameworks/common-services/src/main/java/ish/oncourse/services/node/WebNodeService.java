@@ -6,10 +6,12 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
@@ -160,5 +162,11 @@ public class WebNodeService implements IWebNodeService {
 		@SuppressWarnings("unchecked")
 		List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
 		return !nodes.isEmpty()?nodes.get(0):null;
+	}
+
+	public Date getLatestModifiedDate() {
+		return (Date) cayenneService.sharedContext().performQuery(
+				new EJBQLQuery("select max(wn.modified) from WebNode wn where "
+						+ siteQualifier().toEJBQL("wn"))).get(0);
 	}
 }
