@@ -21,6 +21,7 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.WebNodeService;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 
@@ -81,6 +82,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Inject
 	RequestGlobals requestGlobals;
+	
+	@Inject
+	IWebNodeService webNodeService;
 
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 		final String path = request.getPath();
@@ -159,6 +163,17 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		matcher = SITEMAP_PATTERN.matcher(path);
 		if (matcher.matches()) {
 			return new PageRenderRequestParameters("ui/SitemapXML", new EmptyEventContext(), false);
+		}
+		String nodePath=path;
+		if(nodePath.startsWith("/")){
+			nodePath=nodePath.replaceFirst("/", "");
+		}
+		if(nodePath.endsWith("/")){
+			nodePath=nodePath.substring(0, nodePath.length()-1);
+		}
+		if(webNodeService.isNodeExist(nodePath)){
+			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
+			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
 		}
 
 		// If we match no other pattern we need to look up the page in the list

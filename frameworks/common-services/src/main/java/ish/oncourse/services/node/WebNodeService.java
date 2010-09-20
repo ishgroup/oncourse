@@ -169,4 +169,19 @@ public class WebNodeService implements IWebNodeService {
 				new EJBQLQuery("select max(wn.modified) from WebNode wn where "
 						+ siteQualifier().toEJBQL("wn"))).get(0);
 	}
+
+	public boolean isNodeExist(String path) {
+		String[] nodes=path.split("/");
+		WebNode node=getNodeForNodeName(nodes[nodes.length-1]);
+		if(node==null){
+			return false;
+		}
+		for(int i=nodes.length-2;i>=0; i--){
+			WebNode parentNode = node.getParentNode();
+			if(!(nodes[i].equals(parentNode.getShortName())||nodes[i].equals(parentNode.getName()))){
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -59,4 +59,6 @@ public interface IWebNodeService {
 	WebNode getNode(String searchProperty, Object value);
 
 	Date getLatestModifiedDate();
+	
+	boolean isNodeExist(String path);
 }
