@@ -22,4 +22,32 @@ public class Tag extends _Tag {
 		}
 		return false;
 	}
+	
+	public String getLink(String entityType) {
+		String link = "";
+		Tag subTag = this;
+		while (subTag.getParent() != null) {
+			String shortName = subTag.getShortName();
+			String name = shortName != null ? shortName : subTag.getName();
+			link = "/" + name.replaceAll(" ", "+").replaceAll("/", "|") + link;
+			subTag = subTag.getParent();
+		}
+		if (entityType != null) {
+			// TODO add the calculation of plural entity name for all the
+			// taggable entities
+			if (entityType.equals(Course.class.getSimpleName())) {
+				entityType = "courses";
+			}
+		}
+		if (entityType == null) {
+			// Course is default entity type
+			entityType = "courses";
+		}
+		link = "/" + entityType + link;
+		return link;
+	}
+	
+	public String getLink(){
+		return getLink(Course.class.getSimpleName());
+	}
 }

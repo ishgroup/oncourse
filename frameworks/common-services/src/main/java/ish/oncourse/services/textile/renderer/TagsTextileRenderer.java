@@ -134,7 +134,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 		if (inHeaders) {
 			result += "<h2>";
 		}
-		result += "<a href=\"" + getLink(tag, entityType) + "\">"
+		result += "<a href=\"" + tag.getLink(entityType) + "\">"
 				+ tag.getName() + "</a>";
 		if (inHeaders) {
 			result += "</h2>";
@@ -142,26 +142,5 @@ public class TagsTextileRenderer extends AbstractRenderer {
 		return result;
 	}
 
-	public String getLink(Tag subTag, String entityType) {
-		String link = "";
-		while (subTag.getParent() != null) {
-			String shortName = subTag.getShortName();
-			String name = shortName != null ? shortName : subTag.getName();
-			link = "/" + name.replaceAll(" ", "+").replaceAll("/", "|") + link;
-			subTag = subTag.getParent();
-		}
-		if (entityType != null) {
-			// TODO add the calculation of plural entity name for all the
-			// taggable entities
-			if (entityType.equals(Course.class.getSimpleName())) {
-				entityType = "courses";
-			}
-		}
-		if (entityType == null) {
-			// Course is default entity type
-			entityType = "courses";
-		}
-		link = "/" + entityType + link;
-		return link;
-	}
+	
 }

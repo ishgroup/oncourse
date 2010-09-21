@@ -1,35 +1,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html t:type="ui/pagewrapper" title="${title}"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<!-- TODO implement SearchCriteria component-->
-	
-	<span t:type="ui/quicksearch" />
-	
-	<div id="toggle-results-map">
-		<a href="#" class="toggle_locations">Locations</a>
-	</div>
-	<t:zone  t:id="sitesMap" id="sitesMap">
-		<span t:type="ui/GoogleMapSites" sites="mapSites" collapsed="true"/>
-	</t:zone>
-	<t:if t:test="hasAnyItems" negate="true">
-		<h2>no results</h2>
+	<t:if t:test="hasInvalidSearchTerms">
+		<!--
+			TODO implement SearchTermsClarificationView
+			<wo:SearchTermsClarificationView />
+		-->
 		<p:else>
-			<div class="post-collapse">
-				<t:zone t:id="coursesZone" id="coursesZone">
-					<t:loop source="courses" value="course">
-						<span t:type="ui/courseitem" linkToLocationsMap="true" course="course" isList="true"/>
-					</t:loop>
+			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"  browseTagPath="tagPath" />
+			<t:zone t:id="sitesMap" id="sitesMap">
+				<span t:type="ui/GoogleMapSites" sites="mapSites" collapsed="true" />
+			</t:zone>
+			<t:if t:test="hasAnyItems" negate="true">
+				<h2>no results</h2>
+				<p:else>
+					<div class="post-collapse">
+						<t:zone t:id="coursesZone" id="coursesZone">
+							<t:loop source="courses" value="course">
+								<span t:type="ui/courseitem" linkToLocationsMap="true"
+									course="course" isList="true" />
+							</t:loop>
 
-					<t:if t:test="hasMoreItems">
-						<t:actionLink t:id="showMoreCourses" zone="coursesZone">
-							<p class="more-results">show more Courses...</p>
-						</t:actionLink>
-					</t:if>
-				</t:zone>
-				
-				
-			</div>
-
+							<t:if t:test="hasMoreItems">
+								<t:actionLink t:id="showMoreCourses" zone="coursesZone">
+									<p class="more-results">show more Courses...</p>
+								</t:actionLink>
+							</t:if>
+						</t:zone>
+					</div>
+				</p:else>
+			</t:if>
 		</p:else>
 	</t:if>
+
+
 </html>

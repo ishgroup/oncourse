@@ -4,6 +4,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParam;
@@ -59,6 +60,10 @@ public class Courses {
 	@Property
 	@Persist
 	private Integer itemIndex;
+	
+	@Property
+	@Persist
+	private List<Tag> tagPath;
 
 	@Persist
 	private Map<SearchParam, String> searchParams;
@@ -110,6 +115,10 @@ public class Courses {
 		return sites;
 	}
 
+	public boolean isHasMapItemList(){
+		return !getMapSites().isEmpty();
+	}
+	
 	private List<Course> searchCourses() {
 		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
@@ -121,9 +130,9 @@ public class Courses {
 				searchParams.put(name, request.getParameter(name.name()));
 			}
 		}
-		String tag = (String) request.getAttribute(Course.COURSE_TAG);
-		if (tag != null) {
-			searchParams.put(SearchParam.subject, tag);
+		tagPath =  (List<Tag>) request.getAttribute(Course.COURSE_TAG);
+		if (tagPath != null) {
+			searchParams.put(SearchParam.subject, tagPath.get(tagPath.size()-1).getName());
 		}
 
 		return searchCourses(start, rows);
@@ -170,5 +179,10 @@ public class Courses {
 		}
 
 		return start;
+	}
+	
+	public boolean isHasInvalidSearchTerms(){
+		//TODO CourseClassInMemoryFilter.hasInvalidSearchTermsForContext( context() );
+		return false;
 	}
 }

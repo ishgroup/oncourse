@@ -5,6 +5,8 @@
 
 package ish.oncourse.website.linktransforms;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -124,15 +126,17 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				}
 				String tags[]=tagsPath.split("/");
 				Tag rootTag=tagService.getRootTag();
+				List<Tag> tagPath=new ArrayList<Tag>();
 				for(String tag:tags){
 					tag=tag.replaceAll("[+]", " ").replaceAll("[|]", "/");
 					if(rootTag.hasChildWithName(tag)){
 						rootTag=tagService.getSubTagByName(tag);
+						tagPath.add(rootTag);
 					}else{
 						throw new NotImplementedException("URL alias");
 					}
 				}
-				request.setAttribute(Course.COURSE_TAG, tags[tags.length-1]);
+				request.setAttribute(Course.COURSE_TAG, tagPath);
 			}
 			return new PageRenderRequestParameters("ui/Courses", new EmptyEventContext(), false);
 		}
