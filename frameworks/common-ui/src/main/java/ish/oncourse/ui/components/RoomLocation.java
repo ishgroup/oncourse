@@ -6,7 +6,7 @@ import org.apache.tapestry5.annotations.Property;
 import ish.oncourse.model.Room;
 
 public class RoomLocation {
-	@Parameter
+	@Parameter(required=true)
 	@Property
 	private Room room;
 

@@ -24,7 +24,9 @@
 					</t:if>
 				</td>
 				<td>
-					<span t:type="ui/RoomLocation" room="event.room" withRoomName="true" />
+					<t:if t:test="event.room">
+						<span t:type="ui/RoomLocation" room="event.room" withRoomName="true" />
+					</t:if>
 				</td>
 			</tr>
 		</t:loop>

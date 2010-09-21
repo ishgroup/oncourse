@@ -19,6 +19,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
@@ -59,23 +60,40 @@ public class Courses {
 	@Persist
 	private Integer itemIndex;
 
+	@Persist
+	private Map<SearchParam, String> searchParams;
+
 	@SetupRender
 	public void beforeRender() {
-		this.courses = (request.getParameterNames().size() == 0 && request
-				.getAttribute(Course.COURSE_TAG) == null) ? courseService
-				.getCourses(START_DEFAULT, ROWS_DEFAULT) : searchCourses();
-		this.coursesCount = courseService.getCoursesCount();
+		this.itemIndex = 0;
+		if (request.getParameterNames().size() == 0
+				&& request.getAttribute(Course.COURSE_TAG) == null) {
+			this.courses = courseService
+					.getCourses(START_DEFAULT, ROWS_DEFAULT);
+			this.coursesCount = courseService.getCoursesCount();
+		} else {
+			this.courses = searchCourses();
+
+		}
+
 		this.itemIndex = courses.size();
 	}
 
 	@InjectComponent
 	private Zone coursesZone;
+	
+	@InjectComponent
+	private Zone sitesMap;
 
 	@OnEvent(component = "showMoreCourses")
 	Object onActionFromShowMoreCourses() {
-		courses.addAll(courseService.getCourses(itemIndex, ROWS_DEFAULT));
+		if (searchParams == null) {
+			courses.addAll(courseService.getCourses(itemIndex, ROWS_DEFAULT));
+		} else {
+			courses.addAll(searchCourses(itemIndex, ROWS_DEFAULT));
+		}
 		itemIndex = courses.size();
-		return coursesZone.getBody();
+		return new MultiZoneUpdate("coursesZone", coursesZone).add("sitesMap",sitesMap);
 	}
 
 	public Collection<Site> getMapSites() {
@@ -83,7 +101,9 @@ public class Courses {
 		for (Course course : courses) {
 			for (CourseClass courseClass : course.getCourseClasses()) {
 				for (Session s : courseClass.getSessions()) {
-					sites.add(s.getRoom().getSite());
+					if(s.getRoom()!=null){
+						sites.add(s.getRoom().getSite());
+					}
 				}
 			}
 		}
@@ -91,27 +111,39 @@ public class Courses {
 	}
 
 	private List<Course> searchCourses() {
-		String query = request.getParameter(SearchParam.s.name());
-
-		int start = getIntParam(request.getParameter("start"), START_DEFAULT);
+		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
 
-		Map<SearchParam, String> params = new HashMap<SearchParam, String>();
+		searchParams = new HashMap<SearchParam, String>();
 
 		for (SearchParam name : SearchParam.values()) {
 			if (request.getParameter(name.name()) != null) {
-				params.put(name, request.getParameter(name.name()));
+				searchParams.put(name, request.getParameter(name.name()));
 			}
 		}
 		String tag = (String) request.getAttribute(Course.COURSE_TAG);
 		if (tag != null) {
-			params.put(SearchParam.subject, tag);
+			searchParams.put(SearchParam.subject, tag);
 		}
 
-		QueryResponse resp = searchService.searchCourses(params, start, rows);
+		return searchCourses(start, rows);
+	}
+
+	/**
+	 * @param start
+	 * @param rows
+	 * @return
+	 */
+	private List<Course> searchCourses(int start, int rows) {
+		QueryResponse resp = searchService.searchCourses(searchParams, start,
+				rows);
 
 		LOGGER.info(String.format("The number of courses found: %s", resp
 				.getResults().size()));
+		if (coursesCount == null) {
+			coursesCount = ((Number) resp.getResults().getNumFound())
+					.intValue();
+		}
 
 		List<String> ids = new ArrayList<String>(resp.getResults().size());
 
