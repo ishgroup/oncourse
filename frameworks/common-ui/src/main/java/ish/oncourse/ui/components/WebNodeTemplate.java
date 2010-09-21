@@ -101,8 +101,9 @@ public class WebNodeTemplate {
 	}
 
 	public PrivateResource getSelectedTemplate() {
-		return resourceService.getTemplateResource(node.getWebNodeType()
-				.getTemplateKey(), "WebNode.tmp");
+		PrivateResource template = resourceService.getTemplateResource(node.getWebNodeType()
+				.getTemplateKey(), "WebNode.tmp"); 
+		return template;
 	}
 
 	RenderCommand beginRender() {

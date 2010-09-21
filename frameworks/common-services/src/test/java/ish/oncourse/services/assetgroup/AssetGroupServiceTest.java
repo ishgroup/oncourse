@@ -1,16 +1,18 @@
 package ish.oncourse.services.assetgroup;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Collection;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.MockResource;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
+
+import java.io.File;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 
 public class AssetGroupServiceTest extends Assert {
@@ -20,9 +22,9 @@ public class AssetGroupServiceTest extends Assert {
 
 		IResourceService resourceService = new IResourceService() {
 
-			public PrivateResource getConfigResource(final String fileName) {
+			public List<PrivateResource> getConfigResources(final String fileName) {
 
-				return new PrivateResource() {
+				PrivateResource res = new PrivateResource() {
 
 					public URL getPrivateUrl() {
 
@@ -45,17 +47,17 @@ public class AssetGroupServiceTest extends Assert {
 						throw new UnsupportedOperationException();
 					}
 				};
+				
+				return Collections.singletonList(res);
 			}
+			
 
-			public Resource getWebResource(final String framework,
-					final String fileName) {
+			public Resource getWebResource(final String fileName) {
 
 				return new MockResource() {
 					@Override
 					public String getPublicUrl() {
-						String prefix = framework != null ? framework + "/"
-								: "";
-						return "http://dummy/" + prefix + fileName;
+						return "http://dummy/" + fileName;
 					}
 				};
 			}

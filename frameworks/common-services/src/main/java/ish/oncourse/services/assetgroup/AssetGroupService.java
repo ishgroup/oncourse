@@ -1,25 +1,26 @@
 package ish.oncourse.services.assetgroup;
 
+import ish.oncourse.model.services.cache.CacheGroup;
+import ish.oncourse.model.services.cache.CachedObjectProvider;
+import ish.oncourse.model.services.cache.ICacheService;
+import ish.oncourse.services.resource.IResourceService;
+import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.site.IWebSiteService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.model.services.cache.CacheGroup;
-import ish.oncourse.model.services.cache.CachedObjectProvider;
-import ish.oncourse.model.services.cache.ICacheService;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.resource.IResourceService;
-
 public class AssetGroupService implements IAssetGroupService {
 
-	private final Pattern groupLinePattern;
-	private final Pattern assetLinePattern;
+	private final Pattern groupLinePattern = Pattern.compile("^(.+):(.*)");;
 
 	@Inject
 	private IResourceService resourceService;
@@ -29,21 +30,21 @@ public class AssetGroupService implements IAssetGroupService {
 
 	@Inject
 	private ICacheService cacheService;
-
 	
 	public AssetGroupService() {
-		groupLinePattern = Pattern.compile("^([\\w]+):");
-		assetLinePattern = Pattern.compile("(\\[([\\w]+)\\])?(.*)$");
+		
 	}
-
+	
 	/**
 	 * Non-public constructor used by JUnit tests.
 	 */
 	AssetGroupService(IResourceService resourceService) {
-		this();
 		this.resourceService = resourceService;
 	}
-
+	
+	/**
+	 * Returns collection of URL for asset type (css or js). 
+	 */
 	public Collection<String> getAssetGroupUrls(final AssetType type,
 			String group) {
 
@@ -59,59 +60,60 @@ public class AssetGroupService implements IAssetGroupService {
 
 		return collection.getAssetUrls(group);
 	}
-
+	
+	
+	/**
+	 * Creates a combined collection of a resource URLS from site and default configs. Used primary for caching purpose.
+	 * @param asset type js or css.
+	 * @return collection
+	 */
 	AssetGroupCollection createAssetGroupCollection(AssetType type) {
-		URL url = resourceService.getConfigResource(type.name() + ".conf")
-				.getPrivateUrl();
+
+		List<PrivateResource> configs = resourceService.getConfigResources(type
+				.name() + ".conf");
 
 		AssetGroupCollection collection = new AssetGroupCollection();
 
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(url
-					.openStream()));
+		for (PrivateResource config : configs) {
+			URL url = config.getPrivateUrl();
+
 			try {
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						url.openStream()));
+				try {
 
-				String line;
-				String group = null;
-				while ((line = in.readLine()) != null) {
+					String line;
+					String group = null;
+					while ((line = in.readLine()) != null) {
 
-					// strip comments
-					line = line.replaceFirst("//.+$", "").replaceFirst("#.+$",
-							"").trim();
+						// strip comments
+						line = line.replaceFirst("//.*$", "")
+								.replaceFirst("#.*$", "").trim();
 
-					if (line.length() == 0) {
-						continue;
-					}
+						if (line.length() == 0) {
+							continue;
+						}
 
-					Matcher groupLineMatcher = groupLinePattern.matcher(line);
-
-					// parse group line
-					if (groupLineMatcher.find()) {
-						group = groupLineMatcher.group(1);
-
-						// TODO: parse "minify" option...
-
-					}
-					// parse asset item line
-					else if (group != null) {
-						Matcher assetLineMatcher = assetLinePattern
+						Matcher groupLineMatcher = groupLinePattern
 								.matcher(line);
 
-						if (assetLineMatcher.find()&&assetLineMatcher.groupCount()==3) {
-							String framework = assetLineMatcher.group(2);
-							String path = assetLineMatcher.group(3);
-
-							String assetURL = resourceService.getWebResource(
-									framework, path).getPublicUrl();
+						// parse group line
+						if (groupLineMatcher.find()) {
+							group = groupLineMatcher.group(1);
+							// TODO: parse "minify" option...
+						}
+						// parse asset item line
+						else if (group != null) {
+							String assetURL = resourceService.getWebResource(line).getPublicUrl();
 							collection.addUrl(group, assetURL);
 						}
 					}
+				} finally {
+					in.close();
 				}
-			} finally {
-				in.close();
+			} catch (IOException e) {
+				throw new RuntimeException("Error reading config file", e);
 			}
-		} catch (IOException e) {
-			throw new RuntimeException("Error reading config file", e);
 		}
 
 		return collection;
@@ -119,8 +121,7 @@ public class AssetGroupService implements IAssetGroupService {
 
 	private String createKeyForAssetTypeCollection(AssetType type) {
 		return AssetGroupService.class.getName() + ":"
-				+ siteService.getResourceFolderName() + "@"
-				+ type.name();
+				+ siteService.getResourceFolderName() + "@" + type.name();
 	}
 
 }

@@ -1,27 +1,27 @@
 package ish.oncourse.services.resource;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
-
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ResourceService implements IResourceService {
 
 	private final static String DEFAULT_FOLDER = "default";
 
 	private final static String LAYOUT_FOLDER = "layouts";
-	private final static String CONFIGS_FOLDER = "config";
+	private final static String CONFIGS_FOLDER = "conf";
 	private final static String WEB_FOLDER = "s";
-	private final static String WEBSERVERRESOURCES_FOLDER = "";
 
 	private final File customComponentsRoot;
 	private final File customComponentsDefaultsRoot;
@@ -44,10 +44,9 @@ public class ResourceService implements IResourceService {
 						+ customComponentsPath);
 			}
 		} catch (NamingException ne) {
-			logger
-					.warn(
-							"CustomComponentsPath not defined by JNDI, falling to secondary config",
-							ne);
+			logger.warn(
+					"CustomComponentsPath not defined by JNDI, falling to secondary config",
+					ne);
 		}
 
 		if ((customComponentsPath == null) || ("".equals(customComponentsPath))) {
@@ -103,142 +102,54 @@ public class ResourceService implements IResourceService {
 
 		return resourceRoots;
 	}
-
+	
+	/**
+	 * 
+	 */
 	public PrivateResource getTemplateResource(String templateKey,
 			String fileName) {
 
-		FileResource resource = new FileResource(LAYOUT_FOLDER + File.separator
-				+ templateKey, fileName);
+		File[] roots = getResourceRoots();
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Getting template resource for templateKey:["
-					+ templateKey + "] and fileName:[" + fileName + "]");
-		}
+		String subfolder = (templateKey != null) ? templateKey : DEFAULT_FOLDER;
 
-		if (!resource.exists()) {
-			resource = new FileResource(LAYOUT_FOLDER + File.separator
-					+ ResourceService.DEFAULT_FOLDER, fileName);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Getting template resource for templateKey:["
-						+ templateKey + "] and fileName:[" + fileName + "]");
+		FileResource res = new FileResource(roots[0] + File.separator
+				+ LAYOUT_FOLDER + File.separator + subfolder, fileName);
+
+		FileResource defaultRes = new FileResource(roots[1] + File.separator
+				+ LAYOUT_FOLDER + File.separator + subfolder, fileName);
+
+		return (res.exists()) ? res : defaultRes;
+	}
+	
+	/**
+	 * 
+	 */
+	public List<PrivateResource> getConfigResources(String fileName) {
+		List<PrivateResource> configs = new LinkedList<PrivateResource>();
+
+		String siteFolder = siteService.getResourceFolderName();
+
+		if (siteFolder != null) {
+			PrivateResource config = new FileResource(customComponentsRoot
+					+ File.separator + siteFolder + File.separator
+					+ CONFIGS_FOLDER, fileName);
+			
+			if (config.exists()) {
+				configs.add(config);
 			}
-
 		}
 
-		return resource;
-	}
-
-	public PrivateResource getConfigResource(String fileName) {
-		return new FileResource(CONFIGS_FOLDER, fileName);
-	}
-
-	public Resource getWebResource(String framework, String fileName) {
-
-		if (framework == null || framework.length() == 0) {
-			return getStaticResource(fileName);
-		} else if ("app".equals(framework)) {
-			return getWOAResource(fileName);
-		} else {
-			return getFrameworkResource(framework, fileName);
-		}
-	}
-
-	private Resource getStaticResource(String fileName) {
-		return new PublicFileResource(WEB_FOLDER, "", fileName);
-	}
-
-	private Resource getWOAResource(String fileName) {
-		return new PublicFileResource(WEB_FOLDER, WEBSERVERRESOURCES_FOLDER,
+		PrivateResource defaultConfig = new FileResource(
+				customComponentsDefaultsRoot + File.separator + CONFIGS_FOLDER,
 				fileName);
+		
+		configs.add(defaultConfig);
+
+		return configs;
 	}
 
-	private Resource getFrameworkResource(String framework, String fileName) {
-		String path = "Frameworks/" + framework + ".framework"
-				+ ("".equals(WEBSERVERRESOURCES_FOLDER) ? "" : "/")
-				+ WEBSERVERRESOURCES_FOLDER;
-		return new PublicFileResource(WEB_FOLDER, path, fileName);
-	}
-
-	class PublicFileResource extends FileResource implements Resource {
-
-		private String frameworkFolder;
-
-		PublicFileResource(String folder, String frameworkFolder,
-				String fileName) {
-			super(folder, fileName);
-			this.frameworkFolder = frameworkFolder != null
-					&& frameworkFolder.length() > 0 ? frameworkFolder + "/"
-					: "";
-		}
-
-		public String getPublicUrl() {
-
-			// let Apache handle URL resolving of default vs. custom resource,
-			// just return a normal URL
-
-			// TODO: andrus, Nov 14 2009 - ZFS version part of the URL
-			return "/" + folder + "/" + frameworkFolder + fileName;
-		}
-	}
-
-	class FileResource implements PrivateResource {
-
-		protected String fileName;
-		protected String folder;
-
-		FileResource(String folder, String fileName) {
-			// TODO: denormalize abstract path for Windows?
-			this.fileName = (fileName.startsWith("/")) ? fileName.substring(1)
-					: fileName;
-			this.folder = folder;
-		}
-
-		public File getFile() {
-
-			StringBuilder messages = null;
-
-			for (File root : getResourceRoots()) {
-
-				File resourceFile = new File(root, folder + File.separator
-						+ fileName);
-
-				if (resourceFile.exists()) {
-					return resourceFile;
-				}
-
-				if (messages == null) {
-					messages = new StringBuilder(
-							"Can't locate file. Location(s) checked: ");
-				} else {
-					messages.append(", ");
-				}
-
-				messages.append(resourceFile.getAbsolutePath());
-			}
-
-			// throw... don't allow missing files
-			throw new IllegalStateException(messages.toString());
-		}
-
-		public URL getPrivateUrl() {
-			try {
-				return getFile().toURI().toURL();
-			} catch (MalformedURLException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
-		public boolean exists() {
-			boolean exists = false;
-
-			for (File root : getResourceRoots()) {
-				if (new File(root, folder + File.separator + fileName).exists()) {
-					exists = true;
-					break;
-				}
-			}
-
-			return exists;
-		}
+	public Resource getWebResource(String fileName) {
+		return new PublicFileResource(WEB_FOLDER, fileName);
 	}
 }

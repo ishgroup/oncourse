@@ -1,17 +1,15 @@
 package ish.oncourse.services.resource;
 
-import ish.oncourse.services.resource.ResourceService;
-import ish.oncourse.services.resource.Resource;
-import ish.oncourse.services.resource.PrivateResource;
-import java.io.File;
-import java.net.URL;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.MockWebSiteService;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ResourceServiceTest extends Assert {
 
@@ -42,15 +40,15 @@ public class ResourceServiceTest extends Assert {
 		ResourceService resourceService = new ResourceService(propertyService,
 				webSiteService1);
 
-		Resource r1 = resourceService.getWebResource(null, "x/some.css");
+		Resource r1 = resourceService.getWebResource("x/some.css");
 		assertNotNull(r1);
 		assertEquals("/s/x/some.css", r1.getPublicUrl());
 
-		Resource r2 = resourceService.getWebResource("app", "x/some.css");
+		Resource r2 = resourceService.getWebResource("x/some.css");
 		assertNotNull(r2);
 		assertEquals("/s/x/some.css", r2.getPublicUrl());
 
-		Resource r3 = resourceService.getWebResource("Ajax", "x/some.css");
+		Resource r3 = resourceService.getWebResource("x/some.css");
 		assertNotNull(r3);
 		assertEquals(
 				"/s/Frameworks/Ajax.framework/x/some.css",
@@ -86,11 +84,12 @@ public class ResourceServiceTest extends Assert {
 		ResourceService resourceService = new ResourceService(propertyService,
 				webSiteService1);
 
-		PrivateResource dummyConf = resourceService
-				.getConfigResource("dummy.conf");
+		List<PrivateResource> dummyConf = resourceService
+				.getConfigResources("dummy.conf");
+		
 		assertNotNull(dummyConf);
 		assertEquals(root.toURI().toURL().toExternalForm()
-				+ "default/config/dummy.conf", dummyConf.getPrivateUrl()
+				+ "default/config/dummy.conf", dummyConf.get(0).getPrivateUrl()
 				.toExternalForm());
 
 		MockWebSiteService webSiteService2 = new MockWebSiteService();
@@ -98,11 +97,12 @@ public class ResourceServiceTest extends Assert {
 
 		resourceService = new ResourceService(propertyService, webSiteService2);
 
-		PrivateResource dummyConf2 = resourceService
-				.getConfigResource("dummy.conf");
+		List<PrivateResource> dummyConf2 = resourceService
+				.getConfigResources("dummy.conf");
+		
 		assertNotNull(dummyConf2);
 		assertEquals(root.toURI().toURL().toExternalForm()
-				+ "testcollege/config/dummy.conf", dummyConf2.getPrivateUrl()
+				+ "testcollege/config/dummy.conf", dummyConf2.get(0).getPrivateUrl()
 				.toExternalForm());
 	}
 }
