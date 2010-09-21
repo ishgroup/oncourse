@@ -103,6 +103,11 @@ public class SearchService implements ISearchService {
 					String time = params.get(SearchParam.time);
 					qString.append("when:" + time).append(" ");
 				}
+				
+				if(params.containsKey(SearchParam.subject)){
+					String subject = params.get(SearchParam.subject);
+					qString.append("tag:" + subject).append(" ");
+				}
 
 				if (params.containsKey(SearchParam.near)) {
 					String near = params.get(SearchParam.near);

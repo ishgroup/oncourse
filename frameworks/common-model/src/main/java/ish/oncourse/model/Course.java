@@ -9,6 +9,8 @@ import java.util.List;
 
 public class Course extends _Course {
 
+	public static final String COURSE_TAG = "courseTag";
+
 	public List<CourseClass> getEnrollableClasses() {
 		List<CourseClass> list = new ArrayList<CourseClass>(getCourseClasses()
 				.size());

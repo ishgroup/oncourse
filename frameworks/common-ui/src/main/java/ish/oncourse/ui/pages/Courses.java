@@ -61,9 +61,9 @@ public class Courses {
 
 	@SetupRender
 	public void beforeRender() {
-		this.courses = (request.getParameterNames().size() == 0) ? courseService
-				.getCourses(START_DEFAULT, ROWS_DEFAULT)
-				: searchCourses();
+		this.courses = (request.getParameterNames().size() == 0 && request
+				.getAttribute(Course.COURSE_TAG) == null) ? courseService
+				.getCourses(START_DEFAULT, ROWS_DEFAULT) : searchCourses();
 		this.coursesCount = courseService.getCoursesCount();
 		this.itemIndex = courses.size();
 	}
@@ -102,6 +102,10 @@ public class Courses {
 			if (request.getParameter(name.name()) != null) {
 				params.put(name, request.getParameter(name.name()));
 			}
+		}
+		String tag = (String) request.getAttribute(Course.COURSE_TAG);
+		if (tag != null) {
+			params.put(SearchParam.subject, tag);
 		}
 
 		QueryResponse resp = searchService.searchCourses(params, start, rows);
