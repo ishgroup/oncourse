@@ -62,7 +62,7 @@ public class ComponentTemplateLocatorAdvice implements MethodAdvice {
 		String templateFile = templatePath.substring(templatePath
 				.lastIndexOf("/") + 1);
 
-		PrivateResource resource = resourceService.getTemplateResource("",
+		PrivateResource resource = resourceService.getTemplateResource(null,
 				templateFile);
 
 		LOGGER.debug("Try to load template override for: " + templateFile);
