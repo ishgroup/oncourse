@@ -1,3 +1,0 @@
-/*
- * extra.js (default)
- */
