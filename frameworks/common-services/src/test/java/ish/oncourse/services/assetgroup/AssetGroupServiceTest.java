@@ -77,13 +77,13 @@ public class AssetGroupServiceTest extends Assert {
 		Collection<String> admin = collection.getAssetUrls("admin");
 		assertNotNull(admin);
 		assertEquals(1, admin.size());
-		assertEquals("http://dummy/app/library/css/application/admin.css",
+		assertEquals("http://dummy/[app]library/css/application/admin.css",
 				admin.toArray()[0]);
 
 		Collection<String> application = collection.getAssetUrls("application");
 		assertNotNull(application);
 		assertEquals(10, application.size());
-		assertEquals("http://dummy/app/library/css/application/reset.css",
+		assertEquals("http://dummy/[app]library/css/application/reset.css",
 				application.toArray()[0]);
 
 		assertNotNull(collection.getAssetUrls("ie"));

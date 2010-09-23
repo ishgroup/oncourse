@@ -43,16 +43,6 @@ public class ResourceServiceTest extends Assert {
 		Resource r1 = resourceService.getWebResource("x/some.css");
 		assertNotNull(r1);
 		assertEquals("/s/x/some.css", r1.getPublicUrl());
-
-		Resource r2 = resourceService.getWebResource("x/some.css");
-		assertNotNull(r2);
-		assertEquals("/s/x/some.css", r2.getPublicUrl());
-
-		Resource r3 = resourceService.getWebResource("x/some.css");
-		assertNotNull(r3);
-		assertEquals(
-				"/s/Frameworks/Ajax.framework/x/some.css",
-				r3.getPublicUrl());
 	}
 
 	@Test
@@ -89,7 +79,7 @@ public class ResourceServiceTest extends Assert {
 		
 		assertNotNull(dummyConf);
 		assertEquals(root.toURI().toURL().toExternalForm()
-				+ "default/config/dummy.conf", dummyConf.get(0).getPrivateUrl()
+				+ "default/conf/dummy.conf", dummyConf.get(0).getPrivateUrl()
 				.toExternalForm());
 
 		MockWebSiteService webSiteService2 = new MockWebSiteService();
@@ -101,8 +91,9 @@ public class ResourceServiceTest extends Assert {
 				.getConfigResources("dummy.conf");
 		
 		assertNotNull(dummyConf2);
+		//because this resource doesn't exist in real test path
 		assertEquals(root.toURI().toURL().toExternalForm()
-				+ "testcollege/config/dummy.conf", dummyConf2.get(0).getPrivateUrl()
+				+ "default/conf/dummy.conf", dummyConf2.get(0).getPrivateUrl()
 				.toExternalForm());
 	}
 }
