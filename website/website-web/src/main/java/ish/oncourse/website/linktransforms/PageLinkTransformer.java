@@ -79,6 +79,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	private static final String HOME_PAGE_PATH = "/";
 
+	/**
+	 * Path of the search autocomplete
+	 */
+	private static final String ADVANCED_KEYWORD_PATH = "/advanced/keyword";
+
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
 
@@ -203,7 +208,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
 			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
 		}
-
+		if(ADVANCED_KEYWORD_PATH.equals(path)){
+			return new PageRenderRequestParameters("ui/QuickSearchView", new EmptyEventContext(), false);
+		}
 		// If we match no other pattern we need to look up the page in the list
 		// of URL aliases
 		throw new NotImplementedException("URL alias");
