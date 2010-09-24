@@ -8,6 +8,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParam;
+import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +45,9 @@ public class Courses {
 	private ISearchService searchService;
 
 	@Inject
+	private ITagService tagService;
+
+	@Inject
 	private Request request;
 
 	@Property
@@ -60,10 +64,6 @@ public class Courses {
 	@Property
 	@Persist
 	private Integer itemIndex;
-	
-	@Property
-	@Persist
-	private List<Tag> tagPath;
 
 	@Persist
 	private Map<SearchParam, String> searchParams;
@@ -80,13 +80,12 @@ public class Courses {
 			this.courses = searchCourses();
 
 		}
-
 		this.itemIndex = courses.size();
 	}
 
 	@InjectComponent
 	private Zone coursesZone;
-	
+
 	@InjectComponent
 	private Zone sitesMap;
 
@@ -98,7 +97,8 @@ public class Courses {
 			courses.addAll(searchCourses(itemIndex, ROWS_DEFAULT));
 		}
 		itemIndex = courses.size();
-		return new MultiZoneUpdate("coursesZone", coursesZone).add("sitesMap",sitesMap);
+		return new MultiZoneUpdate("coursesZone", coursesZone).add("sitesMap",
+				sitesMap);
 	}
 
 	public Collection<Site> getMapSites() {
@@ -106,7 +106,7 @@ public class Courses {
 		for (Course course : courses) {
 			for (CourseClass courseClass : course.getCourseClasses()) {
 				for (Session s : courseClass.getSessions()) {
-					if(s.getRoom()!=null){
+					if (s.getRoom() != null) {
 						sites.add(s.getRoom().getSite());
 					}
 				}
@@ -115,10 +115,10 @@ public class Courses {
 		return sites;
 	}
 
-	public boolean isHasMapItemList(){
+	public boolean isHasMapItemList() {
 		return !getMapSites().isEmpty();
 	}
-	
+
 	private List<Course> searchCourses() {
 		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
@@ -126,15 +126,26 @@ public class Courses {
 		searchParams = new HashMap<SearchParam, String>();
 
 		for (SearchParam name : SearchParam.values()) {
-			if (request.getParameter(name.name()) != null) {
-				searchParams.put(name, request.getParameter(name.name()));
+			String parameter = request.getParameter(name.name());
+			if (parameter != null && !"".equals(parameter)) {
+				searchParams.put(name, parameter);
 			}
 		}
-		tagPath =  (List<Tag>) request.getAttribute(Course.COURSE_TAG);
-		if (tagPath != null) {
-			searchParams.put(SearchParam.subject, tagPath.get(tagPath.size()-1).getName());
+		Tag browseTag = null;
+		if (searchParams.containsKey(SearchParam.subject)) {
+			String path = searchParams.get(SearchParam.subject);
+			browseTag = tagService.getSubTagByName(path.substring(path
+					.lastIndexOf("/") + 1));
+		} else {
+			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
+			if (browseTag != null) {
+				searchParams.put(SearchParam.subject, browseTag.getName());
+			}
 		}
-
+		request.setAttribute("browseTag", browseTag);
+		if (searchParams.isEmpty()) {
+			searchParams.put(SearchParam.s, "");
+		}
 		return searchCourses(start, rows);
 	}
 
@@ -180,9 +191,10 @@ public class Courses {
 
 		return start;
 	}
-	
-	public boolean isHasInvalidSearchTerms(){
-		//TODO CourseClassInMemoryFilter.hasInvalidSearchTermsForContext( context() );
+
+	public boolean isHasInvalidSearchTerms() {
+		// TODO CourseClassInMemoryFilter.hasInvalidSearchTermsForContext(
+		// context() );
 		return false;
 	}
 }

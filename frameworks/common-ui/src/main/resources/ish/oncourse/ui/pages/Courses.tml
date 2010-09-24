@@ -7,7 +7,7 @@
 			<wo:SearchTermsClarificationView />
 		-->
 		<p:else>
-			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"  browseTagPath="tagPath" />
+			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"/>
 			<t:zone t:id="sitesMap" id="sitesMap">
 				<span t:type="ui/GoogleMapSites" sites="mapSites" collapsed="true" />
 			</t:zone>

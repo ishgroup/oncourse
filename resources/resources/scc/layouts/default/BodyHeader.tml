@@ -14,13 +14,13 @@
 	</div>
 <![endif]-->
 
-<div id="login_area">Already a student or tutor? <a href="/login">Sign in to MySCC</a></div>
-<div id="header">
-	<h1><a href="${homeLink}">${collegeName}</a></h1>
+	<div id="login_area">Already a student or tutor? <a href="/login">Sign in to MySCC</a></div>
+	<div id="header">
+		<h1><a href="${homeLink}">${collegeName}</a></h1>
 	
-	<div id="site_toolbar">
-		[webobject name="CourseSearchForm"/]
-		[wo:DynamicCookieView cookieKey = "shortlist" entityName = "CourseClass" /]
+		<div id="site_toolbar">
+			<span t:type="ui/CourseSearchForm"/>
+			[wo:DynamicCookieView cookieKey = "shortlist" entityName = "CourseClass" /]
+		</div>
 	</div>
-</div>
 </t:container>

@@ -6,7 +6,9 @@
     <t:if t:test="browseTagPath">
     	<t:loop source="browseTagPath" value="tag" index="tagIndex">
     		<div class="tag-crumb-title search-value no-highlight">
-	  			<a href="${tag.link}">${tag.name}</a>
+	  			<t:if t:test="showTagRaquo"><a href="${tag.link}">${tag.name}</a>
+	  				<p:else>${tag.name}</p:else>
+	  			</t:if>
 	  		</div>		
 	  		<t:if t:test="showTagRaquo">
 	  			<span>»</span>

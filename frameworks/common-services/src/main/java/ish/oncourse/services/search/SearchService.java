@@ -111,13 +111,18 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.near)) {
 					String near = params.get(SearchParam.near);
-					double[] points = GeoHashUtils.decode(near);
-					qString.append("{!sfilt fl=course_loc}");
-					q.setParam(
-							"pt",
-							String.valueOf(points[0]) + ","
-									+ String.valueOf(points[1]));
-					q.setParam("d", "10");
+					// TODO remove this hack when the name of the location will
+					// be searched in db
+					try {
+						double[] points = GeoHashUtils.decode(near);
+						qString.append("{!sfilt fl=course_loc}");
+						q.setParam("pt", String.valueOf(points[0]) + ","
+								+ String.valueOf(points[1]));
+						q.setParam("d", "10");
+					} catch (NullPointerException e) {
+						// TODO remove this hack when the name of the location
+						// will be searched in db
+					}
 				}
 
 				q.setQuery(qString.toString());

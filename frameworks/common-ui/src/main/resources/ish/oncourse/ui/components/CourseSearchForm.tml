@@ -1,15 +1,14 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<div class="box span-5 noprint" id="search_box">
+	<div class="box span-6 noprint" id="search_box">
 		<h3>
 			<span>Search</span>
 		</h3>
-		<t:form t:id="search" name="search">
-			<t:textField t:id="s" class="quicksearch" size="15"
-				t:value="searchValue"></t:textField>
-			<t:submit t:id="find" value="Go!" class="find" />
-		</t:form>
-		<!-- wo:SearchInputs /-->
+		<form action="/courses" method="get" id="search" name="search">
+			<input type="text" id="s" class="quicksearch" name="s" size="15" autocomplete="off"/>
+			<input type="submit" id="find" value="Go!" class="find" />
+		</form>
+		<span t:type="ui/SearchInputs"/>
 		<div class="advanced-search-button clearafter">
 			<a class="show-advanced-search">
 				<span>More options</span>

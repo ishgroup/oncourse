@@ -1,2 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div id="header">
+		<h1><a href="${homeLink}">${collegeName}</a></h1>
+		<div t:type="ui/webregiondisplay" regionKey="literal:header"></div>
+	</div>
 </t:container>

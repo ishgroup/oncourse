@@ -126,17 +126,15 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				}
 				String tags[]=tagsPath.split("/");
 				Tag rootTag=tagService.getRootTag();
-				List<Tag> tagPath=new ArrayList<Tag>();
 				for(String tag:tags){
 					tag=tag.replaceAll("[+]", " ").replaceAll("[|]", "/");
 					if(rootTag.hasChildWithName(tag)){
 						rootTag=tagService.getSubTagByName(tag);
-						tagPath.add(rootTag);
 					}else{
 						throw new NotImplementedException("URL alias");
 					}
 				}
-				request.setAttribute(Course.COURSE_TAG, tagPath);
+				request.setAttribute(Course.COURSE_TAG, rootTag);
 			}
 			return new PageRenderRequestParameters("ui/Courses", new EmptyEventContext(), false);
 		}
