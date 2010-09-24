@@ -50,8 +50,12 @@ public class CourseItem {
 	}
 
 	public String getCourseDetail() {
+		String detail = course.getDetail();
+		if(detail==null){
+			return "";
+		}
 		if (isList) {
-			String result = course.getDetail().substring(0, 410);
+			String result = detail.substring(0, 410);
 			int closingExpanded = result.lastIndexOf("</");
 			int closingCollapsed = result.lastIndexOf("/>");
 			int lastOpenClosing=Math.max(closingExpanded, closingCollapsed);
@@ -66,7 +70,7 @@ public class CourseItem {
 			}
 			return result + "...";
 		} else {
-			return course.getDetail();
+			return detail;
 		}
 	}
 	
