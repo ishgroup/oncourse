@@ -33,7 +33,6 @@ public class SearchInputs {
 	@Persist
 	private String advKeyword;
 
-	@Property
 	@Persist
 	private List<Tag> subjectTagChildTags;
 

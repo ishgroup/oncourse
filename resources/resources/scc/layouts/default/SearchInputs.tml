@@ -1,0 +1,77 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<div class="advanced-search-button-slide clearafter">
+		<a class="show-advanced-search-slide"><span>More options</span></a>
+		<a class="show-advanced-search-slide" style="display: none;"><span>Less options</span></a>
+	</div>
+
+	<!-- Start advanced search panel --> 
+	<div id="advanced_search_container_slide">
+  	<div class="" id="advanced_search_slide">
+    
+   <t:form t:id="search2" class="advanced-search-form"
+				method="get" name="search">
+    
+      <div id="adv_search_keyword">
+        <label title="Search keywords and functions" for="adv_keyword">I'm Looking For</label>
+        <input t:type="TextField" id="adv_keyword" t:value="advKeyword" default="keyword" name="s" />
+      </div>
+      
+      <div id="adv_search_tag">
+        <label for="subject_selection">In Subject</label>
+        <t:select id="subject_selection" name="subject"
+					model="tagModelEnc" encoder="tagModelEnc" blankLabel="all" value="browseTagLevel2Ancestor"/>
+      </div>
+      
+      <div id="adv_search_location">
+        <label title="Enter a suburb or postcode near where you'd like to do the course" for="suburb-autocomplete">Closest to</label>
+        <input t:type="TextField" name="near" t:value="searchNear" id="suburb-autocomplete"
+						class="suburb-autocomplete" default="postcode or suburb" size="18"
+						autocomplete="off" />
+      </div>
+      
+      <div id="adv_search_price">
+        <label title="Select the maximum price you'd like to pay for a course" for="adv_price">Costing up to</label>
+        <input t:type="TextField"  id="adv_price" default="\$" t:value="searchPrice"
+						name="price" size="8" />
+      </div>
+      
+      <div id="adv_search_time">
+      	<label class="time">
+			<input t:type="Checkbox" t:value="daytime" name="time" />
+			Day time
+		</label>
+
+		<label class="time">
+			<input t:type="Checkbox" t:value="evening" name="time" />
+			Evenings
+		</label>
+	  </div>
+
+	  <div id="adv_search_day">
+		<label class="day">
+			<input  t:type="Checkbox" t:value="weekday" name="day" class="parent"
+								id="weekday-parent" />
+			Weekdays
+		</label>
+
+		<label class="day">
+			<input  t:type="Checkbox" t:value="weekend" name="day" class="parent"
+							id="weekend-parent" />
+			Weekends
+		</label>
+	  </div>
+
+      <div id="adv_search_submit">
+      	<input type="submit" id="searcher" value="Start Search"/>
+        <a id="cancel-search">Close</a>
+      </div>
+      
+    </t:form>
+    <!-- End advanced search panel -->
+  </div>
+</div>
+	
+	
+	
+</t:container>	
