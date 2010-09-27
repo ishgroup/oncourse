@@ -220,7 +220,7 @@
 		<repository>
 			<id>ish-mirror-releases</id>
 			<name>ish Maven2 internal Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/internal</url>
+			<url>http://repo.ish.com.au/repository/internal</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -231,7 +231,7 @@
 		<repository>
 			<id>ish-mirror-snapshots</id>
 			<name>ish Maven2 Snapshot Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/snapshots</url>
+			<url> http://repo.ish.com.au/repository/snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -242,7 +242,7 @@
 		<repository>
 			<id>ish-3rdparty-releases</id>
 			<name>ish Maven2 3rdparty Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-3rdparty-releases
+			<url> http://repo.ish.com.au/repository/ish-3rdparty-releases
 			</url>
 			<snapshots>
 				<enabled>false</enabled>
@@ -254,7 +254,7 @@
 		<repository>
 			<id>ish-3rdparty-snapshots</id>
 			<name>ish Maven2 3rd Party Snapshots Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-3rdparty-snapshots
+			<url> http://repo.ish.com.au/repository/ish-3rdparty-snapshots
 			</url>
 			<snapshots>
 				<enabled>true</enabled>
@@ -266,7 +266,7 @@
 		<repository>
 			<id>ish-releases</id>
 			<name>ish Maven2 ish-releases Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-releases</url>
+			<url> http://repo.ish.com.au/repository/ish-releases</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -277,7 +277,7 @@
 		<repository>
 			<id>ish-snapshots</id>
 			<name>ish Maven2 ish-snapshots Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-snapshots</url>
+			<url> http://repo.ish.com.au/repository/ish-snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -288,7 +288,7 @@
 		<repository>
 			<id>snapshots</id>
 			<name>ish Maven2 snapshots Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/snapshots</url>
+			<url> http://repo.ish.com.au/repository/snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -303,7 +303,7 @@
 		<pluginRepository>
 			<id>ish-mirror-repo</id>
 			<name>ish Maven2 internal Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/internal</url>
+			<url> http://repo.ish.com.au/repository/internal</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -314,7 +314,7 @@
 		<pluginRepository>
 			<id>ish-mirror-snapshots</id>
 			<name>ish Maven2 snapshots Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/snapshots</url>
+			<url> http://repo.ish.com.au/repository/snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -329,12 +329,12 @@
 		<repository>
 			<id>maven-repo.ish.com.au/internal-releases</id>
 			<name>ish Maven2 internal Release Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-releases/</url>
+			<url> http://repo.ish.com.au/repository/ish-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>maven-repo.ish.com.au/internal-snapshots</id>
 			<name>ish Maven2 Snapshot Repository</name>
-			<url>http://archiva.ish.com.au/archiva/repository/ish-snapshots/
+			<url> http://repo.ish.com.au/repository/ish-snapshots/
 			</url>
 		</snapshotRepository>
 	</distributionManagement>
