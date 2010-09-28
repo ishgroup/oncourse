@@ -142,8 +142,7 @@ public class SearchService implements ISearchService {
 			String collegeId = String.valueOf(college.getId());
 
 			SolrQuery q = new SolrQuery();
-			q.setParam("wt", "javabin");
-
+			
 			StringBuilder query = new StringBuilder();
 
 			String[] terms = term.split("[\\s]+");
@@ -170,6 +169,34 @@ public class SearchService implements ISearchService {
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
 			throw new SearchException("Unable to find courses.", e);
+		}
+	}
+	
+	public QueryResponse searchSuburbs(String term) {
+		try {
+
+			SolrQuery q = new SolrQuery();
+			
+			StringBuilder query = new StringBuilder();
+
+			String[] terms = term.split("[\\s]+");
+			for (int i = 0; i < terms.length; i++) {
+				String t = terms[i].toLowerCase().trim() + "*";
+
+				query.append(String.format(
+						"(doctype:place suburb:%s postcode:%s) ", t, t));
+
+				if (i + 1 != terms.length) {
+					query.append(" || ");
+				}
+			}
+
+			q.setQuery(query.toString());
+
+			return getSolrServer().query(q);
+		} catch (Exception e) {
+			logger.error("Failed to search suburbs.", e);
+			throw new SearchException("Unable to find suburbs.", e);
 		}
 	}
 }

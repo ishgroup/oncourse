@@ -5,8 +5,6 @@
 
 package ish.oncourse.website.linktransforms;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,6 +81,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * Path of the search autocomplete
 	 */
 	private static final String ADVANCED_KEYWORD_PATH = "/advanced/keyword";
+	
+	/**
+	 * Path of the suburbs autocomplete
+	 */
+	private static final String ADVANCED_SUBURB_PATH = "/advanced/suburbs";
 
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -210,6 +213,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 		if(ADVANCED_KEYWORD_PATH.equals(path)){
 			return new PageRenderRequestParameters("ui/QuickSearchView", new EmptyEventContext(), false);
+		}
+		if(ADVANCED_SUBURB_PATH.equals(path)){
+			return new PageRenderRequestParameters("ui/SuburbsTextArray", new EmptyEventContext(), false);
 		}
 		// If we match no other pattern we need to look up the page in the list
 		// of URL aliases
