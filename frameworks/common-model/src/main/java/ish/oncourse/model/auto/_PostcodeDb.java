@@ -13,7 +13,9 @@ public abstract class _PostcodeDb extends CayenneDataObject {
     public static final String DC_PROPERTY = "dc";
     public static final String LAT_PROPERTY = "lat";
     public static final String LON_PROPERTY = "lon";
+    public static final String POSTCODE_PROPERTY = "postcode";
     public static final String STATE_PROPERTY = "state";
+    public static final String SUBURB_PROPERTY = "suburb";
     public static final String TYPE_PROPERTY = "type";
 
     public static final String POSTCODE_PK_COLUMN = "postcode";
@@ -40,11 +42,25 @@ public abstract class _PostcodeDb extends CayenneDataObject {
         return (Double)readProperty("lon");
     }
 
+    public void setPostcode(Integer postcode) {
+        writeProperty("postcode", postcode);
+    }
+    public Integer getPostcode() {
+        return (Integer)readProperty("postcode");
+    }
+
     public void setState(String state) {
         writeProperty("state", state);
     }
     public String getState() {
         return (String)readProperty("state");
+    }
+
+    public void setSuburb(String suburb) {
+        writeProperty("suburb", suburb);
+    }
+    public String getSuburb() {
+        return (String)readProperty("suburb");
     }
 
     public void setType(String type) {

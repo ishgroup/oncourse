@@ -1,67 +1,87 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<t:if t:test="hasResults" negate="true">
-		<b><a href="courses?s=${searchString}">Search...</a></b>
-		<p:else>
-			<!-- t:if t:test="hasLocationDetailList">
-				<ul class="suburb_list">
-					<li class="title">Show courses
-						<t:if t:test="hasSearchingLocationsSearchString">
-					for
-					<wo:ISHMatchedString value="$searchingLocationsSearchString" terms="$searchTerms" tag="em" escapeHTML="$false" />
-				</wo:if>
-				near...
-			</li>
-			<wo:loop list="$locationList" item="$locationListItem" index="$listIndex">
-				<li class="location hoverable">
-					<wo:link directActionName="courses" queryDictionary="$locationListItemQueryDictionary"><wo:string value="$locationListItem.displayString" /></wo:link>
-				</li>
-			</wo:loop>
-		</ul>
-	</wo:if>
-	
-	<wo:if condition="$hasMatchingCourseList">
-		
-		<ul class="course_list">
-			<li class="title">Matching courses</li>
-			<wo:loop list="$matchingCourseList" item="$courseListItem" index="$listIndex">
-				<li class="course hoverable">
-	          		<wo:link href="~'/course/' + courseListItem.code"><wo:string value="$courseListItem.name" escapeHTML="$false" />&#151;<wo:ISHMatchedString value="$courseListItem.code" terms="$searchTerms" tag="em" escapeHTML="$false" /></wo:link>
-	        	</li>
-			</wo:loop>
-			<li><wo:link directActionName="courses" queryDictionary="$coursesQueryDictionary">Show all results...</wo:link></li>
-		</ul>
-		
-	</wo:if>
-	<wo:else>
-		
-		<wo:if condition="$hasCourseList">
-			<ul class="course_list">
-				<li class="title">Courses</li>
-				<wo:loop list="$courseList" item="$courseListItem" index="$listIndex">
-					<li class="course hoverable">
-		          		<wo:link href="~'/course/' + courseListItem.code"><wo:ISHMatchedString value="$courseListItem.name" terms="$searchTerms" tag="em" escapeHTML="$false" /></wo:link>
-		        	</li>
-				</wo:loop>
-				<li class="hoverable"><wo:link directActionName="courses" queryDictionary="$coursesQueryDictionary">Show all results...</wo:link></li>
-			</ul>
-		</wo:if>
-		
-	</wo:else>
-	
-	<wo:if condition="$hasTagGroupResultsList">
-		<wo:loop list="$tagGroupResultsList" item="$tagGroupResultsListItem" index="$listIndex">
-			<ul class="tag_list">
-				<li class="title"><wo:string value="$tagGroupResultsListItem.tagGroupName" escapeHTML="$false" /></li>
-				<wo:loop list="$tagGroupResultsListItem.results" item="$taggedResultsListItem" index="$listIndex">
-					<li class="tag hoverable">
-						<wo:link href="~'/courses' + taggedResultsListItem.tagURLPath"><wo:ISHMatchedString value="$taggedResultsListItem.tagName" terms="$searchTerms" tag="em" escapeHTML="$false" /></wo:link>
-					</li>
-				</wo:loop>
-				<wo:if condition="$hasMoreTagGroupResults"></wo:if>
-			</ul>
-		</wo:loop>
-	</wo:if-->		
-		</p:else>
-	</t:if>
+	<div>
+		<t:if t:test="hasResults" negate="true">
+			<b>
+				<a href="courses?s=${searchString}">Search...</a>
+			</b>
+			<p:else>
+				<t:if t:test="hasLocationDetailList">
+					<ul class="suburb_list">
+						<li class="title">
+							Show courses
+							<t:if t:test="hasSearchingLocationsSearchString">
+								for
+								<em>${searchingLocationsSearchString}</em>
+							</t:if>
+							near...
+						</li>
+						<t:loop source="locationDetailList" value="location">
+							<li class="location hoverable">
+								<a href="/courses?${locationLinkParameters}">${location.displayName}</a>
+							</li>
+						</t:loop>
+					</ul>
+				</t:if>
+
+				<t:if test="hasMatchingCourseList">
+
+					<ul class="course_list">
+						<li class="title">Matching courses</li>
+						<t:loop source="matchingCourseList" value="course">
+							<li class="course hoverable">
+								<a href="/course/${course.code}">
+									${course.name}-
+									<em>${course.code}</em>
+								</a>
+							</li>
+						</t:loop>
+						<li>
+							<a href="courses?s=${searchString}">Show all results...</a>
+						</li>
+					</ul>
+					<p:else>
+
+						<t:if test="hasCourseList">
+							<ul class="course_list">
+								<li class="title">Courses</li>
+								<t:loop source="courseList" value="course">
+									<li class="course hoverable">
+										<!-- TODO implement the ISHMatchedString component -->
+										<a href="/course/${course.code}">
+											<em>${course.name}</em>
+										</a>
+									</li>
+								</t:loop>
+								<li>
+									<a href="courses?s=${searchString}">Show all results...</a>
+								</li>
+							</ul>
+						</t:if>
+
+					</p:else>
+				</t:if>
+
+
+				<t:if test="hasTagGroupResultsList">
+					<t:loop source="tags" item="tag">
+						<ul class="tag_list">
+							<li class="title">${tag.name}</li>
+							<!--
+							TODO implement when search for will be ready-->
+							<!--
+								wo:loop list="$tagGroupResultsListItem.results"
+								item="$taggedResultsListItem" index="$listIndex"> <li class="tag
+								hoverable"> <wo:link href="~'/courses' +
+								taggedResultsListItem.tagURLPath"><wo:ISHMatchedString
+								value="$taggedResultsListItem.tagName" terms="$searchTerms"
+								tag="em" escapeHTML="$false" /></wo:link> </li> </wo:loop>
+								<wo:if condition="$hasMoreTagGroupResults"></wo:if
+							-->
+						</ul>
+					</t:loop>
+				</t:if>
+			</p:else>
+		</t:if>
+	</div>
 </t:container>

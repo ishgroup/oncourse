@@ -16,6 +16,8 @@ import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
+import ish.oncourse.services.preference.IPreferenceService;
+import ish.oncourse.services.preference.PreferenceService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.resource.IResourceService;
@@ -66,6 +68,7 @@ public class ServiceModule {
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(IPageRenderer.class, PageRenderer.class);
 		binder.bind(ITagService.class, TagService.class);
+		binder.bind(IPreferenceService.class, PreferenceService.class);
 	}
 
 }

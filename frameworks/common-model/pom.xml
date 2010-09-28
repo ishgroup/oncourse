@@ -63,6 +63,8 @@
 				<artifactId>maven-cayenne-plugin</artifactId>
 				<configuration>
 					<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml</map>
+					<map>${project.build.sourceDirectory}/../resources/oncourseBinary.map.xml</map>
+					<map>${project.build.sourceDirectory}/../resources/oncourseReference.map.xml</map>
 					<destDir>${project.build.sourceDirectory}</destDir>
 					<superPkg>ish.oncourse.model.auto</superPkg>
 				</configuration>

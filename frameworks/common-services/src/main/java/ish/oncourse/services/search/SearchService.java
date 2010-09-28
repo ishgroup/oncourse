@@ -146,14 +146,16 @@ public class SearchService implements ISearchService {
 
 			StringBuilder query = new StringBuilder();
 
-			String[] terms = term.split("\\s");
+			String[] terms = term.split("[\\s]+");
 			for (int i = 0; i < terms.length; i++) {
 				String t = terms[i].toLowerCase().trim() + "*";
 
 				query.append(
 						String.format("(name:%s && collegeId:%s)", t, collegeId))
 						.append("||");
-
+				query.append(
+						String.format("(course_code:%s && collegeId:%s)", t.indexOf( "-" ) < 0 ? t : t.substring( 0, t.indexOf( "-" ) ), collegeId))
+						.append("||");
 				query.append(String.format(
 						"(doctype:place suburb:%s postcode:%s) ", t, t));
 
