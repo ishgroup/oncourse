@@ -10,6 +10,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import javax.naming.Context;
@@ -111,18 +113,30 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.near)) {
 					String near = params.get(SearchParam.near);
-					// TODO remove this hack when the name of the location will
-					// be searched in db
+
+					String[] points = { "0.0", "0.0" };
 					try {
-						double[] points = GeoHashUtils.decode(near);
-						qString.append("{!sfilt fl=course_loc}");
-						q.setParam("pt", String.valueOf(points[0]) + ","
-								+ String.valueOf(points[1]));
-						q.setParam("d", "10");
+						double[] latLong = GeoHashUtils.decode(near);
+						points[0] = String.valueOf(latLong[0]);
+						points[1] = String.valueOf(latLong[1]);
 					} catch (NullPointerException e) {
-						// TODO remove this hack when the name of the location
-						// will be searched in db
+						int separator = near.lastIndexOf(" ");
+						if(separator>0){
+							String[] suburbParams = {near.substring(0, separator-1), 
+								near.substring(separator+1)};
+						
+							SolrDocumentList responseResults = searchSuburb(
+									suburbParams[0], suburbParams[1])
+									.getResults();
+							SolrDocument doc = responseResults.get(0);
+							points = ((String) doc.get("loc")).split(",");
+						}
 					}
+					String latitude = points[0];
+					String longitude = points[1];
+					qString.append("{!sfilt fl=course_loc}");
+					q.setParam("pt", latitude + "," + longitude);
+					q.setParam("d", "10");
 				}
 
 				q.setQuery(qString.toString());
@@ -197,6 +211,25 @@ public class SearchService implements ISearchService {
 		} catch (Exception e) {
 			logger.error("Failed to search suburbs.", e);
 			throw new SearchException("Unable to find suburbs.", e);
+		}
+	}
+	
+	public QueryResponse searchSuburb(String suburbName, String postcode) {
+		try {
+
+			SolrQuery q = new SolrQuery();
+			
+			StringBuilder query = new StringBuilder();
+
+			query.append(String.format(
+						"(doctype:place suburb:%s postcode:%s) ", suburbName, postcode));
+
+			q.setQuery(query.toString());
+
+			return getSolrServer().query(q);
+		} catch (Exception e) {
+			logger.error("Failed to search suburb.", e);
+			throw new SearchException("Unable to find suburb.", e);
 		}
 	}
 }

@@ -10,4 +10,6 @@ public interface ISearchService {
 	QueryResponse searchCourses(Map<SearchParam, String> params, int start, int rows);
 	
 	QueryResponse searchSuburbs(String term);
+	
+	QueryResponse searchSuburb(String suburbName, String postcode);
 }
