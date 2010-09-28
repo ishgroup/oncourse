@@ -210,113 +210,31 @@
 
 
 	<repositories>
-	      
-			<repository>
-			<id>ish-mirror-releases</id>
-			<name>ish Maven2 internal Release Repository</name>
-			<url>http://repo.ish.com.au/content/repositories/internal</url>
+	      	<repository>
+			<id>ish repo</id>
+			<name>ish repository</name>
+			<url>http://repo.ish.com.au/content/groups/public</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
 		</repository> 
-	  <repository>
-	    <id>nexus-maven-central</id>
-	    <name>Nexus Maven Mirror</name>
-	    <url>http://repo.ish.com.au/content/repositories/central</url>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-
-		<repository>
-			<id>ish-mirror-snapshots</id>
-			<name>ish Maven2 Snapshot Repository</name>
-			<url> http://repo.ish.com.au/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-3rdparty</id>
-			<name>ish Maven2 3rdparty Release Repository</name>
-			<url> http://repo.ish.com.au/content/repositories/thirdparty
-			</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-releases</id>
-			<name>ish Maven2 ish-releases Release Repository</name>
-			<url> http://repo.ish.com.au/content/repositories/ish-releases</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>ish-snapshots</id>
-			<name>ish Maven2 ish-snapshots Repository</name>
-			<url> http://repo.ish.com.au/content/repositories/ish-snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>snapshots</id>
-			<name>ish Maven2 snapshots Repository</name>
-			<url> http://repo.ish.com.au/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
 	</repositories>
-
-
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>ish-mirror-repo</id>
-			<name>ish Maven2 internal Repository</name>
-			<url> http://repo.ish.com.au/content/repositories/internal</url>
+			<id>ish plugin repo</id>
+			<name>ish plugin repository</name>
+			<url>http://repo.ish.com.au/content/groups/public</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
 		</pluginRepository> 
-		<pluginRepository>
-			<id>ish-mirror-snapshots</id>
-			<name>ish Maven2 snapshots Repository</name>
-			<url> http://repo.ish.com.au/content/repository/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
 	</pluginRepositories>
 
 
