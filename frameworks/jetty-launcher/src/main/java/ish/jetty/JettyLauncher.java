@@ -12,7 +12,11 @@ public class JettyLauncher {
 		JettyBuilder jettyBuilder = new JettyBuilder();
 		jettyBuilder.setDataSourceFactory(LaunchProperties.ISH_DS_FACTORY
 				.getValue());
-		jettyBuilder.setPort(LaunchProperties.ISH_WEB_PORT.getValue());
+
+		String port = System.getProperty("jetty.port");
+		port = (port != null) ? port : LaunchProperties.ISH_WEB_PORT.getValue();
+
+		jettyBuilder.setPort(port);
 		jettyBuilder.setContext(LaunchProperties.ISH_WEB_CONTEXT.getValue());
 
 		jettyBuilder.setDataSourceNames(

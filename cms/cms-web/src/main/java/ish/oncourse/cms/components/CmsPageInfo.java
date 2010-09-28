@@ -1,5 +1,5 @@
 package ish.oncourse.cms.components;
 
-public class SearchPanel {
+public class CmsPageInfo {
 
 }

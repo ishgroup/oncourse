@@ -1337,6 +1337,7 @@
 		<obj-attribute name="nodeNumber" type="java.lang.Integer" db-attribute-path="nodeNumber"/>
 		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
 		<obj-attribute name="weighting" type="java.lang.Integer" db-attribute-path="weighting"/>
+		<post-add method-name="performInitialization"/>
 	</obj-entity>
 	<obj-entity name="WebNodeContent" className="ish.oncourse.model.WebNodeContent" dbEntityName="WebNodeContent">
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>

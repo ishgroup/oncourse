@@ -1,10 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html t:type="cmspagewrapper" title="index" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<html t:type="cmspagewrapper" title="new page" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<h2>${name}</h2>
-	<div id="content" class="span-18">
-		<div class="edit_region_link">
-			<span>Edit this region</span>
-		</div>
-		Content
-	</div>
+	<span t:id="webNodeTemplate" t:type="ui/webnodetemplate" t:mixins="ui/regioneditor"/>
 </html>

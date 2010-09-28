@@ -32,3 +32,16 @@ body.cms_loggedin { margin: 0 0 60px 0; }
 .cms_editor_tabs_1 { position: relative; }
 
 .cms_form_actions { text-align: right; }
+
+
+/* Layout / Content Editor styling */	
+div.region { border: 1px dashed #eee;  height: 600px; position: relative; z-index: 1;}	
+div.region { }
+div.region div.edit_region_link  { position: absolute; top: 0; right: 0; padding: 12px; background: #939595; color: #fff; display: none; cursor: pointer; }
+div.region:hover { border: 1px solid #939595; }
+div.region:hover div.edit_region_link { display: block; }
+
+
+
+
+

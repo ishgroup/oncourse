@@ -51,7 +51,7 @@ public class WebNodeTemplate {
 		final List<WebNodeContent> contents = node.getWebNodeContents();
 
 		return new DynamicDelegate() {
-			public Block getBlock(String regionKey) {
+			public Block getBlock(final String regionKey) {
 
 				Block block = componentResources.getBlockParameter(regionKey);
 
@@ -67,15 +67,16 @@ public class WebNodeTemplate {
 
 				return new RenderableAsBlock(new Renderable() {
 					public void render(MarkupWriter writer) {
-						String content = nodeContent.getContent();
+						String text = nodeContent.getContent();
 
 						Pattern pattern = Pattern
 								.compile(TextileUtil.TEXTILE_REGEXP);
-						Matcher matcher = pattern.matcher(content);
-						String text = content;
+
+						Matcher matcher = pattern.matcher(text);
+
 						if (matcher.find()) {
 							ValidationErrors errors = new ValidationErrors();
-							text = textileConverter.convert(content, errors);
+							text = textileConverter.convert(text, errors);
 							if (errors.hasFailures()) {
 								try {
 									throw new ValidationException(errors);
@@ -84,7 +85,10 @@ public class WebNodeTemplate {
 								}
 							}
 						}
+
+						writer.writeRaw("<div id=\"" + regionKey +  "\" class=\"region\">");
 						writer.writeRaw(text);
+						writer.writeRaw("</div>");
 					}
 				});
 			}
@@ -101,8 +105,8 @@ public class WebNodeTemplate {
 	}
 
 	public PrivateResource getSelectedTemplate() {
-		PrivateResource template = resourceService.getTemplateResource(node.getWebNodeType()
-				.getTemplateKey(), "WebNode.tmp"); 
+		PrivateResource template = resourceService.getTemplateResource(node
+				.getWebNodeType().getTemplateKey(), "WebNode.tml");
 		return template;
 	}
 

@@ -14,7 +14,7 @@
 	<name>Web Site Web App</name>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-services</artifactId>
@@ -31,7 +31,7 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -41,21 +41,22 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-upload</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-spatial</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 		</dependency>
+
 	</dependencies>
 
 	<profiles>
@@ -72,7 +73,7 @@
 			</dependencies>
 		</profile>
 	</profiles>
-	
+
 	<build>
 		<finalName>web</finalName>
 		<plugins>
@@ -94,8 +95,8 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-    <properties>
-        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-    </properties>
+
+	<properties>
+		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+	</properties>
 </project>

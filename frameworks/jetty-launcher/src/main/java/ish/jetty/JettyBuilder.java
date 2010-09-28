@@ -25,7 +25,8 @@ public class JettyBuilder {
 
 		SelectChannelConnector connector = new SelectChannelConnector();
 		connector.setPort(port);
-
+		connector.setForwarded(true);
+	
 		server.addConnector(connector);
 
 		for (String dataSourceName : dataSourceNames) {

@@ -1,11 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:extend xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:replace id="headBottom">
-		<link t:type="ui/cssassetgroup" group="literal:admin" media="literal:screen, projection" />
+		<link t:type="ui/cssassetgroup" group="literal:core-cms" media="literal:screen, projection" />
 	</t:replace>
 	<t:replace id="bodyTop">
 		<t:if t:test="loggedIn">
-			<div t:type="admintoolbar"/>
+			<div t:type="cmsnavigation"/>
+			<div t:type="cmspageinfo"/>
 		</t:if>
 	</t:replace>
 </t:extend>

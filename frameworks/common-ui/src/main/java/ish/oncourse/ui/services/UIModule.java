@@ -30,6 +30,8 @@ import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
+import org.got5.tapestry5.clientresources.ClientResourcesConstants;
+import org.got5.tapestry5.jquery.JQueryClientResourcesConstants;
 
 /**
  * A Tapestry IoC module definition of the common components library.
@@ -81,6 +83,7 @@ public class UIModule {
 		// this is overridden in other palces anyways, as we are using locale
 		// variant for site template customization
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
+		configuration.add(ClientResourcesConstants.JAVASCRIPT_STACK, JQueryClientResourcesConstants.JAVASCRIPT_STACK_JQUERY);
 	}
 
 	public void contributeRequestHandler(

@@ -219,4 +219,6 @@ public abstract class _WebNode extends CayenneDataObject {
     }
 
 
+    protected abstract void performInitialization();
+
 }

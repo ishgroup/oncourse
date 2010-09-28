@@ -2,14 +2,14 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div id="cms_nav" class="clearfix">
 		<ul id="cms_actions" class="left">
-			<li class="pages selected"><a href="">Create Page</a></li>
+			<li class="pages selected"><a href="#" t:type="ActionLink" t:id="createpage">Create Page</a></li>
 			<li class="theme"><a href="" style="color: #999 !important;">Edit Page</a></li>
 			<li class="blocks"><a href="">Blocks</a></li>			
 			<li class="sitemap"><a href="">Options</a></li>
 		</ul>
 		<ul id="cms_links" class="right toolbar">
 			<li><a href="">Help</a></li>
-			<li><a href="">Logout</a></li>
+			<li><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
 		</ul>
 	</div>
 </t:container>

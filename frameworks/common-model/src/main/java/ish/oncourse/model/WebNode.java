@@ -9,13 +9,13 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 
-
 public class WebNode extends _WebNode {
 
 	static final String DEFAULT_PAGE_TITLE = "New Page";
 
 	public String getPath() {
-		if (getParentNode() == null || getParentNode() == getWebSite().getHomePage()) {
+		if (getParentNode() == null
+				|| getParentNode() == getWebSite().getHomePage()) {
 			return "/" + getUrlShortName();
 		}
 
@@ -30,11 +30,11 @@ public class WebNode extends _WebNode {
 		if (s == null) {
 			s = DEFAULT_PAGE_TITLE;
 		}
-		return s.trim().replaceAll(" ", "+").replaceAll("/","|");
+		return s.trim().replaceAll(" ", "+").replaceAll("/", "|");
 	}
 
 	@Override
-    public List<WebNode> getWebNodes() {
+	public List<WebNode> getWebNodes() {
 		List<WebNode> children = super.getWebNodes();
 		List<Ordering> orderings = new ArrayList<Ordering>();
 
@@ -53,11 +53,29 @@ public class WebNode extends _WebNode {
 	 * @return All web-navigable web-visible child nodes for this node.
 	 */
 	public List<WebNode> getNavigableChildNodes() {
-		Expression expr = ExpressionFactory.matchExp(WebNode.IS_WEB_NAVIGABLE_PROPERTY, true)
-				.andExp(ExpressionFactory.matchExp(WebNode.IS_PUBLISHED_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.IS_WEB_VISIBLE_PROPERTY, true));
+		Expression expr = ExpressionFactory
+				.matchExp(WebNode.IS_WEB_NAVIGABLE_PROPERTY, true)
+				.andExp(ExpressionFactory.matchExp(
+						WebNode.IS_PUBLISHED_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(
+						WebNode.IS_WEB_VISIBLE_PROPERTY, true));
 
 		return expr.filterObjects(getWebNodes());
 	}
 
+	@Override
+	protected void performInitialization() {
+		setIsWebNavigable(true);
+		setIsWebVisible(true);
+		
+		setWebNodeType(WebNodeType
+				.forName(getObjectContext(), WebNodeType.PAGE));
+		
+		for (int i = 0; i < getWebNodeType().getNumberOfRegions(); i++) {
+			WebNodeContent content = getObjectContext().newObject(WebNodeContent.class);
+			content.setRegionKey("content");
+			content.setContent("Sample content text.");
+			addToWebNodeContents(content);
+		}
+	}
 }

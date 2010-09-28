@@ -31,7 +31,6 @@ public class AppModule {
 	private static final Logger LOGGER = Logger.getLogger(AppModule.class);
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
-
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
@@ -51,5 +50,4 @@ public class AppModule {
 	public static void contributeHttpServletRequestHandler(OrderedConfiguration<HttpServletRequestFilter> configuration) {
 		configuration.addInstance("URLRewriteFilter", URLRewriteRequestFilter.class);
 	}
-
 }
