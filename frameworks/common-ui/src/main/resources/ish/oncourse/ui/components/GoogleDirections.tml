@@ -42,9 +42,9 @@
 			var vFrom ="${directionsFrom}";
 			var showNearMarker ="${hasGlobalPosition}";
 			var showMapItems = "${showMapItems}";
-			var latlng = new google.maps.LatLng(vLatitude,vLongitude);
 			var map;
-			var loadMap=mapLoad("${mapClass}",${sitesArray});
+			var siteMarkers = new Array();
+			var sites=${sitesArray};
 		</script>
 	</t:if>
 

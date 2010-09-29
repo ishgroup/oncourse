@@ -9,8 +9,12 @@ import java.util.List;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class GoogleDirections {
+	@Inject
+	private Request request;
 
 	@Parameter
 	private Collection<Site> sites;
@@ -45,7 +49,7 @@ public class GoogleDirections {
 				element.add(item.getLongitude().doubleValue());
 				element.add("\"" + item.getName() + "\"");
 				element.add("\"" + item.getSuburb() + "\"");
-				element.add(item.getId());
+				element.add(item.getAngelId());
 				sitesArray.add(element);
 			}
 		}
@@ -92,13 +96,13 @@ public class GoogleDirections {
 	}
 
 	public boolean isHasGlobalPosition() {
-		// TODO
-		return false;
+		String near=request.getParameter("near");
+		return near!=null;
 	}
 
-	public boolean isSearchingNear() {
-		// TODO
-		return false;
+	public String getSearchingNear() {
+		//TODO convert possible geohash to something suitable
+		return request.getParameter("near");
 	}
 
 	public boolean isHasLocation() {

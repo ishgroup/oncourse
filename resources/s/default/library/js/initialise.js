@@ -394,8 +394,8 @@ $j(document).ready(function() {
 		$j('.showLocationMap').click( function() {
 			$j('.showLocationMap').hide();
 			$j('#location').show();
-			//$j('#location').removeClass('collapsedLocationMap');
-			//mapLoadForID('map');
+			$j('#location').removeClass('collapsedLocationMap');
+			mapLoadForID('map');
 			return false;
 		});
 		  

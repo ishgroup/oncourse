@@ -60,7 +60,7 @@
 						<dd>TBA</dd>
 						<p:else>
 							<a href="#"
-								onclick="zoomMapForSite(${courseClass.room.site.id})"
+								onclick="zoomMapForSite(${courseClass.room.site.angelId})"
 								title="Show venue on map" class="tooltip">${courseClass.room.site.suburb}
 							</a>
 						</p:else>

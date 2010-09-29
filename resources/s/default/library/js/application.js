@@ -244,11 +244,32 @@ function mapLoad() {
 }
 
 function mapLoadForID(mapID) {
-	if ($j('#' + mapID).length && GBrowserIsCompatible() && window.map==null) {
-		window.map = new GMap2(document.getElementById(mapID));
+	if ($j('#' + mapID).length && window.map==null) {
+		//--------
+		var mapOptions = {
+				zoom : 16,
+				center : new google.maps.LatLng(vLatitude,vLongitude),
+				mapTypeId : google.maps.MapTypeId.ROADMAP,
+				mapTypeControl : true,
+				navigationControl: true,
+				navigationControlOptions: {
+				      style: google.maps.NavigationControlStyle.ZOOM_PAN
+				}
+
+		}
+		window.map = new google.maps.Map(document.getElementById(mapID), mapOptions);
+		
+		if (window.showMapItems) {
+			setMarkers(sites);
+		}
+		//---------
+		/*window.map = new GMap2(document.getElementById(mapID));
 		window.map.setCenter(new GLatLng(vLatitude,vLongitude), 16);
 		window.map.addControl(new GMapTypeControl());
 		window.map.addControl(new GSmallMapControl());
+		
+		!!!!!!!!!!!!!!!!!!!!
+		//TODO implement "near" marker
 		if (window.showNearMarker) {
 			// show the marker that matches the "near" search term
 			var nearmarker = drawGIcon(window.map, "Near", vLatitude, vLongitude, null, 
@@ -261,6 +282,7 @@ function mapLoadForID(mapID) {
 					"/s/img/marker1.png", "/s/img/marker-shadow1.png", 20, 34, 36, 34,
 					10, 34, 10, 5);
 		}
+		!!!!!!!!!!!!!!!!!!!!!!!
 		
 		if (window.showMapItems) {
 			window.map.enableInfoWindow();
@@ -309,8 +331,74 @@ function mapLoadForID(mapID) {
 					}
 				}
 			);
-		}
+		}*/
 	}	
+}
+
+function setMarkers(locations) {
+	var latlngbounds = new google.maps.LatLngBounds();
+
+	for ( var i = 0; i < locations.length; i++) {
+		var loc = locations[i];
+		var siteLatLng = new google.maps.LatLng(loc[0], loc[1]);
+		//TODO var image = new google.maps.MarkerImage("path");
+		//TODO var shadow = new google.maps.MarkerImage("path");
+
+		var marker = new google.maps.Marker( {
+			position : siteLatLng,
+			map : map,
+			//TODO shadow: shadow,
+			//TODO icon: image,
+			title : loc[2],
+			id : loc[4]            
+		});
+		siteMarkers[i]=marker;
+		attachMessage(map, marker, "<h4>" + loc[2] + "</h4><h5>" + loc[3]
+				+ "</h5>" + "<p><a href=\"/site/" + loc[4]
+				+ "\">Information and directions</a></p>");
+		latlngbounds.extend(siteLatLng);
+
+	}
+	map.fitBounds(latlngbounds);
+
+}
+
+function attachMessage(map, marker, content) {
+	var infowindow = new google.maps.InfoWindow( {
+		content : content
+	});
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.open(map, marker);
+	});
+}
+
+function zoomMapForSite(siteId){
+    $j('#focus-map').show();
+    $j("body").animate({ scrollTop: 0 }, "slow");
+    if (window.map==null) {
+		mapLoadForID('mapDelayed');
+	}
+	var siteMarker=getSiteMarkerBySiteId(siteId);
+	if(siteMarker==null){
+		alert("There's no such a site on current map");
+	}else{
+		
+		map.setCenter(siteMarker.position);
+		map.setZoom(17);
+		latlngbounds = new google.maps.LatLngBounds();
+		latlngbounds.extend(siteMarker.position);
+		map.fitBounds(latlngbounds);
+	}
+	
+}
+
+function getSiteMarkerBySiteId(siteId){
+	for(var i=0;i<siteMarkers.length;i++){
+		if(siteMarkers[i].id==siteId){
+			return siteMarkers[i];
+		}
+	}
+	return null;
 }
 
 function dirLoad() {
