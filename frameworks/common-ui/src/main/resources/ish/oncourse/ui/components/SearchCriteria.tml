@@ -51,7 +51,7 @@
     </t:if>
     
     <t:if t:test="searchTime">in the <span class="match-10 search-value">${searchTime}</span></t:if>
-    <t:if t:test="searchPrice">up to <span class="match-12 search-value">$${searchTime}</span></t:if>
+    <t:if t:test="searchPrice">up to <span class="match-12 search-value">${searchPrice}</span></t:if>
     <t:if t:test="searchNear"><span class="match-11 search-value"> near ${searchNear}</span></t:if>
   </div>
   <t:if t:test="hasMapItemList">

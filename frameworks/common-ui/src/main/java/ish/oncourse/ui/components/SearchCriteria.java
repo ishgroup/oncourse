@@ -25,19 +25,15 @@ public class SearchCriteria {
 	private List<Tag> browseTagPath;
 
 	@Property
-	@Parameter
 	private String searchString;
 
 	@Property
-	@Parameter
 	private List<String> searchDays;
 
 	@Property
-	@Parameter
 	private String searchTime;
 
 	@Property
-	@Parameter
 	private String searchPrice;
 
 	@Property
@@ -59,6 +55,17 @@ public class SearchCriteria {
 			browseTag = browseTag.getParent();
 		}
 		Collections.reverse(browseTagPath);
+		searchString = request.getParameter("s");
+		String day = request.getParameter("day");
+		if(day!=null){
+			searchDays=new ArrayList<String>(1);
+			searchDays.add(day);
+		}
+		searchTime = request.getParameter("time");
+		searchPrice = request.getParameter("price");
+		String near = request.getParameter("near");
+		//TODO if near is geohash, get the human place view
+		searchNear = near;
 	}
 
 	public boolean getShowTagRaquo() {
@@ -79,6 +86,9 @@ public class SearchCriteria {
 					.toLowerCase())) {
 				return true;
 			}
+			if("weekday".equalsIgnoreCase(day)){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -90,6 +100,9 @@ public class SearchCriteria {
 		for (String day : searchDays) {
 			if (TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(day
 					.toLowerCase())) {
+				return true;
+			}
+			if("weekend".equalsIgnoreCase(day)){
 				return true;
 			}
 		}
