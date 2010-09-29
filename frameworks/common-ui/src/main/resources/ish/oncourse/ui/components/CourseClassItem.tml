@@ -36,16 +36,20 @@
 					</li>
 				</t:if>
 				<p:else>
-					<li class="class_date">
-						<span t:type="ui/DateRangeDisplay" date1="courseClass.startDate"
-							date2="courseClass.endDate" timezone="courseClass.classTimeZone" />
-					</li>
-					<li class="class_time">
-						<span style="text-transform: lowercase;">
-							<span t:type="ui/TimeRangeDisplay" startTime="courseClass.startDate"
-								endTime="courseClass.endDate" timezone="courseClass.classTimeZone" />
-						</span>
-					</li>
+					<t:if test="courseClass.startDate">
+						<t:if test="courseClass.endDate">
+							<li class="class_date">
+								<span t:type="ui/DateRangeDisplay" date1="courseClass.startDate"
+									date2="courseClass.endDate" timezone="courseClass.classTimeZone" />
+							</li>
+							<li class="class_time">
+								<span style="text-transform: lowercase;">
+									<span t:type="ui/TimeRangeDisplay" startTime="courseClass.startDate"
+										endTime="courseClass.endDate" timezone="courseClass.classTimeZone" />
+								</span>
+							</li>
+						</t:if>
+					</t:if>
 				</p:else>
 			</t:if>
 		</ul>
