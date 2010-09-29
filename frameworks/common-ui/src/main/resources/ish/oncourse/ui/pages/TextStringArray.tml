@@ -1,8 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<div>
-		<t:loop source="strings" value="str">
-			${str}
-		</t:loop>
-	</div>
+	<div/>
+	<t:loop source="strings" value="str">
+		${str}
+	</t:loop>
 </t:container>

@@ -87,7 +87,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 			$j("#adv_keyword").val($j(this).attr('value'));
 
 			oldIndex = selectedIndex;
-			allItems = divContainer.children('ul').children('li').not('.title');
+			allItems = divContainer.children('div').children('ul').children('li').not('.title');
 			selectedItem = null;
 			if (allItems.size() > 0) {
 				if (selectedIndex >= 0) {
