@@ -338,21 +338,40 @@ function mapLoadForID(mapID) {
 function setMarkers(locations) {
 	var latlngbounds = new google.maps.LatLngBounds();
 
+	
 	for ( var i = 0; i < locations.length; i++) {
 		var loc = locations[i];
-		var siteLatLng = new google.maps.LatLng(loc[0], loc[1]);
-		//TODO var image = new google.maps.MarkerImage("path");
-		//TODO var shadow = new google.maps.MarkerImage("path");
+		latitude=loc[0];
+		longitude=loc[1];
+		title=loc[2];
+		suburb=loc[3];
+		id=loc[4];
+		imagePath=loc[5];
+		shadowPath=loc[6];
+		iconWidth=loc[7];
+		iconHeight=loc[8];
+		shadowWidth=loc[9];
+		shadowHeight=loc[10];
+		anchorx=loc[11];
+		anchory=loc[12];
+		infoWindowx=loc[13];
+		infoWindowy=loc[14];
+		
+		var siteLatLng = new google.maps.LatLng(latitude, longitude);
+		var image = new google.maps.MarkerImage(imagePath, new google.maps.Size(iconWidth, iconHeight),
+				null, new google.maps.Point(anchorx,anchory));
+		var shadow = new google.maps.MarkerImage(shadowPath, new google.maps.Size(shadowWidth, shadowHeight),
+				null, new google.maps.Point(anchorx,anchory));
 
 		var marker = new google.maps.Marker( {
 			position : siteLatLng,
 			map : map,
-			//TODO shadow: shadow,
-			//TODO icon: image,
-			title : loc[2],
-			id : loc[4],
-			suburb : loc[3],
-			url : "/site/" + loc[4]
+			shadow: shadow,
+			icon: image,
+			title : title,
+			id : id,
+			suburb : suburb,
+			url : "/site/" + id
 		});
 		siteMarkers[i]=marker;
 		attachMessage(map, marker, /*"<h4>" + loc[2] + "</h4><h5>" + loc[3]
@@ -378,7 +397,10 @@ function attachMessage(map, marker, content) {
 }
 
 function openInfoWindow(map, marker, content){
-	var infowindow = new google.maps.InfoWindow( {
+	if(infowindow!=null){
+		infowindow.close();
+	}
+	infowindow = new google.maps.InfoWindow( {
 		content : content
 	});
 	infowindow.open(map, marker);

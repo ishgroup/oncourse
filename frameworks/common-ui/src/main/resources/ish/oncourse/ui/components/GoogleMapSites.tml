@@ -8,9 +8,8 @@
 			displayKey="detail" escapeHTML="$false" /></t:if>
 		-->
 
-
 		<div id="focus-map" class="${focusMapClass}">
-			<span t:type="ui/GoogleDirections" sites="sites"/>
+			<span t:type="ui/GoogleDirections" sites="sites" focuses="focuses"/>
 		</div>
 	</t:if>
 </t:container>

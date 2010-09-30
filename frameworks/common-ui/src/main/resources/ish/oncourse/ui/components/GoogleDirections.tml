@@ -45,6 +45,7 @@
 			var map;
 			var siteMarkers = new Array();
 			var sites=${sitesArray};
+			var infowindow;
 		</script>
 	</t:if>
 

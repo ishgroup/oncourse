@@ -266,7 +266,7 @@ public class CourseClass extends _CourseClass {
 			Calendar start = Calendar.getInstance();
 			start.setTime(session.getStartDate());
 			Integer sessionStartHour = start.get(Calendar.HOUR_OF_DAY);
-			if (earliest!=null && sessionStartHour < earliest) {
+			if (earliest==null || sessionStartHour < earliest) {
 				earliest = sessionStartHour;
 			}
 		}
@@ -303,13 +303,25 @@ public class CourseClass extends _CourseClass {
 			Calendar end = Calendar.getInstance();
 			end.setTime(session.getEndDate());
 			Integer sessionEndHour = end.get(Calendar.HOUR_OF_DAY);
-			if (latest!=null && sessionEndHour > latest) {
+			if (latest==null || sessionEndHour > latest) {
 				latest = sessionEndHour;
 			}
 		}
 		return latest;
 	}
 
+	private Integer getLatestSessionStartHour() {
+		Integer latest = null;
+		for (Session session : getSessions()) {
+			Calendar end = Calendar.getInstance();
+			end.setTime(session.getStartDate());
+			Integer sessionStartHour = end.get(Calendar.HOUR_OF_DAY);
+			if (latest==null || sessionStartHour > latest) {
+				latest = sessionStartHour;
+			}
+		}
+		return latest;
+	}
 	/**
 	 * @return all sessions that satisfy hasStartAndEndTimestamps
 	 * @see Session#hasStartAndEndTimestamps()
@@ -328,4 +340,72 @@ public class CourseClass extends _CourseClass {
 	public boolean isHasRoom() {
 		return getRoom() != null;
 	}
+	
+	public float focusMatchForDays(String searchDay) {
+		float result = 0.0f;
+		if (getDaysOfWeek() != null) {
+			List<String> uniqueDays = new ArrayList<String>();
+			uniqueDays.addAll(getDaysOfWeek());
+			for (String day : uniqueDays) {
+				String lowerDay = day.toLowerCase();
+				if (TimestampUtilities.DaysOfWeekNamesLowerCase
+						.contains(lowerDay)
+						&& lowerDay.equalsIgnoreCase(day)) {
+					result = 1.0f;
+					break;
+				}
+				if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase
+						.contains(lowerDay)
+						&& "weekday".equalsIgnoreCase(day)) {
+					result = 1.0f;
+					break;
+				}
+				if (TimestampUtilities.DaysOfWeekendNamesLowerCase
+						.contains(lowerDay)
+						&& "weekend".equalsIgnoreCase(day)) {
+					result = 1.0f;
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	public float focusMatchForTime(String time) {
+		float result = 0.0f;
+
+		Integer latestHour = getLatestSessionStartHour();
+		Integer earliestHour = getEarliestSessionStartHour();
+		// much discussion about what day and evening mean...
+		// current definitions is that any session that starts before 5 pm is
+		// daytime, any that starts after 5pm is evening
+		boolean isEvening = latestHour != null && latestHour >= 17;
+		boolean isDaytime = earliestHour != null && earliestHour < 17;
+		if (isEvening && isDaytime || isDaytime
+				&& "daytime".equalsIgnoreCase(time) || isEvening
+				&& "evening".equalsIgnoreCase(time)) {
+			result = 1.0f;
+		}
+		return result;
+
+	}
+	
+	
+	public float focusMatchForPrice(Float price) {
+		float result = 0.0f;
+		float maxPrice = price;
+		if (hasFeeIncTax()) {
+			if (getFeeIncGst().floatValue() > maxPrice) {
+				result = 0.75f - (getFeeIncGst().floatValue() - maxPrice)
+						/ maxPrice * 0.25f;
+				if (result < 0.25f) {
+					result = 0.25f;
+				}
+			}
+		}
+
+		return result;
+	}
+	
 }

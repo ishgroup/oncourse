@@ -9,7 +9,7 @@
 		<p:else>
 			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"/>
 			<t:zone t:id="sitesMap" id="sitesMap">
-				<span t:type="ui/GoogleMapSites" sites="mapSites" collapsed="true" />
+				<span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites" collapsed="true" />
 			</t:zone>
 			<t:if t:test="hasAnyItems" negate="true">
 				<h2>no results</h2>

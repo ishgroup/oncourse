@@ -3,7 +3,6 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
@@ -12,12 +11,9 @@ import ish.oncourse.services.search.SearchParam;
 import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -68,6 +64,14 @@ public class Courses {
 
 	@Persist
 	private Map<SearchParam, String> searchParams;
+	
+	@Property
+	@Persist
+	private List<Site> mapSites;
+	
+	@Property
+	@Persist
+	private Map<Integer, Float> focusesForMapSites;
 
 	@SetupRender
 	public void beforeRender() {
@@ -77,11 +81,14 @@ public class Courses {
 			this.courses = courseService
 					.getCourses(START_DEFAULT, ROWS_DEFAULT);
 			this.coursesCount = courseService.getCoursesCount();
+			searchParams=null;
+			focusesForMapSites=null;
 		} else {
 			this.courses = searchCourses();
 
 		}
 		this.itemIndex = courses.size();
+		setupMapSites();
 	}
 
 	@InjectComponent
@@ -102,8 +109,11 @@ public class Courses {
 				sitesMap);
 	}
 
-	public Collection<Site> getMapSites() {
-		Set<Site> sites = new HashSet<Site>();
+	private void setupMapSites() {
+		mapSites = new ArrayList<Site>();
+		if(hasAnyFormValuesForFocus()){
+			focusesForMapSites = new HashMap<Integer, Float>();
+		}
 		for (Course course : courses) {
 			for (CourseClass courseClass : course.getEnrollableClasses()) {
 				Room room = courseClass.getRoom();
@@ -113,16 +123,77 @@ public class Courses {
 							&& !"".equals(site.getSuburb())
 							&& site.getLatitude() != null
 							&& site.getLongitude() != null) {
-						sites.add(site);
+						if(!mapSites.contains(site)){
+							mapSites.add(site);	
+						}
+						if (hasAnyFormValuesForFocus()) {
+							float focusMatchForClass = focusMatchForClass(courseClass);
+							Float focusMatchForSite = focusesForMapSites
+									.get(site.getId());
+							if (focusMatchForSite == null
+									|| focusMatchForClass > focusMatchForSite) {
+								focusesForMapSites.put(site.getId(),
+										focusMatchForClass);
+							}
+						}
 					}
 				}
 			}
 		}
-		return sites;
+	
+	}
+	
+	private boolean hasAnyFormValuesForFocus(){
+		if(searchParams==null){
+			return false;
+		}
+		return searchParams.containsKey(SearchParam.day)||
+		//searchParams.containsKey(SearchParam.near)||
+		searchParams.containsKey(SearchParam.price)||
+		searchParams.containsKey(SearchParam.time);
+	}
+	
+	private  float focusMatchForClass( CourseClass courseClass )
+	{
+		float bestFocusMatch = -1.0f;
+		
+		if (!searchParams.isEmpty())
+		{
+			
+			float daysMatch=1.0f;
+			if(searchParams.containsKey(SearchParam.day)){
+				daysMatch = courseClass.focusMatchForDays(searchParams.get(SearchParam.day));
+			}
+			
+			float timeMatch =1.0f;
+			if(searchParams.containsKey(SearchParam.time)){
+				timeMatch = courseClass.focusMatchForTime(searchParams.get(SearchParam.time));
+			} 
+			
+			float priceMatch = 1.0f;
+			if(searchParams.containsKey(SearchParam.price)){
+				try{
+					Float price=Float.parseFloat(searchParams.get(SearchParam.price));
+					priceMatch = courseClass.focusMatchForPrice(price);
+				}catch(NumberFormatException e){
+					
+				}
+			} 
+			
+			//TODO implement the focus matching for near parameter - see WillowDynamicColleges/willow.controller.CourseClassInMemoryFilter focusMatchForNear(..)[134]
+			//float nearMatch = focusMatchForNear( context, courseClass );
+			
+			float result = daysMatch * timeMatch * priceMatch; //* nearMatch;
+			
+			return result;
+		}
+		
+		return bestFocusMatch;
+		
 	}
 
 	public boolean isHasMapItemList() {
-		return !getMapSites().isEmpty();
+		return !mapSites.isEmpty();
 	}
 
 	private List<Course> searchCourses() {
