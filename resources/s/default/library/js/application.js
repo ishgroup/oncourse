@@ -350,12 +350,14 @@ function setMarkers(locations) {
 			//TODO shadow: shadow,
 			//TODO icon: image,
 			title : loc[2],
-			id : loc[4]            
+			id : loc[4],
+			suburb : loc[3],
+			url : "/site/" + loc[4]
 		});
 		siteMarkers[i]=marker;
-		attachMessage(map, marker, "<h4>" + loc[2] + "</h4><h5>" + loc[3]
+		attachMessage(map, marker, /*"<h4>" + loc[2] + "</h4><h5>" + loc[3]
 				+ "</h5>" + "<p><a href=\"/site/" + loc[4]
-				+ "\">Information and directions</a></p>");
+				+ "\">Information and directions</a></p>"*/ infoWindowContent(marker));
 		latlngbounds.extend(siteLatLng);
 
 	}
@@ -363,13 +365,23 @@ function setMarkers(locations) {
 
 }
 
+function infoWindowContent(marker) {
+	s = '<h4>' + marker.title + '</h4><h5>' + marker.suburb + '</h5>';
+	if (marker.url!=null) s += '<p><a href="' + marker.url + '">Information and directions</a></p>';
+	return s;
+}
+
 function attachMessage(map, marker, content) {
+	google.maps.event.addListener(marker, 'click', function() {
+		openInfoWindow(map, marker, content);
+	});
+}
+
+function openInfoWindow(map, marker, content){
 	var infowindow = new google.maps.InfoWindow( {
 		content : content
 	});
-	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.open(map, marker);
-	});
+	infowindow.open(map, marker);
 }
 
 function zoomMapForSite(siteId){
@@ -382,9 +394,9 @@ function zoomMapForSite(siteId){
 	if(siteMarker==null){
 		alert("There's no such a site on current map");
 	}else{
-		
 		map.setCenter(siteMarker.position);
-		map.setZoom(17);
+		map.setZoom(16);
+		openInfoWindow(map, siteMarker, infoWindowContent(siteMarker));
 		latlngbounds = new google.maps.LatLngBounds();
 		latlngbounds.extend(siteMarker.position);
 		map.fitBounds(latlngbounds);
@@ -469,11 +481,7 @@ function showSiteOnMap(siteID) {
 	}
 }
 
-function infoWindowContent(marker) {
-	s = '<h4>' + marker.title + '</h4><h5>' + marker.suburb + '</h5>';
-	if (marker.url!=null) s += '<p><a href="' + marker.url + '">Information and directions</a></p>';
-	return s;
-}
+
 
 // Cookies
 
