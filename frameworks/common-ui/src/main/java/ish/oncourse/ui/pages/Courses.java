@@ -2,6 +2,7 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Tag;
@@ -104,10 +105,15 @@ public class Courses {
 	public Collection<Site> getMapSites() {
 		Set<Site> sites = new HashSet<Site>();
 		for (Course course : courses) {
-			for (CourseClass courseClass : course.getCourseClasses()) {
-				for (Session s : courseClass.getSessions()) {
-					if (s.getRoom() != null) {
-						sites.add(s.getRoom().getSite());
+			for (CourseClass courseClass : course.getEnrollableClasses()) {
+				Room room = courseClass.getRoom();
+				if (room != null) {
+					Site site = room.getSite();
+					if (site != null && site.getSuburb() != null
+							&& !"".equals(site.getSuburb())
+							&& site.getLatitude() != null
+							&& site.getLongitude() != null) {
+						sites.add(site);
 					}
 				}
 			}

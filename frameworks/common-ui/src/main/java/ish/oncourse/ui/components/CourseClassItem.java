@@ -10,6 +10,7 @@ import java.util.List;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.TutorRole;
 
 import org.apache.tapestry5.annotations.Parameter;
@@ -71,10 +72,18 @@ public class CourseClassItem {
 
 	public boolean isHasSiteSuburb() {
 		Room room = courseClass.getRoom();
-		return room != null
-				&& room.getSite() != null
-				&& room.getSite().getSuburb() != null
-				&& !"".equals(room.getSite().getSuburb());
+		if (room == null) {
+			return false;
+		}
+		Site site = room.getSite();
+		if (site == null) {
+			return false;
+		}
+
+		String suburb = site.getSuburb();
+		return suburb != null && !"".equals(suburb)
+				&& site.getLatitude() != null && site.getLongitude() != null;
+
 	}
 
 	public boolean isTutorPortal() {

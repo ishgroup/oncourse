@@ -3,7 +3,6 @@ package ish.oncourse.services.course;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
-import ish.oncourse.model.Site;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -47,7 +46,7 @@ public class CourseService implements ICourseService {
 	 */
 	private Expression getSiteQualifier() {
 		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege());
+				webSiteService.getCurrentCollege()).andExp(getAvailabilityQualifier());
 	}
 	/**
 	 * @return
@@ -124,6 +123,6 @@ public class CourseService implements ICourseService {
 	public Date getLatestModifiedDate() {
 		return (Date) cayenneService.sharedContext().performQuery(
 				new EJBQLQuery("select max(c.modified) from Course c where "
-						+ getSiteQualifier().andExp(getAvailabilityQualifier()).toEJBQL("c"))).get(0);
+						+ getSiteQualifier().toEJBQL("c"))).get(0);
 	}
 }
