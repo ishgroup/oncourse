@@ -15,7 +15,6 @@
 	<name>onCourse Common UI Framework</name>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>ish.oncourse</groupId>
 			<artifactId>common-model</artifactId>
@@ -47,7 +46,12 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
-
+		
+		<dependency>
+     		<groupId>com.google.code.kaptcha</groupId>
+     		<artifactId>kaptcha</artifactId>
+   		</dependency>
+		
 	</dependencies>
 
 </project>

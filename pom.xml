@@ -86,6 +86,12 @@
 			</dependency>
 
 			<dependency>
+     			<groupId>com.google.code.kaptcha</groupId>
+     			<artifactId>kaptcha</artifactId>
+     			<version>2.3</version>
+   			</dependency>
+		
+			<dependency>
 				<groupId>opensymphony</groupId>
 				<artifactId>oscache</artifactId>
 				<version>2.4</version>
@@ -192,7 +198,7 @@
 		     	<artifactId>maven-war-plugin</artifactId>
 		     	<version>3.0</version>
 		    </dependency>
-
+		
 		</dependencies>
 	</dependencyManagement>
 
