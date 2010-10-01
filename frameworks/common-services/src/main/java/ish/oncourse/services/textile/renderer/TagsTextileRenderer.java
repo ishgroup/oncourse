@@ -1,12 +1,13 @@
 package ish.oncourse.services.textile.renderer;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.TagsTextileValidator;
+import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 
 /**
@@ -41,10 +42,13 @@ import ish.oncourse.util.ValidationErrors;
 public class TagsTextileRenderer extends AbstractRenderer {
 
 	private ITagService tagService;
+	
+	private IPageRenderer pageRenderer;
 
-	public TagsTextileRenderer(ITagService tagService) {
+	public TagsTextileRenderer(ITagService tagService, IPageRenderer pageRenderer) {
 		this.tagService = tagService;
 		validator = new TagsTextileValidator(tagService);
+		this.pageRenderer = pageRenderer;
 	}
 
 	/*
@@ -66,37 +70,45 @@ public class TagsTextileRenderer extends AbstractRenderer {
 					TextileUtil.TAGS_FILTERED_PARAM, TextileUtil.PARAM_NAME);
 			String entityType = tagParams
 					.get(TextileUtil.TAGS_ENTITY_TYPE_PARAM);
-			String maxLevels = tagParams.get(TextileUtil.TAGS_MAX_LEVELS_PARAM);
+			//String maxLevels = tagParams.get(TextileUtil.TAGS_MAX_LEVELS_PARAM);
 			String showDetails = tagParams
 					.get(TextileUtil.TAGS_SHOW_DETAIL_PARAM);
-			String hideTopLevel = tagParams
-					.get(TextileUtil.TAGS_HIDE_TOP_LEVEL);
+			//String hideTopLevel = tagParams
+				//	.get(TextileUtil.TAGS_HIDE_TOP_LEVEL);
 			String filteredParam = tagParams
 					.get(TextileUtil.TAGS_FILTERED_PARAM);
 			String paramName = tagParams.get(TextileUtil.PARAM_NAME);
 
 			Tag parentTag = null;
+			Tag rootTag = tagService.getRootTag();
 			if (paramName != null) {
 				parentTag = tagService.getSubTagByName(paramName);
-				if (hideTopLevel == null) {
+				/*if (hideTopLevel == null) {
 					hideTopLevel = "false";
-				}
+				}*/
 			} else {
-				parentTag = tagService.getRootTag();
-				hideTopLevel = "true";
+				parentTag = rootTag;
+				//hideTopLevel = "true";
 			}
 			if (parentTag != null) {
-				return getResult(parentTag, entityType,
+				/*return getResult(parentTag, entityType,
 						maxLevels != null ? Integer.valueOf(maxLevels) : 1,
 						showDetails != null ? Boolean.valueOf(showDetails)
 								: null, Boolean.valueOf(hideTopLevel),
 						filteredParam != null ? Boolean.valueOf(filteredParam)
-								: null, 0);
+								: null, 0);*/
+				Map<String, Object> parameters=new HashMap<String, Object>();
+				parameters.put("textileTags", parentTag.equals(rootTag)?parentTag.getWebVisibleTags():parentTag);
+				parameters.put("textileTagsEntityType", entityType);
+				parameters.put("textileTagsShowDetails", showDetails);
+				return pageRenderer.renderPage("ui/TextileTags", parameters);
+				
 			}
 		}
 		return "";
 	}
 
+	@Deprecated
 	public String getResult(Tag parentTag, String entityType,
 			Integer maxLevels, Boolean showDetails, Boolean hideTopLevel,
 			Boolean filteredParam, Integer level) {
@@ -128,7 +140,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 		}
 		return result;
 	}
-
+	@Deprecated
 	private String listOpening(String entityType, Tag tag, Boolean inHeaders) {
 		String result = "<li id=\"t" + tag.getId() + "\">";
 		if (inHeaders) {
