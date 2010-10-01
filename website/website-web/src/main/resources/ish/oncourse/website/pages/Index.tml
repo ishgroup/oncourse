@@ -1,0 +1,10 @@
+<html t:type="ui/pagewrapper" title="${title}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:zone t:id="regionZone" visible="false">
+		<t:if t:test="regionSelected">
+			<t:outputraw value="activeRegionContent" />
+		</t:if>
+	</t:zone>
+   	<div id="welcome">
+   		<span t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="activeNode" blockSource="blockSource"/>
+   	</div>
+</html>
