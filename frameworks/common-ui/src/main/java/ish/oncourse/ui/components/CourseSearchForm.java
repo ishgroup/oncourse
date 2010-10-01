@@ -2,7 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.ui.components.utils.GenericSelectModel;
+import ish.oncourse.ui.utils.GenericSelectModel;
 
 import java.net.MalformedURLException;
 import java.net.URL;

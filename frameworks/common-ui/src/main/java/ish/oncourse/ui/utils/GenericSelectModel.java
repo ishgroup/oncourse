@@ -1,4 +1,4 @@
-package ish.oncourse.ui.components.utils;
+package ish.oncourse.ui.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
