@@ -28,8 +28,12 @@ import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 
 public class Page {
 
+	private static final String WELCOME_TEMPLATE_ID = "welcome";
+
 	private static final Logger LOGGER = Logger.getLogger(Page.class);
 
+	private static final String MAIN_PAGE_NAME = "Index";
+	
 	@Inject
 	private IWebNodeService webNodeService;
 
@@ -49,6 +53,9 @@ public class Page {
 	@Persist
 	private WebNode activeNode;
 
+	@Inject
+	private ComponentResources componentResources;
+	
 	@SetupRender
 	void beforeRender() {
 		this.activeNode = (this.activeNode != null) ? this.activeNode
@@ -154,5 +161,14 @@ public class Page {
 
 	public boolean isRegionSelected() {
 		return this.activeRegion != null;
+	}
+	
+	public String getTemplateId(){
+		String pageName = componentResources.getPageName();
+
+		if (MAIN_PAGE_NAME.equals(pageName)) {
+			return WELCOME_TEMPLATE_ID;
+		}
+		return "";
 	}
 }

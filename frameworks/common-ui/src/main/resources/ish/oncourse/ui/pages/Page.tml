@@ -7,5 +7,7 @@
 		</t:if>
 	</t:zone>
 	
-	<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="activeNode" blockSource="blockSource"></div>
+	<div id="${templateId}">
+		<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="activeNode" blockSource="blockSource"></div>
+	</div>
 </html>
