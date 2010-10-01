@@ -19,6 +19,7 @@ public abstract class _WebNodeContent extends CayenneDataObject {
     public static final String CONTENT_PROPERTY = "content";
     public static final String CONTENT_TEXTILE_PROPERTY = "contentTextile";
     public static final String CREATED_PROPERTY = "created";
+    public static final String ID_PROPERTY = "id";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String REGION_KEY_PROPERTY = "regionKey";
     public static final String WEB_NODE_PROPERTY = "webNode";
@@ -45,6 +46,13 @@ public abstract class _WebNodeContent extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setId(Long id) {
+        writeProperty("id", id);
+    }
+    public Long getId() {
+        return (Long)readProperty("id");
     }
 
     public void setModified(Date modified) {

@@ -80,27 +80,9 @@
 			</dependency>
 			
 			<dependency>
-				<groupId>org.got5</groupId>
-				<artifactId>tapestry5-jquery</artifactId>
-				<version>1.1.99</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.apache.tapestry</groupId>
-						<artifactId>tapestry-upload</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			
-			<dependency>
-				<groupId>org.got5</groupId>
-				<artifactId>tapestry5-clientresources</artifactId>
-				<version>1.0.99</version>
-			</dependency>
-		
-			<dependency>
 				<groupId>com.howardlewisship</groupId>
 				<artifactId>tapx-core</artifactId>
-				<version>1.1.99</version>
+				<version>1.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>

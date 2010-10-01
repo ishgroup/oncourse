@@ -23,8 +23,10 @@ public class SuburbsTextArray extends TextStringArray {
 	void beforeRender() {
 		List<String> strings=null;
 		String searchParam = request.getParameter("q");
+		
 		SolrDocumentList responseResults = searchService.searchSuburbs(
 				searchParam).getResults();
+		
 		if (!responseResults.isEmpty()) {
 			strings = new ArrayList<String>(responseResults.size());
 			for (SolrDocument doc : responseResults) {

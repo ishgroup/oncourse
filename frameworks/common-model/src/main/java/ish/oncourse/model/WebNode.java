@@ -71,11 +71,9 @@ public class WebNode extends _WebNode {
 		setWebNodeType(WebNodeType
 				.forName(getObjectContext(), WebNodeType.PAGE));
 		
-		for (int i = 0; i < getWebNodeType().getNumberOfRegions(); i++) {
-			WebNodeContent content = getObjectContext().newObject(WebNodeContent.class);
-			content.setRegionKey("content");
-			content.setContent("Sample content text.");
-			addToWebNodeContents(content);
-		}
+		WebNodeContent content = getObjectContext().newObject(WebNodeContent.class);
+		content.setRegionKey("content");
+		content.setContent("Sample content text.");
+		addToWebNodeContents(content);
 	}
 }

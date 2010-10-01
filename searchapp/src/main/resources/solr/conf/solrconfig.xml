@@ -6,9 +6,9 @@
 	<lib dir="../../dist/" regex="apache-solr-clustering-\d.*\.jar" />
 	<lib dir="../../contrib/clustering/lib/downloads/" />
 	<lib dir="../../contrib/clustering/lib/" />
-	
+
 	<dataDir>${SOLR_DATA}</dataDir>
-	
+
 	<indexDefaults>
 		<useCompoundFile>false</useCompoundFile>
 		<mergeFactor>10</mergeFactor>
@@ -64,7 +64,8 @@
 					<str name="rows">10</str>
 				</lst>
 				<lst>
-					<str name="q">static firstSearcher warming query from solrconfig.xml</str>
+					<str name="q">static firstSearcher warming query from
+						solrconfig.xml</str>
 				</lst>
 			</arr>
 		</listener>
@@ -80,7 +81,8 @@
 		</httpCaching>
 	</requestDispatcher>
 
-	<requestHandler name="standard" class="solr.SearchHandler" default="true">
+	<requestHandler name="standard" class="solr.SearchHandler"
+		default="true">
 		<lst name="defaults">
 			<str name="echoParams">explicit</str>
 			<int name="rows">10</int>
@@ -93,10 +95,13 @@
 			<str name="defType">dismax</str>
 			<str name="echoParams">explicit</str>
 			<float name="tie">0.01</float>
-			<str name="qf">name^10 course_code^10 class_code^10 suburb^5 postcode^5 course_tutor^5 when^5 detail^1</str>
-			<str name="pf">name^10 course_code^10 class_code^10 suburb^5 postcode^5 course_tutor^5 when^5 detail^1</str>
+			<str name="qf">name^10 course_code^10 class_code^10 suburb^5
+				postcode^5 course_tutor^5 when^5 detail^1</str>
+			<str name="pf">name^10 course_code^10 class_code^10 suburb^5
+				postcode^5 course_tutor^5 when^5 detail^1</str>
 			<str name="bf"></str>
-			<str name="fl">name course_code class_code suburb postcode course_tutor when detail</str>
+			<str name="fl">name course_code class_code suburb postcode
+				course_tutor when detail</str>
 			<str name="mm">2&lt;-25% 9&lt;-3</str>
 			<int name="ps">100</int>
 			<str name="q.alt">*:*</str>
@@ -109,10 +114,80 @@
 		</lst>
 	</requestHandler>
 
-
+	<searchComponent class="solr.SpellCheckComponent" name="place">
+		<lst name="spellchecker">
+			<str name="name">place</str>
+			<str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
+			<str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookup</str>
+			<str name="field">subpost</str>
+			<str name="buildOnCommit">true</str>
+		</lst>
+	</searchComponent>
+	
+	<searchComponent class="solr.SpellCheckComponent" name="tag">
+		<lst name="spellchecker">
+			<str name="name">tag</str>
+			<str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
+			<str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookup</str>
+			<str name="field">tag</str>
+			<str name="buildOnCommit">true</str>
+		</lst>
+	</searchComponent>
+	
+	<searchComponent class="solr.SpellCheckComponent" name="name">
+		<lst name="spellchecker">
+			<str name="name">name</str>
+			<str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
+			<str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookup</str>
+			<str name="field">name</str>
+			<str name="buildOnCommit">true</str>
+		</lst>
+	</searchComponent>
+	
+	<requestHandler class="org.apache.solr.handler.component.SearchHandler"
+		name="/place">
+		<lst name="defaults">
+			<str name="spellcheck">true</str>
+			<str name="spellcheck.dictionary">place</str>
+			<str name="spellcheck.onlyMorePopular">true</str>
+			<str name="spellcheck.count">5</str>
+			<str name="spellcheck.collate">true</str>
+		</lst>
+		<arr name="components">
+			<str>place</str>
+		</arr>
+	</requestHandler>
+	
+	<requestHandler class="org.apache.solr.handler.component.SearchHandler"
+		name="/tag">
+		<lst name="defaults">
+			<str name="spellcheck">true</str>
+			<str name="spellcheck.dictionary">tag</str>
+			<str name="spellcheck.onlyMorePopular">true</str>
+			<str name="spellcheck.count">5</str>
+			<str name="spellcheck.collate">true</str>
+		</lst>
+		<arr name="components">
+			<str>tag</str>
+		</arr>
+	</requestHandler>
+	
+	<requestHandler class="org.apache.solr.handler.component.SearchHandler"
+		name="/name">
+		<lst name="defaults">
+			<str name="spellcheck">true</str>
+			<str name="spellcheck.dictionary">name</str>
+			<str name="spellcheck.onlyMorePopular">true</str>
+			<str name="spellcheck.count">5</str>
+			<str name="spellcheck.collate">true</str>
+		</lst>
+		<arr name="components">
+			<str>name</str>
+		</arr>
+	</requestHandler>
+	
 	<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
 		<str name="queryAnalyzerFieldType">textSpell</str>
-
 		<lst name="spellchecker">
 			<str name="name">default</str>
 			<str name="field">name</str>
@@ -174,19 +249,6 @@
 			<str name="fmap.a">links</str>
 			<str name="fmap.div">ignored_</str>
 		</lst>
-	</requestHandler>
-
-	<searchComponent name="termsComponent"
-		class="org.apache.solr.handler.component.TermsComponent" />
-
-	<requestHandler name="/terms"
-		class="org.apache.solr.handler.component.SearchHandler">
-		<lst name="defaults">
-			<bool name="terms">true</bool>
-		</lst>
-		<arr name="components">
-			<str>termsComponent</str>
-		</arr>
 	</requestHandler>
 
 	<searchComponent name="elevator" class="solr.QueryElevationComponent">
@@ -267,9 +329,10 @@
 		class="org.apache.solr.request.XSLTResponseWriter">
 		<int name="xsltCacheLifetimeSeconds">5</int>
 	</queryResponseWriter>
-	  
-	<queryParser name="sfilt" class="org.apache.solr.search.SpatialFilterQParserPlugin" />
-	
+
+	<queryParser name="sfilt"
+		class="org.apache.solr.search.SpatialFilterQParserPlugin" />
+
 	<admin>
 		<defaultQuery>solr</defaultQuery>
 	</admin>

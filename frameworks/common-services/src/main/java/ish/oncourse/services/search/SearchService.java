@@ -96,6 +96,12 @@ public class SearchService implements ISearchService {
 				q.setQuery(params.get(SearchParam.s).toLowerCase());
 			} else {
 				StringBuilder qString = new StringBuilder();
+				
+				if (params.containsKey(SearchParam.s)) {
+					String s = params.get(SearchParam.s);
+					qString.append(s).append(" ");
+				}
+				
 				if (params.containsKey(SearchParam.day)) {
 					String day = params.get(SearchParam.day);
 					qString.append(String.format("when:" + day)).append(" ");
@@ -105,8 +111,8 @@ public class SearchService implements ISearchService {
 					String time = params.get(SearchParam.time);
 					qString.append("when:" + time).append(" ");
 				}
-				
-				if(params.containsKey(SearchParam.subject)){
+
+				if (params.containsKey(SearchParam.subject)) {
 					String subject = params.get(SearchParam.subject);
 					qString.append("tag:" + subject).append(" ");
 				}
@@ -121,10 +127,11 @@ public class SearchService implements ISearchService {
 						points[1] = String.valueOf(latLong[1]);
 					} catch (NullPointerException e) {
 						int separator = near.lastIndexOf(" ");
-						if(separator>0){
-							String[] suburbParams = {near.substring(0, separator-1), 
-								near.substring(separator+1)};
-						
+						if (separator > 0) {
+							String[] suburbParams = {
+									near.substring(0, separator - 1),
+									near.substring(separator + 1) };
+
 							SolrDocumentList responseResults = searchSuburb(
 									suburbParams[0], suburbParams[1])
 									.getResults();
@@ -156,7 +163,7 @@ public class SearchService implements ISearchService {
 			String collegeId = String.valueOf(college.getId());
 
 			SolrQuery q = new SolrQuery();
-			
+
 			StringBuilder query = new StringBuilder();
 
 			String[] terms = term.split("[\\s]+");
@@ -166,11 +173,22 @@ public class SearchService implements ISearchService {
 				query.append(
 						String.format("(name:%s && collegeId:%s)", t, collegeId))
 						.append("||");
+
 				query.append(
-						String.format("(course_code:%s && collegeId:%s)", t.indexOf( "-" ) < 0 ? t : t.substring( 0, t.indexOf( "-" ) ), collegeId))
-						.append("||");
-				query.append(String.format(
-						"(doctype:place suburb:%s postcode:%s) ", t, t));
+						String.format(
+								"(course_code:%s && collegeId:%s)",
+								t.indexOf("-") < 0 ? t : t.substring(0,
+										t.indexOf("-")), collegeId)).append(
+						"||");
+
+				query.append(
+						String.format(
+								"(doctype:place && (suburb:%s || postcode:%s)) ",
+								t, t)).append(" || ");
+
+				query.append(String
+						.format("(doctype:tag && collegeId:%s && tag:%s)",
+								collegeId, t));
 
 				if (i + 1 != terms.length) {
 					query.append(" || ");
@@ -185,12 +203,12 @@ public class SearchService implements ISearchService {
 			throw new SearchException("Unable to find courses.", e);
 		}
 	}
-	
+
 	public QueryResponse searchSuburbs(String term) {
 		try {
 
 			SolrQuery q = new SolrQuery();
-			
+
 			StringBuilder query = new StringBuilder();
 
 			String[] terms = term.split("[\\s]+");
@@ -198,7 +216,7 @@ public class SearchService implements ISearchService {
 				String t = terms[i].toLowerCase().trim() + "*";
 
 				query.append(String.format(
-						"(doctype:place suburb:%s postcode:%s) ", t, t));
+						"(doctype:place && (suburb:%s || postcode:%s)) ", t, t));
 
 				if (i + 1 != terms.length) {
 					query.append(" || ");
@@ -213,16 +231,17 @@ public class SearchService implements ISearchService {
 			throw new SearchException("Unable to find suburbs.", e);
 		}
 	}
-	
+
 	public QueryResponse searchSuburb(String suburbName, String postcode) {
 		try {
 
 			SolrQuery q = new SolrQuery();
-			
+
 			StringBuilder query = new StringBuilder();
 
 			query.append(String.format(
-						"(doctype:place suburb:%s postcode:%s) ", suburbName, postcode));
+					"(doctype:place && suburb:%s && postcode:%s) ", suburbName,
+					postcode));
 
 			q.setQuery(query.toString());
 

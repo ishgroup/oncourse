@@ -1,7 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.cms.pages.Login;
-import ish.oncourse.cms.pages.NewPage;
+import ish.oncourse.cms.pages.Page;
 import ish.oncourse.cms.services.security.annotations.Protected;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.services.persistence.ICayenneService;
@@ -25,19 +25,18 @@ public class CmsNavigation {
 	private Login loginPage;
 
 	@InjectPage
-	private NewPage newPage;
+	private Page newPage;
 
 	@Inject
 	private Cookies cookies;
-	
+
 	@Inject
 	private ICayenneService cayenneService;
 
 	public Object onActionFromCreatePage() throws IOException {
 		ObjectContext ctx = cayenneService.newContext();
 		WebNode page = ctx.newObject(WebNode.class);
-		newPage.setPage(page);
-		
+		newPage.selectActiveNode(page);
 		return newPage;
 	}
 

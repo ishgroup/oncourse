@@ -64,9 +64,14 @@
 
 
 				<t:if test="hasTagGroupResultsList">
-					<t:loop source="tags" item="tag">
 						<ul class="tag_list">
-							<li class="title">${tag.name}</li>
+							<li class="title">Subjects</li>
+							<t:loop source="tags" value="tag">
+								<li>${tag.name}</li>
+							</t:loop>
+						</ul>
+				</t:if>
+						
 							<!--
 							TODO implement when search for will be ready-->
 							<!--
@@ -78,9 +83,7 @@
 								tag="em" escapeHTML="$false" /></wo:link> </li> </wo:loop>
 								<wo:if condition="$hasMoreTagGroupResults"></wo:if
 							-->
-						</ul>
-					</t:loop>
-				</t:if>
+				
 			</p:else>
 		</t:if>
 	</div>

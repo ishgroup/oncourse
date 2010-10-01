@@ -48,16 +48,6 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.got5</groupId>
-			<artifactId>tapestry5-jquery</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.got5</groupId>
-			<artifactId>tapestry5-clientresources</artifactId>
-		</dependency>
-
 	</dependencies>
 
 </project>

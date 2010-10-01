@@ -33,16 +33,22 @@ public class QuickSearchView {
 	private PostcodeDb location;
 	
 	private List<Course> courses;
-	@Property
-	private List<Course> matchingCourseList;
-	@Property
-	private List<Course> courseList;
-	@Property
-	private Course course;
+	
 	@Property
 	private List<Tag> tags;
+	
+	@Property
+	private List<Course> matchingCourseList;
+	
+	@Property
+	private List<Course> courseList;
+	
+	@Property
+	private Course course;
+	
 	@Property
 	private Tag tag;
+	
 	@Property
 	private String searchingLocationsSearchString;
 
@@ -85,7 +91,9 @@ public class QuickSearchView {
 				postcodeDb.setLon(Double.valueOf(points[1]));
 				locationDetailList.add(postcodeDb);
 			} else if ("tag".equals(doctype)) {
-				// TODO fill the tags list
+				Tag tag = new Tag();
+				tag.setName((String) doc.get("name"));
+				tags.add(tag);
 			}
 		}
 	}
