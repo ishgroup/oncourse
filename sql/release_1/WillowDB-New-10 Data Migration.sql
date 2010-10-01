@@ -274,7 +274,7 @@ INSERT INTO willow_college.WebTheme (id, collegeId, angelId, isDeleted, name, th
 	FROM oncourse_realdata_willow_college.WebTheme WHERE isDeleted = 0 AND collegeId = @collegeId;
 INSERT INTO willow_college.WebURLAlias (angelId, created, id, isDeleted, modified, urlPath, webNodeId, webSiteId)
 	SELECT angelId, created, id, isDeleted, modified, urlPath, webNodeId, webSiteId
-	FROM oncourse_realdata_willow_college.WebTheme WHERE isDeleted = 0 AND (collegeId is null or collegeId = @collegeId) AND id NOT IN (SELECT id FROM willow_college.WebTheme);
+	FROM oncourse_realdata_willow_college.WebURLAlias WHERE isDeleted = 0 AND webSiteID in (SELECT id from WebSite WHERE collegeId = @collegeId);
 INSERT INTO willow_college.WillowUser (angelId, collegeId, created, email, failedLoginCount, firstName, flag1, id, isActive, isDeleted, isSuperUser, lastFailedLogin, lastLogin, lastName, modified, password, passwordHash)
 	SELECT angelId, collegeId, created, email, failedLoginCount, firstName, flag1, id, isActive, isDeleted, isSuperUser, lastFailedLogin, lastLogin, lastName, modified, password, null
 	FROM oncourse_realdata_willow_college.WillowUser WHERE collegeId = @collegeId;
