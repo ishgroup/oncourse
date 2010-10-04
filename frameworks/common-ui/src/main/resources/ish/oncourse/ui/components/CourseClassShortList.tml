@@ -1,0 +1,55 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<div id="updater"></div>
+	<t:if test="hasObjects">
+		<div id="cover"></div>
+		<div id="shortListWrapper">
+			<div id="shortListInner">
+				<div class="box" id="myShortList">
+					<h3><span>My Order</span></h3>
+					<ul class="menu">
+						<t:loop source="orderedClasses" value="courseClass">
+							<t:if test="sessionPage">
+								<li class="onshortlist-x">
+									<!-- CourseClassCookieView.removeClassAction -->
+									<a href="#" class="cutitem"><span class="hide" title="Remove item">X</span></a>
+									<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
+										${courseClass.course.name}
+									</a>
+								</li>
+								<p:else>
+									<li class="onshortlist">
+										<!-- WillowDynamicColleges/src/main/components/CourseClassCookieView.wo/CourseClassCookieView.wod.RemoveItemLink[40] -->
+										<a href="#" class="cutitem"><span class="hide" title="Remove item">X</span></a>
+										<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
+											${courseClass.course.name}
+										</a>
+									</li>
+								</p:else>
+							</t:if>
+						</t:loop>
+						<t:if test="showEnrolNow">
+							<li class="enrolnow">
+								<a id="enrolNowLink" href="/enrolNow">
+									${enrolLinkText}
+								</a>
+							</li>
+						</t:if>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</t:if>
+	<script type="text/javascript">
+		if (typeof enrolmentEntryDisplayed != 'undefined'){
+			if(enrolmentEntryDisplayed) {
+			document.getElementById("shortListWrapper").setAttribute("class", "highlightWrapper");
+			document.getElementById("shortListWrapper").setAttribute("className", "highlightWrapper");
+			document.getElementById("shortListInner").setAttribute("class", "highlightBalloon");
+			document.getElementById("shortListInner").setAttribute("className", "highlightBalloon");
+			document.getElementById("enrolNowLink").style.visibility = "hidden";
+			document.getElementById("enrolNowLink").style.display = "none";
+			}
+		}
+	</script>
+</t:container>	

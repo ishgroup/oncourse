@@ -1,0 +1,6 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<div id="shortlist" class="noprint">
+		<span t:type="ui/CourseClassShortList" orderedClasses="ordered"/>
+	</div>
+</t:container>
