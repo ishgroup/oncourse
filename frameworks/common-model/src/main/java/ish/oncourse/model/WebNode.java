@@ -13,6 +13,11 @@ public class WebNode extends _WebNode {
 
 	static final String DEFAULT_PAGE_TITLE = "New Page";
 
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+
 	public String getPath() {
 		if (getParentNode() == null
 				|| getParentNode() == getWebSite().getHomePage()) {
@@ -67,13 +72,5 @@ public class WebNode extends _WebNode {
 	protected void performInitialization() {
 		setIsWebNavigable(true);
 		setIsWebVisible(true);
-		
-		setWebNodeType(WebNodeType
-				.forName(getObjectContext(), WebNodeType.PAGE));
-		
-		WebNodeContent content = getObjectContext().newObject(WebNodeContent.class);
-		content.setRegionKey("content");
-		content.setContent("Sample content text.");
-		addToWebNodeContents(content);
 	}
 }

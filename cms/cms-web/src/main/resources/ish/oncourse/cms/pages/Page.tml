@@ -1,31 +1,42 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html t:type="cmspagewrapper" title="${title}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html t:type="cmspagewrapper" title="${node.name}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<t:block id="regionBlock">
+		<div class="region">
+			<div class="edit_region_link"><span t:type="actionLink" t:id="editRegion" t:zone="editorZone" context="region.regionKey">Edit this region</span></div>
+			<t:outputraw value="regionContent" />
+		</div>
+	</t:block>
+	
+	<t:zone t:id="contentZone">
+		<div id="${templateId}">
+			<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="node" blockSource="blockSource"></div>
+		</div>
+	</t:zone>
+	
+	
+	<t:zone t:id="editorZone" visible="false"></t:zone>
 
-	<t:zone t:id="regionZone" visible="false">
-		<t:if t:test="regionSelected">
-			<div class="region">
-				<div class="edit_region_link"><span t:type="actionLink" t:id="editRegion" class="activeRegion.id" t:zone="editorZone" context="activeRegion.regionKey">Edit this region</span></div>
-				<t:outputraw value="activeRegionContent" />
-			</div>
-		</t:if>
-	</t:zone>
-	
-	<div id="${templateId}">
-			<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="activeNode" blockSource="blockSource"></div>
-	</div>
-	
-	<t:zone t:id="editorZone" visible="false">
-		<t:if t:test="editRegionSelected">
-			<div id="dialog" title="Basic dialog">
-				<form t:id="regionForm">
-					<textarea t:type="TextArea" value="editRegion.content" style="width: 100%"/>
-					<div class="cms_form_actions">
-						<button t:type="actionLink" t:id="cancel">Cancel</button>
-						<button t:type="actionLink" t:id="save">Save Changes</button>
-					</div>
-				</form>
-			</div>
-			<script type="text/javascript">jQuery(function() {jQuery("#dialog").dialog();});</script>
-		</t:if>
-	</t:zone>
+	<t:block id="editorBlock">
+		<div id="dialog" title="Basic dialog">
+			<form t:id="regionForm" zone="contentZone">
+				<textarea t:type="TextArea" value="editorRegion.content" rows="18" style="width: 99%"/>
+			</form>
+		</div>
+		<script type="text/javascript">
+					jQuery(function() {
+						jQuery("#dialog").dialog({modal:true, height: 430, width: 530, 
+							buttons: { 
+								Cancel: function() {
+									jQuery(this).dialog( "close" );
+								}, 
+								"Save Changes": function() { 
+									jQuery(this).dialog( "close" );
+									$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+								}
+							}	
+						});
+					});
+		</script>
+	</t:block>
 </html>

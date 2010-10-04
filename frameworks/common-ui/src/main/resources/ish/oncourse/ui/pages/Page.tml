@@ -1,12 +1,10 @@
 <html t:type="ui/pagewrapper" title="${title}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
-	<t:zone t:id="regionZone" visible="false">
-		<t:if t:test="regionSelected">
-			<t:outputraw value="activeRegionContent" />
-		</t:if>
-	</t:zone>
+	<t:block id="regionBlock">
+		<t:outputraw value="regionContent" />
+	</t:block>
 	
 	<div id="${templateId}">
-		<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="activeNode" blockSource="blockSource"></div>
+		<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="node" blockSource="blockSource"></div>
 	</div>
 </html>

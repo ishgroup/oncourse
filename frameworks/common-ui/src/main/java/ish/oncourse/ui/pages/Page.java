@@ -16,11 +16,9 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -33,7 +31,7 @@ public class Page {
 	private static final Logger LOGGER = Logger.getLogger(Page.class);
 
 	private static final String MAIN_PAGE_NAME = "Index";
-	
+
 	@Inject
 	private IWebNodeService webNodeService;
 
@@ -43,38 +41,26 @@ public class Page {
 	@Inject
 	private ITextileConverter textileConverter;
 
-	@Component
-	private Zone regionZone;
+	@Inject
+	private Block regionBlock;
 
 	@Property
-	private WebNodeContent activeRegion;
+	private WebNodeContent region;
 
 	@Property
 	@Persist
-	private WebNode activeNode;
+	private WebNode node;
 
 	@Inject
 	private ComponentResources componentResources;
-	
-	@SetupRender
-	void beforeRender() {
-		this.activeNode = getCurrentNode();
-	}
 
-	public Zone regionZone() {
-		return regionZone;
+	@SetupRender
+	public void beforeRender() {
+		this.node = getCurrentNode();
 	}
 
 	public IWebNodeService getWebNodeService() {
 		return webNodeService;
-	}
-
-	public void selectActiveRegion(WebNodeContent activeRegion) {
-		this.activeRegion = activeRegion;
-	}
-
-	public void selectActiveNode(WebNode node) {
-		this.activeNode = node;
 	}
 
 	protected WebNode getCurrentNode() {
@@ -116,8 +102,8 @@ public class Page {
 		return node;
 	}
 
-	public String getActiveRegionContent() {
-		String text = activeRegion.getContent();
+	public String getRegionContent() {
+		String text = region.getContent();
 
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 
@@ -145,11 +131,11 @@ public class Page {
 						WebNodeContent.REGION_KEY_PROPERTY, regionKey);
 
 				final WebNodeContent nodeContent = expr.filterObjects(
-						activeNode.getWebNodeContents()).get(0);
+						node.getWebNodeContents()).get(0);
 
-				selectActiveRegion(nodeContent);
+				selectCurrentRegion(nodeContent);
 
-				return regionZone.getBody();
+				return regionBlock;
 			}
 
 			public ComponentResources getComponentResources() {
@@ -158,16 +144,28 @@ public class Page {
 		};
 	}
 
-	public boolean isRegionSelected() {
-		return this.activeRegion != null;
+	public void selectNode(WebNode node) {
+		this.node = node;
 	}
-	
-	public String getTemplateId(){
+
+	public String getTemplateId() {
 		String pageName = componentResources.getPageName();
 
 		if (MAIN_PAGE_NAME.equals(pageName)) {
 			return WELCOME_TEMPLATE_ID;
 		}
 		return "";
+	}
+
+	public WebNode currentNode() {
+		return this.node;
+	}
+
+	public Block regionBlock() {
+		return regionBlock;
+	}
+
+	public void selectCurrentRegion(WebNodeContent activeRegion) {
+		this.region = activeRegion;
 	}
 }

@@ -4,7 +4,11 @@ import ish.oncourse.cms.pages.Login;
 import ish.oncourse.cms.pages.Page;
 import ish.oncourse.cms.services.security.annotations.Protected;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeContent;
+import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 
 import java.io.IOException;
 
@@ -20,6 +24,9 @@ public class CmsNavigation {
 
 	@Inject
 	private Request request;
+	
+	@Inject
+	private IWebSiteService webSiteService;
 
 	@InjectPage
 	private Login loginPage;
@@ -35,8 +42,27 @@ public class CmsNavigation {
 
 	public Object onActionFromCreatePage() throws IOException {
 		ObjectContext ctx = cayenneService.newContext();
+		
 		WebNode page = ctx.newObject(WebNode.class);
-		newPage.selectActiveNode(page);
+		
+		WebSite webSite = webSiteService.getCurrentWebSite();
+		
+		page.setWebSite((WebSite) ctx.localObject(webSite.getObjectId(), null));
+		
+		page.setWeighting(0);
+		
+		page.setNodeNumber(0);
+		
+		page.setWebNodeType(WebNodeType
+				.forName(ctx, WebNodeType.PAGE));
+		
+		WebNodeContent content = ctx.newObject(WebNodeContent.class);
+		content.setRegionKey("content");
+		content.setContent("Sample content text.");
+		page.addToWebNodeContents(content);
+		
+		newPage.selectNode(page);
+		
 		return newPage;
 	}
 

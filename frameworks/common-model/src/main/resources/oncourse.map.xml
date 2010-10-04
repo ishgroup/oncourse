@@ -689,7 +689,7 @@
 	<db-entity name="WebNode" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isPublished" type="BIT"/>
 		<db-attribute name="isRssFeed" type="BIT"/>
 		<db-attribute name="isWebNavigable" type="BIT"/>
@@ -709,7 +709,7 @@
 		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="regionKey" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
@@ -1326,7 +1326,6 @@
 	<obj-entity name="WebNode" className="ish.oncourse.model.WebNode" dbEntityName="WebNode">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isPublished" type="java.lang.Boolean" db-attribute-path="isPublished"/>
 		<obj-attribute name="isRssFeed" type="java.lang.Boolean" db-attribute-path="isRssFeed"/>
 		<obj-attribute name="isWebNavigable" type="java.lang.Boolean" db-attribute-path="isWebNavigable"/>
@@ -1343,7 +1342,6 @@
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
 		<obj-attribute name="contentTextile" type="java.lang.String" db-attribute-path="content_textile"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
 	</obj-entity>

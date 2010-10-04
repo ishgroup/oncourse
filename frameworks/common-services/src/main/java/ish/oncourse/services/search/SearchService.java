@@ -96,15 +96,16 @@ public class SearchService implements ISearchService {
 				q.setQuery(params.get(SearchParam.s).toLowerCase());
 			} else {
 				StringBuilder qString = new StringBuilder();
-				
+
 				if (params.containsKey(SearchParam.s)) {
 					String s = params.get(SearchParam.s);
-					qString.append(s).append(" ");
+					qString.append(s).append(" ").append("detail:" + s)
+							.append(" ");
 				}
-				
+
 				if (params.containsKey(SearchParam.day)) {
 					String day = params.get(SearchParam.day);
-					qString.append(String.format("when:" + day)).append(" ");
+					qString.append("when:" + day).append(" ");
 				}
 
 				if (params.containsKey(SearchParam.time)) {
