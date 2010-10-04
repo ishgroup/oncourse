@@ -103,7 +103,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	ITagService tagService;
 	
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
-		final String path = request.getPath();
+		final String path = request.getPath().toLowerCase();
 
 		// TODO remove the next test since it will be replaced with separate application
 		if (path.startsWith("/assets") || path.startsWith("/servlet")) {

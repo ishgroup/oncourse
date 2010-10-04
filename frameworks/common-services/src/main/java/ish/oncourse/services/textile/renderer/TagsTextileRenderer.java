@@ -1,6 +1,8 @@
 package ish.oncourse.services.textile.renderer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.model.Tag;
@@ -98,7 +100,13 @@ public class TagsTextileRenderer extends AbstractRenderer {
 						filteredParam != null ? Boolean.valueOf(filteredParam)
 								: null, 0);*/
 				Map<String, Object> parameters=new HashMap<String, Object>();
-				parameters.put("textileTags", parentTag.equals(rootTag)?parentTag.getWebVisibleTags():parentTag);
+				List<Tag> textileTags = new ArrayList<Tag>();
+				if(parentTag.equals(rootTag)){
+					textileTags.addAll(parentTag.getWebVisibleTags());
+				}else{
+					textileTags.add(parentTag);
+				}
+				parameters.put("textileTags", textileTags);
 				parameters.put("textileTagsEntityType", entityType);
 				parameters.put("textileTagsShowDetails", showDetails);
 				return pageRenderer.renderPage("ui/TextileTags", parameters);
