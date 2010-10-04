@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <li xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-   <a href="page?p=${node.name}">${node.name}</a><ul><t:body/></ul>
+   <a href="${node.name}">${node.name}</a><ul><t:body/></ul>
 </li>
