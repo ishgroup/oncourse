@@ -58,8 +58,7 @@ public class Page {
 	
 	@SetupRender
 	void beforeRender() {
-		this.activeNode = (this.activeNode != null) ? this.activeNode
-				: getCurrentNode();
+		this.activeNode = getCurrentNode();
 	}
 
 	public Zone regionZone() {
