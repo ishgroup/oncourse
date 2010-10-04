@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <div id="footer" class="clearfix">
   	<div class="vcard left">
@@ -14,6 +13,6 @@
 			Email: <span class="email"><a href="mailto:customer.service@scc.nsw.edu.au">customer.service@scc.nsw.edu.au</a></span>
 		</div>
 	</div>
-	<p class="right">Copyright &copy; 2007-${year}</p>
+	<p class="right">Copyright © 2007-${year}</p>
 	<a href="http://www.ish.com.au/oncourse" class="popup"><img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse" /></a> 
 </div></t:container>

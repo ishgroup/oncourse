@@ -1,5 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
+	<!-- this empty div is needed as tapestry page root component-->
 	<div/>
 	<t:loop source="strings" value="str">
 		${str}

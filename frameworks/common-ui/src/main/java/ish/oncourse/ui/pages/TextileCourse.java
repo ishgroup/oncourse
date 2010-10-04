@@ -10,7 +10,7 @@ import org.apache.tapestry5.services.Request;
  * @author ksenia
  *
  */
-public class CoursePage {
+public class TextileCourse {
 	@Inject
 	private Request request;
 
