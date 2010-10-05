@@ -17,10 +17,6 @@ public class CourseClassShortlistControl {
 	@Inject 
 	private IWebSiteService webSiteService;
 
-	public boolean isHasSecureParentPage() {
-		return false;
-	}
-
 	/**
 	 * @return true if the student is already enrolled in this class
 	 */

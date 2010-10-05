@@ -26,15 +26,6 @@ public class CourseClassShortList {
 		return orderedClasses != null && !orderedClasses.isEmpty();
 	}
 
-	public boolean isSessionPage() {
-		// ISHWebObjects/com.ish.webobjects.appserver.ISHComponent.hasSecureParentPage[357]
-		// WOComponent parent = parentPage();
-		// return parent instanceof ISHComponent &&
-		// SecurityPolicy.SECURE.equals( ( ( ISHComponent )parent
-		// ).securityPolicy( null ) );
-		return false;
-	}
-
 	public boolean isShowEnrolNow() {
 		// WillowDynamicColleges/willow.view.CourseClassCookieView.showEnrolNow[102]
 		return false;

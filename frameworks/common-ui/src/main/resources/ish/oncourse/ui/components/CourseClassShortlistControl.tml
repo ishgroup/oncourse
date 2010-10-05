@@ -1,63 +1,53 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<ul id="m${courseClass.id}" class="class_options noprint">
-		<t:if t:test="hasSecureParentPage">
-			<!-- TODO find an equivalent -->
-			<!--
-				wo:DynamicDirectAction refresh="$true" key="shortlist" add="$false"
-				object="$object" id="$object.id" idPrefix="c"
-			-->
-			<a href="#">Remove from order</a>
-			<!-- /wo:DynamicDirectAction-->
-			<p:else>
-				<t:if t:test="courseClass.cancelled" negate="true">
-					<t:if t:test="enrolled" negate="true">
-						<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
-							<t:if t:test="paymentGatewayEnabled">
-								<li class="class_enrol">
-									<a
-										href="enrolNow?secure=$enrolNowLinkIsSecure&amp;addShortlist=${courseClass.id}">Enrol Now</a>
-								</li>
-							</t:if>
-							<p:else>
-								<li class="class_full">No places</li>
-							</p:else>
-						</t:if>
-
+		<t:if t:test="courseClass.cancelled" negate="true">
+			<t:if t:test="enrolled" negate="true">
+				<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+					<t:if t:test="paymentGatewayEnabled">
+						<li class="class_enrol">
+							<a
+								href="enrolNow?secure=$enrolNowLinkIsSecure&amp;addShortlist=${courseClass.id}">Enrol Now</a>
+						</li>
 					</t:if>
 					<p:else>
-						<li class="class_cancelled">Class was cancelled</li>
+						<li class="class_full">No places</li>
 					</p:else>
 				</t:if>
-				<t:if t:test="${containedInShortList}">
-					<li class="shortlisted">
 
-						<!--
-							wo:DynamicDirectAction refresh="$true" key="shortlist"
-							add="$false" object="$object" id="$object.id" idPrefix="c"
-						-->
-						<a href="#">Remove from order</a>
-						<!-- /wo:DynamicDirectAction-->
-					</li>
-					<p:else>
-						<t:if t:test="courseClass.cancelled" negate="true">
-							<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
-								<t:if t:test="paymentGatewayEnabled">
-									<li class="class_addorder addshortlist">
-										<!--
-											<wo:DynamicDirectAction refresh="$true" key="shortlist"
-											add="$true" object="$object" id="$object.id" idPrefix="c"
-										-->
-										<a href="#">Add to order</a>
-										<!-- /wo:DynamicDirectAction> -->
-									</li>
-								</t:if>
-							</t:if>
+			</t:if>
+			<p:else>
+				<li class="class_cancelled">Class was cancelled</li>
+			</p:else>
+		</t:if>
+		<t:if t:test="${containedInShortList}">
+			<li class="shortlisted">
+
+				<!--
+					wo:DynamicDirectAction refresh="$true" key="shortlist" add="$false"
+					object="$object" id="$object.id" idPrefix="c"
+				-->
+				<a href="#">Remove from order</a>
+				<!-- /wo:DynamicDirectAction-->
+			</li>
+			<p:else>
+				<t:if t:test="courseClass.cancelled" negate="true">
+					<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+						<t:if t:test="paymentGatewayEnabled">
+							<li class="class_addorder addshortlist">
+								<!--
+									<wo:DynamicDirectAction refresh="$true" key="shortlist"
+									add="$true" object="$object" id="$object.id" idPrefix="c"
+								-->
+								<a href="#">Add to order</a>
+								<!-- /wo:DynamicDirectAction> -->
+							</li>
 						</t:if>
-					</p:else>
+					</t:if>
 				</t:if>
 			</p:else>
 		</t:if>
+
 
 		<t:if t:test="courseClass.cancelled" negate="true">
 			<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">

@@ -9,24 +9,13 @@
 					<h3><span>My Order</span></h3>
 					<ul class="menu">
 						<t:loop source="orderedClasses" value="courseClass">
-							<t:if test="sessionPage">
-								<li class="onshortlist-x">
-									<!-- CourseClassCookieView.removeClassAction -->
-									<a href="#" class="cutitem"><span class="hide" title="Remove item">X</span></a>
-									<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
-										${courseClass.course.name}
-									</a>
-								</li>
-								<p:else>
-									<li class="onshortlist">
-										<!-- WillowDynamicColleges/src/main/components/CourseClassCookieView.wo/CourseClassCookieView.wod.RemoveItemLink[40] -->
-										<a href="#" class="cutitem"><span class="hide" title="Remove item">X</span></a>
-										<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
-											${courseClass.course.name}
-										</a>
-									</li>
-								</p:else>
-							</t:if>
+							<li class="onshortlist">
+								<!-- CourseClassCookieView.removeClassAction -->
+								<a href="#" class="cutitem"><span class="hide" title="Remove item">X</span></a>
+								<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
+									${courseClass.course.name}
+								</a>
+							</li>
 						</t:loop>
 						<t:if test="showEnrolNow">
 							<li class="enrolnow">
