@@ -6,6 +6,8 @@ import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.block.IWebBlockService;
 import ish.oncourse.services.block.WebBlockService;
+import ish.oncourse.services.cookies.CookiesService;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.CourseClassService;
@@ -66,6 +68,7 @@ public class ServiceModule {
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(IPageRenderer.class, PageRenderer.class);
 		binder.bind(ITagService.class, TagService.class);
+		binder.bind(ICookiesService.class, CookiesService.class);
 	}
 
 }
