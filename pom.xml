@@ -260,7 +260,6 @@
 		</notifiers>
 	</ciManagement>
 
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tapestry5version>5.2.0</tapestry5version>
