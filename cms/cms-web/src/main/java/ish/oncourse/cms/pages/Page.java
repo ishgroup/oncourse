@@ -4,6 +4,8 @@ import ish.oncourse.model.WebNodeContent;
 
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.MarkupWriter;
+import org.apache.tapestry5.Renderable;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Persist;
@@ -44,15 +46,22 @@ public class Page extends ish.oncourse.ui.pages.Page {
 				.matchExp(WebNodeContent.REGION_KEY_PROPERTY, id)
 				.filterObjects(currentNode().getWebNodeContents()).get(0);
 
-		return  editorBlock;
+		return editorBlock;
 	}
 
 	Object onSuccessFromRegionForm() {
 		this.editorRegion.getObjectContext().commitChanges();
-		return new MultiZoneUpdate("contentZone", contentZone).add("editorZone", null); 
+		return new MultiZoneUpdate("contentZone", contentZone).add(
+				"editorZone", new EmptyRenderable());
 	}
 
 	public boolean isEditRegionSelected() {
 		return this.editorRegion != null;
+	}
+
+	private static class EmptyRenderable implements Renderable {
+		public void render(MarkupWriter writer) {
+
+		}
 	}
 }
