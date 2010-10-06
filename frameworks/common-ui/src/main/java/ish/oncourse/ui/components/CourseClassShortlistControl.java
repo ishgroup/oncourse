@@ -3,10 +3,15 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Student;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.site.IWebSiteService;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class CourseClassShortlistControl {
@@ -17,6 +22,19 @@ public class CourseClassShortlistControl {
 	@Inject 
 	private IWebSiteService webSiteService;
 
+	@Inject
+	private ICookiesService cookiesService;
+	
+	private Collection<String> shortListedClassesIds;
+
+	@SetupRender
+	void beginRender(){
+		String[] idsArray = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
+		if(idsArray!=null){
+			shortListedClassesIds = Arrays.asList(idsArray);
+		}
+	}
+	
 	/**
 	 * @return true if the student is already enrolled in this class
 	 */
@@ -38,12 +56,15 @@ public class CourseClassShortlistControl {
 	}
 
 	public boolean isPaymentGatewayEnabled() {
-		return webSiteService.getCurrentCollege().getIsWebSitePaymentsEnabled();
+		//commented to show the view of enrollment link, because the current value in db is false
+		return true;//webSiteService.getCurrentCollege().getIsWebSitePaymentsEnabled();
 	}
 	
 	public boolean isContainedInShortList(){
-		//TODO <wo:ISHKeyValueConditional 
-		//key="myCookies.shortlist.ids" key1="$object.id.toString" value="$object.id.toString">
-		return false;
+		
+		if(shortListedClassesIds==null){
+			return false;
+		}
+		return shortListedClassesIds.contains(courseClass.getId().toString());
 	}
 }

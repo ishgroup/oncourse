@@ -1,11 +1,10 @@
 package ish.oncourse.services.cookies;
 
-import java.util.Collection;
 
 public interface ICookiesService {
 	String getCookieValue(String cookieKey);
-	Collection<String> getCookieCollectionValue(String cookieKey);
-	void resetRequestedCookies();
+	String[] getCookieCollectionValue(String cookieKey);
 	void writeCookieValue(String cookieKey, String cookieValue);
-	void writeCookieCollectionValue(String cookieKey, Collection<String> cookieValue);
+	void appendValueToCookieCollection(String cookieKey, String cookieValue);
+	void removeValueFromCookieCollection(String cookieKey, String cookieValue);
 }

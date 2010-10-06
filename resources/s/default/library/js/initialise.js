@@ -114,22 +114,26 @@ $j(document).ready(function() {
 		var listid = this.id.match(/(\d+)/)[1];
 		$j.ajax({
 			type: "GET",
-			url:  AppBaseURL + '/wa/Refresh/refresh?addShortlist=' + listid,
-			success: function(msg){
-				$j('#shortlist').replaceWith(msg);	
-				$j.ajax({
-					type: "GET",
-					url: AppBaseURL + '/wa/Refresh/courseClass?id1=' + listid + '&x=ShortlistControl',
-					success: function(msg){
-						$j('#m' + listid).replaceWith(msg);
-						// set up the 'email a friend' modal link for ajax-loaded content
-						 $j('.nyromodaliframe').nyroModal( {
-							 type:'iframe'
-						 } );
+			url:  '/addToCookies?courseClassId=' + listid,
+			success: function(){
+						$j.ajax({
+							type: "GET",
+							url:  '/refreshShortList',
+							success: function(msg){
+										$j('#shortlist').replaceWith(msg);	
+											$j.ajax({
+												type: "GET",
+												url:'/refreshShortListControl?courseClassId=' + listid ,
+												success: function(msg){
+													$j('#m' + listid).replaceWith(msg);
+													// set up the 'email a friend' modal link for ajax-loaded content
+													$j('.nyromodaliframe').nyroModal( {type:'iframe'} );
+												}
+											});
+							}
+						});		 	
 					}
-			 	});
-			}
-	 	});		 	
+		});
 		return false; 
 	});
 	
@@ -137,54 +141,64 @@ $j(document).ready(function() {
 	// Drop our shortlisted items in the shortlist box
 	$j('li.onshortlist a.cutitem').live("click", function() {
 		var itemId = this.id.match(/(\d+)/)[1];			
-		$j(this).parent('li:first').css({'background-color':'666666'}).hide("drop", { direction: "up" }, 300, function () { 
+		// this line is commented because otherwise the shortlist remove is not working
+		//$j(this).parent('li:first').css({'background-color':'666666'}).hide("drop", { direction: "up" }, 300, function () { 
 			//$j(this).hide("slide", { direction: "down" }, 300);
 			$j.ajax({
 				type: "GET",
-				url: AppBaseURL + '/wa/Refresh/refresh?cutShortlist=' + itemId,
-				success: function(msg){
-					$j('#shortlist').replaceWith(msg);
-					$j.ajax({
-						type: "GET",
-						url: AppBaseURL + '/wa/Refresh/courseClass?id1=' + itemId + '&x=ShortlistControl',
-						success: function(msg){
-							$j('#m' + itemId).replaceWith(msg);
-							// set up the 'email a friend' modal link for ajax-loaded content
-							 $j('.nyromodaliframe').nyroModal( {
-								 type:'iframe'
-							 } );
+				url:  '/removeFromCookies?courseClassId=' + itemId,
+				success: function(){
+							$j.ajax({
+								type: "GET",
+								url: '/refreshShortList',
+								success: function(msg){
+											$j('#shortlist').replaceWith(msg);
+											$j.ajax({
+												type: "GET",
+												url: '/refreshShortListControl?courseClassId=' + itemId,
+												success: function(msg){		
+															$j('#m' + itemId).replaceWith(msg);
+															// set up the 'email a friend' modal link for ajax-loaded content
+															$j('.nyromodaliframe').nyroModal( { type:'iframe' } );
+														}
+											});
+										}
+							});
 						}
-				 	});
-				}
-		 	});
-		});
+			});
+		//});
 		return false;
 	});
 
 	// Drop our short listed items from the class description
 	$j('li.shortlisted a').live("click", function() {
 		var itemId = this.id.match(/(\d+)/)[1];
-		$j('#shortlist a#x' + itemId).parent('li:first').css({'background-color':'666666'}).hide("drop", { direction: "up" }, 300, function () {
-			$j(this).hide("slide", { direction: "down" }, 300);
+		// this line is commented because otherwise the shortlistControl remove is not working
+		//$j('#shortlist a#x' + itemId).parent('li:first').css({'background-color':'666666'}).hide("drop", { direction: "up" }, 300, function () {
+			$j(/*this*/'#shortlist a#x' + itemId).hide("slide", { direction: "down" }, 300);
 			$j.ajax({
 				type: "GET",
-				url:  AppBaseURL + '/wa/Refresh/refresh?cutShortlist=' + itemId,
-				success: function(msg){
-					$j('#shortlist').replaceWith(msg);	
-				 	$j.ajax({
-						type: "GET",
-						url: AppBaseURL + '/wa/Refresh/courseClass?id1=' + itemId + '&x=ShortlistControl',
-						success: function(msg){
-							$j('#m' + itemId).replaceWith(msg);
-							// set up the 'email a friend' modal link for ajax-loaded content
-							 $j('.nyromodaliframe').nyroModal( {
-								 type:'iframe'
-							 } );
+				url:  '/removeFromCookies?courseClassId=' + itemId,
+				success: function(){
+							$j.ajax({
+								type: "GET",
+								url:  '/refreshShortList',
+								success: function(msg){
+											$j('#shortlist').replaceWith(msg);	
+											$j.ajax({
+												type: "GET",
+												url:  '/refreshShortListControl?courseClassId=' + itemId,
+												success: function(msg){
+															$j('#m' + itemId).replaceWith(msg);
+															// set up the 'email a friend' modal link for ajax-loaded content
+															$j('.nyromodaliframe').nyroModal( { type:'iframe'} );
+															}
+											});
+										}
+							});		 
 						}
-				 	});
-				}
- 			});		 	
- 		});	
+			});
+ 		//});	
  		return false;
 	});
 

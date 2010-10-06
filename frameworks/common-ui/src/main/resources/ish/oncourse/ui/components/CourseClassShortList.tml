@@ -10,8 +10,7 @@
 					<ul class="menu">
 						<t:loop source="orderedClasses" value="courseClass">
 							<li class="onshortlist">
-								<!-- CourseClassCookieView.removeClassAction -->
-								<a href="#" class="cutitem"><span class="hide" title="Remove item">X</span></a>
+								<a href="#" class="cutitem" id="${courseClass.id}"><span class="hide" title="Remove item">X</span></a>
 								<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
 									${courseClass.course.name}
 								</a>

@@ -7,7 +7,7 @@
 					<t:if t:test="paymentGatewayEnabled">
 						<li class="class_enrol">
 							<a
-								href="enrolNow?secure=$enrolNowLinkIsSecure&amp;addShortlist=${courseClass.id}">Enrol Now</a>
+								href="enrolNow?addShortlist=${courseClass.id}">Enrol Now</a>
 						</li>
 					</t:if>
 					<p:else>
@@ -22,38 +22,28 @@
 		</t:if>
 		<t:if t:test="${containedInShortList}">
 			<li class="shortlisted">
-
-				<!--
-					wo:DynamicDirectAction refresh="$true" key="shortlist" add="$false"
-					object="$object" id="$object.id" idPrefix="c"
-				-->
-				<a href="#">Remove from order</a>
-				<!-- /wo:DynamicDirectAction-->
+				<a id="${courseClass.id}" href="#">Remove from order</a>
 			</li>
 			<p:else>
 				<t:if t:test="courseClass.cancelled" negate="true">
 					<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
 						<t:if t:test="paymentGatewayEnabled">
 							<li class="class_addorder addshortlist">
-								<!--
-									<wo:DynamicDirectAction refresh="$true" key="shortlist"
-									add="$true" object="$object" id="$object.id" idPrefix="c"
-								-->
-								<a href="#">Add to order</a>
-								<!-- /wo:DynamicDirectAction> -->
+								<a id="${courseClass.id}" href="#">Add to order</a>
 							</li>
 						</t:if>
 					</t:if>
 				</t:if>
 			</p:else>
 		</t:if>
+		
 
 
 		<t:if t:test="courseClass.cancelled" negate="true">
 			<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
 				<li class="class_emailfriend">
 					<a class="nyromodaliframe"
-						href="~'/tellAFriend?wrap=true&amp;code=${courseClass.course.code}-${courseClass.code}"
+						href="/tellAFriend?wrap=true&amp;code=${courseClass.course.code}-${courseClass.code}"
 						target="_blank">
 						Email to a friend</a>
 				</li>

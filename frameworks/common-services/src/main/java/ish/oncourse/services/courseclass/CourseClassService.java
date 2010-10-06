@@ -5,10 +5,13 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -49,5 +52,20 @@ public class CourseClassService implements ICourseClassService {
 	public Expression getSearchStringPropertyQualifier(String searchProperty,
 			Object value) {
 		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
+	}
+
+	public List<CourseClass> loadByIds(Object... ids) {
+		if (ids.length == 0) {
+			return Collections.emptyList();
+		}
+
+		List<Object> params = Arrays.asList(ids);
+
+		EJBQLQuery q = new EJBQLQuery(
+				"select cc from CourseClass cc where cc.id IN (:ids)");
+
+		q.setParameter("ids", params);
+
+		return cayenneService.sharedContext().performQuery(q);
 	}
 }

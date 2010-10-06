@@ -5,6 +5,8 @@
 
 package ish.oncourse.website.linktransforms;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,12 +23,17 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.tag.ITagService;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
+
+	private static final String DIGIT_REGEXP = "(\\d+)";
 
 	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
 
@@ -87,6 +94,17 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	private static final String ADVANCED_SUBURB_PATH = "/advanced/suburbs";
 
+	/**
+	 * Path of the removing from cookies request
+	 */
+	private static final String REMOVE_FROM_COOKIES_PATH = "/removeFromCookies";
+
+	/**
+	 * Path of the adding to cookies request
+	 */
+	private static final String ADD_TO_COOKIES_PATH = "/addToCookies";
+
+	
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
 
@@ -101,6 +119,12 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Inject
 	ITagService tagService;
+	
+	@Inject
+	ICookiesService cookiesService;
+	
+	@Inject
+	ICourseClassService courseClassService;
 	
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 		final String path = request.getPath().toLowerCase();
@@ -216,6 +240,32 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 		if(ADVANCED_SUBURB_PATH.equals(path)){
 			return new PageRenderRequestParameters("ui/SuburbsTextArray", new EmptyEventContext(), false);
+		}
+		if(ADD_TO_COOKIES_PATH.equalsIgnoreCase(path)){
+			String addedCourseClassId = request.getParameter(CourseClass.COURSE_CLASS_ID_PARAMETER);
+			if(addedCourseClassId!=null&&addedCourseClassId.matches(DIGIT_REGEXP)){
+				List<CourseClass> courseClasses = courseClassService.loadByIds(addedCourseClassId);
+				if(!courseClasses.isEmpty()){
+					cookiesService.appendValueToCookieCollection(CourseClass.SHORTLIST_COOKEY_KEY,addedCourseClassId);
+				}
+			}
+			return null;
+		}
+		if(REMOVE_FROM_COOKIES_PATH.equalsIgnoreCase(path)){
+			String removedCourseClassId = request.getParameter(CourseClass.COURSE_CLASS_ID_PARAMETER);
+			if(removedCourseClassId!=null&&removedCourseClassId.matches(DIGIT_REGEXP)){
+				List<CourseClass> courseClasses = courseClassService.loadByIds(removedCourseClassId);
+				if(!courseClasses.isEmpty()){
+					cookiesService.removeValueFromCookieCollection(CourseClass.SHORTLIST_COOKEY_KEY, removedCourseClassId);
+				}
+			}
+			return null;
+		}
+		if("/refreshShortList".equalsIgnoreCase(path)){
+			return new PageRenderRequestParameters("ui/ShortListPage", new EmptyEventContext(), false);
+		}
+		if("/refreshShortListControl".equalsIgnoreCase(path)){
+			return new PageRenderRequestParameters("ui/ShortListControlPage", new EmptyEventContext(), false);
 		}
 		// If we match no other pattern we need to look up the page in the list
 		// of URL aliases

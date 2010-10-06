@@ -22,6 +22,16 @@ import org.apache.commons.lang.time.DateUtils;
 
 public class CourseClass extends _CourseClass {
 
+	/**
+	 * parameter for add/remove cookies actions
+	 */
+	public static final String COURSE_CLASS_ID_PARAMETER = "courseClassId";
+
+	/**
+	 * ordered classes cookey name
+	 */
+	public static final String SHORTLIST_COOKEY_KEY = "shortlist";
+
 	public static final int EARLIEST_END_FOR_EVENING = 18;
 	public static final int LATEST_START_FOR_DAYTIME = 18;
 	private Set<String> daysOfWeek;
