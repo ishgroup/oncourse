@@ -1,9 +1,13 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	
 	<div t:type="ui/bodyheader"></div>
+	
 	<div style="float:left; width:20%">
 	  <div t:type="ui/menu" nodes="webNodeService.homePage.navigableChildNodes"/>
 	</div>
+	
 	<a name="top"></a>
+	
 	<div class="clearfix container layout_editor" style="float:left; width:80%">
 		<t:body />	
 	</div>

@@ -15,5 +15,9 @@
 		<div t:type="ui/bodylayout">
 			<t:body />
 		</div>
+		<t:if t:test="loggedIn">
+			<div t:type="ui/navigation"/>
+			<div t:type="ui/pageinfo"/>
+		</t:if>
 	</body>
 </html>

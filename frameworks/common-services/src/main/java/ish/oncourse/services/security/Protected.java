@@ -1,4 +1,4 @@
-package ish.oncourse.cms.services.security.annotations;
+package ish.oncourse.services.security;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

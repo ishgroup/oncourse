@@ -26,6 +26,8 @@ import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.room.RoomService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
+import ish.oncourse.services.security.AuthenticationService;
+import ish.oncourse.services.security.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.sites.ISitesService;
@@ -69,6 +71,7 @@ public class ServiceModule {
 		binder.bind(IPageRenderer.class, PageRenderer.class);
 		binder.bind(ITagService.class, TagService.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
+		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 	}
 
 }

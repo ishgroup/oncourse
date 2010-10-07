@@ -1,7 +1,11 @@
 package ish.oncourse.cms.pages;
 
+import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeContent;
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.ui.pages.Page;
 
+import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.MarkupWriter;
@@ -10,11 +14,12 @@ import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class Page extends ish.oncourse.ui.pages.Page {
+public class EditPage extends Page {
 
 	@Persist
 	@Property
@@ -33,11 +38,19 @@ public class Page extends ish.oncourse.ui.pages.Page {
 	@Component(id = "regionForm")
 	private Form regionForm;
 
-	@Override
+	@Inject
+	private ICayenneService cayenneService;
+
+	void onActivate(String webNodeID) {
+		WebNode node = DataObjectUtils.objectForPK(cayenneService.newContext(),
+				WebNode.class, webNodeID);
+		
+		super.selectNode(node);
+	}
+
+	@SetupRender
 	public void beforeRender() {
-		if (currentNode() == null) {
-			super.beforeRender();
-		}
+
 	}
 
 	Object onActionFromEditRegion(String id) {

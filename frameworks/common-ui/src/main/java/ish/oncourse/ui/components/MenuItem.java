@@ -7,6 +7,8 @@ import org.apache.tapestry5.annotations.AfterRenderBody;
 import org.apache.tapestry5.annotations.BeforeRenderBody;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class MenuItem {
 
@@ -15,6 +17,9 @@ public class MenuItem {
 
     @Parameter
     private int childPosition;
+    
+    @Inject
+	private Request request;
 
     @SetupRender
     boolean setup() {
@@ -52,5 +57,9 @@ public class MenuItem {
 
     public WebNode getNode() {
         return node;
+    }
+    
+    public String getItemHref() {
+    	return request.getContextPath() + "/" + getNode().getName();
     }
 }

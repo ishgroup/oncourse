@@ -1,5 +1,7 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.services.security.IAuthenticationService;
+
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -27,6 +29,13 @@ public class PageWrapper {
 
 	@Inject
 	private ComponentResources componentResources;
+	
+	@Inject
+	private IAuthenticationService authenticationService;
+	
+	public boolean isLoggedIn() {
+		return authenticationService.getUser() != null;
+	}
 
 	@Inject
 	private Request request;

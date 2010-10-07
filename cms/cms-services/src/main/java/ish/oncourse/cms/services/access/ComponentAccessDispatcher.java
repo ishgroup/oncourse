@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.cms.services.security;
+package ish.oncourse.cms.services.access;
 
 import java.io.IOException;
 import org.apache.tapestry5.services.Dispatcher;

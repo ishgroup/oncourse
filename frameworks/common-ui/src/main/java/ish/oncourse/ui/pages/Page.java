@@ -13,14 +13,12 @@ import java.util.regex.Pattern;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 
@@ -28,15 +26,8 @@ public class Page {
 
 	private static final String WELCOME_TEMPLATE_ID = "welcome";
 
-	private static final Logger LOGGER = Logger.getLogger(Page.class);
-
-	private static final String MAIN_PAGE_NAME = "Index";
-
 	@Inject
 	private IWebNodeService webNodeService;
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private ITextileConverter textileConverter;
@@ -51,55 +42,13 @@ public class Page {
 	@Persist
 	private WebNode node;
 
-	@Inject
-	private ComponentResources componentResources;
-
 	@SetupRender
 	public void beforeRender() {
-		this.node = getCurrentNode();
+		this.node = webNodeService.getCurrentNode();
 	}
 
 	public IWebNodeService getWebNodeService() {
 		return webNodeService;
-	}
-
-	protected WebNode getCurrentNode() {
-
-		WebNode node = null;
-
-		if (request.getAttribute(IWebNodeService.NODE) != null) {
-			return (WebNode) request.getAttribute(IWebNodeService.NODE);
-		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
-			try {
-				Integer nodeNumber = Integer.parseInt(request
-						.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER));
-				node = webNodeService.getNodeForNodeNumber(nodeNumber);
-			} catch (Exception e) {
-				LOGGER.debug("Unable to convert node number to integer: "
-						+ request
-								.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER));
-			}
-		} else if (request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
-			try {
-				Integer nodeNumber = Integer.parseInt(request.getAttribute(
-						IWebNodeService.NODE_NUMBER_PARAMETER).toString());
-				node = webNodeService.getNodeForNodeNumber(nodeNumber);
-			} catch (Exception e) {
-				LOGGER.debug("Unable to convert node number to integer: "
-						+ request
-								.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER));
-			}
-		} else if (request.getParameter(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
-			String pagePath = request
-					.getParameter(IWebNodeService.PAGE_PATH_PARAMETER);
-			node = webNodeService.getNodeForNodeName(pagePath);
-		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
-			String pagePath = (String) request
-					.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER);
-			node = webNodeService.getNodeForNodeName(pagePath);
-		}
-
-		return node;
 	}
 
 	public String getRegionContent() {
@@ -149,11 +98,12 @@ public class Page {
 	}
 
 	public String getTemplateId() {
-		String pageName = componentResources.getPageName();
-
-		if (MAIN_PAGE_NAME.equals(pageName)) {
+		WebNode currentNode = webNodeService.getCurrentNode();
+		
+		if (currentNode.getId().equals(webNodeService.getHomePage().getId())) {
 			return WELCOME_TEMPLATE_ID;
 		}
+		
 		return "";
 	}
 

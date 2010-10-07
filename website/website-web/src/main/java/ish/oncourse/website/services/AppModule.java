@@ -16,11 +16,11 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.HttpServletRequestFilter;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
+import ish.oncourse.linktransform.PageLinkTransformer;
+import ish.oncourse.linktransform.URLRewriteRequestFilter;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.ui.services.UIModule;
-import ish.oncourse.website.linktransforms.PageLinkTransformer;
-import ish.oncourse.website.linktransforms.URLRewriteRequestFilter;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC registry.

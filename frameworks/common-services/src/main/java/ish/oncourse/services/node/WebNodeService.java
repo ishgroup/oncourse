@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-
 public class WebNodeService implements IWebNodeService {
 
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
@@ -31,7 +30,6 @@ public class WebNodeService implements IWebNodeService {
 
 	@Inject
 	private Request request;
-
 
 	@SuppressWarnings("unchecked")
 	public List<WebNode> getNodes() {
@@ -47,18 +45,22 @@ public class WebNodeService implements IWebNodeService {
 
 	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
 		SelectQuery query = new SelectQuery(WebNode.class);
+
 		query.andQualifier(siteQualifier());
 		query.andQualifier(ExpressionFactory.matchExp(
-				WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
-				WEB_NODE_PAGE_TYPE_KEY));
+				WebNode.WEB_NODE_TYPE_PROPERTY + "."
+						+ WebNodeType.NAME_PROPERTY, WEB_NODE_PAGE_TYPE_KEY));
+
 		query.andQualifier(ExpressionFactory.matchExp(
 				WebNode.NODE_NUMBER_PROPERTY, nodeNumber));
 
 		@SuppressWarnings("unchecked")
-		List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
+		List<WebNode> nodes = cayenneService.sharedContext()
+				.performQuery(query);
 
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Found " + nodes.size() + " nodes for query : " + query);
+			LOGGER.debug("Found " + nodes.size() + " nodes for query : "
+					+ query);
 		}
 
 		if (nodes.size() > 1) {
@@ -72,12 +74,12 @@ public class WebNodeService implements IWebNodeService {
 	public WebNode getNodeForNodeName(String nodeName) {
 		WebNode result = null;
 
-		if ( !("".equals(nodeName))) {
+		if (!("".equals(nodeName))) {
 			SelectQuery query = new SelectQuery(WebNode.class);
 			query.andQualifier(siteQualifier());
-			query.andQualifier(ExpressionFactory.matchExp(
-					WebNode.WEB_NODE_TYPE_PROPERTY + "." + WebNodeType.NAME_PROPERTY,
-					WEB_NODE_PAGE_TYPE_KEY));
+			query.andQualifier(ExpressionFactory
+					.matchExp(WebNode.WEB_NODE_TYPE_PROPERTY + "."
+							+ WebNodeType.NAME_PROPERTY, WEB_NODE_PAGE_TYPE_KEY));
 
 			String[] names = nodeName.split("/");
 			int length = names.length;
@@ -90,23 +92,27 @@ public class WebNodeService implements IWebNodeService {
 
 				String shortNamePath = path + WebNode.SHORT_NAME_PROPERTY;
 				String namePath = path + WebNode.NAME_PROPERTY;
-				String value = ("%" + names[i] + "%").replaceAll("[+]", " ").replaceAll("[|]", "/");
-				query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(shortNamePath, value)
-						.orExp(ExpressionFactory.matchExp(shortNamePath, null)
-							.andExp(ExpressionFactory.likeIgnoreCaseExp(namePath, value)
-				)));
+				String value = ("%" + names[i] + "%").replaceAll("[+]", " ")
+						.replaceAll("[|]", "/");
+				query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(
+						shortNamePath, value).orExp(
+						ExpressionFactory.matchExp(shortNamePath, null).andExp(
+								ExpressionFactory.likeIgnoreCaseExp(namePath,
+										value))));
 			}
 
 			@SuppressWarnings("unchecked")
-			List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
+			List<WebNode> nodes = cayenneService.sharedContext().performQuery(
+					query);
 
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Found " + nodes.size() + " nodes for query : " + query);
+				LOGGER.debug("Found " + nodes.size() + " nodes for query : "
+						+ query);
 			}
 
 			if (nodes.size() > 1) {
-				LOGGER.error("Expected one WebNode record, found " + nodes.size()
-						+ " for query : " + query);
+				LOGGER.error("Expected one WebNode record, found "
+						+ nodes.size() + " for query : " + query);
 			}
 
 			result = (nodes.size() == 1) ? nodes.get(0) : null;
@@ -115,70 +121,74 @@ public class WebNodeService implements IWebNodeService {
 		return result;
 	}
 
-	public WebNode getCurrentPage() {
+	public WebNode getCurrentNode() {
+		WebNode node = null;
 
-		WebNode result = null;
-
-		if(request.getAttribute(NODE)!=null){
-			return (WebNode) request.getAttribute(NODE);
-		} else if (request.getParameter(NODE_NUMBER_PARAMETER) != null) {
-			try {
-				Integer nodeNumber = Integer.parseInt(request.getParameter(NODE_NUMBER_PARAMETER));
-				result = getNodeForNodeNumber(nodeNumber);
-			} catch(Exception e) {
-				LOGGER.debug("Unable to convert node number to integer: "
-						+ request.getParameter(NODE_NUMBER_PARAMETER));
-			}
-		} else if (request.getParameter(PAGE_PATH_PARAMETER) != null) {
-			String pagePath = request.getParameter(PAGE_PATH_PARAMETER);
-			result = getNodeForNodeName(pagePath);
+		if (request.getAttribute(IWebNodeService.NODE) != null) {
+			node = (WebNode) request.getAttribute(IWebNodeService.NODE);
+		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
+			node = getNodeForNodeNumber(Integer.parseInt(request
+					.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER)));
+		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
+			String pagePath = (String) request
+					.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER);
+			node = getNodeForNodeName(pagePath);
 		}
 
-		return result;
+		return (node == null) ? getHomePage() : node;
 	}
 
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		Expression expression = (site == null) ?
-			ExpressionFactory.matchExp(
-					WebNode.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
-					webSiteService.getCurrentCollege())
-			: ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY, site);
+		Expression expression = (site == null) ? ExpressionFactory.matchExp(
+				WebNode.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+				webSiteService.getCurrentCollege()) : ExpressionFactory
+				.matchExp(WebNode.WEB_SITE_PROPERTY, site);
 
 		expression = expression
-				.andExp(ExpressionFactory.matchExp(WebNode.IS_PUBLISHED_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.IS_WEB_NAVIGABLE_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(WebNode.IS_WEB_VISIBLE_PROPERTY, true));
-		
+				.andExp(ExpressionFactory.matchExp(
+						WebNode.IS_PUBLISHED_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(
+						WebNode.IS_WEB_NAVIGABLE_PROPERTY, true))
+				.andExp(ExpressionFactory.matchExp(
+						WebNode.IS_WEB_VISIBLE_PROPERTY, true));
+
 		return expression;
 	}
 
 	public WebNode getNode(String searchProperty, Object value) {
 		SelectQuery query = new SelectQuery(WebNode.class);
 		query.andQualifier(siteQualifier());
-		if(searchProperty!=null){
-			query.andQualifier(ExpressionFactory.matchDbExp(searchProperty, value));
+		if (searchProperty != null) {
+			query.andQualifier(ExpressionFactory.matchDbExp(searchProperty,
+					value));
 		}
 		@SuppressWarnings("unchecked")
-		List<WebNode> nodes = cayenneService.sharedContext().performQuery(query);
-		return !nodes.isEmpty()?nodes.get(0):null;
+		List<WebNode> nodes = cayenneService.sharedContext()
+				.performQuery(query);
+		return !nodes.isEmpty() ? nodes.get(0) : null;
 	}
 
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService.sharedContext().performQuery(
-				new EJBQLQuery("select max(wn.modified) from WebNode wn where "
-						+ siteQualifier().toEJBQL("wn"))).get(0);
+		return (Date) cayenneService
+				.sharedContext()
+				.performQuery(
+						new EJBQLQuery(
+								"select max(wn.modified) from WebNode wn where "
+										+ siteQualifier().toEJBQL("wn")))
+				.get(0);
 	}
 
 	public boolean isNodeExist(String path) {
-		String[] nodes=path.split("/");
-		WebNode node=getNodeForNodeName(nodes[nodes.length-1]);
-		if(node==null){
+		String[] nodes = path.split("/");
+		WebNode node = getNodeForNodeName(nodes[nodes.length - 1]);
+		if (node == null) {
 			return false;
 		}
-		for(int i=nodes.length-2;i>=0; i--){
+		for (int i = nodes.length - 2; i >= 0; i--) {
 			WebNode parentNode = node.getParentNode();
-			if(!(nodes[i].equals(parentNode.getShortName())||nodes[i].equals(parentNode.getName()))){
+			if (!(nodes[i].equals(parentNode.getShortName()) || nodes[i]
+					.equals(parentNode.getName()))) {
 				return false;
 			}
 		}

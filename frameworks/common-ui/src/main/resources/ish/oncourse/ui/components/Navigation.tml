@@ -2,8 +2,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div id="cms_nav" class="clearfix">
 		<ul id="cms_actions" class="left">
-			<li class="pages selected"><a href="#" t:type="ActionLink" t:id="createpage">Create Page</a></li>
-			<li class="theme"><a href="" style="color: #999 !important;">Edit Page</a></li>
+			<li class="pages selected"><a href="#" t:type="PageLink" page="NewPage">Create Page</a></li>
+			<t:if t:test="hasCurrentNode">
+				<li class="theme"><a href="#" t:type="PageLink" page="EditPage" context="webNodeService.currentNode.id">Edit Page</a></li>
+			</t:if>
 			<li class="blocks"><a href="">Blocks</a></li>			
 			<li class="sitemap"><a href="">Options</a></li>
 		</ul>

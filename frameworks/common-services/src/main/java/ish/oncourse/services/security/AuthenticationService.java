@@ -1,4 +1,9 @@
-package ish.oncourse.cms.services.security;
+package ish.oncourse.services.security;
+
+import ish.oncourse.model.College;
+import ish.oncourse.model.WillowUser;
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
 
@@ -6,12 +11,9 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
-
-import ish.oncourse.model.College;
-import ish.oncourse.model.WillowUser;
-import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
-
+import org.apache.tapestry5.services.Cookies;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 public class AuthenticationService implements IAuthenticationService {
 
@@ -21,18 +23,22 @@ public class AuthenticationService implements IAuthenticationService {
 	@Inject
 	private IWebSiteService siteService;
 
+	@Inject
+	private Cookies cookies;
+	
+	@Inject
+	private Request request;
 
 	// 'applicationStateManager' is needed to look up user objects as session
 	// state can not be injected in the services
 	@Inject
 	private ApplicationStateManager applicationStateManager;
 
-
 	public AuthenticationStatus authenticate(String userName, String password) {
 
 		if ((userName == null || userName.length() == 0)
 				|| (password == null || password.length() == 0)) {
-			 return AuthenticationStatus.INVALID_CREDENTIALS;
+			return AuthenticationStatus.INVALID_CREDENTIALS;
 		}
 
 		College college = siteService.getCurrentCollege();
@@ -50,13 +56,17 @@ public class AuthenticationService implements IAuthenticationService {
 				WillowUser.PASSWORD_PROPERTY, password));
 
 		@SuppressWarnings("unchecked")
-		List<WillowUser> users = cayenneService.newContext().performQuery(query);
+		List<WillowUser> users = cayenneService.newContext()
+				.performQuery(query);
 
 		AuthenticationStatus status = AuthenticationStatus.NO_MATCHING_USER;
 
 		if ((users != null) && (users.size() == 1)) {
 			applicationStateManager.set(WillowUser.class, users.get(0));
 			status = AuthenticationStatus.SUCCESS;
+
+			cookies.writeCookieValue(CMS_COOKIE_NAME, CMS_COOKIE_NAME, "/");
+
 		} else if ((users != null) && (users.size() > 1)) {
 			status = AuthenticationStatus.MORE_THAN_ONE_USER;
 		}
@@ -65,9 +75,17 @@ public class AuthenticationService implements IAuthenticationService {
 	}
 
 	public WillowUser getUser() {
-
 		// TODO: andrus, 20.10.2009: check if the user belongs to the current
 		// college??
 		return applicationStateManager.getIfExists(WillowUser.class);
+	}
+
+	public void logout() {
+		Session session = request.getSession(false);
+		cookies.removeCookieValue(CMS_COOKIE_NAME);
+
+		if (session != null) {
+			session.invalidate();
+		}
 	}
 }

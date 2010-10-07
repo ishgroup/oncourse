@@ -2,7 +2,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div id="cms_pageinfo">
 		<dl class="cms_inspector">
-			<dt class="cms_pagename cms_inspector">About Us</dt>
+			<dt class="cms_pagename cms_inspector">${webNodeService.currentNode.name}</dt>
 			<dd class="cms_pagestate cms_inspector">not published</dd>
 			<dd class="cms_pagemodified cms_inspector">Last edited <span>2 days ago</span></dd>
 		</dl>

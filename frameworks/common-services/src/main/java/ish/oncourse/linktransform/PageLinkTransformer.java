@@ -3,12 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.website.linktransforms;
+package ish.oncourse.linktransform;
+
+import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Tag;
+import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.WebNodeService;
+import ish.oncourse.services.tag.ITagService;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
@@ -19,15 +29,6 @@ import org.apache.tapestry5.services.PageRenderRequestParameters;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
-
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Tag;
-import ish.oncourse.services.cookies.ICookiesService;
-import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.node.WebNodeService;
-import ish.oncourse.services.tag.ITagService;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 
@@ -81,6 +82,12 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final Pattern SITEMAP_PATTERN = Pattern.compile("/sitemap\\.xml");
 
 	private static final String HOME_PAGE_PATH = "/";
+	
+	private static final String LOGIN_PATH = "/login";
+
+	private static final String EDIT_PAGE_PATH = "/editpage";
+
+	private static final String NEW_PAGE_PATH = "/newpage";
 
 	/**
 	 * Path of the search autocomplete
@@ -132,7 +139,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			return null;
 		}
 
-		if (HOME_PAGE_PATH.equals(path)) {
+		if (HOME_PAGE_PATH.equals(path) || LOGIN_PATH.equals(path)
+				|| path.startsWith(EDIT_PAGE_PATH)
+				|| path.startsWith(NEW_PAGE_PATH)) {
 			return null;
 		}
 
@@ -161,7 +170,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 					if(rootTag.hasChildWithName(tag)){
 						rootTag=tagService.getSubTagByName(tag);
 					}else{
-						return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(), false);
+						throw new NotImplementedException("URL alias");
 					}
 				}
 				request.setAttribute(Course.COURSE_TAG, rootTag);
@@ -265,8 +274,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if("/refreshShortListControl".equalsIgnoreCase(path)){
 			return new PageRenderRequestParameters("ui/ShortListControlPage", new EmptyEventContext(), false);
 		}
-		
-		return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(), false);
+		// If we match no other pattern we need to look up the page in the list
+		// of URL aliases
+		throw new NotImplementedException("URL alias");
 	}
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {

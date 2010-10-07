@@ -48,7 +48,7 @@ public interface IWebNodeService {
 	 *
 	 * @return the current page
 	 */
-	WebNode getCurrentPage();
+	WebNode getCurrentNode();
 
 	/**
 	 *
