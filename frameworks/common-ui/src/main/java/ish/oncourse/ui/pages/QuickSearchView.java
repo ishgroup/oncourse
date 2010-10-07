@@ -133,13 +133,6 @@ public class QuickSearchView {
 		}
 	}
 
-	public String getLocationLinkParameters() {
-		return "near="
-				+ GeoHashUtils.encode(location.getLat(), location.getLon())
-				+ (!"".equals(searchingLocationsSearchString) ? "&s="
-						+ searchingLocationsSearchString : "");
-	}
-
 	private String getSearchStringWithoutLocation() {
 		List<String> locationTerms = new ArrayList<String>();
 		for (PostcodeDb postcodeDb : locationDetailList) {

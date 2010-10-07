@@ -18,7 +18,7 @@
 						</li>
 						<t:loop source="locationDetailList" value="location">
 							<li class="location hoverable">
-								<a href="/courses?${locationLinkParameters}">${location.displayName}</a>
+								<a href="/courses?near=${location.displayName}">${location.displayName}</a>
 							</li>
 						</t:loop>
 					</ul>

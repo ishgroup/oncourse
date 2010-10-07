@@ -130,14 +130,16 @@ public class SearchService implements ISearchService {
 						int separator = near.lastIndexOf(" ");
 						if (separator > 0) {
 							String[] suburbParams = {
-									near.substring(0, separator - 1),
+									near.substring(0, separator),
 									near.substring(separator + 1) };
 
 							SolrDocumentList responseResults = searchSuburb(
 									suburbParams[0], suburbParams[1])
 									.getResults();
-							SolrDocument doc = responseResults.get(0);
-							points = ((String) doc.get("loc")).split(",");
+							if(!responseResults.isEmpty()){
+								SolrDocument doc = responseResults.get(0);
+								points = ((String) doc.get("loc")).split(",");
+							}
 						}
 					}
 					String latitude = points[0];
@@ -241,7 +243,7 @@ public class SearchService implements ISearchService {
 			StringBuilder query = new StringBuilder();
 
 			query.append(String.format(
-					"(doctype:place && suburb:%s && postcode:%s) ", suburbName,
+					"(doctype:place && suburb:%s && postcode:%s) ", suburbName.replaceAll("[\\s]+", "+"),
 					postcode));
 
 			q.setQuery(query.toString());
