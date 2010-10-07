@@ -5,12 +5,10 @@
 
 package ish.oncourse.website.linktransforms;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
@@ -163,7 +161,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 					if(rootTag.hasChildWithName(tag)){
 						rootTag=tagService.getSubTagByName(tag);
 					}else{
-						throw new NotImplementedException("URL alias");
+						return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(), false);
 					}
 				}
 				request.setAttribute(Course.COURSE_TAG, rootTag);
@@ -267,9 +265,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if("/refreshShortListControl".equalsIgnoreCase(path)){
 			return new PageRenderRequestParameters("ui/ShortListControlPage", new EmptyEventContext(), false);
 		}
-		// If we match no other pattern we need to look up the page in the list
-		// of URL aliases
-		throw new NotImplementedException("URL alias");
+		
+		return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(), false);
 	}
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
