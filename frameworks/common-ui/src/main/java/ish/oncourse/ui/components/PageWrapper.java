@@ -2,12 +2,14 @@ package ish.oncourse.ui.components;
 
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 /**
  * A page wrapper component.
  */
 public class PageWrapper {
 
+	private static final String MSIE = "MSIE";
 	private static final String COURSES_PAGE_NAME = "ListPage";
 	private static final String COURSES_PAGE_REAL_NAME = "ui/Courses";
 	private static final String SITES_PAGE_NAME = "SiteList";
@@ -26,6 +28,9 @@ public class PageWrapper {
 	@Inject
 	private ComponentResources componentResources;
 
+	@Inject
+	private Request request;
+	
 	public String getBodyId() {
 
 		String pageName = componentResources.getPageName();
@@ -56,10 +61,35 @@ public class PageWrapper {
 	public String getBodyClass() {
 		String pageName = componentResources.getPageName();
 
+		String bodyClass="";
 		if (MAIN_PAGE_REAL_NAME.equals(pageName)) {
-			return "main-page";
+			bodyClass = "main-page";
 		} else {
-			return "internal-page";
+			bodyClass = "internal-page";
 		}
+		
+		String userAgent=request.getHeader("User-Agent");
+		if(userAgent.indexOf(MSIE)>-1){
+			int versionPosition=userAgent.indexOf(MSIE)+MSIE.length()+1;
+			Integer versionNumber =  Integer.parseInt(userAgent.substring(versionPosition, versionPosition+1));
+			switch(versionNumber){
+			case 7:
+				return bodyClass+" ie7";
+			case 8:
+				return bodyClass+" ie8";
+			case 9:
+				return bodyClass+" ie9";
+			default:
+				if(versionNumber<7){
+					return bodyClass+" ie6";
+				}
+				if(versionNumber>9){
+					return bodyClass;
+				}
+			}
+			
+		}
+		
+		return bodyClass;
 	}
 }
