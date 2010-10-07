@@ -6,13 +6,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Manifest;
 
+import javax.servlet.ServletContext;
+
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.ApplicationGlobals;
 
 public class EnvironmentService implements IEnvironmentService {
 
 	@Inject
 	private IWebSiteService siteService;
 
+	@Inject
+	private ApplicationGlobals applicationGlobals;
+	
 	private String ciVersion;
 
 	public String getApplicationName() {
@@ -59,15 +65,16 @@ public class EnvironmentService implements IEnvironmentService {
 				Manifest manifest = null;
 
 				try {
-					InputStream is = Thread.currentThread()
-							.getContextClassLoader().getResourceAsStream(
-									"META-INF/MANIFEST.MF");
-					try {
-						manifest = new Manifest(is);
-						ciVersion = manifest.getMainAttributes().getValue(
-								"Implementation-Version");
-					} finally {
-						is.close();
+					InputStream is = applicationGlobals.getServletContext().getResourceAsStream(
+									"/META-INF/MANIFEST.MF");
+					if (is != null) {
+						try {
+							manifest = new Manifest(is);
+							ciVersion = manifest.getMainAttributes().getValue(
+									"Implementation-Version");
+						} finally {
+							is.close();
+						}
 					}
 				} catch (IOException e) {
 
