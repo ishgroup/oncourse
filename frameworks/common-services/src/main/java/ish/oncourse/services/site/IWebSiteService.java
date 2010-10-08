@@ -62,4 +62,6 @@ public interface IWebSiteService {
 	String getHomeLink();
 	
 	List<Site> getCollegeSites();
+	
+	boolean isCollegePaymentEnabled();
 }

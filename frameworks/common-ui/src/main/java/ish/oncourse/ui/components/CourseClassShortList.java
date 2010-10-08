@@ -60,8 +60,7 @@ public class CourseClassShortList {
 	}
 
 	public boolean isPaymentGatewayEnabled() {
-		//commented to show the view of enrollment link, because the current value in db is false
-		return true;//webSiteService.getCurrentCollege().getIsWebSitePaymentsEnabled();
+		return webSiteService.isCollegePaymentEnabled();
 	}
 	public String getEnrolLinkText() {
 		return "Enrol in "

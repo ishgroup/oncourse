@@ -149,4 +149,8 @@ public class WebSiteService implements IWebSiteService {
 	public List<Site> getCollegeSites() {
 		return getCurrentCollege().getSites();
 	}
+
+	public boolean isCollegePaymentEnabled() {
+		return getCurrentCollege().getIsWebSitePaymentsEnabled();
+	}
 }
