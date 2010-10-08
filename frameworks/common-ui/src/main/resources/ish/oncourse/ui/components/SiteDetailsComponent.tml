@@ -27,21 +27,21 @@
 		<t:if t:test="hasDrivingDirections">
 
 			<dt>Directions</dt>
-			<dd>${site.drivingDirections}</dd>
+			<dd><t:outputRaw value="${site.drivingDirections}"/></dd>
 
 		</t:if>
 		<t:if t:test="hasPublicTransportDirections">
 			<dt>Public Transport</dt>
-			<dd>${site.publicTransportDirections}</dd>
+			<dd><t:outputRaw value="${site.publicTransportDirections}"/></dd>
 		</t:if>
 		<span style="clear: both; display: block;"></span>
 		<t:if t:test="hasSpecialInstructions">
 			<dt>Instructions</dt>
-			<dd>${site.specialInstructions}</dd>
+			<dd><t:outputRaw value="${site.specialInstructions}"/></dd>
 		</t:if>
 	</dl>
 	<t:if t:test="site.hasCoordinates">
 		<span t:type="ui/GoogleDirections" sites="mapSites"
-			showDirections="true" collapseLocationMap="collapseLocationMap" />
+			showDirections="true" collapseLocationMap="collapseLocationMap" showLocationMap="true" />
 	</t:if>
 </t:container>
