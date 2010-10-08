@@ -60,4 +60,8 @@ public class MockWebSiteService implements IWebSiteService {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
+	public boolean isCollegePaymentEnabled() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
 }
