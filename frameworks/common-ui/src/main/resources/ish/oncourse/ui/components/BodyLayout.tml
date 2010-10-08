@@ -5,7 +5,7 @@
 	<div style="float:left; width:20%">
 	  <div t:type="ui/menu" nodes="webNodeService.homePage.navigableChildNodes"/>
 	</div>
-	
+	<span t:type="ui/GoogleAnalytics"/>
 	<a name="top"></a>
 	
 	<div class="clearfix container layout_editor" style="float:left; width:80%">
