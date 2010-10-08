@@ -3,7 +3,6 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.Site;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +17,11 @@ public class GoogleDirections {
 	private Request request;
 
 	@Parameter
-	private Collection<Site> sites;
+	private List<Site> sites;
 	
 	@Parameter
 	private Map<Integer, Float> focuses;
 	
-
 	@Property
 	private List<List<Object>> sitesArray;
 
@@ -47,6 +45,9 @@ public class GoogleDirections {
 	@Parameter
 	@Property
 	private boolean showLocationMap;
+	
+	@Property
+	private String directionsFrom;
 
 	public static final String NO_MATCH_IMAGE = "/s/img/marker-no-match.png";
 	public static final String PARTIAL_IMAGE = "/s/img/marker-match-partial.png";
@@ -156,7 +157,6 @@ public class GoogleDirections {
 	}
 
 	public String getSearchingNear() {
-		//TODO convert possible geohash to something suitable
 		return request.getParameter("near");
 	}
 
@@ -165,16 +165,14 @@ public class GoogleDirections {
 	}
 
 	public String getAddress() {
-		return "";// TODO return valueForBinding( "street" ) + ", " +
-		// valueForBinding( "suburb" ) + " " + valueForBinding(
-		// "postcode" ) + ", Australia".replace("&amp;", "&");
-	}
-
-	public String getDirectionsFrom() {
-		// TODO return myWebHostName().googleDirectionsFrom();
+		if(sites!=null&&!sites.isEmpty()){
+			Site site = sites.get(0);
+			return site.getStreet() + ", " +
+			site.getSuburb() + " " +site.getPostcode() + ", Australia".replace("&amp;", "&");
+		}
 		return "";
 	}
-
+	
 	public boolean isShowMapItems() {
 		return true;
 	}
@@ -183,12 +181,8 @@ public class GoogleDirections {
 		return !showDirections;
 	}
 
-	public boolean isShowDirectionsMap() {
-		return false;
-	}
-
 	public String getDirMapId() {
-		return isShowDirectionsMap() ? "dirmap" : "dirmapDelayed";
+		return showDirectionsMap ? "dirmap" : "dirmapDelayed";
 	}
 
 	public String getLocationClass() {
