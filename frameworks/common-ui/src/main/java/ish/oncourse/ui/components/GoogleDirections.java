@@ -43,6 +43,10 @@ public class GoogleDirections {
 	@Parameter
 	@Property
 	private boolean showDirectionsMap;
+	
+	@Parameter
+	@Property
+	private boolean showLocationMap;
 
 	public static final String NO_MATCH_IMAGE = "/s/img/marker-no-match.png";
 	public static final String PARTIAL_IMAGE = "/s/img/marker-match-partial.png";
@@ -179,10 +183,6 @@ public class GoogleDirections {
 		return !showDirections;
 	}
 
-	public boolean isShowLocationMap() {
-		return false;
-	}
-
 	public boolean isShowDirectionsMap() {
 		return false;
 	}
@@ -197,7 +197,7 @@ public class GoogleDirections {
 	}
 
 	public String getMapClass() {
-		return isShowLocationMap() ? "map" : "mapDelayed";
+		return showLocationMap ? "map" : "mapDelayed";
 	}
 
 }

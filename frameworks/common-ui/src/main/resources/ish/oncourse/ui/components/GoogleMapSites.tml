@@ -8,7 +8,7 @@
 		-->
 
 		<div id="focus-map" class="${focusMapClass}">
-			<span t:type="ui/GoogleDirections" sites="sites" focuses="focuses"/>
+			<span t:type="ui/GoogleDirections" sites="sites" focuses="focuses" showLocationMap="showLocationMap"/>
 		</div>
 	</t:if>
 </t:container>

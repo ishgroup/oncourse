@@ -22,6 +22,10 @@ public class GoogleMapSites {
 	@Property
 	private boolean collapsed;
 
+	@Parameter
+	@Property
+	private boolean showLocationMap;
+	
 	public boolean isHasMapItemList() {
 		return !sites.isEmpty();
 	}

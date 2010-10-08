@@ -1,7 +1,7 @@
 <html t:type="ui/pagewrapper" title="${title}"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<h2>Sites</h2>
-	<span t:type="ui/GoogleMapSites" sites="sites" />
+	<span t:type="ui/GoogleMapSites" sites="sites" showLocationMap="true"/>
 	<ul class="site_list">
 		<t:loop source="sites" value="site">
 			<li>

@@ -48,13 +48,14 @@ $j(document).ready(function() {
 	});
 		
 	//expandable subject heirarchy
-	$j( "div#block322 > .taggroup > ul > li:has(div)" ).addClass('hasChildren').not('.parent_tag').children('div').hide();
-	$j( "div#block322 div.taggroup ul li h2 a" ).bind( "click", function expandoList() {
+	if ($j('div#block322').length) {
+		$j( "div#block322 > .taggroup > ul > li:has(div)" ).addClass('hasChildren').not('.parent_tag').children('div').hide();
+		$j( "div#block322 div.taggroup ul li h2 a" ).bind( "click", function expandoList() {
 		
-		$j(this).parent().parent().children('div').slideToggle();
-		return false; //stop normal href from working
-	} );
-
+				$j(this).parent().parent().children('div').slideToggle();
+				return false; //stop normal href from working
+			} );
+	}
 	$j( "div#nav > ul > li > a" ).bind("click", function () {
 		return false; //stop normal href from working
 	} );	
