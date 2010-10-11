@@ -11,7 +11,7 @@
 		<entity name="course" dataSource="onCourseDS"
 			query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0 and isWebVisible=1"
 			deltaImportQuery="select id, 'course' as type, name, detail, code, collegeId from Course where id='${dataimporter.delta.id}'"
-			deltaQuery="select id from Course where isDeleted=0 and isWebVisible=1 modified &gt; '${dataimporter.last_index_time}'"
+			deltaQuery="select id from Course where isDeleted=0 and isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
 			pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
@@ -23,34 +23,34 @@
 
 			<entity name="contact" dataSource="onCourseDS" pk="id"
 				transformer="TemplateTransformer"
-				query="select  ct.id, ct.givenName, ct.familyName from Contact ct
+				query="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmn from Contact ct
                     inner join Tutor t on ct.tutorId = t.id
            			inner join TutorRole tr on t.id = tr.tutorId
            			inner join CourseClass cc on tr.courseClassId=cc.id
            			inner join Course c on cc.courseId=c.id where c.id='${course.id}'
            			and cc.isCancelled=0"
-				deltaImportQuery="select  ct.id, ct.givenName, ct.familyName from Contact ct where ct.id='${dataimporter.delta.id}'" 
+				deltaImportQuery="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmn from Contact ct where ct.id='${dataimporter.delta.id}'" 
 				deltaQuery="select ct.id from Contact ct where ct.modified &gt; '${dataimporter.last_index_time}'" 
 				parentDeltaQuery="select c.id from Contact ct 
 					inner join Tutor t on ct.tutorId = t.id
            			inner join TutorRole tr on t.id = tr.tutorId
            			inner join CourseClass cc on tr.courseClassId=cc.id
            			inner join Course c on cc.courseId=c.id where ct.id='${contact.id}'">
-				<field name="id" column="ct.id" />
-				<field name="givenName" column="ct.givenName"/>
-				<field name="familyName" column="ct.familyName"/>
+				<field name="id" column="id" />
+				<field name="givenName" column="gvName"/>
+				<field name="familyName" column="fmn"/>
 				<field name="tutor" column="TUTOR" template="${contact.givenName} ${contact.familyName}" />
 			</entity>
 
 			<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
-				query="select s.id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s
+				query="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s
                 inner join CourseClass cc on s.courseClassId=cc.id
                 inner join Course c on cc.courseId=c.id where c.id='${course.id}'
                 and cc.isCancelled=0"
-                deltaImportQuery="select  s.id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s where s.id='${dataimporter.delta.id}'"
+                deltaImportQuery="select s.id as id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s where s.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from Session where modified &gt; '${dataimporter.last_index_time}'" 
-				parentDeltaQuery="select c.id from Session s inner join CourseClass cc on s.courseClassId=cc.id nner join Course c on cc.courseId=c.id where s.id='${course_session.id}'">
-				<field name="id" column="s.id"/>
+				parentDeltaQuery="select c.id as id from Session s inner join CourseClass cc on s.courseClassId=cc.id nner join Course c on cc.courseId=c.id where s.id='${course_session.id}'">
+				<field name="id" column="id"/>
 				<field name="dayName" column="dayName" />
 				<field name="dayType" column="dayType" />
 				<field name="dayName" column="dayName" />
@@ -58,21 +58,21 @@
 			</entity>
 
 			<entity name="site" dataSource="onCourseDS" pk="id"
-				query="select s.id, s.suburb, s.postcode, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+				query="select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
                     inner join Room r on r.siteId=s.id
                     inner join CourseClass cc on cc.roomId=r.id
                     inner join Course c on cc.courseId=c.id where s.isWebVisible=1 and c.id='${course.id}'
                     and cc.isCancelled=0
             		group by s.suburb, s.postcode
             	union
-            		select s.id, s.suburb, s.postcode, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+            		select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
 		            inner join Room r on r.siteId=s.id
 		            inner join Session ss on ss.roomId=r.id
 		            inner join CourseClass cc on cc.id=ss.courseClassId
 		            inner join Course c on cc.courseId=c.id where s.isWebVisible=1 and c.id='${course.id}'
 		            and cc.isCancelled=0
 		            group by s.suburb, s.postcode"
-				deltaImportQuery="select s.id, s.suburb, s.postcode, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s where s.id='${dataimporter.delta.id}'"
+				deltaImportQuery="select s.id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s where s.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from Site where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'" 
 				parentDeltaQuery="select c.id from Site s 
 					inner join Room r on r.siteId=s.id 
@@ -85,30 +85,29 @@
 				  	inner join CourseClass cc on cc.id=ss.courseClassId
 				  	inner join Course c on cc.courseId=c.id where s.id='${site.id}'">
 				  	
-				<field name="id" column="s.id"/>
+				<field name="id" column="id"/>
 				<field name="course_loc" column="loc" />
-				<field name="course_postcode" column="s.postcode" />
-				<field name="course_suburb" column="s.suburb" />
+				<field name="course_postcode" column="pc" />
+				<field name="course_suburb" column="sb" />
 			</entity>
 
 
 			<entity name="courseClassCode" pk="id" dataSource="onCourseDS"
-				query="select cc.id, cc.code, cc.feeExGst from CourseClass cc where cc.isWebVisible=1 and cc.courseid='${course.id}'
+				query="select cc.id as id, cc.feeExGst as pr from CourseClass cc where cc.isWebVisible=1 and cc.courseid='${course.id}'
                         and cc.isCancelled=0"
-				deltaImportQuery="select cc.id, cc.code, cc.feeExGst from CourseClass cc where cc.id='${dataimporter.delta.id}'"
+				deltaImportQuery="select cc.id as id, cc.feeExGst as pr from CourseClass cc where cc.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
 				parentDeltaQuery="select id from Course where id='{courseClassCode.courseId}'">
-				<field name="id" column="cc.id" />
-				<field name="class_code" column="cc.code" />
-				<field name="price" column="cc.feeExGst" />
+				<field name="id" column="id" />
+				<field name="price" column="pr" />
 			</entity>
 
 			<entity name="coursetag" dataSource="onCourseDS" pk="id"
-				query="select t.id, CONCAT(t.shortName, ' ', t.name) as tag from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and tg.id = '${course.id}'"
-				deltaImportQuery="select t.id, CONCAT(t.shortName, ' ', t.name) as tag from Tag t where t.id='${dataimporter.delta.id}'"
-				deltaQuery="select t.id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and t.modified &gt; '${dataimporter.last_index_time}' or tgt.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}'" 
-				parentDeltaQuery="select tg.id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${tag.id}">
-				<field name="id" column="t.id"/>
+				query="select t.id as id, CONCAT(t.shortName, ' ', t.name) as tag from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and tg.id = '${course.id}'"
+				deltaImportQuery="select t.id as id, CONCAT(t.shortName, ' ', t.name) as tag from Tag t where t.id='${dataimporter.delta.id}'"
+				deltaQuery="select t.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and t.modified &gt; '${dataimporter.last_index_time}' or tgt.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}'" 
+				parentDeltaQuery="select tg.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${tag.id}">
+				<field name="id" column="id"/>
 				<field name="tag" column="tag" />
 			</entity>
 		</entity>
@@ -123,11 +122,11 @@
 			<field name="loc" column="loc" />
 		</entity>
 		
-		<entity name="tag" dataSource="onCourseDS" pk="id" query="select distinct t.id, t.name, 'tag' as type, t.collegeId from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course'">
+		<entity name="tag" dataSource="onCourseDS" pk="id" query="select distinct t.id, t.name as nm, 'tag' as type, t.collegeId as collegeID from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course'">
 			<field name="id" column="t.id" />
 			<field name="doctype" column="type" />
-			<field name="collegeId" column="t.collegeId" />
-			<field name="name" column="t.name"/>
+			<field name="collegeId" column="collegeID" />
+			<field name="name" column="nm"/>
 		</entity>
 		
 	</document>

@@ -4,8 +4,14 @@ import ish.oncourse.model.College;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+
+import java.util.Map;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import org.apache.log4j.Logger;
-import org.apache.lucene.spatial.geohash.GeoHashUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
@@ -14,14 +20,11 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import java.util.Map;
-
 public class SearchService implements ISearchService {
 
 	private static final Logger logger = Logger.getLogger(SearchService.class);
+
+	private static final int MAX_DISTANCE = 3;
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -83,13 +86,14 @@ public class SearchService implements ISearchService {
 					.getCurrentCollege().getId());
 
 			SolrQuery q = new SolrQuery();
+			
 			q.setParam("fl", "id, name");
 			q.setStart(start);
 			q.setRows(rows);
 			q.setIncludeScore(true);
-
-			q.setParam("fq",
-					String.format("collegeId:%s doctype:course", collegeId));
+			q.setParam("q.op", "AND");
+			q.addFilterQuery(String.format("collegeId:%s doctype:course",
+					collegeId));
 
 			if (params.size() == 1 && params.get(SearchParam.s) != null) {
 				q.setQueryType("dismax");
@@ -99,7 +103,15 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.s)) {
 					String s = params.get(SearchParam.s);
-					qString.append(s).append(" ").append("detail:" + s)
+					qString.append(s).append(" ");
+					qString.append(
+							String.format("detail: %s || tutor:%s || course_code:%s",
+									s, s, s)).append(" ");
+				}
+
+				if (params.containsKey(SearchParam.price)) {
+					String price = params.get(SearchParam.price);
+					qString.append(String.format("price:[* TO %s]", price))
 							.append(" ");
 				}
 
@@ -120,33 +132,31 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.near)) {
 					String near = params.get(SearchParam.near);
+					int separator = near.lastIndexOf(" ");
 
-					String[] points = { "0.0", "0.0" };
-					try {
-						double[] latLong = GeoHashUtils.decode(near);
-						points[0] = String.valueOf(latLong[0]);
-						points[1] = String.valueOf(latLong[1]);
-					} catch (NullPointerException e) {
-						int separator = near.lastIndexOf(" ");
-						if (separator > 0) {
-							String[] suburbParams = {
-									near.substring(0, separator),
-									near.substring(separator + 1) };
+					if (separator > 0) {
+						String[] suburbParams = { near.substring(0, separator),
+								near.substring(separator + 1) };
 
-							SolrDocumentList responseResults = searchSuburb(
-									suburbParams[0], suburbParams[1])
-									.getResults();
-							if(!responseResults.isEmpty()){
-								SolrDocument doc = responseResults.get(0);
-								points = ((String) doc.get("loc")).split(",");
+						SolrDocumentList responseResults = searchSuburb(
+								suburbParams[0], suburbParams[1]).getResults();
+
+						if (!responseResults.isEmpty()) {
+							SolrDocument doc = responseResults.get(0);
+							String[] points = ((String) doc.get("loc"))
+									.split(",");
+
+							String distanceQuery = String
+									.format("{!geofilt pt=%s,%s sfield=course_loc d=%s}",
+											points[0], points[1], MAX_DISTANCE);
+
+							if (params.size() > 1) {
+								q.addFilterQuery(distanceQuery);
+							} else {
+								qString.append(distanceQuery);
 							}
 						}
 					}
-					String latitude = points[0];
-					String longitude = points[1];
-					qString.append("{!sfilt fl=course_loc}");
-					q.setParam("pt", latitude + "," + longitude);
-					q.setParam("d", "10");
 				}
 
 				q.setQuery(qString.toString());
@@ -243,8 +253,8 @@ public class SearchService implements ISearchService {
 			StringBuilder query = new StringBuilder();
 
 			query.append(String.format(
-					"(doctype:place && suburb:%s && postcode:%s) ", suburbName.replaceAll("[\\s]+", "+"),
-					postcode));
+					"(doctype:place && suburb:%s && postcode:%s) ",
+					suburbName.replaceAll("[\\s]+", "+"), postcode));
 
 			q.setQuery(query.toString());
 
