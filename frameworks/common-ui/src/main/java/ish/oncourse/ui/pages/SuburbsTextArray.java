@@ -3,7 +3,6 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.services.search.ISearchService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.solr.common.SolrDocument;
@@ -34,10 +33,10 @@ public class SuburbsTextArray extends TextStringArray {
 						+ (String) doc.getFieldValue("postcode"));
 			}
 		}
-		if (strings == null) {
-			strings = Collections.emptyList();
+		if (strings != null) {
+			setStrings(strings);
 		}
-		setStrings(strings);
+		
 	}
 
 }

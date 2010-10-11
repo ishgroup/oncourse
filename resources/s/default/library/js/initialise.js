@@ -206,7 +206,20 @@ $j(document).ready(function() {
 	if ($j(".suburb-autocomplete")) {
 		var data = "/advanced/suburbs";
 		$j(".suburb-autocomplete").autocomplete(data, 
-				{mustMatch:false, matchContains:true, autoFill:false, scrollHeight: 220, selectFirst:false	});
+					{	mustMatch:false, 
+						matchContains:true, 
+						autoFill:false, 
+						scrollHeight: 220, 
+						selectFirst:false, 
+			
+						formatResult:function(item){
+	        				if(item[0].startsWith('<li>')){
+	        					return item[0].replace('<li>', '').replace('</li>', "");
+	        				}else{
+	        					return item;
+	        				}
+	        			}
+					});
 	}
 
 	

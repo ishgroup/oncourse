@@ -1,6 +1,5 @@
 package ish.oncourse.ui.pages;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.tapestry5.annotations.Property;
@@ -22,9 +21,6 @@ public class TextStringArray {
 	@SetupRender
 	void beforeRender(){
 		strings=(List<String>) request.getAttribute("stringsList");
-		if(strings==null){
-			strings = Collections.emptyList();
-		}
 	}
 
 	/**
