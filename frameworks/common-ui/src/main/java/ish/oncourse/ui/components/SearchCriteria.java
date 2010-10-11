@@ -57,7 +57,7 @@ public class SearchCriteria {
 		Collections.reverse(browseTagPath);
 		searchString = request.getParameter("s");
 		String day = request.getParameter("day");
-		if(day!=null){
+		if(day!=null && !"".equals(day)){
 			searchDays=new ArrayList<String>(1);
 			searchDays.add(day);
 		}
