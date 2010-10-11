@@ -29,17 +29,17 @@ public class PageWrapper {
 
 	@Inject
 	private ComponentResources componentResources;
-	
+
 	@Inject
 	private IAuthenticationService authenticationService;
-	
+
 	public boolean isLoggedIn() {
 		return authenticationService.getUser() != null;
 	}
 
 	@Inject
 	private Request request;
-	
+
 	public String getBodyId() {
 
 		String pageName = componentResources.getPageName();
@@ -48,8 +48,9 @@ public class PageWrapper {
 			return MAIN_PAGE_NAME;
 		} else if (WEB_NODE_PAGE_NAME.equals(pageName)) {
 			Long nodeNumber = ((WebNodeTemplate) componentResources.getPage()
-					.getComponentResources().getEmbeddedComponent(
-							WEB_NODE_COMPONENT_NAME)).getNode().getId();
+					.getComponentResources()
+					.getEmbeddedComponent(WEB_NODE_COMPONENT_NAME)).getNode()
+					.getId();
 			return pageName.toLowerCase().replaceFirst("ui/", "") + nodeNumber;
 		} else if (COURSES_PAGE_REAL_NAME.equals(pageName)) {
 			return COURSES_PAGE_NAME;
@@ -70,35 +71,32 @@ public class PageWrapper {
 	public String getBodyClass() {
 		String pageName = componentResources.getPageName();
 
-		String bodyClass="";
-		if (MAIN_PAGE_REAL_NAME.equals(pageName)) {
-			bodyClass = "main-page";
-		} else {
-			bodyClass = "internal-page";
-		}
-		
-		String userAgent=request.getHeader("User-Agent");
-		if(userAgent.indexOf(MSIE)>-1){
-			int versionPosition=userAgent.indexOf(MSIE)+MSIE.length()+1;
-			Integer versionNumber =  Integer.parseInt(userAgent.substring(versionPosition, versionPosition+1));
-			switch(versionNumber){
+		String bodyClass = MAIN_PAGE_REAL_NAME.equals(pageName) ? "main-page"
+				: "internal-page";
+
+		String userAgent = request.getHeader("User-Agent");
+		if (userAgent.indexOf(MSIE) > -1) {
+			int versionPosition = userAgent.indexOf(MSIE) + MSIE.length() + 1;
+			Integer versionNumber = Integer.parseInt(userAgent.substring(
+					versionPosition, versionPosition + 1));
+			switch (versionNumber) {
 			case 7:
-				return bodyClass+" ie7";
+				return bodyClass + " ie7";
 			case 8:
-				return bodyClass+" ie8";
+				return bodyClass + " ie8";
 			case 9:
-				return bodyClass+" ie9";
+				return bodyClass + " ie9";
 			default:
-				if(versionNumber<7){
-					return bodyClass+" ie6";
+				if (versionNumber < 7) {
+					return bodyClass + " ie6";
 				}
-				if(versionNumber>9){
+				if (versionNumber > 9) {
 					return bodyClass;
 				}
 			}
-			
+
 		}
-		
+
 		return bodyClass;
 	}
 }

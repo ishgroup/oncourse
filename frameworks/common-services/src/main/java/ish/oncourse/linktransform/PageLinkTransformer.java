@@ -81,13 +81,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	private static final Pattern SITEMAP_PATTERN = Pattern.compile("/sitemap\\.xml");
 
-	private static final String HOME_PAGE_PATH = "/";
 	
-	private static final String LOGIN_PATH = "/login";
-
-	private static final String EDIT_PAGE_PATH = "/editpage";
-
-	private static final String NEW_PAGE_PATH = "/newpage";
+	String[] IMMUTABLE_PATHS = new String[] {"/login", "/editpage", "/newpage", "/menubuilder"};
+	
+	private static final String HOME_PAGE_PATH = "/";
 
 	/**
 	 * Path of the search autocomplete
@@ -139,10 +136,14 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			return null;
 		}
 
-		if (HOME_PAGE_PATH.equals(path) || LOGIN_PATH.equals(path)
-				|| path.startsWith(EDIT_PAGE_PATH)
-				|| path.startsWith(NEW_PAGE_PATH)) {
+		if (HOME_PAGE_PATH.equals(path)) {
 			return null;
+		}
+		
+		for (String p : IMMUTABLE_PATHS) {
+			if (path.startsWith(p)) {
+				return null;
+			}
 		}
 
 		Matcher matcher;

@@ -18,6 +18,10 @@
   
   <script t:type="ui/jsassetgroup" group="literal:core"/>
   <script t:type="ui/jsassetgroup" group="literal:core-application"/>
-  
   <script t:type="ui/jsassetgroup" group="literal:site"/>
+  
+  <t:if t:test="loggedIn">
+  	<script t:type="ui/jsassetgroup" group="literal:core-cms"/>
+  </t:if>
+  
 </t:container>
