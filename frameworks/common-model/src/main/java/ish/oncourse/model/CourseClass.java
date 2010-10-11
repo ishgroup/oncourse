@@ -417,5 +417,51 @@ public class CourseClass extends _CourseClass {
 
 		return result;
 	}
-	
+
+	/**
+	 * Haversine formula: R = earthÕs radius (mean radius = 6,371km) dLat = lat2
+	 * - lat1 dLon = lon2 - lon1 a = (sin(dLat/2))^2 +
+	 * cos(lat1)*cos(lat2)*(sin(dLat/2))^2 c = 2*atan2(sqrt(a), sqrt(1-a)) d =
+	 * R*c
+	 * 
+	 * @param nearLatitude
+	 * @param nearLongitude
+	 * @return
+	 */
+	public float focusMatchForNear(Double nearLatitude, Double nearLongitude) {
+		float result = 0.0f;
+
+		if (nearLatitude != null && nearLongitude != null && getRoom() != null
+				&& getRoom().getSite() != null
+				&& getRoom().getSite().isHasCoordinates()) {
+			Site site = getRoom().getSite();
+
+			double earthRadius = 6371; // km
+
+			double lat1 = Math.toRadians(site.getLatitude().doubleValue());
+			double lon1 = Math.toRadians(site.getLongitude().doubleValue());
+			double lat2 = Math.toRadians(nearLatitude);
+			double lon2 = Math.toRadians(nearLongitude);
+
+			double dLat = lat2 - lat1;
+			double dLon = lon2 - lon1;
+			double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1)
+					* Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+			double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+			double distance = earthRadius * c;
+			float searchKilometers = 10.0f;
+			if (distance >= 5d * searchKilometers) {
+				result = 0f;
+			} else if (distance <= searchKilometers) {
+				result = 1f;
+			} else {
+				result = 1 - ((float) distance - searchKilometers)
+						/ (4f * searchKilometers);
+			}
+
+		}
+		return result;
+
+	}
 }

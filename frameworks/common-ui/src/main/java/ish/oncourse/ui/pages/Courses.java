@@ -18,6 +18,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -64,11 +65,11 @@ public class Courses {
 
 	@Persist
 	private Map<SearchParam, String> searchParams;
-	
+
 	@Property
 	@Persist
 	private List<Site> mapSites;
-	
+
 	@Property
 	@Persist
 	private Map<Integer, Float> focusesForMapSites;
@@ -81,8 +82,8 @@ public class Courses {
 			this.courses = courseService
 					.getCourses(START_DEFAULT, ROWS_DEFAULT);
 			this.coursesCount = courseService.getCoursesCount();
-			searchParams=null;
-			focusesForMapSites=null;
+			searchParams = null;
+			focusesForMapSites = null;
 		} else {
 			this.courses = searchCourses();
 
@@ -111,7 +112,7 @@ public class Courses {
 
 	private void setupMapSites() {
 		mapSites = new ArrayList<Site>();
-		if(hasAnyFormValuesForFocus()){
+		if (hasAnyFormValuesForFocus()) {
 			focusesForMapSites = new HashMap<Integer, Float>();
 		}
 		for (Course course : courses) {
@@ -123,8 +124,8 @@ public class Courses {
 							&& !"".equals(site.getSuburb())
 							&& site.getLatitude() != null
 							&& site.getLongitude() != null) {
-						if(!mapSites.contains(site)){
-							mapSites.add(site);	
+						if (!mapSites.contains(site)) {
+							mapSites.add(site);
 						}
 						if (hasAnyFormValuesForFocus()) {
 							float focusMatchForClass = focusMatchForClass(courseClass);
@@ -140,56 +141,81 @@ public class Courses {
 				}
 			}
 		}
-	
+
 	}
-	
-	private boolean hasAnyFormValuesForFocus(){
-		if(searchParams==null){
+
+	private boolean hasAnyFormValuesForFocus() {
+		if (searchParams == null) {
 			return false;
 		}
-		return searchParams.containsKey(SearchParam.day)||
-		//searchParams.containsKey(SearchParam.near)||
-		searchParams.containsKey(SearchParam.price)||
-		searchParams.containsKey(SearchParam.time);
+		return searchParams.containsKey(SearchParam.day)
+				|| searchParams.containsKey(SearchParam.near)
+				|| searchParams.containsKey(SearchParam.price)
+				|| searchParams.containsKey(SearchParam.time);
 	}
-	
-	private  float focusMatchForClass( CourseClass courseClass )
-	{
+
+	private float focusMatchForClass(CourseClass courseClass) {
 		float bestFocusMatch = -1.0f;
-		
-		if (!searchParams.isEmpty())
-		{
-			
-			float daysMatch=1.0f;
-			if(searchParams.containsKey(SearchParam.day)){
-				daysMatch = courseClass.focusMatchForDays(searchParams.get(SearchParam.day));
+
+		if (!searchParams.isEmpty()) {
+
+			float daysMatch = 1.0f;
+			if (searchParams.containsKey(SearchParam.day)) {
+				daysMatch = courseClass.focusMatchForDays(searchParams
+						.get(SearchParam.day));
 			}
-			
-			float timeMatch =1.0f;
-			if(searchParams.containsKey(SearchParam.time)){
-				timeMatch = courseClass.focusMatchForTime(searchParams.get(SearchParam.time));
-			} 
-			
+
+			float timeMatch = 1.0f;
+			if (searchParams.containsKey(SearchParam.time)) {
+				timeMatch = courseClass.focusMatchForTime(searchParams
+						.get(SearchParam.time));
+			}
+
 			float priceMatch = 1.0f;
-			if(searchParams.containsKey(SearchParam.price)){
-				try{
-					Float price=Float.parseFloat(searchParams.get(SearchParam.price));
+			if (searchParams.containsKey(SearchParam.price)) {
+				try {
+					Float price = Float.parseFloat(searchParams
+							.get(SearchParam.price));
 					priceMatch = courseClass.focusMatchForPrice(price);
-				}catch(NumberFormatException e){
-					
+				} catch (NumberFormatException e) {
+
 				}
-			} 
-			
-			//TODO implement the focus matching for near parameter - see WillowDynamicColleges/willow.controller.CourseClassInMemoryFilter focusMatchForNear(..)[134]
-			//float nearMatch = focusMatchForNear( context, courseClass );
-			
-			float result = daysMatch * timeMatch * priceMatch; //* nearMatch;
-			
+			}
+
+			float nearMatch = 1.0f;
+			if (searchParams.containsKey(SearchParam.near)) {
+				try {
+					String place = searchParams.get(SearchParam.near);
+					int separator = place.lastIndexOf(" ");
+					if (separator > 0) {
+						String[] suburbParams = {
+								place.substring(0, separator),
+								place.substring(separator + 1) };
+
+						SolrDocumentList responseResults = searchService
+								.searchSuburb(suburbParams[0], suburbParams[1])
+								.getResults();
+						if (!responseResults.isEmpty()) {
+							SolrDocument doc = responseResults.get(0);
+							String[] points = ((String) doc.get("loc"))
+									.split(",");
+							nearMatch = courseClass.focusMatchForNear(Double
+									.parseDouble(points[0]), Double
+									.parseDouble(points[1]));
+						}
+					}
+				} catch (NumberFormatException e) {
+
+				}
+			}
+
+			float result = daysMatch * timeMatch * priceMatch * nearMatch;
+
 			return result;
 		}
-		
+
 		return bestFocusMatch;
-		
+
 	}
 
 	public boolean isHasMapItemList() {
