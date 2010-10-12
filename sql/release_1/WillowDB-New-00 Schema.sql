@@ -26,32 +26,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-
--- -----------------------------------------------------
--- Table `willow_binary`.`EO_PK_TABLE`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_binary`.`EO_PK_TABLE` (
-  `NAME` CHAR(40) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  `PK` INT(11) NULL DEFAULT NULL ,
-  PRIMARY KEY (`NAME`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `willow_binary`.`_dbupdater`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_binary`.`_dbupdater` (
-  `lockowner` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  `modelname` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  `updatelock` INT(11) NOT NULL ,
-  `version` INT(11) NOT NULL )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-ROW_FORMAT = DYNAMIC;
-
 USE `willow_college` ;
 
 -- -----------------------------------------------------
@@ -111,10 +85,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Student` (
   `yearSchoolCompleted` INT(11) NULL DEFAULT NULL ,
   `labourForceType` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `Student_ibfk_1` (`collegeId` ASC) ,
-  CONSTRAINT `Student_ibfk_1`
-    FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`Collge` (`id` ))
+  INDEX `Student_ibfk_1` (`collegeId` ASC) )
 ENGINE = InnoDB
 AUTO_INCREMENT = 1189147
 DEFAULT CHARACTER SET = utf8
@@ -294,10 +265,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Tutor` (
   `resume` LONGTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `resume_textile` LONGTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `Tutor_ibfk_1` (`collegeId` ASC) ,
-  CONSTRAINT `Tutor_ibfk_1`
-    FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`Collge` (`id` ))
+  INDEX `Tutor_ibfk_1` (`collegeId` ASC) )
 ENGINE = InnoDB
 AUTO_INCREMENT = 1185782
 DEFAULT CHARACTER SET = utf8
@@ -327,9 +295,6 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Session` (
   INDEX `Session_ibfk_4` (`markerId` ASC) ,
   INDEX `Session_startDate_idx` (`startDate` ASC) ,
   INDEX `Session_endDate_idx` (`endDate` ASC) ,
-  CONSTRAINT `Session_ibfk_1`
-    FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`Collge` (`id` ),
   CONSTRAINT `Session_ibfk_2`
     FOREIGN KEY (`courseClassId` )
     REFERENCES `willow_college`.`CourseClass` (`id` ),
@@ -876,9 +841,6 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountCourseClass` (
   PRIMARY KEY (`courseClassId`, `discountId`) ,
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `DiscountCourseClass_ibfk_3` (`discountId` ASC) ,
-  CONSTRAINT `DiscountCourseClass_ibfk_1`
-    FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`Collge` (`id` ),
   CONSTRAINT `DiscountCourseClass_ibfk_2`
     FOREIGN KEY (`courseClassId` )
     REFERENCES `willow_college`.`CourseClass` (`id` ),
@@ -1839,14 +1801,14 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebBlockVisibility` (
   `regionKey` VARCHAR(24) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `WebBlock` (`WebBlockId` ASC) ,
-  INDEX `WebNodeType` (`WebBlockId` ASC) ,
+  INDEX `WebNodeType` (`WebNodeTypeId` ASC) ,
   CONSTRAINT `WebBlock`
     FOREIGN KEY (`WebBlockId` )
     REFERENCES `willow_college`.`WebBlock` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `WebNodeType`
-    FOREIGN KEY (`WebBlockId` )
+    FOREIGN KEY (`WebNodeTypeId` )
     REFERENCES `willow_college`.`WebNodeType` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -1992,20 +1954,6 @@ CREATE  TABLE IF NOT EXISTS `willow_reference`.`TrainingPackage` (
   `type` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `ishVersion` (`ishVersion` ASC) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci
-ROW_FORMAT = DYNAMIC;
-
-
--- -----------------------------------------------------
--- Table `willow_reference`.`_dbupdater`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`_dbupdater` (
-  `lockowner` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  `modelname` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  `updatelock` INT(11) NOT NULL ,
-  `version` INT(11) NOT NULL )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci
