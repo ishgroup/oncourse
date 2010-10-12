@@ -1,4 +1,3 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 	http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -62,15 +61,33 @@
 				<groupId>org.apache.cayenne.plugins</groupId>
 				<artifactId>maven-cayenne-plugin</artifactId>
 				<configuration>
-					<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml</map>
-					<map>${project.build.sourceDirectory}/../resources/oncourseBinary.map.xml</map>
-					<map>${project.build.sourceDirectory}/../resources/oncourseReference.map.xml</map>
 					<destDir>${project.build.sourceDirectory}</destDir>
 					<superPkg>ish.oncourse.model.auto</superPkg>
 				</configuration>
 				<executions>
 					<execution>
-						<id>cgen</id>
+						<id>cgen1</id>
+						<configuration>
+							<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml</map>
+						</configuration>
+						<goals>
+							<goal>cgen</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>cgen2</id>
+						<configuration>
+							<map>${project.build.sourceDirectory}/../resources/oncourseBinary.map.xml</map>
+						</configuration>
+						<goals>
+							<goal>cgen</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>cgen3</id>
+						<configuration>
+							<map>${project.build.sourceDirectory}/../resources/oncourseReference.map.xml</map>
+						</configuration>
 						<goals>
 							<goal>cgen</goal>
 						</goals>
