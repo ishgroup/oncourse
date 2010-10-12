@@ -47,7 +47,6 @@ public class EditPage extends Page {
 	}
 
 	Object onActionFromEditRegion(String id) {
-
 		this.editorRegion = ExpressionFactory
 				.matchExp(WebNodeContent.REGION_KEY_PROPERTY, id)
 				.filterObjects(getCurrentNode().getWebNodeContents()).get(0);

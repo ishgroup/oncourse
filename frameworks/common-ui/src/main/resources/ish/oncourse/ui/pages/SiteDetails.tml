@@ -1,4 +1,4 @@
-<html t:type="ui/pagewrapper" title="${title}" bodyId="SiteList"
+<html t:type="ui/pagewrapper" title="${title}" bodyId="literal:SiteList"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<span t:type="ui/SiteDetailsComponent" site="site" collapseLocationMap="false"/>
 </html>	

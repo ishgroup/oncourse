@@ -1,8 +1,8 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.security.IAuthenticationService;
 
-import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -14,17 +14,19 @@ import org.apache.tapestry5.services.Request;
 public class PageWrapper {
 
 	private static final String MSIE = "MSIE";
-	private static final String MAIN_PAGE_REAL_NAME = "Index";
-
-	@Inject
-	private ComponentResources componentResources;
 
 	@Inject
 	private IAuthenticationService authenticationService;
 	
+	@Inject
+	private IWebNodeService webNodeService;
+	
 	@Parameter
 	@Property
 	private String bodyId;
+	
+	@Parameter
+	private String bodyClass;
 
 	public boolean isLoggedIn() {
 		return authenticationService.getUser() != null;
@@ -33,12 +35,8 @@ public class PageWrapper {
 	@Inject
 	private Request request;
 
-	public String getBodyClass() {
-		String pageName = componentResources.getPageName();
-
-		String bodyClass = MAIN_PAGE_REAL_NAME.equals(pageName) ? "main-page"
-				: "internal-page";
-
+	public String getAgentAwareBodyClass() {
+	
 		String userAgent = request.getHeader("User-Agent");
 		if (userAgent.indexOf(MSIE) > -1) {
 			int versionPosition = userAgent.indexOf(MSIE) + MSIE.length() + 1;
@@ -63,5 +61,9 @@ public class PageWrapper {
 		}
 
 		return bodyClass;
+	}
+	
+	public boolean isHasCurrentNode() {
+		return webNodeService.getCurrentNode() != null;
 	}
 }

@@ -10,14 +10,16 @@
 		<head t:type="ui/pagehead" />
 		<t:extension-point id="headBottom" />
 	</head>
-	<body t:type="any" class="prop:bodyClass" id="prop:bodyId">
+	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
 		<t:extension-point id="bodyTop" />
 		<div t:type="ui/bodylayout">
 			<t:body />
 		</div>
 		<t:if t:test="loggedIn">
 			<div t:type="ui/navigation"/>
-			<div t:type="ui/pageinfo"/>
+			<t:if t:test="hasCurrentNode">
+				<div t:type="ui/pageinfo"/>
+			</t:if>
 		</t:if>
 	</body>
 </html>

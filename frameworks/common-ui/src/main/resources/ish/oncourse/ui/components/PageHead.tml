@@ -24,4 +24,6 @@
   	<script t:type="ui/jsassetgroup" group="literal:core-cms"/>
   </t:if>
   
+  <script type="text/javascript">jQuery.noConflict();</script>
+  
 </t:container>

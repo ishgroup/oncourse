@@ -1,4 +1,4 @@
-<html t:type="ui/pagewrapper" title="${title}" bodyId="ListPage"
+<html t:type="ui/pagewrapper" title="${title}" bodyId="literal:ListPage"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:if t:test="hasInvalidSearchTerms">
 		<!--

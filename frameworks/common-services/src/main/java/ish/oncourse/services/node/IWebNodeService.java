@@ -12,7 +12,6 @@ public interface IWebNodeService {
 	public static final String PAGE_PATH_PARAMETER = "p";
 	public static final String WEB_NODE_PAGE_TYPE_KEY = "Page";
 
-
 	/**
 	 * Returns all web nodes for the current site or current college.
 	 */

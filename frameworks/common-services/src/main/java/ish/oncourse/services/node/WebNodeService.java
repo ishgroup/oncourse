@@ -135,7 +135,7 @@ public class WebNodeService implements IWebNodeService {
 			node = getNodeForNodeName(pagePath);
 		}
 
-		return (node == null) ? getHomePage() : node;
+		return node;
 	}
 
 	private Expression siteQualifier() {

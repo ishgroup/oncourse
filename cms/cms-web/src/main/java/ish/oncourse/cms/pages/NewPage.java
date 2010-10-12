@@ -21,11 +21,12 @@ public class NewPage extends EditPage {
 
 	@SetupRender
 	public void beforeRender() {
-
-		if (super.currentNode() != null) {
-			return;
+		if (getCurrentNode() == null) {
+			setCurrentNode(newPage());
 		}
+	}
 
+	private WebNode newPage() {
 		ObjectContext ctx = cayenneService.newContext();
 
 		WebNode newPageNode = ctx.newObject(WebNode.class);
@@ -44,6 +45,6 @@ public class NewPage extends EditPage {
 
 		newPageNode.addToWebNodeContents(content);
 
-		super.selectNode(newPageNode);
+		return newPageNode;
 	}
 }

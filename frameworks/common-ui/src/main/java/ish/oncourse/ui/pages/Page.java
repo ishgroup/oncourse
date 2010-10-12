@@ -103,10 +103,19 @@ public class Page {
 	}
 
 	public String getTemplateId() {
-		if (this.node.getId().equals(webNodeService.getHomePage().getId())) {
-			return WELCOME_TEMPLATE_ID;
-		}
+		return (isHomePage()) ? WELCOME_TEMPLATE_ID : "";
+	}
 
-		return "";
+	public String getBodyId() {
+		return (isHomePage()) ? "Main" : ("page" + this.node.getId());
+	}
+
+	public String getBodyClass() {
+		return (isHomePage()) ? "main-page" : "internal-page";
+	}
+
+	private boolean isHomePage() {
+		return getCurrentNode().getId().equals(
+				webNodeService.getHomePage().getId());
 	}
 }
