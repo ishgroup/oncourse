@@ -1736,10 +1736,10 @@ COLLATE = utf8_unicode_ci;
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webSiteId` BIGINT(20) NOT NULL ,
-  `webNodeId` BIGINT(20) NULL DEFAULT NULL ,
+  `webNodeId` BIGINT(20) NOT NULL ,
   `created` DATETIME NOT NULL ,
   `modified` DATETIME NOT NULL ,
-  `urlPath` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `urlPath` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `WebURLAlias_ibfk_1` (`webSiteId` ASC) ,
   INDEX `WebURLAlias_ibfk_2` (`webNodeId` ASC) ,
