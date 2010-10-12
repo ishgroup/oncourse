@@ -1,4 +1,4 @@
-<html t:type="ui/pagewrapper" title="${title}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html t:type="ui/pagewrapper" title="${title}" bodyId="bodyId" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 	<t:block id="regionBlock">
 		<div id="${templateId}">
@@ -6,6 +6,6 @@
 		</div>
 	</t:block>
 	
-	<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="node" blockSource="blockSource"></div>
+	<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="currentNode" blockSource="blockSource"></div>
 	
 </html>

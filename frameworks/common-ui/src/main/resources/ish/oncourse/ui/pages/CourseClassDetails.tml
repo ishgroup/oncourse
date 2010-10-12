@@ -1,4 +1,4 @@
-<html t:type="ui/pagewrapper" title="${title}"
+<html t:type="ui/pagewrapper" title="${title}" bodyId="DetailsPage"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<h2 class="clearfix">
 		<span>
