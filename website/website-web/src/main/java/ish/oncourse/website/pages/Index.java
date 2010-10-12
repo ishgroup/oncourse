@@ -5,7 +5,19 @@
 
 package ish.oncourse.website.pages;
 
+import org.apache.tapestry5.ioc.annotations.Inject;
+
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.ui.pages.Page;
 
 public class Index extends Page {
+	
+	@Inject
+	private IWebNodeService webNodeService;
+	
+	@Override
+	public void beforeRender() {
+		setCurrentNode(webNodeService.getHomePage());
+	}
+	
 }

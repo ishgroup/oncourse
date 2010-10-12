@@ -19,12 +19,16 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 
 public class Page {
 
 	private static final String WELCOME_TEMPLATE_ID = "welcome";
+
+	@Inject
+	private Request request;
 
 	@Inject
 	private IWebNodeService webNodeService;
@@ -42,13 +46,20 @@ public class Page {
 	@Persist
 	private WebNode node;
 
+	private Page _self = this;
+
 	@SetupRender
 	public void beforeRender() {
 		this.node = webNodeService.getCurrentNode();
 	}
 
-	public IWebNodeService getWebNodeService() {
-		return webNodeService;
+	public WebNode getCurrentNode() {
+		return this.node;
+	}
+
+	public void setCurrentNode(WebNode node) {
+		this.node = node;
+		request.setAttribute(webNodeService.NODE, this.node);
 	}
 
 	public String getRegionContent() {
@@ -79,10 +90,8 @@ public class Page {
 				final Expression expr = ExpressionFactory.matchExp(
 						WebNodeContent.REGION_KEY_PROPERTY, regionKey);
 
-				final WebNodeContent nodeContent = expr.filterObjects(
-						node.getWebNodeContents()).get(0);
-
-				selectCurrentRegion(nodeContent);
+				_self.region = expr.filterObjects(node.getWebNodeContents())
+						.get(0);
 
 				return regionBlock;
 			}
@@ -93,29 +102,11 @@ public class Page {
 		};
 	}
 
-	public void selectNode(WebNode node) {
-		this.node = node;
-	}
-
 	public String getTemplateId() {
-		WebNode currentNode = webNodeService.getCurrentNode();
-		
-		if (currentNode.getId().equals(webNodeService.getHomePage().getId())) {
+		if (this.node.getId().equals(webNodeService.getHomePage().getId())) {
 			return WELCOME_TEMPLATE_ID;
 		}
-		
+
 		return "";
-	}
-
-	public WebNode currentNode() {
-		return this.node;
-	}
-
-	public Block regionBlock() {
-		return regionBlock;
-	}
-
-	public void selectCurrentRegion(WebNodeContent activeRegion) {
-		this.region = activeRegion;
 	}
 }
