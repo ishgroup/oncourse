@@ -305,10 +305,10 @@ INSERT INTO willow_college.WaitingListSite (siteId, waitingListId)
 		AND waitingListId IN (SELECT id FROM WaitingList WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.WebSite (  collegeId, created,   id,  modified, name,  siteKey, googleAnalyticsAccount, googleDirectionsFrom, SSLhostNameId )
-	SELECT  ws.collegeId, ws.created, ws.id, ws.modified, ws.name,  '', cd.googleAnalyticsAccount, cd.googleDirectionsFrom, cd.id
+	SELECT  ws.collegeId, ws.created, ws.id, ws.modified, ws.name,  ws.code, cd.googleAnalyticsAccount, cd.googleDirectionsFrom, cd.id
 	FROM oncourse_realdata_willow_college.WebSite AS ws
 	JOIN oncourse_realdata_willow_college.CollegeDomain AS cd ON ws.id = cd.WebSiteId AND ws.sslHostName = cd.name
-	WHERE ws.isDeleted = 0 AND ws.collegeId = @collegeId ;
+	WHERE ws.isDeleted = 0 AND ws.collegeId = @collegeId AND ws.code IS NOT NULL;
 
 INSERT INTO willow_college.WebBlock ( content, content_textile, created, id,  modified, name,   webSiteId)
 	SELECT  content, content_textile, created, id,  modified, name, webSiteID
@@ -348,6 +348,13 @@ INSERT INTO willow_college.WebMenu (id , webNodeId, URL, webSiteId, webMenuParen
        SELECT wn.id, wn.id, '', wn.webSiteID, wn.parentNodeID, wn.weighting, wn.shortName, NOW(), NOW()
        FROM oncourse_realdata_willow_college.WebNode AS wn
        WHERE wn.isDeleted = 0 AND wn.isWebNavigable =1 AND wn.webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
+
+UPDATE willow_college.WebHostName AS wh 
+       JOIN willow_college.WebSite AS ws ON ws.id = wh.webSiteId
+       SET wh.name=CONCAT(ws.siteKey, '.test1.oncourse.net.au') 
+       WHERE wh.name LIKE '%.test.oncourse.net.au' 
+       
+       
 
 
 set foreign_key_checks = 1 ;
