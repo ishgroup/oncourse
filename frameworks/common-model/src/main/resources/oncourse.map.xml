@@ -93,11 +93,9 @@
 	</db-entity>
 	<db-entity name="College" catalog="willow_college">
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
-		<db-attribute name="collegeKey" type="VARCHAR" length="25"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="isSslEnabled" type="BIT"/>
 		<db-attribute name="isTestingWebServicePayments" type="BIT"/>
 		<db-attribute name="isTestingWebSitePayments" type="BIT"/>
 		<db-attribute name="isWebServicePaymentsEnabled" type="BIT"/>
@@ -109,24 +107,10 @@
 		<db-attribute name="paymentGatewayAccount" type="VARCHAR" length="32"/>
 		<db-attribute name="paymentGatewayPass" type="VARCHAR" length="16"/>
 		<db-attribute name="paymentGatewayType" type="INTEGER" length="10"/>
-		<db-attribute name="primaryDomainId" type="BIGINT" length="19"/>
 		<db-attribute name="requiresAvetmiss" type="BIT"/>
 		<db-attribute name="webServicesLogin" type="VARCHAR" length="16"/>
 		<db-attribute name="webServicesPass" type="VARCHAR" length="16"/>
 		<db-attribute name="webServicesSecurityCode" type="VARCHAR" length="16"/>
-	</db-entity>
-	<db-entity name="CollegeDomain" catalog="willow_college">
-		<db-attribute name="aliasedDomainId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
-		<db-attribute name="googleAnalyticsAccount" type="VARCHAR" length="16"/>
-		<db-attribute name="googleDirectionsFrom" type="VARCHAR" length="256"/>
-		<db-attribute name="hasSSL" type="BIT"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="name" type="VARCHAR" length="128"/>
-		<db-attribute name="subsiteCode" type="VARCHAR" length="128"/>
-		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="ConcessionType" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -667,98 +651,79 @@
 		<db-attribute name="waitingListId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="WebBlock" catalog="willow_college">
-		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
-		<db-attribute name="regionKey" type="VARCHAR" length="128"/>
-		<db-attribute name="webBlockTypeId" type="BIGINT" length="19"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="weighting" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
-	<db-entity name="WebBlockType" catalog="willow_college">
-		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+	<db-entity name="WebBlockVisibility" catalog="willow_college">
+		<db-attribute name="WebBlockId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="WebNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="regionKey" type="VARCHAR" isMandatory="true" length="24"/>
+		<db-attribute name="weight" type="INTEGER" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="WebHostName" catalog="willow_college">
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
+		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
+	</db-entity>
+	<db-entity name="WebMenu" catalog="willow_college">
+		<db-attribute name="URL" type="LONGVARCHAR" length="65535"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="webMenuParentId" type="BIGINT" length="19"/>
+		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
+		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="weight" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="WebNode" catalog="willow_college">
-		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="isPublished" type="BIT"/>
-		<db-attribute name="isRssFeed" type="BIT"/>
-		<db-attribute name="isWebNavigable" type="BIT"/>
-		<db-attribute name="isWebVisible" type="BIT"/>
-		<db-attribute name="menuAliasId" type="BIGINT" length="19"/>
+		<db-attribute name="isPublished" type="BIT" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="name" type="VARCHAR" length="128"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="nodeNumber" type="INTEGER" isMandatory="true" length="10"/>
-		<db-attribute name="parentNodeID" type="BIGINT" length="19"/>
-		<db-attribute name="savedByUserId" type="BIGINT" length="19"/>
-		<db-attribute name="shortName" type="VARCHAR" length="128"/>
 		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="weighting" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="WebNodeContent" catalog="willow_college">
 		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="regionKey" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="WebNodeContentWebBlock" catalog="willow_college">
-		<db-attribute name="webBlockId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="webNodeContentId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-	</db-entity>
 	<db-entity name="WebNodeType" catalog="willow_college">
-		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="defaultWebThemeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="name" type="VARCHAR" length="128"/>
-		<db-attribute name="numberOfRegions" type="INTEGER" length="10"/>
-		<db-attribute name="templateKey" type="VARCHAR" length="50"/>
-		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
+		<db-attribute name="layoutKey" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="WebSite" catalog="willow_college">
-		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="code" type="VARCHAR" length="100"/>
+		<db-attribute name="SSLhostNameId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="defaultUrlPath" type="VARCHAR" length="512"/>
-		<db-attribute name="homePageId" type="BIGINT" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="googleAnalyticsAccount" type="VARCHAR" length="16"/>
+		<db-attribute name="googleDirectionsFrom" type="VARCHAR" length="256"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
-		<db-attribute name="parentWebSiteId" type="BIGINT" length="19"/>
 		<db-attribute name="siteKey" type="VARCHAR" length="25"/>
-		<db-attribute name="sslHostName" type="VARCHAR" length="128"/>
-	</db-entity>
-	<db-entity name="WebTheme" catalog="willow_college">
-		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="description_textile" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="name" type="VARCHAR" length="128"/>
-		<db-attribute name="themeKey" type="VARCHAR" length="128"/>
 	</db-entity>
 	<db-entity name="WebURLAlias" catalog="willow_college">
-		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="urlPath" type="VARCHAR" length="512"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
@@ -851,10 +816,8 @@
 	</obj-entity>
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College">
 		<obj-attribute name="billingCode" type="java.lang.String" db-attribute-path="billingCode"/>
-		<obj-attribute name="collegeKey" type="java.lang.String" db-attribute-path="collegeKey"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
-		<obj-attribute name="isSslEnabled" type="java.lang.Boolean" db-attribute-path="isSslEnabled"/>
 		<obj-attribute name="isTestingWebServicePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebServicePayments"/>
 		<obj-attribute name="isTestingWebSitePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebSitePayments"/>
 		<obj-attribute name="isWebServicePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebServicePaymentsEnabled"/>
@@ -871,14 +834,10 @@
 		<obj-attribute name="webServicesPass" type="java.lang.String" db-attribute-path="webServicesPass"/>
 		<obj-attribute name="webServicesSecurityCode" type="java.lang.String" db-attribute-path="webServicesSecurityCode"/>
 	</obj-entity>
-	<obj-entity name="CollegeDomain" className="ish.oncourse.model.CollegeDomain" dbEntityName="CollegeDomain">
+	<obj-entity name="CollegeDomain" className="ish.oncourse.model.CollegeDomain" dbEntityName="WebHostName">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="googleAnalyticsAccount" type="java.lang.String" db-attribute-path="googleAnalyticsAccount"/>
-		<obj-attribute name="googleDirectionsFrom" type="java.lang.String" db-attribute-path="googleDirectionsFrom"/>
-		<obj-attribute name="hasSSL" type="java.lang.Boolean" db-attribute-path="hasSSL"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="subsiteCode" type="java.lang.String" db-attribute-path="subsiteCode"/>
 	</obj-entity>
 	<obj-entity name="ConcessionType" className="ish.oncourse.model.ConcessionType" dbEntityName="ConcessionType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1309,74 +1268,51 @@
 	<obj-entity name="WaitingListSite" className="ish.oncourse.model.WaitingListSite" dbEntityName="WaitingListSite">
 	</obj-entity>
 	<obj-entity name="WebBlock" className="ish.oncourse.model.WebBlock" dbEntityName="WebBlock">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
 		<obj-attribute name="contentTextile" type="java.lang.String" db-attribute-path="content_textile"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
-		<obj-attribute name="weighting" type="java.lang.Integer" db-attribute-path="weighting"/>
 	</obj-entity>
-	<obj-entity name="WebBlockType" className="ish.oncourse.model.WebBlockType" dbEntityName="WebBlockType">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+	<obj-entity name="WebBlockVisibility" className="ish.oncourse.model.WebBlockVisibility" dbEntityName="WebBlockVisibility">
+		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
+		<obj-attribute name="webNodeTypeId" type="java.lang.Long" db-attribute-path="WebNodeTypeId"/>
+		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
+	</obj-entity>
+	<obj-entity name="WebMenu" className="ish.oncourse.model.WebMenu" dbEntityName="WebMenu">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="url" type="java.lang.String" db-attribute-path="URL"/>
+		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
 	</obj-entity>
 	<obj-entity name="WebNode" className="ish.oncourse.model.WebNode" dbEntityName="WebNode">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="isPublished" type="java.lang.Boolean" db-attribute-path="isPublished"/>
-		<obj-attribute name="isRssFeed" type="java.lang.Boolean" db-attribute-path="isRssFeed"/>
-		<obj-attribute name="isWebNavigable" type="java.lang.Boolean" db-attribute-path="isWebNavigable"/>
-		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
-		<obj-attribute name="menuAliasId" type="java.lang.Long" db-attribute-path="menuAliasId"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="nodeNumber" type="java.lang.Integer" db-attribute-path="nodeNumber"/>
-		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
-		<obj-attribute name="weighting" type="java.lang.Integer" db-attribute-path="weighting"/>
 		<post-add method-name="performInitialization"/>
 	</obj-entity>
 	<obj-entity name="WebNodeContent" className="ish.oncourse.model.WebNodeContent" dbEntityName="WebNodeContent">
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
 		<obj-attribute name="contentTextile" type="java.lang.String" db-attribute-path="content_textile"/>
-		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
-	</obj-entity>
-	<obj-entity name="WebNodeContentWebBlock" className="ish.oncourse.model.WebNodeContentWebBlock" dbEntityName="WebNodeContentWebBlock">
 	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="numberOfRegions" type="java.lang.Integer" db-attribute-path="numberOfRegions"/>
-		<obj-attribute name="templateKey" type="java.lang.String" db-attribute-path="templateKey"/>
 	</obj-entity>
 	<obj-entity name="WebSite" className="ish.oncourse.model.WebSite" dbEntityName="WebSite">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="defaultUrlPath" type="java.lang.String" db-attribute-path="defaultUrlPath"/>
+		<obj-attribute name="googleAnalyticsAccount" type="java.lang.String" db-attribute-path="googleAnalyticsAccount"/>
+		<obj-attribute name="googleDirectionsFrom" type="java.lang.String" db-attribute-path="googleDirectionsFrom"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="siteKey" type="java.lang.String" db-attribute-path="siteKey"/>
-		<obj-attribute name="sslHostName" type="java.lang.String" db-attribute-path="sslHostName"/>
-	</obj-entity>
-	<obj-entity name="WebTheme" className="ish.oncourse.model.WebTheme" dbEntityName="WebTheme">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="descriptionTextile" type="java.lang.String" db-attribute-path="description_textile"/>
-		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="themeKey" type="java.lang.String" db-attribute-path="themeKey"/>
 	</obj-entity>
 	<obj-entity name="WebUrlAlias" className="ish.oncourse.model.WebUrlAlias" dbEntityName="WebURLAlias">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="urlPath" type="java.lang.String" db-attribute-path="urlPath"/>
@@ -1466,7 +1402,7 @@
 	<db-relationship name="changeRequests" source="College" target="ChangeRequest" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
-	<db-relationship name="collegeDomains" source="College" target="CollegeDomain" toMany="true">
+	<db-relationship name="collegeDomains" source="College" target="WebHostName" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="concessionTypes" source="College" target="ConcessionType" toMany="true">
@@ -1526,9 +1462,6 @@
 	<db-relationship name="preferences" source="College" target="Preference" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
-	<db-relationship name="primaryDomain" source="College" target="CollegeDomain" toMany="false">
-		<db-attribute-pair source="primaryDomainId" target="id"/>
-	</db-relationship>
 	<db-relationship name="queuedRecords" source="College" target="QueuedRecord" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1565,26 +1498,8 @@
 	<db-relationship name="webSites" source="College" target="WebSite" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
-	<db-relationship name="webThemes" source="College" target="WebTheme" toMany="true">
-		<db-attribute-pair source="id" target="collegeId"/>
-	</db-relationship>
 	<db-relationship name="willowUsers" source="College" target="WillowUser" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
-	</db-relationship>
-	<db-relationship name="aliasedDomain" source="CollegeDomain" target="CollegeDomain" toMany="false">
-		<db-attribute-pair source="aliasedDomainId" target="id"/>
-	</db-relationship>
-	<db-relationship name="college" source="CollegeDomain" target="College" toMany="false">
-		<db-attribute-pair source="collegeId" target="id"/>
-	</db-relationship>
-	<db-relationship name="collegeDomains" source="CollegeDomain" target="CollegeDomain" toMany="true">
-		<db-attribute-pair source="id" target="aliasedDomainId"/>
-	</db-relationship>
-	<db-relationship name="colleges" source="CollegeDomain" target="College" toMany="true">
-		<db-attribute-pair source="id" target="primaryDomainId"/>
-	</db-relationship>
-	<db-relationship name="webSite" source="CollegeDomain" target="WebSite" toMany="false">
-		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="ConcessionType" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -1988,23 +1903,35 @@
 	<db-relationship name="waitingList" source="WaitingListSite" target="WaitingList" toMany="false">
 		<db-attribute-pair source="waitingListId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webBlockType" source="WebBlock" target="WebBlockType" toMany="false">
-		<db-attribute-pair source="webBlockTypeId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webNodeContentWebBlocks" source="WebBlock" target="WebNodeContentWebBlock" toDependentPK="true" toMany="true">
-		<db-attribute-pair source="id" target="webBlockId"/>
-	</db-relationship>
 	<db-relationship name="webSite" source="WebBlock" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webBlocks" source="WebBlockType" target="WebBlock" toMany="true">
-		<db-attribute-pair source="id" target="webBlockTypeId"/>
+	<db-relationship name="toWebBlock" source="WebBlockVisibility" target="WebBlock" toMany="false">
+		<db-attribute-pair source="WebBlockId" target="id"/>
 	</db-relationship>
-	<db-relationship name="parentNode" source="WebNode" target="WebNode" toMany="false">
-		<db-attribute-pair source="parentNodeID" target="id"/>
+	<db-relationship name="toWebNodeType" source="WebBlockVisibility" target="WebNodeType" toMany="false">
+		<db-attribute-pair source="WebBlockId" target="id"/>
 	</db-relationship>
-	<db-relationship name="savedByUser" source="WebNode" target="WillowUser" toMany="false">
-		<db-attribute-pair source="savedByUserId" target="id"/>
+	<db-relationship name="college" source="WebHostName" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webSite" source="WebHostName" target="WebSite" toMany="false">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webSiteArray" source="WebHostName" target="WebSite" toMany="true">
+		<db-attribute-pair source="id" target="SSLhostNameId"/>
+	</db-relationship>
+	<db-relationship name="toWebMenu" source="WebMenu" target="WebMenu" toMany="false">
+		<db-attribute-pair source="webMenuParentId" target="id"/>
+	</db-relationship>
+	<db-relationship name="toWebNode" source="WebMenu" target="WebNode" toMany="false">
+		<db-attribute-pair source="webNodeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="toWebSite" source="WebMenu" target="WebSite" toMany="false">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webMenuArray" source="WebMenu" target="WebMenu" toMany="true">
+		<db-attribute-pair source="id" target="webMenuParentId"/>
 	</db-relationship>
 	<db-relationship name="webNodeContents" source="WebNode" target="WebNodeContent" toMany="true">
 		<db-attribute-pair source="id" target="webNodeId"/>
@@ -2012,32 +1939,14 @@
 	<db-relationship name="webNodeType" source="WebNode" target="WebNodeType" toMany="false">
 		<db-attribute-pair source="webNodeTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webNodes" source="WebNode" target="WebNode" toMany="true">
-		<db-attribute-pair source="id" target="parentNodeID"/>
-	</db-relationship>
 	<db-relationship name="webSite" source="WebNode" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webSites" source="WebNode" target="WebSite" toMany="true">
-		<db-attribute-pair source="id" target="homePageId"/>
 	</db-relationship>
 	<db-relationship name="webUrlAliases" source="WebNode" target="WebURLAlias" toMany="true">
 		<db-attribute-pair source="id" target="webNodeId"/>
 	</db-relationship>
 	<db-relationship name="webNode" source="WebNodeContent" target="WebNode" toMany="false">
 		<db-attribute-pair source="webNodeId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webNodeContentWebBlocks" source="WebNodeContent" target="WebNodeContentWebBlock" toDependentPK="true" toMany="true">
-		<db-attribute-pair source="id" target="webNodeContentId"/>
-	</db-relationship>
-	<db-relationship name="webBlock" source="WebNodeContentWebBlock" target="WebBlock" toMany="false">
-		<db-attribute-pair source="webBlockId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webNodeContent" source="WebNodeContentWebBlock" target="WebNodeContent" toMany="false">
-		<db-attribute-pair source="webNodeContentId" target="id"/>
-	</db-relationship>
-	<db-relationship name="defaultWebTheme" source="WebNodeType" target="WebTheme" toMany="false">
-		<db-attribute-pair source="defaultWebThemeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webNodes" source="WebNodeType" target="WebNode" toMany="true">
 		<db-attribute-pair source="id" target="webNodeTypeId"/>
@@ -2048,14 +1957,11 @@
 	<db-relationship name="college" source="WebSite" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="collegeDomains" source="WebSite" target="CollegeDomain" toMany="true">
+	<db-relationship name="collegeDomains" source="WebSite" target="WebHostName" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
-	<db-relationship name="homePage" source="WebSite" target="WebNode" toMany="false">
-		<db-attribute-pair source="homePageId" target="id"/>
-	</db-relationship>
-	<db-relationship name="parentWebSite" source="WebSite" target="WebSite" toMany="false">
-		<db-attribute-pair source="parentWebSiteId" target="id"/>
+	<db-relationship name="toWebHostName" source="WebSite" target="WebHostName" toMany="false">
+		<db-attribute-pair source="SSLhostNameId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webBlocks" source="WebSite" target="WebBlock" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
@@ -2066,17 +1972,8 @@
 	<db-relationship name="webNodes" source="WebSite" target="WebNode" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
-	<db-relationship name="webSites" source="WebSite" target="WebSite" toMany="true">
-		<db-attribute-pair source="id" target="parentWebSiteId"/>
-	</db-relationship>
 	<db-relationship name="webUrlAliases" source="WebSite" target="WebURLAlias" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
-	</db-relationship>
-	<db-relationship name="college" source="WebTheme" target="College" toMany="false">
-		<db-attribute-pair source="collegeId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webNodeTypes" source="WebTheme" target="WebNodeType" toMany="true">
-		<db-attribute-pair source="id" target="defaultWebThemeId"/>
 	</db-relationship>
 	<db-relationship name="webNode" source="WebURLAlias" target="WebNode" toMany="false">
 		<db-attribute-pair source="webNodeId" target="id"/>
@@ -2089,9 +1986,6 @@
 	</db-relationship>
 	<db-relationship name="logs" source="WillowUser" target="Log" toMany="true">
 		<db-attribute-pair source="id" target="userId"/>
-	</db-relationship>
-	<db-relationship name="webNodes" source="WillowUser" target="WebNode" toMany="true">
-		<db-attribute-pair source="id" target="savedByUserId"/>
 	</db-relationship>
 	<obj-relationship name="college" source="Attendance" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="marker" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
@@ -2136,7 +2030,6 @@
 	<obj-relationship name="paymentsIn" source="College" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="College" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="preferences" source="College" target="Preference" deleteRule="Deny" db-relationship-path="preferences"/>
-	<obj-relationship name="primaryDomain" source="College" target="CollegeDomain" deleteRule="Nullify" db-relationship-path="primaryDomain"/>
 	<obj-relationship name="queuedRecords" source="College" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
 	<obj-relationship name="rooms" source="College" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
 	<obj-relationship name="sessionTutors" source="College" target="SessionTutor" deleteRule="Deny" db-relationship-path="sessionTutors"/>
@@ -2149,13 +2042,10 @@
 	<obj-relationship name="tutorRoles" source="College" target="TutorRole" deleteRule="Deny" db-relationship-path="tutorRoles"/>
 	<obj-relationship name="waitingLists" source="College" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="webSites" source="College" target="WebSite" deleteRule="Deny" db-relationship-path="webSites"/>
-	<obj-relationship name="webThemes" source="College" target="WebTheme" deleteRule="Deny" db-relationship-path="webThemes"/>
 	<obj-relationship name="willowUsers" source="College" target="WillowUser" deleteRule="Deny" db-relationship-path="willowUsers"/>
-	<obj-relationship name="aliasedDomain" source="CollegeDomain" target="CollegeDomain" deleteRule="Nullify" db-relationship-path="aliasedDomain"/>
 	<obj-relationship name="college" source="CollegeDomain" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="collegeDomains" source="CollegeDomain" target="CollegeDomain" deleteRule="Deny" db-relationship-path="collegeDomains"/>
-	<obj-relationship name="colleges" source="CollegeDomain" target="College" deleteRule="Deny" db-relationship-path="colleges"/>
 	<obj-relationship name="webSite" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="webSiteArray" source="CollegeDomain" target="WebSite" deleteRule="Deny" db-relationship-path="webSiteArray"/>
 	<obj-relationship name="college" source="ConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
@@ -2290,39 +2180,29 @@
 	<obj-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="site" source="WaitingListSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="waitingList" source="WaitingListSite" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingList"/>
-	<obj-relationship name="webBlockType" source="WebBlock" target="WebBlockType" deleteRule="Nullify" db-relationship-path="webBlockType"/>
-	<obj-relationship name="webNodeContentWebBlocks" source="WebBlock" target="WebNodeContentWebBlock" deleteRule="Deny" db-relationship-path="webNodeContentWebBlocks"/>
 	<obj-relationship name="webSite" source="WebBlock" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="webBlocks" source="WebBlockType" target="WebBlock" deleteRule="Deny" db-relationship-path="webBlocks"/>
-	<obj-relationship name="parentNode" source="WebNode" target="WebNode" deleteRule="Nullify" db-relationship-path="parentNode"/>
-	<obj-relationship name="savedByUser" source="WebNode" target="WillowUser" deleteRule="Nullify" db-relationship-path="savedByUser"/>
-	<obj-relationship name="webNodeContents" source="WebNode" target="WebNodeContent" deleteRule="Deny" db-relationship-path="webNodeContents"/>
+	<obj-relationship name="toWebBlock" source="WebBlockVisibility" target="WebBlock" deleteRule="Nullify" db-relationship-path="toWebBlock"/>
+	<obj-relationship name="toWebNodeType" source="WebBlockVisibility" target="WebNodeType" deleteRule="Nullify" db-relationship-path="toWebNodeType"/>
+	<obj-relationship name="toWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="toWebMenu"/>
+	<obj-relationship name="toWebNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="toWebNode"/>
+	<obj-relationship name="toWebSite" source="WebMenu" target="WebSite" deleteRule="Nullify" db-relationship-path="toWebSite"/>
+	<obj-relationship name="webMenuArray" source="WebMenu" target="WebMenu" deleteRule="Deny" db-relationship-path="webMenuArray"/>
+	<obj-relationship name="webNodeContents" source="WebNode" target="WebNodeContent" deleteRule="Cascade" db-relationship-path="webNodeContents"/>
 	<obj-relationship name="webNodeType" source="WebNode" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
-	<obj-relationship name="webNodes" source="WebNode" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 	<obj-relationship name="webSite" source="WebNode" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="webSites" source="WebNode" target="WebSite" deleteRule="Deny" db-relationship-path="webSites"/>
-	<obj-relationship name="webUrlAliases" source="WebNode" target="WebUrlAlias" deleteRule="Deny" db-relationship-path="webUrlAliases"/>
+	<obj-relationship name="webUrlAliases" source="WebNode" target="WebUrlAlias" deleteRule="Cascade" db-relationship-path="webUrlAliases"/>
 	<obj-relationship name="webNode" source="WebNodeContent" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
-	<obj-relationship name="webNodeContentWebBlocks" source="WebNodeContent" target="WebNodeContentWebBlock" deleteRule="Deny" db-relationship-path="webNodeContentWebBlocks"/>
-	<obj-relationship name="webBlock" source="WebNodeContentWebBlock" target="WebBlock" deleteRule="Nullify" db-relationship-path="webBlock"/>
-	<obj-relationship name="webNodeContent" source="WebNodeContentWebBlock" target="WebNodeContent" deleteRule="Nullify" db-relationship-path="webNodeContent"/>
-	<obj-relationship name="defaultWebTheme" source="WebNodeType" target="WebTheme" deleteRule="Nullify" db-relationship-path="defaultWebTheme"/>
 	<obj-relationship name="webNodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 	<obj-relationship name="webSite" source="WebNodeType" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="collegeDomains" source="WebSite" target="CollegeDomain" deleteRule="Deny" db-relationship-path="collegeDomains"/>
-	<obj-relationship name="homePage" source="WebSite" target="WebNode" deleteRule="Nullify" db-relationship-path="homePage"/>
-	<obj-relationship name="parentWebSite" source="WebSite" target="WebSite" deleteRule="Nullify" db-relationship-path="parentWebSite"/>
+	<obj-relationship name="toWebHostName" source="WebSite" target="CollegeDomain" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
 	<obj-relationship name="webBlocks" source="WebSite" target="WebBlock" deleteRule="Deny" db-relationship-path="webBlocks"/>
 	<obj-relationship name="webNodeTypes" source="WebSite" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
 	<obj-relationship name="webNodes" source="WebSite" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
-	<obj-relationship name="webSites" source="WebSite" target="WebSite" deleteRule="Deny" db-relationship-path="webSites"/>
 	<obj-relationship name="webUrlAliases" source="WebSite" target="WebUrlAlias" deleteRule="Deny" db-relationship-path="webUrlAliases"/>
-	<obj-relationship name="college" source="WebTheme" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="webNodeTypes" source="WebTheme" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
 	<obj-relationship name="webNode" source="WebUrlAlias" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webSite" source="WebUrlAlias" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="WillowUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="logs" source="WillowUser" target="Log" deleteRule="Deny" db-relationship-path="logs"/>
-	<obj-relationship name="webNodes" source="WillowUser" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 </data-map>
