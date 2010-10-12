@@ -1736,7 +1736,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
   INDEX `WebNode_ibfk_1` (`webSiteId` ASC) ,
   INDEX `WebNode_ibfk_3` (`webNodeTypeId` ASC) ,
   INDEX `isPublished_isWebNavigable_idx` (`isPublished` ASC) ,
-  UNIQUE INDEX `college_nodeNumber` (`nodeNumber` ASC) ,
+  UNIQUE INDEX `college_nodeNumber` (`nodeNumber` ASC, `webSiteId` ASC) ,
   CONSTRAINT `WebNode_ibfk_1`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` ),
