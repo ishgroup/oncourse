@@ -78,9 +78,8 @@ public class WebSiteService implements IWebSiteService {
 	/**
 	 * Retrieve the resource folder name.
 	 *
-	 * <p>The resource folder name is the root folder containing college/site
-	 * specific resources. The name is constructed from the College key and the
-	 * Site key (where applicable).</p>
+	 * <p>The resource folder name is the root folder containing site
+	 * specific resources. The name is constructed from the Site key.</p>
 	 *
 	 * <p>Defaults to the "defaults" folder.</p>
 	 *
@@ -90,11 +89,9 @@ public class WebSiteService implements IWebSiteService {
 		String folderName = DEFAULT_FOLDER_NAME;
 
 		if (getCurrentDomain() != null) {
-			//TODO may be there's a replacement for the college key
-			//folderName = getCurrentDomain().getCollege().getCollegeKey();
 			String siteKey = getCurrentDomain().getWebSite().getSiteKey();
 			if ((siteKey != null) && !("".equals(siteKey))) {
-				folderName += "_" + siteKey;
+				folderName = siteKey;
 			}
 		}
 
