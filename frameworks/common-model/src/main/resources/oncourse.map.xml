@@ -834,11 +834,6 @@
 		<obj-attribute name="webServicesPass" type="java.lang.String" db-attribute-path="webServicesPass"/>
 		<obj-attribute name="webServicesSecurityCode" type="java.lang.String" db-attribute-path="webServicesSecurityCode"/>
 	</obj-entity>
-	<obj-entity name="CollegeDomain" className="ish.oncourse.model.CollegeDomain" dbEntityName="WebHostName">
-		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-	</obj-entity>
 	<obj-entity name="ConcessionType" className="ish.oncourse.model.ConcessionType" dbEntityName="ConcessionType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1278,6 +1273,11 @@
 		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
 		<obj-attribute name="webNodeTypeId" type="java.lang.Long" db-attribute-path="WebNodeTypeId"/>
 		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
+	</obj-entity>
+	<obj-entity name="WebHostName" className="ish.oncourse.model.WebHostName" dbEntityName="WebHostName">
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
 	<obj-entity name="WebMenu" className="ish.oncourse.model.WebMenu" dbEntityName="WebMenu">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2010,7 +2010,7 @@
 	<obj-relationship name="certificateOutcomes" source="College" target="CertificateOutcome" deleteRule="Deny" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="certificates" source="College" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="changeRequests" source="College" target="ChangeRequest" deleteRule="Deny" db-relationship-path="changeRequests"/>
-	<obj-relationship name="collegeDomains" source="College" target="CollegeDomain" deleteRule="Deny" db-relationship-path="collegeDomains"/>
+	<obj-relationship name="collegeDomains" source="College" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="concessionTypes" source="College" target="ConcessionType" deleteRule="Deny" db-relationship-path="concessionTypes"/>
 	<obj-relationship name="contacts" source="College" target="Contact" deleteRule="Deny" db-relationship-path="contacts"/>
 	<obj-relationship name="courseClasses" source="College" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
@@ -2043,9 +2043,6 @@
 	<obj-relationship name="waitingLists" source="College" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="webSites" source="College" target="WebSite" deleteRule="Deny" db-relationship-path="webSites"/>
 	<obj-relationship name="willowUsers" source="College" target="WillowUser" deleteRule="Deny" db-relationship-path="willowUsers"/>
-	<obj-relationship name="college" source="CollegeDomain" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="webSite" source="CollegeDomain" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="webSiteArray" source="CollegeDomain" target="WebSite" deleteRule="Deny" db-relationship-path="webSiteArray"/>
 	<obj-relationship name="college" source="ConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
@@ -2183,6 +2180,9 @@
 	<obj-relationship name="webSite" source="WebBlock" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="toWebBlock" source="WebBlockVisibility" target="WebBlock" deleteRule="Nullify" db-relationship-path="toWebBlock"/>
 	<obj-relationship name="toWebNodeType" source="WebBlockVisibility" target="WebNodeType" deleteRule="Nullify" db-relationship-path="toWebNodeType"/>
+	<obj-relationship name="college" source="WebHostName" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="webSite" source="WebHostName" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="webSiteArray" source="WebHostName" target="WebSite" deleteRule="Deny" db-relationship-path="webSiteArray"/>
 	<obj-relationship name="toWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="toWebMenu"/>
 	<obj-relationship name="toWebNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="toWebNode"/>
 	<obj-relationship name="toWebSite" source="WebMenu" target="WebSite" deleteRule="Nullify" db-relationship-path="toWebSite"/>
@@ -2195,8 +2195,8 @@
 	<obj-relationship name="webNodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 	<obj-relationship name="webSite" source="WebNodeType" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="collegeDomains" source="WebSite" target="CollegeDomain" deleteRule="Deny" db-relationship-path="collegeDomains"/>
-	<obj-relationship name="toWebHostName" source="WebSite" target="CollegeDomain" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
+	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
+	<obj-relationship name="toWebHostName" source="WebSite" target="WebHostName" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
 	<obj-relationship name="webBlocks" source="WebSite" target="WebBlock" deleteRule="Deny" db-relationship-path="webBlocks"/>
 	<obj-relationship name="webNodeTypes" source="WebSite" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
 	<obj-relationship name="webNodes" source="WebSite" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>

@@ -15,7 +15,6 @@ import ish.oncourse.model.WebSite;
  */
 public abstract class _WebUrlAlias extends CayenneDataObject {
 
-    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String URL_PATH_PROPERTY = "urlPath";
@@ -23,13 +22,6 @@ public abstract class _WebUrlAlias extends CayenneDataObject {
     public static final String WEB_SITE_PROPERTY = "webSite";
 
     public static final String ID_PK_COLUMN = "id";
-
-    public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
-    }
-    public Long getAngelId() {
-        return (Long)readProperty("angelId");
-    }
 
     public void setCreated(Date created) {
         writeProperty("created", created);

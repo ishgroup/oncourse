@@ -11,7 +11,6 @@ import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.ChangeRequest;
-import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
@@ -42,8 +41,8 @@ import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
+import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.model.WebTheme;
 import ish.oncourse.model.WillowUser;
 
 /**
@@ -55,10 +54,8 @@ import ish.oncourse.model.WillowUser;
 public abstract class _College extends CayenneDataObject {
 
     public static final String BILLING_CODE_PROPERTY = "billingCode";
-    public static final String COLLEGE_KEY_PROPERTY = "collegeKey";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
-    public static final String IS_SSL_ENABLED_PROPERTY = "isSslEnabled";
     public static final String IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY = "isTestingWebServicePayments";
     public static final String IS_TESTING_WEB_SITE_PAYMENTS_PROPERTY = "isTestingWebSitePayments";
     public static final String IS_WEB_SERVICE_PAYMENTS_ENABLED_PROPERTY = "isWebServicePaymentsEnabled";
@@ -100,7 +97,6 @@ public abstract class _College extends CayenneDataObject {
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
     public static final String PAYMENTS_OUT_PROPERTY = "paymentsOut";
     public static final String PREFERENCES_PROPERTY = "preferences";
-    public static final String PRIMARY_DOMAIN_PROPERTY = "primaryDomain";
     public static final String QUEUED_RECORDS_PROPERTY = "queuedRecords";
     public static final String ROOMS_PROPERTY = "rooms";
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
@@ -113,7 +109,6 @@ public abstract class _College extends CayenneDataObject {
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
     public static final String WEB_SITES_PROPERTY = "webSites";
-    public static final String WEB_THEMES_PROPERTY = "webThemes";
     public static final String WILLOW_USERS_PROPERTY = "willowUsers";
 
     public static final String ID_PK_COLUMN = "id";
@@ -123,13 +118,6 @@ public abstract class _College extends CayenneDataObject {
     }
     public String getBillingCode() {
         return (String)readProperty("billingCode");
-    }
-
-    public void setCollegeKey(String collegeKey) {
-        writeProperty("collegeKey", collegeKey);
-    }
-    public String getCollegeKey() {
-        return (String)readProperty("collegeKey");
     }
 
     public void setCreated(Date created) {
@@ -144,13 +132,6 @@ public abstract class _College extends CayenneDataObject {
     }
     public Date getFirstRemoteAuthentication() {
         return (Date)readProperty("firstRemoteAuthentication");
-    }
-
-    public void setIsSslEnabled(Boolean isSslEnabled) {
-        writeProperty("isSslEnabled", isSslEnabled);
-    }
-    public Boolean getIsSslEnabled() {
-        return (Boolean)readProperty("isSslEnabled");
     }
 
     public void setIsTestingWebServicePayments(Boolean isTestingWebServicePayments) {
@@ -330,15 +311,15 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
-    public void addToCollegeDomains(CollegeDomain obj) {
+    public void addToCollegeDomains(WebHostName obj) {
         addToManyTarget("collegeDomains", obj, true);
     }
-    public void removeFromCollegeDomains(CollegeDomain obj) {
+    public void removeFromCollegeDomains(WebHostName obj) {
         removeToManyTarget("collegeDomains", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<CollegeDomain> getCollegeDomains() {
-        return (List<CollegeDomain>)readProperty("collegeDomains");
+    public List<WebHostName> getCollegeDomains() {
+        return (List<WebHostName>)readProperty("collegeDomains");
     }
 
 
@@ -570,15 +551,6 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
-    public void setPrimaryDomain(CollegeDomain primaryDomain) {
-        setToOneTarget("primaryDomain", primaryDomain, true);
-    }
-
-    public CollegeDomain getPrimaryDomain() {
-        return (CollegeDomain)readProperty("primaryDomain");
-    }
-
-
     public void addToQueuedRecords(QueuedRecord obj) {
         addToManyTarget("queuedRecords", obj, true);
     }
@@ -720,18 +692,6 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebSite> getWebSites() {
         return (List<WebSite>)readProperty("webSites");
-    }
-
-
-    public void addToWebThemes(WebTheme obj) {
-        addToManyTarget("webThemes", obj, true);
-    }
-    public void removeFromWebThemes(WebTheme obj) {
-        removeToManyTarget("webThemes", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebTheme> getWebThemes() {
-        return (List<WebTheme>)readProperty("webThemes");
     }
 
 

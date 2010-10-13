@@ -6,11 +6,10 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.WebBlock;
+import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 
 /**
@@ -21,39 +20,21 @@ import ish.oncourse.model.WebUrlAlias;
  */
 public abstract class _WebSite extends CayenneDataObject {
 
-    public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String CODE_PROPERTY = "code";
     public static final String CREATED_PROPERTY = "created";
-    public static final String DEFAULT_URL_PATH_PROPERTY = "defaultUrlPath";
+    public static final String GOOGLE_ANALYTICS_ACCOUNT_PROPERTY = "googleAnalyticsAccount";
+    public static final String GOOGLE_DIRECTIONS_FROM_PROPERTY = "googleDirectionsFrom";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String SITE_KEY_PROPERTY = "siteKey";
-    public static final String SSL_HOST_NAME_PROPERTY = "sslHostName";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
-    public static final String HOME_PAGE_PROPERTY = "homePage";
-    public static final String PARENT_WEB_SITE_PROPERTY = "parentWebSite";
+    public static final String TO_WEB_HOST_NAME_PROPERTY = "toWebHostName";
     public static final String WEB_BLOCKS_PROPERTY = "webBlocks";
     public static final String WEB_NODE_TYPES_PROPERTY = "webNodeTypes";
     public static final String WEB_NODES_PROPERTY = "webNodes";
-    public static final String WEB_SITES_PROPERTY = "webSites";
     public static final String WEB_URL_ALIASES_PROPERTY = "webUrlAliases";
 
     public static final String ID_PK_COLUMN = "id";
-
-    public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
-    }
-    public Long getAngelId() {
-        return (Long)readProperty("angelId");
-    }
-
-    public void setCode(String code) {
-        writeProperty("code", code);
-    }
-    public String getCode() {
-        return (String)readProperty("code");
-    }
 
     public void setCreated(Date created) {
         writeProperty("created", created);
@@ -62,11 +43,18 @@ public abstract class _WebSite extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setDefaultUrlPath(String defaultUrlPath) {
-        writeProperty("defaultUrlPath", defaultUrlPath);
+    public void setGoogleAnalyticsAccount(String googleAnalyticsAccount) {
+        writeProperty("googleAnalyticsAccount", googleAnalyticsAccount);
     }
-    public String getDefaultUrlPath() {
-        return (String)readProperty("defaultUrlPath");
+    public String getGoogleAnalyticsAccount() {
+        return (String)readProperty("googleAnalyticsAccount");
+    }
+
+    public void setGoogleDirectionsFrom(String googleDirectionsFrom) {
+        writeProperty("googleDirectionsFrom", googleDirectionsFrom);
+    }
+    public String getGoogleDirectionsFrom() {
+        return (String)readProperty("googleDirectionsFrom");
     }
 
     public void setModified(Date modified) {
@@ -90,13 +78,6 @@ public abstract class _WebSite extends CayenneDataObject {
         return (String)readProperty("siteKey");
     }
 
-    public void setSslHostName(String sslHostName) {
-        writeProperty("sslHostName", sslHostName);
-    }
-    public String getSslHostName() {
-        return (String)readProperty("sslHostName");
-    }
-
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
     }
@@ -106,33 +87,24 @@ public abstract class _WebSite extends CayenneDataObject {
     }
 
 
-    public void addToCollegeDomains(CollegeDomain obj) {
+    public void addToCollegeDomains(WebHostName obj) {
         addToManyTarget("collegeDomains", obj, true);
     }
-    public void removeFromCollegeDomains(CollegeDomain obj) {
+    public void removeFromCollegeDomains(WebHostName obj) {
         removeToManyTarget("collegeDomains", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<CollegeDomain> getCollegeDomains() {
-        return (List<CollegeDomain>)readProperty("collegeDomains");
+    public List<WebHostName> getCollegeDomains() {
+        return (List<WebHostName>)readProperty("collegeDomains");
     }
 
 
-    public void setHomePage(WebNode homePage) {
-        setToOneTarget("homePage", homePage, true);
+    public void setToWebHostName(WebHostName toWebHostName) {
+        setToOneTarget("toWebHostName", toWebHostName, true);
     }
 
-    public WebNode getHomePage() {
-        return (WebNode)readProperty("homePage");
-    }
-
-
-    public void setParentWebSite(WebSite parentWebSite) {
-        setToOneTarget("parentWebSite", parentWebSite, true);
-    }
-
-    public WebSite getParentWebSite() {
-        return (WebSite)readProperty("parentWebSite");
+    public WebHostName getToWebHostName() {
+        return (WebHostName)readProperty("toWebHostName");
     }
 
 
@@ -169,18 +141,6 @@ public abstract class _WebSite extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebNode> getWebNodes() {
         return (List<WebNode>)readProperty("webNodes");
-    }
-
-
-    public void addToWebSites(WebSite obj) {
-        addToManyTarget("webSites", obj, true);
-    }
-    public void removeFromWebSites(WebSite obj) {
-        removeToManyTarget("webSites", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WebSite> getWebSites() {
-        return (List<WebSite>)readProperty("webSites");
     }
 
 

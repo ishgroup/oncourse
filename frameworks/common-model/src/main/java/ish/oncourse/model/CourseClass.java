@@ -36,11 +36,6 @@ public class CourseClass extends _CourseClass {
 	public static final int LATEST_START_FOR_DAYTIME = 18;
 	private Set<String> daysOfWeek;
 
-	public Integer getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId().getIdSnapshot().get(ID_PK_COLUMN)).intValue()
-				: null;
-	}
-
 	/**
 	 * @return total number of minutes from all sessions that have start and end
 	 *         dates defined.

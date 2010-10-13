@@ -12,13 +12,6 @@ import ish.oncourse.model.auto._WebSite;
 public class WebSite extends _WebSite {
 
 	/**
-	 * @return true if this WebSite has a parent WebSite, false otherwise
-	 */
-	public boolean hasParentWebSite() {
-		return getParentWebSite() != null;
-	}
-
-	/**
 	 * The site resource folder identifier is constructed from
 	 * {@link College#getCollegeKey()} and the optional
 	 * {@link WebSite#getSiteKey()} properties.
@@ -29,14 +22,15 @@ public class WebSite extends _WebSite {
 	 * @return site resources folder location.
 	 */
 	public String getSiteIdentifier() {
-		String identifier = getCollege().getCollegeKey();
+		//TODO may be there's a replacement for the college key
+		/*String identifier = getCollege().getCollegeKey();
 
 		//FIXME: Take care of the parent site case.
 		if ((getSiteKey() != null) && !("".equals(getSiteKey()))) {
 			identifier += "_" + getSiteKey();
-		}
+		}*/
 
-		return identifier;
+		return getSiteKey();
 	}
 
 }

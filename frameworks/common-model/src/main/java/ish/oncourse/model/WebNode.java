@@ -19,26 +19,19 @@ public class WebNode extends _WebNode {
 	}
 
 	public String getPath() {
-		if (getParentNode() == null
-				|| getParentNode() == getWebSite().getHomePage()) {
-			return "/" + getUrlShortName();
-		}
-
-		return getParentNode().getPath() + "/" + getUrlShortName();
+		//TODO get the main of node url aliases
+		return getWebUrlAliases().get(0).getUrlPath();
 	}
 
 	public String getUrlShortName() {
-		String s = getShortName();
-		if (s == null) {
-			s = getName();
-		}
+		String s = getName();
 		if (s == null) {
 			s = DEFAULT_PAGE_TITLE;
 		}
 		return s.trim().replaceAll(" ", "+").replaceAll("/", "|");
 	}
-
-	@Override
+//TODO remove the commented getChilds methods when the WebMenu will be implemented
+/*	@Override
 	public List<WebNode> getWebNodes() {
 		List<WebNode> children = super.getWebNodes();
 		List<Ordering> orderings = new ArrayList<Ordering>();
@@ -53,11 +46,11 @@ public class WebNode extends _WebNode {
 
 		return children;
 	}
-
+*/
 	/**
 	 * @return All web-navigable web-visible child nodes for this node.
 	 */
-	public List<WebNode> getNavigableChildNodes() {
+/*	public List<WebNode> getNavigableChildNodes() {
 		Expression expr = ExpressionFactory
 				.matchExp(WebNode.IS_WEB_NAVIGABLE_PROPERTY, true)
 				.andExp(ExpressionFactory.matchExp(
@@ -67,10 +60,9 @@ public class WebNode extends _WebNode {
 
 		return expr.filterObjects(getWebNodes());
 	}
-
+*/
 	@Override
 	protected void performInitialization() {
-		setIsWebNavigable(true);
-		setIsWebVisible(true);
+		
 	}
 }

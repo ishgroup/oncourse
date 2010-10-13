@@ -3,6 +3,7 @@ package ish.oncourse.services.node;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -35,12 +36,20 @@ public class WebNodeService implements IWebNodeService {
 	public List<WebNode> getNodes() {
 		SelectQuery query = new SelectQuery(WebNode.class);
 		query.andQualifier(siteQualifier());
-		query.addOrdering(WebNode.WEIGHTING_PROPERTY, SortOrder.ASCENDING);
 		return cayenneService.sharedContext().performQuery(query);
 	}
 
 	public WebNode getHomePage() {
-		return webSiteService.getCurrentWebSite().getHomePage();
+		Expression defaultPathQualifier = ExpressionFactory.matchExp(WebUrlAlias.URL_PATH_PROPERTY,"/");
+		Expression siteMatchQualifier = ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite());
+		Expression qualifier = defaultPathQualifier.andExp(siteMatchQualifier);
+		SelectQuery query = new SelectQuery(WebUrlAlias.class, qualifier);
+		List<WebUrlAlias> aliases = cayenneService.sharedContext().performQuery(query);
+		if(aliases.isEmpty()){
+			return null;
+		}
+		return aliases.get(0).getWebNode();
 	}
 
 	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
@@ -83,7 +92,9 @@ public class WebNodeService implements IWebNodeService {
 
 			String[] names = nodeName.split("/");
 			int length = names.length;
-			for (int i = 0; i < length; i++) {
+			//TODO commented to resolve compilation problems, 
+			//in future the whole method will be removed because of using aliases
+			/*for (int i = 0; i < length; i++) {
 
 				String path = "";
 				for (int j = 0; j < length - 1 - i; j++) {
@@ -99,7 +110,7 @@ public class WebNodeService implements IWebNodeService {
 						ExpressionFactory.matchExp(shortNamePath, null).andExp(
 								ExpressionFactory.likeIgnoreCaseExp(namePath,
 										value))));
-			}
+			}*/
 
 			@SuppressWarnings("unchecked")
 			List<WebNode> nodes = cayenneService.sharedContext().performQuery(
@@ -147,11 +158,7 @@ public class WebNodeService implements IWebNodeService {
 
 		expression = expression
 				.andExp(ExpressionFactory.matchExp(
-						WebNode.IS_PUBLISHED_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(
-						WebNode.IS_WEB_NAVIGABLE_PROPERTY, true))
-				.andExp(ExpressionFactory.matchExp(
-						WebNode.IS_WEB_VISIBLE_PROPERTY, true));
+						WebNode.IS_PUBLISHED_PROPERTY, true));
 
 		return expression;
 	}
@@ -186,11 +193,13 @@ public class WebNodeService implements IWebNodeService {
 			return false;
 		}
 		for (int i = nodes.length - 2; i >= 0; i--) {
-			WebNode parentNode = node.getParentNode();
+			//TODO commented to resolve compilation problems, 
+			//in future the whole method will be removed because of using aliases
+			/*WebNode parentNode = node.getParentNode();
 			if (!(nodes[i].equals(parentNode.getShortName()) || nodes[i]
 					.equals(parentNode.getName()))) {
 				return false;
-			}
+			}*/
 		}
 		return true;
 	}

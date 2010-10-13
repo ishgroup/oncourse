@@ -32,7 +32,8 @@ public class WebSiteService implements IWebSiteService {
 	private ICayenneService cayenneService;
 	private transient CollegeDomain collegeDomain;
 	private final Expression activeBlocksNameFilter;
-	private final Expression activeBlocksRegionFilter;
+	//TODO commented till the question with the layouts regions will be resolved
+	//private final Expression activeBlocksRegionFilter;
 
 	public WebSiteService() {
 
@@ -41,10 +42,11 @@ public class WebSiteService implements IWebSiteService {
 
 		activeBlocksNameFilter = Expression.fromString(activeBlocksNameExp);
 
-		String activeBlocksRegionExp = String.format(
+		//TODO commented till the question with the layouts regions will be resolved
+		/*String activeBlocksRegionExp = String.format(
 				"%s = $regionKey", WebBlock.REGION_KEY_PROPERTY);
 
-		activeBlocksRegionFilter = Expression.fromString(activeBlocksRegionExp);
+		activeBlocksRegionFilter = Expression.fromString(activeBlocksRegionExp);*/
 	}
 
 	public CollegeDomain getCurrentDomain() {
@@ -88,7 +90,8 @@ public class WebSiteService implements IWebSiteService {
 		String folderName = DEFAULT_FOLDER_NAME;
 
 		if (getCurrentDomain() != null) {
-			folderName = getCurrentDomain().getCollege().getCollegeKey();
+			//TODO may be there's a replacement for the college key
+			//folderName = getCurrentDomain().getCollege().getCollegeKey();
 			String siteKey = getCurrentDomain().getWebSite().getSiteKey();
 			if ((siteKey != null) && !("".equals(siteKey))) {
 				folderName += "_" + siteKey;
@@ -117,10 +120,11 @@ public class WebSiteService implements IWebSiteService {
 			return null;
 		}
 
-		Expression filter = activeBlocksRegionFilter.expWithParameters(
-				Collections.singletonMap(WebBlock.REGION_KEY_PROPERTY, regionKey));
+		//TODO commented till the question with the layouts regions will be resolved
+		//Expression filter = activeBlocksRegionFilter.expWithParameters(
+			//	Collections.singletonMap(WebBlock.REGION_KEY_PROPERTY, regionKey));
 
-		allBlocks = filter.filterObjects(allBlocks);
+		//allBlocks = filter.filterObjects(allBlocks);
 
 		return (allBlocks.isEmpty()) ? null : allBlocks;
 	}
