@@ -6,6 +6,10 @@ INSERT INTO willow_college.Attendance (id, collegeId, angelId, studentId, sessio
 	SELECT id, collegeId, angelId, studentId, sessionId, attendanceType, markerId, created, modified 
 	FROM oncourse_realdata_willow_college.Attendance WHERE collegeId = @collegeId;
 
+INSERT INTO willow_binary.BinaryData (id, angelId,  binaryInfoId, collegeId, content, created, isDeleted, modified) 
+       SELECT id, angelId, binaryInfoId, collegeId, content, created, isDeleted, modified
+       FROM oncourse_realdata_willow_binary.BinaryData WHERE collegeId = @collegeId;
+
 INSERT INTO willow_college.BinaryInfoRelation (id, collegeId, isDeleted, binaryInfoId, entityIdentifier, entityWillowId, entityAngelId, angelId, created, modified) 
 	SELECT id, collegeId, isDeleted, binaryInfoId, entityIdentifier, entityRecordId, entityAngelId, angelId, created, modified 
 	FROM oncourse_realdata_willow_college.BinaryInfoRelation WHERE collegeId = @collegeId AND isDeleted = 0;
@@ -352,9 +356,6 @@ INSERT INTO willow_college.WebMenu (id , webNodeId, URL, webSiteId, webMenuParen
 UPDATE willow_college.WebHostName AS wh 
        JOIN willow_college.WebSite AS ws ON ws.id = wh.webSiteId
        SET wh.name=CONCAT(ws.siteKey, '.test1.oncourse.net.au') 
-       WHERE wh.name LIKE '%.test.oncourse.net.au' 
+       WHERE wh.name LIKE '%.test.oncourse.net.au'; 
        
-       
-
-
 set foreign_key_checks = 1 ;
