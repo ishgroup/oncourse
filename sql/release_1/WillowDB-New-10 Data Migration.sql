@@ -374,8 +374,6 @@ CREATE TABLE willow_college.WebMenuTEMP (
   `name` VARCHAR(64)
 );
 
-SET @collegeId = 10;
-
 INSERT INTO willow_college.WebMenuTEMP (webNodeId, webSiteId, webMenuParentId, weight, name)
 	SELECT wn.id, wn.webSiteID, wn.parentNodeID, wn.weighting, case when (wn.shortName is null) then wn.name else wn.shortName end
 	FROM oncourse_realdata_willow_college.WebNode AS wn
