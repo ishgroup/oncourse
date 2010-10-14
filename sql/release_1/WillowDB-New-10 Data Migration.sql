@@ -101,7 +101,7 @@ INSERT INTO willow_college.Contact (angelId, collegeId, created, id, isDeleted, 
 
 INSERT INTO willow_college.CourseModule (courseId, moduleId, created, modified)
 	SELECT courseId, moduleId, created, modified
-	FROM oncourse_realdata_willow_college.CourseModule WHERE courseId in (SELECT id FROM Course WHERE collegeId = @collegeId);
+	FROM oncourse_realdata_willow_college.CourseModule WHERE courseId in (SELECT id FROM willow_college.Course WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.Discount (id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, isCodeRequired, isDeleted, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail, detail_textile)
 	SELECT id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, isCodeRequired, isDeleted, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail, detail_textile
@@ -352,7 +352,7 @@ INSERT INTO willow_college.WebContentVisibility ( WebNodeTypeId, WebContentId, w
 	SELECT wnt.id, wb.id, wb.weighting, wb.regionKey
 	FROM oncourse_realdata_willow_college.WebBlock AS wb
 	JOIN willow_college.WebNodeType AS wnt ON  wnt.webSiteId = wb.webSiteId
-	WHERE wb.isDeleted = 0 AND wb.regionKey is not NULL AND wb.webSiteId IN (SELECT id FROM WebSite WHERE collegeId = @collegeId);
+	WHERE wb.isDeleted = 0 AND wb.regionKey is not NULL AND wb.webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
 
 -- web node content goes into WebContent
 INSERT INTO willow_college.WebContent (id, content, content_textile, name, webSiteId, created, modified)
@@ -366,16 +366,63 @@ INSERT INTO willow_college.WebContentVisibility ( WebNodeId, WebContentId, weigh
 	WHERE ws.collegeId = @collegeId;
 
 
-INSERT INTO willow_college.WebMenu (id , webNodeId, URL, webSiteId, webMenuParentId, weight, name, created, modified)
-	SELECT wn.id, wn.id, '', wn.webSiteID, NULL, wn.weighting, wn.shortName, NOW(), NOW()
-	FROM oncourse_realdata_willow_college.WebNode AS wn
-	WHERE wn.isDeleted = 0 AND wn.isWebNavigable =1 AND wn.webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
+CREATE TABLE willow_college.WebMenuTEMP (
+  `webNodeId` BIGINT(20) ,
+  `webSiteId` BIGINT(20),
+  `webMenuParentId` BIGINT(20),
+  `weight` INT,
+  `name` VARCHAR(64)
+);
 
+SET @collegeId = 10;
+
+INSERT INTO willow_college.WebMenuTEMP (webNodeId, webSiteId, webMenuParentId, weight, name)
+	SELECT wn.id, wn.webSiteID, wn.parentNodeID, wn.weighting, case when (wn.shortName is null) then wn.name else wn.shortName end
+	FROM oncourse_realdata_willow_college.WebNode AS wn
+	JOIN willow_college.WebSite AS ws ON ws.id = wn.webSiteId
+	WHERE wn.isDeleted = 0 AND wn.isWebVisible = 1 AND wn.isPublished AND ws.collegeId = @collegeId;
+
+-- do this many times to clean up the whole menu tree
+DELETE w FROM willow_college.WebMenuTEMP AS w
+	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
+	WHERE parent.webNodeId IS NULL AND w.webMenuParentId IS NOT NULL;
+
+DELETE w FROM willow_college.WebMenuTEMP AS w
+	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
+	WHERE parent.webNodeId IS NULL AND w.webMenuParentId IS NOT NULL;
+
+DELETE w FROM willow_college.WebMenuTEMP AS w
+	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
+	WHERE parent.webNodeId IS NULL AND w.webMenuParentId IS NOT NULL;
+	
+DELETE w FROM willow_college.WebMenuTEMP AS w
+	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
+	WHERE parent.webNodeId IS NULL AND w.webMenuParentId IS NOT NULL;
+	
+DELETE w FROM willow_college.WebMenuTEMP AS w
+	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
+	WHERE parent.webNodeId IS NULL AND w.webMenuParentId IS NOT NULL;
+	
+DELETE w FROM willow_college.WebMenuTEMP AS w
+	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
+	WHERE parent.webNodeId IS NULL AND w.webMenuParentId IS NOT NULL;
+
+DELETE w FROM willow_college.WebMenuTEMP AS w
+	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
+	WHERE parent.webNodeId IS NULL AND w.webMenuParentId IS NOT NULL;
+	
+
+INSERT INTO willow_college.WebMenu (id, webNodeId, URL, webSiteId, webMenuParentId, weight, name, created, modified)
+	SELECT webNodeId, webNodeId, '', webSiteId, NULL, weight, name, NOW(), NOW()
+	FROM willow_college.WebMenuTEMP;
+
+-- we need to do the parent references as a separate step since we have constraints
 UPDATE willow_college.WebMenu AS wm 
-	JOIN oncourse_realdata_willow_college.WebNode AS wn ON wn.id = wm.id
-	JOIN willow_college.WebMenu AS wmJoin ON wmJoin.id = wn.parentNodeID
-	SET wm.webMenuParentId = wn.parentNodeID
-	WHERE wm.webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
+	JOIN willow_college.WebMenuTEMP AS temp ON temp.webNodeId = wm.webNodeId
+	SET wm.webMenuParentId = temp.webMenuParentId;
+
+DROP TABLE willow_college.WebMenuTEMP;
+
 
 UPDATE willow_college.WebHostName AS wh 
 	JOIN willow_college.WebSite AS ws ON ws.id = wh.webSiteId
