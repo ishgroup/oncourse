@@ -111,7 +111,10 @@ public class WebSiteService implements IWebSiteService {
 	}
 
 	public List<WebBlock> getWebBlocksForRegion(String regionKey) {
-
+		//TODO commented till the question with the layouts regions will be resolved
+		if(true){
+			return null;
+		}
 		List<WebBlock> allBlocks = getCurrentWebSite().getWebBlocks();
 		if (allBlocks.isEmpty()) {
 			return null;

@@ -63,6 +63,10 @@ public class Page {
 	}
 
 	public String getRegionContent() {
+		//TODO remove when the question with the layouts regions will be resolved
+		if(region==null){
+			return null;
+		}
 		String text = region.getContent();
 
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
