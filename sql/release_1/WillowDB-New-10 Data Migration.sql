@@ -320,8 +320,9 @@ INSERT INTO willow_college.WebNodeType ( created,  modified, name, layoutKey, we
 	FROM oncourse_realdata_willow_college.WebSite AS ws
 	WHERE ws.isDeleted = 0 AND ws.collegeId = @collegeId ;
 
-INSERT INTO willow_college.WebContent (id, content, content_textile, webNodeId, regionKey, name, webSiteId, created, modified)
-	SELECT	id, content, content_textile, NULL, regionKey, name, webSiteID, created, modified
+-- web blocks go into web content now
+INSERT INTO willow_college.WebContent (id, content, content_textile, name, webSiteId, created, modified)
+	SELECT	id, content, content_textile, name, webSiteID, created, modified
 	FROM oncourse_realdata_willow_college.WebBlock WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
 
 
@@ -350,13 +351,21 @@ INSERT INTO willow_college.WillowUser (angelId, collegeId, created, email, faile
 INSERT INTO willow_college.WebContentVisibility ( WebNodeTypeId, WebContentId, weight,regionKey) 
 	SELECT wnt.id, wb.id, wb.weighting, wb.regionKey
 	FROM oncourse_realdata_willow_college.WebBlock AS wb
-	JOIN willow_college.WebNodeType AS wnt ON  wnt.webSiteId= wb.webSiteId
+	JOIN willow_college.WebNodeType AS wnt ON  wnt.webSiteId = wb.webSiteId
 	WHERE wb.isDeleted = 0 AND wb.regionKey is not NULL AND wb.webSiteId IN (SELECT id FROM WebSite WHERE collegeId = @collegeId);
 
-INSERT INTO willow_college.WebContent (id, content, content_textile, webNodeId, regionKey, name, webSiteId, created, modified)
-	SELECT id + 1000, content, content_textile, id, 'content', NULL, webSiteId, NOW(), NOW()
+-- web node content goes into WebContent
+INSERT INTO willow_college.WebContent (id, content, content_textile, name, webSiteId, created, modified)
+	SELECT id + 1000, content, content_textile, NULL, webSiteId, NOW(), NOW()
 	FROM oncourse_realdata_willow_college.WebNode WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
- 
+
+INSERT INTO willow_college.WebContentVisibility ( WebNodeId, WebContentId, weight,regionKey) 
+	SELECT wn.id, wn.id + 1000, 0, 'content'
+	FROM willow_college.WebNode AS wn
+	JOIN willow_college.WebSite AS ws ON  ws.id = wn.webSiteId
+	WHERE ws.collegeId = @collegeId;
+
+
 INSERT INTO willow_college.WebMenu (id , webNodeId, URL, webSiteId, webMenuParentId, weight, name, created, modified)
 	SELECT wn.id, wn.id, '', wn.webSiteID, NULL, wn.weighting, wn.shortName, NOW(), NOW()
 	FROM oncourse_realdata_willow_college.WebNode AS wn
@@ -374,7 +383,7 @@ UPDATE willow_college.WebHostName AS wh
 	WHERE wh.name LIKE '%.test.oncourse.net.au'; 
 
 -- add special aliases for the home page
-INSERT INTO	 willow_college.WebURLAlias ( created, id, modified, urlPath, webNodeId, webSiteId)
+INSERT INTO willow_college.WebURLAlias ( created, id, modified, urlPath, webNodeId, webSiteId)
 	SELECT NOW(), id + 10000, NOW(), '/', id, webSiteId
 	FROM oncourse_realdata_willow_college.WebNode 
 	WHERE `isDeleted` =0 AND `isWebVisible` = 1

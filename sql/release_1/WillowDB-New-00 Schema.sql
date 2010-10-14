@@ -4,6 +4,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 CREATE SCHEMA IF NOT EXISTS `willow_binary` DEFAULT CHARACTER SET latin1 ;
 CREATE SCHEMA IF NOT EXISTS `willow_college` DEFAULT CHARACTER SET latin1 ;
+CREATE SCHEMA IF NOT EXISTS `willow_reference` DEFAULT CHARACTER SET latin1 ;
 USE `willow_binary` ;
 
 -- -----------------------------------------------------
@@ -442,6 +443,30 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 930
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `willow_reference`.`Module`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_reference`.`Module` (
+  `ishVersion` BIGINT(11) NOT NULL ,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `nationalCode` VARCHAR(16) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `title` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `disciplineCode` VARCHAR(8) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `fieldOfEducation` VARCHAR(8) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `isModule` TINYINT(4) NOT NULL ,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
+  `trainingPackageId` BIGINT(20) NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `nationalcode` (`nationalCode` ASC) ,
+  INDEX `ishVersion` (`ishVersion` ASC) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 1110427
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci
+ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
@@ -1724,25 +1749,17 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContent` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-  `webNodeId` BIGINT(20) NULL DEFAULT NULL ,
   `content` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `content_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  `regionKey` VARCHAR(24) NOT NULL ,
   `name` VARCHAR(128) NULL DEFAULT NULL ,
   `webSiteId` BIGINT(20) NOT NULL ,
   `created` DATETIME NOT NULL ,
   `modified` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `webContent_webSite` (`webSiteId` ASC) ,
-  INDEX `webContent_webNode` (`webNodeId` ASC) ,
   CONSTRAINT `webContent_webSite`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `webContent_webNode`
-    FOREIGN KEY (`webNodeId` )
-    REFERENCES `willow_college`.`WebNode` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -1791,13 +1808,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-  `WebNodeTypeId` BIGINT(20) NOT NULL ,
+  `WebNodeTypeId` BIGINT(20) NULL ,
+  `WebNodeId` BIGINT(20) NULL ,
   `WebContentId` BIGINT(20) NOT NULL ,
   `weight` INT NOT NULL DEFAULT 0 ,
   `regionKey` VARCHAR(24) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `WebContentVisibility_WebContent` (`WebContentId` ASC) ,
   INDEX `WebContentVisibility_WebNodeType` (`WebNodeTypeId` ASC) ,
+  INDEX `WebContentVisibility_WebNode` (`WebNodeId` ASC) ,
   CONSTRAINT `WebContentVisibility_WebContent`
     FOREIGN KEY (`WebContentId` )
     REFERENCES `willow_college`.`WebContent` (`id` )
@@ -1806,6 +1825,11 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
   CONSTRAINT `WebContentVisibility_WebNodeType`
     FOREIGN KEY (`WebNodeTypeId` )
     REFERENCES `willow_college`.`WebNodeType` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `WebContentVisibility_WebNode`
+    FOREIGN KEY (`WebNodeId` )
+    REFERENCES `willow_college`.`WebNode` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1834,6 +1858,144 @@ CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY
 DROP TABLE IF EXISTS `willow_college`.`TutorView`;
 USE `willow_college`;
 CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `willow_college`.`TutorView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`t`.`startDate` AS `startDate`,`t`.`finishDate` AS `finishDate`,`t`.`resume` AS `resume`,`t`.`resume_textile` AS `resume_textile`,`t`.`isDeleted` AS `tIsDeleted`,`t`.`created` AS `tCreated`,`t`.`modified` AS `tModified` from (`willow_college`.`Tutor` `t` join `willow_college`.`Contact` `c` on((`c`.`tutorId` = `t`.`id`)));
+USE `willow_reference` ;
+
+-- -----------------------------------------------------
+-- Table `willow_reference`.`Country`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_reference`.`Country` (
+  `asccssCode` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `id` BIGINT(20) NOT NULL DEFAULT '0' ,
+  `ishVersion` BIGINT(11) NULL DEFAULT NULL ,
+  `isoCodeAlpha2` CHAR(3) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `isoCodeAlpha3` CHAR(3) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `isoCodeNumeric` INT(11) NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
+  `name` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `saccCode` INT(11) NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `name_uniq_idx` (`name` ASC) ,
+  INDEX `ishVersion` (`ishVersion` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `willow_reference`.`Language`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_reference`.`Language` (
+  `absCode` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `id` BIGINT(20) NOT NULL DEFAULT '0' ,
+  `isActive` TINYINT(4) NOT NULL DEFAULT '0' ,
+  `ishVersion` BIGINT(11) NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
+  `name` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `ishVersion` (`ishVersion` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `willow_reference`.`Qualification`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_reference`.`Qualification` (
+  `ishVersion` BIGINT(11) NULL DEFAULT '0' ,
+  `id` BIGINT(20) NOT NULL DEFAULT '0' ,
+  `nationalCode` VARCHAR(16) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `level` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `title` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `anzsco` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `anzsic` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `asco` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `fieldOfStudy` VARCHAR(4) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `fieldOfEducation` VARCHAR(8) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `nominalHours` FLOAT NULL DEFAULT NULL ,
+  `reviewDate` DATE NULL DEFAULT NULL ,
+  `isAccreditedCourse` TINYINT(4) NULL DEFAULT NULL ,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
+  `newApprenticeship` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `trainingPackageId` BIGINT(20) NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `ishVersion` (`ishVersion` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `willow_reference`.`TrainingPackage`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_reference`.`TrainingPackage` (
+  `ishVersion` BIGINT(11) NULL DEFAULT '0' ,
+  `id` BIGINT(20) NOT NULL DEFAULT '0' ,
+  `nationalISC` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `title` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `copyrightCategory` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `copyrightContact` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `developer` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `endorsementFrom` DATETIME NULL DEFAULT NULL ,
+  `endorsementTo` DATETIME NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
+  `purchaseFrom` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `type` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `ishVersion` (`ishVersion` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `willow_reference`.`postcode`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_reference`.`postcode` (
+  `ishVersion` BIGINT(11) NULL DEFAULT NULL ,
+  `postcode` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `locality` VARCHAR(60) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
+  `state` CHAR(3) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
+  `comments` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
+  `deliveryOffice` VARCHAR(60) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
+  `presortIndicator` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `parcelZone` CHAR(3) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
+  `BSPnumber` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `BSPname` VARCHAR(60) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
+  `category` VARCHAR(60) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
+  INDEX `postcode` (`postcode` ASC, `locality` ASC, `state` ASC, `comments` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `willow_reference`.`postcode_db`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_reference`.`postcode_db` (
+  `postcode` INT(4) UNSIGNED NOT NULL ,
+  `suburb` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `state` VARCHAR(4) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `dc` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `type` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `lat` DOUBLE NOT NULL DEFAULT '0' ,
+  `lon` DOUBLE NOT NULL DEFAULT '0' ,
+  PRIMARY KEY (`postcode`, `suburb`) ,
+  INDEX `idx_lon` (`lon` ASC) ,
+  INDEX `idx_lat` (`lat` ASC) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
