@@ -74,17 +74,16 @@
 							<goal>cgen</goal>
 						</goals>
 					</execution>
-					<execution>
+					<!-- execution>
 						<id>cgen2</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourseBinary.map.xml</map>
-							<!-- excluding this entity depending on the onCourse datamap till the CAY-1494 will be done-->
 							<excludeEntitiesPattern>BinaryData</excludeEntitiesPattern>
 						</configuration>
 						<goals>
 							<goal>cgen</goal>
 						</goals>
-					</execution>
+					</execution-->
 					<execution>
 						<id>cgen3</id>
 						<configuration>
