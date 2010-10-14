@@ -115,7 +115,7 @@ public class WebSiteService implements IWebSiteService {
 		if(true){
 			return null;
 		}
-		List<WebBlock> allBlocks = getCurrentWebSite().getWebBlocks();
+		List<WebBlock> allBlocks = Collections.emptyList();//getCurrentWebSite().getWebBlocks();
 		if (allBlocks.isEmpty()) {
 			return null;
 		}
@@ -131,7 +131,7 @@ public class WebSiteService implements IWebSiteService {
 
 	public WebBlock getWebBlockForName(String name) {
 
-		List<WebBlock> allBlocks = getCurrentWebSite().getWebBlocks();
+		List<WebBlock> allBlocks = Collections.emptyList();//getCurrentWebSite().getWebBlocks();
 		if (allBlocks.isEmpty()) {
 			return null;
 		}

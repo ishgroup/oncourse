@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.WebBlock;
+import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebHostName;
+import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebUrlAlias;
@@ -28,8 +29,9 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final String SITE_KEY_PROPERTY = "siteKey";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
+    public static final String CONTENTS_PROPERTY = "contents";
     public static final String TO_WEB_HOST_NAME_PROPERTY = "toWebHostName";
-    public static final String WEB_BLOCKS_PROPERTY = "webBlocks";
+    public static final String WEB_MENUS_PROPERTY = "webMenus";
     public static final String WEB_NODE_TYPES_PROPERTY = "webNodeTypes";
     public static final String WEB_NODES_PROPERTY = "webNodes";
     public static final String WEB_URL_ALIASES_PROPERTY = "webUrlAliases";
@@ -99,6 +101,18 @@ public abstract class _WebSite extends CayenneDataObject {
     }
 
 
+    public void addToContents(WebContent obj) {
+        addToManyTarget("contents", obj, true);
+    }
+    public void removeFromContents(WebContent obj) {
+        removeToManyTarget("contents", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WebContent> getContents() {
+        return (List<WebContent>)readProperty("contents");
+    }
+
+
     public void setToWebHostName(WebHostName toWebHostName) {
         setToOneTarget("toWebHostName", toWebHostName, true);
     }
@@ -108,15 +122,15 @@ public abstract class _WebSite extends CayenneDataObject {
     }
 
 
-    public void addToWebBlocks(WebBlock obj) {
-        addToManyTarget("webBlocks", obj, true);
+    public void addToWebMenus(WebMenu obj) {
+        addToManyTarget("webMenus", obj, true);
     }
-    public void removeFromWebBlocks(WebBlock obj) {
-        removeToManyTarget("webBlocks", obj, true);
+    public void removeFromWebMenus(WebMenu obj) {
+        removeToManyTarget("webMenus", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<WebBlock> getWebBlocks() {
-        return (List<WebBlock>)readProperty("webBlocks");
+    public List<WebMenu> getWebMenus() {
+        return (List<WebMenu>)readProperty("webMenus");
     }
 
 

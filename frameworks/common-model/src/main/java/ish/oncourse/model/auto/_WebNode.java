@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
-import ish.oncourse.model.WebNodeContent;
+import ish.oncourse.model.WebContentVisibility;
+import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
@@ -23,7 +24,9 @@ public abstract class _WebNode extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String NODE_NUMBER_PROPERTY = "nodeNumber";
-    public static final String WEB_NODE_CONTENTS_PROPERTY = "webNodeContents";
+    public static final String DEFAULT_WEB_URLALIAS_PROPERTY = "defaultWebURLAlias";
+    public static final String WEB_CONTENT_VISIBILITY_PROPERTY = "webContentVisibility";
+    public static final String WEB_MENU_PROPERTY = "webMenu";
     public static final String WEB_NODE_TYPE_PROPERTY = "webNodeType";
     public static final String WEB_SITE_PROPERTY = "webSite";
     public static final String WEB_URL_ALIASES_PROPERTY = "webUrlAliases";
@@ -65,15 +68,30 @@ public abstract class _WebNode extends CayenneDataObject {
         return (Integer)readProperty("nodeNumber");
     }
 
-    public void addToWebNodeContents(WebNodeContent obj) {
-        addToManyTarget("webNodeContents", obj, true);
+    public void setDefaultWebURLAlias(WebUrlAlias defaultWebURLAlias) {
+        setToOneTarget("defaultWebURLAlias", defaultWebURLAlias, true);
     }
-    public void removeFromWebNodeContents(WebNodeContent obj) {
-        removeToManyTarget("webNodeContents", obj, true);
+
+    public WebUrlAlias getDefaultWebURLAlias() {
+        return (WebUrlAlias)readProperty("defaultWebURLAlias");
     }
-    @SuppressWarnings("unchecked")
-    public List<WebNodeContent> getWebNodeContents() {
-        return (List<WebNodeContent>)readProperty("webNodeContents");
+
+
+    public void setWebContentVisibility(WebContentVisibility webContentVisibility) {
+        setToOneTarget("webContentVisibility", webContentVisibility, true);
+    }
+
+    public WebContentVisibility getWebContentVisibility() {
+        return (WebContentVisibility)readProperty("webContentVisibility");
+    }
+
+
+    public void setWebMenu(WebMenu webMenu) {
+        setToOneTarget("webMenu", webMenu, true);
+    }
+
+    public WebMenu getWebMenu() {
+        return (WebMenu)readProperty("webMenu");
     }
 
 

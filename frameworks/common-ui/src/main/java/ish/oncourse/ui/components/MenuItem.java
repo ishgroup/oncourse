@@ -54,7 +54,7 @@ public class MenuItem {
     @AfterRender
     void after() {
         // set the currentMenu to the parent after render (pop the stack)
-        WebMenu webMenu = menu.getToWebMenu();
+        WebMenu webMenu = menu.getParentWebMenu();
 		if (webMenu != null) {
             menu = webMenu;
 		}
@@ -65,7 +65,7 @@ public class MenuItem {
     }
     
     public String getItemHref() {
-    	WebNode node = menu.getToWebNode();
-		return request.getContextPath() + "/" + node==null?menu.getUrl():node.getPath();
+    	WebNode node = menu.getWebNode();
+		return node==null?menu.getUrl():(request.getContextPath() + "/" + node.getPath());
     }
 }

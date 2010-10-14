@@ -22,10 +22,10 @@ public abstract class _WebMenu extends CayenneDataObject {
     public static final String NAME_PROPERTY = "name";
     public static final String URL_PROPERTY = "url";
     public static final String WEIGHT_PROPERTY = "weight";
-    public static final String TO_WEB_MENU_PROPERTY = "toWebMenu";
-    public static final String TO_WEB_NODE_PROPERTY = "toWebNode";
-    public static final String TO_WEB_SITE_PROPERTY = "toWebSite";
-    public static final String WEB_MENU_ARRAY_PROPERTY = "webMenuArray";
+    public static final String CHILDREN_MENUS_PROPERTY = "childrenMenus";
+    public static final String PARENT_WEB_MENU_PROPERTY = "parentWebMenu";
+    public static final String WEB_NODE_PROPERTY = "webNode";
+    public static final String WEB_SITE_PROPERTY = "webSite";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -64,42 +64,42 @@ public abstract class _WebMenu extends CayenneDataObject {
         return (Integer)readProperty("weight");
     }
 
-    public void setToWebMenu(WebMenu toWebMenu) {
-        setToOneTarget("toWebMenu", toWebMenu, true);
+    public void addToChildrenMenus(WebMenu obj) {
+        addToManyTarget("childrenMenus", obj, true);
     }
-
-    public WebMenu getToWebMenu() {
-        return (WebMenu)readProperty("toWebMenu");
-    }
-
-
-    public void setToWebNode(WebNode toWebNode) {
-        setToOneTarget("toWebNode", toWebNode, true);
-    }
-
-    public WebNode getToWebNode() {
-        return (WebNode)readProperty("toWebNode");
-    }
-
-
-    public void setToWebSite(WebSite toWebSite) {
-        setToOneTarget("toWebSite", toWebSite, true);
-    }
-
-    public WebSite getToWebSite() {
-        return (WebSite)readProperty("toWebSite");
-    }
-
-
-    public void addToWebMenuArray(WebMenu obj) {
-        addToManyTarget("webMenuArray", obj, true);
-    }
-    public void removeFromWebMenuArray(WebMenu obj) {
-        removeToManyTarget("webMenuArray", obj, true);
+    public void removeFromChildrenMenus(WebMenu obj) {
+        removeToManyTarget("childrenMenus", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<WebMenu> getWebMenuArray() {
-        return (List<WebMenu>)readProperty("webMenuArray");
+    public List<WebMenu> getChildrenMenus() {
+        return (List<WebMenu>)readProperty("childrenMenus");
+    }
+
+
+    public void setParentWebMenu(WebMenu parentWebMenu) {
+        setToOneTarget("parentWebMenu", parentWebMenu, true);
+    }
+
+    public WebMenu getParentWebMenu() {
+        return (WebMenu)readProperty("parentWebMenu");
+    }
+
+
+    public void setWebNode(WebNode webNode) {
+        setToOneTarget("webNode", webNode, true);
+    }
+
+    public WebNode getWebNode() {
+        return (WebNode)readProperty("webNode");
+    }
+
+
+    public void setWebSite(WebSite webSite) {
+        setToOneTarget("webSite", webSite, true);
+    }
+
+    public WebSite getWebSite() {
+        return (WebSite)readProperty("webSite");
     }
 
 

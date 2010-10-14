@@ -25,7 +25,7 @@ public class WebMenuService implements IWebMenuService {
 
 	public WebMenu getMainMenu() {
 		Expression rootMenuExp = ExpressionFactory.matchExp(
-				WebMenu.TO_WEB_MENU_PROPERTY, null);
+				WebMenu.PARENT_WEB_MENU_PROPERTY, null);
 		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier()
 				.andExp(rootMenuExp));
 		List<WebMenu> results = cayenneService.sharedContext().performQuery(
@@ -36,9 +36,9 @@ public class WebMenuService implements IWebMenuService {
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
 		Expression expression = (site == null) ? ExpressionFactory.matchExp(
-				WebMenu.TO_WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+				WebMenu.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory
-				.matchExp(WebMenu.TO_WEB_SITE_PROPERTY, site);
+				.matchExp(WebMenu.WEB_SITE_PROPERTY, site);
 
 		return expression;
 	}

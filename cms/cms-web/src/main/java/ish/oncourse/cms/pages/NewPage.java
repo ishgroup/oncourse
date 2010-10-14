@@ -43,7 +43,7 @@ public class NewPage extends EditPage {
 		//content.setRegionKey("content");
 		content.setContent("Sample content text.");
 
-		newPageNode.addToWebNodeContents(content);
+		//newPageNode.addToWebNodeContents(content);
 
 		return newPageNode;
 	}

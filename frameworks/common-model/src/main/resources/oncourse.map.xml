@@ -650,18 +650,19 @@
 		<db-attribute name="siteId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="waitingListId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="WebBlock" catalog="willow_college">
+	<db-entity name="WebContent" catalog="willow_college">
 		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
-		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
 	</db-entity>
-	<db-entity name="WebBlockVisibility" catalog="willow_college">
-		<db-attribute name="WebBlockId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="WebNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
+	<db-entity name="WebContentVisibility" catalog="willow_college">
+		<db-attribute name="WebContentId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="WebNodeId" type="BIGINT" length="19"/>
+		<db-attribute name="WebNodeTypeId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="regionKey" type="VARCHAR" isMandatory="true" length="24"/>
 		<db-attribute name="weight" type="INTEGER" isMandatory="true" length="10"/>
@@ -687,6 +688,7 @@
 	</db-entity>
 	<db-entity name="WebNode" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="defaultURLAlias" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isPublished" type="BIT" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -694,12 +696,6 @@
 		<db-attribute name="nodeNumber" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
-	</db-entity>
-	<db-entity name="WebNodeContent" catalog="willow_college">
-		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="content_textile" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="WebNodeType" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
@@ -1262,16 +1258,15 @@
 	</obj-entity>
 	<obj-entity name="WaitingListSite" className="ish.oncourse.model.WaitingListSite" dbEntityName="WaitingListSite">
 	</obj-entity>
-	<obj-entity name="WebBlock" className="ish.oncourse.model.WebBlock" dbEntityName="WebBlock">
+	<obj-entity name="WebContent" className="ish.oncourse.model.WebContent" dbEntityName="WebContent">
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
 		<obj-attribute name="contentTextile" type="java.lang.String" db-attribute-path="content_textile"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
-	<obj-entity name="WebBlockVisibility" className="ish.oncourse.model.WebBlockVisibility" dbEntityName="WebBlockVisibility">
+	<obj-entity name="WebContentVisibility" className="ish.oncourse.model.WebContentVisibility" dbEntityName="WebContentVisibility">
 		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
-		<obj-attribute name="webNodeTypeId" type="java.lang.Long" db-attribute-path="WebNodeTypeId"/>
 		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
 	</obj-entity>
 	<obj-entity name="WebHostName" className="ish.oncourse.model.WebHostName" dbEntityName="WebHostName">
@@ -1293,10 +1288,6 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="nodeNumber" type="java.lang.Integer" db-attribute-path="nodeNumber"/>
 		<post-add method-name="performInitialization"/>
-	</obj-entity>
-	<obj-entity name="WebNodeContent" className="ish.oncourse.model.WebNodeContent" dbEntityName="WebNodeContent">
-		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
-		<obj-attribute name="contentTextile" type="java.lang.String" db-attribute-path="content_textile"/>
 	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1903,14 +1894,20 @@
 	<db-relationship name="waitingList" source="WaitingListSite" target="WaitingList" toMany="false">
 		<db-attribute-pair source="waitingListId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webSite" source="WebBlock" target="WebSite" toMany="false">
+	<db-relationship name="webContentVisibility" source="WebContent" target="WebContentVisibility" toMany="false">
+		<db-attribute-pair source="id" target="WebContentId"/>
+	</db-relationship>
+	<db-relationship name="webSite" source="WebContent" target="WebSite" toMany="false">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
-	<db-relationship name="toWebBlock" source="WebBlockVisibility" target="WebBlock" toMany="false">
-		<db-attribute-pair source="WebBlockId" target="id"/>
+	<db-relationship name="webContent" source="WebContentVisibility" target="WebContent" toMany="false">
+		<db-attribute-pair source="WebContentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="toWebNodeType" source="WebBlockVisibility" target="WebNodeType" toMany="false">
-		<db-attribute-pair source="WebBlockId" target="id"/>
+	<db-relationship name="webNode" source="WebContentVisibility" target="WebNode" toMany="false">
+		<db-attribute-pair source="WebNodeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webNodeType" source="WebContentVisibility" target="WebNodeType" toMany="false">
+		<db-attribute-pair source="WebNodeTypeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="WebHostName" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -1921,19 +1918,25 @@
 	<db-relationship name="webSiteArray" source="WebHostName" target="WebSite" toMany="true">
 		<db-attribute-pair source="id" target="SSLhostNameId"/>
 	</db-relationship>
-	<db-relationship name="toWebMenu" source="WebMenu" target="WebMenu" toMany="false">
-		<db-attribute-pair source="webMenuParentId" target="id"/>
-	</db-relationship>
-	<db-relationship name="toWebNode" source="WebMenu" target="WebNode" toMany="false">
-		<db-attribute-pair source="webNodeId" target="id"/>
-	</db-relationship>
-	<db-relationship name="toWebSite" source="WebMenu" target="WebSite" toMany="false">
-		<db-attribute-pair source="webSiteId" target="id"/>
-	</db-relationship>
-	<db-relationship name="webMenuArray" source="WebMenu" target="WebMenu" toMany="true">
+	<db-relationship name="childrenMenus" source="WebMenu" target="WebMenu" toMany="true">
 		<db-attribute-pair source="id" target="webMenuParentId"/>
 	</db-relationship>
-	<db-relationship name="webNodeContents" source="WebNode" target="WebNodeContent" toMany="true">
+	<db-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" toMany="false">
+		<db-attribute-pair source="webMenuParentId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webNode" source="WebMenu" target="WebNode" toMany="false">
+		<db-attribute-pair source="webNodeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webSite" source="WebMenu" target="WebSite" toMany="false">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
+	<db-relationship name="defaultWebURLAlias" source="WebNode" target="WebURLAlias" toMany="false">
+		<db-attribute-pair source="defaultURLAlias" target="id"/>
+	</db-relationship>
+	<db-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" toMany="false">
+		<db-attribute-pair source="id" target="WebNodeId"/>
+	</db-relationship>
+	<db-relationship name="webMenu" source="WebNode" target="WebMenu" toMany="false">
 		<db-attribute-pair source="id" target="webNodeId"/>
 	</db-relationship>
 	<db-relationship name="webNodeType" source="WebNode" target="WebNodeType" toMany="false">
@@ -1945,10 +1948,10 @@
 	<db-relationship name="webUrlAliases" source="WebNode" target="WebURLAlias" toMany="true">
 		<db-attribute-pair source="id" target="webNodeId"/>
 	</db-relationship>
-	<db-relationship name="webNode" source="WebNodeContent" target="WebNode" toMany="false">
-		<db-attribute-pair source="webNodeId" target="id"/>
+	<db-relationship name="webContentVisibilities" source="WebNodeType" target="WebContentVisibility" toMany="true">
+		<db-attribute-pair source="id" target="WebNodeTypeId"/>
 	</db-relationship>
-	<db-relationship name="webNodes" source="WebNodeType" target="WebNode" toMany="true">
+	<db-relationship name="webNode" source="WebNodeType" target="WebNode" toMany="false">
 		<db-attribute-pair source="id" target="webNodeTypeId"/>
 	</db-relationship>
 	<db-relationship name="webSite" source="WebNodeType" target="WebSite" toMany="false">
@@ -1960,10 +1963,13 @@
 	<db-relationship name="collegeDomains" source="WebSite" target="WebHostName" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
+	<db-relationship name="contents" source="WebSite" target="WebContent" toMany="true">
+		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
 	<db-relationship name="toWebHostName" source="WebSite" target="WebHostName" toMany="false">
 		<db-attribute-pair source="SSLhostNameId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webBlocks" source="WebSite" target="WebBlock" toMany="true">
+	<db-relationship name="webMenus" source="WebSite" target="WebMenu" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
 	<db-relationship name="webNodeTypes" source="WebSite" target="WebNodeType" toMany="true">
@@ -2177,27 +2183,32 @@
 	<obj-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="site" source="WaitingListSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="waitingList" source="WaitingListSite" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingList"/>
-	<obj-relationship name="webSite" source="WebBlock" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="toWebBlock" source="WebBlockVisibility" target="WebBlock" deleteRule="Nullify" db-relationship-path="toWebBlock"/>
-	<obj-relationship name="toWebNodeType" source="WebBlockVisibility" target="WebNodeType" deleteRule="Nullify" db-relationship-path="toWebNodeType"/>
+	<obj-relationship name="webContentVisibility" source="WebContent" target="WebContentVisibility" deleteRule="Nullify" db-relationship-path="webContentVisibility"/>
+	<obj-relationship name="webSite" source="WebContent" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="webContent" source="WebContentVisibility" target="WebContent" deleteRule="Nullify" db-relationship-path="webContent"/>
+	<obj-relationship name="webNode" source="WebContentVisibility" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
+	<obj-relationship name="webNodeType" source="WebContentVisibility" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
 	<obj-relationship name="college" source="WebHostName" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="webSite" source="WebHostName" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="webSiteArray" source="WebHostName" target="WebSite" deleteRule="Deny" db-relationship-path="webSiteArray"/>
-	<obj-relationship name="toWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="toWebMenu"/>
-	<obj-relationship name="toWebNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="toWebNode"/>
-	<obj-relationship name="toWebSite" source="WebMenu" target="WebSite" deleteRule="Nullify" db-relationship-path="toWebSite"/>
-	<obj-relationship name="webMenuArray" source="WebMenu" target="WebMenu" deleteRule="Deny" db-relationship-path="webMenuArray"/>
-	<obj-relationship name="webNodeContents" source="WebNode" target="WebNodeContent" deleteRule="Cascade" db-relationship-path="webNodeContents"/>
+	<obj-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="parentWebMenu"/>
+	<obj-relationship name="webSite" source="WebMenu" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="childrenMenus" source="WebMenu" target="WebMenu" deleteRule="Deny" db-relationship-path="childrenMenus"/>
+	<obj-relationship name="webNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
+	<obj-relationship name="defaultWebURLAlias" source="WebNode" target="WebUrlAlias" deleteRule="Nullify" db-relationship-path="defaultWebURLAlias"/>
+	<obj-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" deleteRule="Nullify" db-relationship-path="webContentVisibility"/>
+	<obj-relationship name="webMenu" source="WebNode" target="WebMenu" deleteRule="Nullify" db-relationship-path="webMenu"/>
 	<obj-relationship name="webNodeType" source="WebNode" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
 	<obj-relationship name="webSite" source="WebNode" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="webUrlAliases" source="WebNode" target="WebUrlAlias" deleteRule="Cascade" db-relationship-path="webUrlAliases"/>
-	<obj-relationship name="webNode" source="WebNodeContent" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
-	<obj-relationship name="webNodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
+	<obj-relationship name="webContentVisibilities" source="WebNodeType" target="WebContentVisibility" deleteRule="Deny" db-relationship-path="webContentVisibilities"/>
+	<obj-relationship name="webNodes" source="WebNodeType" target="WebNode" deleteRule="Deny" db-relationship-path="webNode"/>
 	<obj-relationship name="webSite" source="WebNodeType" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
+	<obj-relationship name="contents" source="WebSite" target="WebContent" deleteRule="Deny" db-relationship-path="contents"/>
 	<obj-relationship name="toWebHostName" source="WebSite" target="WebHostName" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
-	<obj-relationship name="webBlocks" source="WebSite" target="WebBlock" deleteRule="Deny" db-relationship-path="webBlocks"/>
+	<obj-relationship name="webMenus" source="WebSite" target="WebMenu" deleteRule="Deny" db-relationship-path="webMenus"/>
 	<obj-relationship name="webNodeTypes" source="WebSite" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>
 	<obj-relationship name="webNodes" source="WebSite" target="WebNode" deleteRule="Deny" db-relationship-path="webNodes"/>
 	<obj-relationship name="webUrlAliases" source="WebSite" target="WebUrlAlias" deleteRule="Deny" db-relationship-path="webUrlAliases"/>
