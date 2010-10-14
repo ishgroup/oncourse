@@ -1,12 +1,15 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.model.WebMenu;
+import ish.oncourse.services.menu.IWebMenuService;
 
-import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class BodyLayout {
 	@Inject
-	@Property
-	private IWebNodeService webNodeService;
+	private IWebMenuService webMenuService;
+	
+	public WebMenu getMenu(){
+		return webMenuService.getMainMenu();
+	}
 }

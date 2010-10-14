@@ -1,6 +1,6 @@
 <ul xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	
-	<t:loop source="nodes" value="currentNode">
+	<t:loop source="mainMenu.navigableChildMenus" value="currentMenu">
 		<t:delegate to="menuItem"/>
 	</t:loop>
 	

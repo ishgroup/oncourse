@@ -35,12 +35,12 @@ public class NewPage extends EditPage {
 
 		newPageNode.setWebSite((WebSite) ctx.localObject(webSite.getObjectId(),
 				null));
-		newPageNode.setWeighting(0);
-		newPageNode.setNodeNumber(0);
+				newPageNode.setNodeNumber(0);
 		newPageNode.setWebNodeType(WebNodeType.forName(ctx, WebNodeType.PAGE));
 
 		WebNodeContent content = ctx.newObject(WebNodeContent.class);
-		content.setRegionKey("content");
+		//TODO commented till the question with the layouts regions will be resolved
+		//content.setRegionKey("content");
 		content.setContent("Sample content text.");
 
 		newPageNode.addToWebNodeContents(content);

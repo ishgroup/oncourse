@@ -16,6 +16,8 @@ import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
+import ish.oncourse.services.menu.IWebMenuService;
+import ish.oncourse.services.menu.WebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.property.IPropertyService;
@@ -72,6 +74,7 @@ public class ServiceModule {
 		binder.bind(ITagService.class, TagService.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
+		binder.bind(IWebMenuService.class, WebMenuService.class);
 	}
 
 }

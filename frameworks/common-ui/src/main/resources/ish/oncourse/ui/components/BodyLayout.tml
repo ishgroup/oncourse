@@ -3,7 +3,7 @@
 	<div t:type="ui/bodyheader"></div>
 	
 	<div style="float:left; width:20%">
-	  <div t:type="ui/menu" nodes="webNodeService.homePage.navigableChildNodes"/>
+	  <div t:type="ui/menu" mainMenu="menu"/>
 	</div>
 	<span t:type="ui/GoogleAnalytics"/>
 	<a name="top"></a>

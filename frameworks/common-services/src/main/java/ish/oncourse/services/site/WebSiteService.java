@@ -1,8 +1,8 @@
 package ish.oncourse.services.site;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.Site;
+import ish.oncourse.model.WebHostName;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +30,7 @@ public class WebSiteService implements IWebSiteService {
 	private Request request;
 	@Inject
 	private ICayenneService cayenneService;
-	private transient CollegeDomain collegeDomain;
+	private transient WebHostName collegeDomain;
 	private final Expression activeBlocksNameFilter;
 	//TODO commented till the question with the layouts regions will be resolved
 	//private final Expression activeBlocksRegionFilter;
@@ -49,20 +49,20 @@ public class WebSiteService implements IWebSiteService {
 		activeBlocksRegionFilter = Expression.fromString(activeBlocksRegionExp);*/
 	}
 
-	public CollegeDomain getCurrentDomain() {
+	public WebHostName getCurrentDomain() {
 
 		if (collegeDomain == null) {
 
 			String serverName = request.getServerName().toLowerCase();
 
-			SelectQuery query = new SelectQuery(CollegeDomain.class);
+			SelectQuery query = new SelectQuery(WebHostName.class);
 			query.andQualifier(ExpressionFactory.matchExp(
-					CollegeDomain.NAME_PROPERTY, serverName));
+					WebHostName.NAME_PROPERTY, serverName));
 
 			query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			query.setCacheGroups(COLLEGE_DOMAIN_CACHE_GROUP);
 
-			collegeDomain = (CollegeDomain) DataObjectUtils.objectForQuery(
+			collegeDomain = (WebHostName) DataObjectUtils.objectForQuery(
 					cayenneService.sharedContext(), query);
 
 			if (collegeDomain == null) {

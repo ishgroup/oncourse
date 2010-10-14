@@ -47,9 +47,10 @@ public class EditPage extends Page {
 	}
 
 	Object onActionFromEditRegion(String id) {
-		this.editorRegion = ExpressionFactory
+		//TODO commented till the question with the layouts regions will be resolved
+		/*this.editorRegion = ExpressionFactory
 				.matchExp(WebNodeContent.REGION_KEY_PROPERTY, id)
-				.filterObjects(getCurrentNode().getWebNodeContents()).get(0);
+				.filterObjects(getCurrentNode().getWebNodeContents()).get(0);*/
 
 		return editorBlock;
 	}

@@ -3,7 +3,7 @@ package ish.oncourse.services.site;
 import java.util.List;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.CollegeDomain;
+import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.WebBlock;
 import ish.oncourse.model.WebSite;
@@ -32,7 +32,7 @@ public interface IWebSiteService {
 	 *
 	 * @return domain
 	 */
-	CollegeDomain getCurrentDomain();
+	WebHostName getCurrentDomain();
 
 	/**
 	 * Retrieve the resource folder name.

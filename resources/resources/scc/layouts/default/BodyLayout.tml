@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="clearfix container">
 		<div t:type="ui/bodyheader"></div>
-		<div t:type="ui/menu" nodes="webNodeService.homePage.getNavigableChildNodes()" />
+		<div t:type="ui/menu" mainMenu="menu" />
 
 		<div id="content_container" class="clearfix">
 			<div id="content" class="span-18 unitPng">

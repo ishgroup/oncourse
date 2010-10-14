@@ -1,8 +1,8 @@
 package ish.oncourse.services.site;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.CollegeDomain;
 import ish.oncourse.model.Site;
+import ish.oncourse.model.WebHostName;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +36,7 @@ public class MockWebSiteService implements IWebSiteService {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
-	public CollegeDomain getCurrentDomain() {
+	public WebHostName getCurrentDomain() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

@@ -15,7 +15,7 @@ public class GoogleAnalytics {
 	private IWebSiteService siteService;
 
 	public String getAnalyticsAccount() {
-		String analyticsAccount = siteService.getCurrentDomain().getGoogleAnalyticsAccount();
+		String analyticsAccount = siteService.getCurrentWebSite().getGoogleAnalyticsAccount();
 
 		return (analyticsAccount == null) ? "" : analyticsAccount.trim();
 	}

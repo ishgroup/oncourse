@@ -1,9 +1,8 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebMenu;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry5.annotations.Component;
@@ -13,37 +12,37 @@ import org.apache.tapestry5.annotations.Property;
 public class Menu {
 	@Property
 	@Parameter(required = true)
-	private List<WebNode> nodes;
+	private WebMenu mainMenu;
 
 	@Property
-	@Component(id = "menuItem", parameters = { "node=currentNode",
+	@Component(id = "menuItem", parameters = { "menu=currentMenu",
 			"childPosition=currentChildPosition" })
 	private MenuItem menuItem;
 
-	private WebNode currentNode;
+	private WebMenu currentMenu;
 
-	private Map<WebNode, Integer> childPositions;
+	private Map<WebMenu, Integer> childPositions;
 	
-	public WebNode getCurrentNode() {
-        return currentNode;
+	public WebMenu getCurrentMenu() {
+        return currentMenu;
     }
 
-    public void setCurrentNode(final WebNode node) {
-        if (!childPositions.containsKey(node)) {
-            childPositions.put(node, 0);
+    public void setCurrentMenu(final WebMenu menu) {
+        if (!childPositions.containsKey(menu)) {
+            childPositions.put(menu, 0);
         }
-        this.currentNode = node;
+        this.currentMenu = menu;
     }
 	
 	public int getCurrentChildPosition() {
-		return childPositions.get(this.currentNode);
+		return childPositions.get(this.currentMenu);
 	}
 
 	public void setCurrentChildPosition(final int pos) {
-		this.childPositions.put(currentNode, pos);
+		this.childPositions.put(currentMenu, pos);
 	}
 	
 	void setupRender() {
-        childPositions = new HashMap<WebNode, Integer>();
+        childPositions = new HashMap<WebMenu, Integer>();
     }
 }

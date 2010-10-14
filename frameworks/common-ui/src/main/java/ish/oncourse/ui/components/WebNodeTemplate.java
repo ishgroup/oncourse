@@ -27,7 +27,7 @@ public class WebNodeTemplate {
 
 	public PrivateResource getSelectedTemplate() {
 		PrivateResource template = resourceService.getTemplateResource(node
-				.getWebNodeType().getTemplateKey(), "WebNode.tml");
+				.getWebNodeType().getLayoutKey(), "WebNode.tml");
 		return template;
 	}
 

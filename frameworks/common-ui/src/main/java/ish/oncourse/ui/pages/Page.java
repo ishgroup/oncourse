@@ -87,12 +87,13 @@ public class Page {
 	public DynamicDelegate getBlockSource() {
 		return new DynamicDelegate() {
 			public Block getBlock(final String regionKey) {
-				final Expression expr = ExpressionFactory.matchExp(
+				//TODO commented till the question with the layouts regions will be resolved
+				/*final Expression expr = ExpressionFactory.matchExp(
 						WebNodeContent.REGION_KEY_PROPERTY, regionKey);
 
 				_self.region = expr.filterObjects(node.getWebNodeContents())
 						.get(0);
-
+				*/
 				return regionBlock;
 			}
 
