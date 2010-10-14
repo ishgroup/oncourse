@@ -642,6 +642,113 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
+-- Table `willow_college`.`WebNodeType`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNodeType` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `webSiteId` BIGINT(20) NOT NULL ,
+  `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `layoutKey` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `created` DATETIME NOT NULL ,
+  `modified` DATETIME NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `webSiteId_templateKey_uniq_idx` (`webSiteId` ASC, `layoutKey` ASC) ,
+  INDEX `name_idx` (`name` ASC) ,
+  CONSTRAINT `WebNodeType_ibfk_2`
+    FOREIGN KEY (`webSiteId` )
+    REFERENCES `willow_college`.`WebSite` (`id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `willow_college`.`WebURLAlias`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `webSiteId` BIGINT(20) NOT NULL ,
+  `webNodeId` BIGINT(20) NOT NULL ,
+  `created` DATETIME NOT NULL ,
+  `modified` DATETIME NOT NULL ,
+  `urlPath` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `WebURLAlias_ibfk_1` (`webSiteId` ASC) ,
+  INDEX `WebURLAlias_ibfk_2` (`webNodeId` ASC) ,
+  CONSTRAINT `WebURLAlias_ibfk_1`
+    FOREIGN KEY (`webSiteId` )
+    REFERENCES `willow_college`.`WebSite` (`id` ),
+  CONSTRAINT `WebURLAlias_ibfk_2`
+    FOREIGN KEY (`webNodeId` )
+    REFERENCES `willow_college`.`WebNode` (`id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 552
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `willow_college`.`WebNode`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `webSiteId` BIGINT(20) NOT NULL ,
+  `webNodeTypeId` BIGINT(20) NOT NULL ,
+  `isPublished` TINYINT(1) NOT NULL DEFAULT false ,
+  `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
+  `nodeNumber` INT(11) NOT NULL ,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
+  `defaultURLalias` BIGINT(20) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `webSite` (`webSiteId` ASC) ,
+  INDEX `webNodeType` (`webNodeTypeId` ASC) ,
+  INDEX `isPublished_isWebNavigable_idx` (`isPublished` ASC) ,
+  UNIQUE INDEX `college_nodeNumber` (`nodeNumber` ASC, `webSiteId` ASC) ,
+  INDEX `defaultWebURLalias` (`defaultURLalias` ASC) ,
+  CONSTRAINT `webSite`
+    FOREIGN KEY (`webSiteId` )
+    REFERENCES `willow_college`.`WebSite` (`id` ),
+  CONSTRAINT `webNodeType`
+    FOREIGN KEY (`webNodeTypeId` )
+    REFERENCES `willow_college`.`WebNodeType` (`id` ),
+  CONSTRAINT `defaultWebURLalias`
+    FOREIGN KEY (`defaultURLalias` )
+    REFERENCES `willow_college`.`WebURLAlias` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 5494
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `willow_college`.`WebContent`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContent` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `webNodeId` BIGINT(20) NULL DEFAULT NULL ,
+  `content` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `content_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `regionKey` VARCHAR(24) NOT NULL ,
+  `name` VARCHAR(128) NULL DEFAULT NULL ,
+  `webSiteId` BIGINT(20) NOT NULL ,
+  `created` DATETIME NOT NULL ,
+  `modified` DATETIME NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `webNodeId_regionKey_uniq_idx` (`webSiteId` ASC) ,
+  CONSTRAINT `webSite`
+    FOREIGN KEY (`webSiteId` )
+    REFERENCES `willow_college`.`WebNode` (`id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 374
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
 -- Table `willow_college`.`WebSite`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebSite` (
@@ -654,15 +761,22 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebSite` (
   `SSLhostNameId` BIGINT(20) NULL DEFAULT NULL ,
   `googleAnalyticsAccount` VARCHAR(16) NULL DEFAULT NULL ,
   `googleDirectionsFrom` VARCHAR(256) NULL DEFAULT NULL ,
+  `WebNodeContent_id` BIGINT(20) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `WebSite_ibfk_1` (`collegeId` ASC) ,
   INDEX `SSLhostname` (`SSLhostNameId` ASC) ,
+  INDEX `fk_WebSite_WebNodeContent1` (`WebNodeContent_id` ASC) ,
   CONSTRAINT `WebSite_ibfk_1`
     FOREIGN KEY (`collegeId` )
     REFERENCES `willow_college`.`College` (`id` ),
   CONSTRAINT `SSLhostname`
     FOREIGN KEY (`SSLhostNameId` )
     REFERENCES `willow_college`.`WebHostName` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_WebSite_WebNodeContent1`
+    FOREIGN KEY (`WebNodeContent_id` )
+    REFERENCES `willow_college`.`WebContent` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -1638,124 +1752,6 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebBlock`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebBlock` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-  `webSiteId` BIGINT(20) NOT NULL ,
-  `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
-  `content` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  `content_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `WebBlock_ibfk_2` (`webSiteId` ASC) ,
-  INDEX `name_idx` (`name` ASC) ,
-  CONSTRAINT `WebBlock_ibfk_2`
-    FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ))
-ENGINE = InnoDB
-AUTO_INCREMENT = 458
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `willow_college`.`WebNodeType`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNodeType` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-  `webSiteId` BIGINT(20) NOT NULL ,
-  `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  `layoutKey` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `webSiteId_templateKey_uniq_idx` (`webSiteId` ASC, `layoutKey` ASC) ,
-  INDEX `name_idx` (`name` ASC) ,
-  CONSTRAINT `WebNodeType_ibfk_2`
-    FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ))
-ENGINE = InnoDB
-AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `willow_college`.`WebNode`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-  `webSiteId` BIGINT(20) NOT NULL ,
-  `webNodeTypeId` BIGINT(20) NOT NULL ,
-  `isPublished` TINYINT(1) NOT NULL DEFAULT false ,
-  `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  `nodeNumber` INT(11) NOT NULL ,
-  `created` DATETIME NULL DEFAULT NULL ,
-  `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `WebNode_ibfk_1` (`webSiteId` ASC) ,
-  INDEX `WebNode_ibfk_3` (`webNodeTypeId` ASC) ,
-  INDEX `isPublished_isWebNavigable_idx` (`isPublished` ASC) ,
-  UNIQUE INDEX `college_nodeNumber` (`nodeNumber` ASC, `webSiteId` ASC) ,
-  CONSTRAINT `WebNode_ibfk_1`
-    FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ),
-  CONSTRAINT `WebNode_ibfk_3`
-    FOREIGN KEY (`webNodeTypeId` )
-    REFERENCES `willow_college`.`WebNodeType` (`id` ))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5494
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `willow_college`.`WebNodeContent`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNodeContent` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-  `webNodeId` BIGINT(20) NULL DEFAULT NULL ,
-  `content` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  `content_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `webNodeId_regionKey_uniq_idx` (`webNodeId` ASC) ,
-  CONSTRAINT `WebNodeContent_ibfk_1`
-    FOREIGN KEY (`webNodeId` )
-    REFERENCES `willow_college`.`WebNode` (`id` ))
-ENGINE = InnoDB
-AUTO_INCREMENT = 374
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `willow_college`.`WebURLAlias`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
-  `webSiteId` BIGINT(20) NOT NULL ,
-  `webNodeId` BIGINT(20) NOT NULL ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
-  `urlPath` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `WebURLAlias_ibfk_1` (`webSiteId` ASC) ,
-  INDEX `WebURLAlias_ibfk_2` (`webNodeId` ASC) ,
-  CONSTRAINT `WebURLAlias_ibfk_1`
-    FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ),
-  CONSTRAINT `WebURLAlias_ibfk_2`
-    FOREIGN KEY (`webNodeId` )
-    REFERENCES `willow_college`.`WebNode` (`id` ))
-ENGINE = InnoDB
-AUTO_INCREMENT = 552
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
 -- Table `willow_college`.`WebMenu`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebMenu` (
@@ -1791,20 +1787,20 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebBlockVisibility`
+-- Table `willow_college`.`WebContentVisibility`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebBlockVisibility` (
+CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `WebNodeTypeId` BIGINT(20) NOT NULL ,
-  `WebBlockId` BIGINT(20) NOT NULL ,
+  `WebContentId` BIGINT(20) NOT NULL ,
   `weight` INT NOT NULL DEFAULT 0 ,
   `regionKey` VARCHAR(24) NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `WebBlock` (`WebBlockId` ASC) ,
+  INDEX `WebContent` (`WebContentId` ASC) ,
   INDEX `WebNodeType` (`WebNodeTypeId` ASC) ,
-  CONSTRAINT `WebBlock`
-    FOREIGN KEY (`WebBlockId` )
-    REFERENCES `willow_college`.`WebBlock` (`id` )
+  CONSTRAINT `WebContent`
+    FOREIGN KEY (`WebContentId` )
+    REFERENCES `willow_college`.`WebContent` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `WebNodeType`

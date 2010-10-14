@@ -314,8 +314,8 @@ INSERT INTO willow_college.WebSite (  collegeId, created,   id,  modified, name,
 	JOIN oncourse_realdata_willow_college.CollegeDomain AS cd ON ws.id = cd.WebSiteId AND ws.sslHostName = cd.name
 	WHERE ws.isDeleted = 0 AND ws.collegeId = @collegeId AND ws.code IS NOT NULL;
 
-INSERT INTO willow_college.WebBlock ( content, content_textile, created, id,  modified, name,   webSiteId)
-	SELECT  content, content_textile, created, id,  modified, name, webSiteID
+INSERT INTO willow_college.WebContent (id, content, content_textile, webNodeId, regionKey, name, webSiteId, created, modified)
+	SELECT  id, content, content_textile, NULL, name, webSiteID, created, modified
 	FROM oncourse_realdata_willow_college.WebBlock WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.WebNodeType ( created,  modified, name, layoutKey, webSiteId)
@@ -323,15 +323,10 @@ INSERT INTO willow_college.WebNodeType ( created,  modified, name, layoutKey, we
 	FROM oncourse_realdata_willow_college.WebSite AS ws
 	WHERE ws.isDeleted = 0 AND ws.collegeId = @collegeId ;
 
-INSERT INTO willow_college.WebNode ( created, id, isPublished,  modified, name, nodeNumber,  webNodeTypeId, webSiteId )
-	SELECT  wn.created, wn.id, wn.isPublished, wn.modified, wn.name, wn.nodeNumber, wnt.id, wn.webSiteId
-	FROM oncourse_realdata_willow_college.WebNode as wn
-	JOIN willow_college.WebNodeType AS wnt ON wnt.webSiteId = wn.webSiteId
-	WHERE wn.isDeleted = 0 AND wn.webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
-
-INSERT INTO willow_college.WebNodeContent (content, content_textile, webNodeId)
-	SELECT content, content_textile, id
+INSERT INTO willow_college.WebNode ( created, id, isPublished,  modified, name, nodeNumber,  webNodeTypeId, webSiteId, defaultURLalias )
+	SELECT  created, id, isPublished,  modified, name, nodeNumber, webNodeTypeId, webSiteId, menuAliasID
 	FROM oncourse_realdata_willow_college.WebNode WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
+
 
 INSERT INTO willow_college.WebURLAlias ( created, id, modified, urlPath, webNodeId, webSiteId)
 	SELECT created, id, modified, urlPath, webNodeId, webSiteId
@@ -341,12 +336,16 @@ INSERT INTO willow_college.WillowUser (angelId, collegeId, created, email, faile
 	SELECT angelId, collegeId, created, email, failedLoginCount, firstName, flag1, id, isActive, isDeleted, isSuperUser, lastFailedLogin, lastLogin, lastName, modified, password, null
 	FROM oncourse_realdata_willow_college.WillowUser WHERE collegeId = @collegeId;
 
-INSERT INTO willow_college.WebBlockVisibility ( WebNodeTypeId, WebBlockId, weight,regionKey) 
+INSERT INTO willow_college.WebContentVisibilty ( WebNodeTypeId, WebContentId, weight,regionKey) 
 	SELECT wnt.id, wb.id, wb.weighting, wb.regionKey
 	FROM oncourse_realdata_willow_college.WebBlock AS wb
 	JOIN willow_college.WebNodeType AS wnt ON  wnt.webSiteId= wb.webSiteId
 	WHERE wb.isDeleted = 0 AND wb.regionKey is not NULL AND wb.webSiteId IN (SELECT id FROM WebSite WHERE collegeId = @collegeId);
 
+
+INSERT INTO willow_college.WebContent (id, content, content_textile, webNodeId, regionKey, name, webSiteId, created, modified)
+	SELECT id + 1000, content, content_textile, id, 'content', NULL, webSiteId, NOW(), NOW()
+	FROM oncourse_realdata_willow_college.WebNode WHERE isDeleted = 0 AND webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
  
 INSERT INTO willow_college.WebMenu (id , webNodeId, URL, webSiteId, webMenuParentId, weight, name, created, modified)
        SELECT wn.id, wn.id, '', wn.webSiteID, wn.parentNodeID, wn.weighting, wn.shortName, NOW(), NOW()
