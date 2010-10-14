@@ -257,8 +257,14 @@ INSERT INTO willow_college.SessionTutor (angelId, collegeId, created, modified, 
 		AND tutorId IN (SELECT id FROM Tutor WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.Tag (angelId, collegeId, created, detail, detail_textile, id, isDeleted, isTagGroup, isWebVisible, modified, name, nodeType, parentId, shortName, weighting)
-	SELECT angelId, collegeId, created, detail, detail_textile, id, isDeleted, isTagGroup, isWebVisible, modified, name, nodeType, parentId, shortName, weighting
-	FROM oncourse_realdata_willow_college.Tag WHERE collegeId = @collegeId AND isDeleted = 0;
+	SELECT angelId, collegeId, created, detail, detail_textile, id, isDeleted, isTagGroup, isWebVisible, modified, name, nodeType, NULL, shortName, weighting
+	FROM oncourse_realdata_willow_college.Tag
+	WHERE collegeId = @collegeId AND isDeleted = 0;
+	
+UPDATE willow_college.Tag AS t
+	JOIN oncourse_realdata_willow_college.Tag AS tOld ON tOld.id = t.id
+	SET t.parentId = tOld.parentId 
+	WHERE t.collegeId = @collegeId;
 
 INSERT INTO willow_college.Taggable (angelId, collegeId, created, id, isDeleted, modified, entityIdentifier, entityWillowId)
 	SELECT angelId, collegeId, created, id, isDeleted, modified, entityType, id
@@ -293,8 +299,8 @@ INSERT INTO willow_college.WaitingListSite (siteId, waitingListId)
 	WHERE siteId IN (SELECT id FROM Site WHERE collegeId = @collegeId)
 		AND waitingListId IN (SELECT id FROM WaitingList WHERE collegeId = @collegeId);
 
-INSERT INTO willow_college.WebSite (  collegeId, created,  id,	modified, name,	 siteKey, googleAnalyticsAccount, googleDirectionsFrom )
-	SELECT	ws.collegeId, ws.created, ws.id, ws.modified, ws.name,	ws.code, cd.googleAnalyticsAccount, cd.googleDirectionsFrom
+INSERT INTO willow_college.WebSite (  collegeId, created,  id, modified, name, siteKey, googleAnalyticsAccount, googleDirectionsFrom )
+	SELECT	ws.collegeId, ws.created, ws.id, ws.modified, ws.name, ws.code, cd.googleAnalyticsAccount, cd.googleDirectionsFrom
 	FROM oncourse_realdata_willow_college.WebSite AS ws
 	JOIN oncourse_realdata_willow_college.CollegeDomain AS cd ON ws.id = cd.WebSiteId AND ws.sslHostName = cd.name
 	WHERE ws.isDeleted = 0 AND ws.collegeId = @collegeId AND ws.code IS NOT NULL;
@@ -303,10 +309,11 @@ INSERT INTO willow_college.WebHostName (id, collegeId, webSiteId, created, modif
 	SELECT id, collegeId, webSiteId, created, modified, name
 	FROM oncourse_realdata_willow_college.CollegeDomain WHERE collegeId = @collegeId  AND isDeleted = 0;
 
-UPDATE willow_college.WebSite AS ws	 
-		JOIN oncourse_realdata_willow_college.CollegeDomain AS cd ON ws.id = cd.WebSiteId AND ws.sslHostName = cd.name
-	SET (ws.SSLhostNameId = cd.id)
-		WHERE ws.isDeleted = 0 AND ws.collegeId = @collegeId AND ws.code IS NOT NULL;
+UPDATE willow_college.WebSite AS ws
+	JOIN oncourse_realdata_willow_college.WebSite AS wsOld ON wsOld.id = ws.id
+	JOIN oncourse_realdata_willow_college.CollegeDomain AS cd ON ws.id = cd.WebSiteId AND wsOld.sslHostName = cd.name
+	SET ws.SSLhostNameId = cd.id
+	WHERE ws.collegeId = @collegeId;
 
 INSERT INTO willow_college.WebNodeType ( created,  modified, name, layoutKey, webSiteId)
 		SELECT	NOW(), NOW(), 'page', 'default', ws.id
