@@ -10,6 +10,8 @@ USE `willow_binary` ;
 -- -----------------------------------------------------
 -- Table `willow_binary`.`BinaryData`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_binary`.`BinaryData` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_binary`.`BinaryData` (
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
   `binaryInfoId` BIGINT(20) NOT NULL ,
@@ -31,6 +33,8 @@ USE `willow_college` ;
 -- -----------------------------------------------------
 -- Table `willow_college`.`College`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`College` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`College` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `isDeleted` TINYINT(1) NULL DEFAULT NULL ,
@@ -65,6 +69,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Student`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Student` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Student` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -95,6 +101,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Course`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Course` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Course` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -130,6 +138,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Site`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Site` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Site` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -167,6 +177,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Room`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Room` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Room` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -199,6 +211,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`CourseClass`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`CourseClass` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`CourseClass` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -253,6 +267,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Tutor`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Tutor` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Tutor` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -275,6 +291,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Session`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Session` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Session` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -313,6 +331,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Attendance`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Attendance` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Attendance` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -349,6 +369,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`BinaryInfo`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`BinaryInfo` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`BinaryInfo` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -380,6 +402,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`BinaryInfoRelation`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`BinaryInfoRelation` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`BinaryInfoRelation` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -411,6 +435,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Certificate`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Certificate` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Certificate` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -448,6 +474,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Discount`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Discount` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Discount` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -490,6 +518,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Enrolment`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Enrolment` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Enrolment` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -529,6 +559,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Outcome`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Outcome` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Outcome` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -567,6 +599,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`CertificateOutcome`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`CertificateOutcome` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`CertificateOutcome` (
   `certificateId` BIGINT(20) NOT NULL ,
   `outcomeId` BIGINT(20) NOT NULL ,
@@ -594,6 +628,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`ChangeRequest`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`ChangeRequest` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`ChangeRequest` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -616,6 +652,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`ChangeRequestItem`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`ChangeRequestItem` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`ChangeRequestItem` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `changeRequestId` BIGINT(20) NOT NULL ,
@@ -644,6 +682,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebNodeType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebNodeType` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNodeType` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webSiteId` BIGINT(20) NOT NULL ,
@@ -666,6 +706,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebURLAlias`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebURLAlias` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webSiteId` BIGINT(20) NOT NULL ,
@@ -691,6 +733,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebNode`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebNode` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webSiteId` BIGINT(20) NOT NULL ,
@@ -702,18 +746,18 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
   `modified` DATETIME NULL DEFAULT NULL ,
   `defaultURLalias` BIGINT(20) NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `webSite` (`webSiteId` ASC) ,
-  INDEX `webNodeType` (`webNodeTypeId` ASC) ,
+  INDEX `WebNode_webSite` (`webSiteId` ASC) ,
+  INDEX `WebNode_webNodeType` (`webNodeTypeId` ASC) ,
   INDEX `isPublished_isWebNavigable_idx` (`isPublished` ASC) ,
   UNIQUE INDEX `college_nodeNumber` (`nodeNumber` ASC, `webSiteId` ASC) ,
-  INDEX `defaultWebURLalias` (`defaultURLalias` ASC) ,
-  CONSTRAINT `webSite`
+  INDEX `WebNode_defaultWebURLalias` (`defaultURLalias` ASC) ,
+  CONSTRAINT `WebNode_webSite`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` ),
-  CONSTRAINT `webNodeType`
+  CONSTRAINT `WebNode_webNodeType`
     FOREIGN KEY (`webNodeTypeId` )
     REFERENCES `willow_college`.`WebNodeType` (`id` ),
-  CONSTRAINT `defaultWebURLalias`
+  CONSTRAINT `WebNode_defaultWebURLalias`
     FOREIGN KEY (`defaultURLalias` )
     REFERENCES `willow_college`.`WebURLAlias` (`id` )
     ON DELETE NO ACTION
@@ -727,6 +771,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebContent`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebContent` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContent` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webNodeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -738,10 +784,18 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContent` (
   `created` DATETIME NOT NULL ,
   `modified` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `webNodeId_regionKey_uniq_idx` (`webSiteId` ASC) ,
-  CONSTRAINT `webSite`
+  INDEX `webContent_webSite` (`webSiteId` ASC) ,
+  INDEX `webContent_webNode` (`webNodeId` ASC) ,
+  CONSTRAINT `webContent_webSite`
     FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebNode` (`id` ))
+    REFERENCES `willow_college`.`WebSite` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `webContent_webNode`
+    FOREIGN KEY (`webNodeId` )
+    REFERENCES `willow_college`.`WebNode` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 374
 DEFAULT CHARACTER SET = utf8
@@ -751,6 +805,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebSite`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebSite` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebSite` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -788,6 +844,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebHostName`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebHostName` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebHostName` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -814,6 +872,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`ConcessionType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`ConcessionType` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`ConcessionType` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -842,6 +902,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Contact`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Contact` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Contact` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -901,6 +963,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`CourseModule`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`CourseModule` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`CourseModule` (
   `courseId` BIGINT(20) NOT NULL ,
   `moduleId` BIGINT(20) NOT NULL ,
@@ -918,6 +982,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`DiscountConcessionType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`DiscountConcessionType` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountConcessionType` (
   `concessionTypeId` BIGINT(20) NOT NULL DEFAULT '0' ,
   `discountId` BIGINT(20) NOT NULL DEFAULT '0' ,
@@ -945,6 +1011,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`DiscountCourseClass`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`DiscountCourseClass` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountCourseClass` (
   `courseClassId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
@@ -969,6 +1037,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`DiscountEnrolment`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`DiscountEnrolment` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountEnrolment` (
   `discountId` BIGINT(20) NOT NULL ,
   `enrolmentId` BIGINT(20) NOT NULL ,
@@ -988,6 +1058,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Invoice`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Invoice` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Invoice` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1029,6 +1101,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`InvoiceLine`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`InvoiceLine` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`InvoiceLine` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1069,6 +1143,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`InvoiceLine_Discount`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`InvoiceLine_Discount` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`InvoiceLine_Discount` (
   `invoiceLineId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
@@ -1090,6 +1166,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`LicenseFee`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`LicenseFee` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`LicenseFee` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `college_id` BIGINT(11) NOT NULL ,
@@ -1112,6 +1190,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WillowUser`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WillowUser` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WillowUser` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1144,6 +1224,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Log`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Log` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Log` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1170,6 +1252,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Message`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Message` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Message` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1194,6 +1278,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`MessagePerson`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`MessagePerson` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`MessagePerson` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1242,6 +1328,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`MessageTemplate`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`MessageTemplate` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`MessageTemplate` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1266,6 +1354,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`NotificationTemplate`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`NotificationTemplate` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`NotificationTemplate` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1293,6 +1383,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`PaymentIn`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`PaymentIn` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentIn` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1333,6 +1425,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`PaymentInLine`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`PaymentInLine` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentInLine` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `paymentInId` BIGINT(20) NOT NULL ,
@@ -1362,6 +1456,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`PaymentOut`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`PaymentOut` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentOut` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1394,6 +1490,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`PaymentOutTransaction`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`PaymentOutTransaction` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentOutTransaction` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `paymentOutId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1417,6 +1515,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`PaymentTransaction`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`PaymentTransaction` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentTransaction` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `paymentId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1440,6 +1540,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Preference`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Preference` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Preference` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1466,6 +1568,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`QueuedRecord`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`QueuedRecord` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`QueuedRecord` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1487,6 +1591,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`SessionTutor`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`SessionTutor` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`SessionTutor` (
   `sessionId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
@@ -1515,6 +1621,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`StudentConcession`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`StudentConcession` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`StudentConcession` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `studentId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1551,6 +1659,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Tag`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Tag` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Tag` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `parentId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1588,6 +1698,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`TagGroupRequirement`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`TagGroupRequirement` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`TagGroupRequirement` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `tagId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1617,6 +1729,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`Taggable`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`Taggable` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Taggable` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1642,6 +1756,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`TaggableTag`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`TaggableTag` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`TaggableTag` (
   `tagId` BIGINT(20) NOT NULL ,
   `taggableId` BIGINT(20) NOT NULL ,
@@ -1670,6 +1786,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`TutorRole`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`TutorRole` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`TutorRole` (
   `courseClassId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
@@ -1702,6 +1820,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WaitingList`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WaitingList` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WaitingList` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1735,6 +1855,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WaitingListSite`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WaitingListSite` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WaitingListSite` (
   `siteId` BIGINT(20) NOT NULL ,
   `waitingListId` BIGINT(20) NOT NULL ,
@@ -1754,6 +1876,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebMenu`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebMenu` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebMenu` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webNodeId` BIGINT(20) NULL ,
@@ -1765,20 +1889,20 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebMenu` (
   `created` DATETIME NOT NULL ,
   `modified` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `webNode` (`webNodeId` ASC) ,
-  INDEX `webSite` (`webSiteId` ASC) ,
-  INDEX `menuParent` (`webMenuParentId` ASC) ,
-  CONSTRAINT `webNode`
+  INDEX `WebMenu_webNode` (`webNodeId` ASC) ,
+  INDEX `WebMenu_webSite` (`webSiteId` ASC) ,
+  INDEX `WebMenu_menuParent` (`webMenuParentId` ASC) ,
+  CONSTRAINT `WebMenu_webNode`
     FOREIGN KEY (`webNodeId` )
     REFERENCES `willow_college`.`WebNode` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `webSite`
+  CONSTRAINT `WebMenu_webSite`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `menuParent`
+  CONSTRAINT `WebMenu_menuParent`
     FOREIGN KEY (`webMenuParentId` )
     REFERENCES `willow_college`.`WebMenu` (`id` )
     ON DELETE NO ACTION
@@ -1789,6 +1913,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `willow_college`.`WebContentVisibility`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_college`.`WebContentVisibility` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `WebNodeTypeId` BIGINT(20) NOT NULL ,
@@ -1796,14 +1922,14 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
   `weight` INT NOT NULL DEFAULT 0 ,
   `regionKey` VARCHAR(24) NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `WebContent` (`WebContentId` ASC) ,
-  INDEX `WebNodeType` (`WebNodeTypeId` ASC) ,
-  CONSTRAINT `WebContent`
+  INDEX `WebContentVisibility_WebContent` (`WebContentId` ASC) ,
+  INDEX `WebContentVisibility_WebNodeType` (`WebNodeTypeId` ASC) ,
+  CONSTRAINT `WebContentVisibility_WebContent`
     FOREIGN KEY (`WebContentId` )
     REFERENCES `willow_college`.`WebContent` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `WebNodeType`
+  CONSTRAINT `WebContentVisibility_WebNodeType`
     FOREIGN KEY (`WebNodeTypeId` )
     REFERENCES `willow_college`.`WebNodeType` (`id` )
     ON DELETE NO ACTION
@@ -1824,6 +1950,7 @@ CREATE TABLE IF NOT EXISTS `willow_college`.`TutorView` (`id` INT, `collegeId` I
 -- -----------------------------------------------------
 -- View `willow_college`.`StudentView`
 -- -----------------------------------------------------
+DROP VIEW IF EXISTS `willow_college`.`StudentView` ;
 DROP TABLE IF EXISTS `willow_college`.`StudentView`;
 USE `willow_college`;
 CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `willow_college`.`StudentView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`s`.`countryOfBirthId` AS `countryOfBirthId`,`s`.`languageId` AS `languageId`,`s`.`concessionType` AS `concessionType`,`s`.`disabilityType` AS `disabilityType`,`s`.`englishProficiency` AS `englishProficiency`,`s`.`highestSchoolLevel` AS `highestSchoolLevel`,`s`.`indigenousStatus` AS `indigenousStatus`,`s`.`isOverseasClient` AS `isOverseasClient`,`s`.`isStillAtSchool` AS `isStillAtSchool`,`s`.`priorEducationCode` AS `priorEducationCode`,`s`.`yearSchoolCompleted` AS `yearSchoolCompleted`,`s`.`labourForceType` AS `labourForceType`,`s`.`isDeleted` AS `sIsDeleted`,`s`.`created` AS `sCreated`,`s`.`modified` AS `sModified` from (`willow_college`.`Student` `s` join `willow_college`.`Contact` `c` on((`c`.`studentId` = `s`.`id`)));
@@ -1831,6 +1958,7 @@ CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY
 -- -----------------------------------------------------
 -- View `willow_college`.`TutorView`
 -- -----------------------------------------------------
+DROP VIEW IF EXISTS `willow_college`.`TutorView` ;
 DROP TABLE IF EXISTS `willow_college`.`TutorView`;
 USE `willow_college`;
 CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `willow_college`.`TutorView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`t`.`startDate` AS `startDate`,`t`.`finishDate` AS `finishDate`,`t`.`resume` AS `resume`,`t`.`resume_textile` AS `resume_textile`,`t`.`isDeleted` AS `tIsDeleted`,`t`.`created` AS `tCreated`,`t`.`modified` AS `tModified` from (`willow_college`.`Tutor` `t` join `willow_college`.`Contact` `c` on((`c`.`tutorId` = `t`.`id`)));
@@ -1839,6 +1967,8 @@ USE `willow_reference` ;
 -- -----------------------------------------------------
 -- Table `willow_reference`.`Country`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_reference`.`Country` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_reference`.`Country` (
   `asccssCode` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
@@ -1862,6 +1992,8 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 -- Table `willow_reference`.`Language`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_reference`.`Language` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_reference`.`Language` (
   `absCode` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
@@ -1881,6 +2013,8 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 -- Table `willow_reference`.`Module`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_reference`.`Module` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_reference`.`Module` (
   `ishVersion` BIGINT(11) NOT NULL ,
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
@@ -1905,6 +2039,8 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 -- Table `willow_reference`.`Qualification`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_reference`.`Qualification` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_reference`.`Qualification` (
   `ishVersion` BIGINT(11) NULL DEFAULT '0' ,
   `id` BIGINT(20) NOT NULL DEFAULT '0' ,
@@ -1934,6 +2070,8 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 -- Table `willow_reference`.`TrainingPackage`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_reference`.`TrainingPackage` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_reference`.`TrainingPackage` (
   `ishVersion` BIGINT(11) NULL DEFAULT '0' ,
   `id` BIGINT(20) NOT NULL DEFAULT '0' ,
@@ -1959,6 +2097,8 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 -- Table `willow_reference`.`postcode`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_reference`.`postcode` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_reference`.`postcode` (
   `ishVersion` BIGINT(11) NULL DEFAULT NULL ,
   `postcode` SMALLINT(6) NOT NULL DEFAULT '0' ,
@@ -1981,6 +2121,8 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 -- Table `willow_reference`.`postcode_db`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `willow_reference`.`postcode_db` ;
+
 CREATE  TABLE IF NOT EXISTS `willow_reference`.`postcode_db` (
   `postcode` INT(4) UNSIGNED NOT NULL ,
   `suburb` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
