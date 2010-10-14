@@ -24,7 +24,7 @@ public class MockWebSiteService implements IWebSiteService {
 
 	public WebSite getCurrentWebSite() {
 		WebSite site = new WebSite();
-		site.setCode(siteCode);
+		site.setSiteKey(siteCode);
 		return site;
 	}
 	
@@ -41,7 +41,7 @@ public class MockWebSiteService implements IWebSiteService {
 	}
 
 	public String getResourceFolderName() {
-		return getCurrentWebSite().getCode();
+		return getCurrentWebSite().getSiteKey();
 	}
 
 	public List<WebBlock> getWebBlocksForRegion(String regionKey) {
