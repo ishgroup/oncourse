@@ -11,7 +11,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Scope;
 
-import ish.oncourse.model.WebBlock;
+import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import org.apache.cayenne.DataObjectUtils;
@@ -38,13 +38,13 @@ public class WebSiteService implements IWebSiteService {
 	public WebSiteService() {
 
 		String activeBlocksNameExp = String.format(
-				"%s = $name", WebBlock.NAME_PROPERTY);
+				"%s = $name", WebContent.NAME_PROPERTY);
 
 		activeBlocksNameFilter = Expression.fromString(activeBlocksNameExp);
 
 		//TODO commented till the question with the layouts regions will be resolved
 		/*String activeBlocksRegionExp = String.format(
-				"%s = $regionKey", WebBlock.REGION_KEY_PROPERTY);
+				"%s = $regionKey", WebContent.REGION_KEY_PROPERTY);
 
 		activeBlocksRegionFilter = Expression.fromString(activeBlocksRegionExp);*/
 	}
@@ -110,39 +110,39 @@ public class WebSiteService implements IWebSiteService {
 		return getCurrentCollege().getWebSites();
 	}
 
-	public List<WebBlock> getWebBlocksForRegion(String regionKey) {
+	public List<WebContent> getWebBlocksForRegion(String regionKey) {
 		//TODO commented till the question with the layouts regions will be resolved
 		if(true){
 			return null;
 		}
-		List<WebBlock> allBlocks = Collections.emptyList();//getCurrentWebSite().getWebBlocks();
+		List<WebContent> allBlocks = Collections.emptyList();//getCurrentWebSite().getWebBlocks();
 		if (allBlocks.isEmpty()) {
 			return null;
 		}
 
 		//TODO commented till the question with the layouts regions will be resolved
 		//Expression filter = activeBlocksRegionFilter.expWithParameters(
-			//	Collections.singletonMap(WebBlock.REGION_KEY_PROPERTY, regionKey));
+			//	Collections.singletonMap(WebContent.REGION_KEY_PROPERTY, regionKey));
 
 		//allBlocks = filter.filterObjects(allBlocks);
 
 		return (allBlocks.isEmpty()) ? null : allBlocks;
 	}
 
-	public WebBlock getWebBlockForName(String name) {
+	public WebContent getWebBlockForName(String name) {
 
-		List<WebBlock> allBlocks = Collections.emptyList();//getCurrentWebSite().getWebBlocks();
+		List<WebContent> allBlocks = Collections.emptyList();//getCurrentWebSite().getWebBlocks();
 		if (allBlocks.isEmpty()) {
 			return null;
 		}
 
 		Expression filter = activeBlocksNameFilter.expWithParameters(
-				Collections.singletonMap(WebBlock.NAME_PROPERTY, name));
+				Collections.singletonMap(WebContent.NAME_PROPERTY, name));
 
 		allBlocks = filter.filterObjects(allBlocks);
 
 		// TODO: MSW 2010/06/03 Should we return an exception if more than one
-		// WebBlock is found? We expect only one web block per site per name.
+		// WebContent is found? We expect only one web block per site per name.
 		return (allBlocks.isEmpty()) ? null : allBlocks.get(0);
 	}
 

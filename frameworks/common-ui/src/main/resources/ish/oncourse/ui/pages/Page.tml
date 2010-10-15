@@ -1,11 +1,9 @@
-<html t:type="ui/pagewrapper" title="${title}" bodyId="${bodyId}" bodyClass="${bodyClass}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-
-	<t:block id="regionBlock">
-			<t:outputraw value="regionContent" />
-	</t:block>
+<html t:type="ui/pagewrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"
+	title="${title}" bodyId="${bodyId}" bodyClass="${bodyClass}" 
+	webNodeType="prop:node.webNodeType" dynamicDelegate="prop:dynamicDelegate">
 	
-	<div id="${templateId}">
-		<div t:id="webNodeTemplate" t:type="ui/webnodetemplate" node="currentNode" blockSource="blockSource"></div>
-	</div>
+	<t:block id="regionBlock">
+		<t:outputraw value="regionContent" />
+	</t:block>
 	
 </html>

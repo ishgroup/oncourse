@@ -1933,7 +1933,7 @@
 	<db-relationship name="defaultWebURLAlias" source="WebNode" target="WebURLAlias" toMany="false">
 		<db-attribute-pair source="defaultURLAlias" target="id"/>
 	</db-relationship>
-	<db-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" toMany="false">
+	<db-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" toMany="true">
 		<db-attribute-pair source="id" target="WebNodeId"/>
 	</db-relationship>
 	<db-relationship name="webMenu" source="WebNode" target="WebMenu" toMany="false">
@@ -2191,10 +2191,10 @@
 	<obj-relationship name="college" source="WebHostName" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="webSite" source="WebHostName" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="webSiteArray" source="WebHostName" target="WebSite" deleteRule="Deny" db-relationship-path="webSiteArray"/>
-	<obj-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="parentWebMenu"/>
-	<obj-relationship name="webSite" source="WebMenu" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="childrenMenus" source="WebMenu" target="WebMenu" deleteRule="Deny" db-relationship-path="childrenMenus"/>
+	<obj-relationship name="parentWebMenu" source="WebMenu" target="WebMenu" deleteRule="Nullify" db-relationship-path="parentWebMenu"/>
 	<obj-relationship name="webNode" source="WebMenu" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
+	<obj-relationship name="webSite" source="WebMenu" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="defaultWebURLAlias" source="WebNode" target="WebUrlAlias" deleteRule="Nullify" db-relationship-path="defaultWebURLAlias"/>
 	<obj-relationship name="webContentVisibility" source="WebNode" target="WebContentVisibility" deleteRule="Nullify" db-relationship-path="webContentVisibility"/>
 	<obj-relationship name="webMenu" source="WebNode" target="WebMenu" deleteRule="Nullify" db-relationship-path="webMenu"/>

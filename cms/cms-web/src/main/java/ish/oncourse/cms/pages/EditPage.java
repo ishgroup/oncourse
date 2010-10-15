@@ -4,6 +4,7 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeContent;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.ui.pages.Page;
+import ish.oncourse.ui.utils.EmptyRenderable;
 
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -63,11 +64,5 @@ public class EditPage extends Page {
 
 	public boolean isEditRegionSelected() {
 		return this.editorRegion != null;
-	}
-
-	private static class EmptyRenderable implements Renderable {
-		public void render(MarkupWriter writer) {
-
-		}
 	}
 }

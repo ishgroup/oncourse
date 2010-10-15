@@ -1,25 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div class="clearfix container">
-		<div t:type="ui/bodyheader"></div>
-		<div t:type="ui/menu" mainMenu="menu" />
-
-		<div id="content_container" class="clearfix">
-			<div id="content" class="span-18 unitPng">
-				<t:body />
-			</div>
-
-			<div id="sidebar" class="span-5 side_panel last">
-				<div t:type="ui/bodysidebar"></div>
-			</div>
-		</div>
-
-		<div t:type="ui/bodyfooter"></div>
-
-	</div>
-
-	<div id="overlay" style="display: none; height: 500px"></div>
-	<div id="timeline-wrap" style="visibility: hidden;">
-		<div id="timeline"></div>
-	</div>
-	<span t:type="ui/googleAnalytics"></span>
+	<t:block id="regionBlock">
+		<t:loop source="currentRegions" value="currentRegion">
+			<t:outputraw value="regionContent" />	
+		</t:loop>
+	</t:block>
 </t:container>

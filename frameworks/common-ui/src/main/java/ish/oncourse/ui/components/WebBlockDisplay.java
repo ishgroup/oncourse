@@ -7,7 +7,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import ish.oncourse.model.WebBlock;
+import ish.oncourse.model.WebContent;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
@@ -20,7 +20,7 @@ public class WebBlockDisplay {
 
 	@Property
 	@Parameter
-	private WebBlock displayedBlock;
+	private WebContent displayedBlock;
 
 	public String getContent() {
 		ValidationErrors errors = new ValidationErrors();

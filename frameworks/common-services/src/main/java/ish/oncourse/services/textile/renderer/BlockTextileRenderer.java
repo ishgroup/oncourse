@@ -1,15 +1,15 @@
 package ish.oncourse.services.textile.renderer;
 
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import ish.oncourse.model.WebBlock;
-import ish.oncourse.services.block.IWebBlockService;
+import ish.oncourse.model.WebContent;
+import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.BlockTextileValidator;
 import ish.oncourse.util.ValidationErrors;
+
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Displays content from a single WebBlock, either by name or randomly from a
@@ -29,11 +29,11 @@ import ish.oncourse.util.ValidationErrors;
  */
 public class BlockTextileRenderer extends AbstractRenderer {
 
-	private IWebBlockService webBlockDataService;
+	private IWebContentService webBlockDataService;
 
 	private ITextileConverter converter;
 
-	public BlockTextileRenderer(IWebBlockService webBlockDataService,
+	public BlockTextileRenderer(IWebContentService webBlockDataService,
 			ITextileConverter converter) {
 		validator = new BlockTextileValidator(webBlockDataService);
 		this.webBlockDataService = webBlockDataService;
@@ -43,16 +43,17 @@ public class BlockTextileRenderer extends AbstractRenderer {
 	public String render(String tag, ValidationErrors errors) {
 		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
-			WebBlock webBlock = null;
+
+			WebContent webBlock = null;
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					TextileUtil.PARAM_NAME);
 
 			String name = tagParams.get(TextileUtil.PARAM_NAME);
 			if (name != null) {
-				webBlock = webBlockDataService.getWebBlock(
-						WebBlock.NAME_PROPERTY, name);
+				webBlock = webBlockDataService.getWebContent(
+						WebContent.NAME_PROPERTY, name);
 			} else {
-				webBlock = webBlockDataService.getWebBlock(null, null);
+				webBlock = webBlockDataService.getWebContent(null, null);
 			}
 
 			if (webBlock != null) {

@@ -2,7 +2,6 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.resource.PrivateResource;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -24,12 +23,6 @@ public class WebNodeTemplate {
 
 	@Inject
 	private IResourceService resourceService;
-
-	public PrivateResource getSelectedTemplate() {
-		PrivateResource template = resourceService.getTemplateResource(node
-				.getWebNodeType().getLayoutKey(), "WebNode.tml");
-		return template;
-	}
 
 	RenderCommand beginRender() {
 		return template.createRenderCommand(blockSource);

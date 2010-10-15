@@ -5,7 +5,7 @@ import java.util.List;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.Site;
-import ish.oncourse.model.WebBlock;
+import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebSite;
 
 
@@ -42,22 +42,22 @@ public interface IWebSiteService {
 	String getResourceFolderName();
 
 	/**
-	 * Get WebBlock matching the regionKey and linked to the current site.
+	 * Get WebContent matching the regionKey and linked to the current site.
 	 *
 	 * @param regionKey - the region
 	 *
 	 * @return list matching of web blocks
 	 */
-	List<WebBlock> getWebBlocksForRegion(String regionKey);
+	List<WebContent> getWebBlocksForRegion(String regionKey);
 
 	/**
-	 * Get WebBlock matching the name and linked to the current site.
+	 * Get WebContent matching the name and linked to the current site.
 	 *
 	 * @param name the name of the block
 	 *
 	 * @return
 	 */
-	WebBlock getWebBlockForName(String name);
+	WebContent getWebBlockForName(String name);
 
 	String getHomeLink();
 	

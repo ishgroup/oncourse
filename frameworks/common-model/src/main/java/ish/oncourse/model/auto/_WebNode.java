@@ -77,12 +77,15 @@ public abstract class _WebNode extends CayenneDataObject {
     }
 
 
-    public void setWebContentVisibility(WebContentVisibility webContentVisibility) {
-        setToOneTarget("webContentVisibility", webContentVisibility, true);
+    public void addToWebContentVisibility(WebContentVisibility obj) {
+        addToManyTarget("webContentVisibility", obj, true);
     }
-
-    public WebContentVisibility getWebContentVisibility() {
-        return (WebContentVisibility)readProperty("webContentVisibility");
+    public void removeFromWebContentVisibility(WebContentVisibility obj) {
+        removeToManyTarget("webContentVisibility", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WebContentVisibility> getWebContentVisibility() {
+        return (List<WebContentVisibility>)readProperty("webContentVisibility");
     }
 
 

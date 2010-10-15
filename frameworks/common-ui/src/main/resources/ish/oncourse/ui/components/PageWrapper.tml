@@ -8,13 +8,27 @@
 	</t:remove>
 	<head>
 		<head t:type="ui/pagehead" />
-		<t:extension-point id="headBottom" />
 	</head>
 	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-		<t:extension-point id="bodyTop" />
-		<div t:type="ui/bodylayout">
-			<t:body />
+		
+		<div t:type="ui/bodylayout" dynamicDelegate="dynamicDelegate" webNodeType="webNodeType">
+			<p:header>
+				<h1><a href="${homeLink}">${collegeName}</a></h1>
+				<div id="site_toolbar">
+					<span t:type="ui/CourseSearchForm"/>
+					<span t:type="ui/ShortList"/>
+				</div>
+			</p:header>
+			<p:menu>
+				<div t:type="ui/menu" mainMenu="menu"/>
+			</p:menu>
+			<p:footer>
+				<div t:type="ui/bodyfooter"></div>
+			</p:footer>
 		</div>
+		
+		<span t:type="ui/googleAnalytics"></span>
+		
 		<t:if t:test="loggedIn">
 			<div t:type="ui/navigation"/>
 			<t:if t:test="hasCurrentNode">

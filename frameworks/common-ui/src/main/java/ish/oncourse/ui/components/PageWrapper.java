@@ -1,42 +1,85 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.model.WebMenu;
+import ish.oncourse.model.WebNodeType;
+import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.security.IAuthenticationService;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.ui.dynamic.DynamicDelegateComposite;
+import ish.oncourse.ui.dynamic.DynamicDelegatePart;
 
+import org.apache.tapestry5.Block;
+import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.SupportsInformalParameters;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 /**
  * A page wrapper component.
  */
+@SupportsInformalParameters
 public class PageWrapper {
 
 	private static final String MSIE = "MSIE";
 
 	@Inject
+	private IWebSiteService webSiteService;
+
+	@Inject
 	private IAuthenticationService authenticationService;
-	
+
 	@Inject
 	private IWebNodeService webNodeService;
-	
+
+	@Inject
+	private IWebMenuService webMenuService;
+
+	@Inject
+	private Request request;
+
+	@Inject
+	private ComponentResources resources;
+
 	@Parameter
 	@Property
 	private String bodyId;
-	
+
 	@Parameter
 	private String bodyClass;
+
+	@Parameter
+	@Property
+	private WebNodeType webNodeType;
+
+	@Property
+	@Parameter(required = true)
+	private DynamicDelegateComposite dynamicDelegate;
+
+	private DynamicDelegatePart _dynamicPart = new DynamicDelegatePart(1) {
+		public ComponentResources getComponentResources() {
+			return resources;
+		}
+
+		public Block getBlock(String regionKey) {
+			return resources.getBlockParameter(regionKey);
+		}
+	};
+
+	@SetupRender
+	public void beforeRender() {
+		this.dynamicDelegate.addDynamicDelegatePart(_dynamicPart);
+	}
 
 	public boolean isLoggedIn() {
 		return authenticationService.getUser() != null;
 	}
 
-	@Inject
-	private Request request;
-
 	public String getAgentAwareBodyClass() {
-	
+
 		String userAgent = request.getHeader("User-Agent");
 		if (userAgent.indexOf(MSIE) > -1) {
 			int versionPosition = userAgent.indexOf(MSIE) + MSIE.length() + 1;
@@ -62,8 +105,20 @@ public class PageWrapper {
 
 		return bodyClass;
 	}
-	
+
 	public boolean isHasCurrentNode() {
 		return webNodeService.getCurrentNode() != null;
+	}
+
+	public WebMenu getMenu() {
+		return webMenuService.getMainMenu();
+	}
+
+	public String getCollegeName() {
+		return webSiteService.getCurrentCollege().getName();
+	}
+
+	public String getHomeLink() {
+		return webSiteService.getHomeLink();
 	}
 }

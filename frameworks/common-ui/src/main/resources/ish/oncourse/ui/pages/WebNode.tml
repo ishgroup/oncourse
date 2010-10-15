@@ -1,1 +1,34 @@
-<div id="param:content"></div>
+<div class="layout">
+	<div class="clearfix container">
+			<div id="header">
+				<span id="param:header"/>
+			</div>
+			
+			<div style="float:left; width:20%">
+				<span id="param:menu"/>
+			</div>
+	
+			<div id="content_container" class="clearfix">
+				<div id="content" class="span-18 unitPng">
+					<div id="welcome">
+						<span id="param:content"/>
+					</div>
+				</div>
+				
+				<div id="sidebar" class="span-5 side_panel last">
+					<span id="param:left"/>
+				</div>
+			</div>
+			
+			<div id="footer" class="clearfix">
+				<span id="param:footer"/>
+			</div>
+	</div>
+	
+	<div id="overlay" style="display: none; height: 500px"></div>
+	
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline"></div>
+	</div>
+</div>
+

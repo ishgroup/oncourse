@@ -1,7 +1,7 @@
 package ish.oncourse.services.textile;
 
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.block.IWebBlockService;
+import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
@@ -28,7 +28,7 @@ public class TextileConverter implements ITextileConverter {
 	private IBinaryDataService binaryDataService;
 
 	@Inject
-	private IWebBlockService webBlockService;
+	private IWebContentService webContentService;
 
 	@Inject
 	private ICourseService courseService;
@@ -86,7 +86,7 @@ public class TextileConverter implements ITextileConverter {
 		case IMAGE:
 			return new ImageTextileRenderer(binaryDataService);
 		case BLOCK:
-			return new BlockTextileRenderer(webBlockService, this);
+			return new BlockTextileRenderer(webContentService, this);
 		case VIDEO:
 			return new VideoTextileRenderer();
 		case COURSE:

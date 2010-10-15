@@ -7,7 +7,7 @@ import ish.oncourse.model.WebHostName;
 import java.util.Collections;
 import java.util.List;
 
-import ish.oncourse.model.WebBlock;
+import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebSite;
 
 public class MockWebSiteService implements IWebSiteService {
@@ -28,7 +28,7 @@ public class MockWebSiteService implements IWebSiteService {
 		return site;
 	}
 	
-	public List<WebBlock> getActiveBlocks(String regionKey) {
+	public List<WebContent> getActiveBlocks(String regionKey) {
 		return Collections.emptyList();
 	}
 
@@ -44,11 +44,11 @@ public class MockWebSiteService implements IWebSiteService {
 		return getCurrentWebSite().getSiteKey();
 	}
 
-	public List<WebBlock> getWebBlocksForRegion(String regionKey) {
+	public List<WebContent> getWebBlocksForRegion(String regionKey) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
-	public WebBlock getWebBlockForName(String name) {
+	public WebContent getWebBlockForName(String name) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

@@ -4,8 +4,8 @@ import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.block.IWebBlockService;
-import ish.oncourse.services.block.WebBlockService;
+import ish.oncourse.services.content.IWebContentService;
+import ish.oncourse.services.content.WebContentService;
 import ish.oncourse.services.cookies.CookiesService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.CourseService;
@@ -57,10 +57,10 @@ public class ServiceModule {
 		binder.bind(IEnvironmentService.class, EnvironmentService.class);
 		binder.bind(IPropertyService.class, PropertyService.class);
 		binder.bind(IResourceService.class, ResourceService.class);
-		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
+		binder.bind(IComponentPageResponseRenderer.class,
+				ComponentPageResponseRenderer.class);
 		binder.bind(IWebSiteService.class, WebSiteService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
-		binder.bind(IWebBlockService.class, WebBlockService.class);
 		binder.bind(IFormatService.class, FormatService.class);
 		binder.bind(ITextileConverter.class, TextileConverter.class);
 		binder.bind(IBinaryDataService.class, BinaryDataService.class);
@@ -75,6 +75,7 @@ public class ServiceModule {
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(IWebMenuService.class, WebMenuService.class);
+		binder.bind(IWebContentService.class, WebContentService.class);
 	}
 
 }
