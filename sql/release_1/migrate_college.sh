@@ -6,7 +6,7 @@ usage() {
 if [ $# -lt 1 ]; then
     usage;
 fi
-sed 's/%COLLEGEID%/$1/' dataMigration.sql > tmp.sql
+sed "s/%COLLEGEID%/${1}/" dataMigration.sql > tmp.sql
 mysql -h db.office -uwillow -pT7t,RMJRPGjFSq9m   < tmp.sql
 
 #Grab blob values from table and set them into a values_string column as text

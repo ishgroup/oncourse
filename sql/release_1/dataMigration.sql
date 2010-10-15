@@ -29,8 +29,9 @@ INSERT INTO willow_college.ConcessionType (id, collegeId, angelId, created, modi
 INSERT INTO willow_college.StudentConcession (angelId, authorisationExpiresOn, authorisedOn, collegeId, concessionNumber, concessionTypeId, created, expiresOn, id, isDeleted, modified, studentId, timeZone)
 	SELECT sc.angelId, sc.authorisationExpiresOn, sc.authorisedOn, sc.collegeId, sc.concessionNumber, sc.concessionTypeId, sc.created, sc.expiresOn, sc.id, sc.isDeleted, sc.modified, sc.studentId, sc.timeZone
 	FROM oncourse_realdata_willow_college.StudentConcession AS sc
-	JOIN oncourse_realdata_willow_college.Taggable AS t ON t.isDeleted=0 AND t.id = sc.studentId AND t.entityType like 'Student'
-	WHERE sc.collegeId = @collegeId AND sc.isDeleted = 0;
+	JOIN oncourse_realdata_willow_college.Taggable AS t ON t.id = sc.studentId 
+	JOIN willow_college.Student AS s ON sc.studentId=s.id
+	WHERE sc.collegeId = @collegeId AND sc.isDeleted = 0 AND t.entityType like 'Student';
 
 INSERT INTO willow_college.Course (id, collegeId, qualificationId, angelId, code, isWebVisible, isVETCourse, isSufficientForQualification, allowWaitingList, nominalHours, name, detail, detail_textile, fieldOfEducation, searchText, isDeleted, created, modified)
 	SELECT c.id, t.collegeId, c.qualificationId, t.angelId, c.code, c.isWebVisible, c.isVETCourse, c.isSufficientForQualification, c.allowWaitingList, c.nominalHours, c.name, c.detail, c.detail_textile, c.fieldOfEducation, c.searchText, t.isDeleted, t.created, t.modified
@@ -97,6 +98,7 @@ INSERT INTO willow_college.Contact (angelId, collegeId, created, id, isDeleted, 
 	c.isMarketingViaPostAllowed,c.isMarketingViaSMSAllowed,c.mobilePhoneNumber,c.password,
 	c.postcode,c.state,c.street,c.studentID,c.suburb,c.taxFileNumber,c.tutorID,c.uniqueCode
 	FROM oncourse_realdata_willow_college.Contact AS c
+	JOIN willow_college.Student AS s ON s.id = c.studentId
 	JOIN oncourse_realdata_willow_college.Taggable AS t ON c.id = t.id AND t.entityType = 'Contact' AND t.collegeId = @collegeId AND t.isDeleted = 0;
 
 INSERT INTO willow_college.CourseModule (courseId, moduleId, created, modified)
@@ -109,7 +111,7 @@ INSERT INTO willow_college.Discount (id, collegeId, angelId, code, validFrom, va
 
 INSERT INTO willow_college.DiscountConcessionType (concessionTypeId, discountId, collegeId, angelId, created, modified)
 	SELECT concessionTypeId, discountId, collegeId, angelId, created, modified
-	FROM oncourse_realdata_willow_college.DiscountConcessionType WHERE collegeId = @collegeId AND discountId IN (SELECT id FROM Discount);
+	FROM oncourse_realdata_willow_college.DiscountConcessionType WHERE collegeId = @collegeId AND discountId IN (SELECT id FROM oncourse_realdata_willow_college.Discount);
 
 INSERT INTO willow_college.DiscountCourseClass (courseClassId, discountId, collegeId, angelId, created, modified)
 	SELECT dcc.courseClassId, dcc.discountId, dcc.collegeId, dcc.angelId, dcc.created, dcc.modified
@@ -235,11 +237,11 @@ INSERT INTO willow_college.PaymentOut (id, collegeId, contactId, angelId, paymen
 
 INSERT INTO willow_college.PaymentOutTransaction (created, id, isDeleted, isFinalised, modified, paymentOutId, response, txnReference)
 	SELECT created, id, isDeleted, isFinalised, modified, paymentOutId, response, txnReference
-	FROM oncourse_realdata_willow_college.PaymentOutTransaction WHERE paymentOutId in (SELECT id FROM PaymentOut WHERE collegeId = @collegeId) AND isDeleted = 0;
+	FROM oncourse_realdata_willow_college.PaymentOutTransaction WHERE paymentOutId in (SELECT id FROM willow_college.PaymentOut WHERE collegeId = @collegeId) AND isDeleted = 0;
 
 INSERT INTO willow_college.PaymentTransaction (created, id, isDeleted, isFinalised, modified, paymentId, response, txnReference)
    SELECT created, id, isDeleted, isFinalised, modified, paymentId, response, txnReference
-   FROM oncourse_realdata_willow_college.PaymentTransaction WHERE paymentId IN (SELECT id FROM PaymentIn WHERE collegeId = @collegeId) AND isDeleted = 0;
+   FROM oncourse_realdata_willow_college.PaymentTransaction WHERE paymentId IN (SELECT id FROM willow_college.PaymentIn WHERE collegeId = @collegeId) AND isDeleted = 0;
 
 INSERT INTO willow_college.Preference (angelId, collegeId, created, explanation, id, isDeleted, modified, name, sqlType, value)
 	SELECT angelId, collegeId, created, explanation, id, isDeleted, modified, name, sqlType, value
@@ -253,8 +255,8 @@ INSERT INTO willow_college.SessionTutor (angelId, collegeId, created, modified, 
 	SELECT angelId, collegeId, created, modified, sessionId, tutorId, type
 	FROM oncourse_realdata_willow_college.SessionTutor 
 	WHERE collegeId = @collegeId 
-		AND sessionId IN (SELECT id FROM Session WHERE collegeId = @collegeId)
-		AND tutorId IN (SELECT id FROM Tutor WHERE collegeId = @collegeId);
+		AND sessionId IN (SELECT id FROM willow_college.Session WHERE collegeId = @collegeId)
+		AND tutorId IN (SELECT id FROM willow_college.Tutor WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.Tag (angelId, collegeId, created, detail, detail_textile, id, isDeleted, isTagGroup, isWebVisible, modified, name, nodeType, parentId, shortName, weighting)
 	SELECT angelId, collegeId, created, detail, detail_textile, id, isDeleted, isTagGroup, isWebVisible, modified, name, nodeType, NULL, shortName, weighting
@@ -296,8 +298,8 @@ INSERT INTO willow_college.WaitingList (angelId, collegeId, courseId, created, d
 INSERT INTO willow_college.WaitingListSite (siteId, waitingListId)
 	SELECT siteId, waitingListId
 	FROM oncourse_realdata_willow_college.WaitingListSite
-	WHERE siteId IN (SELECT id FROM Site WHERE collegeId = @collegeId)
-		AND waitingListId IN (SELECT id FROM WaitingList WHERE collegeId = @collegeId);
+	WHERE siteId IN (SELECT id FROM willow_college.Site WHERE collegeId = @collegeId)
+		AND waitingListId IN (SELECT id FROM willow_college.WaitingList WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.WebSite (  collegeId, created,  id, modified, name, siteKey, googleAnalyticsAccount, googleDirectionsFrom )
 	SELECT	ws.collegeId, ws.created, ws.id, ws.modified, ws.name, ws.code, cd.googleAnalyticsAccount, cd.googleDirectionsFrom
@@ -380,6 +382,7 @@ INSERT INTO willow_college.WebMenuTEMP (webNodeId, webSiteId, webMenuParentId, w
 	JOIN willow_college.WebSite AS ws ON ws.id = wn.webSiteId
 	WHERE wn.isDeleted = 0 AND wn.isWebVisible = 1 AND wn.isPublished AND ws.collegeId = @collegeId;
 
+use willow_college;
 -- do this many times to clean up the whole menu tree
 DELETE w FROM willow_college.WebMenuTEMP AS w
 	LEFT OUTER JOIN willow_college.WebMenuTEMP AS parent ON parent.webNodeId = w.webMenuParentId
