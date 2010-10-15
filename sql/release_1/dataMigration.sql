@@ -1,6 +1,6 @@
 -- set the college you wish to migrate
 
-SET @collegeId = 10;
+SET @collegeId = %COLLEGEID%;
 
 INSERT INTO willow_college.College (id, isDeleted, isWebServicePaymentsEnabled, isWebSitePaymentsEnabled, 
 	isTestingWebServicePayments, isTestingWebSitePayments, requiresAvetmiss, created, modified, 
