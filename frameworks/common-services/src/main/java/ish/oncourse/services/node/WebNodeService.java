@@ -139,6 +139,9 @@ public class WebNodeService implements IWebNodeService {
 		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
 			node = getNodeForNodeNumber(Integer.parseInt(request
 					.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER)));
+		} else if(request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
+			node = getNodeForNodeNumber(Integer.parseInt((String) request
+					.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER)));
 		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
 			String pagePath = (String) request
 					.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER);
