@@ -1,7 +1,5 @@
 package ish.oncourse.model;
 
-import java.util.List;
-
 import ish.oncourse.model.auto._WebNode;
 
 public class WebNode extends _WebNode {
@@ -15,11 +13,10 @@ public class WebNode extends _WebNode {
 	}
 
 	public String getPath() {
-		// TODO get the main of node url aliases
-		List<WebUrlAlias> webUrlAliases = getWebUrlAliases();
-		String alias = "page/" + getNodeNumber();
-		return webUrlAliases.isEmpty() ? alias : webUrlAliases.get(0)
-				.getUrlPath();
+		WebUrlAlias defaultAlias = getDefaultWebURLAlias();
+		String alias = defaultAlias == null ? ("/page/" + getNodeNumber())
+				: defaultAlias.getUrlPath();
+		return alias;
 	}
 
 	public String getUrlShortName() {

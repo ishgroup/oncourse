@@ -64,8 +64,8 @@ public class MenuItem {
         return menu;
     }
     
-    public String getItemHref() {
-    	WebNode node = menu.getWebNode();
-		return node==null?menu.getUrl():(request.getContextPath() + "/" + node.getPath());
-    }
+	public String getItemHref() {
+		WebNode node = menu.getWebNode();
+		return node == null ? menu.getUrl() : node.getPath();
+	}
 }
