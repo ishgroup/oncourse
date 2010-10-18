@@ -36,12 +36,12 @@ public interface IWebNodeService {
 	WebNode getNodeForNodeNumber(Integer nodeNumber);
 
 	/**
-	 * Find a web node for the corresponding node name.
-	 * 
-	 * @param nodeName
+	 * Find a web node for the node path.
+	 *
+	 * @param nodePath
 	 * @return corresponding web node or null if not found
 	 */
-	WebNode getNodeForNodeName(String nodeName);
+	WebNode getNodeForNodePath(String nodePath);
 
 	/**
 	 * Returns the current page active page.

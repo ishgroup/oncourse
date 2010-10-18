@@ -1,5 +1,7 @@
 package ish.oncourse.services;
 
+import ish.oncourse.services.alias.IWebUrlAliasService;
+import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -76,6 +78,7 @@ public class ServiceModule {
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
+		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 	}
 
 }

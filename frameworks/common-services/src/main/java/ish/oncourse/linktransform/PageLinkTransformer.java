@@ -105,6 +105,15 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 */
 	private static final String ADD_TO_COOKIES_PATH = "/addToCookies";
 
+	/**
+	 * Path of the refreshing the shortlist control
+	 */
+	private static final String REFRESH_SHORT_LIST_CONTROL_PATH = "/refreshShortListControl";
+
+	/**
+	 * Path of the refreshing the shortlist
+	 */
+	private static final String REFRESH_SHORT_LIST_PATH = "/refreshShortList";
 	
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -231,23 +240,15 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if (matcher.matches()) {
 			return new PageRenderRequestParameters("ui/SitemapXML", new EmptyEventContext(), false);
 		}
-		String nodePath=path;
-		if(nodePath.startsWith("/")){
-			nodePath=nodePath.replaceFirst("/", "");
-		}
-		if(nodePath.endsWith("/")){
-			nodePath=nodePath.substring(0, nodePath.length()-1);
-		}
-		if(webNodeService.isNodeExist(nodePath)){
-			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
-			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
-		}
+		
 		if(ADVANCED_KEYWORD_PATH.equals(path)){
 			return new PageRenderRequestParameters("ui/QuickSearchView", new EmptyEventContext(), false);
 		}
+		
 		if(ADVANCED_SUBURB_PATH.equals(path)){
 			return new PageRenderRequestParameters("ui/SuburbsTextArray", new EmptyEventContext(), false);
 		}
+		
 		if(ADD_TO_COOKIES_PATH.equalsIgnoreCase(path)){
 			String addedCourseClassId = request.getParameter(CourseClass.COURSE_CLASS_ID_PARAMETER);
 			if(addedCourseClassId!=null&&addedCourseClassId.matches(DIGIT_REGEXP)){
@@ -258,6 +259,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			return null;
 		}
+		
 		if(REMOVE_FROM_COOKIES_PATH.equalsIgnoreCase(path)){
 			String removedCourseClassId = request.getParameter(CourseClass.COURSE_CLASS_ID_PARAMETER);
 			if(removedCourseClassId!=null&&removedCourseClassId.matches(DIGIT_REGEXP)){
@@ -268,11 +270,23 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			return null;
 		}
-		if("/refreshShortList".equalsIgnoreCase(path)){
+		
+		if(REFRESH_SHORT_LIST_PATH.equalsIgnoreCase(path)){
 			return new PageRenderRequestParameters("ui/ShortListPage", new EmptyEventContext(), false);
 		}
-		if("/refreshShortListControl".equalsIgnoreCase(path)){
+		
+		if(REFRESH_SHORT_LIST_CONTROL_PATH.equalsIgnoreCase(path)){
 			return new PageRenderRequestParameters("ui/ShortListControlPage", new EmptyEventContext(), false);
+		}
+		
+		String nodePath=path;
+		
+		if(nodePath.endsWith("/")){
+			nodePath=nodePath.substring(0, nodePath.length()-1);
+		}
+		if(webNodeService.isNodeExist(nodePath)){
+			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
+			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
 		}
 		
 		return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(), false);

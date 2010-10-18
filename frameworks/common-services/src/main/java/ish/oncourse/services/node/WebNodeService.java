@@ -5,6 +5,7 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.Date;
@@ -24,6 +25,9 @@ public class WebNodeService implements IWebNodeService {
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
 	@Inject
+	private IWebUrlAliasService webUrlAliasService;
+	
+	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
@@ -40,19 +44,7 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getHomePage() {
-		Expression defaultPathQualifier = ExpressionFactory.matchExp(
-				WebUrlAlias.URL_PATH_PROPERTY, "/");
-		Expression siteMatchQualifier = ExpressionFactory.matchExp(
-				WebUrlAlias.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite());
-		Expression qualifier = defaultPathQualifier.andExp(siteMatchQualifier);
-		SelectQuery query = new SelectQuery(WebUrlAlias.class, qualifier);
-		List<WebUrlAlias> aliases = cayenneService.sharedContext()
-				.performQuery(query);
-		if (aliases.isEmpty()) {
-			return null;
-		}
-		return aliases.get(0).getWebNode();
+		return getNodeForNodePath("/");
 	}
 
 	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
@@ -83,54 +75,12 @@ public class WebNodeService implements IWebNodeService {
 		return (nodes.size() == 1) ? nodes.get(0) : null;
 	}
 
-	public WebNode getNodeForNodeName(String nodeName) {
-		WebNode result = null;
-
-		if (!("".equals(nodeName))) {
-			SelectQuery query = new SelectQuery(WebNode.class);
-			query.andQualifier(siteQualifier());
-			query.andQualifier(ExpressionFactory
-					.matchExp(WebNode.WEB_NODE_TYPE_PROPERTY + "."
-							+ WebNodeType.NAME_PROPERTY, WEB_NODE_PAGE_TYPE_KEY));
-
-			String[] names = nodeName.split("/");
-			int length = names.length;
-			// TODO commented to resolve compilation problems,
-			// in future the whole method will be removed because of using
-			// aliases
-			/*
-			 * for (int i = 0; i < length; i++) {
-			 * 
-			 * String path = ""; for (int j = 0; j < length - 1 - i; j++) { path
-			 * += WebNode.PARENT_NODE_PROPERTY + "."; }
-			 * 
-			 * String shortNamePath = path + WebNode.SHORT_NAME_PROPERTY; String
-			 * namePath = path + WebNode.NAME_PROPERTY; String value = ("%" +
-			 * names[i] + "%").replaceAll("[+]", " ") .replaceAll("[|]", "/");
-			 * query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(
-			 * shortNamePath, value).orExp(
-			 * ExpressionFactory.matchExp(shortNamePath, null).andExp(
-			 * ExpressionFactory.likeIgnoreCaseExp(namePath, value)))); }
-			 */
-
-			@SuppressWarnings("unchecked")
-			List<WebNode> nodes = cayenneService.sharedContext().performQuery(
-					query);
-
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Found " + nodes.size() + " nodes for query : "
-						+ query);
-			}
-
-			if (nodes.size() > 1) {
-				LOGGER.error("Expected one WebNode record, found "
-						+ nodes.size() + " for query : " + query);
-			}
-
-			result = (nodes.size() == 1) ? nodes.get(0) : null;
+	public WebNode getNodeForNodePath(String nodePath) {
+		WebUrlAlias alias = webUrlAliasService.getAliasByPath(nodePath);
+		if(alias == null){
+			return null;
 		}
-
-		return result;
+		return alias.getWebNode();
 	}
 
 	public WebNode getCurrentNode() {
@@ -147,7 +97,7 @@ public class WebNodeService implements IWebNodeService {
 		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
 			String pagePath = (String) request
 					.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER);
-			node = getNodeForNodeName(pagePath);
+			node = getNodeForNodePath(pagePath);
 		}
 
 		return node;
@@ -190,20 +140,9 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public boolean isNodeExist(String path) {
-		String[] nodes = path.split("/");
-		WebNode node = getNodeForNodeName(nodes[nodes.length - 1]);
-		if (node == null) {
+		WebUrlAlias alias = webUrlAliasService.getAliasByPath(path);
+		if(alias == null){
 			return false;
-		}
-		for (int i = nodes.length - 2; i >= 0; i--) {
-			// TODO commented to resolve compilation problems,
-			// in future the whole method will be removed because of using
-			// aliases
-			/*
-			 * WebNode parentNode = node.getParentNode(); if
-			 * (!(nodes[i].equals(parentNode.getShortName()) || nodes[i]
-			 * .equals(parentNode.getName()))) { return false; }
-			 */
 		}
 		return true;
 	}
