@@ -1,4 +1,4 @@
-<html t:type="ui/pagewrapper" title="${title}" bodyId="literal:DetailsPage" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<html t:type="ui/pagewrapper" title="${course.name}" bodyId="literal:DetailsPage" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div id="course_detail">
 		<a name="top"></a>
 		<span t:type="ui/courseitem" course="course" />

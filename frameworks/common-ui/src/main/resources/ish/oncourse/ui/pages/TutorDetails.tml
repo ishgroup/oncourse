@@ -1,11 +1,11 @@
-<html t:type="ui/pagewrapper" title="${title}" bodyId="literal:DetailsPage"
+<html t:type="ui/pagewrapper" title="${tutor.fullName}" bodyId="literal:DetailsPage"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="tutors_details">
 		<t:if t:test="${tutorFound}">
 			<h2>${tutor.fullName}</h2>
 			<t:if t:test="${hasResume}">
 				<h4>Resume</h4>
-				${tutor.resume}
+				<t:outputraw value="${tutor.resume}"/>
 			</t:if>
 
 			<t:if t:test="${hasRoles}">

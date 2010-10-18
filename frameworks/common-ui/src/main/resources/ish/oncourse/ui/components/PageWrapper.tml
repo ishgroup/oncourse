@@ -7,7 +7,7 @@
 		Override: No. This component should not normally be overridden
 	</t:remove>
 	<head>
-		<head t:type="ui/pagehead" />
+		<head t:type="ui/pagehead" title="${title}"/>
 	</head>
 	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
 		<div t:id="bodyLayout" t:type="ui/bodylayout">

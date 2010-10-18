@@ -58,6 +58,10 @@ public class PageWrapper {
 	@Property
 	@Parameter
 	private WebNodeType webNodeType;
+	
+	@Property
+	@Parameter
+	private String title;
 
 	@Parameter
 	private ContentDelegate delegate;

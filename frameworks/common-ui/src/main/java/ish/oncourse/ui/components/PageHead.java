@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.services.security.IAuthenticationService;
@@ -18,12 +19,21 @@ public class PageHead {
 	@Inject
 	private IAuthenticationService authenticationService;
 	
+	@Parameter
+	private String title;
+	
 	public boolean isLoggedIn() {
 		return authenticationService.getUser() != null;
 	}
 
 	public String getTitle() {
-		return siteService.getCurrentCollege().getName();
+		String collegeName = siteService.getCurrentCollege().getName();
+		
+		if (title != null) {
+			return title + " " + collegeName;
+		}
+		
+		return collegeName;
 	}
 
 	public String getMetaGeneratorContent() {
