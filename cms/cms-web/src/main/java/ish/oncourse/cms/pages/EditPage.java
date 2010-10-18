@@ -1,20 +1,18 @@
 package ish.oncourse.cms.pages;
 
+import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeContent;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.ui.pages.Page;
 import ish.oncourse.ui.utils.EmptyRenderable;
 
 import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.MarkupWriter;
-import org.apache.tapestry5.Renderable;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -23,13 +21,13 @@ public class EditPage extends Page {
 
 	@Persist
 	@Property
-	private WebNodeContent editorRegion;
-
-	@Component
-	private Zone contentZone;
+	private WebContent editorRegion;
 
 	@Component
 	private Zone editorZone;
+
+	@Component
+	private Zone regionZone;
 
 	@Inject
 	private Block editorBlock;
@@ -41,25 +39,29 @@ public class EditPage extends Page {
 	@Inject
 	private ICayenneService cayenneService;
 
-	void onActivate(String webNodeID) {
+	@Property
+	private String webNodeId;
+
+	void onActivate(String webNodeId) {
+		this.webNodeId = webNodeId;
+	}
+
+	@SetupRender
+	public void beforeRender() {
 		WebNode node = DataObjectUtils.objectForPK(cayenneService.newContext(),
-				WebNode.class, webNodeID);
+				WebNode.class, webNodeId);
 		setCurrentNode(node);
 	}
 
 	Object onActionFromEditRegion(String id) {
-		//TODO commented till the question with the layouts regions will be resolved
-		/*this.editorRegion = ExpressionFactory
-				.matchExp(WebNodeContent.REGION_KEY_PROPERTY, id)
-				.filterObjects(getCurrentNode().getWebNodeContents()).get(0);*/
-
+		this.editorRegion = DataObjectUtils.objectForPK(getCurrentNode().getObjectContext(), WebContent.class, id);
 		return editorBlock;
 	}
 
 	Object onSuccessFromRegionForm() {
 		this.editorRegion.getObjectContext().commitChanges();
-		return new MultiZoneUpdate("contentZone", contentZone).add(
-				"editorZone", new EmptyRenderable());
+		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(
+				"regionZone", regionZone.getBody());
 	}
 
 	public boolean isEditRegionSelected() {

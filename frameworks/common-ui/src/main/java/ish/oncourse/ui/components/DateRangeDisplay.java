@@ -14,7 +14,7 @@ public class DateRangeDisplay {
 	private static final String doubleDateformat = "EE d MMM";
 	private static final String singleDateformat = "EEEE d MMMM";
 	private static final String yearformat = "yyyy";
-	private static final String machineFormat = "YYYY-MM-DDTHH:MM:SS+ZZ:ZZ";
+	private static final String machineFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
 	@Parameter
 	private Date date1;

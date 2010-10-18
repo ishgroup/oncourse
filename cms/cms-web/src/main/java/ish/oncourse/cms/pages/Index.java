@@ -17,7 +17,6 @@ public class Index extends Page {
 	@Override
 	@SetupRender
 	public void beforeRender() {
-		super.beforeRender();
 		setCurrentNode(webNodeService.getHomePage());
 	}
 }

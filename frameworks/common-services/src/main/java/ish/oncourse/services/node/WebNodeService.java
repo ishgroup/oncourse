@@ -10,6 +10,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -39,13 +40,16 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getHomePage() {
-		Expression defaultPathQualifier = ExpressionFactory.matchExp(WebUrlAlias.URL_PATH_PROPERTY,"/");
-		Expression siteMatchQualifier = ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_PROPERTY,
+		Expression defaultPathQualifier = ExpressionFactory.matchExp(
+				WebUrlAlias.URL_PATH_PROPERTY, "/");
+		Expression siteMatchQualifier = ExpressionFactory.matchExp(
+				WebUrlAlias.WEB_SITE_PROPERTY,
 				webSiteService.getCurrentWebSite());
 		Expression qualifier = defaultPathQualifier.andExp(siteMatchQualifier);
 		SelectQuery query = new SelectQuery(WebUrlAlias.class, qualifier);
-		List<WebUrlAlias> aliases = cayenneService.sharedContext().performQuery(query);
-		if(aliases.isEmpty()){
+		List<WebUrlAlias> aliases = cayenneService.sharedContext()
+				.performQuery(query);
+		if (aliases.isEmpty()) {
 			return null;
 		}
 		return aliases.get(0).getWebNode();
@@ -91,25 +95,23 @@ public class WebNodeService implements IWebNodeService {
 
 			String[] names = nodeName.split("/");
 			int length = names.length;
-			//TODO commented to resolve compilation problems, 
-			//in future the whole method will be removed because of using aliases
-			/*for (int i = 0; i < length; i++) {
-
-				String path = "";
-				for (int j = 0; j < length - 1 - i; j++) {
-					path += WebNode.PARENT_NODE_PROPERTY + ".";
-				}
-
-				String shortNamePath = path + WebNode.SHORT_NAME_PROPERTY;
-				String namePath = path + WebNode.NAME_PROPERTY;
-				String value = ("%" + names[i] + "%").replaceAll("[+]", " ")
-						.replaceAll("[|]", "/");
-				query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(
-						shortNamePath, value).orExp(
-						ExpressionFactory.matchExp(shortNamePath, null).andExp(
-								ExpressionFactory.likeIgnoreCaseExp(namePath,
-										value))));
-			}*/
+			// TODO commented to resolve compilation problems,
+			// in future the whole method will be removed because of using
+			// aliases
+			/*
+			 * for (int i = 0; i < length; i++) {
+			 * 
+			 * String path = ""; for (int j = 0; j < length - 1 - i; j++) { path
+			 * += WebNode.PARENT_NODE_PROPERTY + "."; }
+			 * 
+			 * String shortNamePath = path + WebNode.SHORT_NAME_PROPERTY; String
+			 * namePath = path + WebNode.NAME_PROPERTY; String value = ("%" +
+			 * names[i] + "%").replaceAll("[+]", " ") .replaceAll("[|]", "/");
+			 * query.andQualifier(ExpressionFactory.likeIgnoreCaseExp(
+			 * shortNamePath, value).orExp(
+			 * ExpressionFactory.matchExp(shortNamePath, null).andExp(
+			 * ExpressionFactory.likeIgnoreCaseExp(namePath, value)))); }
+			 */
 
 			@SuppressWarnings("unchecked")
 			List<WebNode> nodes = cayenneService.sharedContext().performQuery(
@@ -158,9 +160,8 @@ public class WebNodeService implements IWebNodeService {
 				webSiteService.getCurrentCollege()) : ExpressionFactory
 				.matchExp(WebNode.WEB_SITE_PROPERTY, site);
 
-		expression = expression
-				.andExp(ExpressionFactory.matchExp(
-						WebNode.IS_PUBLISHED_PROPERTY, true));
+		expression = expression.andExp(ExpressionFactory.matchExp(
+				WebNode.IS_PUBLISHED_PROPERTY, true));
 
 		return expression;
 	}
@@ -195,14 +196,30 @@ public class WebNodeService implements IWebNodeService {
 			return false;
 		}
 		for (int i = nodes.length - 2; i >= 0; i--) {
-			//TODO commented to resolve compilation problems, 
-			//in future the whole method will be removed because of using aliases
-			/*WebNode parentNode = node.getParentNode();
-			if (!(nodes[i].equals(parentNode.getShortName()) || nodes[i]
-					.equals(parentNode.getName()))) {
-				return false;
-			}*/
+			// TODO commented to resolve compilation problems,
+			// in future the whole method will be removed because of using
+			// aliases
+			/*
+			 * WebNode parentNode = node.getParentNode(); if
+			 * (!(nodes[i].equals(parentNode.getShortName()) || nodes[i]
+			 * .equals(parentNode.getName()))) { return false; }
+			 */
 		}
 		return true;
+	}
+
+	public WebNodeType getDefaultWebNodeType() {
+		SelectQuery q = new SelectQuery(WebNodeType.class);
+
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebNodeType.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite()));
+
+		q.andQualifier(ExpressionFactory
+				.matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
+						WebNodeType.DEFAULT_LAYOUT_KEY));
+
+		return (WebNodeType) DataObjectUtils.objectForQuery(
+				cayenneService.sharedContext(), q);
 	}
 }

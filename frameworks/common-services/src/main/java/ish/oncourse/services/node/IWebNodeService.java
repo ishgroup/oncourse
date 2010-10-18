@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
 
 public interface IWebNodeService {
 
@@ -12,17 +13,20 @@ public interface IWebNodeService {
 	public static final String PAGE_PATH_PARAMETER = "p";
 	public static final String WEB_NODE_PAGE_TYPE_KEY = "Page";
 
+	WebNodeType getDefaultWebNodeType();
+
 	/**
 	 * Returns all web nodes for the current site or current college.
 	 */
 	List<WebNode> getNodes();
-	
+
 	/**
 	 * Returns home page for current site.
+	 * 
 	 * @return
 	 */
 	WebNode getHomePage();
-	
+
 	/**
 	 * Find a web node for the corresponding node number.
 	 * 
@@ -33,7 +37,7 @@ public interface IWebNodeService {
 
 	/**
 	 * Find a web node for the corresponding node name.
-	 *
+	 * 
 	 * @param nodeName
 	 * @return corresponding web node or null if not found
 	 */
@@ -41,16 +45,16 @@ public interface IWebNodeService {
 
 	/**
 	 * Returns the current page active page.
-	 *
+	 * 
 	 * Note that this method relies on the injected
 	 * {@link org.apache.tapestry5.services.Request} object.
-	 *
+	 * 
 	 * @return the current page
 	 */
 	WebNode getCurrentNode();
 
 	/**
-	 *
+	 * 
 	 * @param searchProperty
 	 * @param value
 	 * @return
@@ -58,6 +62,6 @@ public interface IWebNodeService {
 	WebNode getNode(String searchProperty, Object value);
 
 	Date getLatestModifiedDate();
-	
+
 	boolean isNodeExist(String path);
 }

@@ -10,7 +10,7 @@
 	
 			<div id="content_container" class="clearfix">
 				<div id="content" class="span-18 unitPng">
-					<div id="welcome">
+					<div id="${templateId}">
 						<span id="param:content"></span>
 					</div>
 				</div>

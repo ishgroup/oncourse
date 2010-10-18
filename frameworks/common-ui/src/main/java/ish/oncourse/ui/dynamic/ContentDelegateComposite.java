@@ -11,12 +11,12 @@ import org.apache.tapestry5.internal.util.RenderableAsBlock;
 
 import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 
-public class DynamicDelegateComposite implements DynamicDelegate {
+public class ContentDelegateComposite implements DynamicDelegate {
 
-	private Set<DynamicDelegatePart> delegates = new TreeSet<DynamicDelegatePart>();
+	private Set<ContentDelegate> delegates = new TreeSet<ContentDelegate>();
 	private ComponentResources resources;
 
-	public DynamicDelegateComposite(ComponentResources resources) {
+	public ContentDelegateComposite(ComponentResources resources) {
 		this.resources = resources;
 	}
 
@@ -36,7 +36,12 @@ public class DynamicDelegateComposite implements DynamicDelegate {
 		return new RenderableAsBlock(new EmptyRenderable());
 	}
 
-	public void addDynamicDelegatePart(DynamicDelegatePart part) {
+	public void addDynamicDelegatePart(ContentDelegate part) {
 		delegates.add(part);
+	}
+
+	public void clear() {
+		delegates.clear();
+		resources = null;
 	}
 }

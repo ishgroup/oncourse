@@ -6,11 +6,11 @@ import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.security.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.ui.dynamic.DynamicDelegateComposite;
-import ish.oncourse.ui.dynamic.DynamicDelegatePart;
+import ish.oncourse.ui.dynamic.ContentDelegate;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -25,15 +25,16 @@ import org.apache.tapestry5.services.Request;
 public class PageWrapper {
 
 	private static final String MSIE = "MSIE";
-
-	@Inject
-	private IWebSiteService webSiteService;
+	private static final String WELCOME_TEMPLATE_ID = "welcome";
 
 	@Inject
 	private IAuthenticationService authenticationService;
-
+	
 	@Inject
 	private IWebNodeService webNodeService;
+	
+	@Inject
+	private IWebSiteService webSiteService;
 
 	@Inject
 	private IWebMenuService webMenuService;
@@ -44,22 +45,27 @@ public class PageWrapper {
 	@Inject
 	private ComponentResources resources;
 
-	@Parameter
 	@Property
+	@Parameter
 	private String bodyId;
 
 	@Parameter
 	private String bodyClass;
 
-	@Parameter
 	@Property
+	private String templateId;
+
+	@Property
+	@Parameter
 	private WebNodeType webNodeType;
 
-	@Property
-	@Parameter(required = true)
-	private DynamicDelegateComposite dynamicDelegate;
+	@Parameter
+	private ContentDelegate delegate;
 
-	private DynamicDelegatePart _dynamicPart = new DynamicDelegatePart(1) {
+	@Component
+	private BodyLayout bodyLayout;
+
+	private ContentDelegate _dynamicPart = new ContentDelegate(1) {
 		public ComponentResources getComponentResources() {
 			return resources;
 		}
@@ -71,11 +77,16 @@ public class PageWrapper {
 
 	@SetupRender
 	public void beforeRender() {
-		this.dynamicDelegate.addDynamicDelegatePart(_dynamicPart);
-	}
+		bodyLayout.addContentDelegate(_dynamicPart);
+		if (resources.isBound("delegate")) {
+			bodyLayout.addContentDelegate(delegate);
+		}
 
-	public boolean isLoggedIn() {
-		return authenticationService.getUser() != null;
+		webNodeType = (resources.isBound("webNodeType")) ? webNodeType
+				: webNodeService.getDefaultWebNodeType();
+
+		bodyLayout.setWebNodeType(webNodeType);
+		this.templateId = WELCOME_TEMPLATE_ID;
 	}
 
 	public String getAgentAwareBodyClass() {
@@ -106,10 +117,6 @@ public class PageWrapper {
 		return bodyClass;
 	}
 
-	public boolean isHasCurrentNode() {
-		return webNodeService.getCurrentNode() != null;
-	}
-
 	public WebMenu getMenu() {
 		return webMenuService.getMainMenu();
 	}
@@ -120,5 +127,13 @@ public class PageWrapper {
 
 	public String getHomeLink() {
 		return webSiteService.getHomeLink();
+	}
+	
+	public boolean isLoggedIn() {
+		return authenticationService.getUser() != null;
+	}
+	
+	public boolean isHasCurrentNode() {
+		return webNodeService.getCurrentNode() != null;
 	}
 }

@@ -1,7 +1,7 @@
 package ish.oncourse.cms.pages;
 
+import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeContent;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
@@ -38,7 +38,7 @@ public class NewPage extends EditPage {
 				newPageNode.setNodeNumber(0);
 		newPageNode.setWebNodeType(WebNodeType.forName(ctx, WebNodeType.PAGE));
 
-		WebNodeContent content = ctx.newObject(WebNodeContent.class);
+		WebContent content = ctx.newObject(WebContent.class);
 		//TODO commented till the question with the layouts regions will be resolved
 		//content.setRegionKey("content");
 		content.setContent("Sample content text.");

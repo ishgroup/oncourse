@@ -14,6 +14,7 @@ import ish.oncourse.model.auto._WebNodeType;
 public class WebNodeType extends _WebNodeType {
 
 	public static final String PAGE = "Page";
+	public static final String DEFAULT_LAYOUT_KEY = "default";
 
 	public static WebNodeType forName(ObjectContext ctx, String name) {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
@@ -24,19 +25,19 @@ public class WebNodeType extends _WebNodeType {
 
 	public List<WebContent> getContentForRegionKey(String regionKey) {
 		SelectQuery q = new SelectQuery(WebContent.class);
-		
+
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
 						+ WebContentVisibility.WEB_NODE_TYPE_PROPERTY, this));
-		
+
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
 						+ WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
-		
+
 		q.addOrdering(new Ordering(WebContent.WEB_CONTENT_VISIBILITY_PROPERTY
 				+ "." + WebContentVisibility.WEIGHT_PROPERTY,
 				SortOrder.ASCENDING));
-		
+
 		return getObjectContext().performQuery(q);
 	}
 }

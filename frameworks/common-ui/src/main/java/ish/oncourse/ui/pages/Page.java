@@ -5,8 +5,7 @@ import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.ui.dynamic.DynamicDelegateComposite;
-import ish.oncourse.ui.dynamic.DynamicDelegatePart;
+import ish.oncourse.ui.dynamic.ContentDelegate;
 
 import java.util.List;
 
@@ -20,8 +19,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class Page {
-
-	private static final String WELCOME_TEMPLATE_ID = "welcome";
 
 	@Inject
 	private Request request;
@@ -45,13 +42,7 @@ public class Page {
 	@Persist
 	private WebNode node;
 
-	@Property
-	private DynamicDelegateComposite dynamicDelegate;
-	
-	@Property
-	private String templateId;
-
-	private DynamicDelegatePart _dynamicPart = new DynamicDelegatePart(2) {
+	private ContentDelegate _dynamicPart = new ContentDelegate(2) {
 		public ComponentResources getComponentResources() {
 			return resources;
 		}
@@ -78,10 +69,7 @@ public class Page {
 
 	@SetupRender
 	public void beforeRender() {
-		this.dynamicDelegate = new DynamicDelegateComposite(resources);
-		this.dynamicDelegate.addDynamicDelegatePart(_dynamicPart);
 		this.node = webNodeService.getCurrentNode();
-		this.templateId =  WELCOME_TEMPLATE_ID;
 	}
 
 	public String getRegionContent() {
@@ -112,5 +100,9 @@ public class Page {
 
 	public String getTitle() {
 		return getCurrentNode().getName();
+	}
+	
+	public ContentDelegate getDelegate() {
+		return _dynamicPart;
 	}
 }

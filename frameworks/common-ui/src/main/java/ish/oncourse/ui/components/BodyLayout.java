@@ -5,13 +5,15 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
-import ish.oncourse.ui.dynamic.DynamicDelegateComposite;
-import ish.oncourse.ui.dynamic.DynamicDelegatePart;
+import ish.oncourse.ui.dynamic.ContentDelegateComposite;
+import ish.oncourse.ui.dynamic.ContentDelegate;
 
 import java.util.List;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.annotations.AfterRender;
+import org.apache.tapestry5.annotations.BeginRender;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SupportsInformalParameters;
@@ -38,10 +40,6 @@ public class BodyLayout {
 	@Parameter("selectedTemplate")
 	private DynamicTemplate template;
 
-	@Parameter(required = true)
-	private DynamicDelegateComposite dynamicDelegate;
-
-	@Parameter
 	private WebNodeType webNodeType;
 
 	@Property
@@ -50,7 +48,10 @@ public class BodyLayout {
 	@Property
 	private WebContent currentRegion;
 
-	private DynamicDelegatePart _dynamicPart = new DynamicDelegatePart(3) {
+	private ContentDelegateComposite compositeDelegate = new ContentDelegateComposite(
+			resources);
+
+	private ContentDelegate _dynamicPart = new ContentDelegate(Integer.MAX_VALUE) {
 		public ComponentResources getComponentResources() {
 			return resources;
 		}
@@ -68,9 +69,15 @@ public class BodyLayout {
 		}
 	};
 
+	@BeginRender
 	RenderCommand beginRender() {
-		dynamicDelegate.addDynamicDelegatePart(_dynamicPart);
-		return template.createRenderCommand(dynamicDelegate);
+		compositeDelegate.addDynamicDelegatePart(_dynamicPart);
+		return template.createRenderCommand(compositeDelegate);
+	}
+
+	@AfterRender
+	public void afterRender() {
+		compositeDelegate.clear();
 	}
 
 	public String getRegionContent() {
@@ -81,5 +88,17 @@ public class BodyLayout {
 		PrivateResource template = resourceService.getTemplateResource(
 				webNodeType.getLayoutKey(), "WebNode.tml");
 		return template;
+	}
+
+	public WebNodeType getWebNodeType() {
+		return webNodeType;
+	}
+
+	public void setWebNodeType(WebNodeType webNodeType) {
+		this.webNodeType = webNodeType;
+	}
+
+	public void addContentDelegate(ContentDelegate delegate) {
+		compositeDelegate.addDynamicDelegatePart(delegate);
 	}
 }

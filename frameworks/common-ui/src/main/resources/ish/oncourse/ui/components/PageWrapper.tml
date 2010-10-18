@@ -10,8 +10,7 @@
 		<head t:type="ui/pagehead" />
 	</head>
 	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-		
-		<div t:type="ui/bodylayout" dynamicDelegate="dynamicDelegate" webNodeType="webNodeType">
+		<div t:id="bodyLayout" t:type="ui/bodylayout">
 			<p:header>
 				<h1><a href="${homeLink}">${collegeName}</a></h1>
 				<div id="site_toolbar">
@@ -22,13 +21,14 @@
 			<p:menu>
 				<div t:type="ui/menu" mainMenu="menu"/>
 			</p:menu>
+			<p:content>
+				<t:body/>		
+			</p:content>
 			<p:footer>
 				<div t:type="ui/bodyfooter"></div>
 			</p:footer>
 		</div>
-		
 		<span t:type="ui/googleAnalytics"></span>
-		
 		<t:if t:test="loggedIn">
 			<div t:type="ui/navigation"/>
 			<t:if t:test="hasCurrentNode">

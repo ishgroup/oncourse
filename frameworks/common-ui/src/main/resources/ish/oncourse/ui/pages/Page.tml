@@ -1,6 +1,5 @@
 <html t:type="ui/pagewrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"
-	title="${title}" bodyId="${bodyId}" bodyClass="${bodyClass}" 
-	webNodeType="prop:node.webNodeType" dynamicDelegate="prop:dynamicDelegate">
+	title="${title}" bodyId="${bodyId}" bodyClass="${bodyClass}" webNodeType="prop:node.webNodeType" delegate="prop:delegate">
 	
 	<t:block id="regionBlock">
 		<t:outputraw value="regionContent" />

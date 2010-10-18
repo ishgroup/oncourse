@@ -5,7 +5,6 @@
 
 package ish.oncourse.website.pages;
 
-import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.services.node.IWebNodeService;
@@ -16,12 +15,8 @@ public class Index extends Page {
 	@Inject
 	private IWebNodeService webNodeService;
 	
-	@Property
-	private String templateId;
-	
 	@Override
 	public void beforeRender() {
-		super.beforeRender();
 		setCurrentNode(webNodeService.getHomePage());
 	}
 	
