@@ -147,7 +147,7 @@ public class WebSiteService implements IWebSiteService {
 	}
 
 	public String getHomeLink() {
-		return request.getServerName()+ "/";
+		return "/";
 	}
 
 	public List<Site> getCollegeSites() {
