@@ -98,10 +98,6 @@ public class Page {
 				webNodeService.getHomePage().getId());
 	}
 
-	public String getTitle() {
-		return getCurrentNode().getName();
-	}
-	
 	public ContentDelegate getDelegate() {
 		return _dynamicPart;
 	}
