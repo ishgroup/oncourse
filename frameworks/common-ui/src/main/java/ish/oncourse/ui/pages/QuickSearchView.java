@@ -4,6 +4,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ public class QuickSearchView {
 	private Request request;
 	@Inject
 	private ISearchService searchService;
+	@Inject
+	private ITagService tagService;
+	
 	@Property
 	private String searchString;
 
@@ -91,7 +95,7 @@ public class QuickSearchView {
 				postcodeDb.setLon(Double.valueOf(points[1]));
 				locationDetailList.add(postcodeDb);
 			} else if ("tag".equals(doctype)) {
-				Tag tag = new Tag();
+				Tag tag = tagService.getTag(Tag.ID_PROPERTY, doc.get("id"));
 				tag.setName((String) doc.get("name"));
 				tags.add(tag);
 			}

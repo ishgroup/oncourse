@@ -91,7 +91,6 @@ public class SearchService implements ISearchService {
 			q.setStart(start);
 			q.setRows(rows);
 			q.setIncludeScore(true);
-			q.setParam("q.op", "AND");
 			q.addFilterQuery(String.format("collegeId:%s doctype:course",
 					collegeId));
 

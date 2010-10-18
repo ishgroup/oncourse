@@ -37,7 +37,7 @@
 							</li>
 						</t:loop>
 						<li>
-							<a href="courses?s=${searchString}">Show all results...</a>
+							<a href="/courses?s=${searchString}">Show all results...</a>
 						</li>
 					</ul>
 					<p:else>
@@ -54,7 +54,7 @@
 									</li>
 								</t:loop>
 								<li>
-									<a href="courses?s=${searchString}">Show all results...</a>
+									<a href="/courses?s=${searchString}">Show all results...</a>
 								</li>
 							</ul>
 						</t:if>
@@ -67,22 +67,12 @@
 						<ul class="tag_list">
 							<li class="title">Subjects</li>
 							<t:loop source="tags" value="tag">
-								<li>${tag.name}</li>
+								<li>
+									<a href="${tag.link}">${tag.name}</a>
+								</li>
 							</t:loop>
 						</ul>
 				</t:if>
-						
-							<!--
-							TODO implement when search for will be ready-->
-							<!--
-								wo:loop list="$tagGroupResultsListItem.results"
-								item="$taggedResultsListItem" index="$listIndex"> <li class="tag
-								hoverable"> <wo:link href="~'/courses' +
-								taggedResultsListItem.tagURLPath"><wo:ISHMatchedString
-								value="$taggedResultsListItem.tagName" terms="$searchTerms"
-								tag="em" escapeHTML="$false" /></wo:link> </li> </wo:loop>
-								<wo:if condition="$hasMoreTagGroupResults"></wo:if
-							-->
 				
 			</p:else>
 		</t:if>
