@@ -680,7 +680,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebSite` (
   `googleDirectionsFrom` VARCHAR(256) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `Website_college` (`collegeId` ASC) ,
-  INDEX `Website_SSLhostname` (`SSLhostNameId` ASC) ,
+  UNIQUE INDEX `Website_SSLhostname` (`SSLhostNameId` ASC) ,
   CONSTRAINT `Website_college`
     FOREIGN KEY (`collegeId` )
     REFERENCES `willow_college`.`College` (`id` ),
@@ -706,13 +706,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebHostName` (
   `modified` DATETIME NOT NULL ,
   `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `collegeid_name_uniq_idx` (`collegeId` ASC, `name` ASC) ,
-  INDEX `CollegeDomain_ibfk_2` (`webSiteId` ASC) ,
-  INDEX `name_idx` (`name` ASC) ,
-  CONSTRAINT `CollegeDomain_ibfk_1`
+  UNIQUE INDEX `WebHostName_college` (`collegeId` ASC, `name` ASC) ,
+  INDEX `WebHostNama_website` (`webSiteId` ASC) ,
+  INDEX `WebHostName_name` (`name` ASC) ,
+  CONSTRAINT `WebHostName_college`
     FOREIGN KEY (`collegeId` )
     REFERENCES `willow_college`.`College` (`id` ),
-  CONSTRAINT `CollegeDomain_ibfk_2`
+  CONSTRAINT `WebHostName_website`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` ))
 ENGINE = InnoDB
@@ -1674,7 +1674,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNodeType` (
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `webSiteId_templateKey_uniq_idx` (`webSiteId` ASC, `layoutKey` ASC) ,
   INDEX `name_idx` (`name` ASC) ,
-  CONSTRAINT `WebNodeType_ibfk_2`
+  CONSTRAINT `WebNodeType_website`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` ))
 ENGINE = InnoDB
@@ -1694,12 +1694,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
   `modified` DATETIME NOT NULL ,
   `urlPath` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `WebURLAlias_ibfk_1` (`webSiteId` ASC) ,
-  INDEX `WebURLAlias_ibfk_2` (`webNodeId` ASC) ,
-  CONSTRAINT `WebURLAlias_ibfk_1`
+  INDEX `webSite` (`webSiteId` ASC) ,
+  INDEX `webNode` (`webNodeId` ASC) ,
+  UNIQUE INDEX `urlPath` (`urlPath` ASC, `webSiteId` ASC) ,
+  CONSTRAINT `WebURLAlias_website`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` ),
-  CONSTRAINT `WebURLAlias_ibfk_2`
+  CONSTRAINT `WebURLAlias_webNode`
     FOREIGN KEY (`webNodeId` )
     REFERENCES `willow_college`.`WebNode` (`id` ))
 ENGINE = InnoDB
@@ -1726,7 +1727,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
   INDEX `WebNode_webNodeType` (`webNodeTypeId` ASC) ,
   INDEX `isPublished_isWebNavigable_idx` (`isPublished` ASC) ,
   UNIQUE INDEX `college_nodeNumber` (`nodeNumber` ASC, `webSiteId` ASC) ,
-  INDEX `WebNode_defaultWebURLalias` (`defaultURLalias` ASC) ,
+  UNIQUE INDEX `WebNode_defaultWebURLalias` (`defaultURLalias` ASC) ,
   CONSTRAINT `WebNode_webSite`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` ),
@@ -1757,6 +1758,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContent` (
   `modified` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `webContent_webSite` (`webSiteId` ASC) ,
+  INDEX `webContent_name` (`name` ASC) ,
   CONSTRAINT `webContent_webSite`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` )
@@ -1800,7 +1802,9 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebMenu` (
     REFERENCES `willow_college`.`WebMenu` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
@@ -1832,7 +1836,9 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
     REFERENCES `willow_college`.`WebNode` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
