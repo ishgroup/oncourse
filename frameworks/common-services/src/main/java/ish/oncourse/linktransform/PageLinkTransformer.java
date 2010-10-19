@@ -74,7 +74,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
 	 */
 	private static final Pattern TUTOR_PATTERN = Pattern.compile("/tutor/(\\d+)");
-
+	
 	/**
 	 * /sitemap.xml Google specific sitemap file.
 	 */
@@ -114,6 +114,13 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * Path of the refreshing the shortlist
 	 */
 	private static final String REFRESH_SHORT_LIST_PATH = "/refreshShortList";
+	
+	/**
+	 * /Timeline/sessions?ids=123,456 Show the timeline view for the sessions 
+	 *  of courseClasses with ids of 123 and 456
+	 */
+	private static final String TIMELINE_PATH = "/Timeline/sessions";
+
 	
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -277,6 +284,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		
 		if(REFRESH_SHORT_LIST_CONTROL_PATH.equalsIgnoreCase(path)){
 			return new PageRenderRequestParameters("ui/ShortListControlPage", new EmptyEventContext(), false);
+		}
+		
+		if(TIMELINE_PATH.equalsIgnoreCase(path)){
+			return new PageRenderRequestParameters("ui/TimelineData", new EmptyEventContext(), false);
 		}
 		
 		String nodePath=path;
