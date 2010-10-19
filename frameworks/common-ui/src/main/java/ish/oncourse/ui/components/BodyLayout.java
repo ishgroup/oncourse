@@ -71,13 +71,13 @@ public class BodyLayout {
 
 	@BeginRender
 	RenderCommand beginRender() {
-		compositeDelegate.addDynamicDelegatePart(_dynamicPart);
+		compositeDelegate.addContentDelegate(_dynamicPart);
 		return template.createRenderCommand(compositeDelegate);
 	}
 
 	@AfterRender
 	public void afterRender() {
-		compositeDelegate.clear();
+		compositeDelegate.clearDelegates();
 	}
 
 	public String getRegionContent() {
@@ -99,6 +99,6 @@ public class BodyLayout {
 	}
 
 	public void addContentDelegate(ContentDelegate delegate) {
-		compositeDelegate.addDynamicDelegatePart(delegate);
+		compositeDelegate.addContentDelegate(delegate);
 	}
 }

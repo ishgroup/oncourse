@@ -36,12 +36,11 @@ public class ContentDelegateComposite implements DynamicDelegate {
 		return new RenderableAsBlock(new EmptyRenderable());
 	}
 
-	public void addDynamicDelegatePart(ContentDelegate part) {
+	public void addContentDelegate(ContentDelegate part) {
 		delegates.add(part);
 	}
 
-	public void clear() {
+	public void clearDelegates() {
 		delegates.clear();
-		resources = null;
 	}
 }
