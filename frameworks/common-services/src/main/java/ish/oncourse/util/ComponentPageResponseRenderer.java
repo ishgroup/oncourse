@@ -42,12 +42,13 @@ public class ComponentPageResponseRenderer implements IComponentPageResponseRend
 	 */
 	public void renderPageResponse(Page page) throws IOException {
 		assert page != null;
-		ValidationDecorator validationDecorator=environment.peekRequired(ValidationDecorator.class);
-		Heartbeat heartbeat = environment.peekRequired(Heartbeat.class);
-		DocumentLinker documentLinker = environment.peekRequired(DocumentLinker.class);
-		JavaScriptSupport javaScriptSupport = environment.peekRequired(JavaScriptSupport.class);
-		RenderSupport renderSupport = environment.peekRequired(RenderSupport.class);
-		ClientBehaviorSupport clientBehaviorSupport = environment.peekRequired(ClientBehaviorSupport.class);
+		
+		ValidationDecorator validationDecorator=environment.peek(ValidationDecorator.class);
+		Heartbeat heartbeat = environment.peek(Heartbeat.class);
+		DocumentLinker documentLinker = environment.peek(DocumentLinker.class);
+		JavaScriptSupport javaScriptSupport = environment.peek(JavaScriptSupport.class);
+		RenderSupport renderSupport = environment.peek(RenderSupport.class);
+		ClientBehaviorSupport clientBehaviorSupport = environment.peek(ClientBehaviorSupport.class);
 		
 		ContentType contentType = pageContentTypeAnalyzer.findContentType(page);
 

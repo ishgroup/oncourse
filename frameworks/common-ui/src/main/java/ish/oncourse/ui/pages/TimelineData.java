@@ -1,15 +1,17 @@
 package ish.oncourse.ui.pages;
 
-import java.text.DateFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimeZone;
-
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.util.IPageRenderer;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
@@ -34,7 +36,9 @@ public class TimelineData {
 	private Session record;
 
 	private static final String FORMAT_FOR_TITLE = "d MMM h:mma";
-	private static final String TIMESTAMP_FORMAT = "d MMM yy h:mma z";
+
+	@Inject
+	private IPageRenderer pageRenderer;
 
 	@SetupRender
 	void beforeRender() {
@@ -70,9 +74,22 @@ public class TimelineData {
 		return result;
 	}
 
-	public Format getTimestampFormatter() {
-		SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT);
-		formatter.setTimeZone(TimeZone.getTimeZone(record.getTimeZone()));
-		return formatter;
+	public String getEventContent() {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("timelineRecord", record);
+		return pageRenderer.encodedPage("ui/TimelineEventDetail", parameters);
 	}
+
+	public String getStartDate() {
+		DateFormat format = DateFormat.getDateInstance(DateFormat.FULL);
+		format.setTimeZone(TimeZone.getTimeZone(record.getTimeZone()));
+		return format.format(record.getStartDate());
+	}
+
+	public String getEndDate() {
+		DateFormat format = DateFormat.getDateInstance(DateFormat.FULL);
+		format.setTimeZone(TimeZone.getTimeZone(record.getTimeZone()));
+		return format.format(record.getEndDate());
+	}
+
 }
