@@ -10,7 +10,6 @@ import org.apache.cayenne.DataObjectUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
@@ -19,15 +18,11 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class EditPage extends Page {
 
-	@Persist
-	@Property
-	private WebContent editorRegion;
-
 	@Component
 	private Zone editorZone;
 
 	@Component
-	private Zone regionZone;
+	private Zone contentZone;
 
 	@Inject
 	private Block editorBlock;
@@ -54,17 +49,14 @@ public class EditPage extends Page {
 	}
 
 	Object onActionFromEditRegion(String id) {
-		this.editorRegion = DataObjectUtils.objectForPK(getCurrentNode().getObjectContext(), WebContent.class, id);
+		WebContent region = DataObjectUtils.objectForPK(getCurrentNode().getObjectContext(), WebContent.class, id);
+		setCurrentRegion(region);
 		return editorBlock;
 	}
 
 	Object onSuccessFromRegionForm() {
-		this.editorRegion.getObjectContext().commitChanges();
+		getCurrentRegion().getObjectContext().commitChanges();
 		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(
-				"regionZone", regionZone.getBody());
-	}
-
-	public boolean isEditRegionSelected() {
-		return this.editorRegion != null;
+				"contentZone", contentZone.getBody());
 	}
 }

@@ -36,7 +36,8 @@ public class Page {
 	private Block regionBlock;
 
 	@Property
-	private WebContent currentRegion;
+	@Persist
+	private WebContent region;
 
 	@Property
 	@Persist
@@ -59,7 +60,7 @@ public class Page {
 					.filterObjects(node.getWebContentVisibility());
 
 			if (list.size() > 0) {
-				currentRegion = list.get(0).getWebContent();
+				region = list.get(0).getWebContent();
 				return regionBlock;
 			}
 
@@ -73,7 +74,7 @@ public class Page {
 	}
 
 	public String getRegionContent() {
-		return webContentService.getParsedContent(this.currentRegion);
+		return webContentService.getParsedContent(this.region);
 	}
 
 	public WebNode getCurrentNode() {
@@ -83,6 +84,14 @@ public class Page {
 	public void setCurrentNode(WebNode node) {
 		this.node = node;
 		request.setAttribute(webNodeService.NODE, this.node);
+	}
+
+	public void setCurrentRegion(WebContent region) {
+		this.region = region;
+	}
+
+	public WebContent getCurrentRegion() {
+		return this.region;
 	}
 
 	public String getBodyId() {
