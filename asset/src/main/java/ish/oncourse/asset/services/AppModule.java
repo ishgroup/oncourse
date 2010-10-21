@@ -11,7 +11,7 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
  * registry.
  */
 @SubModule({ModelModule.class, ServiceModule.class})
-public class AssetModule {
+public class AppModule {
 	
 	public static void contributeIgnoredPathsFilter(Configuration<String> configuration) {
 		configuration.add("/asset/binarydata");
