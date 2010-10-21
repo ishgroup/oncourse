@@ -15,10 +15,15 @@ import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.java.textilej.parser.MarkupParser;
+import net.java.textilej.parser.builder.HtmlDocumentBuilder;
+import net.java.textilej.parser.markup.textile.TextileDialect;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -44,7 +49,21 @@ public class TextileConverter implements ITextileConverter {
 
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
-	public String convert(String content, ValidationErrors errors) {
+	public String convertCoreTextile(String content) {
+		StringWriter writer = new StringWriter();
+
+		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
+		// avoid the <html> and <body> tags 
+		builder.setEmitAsDocument(false);
+
+		MarkupParser parser = new MarkupParser(new TextileDialect());
+		parser.setBuilder(builder);
+
+		parser.parse(content, false);
+		return writer.toString();
+	}
+	
+	public String convertCustomTextile(String content, ValidationErrors errors) {
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 		Matcher matcher = pattern.matcher(content);
 		String result = content;
@@ -63,6 +82,7 @@ public class TextileConverter implements ITextileConverter {
 		return result;
 	}
 
+	
 	private IRenderer getRendererForTag(String tag) {
 		IRenderer renderer = null;
 		for (TextileType type : TextileType.values()) {
@@ -98,5 +118,7 @@ public class TextileConverter implements ITextileConverter {
 		}
 		return null;
 	}
+
+	
 
 }

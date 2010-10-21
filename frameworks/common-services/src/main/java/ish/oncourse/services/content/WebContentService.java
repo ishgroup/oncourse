@@ -32,7 +32,7 @@ public class WebContentService implements IWebContentService {
 
 	public String getParsedContent(WebContent webContent) {
 		String text = webContent.getContent();
-
+		
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 
 		Matcher matcher = pattern.matcher(text);
@@ -40,7 +40,7 @@ public class WebContentService implements IWebContentService {
 		if (matcher.find()) {
 			
 			ValidationErrors errors = new ValidationErrors();
-			text = textileConverter.convert(text, errors);
+			text = textileConverter.convertCustomTextile(text, errors);
 			
 			if (errors.hasFailures()) {
 				try {

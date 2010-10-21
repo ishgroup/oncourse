@@ -28,7 +28,7 @@ public class WebBlockDisplay {
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 		Matcher matcher = pattern.matcher(content);
 		if (matcher.find()) {
-			content = textileConverter.convert(content, errors);
+			content = textileConverter.convertCustomTextile(content, errors);
 		}
 		if (errors.hasFailures()) {
 			try {

@@ -3,5 +3,6 @@ package ish.oncourse.services.textile;
 import ish.oncourse.util.ValidationErrors;
 
 public interface ITextileConverter {
-	String convert(String content, ValidationErrors errors);
+	String convertCustomTextile(String content, ValidationErrors errors);
+	String convertCoreTextile(String content);
 }

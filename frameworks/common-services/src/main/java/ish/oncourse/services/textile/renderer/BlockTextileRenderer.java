@@ -62,7 +62,7 @@ public class BlockTextileRenderer extends AbstractRenderer {
 				Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 				Matcher matcher = pattern.matcher(result);
 				if (matcher.find() && !errors.hasFailures()) {
-					tag = converter.convert(result, errors);
+					tag = converter.convertCustomTextile(result, errors);
 				} else {
 					tag = result;
 				}
