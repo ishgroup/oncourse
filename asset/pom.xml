@@ -44,6 +44,22 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<!-- Activate explicitly in Eclipse -->
+			<id>eclipse</id>
+			<dependencies>
+				<dependency>
+					<groupId>ish.oncourse</groupId>
+					<artifactId>jetty-launcher</artifactId>
+					<version>${version}</version>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	
 	<build>
 		<finalName>asset</finalName>
 		
