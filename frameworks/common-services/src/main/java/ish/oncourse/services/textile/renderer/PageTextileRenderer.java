@@ -59,8 +59,7 @@ public class PageTextileRenderer extends AbstractRenderer {
 			if (node  != null) {
 				Map<String, Object> parameters=new HashMap<String, Object>();
 				parameters.put(IWebNodeService.NODE, node);
-				tag = pageRenderer.renderPage("ui/Page", parameters);
-				
+				tag = pageRenderer.renderPage("ui/TextilePage", parameters);
 			}
 		}
 		return tag;
