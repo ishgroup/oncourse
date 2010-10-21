@@ -12,8 +12,9 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
  */
 @SubModule({ModelModule.class, ServiceModule.class})
 public class AssetModule {
+	
 	public static void contributeIgnoredPathsFilter(Configuration<String> configuration) {
-		configuration.add("/servlet/binarydata");
-		configuration.add("/servlet/autosuggest");
+		configuration.add("/asset/binarydata");
+		configuration.add("/asset/autosuggest");
 	}
 }

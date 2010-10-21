@@ -22,12 +22,12 @@
 
 	<servlet-mapping>
 		<servlet-name>BinaryData</servlet-name>
-		<url-pattern>/servlet/binarydata</url-pattern>
+		<url-pattern>/asset/binarydata</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>AutoSuggest</servlet-name>
-		<url-pattern>/servlet/autosuggest</url-pattern>
+		<url-pattern>/asset/autosuggest</url-pattern>
 	</servlet-mapping>
 
 	<filter>
@@ -37,7 +37,7 @@
 
 	<filter-mapping>
 		<filter-name>app</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/asset/*</url-pattern>
 	</filter-mapping>
 
 	<welcome-file-list>

@@ -35,6 +35,7 @@ public class ServiceAwareServlet extends HttpServlet {
 	protected <T> T getService(Class<T> clazz) {
 		Registry registry = (Registry) getServletContext().getAttribute(
 				TapestryFilter.REGISTRY_CONTEXT_NAME);
+		
 		return registry.getService(clazz);
 	}
 }

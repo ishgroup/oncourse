@@ -10,26 +10,6 @@
 		<param-value>ish.oncourse.website</param-value>
 	</context-param>
 
-	<servlet>
-		<servlet-name>BinaryData</servlet-name>
-		<servlet-class>ish.oncourse.website.servlet.BinaryDataServlet</servlet-class>
-	</servlet>
-
-	<servlet>
-		<servlet-name>AutoSuggest</servlet-name>
-		<servlet-class>ish.oncourse.website.servlet.AutoSuggestServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>BinaryData</servlet-name>
-		<url-pattern>/servlet/binarydata</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>AutoSuggest</servlet-name>
-		<url-pattern>/servlet/autosuggest</url-pattern>
-	</servlet-mapping>
-
 	<filter>
 		<filter-name>app</filter-name>
 		<filter-class>org.apache.tapestry5.TapestryFilter</filter-class>

@@ -49,7 +49,7 @@ public class ImageTextileRenderer extends AbstractRenderer {
 						BinaryInfo.NAME_PROPERTY, name);
 			}
 
-			String path = "/servlet/binarydata?id=" + imageBinaryInfo.getReferenceNumber();
+			String path = "/asset/binarydata?id=" + imageBinaryInfo.getReferenceNumber();
 			String additionalParams = "";
 			if (align != null) {
 				additionalParams += " align=\"" + align + "\" ";
