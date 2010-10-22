@@ -1,10 +1,14 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:if t:test="hasTags">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<div>
+		<t:if t:test="hasTags">
 			<div class="taggroup">
 				<ul>
 					<t:loop source="tags" value="tag">
 						<li id="t${tag.id}">
-							<h2><a href="${tagLink}">${tag.name}</a></h2>
+							<h2>
+								<a href="${tagLink}">${tag.name}</a>
+							</h2>
 							<div class="taggroup">
 								<ul>
 									<t:loop source="tag.webVisibleTags" value="child">
@@ -18,10 +22,11 @@
 										</li>
 									</t:loop>
 								</ul>
-							</div>			
+							</div>
 						</li>
-					</t:loop>	
+					</t:loop>
 				</ul>
 			</div>
 		</t:if>
+	</div>
 </t:container>
