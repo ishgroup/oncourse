@@ -26,10 +26,13 @@ public class WebMenuService implements IWebMenuService {
 	public WebMenu getMainMenu() {
 		Expression rootMenuExp = ExpressionFactory.matchExp(
 				WebMenu.PARENT_WEB_MENU_PROPERTY, null);
-		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier()
-				.andExp(rootMenuExp));
+		
+		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier().andExp(rootMenuExp));
+		query.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
+		
 		List<WebMenu> results = cayenneService.sharedContext().performQuery(
 				query);
+		
 		return results.isEmpty() ? null : results.get(0);
 	}
 

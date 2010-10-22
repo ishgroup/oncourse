@@ -22,7 +22,7 @@ public class ComponentTemplateLocatorAdvice implements MethodAdvice {
 	private static final Logger LOGGER = Logger
 			.getLogger(ComponentTemplateLocatorAdvice.class);
 
-	private static final String PACKAGE = "ish.oncourse.ui";
+	private static final String PACKAGE = "ish.oncourse";
 
 	@Inject
 	private transient IResourceService resourceService;
@@ -30,29 +30,28 @@ public class ComponentTemplateLocatorAdvice implements MethodAdvice {
 	public void advise(Invocation invocation) {
 		ComponentModel model = (ComponentModel) invocation.getParameter(0);
 		Locale locale = (Locale) invocation.getParameter(1);
-
-		Resource resource = locateTemplateResource(model, locale);
-
-		if (resource != null) {
-			LOGGER.debug("Override Template invoked");
-			invocation.overrideResult(resource);
-		} else {
-			LOGGER.debug("Original Template invoked");
-			invocation.proceed();
+		
+		String componentName = model.getComponentClassName();
+		
+		if (componentName.startsWith(PACKAGE)) {
+			Resource resource = locateTemplateResource(model, locale);
+			
+			if (resource != null) {
+				invocation.overrideResult(resource);
+				return;
+			} 
 		}
+		
+		invocation.proceed();
 	}
 
 	private Resource locateTemplateResource(ComponentModel model, Locale locale) {
-
+		
 		String componentName = model.getComponentClassName();
-
+		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Retrieve template for component class name : "
 					+ componentName + ", if starts with : " + PACKAGE);
-		}
-
-		if (!componentName.startsWith(PACKAGE)) {
-			return null;
 		}
 
 		Resource templateBaseResource = model.getBaseResource().withExtension(

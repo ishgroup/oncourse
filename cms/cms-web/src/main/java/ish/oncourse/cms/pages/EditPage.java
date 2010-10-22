@@ -8,24 +8,21 @@ import ish.oncourse.ui.utils.EmptyRenderable;
 
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class EditPage extends Page {
 
-	@Component
-	private Zone editorZone;
-
-	@Component
-	private Zone contentZone;
-
 	@Inject
 	private Block editorBlock;
+	
+	@Inject
+	private Block regionContentBlock;
 
 	@Property
 	@Component(id = "regionForm")
@@ -33,6 +30,9 @@ public class EditPage extends Page {
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private ComponentResources resources;
 
 	@Property
 	private String webNodeId;
@@ -49,14 +49,18 @@ public class EditPage extends Page {
 	}
 
 	Object onActionFromEditRegion(String id) {
-		WebContent region = DataObjectUtils.objectForPK(getCurrentNode().getObjectContext(), WebContent.class, id);
+		WebContent region = DataObjectUtils.objectForPK(getCurrentNode()
+				.getObjectContext(), WebContent.class, id);
 		setCurrentRegion(region);
 		return editorBlock;
 	}
 
 	Object onSuccessFromRegionForm() {
 		getCurrentRegion().getObjectContext().commitChanges();
-		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(
-				"contentZone", contentZone.getBody());
+		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(getCurrentZoneKey(), regionContentBlock);
+	}
+
+	public String getCurrentZoneKey() {
+		return "z_" + getCurrentRegion().getWebContentVisibility().getRegionKey();
 	}
 }

@@ -15,6 +15,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.annotations.SupportsInformalParameters;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -23,10 +24,9 @@ import org.apache.tapestry5.services.Request;
  */
 @SupportsInformalParameters
 public class PageWrapper {
-
+	
 	private static final String MSIE = "MSIE";
-	private static final String WELCOME_TEMPLATE_ID = "welcome";
-
+	
 	@Inject
 	private IAuthenticationService authenticationService;
 	
@@ -51,9 +51,6 @@ public class PageWrapper {
 
 	@Parameter
 	private String bodyClass;
-
-	@Property
-	private String templateId;
 
 	@Property
 	@Parameter
@@ -90,7 +87,6 @@ public class PageWrapper {
 				: webNodeService.getDefaultWebNodeType();
 
 		bodyLayout.setWebNodeType(webNodeType);
-		this.templateId = WELCOME_TEMPLATE_ID;
 	}
 
 	public String getAgentAwareBodyClass() {

@@ -1,27 +1,25 @@
 <div class="layout">
 	<div class="clearfix container">
 			<div id="header">
-				<span id="param:header"></span>
+				<span id="param:header"/>
 			</div>
 			
 			<div style="float:left; width:20%">
-				<span id="param:menu"></span>
+				<span id="param:menu"/>
 			</div>
 	
 			<div id="content_container" class="clearfix">
 				<div id="content" class="span-18 unitPng">
-					<div id="${templateId}">
-						<span id="param:content"></span>
-					</div>
+					<span id="param:content"/>
 				</div>
 				
 				<div id="sidebar" class="span-5 side_panel last">
-					<span id="param:left"></span>
+					<span id="param:left"/>
 				</div>
 			</div>
 			
 			<div id="footer" class="clearfix">
-				<span id="param:footer"></span>
+				<span id="param:footer"/>
 			</div>
 	</div>
 	

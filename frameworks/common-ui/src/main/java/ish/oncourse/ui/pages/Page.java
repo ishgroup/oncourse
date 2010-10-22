@@ -19,7 +19,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class Page {
-
+	
+	private static final String WELCOME_TEMPLATE_ID = "welcome";
+	
 	@Inject
 	private Request request;
 
@@ -71,6 +73,10 @@ public class Page {
 	@SetupRender
 	public void beforeRender() {
 		this.node = webNodeService.getCurrentNode();
+	}
+	
+	public String getTemplateId() {
+		return (webNodeService.getHomePage().getId() == this.node.getId()) ? WELCOME_TEMPLATE_ID : "";
 	}
 
 	public String getRegionContent() {

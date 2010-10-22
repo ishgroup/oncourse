@@ -2,7 +2,9 @@
 	bodyId="${bodyId}" bodyClass="${bodyClass}" webNodeType="prop:node.webNodeType" delegate="prop:delegate">
 	
 	<t:block id="regionBlock">
-		<t:outputraw value="regionContent" />
+		<div t:type="any" id="prop:templateId">
+			<t:outputraw value="regionContent" />
+		</div>
 	</t:block>
 	
 </html>

@@ -36,11 +36,11 @@ public class TextileTags {
 	}
 
 	public String getTagLink() {
-		return tag.getLink(entityType);
+		return request.getContextPath() + tag.getLink(entityType);
 	}
 
 	public String getChildLink() {
-		return child.getLink(entityType);
+		return request.getContextPath() + child.getLink(entityType);
 	}
 
 	public boolean isShowDetails() {
