@@ -49,6 +49,20 @@ public class TextileConverter implements ITextileConverter {
 
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
+	public TextileConverter() {}
+	
+	public TextileConverter(IBinaryDataService binaryDataService,
+			IWebContentService webContentService, ICourseService courseService,
+			IPageRenderer pageRenderer, IWebNodeService webNodeService,
+			ITagService tagService) {
+		this.binaryDataService = binaryDataService;
+		this.webContentService = webContentService;
+		this.courseService = courseService;
+		this.pageRenderer = pageRenderer;
+		this.webNodeService = webNodeService;
+		this.tagService = tagService;
+	}
+
 	public String convertCoreTextile(String content) {
 		StringWriter writer = new StringWriter();
 
@@ -56,7 +70,9 @@ public class TextileConverter implements ITextileConverter {
 		// avoid the <html> and <body> tags 
 		builder.setEmitAsDocument(false);
 
-		MarkupParser parser = new MarkupParser(new TextileDialect());
+		TextileDialect textileDialect = new TextileDialect();
+		MarkupParser parser = new MarkupParser(textileDialect);
+	
 		parser.setBuilder(builder);
 
 		parser.parse(content, false);

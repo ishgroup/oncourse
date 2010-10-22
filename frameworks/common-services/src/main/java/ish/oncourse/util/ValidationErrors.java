@@ -53,4 +53,8 @@ public class ValidationErrors implements Serializable {
 
 		return ret.toString();
 	}
+	
+	public void clear() {
+		failures = new ArrayList<String>();
+	}
 }
