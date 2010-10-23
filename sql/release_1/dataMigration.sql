@@ -380,7 +380,7 @@ INSERT INTO willow_college.WebMenuTEMP (webNodeId, webSiteId, webMenuParentId, w
 	SELECT wn.id, wn.webSiteID, wn.parentNodeID, wn.weighting, case when (wn.shortName is null) then wn.name else wn.shortName end
 	FROM oncourse_realdata_willow_college.WebNode AS wn
 	JOIN willow_college.WebSite AS ws ON ws.id = wn.webSiteId
-	WHERE wn.isDeleted = 0 AND wn.isWebVisible = 1 AND wn.isPublished AND ws.collegeId = @collegeId;
+	WHERE wn.isDeleted = 0 AND wn.isWebVisible = 1 AND wn.isPublished AND wn.isWebNavigable = 1 AND ws.collegeId = @collegeId;
 
 use willow_college;
 -- do this many times to clean up the whole menu tree
