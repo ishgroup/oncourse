@@ -2,8 +2,10 @@ package ish.oncourse.services.course;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.services.search.SearchParam;
 
 public interface ICourseService {
 	int START_DEFAULT = 0;
@@ -12,7 +14,8 @@ public interface ICourseService {
 	List<Course> getCourses(Integer startDefault, Integer rowsDefault);
 	List<Course> loadByIds(Object... ids);
 	Course getCourse(String searchProperty, Object value);
-	List<Course> getCourses(boolean enrollable);
+	Course getCourse(Boolean enrollable, String taggedWith, Boolean currentSearch);
 	Integer getCoursesCount();
 	Date getLatestModifiedDate();
+	Map<SearchParam, String>getCourseSearchParams();
 }

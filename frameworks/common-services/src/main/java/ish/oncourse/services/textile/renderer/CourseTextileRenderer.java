@@ -2,15 +2,14 @@ package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.CourseTextileValidator;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Displays a single course, using either the defined template or the default
@@ -38,48 +37,47 @@ import java.util.Random;
  * are no advanced search parameters, this will be ignored.
  * </pre>
  */
-// TODO deal with the template, tag and currentsSearch attributes (left
-// not implemented)
+// TODO deal with the template attribute (left not implemented)
 public class CourseTextileRenderer extends AbstractRenderer {
 
 	private ICourseService courseService;
-	
+
 	private IPageRenderer pageRenderer;
-	
-	public CourseTextileRenderer(ICourseService courseService, IPageRenderer pageRenderer) {
+
+	public CourseTextileRenderer(ICourseService courseService,
+			IPageRenderer pageRenderer, ITagService tagService) {
 		this.courseService = courseService;
 		this.pageRenderer = pageRenderer;
-		validator = new CourseTextileValidator(courseService);
+		validator = new CourseTextileValidator(courseService, tagService);
 	}
 
 	@Override
 	public String render(String tag, ValidationErrors errors) {
 		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
-			
+
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					TextileUtil.COURSE_PARAM_CODE,
-					TextileUtil.COURSE_PARAM_ENROLLABLE);
+					TextileUtil.COURSE_PARAM_ENROLLABLE, TextileUtil.PARAM_TAG,
+					TextileUtil.COURSE_PARAM_CURRENT_SEARCH);
 			String code = tagParams.get(TextileUtil.COURSE_PARAM_CODE);
 			String enrollable = tagParams
 					.get(TextileUtil.COURSE_PARAM_ENROLLABLE);
+			String tagName = tagParams.get(TextileUtil.PARAM_TAG);
+			String currentSearch = tagParams.get(TextileUtil.COURSE_PARAM_CURRENT_SEARCH);
 			Course course = null;
 			if (code != null) {
 				course = courseService.getCourse(Course.CODE_PROPERTY, code);
-			} else if (enrollable != null) {
-				Boolean enrollableValue = Boolean.valueOf(enrollable);
-				List<Course> courses = courseService
-						.getCourses(enrollableValue);
-				if (!courses.isEmpty()) {
-					course = courses.get(new Random().nextInt(courses.size()));
-				}
 			} else {
-				course = courseService.getCourse(null, null);
+				course = courseService.getCourse(enrollable == null ? null
+						: Boolean.parseBoolean(enrollable), tagName, 
+						currentSearch == null ? null : Boolean.parseBoolean(currentSearch));
 			}
 			if (course != null) {
-				Map<String, Object> parameters=new HashMap<String, Object>();
+				Map<String, Object> parameters = new HashMap<String, Object>();
 				parameters.put(TextileUtil.TEXTILE_COURSE_PAGE_PARAM, course);
-				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_PAGE, parameters);
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_PAGE,
+						parameters);
 			}
 		}
 		return tag;

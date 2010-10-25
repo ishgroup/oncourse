@@ -1,5 +1,6 @@
 package ish.oncourse.services.tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
@@ -10,6 +11,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
+import ish.oncourse.model.Taggable;
+import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -73,5 +76,22 @@ public class TagService implements ITagService {
 			}
 		}
 		return null;
+	}
+
+	public List<Long> getEntityIdsByTagName(String tagName, String entityName) {
+		if (tagName == null || entityName == null) {
+			return null;
+		}
+
+		List<Long>ids=new ArrayList<Long>();
+		
+		Tag tag = getSubTagByName(tagName);
+		for(TaggableTag tt:tag.getTaggableTags()){
+			Taggable taggable = tt.getTaggable();
+			if(entityName.equals(taggable.getEntityIdentifier())){
+				ids.add(taggable.getEntityWillowId());
+			}
+		}
+		return ids;
 	}
 }

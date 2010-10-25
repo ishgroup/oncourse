@@ -27,7 +27,10 @@ public class TextileUtil {
 	
 	public static final String BLOCK_REGEXP = "\\{block( ((name:"+STR_WITH_WHITESPACE+")|(tag:"+STR_WITH_WHITESPACE+"))){0,2}}";
 	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+PIXELS_ATTR_IN_QUOTS+")|(height:"+PIXELS_ATTR_IN_QUOTS+"))){1,4}}";
-	public static final String COURSE_REGEXP = "\\{course( ((code:" + STR_IN_QUOTS + ")|(tag:" + STR_WITH_WHITESPACE + ")|(enrollable:" + BOOLEAN_IN_QUOTS + "))){0,3}}";
+	public static final String COURSE_REGEXP = "\\{course( ((code:" + STR_IN_QUOTS + ")|" +
+															"(tag:" + STR_WITH_WHITESPACE + ")|" +
+															"(enrollable:" + BOOLEAN_IN_QUOTS + ")|" +
+															"(currentsearch:"+BOOLEAN_IN_QUOTS+"))){0,4}}";
 	public static final String PAGE_REGEXP = "\\{page( ((code:"+DIGIT_IN_QUOTS+"))){0,1}}";
 	public static final String TAGS_REGEXP="\\{tags( ((entityType:"+STR_WITH_WHITESPACE+")|(maxLevels:"
 													+DIGIT_IN_QUOTS+")|(showtopdetail:"
@@ -52,6 +55,7 @@ public class TextileUtil {
 	
 	public static final String COURSE_PARAM_CODE = "code:";
 	public static final String COURSE_PARAM_ENROLLABLE = "enrollable:";
+	public static final String COURSE_PARAM_CURRENT_SEARCH = "currentsearch:";
 	
 	public static final String VIDEO_WIDTH_DEFAULT = "425";
 	public static final String VIDEO_HEIGHT_DEFAULT = "344";

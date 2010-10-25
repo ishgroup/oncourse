@@ -126,7 +126,7 @@ public class TextileConverter implements ITextileConverter {
 		case VIDEO:
 			return new VideoTextileRenderer(pageRenderer);
 		case COURSE:
-			return new CourseTextileRenderer(courseService, pageRenderer);
+			return new CourseTextileRenderer(courseService, pageRenderer, tagService);
 		case PAGE:
 			return new PageTextileRenderer(webNodeService, pageRenderer);
 		case TAGS:

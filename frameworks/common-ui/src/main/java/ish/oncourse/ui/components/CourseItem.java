@@ -10,6 +10,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class CourseItem {
 
+	private static final int COURSE_DETAILS_LENGTH = 410;
+
 	private static final String COURSES_PAGE_NAME = "ui/Courses";
 
 	@Inject
@@ -55,7 +57,8 @@ public class CourseItem {
 			return "";
 		}
 		if (isList) {
-			String result = detail.substring(0, 410);
+			String result = detail.length() > COURSE_DETAILS_LENGTH ? detail.substring(0, COURSE_DETAILS_LENGTH)
+					: detail;
 			int closingExpanded = result.lastIndexOf("</");
 			int closingCollapsed = result.lastIndexOf("/>");
 			int lastOpenClosing=Math.max(closingExpanded, closingCollapsed);

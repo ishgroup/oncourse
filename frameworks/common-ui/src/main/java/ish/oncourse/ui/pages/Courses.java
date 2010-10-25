@@ -4,7 +4,6 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
-import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParam;
@@ -41,9 +40,6 @@ public class Courses {
 
 	@Inject
 	private ISearchService searchService;
-
-	@Inject
-	private ITagService tagService;
 
 	@Inject
 	private Request request;
@@ -226,26 +222,7 @@ public class Courses {
 		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
 
-		searchParams = new HashMap<SearchParam, String>();
-
-		for (SearchParam name : SearchParam.values()) {
-			String parameter = request.getParameter(name.name());
-			if (parameter != null && !"".equals(parameter)) {
-				searchParams.put(name, parameter);
-			}
-		}
-		Tag browseTag = null;
-		if (searchParams.containsKey(SearchParam.subject)) {
-			String path = searchParams.get(SearchParam.subject);
-			browseTag = tagService.getSubTagByName(path.substring(path
-					.lastIndexOf("/") + 1));
-		} else {
-			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
-			if (browseTag != null) {
-				searchParams.put(SearchParam.subject, browseTag.getName());
-			}
-		}
-		request.setAttribute("browseTag", browseTag);
+		searchParams = courseService.getCourseSearchParams();
 		if (searchParams.isEmpty()) {
 			searchParams.put(SearchParam.s, "");
 		}
