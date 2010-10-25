@@ -10,6 +10,7 @@ import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,28 +21,28 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WebContentService implements IWebContentService {
-	
+
 	@Inject
 	private ITextileConverter textileConverter;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
-	
+
 	@Inject
 	private ICayenneService cayenneService;
 
 	public String getParsedContent(WebContent webContent) {
 		String text = webContent.getContent();
-		
+
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 
 		Matcher matcher = pattern.matcher(text);
 
 		if (matcher.find()) {
-			
+
 			ValidationErrors errors = new ValidationErrors();
 			text = textileConverter.convertCustomTextile(text, errors);
-			
+
 			if (errors.hasFailures()) {
 				try {
 					throw new ValidationException(errors);
@@ -56,21 +57,22 @@ public class WebContentService implements IWebContentService {
 
 	public WebContent getWebContent(String searchProperty, Object value) {
 		WebSite currentSite = webSiteService.getCurrentWebSite();
-		
+
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		
+
 		Expression qualifier = ExpressionFactory.matchExp(
 				WebContent.WEB_SITE_PROPERTY, currentSite);
-		
+
 		if (searchProperty != null) {
 			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
 					searchProperty, value));
 		}
-		
+
 		SelectQuery query = new SelectQuery(WebContent.class, qualifier);
-		
+
 		@SuppressWarnings("unchecked")
 		List<WebContent> listResult = sharedContext.performQuery(query);
-		return !listResult.isEmpty() ? listResult.get(0) : null;
+		return !listResult.isEmpty() ? listResult.get(new Random()
+				.nextInt(listResult.size())) : null;
 	}
 }

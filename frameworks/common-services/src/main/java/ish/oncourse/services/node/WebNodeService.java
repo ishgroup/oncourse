@@ -10,6 +10,7 @@ import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.Expression;
@@ -126,17 +127,14 @@ public class WebNodeService implements IWebNodeService {
 		@SuppressWarnings("unchecked")
 		List<WebNode> nodes = cayenneService.sharedContext()
 				.performQuery(query);
-		return !nodes.isEmpty() ? nodes.get(0) : null;
+		return !nodes.isEmpty() ? nodes.get(new Random().nextInt(nodes.size()))
+				: null;
 	}
 
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService
-				.sharedContext()
-				.performQuery(
-						new EJBQLQuery(
-								"select max(wn.modified) from WebNode wn where "
-										+ siteQualifier().toEJBQL("wn")))
-				.get(0);
+		return (Date) cayenneService.sharedContext().performQuery(
+				new EJBQLQuery("select max(wn.modified) from WebNode wn where "
+						+ siteQualifier().toEJBQL("wn"))).get(0);
 	}
 
 	public boolean isNodeExist(String path) {
@@ -151,15 +149,15 @@ public class WebNodeService implements IWebNodeService {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
 
 		q.andQualifier(ExpressionFactory.matchExp(
-				WebNodeType.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
+				WebNodeType.WEB_SITE_PROPERTY, webSiteService
+						.getCurrentWebSite()));
 
 		q.andQualifier(ExpressionFactory
 				.matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
 						WebNodeType.DEFAULT_LAYOUT_KEY));
 
-		return (WebNodeType) DataObjectUtils.objectForQuery(
-				cayenneService.sharedContext(), q);
+		return (WebNodeType) DataObjectUtils.objectForQuery(cayenneService
+				.sharedContext(), q);
 	}
 
 	public List<WebNodeType> getWebNodeTypes() {

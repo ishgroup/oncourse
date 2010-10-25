@@ -10,6 +10,7 @@ import ish.oncourse.util.ValidationErrors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Displays a single course, using either the defined template or the default
@@ -70,7 +71,7 @@ public class CourseTextileRenderer extends AbstractRenderer {
 				List<Course> courses = courseService
 						.getCourses(enrollableValue);
 				if (!courses.isEmpty()) {
-					course = courses.get(0);
+					course = courses.get(new Random().nextInt(courses.size()));
 				}
 			} else {
 				course = courseService.getCourse(null, null);

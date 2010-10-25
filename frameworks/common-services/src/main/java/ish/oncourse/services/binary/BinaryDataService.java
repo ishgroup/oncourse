@@ -1,6 +1,7 @@
 package ish.oncourse.services.binary;
 
 import java.util.List;
+import java.util.Random;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -34,7 +35,8 @@ public class BinaryDataService implements IBinaryDataService {
 		SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);
 		@SuppressWarnings("unchecked")
 		List<BinaryInfo> listResult = sharedContext.performQuery(query);
-		return !listResult.isEmpty() ? listResult.get(0) : null;
+		return !listResult.isEmpty() ? listResult.get(new Random()
+				.nextInt(listResult.size())) : null;
 	}
 
 	public BinaryData getBinaryData(BinaryInfo binaryInfo) {

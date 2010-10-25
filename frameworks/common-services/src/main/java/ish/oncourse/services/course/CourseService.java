@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -87,7 +88,7 @@ public class CourseService implements ICourseService {
 		}
 		SelectQuery q = new SelectQuery(Course.class, qualifier);
 		List<Course> result = sharedContext.performQuery(q);
-		return !result.isEmpty() ? result.get(0) : null;
+		return !result.isEmpty() ? result.get(new Random().nextInt(result.size())) : null;
 	}
 
 	public Expression getSearchStringPropertyQualifier(String searchProperty,
