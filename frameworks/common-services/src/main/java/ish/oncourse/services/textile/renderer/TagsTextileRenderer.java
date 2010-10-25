@@ -49,8 +49,8 @@ public class TagsTextileRenderer extends AbstractRenderer {
 
 	public TagsTextileRenderer(ITagService tagService, IPageRenderer pageRenderer) {
 		this.tagService = tagService;
-		validator = new TagsTextileValidator(tagService);
 		this.pageRenderer = pageRenderer;
+		validator = new TagsTextileValidator(tagService);
 	}
 
 	/*
@@ -106,10 +106,10 @@ public class TagsTextileRenderer extends AbstractRenderer {
 				}else{
 					textileTags.add(parentTag);
 				}
-				parameters.put("textileTags", textileTags);
-				parameters.put("textileTagsEntityType", entityType);
-				parameters.put("textileTagsShowDetails", showDetails);
-				return pageRenderer.renderPage("ui/TextileTags", parameters);
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_TAGS_PARAM, textileTags);
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM, entityType);
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM, showDetails);
+				return pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE, parameters);
 				
 			}
 		}

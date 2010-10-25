@@ -3,6 +3,7 @@ package ish.oncourse.ui.pages;
 import java.util.List;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.textile.TextileUtil;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -25,10 +26,10 @@ public class TextileTags {
 
 	@SuppressWarnings("unchecked")
 	void beginRender() {
-		tags = (List<Tag>) request.getAttribute("textileTags");
-		entityType = (String) request.getAttribute("textileTagsEntityType");
+		tags = (List<Tag>) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_TAGS_PARAM);
+		entityType = (String) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM);
 		showDetails = Boolean.TRUE.equals(request
-				.getAttribute("textileTagsShowDetails"));
+				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM));
 	}
 
 	public boolean isHasTags() {

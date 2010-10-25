@@ -77,8 +77,8 @@ public class CourseTextileRenderer extends AbstractRenderer {
 			}
 			if (course != null) {
 				Map<String, Object> parameters=new HashMap<String, Object>();
-				parameters.put("course", course);
-				tag = pageRenderer.renderPage("ui/TextileCourse", parameters);
+				parameters.put(TextileUtil.TEXTILE_COURSE_PAGE_PARAM, course);
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_PAGE, parameters);
 			}
 		}
 		return tag;

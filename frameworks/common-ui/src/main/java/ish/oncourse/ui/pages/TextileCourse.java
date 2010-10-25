@@ -1,6 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.services.textile.TextileUtil;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -18,6 +19,6 @@ public class TextileCourse {
 	private Course course;
 
 	void beginRender() {
-		course = (Course) request.getAttribute("course");
+		course = (Course) request.getAttribute(TextileUtil.TEXTILE_COURSE_PAGE_PARAM);
 	}
 }

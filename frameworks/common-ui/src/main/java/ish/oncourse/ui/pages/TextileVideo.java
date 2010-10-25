@@ -26,7 +26,7 @@ public class TextileVideo {
 	@SetupRender
 	void beforeRender(){
 		Map<String, String> tagParams = (Map<String, String>) request
-		.getAttribute("videoParameters");
+		.getAttribute(TextileUtil.TEXTILE_VIDEO_PAGE_PARAM);
 		
 		videoYoutubeId = tagParams.get(TextileUtil.PARAM_ID);
 		videoWidth = tagParams.get(TextileUtil.PARAM_WIDTH);

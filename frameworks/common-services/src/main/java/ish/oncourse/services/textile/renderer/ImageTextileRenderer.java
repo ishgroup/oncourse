@@ -31,8 +31,8 @@ public class ImageTextileRenderer extends AbstractRenderer {
 					TextileUtil.IMAGE_PARAM_TITLE, TextileUtil.PARAM_WIDTH,
 					TextileUtil.PARAM_HEIGHT, TextileUtil.IMAGE_PARAM_CLASS);
 			Map<String, Object> parameters=new HashMap<String, Object>();
-			parameters.put("additionalImageParameters", tagParams);
-			tag = pageRenderer.renderPage("ui/TextileImage", parameters);
+			parameters.put(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM, tagParams);
+			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_IMAGE_PAGE, parameters);
 		}
 		return tag;
 	}

@@ -111,9 +111,8 @@ public class CustomTextileConverterTest {
 				binaryInfo);
 		when(binaryDataService.getBinaryData(binaryInfo))
 				.thenReturn(binaryData);
-		String successfulResult = "successful rendered image block";
-		String pageName = "ui/TextileImage";
-		testPageRenderParams(IMAGE_BY_REF_NUMBER, pageName, successfulResult);
+		String successfulResult = "successfully rendered image block";
+		testPageRenderParams(IMAGE_BY_REF_NUMBER, TextileUtil.TEXTILE_IMAGE_PAGE, successfulResult);
 
 	}
 
@@ -141,9 +140,8 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void smokeVideoConvertTest() {
-		String successfulResult = "successful rendered video block";
-		String pageName = "ui/TextileVideo";
-		testPageRenderParams(VIDEO, pageName, successfulResult);
+		String successfulResult = "successfully rendered video block";
+		testPageRenderParams(VIDEO, TextileUtil.TEXTILE_VIDEO_PAGE, successfulResult);
 	}
 
 	/**
@@ -153,10 +151,9 @@ public class CustomTextileConverterTest {
 	@Test
 	public void smokeCourseConvertTest() {
 		course = new Course();
-		String successfulResult = "successful rendered course block";
+		String successfulResult = "successfully rendered course block";
 		when(courseService.getCourse(null, null)).thenReturn(course);
-		String pageName = "ui/TextileCourse";
-		testPageRenderParams(COURSE, pageName, successfulResult);
+		testPageRenderParams(COURSE, TextileUtil.TEXTILE_COURSE_PAGE, successfulResult);
 	}
 
 	/**
@@ -167,10 +164,9 @@ public class CustomTextileConverterTest {
 	public void smokePageConvertTest() {
 
 		page = new WebNode();
-		String successfulResult = "successful rendered page block";
+		String successfulResult = "successfully rendered page block";
 		when(webNodeService.getNode(null, null)).thenReturn(page);
-		String pageName = "ui/TextilePage";
-		testPageRenderParams(PAGE, pageName, successfulResult);
+		testPageRenderParams(PAGE, TextileUtil.TEXTILE_PAGE_PAGE, successfulResult);
 
 	}
 
@@ -181,10 +177,9 @@ public class CustomTextileConverterTest {
 	@Test
 	public void smokeTagsConvertTest() {
 		tag = new Tag();
-		String successfulResult = "successful rendered tags block";
+		String successfulResult = "successfully rendered tags block";
 		when(tagService.getRootTag()).thenReturn(tag);
-		String pageName = "ui/TextileTags";
-		testPageRenderParams(TAGS, pageName, successfulResult);
+		testPageRenderParams(TAGS, TextileUtil.TEXTILE_TAGS_PAGE, successfulResult);
 
 	}
 

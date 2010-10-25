@@ -48,7 +48,7 @@ public class TextileImage {
 	@SetupRender
 	void beforeRender() {
 		Map<String, String> tagParams = (Map<String, String>) request
-				.getAttribute("additionalImageParameters");
+				.getAttribute(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM);
 		String id = tagParams.get(TextileUtil.PARAM_ID);
 		String name = tagParams.get(TextileUtil.PARAM_NAME);
 		String align = tagParams.get(TextileUtil.IMAGE_PARAM_ALIGH);

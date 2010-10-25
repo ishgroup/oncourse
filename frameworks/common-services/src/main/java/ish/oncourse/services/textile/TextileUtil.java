@@ -64,6 +64,20 @@ public class TextileUtil {
 	public static final String TAGS_HIDE_TOP_LEVEL = "isHidingTopLevelTags:";
 	public static final String TAGS_FILTERED_PARAM = "isFiltered:";
 	
+
+	public static final String TEXTILE_COURSE_PAGE = "ui/TextileCourse";
+	public static final String TEXTILE_IMAGE_PAGE = "ui/TextileImage";
+	public static final String TEXTILE_PAGE_PAGE = "ui/TextilePage";
+	public static final String TEXTILE_TAGS_PAGE = "ui/TextileTags";
+	public static final String TEXTILE_VIDEO_PAGE = "ui/TextileVideo";
+	
+	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
+	public static final String TEXTILE_IMAGE_PAGE_PARAM = "additionalImageParameters";
+	public static final String TEXTILE_TAGS_PAGE_DETAILS_PARAM = "textileTagsShowDetails";
+	public static final String TEXTILE_TAGS_PAGE_ENTITY_PARAM = "textileTagsEntityType";
+	public static final String TEXTILE_TAGS_PAGE_TAGS_PARAM = "textileTags";
+	public static final String TEXTILE_VIDEO_PAGE_PARAM = "videoParameters";
+	
 	/**
 	 * @param tag
 	 * @return

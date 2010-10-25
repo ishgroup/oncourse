@@ -32,8 +32,8 @@ public class VideoTextileRenderer extends AbstractRenderer {
 				tagParams.put(TextileUtil.PARAM_HEIGHT, TextileUtil.VIDEO_HEIGHT_DEFAULT);
 			}
 			Map<String, Object> parameters=new HashMap<String, Object>();
-			parameters.put("videoParameters", tagParams);
-			tag = pageRenderer.renderPage("ui/TextileVideo", parameters);
+			parameters.put(TextileUtil.TEXTILE_VIDEO_PAGE_PARAM, tagParams);
+			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_VIDEO_PAGE, parameters);
 		}
 		return tag;
 	}
