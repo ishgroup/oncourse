@@ -2,7 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.ui.utils.GenericSelectModel;
+import ish.oncourse.services.ui.ISelectModelService;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,7 +15,6 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 
 public class SearchInputs {
@@ -24,7 +23,7 @@ public class SearchInputs {
 	private ITagService tagService;
 
 	@Inject
-	private PropertyAccess access;
+	private ISelectModelService selectModelService;
 
 	@Inject
 	private Request request;
@@ -77,14 +76,15 @@ public class SearchInputs {
 				return tag1.getName().compareTo(tag2.getName());
 			}
 		});
-		tagModelEnc = new GenericSelectModel<Tag>(subjectTagChildTags,
-				Tag.class, "name", "id", access);
+		tagModelEnc = selectModelService.newSelectModel(subjectTagChildTags,
+				Tag.NAME_PROPERTY, Tag.ID_PROPERTY);
 		Tag browseTag = (Tag) request.getAttribute("browseTag");
 		if (browseTag != null) {
 			browseTagLevel2Ancestor = browseTag.getLevel2Ancestor();
 		}
 		// TODO define the default value for searchNear and searchPrice
-		// searchNear= CourseClassInMemoryFilter.searchingNearForContext(context());
+		// searchNear=
+		// CourseClassInMemoryFilter.searchingNearForContext(context());
 		// searchPrice=context().request().stringFormValueForKey( "price" );
 	}
 
@@ -92,8 +92,10 @@ public class SearchInputs {
 		try {
 			String url = "http://"
 					+ request.getServerName()
-					+ "/courses?s=" + (advKeyword == null ? "" : advKeyword)
-					+ "&subject=" + (browseTagLevel2Ancestor == null ? ""
+					+ "/courses?s="
+					+ (advKeyword == null ? "" : advKeyword)
+					+ "&subject="
+					+ (browseTagLevel2Ancestor == null ? ""
 							: browseTagLevel2Ancestor.getDefaultPath())
 					+ "&near=" + (searchNear == null ? "" : searchNear)
 					+ "&price=" + (searchPrice == null ? "" : searchPrice)

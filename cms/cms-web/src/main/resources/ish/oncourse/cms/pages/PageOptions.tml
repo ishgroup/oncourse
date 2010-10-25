@@ -1,0 +1,26 @@
+<html t:type="ui/nonavipagewrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:form t:id="pageOptionsForm">
+		<t:errors/>
+		
+		<div>
+			<t:label for="pageName"/><t:textfield t:id="pageName" t:value="node.name"/><br/>
+			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeModel" value="node.webNodeType"/><br/>
+		</div>
+		
+		URL:<br/>
+		<t:loop source="node.webUrlAliases" value="webUrlAlias">
+			${webUrlAlias.urlPath}<a t:type="actionLink">Delete</a>
+		</t:loop>
+		
+		<!--  
+		<t:textfield t:value="newWebUrlAlias"/><a t:type="actionLink">Add</a>
+		-->	
+		
+		<br/>	
+			
+		<input type="submit" value="Delete"/>
+		<input type="submit" value="Cancel"/>
+		<input type="submit" value="Save"/>
+		
+	</t:form>
+</html>

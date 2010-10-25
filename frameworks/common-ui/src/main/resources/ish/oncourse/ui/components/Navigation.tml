@@ -8,7 +8,7 @@
 			</t:if>
 			<li class="blocks"><a href="">Blocks</a></li>
 			<t:if t:test="hasCurrentNode">			
-				<li class="sitemap"><a href="">Options</a></li>
+				<li class="sitemap"><a href="#" class="pageOptions" t:type="PageLink" page="PageOptions" context="webNodeService.currentNode.id">Options</a></li>
 			</t:if>
 		</ul>
 		<ul id="cms_links" class="right toolbar">
@@ -16,4 +16,24 @@
 			<li><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
 		</ul>
 	</div>
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery(".pageOptions").each(function() {
+				var $link = jQuery(this);
+				
+				$link.click(function() {
+					var $dialog = jQuery('<div></div>').load($link.attr('href'))
+					.dialog({
+						autoOpen: false,
+						title: $link.attr('title'),
+						width: 500,
+						height: 300
+					});
+
+					$dialog.dialog('open');
+					return false;
+				});
+			});
+		});
+	</script>
 </t:container>

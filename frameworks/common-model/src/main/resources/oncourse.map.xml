@@ -1291,6 +1291,7 @@
 	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>

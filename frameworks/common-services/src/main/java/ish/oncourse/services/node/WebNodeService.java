@@ -26,7 +26,7 @@ public class WebNodeService implements IWebNodeService {
 
 	@Inject
 	private IWebUrlAliasService webUrlAliasService;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
 
@@ -77,7 +77,7 @@ public class WebNodeService implements IWebNodeService {
 
 	public WebNode getNodeForNodePath(String nodePath) {
 		WebUrlAlias alias = webUrlAliasService.getAliasByPath(nodePath);
-		if(alias == null){
+		if (alias == null) {
 			return null;
 		}
 		return alias.getWebNode();
@@ -91,7 +91,7 @@ public class WebNodeService implements IWebNodeService {
 		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
 			node = getNodeForNodeNumber(Integer.parseInt(request
 					.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER)));
-		} else if(request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
+		} else if (request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
 			node = getNodeForNodeNumber(Integer.parseInt((String) request
 					.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER)));
 		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
@@ -141,7 +141,7 @@ public class WebNodeService implements IWebNodeService {
 
 	public boolean isNodeExist(String path) {
 		WebUrlAlias alias = webUrlAliasService.getAliasByPath(path);
-		if(alias == null){
+		if (alias == null) {
 			return false;
 		}
 		return true;
@@ -160,5 +160,13 @@ public class WebNodeService implements IWebNodeService {
 
 		return (WebNodeType) DataObjectUtils.objectForQuery(
 				cayenneService.sharedContext(), q);
+	}
+
+	public List<WebNodeType> getWebNodeTypes() {
+		SelectQuery q = new SelectQuery(WebNodeType.class);
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebNodeType.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite()));
+		return cayenneService.sharedContext().performQuery(q);
 	}
 }
