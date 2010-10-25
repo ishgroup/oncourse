@@ -2,13 +2,18 @@ package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.validator.VideoTextileValidator;
+import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class VideoTextileRenderer extends AbstractRenderer {
 
-	public VideoTextileRenderer() {
+	private IPageRenderer pageRenderer;
+
+	public VideoTextileRenderer(IPageRenderer pageRenderer) {
+		this.pageRenderer = pageRenderer;
 		validator = new VideoTextileValidator();
 	}
 
@@ -18,26 +23,17 @@ public class VideoTextileRenderer extends AbstractRenderer {
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					TextileUtil.PARAM_ID, TextileUtil.PARAM_WIDTH,
 					TextileUtil.PARAM_HEIGHT);
-			String id = tagParams.get(TextileUtil.PARAM_ID);
 			String width = tagParams.get(TextileUtil.PARAM_WIDTH);
 			String height = tagParams.get(TextileUtil.PARAM_HEIGHT);
 			if (width == null) {
-				width = TextileUtil.VIDEO_WIDTH_DEFAULT;
+				tagParams.put(TextileUtil.PARAM_WIDTH, TextileUtil.VIDEO_WIDTH_DEFAULT);
 			}
 			if (height == null) {
-				height = TextileUtil.VIDEO_HEIGHT_DEFAULT;
+				tagParams.put(TextileUtil.PARAM_HEIGHT, TextileUtil.VIDEO_HEIGHT_DEFAULT);
 			}
-			String size = " width=\"" + width + "\" height=\"" + height + "\"";
-			tag = "<object"
-					+ size
-					+ "><param name=\"movie\" value=\"http://www.youtube.com/v/"
-					+ id
-					+ "\">"
-					+ "</param><param name=\"allowFullScreen\" value=\"true\"></param>"
-					+ "<param name=\"allowscriptaccess\" value=\"always\"></param> <embed type=\"application/x-shockwave-flash\" src=\"http://www.youtube.com/v/"
-					+ id
-					+ "\" allowscriptaccess=\"always\" allowfullscreen=\"true\" "
-					+ size + "></embed></object>";
+			Map<String, Object> parameters=new HashMap<String, Object>();
+			parameters.put("videoParameters", tagParams);
+			tag = pageRenderer.renderPage("ui/TextileVideo", parameters);
 		}
 		return tag;
 	}

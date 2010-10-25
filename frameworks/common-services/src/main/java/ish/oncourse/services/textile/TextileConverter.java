@@ -120,11 +120,11 @@ public class TextileConverter implements ITextileConverter {
 	private IRenderer createRendererForType(TextileType type) {
 		switch (type) {
 		case IMAGE:
-			return new ImageTextileRenderer(binaryDataService);
+			return new ImageTextileRenderer(binaryDataService, pageRenderer);
 		case BLOCK:
 			return new BlockTextileRenderer(webContentService, this);
 		case VIDEO:
-			return new VideoTextileRenderer();
+			return new VideoTextileRenderer(pageRenderer);
 		case COURSE:
 			return new CourseTextileRenderer(courseService, pageRenderer);
 		case PAGE:

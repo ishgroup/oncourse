@@ -28,6 +28,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CustomTextileConverterTest {
 
+	private static final String VIDEO = "{video id:\"youtubeId\" type:\"youtube\"}";
+
 	private static final String TAGS = "{tags}";
 
 	private static final String PAGE = "{page}";
@@ -62,7 +64,7 @@ public class CustomTextileConverterTest {
 
 	@Mock
 	private IWebNodeService webNodeService;
-	
+
 	@Mock
 	private ITagService tagService;
 
@@ -109,11 +111,9 @@ public class CustomTextileConverterTest {
 				binaryInfo);
 		when(binaryDataService.getBinaryData(binaryInfo))
 				.thenReturn(binaryData);
-
-		String result = textileConverter.convertCustomTextile(
-				IMAGE_BY_REF_NUMBER, errors);
-		assertEquals("<img src=\"/asset/binarydata?id=123\" />", result);
-		assertFalse(errors.hasFailures());
+		String successfulResult = "successful rendered image block";
+		String pageName = "ui/TextileImage";
+		testPageRenderParams(IMAGE_BY_REF_NUMBER, pageName, successfulResult);
 
 	}
 
@@ -141,17 +141,9 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void smokeVideoConvertTest() {
-		String result = textileConverter.convertCustomTextile(
-				"{video id:\"youtubeId\" type:\"youtube\"}", errors);
-		assertEquals(
-				"<object width=\"425\" height=\"344\">"
-						+ "<param name=\"movie\" value=\"http://www.youtube.com/v/youtubeId\"></param>"
-						+ "<param name=\"allowFullScreen\" value=\"true\"></param>"
-						+ "<param name=\"allowscriptaccess\" value=\"always\"></param> "
-						+ "<embed type=\"application/x-shockwave-flash\" src=\"http://www.youtube.com/v/youtubeId\" "
-						+ "allowscriptaccess=\"always\" allowfullscreen=\"true\"  width=\"425\" height=\"344\">"
-						+ "</embed></object>", result);
-		assertFalse(errors.hasFailures());
+		String successfulResult = "successful rendered video block";
+		String pageName = "ui/TextileVideo";
+		testPageRenderParams(VIDEO, pageName, successfulResult);
 	}
 
 	/**
