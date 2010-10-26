@@ -39,24 +39,31 @@ public class CourseTextileValidator implements IValidator {
 		if (code != null) {
 			Course course = courseService.getCourse(Course.CODE_PROPERTY, code);
 			if (course == null) {
-				errors.addFailure("There are no course with such a code:"
-						+ code);
+				errors.addFailure(getCourseNotFoundByCode(code));
 			}
 		}
 		if (tagged != null) {
 			Tag tagEntity = tagService.getSubTagByName(tagged);
 			if (tagEntity == null) {
-				errors.addFailure("There are no tags with such a name: "
-						+ tagged);
+				errors.addFailure(getTagNotFoundByName(tagged));
 			}
 		}
 
+	}
+
+	public String getTagNotFoundByName(String tagged) {
+		return "There are no tags with such a name: "
+				+ tagged;
 	}
 
 	public String getFormatErrorMessage(String tag) {
 		return "The course tag '" + tag
 				+ "' doesn't match {course code:\"code\" tag:\"tag\" "
 				+ "enrollable:\"true|false\" currentsearch:\"true|false\"}";
+	}
+
+	public String getCourseNotFoundByCode(String code) {
+		return "There are no course with such a code:" + code;
 	}
 
 }

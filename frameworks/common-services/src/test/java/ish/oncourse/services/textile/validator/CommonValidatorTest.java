@@ -1,13 +1,11 @@
 package ish.oncourse.services.textile.validator;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.util.Map;
-
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
+
+import java.util.Map;
 
 import org.junit.Test;
 
