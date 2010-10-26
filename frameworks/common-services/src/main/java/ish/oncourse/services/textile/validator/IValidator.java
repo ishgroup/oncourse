@@ -4,4 +4,5 @@ import ish.oncourse.util.ValidationErrors;
 
 public interface IValidator {
 	void validate(String tag, ValidationErrors errors);
+	String getFormatErrorMessage(String tag);
 }

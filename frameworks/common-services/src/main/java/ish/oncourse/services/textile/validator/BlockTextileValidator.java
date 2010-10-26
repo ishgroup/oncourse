@@ -32,7 +32,7 @@ public class BlockTextileValidator implements IValidator {
 			result = webContentService.getWebContent(
 					WebContent.NAME_PROPERTY, name);
 			if (result == null) {
-				errors.addFailure(existErrorMessage(name));
+				errors.addFailure(getBlockNotFoundErrorMessage(name));
 			}
 		}
 	}
@@ -41,7 +41,7 @@ public class BlockTextileValidator implements IValidator {
 	 * @param name
 	 * @return
 	 */
-	public String existErrorMessage(String name) {
+	public String getBlockNotFoundErrorMessage(String name) {
 		return "There's no block with the name: " + name;
 	}
 

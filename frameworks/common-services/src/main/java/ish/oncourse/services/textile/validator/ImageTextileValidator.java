@@ -18,11 +18,7 @@ public class ImageTextileValidator implements IValidator {
 	public void validate(String tag, ValidationErrors errors) {
 		BinaryInfo result = null;
 		if (!tag.matches(TextileUtil.IMAGE_REGEXP)) {
-			errors
-					.addFailure("The image tag '"
-							+ tag
-							+ "' doesn't match {image id:\"id\" name:\"name\" align:\"right|left|center\" "
-							+ "caption:\"your caption\" alt:\"your alt\" link:\"link\" title:\"title\" width:\"digit\" height:\"digit\" class:\"cssClass\"}");
+			errors.addFailure(getFormatErrorMessage(tag));
 		}
 		if (!TextileUtil.hasRequiredParam(tag, TextileUtil.PARAM_ID)
 				&& !TextileUtil.hasRequiredParam(tag, TextileUtil.PARAM_NAME)) {
@@ -33,16 +29,17 @@ public class ImageTextileValidator implements IValidator {
 		}
 		TextileUtil.checkParamsUniquence(tag, errors, TextileUtil.PARAM_ID,
 				TextileUtil.PARAM_NAME, TextileUtil.IMAGE_PARAM_ALIGH,
-				TextileUtil.IMAGE_PARAM_CAPTION, TextileUtil.IMAGE_PARAM_ALT, TextileUtil.IMAGE_PARAM_LINK,
-				TextileUtil.IMAGE_PARAM_TITLE, TextileUtil.PARAM_WIDTH,
-				TextileUtil.PARAM_HEIGHT, TextileUtil.IMAGE_PARAM_CLASS);
+				TextileUtil.IMAGE_PARAM_CAPTION, TextileUtil.IMAGE_PARAM_ALT,
+				TextileUtil.IMAGE_PARAM_LINK, TextileUtil.IMAGE_PARAM_TITLE,
+				TextileUtil.PARAM_WIDTH, TextileUtil.PARAM_HEIGHT,
+				TextileUtil.IMAGE_PARAM_CLASS);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 				TextileUtil.PARAM_ID, TextileUtil.PARAM_NAME);
 		String id = tagParams.get(TextileUtil.PARAM_ID);
 		String name = tagParams.get(TextileUtil.PARAM_NAME);
 		if (id != null) {
-			result = binaryDataService.getBinaryInfo(BinaryInfo.REFERENCE_NUMBER_PROPERTY,
-					Integer.valueOf(id));
+			result = binaryDataService.getBinaryInfo(
+					BinaryInfo.REFERENCE_NUMBER_PROPERTY, Integer.valueOf(id));
 			if (result == null) {
 				errors.addFailure("There's no image with the id: " + id);
 			}
@@ -57,6 +54,14 @@ public class ImageTextileValidator implements IValidator {
 		if (result != null && binaryDataService.getBinaryData(result) == null) {
 			errors.addFailure("This image's content is missed");
 		}
+	}
+
+	public String getFormatErrorMessage(String tag) {
+		return "The image tag '"
+				+ tag
+				+ "' doesn't match {image id:\"id\" name:\"name\" align:\"right|left|center\" "
+				+ "caption:\"your caption\" alt:\"your alt\" link:\"link\" "
+				+ "title:\"title\" width:\"digit\" height:\"digit\" class:\"cssClass\"}";
 	}
 
 }

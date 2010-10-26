@@ -23,16 +23,13 @@ public class CourseTextileValidator implements IValidator {
 
 	public void validate(String tag, ValidationErrors errors) {
 		if (!tag.matches(TextileUtil.COURSE_REGEXP)) {
-			errors
-					.addFailure("The course tag '"
-							+ tag
-							+ "' doesn't match {course code:\"code\" tag:\"tag\" " +
-									"enrollable:\"true|false\" currentsearch:\"true|false\"}");
+			errors.addFailure(getFormatErrorMessage(tag));
 		}
 
 		TextileUtil.checkParamsUniquence(tag, errors,
 				TextileUtil.COURSE_PARAM_CODE, TextileUtil.PARAM_TAG,
-				TextileUtil.COURSE_PARAM_ENROLLABLE, TextileUtil.COURSE_PARAM_CURRENT_SEARCH);
+				TextileUtil.COURSE_PARAM_ENROLLABLE,
+				TextileUtil.COURSE_PARAM_CURRENT_SEARCH);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 				TextileUtil.COURSE_PARAM_CODE, TextileUtil.PARAM_TAG);
 		String code = tagParams.get(TextileUtil.COURSE_PARAM_CODE);
@@ -52,6 +49,12 @@ public class CourseTextileValidator implements IValidator {
 			}
 		}
 
+	}
+
+	public String getFormatErrorMessage(String tag) {
+		return "The course tag '" + tag
+				+ "' doesn't match {course code:\"code\" tag:\"tag\" "
+				+ "enrollable:\"true|false\" currentsearch:\"true|false\"}";
 	}
 
 }

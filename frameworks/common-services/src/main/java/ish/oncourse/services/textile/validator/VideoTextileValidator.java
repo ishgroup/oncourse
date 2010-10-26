@@ -9,10 +9,7 @@ public class VideoTextileValidator implements IValidator {
 
 	public void validate(String tag, ValidationErrors errors) {
 		if (!tag.matches(TextileUtil.VIDEO_REGEXP)) {
-			errors
-					.addFailure("The tag: "
-							+ tag
-							+ " doesn't match pattern {video type:\"youtube\" id:\"youtube_id\" height:\"digit_number\" width:\"digit_number\"}");
+			errors.addFailure(getFormatErrorMessage(tag));
 		}
 		TextileUtil.checkRequiredParams(tag, errors, TextileUtil.PARAM_ID,
 				TextileUtil.VIDEO_PARAM_TYPE);
@@ -29,5 +26,12 @@ public class VideoTextileValidator implements IValidator {
 							+ type);
 		}
 
+	}
+
+	public String getFormatErrorMessage(String tag) {
+		return "The tag: "
+				+ tag
+				+ " doesn't match pattern {video type:\"youtube\" id:\"youtube_id\" "
+				+ "height:\"digit_number\" width:\"digit_number\"}";
 	}
 }

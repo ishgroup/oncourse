@@ -48,7 +48,7 @@ public class BlockTextileValidatorTest {
 	}
 
 	/**
-	 * Emulates the situation when {block name:"blockName"} is converted, the
+	 * Emulates the situation when {block name:"blockName"} is validated, the
 	 * webContent with name "blockName" exists. Errors should be empty.
 	 */
 	@Test
@@ -96,7 +96,7 @@ public class BlockTextileValidatorTest {
 		blockTextileValidator.validate(tag, errors);
 		assertTrue(errors.hasFailures());
 		assertEquals(blockTextileValidator
-				.existErrorMessage(TEST_NAME_NOT_EXIST), errors.toString());
+				.getBlockNotFoundErrorMessage(TEST_NAME_NOT_EXIST), errors.toString());
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class BlockTextileValidatorTest {
 				+ separator
 				+ TextileUtil.getDoubledParamErrorMessage(tag,
 						TextileUtil.PARAM_NAME) + separator
-				+ blockTextileValidator.existErrorMessage(TEST_NAME_NOT_EXIST),
+				+ blockTextileValidator.getBlockNotFoundErrorMessage(TEST_NAME_NOT_EXIST),
 				errors.toString());
 	}
 
