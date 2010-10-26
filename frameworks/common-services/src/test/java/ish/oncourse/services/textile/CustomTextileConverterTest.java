@@ -90,11 +90,6 @@ public class CustomTextileConverterTest {
 				tagService);
 	}
 
-	@After
-	public void clear() {
-		errors.clear();
-	}
-
 	/**
 	 * Emulates the situation when {image id:"123"} is converted, the binary
 	 * info with reference number 123 exists. Should pass without errors.

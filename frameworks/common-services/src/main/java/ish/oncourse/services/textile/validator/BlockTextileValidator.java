@@ -9,18 +9,17 @@ import java.util.Map;
 
 public class BlockTextileValidator implements IValidator {
 
-	private IWebContentService webBlockDataService;
+	private IWebContentService webContentService;
 
-	public BlockTextileValidator(IWebContentService webBlockDataService) {
-		this.webBlockDataService = webBlockDataService;
+	public BlockTextileValidator(IWebContentService webContentService) {
+		this.webContentService = webContentService;
 	}
 
 	public void validate(String tag, ValidationErrors errors) {
 		WebContent result = null;
 
 		if (!tag.matches(TextileUtil.BLOCK_REGEXP)) {
-			errors.addFailure("The tag: " + tag
-					+ " doesn't match pattern {block name:\"My Block\"}");
+			errors.addFailure(getFormatErrorMessage(tag));
 		}
 		TextileUtil.checkParamsUniquence(tag, errors, TextileUtil.PARAM_NAME);
 
@@ -30,12 +29,29 @@ public class BlockTextileValidator implements IValidator {
 		String name = tagParams.get(TextileUtil.PARAM_NAME);
 		
 		if (name != null) {
-			result = webBlockDataService.getWebContent(
+			result = webContentService.getWebContent(
 					WebContent.NAME_PROPERTY, name);
 			if (result == null) {
-				errors.addFailure("There's no block with the name: " + name);
+				errors.addFailure(existErrorMessage(name));
 			}
 		}
+	}
+
+	/**
+	 * @param name
+	 * @return
+	 */
+	public String existErrorMessage(String name) {
+		return "There's no block with the name: " + name;
+	}
+
+	/**
+	 * @param tag
+	 * @return
+	 */
+	public String getFormatErrorMessage(String tag) {
+		return "The tag: " + tag
+				+ " doesn't match pattern {block name:\"My Block\"}";
 	}
 
 }

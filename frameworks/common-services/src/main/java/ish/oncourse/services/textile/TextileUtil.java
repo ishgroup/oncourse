@@ -120,11 +120,20 @@ public class TextileUtil {
 			ValidationErrors errors, String... params) {
 		for (String param : params) {
 			if (!isUniqueParam(tag, param)) {
-				errors.addFailure("The tag: " + tag
-						+ " can't contain more than one \""
-						+ param.replace(":", "") + "\" attribute");
+				errors.addFailure(getDoubledParamErrorMessage(tag, param));
 			}
 		}
+	}
+
+	/**
+	 * @param tag
+	 * @param param
+	 * @return
+	 */
+	public static String getDoubledParamErrorMessage(String tag, String param) {
+		return "The tag: " + tag
+				+ " can't contain more than one \""
+				+ param.replace(":", "") + "\" attribute";
 	}
 	
 	public static void checkRequiredParams(String tag,
