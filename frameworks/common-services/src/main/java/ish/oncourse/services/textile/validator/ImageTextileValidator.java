@@ -27,9 +27,7 @@ public class ImageTextileValidator implements IValidator {
 				&& !TextileUtil.hasRequiredParam(tag,
 						ImageTextileAttributes.IMAGE_PARAM_NAME.getValue())) {
 			errors
-					.addFailure("The image: "
-							+ tag
-							+ " must contain at least one of the required attributes: name or id");
+					.addFailure(getRequiredAttrsMessage(tag));
 		}
 		List<String> attrValues = ImageTextileAttributes.getAttrValues();
 		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
@@ -56,6 +54,16 @@ public class ImageTextileValidator implements IValidator {
 		if (result != null && binaryDataService.getBinaryData(result) == null) {
 			errors.addFailure("This image's content is missed");
 		}
+	}
+
+	/**
+	 * @param tag
+	 * @return
+	 */
+	public String getRequiredAttrsMessage(String tag) {
+		return "The image: "
+				+ tag
+				+ " must contain at least one of the required attributes: name or id";
 	}
 
 	public String getFormatErrorMessage(String tag) {

@@ -13,7 +13,6 @@ import ish.oncourse.util.ValidationErrors;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -36,7 +35,6 @@ public class CourseTextileValidatorTest extends CommonValidatorTest {
 
 	private Tag tag;
 
-	@Before
 	public void init() {
 		errors = new ValidationErrors();
 		validator = new CourseTextileValidator(courseService, tagService);

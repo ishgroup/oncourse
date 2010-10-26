@@ -13,7 +13,6 @@ import ish.oncourse.util.ValidationErrors;
 
 import static org.mockito.Mockito.*;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -30,7 +29,6 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 
 	private WebContent webContent;
 
-	@Before
 	public void init() {
 		webContent = new WebContent();
 		when(

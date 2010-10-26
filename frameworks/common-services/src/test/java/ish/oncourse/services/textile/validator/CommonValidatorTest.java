@@ -7,6 +7,7 @@ import ish.oncourse.util.ValidationErrors;
 
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public abstract class CommonValidatorTest {
@@ -21,6 +22,7 @@ public abstract class CommonValidatorTest {
 	/**
 	 * Provide the initialization of service to test and auxiliary fields
 	 */
+	@Before
 	public abstract void init();
 
 	/**

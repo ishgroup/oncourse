@@ -18,7 +18,6 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
