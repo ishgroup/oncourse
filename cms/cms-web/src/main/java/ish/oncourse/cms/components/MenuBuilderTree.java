@@ -5,7 +5,7 @@ import org.apache.tapestry5.annotations.Property;
 
 public class MenuBuilderTree extends ish.oncourse.ui.components.Menu {
 	@Property
-	@Component(id = "menuItem", parameters = { "node=currentNode",
+	@Component(id = "menuItem", parameters = { "menu=currentMenu",
 			"childPosition=currentChildPosition" })
 	private MenuBuilderNode menuItem;
 }
