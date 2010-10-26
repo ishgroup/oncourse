@@ -24,8 +24,7 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 
 	private static final String TEST_NAME_NOT_EXIST = "oneName";
 	private static final String TEST_BLOCK_NAME = "blockName";
-	private String separator = System.getProperty("line.separator");
-
+	
 	@Mock
 	private IWebContentService webContentService;
 
@@ -72,14 +71,12 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 
 		validator.validate(tag, errors);
 		assertTrue(errors.hasFailures());
-		assertEquals(validator.getFormatErrorMessage(tag)
-				+ separator
-				+ TextileUtil.getDoubledParamErrorMessage(tag,
-						BlockTextileAttributes.BLOCK_PARAM_NAME.getValue())
-				+ separator
-				+ ((BlockTextileValidator) validator)
-						.getBlockNotFoundErrorMessage(TEST_NAME_NOT_EXIST),
-				errors.toString());
+		assertEquals(3, errors.getSize());
+		assertTrue(errors.contains(validator.getFormatErrorMessage(tag)));
+		assertTrue(errors.contains(TextileUtil.getDoubledParamErrorMessage(tag,
+						BlockTextileAttributes.BLOCK_PARAM_NAME.getValue())));
+		assertTrue(errors.contains(((BlockTextileValidator) validator)
+						.getBlockNotFoundErrorMessage(TEST_NAME_NOT_EXIST)));
 	}
 
 	@Override

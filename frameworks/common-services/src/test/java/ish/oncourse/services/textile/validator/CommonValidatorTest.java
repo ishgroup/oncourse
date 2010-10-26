@@ -48,8 +48,7 @@ public abstract class CommonValidatorTest {
 			String tag = testData.get(key);
 			validator.validate(tag, errors);
 			assertTrue(errors.hasFailures());
-			assertEquals(TextileUtil.getDoubledParamErrorMessage(tag, key),
-					errors.toString());
+			assertTrue(errors.contains(TextileUtil.getDoubledParamErrorMessage(tag, key)));
 			errors.clear();
 		}
 	}

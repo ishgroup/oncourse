@@ -57,4 +57,12 @@ public class ValidationErrors implements Serializable {
 	public void clear() {
 		failures = new ArrayList<String>();
 	}
+	
+	public boolean contains(String error){
+		return failures.contains(error);
+	}
+	
+	public int getSize(){
+		return failures.size();
+	}
 }
