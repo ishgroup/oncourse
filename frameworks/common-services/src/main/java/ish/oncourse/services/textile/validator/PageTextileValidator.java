@@ -1,10 +1,12 @@
 package ish.oncourse.services.textile.validator;
 
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.PageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 
 public class PageTextileValidator implements IValidator {
@@ -20,12 +22,13 @@ public class PageTextileValidator implements IValidator {
 			errors.addFailure(getFormatErrorMessage(tag));
 		}
 
-		TextileUtil.checkParamsUniquence(tag, errors,
-				TextileUtil.PAGE_CODE_PARAM);
+		List<String> attrValues = PageTextileAttributes.getAttrValues();
+		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
 
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				TextileUtil.PAGE_CODE_PARAM);
-		String code = tagParams.get(TextileUtil.PAGE_CODE_PARAM);
+				attrValues);
+		String code = tagParams.get(PageTextileAttributes.PAGE_CODE_PARAM
+				.getValue());
 		WebNode node = null;
 		if (code != null && code.matches("(\\d+)")) {
 			node = webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY, Integer

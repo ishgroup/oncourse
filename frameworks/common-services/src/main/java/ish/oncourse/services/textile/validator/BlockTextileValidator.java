@@ -3,8 +3,10 @@ package ish.oncourse.services.textile.validator;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.BlockTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 
+import java.util.List;
 import java.util.Map;
 
 public class BlockTextileValidator implements IValidator {
@@ -21,16 +23,18 @@ public class BlockTextileValidator implements IValidator {
 		if (!tag.matches(TextileUtil.BLOCK_REGEXP)) {
 			errors.addFailure(getFormatErrorMessage(tag));
 		}
-		TextileUtil.checkParamsUniquence(tag, errors, TextileUtil.PARAM_NAME);
+		List<String> attrValues = BlockTextileAttributes.getAttrValues();
+		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
 
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				TextileUtil.PARAM_NAME);
+				attrValues);
 
-		String name = tagParams.get(TextileUtil.PARAM_NAME);
-		
+		String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME
+				.getValue());
+
 		if (name != null) {
-			result = webContentService.getWebContent(
-					WebContent.NAME_PROPERTY, name);
+			result = webContentService.getWebContent(WebContent.NAME_PROPERTY,
+					name);
 			if (result == null) {
 				errors.addFailure(getBlockNotFoundErrorMessage(name));
 			}

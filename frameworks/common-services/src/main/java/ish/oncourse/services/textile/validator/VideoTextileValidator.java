@@ -1,8 +1,10 @@
 package ish.oncourse.services.textile.validator;
 
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.VideoTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 
 public class VideoTextileValidator implements IValidator {
@@ -11,14 +13,15 @@ public class VideoTextileValidator implements IValidator {
 		if (!tag.matches(TextileUtil.VIDEO_REGEXP)) {
 			errors.addFailure(getFormatErrorMessage(tag));
 		}
-		TextileUtil.checkRequiredParams(tag, errors, TextileUtil.PARAM_ID,
-				TextileUtil.VIDEO_PARAM_TYPE);
-		TextileUtil.checkParamsUniquence(tag, errors, TextileUtil.PARAM_ID,
-				TextileUtil.VIDEO_PARAM_TYPE, TextileUtil.PARAM_WIDTH,
-				TextileUtil.PARAM_HEIGHT);
+		TextileUtil.checkRequiredParams(tag, errors,
+				VideoTextileAttributes.VIDEO_PARAM_ID.getValue(),
+				VideoTextileAttributes.VIDEO_PARAM_TYPE.getValue());
+		List<String> attrValues = VideoTextileAttributes.getAttrValues();
+		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				TextileUtil.VIDEO_PARAM_TYPE);
-		String type = tagParams.get(TextileUtil.VIDEO_PARAM_TYPE);
+				attrValues);
+		String type = tagParams.get(VideoTextileAttributes.VIDEO_PARAM_TYPE
+				.getValue());
 
 		if (!"youtube".equals(type)) {
 			errors

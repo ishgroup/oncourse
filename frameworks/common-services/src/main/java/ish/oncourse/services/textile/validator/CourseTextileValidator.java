@@ -1,5 +1,6 @@
 package ish.oncourse.services.textile.validator;
 
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.model.Course;
@@ -7,6 +8,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.CourseTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 
 public class CourseTextileValidator implements IValidator {
@@ -26,14 +28,14 @@ public class CourseTextileValidator implements IValidator {
 			errors.addFailure(getFormatErrorMessage(tag));
 		}
 
-		TextileUtil.checkParamsUniquence(tag, errors,
-				TextileUtil.COURSE_PARAM_CODE, TextileUtil.PARAM_TAG,
-				TextileUtil.COURSE_PARAM_ENROLLABLE,
-				TextileUtil.COURSE_PARAM_CURRENT_SEARCH);
+		List<String> attrValues = CourseTextileAttributes.getAttrValues();
+		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				TextileUtil.COURSE_PARAM_CODE, TextileUtil.PARAM_TAG);
-		String code = tagParams.get(TextileUtil.COURSE_PARAM_CODE);
-		String tagged = tagParams.get(TextileUtil.PARAM_TAG);
+				attrValues);
+		String code = tagParams.get(CourseTextileAttributes.COURSE_PARAM_CODE
+				.getValue());
+		String tagged = tagParams.get(CourseTextileAttributes.COURSE_PARAM_TAG
+				.getValue());
 		if (code != null) {
 			Course course = courseService.getCourse(Course.CODE_PROPERTY, code);
 			if (course == null) {

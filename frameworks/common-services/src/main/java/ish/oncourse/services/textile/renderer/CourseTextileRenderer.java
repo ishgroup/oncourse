@@ -4,6 +4,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.CourseTextileAttributes;
 import ish.oncourse.services.textile.validator.CourseTextileValidator;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -57,21 +58,25 @@ public class CourseTextileRenderer extends AbstractRenderer {
 		if (!errors.hasFailures()) {
 
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					TextileUtil.COURSE_PARAM_CODE,
-					TextileUtil.COURSE_PARAM_ENROLLABLE, TextileUtil.PARAM_TAG,
-					TextileUtil.COURSE_PARAM_CURRENT_SEARCH);
-			String code = tagParams.get(TextileUtil.COURSE_PARAM_CODE);
+					CourseTextileAttributes.getAttrValues());
+			String code = tagParams
+					.get(CourseTextileAttributes.COURSE_PARAM_CODE.getValue());
 			String enrollable = tagParams
-					.get(TextileUtil.COURSE_PARAM_ENROLLABLE);
-			String tagName = tagParams.get(TextileUtil.PARAM_TAG);
-			String currentSearch = tagParams.get(TextileUtil.COURSE_PARAM_CURRENT_SEARCH);
+					.get(CourseTextileAttributes.COURSE_PARAM_ENROLLABLE
+							.getValue());
+			String tagName = tagParams
+					.get(CourseTextileAttributes.COURSE_PARAM_TAG.getValue());
+			String currentSearch = tagParams
+					.get(CourseTextileAttributes.COURSE_PARAM_CURRENT_SEARCH
+							.getValue());
 			Course course = null;
 			if (code != null) {
 				course = courseService.getCourse(Course.CODE_PROPERTY, code);
 			} else {
 				course = courseService.getCourse(enrollable == null ? null
-						: Boolean.parseBoolean(enrollable), tagName, 
-						currentSearch == null ? null : Boolean.parseBoolean(currentSearch));
+						: Boolean.parseBoolean(enrollable), tagName,
+						currentSearch == null ? null : Boolean
+								.parseBoolean(currentSearch));
 			}
 			if (course != null) {
 				Map<String, Object> parameters = new HashMap<String, Object>();

@@ -6,6 +6,7 @@ import java.util.Map;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.PageTextileAttributes;
 import ish.oncourse.services.textile.validator.PageTextileValidator;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -24,18 +25,18 @@ import ish.oncourse.util.ValidationErrors;
  * template: the name of the Template used to display the page content.
  * 
  * code: if 123 is specified, only the page with that node number will be displayed.
- * Otherwise, a random page will be displayed. 
+ * Otherwise, a random page will be displayed.
  * 
  * 
  * </pre>
  */
-//TODO implement the template attribute
+// TODO implement the template attribute
 public class PageTextileRenderer extends AbstractRenderer {
 
 	private IWebNodeService webNodeService;
-	
+
 	private IPageRenderer pageRenderer;
-	
+
 	public PageTextileRenderer(IWebNodeService webNodeService,
 			IPageRenderer pageRenderer) {
 		this.webNodeService = webNodeService;
@@ -47,19 +48,23 @@ public class PageTextileRenderer extends AbstractRenderer {
 	public String render(String tag, ValidationErrors errors) {
 		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
-			WebNode node=null;
-			Map<String, String> tagParams = TextileUtil.getTagParams(tag,TextileUtil.PAGE_CODE_PARAM);
-			String code=tagParams.get(TextileUtil.PAGE_CODE_PARAM);
-			
-			if(code!=null){
-				node = webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY, Integer.valueOf(code));
-			}else{
+			WebNode node = null;
+			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
+					PageTextileAttributes.getAttrValues());
+			String code = tagParams.get(PageTextileAttributes.PAGE_CODE_PARAM
+					.getValue());
+
+			if (code != null) {
+				node = webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY,
+						Integer.valueOf(code));
+			} else {
 				node = webNodeService.getNode(null, null);
 			}
-			if (node  != null) {
-				Map<String, Object> parameters=new HashMap<String, Object>();
+			if (node != null) {
+				Map<String, Object> parameters = new HashMap<String, Object>();
 				parameters.put(IWebNodeService.NODE, node);
-				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_PAGE_PAGE, parameters);
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_PAGE_PAGE,
+						parameters);
 			}
 		}
 		return tag;

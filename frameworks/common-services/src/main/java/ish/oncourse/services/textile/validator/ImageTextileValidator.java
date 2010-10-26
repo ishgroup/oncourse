@@ -1,10 +1,12 @@
 package ish.oncourse.services.textile.validator;
 
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 
 public class ImageTextileValidator implements IValidator {
@@ -20,23 +22,23 @@ public class ImageTextileValidator implements IValidator {
 		if (!tag.matches(TextileUtil.IMAGE_REGEXP)) {
 			errors.addFailure(getFormatErrorMessage(tag));
 		}
-		if (!TextileUtil.hasRequiredParam(tag, TextileUtil.PARAM_ID)
-				&& !TextileUtil.hasRequiredParam(tag, TextileUtil.PARAM_NAME)) {
+		if (!TextileUtil.hasRequiredParam(tag,
+				ImageTextileAttributes.IMAGE_PARAM_ID.getValue())
+				&& !TextileUtil.hasRequiredParam(tag,
+						ImageTextileAttributes.IMAGE_PARAM_NAME.getValue())) {
 			errors
 					.addFailure("The image: "
 							+ tag
 							+ " must contain at least one of the required attributes: name or id");
 		}
-		TextileUtil.checkParamsUniquence(tag, errors, TextileUtil.PARAM_ID,
-				TextileUtil.PARAM_NAME, TextileUtil.IMAGE_PARAM_ALIGH,
-				TextileUtil.IMAGE_PARAM_CAPTION, TextileUtil.IMAGE_PARAM_ALT,
-				TextileUtil.IMAGE_PARAM_LINK, TextileUtil.IMAGE_PARAM_TITLE,
-				TextileUtil.PARAM_WIDTH, TextileUtil.PARAM_HEIGHT,
-				TextileUtil.IMAGE_PARAM_CLASS);
+		List<String> attrValues = ImageTextileAttributes.getAttrValues();
+		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				TextileUtil.PARAM_ID, TextileUtil.PARAM_NAME);
-		String id = tagParams.get(TextileUtil.PARAM_ID);
-		String name = tagParams.get(TextileUtil.PARAM_NAME);
+				attrValues);
+		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID
+				.getValue());
+		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME
+				.getValue());
 		if (id != null) {
 			result = binaryDataService.getBinaryInfo(
 					BinaryInfo.REFERENCE_NUMBER_PROPERTY, Integer.valueOf(id));

@@ -3,6 +3,7 @@ package ish.oncourse.services.textile;
 import ish.oncourse.util.ValidationErrors;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -38,37 +39,9 @@ public class TextileUtil {
 													+BOOLEAN_IN_QUOTS+")|(isFiltered:"
 													+BOOLEAN_IN_QUOTS+")|(name:"+STR_WITH_WHITESPACE+"))){0,6}}";
 	
-	public static final String PARAM_ID="id:";
-	public static final String PARAM_WIDTH = "width:";
-	public static final String PARAM_HEIGHT = "height:";
-	public static final String PARAM_NAME = "name:";
-	public static final String PARAM_TAG = "tag:";
-	
-	public static final String VIDEO_PARAM_TYPE = "type:";
-	
-	public static final String IMAGE_PARAM_ALIGH = "align:";
-	public static final String IMAGE_PARAM_CAPTION = "caption:";
-	public static final String IMAGE_PARAM_ALT = "alt:";
-	public static final String IMAGE_PARAM_LINK = "link:";
-	public static final String IMAGE_PARAM_CLASS = "class:";
-	public static final String IMAGE_PARAM_TITLE = "title:";
-	
-	public static final String COURSE_PARAM_CODE = "code:";
-	public static final String COURSE_PARAM_ENROLLABLE = "enrollable:";
-	public static final String COURSE_PARAM_CURRENT_SEARCH = "currentsearch:";
-	
 	public static final String VIDEO_WIDTH_DEFAULT = "425";
 	public static final String VIDEO_HEIGHT_DEFAULT = "344";
 	
-	public static final String PAGE_CODE_PARAM = "code:";
-	
-	public static final String TAGS_ENTITY_TYPE_PARAM = "entityType:";
-	public static final String TAGS_MAX_LEVELS_PARAM = "maxLevels:";
-	public static final String TAGS_SHOW_DETAIL_PARAM = "showtopdetail:";
-	public static final String TAGS_HIDE_TOP_LEVEL = "isHidingTopLevelTags:";
-	public static final String TAGS_FILTERED_PARAM = "isFiltered:";
-	
-
 	public static final String TEXTILE_COURSE_PAGE = "ui/TextileCourse";
 	public static final String TEXTILE_IMAGE_PAGE = "ui/TextileImage";
 	public static final String TEXTILE_PAGE_PAGE = "ui/TextilePage";
@@ -90,7 +63,7 @@ public class TextileUtil {
 		return tag.split(QUOT_REGEXP)[1];
 	}
 	
-	public static Map<String, String> getTagParams(String tag, String... paramKeys){
+	public static Map<String, String> getTagParams(String tag, List<String>paramKeys){
 		Map<String, String> params= new HashMap<String, String>();
 		for(String key:paramKeys){
 			if(tag.contains(key)){
@@ -117,7 +90,7 @@ public class TextileUtil {
 	}
 
 	public static void checkParamsUniquence(String tag,
-			ValidationErrors errors, String... params) {
+			ValidationErrors errors, List<String> params) {
 		for (String param : params) {
 			if (!isUniqueParam(tag, param)) {
 				errors.addFailure(getDoubledParamErrorMessage(tag, param));

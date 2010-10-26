@@ -1,6 +1,7 @@
 package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.VideoTextileAttributes;
 import ish.oncourse.services.textile.validator.VideoTextileValidator;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
@@ -21,19 +22,23 @@ public class VideoTextileRenderer extends AbstractRenderer {
 		tag = super.render(tag, errors);
 		if (!errors.hasFailures()) {
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					TextileUtil.PARAM_ID, TextileUtil.PARAM_WIDTH,
-					TextileUtil.PARAM_HEIGHT);
-			String width = tagParams.get(TextileUtil.PARAM_WIDTH);
-			String height = tagParams.get(TextileUtil.PARAM_HEIGHT);
+					VideoTextileAttributes.getAttrValues());
+			String width = tagParams
+					.get(VideoTextileAttributes.VIDEO_PARAM_WIDTH.getValue());
+			String height = tagParams
+					.get(VideoTextileAttributes.VIDEO_PARAM_HEIGHT.getValue());
 			if (width == null) {
-				tagParams.put(TextileUtil.PARAM_WIDTH, TextileUtil.VIDEO_WIDTH_DEFAULT);
+				tagParams.put(VideoTextileAttributes.VIDEO_PARAM_WIDTH
+						.getValue(), TextileUtil.VIDEO_WIDTH_DEFAULT);
 			}
 			if (height == null) {
-				tagParams.put(TextileUtil.PARAM_HEIGHT, TextileUtil.VIDEO_HEIGHT_DEFAULT);
+				tagParams.put(VideoTextileAttributes.VIDEO_PARAM_HEIGHT
+						.getValue(), TextileUtil.VIDEO_HEIGHT_DEFAULT);
 			}
-			Map<String, Object> parameters=new HashMap<String, Object>();
+			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put(TextileUtil.TEXTILE_VIDEO_PAGE_PARAM, tagParams);
-			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_VIDEO_PAGE, parameters);
+			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_VIDEO_PAGE,
+					parameters);
 		}
 		return tag;
 	}

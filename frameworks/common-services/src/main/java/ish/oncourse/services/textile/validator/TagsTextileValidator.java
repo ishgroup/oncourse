@@ -1,10 +1,12 @@
 package ish.oncourse.services.textile.validator;
 
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 
 public class TagsTextileValidator implements IValidator {
@@ -20,16 +22,14 @@ public class TagsTextileValidator implements IValidator {
 			errors.addFailure(getFormatErrorMessage(tag));
 		}
 
-		TextileUtil.checkParamsUniquence(tag, errors,
-				TextileUtil.TAGS_ENTITY_TYPE_PARAM,
-				TextileUtil.TAGS_MAX_LEVELS_PARAM,
-				TextileUtil.TAGS_SHOW_DETAIL_PARAM,
-				TextileUtil.TAGS_HIDE_TOP_LEVEL,
-				TextileUtil.TAGS_FILTERED_PARAM, TextileUtil.PARAM_NAME);
+		List<String> attrValues = TagsTextileAttributes.getAttrValues();
+		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				TextileUtil.PARAM_NAME, TextileUtil.TAGS_ENTITY_TYPE_PARAM);
-		String name = tagParams.get(TextileUtil.PARAM_NAME);
-		String entityType = tagParams.get(TextileUtil.TAGS_ENTITY_TYPE_PARAM);
+				attrValues);
+		String name = tagParams.get(TagsTextileAttributes.TAGS_PARAM_NAME
+				.getValue());
+		String entityType = tagParams
+				.get(TagsTextileAttributes.TAGS_ENTITY_TYPE_PARAM.getValue());
 		if (name != null) {
 			Tag tagObj = tagService.getSubTagByName(name);
 			if (tagObj == null) {

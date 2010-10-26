@@ -1,8 +1,9 @@
 package ish.oncourse.ui.pages;
 
-import java.util.Map;
-
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.VideoTextileAttributes;
+
+import java.util.Map;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -28,9 +29,9 @@ public class TextileVideo {
 		Map<String, String> tagParams = (Map<String, String>) request
 		.getAttribute(TextileUtil.TEXTILE_VIDEO_PAGE_PARAM);
 		
-		videoYoutubeId = tagParams.get(TextileUtil.PARAM_ID);
-		videoWidth = tagParams.get(TextileUtil.PARAM_WIDTH);
-		videoHeight = tagParams.get(TextileUtil.PARAM_HEIGHT);
+		videoYoutubeId = tagParams.get(VideoTextileAttributes.VIDEO_PARAM_ID.getValue());
+		videoWidth = tagParams.get(VideoTextileAttributes.VIDEO_PARAM_WIDTH.getValue());
+		videoHeight = tagParams.get(VideoTextileAttributes.VIDEO_PARAM_HEIGHT.getValue());
 	}
 	
 }

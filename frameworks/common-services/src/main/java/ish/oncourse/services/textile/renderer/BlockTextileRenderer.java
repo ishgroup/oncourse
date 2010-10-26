@@ -4,6 +4,7 @@ import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.BlockTextileAttributes;
 import ish.oncourse.services.textile.validator.BlockTextileValidator;
 import ish.oncourse.util.ValidationErrors;
 
@@ -46,9 +47,10 @@ public class BlockTextileRenderer extends AbstractRenderer {
 
 			WebContent webBlock = null;
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-					TextileUtil.PARAM_NAME);
+					BlockTextileAttributes.getAttrValues());
 
-			String name = tagParams.get(TextileUtil.PARAM_NAME);
+			String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME
+					.getValue());
 			if (name != null) {
 				webBlock = webBlockDataService.getWebContent(
 						WebContent.NAME_PROPERTY, name);

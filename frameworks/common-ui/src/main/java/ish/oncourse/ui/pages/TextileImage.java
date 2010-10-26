@@ -5,6 +5,7 @@ import java.util.Map;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -49,16 +50,16 @@ public class TextileImage {
 	void beforeRender() {
 		Map<String, String> tagParams = (Map<String, String>) request
 				.getAttribute(TextileUtil.TEXTILE_IMAGE_PAGE_PARAM);
-		String id = tagParams.get(TextileUtil.PARAM_ID);
-		String name = tagParams.get(TextileUtil.PARAM_NAME);
-		String align = tagParams.get(TextileUtil.IMAGE_PARAM_ALIGH);
-		String alt = tagParams.get(TextileUtil.IMAGE_PARAM_ALT);
-		String caption = tagParams.get(TextileUtil.IMAGE_PARAM_CAPTION);
-		String link = tagParams.get(TextileUtil.IMAGE_PARAM_LINK);
-		String title = tagParams.get(TextileUtil.IMAGE_PARAM_TITLE);
-		String width = tagParams.get(TextileUtil.PARAM_WIDTH);
-		String height = tagParams.get(TextileUtil.PARAM_HEIGHT);
-		String cssClass = tagParams.get(TextileUtil.IMAGE_PARAM_CLASS);
+		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID.getValue());
+		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());
+		String align = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ALIGH.getValue());
+		String alt = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ALT.getValue());
+		String caption = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_CAPTION.getValue());
+		String link = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_LINK.getValue());
+		String title = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_TITLE.getValue());
+		String width = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_WIDTH.getValue());
+		String height = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_HEIGHT.getValue());
+		String cssClass = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_CLASS.getValue());
 
 		BinaryInfo imageBinaryInfo = null;
 		if (id != null) {
