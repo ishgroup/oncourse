@@ -37,7 +37,7 @@ public class TextileTags {
 	}
 
 	public String getTagLink() {
-		return request.getContextPath() + tag.getLink(entityType);
+		return tag.getLink(entityType);
 	}
 
 	public String getChildLink() {

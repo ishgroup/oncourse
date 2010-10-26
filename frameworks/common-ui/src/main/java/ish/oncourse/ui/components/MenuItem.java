@@ -72,8 +72,7 @@ public class MenuItem {
 		WebNode node = menu.getWebNode();
 
 		if (node != null) {
-			String contextPath = request.getContextPath();
-			return contextPath + node.getPath();
+			return node.getPath();
 		}
 
 		return menu.getUrl();
