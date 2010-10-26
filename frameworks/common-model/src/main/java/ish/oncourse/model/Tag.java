@@ -16,7 +16,7 @@ public class Tag extends _Tag {
 	public boolean hasChildWithName(String name) {
 		for (Tag tag : getWebVisibleTags()) {
 			if (((tag.getShortName() != null) && tag.getShortName().toUpperCase().equals(name.toUpperCase()))
-					|| tag.getName().toUpperCase().equals(name.toUpperCase())) {
+					|| ((tag.getName() != null) && tag.getName().toUpperCase().equals(name.toUpperCase()))) {
 				return true;
 			}
 		}
