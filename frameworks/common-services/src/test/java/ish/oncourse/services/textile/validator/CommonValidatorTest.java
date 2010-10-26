@@ -54,4 +54,20 @@ public abstract class CommonValidatorTest {
 	}
 
 	protected abstract Map<String, String> getDataForUniquenceTest();
+	
+
+	/**
+	 * Emulates the situation when the textile format is incorrect, errors
+	 * should contain warning.
+	 */
+	@Test
+	public void incorrectFormatTest() {
+		String tag = getIncorrectFormatTextile();
+		validator.validate(tag, errors);
+		assertTrue(errors.hasFailures());
+		assertTrue(errors.contains(validator.getFormatErrorMessage(tag)));
+	}
+
+	protected abstract String getIncorrectFormatTextile();
+
 }

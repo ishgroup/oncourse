@@ -99,4 +99,9 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 		return data;
 	}
 
+	@Override
+	protected String getIncorrectFormatTextile() {
+		return "{block nameeeee:\"" + TEST_BLOCK_NAME + "\"}";
+	}
+
 }
