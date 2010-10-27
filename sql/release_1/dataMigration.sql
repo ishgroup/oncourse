@@ -286,8 +286,11 @@ INSERT INTO willow_college.TagGroupRequirement (allowsMultipleTags, angelId, col
 	 WHERE tgr.collegeId = @collegeId AND tgr.isDeleted = 0;
 
 INSERT INTO willow_college.TutorRole (angelId, collegeId, courseClassId, created, confirmedDate, detail, detail_textile, isConfirmed, isDeleted, modified, tutorId)
-	SELECT angelId, collegeId, courseClassId, created, dateConfirmed, detail, detail_textile, isConfirmed, isDeleted, modified, tutorId
-	FROM oncourse_realdata_willow_college.TutorRole WHERE collegeId = @collegeId AND isDeleted = 0;
+	SELECT tr.angelId, tr.collegeId, tr.courseClassId, tr.created, tr.dateConfirmed, tr.detail,  tr.detail_textile, tr.isConfirmed, tr.isDeleted, tr.modified, tr.tutorId
+	FROM oncourse_realdata_willow_college.TutorRole AS tr
+	JOIN willow_college.Tutor AS t ON tr.tutorid = t.id
+	JOIN willow_college.CourseClass AS cc ON tr.courseclassid=cc.id
+	WHERE tr.collegeId = @collegeId ;
 
 INSERT INTO willow_college.WaitingList (angelId, collegeId, courseId, created, detail, id, isDeleted, modified, potentialStudents, studentId)
 	SELECT wl.angelId, wl.collegeId, wl.courseId, wl.created, wl.detail, wl.id, wl.isDeleted, wl.modified, wl.potentialStudents, wl.studentId
