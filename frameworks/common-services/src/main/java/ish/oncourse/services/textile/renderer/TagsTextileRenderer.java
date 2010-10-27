@@ -87,21 +87,12 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			Tag rootTag = tagService.getRootTag();
 			if (paramName != null) {
 				parentTag = tagService.getSubTagByName(paramName);
-				/*
-				 * if (hideTopLevel == null) { hideTopLevel = "false"; }
-				 */
+
 			} else {
 				parentTag = rootTag;
-				// hideTopLevel = "true";
+
 			}
 			if (parentTag != null) {
-				/*
-				 * return getResult(parentTag, entityType, maxLevels != null ?
-				 * Integer.valueOf(maxLevels) : 1, showDetails != null ?
-				 * Boolean.valueOf(showDetails) : null,
-				 * Boolean.valueOf(hideTopLevel), filteredParam != null ?
-				 * Boolean.valueOf(filteredParam) : null, 0);
-				 */
 				Map<String, Object> parameters = new HashMap<String, Object>();
 				List<Tag> textileTags = new ArrayList<Tag>();
 				if (parentTag.equals(rootTag)) {
@@ -121,53 +112,6 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			}
 		}
 		return "";
-	}
-
-	@Deprecated
-	public String getResult(Tag parentTag, String entityType,
-			Integer maxLevels, Boolean showDetails, Boolean hideTopLevel,
-			Boolean filteredParam, Integer level) {
-		String result = "";
-		if (!hideTopLevel) {
-			result += "<div class=\"taggroup\"><ul>"
-					+ listOpening(entityType, parentTag, true);
-		}
-		result += "<div class=\"taggroup\"><ul>";
-		for (Tag subTag : parentTag.getWebVisibleTags()) {
-			result += listOpening(entityType, subTag, hideTopLevel
-					&& level == 0);
-			if (Boolean.TRUE.equals(showDetails) && subTag.getDetail() != null) {
-				result += "<div class=\"taggroup_detail\">"
-						+ subTag.getDetail() + "</div>";
-			}
-			if (!subTag.getWebVisibleTags().isEmpty()
-					&& (maxLevels == null || maxLevels > 0)) {
-				result += getResult(subTag, entityType,
-						maxLevels == null ? null : maxLevels - 1, showDetails,
-						true, filteredParam, level + 1);
-			}
-			result += "</li>";
-		}
-
-		result += "</ul></div>";
-		if (!hideTopLevel) {
-			result += "</li></ul></div>";
-		}
-		return result;
-	}
-
-	@Deprecated
-	private String listOpening(String entityType, Tag tag, Boolean inHeaders) {
-		String result = "<li id=\"t" + tag.getId() + "\">";
-		if (inHeaders) {
-			result += "<h2>";
-		}
-		result += "<a href=\"" + tag.getLink(entityType) + "\">"
-				+ tag.getName() + "</a>";
-		if (inHeaders) {
-			result += "</h2>";
-		}
-		return result;
 	}
 
 }
