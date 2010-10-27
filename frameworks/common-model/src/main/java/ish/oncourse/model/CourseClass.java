@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DateDV;
 import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.TimestampUtilities;
@@ -18,6 +19,10 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.helpers.ISO8601DateFormat;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 
 public class CourseClass extends _CourseClass {
@@ -177,6 +182,16 @@ public class CourseClass extends _CourseClass {
 
 	public TimeZone getClassTimeZone() {
 		return TimeZone.getTimeZone(getTimeZone());
+	}
+
+	public String getIsoStartDate() {
+		DateTime dt = new DateTime(getStartDate());
+		return dt.toString(ISODateTimeFormat.basicDate());
+	}
+
+	public String getIsoEndDate() {
+		DateTime dt = new DateTime(getEndDate());
+		return dt.toString(ISODateTimeFormat.basicDate());
 	}
 
 	public boolean hasFeeIncTax() {
@@ -414,7 +429,7 @@ public class CourseClass extends _CourseClass {
 	}
 
 	/**
-	 * Haversine formula: R = earthÕs radius (mean radius = 6,371km) dLat = lat2
+	 * Haversine formula: R = earthï¿½s radius (mean radius = 6,371km) dLat = lat2
 	 * - lat1 dLon = lon2 - lon1 a = (sin(dLat/2))^2 +
 	 * cos(lat1)*cos(lat2)*(sin(dLat/2))^2 c = 2*atan2(sqrt(a), sqrt(1-a)) d =
 	 * R*c
