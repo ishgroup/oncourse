@@ -24,9 +24,7 @@ public class VideoTextileValidator implements IValidator {
 				.getValue());
 
 		if (!"youtube".equals(type)) {
-			errors
-					.addFailure("The video of type \"youtube\" is supported only: "
-							+ type);
+			errors.addFailure(getIncorrectTypeMessage(type));
 		}
 
 	}
@@ -36,5 +34,9 @@ public class VideoTextileValidator implements IValidator {
 				+ tag
 				+ " doesn't match pattern {video type:\"youtube\" id:\"youtube_id\" "
 				+ "height:\"digit_number\" width:\"digit_number\"}";
+	}
+
+	public String getIncorrectTypeMessage(String type) {
+		return "The video of type \"youtube\" is supported only: " + type;
 	}
 }
