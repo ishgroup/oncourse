@@ -106,12 +106,12 @@ public class TagsTextileRenderer extends AbstractRenderer {
 						entityType);
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM,
 						showDetails);
-				return pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE,
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE,
 						parameters);
 
 			}
 		}
-		return "";
+		return tag;
 	}
 
 }

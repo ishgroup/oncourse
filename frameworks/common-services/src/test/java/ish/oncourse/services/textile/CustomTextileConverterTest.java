@@ -47,6 +47,8 @@ public class CustomTextileConverterTest {
 	private static final String BLOCK_BY_NAME = "{block name:\""
 			+ TEST_BLOCK_NAME + "\"}";
 
+	private static final String COMPLEX_WEB_BLOCK_CONTENT = IMAGE_BY_REF_NUMBER;
+
 	private ValidationErrors errors;
 
 	@Mock
@@ -127,7 +129,39 @@ public class CustomTextileConverterTest {
 		assertEquals(TEST_WEB_BLOCK_CONTENT, result);
 		assertFalse(errors.hasFailures());
 	}
-
+	/**
+	 * when some block's content contains the another custom textile it will be converted as well 
+	 */
+	@Test 
+	public void recursiveBlockConvertTest(){
+		webContent = new WebContent();
+		webContent.setContent(COMPLEX_WEB_BLOCK_CONTENT);
+		when(
+				webContentService.getWebContent(WebContent.NAME_PROPERTY,
+						TEST_BLOCK_NAME)).thenReturn(webContent);
+		reset(binaryDataService);
+		binaryData = new BinaryData();
+		binaryInfo = new BinaryInfo();
+		binaryInfo.setReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER);
+		when(
+				binaryDataService.getBinaryInfo(
+						BinaryInfo.REFERENCE_NUMBER_PROPERTY,
+						TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(
+				binaryInfo);
+		when(binaryDataService.getBinaryData(binaryInfo))
+				.thenReturn(binaryData);
+		
+		String successfulResult = "successfully rendered image block";
+		
+		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_IMAGE_PAGE), anyMap())).thenReturn(
+				successfulResult);
+		
+		String result = textileConverter.convertCustomTextile(BLOCK_BY_NAME,
+				errors);
+		
+		assertEquals(successfulResult, result);
+		assertFalse(errors.hasFailures());
+	}
 	/**
 	 * Emulates the situation when {video id:"youtubeId" type:"youtube"} is
 	 * converted. Should pass without errors.
@@ -156,7 +190,6 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void smokePageConvertTest() {
-
 		page = new WebNode();
 		String successfulResult = "successfully rendered page block";
 		when(webNodeService.getNode(null, null)).thenReturn(page);
