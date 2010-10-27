@@ -38,21 +38,22 @@ public class ImageTextileValidator implements IValidator {
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME
 				.getValue());
 		if (id != null) {
+			Integer idNum = Integer.valueOf(id);
 			result = binaryDataService.getBinaryInfo(
-					BinaryInfo.REFERENCE_NUMBER_PROPERTY, Integer.valueOf(id));
+					BinaryInfo.REFERENCE_NUMBER_PROPERTY, idNum);
 			if (result == null) {
-				errors.addFailure("There's no image with the id: " + id);
+				errors.addFailure(getNotFoundByIdMessage(idNum));
 			}
 
 		} else if (name != null) {
 			result = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY,
 					name);
 			if (result == null) {
-				errors.addFailure("There's no image with the name: " + name);
+				errors.addFailure(getNotFoundByNameMessage(name));
 			}
 		}
 		if (result != null && binaryDataService.getBinaryData(result) == null) {
-			errors.addFailure("This image's content is missed");
+			errors.addFailure(getNotFoundContentMessage());
 		}
 	}
 
@@ -72,6 +73,18 @@ public class ImageTextileValidator implements IValidator {
 				+ "' doesn't match {image id:\"id\" name:\"name\" align:\"right|left|center\" "
 				+ "caption:\"your caption\" alt:\"your alt\" link:\"link\" "
 				+ "title:\"title\" width:\"digit\" height:\"digit\" class:\"cssClass\"}";
+	}
+
+	public String getNotFoundByIdMessage(Integer id) {
+		return "There's no image with the id: " + id;
+	}
+
+	public String getNotFoundByNameMessage(String name) {
+		return "There's no image with the name: " + name;
+	}
+
+	public String getNotFoundContentMessage() {
+		return "This image's content is missed";
 	}
 
 }

@@ -21,10 +21,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ImageTextileValidatorTest extends CommonValidatorTest {
 
 	private static final Integer TEST_BINARYINFO_REFERENCE_NUMBER = 100;
+	private static final String TEST_BINARYINFO_NAME = "image name";
+
+	private static final Integer NOT_EXISTING_REFERENCE_NUMBER = 200;
+	private static final String NOT_EXISTING_NAME = "another name";
+
+	private static final Integer REF_NUM_OF_EMPTY_BINARY_INFO = 0;
 	@Mock
 	private IBinaryDataService binaryDataService;
 	private BinaryData binaryData;
 	private BinaryInfo binaryInfo;
+	private BinaryInfo emptyBinaryInfo;
 
 	@Override
 	protected Map<String, String> getDataForUniquenceTest() {
@@ -95,13 +102,33 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 		binaryData = new BinaryData();
 		binaryInfo = new BinaryInfo();
 		binaryInfo.setReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER);
+		emptyBinaryInfo = new BinaryInfo();
+		emptyBinaryInfo.setReferenceNumber(REF_NUM_OF_EMPTY_BINARY_INFO);
 		when(
 				binaryDataService.getBinaryInfo(
 						BinaryInfo.REFERENCE_NUMBER_PROPERTY,
 						TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(
 				binaryInfo);
+		when(
+				binaryDataService.getBinaryInfo(
+						BinaryInfo.NAME_PROPERTY,
+						TEST_BINARYINFO_NAME)).thenReturn(
+				binaryInfo);
+		when(
+				binaryDataService.getBinaryInfo(
+						BinaryInfo.REFERENCE_NUMBER_PROPERTY,
+						REF_NUM_OF_EMPTY_BINARY_INFO)).thenReturn(
+				emptyBinaryInfo);
+		when(
+				binaryDataService.getBinaryInfo(
+						BinaryInfo.REFERENCE_NUMBER_PROPERTY,
+						NOT_EXISTING_REFERENCE_NUMBER)).thenReturn(null);
+		when(
+				binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY,
+						NOT_EXISTING_NAME)).thenReturn(null);
 		when(binaryDataService.getBinaryData(binaryInfo))
 				.thenReturn(binaryData);
+		when(binaryDataService.getBinaryData(emptyBinaryInfo)).thenReturn(null);
 	}
 
 	/**
@@ -110,10 +137,51 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 	 */
 	@Test
 	public void requiredAttrsTest() {
-		String tag = "{image alt:\"altText\"}";
+		String tag = "{image id:\"" + TEST_BINARYINFO_REFERENCE_NUMBER + "\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+
+		tag = "{image name:\"" + TEST_BINARYINFO_NAME + "\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+
+		tag = "{image alt:\"altText\"}";
 		validator.validate(tag, errors);
 		assertTrue(errors.hasFailures());
 		assertTrue(errors.contains(((ImageTextileValidator) validator)
 				.getRequiredAttrsMessage(tag)));
+	}
+
+	/**
+	 * Emulates the situation when the binaryInfo with given ref number or name
+	 * doesn't exist
+	 */
+	@Test
+	public void notFoundBinaryInfoTest() {
+		String tag = "{image id:\"" + NOT_EXISTING_REFERENCE_NUMBER + "\"}";
+		validator.validate(tag, errors);
+		assertTrue(errors.hasFailures());
+		assertTrue(errors.contains(((ImageTextileValidator) validator)
+				.getNotFoundByIdMessage(NOT_EXISTING_REFERENCE_NUMBER)));
+
+		tag = "{image name:\"" + NOT_EXISTING_NAME + "\"}";
+		validator.validate(tag, errors);
+		assertTrue(errors.hasFailures());
+		assertTrue(errors.contains(((ImageTextileValidator) validator)
+				.getNotFoundByNameMessage(NOT_EXISTING_NAME)));
+	}
+
+	/**
+	 * Emulates the situation when the binaryInfo exists but the corresponded
+	 * binary data doesn't
+	 */
+	@Test
+	public void notFoundBinaryDataTest() {
+		String tag = "{image id:\"" + REF_NUM_OF_EMPTY_BINARY_INFO + "\"}";
+		validator.validate(tag, errors);
+		assertTrue(errors.hasFailures());
+		assertTrue(errors.contains(((ImageTextileValidator) validator)
+				.getNotFoundContentMessage()));
+
 	}
 }
