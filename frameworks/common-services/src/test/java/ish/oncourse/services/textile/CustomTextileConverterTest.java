@@ -108,7 +108,8 @@ public class CustomTextileConverterTest {
 		when(binaryDataService.getBinaryData(binaryInfo))
 				.thenReturn(binaryData);
 		String successfulResult = "successfully rendered image block";
-		testPageRenderParams(IMAGE_BY_REF_NUMBER, TextileUtil.TEXTILE_IMAGE_PAGE, successfulResult);
+		testPageRenderParams(IMAGE_BY_REF_NUMBER,
+				TextileUtil.TEXTILE_IMAGE_PAGE, successfulResult);
 
 	}
 
@@ -129,11 +130,13 @@ public class CustomTextileConverterTest {
 		assertEquals(TEST_WEB_BLOCK_CONTENT, result);
 		assertFalse(errors.hasFailures());
 	}
+
 	/**
-	 * when some block's content contains the another custom textile it will be converted as well 
+	 * when some block's content contains the another custom textile it will be
+	 * converted as well
 	 */
-	@Test 
-	public void recursiveBlockConvertTest(){
+	@Test
+	public void recursiveBlockConvertTest() {
 		webContent = new WebContent();
 		webContent.setContent(COMPLEX_WEB_BLOCK_CONTENT);
 		when(
@@ -150,18 +153,20 @@ public class CustomTextileConverterTest {
 				binaryInfo);
 		when(binaryDataService.getBinaryData(binaryInfo))
 				.thenReturn(binaryData);
-		
+
 		String successfulResult = "successfully rendered image block";
-		
-		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_IMAGE_PAGE), anyMap())).thenReturn(
-				successfulResult);
-		
+
+		when(
+				pageRenderer.renderPage(eq(TextileUtil.TEXTILE_IMAGE_PAGE),
+						anyMap())).thenReturn(successfulResult);
+
 		String result = textileConverter.convertCustomTextile(BLOCK_BY_NAME,
 				errors);
-		
+
 		assertEquals(successfulResult, result);
 		assertFalse(errors.hasFailures());
 	}
+
 	/**
 	 * Emulates the situation when {video id:"youtubeId" type:"youtube"} is
 	 * converted. Should pass without errors.
@@ -169,7 +174,8 @@ public class CustomTextileConverterTest {
 	@Test
 	public void smokeVideoConvertTest() {
 		String successfulResult = "successfully rendered video block";
-		testPageRenderParams(VIDEO, TextileUtil.TEXTILE_VIDEO_PAGE, successfulResult);
+		testPageRenderParams(VIDEO, TextileUtil.TEXTILE_VIDEO_PAGE,
+				successfulResult);
 	}
 
 	/**
@@ -180,8 +186,10 @@ public class CustomTextileConverterTest {
 	public void smokeCourseConvertTest() {
 		course = new Course();
 		String successfulResult = "successfully rendered course block";
-		when(courseService.getCourse((Boolean)null, null, null)).thenReturn(course);
-		testPageRenderParams(COURSE, TextileUtil.TEXTILE_COURSE_PAGE, successfulResult);
+		when(courseService.getCourse((Boolean) null, null, null)).thenReturn(
+				course);
+		testPageRenderParams(COURSE, TextileUtil.TEXTILE_COURSE_PAGE,
+				successfulResult);
 	}
 
 	/**
@@ -193,7 +201,8 @@ public class CustomTextileConverterTest {
 		page = new WebNode();
 		String successfulResult = "successfully rendered page block";
 		when(webNodeService.getNode(null, null)).thenReturn(page);
-		testPageRenderParams(PAGE, TextileUtil.TEXTILE_PAGE_PAGE, successfulResult);
+		testPageRenderParams(PAGE, TextileUtil.TEXTILE_PAGE_PAGE,
+				successfulResult);
 
 	}
 
@@ -206,7 +215,8 @@ public class CustomTextileConverterTest {
 		tag = new Tag();
 		String successfulResult = "successfully rendered tags block";
 		when(tagService.getRootTag()).thenReturn(tag);
-		testPageRenderParams(TAGS, TextileUtil.TEXTILE_TAGS_PAGE, successfulResult);
+		testPageRenderParams(TAGS, TextileUtil.TEXTILE_TAGS_PAGE,
+				successfulResult);
 
 	}
 
@@ -222,6 +232,18 @@ public class CustomTextileConverterTest {
 		String result = textileConverter.convertCustomTextile(textile, errors);
 		assertEquals(successfulResult, result);
 		assertFalse(errors.hasFailures());
+	}
+
+	/**
+	 * Emulates the situation when all the textiles in string have the incorrect
+	 * format. Because of errors, the origin string stays unconverted
+	 */
+	@Test
+	public void errorsInTextilesConvertTest() {
+		String tag = "{block test}{course test}{image test}{page test}{tags test}{video test}";
+		String result = textileConverter.convertCustomTextile(tag, errors);
+		assertEquals(tag, result);
+		assertTrue(errors.hasFailures());
 	}
 
 }
