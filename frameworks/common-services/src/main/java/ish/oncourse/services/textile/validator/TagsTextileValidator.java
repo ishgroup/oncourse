@@ -8,6 +8,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.utils.TagsTextileEntityTypes;
 
 public class TagsTextileValidator implements IValidator {
 
@@ -33,18 +34,14 @@ public class TagsTextileValidator implements IValidator {
 		if (name != null) {
 			Tag tagObj = tagService.getSubTagByName(name);
 			if (tagObj == null) {
-				errors.addFailure("There are no tag with such a name:" + name);
+				errors.addFailure(getTagNotFoundByName(name));
 			}
 		}
 		if (entityType != null) {
 			try {
-				Class<?> clazz = Class.forName(entityType);
-				// TODO add the check for only the taggable entity types
-				clazz.getName();
-			} catch (ClassNotFoundException e) {
-				errors
-						.addFailure("There are no entities with such an entiry type: "
-								+ entityType);
+				TagsTextileEntityTypes.valueOf(entityType);
+			} catch (IllegalArgumentException e) {
+				errors.addFailure(getEntityTypeNotFoundByName(entityType));
 			}
 		}
 	}
@@ -55,6 +52,14 @@ public class TagsTextileValidator implements IValidator {
 				+ "' doesn't match {tags entityType:\"Course\" maxLevels:\"digit\" "
 				+ "showtopdetail:\"true|false\" isHidingTopLevelTags:\"true|false\""
 				+ " isFiltered:\"true|false\" name:\"name\" }";
+	}
+
+	public String getTagNotFoundByName(String name) {
+		return "There are no tag with such a name:" + name;
+	}
+
+	public String getEntityTypeNotFoundByName(String entityType) {
+		return "There are no entities with such an entiry type: " + entityType;
 	}
 
 }

@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Tag;
+import ish.oncourse.utils.TagsTextileEntityTypes;
 
 import java.util.List;
 
@@ -25,10 +26,13 @@ public class Tag extends _Tag {
 	
 	public String getLink(String entityType) {
 		if (entityType != null) {
+			TagsTextileEntityTypes type=TagsTextileEntityTypes.valueOf(entityType);
 			// TODO add the calculation of plural entity name for all the
 			// taggable entities
-			if (entityType.equals(Course.class.getSimpleName())) {
+			switch(type){
+			case Course:
 				entityType = "courses";
+				break;
 			}
 		}
 		if (entityType == null) {
