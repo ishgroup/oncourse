@@ -26,8 +26,10 @@ public class TextileTags {
 
 	@SuppressWarnings("unchecked")
 	void beginRender() {
-		tags = (List<Tag>) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_TAGS_PARAM);
-		entityType = (String) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM);
+		tags = (List<Tag>) request
+				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_TAGS_PARAM);
+		entityType = (String) request
+				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM);
 		showDetails = Boolean.TRUE.equals(request
 				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM));
 	}
@@ -41,7 +43,7 @@ public class TextileTags {
 	}
 
 	public String getChildLink() {
-		return request.getContextPath() + child.getLink(entityType);
+		return child.getLink(entityType);
 	}
 
 	public boolean isShowDetails() {
