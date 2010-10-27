@@ -98,7 +98,6 @@ INSERT INTO willow_college.Contact (angelId, collegeId, created, id, isDeleted, 
 	c.isMarketingViaPostAllowed,c.isMarketingViaSMSAllowed,c.mobilePhoneNumber,c.password,
 	c.postcode,c.state,c.street,c.studentID,c.suburb,c.taxFileNumber,c.tutorID,c.uniqueCode
 	FROM oncourse_realdata_willow_college.Contact AS c
-	JOIN willow_college.Student AS s ON s.id = c.studentId
 	JOIN oncourse_realdata_willow_college.Taggable AS t ON c.id = t.id AND t.entityType = 'Contact' AND t.collegeId = @collegeId AND t.isDeleted = 0;
 
 INSERT INTO willow_college.CourseModule (courseId, moduleId, created, modified)
