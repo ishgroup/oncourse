@@ -22,12 +22,12 @@ public class AuthenticationService implements IAuthenticationService {
 
 	@Inject
 	private IWebSiteService siteService;
-
-	@Inject
-	private Cookies cookies;
 	
 	@Inject
 	private Request request;
+	
+	@Inject
+	private Cookies cookies;
 
 	// 'applicationStateManager' is needed to look up user objects as session
 	// state can not be injected in the services
@@ -64,9 +64,6 @@ public class AuthenticationService implements IAuthenticationService {
 		if ((users != null) && (users.size() == 1)) {
 			applicationStateManager.set(WillowUser.class, users.get(0));
 			status = AuthenticationStatus.SUCCESS;
-
-			cookies.writeCookieValue(CMS_COOKIE_NAME, CMS_COOKIE_NAME, "/");
-
 		} else if ((users != null) && (users.size() > 1)) {
 			status = AuthenticationStatus.MORE_THAN_ONE_USER;
 		}
@@ -82,10 +79,10 @@ public class AuthenticationService implements IAuthenticationService {
 
 	public void logout() {
 		Session session = request.getSession(false);
-		cookies.removeCookieValue(CMS_COOKIE_NAME);
-
 		if (session != null) {
 			session.invalidate();
 		}
+		
+		cookies.removeCookieValue("cms_session");
 	}
 }

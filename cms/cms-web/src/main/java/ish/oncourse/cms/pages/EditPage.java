@@ -25,6 +25,7 @@ public class EditPage extends Page {
 	private Block editorBlock;
 
 	@Inject
+	@Property
 	private Block regionContentBlock;
 
 	@Inject
@@ -50,10 +51,6 @@ public class EditPage extends Page {
 		setCurrentRegion(region);
 
 		return editorBlock;
-	}
-
-	Object onActionFromEditRegionNew(String id) {
-		return onActionFromEditRegion(id);
 	}
 
 	Object onSuccessFromRegionForm() {

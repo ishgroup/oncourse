@@ -3,17 +3,14 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 	<t:block id="regionBlock">
-		<div t:type="zone" id="prop:currentZoneKey" class="region">
-			<div class="edit_region_link"><span t:type="actionLink" t:id="editRegionNew" t:zone="editorZone" context="currentRegion.id">Edit this region</span></div>
-			<div t:type="any" id="prop:templateId">
-				<t:outputraw value="regionContent" />
-			</div>
-		</div>
+		<t:zone id="prop:currentZoneKey" class="region">
+			<t:delegate to="regionContentBlock"/>
+		</t:zone>
 		<t:zone t:id="editorZone" visible="false"></t:zone>
 	</t:block>
 	
 	<t:block id="regionContentBlock">
-		<div class="edit_region_link"><span t:type="actionLink" t:id="editRegion" t:zone="editorZone" context="currentRegion.id">Edit this region</span></div>
+		<div class="edit_region_link"><a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="currentRegion.id">Edit this region</a></div>
 		<div t:type="any" id="prop:templateId">
 			<t:outputraw value="regionContent" />
 		</div>

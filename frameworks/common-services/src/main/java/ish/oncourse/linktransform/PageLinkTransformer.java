@@ -81,7 +81,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final Pattern SITEMAP_PATTERN = Pattern.compile("/sitemap\\.xml");
 
 	
-	String[] IMMUTABLE_PATHS = new String[] {"/login", "/editpage", "/newpage", "/menubuilder", "/assets", "/pageoptions"};
+	String[] IMMUTABLE_PATHS = new String[] {"/assets",  "/login", "/editpage", "/newpage", "/menubuilder", "/assets", "/pageoptions"};
 	
 	private static final String HOME_PAGE_PATH = "/";
 
@@ -144,13 +144,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	ICourseClassService courseClassService;
 	
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
+		
 		final String path = request.getPath().toLowerCase();
-
-		//path to the asset web app - if not routed to this app by configs, return null 
-		if (path.startsWith("/asset")) {
-			return null;
-		}
-
+		
 		if (HOME_PAGE_PATH.equals(path)) {
 			return null;
 		}
