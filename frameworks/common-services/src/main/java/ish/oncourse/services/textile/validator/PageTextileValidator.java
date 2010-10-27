@@ -31,10 +31,11 @@ public class PageTextileValidator implements IValidator {
 				.getValue());
 		WebNode node = null;
 		if (code != null && code.matches("(\\d+)")) {
-			node = webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY, Integer
-					.valueOf(code));
+			Integer codeNum = Integer.valueOf(code);
+			node = webNodeService
+					.getNode(WebNode.NODE_NUMBER_PROPERTY, codeNum);
 			if (node == null) {
-				errors.addFailure("There're no page with code '" + code);
+				errors.addFailure(getPageNotFoundByCode(codeNum));
 			}
 		}
 	}
@@ -42,6 +43,10 @@ public class PageTextileValidator implements IValidator {
 	public String getFormatErrorMessage(String tag) {
 		return "The page tag '" + tag
 				+ "' doesn't match {page code:\"number\"}";
+	}
+
+	public String getPageNotFoundByCode(int code) {
+		return "There're no page with code '" + code;
 	}
 
 }
