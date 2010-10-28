@@ -13,5 +13,6 @@
 	</buildSpec>
 	<natures>
 		<nature>org.maven.ide.eclipse.maven2Nature</nature>
+		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 	</natures>
 </projectDescription>

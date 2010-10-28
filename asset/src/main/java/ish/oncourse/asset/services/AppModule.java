@@ -14,7 +14,7 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 public class AppModule {
 	
 	public static void contributeIgnoredPathsFilter(Configuration<String> configuration) {
-		configuration.add("/asset/binarydata");
-		configuration.add("/asset/autosuggest");
+		configuration.add("/binarydata");
+		configuration.add("/autosuggest");
 	}
 }
