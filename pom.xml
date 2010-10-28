@@ -248,8 +248,7 @@
 		<snapshotRepository>
 			<id>maven-repo.ish.com.au/internal-snapshots</id>
 			<name>ish Maven2 Snapshot Repository</name>
-			<url> http://repo.ish.com.au/content/repositories/ish-snapshots
-			</url>
+			<url> http://repo.ish.com.au/content/repositories/ish-snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -270,6 +269,17 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tapestry5version>5.2.0</tapestry5version>
+		<maven.emma.report.xml>true</maven.emma.report.xml>
+		<maven.emma.report.html>true</maven.emma.report.html>
 	</properties>
 
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>emma-maven-plugin</artifactId>
+				<inherited>true</inherited>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
