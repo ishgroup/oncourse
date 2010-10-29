@@ -3,21 +3,26 @@ package ish.oncourse.services.cookies;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.util.TimeInterval;
 import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.RequestGlobals;
 
 public class CookiesService implements ICookiesService {
 
 	public static final String COOKIES_DICTIONARY_REQUEST_ATTR = "cookiesDictionary";
-	//at the old site the view of shortlist cookie is "shortlist=CourseClass%3A123234%2C456785"
-	//our view will be "shortlist=123234%456785"
-	//sort out if we need the entityname and what does the letters mean
 	private static final String COOKIES_COLLECTION_SEPARATOR = "%";
-	private static final String COOKIES_COLLECTION_SEPARATOR_REGEXP = "["+COOKIES_COLLECTION_SEPARATOR+"]";
-	
+	private static final String COOKIES_COLLECTION_SEPARATOR_REGEXP = "["
+			+ COOKIES_COLLECTION_SEPARATOR + "]";
+
 	@Inject
 	private Request request;
+
+	@Inject
+	private RequestGlobals requestGlobals;
 
 	@Inject
 	private Cookies cookies;
@@ -29,8 +34,7 @@ public class CookiesService implements ICookiesService {
 			if (resultString == null) {
 				return null;
 			}
-			result = resultString
-					.split(COOKIES_COLLECTION_SEPARATOR_REGEXP);
+			result = resultString.split(COOKIES_COLLECTION_SEPARATOR_REGEXP);
 			addCookieToDictionary(cookieKey, result);
 		}
 		return result;
@@ -40,17 +44,14 @@ public class CookiesService implements ICookiesService {
 	 * @param cookieKey
 	 * @param result
 	 */
-	private void addCookieToDictionary(String cookieKey,
-			Object result) {
+	private void addCookieToDictionary(String cookieKey, Object result) {
 		Map<String, Object> cookiesDictionary = (Map<String, Object>) request
 				.getAttribute(COOKIES_DICTIONARY_REQUEST_ATTR);
 		if (cookiesDictionary == null) {
 			cookiesDictionary = new HashMap<String, Object>();
 		}
 		cookiesDictionary.put(cookieKey, result);
-		request
-				.setAttribute(COOKIES_DICTIONARY_REQUEST_ATTR,
-						cookiesDictionary);
+		request.setAttribute(COOKIES_DICTIONARY_REQUEST_ATTR, cookiesDictionary);
 	}
 
 	/**
@@ -72,34 +73,40 @@ public class CookiesService implements ICookiesService {
 
 	public void appendValueToCookieCollection(String cookieKey,
 			String cookieValue) {
-		String existingValue=getCookieValue(cookieKey);
+		String existingValue = getCookieValue(cookieKey);
 		StringBuffer strBuff = new StringBuffer();
-		if(existingValue!=null&&!"".equals(existingValue)){
+		if (existingValue != null && !"".equals(existingValue)) {
 			strBuff.append(existingValue);
 			strBuff.append(COOKIES_COLLECTION_SEPARATOR);
 		}
 		strBuff.append(cookieValue);
-		writeCookieValue(cookieKey,strBuff.toString());
+		writeCookieValue(cookieKey, strBuff.toString());
 
 	}
 
 	public void writeCookieValue(String cookieKey, String cookieValue) {
-		cookies.writeCookieValue(cookieKey, cookieValue);
+		Cookie cookie = new Cookie(cookieKey, cookieValue);
+		cookie.setPath("/");
+		cookie.setMaxAge((int) new TimeInterval("7 d").seconds());
+		cookie.setSecure(request.isSecure());
+		requestGlobals.getHTTPServletResponse().addCookie(cookie);
 	}
 
 	public void removeValueFromCookieCollection(String cookieKey,
 			String cookieValue) {
-		String existingValue=getCookieValue(cookieKey);
+		String existingValue = getCookieValue(cookieKey);
 		String result;
-		if(existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR)==-1){
-			result=existingValue.replaceAll(cookieValue, "");
-		}else
-		if(existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR)>existingValue.indexOf(cookieValue)){
-			result=existingValue.replaceAll(cookieValue+COOKIES_COLLECTION_SEPARATOR_REGEXP, "");
-		}else{
-			result=existingValue.replaceAll(COOKIES_COLLECTION_SEPARATOR_REGEXP+cookieValue, "");
+		if (existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) == -1) {
+			result = existingValue.replaceAll(cookieValue, "");
+		} else if (existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) > existingValue
+				.indexOf(cookieValue)) {
+			result = existingValue.replaceAll(cookieValue
+					+ COOKIES_COLLECTION_SEPARATOR_REGEXP, "");
+		} else {
+			result = existingValue.replaceAll(
+					COOKIES_COLLECTION_SEPARATOR_REGEXP + cookieValue, "");
 		}
-		writeCookieValue(cookieKey,result);
+		writeCookieValue(cookieKey, result);
 	}
 
 }
