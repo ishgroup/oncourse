@@ -1,5 +1,5 @@
 package ish.oncourse.enrol.pages;
 
-public class DefaultEnrolPage {
+public class EnrolCourses {
 
 }

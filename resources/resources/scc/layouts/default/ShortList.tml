@@ -7,7 +7,7 @@
 			<div id="actions">
 				<a class="toggle_shortlist" id="toggle_shortlist_show" style="display: visible;">Show Shortlist</a>
 				<a class="toggle_shortlist" id="toggle_shortlist_hide" style="display: none;">Hide Shortlist</a>
-				<a href="/enrolNow" >Enrol</a>
+				<a href="/enrol/EnrolCourses" >Enrol</a>
 			</div>
 		</t:if>
 		<div id="shortlist_classes" class="pp_shortlist_classes">
