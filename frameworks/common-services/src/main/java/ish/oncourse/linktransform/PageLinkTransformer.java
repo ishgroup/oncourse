@@ -81,7 +81,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final Pattern SITEMAP_PATTERN = Pattern.compile("/sitemap\\.xml");
 
 	
-	String[] IMMUTABLE_PATHS = new String[] {"/assets",  "/login", "/editpage", "/newpage", "/menubuilder", "/assets", "/pageoptions"};
+	String[] IMMUTABLE_PATHS = new String[] {"/assets",  "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions"};
 	
 	private static final String HOME_PAGE_PATH = "/";
 
