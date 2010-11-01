@@ -22,6 +22,8 @@ import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.menu.WebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
+import ish.oncourse.services.preference.IPreferenceService;
+import ish.oncourse.services.preference.PreferenceService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.resource.IResourceService;
@@ -79,6 +81,7 @@ public class ServiceModule {
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebUrlAliasReadService.class, WebUrlAliasReadService.class);
 		binder.bind(ISelectModelService.class, SelectModelService.class);
+		binder.bind(IPreferenceService.class, PreferenceService.class);
 	}
 
 }

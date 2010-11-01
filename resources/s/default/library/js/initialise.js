@@ -201,6 +201,20 @@ $j(document).ready(function() {
  		//});	
  		return false;
 	});
+	
+	$j('li.class_enrol a').live("click", function(){
+		var listid = this.id.match(/(\d+)/)[1];
+		var link=this.href;
+		$j.ajax({
+			type: "GET",
+			url:  '/addToCookies?courseClassId=' + listid,
+			success: function(){
+				window.location=link;		 	
+			}
+		});
+		return false; 
+	});
+	
 
 	// form 
 	if ($j(".suburb-autocomplete")) {

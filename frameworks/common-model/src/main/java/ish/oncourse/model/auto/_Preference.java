@@ -21,6 +21,7 @@ public abstract class _Preference extends CayenneDataObject {
     public static final String NAME_PROPERTY = "name";
     public static final String SQL_TYPE_PROPERTY = "sqlType";
     public static final String VALUE_PROPERTY = "value";
+    public static final String VALUE_STRING_PROPERTY = "valueString";
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";
@@ -72,6 +73,13 @@ public abstract class _Preference extends CayenneDataObject {
     }
     public byte[] getValue() {
         return (byte[])readProperty("value");
+    }
+
+    public void setValueString(String valueString) {
+        writeProperty("valueString", valueString);
+    }
+    public String getValueString() {
+        return (String)readProperty("valueString");
     }
 
     public void setCollege(College college) {

@@ -6,8 +6,8 @@
 				<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
 					<t:if t:test="paymentGatewayEnabled">
 						<li class="class_enrol">
-							<a
-								href="enrol/EnrolCourses?addShortlist=${courseClass.id}">Enrol Now</a>
+							<a id="${courseClass.id}"
+								href="enrol/EnrolCourses">Enrol Now</a>
 						</li>
 					</t:if>
 					<p:else>
