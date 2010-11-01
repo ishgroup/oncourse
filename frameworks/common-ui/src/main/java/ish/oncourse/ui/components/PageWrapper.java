@@ -4,7 +4,6 @@ import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.security.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.dynamic.ContentDelegate;
 
@@ -25,9 +24,6 @@ import org.apache.tapestry5.services.Request;
 public class PageWrapper {
 	
 	private static final String MSIE = "MSIE";
-	
-	@Inject
-	private IAuthenticationService authenticationService;
 	
 	@Inject
 	private IWebNodeService webNodeService;
@@ -126,10 +122,6 @@ public class PageWrapper {
 
 	public String getHomeLink() {
 		return webSiteService.getHomeLink();
-	}
-	
-	public boolean isLoggedIn() {
-		return authenticationService.getUser() != null;
 	}
 	
 	public boolean isHasCurrentNode() {

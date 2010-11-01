@@ -1,12 +1,11 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.site.IWebSiteService;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import ish.oncourse.services.security.IAuthenticationService;
-import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.environment.IEnvironmentService;
 
 public class PageHead {
 
@@ -15,16 +14,9 @@ public class PageHead {
 
 	@Inject
 	private IWebSiteService siteService;
-
-	@Inject
-	private IAuthenticationService authenticationService;
 	
 	@Parameter
 	private String title;
-	
-	public boolean isLoggedIn() {
-		return authenticationService.getUser() != null;
-	}
 
 	public String getTitle() {
 		String collegeName = siteService.getCurrentCollege().getName();

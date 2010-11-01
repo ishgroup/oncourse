@@ -1,7 +1,7 @@
 package ish.oncourse.services;
 
-import ish.oncourse.services.alias.IWebUrlAliasService;
-import ish.oncourse.services.alias.WebUrlAliasService;
+import ish.oncourse.services.alias.IWebUrlAliasReadService;
+import ish.oncourse.services.alias.WebUrlAliasReadService;
 import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -30,8 +30,6 @@ import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.room.RoomService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
-import ish.oncourse.services.security.AuthenticationService;
-import ish.oncourse.services.security.IAuthenticationService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.sites.ISitesService;
@@ -77,10 +75,9 @@ public class ServiceModule {
 		binder.bind(IPageRenderer.class, PageRenderer.class);
 		binder.bind(ITagService.class, TagService.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
-		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
-		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
+		binder.bind(IWebUrlAliasReadService.class, WebUrlAliasReadService.class);
 		binder.bind(ISelectModelService.class, SelectModelService.class);
 	}
 

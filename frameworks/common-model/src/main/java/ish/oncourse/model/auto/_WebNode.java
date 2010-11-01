@@ -20,10 +20,10 @@ import ish.oncourse.model.WebUrlAlias;
 public abstract class _WebNode extends CayenneDataObject {
 
     public static final String CREATED_PROPERTY = "created";
-    public static final String IS_PUBLISHED_PROPERTY = "isPublished";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String NODE_NUMBER_PROPERTY = "nodeNumber";
+    public static final String PUBLISHED_PROPERTY = "published";
     public static final String DEFAULT_WEB_URLALIAS_PROPERTY = "defaultWebURLAlias";
     public static final String WEB_CONTENT_VISIBILITY_PROPERTY = "webContentVisibility";
     public static final String WEB_MENU_PROPERTY = "webMenu";
@@ -38,13 +38,6 @@ public abstract class _WebNode extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setIsPublished(Boolean isPublished) {
-        writeProperty("isPublished", isPublished);
-    }
-    public Boolean getIsPublished() {
-        return (Boolean)readProperty("isPublished");
     }
 
     public void setModified(Date modified) {
@@ -66,6 +59,14 @@ public abstract class _WebNode extends CayenneDataObject {
     }
     public Integer getNodeNumber() {
         return (Integer)readProperty("nodeNumber");
+    }
+
+    public void setPublished(boolean published) {
+        writeProperty("published", published);
+    }
+	public boolean isPublished() {
+        Boolean value = (Boolean)readProperty("published");
+        return (value != null) ? value.booleanValue() : false;
     }
 
     public void setDefaultWebURLAlias(WebUrlAlias defaultWebURLAlias) {
@@ -128,6 +129,6 @@ public abstract class _WebNode extends CayenneDataObject {
     }
 
 
-    protected abstract void performInitialization();
+    protected abstract void onPostAdd();
 
 }

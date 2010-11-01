@@ -29,11 +29,5 @@
 			</p:footer>
 		</div>
 		<span t:type="ui/googleAnalytics"></span>
-		<t:if t:test="loggedIn">
-			<div t:type="ui/navigation"/>
-			<t:if t:test="hasCurrentNode">
-				<div t:type="ui/pageinfo"/>
-			</t:if>
-		</t:if>
 	</body>
 </html>

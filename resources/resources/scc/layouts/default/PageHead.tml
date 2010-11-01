@@ -12,17 +12,9 @@
   <link t:type="ui/cssassetgroup" group="literal:site" media="literal:screen, projection" />
   <link t:type="ui/cssassetgroup" group="literal:print" media="literal:print" />
   
-  <t:if t:test="loggedIn">
-	<link t:type="ui/cssassetgroup" group="literal:core-cms" media="literal:screen, projection" />
-  </t:if>
-  
   <script t:type="ui/jsassetgroup" group="literal:core"/>
   <script t:type="ui/jsassetgroup" group="literal:core-application"/>
   <script t:type="ui/jsassetgroup" group="literal:site"/>
-  
-  <t:if t:test="loggedIn">
-  	<script t:type="ui/jsassetgroup" group="literal:core-cms"/>
-  </t:if>
 
 	<!--[if (gte IE 5.5)&(lte IE 8)]>
 		<link rel="stylesheet" type="text/css" href="/s/css/site/ie-fixes.rounded.css"></link> 

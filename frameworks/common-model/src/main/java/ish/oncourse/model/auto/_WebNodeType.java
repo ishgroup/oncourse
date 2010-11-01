@@ -75,12 +75,15 @@ public abstract class _WebNodeType extends CayenneDataObject {
     }
 
 
-    public void setWebNodes(WebNode webNodes) {
-        setToOneTarget("webNodes", webNodes, true);
+    public void addToWebNodes(WebNode obj) {
+        addToManyTarget("webNodes", obj, true);
     }
-
-    public WebNode getWebNodes() {
-        return (WebNode)readProperty("webNodes");
+    public void removeFromWebNodes(WebNode obj) {
+        removeToManyTarget("webNodes", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WebNode> getWebNodes() {
+        return (List<WebNode>)readProperty("webNodes");
     }
 
 

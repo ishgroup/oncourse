@@ -1,6 +1,5 @@
 package ish.oncourse.cms.services.access;
 
-import ish.oncourse.services.security.IAuthenticationService;
 
 import java.io.IOException;
 

@@ -63,4 +63,6 @@ public abstract class _WebContentVisibility extends CayenneDataObject {
     }
 
 
+    protected abstract void onPostAdd();
+
 }

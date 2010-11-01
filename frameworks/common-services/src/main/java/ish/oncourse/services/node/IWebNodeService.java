@@ -15,16 +15,18 @@ public interface IWebNodeService {
 
 	/**
 	 * Returns default webNodeType for the current site.
+	 * 
 	 * @return default webNodeType
 	 */
 	WebNodeType getDefaultWebNodeType();
 
 	/**
 	 * Returns all available web node types for the current site.
+	 * 
 	 * @return available web node types.
 	 */
 	List<WebNodeType> getWebNodeTypes();
-	
+
 	/**
 	 * Returns all web nodes for the current site or current college.
 	 */
@@ -47,7 +49,7 @@ public interface IWebNodeService {
 
 	/**
 	 * Find a web node for the node path.
-	 *
+	 * 
 	 * @param nodePath
 	 * @return corresponding web node or null if not found
 	 */
@@ -64,6 +66,7 @@ public interface IWebNodeService {
 	WebNode getCurrentNode();
 
 	/**
+	 * Search by property and value.
 	 * 
 	 * @param searchProperty
 	 * @param value
@@ -71,7 +74,25 @@ public interface IWebNodeService {
 	 */
 	WebNode getNode(String searchProperty, Object value);
 
+	/**
+	 * The latest date when site page was modified.
+	 */
 	Date getLatestModifiedDate();
 
+	/**
+	 * If node exists for path.
+	 */
 	boolean isNodeExist(String path);
+
+	/**
+	 * Next node number for current site.
+	 */
+	Integer getNextNodeNumber();
+	
+	/**
+	 * Loads node by id.
+	 * @param webnode id
+	 * @return webnode
+	 */
+	WebNode getNodeById(Long id);
 }

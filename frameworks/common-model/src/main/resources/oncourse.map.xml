@@ -663,7 +663,7 @@
 		<db-attribute name="WebContentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="WebNodeId" type="BIGINT" length="19"/>
 		<db-attribute name="WebNodeTypeId" type="BIGINT" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="regionKey" type="VARCHAR" isMandatory="true" length="24"/>
 		<db-attribute name="weight" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
@@ -1264,10 +1264,12 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="WebContentVisibility" className="ish.oncourse.model.WebContentVisibility" dbEntityName="WebContentVisibility">
 		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
 		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="WebHostName" className="ish.oncourse.model.WebHostName" dbEntityName="WebHostName">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1283,11 +1285,11 @@
 	</obj-entity>
 	<obj-entity name="WebNode" className="ish.oncourse.model.WebNode" dbEntityName="WebNode">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isPublished" type="java.lang.Boolean" db-attribute-path="isPublished"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="nodeNumber" type="java.lang.Integer" db-attribute-path="nodeNumber"/>
-		<post-add method-name="performInitialization"/>
+		<obj-attribute name="published" type="boolean" db-attribute-path="isPublished"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1952,7 +1954,7 @@
 	<db-relationship name="webContentVisibilities" source="WebNodeType" target="WebContentVisibility" toMany="true">
 		<db-attribute-pair source="id" target="WebNodeTypeId"/>
 	</db-relationship>
-	<db-relationship name="webNode" source="WebNodeType" target="WebNode" toMany="false">
+	<db-relationship name="webNode" source="WebNodeType" target="WebNode" toMany="true">
 		<db-attribute-pair source="id" target="webNodeTypeId"/>
 	</db-relationship>
 	<db-relationship name="webSite" source="WebNodeType" target="WebSite" toMany="false">

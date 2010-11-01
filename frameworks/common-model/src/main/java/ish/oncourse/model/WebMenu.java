@@ -10,7 +10,7 @@ import org.apache.cayenne.query.Ordering;
 import ish.oncourse.model.auto._WebMenu;
 
 public class WebMenu extends _WebMenu {
-	
+
 	public List<WebMenu> getWebMenus() {
 		List<WebMenu> children = getChildrenMenus();
 		List<Ordering> orderings = new ArrayList<Ordering>();
@@ -30,10 +30,12 @@ public class WebMenu extends _WebMenu {
 	 * @return All child menus with published nodes for this menu.
 	 */
 	public List<WebMenu> getNavigableChildMenus() {
-		Expression expr = ExpressionFactory
-				.matchExp(WebMenu.WEB_NODE_PROPERTY+"."+WebNode.IS_PUBLISHED_PROPERTY, true)
-				.orExp(ExpressionFactory.matchExp(WebMenu.WEB_NODE_PROPERTY, null)
-						.andExp(ExpressionFactory.noMatchExp(WebMenu.URL_PROPERTY, null)));
+		Expression expr = ExpressionFactory.matchExp(
+				WebMenu.WEB_NODE_PROPERTY + "." + WebNode.PUBLISHED_PROPERTY,
+				true).orExp(
+				ExpressionFactory.matchExp(WebMenu.WEB_NODE_PROPERTY, null)
+						.andExp(ExpressionFactory.noMatchExp(
+								WebMenu.URL_PROPERTY, null)));
 
 		return expr.filterObjects(getWebMenus());
 	}

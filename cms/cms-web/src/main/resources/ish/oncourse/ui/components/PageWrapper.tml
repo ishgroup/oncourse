@@ -1,0 +1,43 @@
+ <html xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	<t:remove>
+		Name: PageWrapper
+		Purpose: html, head and body tags for the entire page. This is called for
+		every single full page which is rendered by onCourse.
+		Override: No. This component should not normally be overridden
+	</t:remove>
+	<head>
+		<head t:type="ui/pagehead" title="${title}"/>
+		<t:if t:test="loggedIn">
+			<link t:type="ui/cssassetgroup" group="literal:core-cms" media="literal:screen, projection" />
+			<script t:type="ui/jsassetgroup" group="literal:core-cms"/>
+  		</t:if>
+	</head>
+	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
+		<div t:id="bodyLayout" t:type="ui/bodylayout">
+			<p:header>
+				<h1><a href="${homeLink}">${collegeName}</a></h1>
+				<div id="site_toolbar">
+					<span t:type="ui/CourseSearchForm"/>
+					<span t:type="ui/ShortList"/>
+				</div>
+			</p:header>
+			<p:menu>
+				<div t:type="ui/menu" mainMenu="menu"/>
+			</p:menu>
+			<p:content>
+				<t:body/>		
+			</p:content>
+			<p:footer>
+				<div t:type="ui/bodyfooter"></div>
+			</p:footer>
+		</div>
+		<span t:type="ui/googleAnalytics"></span>
+		<t:if t:test="loggedIn">
+			<div t:type="CmsNavigation" node=""/>
+			<t:if t:test="hasCurrentNode">
+				<div t:type="pageinfo" node="prop:webNodeService.currentNode"/>
+			</t:if>
+		</t:if>
+	</body>
+</html>

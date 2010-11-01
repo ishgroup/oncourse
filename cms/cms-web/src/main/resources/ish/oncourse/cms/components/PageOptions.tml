@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div id="pgOptions" style="display: none;">
+			<form t:type="Form" t:id="optionsForm" t:zone="aliasZone">
+				<t:errors/>	
+				<div>
+					<t:label for="pageName"/><t:textfield t:id="pageName" t:value="node.name"/><br/>
+					<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeModel" value="node.webNodeType"/><br/>
+					<t:label for="published"/><t:checkbox t:id="published" value="node.published"/>
+				</div>
+				<t:zone t:id="aliasZone">
+					<div>
+						<t:loop source="node.webUrlAliases" value="webUrlAlias">
+							${webUrlAlias.urlPath} <a t:id="deleteAlias" t:type="actionLink" context="prop:webUrlAlias.id" zone="aliasZone">Delete</a> <br/>
+						</t:loop>
+					</div>
+				</t:zone>
+				<t:textfield t:value="urlPath"/> <input t:type="submit" event="add"/>
+			</form>
+    </div>
+    <script type="text/javascript">
+    	jQuery(function() {
+    		jQuery("#pgOptionsLink").click(function() {
+    			jQuery("#pgOptions").dialog({modal:true, height: 430, width: 530, 
+					buttons: { 
+						"Delete": function() {
+							
+						},
+						"Cancel": function() {
+							jQuery(this).dialog("close");
+						}, 
+						"Save": function() { 
+							jQuery(this).dialog("close");
+							$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+						}
+					}	
+				});
+    		});
+    	});
+	</script>	
+</t:container>

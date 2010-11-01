@@ -1,12 +1,12 @@
 package ish.oncourse.model.services.persistence;
 
+import ish.oncourse.model.services.cache.ICacheService;
+
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.conf.Configuration;
 import org.apache.cayenne.conf.DefaultConfiguration;
-
-import ish.oncourse.model.services.cache.ICacheService;
 
 public class CayenneService implements ICayenneService {
 

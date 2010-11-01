@@ -16,9 +16,6 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-ui/common-ui">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/jetty-launcher/jetty-launcher">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/cms-web1/target/classes"/>
         <property name="context-root" value="cms"/>
     </wb-module>

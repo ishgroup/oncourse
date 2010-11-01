@@ -1,9 +1,10 @@
 package ish.oncourse.cms.pages;
 
-import ish.oncourse.services.security.AuthenticationStatus;
-import ish.oncourse.services.security.IAuthenticationService;
+import ish.oncourse.cms.services.access.AuthenticationStatus;
+import ish.oncourse.cms.services.access.IAuthenticationService;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Component;
@@ -14,6 +15,7 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 /**
  * CMS login page.
@@ -29,6 +31,9 @@ public class Login {
 
 	@Component
 	private Form loginForm;
+	
+	@Inject
+	private Request request;
 
 	@InjectComponent("email")
 	private TextField emailField;
@@ -65,7 +70,7 @@ public class Login {
 			}
 		}
 		
-		return (loginForm.getHasErrors()) ? this : Index.class;
+		return (loginForm.getHasErrors()) ? this : new URL("http://" + request.getServerName());
 	}
 
 }

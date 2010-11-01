@@ -1,5 +1,7 @@
 package ish.oncourse.model;
 
+import java.util.Date;
+
 import ish.oncourse.model.auto._WebNode;
 
 public class WebNode extends _WebNode {
@@ -28,6 +30,10 @@ public class WebNode extends _WebNode {
 	}
 
 	@Override
-	protected void performInitialization() {}
-	
+	protected void onPostAdd() {
+		Date today = new Date();
+		setCreated(today);
+		setModified(today);
+		setPublished(false);
+	}
 }

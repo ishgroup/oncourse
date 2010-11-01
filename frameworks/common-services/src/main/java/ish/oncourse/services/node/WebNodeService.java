@@ -5,7 +5,7 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.services.alias.IWebUrlAliasService;
+import ish.oncourse.services.alias.IWebUrlAliasReadService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.Date;
@@ -26,7 +26,7 @@ public class WebNodeService implements IWebNodeService {
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
 	@Inject
-	private IWebUrlAliasService webUrlAliasService;
+	private IWebUrlAliasReadService webUrlAliasService;
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -112,7 +112,7 @@ public class WebNodeService implements IWebNodeService {
 				.matchExp(WebNode.WEB_SITE_PROPERTY, site);
 
 		expression = expression.andExp(ExpressionFactory.matchExp(
-				WebNode.IS_PUBLISHED_PROPERTY, true));
+				WebNode.PUBLISHED_PROPERTY, true));
 
 		return expression;
 	}
@@ -132,9 +132,13 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService.sharedContext().performQuery(
-				new EJBQLQuery("select max(wn.modified) from WebNode wn where "
-						+ siteQualifier().toEJBQL("wn"))).get(0);
+		return (Date) cayenneService
+				.sharedContext()
+				.performQuery(
+						new EJBQLQuery(
+								"select max(wn.modified) from WebNode wn where "
+										+ siteQualifier().toEJBQL("wn")))
+				.get(0);
 	}
 
 	public boolean isNodeExist(String path) {
@@ -149,15 +153,15 @@ public class WebNodeService implements IWebNodeService {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
 
 		q.andQualifier(ExpressionFactory.matchExp(
-				WebNodeType.WEB_SITE_PROPERTY, webSiteService
-						.getCurrentWebSite()));
+				WebNodeType.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite()));
 
 		q.andQualifier(ExpressionFactory
 				.matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
 						WebNodeType.DEFAULT_LAYOUT_KEY));
 
-		return (WebNodeType) DataObjectUtils.objectForQuery(cayenneService
-				.sharedContext(), q);
+		return (WebNodeType) DataObjectUtils.objectForQuery(
+				cayenneService.sharedContext(), q);
 	}
 
 	public List<WebNodeType> getWebNodeTypes() {
@@ -166,5 +170,24 @@ public class WebNodeService implements IWebNodeService {
 				WebNodeType.WEB_SITE_PROPERTY,
 				webSiteService.getCurrentWebSite()));
 		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	public Integer getNextNodeNumber() {
+		Expression siteExpr = ExpressionFactory.matchExp(
+				WebNode.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite());
+
+		Integer number = (Integer) cayenneService
+				.sharedContext()
+				.performQuery(
+						new EJBQLQuery(
+								"select max(wn.nodeNumber) from WebNode wn where "
+										+ siteExpr.toEJBQL("wn"))).get(0);
+
+		return ++number;
+	}
+
+	public WebNode getNodeById(Long id) {
+		return DataObjectUtils.objectForPK(cayenneService.sharedContext(),
+				WebNode.class, id);
 	}
 }

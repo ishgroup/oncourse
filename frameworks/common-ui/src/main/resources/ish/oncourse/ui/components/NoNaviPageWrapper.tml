@@ -1,9 +1,0 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter" lang="en">
-	<head>
-		<head t:type="ui/pagehead" title="${title}"/>
-	</head>
-	<body style="background: none;">
-		<t:body/>
-	</body>
-</html>

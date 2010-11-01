@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -74,5 +75,10 @@ public class WebContentService implements IWebContentService {
 		List<WebContent> listResult = sharedContext.performQuery(query);
 		return !listResult.isEmpty() ? listResult.get(new Random()
 				.nextInt(listResult.size())) : null;
+	}
+
+	public WebContent loadById(String id) {
+		return DataObjectUtils.objectForPK(cayenneService.sharedContext(),
+				WebContent.class, id);
 	}
 }
