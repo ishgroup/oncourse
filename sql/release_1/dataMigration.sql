@@ -339,7 +339,7 @@ INSERT INTO willow_college.WebNode ( created, id, isPublished,	modified, name, n
 
 INSERT INTO willow_college.WebURLAlias ( created, id, modified, urlPath, webNodeId, webSiteId)
 	SELECT created, id, modified, urlPath, webNodeId, webSiteId
-	FROM oncourse_realdata_willow_college.WebURLAlias WHERE isDeleted = 0 AND webSiteID in (SELECT id from willow_college.WebSite WHERE collegeId = @collegeId) AND urlPath is not NULL and webNodeId is not NULL;
+	FROM oncourse_realdata_willow_college.WebURLAlias WHERE (isDeleted = 0 or isDeleted is NULL) AND webSiteID in (SELECT id from willow_college.WebSite WHERE collegeId = @collegeId) AND urlPath is not NULL and webNodeId is not NULL;
 
 UPDATE willow_college.WebNode AS wn
 	JOIN willow_college.WebNodeType as wnt ON wnt.webSiteId= wn.webSiteId
