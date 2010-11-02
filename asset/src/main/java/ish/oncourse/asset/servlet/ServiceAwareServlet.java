@@ -26,7 +26,7 @@ public class ServiceAwareServlet extends HttpServlet {
 				new RequestImpl(
 						req, req.getCharacterEncoding(),
 						new DefaultSessionPersistedObjectAnalyzer()),
-				new ResponseImpl(req, resp));
+				new ResponseImpl(resp));
 
 		super.service(req, resp);
 	}
