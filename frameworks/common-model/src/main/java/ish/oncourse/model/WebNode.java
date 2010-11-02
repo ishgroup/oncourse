@@ -40,25 +40,4 @@ public class WebNode extends _WebNode {
 		setModified(today);
 		setPublished(false);
 	}
-
-	public WebUrlAlias getDefaultWebURLAlias() {
-		Expression expr = ExpressionFactory.matchExp(
-				WebUrlAlias.DEFAULT_PROPERTY, true);
-
-		List<WebUrlAlias> l = expr.filterObjects(getWebUrlAliases());
-
-		if (l.size() > 0) {
-			return l.get(0);
-		} else if (getWebUrlAliases().size() > 0) {
-			return getWebUrlAliases().get(0);
-		} else {
-			return null;
-		}
-	}
-	
-	public void clearDefaultUrl() {
-		for (WebUrlAlias alias : getWebUrlAliases()) {
-			alias.setDefault(false);
-		}
-	}
 }

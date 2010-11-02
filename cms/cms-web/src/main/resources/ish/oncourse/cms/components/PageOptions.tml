@@ -7,28 +7,28 @@
 			<t:label for="published"/><t:checkbox t:id="published" value="node.published"/>
 		</t:form>
 	    
-	    
-	    	
-	    URLs<ul>
-	    		<t:zone t:id="urlZone">
-			    	<t:loop source="prop:urls" value="webUrlAlias">
-			    		<li>
-			    			${webUrlAlias.urlPath}<a t:type="actionLink" t:id="removeUrl" t:context="webUrlAlias.id" zone="urlZone"><img src="/s/img/trash_16.gif" border="0"/></a>
-			    			<t:if t:test="webUrlAlias.default">
-			    				<img src="/s/img/arrow_left.png" border="0"/>
-			    				<p:else>
-			    					<a t:id="makeDefault" t:type="actionLink" t:context="webUrlAlias.id" zone="urlZone"><img src="/s/img/arrow_left.png" border="0"/>default</a>
-			    				</p:else>
-			    			</t:if>
-			    		</li>
-			    	</t:loop>
-		    	</t:zone>
-		    	<li>
-			    	<t:form t:id="urlForm" zone="urlZone">
-		    			<t:textfield value="urlPath"/><a href="#" t:type="linkSubmit" t:id="addUrl"><img src="/s/img/add.png" border="0"/></a>
-		    		</t:form>
-	    		</li>
-	      </ul>
+	    URLs
+    	<ul>
+    		<t:zone t:id="urlZone">
+    			<t:if t:test="hasDefault">
+    				<li style="line-height: 1.2em">${node.defaultWebURLAlias.urlPath}<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/></li>
+    			</t:if>
+		    	<t:loop source="prop:node.webUrlAliases" value="prop:webUrlAlias">
+		    			<t:if t:test="notDefault">
+		    				<li style="line-height: 1.2em">
+		    					${webUrlAlias.urlPath} 
+		    					<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.id" zone="urlZone"><img src="/s/img/trash_16.gif" border="0" style="vertical-align: middle;"/></a>
+		    					<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/><a t:id="makeDefault" t:type="actionLink" t:context="webUrlAlias.id" zone="urlZone">&nbsp;default</a>
+		    				</li>
+		    			</t:if>
+		    	</t:loop>
+	    	</t:zone>
+	    	<li>
+		    	<t:form t:id="urlForm" zone="urlZone">
+	    			<t:textfield value="urlPath"/><a href="#" t:type="linkSubmit" t:id="addUrl"><img src="/s/img/add.png" border="0"/></a>
+	    		</t:form>
+    		</li>
+      </ul>
 	</div>
 	<script type="text/javascript">
 	    jQuery(function() {

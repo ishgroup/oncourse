@@ -719,7 +719,7 @@
 	</db-entity>
 	<db-entity name="WebURLAlias" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="urlPath" type="VARCHAR" length="512"/>
 		<db-attribute name="webNodeId" type="BIGINT" length="19"/>
@@ -1312,6 +1312,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="urlPath" type="java.lang.String" db-attribute-path="urlPath"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="WillowUser" className="ish.oncourse.model.WillowUser" dbEntityName="WillowUser">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

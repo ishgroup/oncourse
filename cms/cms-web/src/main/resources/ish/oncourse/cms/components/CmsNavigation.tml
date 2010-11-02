@@ -3,7 +3,7 @@
 	
 	<t:if t:test="hasCurrentNode">
 		<span t:type="pageoptions" node="prop:node"/>
-		<div t:type="pageinfo" node="prop:webNodeService.currentNode"/>
+		<div t:type="pageinfo" node="prop:node"/>
 	</t:if>
 	
 	<div id="cms_nav" class="clearfix">

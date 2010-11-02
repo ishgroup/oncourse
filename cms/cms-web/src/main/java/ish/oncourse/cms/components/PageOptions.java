@@ -1,7 +1,5 @@
 package ish.oncourse.cms.components;
 
-import java.util.List;
-
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebUrlAlias;
@@ -10,8 +8,6 @@ import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.ui.ISelectModelService;
 
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
@@ -27,15 +23,15 @@ public class PageOptions {
 	@Parameter
 	@Property
 	private WebNode node;
-	
+
 	@Property
 	@Component(id = "optionsForm")
 	private Form optionsForm;
-	
+
 	@Property
 	@Component(id = "urlForm")
 	private Form urlForm;
-	
+
 	@Component
 	private Zone urlZone;
 
@@ -47,7 +43,7 @@ public class PageOptions {
 
 	@Inject
 	private IWebUrlAliasService aliasService;
-	
+
 	@Inject
 	private ICayenneService cayenneService;
 
@@ -61,63 +57,65 @@ public class PageOptions {
 	@Property
 	private String urlPath;
 
-	
 	@SetupRender
 	public void beforeRender() {
 		this.pageTypeModel = selectModelService.newSelectModel(
-				webNodeService.getWebNodeTypes(), WebNodeType.LAYOUT_KEY_PROPERTY,
-				WebNodeType.ID_PROPERTY);
+				webNodeService.getWebNodeTypes(),
+				WebNodeType.LAYOUT_KEY_PROPERTY, WebNodeType.ID_PROPERTY);
+	}
+
+	public boolean isNotDefault() {
+		if (this.node.getDefaultWebURLAlias() != null) {
+			return !node.getDefaultWebURLAlias().equals(webUrlAlias.getId());
+		}
+		return true;
+	}
+
+	public boolean isHasDefault() {
+		return this.node.getDefaultWebURLAlias() != null;
 	}
 
 	void onSelectedFromAddUrl() {
-		
+
 	}
-	
+
 	Object onActionFromRemoveUrl(String id) {
 		WebUrlAlias alias = aliasService.getAliasById(Long.parseLong(id));
-		
+
 		this.node.removeFromWebUrlAliases(alias);
 		cayenneService.sharedContext().deleteObject(alias);
-		
+
 		cayenneService.sharedContext().commitChanges();
-		
+
 		return urlZone.getBody();
 	}
-	
+
 	Object onActionFromMakeDefault(String id) {
 		WebUrlAlias alias = aliasService.getAliasById(Long.parseLong(id));
-		
-		alias.getWebNode().clearDefaultUrl();
-		alias.setDefault(true);
-		
+
+		this.node.setDefaultWebURLAlias(alias);
 		cayenneService.sharedContext().commitChanges();
-		
+
 		return urlZone.getBody();
 	}
-	
+
 	Object onSuccessFromUrlForm() {
-		WebUrlAlias alias = cayenneService.sharedContext().newObject(WebUrlAlias.class);
-		
+		WebUrlAlias alias = cayenneService.sharedContext().newObject(
+				WebUrlAlias.class);
+
 		alias.setUrlPath(urlPath);
 		node.addToWebUrlAliases(alias);
 		alias.setWebSite(this.node.getWebSite());
-		
+
 		this.urlPath = "";
-		
+
 		cayenneService.sharedContext().commitChanges();
-		
+
 		return urlZone.getBody();
 	}
-	
+
 	Object onSuccessFromOptionsForm() {
 		cayenneService.sharedContext().commitChanges();
 		return urlZone.getBody();
-	}
-	
-	public List<WebUrlAlias> getUrls() {
-		Ordering ord = new Ordering(WebUrlAlias.DEFAULT_PROPERTY, SortOrder.DESCENDING);
-		List<WebUrlAlias> l = node.getWebUrlAliases();
-		ord.orderList(l);
-		return l;
 	}
 }

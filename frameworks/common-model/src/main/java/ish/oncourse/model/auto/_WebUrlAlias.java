@@ -16,7 +16,6 @@ import ish.oncourse.model.WebSite;
 public abstract class _WebUrlAlias extends CayenneDataObject {
 
     public static final String CREATED_PROPERTY = "created";
-    public static final String DEFAULT_PROPERTY = "default";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String URL_PATH_PROPERTY = "urlPath";
     public static final String WEB_NODE_PROPERTY = "webNode";
@@ -29,14 +28,6 @@ public abstract class _WebUrlAlias extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setDefault(boolean _default) {
-        writeProperty("default", _default);
-    }
-	public boolean isDefault() {
-        Boolean value = (Boolean)readProperty("default");
-        return (value != null) ? value.booleanValue() : false;
     }
 
     public void setModified(Date modified) {
