@@ -21,13 +21,12 @@ public class ServiceAwareServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		RequestGlobals requestGlobals = getService(RequestGlobals.class);
-
 		requestGlobals.storeServletRequestResponse(req, resp);
-
-		requestGlobals.storeRequestResponse(new RequestImpl(req, req
-				.getCharacterEncoding(),
-				new DefaultSessionPersistedObjectAnalyzer()), new ResponseImpl(
-				resp));
+		requestGlobals.storeRequestResponse(
+				new RequestImpl(
+						req, req.getCharacterEncoding(),
+						new DefaultSessionPersistedObjectAnalyzer()),
+				new ResponseImpl(req, resp));
 
 		super.service(req, resp);
 	}

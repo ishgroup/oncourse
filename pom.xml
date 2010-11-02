@@ -268,7 +268,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tapestry5version>5.2.0</tapestry5version>
+		<tapestry5version>5.2.2</tapestry5version>
 		<maven.emma.report.xml>true</maven.emma.report.xml>
 		<maven.emma.report.html>true</maven.emma.report.html>
 	</properties>
