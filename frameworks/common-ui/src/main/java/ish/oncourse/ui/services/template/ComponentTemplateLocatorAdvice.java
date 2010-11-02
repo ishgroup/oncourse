@@ -67,6 +67,7 @@ public class ComponentTemplateLocatorAdvice implements MethodAdvice {
 		LOGGER.debug("Try to load template override for: " + templateFile);
 
 		if (resource.exists()) {
+			LOGGER.debug("Template override: " + templateFile + " found.");
 			return new T5FileResource(resource.getFile());
 		}
 

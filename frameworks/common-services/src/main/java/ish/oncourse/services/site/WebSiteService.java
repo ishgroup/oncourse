@@ -1,24 +1,24 @@
 package ish.oncourse.services.site;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.WebHostName;
-
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.Scope;
-
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebSite;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.services.Request;
+
+import ish.oncourse.model.College;
+import ish.oncourse.model.Site;
+import ish.oncourse.model.WebContent;
+import ish.oncourse.model.WebHostName;
+import ish.oncourse.model.WebSite;
+import ish.oncourse.model.services.persistence.ICayenneService;
 
 
 @Scope("perthread")
@@ -26,14 +26,20 @@ public class WebSiteService implements IWebSiteService {
 
 	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
 	private static final String DEFAULT_FOLDER_NAME = "default";
+	
 	@Inject
 	private Request request;
+
 	@Inject
 	private ICayenneService cayenneService;
+
 	private transient WebHostName collegeDomain;
 	private final Expression activeBlocksNameFilter;
 	//TODO commented till the question with the layouts regions will be resolved
 	//private final Expression activeBlocksRegionFilter;
+
+	private final static Logger LOGGER = Logger.getLogger(WebSiteService.class);
+
 
 	public WebSiteService() {
 
@@ -65,10 +71,19 @@ public class WebSiteService implements IWebSiteService {
 			collegeDomain = (WebHostName) DataObjectUtils.objectForQuery(
 					cayenneService.sharedContext(), query);
 
+
 			if (collegeDomain == null) {
 				throw new IllegalStateException(
 						"Can't determine college domain for server name: '"
 						+ serverName + "'");
+			}
+		}
+
+		if (collegeDomain != null) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Request server name: " + request.getServerName()
+						+ " for Request #" + request.hashCode()
+						+ " ; returning domain object with " + collegeDomain.getName());
 			}
 		}
 
