@@ -47,8 +47,11 @@ public class GenericSelectModel<T> extends AbstractSelectModel implements
 	}
 
 	public T toValue(String clientValue) {
-		Expression expr = ExpressionFactory.matchExp(idField, clientValue);
+		Long id = Long.parseLong(clientValue);
+		
+		Expression expr = ExpressionFactory.matchExp(idField, id);
 		List<T> l = expr.filterObjects(list);
+		
 		return l.get(0);
 	}
 }

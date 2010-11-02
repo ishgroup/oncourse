@@ -2,8 +2,8 @@ package ish.oncourse.services.alias;
 
 import ish.oncourse.model.WebUrlAlias;
 
-public interface IWebUrlAliasReadService {
+public interface IWebUrlAliasService {
 	WebUrlAlias getAliasByPath(String path);
 
-	WebUrlAlias getAliasById(String id);
+	WebUrlAlias getAliasById(Long id);
 }

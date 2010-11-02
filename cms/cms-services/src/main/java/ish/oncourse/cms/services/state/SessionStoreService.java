@@ -12,6 +12,7 @@ public class SessionStoreService implements ISessionStoreService {
 
 	public ObjectContext sessionContext() {
 		Session session = request.getSession(false);
-		return (ObjectContext) session.getAttribute(SESSION_CONTEXT);
+		return (session == null) ? null : (ObjectContext) session
+				.getAttribute(SESSION_CONTEXT);
 	}
 }

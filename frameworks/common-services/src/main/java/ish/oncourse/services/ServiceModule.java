@@ -1,7 +1,7 @@
 package ish.oncourse.services;
 
-import ish.oncourse.services.alias.IWebUrlAliasReadService;
-import ish.oncourse.services.alias.WebUrlAliasReadService;
+import ish.oncourse.services.alias.IWebUrlAliasService;
+import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -79,7 +79,7 @@ public class ServiceModule {
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
-		binder.bind(IWebUrlAliasReadService.class, WebUrlAliasReadService.class);
+		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(ISelectModelService.class, SelectModelService.class);
 		binder.bind(IPreferenceService.class, PreferenceService.class);
 	}

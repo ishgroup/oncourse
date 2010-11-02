@@ -5,7 +5,7 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.services.alias.IWebUrlAliasReadService;
+import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.Date;
@@ -26,7 +26,7 @@ public class WebNodeService implements IWebNodeService {
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
 	@Inject
-	private IWebUrlAliasReadService webUrlAliasService;
+	private IWebUrlAliasService webUrlAliasService;
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -110,10 +110,6 @@ public class WebNodeService implements IWebNodeService {
 				WebNode.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory
 				.matchExp(WebNode.WEB_SITE_PROPERTY, site);
-
-		expression = expression.andExp(ExpressionFactory.matchExp(
-				WebNode.PUBLISHED_PROPERTY, true));
-
 		return expression;
 	}
 
@@ -166,9 +162,11 @@ public class WebNodeService implements IWebNodeService {
 
 	public List<WebNodeType> getWebNodeTypes() {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
+		
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebNodeType.WEB_SITE_PROPERTY,
 				webSiteService.getCurrentWebSite()));
+		
 		return cayenneService.sharedContext().performQuery(q);
 	}
 

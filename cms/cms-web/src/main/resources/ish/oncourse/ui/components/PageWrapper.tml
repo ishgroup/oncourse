@@ -35,9 +35,6 @@
 		<span t:type="ui/googleAnalytics"></span>
 		<t:if t:test="loggedIn">
 			<div t:type="CmsNavigation" node=""/>
-			<t:if t:test="hasCurrentNode">
-				<div t:type="pageinfo" node="prop:webNodeService.currentNode"/>
-			</t:if>
 		</t:if>
 	</body>
 </html>

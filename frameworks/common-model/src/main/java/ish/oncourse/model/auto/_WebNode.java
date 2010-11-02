@@ -24,7 +24,6 @@ public abstract class _WebNode extends CayenneDataObject {
     public static final String NAME_PROPERTY = "name";
     public static final String NODE_NUMBER_PROPERTY = "nodeNumber";
     public static final String PUBLISHED_PROPERTY = "published";
-    public static final String DEFAULT_WEB_URLALIAS_PROPERTY = "defaultWebURLAlias";
     public static final String WEB_CONTENT_VISIBILITY_PROPERTY = "webContentVisibility";
     public static final String WEB_MENU_PROPERTY = "webMenu";
     public static final String WEB_NODE_TYPE_PROPERTY = "webNodeType";
@@ -68,15 +67,6 @@ public abstract class _WebNode extends CayenneDataObject {
         Boolean value = (Boolean)readProperty("published");
         return (value != null) ? value.booleanValue() : false;
     }
-
-    public void setDefaultWebURLAlias(WebUrlAlias defaultWebURLAlias) {
-        setToOneTarget("defaultWebURLAlias", defaultWebURLAlias, true);
-    }
-
-    public WebUrlAlias getDefaultWebURLAlias() {
-        return (WebUrlAlias)readProperty("defaultWebURLAlias");
-    }
-
 
     public void addToWebContentVisibility(WebContentVisibility obj) {
         addToManyTarget("webContentVisibility", obj, true);

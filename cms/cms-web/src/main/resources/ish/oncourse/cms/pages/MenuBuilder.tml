@@ -2,7 +2,8 @@
 <html t:type="ui/pagewrapper" title="literal:Menu Builder"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	 
+	<br/>
+	<br/> 
 	<button class="awesome blue large cms_add_menuitem">Add a new menu item</button>
 	
 	<div t:type="menubuildertree" mainMenu="menu"/>

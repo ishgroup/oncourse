@@ -14,9 +14,9 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class WebUrlAliasReadService implements IWebUrlAliasReadService{
+public class WebUrlAliasService implements IWebUrlAliasService{
 
-	private static final Logger LOGGER = Logger.getLogger(WebUrlAliasReadService.class);
+	private static final Logger LOGGER = Logger.getLogger(WebUrlAliasService.class);
 	
 	@Inject
 	private IWebSiteService webSiteService;
@@ -53,7 +53,7 @@ public class WebUrlAliasReadService implements IWebUrlAliasReadService{
 		return expression;
 	}
 	
-	public WebUrlAlias getAliasById(String id) {
+	public WebUrlAlias getAliasById(Long id) {
 		return DataObjectUtils.objectForPK(cayenneService.sharedContext(), WebUrlAlias.class, id);
 	}
 }
