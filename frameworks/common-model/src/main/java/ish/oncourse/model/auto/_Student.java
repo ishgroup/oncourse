@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Certificate;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.MessagePerson;
@@ -23,7 +24,6 @@ import ish.oncourse.model.WaitingList;
 public abstract class _Student extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
     public static final String COUNTRY_OF_BIRTH_ID_PROPERTY = "countryOfBirthId";
     public static final String CREATED_PROPERTY = "created";
@@ -40,6 +40,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
     public static final String ATTENDANCES_PROPERTY = "attendances";
     public static final String CERTIFICATES_PROPERTY = "certificates";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
@@ -54,13 +55,6 @@ public abstract class _Student extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
-    }
-
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
-    }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
     }
 
     public void setConcessionType(Integer concessionType) {
@@ -182,6 +176,15 @@ public abstract class _Student extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
         return (List<Certificate>)readProperty("certificates");
+    }
+
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
     }
 
 

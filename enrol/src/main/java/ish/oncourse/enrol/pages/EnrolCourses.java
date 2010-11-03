@@ -71,7 +71,6 @@ public class EnrolCourses {
 	}
 
 	public boolean isShowConcessionsArea() {
-		// collegeHasConcessionTypes&&isConcessionEnabled
 		return (!concessionsService.getActiveConcessionTypes().isEmpty())
 				&& Boolean.valueOf(preferenceService.getPreferenceByKey(
 						"feature.concessionsInEnrolment").getValueString());

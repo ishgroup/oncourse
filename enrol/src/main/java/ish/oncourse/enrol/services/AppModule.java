@@ -2,6 +2,8 @@ package ish.oncourse.enrol.services;
 
 import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
+import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.enrol.services.student.StudentService;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.ui.services.UIModule;
@@ -17,5 +19,6 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 public class AppModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
+		binder.bind(IStudentService.class, StudentService.class);
 	}
 }

@@ -1171,7 +1171,6 @@
 	</obj-entity>
 	<obj-entity name="Student" className="ish.oncourse.model.Student" dbEntityName="Student">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 		<obj-attribute name="concessionType" type="java.lang.Integer" db-attribute-path="concessionType"/>
 		<obj-attribute name="countryOfBirthId" type="java.lang.Long" db-attribute-path="countryOfBirthId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1472,6 +1471,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="studentConcessions" source="College" target="StudentConcession" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="students" source="College" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="tagGroupRequirements" source="College" target="TagGroupRequirement" toMany="true">
@@ -1791,6 +1793,9 @@
 	</db-relationship>
 	<db-relationship name="certificates" source="Student" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
+	</db-relationship>
+	<db-relationship name="college" source="Student" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contact" source="Student" target="Contact" toMany="false">
 		<db-attribute-pair source="id" target="studentId"/>
@@ -2153,6 +2158,7 @@
 	<obj-relationship name="waitingListSites" source="Site" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="attendances" source="Student" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="certificates" source="Student" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
+	<obj-relationship name="college" source="Student" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
