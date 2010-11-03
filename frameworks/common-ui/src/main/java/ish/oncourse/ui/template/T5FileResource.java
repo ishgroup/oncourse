@@ -1,4 +1,4 @@
-package ish.oncourse.ui.services.template;
+package ish.oncourse.ui.template;
 
 import java.io.File;
 import java.net.MalformedURLException;
