@@ -131,7 +131,6 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
 
     private final boolean poolingEnabled;
     
-    @Inject
     private Request request;
 
     public PageLoaderOverride(ComponentInstantiatorSource instantiatorSource, ComponentTemplateSource templateSource,
@@ -152,8 +151,16 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
         this.perThreadManager = perThreadManager;
         this.poolingEnabled = poolingEnabled;
     }
-
-    public void objectWasInvalidated()
+    
+    public Request getRequest() {
+		return request;
+	}
+    
+	public void setRequest(Request request) {
+		this.request = request;
+	}
+	
+	public void objectWasInvalidated()
     {
         cache.clear();
     }

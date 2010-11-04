@@ -19,7 +19,6 @@ import org.apache.tapestry5.internal.services.TemplateParser;
 import org.apache.tapestry5.internal.util.MultiKey;
 import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.ioc.Resource;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.ioc.internal.util.URLChangeTracker;
@@ -37,7 +36,6 @@ public final class ComponentTemplateSourceOverride extends
 		InvalidationEventHubImpl implements ComponentTemplateSource,
 		UpdateListener {
 
-	@Inject
 	private Request request;
 
 	private static final Logger LOGGER = Logger
@@ -45,7 +43,6 @@ public final class ComponentTemplateSourceOverride extends
 
 	private static final String PACKAGE = "ish.oncourse";
 
-	@Inject
 	private IResourceService resourceService;
 
 	private final TemplateParser parser;
@@ -99,9 +96,15 @@ public final class ComponentTemplateSourceOverride extends
 
 	public ComponentTemplateSourceOverride(TemplateParser parser,
 			@Primary ComponentTemplateLocator templateLocator,
-			ClasspathURLConverter classpathURLConverter) {
+			ClasspathURLConverter classpathURLConverter, 
+			Request request,
+			IResourceService resourceService) {
+		
 		this(parser, templateLocator, new URLChangeTracker(
 				classpathURLConverter));
+		
+		this.request = request;
+		this.resourceService = resourceService;
 	}
 
 	ComponentTemplateSourceOverride(TemplateParser parser,
@@ -121,6 +124,7 @@ public final class ComponentTemplateSourceOverride extends
 	 */
 	public ComponentTemplate getTemplate(ComponentModel componentModel,
 			Locale locale) {
+		
 		String componentName = componentModel.getComponentClassName();
 
 		MultiKey key = new MultiKey(componentName, locale,

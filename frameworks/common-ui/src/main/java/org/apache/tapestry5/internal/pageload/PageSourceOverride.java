@@ -7,7 +7,6 @@ import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.services.PageSource;
 import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.internal.util.MultiKey;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.services.InvalidationListener;
 import org.apache.tapestry5.services.Request;
@@ -15,14 +14,14 @@ import org.apache.tapestry5.services.Request;
 public class PageSourceOverride implements PageSource, InvalidationListener {
 	private final PageLoader pageLoader;
 
-	@Inject
 	private Request request;
 
 	private final Map<MultiKey, Page> pageCache = CollectionFactory
 			.newConcurrentMap();
 
-	public PageSourceOverride(PageLoader pageLoader) {
+	public PageSourceOverride(PageLoader pageLoader, Request request) {
 		this.pageLoader = pageLoader;
+		this.request = request;
 	}
 
 	public synchronized void objectWasInvalidated() {
