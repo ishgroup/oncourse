@@ -813,3 +813,16 @@ function editWebContentWithCKEditor(fieldID) {
 	//CKEDITOR.replace( fieldID, { customConfig : '../ckconfig.js' } );
 	CKEDITOR.replace(fieldID );
 }
+
+function initHints(){
+	// Show us hints on entering the field if the input is not invalid
+	$j('span.valid input').bind("focus blur", function() {
+		$j(this).next().next().children('.hint').toggleClass('hidden-text');
+		//$j(this).parent().nextAll('.hint:first').toggle();
+	});
+
+	// Show us reasons for errors on entering the field if the input IS invalid
+	$j('span.validate input').bind("focus blur", function() {
+		$j(this).next().next().children('.reason').toggleClass('hidden-text');
+	});
+}

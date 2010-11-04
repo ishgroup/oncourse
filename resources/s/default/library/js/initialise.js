@@ -69,20 +69,10 @@ $j(document).ready(function() {
 		}
 		return false;
 	});
-	
 	// hide the hints and errors at the start
 	$j('.reason', '.hint').toggleClass('hidden-text');
   
-	// Show us hints on entering the field if the input is not invalid
-	$j('span.valid input').bind("focus blur", function() {
-		$j(this).next().children('.hint').toggleClass('hidden-text');
-		//$j(this).parent().nextAll('.hint:first').toggle();
-	});
-	
-	// Show us reasons for errors on entering the field if the input IS invalid
-	$j('span.validate input').bind("focus blur", function() {
-		$j(this).next().children('.reason').toggleClass('hidden-text');
-	});
+	initHints();
 	
 	// When a user logs in, show them the company fields or the individual's fields
 	$j("#iscompany").click ( function() {
@@ -439,8 +429,7 @@ $j(document).ready(function() {
 			mapLoadForID('map');
 			return false;
 		});
-		  
-		 		 
+			 
 });
 	
 function submitTellAFriend() {
