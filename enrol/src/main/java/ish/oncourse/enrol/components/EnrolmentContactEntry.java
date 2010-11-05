@@ -126,7 +126,12 @@ public class EnrolmentContactEntry {
 		Student student = context.newObject(Student.class);
 		student.setCollege(college);
 		contact.setStudent(student);
-
+		
+		contact.setIsMale(true);
+		contact.setIsMarketingViaEmailAllowed(true);
+		contact.setIsMarketingViaPostAllowed(true);
+		contact.setIsMarketingViaSMSAllowed(true);
+		
 		reset = true;
 		shortDetailsForm.clearErrors();
 	}

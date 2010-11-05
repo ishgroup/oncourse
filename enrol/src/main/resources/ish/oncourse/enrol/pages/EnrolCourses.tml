@@ -46,6 +46,8 @@
 					</thead>
 					<tbody>
 						<t:loop source="classesToEnrol" value="courseClass">
+						<!-- TODO remove when  EnrolmentListItem will be implememnted-->
+						<tr><td>${courseClass.uniqueIdentifier}(Test view)</td></tr>
 							<!-- wo:EnrolmentListItem student="$studentItem"
 								courseClass="$classItem" index="$enrolmentIndex" /-->
 						</t:loop>
@@ -61,13 +63,13 @@
 								value="$payment.totalDiscountAmountIncTax"
 								numberformat="###,##0.00" /></td>
 						</tr>
-					</wo:ISHKeyValueConditional>
+					</wo:ISHKeyValueConditional-->
 					<tr>
 						<td><span id="addstudent">Add another student</span></td>
 						<td class="alignright">Total</td>
-						<td class="alignright" id="total"><wo:string
-							value="$payment.totalIncGst" numberformat="###,##0.00" /></td>
-					</tr-->
+						<!-- td class="alignright" id="total"><wo:string
+							value="$payment.totalIncGst" numberformat="###,##0.00" /></td-->
+					</tr>
 				</tbody>
 			</table>
 		</t:if>

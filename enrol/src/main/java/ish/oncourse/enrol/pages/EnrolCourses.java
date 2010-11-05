@@ -68,6 +68,10 @@ public class EnrolCourses {
 					SortOrder.DESCENDING));
 			Ordering.orderList(classesToEnrol, orderings);
 		}
+
+		students = (List<Student>) request.getSession(true).getAttribute(
+				"shortlistStudents");
+
 	}
 
 	public boolean isShowConcessionsArea() {

@@ -521,12 +521,12 @@ public class TimestampUtilities {
 	 */
 	public static Set<String> uniqueDaysInOrder(List<String> days) {
 		Set<String> daysInOrder = new LinkedHashSet<String>(daysOfWeekNames());
-		
-		Set<String> excludedDays  = new LinkedHashSet<String>(daysOfWeekNames());
+
+		Set<String> excludedDays = new LinkedHashSet<String>(daysOfWeekNames());
 		excludedDays.removeAll(days);
-		
+
 		daysInOrder.removeAll(excludedDays);
-		
+
 		return daysInOrder;
 	}
 
@@ -642,5 +642,32 @@ public class TimestampUtilities {
 			daysBetweenDates += endDayOfWeek - 2;
 		}
 		return daysBetweenDates;
+	}
+
+	/**
+	 * @param t1
+	 *            - timestamp one
+	 * @param t2
+	 *            - timestamp two
+	 * @return the number of years between the two timestamps in the given
+	 *         timezone
+	 * @throws NullPointerException
+	 */
+	public static int yearsBetweenDates(Date t1, Date t2)
+			throws NullPointerException {
+		Calendar a = Calendar.getInstance();
+		Calendar b = Calendar.getInstance();
+
+		int compare = t1.compareTo(t2);
+
+		if (compare <= 0) {
+			a.setTimeInMillis(t1.getTime());
+			b.setTimeInMillis(t2.getTime());
+		} else {
+			b.setTimeInMillis(t1.getTime());
+			a.setTimeInMillis(t2.getTime());
+		}
+
+		return b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
 	}
 }
