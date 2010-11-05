@@ -113,7 +113,7 @@ public class EnrolmentContactEntry {
 
 	@SetupRender
 	void beforeRender() {
-		hasContact=false;
+		hasContact = false;
 		context = cayenneService.newContext();
 
 		contact = context.newObject(Contact.class);
@@ -157,28 +157,18 @@ public class EnrolmentContactEntry {
 		if (reset) {
 			shortDetailsForm.clearErrors();
 		} else {
-			if (contact.getGivenName() == null
-					|| "".equals(contact.getGivenName())) {
-				firstNameErrorMessage = messages.get("first-name-required");
+			firstNameErrorMessage = contact.validateGivenName();
+			if (firstNameErrorMessage != null) {
 				shortDetailsForm.recordError(firstName, firstNameErrorMessage);
 			}
-			if (contact.getFamilyName() == null
-					|| "".equals(contact.getFamilyName())) {
-				lastNameErrorMessage = messages.get("last-name-required");
+			lastNameErrorMessage = contact.validateFamilyName();
+			if (lastNameErrorMessage != null) {
 				shortDetailsForm.recordError(lastName, lastNameErrorMessage);
 			}
-			if (contact.getEmailAddress() == null
-					|| "".equals(contact.getEmailAddress())) {
-				emailErrorMessage = messages.get("email-required");
+			emailErrorMessage = contact.validateEmail();
+			if (emailErrorMessage != null) {
 				shortDetailsForm.recordError(email, emailErrorMessage);
-			} else {
-				if (!contact.getEmailAddress().matches(
-						messages.get("email-regexp"))) {
-					emailErrorMessage = messages.get("email-regexp-message");
-					shortDetailsForm.recordError(email, emailErrorMessage);
-				}
 			}
-
 		}
 	}
 
