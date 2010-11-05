@@ -69,14 +69,7 @@
 								</tr>
 							</thead>
 						</table>
-						<!-- TODO extract this block to the  ContactDetails component-->
-						<!-- t:if test="hasErrors" negate="true"-->
-							<div class="message">
-								<p>${message:requireAdditionalInfo}</p>
-							</div>
-						<!-- /t:if-->
-	
-						<!-- wo:ContactDetails contact="$contact" showEmail="$false"/-->
+						<span t:type="ContactDetails" parentZone="addStudentBlock" contact="contact" showEmail="false" requireAdditionalInfo="true"/>
 					</t:if>
 				</p:else>
 			</t:if>

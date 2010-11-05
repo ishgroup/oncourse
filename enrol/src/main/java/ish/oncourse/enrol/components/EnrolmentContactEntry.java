@@ -60,6 +60,7 @@ public class EnrolmentContactEntry {
 	 * components
 	 */
 	@InjectComponent
+	@Property
 	private Zone addStudentBlock;
 
 	@InjectComponent
@@ -81,6 +82,7 @@ public class EnrolmentContactEntry {
 	@Property
 	private boolean needMoreInfo;
 
+	@Persist
 	@Property
 	private boolean hasContact;
 
@@ -94,27 +96,37 @@ public class EnrolmentContactEntry {
 
 	@Persist
 	private ObjectContext context;
-	
+
+	private boolean reset;
+
 	/**
 	 * these properties are used for validation list and for hints
 	 */
 	@Property
 	private String firstNameErrorMessage;
-	
+
 	@Property
 	private String lastNameErrorMessage;
-	
+
 	@Property
 	private String emailErrorMessage;
 
 	@SetupRender
 	void beforeRender() {
+		hasContact=false;
 		context = cayenneService.newContext();
 
 		contact = context.newObject(Contact.class);
-		College college = webSiteService.getCurrentCollege();
-		contact.setCollege((College) context.localObject(college.getObjectId(),
-				college));
+
+		College currentCollege = webSiteService.getCurrentCollege();
+		College college = (College) context.localObject(
+				currentCollege.getObjectId(), currentCollege);
+		contact.setCollege(college);
+
+		Student student = context.newObject(Student.class);
+		student.setCollege(college);
+		contact.setStudent(student);
+
 		reset = true;
 		shortDetailsForm.clearErrors();
 	}
@@ -135,14 +147,12 @@ public class EnrolmentContactEntry {
 		reset = false;
 	}
 
-	private boolean reset;
-
 	@OnEvent(component = "resetAll", value = "selected")
 	void onSelectedFromReset() {
 		reset = true;
 	}
 
-	@OnEvent(component = "shortDetailsForm", value = VALIDATE_CLASS)
+	@OnEvent(component = "shortDetailsForm", value = "validate")
 	void validate() {
 		if (reset) {
 			shortDetailsForm.clearErrors();
@@ -206,9 +216,10 @@ public class EnrolmentContactEntry {
 	public String getEmailInput() {
 		return getInputSectionClass(email);
 	}
+
 	private String getInputSectionClass(TextField field) {
 		ValidationTracker defaultTracker = shortDetailsForm.getDefaultTracker();
-		return defaultTracker==null||!defaultTracker.inError(field) ? VALID_CLASS
+		return defaultTracker == null || !defaultTracker.inError(field) ? VALID_CLASS
 				: VALIDATE_CLASS;
 	}
 
