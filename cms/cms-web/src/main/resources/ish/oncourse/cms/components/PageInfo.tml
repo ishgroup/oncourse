@@ -1,15 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div id="cms_pageinfo">
-		<dl class="cms_inspector">
-			<dt class="cms_pagename cms_inspector">${node.name}</dt>
-			<dd class="cms_pagestate cms_inspector">${pageStatus}</dd>
-			<dd class="cms_pagemodified cms_inspector">Last edited <span>2 days ago</span></dd>
-		</dl>
-		<a class="inspector" href="#edit">Options</a>
-		<div class="noteditable hidden">
-			<h5>onCourse only!</h5>
-			<p>This information can only be edited using your onCourse client.</p>
-		</div>	
-	</div>
+	<t:zone t:id="inspectorZone">
+		<div id="cms_pageinfo">
+			<dl class="cms_inspector">
+				<dt class="cms_pagename cms_inspector">${node.name}</dt>
+				<dd class="cms_pagestate cms_inspector">${pageStatus}</dd>
+				<dd class="cms_pagemodified cms_inspector">${lastEdited}</dd>
+			</dl>
+			<a id="pgOptionsLink" class="inspector" href="javascript:openPageOptionsDialog()">Options</a>
+			<div class="noteditable hidden">
+				<h5>onCourse only!</h5>
+				<p>This information can only be edited using your onCourse client.</p>
+			</div>	
+		</div>
+	</t:zone>
+	<span t:type="pageoptions" node="prop:node" updateZone="inspectorZone"/>
 </t:container>

@@ -23,6 +23,10 @@ public class PageOptions {
 	@Parameter
 	@Property
 	private WebNode node;
+	
+	@Parameter
+	@Property
+	private Zone updateZone;
 
 	@Property
 	@Component(id = "optionsForm")
@@ -116,6 +120,6 @@ public class PageOptions {
 
 	Object onSuccessFromOptionsForm() {
 		cayenneService.sharedContext().commitChanges();
-		return urlZone.getBody();
+		return updateZone.getBody();
 	}
 }

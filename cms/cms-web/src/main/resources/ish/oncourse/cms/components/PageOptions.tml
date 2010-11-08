@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div id="pgOptions">
-	    <t:form t:id="optionsForm" zone="urlZone">
+	<div id="pgOptions" style="display: none;">
+	    <t:form t:id="optionsForm" zone="prop:updateZone.clientId">
 			<t:label for="pageName"/><t:textfield t:id="pageName" t:value="node.name"/><br/>
 			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeModel" value="node.webNodeType"/><br/>
 			<t:label for="published"/><t:checkbox t:id="published" value="node.published"/>
@@ -30,18 +30,18 @@
     		</li>
       </ul>
 	</div>
+	
 	<script type="text/javascript">
-	    jQuery(function() {
-			jQuery("#pgOptionsLink").click(function() {
-				jQuery("#pgOptions").dialog({modal:true, height: 430, width: 530, 
-					buttons: { 
-						"Done": function() {
-							jQuery(this).dialog("close");
-							$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-						}
-					}	
-				});
+	    function openPageOptionsDialog() {
+	    	jQuery("#pgOptions").dialog({modal:true, height: 430, width: 530, 
+				buttons: { 
+					"Done": function() {
+						jQuery(this).dialog("close");
+						$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+					}
+				}	
 			});
-		});
+	    }
 	</script>
+	
 </t:container>

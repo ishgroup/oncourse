@@ -2,7 +2,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 	<t:if t:test="hasCurrentNode">
-		<span t:type="pageoptions" node="prop:node"/>
 		<div t:type="pageinfo" node="prop:node"/>
 	</t:if>
 	
@@ -10,7 +9,6 @@
 		<ul id="cms_actions" class="left">
 			<li class="pages selected"><a href="#" t:type="actionLink" t:id="newPage">Create Page</a></li>
 			<li class="blocks"><a href="">Blocks</a></li>			
-			<li class="sitemap"><a href="#" id="pgOptionsLink">Options</a></li>
 		</ul>
 		
 		<ul id="cms_links" class="right toolbar">
