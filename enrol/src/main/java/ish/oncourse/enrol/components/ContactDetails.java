@@ -188,8 +188,7 @@ public class ContactDetails {
 			// view will be implemented
 			return parentZone.getBody();
 		} else {
-			// TODO uncomment when the db issue will be fixed
-			// contact.getObjectContext().commitChanges();
+			contact.getObjectContext().commitChanges();
 			Session session = request.getSession(false);
 			List<Student> students = (List<Student>) session
 					.getAttribute("shortlistStudents");

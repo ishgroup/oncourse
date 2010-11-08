@@ -10,7 +10,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="content" type="LONGVARBINARY" length="2147483647"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isDeleted" type="SMALLINT" length="5"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
