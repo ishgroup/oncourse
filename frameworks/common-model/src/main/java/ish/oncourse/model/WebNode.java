@@ -1,12 +1,8 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-
 import ish.oncourse.model.auto._WebNode;
+
+import java.util.Date;
 
 public class WebNode extends _WebNode {
 
@@ -39,5 +35,11 @@ public class WebNode extends _WebNode {
 		setCreated(today);
 		setModified(today);
 		setPublished(false);
+	}
+
+	@Override
+	protected void onPreUpdate() {
+		Date today = new Date();
+		setModified(today);
 	}
 }

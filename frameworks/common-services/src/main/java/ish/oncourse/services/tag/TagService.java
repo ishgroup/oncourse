@@ -1,11 +1,14 @@
 package ish.oncourse.services.tag;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -17,6 +20,7 @@ import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 public class TagService implements ITagService {
+	
 	@Inject
 	private ICayenneService cayenneService;
 
@@ -27,7 +31,23 @@ public class TagService implements ITagService {
 		// TODO get root tag not by harcoded name
 		return getTag(Tag.NAME_PROPERTY, "Subjects");
 	}
+	
+	public List<Tag> loadByIds(Object... ids) {
+		
+		if (ids.length == 0) {
+			return Collections.emptyList();
+		}
 
+		List<Object> params = Arrays.asList(ids);
+
+		EJBQLQuery q = new EJBQLQuery(
+				"select c from Tag c where c.id IN (:ids)");
+
+		q.setParameter("ids", params);
+
+		return cayenneService.sharedContext().performQuery(q);
+	}
+	
 	private Expression getSiteQualifier() {
 		College currentCollege = webSiteService.getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY,

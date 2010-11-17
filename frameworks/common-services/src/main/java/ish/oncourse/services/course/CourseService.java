@@ -124,7 +124,7 @@ public class CourseService implements ICourseService {
 		SelectQuery q = new SelectQuery(Course.class);
 		q.andQualifier(getSiteQualifier());
 		if (taggedWith != null) {
-			q.andQualifier(ExpressionFactory.inExp(Course.ID_PROPERTY,
+			q.andQualifier(ExpressionFactory.inExp("db:ID",
 					tagService.getEntityIdsByTagName(taggedWith, Course.class
 							.getSimpleName())));
 		}
@@ -144,11 +144,11 @@ public class CourseService implements ICourseService {
 					ids.add((String) doc.getFieldValue("id"));
 				}
 				if (currentSearch) {
-					q.andQualifier(ExpressionFactory.inExp(Course.ID_PROPERTY,
+					q.andQualifier(ExpressionFactory.inExp("db:ID",
 							ids));
 				} else {
 					q.andQualifier(ExpressionFactory.notInExp(
-							Course.ID_PROPERTY, ids));
+							"db:ID", ids));
 				}
 			}
 		}

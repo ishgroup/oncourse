@@ -10,10 +10,12 @@ public interface ITagService {
 
 	Tag getTag(String searchProperty, Object value);
 
+	List<Tag> loadByIds(Object... ids);
+
 	List<Tag> getTags(String searchProperty, Object value);
-	
+
 	Tag getSubTagByName(String name);
-	
+
 	List<Long> getEntityIdsByTagName(String tagName, String entityName);
-	
+
 }

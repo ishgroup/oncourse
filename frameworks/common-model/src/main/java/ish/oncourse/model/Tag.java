@@ -9,6 +9,11 @@ import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Tag extends _Tag {
 
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+
 	public List<Tag> getWebVisibleTags() {
 		return ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true)
 				.filterObjects(getTags());
@@ -16,20 +21,23 @@ public class Tag extends _Tag {
 
 	public boolean hasChildWithName(String name) {
 		for (Tag tag : getWebVisibleTags()) {
-			if (((tag.getShortName() != null) && tag.getShortName().toUpperCase().equals(name.toUpperCase()))
-					|| ((tag.getName() != null) && tag.getName().toUpperCase().equals(name.toUpperCase()))) {
+			if (((tag.getShortName() != null) && tag.getShortName()
+					.toUpperCase().equals(name.toUpperCase()))
+					|| ((tag.getName() != null) && tag.getName().toUpperCase()
+							.equals(name.toUpperCase()))) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public String getLink(String entityType) {
 		if (entityType != null) {
-			TagsTextileEntityTypes type=TagsTextileEntityTypes.valueOf(entityType);
+			TagsTextileEntityTypes type = TagsTextileEntityTypes
+					.valueOf(entityType);
 			// TODO add the calculation of plural entity name for all the
 			// taggable entities
-			switch(type){
+			switch (type) {
 			case Course:
 				entityType = "courses";
 				break;
@@ -42,12 +50,12 @@ public class Tag extends _Tag {
 		String link = "/" + entityType + getDefaultPath();
 		return link;
 	}
-	
-	public String getLink(){
+
+	public String getLink() {
 		return getLink(Course.class.getSimpleName());
 	}
-	
-	public String getDefaultPath(){
+
+	public String getDefaultPath() {
 		String path = "";
 		Tag subTag = this;
 		while (subTag.getParent() != null) {
@@ -56,7 +64,7 @@ public class Tag extends _Tag {
 			path = "/" + name.replaceAll(" ", "+").replaceAll("/", "|") + path;
 			subTag = subTag.getParent();
 		}
-		
+
 		return path;
 	}
 

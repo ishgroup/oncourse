@@ -753,7 +753,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="byteSize"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -879,7 +878,6 @@
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isSufficientForQualification" type="java.lang.Boolean" db-attribute-path="isSufficientForQualification"/>
 		<obj-attribute name="isVETCourse" type="java.lang.Boolean" db-attribute-path="isVETCourse"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
@@ -901,7 +899,6 @@
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="feeExGst" type="java.math.BigDecimal" db-attribute-path="feeExGst"/>
 		<obj-attribute name="feeGst" type="java.math.BigDecimal" db-attribute-path="feeGst"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="materials_textile"/>
@@ -1201,7 +1198,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isTagGroup" type="java.lang.Boolean" db-attribute-path="isTagGroup"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1291,10 +1287,10 @@
 		<obj-attribute name="nodeNumber" type="java.lang.Integer" db-attribute-path="nodeNumber"/>
 		<obj-attribute name="published" type="boolean" db-attribute-path="isPublished"/>
 		<post-add method-name="onPostAdd"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="WebNodeType" className="ish.oncourse.model.WebNodeType" dbEntityName="WebNodeType">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>

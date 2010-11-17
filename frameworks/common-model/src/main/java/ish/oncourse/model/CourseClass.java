@@ -1,6 +1,5 @@
 package ish.oncourse.model;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DateDV;
 import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.TimestampUtilities;
@@ -19,11 +18,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.helpers.ISO8601DateFormat;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-
 
 public class CourseClass extends _CourseClass {
 
@@ -40,6 +36,11 @@ public class CourseClass extends _CourseClass {
 	public static final int EARLIEST_END_FOR_EVENING = 18;
 	public static final int LATEST_START_FOR_DAYTIME = 18;
 	private Set<String> daysOfWeek;
+
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
 
 	/**
 	 * @return total number of minutes from all sessions that have start and end
@@ -63,7 +64,8 @@ public class CourseClass extends _CourseClass {
 
 		Integer totalMinutes = getTotalDurationMinutes();
 		if (totalMinutes != null) {
-			result = BigDecimal.valueOf(totalMinutes.longValue()).setScale(2).divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP);
+			result = BigDecimal.valueOf(totalMinutes.longValue()).setScale(2)
+					.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP);
 		}
 		return result;
 	}
@@ -140,7 +142,8 @@ public class CourseClass extends _CourseClass {
 		}
 
 		List<Session> list = new ArrayList<Session>(getSessions());
-		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(list);
+		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)
+				.orderList(list);
 		return list.get(0);
 	}
 
@@ -158,8 +161,9 @@ public class CourseClass extends _CourseClass {
 	}
 
 	public int validEnrolmentsCount() {
-		int result = ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY,
-				ISHPayment.STATUSES_LEGIT).filterObjects(getEnrolments()).size();
+		int result = ExpressionFactory
+				.inExp(Enrolment.STATUS_PROPERTY, ISHPayment.STATUSES_LEGIT)
+				.filterObjects(getEnrolments()).size();
 		return Math.max(0, result);
 	}
 
@@ -173,7 +177,8 @@ public class CourseClass extends _CourseClass {
 
 	public boolean isHasAnyTimelineableSessions() {
 		for (Session session : getSessions()) {
-			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
+			if ((session.getStartDate() != null)
+					&& (session.getEndDate() != null)) {
 				return true;
 			}
 		}
@@ -231,23 +236,21 @@ public class CourseClass extends _CourseClass {
 			if (getSessions().size() > 0) {
 				ArrayList<String> days = new ArrayList<String>();
 				for (Session s : getSessions()) {
-					days.add(TimestampUtilities.dayOfWeek(
-							s.getStartDate(),
-							true,
-							TimeZone.getTimeZone(s.getTimeZone())));
+					days.add(TimestampUtilities.dayOfWeek(s.getStartDate(),
+							true, TimeZone.getTimeZone(s.getTimeZone())));
 				}
 				daysOfWeek = TimestampUtilities.uniqueDaysInOrder(days);
 			} else {
 				// no sessions recorded, so guess from class start / finish time
 				daysOfWeek = new HashSet<String>();
 				if (getStartDate() != null) {
-					daysOfWeek.add(TimestampUtilities.dayOfWeek(
-							getStartDate(), true, TimeZone.getTimeZone(getTimeZone())));
+					daysOfWeek.add(TimestampUtilities.dayOfWeek(getStartDate(),
+							true, TimeZone.getTimeZone(getTimeZone())));
 
 				}
 				if (getEndDate() != null) {
-					daysOfWeek.add(TimestampUtilities.dayOfWeek(
-							getEndDate(), true, TimeZone.getTimeZone(getTimeZone())));
+					daysOfWeek.add(TimestampUtilities.dayOfWeek(getEndDate(),
+							true, TimeZone.getTimeZone(getTimeZone())));
 
 				}
 
@@ -261,7 +264,8 @@ public class CourseClass extends _CourseClass {
 		// current definition is that any session that starts before 6 pm is
 		// daytime
 		if (earliest == null) {
-			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
+			Calendar t = Calendar.getInstance(TimeZone
+					.getTimeZone(getTimeZone()));
 			// no sessions, so guess from start and end dates
 			if (getStartDate() != null) {
 				t.setTime(getStartDate());
@@ -286,7 +290,7 @@ public class CourseClass extends _CourseClass {
 			Calendar start = Calendar.getInstance();
 			start.setTime(session.getStartDate());
 			Integer sessionStartHour = start.get(Calendar.HOUR_OF_DAY);
-			if (earliest==null || sessionStartHour < earliest) {
+			if (earliest == null || sessionStartHour < earliest) {
 				earliest = sessionStartHour;
 			}
 		}
@@ -298,7 +302,8 @@ public class CourseClass extends _CourseClass {
 		// current definition is that any session that ends on or after 6 pm is
 		// evening
 		if (latest == null) {
-			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
+			Calendar t = Calendar.getInstance(TimeZone
+					.getTimeZone(getTimeZone()));
 			// no sessions, so guess from start and end dates
 			if (getStartDate() != null) {
 				t.setTime(getStartDate());
@@ -323,7 +328,7 @@ public class CourseClass extends _CourseClass {
 			Calendar end = Calendar.getInstance();
 			end.setTime(session.getEndDate());
 			Integer sessionEndHour = end.get(Calendar.HOUR_OF_DAY);
-			if (latest==null || sessionEndHour > latest) {
+			if (latest == null || sessionEndHour > latest) {
 				latest = sessionEndHour;
 			}
 		}
@@ -336,12 +341,13 @@ public class CourseClass extends _CourseClass {
 			Calendar end = Calendar.getInstance();
 			end.setTime(session.getStartDate());
 			Integer sessionStartHour = end.get(Calendar.HOUR_OF_DAY);
-			if (latest==null || sessionStartHour > latest) {
+			if (latest == null || sessionStartHour > latest) {
 				latest = sessionStartHour;
 			}
 		}
 		return latest;
 	}
+
 	/**
 	 * @return all sessions that satisfy hasStartAndEndTimestamps
 	 * @see Session#hasStartAndEndTimestamps()
@@ -350,17 +356,18 @@ public class CourseClass extends _CourseClass {
 		List<Session> classSessions = getSessions();
 		List<Session> validSessions = new ArrayList<Session>();
 		for (Session session : classSessions) {
-			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
+			if ((session.getStartDate() != null)
+					&& (session.getEndDate() != null)) {
 				validSessions.add(session);
 			}
 		}
 		return validSessions;
 	}
-	
+
 	public boolean isHasRoom() {
 		return getRoom() != null;
 	}
-	
+
 	public float focusMatchForDays(String searchDay) {
 		float result = 0.0f;
 		if (getDaysOfWeek() != null) {
@@ -369,20 +376,17 @@ public class CourseClass extends _CourseClass {
 			for (String day : uniqueDays) {
 				String lowerDay = day.toLowerCase();
 				if (TimestampUtilities.DaysOfWeekNamesLowerCase
-						.contains(lowerDay)
-						&& lowerDay.equalsIgnoreCase(day)) {
+						.contains(lowerDay) && lowerDay.equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
 				if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase
-						.contains(lowerDay)
-						&& "weekday".equalsIgnoreCase(day)) {
+						.contains(lowerDay) && "weekday".equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
 				if (TimestampUtilities.DaysOfWeekendNamesLowerCase
-						.contains(lowerDay)
-						&& "weekend".equalsIgnoreCase(day)) {
+						.contains(lowerDay) && "weekend".equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
@@ -410,8 +414,7 @@ public class CourseClass extends _CourseClass {
 		return result;
 
 	}
-	
-	
+
 	public float focusMatchForPrice(Float price) {
 		float result = 0.0f;
 		float maxPrice = price;
@@ -429,8 +432,8 @@ public class CourseClass extends _CourseClass {
 	}
 
 	/**
-	 * Haversine formula: R = earth�s radius (mean radius = 6,371km) dLat = lat2
-	 * - lat1 dLon = lon2 - lon1 a = (sin(dLat/2))^2 +
+	 * Haversine formula: R = earth�s radius (mean radius = 6,371km) dLat =
+	 * lat2 - lat1 dLon = lon2 - lon1 a = (sin(dLat/2))^2 +
 	 * cos(lat1)*cos(lat2)*(sin(dLat/2))^2 c = 2*atan2(sqrt(a), sqrt(1-a)) d =
 	 * R*c
 	 * 

@@ -3,6 +3,8 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
 
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.lucene.spatial.geohash.GeoHashUtils;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.tapestry5.annotations.Property;
@@ -22,10 +23,18 @@ public class QuickSearchView {
 
 	@Inject
 	private Request request;
+	
 	@Inject
 	private ISearchService searchService;
+	
 	@Inject
 	private ITagService tagService;
+	
+	@Inject
+	private ICourseService courseService;
+	
+	@Inject
+	private IPostCodeDbService postCodeDbService;
 	
 	@Property
 	private String searchString;
@@ -60,6 +69,7 @@ public class QuickSearchView {
 	void beforeRender() {
 		searchString = request.getParameter("text");
 		searchTerms = searchString.split("[\\s]+");
+		
 		QueryResponse suggestions = searchService.autoSuggest(searchString);
 		setupLists(suggestions);
 
@@ -73,33 +83,27 @@ public class QuickSearchView {
 	 */
 	private void setupLists(QueryResponse suggestions) {
 		locationDetailList = new ArrayList<PostcodeDb>();
-		courses = new ArrayList<Course>();
-		tags = new ArrayList<Tag>();
+		
+		List<String> courseIds = new ArrayList<String>();
+		List<String> tagIds = new ArrayList<String>();
+		List<String> postCodes = new ArrayList<String>();
+		
 		for (SolrDocument doc : suggestions.getResults()) {
 
 			String doctype = (String) doc.get("doctype");
 
 			if ("course".equalsIgnoreCase(doctype)) {
-				Course course = new Course();
-				course.setId(Long.valueOf((String) doc.get("id")));
-				course.setName((String) doc.get("name"));
-				course.setCode((String) doc.get("course_code"));
-				courses.add(course);
+				courseIds.add((String) doc.get("id"));
 			} else if ("place".equalsIgnoreCase(doctype)) {
-				PostcodeDb postcodeDb = new PostcodeDb();
-				postcodeDb.setSuburb((String) doc.get("suburb"));
-				postcodeDb.setPostcode(Integer.valueOf((String) doc
-						.get("postcode")));
-				String[] points = ((String) doc.get("loc")).split(",");
-				postcodeDb.setLat(Double.valueOf(points[0]));
-				postcodeDb.setLon(Double.valueOf(points[1]));
-				locationDetailList.add(postcodeDb);
+				postCodes.add((String) doc.get("suburb"));
 			} else if ("tag".equals(doctype)) {
-				Tag tag = tagService.getTag(Tag.ID_PROPERTY, doc.get("id"));
-				tag.setName((String) doc.get("name"));
-				tags.add(tag);
+				tagIds.add((String) doc.get("id"));
 			}
 		}
+		
+		this.courseList = courseService.loadByIds(courseIds);
+		this.tags = tagService.loadByIds(tagIds);
+		this.locationDetailList = postCodeDbService.loadByIds(postCodes);
 	}
 
 	public boolean isHasResults() {

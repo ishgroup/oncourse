@@ -18,6 +18,8 @@ import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
+import ish.oncourse.services.location.IPostCodeDbService;
+import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.menu.WebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
@@ -82,6 +84,7 @@ public class ServiceModule {
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(ISelectModelService.class, SelectModelService.class);
 		binder.bind(IPreferenceService.class, PreferenceService.class);
+		binder.bind(IPostCodeDbService.class, PostCodeDbService.class);
 	}
 
 }

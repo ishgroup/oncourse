@@ -18,7 +18,6 @@ import ish.oncourse.model.WebSite;
 public abstract class _WebNodeType extends CayenneDataObject {
 
     public static final String CREATED_PROPERTY = "created";
-    public static final String ID_PROPERTY = "id";
     public static final String LAYOUT_KEY_PROPERTY = "layoutKey";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
@@ -33,13 +32,6 @@ public abstract class _WebNodeType extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
     }
 
     public void setLayoutKey(String layoutKey) {

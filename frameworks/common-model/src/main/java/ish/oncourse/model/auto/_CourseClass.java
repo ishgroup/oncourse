@@ -33,7 +33,6 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String FEE_EX_GST_PROPERTY = "feeExGst";
     public static final String FEE_GST_PROPERTY = "feeGst";
-    public static final String ID_PROPERTY = "id";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MATERIALS_PROPERTY = "materials";
     public static final String MATERIALS_TEXTILE_PROPERTY = "materialsTextile";
@@ -132,13 +131,6 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public BigDecimal getFeeGst() {
         return (BigDecimal)readProperty("feeGst");
-    }
-
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {

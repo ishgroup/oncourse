@@ -76,8 +76,10 @@ public class SearchInputs {
 				return tag1.getName().compareTo(tag2.getName());
 			}
 		});
+		
 		tagModelEnc = selectModelService.newSelectModel(subjectTagChildTags,
-				Tag.NAME_PROPERTY, Tag.ID_PROPERTY);
+				Tag.NAME_PROPERTY, "id");
+		
 		Tag browseTag = (Tag) request.getAttribute("browseTag");
 		if (browseTag != null) {
 			browseTagLevel2Ancestor = browseTag.getLevel2Ancestor();

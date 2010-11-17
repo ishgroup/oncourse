@@ -19,7 +19,6 @@ public abstract class _BinaryInfo extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BYTE_SIZE_PROPERTY = "byteSize";
     public static final String CREATED_PROPERTY = "created";
-    public static final String ID_PROPERTY = "id";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MIME_TYPE_PROPERTY = "mimeType";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -51,13 +50,6 @@ public abstract class _BinaryInfo extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {

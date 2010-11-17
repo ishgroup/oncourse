@@ -2,7 +2,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div id="pgOptions" style="display: none;">
 	    <t:form t:id="optionsForm" zone="prop:updateZone.clientId">
-			<t:label for="pageName"/><t:textfield t:id="pageName" t:value="node.name"/><br/>
+	    	<t:errors/>
+			<t:label for="pageName"></t:label><t:textfield t:id="pageName" t:value="node.name" t:validate="required,minlength=3"/><br/>
 			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeModel" value="node.webNodeType"/><br/>
 			<t:label for="published"/><t:checkbox t:id="published" value="node.published"/>
 		</t:form>
@@ -36,8 +37,8 @@
 	    	jQuery("#pgOptions").dialog({modal:true, height: 430, width: 530, 
 				buttons: { 
 					"Done": function() {
-						jQuery(this).dialog("close");
 						$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+						jQuery(this).dialog("close");
 					}
 				}	
 			});

@@ -10,6 +10,11 @@ import java.util.List;
 public class Course extends _Course {
 
 	public static final String COURSE_TAG = "courseTag";
+	
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
 
 	public List<CourseClass> getEnrollableClasses() {
 		List<CourseClass> list = new ArrayList<CourseClass>(getCourseClasses()

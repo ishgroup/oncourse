@@ -22,7 +22,6 @@ public abstract class _Tag extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
-    public static final String ID_PROPERTY = "id";
     public static final String IS_TAG_GROUP_PROPERTY = "isTagGroup";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -64,13 +63,6 @@ public abstract class _Tag extends CayenneDataObject {
     }
     public String getDetailTextile() {
         return (String)readProperty("detailTextile");
-    }
-
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
     }
 
     public void setIsTagGroup(Boolean isTagGroup) {

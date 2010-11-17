@@ -25,7 +25,6 @@ public abstract class _Course extends CayenneDataObject {
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
-    public static final String ID_PROPERTY = "id";
     public static final String IS_SUFFICIENT_FOR_QUALIFICATION_PROPERTY = "isSufficientForQualification";
     public static final String IS_VETCOURSE_PROPERTY = "isVETCourse";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
@@ -88,13 +87,6 @@ public abstract class _Course extends CayenneDataObject {
     }
     public String getFieldOfEducation() {
         return (String)readProperty("fieldOfEducation");
-    }
-
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
     }
 
     public void setIsSufficientForQualification(Boolean isSufficientForQualification) {

@@ -19,7 +19,7 @@
 	<db-entity name="Language" catalog="willow_reference">
 		<db-attribute name="absCode" type="VARCHAR" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="isActive" type="TINYINT" isMandatory="true" length="3"/>
 		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -80,7 +80,7 @@
 		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
 		<db-attribute name="locality" type="VARCHAR" isMandatory="true" length="60"/>
 		<db-attribute name="parcelZone" type="CHAR" isMandatory="true" length="3"/>
-		<db-attribute name="postcode" type="SMALLINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="5"/>
+		<db-attribute name="postcode" type="SMALLINT" isPrimaryKey="true" isMandatory="true" length="5"/>
 		<db-attribute name="presortIndicator" type="SMALLINT" isMandatory="true" length="5"/>
 		<db-attribute name="state" type="CHAR" isMandatory="true" length="3"/>
 	</db-entity>
@@ -88,9 +88,9 @@
 		<db-attribute name="dc" type="VARCHAR" isMandatory="true" length="45"/>
 		<db-attribute name="lat" type="DOUBLE" isMandatory="true" length="22"/>
 		<db-attribute name="lon" type="DOUBLE" isMandatory="true" length="22"/>
-		<db-attribute name="postcode" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="postcode" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="state" type="VARCHAR" isMandatory="true" length="4"/>
-		<db-attribute name="suburb" type="VARCHAR" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="45"/>
+		<db-attribute name="suburb" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="45"/>
 		<db-attribute name="type" type="VARCHAR" isMandatory="true" length="45"/>
 	</db-entity>
 	<obj-entity name="Country" className="ish.oncourse.model.Country" dbEntityName="Country">

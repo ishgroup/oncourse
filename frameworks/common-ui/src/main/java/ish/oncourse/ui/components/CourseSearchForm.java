@@ -70,7 +70,7 @@ public class CourseSearchForm {
 		});
 
 		tagModelEnc = selectModelService.newSelectModel(subjectTagChildTags,
-				Tag.NAME_PROPERTY, Tag.ID_PROPERTY);
+				Tag.NAME_PROPERTY, "id");
 	}
 
 	URL onActionFromSearch() {

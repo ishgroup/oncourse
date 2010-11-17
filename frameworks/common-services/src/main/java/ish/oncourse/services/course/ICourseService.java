@@ -13,6 +13,7 @@ public interface ICourseService {
 	
 	List<Course> getCourses(Integer startDefault, Integer rowsDefault);
 	List<Course> loadByIds(Object... ids);
+	
 	Course getCourse(String searchProperty, Object value);
 	Course getCourse(Boolean enrollable, String taggedWith, Boolean currentSearch);
 	Integer getCoursesCount();

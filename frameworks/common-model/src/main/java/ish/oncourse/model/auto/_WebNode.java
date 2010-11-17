@@ -131,4 +131,6 @@ public abstract class _WebNode extends CayenneDataObject {
 
     protected abstract void onPostAdd();
 
+    protected abstract void onPreUpdate();
+
 }

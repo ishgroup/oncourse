@@ -65,7 +65,7 @@ public class PageOptions {
 	public void beforeRender() {
 		this.pageTypeModel = selectModelService.newSelectModel(
 				webNodeService.getWebNodeTypes(),
-				WebNodeType.LAYOUT_KEY_PROPERTY, WebNodeType.ID_PROPERTY);
+				WebNodeType.LAYOUT_KEY_PROPERTY, "id");
 	}
 
 	public boolean isNotDefault() {
@@ -84,7 +84,7 @@ public class PageOptions {
 	}
 
 	Object onActionFromRemoveUrl(String id) {
-		WebUrlAlias alias = aliasService.getAliasById(Long.parseLong(id));
+		WebUrlAlias alias = aliasService.loadByIds(Long.parseLong(id)).get(0);
 
 		this.node.removeFromWebUrlAliases(alias);
 		cayenneService.sharedContext().deleteObject(alias);
@@ -95,7 +95,7 @@ public class PageOptions {
 	}
 
 	Object onActionFromMakeDefault(String id) {
-		WebUrlAlias alias = aliasService.getAliasById(Long.parseLong(id));
+		WebUrlAlias alias = aliasService.loadByIds(Long.parseLong(id)).get(0);
 
 		this.node.setDefaultWebURLAlias(alias);
 		cayenneService.sharedContext().commitChanges();

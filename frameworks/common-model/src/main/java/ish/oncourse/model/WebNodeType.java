@@ -16,6 +16,11 @@ public class WebNodeType extends _WebNodeType {
 	public static final String PAGE = "Page";
 	public static final String DEFAULT_LAYOUT_KEY = "default";
 
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+
 	public static WebNodeType forName(ObjectContext ctx, String name) {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
 		q.andQualifier(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY,
