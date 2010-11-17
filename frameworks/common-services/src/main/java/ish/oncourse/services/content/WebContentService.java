@@ -2,7 +2,6 @@ package ish.oncourse.services.content;
 
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -84,10 +83,12 @@ public class WebContentService implements IWebContentService {
 			return Collections.emptyList();
 		}
 
-		SelectQuery q = new SelectQuery(WebMenu.class);
-		q.andQualifier(ExpressionFactory.inDbExp(WebContent.ID_PK_COLUMN, ids));
+		SelectQuery q = new SelectQuery(WebContent.class);
+		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
+		
+		List<WebContent> list = cayenneService.sharedContext().performQuery(q);
 
-		return cayenneService.sharedContext().performQuery(q);
+		return list;
 	}
 
 	public List<WebContent> getBlocks() {
