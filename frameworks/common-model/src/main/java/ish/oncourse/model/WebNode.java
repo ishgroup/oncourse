@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebNode;
+import ish.oncourse.model.visitor.IVisitor;
 
 import java.util.Date;
 
@@ -11,6 +12,10 @@ public class WebNode extends _WebNode {
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+
+	public <T> T accept(IVisitor<T> visitor) {
+		return visitor.visitWebNode(this);
 	}
 
 	public String getPath() {

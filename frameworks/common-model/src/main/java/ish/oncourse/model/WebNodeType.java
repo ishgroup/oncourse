@@ -10,6 +10,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
 import ish.oncourse.model.auto._WebNodeType;
+import ish.oncourse.model.visitor.IVisitor;
 
 public class WebNodeType extends _WebNodeType {
 
@@ -19,6 +20,10 @@ public class WebNodeType extends _WebNodeType {
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+	
+	public <T> T accept(IVisitor<T> visitor) {
+		return visitor.visitWebNodeType(this);
 	}
 
 	public static WebNodeType forName(ObjectContext ctx, String name) {

@@ -5,5 +5,5 @@
 		<div class="cms_draghandle ui-icon ui-icon-arrowthick-2-n-s"></div>
 		<div class="cms_delete_icon"><a id="r_${menu.id}" style="text-decoration: none; color: black;"><span class="ui-icon ui-icon-trash left"></span>Delete</a></div>
 	</div>
-	<ul><t:body/></ul>
+	<ol><t:body/></ol>
 </li>

@@ -4,7 +4,10 @@
 	
 	<ol class="cms_navmenu_list cms_draggable cms_sortable">
 		
-		<li class="hidden cms_newmenuitem"><div class="cms_pagename">New menu item</div><div class="cms_refurl"></div></li>
+		<li class="hidden cms_newmenuitem">
+			<div class="cms_pagename">New menu item</div>
+			<div class="cms_refurl"></div>
+		</li>
 		
 		<t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
 			<t:delegate to="menuItem"/>

@@ -18,11 +18,11 @@
 							.append( "<a>" + item.label + "<br>" + item.title + "</a>" )
 							.appendTo( ul );
 			      		};      
-			      jQuery(this).append(input);
+			      $(this).append(input);
 			      return (input);
 			  }
 		});
-		
+
 		$('ol.cms_sortable').nestedSortable({
 			disableNesting: 'no-nest',
 			forcePlaceholderSize: true,
@@ -47,15 +47,15 @@
 			newitem.children('.cms_refurl').trigger('click');
 		});
 		
-		$('.cms_navmenu_list li').each(function() {
-			cms_attachEditable($(this))
+		$('.cms_navmenu_list li > div').each(function() {
+			cms_attachEditable($(this));
 		});
 		
 		$('.cms_expander').live('click', function() {
 			$(this).parent().filter(':first').siblings('ol').toggle();
 		});
 		
-		$(".cms_navmenu_list li:has('ol')" ).addClass('hasChildren').children('ol').hide();
+		$(".cms_navmenu_list li:has('ol > li')").addClass('hasChildren').children('ol').hide();
 		$( ".cms_navmenu_list li.hasChildren > div").prepend("<div class='cms_expander'><span class='ui-icon ui-icon-plusthick'></span></div>");
 		
 		function cms_attachEditable(newitem) {

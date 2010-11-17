@@ -4,17 +4,24 @@
 	
 	<a t:id="newPage" t:type="actionLink"><button>New Page</button></a> <input id="pageFilter" type="text" value=""/>
 	
-	<h1>Pages</h1>
+	<h2>Pages</h2>
 	
 	<table id="pages">
 		<t:loop source="webNodeService.nodes" value="webNode">
-			<tr>
+			<tr id="${webNode.nodeNumber}">
 				<td class="pageName">${webNode.name}</td>
 				<td><t:if t:test="webNode.published">published<p:else>unpublished</p:else></t:if></td>
-				<td>edited 3 days ago</td>
+				<td><t:outputraw value="lastEdited"/></td>
 			</tr>
 		</t:loop>
 	</table>
+	
+	<style>
+		.selectedRow {
+			background-color: yellow;
+			cursor: pointer;
+		 }
+	</style>
 	
 	<script type="text/javascript">
 		jQuery(function() {
@@ -36,6 +43,18 @@
 	              results.show();
 	            });
 	          });
+			
+			jQuery('#pages tbody tr').mouseover(
+					function() {
+						jQuery(this).addClass('selectedRow');
+					}).mouseout(
+					function() {
+			    		jQuery(this).removeClass('selectedRow');
+			    	}).click(
+			    	function() {
+			    		window.location = '/page/' + jQuery(this).attr('id');
+		           });
+			
 		});
 	</script>
 </div>

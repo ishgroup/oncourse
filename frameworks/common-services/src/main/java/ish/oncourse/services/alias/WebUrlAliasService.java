@@ -5,13 +5,11 @@ import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -63,22 +61,19 @@ public class WebUrlAliasService implements IWebUrlAliasService {
 			return Collections.emptyList();
 		}
 
-		List<Object> params = Arrays.asList(ids);
-
-		EJBQLQuery q = new EJBQLQuery(
-				"select c from WebUrlAlias c where c.id IN (:ids)");
-
-		q.setParameter("ids", params);
+		SelectQuery q = new SelectQuery(WebUrlAlias.class);
+		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
 	public List<WebUrlAlias> loadForCurrentSite() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		
+
 		SelectQuery q = new SelectQuery(WebUrlAlias.class);
-		q.andQualifier(ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_PROPERTY, site));
-		
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebUrlAlias.WEB_SITE_PROPERTY, site));
+
 		return cayenneService.sharedContext().performQuery(q);
 	}
 }
