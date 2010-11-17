@@ -113,7 +113,7 @@ public class PageWrapper {
 	}
 
 	public WebMenu getMenu() {
-		return webMenuService.getMainMenu();
+		return webMenuService.getRootMenu();
 	}
 
 	public String getCollegeName() {

@@ -28,7 +28,7 @@ public class Page extends GenericPage {
 	private Block regionContentBlock;
 
 	Object onActionFromEditRegion(String id) {
-		WebContent region = webContentService.loadById(id);
+		WebContent region = webContentService.loadByIds(id).get(0);
 		setCurrentRegion(region);
 
 		return editorBlock;

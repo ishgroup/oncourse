@@ -5,17 +5,15 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WebMenuService implements IWebMenuService {
-
-	private static final Logger LOGGER = Logger.getLogger(WebMenuService.class);
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -23,16 +21,17 @@ public class WebMenuService implements IWebMenuService {
 	@Inject
 	private ICayenneService cayenneService;
 
-	public WebMenu getMainMenu() {
+	public WebMenu getRootMenu() {
 		Expression rootMenuExp = ExpressionFactory.matchExp(
 				WebMenu.PARENT_WEB_MENU_PROPERTY, null);
-		
-		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier().andExp(rootMenuExp));
+
+		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier()
+				.andExp(rootMenuExp));
 		query.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
-		
+
 		List<WebMenu> results = cayenneService.sharedContext().performQuery(
 				query);
-		
+
 		return results.isEmpty() ? null : results.get(0);
 	}
 
@@ -44,5 +43,17 @@ public class WebMenuService implements IWebMenuService {
 				.matchExp(WebMenu.WEB_SITE_PROPERTY, site);
 
 		return expression;
+	}
+
+	public List<WebMenu> loadByIds(Object... ids) {
+
+		if (ids.length == 0) {
+			return Collections.emptyList();
+		}
+
+		SelectQuery q = new SelectQuery(WebMenu.class);
+		q.andQualifier(ExpressionFactory.inDbExp(WebMenu.ID_PK_COLUMN, ids));
+
+		return cayenneService.sharedContext().performQuery(q);
 	}
 }

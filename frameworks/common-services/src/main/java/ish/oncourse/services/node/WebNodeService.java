@@ -1,5 +1,7 @@
 package ish.oncourse.services.node;
 
+import ish.oncourse.model.WebContent;
+import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
@@ -8,11 +10,14 @@ import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -162,15 +167,15 @@ public class WebNodeService implements IWebNodeService {
 
 	public List<WebNodeType> getWebNodeTypes() {
 		SelectQuery q = new SelectQuery(WebNodeType.class);
-		
+
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebNodeType.WEB_SITE_PROPERTY,
 				webSiteService.getCurrentWebSite()));
-		
+
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
-	public Integer getNextNodeNumber() {
+	private Integer getNextNodeNumber() {
 		Expression siteExpr = ExpressionFactory.matchExp(
 				WebNode.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite());
 
@@ -184,8 +189,53 @@ public class WebNodeService implements IWebNodeService {
 		return ++number;
 	}
 
-	public WebNode getNodeById(Long id) {
-		return DataObjectUtils.objectForPK(cayenneService.sharedContext(),
-				WebNode.class, id);
+	public List<WebNode> loadByIds(Object... ids) {
+		if (ids.length == 0) {
+			return Collections.emptyList();
+		}
+
+		List<Object> params = Arrays.asList(ids);
+
+		EJBQLQuery q = new EJBQLQuery(
+				"select c from WebNode c where c.id IN (:ids)");
+
+		q.setParameter("ids", params);
+
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	public WebNode newWebNode() {
+		ObjectContext ctx = cayenneService.newContext();
+
+		WebNode newPageNode = ctx.newObject(WebNode.class);
+
+		newPageNode.setName("New Page");
+
+		WebSite webSite = (WebSite) ctx.localObject(webSiteService
+				.getCurrentWebSite().getObjectId(), null);
+
+		newPageNode.setWebSite(webSite);
+		Integer nodeNumber = getNextNodeNumber();
+		
+		newPageNode.setNodeNumber(nodeNumber);
+
+		WebNodeType webNodeType = (WebNodeType) ctx.localObject(getDefaultWebNodeType().getObjectId(), null);
+
+		newPageNode.setWebNodeType(webNodeType);
+
+		WebContentVisibility contentVisibility = ctx
+				.newObject(WebContentVisibility.class);
+
+		contentVisibility.setRegionKey(WebContentVisibility.DEFAULT_REGION_KEY);
+		contentVisibility.setWebNode(newPageNode);
+
+		WebContent webContent = ctx.newObject(WebContent.class);
+		webContent.setWebSite(webSite);
+		webContent.setContent("Sample content text.");
+		contentVisibility.setWebContent(webContent);
+
+		ctx.commitChanges();
+		
+		return newPageNode;
 	}
 }

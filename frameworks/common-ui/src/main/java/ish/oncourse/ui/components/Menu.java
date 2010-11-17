@@ -10,9 +10,10 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 
 public class Menu {
+
 	@Property
 	@Parameter(required = true)
-	private WebMenu mainMenu;
+	private WebMenu rootMenu;
 
 	@Property
 	@Component(id = "menuItem", parameters = { "menu=currentMenu",
@@ -22,18 +23,18 @@ public class Menu {
 	private WebMenu currentMenu;
 
 	private Map<WebMenu, Integer> childPositions;
-	
-	public WebMenu getCurrentMenu() {
-        return currentMenu;
-    }
 
-    public void setCurrentMenu(final WebMenu menu) {
-        if (!childPositions.containsKey(menu)) {
-            childPositions.put(menu, 0);
-        }
-        this.currentMenu = menu;
-    }
-	
+	public WebMenu getCurrentMenu() {
+		return currentMenu;
+	}
+
+	public void setCurrentMenu(final WebMenu menu) {
+		if (!childPositions.containsKey(menu)) {
+			childPositions.put(menu, 0);
+		}
+		this.currentMenu = menu;
+	}
+
 	public int getCurrentChildPosition() {
 		return childPositions.get(this.currentMenu);
 	}
@@ -41,8 +42,8 @@ public class Menu {
 	public void setCurrentChildPosition(final int pos) {
 		this.childPositions.put(currentMenu, pos);
 	}
-	
+
 	void setupRender() {
-        childPositions = new HashMap<WebMenu, Integer>();
-    }
+		childPositions = new HashMap<WebMenu, Integer>();
+	}
 }

@@ -83,16 +83,17 @@ public interface IWebNodeService {
 	 * If node exists for path.
 	 */
 	boolean isNodeExist(String path);
-
-	/**
-	 * Next node number for current site.
-	 */
-	Integer getNextNodeNumber();
 	
 	/**
 	 * Loads node by id.
 	 * @param webnode id
 	 * @return webnode
 	 */
-	WebNode getNodeById(Long id);
+	List<WebNode> loadByIds(Object... ids);
+	
+	/**
+	 * Creates new webnode with default settings.
+	 * @return webnode
+	 */
+	WebNode newWebNode();
 }

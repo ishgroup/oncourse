@@ -7,4 +7,5 @@ import ish.oncourse.model.WebUrlAlias;
 public interface IWebUrlAliasService {
 	WebUrlAlias getAliasByPath(String path);
 	List<WebUrlAlias> loadByIds(Object... ids);
+	List<WebUrlAlias> loadForCurrentSite();
 }

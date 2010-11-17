@@ -10,6 +10,11 @@ import org.apache.cayenne.query.Ordering;
 import ish.oncourse.model.auto._WebMenu;
 
 public class WebMenu extends _WebMenu {
+	
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
 
 	public List<WebMenu> getWebMenus() {
 		List<WebMenu> children = getChildrenMenus();

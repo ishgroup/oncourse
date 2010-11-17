@@ -19,7 +19,7 @@
 				</div>
 			</p:header>
 			<p:menu>
-				<div t:type="ui/menu" mainMenu="menu"/>
+				<div t:type="ui/menu" rootMenu="menu"/>
 			</p:menu>
 			<p:content>
 				<t:body/>		

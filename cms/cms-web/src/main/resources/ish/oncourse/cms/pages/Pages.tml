@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	
+	<a t:id="newPage" t:type="actionLink"><button>New Page</button></a> <input id="pageFilter" type="text" value=""/>
+	
+	<h1>Pages</h1>
+	
+	<table id="pages">
+		<t:loop source="webNodeService.nodes" value="webNode">
+			<tr>
+				<td class="pageName">${webNode.name}</td>
+				<td><t:if t:test="webNode.published">published<p:else>unpublished</p:else></t:if></td>
+				<td>edited 3 days ago</td>
+			</tr>
+		</t:loop>
+	</table>
+	
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery('#pageFilter').search('#pages tr', function(on) {
+	            on.all(function(results) {
+	             
+	            });
+
+	            on.reset(function() {
+	              jQuery('#pages tr').show();
+	            });
+
+	            on.empty(function() {
+	              jQuery('#pages tr').hide();
+	            });
+
+	            on.results(function(results) {
+	              jQuery('#pages tr').hide();
+	              results.show();
+	            });
+	          });
+		});
+	</script>
+</div>

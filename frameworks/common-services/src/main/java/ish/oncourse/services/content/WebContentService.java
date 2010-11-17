@@ -1,6 +1,8 @@
 package ish.oncourse.services.content;
 
 import ish.oncourse.model.WebContent;
+import ish.oncourse.model.WebContentVisibility;
+import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -9,12 +11,12 @@ import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -77,8 +79,32 @@ public class WebContentService implements IWebContentService {
 				.nextInt(listResult.size())) : null;
 	}
 
-	public WebContent loadById(String id) {
-		return DataObjectUtils.objectForPK(cayenneService.sharedContext(),
-				WebContent.class, id);
+	public List<WebContent> loadByIds(Object... ids) {
+		if (ids.length == 0) {
+			return Collections.emptyList();
+		}
+
+		SelectQuery q = new SelectQuery(WebMenu.class);
+		q.andQualifier(ExpressionFactory.inDbExp(WebContent.ID_PK_COLUMN, ids));
+
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	public List<WebContent> getBlocks() {
+
+		SelectQuery q = new SelectQuery(WebContent.class);
+		
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebContent.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite()));
+
+		q.andQualifier(ExpressionFactory.noMatchExp(
+				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+						+ WebContentVisibility.WEB_NODE_TYPE_PROPERTY, null));
+		
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+						+ WebContentVisibility.WEB_NODE_PROPERTY, null));
+
+		return cayenneService.sharedContext().performQuery(q);
 	}
 }

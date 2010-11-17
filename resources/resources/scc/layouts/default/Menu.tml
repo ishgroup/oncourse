@@ -1,7 +1,7 @@
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" id="nav" class="dropdown clearfix">
 	<ul class="clearfix">
 		
-		<t:loop source="mainMenu.navigableChildMenus" value="currentMenu">
+		<t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
 			<t:delegate to="menuItem"/>
 		</t:loop>
 		

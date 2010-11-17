@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">	
+	<button class="awesome blue large cms_add_menuitem">Add a new menu item</button> <br/>
+	
+	<ol class="cms_navmenu_list cms_draggable cms_sortable">
+		
+		<li class="hidden cms_newmenuitem"><div class="cms_pagename">New menu item</div><div class="cms_refurl"></div></li>
+		
+		<t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
+			<t:delegate to="menuItem"/>
+		</t:loop>
+		
+	    <t:block>
+	        <div t:id="menuItem">
+	            <t:delegate to="menuItem"/>
+	        </div>
+	    </t:block>
+	    
+	</ol>
+	
+	<script type="text/javascript">
+		jQuery(function(){
+			jQuery.menubuilder(${suggestResults});
+		});
+	</script>
+</t:container>

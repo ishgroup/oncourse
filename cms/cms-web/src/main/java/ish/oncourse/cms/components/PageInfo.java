@@ -40,23 +40,25 @@ public class PageInfo {
 		if (passedSeconds < 60) {
 
 			message = messages.format("page.lastedited", passedSeconds,
-					passedSeconds > 1 ? "second" : "seconds");
+					passedSeconds > 1 ? "seconds" : "second");
 
 		} else if (passedSeconds < 3600) {
 			long passedMinutes = passedSeconds / 60;
+			
 			message = messages.format("page.lastedited", passedMinutes,
-					passedMinutes > 1 ? "minute" : "minutes");
+					passedMinutes > 1 ? "minutes" : "minute");
 
-		}
-		if (passedSeconds < 3600 * 60 * 24) {
+		} else if (passedSeconds < 3600 * 60 * 24) {
 			long passedHours = passedSeconds / (3600 * 60);
+			
 			message = messages.format("page.lastedited", passedHours,
-					passedHours > 1 ? "hour" : "hours");
+					passedHours > 1 ? "hours" : "hour");
 
 		} else {
 			long passedDays = passedSeconds / (3600 * 60 * 24);
+			
 			message = messages.format("page.lastedited", passedDays,
-					passedDays > 1 ? "day" : "days");
+					passedDays > 1 ? "days" : "day");
 		}
 
 		return message;

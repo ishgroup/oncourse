@@ -72,4 +72,13 @@ public class WebUrlAliasService implements IWebUrlAliasService {
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
+
+	public List<WebUrlAlias> loadForCurrentSite() {
+		WebSite site = webSiteService.getCurrentWebSite();
+		
+		SelectQuery q = new SelectQuery(WebUrlAlias.class);
+		q.andQualifier(ExpressionFactory.matchExp(WebUrlAlias.WEB_SITE_PROPERTY, site));
+		
+		return cayenneService.sharedContext().performQuery(q);
+	}
 }
