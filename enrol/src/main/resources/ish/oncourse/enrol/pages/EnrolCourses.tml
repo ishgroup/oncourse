@@ -46,20 +46,20 @@
 				</t:loop>
 
 				<tbody class="totals">
-					<!-- wo:ISHKeyValueConditional key="payment.totalDiscountAmount"
-						value="$0" operator="gt">
+					<t:if test="hasDiscount">
 						<tr>
 							<td colspan="2" class="alignright">Discount</td>
-							<td class="alignright" id="discounttotal"><wo:string
-								value="$payment.totalDiscountAmountIncTax"
-								numberformat="###,##0.00" /></td>
+							<td class="alignright" id="discounttotal">
+								<t:output value="totalDiscountAmountIncTax" format="moneyFormat"/>
+							</td>
 						</tr>
-					</wo:ISHKeyValueConditional-->
+					</t:if>
 					<tr>
 						<td><span id="addstudent">Add another student</span></td>
 						<td class="alignright">Total</td>
-						<!-- td class="alignright" id="total"><wo:string
-							value="$payment.totalIncGst" numberformat="###,##0.00" /></td-->
+						<td class="alignright" id="total">
+							<t:output value="totalIncGst" format="moneyFormat"/>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -70,9 +70,7 @@
 		<!-- end enrolments summary -->
 		<t:if test="students">
 			<!-- start payment form -->
-			<!-- wo:EnrolmentPaymentEntry callback="attemptSave"
-				enrolmentController="$enrolmentController"
-				validationExceptions="$validationExceptions" /-->
+			<span t:type="EnrolmentPaymentEntry"/>
 			<!-- end payment form -->
 		</t:if>
 		<p:else>

@@ -1,0 +1,102 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:form>
+		<t:if test="allEnrolmentsAvailable" negate="true">
+  			<div class="error">
+    			<p>One or more of your selected enrolments has been filled. Please 
+      				<a href="enrolCourses">adjust your selection</a>
+      				before proceeding.
+      			</p>
+  			</div>
+		</t:if>
+
+		<div id="paymentform">
+  			<t:if test="zeroPayment" negate="true"> 
+   				<fieldset>
+  					<div class="form-details">
+    					<p>
+      						<label>Amount</label>
+      						<span id="cardtotalstring"><t:output value="totalIncGst" format="moneyFormat"/></span>
+    					</p>
+    					<p>
+      						<label for="cardpayer">Payer<em title="${message:required}">*</em></label>
+      						<span class="valid">
+								<!-- TODO select for payer -->
+							</span>
+  						</p>
+    					<p>
+      						<label for="cardtype">Card Type<em title="${message:required}">*</em></label>
+      						<span class="${cardTypeClass}">
+								<!-- TODO select for card type;  noSelectionString="Please select..."-->
+								<span t:type="ui/HintComponent" validationMessage="cardTypeErrorMessage"/>
+							</span>
+     					</p>
+      					<p>
+        					<label for="cardname">Name on Card<em title="${message:required}">*</em></label>
+        						<span class="${cardNameInputClass}">
+									<t:textfield value="cardname" class ="input-fixed" 
+										clientId="cardname" t:id="cardName" maxlength="80" />
+									<span t:type="ui/HintComponent" validationMessage="cardNameErrorMessage"/>
+								</span>
+        				</p>
+      					<p>
+        					<label for="cardnumber">Number<em title="${message:required}">*</em></label>
+        					<span class="${cardNumberInputClass}">
+								<t:textfield value="cardnumber" class ="input-fixed" 
+										clientId="cardnumber" t:id="cardNumber" maxlength="20" />
+								<span t:type="ui/HintComponent" validationMessage="cardNumberErrorMessage"/>
+							</span>
+      					</p>
+      					<p>
+        					<label for="cardcvv">CVV<em title="${message:required}">*</em></label>
+        					<span class="${cardcvvInputClass}">
+								<t:textfield value="cardcvv" class ="input-small" 
+										clientId="cardcvv" t:id="cardcvv" maxlength="5" />
+								<span t:type="ui/HintComponent" validationMessage=cardcvv"/>
+								<a href="$^cvvPopupUrl" class="nyromodal" >What is CVV?</a>
+							</span>
+      					</p>
+      					<p>
+        					<label>Expiry<em title="${message:required}">*</em></label>
+        					<span class="${expiryInputClass}">
+        						<!-- TODO select for month-->/<!-- TODO select for year-->
+        						<span t:type="ui/HintComponent" validationMessage="expiryErrorMessage"/>
+        					</span>
+     					</p>
+  					</div>
+				</fieldset>
+			</t:if>
+  			<p>
+   				<div>
+   					<label>Conditions<em title="${message:required}">*</em></label>
+   				</div>
+   				<div class="conditions">
+	   				<!-- todo checkbox for agree  id="agree"-->
+   					<t:if test="hasEnrolmentDisclosure">
+   					 	I have read the 
+        				<a href="${enrolmentDisclosure}" title="Student information" class="nyromodal" >Student Information</a>
+        				or have had it explained to me, and I agree to accept these enrolment conditions.
+   					</t:if>
+     				I understand the enrolment and refund policy. 
+	    		</div>
+  			</p>
+  			<p class="note"><strong class="alert">Note</strong>: Fields marked with an <em>*</em> are required.</p>
+	    	<t:if test="hasConcessionsCollege">
+    			<t:if test="hasConcessionsEnrolment">
+   					<t:if test="hasStudentWithoutConcessions">
+   						<div class="message enrolment-concession-reminder">
+        					<p>
+	        					If a student is eligible for a concession you must enter it at the top of this page before you make a payment. 
+	        					Concessions are not available after you have submitted your payment details.
+		        			</p>
+		        		</div>
+    				</t:if>
+    			</t:if>
+	    	</t:if>
+   			<div class="form-controls">
+    			<t:submit t:id="paymentSubmit" value="${submitButtonText}" class="btn"  clientId="makepayment"/>
+  			</div>
+		</div>
+	</t:form>
+</t:container>	

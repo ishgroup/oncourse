@@ -14,6 +14,9 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,8 +92,13 @@ public class EnrolCourses {
 	@Property
 	private ObjectContext context;
 
+	@Property
+	private Format moneyFormat;
+
+	
 	@SetupRender
 	void beforeRender() {
+		moneyFormat = new DecimalFormat("###,##0.00");
 		context = cayenneService.newContext();
 
 		
@@ -153,5 +161,19 @@ public class EnrolCourses {
 		System.out.println("Hello from updated enrolments");
 		// TODO Auto-generated method stub
 		
+	}
+	public boolean isHasDiscount(){
+		//TODO discounts from enrolments - wo:ISHKeyValueConditional key="payment.totalDiscountAmount" value="$0" operator="gt"
+		return true;
+	}
+	
+	public BigDecimal getTotalDiscountAmountIncTax(){
+		//TODO payment.totalDiscountAmountIncTax
+		return BigDecimal.ZERO;
+	}
+	
+	public BigDecimal getTotalIncGst(){
+		//TODO payment.totalIncGst
+		return BigDecimal.ZERO;
 	}
 }
