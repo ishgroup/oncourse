@@ -205,7 +205,6 @@ $j(document).ready(function() {
 		return false; 
 	});
 	
-	/*
 
 	// form 
 	if ($j(".suburb-autocomplete")) {
@@ -240,7 +239,7 @@ $j(document).ready(function() {
 			key.preventDefault();
 			return false;
 		}
-	}); */
+	}); 
 				
 
 	// show default text in text fields with class defaultText using "default" attribute
