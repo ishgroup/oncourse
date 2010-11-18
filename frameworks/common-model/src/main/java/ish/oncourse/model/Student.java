@@ -59,5 +59,9 @@ public class Student extends _Student {
 		}
 		return null;
 	}
+	
+	public String getFullName(){
+		return getContact().getFullName();
+	}
 
 }

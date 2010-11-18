@@ -70,7 +70,7 @@
 		<!-- end enrolments summary -->
 		<t:if test="students">
 			<!-- start payment form -->
-			<span t:type="EnrolmentPaymentEntry"/>
+			<span t:type="EnrolmentPaymentEntry" totalIncGst="totalIncGst" payers="students"/>
 			<!-- end payment form -->
 		</t:if>
 		<p:else>

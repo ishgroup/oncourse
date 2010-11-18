@@ -1,7 +1,8 @@
 <t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<t:form>
+	<t:form t:id="paymentDetailsForm">
+		<t:errors/>
 		<t:if test="allEnrolmentsAvailable" negate="true">
   			<div class="error">
     			<p>One or more of your selected enrolments has been filled. Please 
@@ -22,17 +23,17 @@
     					<p>
       						<label for="cardpayer">Payer<em title="${message:required}">*</em></label>
       						<span class="valid">
-								<!-- TODO select for payer -->
+								<t:select value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
 							</span>
   						</p>
-    					<p>
+    					<!--p>
       						<label for="cardtype">Card Type<em title="${message:required}">*</em></label>
-      						<span class="${cardTypeClass}">
+      						<span class="${cardTypeClass}"-->
 								<!-- TODO select for card type;  noSelectionString="Please select..."-->
-								<span t:type="ui/HintComponent" validationMessage="cardTypeErrorMessage"/>
+								<!-- span t:type="ui/HintComponent" validationMessage="${message:cardTypeErrorMessage}"/>
 							</span>
      					</p>
-      					<p>
+      					< p>
         					<label for="cardname">Name on Card<em title="${message:required}">*</em></label>
         						<span class="${cardNameInputClass}">
 									<t:textfield value="cardname" class ="input-fixed" 
@@ -59,11 +60,11 @@
       					</p>
       					<p>
         					<label>Expiry<em title="${message:required}">*</em></label>
-        					<span class="${expiryInputClass}">
+        					<span class="${expiryInputClass}"-->
         						<!-- TODO select for month-->/<!-- TODO select for year-->
-        						<span t:type="ui/HintComponent" validationMessage="expiryErrorMessage"/>
+        						<!-- span t:type="ui/HintComponent" validationMessage="expiryErrorMessage"/>
         					</span>
-     					</p>
+     					</p-->
   					</div>
 				</fieldset>
 			</t:if>
@@ -75,7 +76,7 @@
 	   				<!-- todo checkbox for agree  id="agree"-->
    					<t:if test="hasEnrolmentDisclosure">
    					 	I have read the 
-        				<a href="${enrolmentDisclosure}" title="Student information" class="nyromodal" >Student Information</a>
+        				<!-- a href="${enrolmentDisclosure}" title="Student information" class="nyromodal" >Student Information</a-->
         				or have had it explained to me, and I agree to accept these enrolment conditions.
    					</t:if>
      				I understand the enrolment and refund policy. 

@@ -1174,6 +1174,7 @@
 		<obj-attribute name="disabilityType" type="java.lang.Integer" db-attribute-path="disabilityType"/>
 		<obj-attribute name="englishProficiency" type="java.lang.Integer" db-attribute-path="englishProficiency"/>
 		<obj-attribute name="highestSchoolLevel" type="java.lang.Integer" db-attribute-path="highestSchoolLevel"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="indigenousStatus" type="java.lang.Integer" db-attribute-path="indigenousStatus"/>
 		<obj-attribute name="isOverseasClient" type="java.lang.Boolean" db-attribute-path="isOverseasClient"/>
 		<obj-attribute name="isStillAtSchool" type="java.lang.Boolean" db-attribute-path="isStillAtSchool"/>

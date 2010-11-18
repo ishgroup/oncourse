@@ -30,6 +30,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String DISABILITY_TYPE_PROPERTY = "disabilityType";
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
     public static final String HIGHEST_SCHOOL_LEVEL_PROPERTY = "highestSchoolLevel";
+    public static final String ID_PROPERTY = "id";
     public static final String INDIGENOUS_STATUS_PROPERTY = "indigenousStatus";
     public static final String IS_OVERSEAS_CLIENT_PROPERTY = "isOverseasClient";
     public static final String IS_STILL_AT_SCHOOL_PROPERTY = "isStillAtSchool";
@@ -97,6 +98,13 @@ public abstract class _Student extends CayenneDataObject {
     }
     public Integer getHighestSchoolLevel() {
         return (Integer)readProperty("highestSchoolLevel");
+    }
+
+    public void setId(Long id) {
+        writeProperty("id", id);
+    }
+    public Long getId() {
+        return (Long)readProperty("id");
     }
 
     public void setIndigenousStatus(Integer indigenousStatus) {
