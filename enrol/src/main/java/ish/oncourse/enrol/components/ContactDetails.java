@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.components;
 
+import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 
@@ -46,6 +47,9 @@ public class ContactDetails {
 
 	@Inject
 	private Request request;
+	
+	@Inject
+	private IStudentService studentService;
 
 	/**
 	 * Parameters
@@ -189,14 +193,7 @@ public class ContactDetails {
 			return parentZone.getBody();
 		} else {
 			contact.getObjectContext().commitChanges();
-			Session session = request.getSession(false);
-			List<Student> students = (List<Student>) session
-					.getAttribute("shortlistStudents");
-			if (students == null) {
-				students = new ArrayList<Student>();
-			}
-			students.add(contact.getStudent());
-			session.setAttribute("shortlistStudents", students);
+			studentService.addStudentToShortlist(contact.getStudent());
 			return "EnrolCourses";
 		}
 	}

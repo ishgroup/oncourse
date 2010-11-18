@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.services.student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -7,6 +8,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -23,6 +26,9 @@ public class StudentService implements IStudentService {
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private Request request;
 
 	public Student getStudent(String firstName, String lastName, String email) {
 		College currentCollege = webSiteService.getCurrentCollege();
@@ -38,6 +44,17 @@ public class StudentService implements IStudentService {
 		List<Student> results = cayenneService.sharedContext().performQuery(
 				query);
 		return results.isEmpty() ? null : results.get(0);
+	}
+
+	public void addStudentToShortlist(Student student) {
+		Session session = request.getSession(false);
+		List<Student> students = (List<Student>) session
+				.getAttribute("shortlistStudents");
+		if (students == null) {
+			students = new ArrayList<Student>();
+		}
+		students.add(student);
+		session.setAttribute("shortlistStudents", students);
 	}
 
 }

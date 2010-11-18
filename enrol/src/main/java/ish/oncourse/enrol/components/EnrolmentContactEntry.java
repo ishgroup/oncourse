@@ -177,13 +177,13 @@ public class EnrolmentContactEntry {
 		}
 	}
 
-	@OnEvent(component = "shortDetailsForm", value = "submit")
+	@OnEvent(component = "shortDetailsForm", value = "failure")
 	Block refreshContactEntry() {
 		return addStudentBlock.getBody();
 	}
 
 	@OnEvent(component = "shortDetailsForm", value = "success")
-	void submittedSuccessfully() {
+	Object submittedSuccessfully() {
 		if (reset) {
 			contact.setGivenName(null);
 			contact.setFamilyName(null);
@@ -194,10 +194,12 @@ public class EnrolmentContactEntry {
 					contact.getFamilyName(), contact.getEmailAddress());
 			if (student != null) {
 				contact = student.getContact();
+				studentService.addStudentToShortlist(student);
+				return "EnrolCourses";
 			}
 			hasContact = true;
 		}
-
+		return addStudentBlock.getBody();
 	}
 
 	public String getFirstNameInput() {
