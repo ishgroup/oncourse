@@ -1,4 +1,4 @@
-package ish.oncourse.cms.pages;
+package ish.oncourse.cms.components;
 
 import java.io.IOException;
 import java.net.URL;

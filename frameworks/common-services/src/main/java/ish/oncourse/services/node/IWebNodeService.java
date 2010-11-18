@@ -1,10 +1,9 @@
 package ish.oncourse.services.node;
 
+import ish.oncourse.model.WebNode;
+
 import java.util.Date;
 import java.util.List;
-
-import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeType;
 
 public interface IWebNodeService {
 
@@ -12,20 +11,6 @@ public interface IWebNodeService {
 	public static final String NODE_NUMBER_PARAMETER = "n";
 	public static final String PAGE_PATH_PARAMETER = "p";
 	public static final String WEB_NODE_PAGE_TYPE_KEY = "Page";
-
-	/**
-	 * Returns default webNodeType for the current site.
-	 * 
-	 * @return default webNodeType
-	 */
-	WebNodeType getDefaultWebNodeType();
-
-	/**
-	 * Returns all available web node types for the current site.
-	 * 
-	 * @return available web node types.
-	 */
-	List<WebNodeType> getWebNodeTypes();
 
 	/**
 	 * Returns all web nodes for the current site or current college.

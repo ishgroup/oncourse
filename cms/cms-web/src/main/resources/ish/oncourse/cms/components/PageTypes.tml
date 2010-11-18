@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	
+	<t:block t:id="editPageTypeBlock">
+		<span t:type="pageTypeEdit" pageType="prop:selectedPageType" updateZone="prop:pageTypeZone"/>
+	</t:block>
+	
+	
+	<t:zone t:id="pageTypeZone">
+	
+		<button>New Page Type</button> <br/>
+		
+		<h2>Page Types</h2>
+		
+		<table id="pageTypes">
+			<t:loop source="webNodeTypeService.webNodeTypes" value="webNodeType">
+				<tr id="${webNodeType.id}">
+					<td><a href="#" t:type="actionLink" t:id="editPageType" t:zone="pageTypeZone" t:context="webNodeType.id">${webNodeType.name}</a></td> 
+					<td><t:outputraw value="lastEdited"/></td>
+				</tr>
+			</t:loop>
+		</table>
+		
+		<style>
+			.selectedRow {
+				background-color: yellow;
+				cursor: pointer;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			jQuery(function() {
+				jQuery('#pageTypes tbody tr').mouseover(function() {
+					jQuery(this).addClass('selectedRow');
+				}).mouseout(function() {
+				    jQuery(this).removeClass('selectedRow');
+				}).click(function() {
+					var zoneManager = Tapestry.findZoneManagerForZone('pageTypeZone');
+					zoneManager.updateFromURL('${editPageTypeUrl}' + jQuery(this).attr('id'));
+				});
+			});
+		</script>
+	
+	</t:zone>
+</div>

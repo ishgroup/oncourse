@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -37,6 +36,9 @@ public class WebNodeService implements IWebNodeService {
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private IWebNodeTypeService webNodeTypeService;
 
 	@Inject
 	private Request request;
@@ -149,31 +151,6 @@ public class WebNodeService implements IWebNodeService {
 		return true;
 	}
 
-	public WebNodeType getDefaultWebNodeType() {
-		SelectQuery q = new SelectQuery(WebNodeType.class);
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebNodeType.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
-
-		q.andQualifier(ExpressionFactory
-				.matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
-						WebNodeType.DEFAULT_LAYOUT_KEY));
-
-		return (WebNodeType) DataObjectUtils.objectForQuery(
-				cayenneService.sharedContext(), q);
-	}
-
-	public List<WebNodeType> getWebNodeTypes() {
-		SelectQuery q = new SelectQuery(WebNodeType.class);
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebNodeType.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
-
-		return cayenneService.sharedContext().performQuery(q);
-	}
-
 	private Integer getNextNodeNumber() {
 		Expression siteExpr = ExpressionFactory.matchExp(
 				WebNode.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite());
@@ -214,7 +191,8 @@ public class WebNodeService implements IWebNodeService {
 		
 		newPageNode.setNodeNumber(nodeNumber);
 
-		WebNodeType webNodeType = (WebNodeType) ctx.localObject(getDefaultWebNodeType().getObjectId(), null);
+		WebNodeType webNodeType = (WebNodeType) ctx.localObject(
+				webNodeTypeService.getDefaultWebNodeType().getObjectId(), null);
 
 		newPageNode.setWebNodeType(webNodeType);
 

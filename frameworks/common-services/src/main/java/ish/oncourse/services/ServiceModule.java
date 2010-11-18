@@ -23,7 +23,9 @@ import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.menu.WebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.node.WebNodeService;
+import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.preference.PreferenceService;
 import ish.oncourse.services.property.IPropertyService;
@@ -85,6 +87,7 @@ public class ServiceModule {
 		binder.bind(ISelectModelService.class, SelectModelService.class);
 		binder.bind(IPreferenceService.class, PreferenceService.class);
 		binder.bind(IPostCodeDbService.class, PostCodeDbService.class);
+		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 	}
 
 }

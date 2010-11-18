@@ -6,6 +6,7 @@ import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.ui.ISelectModelService;
 
@@ -44,7 +45,7 @@ public class PageOptions {
 	private ISelectModelService selectModelService;
 
 	@Inject
-	private IWebNodeService webNodeService;
+	private IWebNodeTypeService webNodeTypeService;
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -68,7 +69,7 @@ public class PageOptions {
 	@SetupRender
 	public void beforeRender() {
 		this.pageTypeModel = selectModelService.newSelectModel(
-				webNodeService.getWebNodeTypes(),
+				webNodeTypeService.getWebNodeTypes(),
 				WebNodeType.LAYOUT_KEY_PROPERTY, "id");
 	}
 

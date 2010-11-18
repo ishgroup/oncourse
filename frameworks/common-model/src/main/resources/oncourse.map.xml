@@ -1296,6 +1296,7 @@
 		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="WebSite" className="ish.oncourse.model.WebSite" dbEntityName="WebSite">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>

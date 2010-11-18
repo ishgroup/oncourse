@@ -23,12 +23,32 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="/sitesettings">Site</a></li>
-			<li><a href="/pages">Pages</a></li>
-			<li><a href="/blocks">Blocks</a></li>
-			<li><a href="/menus">Menus</a></li>
-			<li><a href="/pagetypes">Page types</a></li>
+			<li><a href="#sitesettings">Site</a></li>
+			<li><a href="#pages">Pages</a></li>
+			<li><a href="#blocks">Blocks</a></li>
+			<li><a href="#menus">Menus</a></li>
+			<li><a href="#pagetypes">Page types</a></li>
 		</ul>
+		
+		<div id="sitesettings">
+			<span t:type="sitesettings"/>
+		</div>
+		
+		<div id="pages">
+			<span t:type="pages"/>
+		</div>
+		
+		<div id="blocks">
+			<span t:type="blocks"/>
+		</div>	
+		
+		<div id="menus">
+			<ol t:type="menubuilder" rootMenu="webMenuService.rootMenu"></ol>
+		</div>
+		
+		<div id="pagetypes">
+			<span t:type="pagetypes"/>
+		</div>	
 	</div>
 	 
 	

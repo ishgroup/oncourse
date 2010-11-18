@@ -5,6 +5,7 @@ import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.dynamic.ContentDelegate;
 
@@ -32,6 +33,9 @@ public class PageWrapper {
 	@Property
 	@Inject
 	private IWebNodeService webNodeService;
+	
+	@Inject
+	private IWebNodeTypeService webNodeTypeService;
 	
 	@Inject
 	private IWebSiteService webSiteService;
@@ -84,7 +88,7 @@ public class PageWrapper {
 		}
 
 		webNodeType = (resources.isBound("webNodeType")) ? webNodeType
-				: webNodeService.getDefaultWebNodeType();
+				: webNodeTypeService.getDefaultWebNodeType();
 
 		bodyLayout.setWebNodeType(webNodeType);
 	}

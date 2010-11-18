@@ -88,4 +88,6 @@ public abstract class _WebNodeType extends CayenneDataObject {
     }
 
 
+    protected abstract void onPostAdd();
+
 }

@@ -108,4 +108,15 @@ public class WebContentService implements IWebContentService {
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
+
+	public WebContent newWebContent() {
+		WebContent webContent = cayenneService.sharedContext().newObject(WebContent.class);
+		
+		webContent.setWebSite(webSiteService.getCurrentWebSite());
+		webContent.setContent("Sample content text.");
+		
+		cayenneService.sharedContext().commitChanges();
+		
+		return webContent;
+	}
 }

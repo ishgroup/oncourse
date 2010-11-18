@@ -34,4 +34,10 @@ public interface IWebContentService {
 	 * Returns all web blocks for the current site or current college.
 	 */
 	List<WebContent> getBlocks();
+	
+	/**
+	 * Creates new web content.
+	 * @return
+	 */
+	WebContent newWebContent();
 }

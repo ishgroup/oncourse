@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.DataObjectUtils;
@@ -21,7 +22,14 @@ public class WebNodeType extends _WebNodeType {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
-	
+		
+	@Override
+	protected void onPostAdd() {
+		Date today = new Date();
+		setModified(today);
+		setCreated(today);
+	}
+
 	public <T> T accept(IVisitor<T> visitor) {
 		return visitor.visitWebNodeType(this);
 	}

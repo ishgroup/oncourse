@@ -1,0 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:form t:id="pageTypeEditForm" zone="pageTypeZone">
+		<a t:id="cancel" t:type="actionLink" zone="blockZone">Cancel</a>
+		<a t:id="delete" t:type="actionLink" zone="blockZone">Delete</a>
+		<t:submit t:id="Save"/>
+	</t:form>
+</div>

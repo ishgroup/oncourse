@@ -53,12 +53,13 @@ public class UIModule {
 				.withId("Override");
 	}
 
-	public PageLoader buildPageLoaderOverride(@Autobuild PageLoaderOverride service, 
+	public PageLoader buildPageLoaderOverride(
+			@Autobuild PageLoaderOverride service,
 			@ComponentTemplates InvalidationEventHub templatesHub,
 			@ComponentMessages InvalidationEventHub messagesHub,
 			@ComponentClasses InvalidationEventHub classesInvalidationEventHub,
 			Request request) {
-		
+
 		service.setRequest(request);
 		classesInvalidationEventHub.addInvalidationListener(service);
 		templatesHub.addInvalidationListener(service);
@@ -85,12 +86,12 @@ public class UIModule {
 	public ComponentTemplateSource buildComponentTemplateSourceOverride(
 			TemplateParser parser, ComponentTemplateLocator locator,
 			ClasspathURLConverter classpathURLConverter,
-			UpdateListenerHub updateListenerHub, 
-			Request request,
+			UpdateListenerHub updateListenerHub, Request request,
 			IResourceService resourceService) {
 
 		ComponentTemplateSourceOverride service = new ComponentTemplateSourceOverride(
-				parser, locator, classpathURLConverter, request, resourceService);
+				parser, locator, classpathURLConverter, request,
+				resourceService);
 
 		updateListenerHub.addUpdateListener(service);
 
