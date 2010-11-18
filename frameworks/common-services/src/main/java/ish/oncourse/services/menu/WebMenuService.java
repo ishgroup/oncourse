@@ -8,6 +8,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -20,6 +21,18 @@ public class WebMenuService implements IWebMenuService {
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	public WebMenu newMenu() {
+		ObjectContext ctx = cayenneService.sharedContext();
+		
+		WebMenu menu = ctx.newObject(WebMenu.class);
+		menu.setName("New menu item");
+		menu.setWebSite(webSiteService.getCurrentWebSite());
+		
+		ctx.commitChanges();
+		
+		return menu;
+	}
 
 	public WebMenu getRootMenu() {
 		Expression rootMenuExp = ExpressionFactory.matchExp(

@@ -1279,6 +1279,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="url" type="java.lang.String" db-attribute-path="URL"/>
 		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="WebNode" className="ish.oncourse.model.WebNode" dbEntityName="WebNode">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>

@@ -1,9 +1,9 @@
 <li id="m_${menu.id}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div>
 		<div class="cms_pagename" id="n_${menu.id}">${menu.name}</div>
-		<div class="cms_refurl" id="u_${menu.id}">/page/44</div>
+		<div class="cms_refurl" id="u_${menu.id}">${itemHref}</div>
 		<div class="cms_draghandle ui-icon ui-icon-arrowthick-2-n-s"></div>
-		<div class="cms_delete_icon"><a id="r_${menu.id}" style="text-decoration: none; color: black;"><span class="ui-icon ui-icon-trash left"></span>Delete</a></div>
+		<div class="cms_delete_icon"><a id="r_${menu.id}" style="cursor: pointer; color: black;"><span class="ui-icon ui-icon-trash left"></span>Delete</a></div>
 	</div>
 	<ol><t:body/></ol>
 </li>

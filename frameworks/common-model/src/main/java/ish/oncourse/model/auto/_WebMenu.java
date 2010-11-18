@@ -103,4 +103,6 @@ public abstract class _WebMenu extends CayenneDataObject {
     }
 
 
+    protected abstract void onPostAdd();
+
 }

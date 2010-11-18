@@ -8,7 +8,7 @@
 	
 	<table id="blocks">
 		<t:loop source="webContentService.blocks" value="block">
-			<tr>
+			<tr id="${block.id}">
 				<td>${block.name}</td> 
 				<td><t:outputraw value="lastEdited"/></td>
 			</tr>
@@ -48,7 +48,7 @@
 			}).mouseout(function() {
 			    jQuery(this).removeClass('selectedRow');
 			}).click(function() {
-			     alert(jQuery('td:first', this).text());
+				 jQuery('#ui-tabs-3').load('/blockedit/' + jQuery(this).attr('id'));
 		    });
 		});
 	</script>

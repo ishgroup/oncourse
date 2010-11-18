@@ -10,7 +10,6 @@ import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.site.IWebSiteService;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -194,13 +193,9 @@ public class WebNodeService implements IWebNodeService {
 			return Collections.emptyList();
 		}
 
-		List<Object> params = Arrays.asList(ids);
-
-		EJBQLQuery q = new EJBQLQuery(
-				"select c from WebNode c where c.id IN (:ids)");
-
-		q.setParameter("ids", params);
-
+		SelectQuery q = new SelectQuery(WebNode.class);
+		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
+		
 		return cayenneService.sharedContext().performQuery(q);
 	}
 

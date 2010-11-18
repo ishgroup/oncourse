@@ -6,6 +6,7 @@ import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.ui.ISelectModelService;
 
 import org.apache.tapestry5.SelectModel;
@@ -23,7 +24,7 @@ public class PageOptions {
 	@Parameter
 	@Property
 	private WebNode node;
-	
+
 	@Parameter
 	@Property
 	private Zone updateZone;
@@ -44,6 +45,9 @@ public class PageOptions {
 
 	@Inject
 	private IWebNodeService webNodeService;
+
+	@Inject
+	private IWebSiteService webSiteService;
 
 	@Inject
 	private IWebUrlAliasService aliasService;
@@ -121,5 +125,9 @@ public class PageOptions {
 	Object onSuccessFromOptionsForm() {
 		cayenneService.sharedContext().commitChanges();
 		return updateZone.getBody();
+	}
+
+	public String getSiteUrl() {
+		return "http://" + webSiteService.getCurrentDomain().getName() + "/";
 	}
 }

@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -14,6 +15,14 @@ public class WebMenu extends _WebMenu {
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+	
+	@Override
+	protected void onPostAdd() {
+		Date today = new Date();
+		setCreated(today);
+		setModified(today);
+		setWeight(0);
 	}
 
 	public List<WebMenu> getWebMenus() {
