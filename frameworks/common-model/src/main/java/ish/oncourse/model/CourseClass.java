@@ -1,5 +1,7 @@
 package ish.oncourse.model;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DateDV;
+
 import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.TimestampUtilities;
@@ -476,5 +478,25 @@ public class CourseClass extends _CourseClass {
 		}
 		return result;
 
+	}
+	
+	public boolean hasEnded()
+	{
+		Date end = getEndDate();
+		return end != null && new Date().after( end );
+	}
+	
+	
+	
+	public boolean hasStarted()
+	{
+		Date start = getStartDate();
+		return start != null && new Date().after( start ) ;
+	}
+	
+	
+	public boolean isRunning()
+	{
+		return hasStarted() && !hasEnded();
 	}
 }

@@ -1,19 +1,11 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<a title="Show venue details" class="tooltip" href="${mapLink}">
-		<t:if test="withRoomName">
-			<t:if test="hasRoomName">${room.name}</t:if>
-		</t:if>
-		<t:if test="hasSiteName">
-			<t:if test="withRoomName"> - </t:if>
-			${room.site.name}
-			<t:if t:test="withSiteAddress">
-				<span>
-					${room.site.street}
-					${room.site.suburb}
-					${room.site.postcode}
-				</span>
-			</t:if>
-		</t:if>
-	</a>
+	<t:if test="disabledLink">
+		<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
+		<p:else>
+			<a title="Show venue details" class="tooltip" href="${mapLink}" >
+				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
+			</a>
+		</p:else>
+	</t:if>
 </t:container>

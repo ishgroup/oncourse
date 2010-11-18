@@ -13,13 +13,6 @@
 			</div>
 		</t:if>
 
-		<!-- wo:ISHValidationContainer keyPath="attemptSave" object="$parentPage">
-			<div class="error">
-				<p><wo:ISHValidationMessage keyPath="attemptSave"
-					object="$parentPage" /></p>
-			</div>
-		</wo:ISHValidationContainer-->
-
 		<!-- start has students -->
 		<t:if test="students">
 			<!-- start enrolments summary -->
@@ -29,7 +22,7 @@
 					<col width="80"/>
 					<col width="80"/>
 				</colgroup>
-				<t:loop source="students" value="student">
+				<t:loop source="students" value="student" index="studentIndex">
 					<thead>
 						<tr>
 							<th colspan="3">
@@ -45,11 +38,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						<t:loop source="classesToEnrol" value="courseClass">
-						<!-- TODO remove when  EnrolmentListItem will be implememnted-->
-						<tr><td>${courseClass.uniqueIdentifier}(Test view)</td></tr>
-							<!-- wo:EnrolmentListItem student="$studentItem"
-								courseClass="$classItem" index="$enrolmentIndex" /-->
+						<t:loop source="classesToEnrol" value="courseClass" index="courseClassIndex">
+							<span t:type="EnrolmentListItem" enrolment="enrolment" student="student"
+								courseClass="courseClass" index="enrolmentIndex" />
 						</t:loop>
 					</tbody>
 				</t:loop>
@@ -74,7 +65,7 @@
 			</table>
 		</t:if>
 
-		<span t:type="EnrolmentContactEntry" showConcessionsArea="showConcessionsArea"/>
+		<span t:type="EnrolmentContactEntry" showConcessionsArea="showConcessionsArea" context="context" />
 
 		<!-- end enrolments summary -->
 		<t:if test="students">

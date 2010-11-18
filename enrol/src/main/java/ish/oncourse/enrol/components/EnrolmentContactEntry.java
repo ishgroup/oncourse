@@ -4,7 +4,6 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
@@ -41,9 +40,7 @@ public class EnrolmentContactEntry {
 	@Inject
 	private IWebSiteService webSiteService;
 
-	@Inject
-	private ICayenneService cayenneService;
-
+	
 	@Inject
 	private IStudentService studentService;
 
@@ -94,7 +91,7 @@ public class EnrolmentContactEntry {
 	@Persist
 	private Contact contact;
 
-	@Persist
+	@Parameter
 	private ObjectContext context;
 
 	private boolean reset;
@@ -114,8 +111,6 @@ public class EnrolmentContactEntry {
 	@SetupRender
 	void beforeRender() {
 		hasContact = false;
-		context = cayenneService.newContext();
-
 		contact = context.newObject(Contact.class);
 
 		College currentCollege = webSiteService.getCurrentCollege();

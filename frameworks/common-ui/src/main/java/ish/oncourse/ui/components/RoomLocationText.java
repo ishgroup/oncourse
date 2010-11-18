@@ -1,11 +1,12 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.model.Room;
+
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 
-import ish.oncourse.model.Room;
+public class RoomLocationText {
 
-public class RoomLocation {
 	@Parameter(required=true)
 	@Property
 	private Room room;
@@ -18,12 +19,13 @@ public class RoomLocation {
 	@Property
 	private boolean withSiteAddress;
 
-	@Parameter
-	@Property
-	private boolean disabledLink;
-
-
-	public String getMapLink() {
-		return withRoomName?"/room/"+room.getAngelId():"/site/"+room.getSite().getAngelId();
+	public boolean isHasRoomName() {
+		return room.getName() != null && !"".equals(room.getName());
 	}
+
+	public boolean isHasSiteName() {
+		return room.getSite() != null && room.getSite().getName() != null
+				&& !"".equals(room.getSite().getName());
+	}
+
 }

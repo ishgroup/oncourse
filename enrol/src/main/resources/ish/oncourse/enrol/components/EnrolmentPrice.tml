@@ -1,0 +1,14 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<span class="${feeClass}">
+		<t:output value="courseClass.feeIncGst" format="moneyFormat"/>
+	</span>
+	<span class="${feeDiscountedClass})">
+		<t:output value="courseClass.feeIncGst" format="moneyFormat"/><!-- todo discountedIncTaxAmount for enrolment! -->
+	</span>
+	<span id="d${index}" style="display:none;">
+		<t:output value="courseClass.feeIncGst" format="numberFormat"/>
+		<!-- wo:string numberformat="0.00" value="$totalDiscountIncTax" /-->
+	</span>
+</t:container>	

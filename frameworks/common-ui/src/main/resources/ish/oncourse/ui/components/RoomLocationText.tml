@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:if test="withRoomName">
+		<t:if test="hasRoomName">${room.name}</t:if>
+	</t:if>
+	<t:if test="hasSiteName">
+		<t:if test="withRoomName"> - </t:if>
+		${room.site.name}
+		<t:if t:test="withSiteAddress">
+			<span>
+				${room.site.street}
+				${room.site.suburb}
+				${room.site.postcode}
+			</span>
+		</t:if>
+	</t:if>
+</t:container>		
