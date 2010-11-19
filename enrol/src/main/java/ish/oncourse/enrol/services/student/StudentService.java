@@ -46,12 +46,12 @@ public class StudentService implements IStudentService {
 		return results.isEmpty() ? null : results.get(0);
 	}
 
-	public void addStudentToShortlist(Student student) {
+	public void addStudentToShortlist(Contact student) {
 		Session session = request.getSession(false);
-		List<Student> students = (List<Student>) session
+		List<Contact> students = (List<Contact>) session
 				.getAttribute("shortlistStudents");
 		if (students == null) {
-			students = new ArrayList<Student>();
+			students = new ArrayList<Contact>();
 		}
 		students.add(student);
 		session.setAttribute("shortlistStudents", students);

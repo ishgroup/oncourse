@@ -40,7 +40,6 @@ public class EnrolmentContactEntry {
 	@Inject
 	private IWebSiteService webSiteService;
 
-	
 	@Inject
 	private IStudentService studentService;
 
@@ -121,19 +120,19 @@ public class EnrolmentContactEntry {
 		Student student = context.newObject(Student.class);
 		student.setCollege(college);
 		contact.setStudent(student);
-		
+
 		contact.setIsMale(true);
 		contact.setIsMarketingViaEmailAllowed(true);
 		contact.setIsMarketingViaPostAllowed(true);
 		contact.setIsMarketingViaSMSAllowed(true);
-		
+
 		reset = true;
 		shortDetailsForm.clearErrors();
 	}
 
 	public String getAddStudentBlockClass() {
-		List<Student> shortlistStudents = (List<Student>) request.getSession(
-				false).getAttribute("shortlistStudents");
+		List shortlistStudents = (List) request.getSession(false).getAttribute(
+				"shortlistStudents");
 		return (shortlistStudents == null || shortlistStudents.isEmpty() || needMoreInfo) ? "show"
 				: "collapse";
 	}
@@ -189,7 +188,7 @@ public class EnrolmentContactEntry {
 					contact.getFamilyName(), contact.getEmailAddress());
 			if (student != null) {
 				contact = student.getContact();
-				studentService.addStudentToShortlist(student);
+				studentService.addStudentToShortlist(contact);
 				return "EnrolCourses";
 			}
 			hasContact = true;

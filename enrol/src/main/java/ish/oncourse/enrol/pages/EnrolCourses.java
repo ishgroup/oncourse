@@ -2,6 +2,7 @@ package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
@@ -46,13 +47,13 @@ public class EnrolCourses {
 
 	@Inject
 	private Request request;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
 	private ICayenneService cayenneService;
-	
+
 	@Property
 	private List<CourseClass> classesToEnrol;
 
@@ -63,45 +64,43 @@ public class EnrolCourses {
 	 * studentsSet.allObjects.@sort.contact.fullName
 	 */
 	@Property
-	private List<Student> students;
+	private List<Contact> contacts;
 
 	@Property
-	private Student student;
+	private Contact contact;
 
 	@Property
 	private int studentIndex;
-	
+
 	@Property
 	private int courseClassIndex;
-	
+
 	@Property
 	@Parameter
 	private boolean hadPreviousPaymentFailure;
 
 	@Persist
 	private Enrolment[][] enrolments;
-	
+
 	@Persist
 	@Property
 	private PaymentIn payment;
-	
+
 	@Persist
 	@Property
 	private Invoice invoice;
-	
+
 	@Property
 	private ObjectContext context;
 
 	@Property
 	private Format moneyFormat;
 
-	
 	@SetupRender
 	void beforeRender() {
 		moneyFormat = new DecimalFormat("###,##0.00");
 		context = cayenneService.newContext();
 
-		
 		String[] orderedClassesIds = cookiesService
 				.getCookieCollectionValue("shortlist");
 		if (orderedClassesIds != null && orderedClassesIds.length != 0) {
@@ -114,35 +113,36 @@ public class EnrolCourses {
 			Ordering.orderList(classesToEnrol, orderings);
 		}
 
-		students = (List<Student>) request.getSession(true).getAttribute(
+		contacts = (List<Contact>) request.getSession(true).getAttribute(
 				"shortlistStudents");
-		
-		
-		if(classesToEnrol!=null&&students!=null){
-			for(Student student:students){
-				student.readProperty(Student.CONTACT_PROPERTY);
-			}
+
+		if (classesToEnrol != null && contacts != null && !contacts.isEmpty()) {
 			payment = context.newObject(PaymentIn.class);
 			invoice = context.newObject(Invoice.class);
-			enrolments=new Enrolment[students.size()][classesToEnrol.size()];
-			for(int i=0;i<students.size();i++){
-				for(int j=0;j<classesToEnrol.size();j++){
-					enrolments[i][j]=context.newObject(Enrolment.class);
+			enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
+			for (int i = 0; i < contacts.size(); i++) {
+				for (int j = 0; j < classesToEnrol.size(); j++) {
+					enrolments[i][j] = context.newObject(Enrolment.class);
 					College currentCollege = webSiteService.getCurrentCollege();
 					College college = (College) context.localObject(
 							currentCollege.getObjectId(), currentCollege);
 					enrolments[i][j].setCollege(college);
-					Student student = (Student) context.localObject(students.get(i).getObjectId(), students.get(i));
-					CourseClass courseClass =(CourseClass) context.localObject( classesToEnrol.get(j).getObjectId(),classesToEnrol.get(j));
-					if(!enrolments[i][j].isDuplicated(student)&&courseClass.isHasAvailableEnrolmentPlaces()){
+					Student student = ((Contact) context.localObject(contacts
+							.get(i).getObjectId(), contacts.get(i)))
+							.getStudent();
+					CourseClass courseClass = (CourseClass) context
+							.localObject(classesToEnrol.get(j).getObjectId(),
+									classesToEnrol.get(j));
+					if (!enrolments[i][j].isDuplicated(student)
+							&& courseClass.isHasAvailableEnrolmentPlaces()) {
 						enrolments[i][j].setStudent(student);
 						enrolments[i][j].setCourseClass(courseClass);
 					}
 				}
 			}
-			
+
 		}
-		
+
 	}
 
 	public boolean isShowConcessionsArea() {
@@ -155,30 +155,33 @@ public class EnrolCourses {
 		return "http://" + request.getServerName() + "/courses";
 	}
 
-	public int getEnrolmentIndex(){
-		return studentIndex * classesToEnrol.size() + courseClassIndex; 
+	public int getEnrolmentIndex() {
+		return studentIndex * classesToEnrol.size() + courseClassIndex;
 	}
 
-	public Enrolment getEnrolment(){
+	public Enrolment getEnrolment() {
 		return enrolments[studentIndex][courseClassIndex];
 	}
+
 	public void enrolmentsUpdated() {
 		System.out.println("Hello from updated enrolments");
 		// TODO Auto-generated method stub
-		
+
 	}
-	public boolean isHasDiscount(){
-		//TODO discounts from enrolments - wo:ISHKeyValueConditional key="payment.totalDiscountAmount" value="$0" operator="gt"
+
+	public boolean isHasDiscount() {
+		// TODO discounts from enrolments - wo:ISHKeyValueConditional
+		// key="payment.totalDiscountAmount" value="$0" operator="gt"
 		return true;
 	}
-	
-	public BigDecimal getTotalDiscountAmountIncTax(){
-		//TODO payment.totalDiscountAmountIncTax
+
+	public BigDecimal getTotalDiscountAmountIncTax() {
+		// TODO payment.totalDiscountAmountIncTax
 		return BigDecimal.ZERO;
 	}
-	
-	public BigDecimal getTotalIncGst(){
-		//TODO payment.totalIncGst
+
+	public BigDecimal getTotalIncGst() {
+		// TODO payment.totalIncGst
 		return BigDecimal.ZERO;
 	}
 }

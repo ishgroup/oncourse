@@ -3,11 +3,12 @@ package ish.oncourse.enrol.components;
 import ish.common.payment.cc.CreditCardType;
 import ish.oncourse.enrol.selectutils.ListSelectionModel;
 import ish.oncourse.enrol.selectutils.ListValueEncoder;
-import ish.oncourse.model.Student;
-
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.PaymentIn;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry5.Block;
@@ -21,6 +22,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Select;
+import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -43,19 +45,19 @@ public class EnrolmentPaymentEntry {
 
 	@Parameter
 	@Property
-	private List<Student> payers;
+	private List<Contact> payers;
 
 	@Property
 	@Persist
-	private Student payer;
+	private ListSelectionModel<Contact> payersModel;
 
 	@Property
 	@Persist
-	private ListSelectionModel<Student> payersModel;
+	private ListValueEncoder<Contact> payersEncoder;
 
 	@Property
-	@Persist
-	private ListValueEncoder<Student> payersEncoder;
+	@Parameter
+	private PaymentIn payment;
 
 	private static final String VALID_CLASS = "valid";
 
@@ -66,10 +68,6 @@ public class EnrolmentPaymentEntry {
 	@InjectComponent
 	private Select cardTypeSelect;
 
-	@Property
-	@Persist
-	private CreditCardType cardType;
-
 	@Inject
 	private Messages messages;
 
@@ -79,14 +77,22 @@ public class EnrolmentPaymentEntry {
 	@Property
 	@Persist
 	private AbstractSelectModel cardTypeModel;
+	@InjectComponent
+	private TextField cardName;
 
 	@SetupRender
 	void beforeRender() {
 		moneyFormat = new DecimalFormat("###,##0.00");
-		payer = payers.get(0);
-		payersModel = new ListSelectionModel<Student>(payers, "fullName",
+		List<Contact> localPayers = new ArrayList<Contact>(payers.size());
+		for (Contact payer : payers) {
+			localPayers.add((Contact) payment.getObjectContext().localObject(
+					payer.getObjectId(), payer));
+		}
+		payers = localPayers;
+		payment.setContact(payers.get(0));
+		payersModel = new ListSelectionModel<Contact>(payers, "fullName",
 				propertyAccess);
-		payersEncoder = new ListValueEncoder<Student>(payers, "id",
+		payersEncoder = new ListValueEncoder<Contact>(payers, "id",
 				propertyAccess);
 		cardTypeModel = new EnumSelectModel(CreditCardType.class, messages);
 	}
@@ -131,6 +137,10 @@ public class EnrolmentPaymentEntry {
 		return getInputSectionClass(cardTypeSelect);
 	}
 
+	public String getCardNameInputClass() {
+		return getInputSectionClass(cardName);
+	}
+
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = paymentDetailsForm
 				.getDefaultTracker();
@@ -150,9 +160,14 @@ public class EnrolmentPaymentEntry {
 
 	@OnEvent(component = "paymentDetailsForm", value = "validate")
 	void validate() {
-		if (cardType == null) {
+		if (payment.getCreditCardType() == null) {
 			paymentDetailsForm.recordError(cardTypeSelect,
 					messages.get("cardTypeErrorMessage"));
+		}
+		String creditCardName = payment.getCreditCardName();
+		if (creditCardName == null || creditCardName.equals("")) {
+			paymentDetailsForm.recordError(cardName,
+					messages.get("cardNameErrorMessage"));
 		}
 	}
 }

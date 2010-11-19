@@ -23,25 +23,25 @@
     					<p>
       						<label for="cardpayer">Payer<em title="${message:required}">*</em></label>
       						<span class="valid">
-								<t:select value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
+								<t:select value="payment.contact" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
 							</span>
   						</p>
     					<p>
       						<label for="cardtype">Card Type<em title="${message:required}">*</em></label>
       						<span class="${cardTypeClass}">
-								<t:select t:id="cardTypeSelect" value="cardType" model="cardTypeModel" blankLabel="Please select..."/>
+								<t:select t:id="cardTypeSelect" value="payment.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"/>
 								<span t:type="ui/HintComponent" validationMessage="${message:cardTypeErrorMessage}"/>
 							</span>
      					</p>
-      					<!--  p>
+      					<p>
         					<label for="cardname">Name on Card<em title="${message:required}">*</em></label>
         						<span class="${cardNameInputClass}">
-									<t:textfield value="cardname" class ="input-fixed" 
+									<t:textfield value="payment.creditCardName" class ="input-fixed" 
 										clientId="cardname" t:id="cardName" maxlength="80" />
-									<span t:type="ui/HintComponent" validationMessage="cardNameErrorMessage"/>
+									<span t:type="ui/HintComponent" validationMessage="${message:cardNameErrorMessage}"/>
 								</span>
         				</p>
-      					<p>
+      					<!--p>
         					<label for="cardnumber">Number<em title="${message:required}">*</em></label>
         					<span class="${cardNumberInputClass}">
 								<t:textfield value="cardnumber" class ="input-fixed" 

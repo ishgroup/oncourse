@@ -181,7 +181,7 @@ public class ContactDetails {
 			return parentZone.getBody();
 		} else {
 			contact.getObjectContext().commitChanges();
-			studentService.addStudentToShortlist(contact.getStudent());
+			studentService.addStudentToShortlist(contact);
 			return "EnrolCourses";
 		}
 	}
