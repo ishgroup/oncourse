@@ -116,7 +116,12 @@ public class EnrolCourses {
 
 		students = (List<Student>) request.getSession(true).getAttribute(
 				"shortlistStudents");
+		
+		
 		if(classesToEnrol!=null&&students!=null){
+			for(Student student:students){
+				student.readProperty(Student.CONTACT_PROPERTY);
+			}
 			payment = context.newObject(PaymentIn.class);
 			invoice = context.newObject(Invoice.class);
 			enrolments=new Enrolment[students.size()][classesToEnrol.size()];

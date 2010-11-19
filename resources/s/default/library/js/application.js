@@ -825,4 +825,7 @@ function initHints(){
 	$j('span.validate input').bind("focus blur", function() {
 		$j(this).next().next().children('.reason').toggleClass('hidden-text');
 	});
+	$j('span.validate select').bind("focus blur", function() {
+		$j(this).next().next().children('.reason').toggleClass('hidden-text');
+	});
 }

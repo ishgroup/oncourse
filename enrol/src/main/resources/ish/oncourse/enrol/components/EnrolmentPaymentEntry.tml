@@ -1,13 +1,13 @@
 <t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<t:form t:id="paymentDetailsForm">
-		<t:errors/>
+	<t:zone t:id="paymentZone">
+	<t:form t:id="paymentDetailsForm" zone="paymentZone">
+		<t:errors banner="message:errors" class="literal:validation"/>
 		<t:if test="allEnrolmentsAvailable" negate="true">
   			<div class="error">
-    			<p>One or more of your selected enrolments has been filled. Please 
-      				<a href="enrolCourses">adjust your selection</a>
-      				before proceeding.
+    			<p>
+    				${message:filledEnrolmentsError} Please <a href="enrolCourses">adjust your selection</a> before proceeding.
       			</p>
   			</div>
 		</t:if>
@@ -26,14 +26,14 @@
 								<t:select value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
 							</span>
   						</p>
-    					<!--p>
+    					<p>
       						<label for="cardtype">Card Type<em title="${message:required}">*</em></label>
-      						<span class="${cardTypeClass}"-->
-								<!-- TODO select for card type;  noSelectionString="Please select..."-->
-								<!-- span t:type="ui/HintComponent" validationMessage="${message:cardTypeErrorMessage}"/>
+      						<span class="${cardTypeClass}">
+								<t:select t:id="cardTypeSelect" value="cardType" model="cardTypeModel" blankLabel="Please select..."/>
+								<span t:type="ui/HintComponent" validationMessage="${message:cardTypeErrorMessage}"/>
 							</span>
      					</p>
-      					< p>
+      					<!--  p>
         					<label for="cardname">Name on Card<em title="${message:required}">*</em></label>
         						<span class="${cardNameInputClass}">
 									<t:textfield value="cardname" class ="input-fixed" 
@@ -100,4 +100,8 @@
   			</div>
 		</div>
 	</t:form>
+	</t:zone>
+	<script type="text/javascript">
+		Event.observe('paymentZone', Tapestry.ZONE_UPDATED_EVENT, initHints);
+	</script>
 </t:container>	

@@ -2,14 +2,11 @@ package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Student;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.Block;
@@ -24,10 +21,7 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 
 public class ContactDetails {
 	/**
@@ -40,14 +34,8 @@ public class ContactDetails {
 	private static final DateFormat FORMAT = new SimpleDateFormat("d/M/y");
 
 	/**
-	 * tapestry services
+	 * ish services
 	 */
-	@Inject
-	private Messages messages;
-
-	@Inject
-	private Request request;
-	
 	@Inject
 	private IStudentService studentService;
 

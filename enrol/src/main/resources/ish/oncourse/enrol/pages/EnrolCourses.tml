@@ -26,7 +26,7 @@
 					<thead>
 						<tr>
 							<th colspan="3">
-								<div class="left">${student.contact.fullName} <span>- ${student.contact.emailAddress}</span></div>
+								<div class="left">${student.fullName} <span>- ${student.contact.emailAddress}</span></div>
 								<div class="right">
 									<t:if test="showConcessionsArea">
 										<t:actionlink t:id="addStudentConcession" title="Add a concession" class="add-concession">

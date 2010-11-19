@@ -18,6 +18,11 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>ish.oncourse.angel</groupId>
+			<artifactId>waCommon</artifactId>
+		</dependency>
+		
+		<dependency>
 			<artifactId>cayenne-server</artifactId>
 			<groupId>org.apache.cayenne</groupId>
 		</dependency>

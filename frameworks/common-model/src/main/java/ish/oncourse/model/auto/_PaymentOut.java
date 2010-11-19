@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.payment.cc.CreditCardType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentOutTransaction;
@@ -54,11 +55,11 @@ public abstract class _PaymentOut extends CayenneDataObject {
         return (String)readProperty("creditCardCVV");
     }
 
-    public void setCreditCardType(String creditCardType) {
+    public void setCreditCardType(CreditCardType creditCardType) {
         writeProperty("creditCardType", creditCardType);
     }
-    public String getCreditCardType() {
-        return (String)readProperty("creditCardType");
+    public CreditCardType getCreditCardType() {
+        return (CreditCardType)readProperty("creditCardType");
     }
 
     public void setModified(Date modified) {
