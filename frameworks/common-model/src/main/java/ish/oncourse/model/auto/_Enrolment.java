@@ -32,7 +32,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String DISCOUNT_PROPERTY = "discount";
     public static final String DISCOUNT_ENROLMENTS_PROPERTY = "discountEnrolments";
-    public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
+    public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
     public static final String OUTCOMES_PROPERTY = "outcomes";
     public static final String STUDENT_PROPERTY = "student";
 
@@ -119,15 +119,12 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
 
 
-    public void addToInvoiceLines(InvoiceLine obj) {
-        addToManyTarget("invoiceLines", obj, true);
+    public void setInvoiceLine(InvoiceLine invoiceLine) {
+        setToOneTarget("invoiceLine", invoiceLine, true);
     }
-    public void removeFromInvoiceLines(InvoiceLine obj) {
-        removeToManyTarget("invoiceLines", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<InvoiceLine> getInvoiceLines() {
-        return (List<InvoiceLine>)readProperty("invoiceLines");
+
+    public InvoiceLine getInvoiceLine() {
+        return (InvoiceLine)readProperty("invoiceLine");
     }
 
 
