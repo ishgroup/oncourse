@@ -1,16 +1,18 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.payment.cc.CreditCardType;
-import ish.oncourse.enrol.selectutils.ListSelectionModel;
-import ish.oncourse.enrol.selectutils.ListValueEncoder;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.selectutils.ListSelectModel;
+import ish.oncourse.selectutils.ListValueEncoder;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ListSelectionModel;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.Field;
@@ -50,7 +52,7 @@ public class EnrolmentPaymentEntry {
 
 	@Property
 	@Persist
-	private ListSelectionModel<Contact> payersModel;
+	private ListSelectModel<Contact> payersModel;
 
 	@Property
 	@Persist
@@ -94,8 +96,9 @@ public class EnrolmentPaymentEntry {
 		payers = localPayers;
 		payment.setContact(payers.get(0));
 		
-		payersModel = new ListSelectionModel<Contact>(payers, "fullName",
+		payersModel = new ListSelectModel<Contact>(payers, "fullName",
 				propertyAccess);
+		
 		payersEncoder = new ListValueEncoder<Contact>(payers, "id",
 				propertyAccess);
 				
