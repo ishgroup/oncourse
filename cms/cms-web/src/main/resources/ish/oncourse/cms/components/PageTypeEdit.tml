@@ -1,36 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:form t:id="pageTypeEditForm" zone="pageTypeZone">
-		<t:errors/>
-		
+		<t:errors/>	
 		<t:label for="name"></t:label><t:textfield t:id="name" t:value="editPageType.name" t:validate="required,minlength=3"/><br/>
 		<t:label for="layoutKey"></t:label><t:select t:id="layoutKey" name="layoutKey" model="layoutSelectModel" encoder="layoutSelectModel" value="editPageType.layoutKey"/>
-		
-		<br/>
-		
-		<t:loop source="regionKeys" value="regionKey">
-			<h2>${regionKey}</h2>
-			<ul id="b_${regionKey}" class="connectedSortable">
-				<li class="ui-state-default">Item 1</li>
-				<li class="ui-state-default">Item 2</li>
-				<li class="ui-state-default">Item 3</li>
-				<li class="ui-state-default">Item 4</li>
-				<li class="ui-state-default">Item 5</li>
-			</ul>		
-			<br/>
-		</t:loop>
-		
-		<a t:id="cancel" t:type="actionLink" zone="blockZone">Cancel</a>
-		<a t:id="delete" t:type="actionLink" zone="blockZone">Delete</a>
-		
-		<t:submit t:id="Save"/>
-		
-		<span>${blockIds}</span>
 	</t:form>
+	
+	<br/>
+		
+	<t:loop source="regionKeys" value="regionKey">
+		<h2>${regionKey}</h2>
+		<ul id="b_${regionKey}" class="connectedSortable">
+			<t:loop source="blocksForRegionKey" value="block">
+				<li id="${block.id}" class="ui-state-default">${block.name}</li>
+			</t:loop>
+			<span>&nbsp;</span>
+		</ul>		
+		<br/>
+	</t:loop>
+		
+	<div>
+		<a t:id="cancel" t:type="actionLink" zone="blockZone"><button>Cancel</button></a>
+		<a t:id="delete" t:type="actionLink" zone="blockZone"><button>Delete</button></a>
+		<button onclick="javascript:$('${pageTypeEditForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">Save</button>
+	</div>
 	
 	<script type="text/javascript">
 		jQuery(function() {
-			jQuery('${blockIds}').sortable({ connectWith: ".connectedSortable"}).disableSelection();
-		});
+			jQuery('${blockIds}').sortable({ connectWith: ".connectedSortable", placeholder: "ui-state-highlight", 
+				update: function (event, ui) {
+					 var result = $('${blockIds}').sortable('toArray');
+                     alert(result);
+                     if (ui.sender) {
+                    	 
+                     }
+				}}).disableSelection();
+			}
+		);
 	</script>
 </div>

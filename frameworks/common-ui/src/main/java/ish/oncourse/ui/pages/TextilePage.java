@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
@@ -13,7 +14,6 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class TextilePage {
-	private static final String DISPLAYED_REGION_KEY = "content";
 
 	@Inject
 	private IWebContentService webContentService;
@@ -29,7 +29,7 @@ public class TextilePage {
 	void beforeRender() {
 		this.node = webNodeService.getCurrentNode();
 		List<WebContentVisibility> list = ExpressionFactory.matchExp(
-				WebContentVisibility.REGION_KEY_PROPERTY, DISPLAYED_REGION_KEY)
+				WebContentVisibility.REGION_KEY_PROPERTY, RegionKey.content)
 				.filterObjects(node.getWebContentVisibility());
 
 		if (list.size() > 0) {

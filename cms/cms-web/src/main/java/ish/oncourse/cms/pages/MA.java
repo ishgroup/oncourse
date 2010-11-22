@@ -20,7 +20,7 @@ public class MA {
 
 	@Inject
 	private IWebMenuService webMenuService;
-	
+
 	@Inject
 	private IWebNodeService webNodeService;
 
@@ -33,16 +33,16 @@ public class MA {
 	private enum OPER {
 		n, u
 	};
-	
+
 	StreamResponse onActionFromNewPage() {
 		WebMenu menu = webMenuService.newMenu();
-		
+
 		JSONObject obj = new JSONObject();
 		obj.put("id", menu.getId());
-		
+
 		return new TextStreamResponse("text/json", obj.toString());
 	}
-	
+
 	StreamResponse onActionFromSave() {
 		String[] id = request.getParameter("id").split("_");
 		String value = request.getParameter("value");
@@ -56,29 +56,54 @@ public class MA {
 		case u:
 			if (value.startsWith("/page")) {
 				String nodeId = value.substring(6);
-				WebNode node = webNodeService.getNodeForNodeNumber(Integer.parseInt(nodeId));
+				WebNode node = webNodeService.getNodeForNodeNumber(Integer
+						.parseInt(nodeId));
 				menu.setWebNode(node);
-			}
-			else {
+			} else {
 				menu.setUrl(value);
 			}
 			break;
 		}
 
 		cayenneService.sharedContext().commitChanges();
-		
+
 		return new TextStreamResponse("text/html", value);
 	}
-	
+
 	StreamResponse onActionFromRemove() {
-		
+
 		String id = request.getParameter("id");
-		
+
 		WebMenu menu = webMenuService.loadByIds(id).get(0);
-		
+
 		cayenneService.sharedContext().deleteObject(menu);
 		cayenneService.sharedContext().commitChanges();
-		
+
+		return new TextStreamResponse("text/json", "{status: 'OK'}");
+	}
+
+	StreamResponse onActionFromSort() {
+		String id = request.getParameter("id");
+		String pid = request.getParameter("pid");
+
+		int w = Integer.parseInt(request.getParameter("w"));
+
+		WebMenu item = webMenuService.loadByIds(id).get(0);
+		WebMenu pItem = ("root".equalsIgnoreCase(pid)) ? null : webMenuService
+				.loadByIds(pid).get(0);
+
+		for (WebMenu m : pItem.getChildrenMenus()) {
+			int weight = m.getWeight();
+			if (weight >= w) {
+				m.setWeight(weight + 1);
+			}
+		}
+
+		item.setParentWebMenu(pItem);
+		item.setWeight(w);
+
+		cayenneService.sharedContext().commitChanges();
+
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 }

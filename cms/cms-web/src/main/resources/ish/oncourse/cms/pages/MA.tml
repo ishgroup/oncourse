@@ -6,5 +6,6 @@
 		 <t:actionlink t:id="save"> </t:actionlink>
 		 <t:actionlink t:id="remove"> </t:actionlink>
 		 <t:actionlink t:id="newPage"></t:actionlink>
+		 <t:actionlink t:id="sort"></t:actionlink>
 	</body>
 </html>

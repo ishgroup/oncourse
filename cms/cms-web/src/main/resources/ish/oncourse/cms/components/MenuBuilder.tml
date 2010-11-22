@@ -1,9 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">	
-	
-	<input type="submit" name="serialize" id="serialize" value="SerializeTTTT" />
-
-	<p id="serializeOutput"></p>
 
 	<button class="awesome blue large cms_add_menuitem">Add a new menu item</button> <br/>
 	
@@ -33,11 +29,6 @@
 	<script type="text/javascript">
 		jQuery(function(){
 			jQuery.menubuilder(${suggestResults});
-			
-			jQuery('#serialize').click(function(){
-				var serialized = jQuery('ol.cms_sortable').nestedSortable('serialize');
-				jQuery('#serializeOutput').text(serialized);
-			});
 		});
 	</script>
 </t:container>

@@ -5,18 +5,22 @@ import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.selectutils.StringSelectModel;
+import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Arrays;
 import java.util.SortedSet;
 
 import org.apache.tapestry5.SelectModel;
+import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -33,6 +37,10 @@ public class PageTypeEdit {
 	@Parameter
 	@Property
 	private Zone updateZone;
+	
+	@Property
+	@Component
+	private Form pageTypeEditForm;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -43,16 +51,22 @@ public class PageTypeEdit {
 
 	@Inject
 	private IResourceService resourceService;
+	
+	@Inject
+	private IWebContentService webContentService;
 
 	@Property
 	private RegionKey regionKey;
+	
+	@Property
+	private WebContent block;
 		
 	public SortedSet<WebContent> getBlocksForRegionKey() {
-		return null;
+		return webContentService.getBlocksForRegionKey(regionKey);
 	}
 	
 	public RegionKey[] getRegionKeys() {
-		return RegionKey.values();
+		return Arrays.copyOfRange(RegionKey.values(), 1, RegionKey.values().length);
 	}
 
 	public String getBlockIds() {

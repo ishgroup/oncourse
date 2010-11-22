@@ -1,9 +1,9 @@
 package ish.oncourse.ui.components;
 
-import java.util.List;
-
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
+
+import java.util.List;
 
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.AfterRenderBody;

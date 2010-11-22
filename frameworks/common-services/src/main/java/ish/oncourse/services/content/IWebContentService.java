@@ -3,6 +3,7 @@ package ish.oncourse.services.content;
 import java.util.List;
 import java.util.SortedSet;
 
+import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 
 public interface IWebContentService {
@@ -42,7 +43,7 @@ public interface IWebContentService {
 	 * @param location key
 	 * @return web blocks.
 	 */
-	SortedSet<WebContent> getBlocksForRegionKey(String regionKey);
+	SortedSet<WebContent> getBlocksForRegionKey(RegionKey regionKey);
 
 	/**
 	 * Creates new web content.

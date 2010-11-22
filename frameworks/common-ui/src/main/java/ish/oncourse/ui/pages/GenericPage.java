@@ -54,8 +54,16 @@ public abstract class GenericPage {
 				return paramBlock;
 			}
 
+			RegionKey key = null;
+
+			try {
+				key = RegionKey.valueOf(regionKey.toLowerCase());
+			} catch (IllegalArgumentException e) {
+				return null;
+			}
+
 			List<WebContentVisibility> list = ExpressionFactory.matchExp(
-					WebContentVisibility.REGION_KEY_PROPERTY, RegionKey.valueOf(regionKey.toUpperCase()))
+					WebContentVisibility.REGION_KEY_PROPERTY, key)
 					.filterObjects(node.getWebContentVisibility());
 
 			if (list.size() > 0) {

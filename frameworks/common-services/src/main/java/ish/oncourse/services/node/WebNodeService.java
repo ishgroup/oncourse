@@ -200,7 +200,7 @@ public class WebNodeService implements IWebNodeService {
 		WebContentVisibility contentVisibility = ctx
 				.newObject(WebContentVisibility.class);
 
-		contentVisibility.setRegionKey(RegionKey.CONTENT);
+		contentVisibility.setRegionKey(RegionKey.content);
 		contentVisibility.setWebNode(newPageNode);
 
 		WebContent webContent = ctx.newObject(WebContent.class);
