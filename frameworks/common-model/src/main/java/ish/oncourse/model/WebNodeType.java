@@ -50,7 +50,7 @@ public class WebNodeType extends _WebNodeType {
 
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
-						+ WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
+						+ WebContentVisibility.REGION_KEY_PROPERTY, RegionKey.valueOf(regionKey.toUpperCase())));
 
 		q.addOrdering(new Ordering(WebContent.WEB_CONTENT_VISIBILITY_PROPERTY
 				+ "." + WebContentVisibility.WEIGHT_PROPERTY,

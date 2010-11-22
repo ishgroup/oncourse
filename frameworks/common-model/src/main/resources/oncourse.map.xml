@@ -1266,7 +1266,7 @@
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="WebContentVisibility" className="ish.oncourse.model.WebContentVisibility" dbEntityName="WebContentVisibility">
-		<obj-attribute name="regionKey" type="java.lang.String" db-attribute-path="regionKey"/>
+		<obj-attribute name="regionKey" type="ish.oncourse.model.RegionKey" db-attribute-path="regionKey"/>
 		<obj-attribute name="weight" type="java.lang.Integer" db-attribute-path="weight"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>

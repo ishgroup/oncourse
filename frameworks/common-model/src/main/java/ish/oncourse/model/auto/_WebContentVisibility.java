@@ -2,6 +2,7 @@ package ish.oncourse.model.auto;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
@@ -22,11 +23,11 @@ public abstract class _WebContentVisibility extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public void setRegionKey(String regionKey) {
+    public void setRegionKey(RegionKey regionKey) {
         writeProperty("regionKey", regionKey);
     }
-    public String getRegionKey() {
-        return (String)readProperty("regionKey");
+    public RegionKey getRegionKey() {
+        return (RegionKey)readProperty("regionKey");
     }
 
     public void setWeight(Integer weight) {

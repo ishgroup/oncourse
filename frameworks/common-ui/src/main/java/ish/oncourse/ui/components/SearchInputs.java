@@ -1,8 +1,9 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.selectutils.ListSelectModel;
+import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.ui.ISelectModelService;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,20 +11,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 
 public class SearchInputs {
 
 	@Inject
 	private ITagService tagService;
-
+	
 	@Inject
-	private ISelectModelService selectModelService;
+	private PropertyAccess access;
 
 	@Inject
 	private Request request;
@@ -37,7 +38,10 @@ public class SearchInputs {
 
 	@Property
 	@Persist
-	private SelectModel tagModelEnc;
+	private ListSelectModel<Tag> tagModel;
+	
+	@Property
+	private ListValueEncoder<Tag> tagEnc;
 
 	@Persist
 	@Property
@@ -77,8 +81,8 @@ public class SearchInputs {
 			}
 		});
 		
-		tagModelEnc = selectModelService.newSelectModel(subjectTagChildTags,
-				Tag.NAME_PROPERTY, "id");
+		this.tagModel = new ListSelectModel<Tag>(subjectTagChildTags, Tag.NAME_PROPERTY, access);
+		this.tagEnc = new ListValueEncoder<Tag>(subjectTagChildTags, "id", access);
 		
 		Tag browseTag = (Tag) request.getAttribute("browseTag");
 		if (browseTag != null) {

@@ -4,7 +4,7 @@
 	    <t:form t:id="optionsForm" zone="prop:updateZone.clientId">
 	    	<t:errors/>
 			<t:label for="pageName"></t:label><t:textfield t:id="pageName" t:value="node.name" t:validate="required,minlength=3"/><br/>
-			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeModel" value="node.webNodeType"/><br/>
+			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="node.webNodeType"/><br/>
 			<t:label for="published"/><t:checkbox t:id="published" value="node.published"/>
 		</t:form>
 	    

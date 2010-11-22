@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.selectutils;
+package ish.oncourse.selectutils;
 
 import java.util.ArrayList;
 import java.util.List;

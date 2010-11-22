@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
@@ -54,7 +55,7 @@ public abstract class GenericPage {
 			}
 
 			List<WebContentVisibility> list = ExpressionFactory.matchExp(
-					WebContentVisibility.REGION_KEY_PROPERTY, regionKey)
+					WebContentVisibility.REGION_KEY_PROPERTY, RegionKey.valueOf(regionKey.toUpperCase()))
 					.filterObjects(node.getWebContentVisibility());
 
 			if (list.size() > 0) {

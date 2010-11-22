@@ -20,7 +20,7 @@
       <div id="adv_search_tag">
         <label for="subject_selection">In Subject</label>
         <t:select id="subject_selection" name="subject"
-					model="tagModelEnc" encoder="tagModelEnc" blankLabel="all" value="browseTagLevel2Ancestor"/>
+					model="tagModel" encoder="tagEnc" blankLabel="all" value="browseTagLevel2Ancestor"/>
       </div>
       
       <div id="adv_search_location">

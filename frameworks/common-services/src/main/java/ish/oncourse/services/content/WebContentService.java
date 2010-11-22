@@ -13,6 +13,7 @@ import ish.oncourse.util.ValidationException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.SortedSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -118,5 +119,9 @@ public class WebContentService implements IWebContentService {
 		cayenneService.sharedContext().commitChanges();
 		
 		return webContent;
+	}
+
+	public SortedSet<WebContent> getBlocksForRegionKey(String regionKey) {
+		return null;
 	}
 }

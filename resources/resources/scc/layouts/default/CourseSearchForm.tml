@@ -15,7 +15,7 @@
 			<h3><span>Search</span></h3>
     		<input t:type="TextField" t:value="s" name="s" class="quicksearch" size="15" autocomplete="off" />
 	        <t:select t:id="subject" name="subject" t:value="subject"
-					model="tagModelEnc" encoder="tagModelEnc" blankLabel="Everything"/>    
+					model="tagModel" encoder="tagEnc" blankLabel="Everything"/>    
 		    <input type="submit" value="Go!" class="find" id="find"/>
   		</t:form>
   		<span t:type="ui/SearchInputs"/>

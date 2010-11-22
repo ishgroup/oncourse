@@ -4,13 +4,14 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.selectutils.ListSelectModel;
+import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.alias.IWebUrlAliasService;
-import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.ui.ISelectModelService;
 
-import org.apache.tapestry5.SelectModel;
+import java.util.List;
+
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -19,6 +20,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 public class PageOptions {
 
@@ -42,7 +44,7 @@ public class PageOptions {
 	private Zone urlZone;
 
 	@Inject
-	private ISelectModelService selectModelService;
+	private PropertyAccess access;
 
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
@@ -58,7 +60,11 @@ public class PageOptions {
 
 	@Property
 	@Persist
-	private SelectModel pageTypeModel;
+	private ListSelectModel<WebNodeType> pageTypeModel;
+
+	@Property
+	@Persist
+	private ListValueEncoder<WebNodeType> pageTypeEncoder;
 
 	@Property
 	private WebUrlAlias webUrlAlias;
@@ -68,9 +74,13 @@ public class PageOptions {
 
 	@SetupRender
 	public void beforeRender() {
-		this.pageTypeModel = selectModelService.newSelectModel(
-				webNodeTypeService.getWebNodeTypes(),
-				WebNodeType.LAYOUT_KEY_PROPERTY, "id");
+		List<WebNodeType> webNodeTypes = webNodeTypeService.getWebNodeTypes();
+
+		this.pageTypeModel = new ListSelectModel<WebNodeType>(webNodeTypes,
+				WebNodeType.LAYOUT_KEY_PROPERTY, access);
+
+		this.pageTypeEncoder = new ListValueEncoder<WebNodeType>(webNodeTypes,
+				"id", access);
 	}
 
 	public boolean isNotDefault() {
@@ -129,6 +139,6 @@ public class PageOptions {
 	}
 
 	public String getSiteUrl() {
-		return "http://" + webSiteService.getCurrentDomain().getName() + "/";
+		return "http://" + webSiteService.getCurrentDomain().getName();
 	}
 }

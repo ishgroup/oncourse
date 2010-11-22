@@ -46,8 +46,6 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
-import ish.oncourse.services.ui.ISelectModelService;
-import ish.oncourse.services.ui.SelectModelService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
@@ -84,7 +82,6 @@ public class ServiceModule {
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
-		binder.bind(ISelectModelService.class, SelectModelService.class);
 		binder.bind(IPreferenceService.class, PreferenceService.class);
 		binder.bind(IPostCodeDbService.class, PostCodeDbService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);

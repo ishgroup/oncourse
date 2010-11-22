@@ -1,5 +1,6 @@
 package ish.oncourse.services.node;
 
+import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
@@ -199,7 +200,7 @@ public class WebNodeService implements IWebNodeService {
 		WebContentVisibility contentVisibility = ctx
 				.newObject(WebContentVisibility.class);
 
-		contentVisibility.setRegionKey(WebContentVisibility.DEFAULT_REGION_KEY);
+		contentVisibility.setRegionKey(RegionKey.CONTENT);
 		contentVisibility.setWebNode(newPageNode);
 
 		WebContent webContent = ctx.newObject(WebContent.class);

@@ -5,6 +5,7 @@ import ish.oncourse.enrol.selectutils.ListSelectionModel;
 import ish.oncourse.enrol.selectutils.ListValueEncoder;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -83,17 +84,21 @@ public class EnrolmentPaymentEntry {
 	@SetupRender
 	void beforeRender() {
 		moneyFormat = new DecimalFormat("###,##0.00");
+
 		List<Contact> localPayers = new ArrayList<Contact>(payers.size());
 		for (Contact payer : payers) {
 			localPayers.add((Contact) payment.getObjectContext().localObject(
 					payer.getObjectId(), payer));
 		}
+		
 		payers = localPayers;
 		payment.setContact(payers.get(0));
+		
 		payersModel = new ListSelectionModel<Contact>(payers, "fullName",
 				propertyAccess);
 		payersEncoder = new ListValueEncoder<Contact>(payers, "id",
 				propertyAccess);
+				
 		cardTypeModel = new EnumSelectModel(CreditCardType.class, messages);
 	}
 

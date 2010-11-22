@@ -89,10 +89,12 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final Pattern SITEMAP_PATTERN = Pattern
 			.compile("/sitemap\\.xml");
 
-	String[] IMMUTABLE_PATHS = new String[] {"/assets",  "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions", 
-				"/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.blockedit.blockeditform"};
-	
-	
+	String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage",
+			"/newpage", "/menubuilder", "/pageoptions", "/ma.", "/site",
+			"/sitesettings", "/pagetypes", "/menus", "/pages", "/blocks",
+			"/blockedit", "/site.blocks.blockedit.blockeditform",
+			"/site.pagetypes.pagetypeedit.pagetypeeditform" };
+
 	private static final String HOME_PAGE_PATH = "/";
 
 	/**

@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.selectutils;
+package ish.oncourse.selectutils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,13 @@ import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.ioc.services.PropertyAdapter;
 import org.apache.tapestry5.util.AbstractSelectModel;
 
-public class ListSelectionModel<T> extends AbstractSelectModel {
+public class ListSelectModel<T> extends AbstractSelectModel {
 
 	private PropertyAdapter labelFieldAdapter = null;
 
 	private List<T> list;
 
-	public ListSelectionModel(List<T> list, String labelField,
+	public ListSelectModel(List<T> list, String labelField,
 			PropertyAccess access) {
 		if (list == null) {
 			list = new ArrayList<T>();
@@ -54,5 +54,4 @@ public class ListSelectionModel<T> extends AbstractSelectModel {
 			return o.toString();
 		}
 	}
-
 }
