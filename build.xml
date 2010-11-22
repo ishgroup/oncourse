@@ -13,16 +13,10 @@
 	<property environment="env"/>
     
 	<path id="allLibraries.path">
-		<fileset id="allLibraries.files" dir="${common.lib.dir}">
-			<include name="**/*.jar"/>
-		</fileset>
 	</path>
 	
 	<taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="${global.lib.dir}/exe4j/bin/ant.jar" />
 
-	<taskdef name="cgen" classname="org.apache.cayenne.tools.CayenneGenerator">
-		<classpath refid="allLibraries.path" />
-	</taskdef>
 	
 	<!-- ==================================================== -->
 	
