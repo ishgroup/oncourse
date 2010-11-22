@@ -216,10 +216,21 @@
 
 
 	<repositories>
-	      	<repository>
+		<repository>
+			<id>ish repo third party</id>
+			<name>ish third party repository</name>
+			<url>http://repo.ish.com.au/content/groups/public</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository> 
+		<repository>
 			<id>ish repo</id>
 			<name>ish repository</name>
-			<url>http://repo.ish.com.au/content/groups/public</url>
+			<url>http://repo.ish.com.au/content/groups/ish</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
