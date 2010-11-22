@@ -28,13 +28,6 @@ import org.apache.tapestry5.services.Request;
 public class EnrolmentContactEntry {
 
 	/**
-	 * Contants
-	 */
-	private static final String VALID_CLASS = "valid";
-
-	private static final String VALIDATE_CLASS = "validate";
-
-	/**
 	 * ish services
 	 */
 	@Inject
@@ -210,8 +203,8 @@ public class EnrolmentContactEntry {
 
 	private String getInputSectionClass(TextField field) {
 		ValidationTracker defaultTracker = shortDetailsForm.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? VALID_CLASS
-				: VALIDATE_CLASS;
+		return defaultTracker == null || !defaultTracker.inError(field) ? messages
+				.get("validInput") : messages.get("validateInput");
 	}
 
 }

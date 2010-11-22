@@ -41,10 +41,10 @@
 									<span t:type="ui/HintComponent" validationMessage="${message:cardNameErrorMessage}"/>
 								</span>
         				</p>
-      					<!--p>
+      					<p>
         					<label for="cardnumber">Number<em title="${message:required}">*</em></label>
         					<span class="${cardNumberInputClass}">
-								<t:textfield value="cardnumber" class ="input-fixed" 
+								<t:textfield value="payment.creditCardNumber" class ="input-fixed" 
 										clientId="cardnumber" t:id="cardNumber" maxlength="20" />
 								<span t:type="ui/HintComponent" validationMessage="cardNumberErrorMessage"/>
 							</span>
@@ -52,19 +52,20 @@
       					<p>
         					<label for="cardcvv">CVV<em title="${message:required}">*</em></label>
         					<span class="${cardcvvInputClass}">
-								<t:textfield value="cardcvv" class ="input-small" 
+								<t:textfield value="payment.creditCardCVV" class ="input-fixed" 
 										clientId="cardcvv" t:id="cardcvv" maxlength="5" />
-								<span t:type="ui/HintComponent" validationMessage=cardcvv"/>
-								<a href="$^cvvPopupUrl" class="nyromodal" >What is CVV?</a>
+								<span t:type="ui/HintComponent" validationMessage="${message:cardcvv}"/>
 							</span>
+							<a href="/s/cvv.html" class="nyromodal" >What is CVV?</a>
       					</p>
       					<p>
         					<label>Expiry<em title="${message:required}">*</em></label>
-        					<span class="${expiryInputClass}"-->
-        						<!-- TODO select for month-->/<!-- TODO select for year-->
-        						<!-- span t:type="ui/HintComponent" validationMessage="expiryErrorMessage"/>
+        					<span class="valid">
+        							<t:select t:id="expiryMonth" value="ccExpiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"/> 
+        							/
+        							<t:select t:id="expiryYear" value="ccExpiryYear" model="years" blankLabel="yyyy"/>
         					</span>
-     					</p-->
+     					</p>
   					</div>
 				</fieldset>
 			</t:if>
@@ -73,10 +74,10 @@
    					<label>Conditions<em title="${message:required}">*</em></label>
    				</div>
    				<div class="conditions">
-	   				<!-- todo checkbox for agree  id="agree"-->
-   					<t:if test="hasEnrolmentDisclosure">
+	   				<t:checkbox value="userAgreed" clientId="agree"/>
+	   				<t:if test="enrolmentDisclosure">
    					 	I have read the 
-        				<!-- a href="${enrolmentDisclosure}" title="Student information" class="nyromodal" >Student Information</a-->
+        				<a href="${enrolmentDisclosure}" title="Student information" class="nyromodal" >Student Information</a>
         				or have had it explained to me, and I agree to accept these enrolment conditions.
    					</t:if>
      				I understand the enrolment and refund policy. 
@@ -87,10 +88,7 @@
     			<t:if test="hasConcessionsEnrolment">
    					<t:if test="hasStudentWithoutConcessions">
    						<div class="message enrolment-concession-reminder">
-        					<p>
-	        					If a student is eligible for a concession you must enter it at the top of this page before you make a payment. 
-	        					Concessions are not available after you have submitted your payment details.
-		        			</p>
+        					<p>${message:concessionsAvailable}</p>
 		        		</div>
     				</t:if>
     			</t:if>
@@ -102,6 +100,11 @@
 	</t:form>
 	</t:zone>
 	<script type="text/javascript">
-		Event.observe('paymentZone', Tapestry.ZONE_UPDATED_EVENT, initHints);
+		Event.observe('paymentZone', Tapestry.ZONE_UPDATED_EVENT, 
+				function(){
+					initHints();  
+					$j('.nyromodal').nyroModal( {debug:false } );
+				}
+		);
 	</script>
 </t:container>	

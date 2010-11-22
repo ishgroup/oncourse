@@ -21,17 +21,20 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ContactDetails {
 	/**
 	 * Contants
 	 */
-	private static final String VALID_CLASS = "valid";
-
-	private static final String VALIDATE_CLASS = "validate";
-
 	private static final DateFormat FORMAT = new SimpleDateFormat("d/M/y");
+
+	/**
+	 * tapestry services
+	 */
+	@Inject
+	private Messages messages;
 
 	/**
 	 * ish services
@@ -303,8 +306,8 @@ public class ContactDetails {
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = contactDetailsForm
 				.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? VALID_CLASS
-				: VALIDATE_CLASS;
+		return defaultTracker == null || !defaultTracker.inError(field) ? messages
+				.get("validInput") : messages.get("validateInput");
 	}
 
 	public String getBirthDateProperty() {

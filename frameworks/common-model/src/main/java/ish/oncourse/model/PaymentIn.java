@@ -1,9 +1,10 @@
 package ish.oncourse.model;
 
+import ish.common.util.ExternalValidation;
+import ish.oncourse.model.auto._PaymentIn;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-import ish.oncourse.model.auto._PaymentIn;
 
 public class PaymentIn extends _PaymentIn {
 
@@ -19,4 +20,21 @@ public class PaymentIn extends _PaymentIn {
 		}
 		return total;
 	}
+
+	public String validateCCNumber() {
+		if (getCreditCardNumber() == null || getCreditCardNumber().equals("")) {
+			return "The credit card number cannot be blank.";
+		}
+
+		if (!ExternalValidation.validateCreditCardNumber(getCreditCardNumber())
+				|| (getCreditCardType() != null && !ExternalValidation
+						.validateCreditCardNumber(getCreditCardNumber(),
+								getCreditCardType()))) {
+
+			return "Invalid credit card number.";
+		}
+
+		return null;
+	}
+	
 }

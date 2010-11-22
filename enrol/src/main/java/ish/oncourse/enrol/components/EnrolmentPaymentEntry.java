@@ -3,16 +3,18 @@ package ish.oncourse.enrol.components;
 import ish.common.payment.cc.CreditCardType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.Preference;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
+import ish.oncourse.services.preference.IPreferenceService;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
-import javax.swing.ListSelectionModel;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.Field;
@@ -30,25 +32,47 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.util.AbstractSelectModel;
 import org.apache.tapestry5.util.EnumSelectModel;
 
 public class EnrolmentPaymentEntry {
+	/**
+	 * Constants
+	 */
+	private static final String PAYMENT_AMOUNT_FORMAT = "###,##0.00";
 
+	/**
+	 * tapestry services
+	 */
+	@Inject
+	private IPreferenceService preferenceService;
+
+	@Inject
+	private PropertyAccess propertyAccess;
+
+	@Inject
+	private Messages messages;
+
+	/**
+	 * Parameters
+	 */
 	@Parameter
 	@Property
 	private BigDecimal totalIncGst;
 
-	@Property
-	@Persist
-	private Format moneyFormat;
-
-	@InjectComponent
-	private Form paymentDetailsForm;
-
 	@Parameter
 	@Property
 	private List<Contact> payers;
+
+	@Parameter
+	@Property
+	private PaymentIn payment;
+
+	/**
+	 * Auxiliary properties
+	 */
+	@Property
+	@Persist
+	private Format moneyFormat;
 
 	@Property
 	@Persist
@@ -59,50 +83,96 @@ public class EnrolmentPaymentEntry {
 	private ListValueEncoder<Contact> payersEncoder;
 
 	@Property
-	@Parameter
-	private PaymentIn payment;
+	@Persist
+	private EnumSelectModel cardTypeModel;
 
-	private static final String VALID_CLASS = "valid";
+	@Property
+	private String cardNumberErrorMessage;
 
-	private static final String VALIDATE_CLASS = "validate";
+	@Property
+	private String ccExpiryMonth;
 
-	@Inject
-	private PropertyAccess propertyAccess;
-	@InjectComponent
-	private Select cardTypeSelect;
-
-	@Inject
-	private Messages messages;
-
-	@InjectComponent
-	private Zone paymentZone;
+	@Property
+	private Integer ccExpiryYear;
 
 	@Property
 	@Persist
-	private AbstractSelectModel cardTypeModel;
+	private List<Integer> years;
+
+	@Property
+	@Persist
+	private boolean userAgreed;
+
+	@Property
+	@Persist
+	private String enrolmentDisclosure;
+
+	/**
+	 * Components
+	 */
+	@InjectComponent
+	private Zone paymentZone;
+
+	@InjectComponent
+	private Form paymentDetailsForm;
+
+	@InjectComponent
+	private Select cardTypeSelect;
+
 	@InjectComponent
 	private TextField cardName;
 
+	@InjectComponent
+	private TextField cardNumber;
+
+	@InjectComponent
+	private TextField cardcvv;
+
 	@SetupRender
 	void beforeRender() {
-		moneyFormat = new DecimalFormat("###,##0.00");
+		moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
+		initYears();
+		initEnrolmentDisclosure();
 
+		initPayers();
+
+		payersModel = new ListSelectModel<Contact>(payers, "fullName",
+				propertyAccess);
+
+		payersEncoder = new ListValueEncoder<Contact>(payers, "id",
+				propertyAccess);
+
+		cardTypeModel = new EnumSelectModel(CreditCardType.class, messages);
+	}
+
+	private void initYears() {
+		years = new ArrayList<Integer>();
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+		for (int i = 0; i < 10; i++) {
+			years.add(currentYear + i);
+		}
+	}
+
+	private void initEnrolmentDisclosure() {
+		Preference enrolmentDisclosurePref = preferenceService
+				.getPreferenceByKey("feature.enrolmentDisclosure");
+		enrolmentDisclosure = enrolmentDisclosurePref.getValueString();
+
+		if ("".equals(enrolmentDisclosure)) {
+			enrolmentDisclosure = null;
+		}
+	}
+
+	private void initPayers() {
 		List<Contact> localPayers = new ArrayList<Contact>(payers.size());
 		for (Contact payer : payers) {
 			localPayers.add((Contact) payment.getObjectContext().localObject(
 					payer.getObjectId(), payer));
 		}
-		
+
 		payers = localPayers;
 		payment.setContact(payers.get(0));
-		
-		payersModel = new ListSelectModel<Contact>(payers, "fullName",
-				propertyAccess);
-		
-		payersEncoder = new ListValueEncoder<Contact>(payers, "id",
-				propertyAccess);
-				
-		cardTypeModel = new EnumSelectModel(CreditCardType.class, messages);
 	}
 
 	public boolean isAllEnrolmentsAvailable() {
@@ -113,12 +183,6 @@ public class EnrolmentPaymentEntry {
 	public boolean isZeroPayment() {
 		// TODO payment.isZeroTotalIncGst
 		return false;
-	}
-
-	public boolean isHasEnrolmentDisclosure() {
-		// <wo:PreferenceConditional college="$myCollege"
-		// key="feature.enrolmentDisclosure">
-		return true;
 	}
 
 	public boolean isHasConcessionsCollege() {
@@ -149,11 +213,19 @@ public class EnrolmentPaymentEntry {
 		return getInputSectionClass(cardName);
 	}
 
+	public String getCardNumberInputClass() {
+		return getInputSectionClass(cardNumber);
+	}
+
+	public String getCardcvvInputClass() {
+		return getInputSectionClass(cardcvv);
+	}
+
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = paymentDetailsForm
 				.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? VALID_CLASS
-				: VALIDATE_CLASS;
+		return defaultTracker == null || !defaultTracker.inError(field) ? messages
+				.get("validInput") : messages.get("validateInput");
 	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "success")
@@ -176,6 +248,36 @@ public class EnrolmentPaymentEntry {
 		if (creditCardName == null || creditCardName.equals("")) {
 			paymentDetailsForm.recordError(cardName,
 					messages.get("cardNameErrorMessage"));
+		}
+
+		cardNumberErrorMessage = payment.validateCCNumber();
+		if (cardNumberErrorMessage != null) {
+			paymentDetailsForm.recordError(cardNumber, cardNumberErrorMessage);
+		}
+
+		String creditCardCVV = payment.getCreditCardCVV();
+		if (creditCardCVV == null || creditCardCVV.equals("")) {
+			paymentDetailsForm.recordError(cardcvv, messages.get("cardcvv"));
+		}
+
+		boolean hasErrorInDate = false;
+		if (ccExpiryMonth == null || ccExpiryYear == null) {
+			hasErrorInDate = true;
+		} else {
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.MONTH, Integer.parseInt(ccExpiryMonth) - 1);
+			cal.set(Calendar.YEAR, ccExpiryYear);
+			if (cal.getTime().before(new Date())) {
+				hasErrorInDate = true;
+			}
+		}
+		if (hasErrorInDate) {
+			paymentDetailsForm.recordError(messages.get("expiryDateError"));
+		} else {
+			payment.setCreditCardExpiry(ccExpiryMonth + "/" + ccExpiryYear);
+		}
+		if (!userAgreed) {
+			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
 		}
 	}
 }
