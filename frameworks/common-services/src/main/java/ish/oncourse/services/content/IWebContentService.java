@@ -5,6 +5,7 @@ import java.util.SortedSet;
 
 import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
+import ish.oncourse.model.WebContentVisibility;
 
 public interface IWebContentService {
 
@@ -38,7 +39,7 @@ public interface IWebContentService {
 	List<WebContent> getBlocks();
 
 	/**
-	 * Get blocks for location key, sorted by weight property.
+	 * Gets blocks for location key, sorted by weight property.
 	 * 
 	 * @param location key
 	 * @return web blocks.
@@ -51,4 +52,11 @@ public interface IWebContentService {
 	 * @return
 	 */
 	WebContent newWebContent();
+	
+	/**
+	 * Gets web content visibility for region key.
+	 * @param regionKey
+	 * @return web content visibility
+	 */
+	SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(RegionKey regionKey);
 }

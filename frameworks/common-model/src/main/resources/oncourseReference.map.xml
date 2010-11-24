@@ -140,7 +140,7 @@
 		<obj-attribute name="dc" type="java.lang.String" db-attribute-path="dc"/>
 		<obj-attribute name="lat" type="java.lang.Double" db-attribute-path="lat"/>
 		<obj-attribute name="lon" type="java.lang.Double" db-attribute-path="lon"/>
-		<obj-attribute name="postcode" type="Integer" db-attribute-path="postcode"/>
+		<obj-attribute name="postcode" type="java.lang.Long" db-attribute-path="postcode"/>
 		<obj-attribute name="state" type="java.lang.String" db-attribute-path="state"/>
 		<obj-attribute name="suburb" type="java.lang.String" db-attribute-path="suburb"/>
 		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>

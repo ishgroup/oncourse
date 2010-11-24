@@ -11,7 +11,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -82,12 +81,8 @@ public class CourseService implements ICourseService {
 			return Collections.emptyList();
 		}
 
-		List<Object> params = Arrays.asList(ids);
-
-		EJBQLQuery q = new EJBQLQuery(
-				"select c from Course c where c.id IN (:ids)");
-
-		q.setParameter("ids", params);
+		SelectQuery q = new SelectQuery(Course.class);
+		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
@@ -124,9 +119,10 @@ public class CourseService implements ICourseService {
 		SelectQuery q = new SelectQuery(Course.class);
 		q.andQualifier(getSiteQualifier());
 		if (taggedWith != null) {
-			q.andQualifier(ExpressionFactory.inExp("db:ID",
-					tagService.getEntityIdsByTagName(taggedWith, Course.class
-							.getSimpleName())));
+			q.andQualifier(ExpressionFactory.inExp(
+					"db:ID",
+					tagService.getEntityIdsByTagName(taggedWith,
+							Course.class.getSimpleName())));
 		}
 
 		if (currentSearch != null) {
@@ -144,11 +140,9 @@ public class CourseService implements ICourseService {
 					ids.add((String) doc.getFieldValue("id"));
 				}
 				if (currentSearch) {
-					q.andQualifier(ExpressionFactory.inExp("db:ID",
-							ids));
+					q.andQualifier(ExpressionFactory.inExp("db:ID", ids));
 				} else {
-					q.andQualifier(ExpressionFactory.notInExp(
-							"db:ID", ids));
+					q.andQualifier(ExpressionFactory.notInExp("db:ID", ids));
 				}
 			}
 		}
@@ -175,15 +169,22 @@ public class CourseService implements ICourseService {
 	}
 
 	public Integer getCoursesCount() {
-		return ((Number) cayenneService.sharedContext().performQuery(
-				new EJBQLQuery("select count(c) from Course c where "
-						+ getSiteQualifier().toEJBQL("c"))).get(0)).intValue();
+		return ((Number) cayenneService
+				.sharedContext()
+				.performQuery(
+						new EJBQLQuery("select count(c) from Course c where "
+								+ getSiteQualifier().toEJBQL("c"))).get(0))
+				.intValue();
 	}
 
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService.sharedContext().performQuery(
-				new EJBQLQuery("select max(c.modified) from Course c where "
-						+ getSiteQualifier().toEJBQL("c"))).get(0);
+		return (Date) cayenneService
+				.sharedContext()
+				.performQuery(
+						new EJBQLQuery(
+								"select max(c.modified) from Course c where "
+										+ getSiteQualifier().toEJBQL("c")))
+				.get(0);
 	}
 
 	public Map<SearchParam, String> getCourseSearchParams() {
@@ -207,7 +208,7 @@ public class CourseService implements ICourseService {
 			}
 		}
 		request.setAttribute("browseTag", browseTag);
-		
+
 		return searchParams;
 	}
 }

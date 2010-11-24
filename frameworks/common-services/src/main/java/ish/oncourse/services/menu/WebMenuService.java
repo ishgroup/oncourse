@@ -40,6 +40,7 @@ public class WebMenuService implements IWebMenuService {
 
 		SelectQuery query = new SelectQuery(WebMenu.class, siteQualifier()
 				.andExp(rootMenuExp));
+		
 		query.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
 
 		List<WebMenu> results = cayenneService.sharedContext().performQuery(

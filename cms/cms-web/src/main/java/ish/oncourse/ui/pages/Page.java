@@ -1,6 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.WebContent;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.ui.utils.EmptyRenderable;
 
@@ -22,6 +23,9 @@ public class Page extends GenericPage {
 
 	@Inject
 	private IWebContentService webContentService;
+	
+	@Inject
+	private ICayenneService cayenneService;
 
 	@Inject
 	private Block editorBlock;
@@ -43,7 +47,9 @@ public class Page extends GenericPage {
 	}
 
 	Object onSuccessFromRegionForm() {
-		getCurrentRegion().getObjectContext().commitChanges();
+		
+		cayenneService.sharedContext().commitChanges();
+		
 		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(
 				getCurrentZoneKey(), regionContentBlock);
 	}

@@ -42,11 +42,11 @@ public abstract class _PostcodeDb extends CayenneDataObject {
         return (Double)readProperty("lon");
     }
 
-    public void setPostcode(Integer postcode) {
+    public void setPostcode(Long postcode) {
         writeProperty("postcode", postcode);
     }
-    public Integer getPostcode() {
-        return (Integer)readProperty("postcode");
+    public Long getPostcode() {
+        return (Long)readProperty("postcode");
     }
 
     public void setState(String state) {

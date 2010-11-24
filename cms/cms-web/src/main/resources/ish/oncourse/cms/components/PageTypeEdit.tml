@@ -26,16 +26,8 @@
 	</div>
 	
 	<script type="text/javascript">
-		jQuery(function() {
-			jQuery('${blockIds}').sortable({ connectWith: ".connectedSortable", placeholder: "ui-state-highlight", 
-				update: function (event, ui) {
-					 var result = $('${blockIds}').sortable('toArray');
-                     alert(result);
-                     if (ui.sender) {
-                    	 
-                     }
-				}}).disableSelection();
-			}
-		);
+			jQuery(function() {
+				jQuery.pageTypeEditor('${blockIds}');
+			});
 	</script>
 </div>

@@ -4,7 +4,7 @@
 	
 	<New id="solrHome" class="org.eclipse.jetty.plus.jndi.EnvEntry">
 		<Arg>solr/home</Arg>
-		<Arg type="java.lang.String">/Users/anton/willow/code/searchapp/src/main/resources/solr</Arg>
+		<Arg type="java.lang.String">/var/onCourse/solr</Arg>
 	</New>
 
 	<New id="onCourseDS" class="org.eclipse.jetty.plus.jndi.Resource">

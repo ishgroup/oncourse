@@ -205,33 +205,13 @@ $j(document).ready(function() {
 		return false; 
 	});
 	
-
-	// form 
 	if ($j(".suburb-autocomplete")) {
-		var data = "/advanced/suburbs";
-		$j(".suburb-autocomplete").autocomplete(data, 
-					{	mustMatch:false, 
-						matchContains:true, 
-						autoFill:false, 
-						scrollHeight: 220, 
-						selectFirst:false, 
-			
-						formatResult:function(item){
-	        				if(item[0].startsWith('<li>')){
-	        					return item[0].replace('<li>', '').replace('</li>', "");
-	        				}else{
-	        					return item;
-	        				}
-	        			}
-					});
+		$j(".suburb-autocomplete").autocomplete({source: '/ui/autocomplete.sub', minLength: 3, 
+			select: function(event, ui) {
+				setPostcodeAndStateFromSuburb(ui.item.value, 'postcode', 'state');
+			} 
+		});
 	}
-
-	
-	$j(".suburb-autocomplete").result(function(event, data, formatted) {
-		if (formatted && formatted.length>0) {
-			setPostcodeAndStateFromSuburb($j(this).attr('id'), 'postcode', 'state');
-		}
-	});
 	
 	// return selects the suburb from the popup list. Eat it so it doesn't submit the form.
 	$j(".suburb-autocomplete").keydown(function(key) {

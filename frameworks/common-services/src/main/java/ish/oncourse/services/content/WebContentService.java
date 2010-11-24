@@ -22,7 +22,9 @@ import java.util.regex.Pattern;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WebContentService implements IWebContentService {
@@ -102,21 +104,31 @@ public class WebContentService implements IWebContentService {
 				webSiteService.getCurrentWebSite()));
 
 		Expression expr = ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "+."
 						+ WebContentVisibility.WEB_NODE_PROPERTY, null);
 
 		expr = expr.orExp(ExpressionFactory.matchExp(
 				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY, null));
-		
+
 		q.andQualifier(expr);
+		
+		q.addOrdering(new Ordering(WebContent.MODIFIED_PROPERTY, SortOrder.DESCENDING));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
 	public WebContent newWebContent() {
+
 		WebContent webContent = cayenneService.sharedContext().newObject(
 				WebContent.class);
 
+		WebContentVisibility visibility = cayenneService.sharedContext()
+				.newObject(WebContentVisibility.class);
+
+		visibility.setRegionKey(RegionKey.unassigned);
+		visibility.setWebContent(webContent);
+
+		webContent.setWebContentVisibility(visibility);
 		webContent.setWebSite(webSiteService.getCurrentWebSite());
 		webContent.setContent("Sample content text.");
 
@@ -128,22 +140,32 @@ public class WebContentService implements IWebContentService {
 	public SortedSet<WebContent> getBlocksForRegionKey(RegionKey regionKey) {
 
 		SelectQuery q = new SelectQuery(WebContent.class);
+
 		q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
 				webSiteService.getCurrentWebSite()));
 
-		if (regionKey == RegionKey.unassigned) {
-
-			q.andQualifier(ExpressionFactory.matchExp(
-					WebContent.WEB_CONTENT_VISIBILITY_PROPERTY, null));
-
-		} else {
-			q.andQualifier(ExpressionFactory.matchExp(
-					WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
-							+ WebContentVisibility.REGION_KEY_PROPERTY,
-					regionKey));
-		}
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+						+ WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
 
 		return new TreeSet<WebContent>(cayenneService.sharedContext()
+				.performQuery(q));
+	}
+
+	public SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(
+			RegionKey regionKey) {
+
+		SelectQuery q = new SelectQuery(WebContentVisibility.class);
+
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebContentVisibility.WEB_CONTENT_PROPERTY + "."
+						+ WebContent.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite()));
+
+		q.andQualifier(ExpressionFactory.matchExp(
+				WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
+
+		return new TreeSet<WebContentVisibility>(cayenneService.sharedContext()
 				.performQuery(q));
 	}
 }

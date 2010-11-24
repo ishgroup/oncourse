@@ -2195,9 +2195,9 @@
 	<obj-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="site" source="WaitingListSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="waitingList" source="WaitingListSite" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingList"/>
-	<obj-relationship name="webContentVisibility" source="WebContent" target="WebContentVisibility" deleteRule="Nullify" db-relationship-path="webContentVisibility"/>
+	<obj-relationship name="webContentVisibility" source="WebContent" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibility"/>
 	<obj-relationship name="webSite" source="WebContent" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
-	<obj-relationship name="webContent" source="WebContentVisibility" target="WebContent" deleteRule="Nullify" db-relationship-path="webContent"/>
+	<obj-relationship name="webContent" source="WebContentVisibility" target="WebContent" deleteRule="Cascade" db-relationship-path="webContent"/>
 	<obj-relationship name="webNode" source="WebContentVisibility" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webNodeType" source="WebContentVisibility" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
 	<obj-relationship name="college" source="WebHostName" target="College" deleteRule="Nullify" db-relationship-path="college"/>

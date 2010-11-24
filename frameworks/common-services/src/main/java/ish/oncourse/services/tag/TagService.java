@@ -16,6 +16,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.WebNode;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -38,12 +39,8 @@ public class TagService implements ITagService {
 			return Collections.emptyList();
 		}
 
-		List<Object> params = Arrays.asList(ids);
-
-		EJBQLQuery q = new EJBQLQuery(
-				"select c from Tag c where c.id IN (:ids)");
-
-		q.setParameter("ids", params);
+		SelectQuery q = new SelectQuery(Tag.class);
+		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}

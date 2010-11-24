@@ -45,10 +45,10 @@ public class QuickSearchView {
 	@Property
 	private PostcodeDb location;
 	
-	private List<Course> courses;
-	
 	@Property
 	private List<Tag> tags;
+	
+	private List<Course> courses;
 	
 	@Property
 	private List<Course> matchingCourseList;
@@ -71,6 +71,7 @@ public class QuickSearchView {
 		searchTerms = searchString.split("[\\s]+");
 		
 		QueryResponse suggestions = searchService.autoSuggest(searchString);
+		
 		setupLists(suggestions);
 
 		setupSearchingLocationsSearchString();
@@ -101,9 +102,9 @@ public class QuickSearchView {
 			}
 		}
 		
-		this.courseList = courseService.loadByIds(courseIds);
-		this.tags = tagService.loadByIds(tagIds);
-		this.locationDetailList = postCodeDbService.loadByIds(postCodes);
+		this.courses = courseService.loadByIds(courseIds.toArray());
+		this.tags = tagService.loadByIds(tagIds.toArray());
+		this.locationDetailList = postCodeDbService.findBySuburb(postCodes.toArray(new String[postCodes.size()]));
 	}
 
 	public boolean isHasResults() {

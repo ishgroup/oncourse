@@ -89,13 +89,18 @@ public class MA {
 		int w = Integer.parseInt(request.getParameter("w"));
 
 		WebMenu item = webMenuService.loadByIds(id).get(0);
-		WebMenu pItem = ("root".equalsIgnoreCase(pid)) ? null : webMenuService
+		
+		WebMenu pItem = ("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu() : webMenuService
 				.loadByIds(pid).get(0);
 
-		for (WebMenu m : pItem.getChildrenMenus()) {
-			int weight = m.getWeight();
-			if (weight >= w) {
-				m.setWeight(weight + 1);
+		for (int i = 0; i < pItem.getChildrenMenus().size(); i++) {
+			WebMenu m = pItem.getChildrenMenus().get(i);
+			
+			if (m.getWeight() < w) {
+				m.setWeight(i);
+			}
+			else {
+				m.setWeight(i + 1);
 			}
 		}
 

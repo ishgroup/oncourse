@@ -33,20 +33,35 @@
 			tolerance: 'pointer',
 			toleranceElement: '> div',
 			update: function (event, ui) {
-				var itemId = $(ui.item).attr('id');
-				var s = $('ol.cms_sortable').nestedSortable('serialize');
+				var itemId = $(ui.item).attr('id').substring(2);
+				var s = $('ol.cms_sortable').nestedSortable('toArray');
+				var parent = null, index = 0;
+				
+				for (var i=0; i< s.length; i++) {
+					if (parent != s[i].parent_id) {
+						parent = s[i].parent_id;
+						index = 0;
+					} 
+					
+					if(s[i].item_id == itemId) {
+						$.post('/ma.sort', {id: s[i].item_id, pid: s[i].parent_id, w:index}, function(data) {
+							
+						});
+						break;
+					} 
+					
+					index++;
+				}
 			}
 			
 		});
 		
 		$(".cms_navmenu_list .cms_delete_icon a").live('click', function() {
 			var elemID = this.id;
+			var id = elemID.replace('r_', 'm_');
+			$(".cms_navmenu_list #" + id).remove();
 			
-			$.post('/ma.remove', {id: elemID.substring(2)}, function(data) {
-					var id = elemID.replace('r_', 'm_');
-					alert($(".cms_navmenu_list #" + id).size());
-					$(".cms_navmenu_list #" + id).remove();
-			}, 'json');
+			$.post('/ma.remove', {id: elemID.substring(2)});
 		});
 		
 		$("button.cms_add_menuitem").click(function() {
@@ -93,20 +108,3 @@
 		}
 	};
 })(jQuery);
-
-
-
-	
-
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-
