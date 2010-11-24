@@ -1,5 +1,7 @@
 package ish.oncourse.services;
 
+import org.apache.tapestry5.ioc.ServiceBinder;
+
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.assetgroup.AssetGroupService;
@@ -30,6 +32,11 @@ import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.preference.PreferenceService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
+import ish.oncourse.services.reference.CountryService;
+import ish.oncourse.services.reference.LanguageService;
+import ish.oncourse.services.reference.ModuleService;
+import ish.oncourse.services.reference.QualificationService;
+import ish.oncourse.services.reference.TrainingPackageService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
@@ -40,6 +47,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
+import ish.oncourse.services.system.CollegeService;
+import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -51,40 +60,50 @@ import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
 
-import org.apache.tapestry5.ioc.ServiceBinder;
-
 /**
  * A Tapestry IoC module definition for all common services.
  */
 public class ServiceModule {
 
 	public static void bind(ServiceBinder binder) {
+
+		// Tapestry and environment specific services
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
-		binder.bind(IEnvironmentService.class, EnvironmentService.class);
-		binder.bind(IPropertyService.class, PropertyService.class);
-		binder.bind(IResourceService.class, ResourceService.class);
 		binder.bind(IComponentPageResponseRenderer.class,
 				ComponentPageResponseRenderer.class);
-		binder.bind(IWebSiteService.class, WebSiteService.class);
-		binder.bind(IWebNodeService.class, WebNodeService.class);
-		binder.bind(IFormatService.class, FormatService.class);
-		binder.bind(ITextileConverter.class, TextileConverter.class);
-		binder.bind(IBinaryDataService.class, BinaryDataService.class);
-		binder.bind(ICourseService.class, CourseService.class);
-		binder.bind(ICourseClassService.class, CourseClassService.class);
-		binder.bind(ITutorService.class, TutorService.class);
-		binder.bind(ISitesService.class, SitesService.class);
-		binder.bind(IRoomService.class, RoomService.class);
-		binder.bind(ISearchService.class, SearchService.class);
-		binder.bind(IPageRenderer.class, PageRenderer.class);
-		binder.bind(ITagService.class, TagService.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
-		binder.bind(IWebMenuService.class, WebMenuService.class);
-		binder.bind(IWebContentService.class, WebContentService.class);
-		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
-		binder.bind(IPreferenceService.class, PreferenceService.class);
+		binder.bind(IEnvironmentService.class, EnvironmentService.class);
+		binder.bind(IFormatService.class, FormatService.class);
+		binder.bind(IPageRenderer.class, PageRenderer.class);
+		binder.bind(IPropertyService.class, PropertyService.class);
+		binder.bind(IResourceService.class, ResourceService.class);
+		binder.bind(ISearchService.class, SearchService.class);
+		binder.bind(ITagService.class, TagService.class);
+		binder.bind(ITextileConverter.class, TextileConverter.class);
+
+		// Data specific serivces
+		binder.bind(IBinaryDataService.class, BinaryDataService.class);
+		binder.bind(ICollegeService.class, CollegeService.class);
+		binder.bind(ICourseClassService.class, CourseClassService.class);
+		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(IPostCodeDbService.class, PostCodeDbService.class);
+		binder.bind(IPreferenceService.class, PreferenceService.class);
+		binder.bind(IRoomService.class, RoomService.class);
+		binder.bind(ISitesService.class, SitesService.class);
+		binder.bind(ITutorService.class, TutorService.class);
+		binder.bind(IWebContentService.class, WebContentService.class);
+		binder.bind(IWebMenuService.class, WebMenuService.class);
+		binder.bind(IWebNodeService.class, WebNodeService.class);
+		binder.bind(IWebSiteService.class, WebSiteService.class);
+		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
+
+		// Reference Data services
+		binder.bind(CountryService.class);
+		binder.bind(LanguageService.class);
+		binder.bind(ModuleService.class);
+		binder.bind(QualificationService.class);
+		binder.bind(TrainingPackageService.class);
 	}
 
 }
