@@ -1,4 +1,4 @@
-<html t:type="ui/pagestructure" bodyId="literal:EnrolmentEntry" bodyClass="literal:internal-page"
+<html t:type="ui/pagewrapper" bodyId="literal:EnrolmentEntry" bodyClass="literal:internal-page"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="classesToEnrol">
