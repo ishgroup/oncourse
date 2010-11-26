@@ -155,11 +155,16 @@
 			</div>
 			<div>
 				<fieldset id="questionnaire-block">
-					<!--  p>
-						<label for="countrybirth">In which country were you born?</label>
-							<webobject name="CountryOfBirthField"/>
-					</p>
+					<br/>
 					<p>
+						<label for="countrybirth">In which country were you born?</label>
+						<span class="${countryOfBirthInputClass}">
+							<t:textfield value="countryOfBirthName" class ="input-fixed" 
+								clientId="countrybirth" t:id="countryOfBirth" />
+							<span t:type="ui/HintComponent" validationMessage="countryOfBirthErrorMessage"/>
+						</span>	
+					</p>
+					<!-- p>
 						<label for="languagehome">What language do you normally speak at home?</label>
 						<webobject name="LanguageValidation"><webobject name="LanguageField"/></webobject>
 					</p>

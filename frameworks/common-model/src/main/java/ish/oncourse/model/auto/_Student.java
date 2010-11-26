@@ -9,6 +9,7 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Country;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.PaymentIn;
@@ -25,7 +26,6 @@ public abstract class _Student extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
-    public static final String COUNTRY_OF_BIRTH_ID_PROPERTY = "countryOfBirthId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DISABILITY_TYPE_PROPERTY = "disabilityType";
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
@@ -43,6 +43,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String CERTIFICATES_PROPERTY = "certificates";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
+    public static final String COUNTRY_OF_BIRTH_PROPERTY = "countryOfBirth";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
@@ -63,13 +64,6 @@ public abstract class _Student extends CayenneDataObject {
     }
     public Integer getConcessionType() {
         return (Integer)readProperty("concessionType");
-    }
-
-    public void setCountryOfBirthId(Long countryOfBirthId) {
-        writeProperty("countryOfBirthId", countryOfBirthId);
-    }
-    public Long getCountryOfBirthId() {
-        return (Long)readProperty("countryOfBirthId");
     }
 
     public void setCreated(Date created) {
@@ -202,6 +196,15 @@ public abstract class _Student extends CayenneDataObject {
 
     public Contact getContact() {
         return (Contact)readProperty("contact");
+    }
+
+
+    public void setCountryOfBirth(Country countryOfBirth) {
+        setToOneTarget("countryOfBirth", countryOfBirth, true);
+    }
+
+    public Country getCountryOfBirth() {
+        return (Country)readProperty("countryOfBirth");
     }
 
 

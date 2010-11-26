@@ -2,6 +2,8 @@ package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Country;
+import ish.oncourse.services.reference.ICountryService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -41,6 +43,9 @@ public class ContactDetails {
 	 */
 	@Inject
 	private IStudentService studentService;
+
+	@Inject
+	private ICountryService countryService;
 
 	/**
 	 * Parameters
@@ -103,13 +108,14 @@ public class ContactDetails {
 	@InjectComponent
 	private TextField birthDate;
 
+	@InjectComponent
+	private TextField countryOfBirth;
+
 	/**
 	 * template properties
 	 */
 	@Property
 	private String passwordConfirmProperty;
-
-	private String birthDateProperty;
 
 	/**
 	 * error message template properties
@@ -147,6 +153,9 @@ public class ContactDetails {
 	@Property
 	private String birthDateErrorMessage;
 
+	@Property
+	private String countryOfBirthErrorMessage;
+
 	/**
 	 * reset form method flag
 	 */
@@ -179,6 +188,7 @@ public class ContactDetails {
 			contact.setIsMarketingViaEmailAllowed(true);
 			contact.setIsMarketingViaPostAllowed(true);
 			contact.setIsMarketingViaSMSAllowed(true);
+			contact.getStudent().setCountryOfBirth(null);
 			// TODO add the student's info clearing after the student-specific
 			// view will be implemented
 			return parentZone.getBody();
@@ -256,6 +266,11 @@ public class ContactDetails {
 				contactDetailsForm
 						.recordError(birthDate, birthDateErrorMessage);
 			}
+
+			if (countryOfBirthErrorMessage != null) {
+				contactDetailsForm.recordError(countryOfBirth,
+						countryOfBirthErrorMessage);
+			}
 		}
 	}
 
@@ -303,6 +318,10 @@ public class ContactDetails {
 		return getInputSectionClass(birthDate);
 	}
 
+	public String getCountryOfBirthInputClass() {
+		return getInputSectionClass(countryOfBirth);
+	}
+
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = contactDetailsForm
 				.getDefaultTracker();
@@ -335,5 +354,27 @@ public class ContactDetails {
 
 	public boolean isNewStudent() {
 		return contact.getStudent().getPersistenceState() == PersistenceState.NEW;
+	}
+
+	public String getCountryOfBirthName() {
+		Country countryOfBirth = contact.getStudent().getCountryOfBirth();
+		if (countryOfBirth == null) {
+			return null;
+		}
+		return countryOfBirth.getName();
+	}
+
+	public void setCountryOfBirthName(String countryOfBirthName) {
+		if (countryOfBirthName == null || "".equals(countryOfBirthName)) {
+			return;
+		}
+		Country country = countryService.getCountryByName(countryOfBirthName);
+		if (country == null) {
+			countryOfBirthErrorMessage = "Country name is incorrect";
+		} else {
+			contact.getStudent().setCountryOfBirth(
+					(Country) contact.getObjectContext().localObject(
+							country.getObjectId(), country));
+		}
 	}
 }

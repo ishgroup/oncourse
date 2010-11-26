@@ -4,6 +4,7 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
@@ -35,6 +36,9 @@ public class EnrolmentContactEntry {
 
 	@Inject
 	private IStudentService studentService;
+
+	@Inject
+	private ICayenneService cayenneService;
 
 	/**
 	 * tapestry services
@@ -83,7 +87,7 @@ public class EnrolmentContactEntry {
 	@Persist
 	private Contact contact;
 
-	@Parameter
+	@Persist
 	private ObjectContext context;
 
 	private boolean reset;
@@ -102,12 +106,13 @@ public class EnrolmentContactEntry {
 
 	@SetupRender
 	void beforeRender() {
+		context = cayenneService.newContext();
 		hasContact = false;
 		contact = context.newObject(Contact.class);
 
 		College currentCollege = webSiteService.getCurrentCollege();
-		College college = (College) context.localObject(
-				currentCollege.getObjectId(), currentCollege);
+		College college = (College) context.localObject(currentCollege.getObjectId(),
+				currentCollege);
 		contact.setCollege(college);
 
 		Student student = context.newObject(Student.class);
@@ -124,8 +129,7 @@ public class EnrolmentContactEntry {
 	}
 
 	public String getAddStudentBlockClass() {
-		List shortlistStudents = (List) request.getSession(false).getAttribute(
-				"shortlistStudents");
+		List shortlistStudents = (List) request.getSession(false).getAttribute("shortlistStudents");
 		return (shortlistStudents == null || shortlistStudents.isEmpty() || needMoreInfo) ? "show"
 				: "collapse";
 	}

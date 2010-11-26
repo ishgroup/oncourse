@@ -68,6 +68,9 @@
 						<id>cgen1</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml</map>
+							<!-- excluded entities should be generated manually by CayenneModeler's "Generate Classes"  -->
+							<!-- excluding this entity depending on the onCourse datamap till the CAY-1494 will be done-->
+							<excludeEntitiesPattern>Student</excludeEntitiesPattern>
 						</configuration>
 						<goals>
 							<goal>cgen</goal>
@@ -77,6 +80,7 @@
 						<id>cgen2</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourseBinary.map.xml</map>
+							<!-- excluded entities should be generated manually by CayenneModeler's "Generate Classes"  -->
 							<!-- excluding this entity depending on the onCourse datamap till the CAY-1494 will be done-->
 							<excludeEntitiesPattern>BinaryData</excludeEntitiesPattern>
 						</configuration>

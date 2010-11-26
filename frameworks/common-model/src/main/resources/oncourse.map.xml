@@ -1170,7 +1170,6 @@
 	<obj-entity name="Student" className="ish.oncourse.model.Student" dbEntityName="Student">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="concessionType" type="java.lang.Integer" db-attribute-path="concessionType"/>
-		<obj-attribute name="countryOfBirthId" type="java.lang.Long" db-attribute-path="countryOfBirthId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="disabilityType" type="java.lang.Integer" db-attribute-path="disabilityType"/>
 		<obj-attribute name="englishProficiency" type="java.lang.Integer" db-attribute-path="englishProficiency"/>
@@ -1800,6 +1799,9 @@
 	<db-relationship name="contact" source="Student" target="Contact" toMany="false">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
+	<db-relationship name="countryOfBirth" source="Student" target="Country" toMany="false">
+		<db-attribute-pair source="countryOfBirthId" target="id"/>
+	</db-relationship>
 	<db-relationship name="enrolments" source="Student" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
@@ -2160,6 +2162,7 @@
 	<obj-relationship name="certificates" source="Student" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="college" source="Student" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
+	<obj-relationship name="countryOfBirth" source="Student" target="Country" deleteRule="Nullify" db-relationship-path="countryOfBirth"/>
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Student" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentIns"/>

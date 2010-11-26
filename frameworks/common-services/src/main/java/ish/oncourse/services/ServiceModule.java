@@ -33,6 +33,7 @@ import ish.oncourse.services.preference.PreferenceService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.reference.CountryService;
+import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.LanguageService;
 import ish.oncourse.services.reference.ModuleService;
 import ish.oncourse.services.reference.QualificationService;
@@ -99,7 +100,7 @@ public class ServiceModule {
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 
 		// Reference Data services
-		binder.bind(CountryService.class);
+		binder.bind(ICountryService.class, CountryService.class);
 		binder.bind(LanguageService.class);
 		binder.bind(ModuleService.class);
 		binder.bind(QualificationService.class);

@@ -19,7 +19,7 @@ import org.apache.cayenne.query.SortOrder;
 
 
 /**
- * Implementation of the Country Service.
+ * Implementation of the Reference Service.
  *
  * @author Marek Wawrzyczny
  */

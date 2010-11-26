@@ -161,8 +161,8 @@ public class EnrolCourses {
 				College college = (College) context.localObject(
 						currentCollege.getObjectId(), currentCollege);
 				enrolments[i][j].setCollege(college);
-				Student student = ((Contact) context.localObject(contacts
-						.get(i).getObjectId(), contacts.get(i)))
+				Contact contact = contacts.get(i);
+				Student student = ((Contact) context.localObject(contact.getObjectId(), contact))
 						.getStudent();
 				CourseClass courseClass = (CourseClass) context
 						.localObject(classesToEnrol.get(j).getObjectId(),
@@ -246,4 +246,5 @@ public class EnrolCourses {
 	public InvoiceLine[][] getInvoiceLines() {
 		return invoiceLines;
 	}
+	
 }
