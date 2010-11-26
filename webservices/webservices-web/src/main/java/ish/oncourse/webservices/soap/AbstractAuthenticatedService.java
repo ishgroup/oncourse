@@ -36,10 +36,8 @@ public abstract class AbstractAuthenticatedService implements AuthenticatedServi
 
 
 	@Override
-	public ReplicationToken authenticate(String securityCode)
+	public void authenticate(String securityCode)
 			throws AuthenticationException {
-
-		ReplicationToken token = null;
 
 		if (getHttpServletRequest().isRequestedSessionIdValid()) {
 			throw new AuthenticationException(
@@ -47,7 +45,6 @@ public abstract class AbstractAuthenticatedService implements AuthenticatedServi
 		}
 
 		College college = collegeService.findBySecurityCode(securityCode);
-		String angelVersion = "N/A";
 
 		if (college == null) {
 			LOGGER.error("No college found for 'security code': " + securityCode);
@@ -55,15 +52,11 @@ public abstract class AbstractAuthenticatedService implements AuthenticatedServi
 		}
 
 		HttpSession session = getHttpSession(true);
-		token = new ReplicationToken(session.getId(), angelVersion);
-		session.setAttribute(SESSION_TOKEN_KEY, token);
 		session.setAttribute(COLLEGE_KEY, college);
-		
-		return token;
 	};
 
 	@Override
-	public void logout(ReplicationToken session) {
+	public void logout() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	};
 
@@ -74,17 +67,6 @@ public abstract class AbstractAuthenticatedService implements AuthenticatedServi
 
 	public HttpSession getHttpSession() {
 		return getHttpSession(false);
-	}
-
-	public boolean isValidToken(ReplicationToken sessionToken) throws AuthenticationException {
-		
-		if (!hasHttpSession() || (sessionToken == null)) {
-			return false;
-		}
-
-		ReplicationToken localSessionToken = (ReplicationToken) getHttpSession(false)
-				.getAttribute(SESSION_TOKEN_KEY);
-		return sessionToken.equals(localSessionToken);
 	}
 
 	protected College getCollege() {

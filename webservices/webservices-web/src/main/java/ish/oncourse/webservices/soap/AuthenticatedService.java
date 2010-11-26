@@ -12,21 +12,16 @@ import javax.jws.WebService;
 public interface AuthenticatedService {
 
 	/**
-	 * Authenticates user, stores details in HTTP Session and returns a token 
-	 * to be used in future communication between the systems.
+	 * Authenticates user, stores details in HTTP Session.
 	 * 
 	 * @param securityCode code generated/stored within Angel database
-	 * @return ReplicationToken to be used in future Angel requests
 	 */
-	ReplicationToken authenticate(String securityCode)
+	void authenticate(String securityCode)
 			throws AuthenticationException;
 
 	/**
-	 * End the session on Willow - this will discard the HTTP Session and
-	 * invalidate the ReplicationToken passed.
-	 *
-	 * @param sessionToken
+	 * End the session on Willow - this will discard the HTTP Session.
 	 */
-	void logout(ReplicationToken sessionToken);
+	void logout();
 	
 }
