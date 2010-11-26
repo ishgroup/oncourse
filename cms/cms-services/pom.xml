@@ -1,35 +1,34 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-	http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<artifactId>cms</artifactId>
-		<groupId>ish.oncourse</groupId>
+		<groupId>ish.oncourse.willow.cms</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cms-services</artifactId>
 	<packaging>jar</packaging>
 	<name>CMS Services</name>
+	<description>onCourse Willow CMS-specific services.</description>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>ish.oncourse</groupId>
+			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-model</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>ish.oncourse</groupId>
+			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-services</artifactId>
 		</dependency>
 
 		<dependency>
-			<artifactId>cayenne-server</artifactId>
 			<groupId>org.apache.cayenne</groupId>
+			<artifactId>cayenne-server</artifactId>
 		</dependency>
 
 		<dependency>

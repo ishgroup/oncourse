@@ -4,16 +4,17 @@
 
 	<parent>
 		<artifactId>parent</artifactId>
-		<groupId>ish.oncourse</groupId>
+		<groupId>ish.oncourse.willow</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 
-	<groupId>ish.oncourse.search</groupId>
+	<groupId>ish.oncourse.willow.search</groupId>
 	<artifactId>searchapp</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>Search Web App</name>
+	<description>onCourse Willow Search application wrapper over Solr.</description>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>

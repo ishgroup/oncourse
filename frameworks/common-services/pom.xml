@@ -7,26 +7,26 @@
 
 	<parent>
 		<artifactId>frameworks</artifactId>
-		<groupId>ish.oncourse</groupId>
+		<groupId>ish.oncourse.willow.frameworks</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>common-services</artifactId>
-	<groupId>ish.oncourse</groupId>
 	<packaging>jar</packaging>
 	<name>onCourse Common Service Framework</name>
+	<description>Contains onCourse Willow Services.</description>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>ish.oncourse</groupId>
+			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<artifactId>cayenne-server</artifactId>
 			<groupId>org.apache.cayenne</groupId>
+			<artifactId>cayenne-server</artifactId>
 		</dependency>
 
 		<dependency>
@@ -35,8 +35,8 @@
 		</dependency>
 
 		<dependency>
-			<artifactId>commons-collections</artifactId>
 			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
 		</dependency>
 
 		<dependency>
@@ -75,16 +75,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		
-		<dependency>
-				<groupId>org.mockito</groupId>
-  				<artifactId>mockito-core</artifactId>
-  		</dependency>		
-
-		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
@@ -97,7 +87,6 @@
 		<dependency>
 			<groupId>net.java.dev.textile-j</groupId>
 			<artifactId>textile-j</artifactId>
-			<version>2.2.864</version>
 		</dependency>
 
 	</dependencies>
