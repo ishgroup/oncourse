@@ -172,11 +172,11 @@
 							<span t:type="ui/HintComponent" validationMessage="languageHomeErrorMessage"/>
 						</span>	
 					</p>
-					<!-- p>
-						<label for="englishproficiency">How well do you speak English?</label>
-						<webobject name="EnglishProficiencyPopUp"/>
-					</p>
 					<p>
+						<label for="englishproficiency">How well do you speak English?</label>
+						<t:select value="contact.student.englishProficiency" clientId="englishproficiency" blankOption="NEVER"/>
+					</p>
+					<!--p>
 						<label for="indigenous">Are you of Aboriginal/Torres Strait Islander origin?</label>
 						<webobject name="IndigenousStatusPopUp"/>
 					</p>

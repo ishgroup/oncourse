@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.College;
@@ -82,11 +83,11 @@ public abstract class _Student extends CayenneDataObject {
         return (Integer)readProperty("disabilityType");
     }
 
-    public void setEnglishProficiency(Integer englishProficiency) {
+    public void setEnglishProficiency(AvetmissStudentEnglishProficiency englishProficiency) {
         writeProperty("englishProficiency", englishProficiency);
     }
-    public Integer getEnglishProficiency() {
-        return (Integer)readProperty("englishProficiency");
+    public AvetmissStudentEnglishProficiency getEnglishProficiency() {
+        return (AvetmissStudentEnglishProficiency)readProperty("englishProficiency");
     }
 
     public void setHighestSchoolLevel(Integer highestSchoolLevel) {

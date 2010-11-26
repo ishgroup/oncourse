@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.components;
 
+import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -117,6 +118,7 @@ public class EnrolmentContactEntry {
 
 		Student student = context.newObject(Student.class);
 		student.setCollege(college);
+		student.setEnglishProficiency(AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
 		contact.setStudent(student);
 
 		contact.setIsMale(true);

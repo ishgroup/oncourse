@@ -1066,7 +1066,7 @@
 		<obj-attribute name="creditCardExpiry" type="java.lang.String" db-attribute-path="creditCardExpiry"/>
 		<obj-attribute name="creditCardName" type="java.lang.String" db-attribute-path="creditCardName"/>
 		<obj-attribute name="creditCardNumber" type="java.lang.String" db-attribute-path="creditCardNumber"/>
-		<obj-attribute name="creditCardType" type="ish.common.payment.cc.CreditCardType" db-attribute-path="creditCardType"/>
+		<obj-attribute name="creditCardType" type="ish.common.types.CreditCardType" db-attribute-path="creditCardType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
 		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
@@ -1083,7 +1083,7 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditCardCVV" type="java.lang.String" db-attribute-path="creditCardCVV"/>
-		<obj-attribute name="creditCardType" type="ish.common.payment.cc.CreditCardType" db-attribute-path="creditCardType"/>
+		<obj-attribute name="creditCardType" type="ish.common.types.CreditCardType" db-attribute-path="creditCardType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="paymentInTxnReference" type="java.lang.String" db-attribute-path="paymentInTxnReference"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
@@ -1172,7 +1172,7 @@
 		<obj-attribute name="concessionType" type="java.lang.Integer" db-attribute-path="concessionType"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="disabilityType" type="java.lang.Integer" db-attribute-path="disabilityType"/>
-		<obj-attribute name="englishProficiency" type="java.lang.Integer" db-attribute-path="englishProficiency"/>
+		<obj-attribute name="englishProficiency" type="ish.common.types.AvetmissStudentEnglishProficiency" db-attribute-path="englishProficiency"/>
 		<obj-attribute name="highestSchoolLevel" type="java.lang.Integer" db-attribute-path="highestSchoolLevel"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="indigenousStatus" type="java.lang.Integer" db-attribute-path="indigenousStatus"/>

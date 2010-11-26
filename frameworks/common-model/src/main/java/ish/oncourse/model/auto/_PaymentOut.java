@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
-import ish.common.payment.cc.CreditCardType;
+import ish.common.types.CreditCardType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentOutTransaction;

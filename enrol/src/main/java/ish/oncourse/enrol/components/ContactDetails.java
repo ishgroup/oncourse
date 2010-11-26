@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.components;
 
+import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
@@ -201,6 +202,8 @@ public class ContactDetails {
 			contact.setIsMarketingViaSMSAllowed(true);
 			contact.getStudent().setCountryOfBirth(null);
 			contact.getStudent().setLanguageHome(null);
+			contact.getStudent().setEnglishProficiency(
+					AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
 			// TODO add the student's info clearing after the student-specific
 			// view will be implemented
 			return parentZone.getBody();

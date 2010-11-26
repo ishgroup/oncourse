@@ -1,6 +1,6 @@
 package ish.oncourse.enrol.components;
 
-import ish.common.payment.cc.CreditCardType;
+import ish.common.types.CreditCardType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Preference;
