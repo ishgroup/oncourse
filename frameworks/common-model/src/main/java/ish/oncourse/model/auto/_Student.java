@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.common.types.AvetmissStudentEnglishProficiency;
+import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.College;
@@ -104,11 +105,11 @@ public abstract class _Student extends CayenneDataObject {
         return (Long)readProperty("id");
     }
 
-    public void setIndigenousStatus(Integer indigenousStatus) {
+    public void setIndigenousStatus(AvetmissStudentIndigenousStatus indigenousStatus) {
         writeProperty("indigenousStatus", indigenousStatus);
     }
-    public Integer getIndigenousStatus() {
-        return (Integer)readProperty("indigenousStatus");
+    public AvetmissStudentIndigenousStatus getIndigenousStatus() {
+        return (AvetmissStudentIndigenousStatus)readProperty("indigenousStatus");
     }
 
     public void setIsOverseasClient(Boolean isOverseasClient) {

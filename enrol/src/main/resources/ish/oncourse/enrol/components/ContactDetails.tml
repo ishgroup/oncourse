@@ -176,11 +176,11 @@
 						<label for="englishproficiency">How well do you speak English?</label>
 						<t:select value="contact.student.englishProficiency" clientId="englishproficiency" blankOption="NEVER"/>
 					</p>
-					<!--p>
-						<label for="indigenous">Are you of Aboriginal/Torres Strait Islander origin?</label>
-						<webobject name="IndigenousStatusPopUp"/>
-					</p>
 					<p>
+						<label for="indigenous">Are you of Aboriginal/Torres Strait Islander origin?</label>
+						<t:select value="contact.student.indigenousStatus" clientId="indigenous" blankOption="NEVER"/>
+					</p>
+					<!-- p>
 						<label for="schoollevel">What is your highest COMPLETED school level?</label>
 						<webobject name="HighestSchoolLevelPopUp"/>
 					</p>

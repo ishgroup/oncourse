@@ -1175,7 +1175,7 @@
 		<obj-attribute name="englishProficiency" type="ish.common.types.AvetmissStudentEnglishProficiency" db-attribute-path="englishProficiency"/>
 		<obj-attribute name="highestSchoolLevel" type="java.lang.Integer" db-attribute-path="highestSchoolLevel"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="indigenousStatus" type="java.lang.Integer" db-attribute-path="indigenousStatus"/>
+		<obj-attribute name="indigenousStatus" type="ish.common.types.AvetmissStudentIndigenousStatus" db-attribute-path="indigenousStatus"/>
 		<obj-attribute name="isOverseasClient" type="java.lang.Boolean" db-attribute-path="isOverseasClient"/>
 		<obj-attribute name="isStillAtSchool" type="java.lang.Boolean" db-attribute-path="isStillAtSchool"/>
 		<obj-attribute name="labourForceType" type="java.lang.Integer" db-attribute-path="labourForceType"/>

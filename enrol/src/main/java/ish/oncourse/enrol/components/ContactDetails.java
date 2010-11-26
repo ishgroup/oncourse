@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.AvetmissStudentEnglishProficiency;
+import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
@@ -204,6 +205,7 @@ public class ContactDetails {
 			contact.getStudent().setLanguageHome(null);
 			contact.getStudent().setEnglishProficiency(
 					AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
+			contact.getStudent().setIndigenousStatus(AvetmissStudentIndigenousStatus.DEFAULT_POPUP_OPTION);
 			// TODO add the student's info clearing after the student-specific
 			// view will be implemented
 			return parentZone.getBody();
