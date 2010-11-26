@@ -3,7 +3,9 @@ package ish.oncourse.enrol.components;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
+import ish.oncourse.model.Language;
 import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.services.reference.ILanguageService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,6 +48,9 @@ public class ContactDetails {
 
 	@Inject
 	private ICountryService countryService;
+
+	@Inject
+	private ILanguageService languageService;
 
 	/**
 	 * Parameters
@@ -111,6 +116,9 @@ public class ContactDetails {
 	@InjectComponent
 	private TextField countryOfBirth;
 
+	@InjectComponent
+	private TextField languageHome;
+
 	/**
 	 * template properties
 	 */
@@ -156,6 +164,9 @@ public class ContactDetails {
 	@Property
 	private String countryOfBirthErrorMessage;
 
+	@Property
+	private String languageHomeErrorMessage;
+
 	/**
 	 * reset form method flag
 	 */
@@ -189,6 +200,7 @@ public class ContactDetails {
 			contact.setIsMarketingViaPostAllowed(true);
 			contact.setIsMarketingViaSMSAllowed(true);
 			contact.getStudent().setCountryOfBirth(null);
+			contact.getStudent().setLanguageHome(null);
 			// TODO add the student's info clearing after the student-specific
 			// view will be implemented
 			return parentZone.getBody();
@@ -232,18 +244,15 @@ public class ContactDetails {
 			}
 			homePhoneErrorMessage = contact.validateHomePhone();
 			if (homePhoneErrorMessage != null) {
-				contactDetailsForm
-						.recordError(homePhone, homePhoneErrorMessage);
+				contactDetailsForm.recordError(homePhone, homePhoneErrorMessage);
 			}
 			mobilePhoneErrorMessage = contact.validateMobilePhone();
 			if (mobilePhoneErrorMessage != null) {
-				contactDetailsForm.recordError(mobilePhone,
-						mobilePhoneErrorMessage);
+				contactDetailsForm.recordError(mobilePhone, mobilePhoneErrorMessage);
 			}
 			businessPhoneErrorMessage = contact.validateBusinessPhone();
 			if (businessPhoneErrorMessage != null) {
-				contactDetailsForm.recordError(businessPhone,
-						businessPhoneErrorMessage);
+				contactDetailsForm.recordError(businessPhone, businessPhoneErrorMessage);
 			}
 			faxErrorMessage = contact.validateFax();
 			if (faxErrorMessage != null) {
@@ -253,23 +262,23 @@ public class ContactDetails {
 			if (passwordErrorMessage != null) {
 				contactDetailsForm.recordError(password, passwordErrorMessage);
 			}
-			passwordConfirmErrorMessage = contact
-					.validatePasswordConfirm(passwordConfirmProperty);
+			passwordConfirmErrorMessage = contact.validatePasswordConfirm(passwordConfirmProperty);
 			if (passwordConfirmErrorMessage != null) {
-				contactDetailsForm.recordError(passwordConfirm,
-						passwordConfirmErrorMessage);
+				contactDetailsForm.recordError(passwordConfirm, passwordConfirmErrorMessage);
 			}
 			if (birthDateErrorMessage == null) {
 				birthDateErrorMessage = contact.validateBirthDate();
 			}
 			if (birthDateErrorMessage != null) {
-				contactDetailsForm
-						.recordError(birthDate, birthDateErrorMessage);
+				contactDetailsForm.recordError(birthDate, birthDateErrorMessage);
 			}
 
 			if (countryOfBirthErrorMessage != null) {
-				contactDetailsForm.recordError(countryOfBirth,
-						countryOfBirthErrorMessage);
+				contactDetailsForm.recordError(countryOfBirth, countryOfBirthErrorMessage);
+			}
+
+			if (languageHomeErrorMessage != null) {
+				contactDetailsForm.recordError(languageHome, languageHomeErrorMessage);
 			}
 		}
 	}
@@ -322,9 +331,12 @@ public class ContactDetails {
 		return getInputSectionClass(countryOfBirth);
 	}
 
+	public String getLanguageHomeInputClass() {
+		return getInputSectionClass(languageHome);
+	}
+
 	private String getInputSectionClass(Field field) {
-		ValidationTracker defaultTracker = contactDetailsForm
-				.getDefaultTracker();
+		ValidationTracker defaultTracker = contactDetailsForm.getDefaultTracker();
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages
 				.get("validInput") : messages.get("validateInput");
 	}
@@ -373,8 +385,30 @@ public class ContactDetails {
 			countryOfBirthErrorMessage = "Country name is incorrect";
 		} else {
 			contact.getStudent().setCountryOfBirth(
-					(Country) contact.getObjectContext().localObject(
-							country.getObjectId(), country));
+					(Country) contact.getObjectContext()
+							.localObject(country.getObjectId(), country));
+		}
+	}
+
+	public String getLanguageHomeName() {
+		Language languageHome = contact.getStudent().getLanguageHome();
+		if (languageHome == null) {
+			return null;
+		}
+		return languageHome.getName();
+	}
+
+	public void setLanguageHomeName(String languageHome) {
+		if (languageHome == null || "".equals(languageHome)) {
+			return;
+		}
+		Language language = languageService.getLanguageByName(languageHome);
+		if (language == null) {
+			languageHomeErrorMessage = "Language name is incorrect";
+		} else {
+			contact.getStudent().setLanguageHome(
+					(Language) contact.getObjectContext().localObject(language.getObjectId(),
+							language));
 		}
 	}
 }

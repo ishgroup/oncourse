@@ -177,7 +177,4 @@
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>
 	</obj-entity>
-	<db-relationship name="untitledRel" source="Country" target="Student" toMany="true">
-		<db-attribute-pair source="id" target="countryOfBirthId"/>
-	</db-relationship>
 </data-map>

@@ -1805,6 +1805,9 @@
 	<db-relationship name="enrolments" source="Student" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
+	<db-relationship name="languageHome" source="Student" target="Language" toMany="false">
+		<db-attribute-pair source="languageId" target="id"/>
+	</db-relationship>
 	<db-relationship name="messagePeople" source="Student" target="MessagePerson" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
@@ -2164,6 +2167,7 @@
 	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
 	<obj-relationship name="countryOfBirth" source="Student" target="Country" deleteRule="Nullify" db-relationship-path="countryOfBirth"/>
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
+	<obj-relationship name="languageHome" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="languageHome"/>
 	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Student" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentIns"/>
 	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>

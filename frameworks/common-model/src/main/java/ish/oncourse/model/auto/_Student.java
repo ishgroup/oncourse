@@ -11,6 +11,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Language;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.StudentConcession;
@@ -45,6 +46,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String CONTACT_PROPERTY = "contact";
     public static final String COUNTRY_OF_BIRTH_PROPERTY = "countryOfBirth";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
+    public static final String LANGUAGE_HOME_PROPERTY = "languageHome";
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
@@ -217,6 +219,15 @@ public abstract class _Student extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
         return (List<Enrolment>)readProperty("enrolments");
+    }
+
+
+    public void setLanguageHome(Language languageHome) {
+        setToOneTarget("languageHome", languageHome, true);
+    }
+
+    public Language getLanguageHome() {
+        return (Language)readProperty("languageHome");
     }
 
 

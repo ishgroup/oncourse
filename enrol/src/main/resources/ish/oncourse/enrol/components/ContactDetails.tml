@@ -164,11 +164,15 @@
 							<span t:type="ui/HintComponent" validationMessage="countryOfBirthErrorMessage"/>
 						</span>	
 					</p>
-					<!-- p>
-						<label for="languagehome">What language do you normally speak at home?</label>
-						<webobject name="LanguageValidation"><webobject name="LanguageField"/></webobject>
-					</p>
 					<p>
+						<label for="languagehome">What language do you normally speak at home?</label>
+						<span class="${languageHomeInputClass}">
+							<t:textfield value="languageHomeName" class ="input-fixed" 
+								clientId="languagehome" t:id="languageHome" />
+							<span t:type="ui/HintComponent" validationMessage="languageHomeErrorMessage"/>
+						</span>	
+					</p>
+					<!-- p>
 						<label for="englishproficiency">How well do you speak English?</label>
 						<webobject name="EnglishProficiencyPopUp"/>
 					</p>
