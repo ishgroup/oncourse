@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -7,6 +8,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.services.persistence.ICayenneService;
@@ -24,15 +26,21 @@ import java.util.List;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.tapestry5.ajax.MultiZoneUpdate;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class EnrolCourses {
 
+	/**
+	 * ish services
+	 */
 	@Inject
 	private ICookiesService cookiesService;
 
@@ -44,17 +52,22 @@ public class EnrolCourses {
 
 	@Inject
 	private IPreferenceService preferenceService;
-
-	@Inject
-	private Request request;
-
+	
 	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
 	private ICayenneService cayenneService;
 
+
+	/**
+	 * tapestry services
+	 */
+	@Inject
+	private Request request;
+
 	@Property
+	@Persist
 	private List<CourseClass> classesToEnrol;
 
 	@Property
@@ -63,7 +76,7 @@ public class EnrolCourses {
 	/**
 	 * studentsSet.allObjects.@sort.contact.fullName
 	 */
-	@Property
+	@Persist
 	private List<Contact> contacts;
 
 	@Property
@@ -83,6 +96,9 @@ public class EnrolCourses {
 	private Enrolment[][] enrolments;
 
 	@Persist
+	private InvoiceLine[][] invoiceLines;
+
+	@Persist
 	@Property
 	private PaymentIn payment;
 
@@ -91,10 +107,20 @@ public class EnrolCourses {
 	private Invoice invoice;
 
 	@Property
+	@Persist
 	private ObjectContext context;
 
 	@Property
+	@Persist
 	private Format moneyFormat;
+
+	@InjectComponent
+	@Property
+	private Zone totals;
+
+	@InjectComponent
+	@Property
+	private EnrolmentPaymentEntry paymentEntry;
 
 	@SetupRender
 	void beforeRender() {
@@ -117,32 +143,43 @@ public class EnrolCourses {
 				"shortlistStudents");
 
 		if (classesToEnrol != null && contacts != null && !contacts.isEmpty()) {
-			payment = context.newObject(PaymentIn.class);
-			invoice = context.newObject(Invoice.class);
-			enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
-			for (int i = 0; i < contacts.size(); i++) {
-				for (int j = 0; j < classesToEnrol.size(); j++) {
-					enrolments[i][j] = context.newObject(Enrolment.class);
-					College currentCollege = webSiteService.getCurrentCollege();
-					College college = (College) context.localObject(
-							currentCollege.getObjectId(), currentCollege);
-					enrolments[i][j].setCollege(college);
-					Student student = ((Contact) context.localObject(contacts
-							.get(i).getObjectId(), contacts.get(i)))
-							.getStudent();
-					CourseClass courseClass = (CourseClass) context
-							.localObject(classesToEnrol.get(j).getObjectId(),
-									classesToEnrol.get(j));
-					if (!enrolments[i][j].isDuplicated(student)
-							&& courseClass.isHasAvailableEnrolmentPlaces()) {
-						enrolments[i][j].setStudent(student);
-						enrolments[i][j].setCourseClass(courseClass);
-					}
-				}
-			}
-
+			initPayment();
 		}
 
+	}
+
+	private void initPayment() {
+		payment = context.newObject(PaymentIn.class);
+		invoice = context.newObject(Invoice.class);
+		enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
+		invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol
+				.size()];
+		for (int i = 0; i < contacts.size(); i++) {
+			for (int j = 0; j < classesToEnrol.size(); j++) {
+				enrolments[i][j] = context.newObject(Enrolment.class);
+				College currentCollege = webSiteService.getCurrentCollege();
+				College college = (College) context.localObject(
+						currentCollege.getObjectId(), currentCollege);
+				enrolments[i][j].setCollege(college);
+				Student student = ((Contact) context.localObject(contacts
+						.get(i).getObjectId(), contacts.get(i)))
+						.getStudent();
+				CourseClass courseClass = (CourseClass) context
+						.localObject(classesToEnrol.get(j).getObjectId(),
+								classesToEnrol.get(j));
+				if (!enrolments[i][j].isDuplicated(student)
+						&& courseClass.isHasAvailableEnrolmentPlaces()) {
+					enrolments[i][j].setStudent(student);
+					enrolments[i][j].setCourseClass(courseClass);
+					InvoiceLine invoiceLine = context
+							.newObject(InvoiceLine.class);
+					invoiceLine.setPriceEachExTax(courseClass
+							.getFeeIncGst());
+					enrolments[i][j].setInvoiceLine(invoiceLine);
+					invoiceLines[i][j] = invoiceLine;
+				}
+			}
+		}
 	}
 
 	public boolean isShowConcessionsArea() {
@@ -153,20 +190,6 @@ public class EnrolCourses {
 
 	public String getCoursesListLink() {
 		return "http://" + request.getServerName() + "/courses";
-	}
-
-	public int getEnrolmentIndex() {
-		return studentIndex * classesToEnrol.size() + courseClassIndex;
-	}
-
-	public Enrolment getEnrolment() {
-		return enrolments[studentIndex][courseClassIndex];
-	}
-
-	public void enrolmentsUpdated() {
-		System.out.println("Hello from updated enrolments");
-		// TODO Auto-generated method stub
-
 	}
 
 	public boolean isHasDiscount() {
@@ -180,8 +203,47 @@ public class EnrolCourses {
 		return BigDecimal.ZERO;
 	}
 
+	//FIXME temp implementation of getting payment amount, should be changed
 	public BigDecimal getTotalIncGst() {
-		// TODO payment.totalIncGst
-		return BigDecimal.ZERO;
+		BigDecimal result = BigDecimal.ZERO;
+		for (int i = 0; i < contacts.size(); i++) {
+			for (int j = 0; j < classesToEnrol.size(); j++) {
+				InvoiceLine invoiceLine = enrolments[i][j].getInvoiceLine();
+				if (invoiceLine != null) {
+					result = result.add(invoiceLine.getPriceEachExTax());
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Updates zones that contain info about payment amount
+	 * 
+	 * @return
+	 */
+	public Object enrolmentsUpdated() {
+		return new MultiZoneUpdate("totals", totals.getBody()).add(
+				"paymentZone", paymentEntry.getPaymentZone());
+	}
+
+	public List<CourseClass> getCourseClasses() {
+		return classesToEnrol;
+	}
+
+	public Enrolment[][] getEnrolments() {
+		return enrolments;
+	}
+
+	public List<Contact> getContacts() {
+		return contacts;
+	}
+	
+	public void setContacts(List<Contact> contacts) {
+		this.contacts=contacts;
+	}
+
+	public InvoiceLine[][] getInvoiceLines() {
+		return invoiceLines;
 	}
 }

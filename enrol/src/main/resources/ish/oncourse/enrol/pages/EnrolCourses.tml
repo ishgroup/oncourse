@@ -39,13 +39,12 @@
 					</thead>
 					<tbody>
 						<t:loop source="classesToEnrol" value="courseClass" index="courseClassIndex">
-							<span t:type="EnrolmentListItem" enrolment="enrolment" student="contact.student"
-								courseClass="courseClass" index="enrolmentIndex" />
+							<span t:type="EnrolmentListItem" studentIndex="studentIndex" courseClassIndex="courseClassIndex"/>
 						</t:loop>
 					</tbody>
 				</t:loop>
-
-				<tbody class="totals">
+				
+				<t:zone t:id="totals" class="totals" elementName="tbody">
 					<t:if test="hasDiscount">
 						<tr>
 							<td colspan="2" class="alignright">Discount</td>
@@ -61,7 +60,7 @@
 							<t:output value="totalIncGst" format="moneyFormat"/>
 						</td>
 					</tr>
-				</tbody>
+				</t:zone>
 			</table>
 		</t:if>
 
@@ -70,7 +69,7 @@
 		<!-- end enrolments summary -->
 		<t:if test="contacts">
 			<!-- start payment form -->
-			<span t:type="EnrolmentPaymentEntry" totalIncGst="totalIncGst" payers="contacts" payment="payment"/>
+			<span t:type="EnrolmentPaymentEntry" t:id="paymentEntry" totalIncGst="totalIncGst" payers="contacts" payment="payment"/>
 			<!-- end payment form -->
 		</t:if>
 		<p:else>
@@ -80,5 +79,10 @@
 			</div>
 		</p:else>
 	</t:if>
+	<script type="text/javascript">
+		Event.observe('totals', Tapestry.ZONE_UPDATED_EVENT, function(){
+			initAddStudentButton();
+		});
+	</script>
 <!-- end has classes -->
 </html>

@@ -16,7 +16,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.tapestry5.Block;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -127,6 +126,7 @@ public class EnrolmentPaymentEntry {
 
 	@InjectComponent
 	private TextField cardcvv;
+	
 
 	@SetupRender
 	void beforeRender() {
@@ -234,7 +234,7 @@ public class EnrolmentPaymentEntry {
 	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "failure")
-	Block submitFailed() {
+	Object submitFailed() {
 		return paymentZone.getBody();
 	}
 
@@ -279,5 +279,9 @@ public class EnrolmentPaymentEntry {
 		if (!userAgreed) {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
 		}
+	}
+	
+	public Zone getPaymentZone() {
+		return paymentZone;
 	}
 }

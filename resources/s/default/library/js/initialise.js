@@ -1,11 +1,7 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
-	// Show the "add a student" section
-	$j('#addstudent').click(function() {
-	$j('#addstudent-block').slideToggle(400);
-	});
-	
+	initAddStudentButton();
 	// if you hit the enter key in the EnrolmentContactEntry component, click "enrol" instead of paying
 	// but not in the suburb autocomplete, where enter will select the suburb
 	$j("fieldset#student_enrol_credentials input,fieldset#student_enrol_details input").keydown(function(e) { 
@@ -435,4 +431,10 @@ function submitTellAFriend() {
 	    $j('#popup-content').html(msg);  
 	  }
 	});  
+}
+function initAddStudentButton(){
+	// 	Show the "add a student" section
+	$j('#addstudent').click(function() {
+		$j('#addstudent-block').slideToggle(400);
+	});
 }
