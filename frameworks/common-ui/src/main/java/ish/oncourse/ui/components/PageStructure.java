@@ -6,6 +6,6 @@ import org.apache.tapestry5.annotations.SupportsInformalParameters;
  * A page wrapper component.
  */
 @SupportsInformalParameters
-public class PageWrapper extends GenericPageStructure {
+public class PageStructure extends GenericPageStructure {
 	
 }

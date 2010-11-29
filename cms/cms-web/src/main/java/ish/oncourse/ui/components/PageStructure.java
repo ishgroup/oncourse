@@ -9,7 +9,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  * A page wrapper component.
  */
 @SupportsInformalParameters
-public class PageWrapper extends GenericPageStructure {
+public class PageStructure extends GenericPageStructure {
 
 	@Inject
 	private IAuthenticationService authenticationService;
