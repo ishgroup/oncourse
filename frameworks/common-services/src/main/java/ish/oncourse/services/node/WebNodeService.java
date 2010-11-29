@@ -1,22 +1,18 @@
 package ish.oncourse.services.node;
 
-import ish.oncourse.model.RegionKey;
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.BaseService;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.site.IWebSiteService;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -25,7 +21,8 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-public class WebNodeService implements IWebNodeService {
+public class WebNodeService extends BaseService<WebNode> implements
+		IWebNodeService {
 
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
@@ -37,7 +34,7 @@ public class WebNodeService implements IWebNodeService {
 
 	@Inject
 	private ICayenneService cayenneService;
-	
+
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
 
@@ -46,9 +43,7 @@ public class WebNodeService implements IWebNodeService {
 
 	@SuppressWarnings("unchecked")
 	public List<WebNode> getNodes() {
-		SelectQuery query = new SelectQuery(WebNode.class);
-		query.andQualifier(siteQualifier());
-		return cayenneService.sharedContext().performQuery(query);
+		return findByQualifier(siteQualifier());
 	}
 
 	public WebNode getHomePage() {
@@ -56,28 +51,23 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
-		SelectQuery query = new SelectQuery(WebNode.class);
-
-		query.andQualifier(siteQualifier());
-		query.andQualifier(ExpressionFactory.matchExp(
-				WebNode.WEB_NODE_TYPE_PROPERTY + "."
-						+ WebNodeType.NAME_PROPERTY, WEB_NODE_PAGE_TYPE_KEY));
-
-		query.andQualifier(ExpressionFactory.matchExp(
-				WebNode.NODE_NUMBER_PROPERTY, nodeNumber));
+		Expression expr = siteQualifier();
+		expr = expr.andExp(
+				ExpressionFactory.matchExp(WebNode.WEB_NODE_TYPE_PROPERTY + "."
+						+ WebNodeType.NAME_PROPERTY, WEB_NODE_PAGE_TYPE_KEY))
+				.andExp(ExpressionFactory.matchExp(
+						WebNode.NODE_NUMBER_PROPERTY, nodeNumber));
 
 		@SuppressWarnings("unchecked")
-		List<WebNode> nodes = cayenneService.sharedContext()
-				.performQuery(query);
+		List<WebNode> nodes = findByQualifier(expr);
 
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Found " + nodes.size() + " nodes for query : "
-					+ query);
+			LOGGER.debug("Found " + nodes.size() + " nodes for expr : " + expr);
 		}
 
 		if (nodes.size() > 1) {
 			LOGGER.error("Expected one WebNode record, found " + nodes.size()
-					+ " for query : " + query);
+					+ " for query : " + expr);
 		}
 
 		return (nodes.size() == 1) ? nodes.get(0) : null;
@@ -152,7 +142,7 @@ public class WebNodeService implements IWebNodeService {
 		return true;
 	}
 
-	private Integer getNextNodeNumber() {
+	public Integer getNextNodeNumber() {
 		Expression siteExpr = ExpressionFactory.matchExp(
 				WebNode.WEB_SITE_PROPERTY, webSiteService.getCurrentWebSite());
 
@@ -162,54 +152,6 @@ public class WebNodeService implements IWebNodeService {
 						new EJBQLQuery(
 								"select max(wn.nodeNumber) from WebNode wn where "
 										+ siteExpr.toEJBQL("wn"))).get(0);
-
 		return ++number;
-	}
-
-	public List<WebNode> loadByIds(Object... ids) {
-		if (ids.length == 0) {
-			return Collections.emptyList();
-		}
-
-		SelectQuery q = new SelectQuery(WebNode.class);
-		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
-		
-		return cayenneService.sharedContext().performQuery(q);
-	}
-
-	public WebNode newWebNode() {
-		ObjectContext ctx = cayenneService.newContext();
-
-		WebNode newPageNode = ctx.newObject(WebNode.class);
-
-		newPageNode.setName("New Page");
-
-		WebSite webSite = (WebSite) ctx.localObject(webSiteService
-				.getCurrentWebSite().getObjectId(), null);
-
-		newPageNode.setWebSite(webSite);
-		Integer nodeNumber = getNextNodeNumber();
-		
-		newPageNode.setNodeNumber(nodeNumber);
-
-		WebNodeType webNodeType = (WebNodeType) ctx.localObject(
-				webNodeTypeService.getDefaultWebNodeType().getObjectId(), null);
-
-		newPageNode.setWebNodeType(webNodeType);
-
-		WebContentVisibility contentVisibility = ctx
-				.newObject(WebContentVisibility.class);
-
-		contentVisibility.setRegionKey(RegionKey.content);
-		contentVisibility.setWebNode(newPageNode);
-
-		WebContent webContent = ctx.newObject(WebContent.class);
-		webContent.setWebSite(webSite);
-		webContent.setContent("Sample content text.");
-		contentVisibility.setWebContent(webContent);
-
-		ctx.commitChanges();
-		
-		return newPageNode;
 	}
 }

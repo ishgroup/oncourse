@@ -1,6 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:zone t:id="inspectorZone">
+		<t:if t:test="pageHasChanges">
+			<div id="cms_page_save">
+				This page is not saved. <a href="#" t:type="actionLink" t:id="save" zone="prop:inspectorZone.clientId">Save</a>
+			</div>
+		</t:if>
 		<div id="cms_pageinfo">
 			<dl class="cms_inspector">
 				<dt class="cms_pagename cms_inspector">${node.name}</dt>

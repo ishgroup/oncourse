@@ -80,4 +80,6 @@ public abstract class _WebContent extends CayenneDataObject {
 
     protected abstract void onPostAdd();
 
+    protected abstract void onPostUpdate();
+
 }

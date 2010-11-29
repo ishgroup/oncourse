@@ -3,18 +3,18 @@
 	<div id="pgOptions" style="display: none;">
 	    <t:form t:id="optionsForm" zone="prop:updateZone.clientId">
 	    	<t:errors/>
-			<t:label for="pageName"></t:label><t:textfield t:id="pageName" t:value="node.name" t:validate="required,minlength=3"/><br/>
-			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="node.webNodeType"/><br/>
-			<t:label for="published"/><t:checkbox t:id="published" value="node.published"/>
+			<t:label for="pageName"></t:label><t:textfield t:id="pageName" t:value="editNode.name" t:validate="required,minlength=3"/><br/>
+			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="editNode.webNodeType"/><br/>
+			<t:label for="published"/><t:checkbox t:id="published" value="editNode.published"/>
 		</t:form>
 	    
 	    URLs
     	<ul>
     		<t:zone t:id="urlZone">
     			<t:if t:test="hasDefault">
-    				<li style="line-height: 1.2em">${siteUrl}${node.defaultWebURLAlias.urlPath}<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/></li>
+    				<li style="line-height: 1.2em">${siteUrl}${editNode.defaultWebURLAlias.urlPath}<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/></li>
     			</t:if>
-		    	<t:loop source="prop:node.webUrlAliases" value="prop:webUrlAlias">
+		    	<t:loop source="prop:editNode.webUrlAliases" value="prop:webUrlAlias">
 		    			<t:if t:test="notDefault">
 		    				<li style="line-height: 1.2em">
 		    					${siteUrl}${webUrlAlias.urlPath} 

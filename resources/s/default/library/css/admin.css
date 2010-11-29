@@ -50,6 +50,15 @@ body.cms_loggedin {
 	display: inline-block;
 }
 
+#cms_page_save {
+	background: rgba(0, 0, 0, 0.9);
+	position: fixed;
+	bottom: 350px;
+	left: 10px;
+	padding: 10px 100px 10px 10px;
+	color: #fff;
+}
+
 #cms_pageinfo {
 	background: rgba(0, 0, 0, 0.9);
 	position: fixed;

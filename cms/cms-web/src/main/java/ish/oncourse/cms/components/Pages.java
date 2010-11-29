@@ -28,7 +28,7 @@ public class Pages {
 	private WebNode webNode;
 	
 	public Object onActionFromNewPage() throws IOException {
-		WebNode node = webNodeService.newWebNode();
+		WebNode node = webNodeService.createNewPage();
 		return new URL("http://" + request.getServerName() + "/page/" + node.getNodeNumber());
 	}
 	

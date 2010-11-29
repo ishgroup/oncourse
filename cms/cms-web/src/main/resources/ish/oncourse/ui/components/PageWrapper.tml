@@ -14,7 +14,7 @@
   		</t:if>
 	</head>
 	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-		<div t:id="bodyLayout" t:type="ui/bodylayout">
+		<div t:id="bodyStructure" t:type="ui/bodyStructureTemplate">
 			<p:header>
 				<h1><a href="${homeLink}">${collegeName}</a></h1>
 				<div id="site_toolbar">
@@ -25,16 +25,16 @@
 			<p:menu>
 				<div t:type="ui/menu" rootMenu="menu"/>
 			</p:menu>
-			<p:content>
+			<p:bodyContent>
 				<t:body/>		
-			</p:content>
+			</p:bodyContent>
 			<p:footer>
 				<div t:type="ui/bodyfooter"></div>
 			</p:footer>
 		</div>
 		<span t:type="ui/googleAnalytics"></span>
 		<t:if t:test="loggedIn">
-			<div t:type="CmsNavigation" node=""/>
+			<div t:type="CmsNavigation"/>
 		</t:if>
 	</body>
 </html>

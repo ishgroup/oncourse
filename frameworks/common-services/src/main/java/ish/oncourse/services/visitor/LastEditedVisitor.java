@@ -3,13 +3,13 @@ package ish.oncourse.services.visitor;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.visitor.IVisitor;
+import ish.oncourse.model.visitor.BaseVisitor;
 
 import java.util.Date;
 
 import org.apache.tapestry5.ioc.Messages;
 
-public class LastEditedVisitor implements IVisitor<String> {
+public class LastEditedVisitor extends BaseVisitor<String> {
 
 	private Messages messages;
 

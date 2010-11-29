@@ -5,6 +5,10 @@ import ish.oncourse.model.visitor.IVisitor;
 
 import java.util.Date;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
+
 public class WebNode extends _WebNode {
 
 	static final String DEFAULT_PAGE_TITLE = "New Page";
@@ -47,4 +51,10 @@ public class WebNode extends _WebNode {
 		Date today = new Date();
 		setModified(today);
 	}
+
+    @Override
+    public void removeFromWebUrlAliases(WebUrlAlias obj) {
+        super.removeFromWebUrlAliases(obj);
+        getObjectContext().deleteObject(obj);
+    }
 }

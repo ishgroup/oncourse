@@ -1,24 +1,21 @@
 package ish.oncourse.services.tag;
 
+import ish.oncourse.model.College;
+import ish.oncourse.model.Tag;
+import ish.oncourse.model.Taggable;
+import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import ish.oncourse.model.College;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.Taggable;
-import ish.oncourse.model.TaggableTag;
-import ish.oncourse.model.WebNode;
-import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
 
 public class TagService implements ITagService {
 	

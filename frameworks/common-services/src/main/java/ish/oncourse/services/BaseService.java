@@ -59,7 +59,7 @@ public class BaseService<T> implements IBaseService<T> {
 		if ((willowId != null) && (willowId > 0)) {
 
 			try {
-				Expression qualifier = ExpressionFactory.matchExp(
+				Expression qualifier = ExpressionFactory.matchDbExp(
 						IBaseService.ID_PK_COLUMN, willowId);
 
 				List<T> results = findByQualifier(qualifier);

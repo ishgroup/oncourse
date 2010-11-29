@@ -3,9 +3,9 @@ package ish.oncourse.services.menu;
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.BaseService;
 import ish.oncourse.services.site.IWebSiteService;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
@@ -14,7 +14,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class WebMenuService implements IWebMenuService {
+public class WebMenuService extends BaseService<WebMenu> implements IWebMenuService {
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -22,11 +22,10 @@ public class WebMenuService implements IWebMenuService {
 	@Inject
 	private ICayenneService cayenneService;
 	
-	public WebMenu newMenu() {
+	public WebMenu createMenu() {
 		ObjectContext ctx = cayenneService.sharedContext();
 		
 		WebMenu menu = ctx.newObject(WebMenu.class);
-		menu.setName("New menu item");
 		menu.setWebSite(webSiteService.getCurrentWebSite());
 		
 		ctx.commitChanges();
@@ -57,17 +56,5 @@ public class WebMenuService implements IWebMenuService {
 				.matchExp(WebMenu.WEB_SITE_PROPERTY, site);
 
 		return expression;
-	}
-
-	public List<WebMenu> loadByIds(Object... ids) {
-
-		if (ids.length == 0) {
-			return Collections.emptyList();
-		}
-
-		SelectQuery q = new SelectQuery(WebMenu.class);
-		q.andQualifier(ExpressionFactory.inDbExp(WebMenu.ID_PK_COLUMN, ids));
-
-		return cayenneService.sharedContext().performQuery(q);
 	}
 }

@@ -33,8 +33,6 @@
 			tolerance: 'pointer',
 			toleranceElement: '> div',
 			update: function (event, ui) {
-				var itemId = $(ui.item).attr('id').substring(2);
-				var s = $('ol.cms_sortable').nestedSortable('toArray');
 				var parent = null, index = 0;
 				
 				for (var i=0; i< s.length; i++) {
@@ -44,14 +42,13 @@
 					} 
 					
 					if(s[i].item_id == itemId) {
-						$.post('/ma.sort', {id: s[i].item_id, pid: s[i].parent_id, w:index}, function(data) {
-							
-						});
 						break;
 					} 
 					
 					index++;
 				}
+				
+				$.post('/ma.sort', {id: $(ui.item).attr('id').substring(2), pid: $(ui.item).closest('li').attr('id').substring(2), w:index}, function(data) {});
 			}
 			
 		});

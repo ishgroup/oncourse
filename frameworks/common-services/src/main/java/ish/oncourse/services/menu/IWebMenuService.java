@@ -1,17 +1,9 @@
 package ish.oncourse.services.menu;
 
-import java.util.List;
-
 import ish.oncourse.model.WebMenu;
+import ish.oncourse.services.IBaseService;
 
-public interface IWebMenuService {
-	
-	/**
-	 * Creates new menu item
-	 * @return menu item
-	 */
-	WebMenu newMenu();
-	
+public interface IWebMenuService {	
 	/**
 	 * Returns top level menu item.
 	 * @return top level item.
@@ -19,9 +11,7 @@ public interface IWebMenuService {
 	WebMenu getRootMenu();
 	
 	/**
-	 * Loads menu items by id
-	 * @param ids
-	 * @return menu items
+	 * @see IBaseService#findById(Long)
 	 */
-	List<WebMenu> loadByIds(Object... ids);
+	WebMenu findById(Long willowId);
 }

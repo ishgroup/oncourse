@@ -1,61 +1,46 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.services.content.IWebContentService;
-import ish.oncourse.ui.utils.EmptyRenderable;
-
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.Block;
-import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class Page extends GenericPage {
+import ish.oncourse.cms.components.PageInfo;
+import ish.oncourse.model.WebNode;
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.node.IWebNodeService;
 
-	private static final Logger LOGGER = Logger.getLogger(Page.class);
+public class Page {
+
+	@Component
+	@Property
+	private PageInfo pageInfo;
 
 	@Property
-	@Component(id = "regionForm")
-	private Form regionForm;
+	@Persist
+	private WebNode node;
 
-	@Inject
-	private IWebContentService webContentService;
-	
 	@Inject
 	private ICayenneService cayenneService;
 
 	@Inject
-	private Block editorBlock;
+	private IWebNodeService webNodeService;
 
-	@Inject
-	@Property
-	private Block regionContentBlock;
-
-	Object onActionFromEditRegion(String id) {
-		
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug(String.format("Edit region with id: %s", id));
-		}
-		
-		WebContent region = webContentService.loadByIds(id).get(0);
-		setCurrentRegion(region);
-
-		return editorBlock;
+	@SetupRender
+	public void beforeRender() {
+		node = (WebNode) cayenneService.newContext().localObject(webNodeService.getCurrentNode().getObjectId(), null);
+	}
+	
+	public String getBodyId() {
+		return (isHomePage()) ? "Main" : ("page" + this.node.getId());
 	}
 
-	Object onSuccessFromRegionForm() {
-		
-		cayenneService.sharedContext().commitChanges();
-		
-		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(
-				getCurrentZoneKey(), regionContentBlock);
+	public String getBodyClass() {
+		return (isHomePage()) ? "main-page" : "internal-page";
 	}
 
-	public String getCurrentZoneKey() {
-		return "z_"
-				+ getCurrentRegion().getWebContentVisibility().getRegionKey();
+	private boolean isHomePage() {
+		return node.getId() != null && node.getId().equals(webNodeService.getHomePage().getId());
 	}
 }

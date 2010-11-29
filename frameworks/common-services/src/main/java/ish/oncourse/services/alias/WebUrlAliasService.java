@@ -3,9 +3,9 @@ package ish.oncourse.services.alias;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.BaseService;
 import ish.oncourse.services.site.IWebSiteService;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -14,10 +14,10 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class WebUrlAliasService implements IWebUrlAliasService {
+public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
+		IWebUrlAliasService {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(WebUrlAliasService.class);
+	private static final Logger LOGGER = Logger.getLogger(WebUrlAliasService.class);
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -53,18 +53,6 @@ public class WebUrlAliasService implements IWebUrlAliasService {
 				webSiteService.getCurrentCollege()) : ExpressionFactory
 				.matchExp(WebUrlAlias.WEB_SITE_PROPERTY, site);
 		return expression;
-	}
-
-	public List<WebUrlAlias> loadByIds(Object... ids) {
-
-		if (ids.length == 0) {
-			return Collections.emptyList();
-		}
-
-		SelectQuery q = new SelectQuery(WebUrlAlias.class);
-		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
-
-		return cayenneService.sharedContext().performQuery(q);
 	}
 
 	public List<WebUrlAlias> loadForCurrentSite() {

@@ -2,6 +2,7 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.selectutils.ListSelectModel;
@@ -10,8 +11,10 @@ import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -31,6 +34,10 @@ public class PageOptions {
 	@Parameter
 	@Property
 	private Zone updateZone;
+
+	@Property
+	@Persist
+	private WebNode editNode;
 
 	@Property
 	@Component(id = "optionsForm")
@@ -74,67 +81,57 @@ public class PageOptions {
 
 	@SetupRender
 	public void beforeRender() {
-		List<WebNodeType> webNodeTypes = webNodeTypeService.getWebNodeTypes();
+		ObjectContext ctx = cayenneService.newContext();
+		this.editNode = (WebNode) ctx.localObject(node.getObjectId(), node);
 
-		this.pageTypeModel = new ListSelectModel<WebNodeType>(webNodeTypes,
-				WebNodeType.LAYOUT_KEY_PROPERTY, access);
+		List<WebNodeType>  webNodeTypes = new ArrayList<WebNodeType>(15);
+		
+		for (WebNodeType t : webNodeTypeService.getWebNodeTypes()) {
+			webNodeTypes.add((WebNodeType) ctx.localObject(t.getObjectId(), null));
+		}
 
-		this.pageTypeEncoder = new ListValueEncoder<WebNodeType>(webNodeTypes,
-				"id", access);
+		this.pageTypeModel = new ListSelectModel<WebNodeType>(webNodeTypes, WebNodeType.LAYOUT_KEY_PROPERTY, access);
+		this.pageTypeEncoder = new ListValueEncoder<WebNodeType>(webNodeTypes, "id", access);
 	}
 
 	public boolean isNotDefault() {
-		if (this.node.getDefaultWebURLAlias() != null) {
-			return !node.getDefaultWebURLAlias().equals(webUrlAlias.getId());
+		if (editNode.getDefaultWebURLAlias() != null) {
+			return !editNode.getDefaultWebURLAlias().equals(webUrlAlias.getId());
 		}
 		return true;
 	}
 
 	public boolean isHasDefault() {
-		return this.node.getDefaultWebURLAlias() != null;
-	}
-
-	void onSelectedFromAddUrl() {
-
+		return editNode.getDefaultWebURLAlias() != null;
 	}
 
 	Object onActionFromRemoveUrl(String id) {
-		WebUrlAlias alias = aliasService.loadByIds(Long.parseLong(id)).get(0);
-
-		this.node.removeFromWebUrlAliases(alias);
-		cayenneService.sharedContext().deleteObject(alias);
-
-		cayenneService.sharedContext().commitChanges();
-
+		WebUrlAlias alias = (WebUrlAlias) editNode.getObjectContext().localObject(aliasService.findById(Long.parseLong(id)).getObjectId(), null);
+		editNode.removeFromWebUrlAliases(alias);
+		editNode.getObjectContext().commitChanges();
 		return urlZone.getBody();
 	}
 
 	Object onActionFromMakeDefault(String id) {
-		WebUrlAlias alias = aliasService.loadByIds(Long.parseLong(id)).get(0);
-
-		this.node.setDefaultWebURLAlias(alias);
-		cayenneService.sharedContext().commitChanges();
-
+		WebUrlAlias alias = (WebUrlAlias) editNode.getObjectContext().localObject(aliasService.findById(Long.parseLong(id)).getObjectId(), null);
+		editNode.setDefaultWebURLAlias(alias);
+		editNode.getObjectContext().commitChanges();
 		return urlZone.getBody();
 	}
 
 	Object onSuccessFromUrlForm() {
-		WebUrlAlias alias = cayenneService.sharedContext().newObject(
-				WebUrlAlias.class);
+		ObjectContext ctx = editNode.getObjectContext();
 
+		WebUrlAlias alias = ctx.newObject(WebUrlAlias.class);
+		alias.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
 		alias.setUrlPath(urlPath);
-		node.addToWebUrlAliases(alias);
-		alias.setWebSite(this.node.getWebSite());
 
-		this.urlPath = "";
-
-		cayenneService.sharedContext().commitChanges();
-
+		editNode.addToWebUrlAliases(alias);
 		return urlZone.getBody();
 	}
 
 	Object onSuccessFromOptionsForm() {
-		cayenneService.sharedContext().commitChanges();
+		editNode.getObjectContext().commitChanges();
 		return updateZone.getBody();
 	}
 

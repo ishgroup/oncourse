@@ -11,14 +11,6 @@ public interface IWebContentService {
 
 	/**
 	 * 
-	 * @param webContent
-	 * @return
-	 */
-
-	String getParsedContent(WebContent webContent);
-
-	/**
-	 * 
 	 * @param searchProperty
 	 * @param value
 	 * @return
@@ -26,12 +18,12 @@ public interface IWebContentService {
 
 	WebContent getWebContent(String searchProperty, Object value);
 
-	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
-	List<WebContent> loadByIds(Object... ids);
+    /**
+     * 
+     * @param willowId
+     * @return
+     */
+	WebContent findById(Long willowId);
 
 	/**
 	 * Returns all web blocks for the current site or current college.
@@ -45,13 +37,6 @@ public interface IWebContentService {
 	 * @return web blocks.
 	 */
 	SortedSet<WebContent> getBlocksForRegionKey(RegionKey regionKey);
-
-	/**
-	 * Creates new web content.
-	 * 
-	 * @return
-	 */
-	WebContent newWebContent();
 	
 	/**
 	 * Gets web content visibility for region key.

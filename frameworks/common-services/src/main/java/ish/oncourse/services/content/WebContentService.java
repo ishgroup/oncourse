@@ -5,13 +5,13 @@ import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.BaseService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationException;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
@@ -27,145 +27,84 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class WebContentService implements IWebContentService {
+public class WebContentService extends BaseService<WebContent> implements IWebContentService {
 
-	@Inject
-	private ITextileConverter textileConverter;
+    @Inject
+    private IWebSiteService webSiteService;
 
-	@Inject
-	private IWebSiteService webSiteService;
+    @Inject
+    private ICayenneService cayenneService;
 
-	@Inject
-	private ICayenneService cayenneService;
+    public WebContent getWebContent(String searchProperty, Object value) {
+        WebSite currentSite = webSiteService.getCurrentWebSite();
 
-	public String getParsedContent(WebContent webContent) {
-		String text = webContent.getContent();
+        ObjectContext sharedContext = cayenneService.sharedContext();
 
-		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
+        Expression qualifier = ExpressionFactory.matchExp(
+                WebContent.WEB_SITE_PROPERTY, currentSite);
 
-		Matcher matcher = pattern.matcher(text);
+        if (searchProperty != null) {
+            qualifier = qualifier.andExp(ExpressionFactory.matchExp(
+                    searchProperty, value));
+        }
 
-		if (matcher.find()) {
+        @SuppressWarnings("unchecked")
+        List<WebContent> listResult = findByQualifier(qualifier);
 
-			ValidationErrors errors = new ValidationErrors();
-			text = textileConverter.convertCustomTextile(text, errors);
+        return !listResult.isEmpty() ? listResult.get(new Random()
+                .nextInt(listResult.size())) : null;
+    }
 
-			if (errors.hasFailures()) {
-				try {
-					throw new ValidationException(errors);
-				} catch (ValidationException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+    public List<WebContent> getBlocks() {
 
-		return text;
-	}
+        SelectQuery q = new SelectQuery(WebContent.class);
 
-	public WebContent getWebContent(String searchProperty, Object value) {
-		WebSite currentSite = webSiteService.getCurrentWebSite();
+        q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
+                webSiteService.getCurrentWebSite()));
 
-		ObjectContext sharedContext = cayenneService.sharedContext();
+        Expression expr = ExpressionFactory.matchExp(
+                WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "+."
+                        + WebContentVisibility.WEB_NODE_PROPERTY, null);
 
-		Expression qualifier = ExpressionFactory.matchExp(
-				WebContent.WEB_SITE_PROPERTY, currentSite);
+        expr = expr.orExp(ExpressionFactory.matchExp(
+                WebContent.WEB_CONTENT_VISIBILITY_PROPERTY, null));
 
-		if (searchProperty != null) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-					searchProperty, value));
-		}
+        q.andQualifier(expr);
 
-		SelectQuery query = new SelectQuery(WebContent.class, qualifier);
+        q.addOrdering(new Ordering(WebContent.MODIFIED_PROPERTY, SortOrder.DESCENDING));
 
-		@SuppressWarnings("unchecked")
-		List<WebContent> listResult = sharedContext.performQuery(query);
-		return !listResult.isEmpty() ? listResult.get(new Random()
-				.nextInt(listResult.size())) : null;
-	}
+        return cayenneService.sharedContext().performQuery(q);
+    }
 
-	public List<WebContent> loadByIds(Object... ids) {
-		if (ids.length == 0) {
-			return Collections.emptyList();
-		}
+    public SortedSet<WebContent> getBlocksForRegionKey(RegionKey regionKey) {
 
-		SelectQuery q = new SelectQuery(WebContent.class);
-		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
+        SelectQuery q = new SelectQuery(WebContent.class);
 
-		List<WebContent> list = cayenneService.sharedContext().performQuery(q);
+        q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
+                webSiteService.getCurrentWebSite()));
 
-		return list;
-	}
+        q.andQualifier(ExpressionFactory.matchExp(
+                WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+                        + WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
 
-	public List<WebContent> getBlocks() {
+        return new TreeSet<WebContent>(cayenneService.sharedContext()
+                .performQuery(q));
+    }
 
-		SelectQuery q = new SelectQuery(WebContent.class);
+    public SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(
+            RegionKey regionKey) {
 
-		q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
+        SelectQuery q = new SelectQuery(WebContentVisibility.class);
 
-		Expression expr = ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "+."
-						+ WebContentVisibility.WEB_NODE_PROPERTY, null);
+        q.andQualifier(ExpressionFactory.matchExp(
+                WebContentVisibility.WEB_CONTENT_PROPERTY + "."
+                        + WebContent.WEB_SITE_PROPERTY,
+                webSiteService.getCurrentWebSite()));
 
-		expr = expr.orExp(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY, null));
+        q.andQualifier(ExpressionFactory.matchExp(
+                WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
 
-		q.andQualifier(expr);
-		
-		q.addOrdering(new Ordering(WebContent.MODIFIED_PROPERTY, SortOrder.DESCENDING));
-
-		return cayenneService.sharedContext().performQuery(q);
-	}
-
-	public WebContent newWebContent() {
-
-		WebContent webContent = cayenneService.sharedContext().newObject(
-				WebContent.class);
-
-		WebContentVisibility visibility = cayenneService.sharedContext()
-				.newObject(WebContentVisibility.class);
-
-		visibility.setRegionKey(RegionKey.unassigned);
-		visibility.setWebContent(webContent);
-
-		webContent.setWebContentVisibility(visibility);
-		webContent.setWebSite(webSiteService.getCurrentWebSite());
-		webContent.setContent("Sample content text.");
-
-		cayenneService.sharedContext().commitChanges();
-
-		return webContent;
-	}
-
-	public SortedSet<WebContent> getBlocksForRegionKey(RegionKey regionKey) {
-
-		SelectQuery q = new SelectQuery(WebContent.class);
-
-		q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
-						+ WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
-
-		return new TreeSet<WebContent>(cayenneService.sharedContext()
-				.performQuery(q));
-	}
-
-	public SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(
-			RegionKey regionKey) {
-
-		SelectQuery q = new SelectQuery(WebContentVisibility.class);
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContentVisibility.WEB_CONTENT_PROPERTY + "."
-						+ WebContent.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
-
-		return new TreeSet<WebContentVisibility>(cayenneService.sharedContext()
-				.performQuery(q));
-	}
+        return new TreeSet<WebContentVisibility>(cayenneService.sharedContext()
+                .performQuery(q));
+    }
 }

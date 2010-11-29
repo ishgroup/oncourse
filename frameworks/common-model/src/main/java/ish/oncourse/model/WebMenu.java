@@ -22,6 +22,7 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 		setCreated(today);
 		setModified(today);
 		setWeight(0);
+        setName("New menu item");
 	}
 
 	/**
@@ -54,4 +55,21 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 	public int compareTo(WebMenu o) {
 		return this.getWeight() - o.getWeight();
 	}
+
+
+    public void updateWeight(int weight) {
+
+        for (int i = 0; i < getParentWebMenu().getChildrenMenus().size(); i++) {
+			WebMenu m = getParentWebMenu().getChildrenMenus().get(i);
+
+			if (m.getWeight() < weight) {
+				m.setWeight(i);
+			}
+			else {
+				m.setWeight(i + 1);
+			}
+		}
+
+		setWeight(weight);
+    }
 }

@@ -1,25 +1,12 @@
 (function($){
 	$.pageTypeEditor = function(blockIds) {
 		jQuery(blockIds).sortable({ connectWith: ".connectedSortable", placeholder: "ui-state-highlight", 
+			receive: function (event, ui) {
+				$.post('/pt.sort', {id: $(ui.item).attr('id'), w:$(ui.item).index(), rg:$(ui.sender).attr('id')}, function(data) {});
+			},
 			update: function (event, ui) {
+				 $.post('/pt.sort', {id: $(ui.item).attr('id'), w:$(ui.item).index()}, function(data) {});
 				 
-				 var items = $(blockIds).sortable('toArray');
-				 var itemId = $(ui.item).attr('id');
-				 
-				 var weight = 0;
-				 for (; weight < items.length; weight++) {
-					 if (items[weight] == itemId) {
-						 break;
-					 }
-				 }
-				 
-				 var params = {id: itemId, w:weight};
-				 
-				 if (ui.sender) {
-                	 params['rg'] = $(ui.item).closest('ul').attr('id').substring(2); 
-                 }
-				 
-				 $.post('/pt.sort', params, function(data) {});
 		}}).disableSelection();
 	}
 })(jQuery);

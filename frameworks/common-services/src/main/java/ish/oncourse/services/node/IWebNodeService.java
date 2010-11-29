@@ -1,17 +1,30 @@
 package ish.oncourse.services.node;
 
 import ish.oncourse.model.WebNode;
+import ish.oncourse.services.IBaseService;
 
 import java.util.Date;
 import java.util.List;
 
 public interface IWebNodeService {
 
-	public static final String NODE = "node";
-	public static final String NODE_NUMBER_PARAMETER = "n";
-	public static final String PAGE_PATH_PARAMETER = "p";
-	public static final String WEB_NODE_PAGE_TYPE_KEY = "Page";
+	 String NODE = "node";
+	 String NODE_NUMBER_PARAMETER = "n";
+	 String PAGE_PATH_PARAMETER = "p";
+	 String WEB_NODE_PAGE_TYPE_KEY = "Page";
+	 String WELCOME_TEMPLATE_ID = "welcome";
 
+	/**
+	 * Returns next node number which is unique within the site.
+	 * @return next node number.
+	 */
+	 Integer getNextNodeNumber();
+	
+	/**
+	 * @see IBaseService#findById(Long)
+	 */
+	WebNode findById(Long willowId);
+	
 	/**
 	 * Returns all web nodes for the current site or current college.
 	 */
@@ -68,17 +81,4 @@ public interface IWebNodeService {
 	 * If node exists for path.
 	 */
 	boolean isNodeExist(String path);
-	
-	/**
-	 * Loads node by id.
-	 * @param webnode id
-	 * @return webnode
-	 */
-	List<WebNode> loadByIds(Object... ids);
-	
-	/**
-	 * Creates new webnode with default settings.
-	 * @return webnode
-	 */
-	WebNode newWebNode();
 }

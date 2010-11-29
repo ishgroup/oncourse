@@ -3,6 +3,7 @@ package ish.oncourse.cms.components;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.services.persistence.ICayenneService;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -35,11 +36,11 @@ public class BlockEdit {
 	
 	@SetupRender
 	public void beforeRender() {
-		this.editBlock = block;
+		editBlock = (WebContent) cayenneService.newContext().localObject(block.getObjectId(), block);
 	}
 	
 	Object onSuccessFromBlockEditForm() {
-		cayenneService.sharedContext().commitChanges();
+		editBlock.getObjectContext().commitChanges();
 		return updateZone.getBody();
 	}
 	
@@ -48,10 +49,9 @@ public class BlockEdit {
 	}
 	
 	Object onActionFromDelete() {
-		
-		cayenneService.sharedContext().deleteObject(editBlock);
-		cayenneService.sharedContext().commitChanges();
-		
+		ObjectContext ctx = editBlock.getObjectContext();
+		ctx.deleteObject(editBlock);
+		ctx.commitChanges();
 		return updateZone.getBody();
 	}
 }

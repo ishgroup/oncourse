@@ -20,15 +20,9 @@ public interface IWebNodeTypeService {
 	List<WebNodeType> getWebNodeTypes();
 	
 	/**
-	 * Creates new page type.
-	 * @return page type.
+	 * Gets webNode type by id.
+	 * @param willowId
+	 * @return
 	 */
-	WebNodeType newWebNodeType();
-	
-	/**
-	 * Loads page types by id.
-	 * @param webnode id
-	 * @return page types
-	 */
-	List<WebNodeType> loadByIds(Object... ids);
+	WebNodeType findById(Long willowId);
 }

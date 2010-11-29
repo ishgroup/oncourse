@@ -4,8 +4,9 @@ import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.services.visitor.ParsedContentVisitor;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class TextilePage {
 
 	@Inject
-	private IWebContentService webContentService;
+	private ITextileConverter textileConverter;
 
 	@Inject
 	private IWebNodeService webNodeService;
@@ -38,7 +39,7 @@ public class TextilePage {
 	}
 
 	public String getRegionContent() {
-		return webContentService.getParsedContent(region);
+		return region.accept(new ParsedContentVisitor(textileConverter));
 	}
 
 }

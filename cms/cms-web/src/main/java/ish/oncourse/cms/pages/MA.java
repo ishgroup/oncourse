@@ -5,7 +5,9 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.site.IWebSiteService;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -25,6 +27,9 @@ public class MA {
 	private IWebNodeService webNodeService;
 
 	@Inject
+	private IWebSiteService webSiteService;
+
+	@Inject
 	private ICayenneService cayenneService;
 
 	@Property
@@ -34,8 +39,16 @@ public class MA {
 		n, u
 	};
 
+	/**
+	 * Invoked upon user click on 'New menu item' button.
+	 * 
+	 * @return
+	 */
 	StreamResponse onActionFromNewPage() {
-		WebMenu menu = webMenuService.newMenu();
+
+		WebMenu menu = cayenneService.newContext().newObject(WebMenu.class);
+		menu.setWebSite(webSiteService.getCurrentWebSite());
+		menu.getObjectContext().commitChanges();
 
 		JSONObject obj = new JSONObject();
 		obj.put("id", menu.getId());
@@ -47,7 +60,7 @@ public class MA {
 		String[] id = request.getParameter("id").split("_");
 		String value = request.getParameter("value");
 
-		WebMenu menu = webMenuService.loadByIds(id[1]).get(0);
+		WebMenu menu = (WebMenu) cayenneService.newContext().localObject(webMenuService.findById(Long.parseLong(id[1])).getObjectId(), null);
 
 		switch (OPER.valueOf(id[0])) {
 		case n:
@@ -56,8 +69,7 @@ public class MA {
 		case u:
 			if (value.startsWith("/page")) {
 				String nodeId = value.substring(6);
-				WebNode node = webNodeService.getNodeForNodeNumber(Integer
-						.parseInt(nodeId));
+				WebNode node = webNodeService.getNodeForNodeNumber(Integer.parseInt(nodeId));
 				menu.setWebNode(node);
 			} else {
 				menu.setUrl(value);
@@ -65,7 +77,7 @@ public class MA {
 			break;
 		}
 
-		cayenneService.sharedContext().commitChanges();
+		menu.getObjectContext().commitChanges();
 
 		return new TextStreamResponse("text/html", value);
 	}
@@ -74,40 +86,32 @@ public class MA {
 
 		String id = request.getParameter("id");
 
-		WebMenu menu = webMenuService.loadByIds(id).get(0);
+		ObjectContext ctx = cayenneService.newContext();
 
-		cayenneService.sharedContext().deleteObject(menu);
-		cayenneService.sharedContext().commitChanges();
+		WebMenu menu = (WebMenu) ctx.localObject(webMenuService.findById(Long.parseLong(id)).getObjectId(), null);
+		ctx.deleteObject(menu);
+
+		ctx.commitChanges();
 
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 
 	StreamResponse onActionFromSort() {
+
 		String id = request.getParameter("id");
 		String pid = request.getParameter("pid");
 
-		int w = Integer.parseInt(request.getParameter("w"));
+		int weight = Integer.parseInt(request.getParameter("w"));
 
-		WebMenu item = webMenuService.loadByIds(id).get(0);
-		
-		WebMenu pItem = ("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu() : webMenuService
-				.loadByIds(pid).get(0);
+		ObjectContext ctx = cayenneService.newContext();
 
-		for (int i = 0; i < pItem.getChildrenMenus().size(); i++) {
-			WebMenu m = pItem.getChildrenMenus().get(i);
-			
-			if (m.getWeight() < w) {
-				m.setWeight(i);
-			}
-			else {
-				m.setWeight(i + 1);
-			}
-		}
+		WebMenu item = (WebMenu) ctx.localObject(webMenuService.findById(Long.parseLong(id)).getObjectId(), null);
+		WebMenu pItem = (WebMenu) ctx.localObject((("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu() : webMenuService.findById(Long.parseLong(pid))).getObjectId(), null);
 
 		item.setParentWebMenu(pItem);
-		item.setWeight(w);
+		item.updateWeight(weight);
 
-		cayenneService.sharedContext().commitChanges();
+		ctx.commitChanges();
 
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}

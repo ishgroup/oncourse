@@ -10,7 +10,7 @@
 	
 			<div id="content_container" class="clearfix">
 				<div id="content" class="span-18 unitPng">
-					<span id="param:content"/>
+					<span id="param:bodycontent"/>
 				</div>
 				
 				<div id="sidebar" class="span-5 side_panel last">

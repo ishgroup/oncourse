@@ -14,6 +14,7 @@ import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.SortedSet;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
@@ -42,9 +43,6 @@ public class PageTypeEdit {
 	@Component
 	private Form pageTypeEditForm;
 
-	@Inject
-	private ICayenneService cayenneService;
-
 	@Property
 	@Persist
 	private SelectModel layoutSelectModel;
@@ -54,6 +52,9 @@ public class PageTypeEdit {
 	
 	@Inject
 	private IWebContentService webContentService;
+
+    @Inject
+	private ICayenneService cayenneService;
 
 	@Property
 	private RegionKey regionKey;
@@ -86,12 +87,12 @@ public class PageTypeEdit {
 
 	@SetupRender
 	public void beforeRender() {
-		this.editPageType = pageType;
-		this.layoutSelectModel = new StringSelectModel(readAvailableLayouts());
+		editPageType = (WebNodeType) cayenneService.newContext().localObject(pageType.getObjectId(), pageType);
+		layoutSelectModel = new StringSelectModel(readAvailableLayouts());
 	}
 
 	Object onSuccessFromPageTypeEditForm() {
-		cayenneService.sharedContext().commitChanges();
+		editPageType.getObjectContext().commitChanges();
 		return updateZone.getBody();
 	}
 
@@ -100,10 +101,9 @@ public class PageTypeEdit {
 	}
 
 	Object onActionFromDelete() {
-
-		cayenneService.sharedContext().deleteObject(editPageType);
-		cayenneService.sharedContext().commitChanges();
-
+        ObjectContext ctx = editPageType.getObjectContext();
+		ctx.deleteObject(editPageType);
+        ctx.commitChanges();
 		return updateZone.getBody();
 	}
 

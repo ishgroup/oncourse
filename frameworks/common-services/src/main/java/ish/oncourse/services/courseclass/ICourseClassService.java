@@ -5,8 +5,6 @@ import java.util.List;
 import ish.oncourse.model.CourseClass;
 
 public interface ICourseClassService {
-
 	CourseClass getCourseClassByFullCode(String code);
-	
 	List<CourseClass> loadByIds(Object... ids);
 }

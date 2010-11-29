@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<t:block id="regionBlock">
+		<t:zone id="prop:currentZoneKey" class="region">
+			<t:delegate to="regionContentBlock"/>
+		</t:zone>
+		<t:zone t:id="editorZone" visible="false"></t:zone>
+	</t:block>
+	
+	<t:block id="regionContentBlock">
+		<div class="edit_region_link"><a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="currentRegion.id">Edit this region</a></div>
+		<div t:type="any" id="prop:templateId">
+			<t:outputraw value="regionContent" />
+		</div>
+	</t:block>
+	
+	<t:block id="editorBlock">
+		<div id="dialog" title="Basic dialog">
+			<form t:id="regionForm" zone="prop:currentZoneKey">
+				<textarea t:type="TextArea" value="currentRegion.content" rows="18" style="width: 99%"/>
+			</form>
+		</div>
+		<script type="text/javascript">
+					jQuery(function() {
+						jQuery("#dialog").dialog({modal:true, height: 430, width: 530, 
+							buttons: { 
+								Cancel: function() {
+									jQuery(this).dialog( "close" );
+								}, 
+								"Save Changes": function() { 
+									jQuery(this).dialog( "close" );
+									$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+								}
+							}	
+						});
+					});
+		</script>
+	</t:block>
+</t:container>

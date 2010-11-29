@@ -1,6 +1,5 @@
 package ish.oncourse.cms.services.access;
 
-import ish.oncourse.cms.services.state.ISessionStoreService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WillowUser;
 import ish.oncourse.model.services.persistence.ICayenneService;
@@ -65,9 +64,6 @@ public class AuthenticationService implements IAuthenticationService {
 			applicationStateManager.set(WillowUser.class, users.get(0));
 			status = AuthenticationStatus.SUCCESS;
 			
-			Session session = request.getSession(false);
-			session.setAttribute(ISessionStoreService.SESSION_CONTEXT, cayenneService.newContext());
-
 		} else if ((users != null) && (users.size() > 1)) {
 			status = AuthenticationStatus.MORE_THAN_ONE_USER;
 		}
