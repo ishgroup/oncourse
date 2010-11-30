@@ -1,10 +1,7 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
-	// Show the "add a student" section
-	$j('#addstudent').click(function() {
-	$j('#addstudent-block').slideToggle(400);
-	});
+	initAddStudentButton();
 	
 	// if you hit the enter key in the EnrolmentContactEntry component, click "enrol" instead of paying
 	// but not in the suburb autocomplete, where enter will select the suburb
@@ -205,22 +202,7 @@ $j(document).ready(function() {
 		return false; 
 	});
 	
-	if ($j(".suburb-autocomplete")) {
-		$j(".suburb-autocomplete").autocomplete({source: '/ui/autocomplete.sub', minLength: 3, 
-			select: function(event, ui) {
-				setPostcodeAndStateFromSuburb(ui.item.value, 'postcode', 'state');
-			} 
-		});
-	}
-	
-	// return selects the suburb from the popup list. Eat it so it doesn't submit the form.
-	$j(".suburb-autocomplete").keydown(function(key) {
-		if (key.which == 13) {
-			key.preventDefault();
-			return false;
-		}
-	}); 
-				
+	initSuburbAutoComplete();		
 
 	// show default text in text fields with class defaultText using "default" attribute
 	$j(".defaultText").focus(function(srcc)
@@ -435,4 +417,31 @@ function submitTellAFriend() {
 	    $j('#popup-content').html(msg);  
 	  }
 	});  
+}
+
+function initAddStudentButton(){
+	//	Show the "add a student" section
+	$j('#addstudent').click(function() {
+		$j('#addstudent-block').slideToggle(400);
+	});
+}
+
+function initSuburbAutoComplete(){
+
+	if ($j(".suburb-autocomplete")) {
+		$j(".suburb-autocomplete").autocomplete({source: '/ui/autocomplete.sub', minLength: 3, 
+			select: function(event, ui) {
+				setPostcodeAndStateFromSuburb(this.form, ui.item.value);
+			} 
+		});
+	}
+
+	// return selects the suburb from the popup list. Eat it so it doesn't submit the form.
+	$j(".suburb-autocomplete").keydown(function(key) {
+		if (key.which == 13) {
+			key.preventDefault();
+			return false;
+		}
+	}); 
+
 }

@@ -778,19 +778,18 @@ function stateFromPostcode(postcode) {
 
 // set postcode and state fields from value of suburb field and remove the postcode from the suburb field
 // if the postcode field does not exist, leave the suburb field alone
-function setPostcodeAndStateFromSuburb(suburbID, postcodeID, stateID) {
-	if (suburbID && $j("#"+suburbID).length > 0) {
-		var s = $j("#"+suburbID).val();
-		var suburb = suburbFromString(s);
-		var postcode = postcodeFromString(s); // otherwise it thinks it's a number
+function setPostcodeAndStateFromSuburb(searchForm, suburbString) {
+	if (suburbString) {
+		var suburb = suburbFromString(suburbString);
+		var postcode = postcodeFromString(suburbString); // otherwise it thinks it's a number
 		var state = postcode.length==0 ? '' : stateFromPostcode(postcode);
 		if (suburb.length > 0) {
-			if (postcodeID && postcode.length>0 && $j("#"+postcodeID).length > 0) {
-				$j("#"+postcodeID).val(postcode);
-				$j("#"+suburbID).val(suburb);
+			if (searchForm.postcode && postcode.length>0) {
+				$j("#"+searchForm.postcode.id).val(postcode);
+				//$j("."+suburbID).val(suburb);
 			}
-			if (stateID && state.length>0 && $j("#"+stateID).length > 0) {
-				$j("#"+stateID).val(state);
+			if (searchForm.state && state.length>0) {
+				$j("#"+searchForm.state.id).val(state);
 			}		
 		}
 	}

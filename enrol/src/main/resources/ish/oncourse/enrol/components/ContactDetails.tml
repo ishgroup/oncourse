@@ -31,13 +31,12 @@
 			<p>
 				<label for="suburb">Suburb</label>
 				<span class="${suburbInputClass}">
-				
-					<t:textfield value="contact.suburb" class ="input-fixed  suburb-autocomplete" 
+					<script type="text/javascript">
+						initSuburbAutoComplete();
+					</script>
+					<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
 						clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
 					<span t:type="ui/HintComponent" validationMessage="suburbErrorMessage"/>
-					<!-- TODO implement the suburb chooser when sort out how should it work -->
-					<!-- wo:SuburbChooser suburb="$contact.suburb" postcode="$contact.postcode" usePostcode="$true" 
-				postcodeFieldID="postcode" suburbFieldID="suburb" stateFieldID="state" class = "input-fixed enrolment-contact-field" /-->
 				</span>
 			</p>
 			<p>
