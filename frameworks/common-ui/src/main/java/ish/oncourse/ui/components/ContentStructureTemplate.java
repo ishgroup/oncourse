@@ -13,10 +13,12 @@ import ish.oncourse.services.visitor.ParsedContentVisitor;
 import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.BeginRender;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -52,6 +54,10 @@ public class ContentStructureTemplate {
 
 	@Parameter("selectedTemplate")
 	private DynamicTemplate template;
+	
+	@Inject
+	@Path("ContentStructure.tml")
+	private Asset contentStructureTml;
 
 	@BeginRender
 	RenderCommand beginRender() {
@@ -77,8 +83,8 @@ public class ContentStructureTemplate {
 		return (webNodeService.getHomePage().getId() == this.node.getId()) ? IWebNodeService.WELCOME_TEMPLATE_ID : "";
 	}
 
-	public PrivateResource getSelectedTemplate() {
+	public Object getSelectedTemplate() {
 		PrivateResource template = resourceService.getTemplateResource(node.getWebNodeType().getLayoutKey(), "ContentStructure.tml");
-		return template;
+		return (template == null) ? contentStructureTml : template;
 	}
 }

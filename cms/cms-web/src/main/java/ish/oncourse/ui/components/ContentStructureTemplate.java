@@ -19,12 +19,14 @@ import java.util.List;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.BeginRender;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
@@ -81,6 +83,10 @@ public class ContentStructureTemplate {
 	@Inject
 	@Property
 	private Block regionContentBlock;
+	
+	@Inject
+	@Path("ContentStructure.tml")
+	private Asset contentStructureTml;
 
 	@Parameter("selectedTemplate")
 	private DynamicTemplate template;
@@ -128,9 +134,9 @@ public class ContentStructureTemplate {
 		return currentRegion.accept(new ParsedContentVisitor(textileConverter));
 	}
 	
-	public PrivateResource getSelectedTemplate() {
+	public Object getSelectedTemplate() {
 		PrivateResource template = resourceService.getTemplateResource(node.getWebNodeType().getLayoutKey(), "ContentStructure.tml");
-		return template;
+		return (template == null) ? contentStructureTml : template;
 	}
 	
 	public String getTemplateId() {
