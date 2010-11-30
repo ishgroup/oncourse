@@ -1,12 +1,14 @@
 package ish.oncourse.model;
 
+import ish.oncourse.model.auto._Student;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-
-import ish.oncourse.model.auto._Student;
+import org.apache.cayenne.validation.ValidationFailure;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
@@ -20,8 +22,8 @@ public class Student extends _Student {
 		Integer age = null;
 
 		if ((getContact() == null) || (getContact().getDateOfBirth() == null)) {
-			Period interval = new Period(getContact().getDateOfBirth()
-					.getTime(), System.currentTimeMillis(), PeriodType.years());
+			Period interval = new Period(getContact().getDateOfBirth().getTime(),
+					System.currentTimeMillis(), PeriodType.years());
 			age = interval.getYears();
 		}
 
@@ -38,12 +40,14 @@ public class Student extends _Student {
 			return new ArrayList<Enrolment>();
 		}
 
-		Expression qualifier = ExpressionFactory.matchExp(
-				Enrolment.STATUS_PROPERTY, 0/*
-											 * TODO Payment.STATUS_SUCCEEDED
-											 */).andExp(
-				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY
-						+ "." + CourseClass.CANCELLED_PROPERTY, false));
+		Expression qualifier = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, 0/*
+																					 * TODO
+																					 * Payment
+																					 * .
+																					 * STATUS_SUCCEEDED
+																					 */).andExp(
+				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "."
+						+ CourseClass.CANCELLED_PROPERTY, false));
 
 		return qualifier.filterObjects(enrolments);
 	}
@@ -51,17 +55,30 @@ public class Student extends _Student {
 	public WaitingList getActiveWaitingListForCourse(Course course) {
 
 		List<WaitingList> waits = getWaitingLists();
-		Expression qualifier = ExpressionFactory.matchExp(
-				WaitingList.COURSE_PROPERTY, course);
+		Expression qualifier = ExpressionFactory.matchExp(WaitingList.COURSE_PROPERTY, course);
 		waits = qualifier.filterObjects(waits);
 		if (waits.size() > 0) {
 			return waits.get(waits.size() - 1);
 		}
 		return null;
 	}
-	
-	public String getFullName(){
+
+	public String getFullName() {
 		return getContact().getFullName();
+	}
+
+	public String validateSchoolYear() {
+		if (getYearSchoolCompleted() != null) {
+			int givenYear = getYearSchoolCompleted().intValue();
+			int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+			if (givenYear > thisYear) {
+				return "Year school completed cannot be in the future if supplied.";
+			}
+			if (thisYear - givenYear > 100) {
+				return "Year school completed if supplied should be within the last 100 years.";
+			}
+		}
+		return null;
 	}
 
 }

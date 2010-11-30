@@ -4,6 +4,8 @@
  */
 package ish.oncourse.model;
 
+import ish.common.util.DisplayableExtendedEnumeration;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;

@@ -31,8 +31,9 @@
 			<p>
 				<label for="suburb">Suburb</label>
 				<span class="${suburbInputClass}">
-					<t:textfield value="contact.suburb" class ="input-fixed" 
-						clientId="suburb" t:id="suburb" />
+				
+					<t:textfield value="contact.suburb" class ="input-fixed  suburb-autocomplete" 
+						clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
 					<span t:type="ui/HintComponent" validationMessage="suburbErrorMessage"/>
 					<!-- TODO implement the suburb chooser when sort out how should it work -->
 					<!-- wo:SuburbChooser suburb="$contact.suburb" postcode="$contact.postcode" usePostcode="$true" 
@@ -113,12 +114,12 @@
 			</p>
 			<p>
 				<label>Gender</label>
-					<div class="radio-list">
-						<t:radiogroup t:value="contact.isMale"> 
-							<input type="radio" t:type="radio" t:value="true"/> Male 
-							<input type="radio" t:type="radio" t:value="false"/> Female 
-						</t:radiogroup>
-					</div>
+				<div class="radio-list">
+					<t:radiogroup t:value="contact.isMale"> 
+						<input type="radio" t:type="radio" t:value="true"/> Male 
+						<input type="radio" t:type="radio" t:value="false"/> Female 
+					</t:radiogroup>
+				</div>
 			</p>
 		</fieldset>
 
@@ -174,33 +175,40 @@
 					</p>
 					<p>
 						<label for="englishproficiency">How well do you speak English?</label>
-						<t:select value="contact.student.englishProficiency" clientId="englishproficiency" blankOption="NEVER"/>
+						<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
 					</p>
 					<p>
 						<label for="indigenous">Are you of Aboriginal/Torres Strait Islander origin?</label>
-						<t:select value="contact.student.indigenousStatus" clientId="indigenous" blankOption="NEVER"/>
+						<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
 					</p>
-					<!-- p>
+					<p>
 						<label for="schoollevel">What is your highest COMPLETED school level?</label>
-						<webobject name="HighestSchoolLevelPopUp"/>
+						<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
 					</p>
 					<p>
 						<label for="schoolyear">In which year did you finish your highschool?</label>
-						<webobject name="YearSchoolCompletedValidation"><webobject name="YearSchoolCompletedField"/></webobject>
+						<span class="${schoolYearInputClass}">
+							<t:textfield value="schoolYearStr" class ="input-fixed" 
+								clientId="schoolyear" t:id="schoolYear" />
+							<span t:type="ui/HintComponent" validationMessage="schoolYearErrorMessage"/>
+						</span>	
 					</p>
 					<p>
 						<label for="prioreducation">Have you SUCCESSFULLY completed any of the following qualifications?</label>
-						<webobject name="PriorEducationPopUp"/>
-					</p-->
+						<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
+					</p>
 					<p>
 						<label>
 							${message:extra-conditions} Please <a href="/about/contact" title="${message:contact-link-title}" class="popup">contact us</a> ${message:contact-message}
 						 </label>
-						<!-- div class="radio-list">
-							<webobject name="HasDisabilityRadioButton"/> Yes
-							<br/>
-							<webobject name="HasNoDisabilityRadioButton"/> No
-						</div-->
+						 <!-- //TODO uncomment for disability type list -->
+						 <!-- t:select value="contact.student.disabilityType" model="disabilityTypeSelectModel" clientId="disabilitytype" blankOption="NEVER"/-->
+						<div class="radio-list">
+							<t:radiogroup t:value="hasDisability"> 
+								<input type="radio" t:type="radio" t:value="true"/> Yes 
+								<input type="radio" t:type="radio" t:value="false"/> No 
+							</t:radiogroup>
+						</div>
 					</p>
 				</fieldset>
 			</div>

@@ -4,6 +4,7 @@ import ish.common.types.CreditCardType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Preference;
+import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.preference.IPreferenceService;
@@ -31,7 +32,6 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.util.EnumSelectModel;
 
 public class EnrolmentPaymentEntry {
 	/**
@@ -83,7 +83,7 @@ public class EnrolmentPaymentEntry {
 
 	@Property
 	@Persist
-	private EnumSelectModel cardTypeModel;
+	private ISHEnumSelectModel cardTypeModel;
 
 	@Property
 	private String cardNumberErrorMessage;
@@ -142,7 +142,7 @@ public class EnrolmentPaymentEntry {
 		payersEncoder = new ListValueEncoder<Contact>(payers, "id",
 				propertyAccess);
 
-		cardTypeModel = new EnumSelectModel(CreditCardType.class, messages);
+		cardTypeModel = new ISHEnumSelectModel(CreditCardType.class, messages);
 	}
 
 	private void initYears() {

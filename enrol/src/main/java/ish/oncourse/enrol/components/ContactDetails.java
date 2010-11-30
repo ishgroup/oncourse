@@ -1,11 +1,15 @@
 package ish.oncourse.enrol.components;
 
+import ish.common.types.AvetmissStudentDisabilityType;
 import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
+import ish.common.types.AvetmissStudentPriorEducation;
+import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
+import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 
@@ -121,11 +125,30 @@ public class ContactDetails {
 	@InjectComponent
 	private TextField languageHome;
 
+	@InjectComponent
+	private TextField schoolYear;
+
 	/**
 	 * template properties
 	 */
 	@Property
 	private String passwordConfirmProperty;
+
+	@Property
+	private ISHEnumSelectModel englishProficiencySelectModel;
+
+	@Property
+	private ISHEnumSelectModel indigenousStatusSelectModel;
+
+	@Property
+	private ISHEnumSelectModel schoolLevelSelectModel;
+
+	@Property
+	private ISHEnumSelectModel priorEducationSelectModel;
+
+	// TODO uncomment for disability type list
+	// @Property
+	// private ISHEnumSelectModel disabilityTypeSelectModel;
 
 	/**
 	 * error message template properties
@@ -169,6 +192,9 @@ public class ContactDetails {
 	@Property
 	private String languageHomeErrorMessage;
 
+	@Property
+	private String schoolYearErrorMessage;
+
 	/**
 	 * reset form method flag
 	 */
@@ -176,7 +202,16 @@ public class ContactDetails {
 
 	@SetupRender
 	void beforeRender() {
-		// Add operations before render
+		englishProficiencySelectModel = new ISHEnumSelectModel(
+				AvetmissStudentEnglishProficiency.class, messages);
+		indigenousStatusSelectModel = new ISHEnumSelectModel(AvetmissStudentIndigenousStatus.class,
+				messages);
+		schoolLevelSelectModel = new ISHEnumSelectModel(AvetmissStudentSchoolLevel.class, messages);
+		priorEducationSelectModel = new ISHEnumSelectModel(AvetmissStudentPriorEducation.class,
+				messages);
+		// TODO uncomment for disability type list
+		// disabilityTypeSelectModel=new
+		// ISHEnumSelectModel(AvetmissStudentDisabilityType.class, messages);
 	}
 
 	@OnEvent(component = "contactDetailsForm", value = "failure")
@@ -205,9 +240,15 @@ public class ContactDetails {
 			contact.getStudent().setLanguageHome(null);
 			contact.getStudent().setEnglishProficiency(
 					AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
-			contact.getStudent().setIndigenousStatus(AvetmissStudentIndigenousStatus.DEFAULT_POPUP_OPTION);
-			// TODO add the student's info clearing after the student-specific
-			// view will be implemented
+			contact.getStudent().setIndigenousStatus(
+					AvetmissStudentIndigenousStatus.DEFAULT_POPUP_OPTION);
+			contact.getStudent().setHighestSchoolLevel(
+					AvetmissStudentSchoolLevel.DEFAULT_POPUP_OPTION);
+			contact.getStudent().setYearSchoolCompleted(null);
+			contact.getStudent().setPriorEducationCode(
+					AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
+			contact.getStudent().setDisabilityType(
+					AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION);
 			return parentZone.getBody();
 		} else {
 			contact.getObjectContext().commitChanges();
@@ -285,6 +326,12 @@ public class ContactDetails {
 			if (languageHomeErrorMessage != null) {
 				contactDetailsForm.recordError(languageHome, languageHomeErrorMessage);
 			}
+			if (schoolYearErrorMessage == null) {
+				schoolYearErrorMessage = contact.getStudent().validateSchoolYear();
+			}
+			if (schoolYearErrorMessage != null) {
+				contactDetailsForm.recordError(schoolYear, schoolYearErrorMessage);
+			}
 		}
 	}
 
@@ -338,6 +385,10 @@ public class ContactDetails {
 
 	public String getLanguageHomeInputClass() {
 		return getInputSectionClass(languageHome);
+	}
+
+	public String getSchoolYearInputClass() {
+		return getInputSectionClass(schoolYear);
 	}
 
 	private String getInputSectionClass(Field field) {
@@ -414,6 +465,46 @@ public class ContactDetails {
 			contact.getStudent().setLanguageHome(
 					(Language) contact.getObjectContext().localObject(language.getObjectId(),
 							language));
+		}
+	}
+
+	public String getSchoolYearStr() {
+		Integer yearSchoolCompleted = contact.getStudent().getYearSchoolCompleted();
+		if (yearSchoolCompleted == null) {
+			return null;
+		}
+		return Integer.toString(yearSchoolCompleted);
+	}
+
+	public void setSchoolYearStr(String schoolYearStr) {
+		if (!(schoolYearStr == null) && !"".equals(schoolYearStr)) {
+			if (!schoolYearStr.matches("(\\d)+")) {
+				schoolYearErrorMessage = "Incorrect format of the year.";
+				return;
+			}
+			contact.getStudent().setYearSchoolCompleted(Integer.parseInt(schoolYearStr));
+		}
+	}
+
+	// TODO useless if we display disabilityType list select
+	public boolean isHasDisability() {
+		AvetmissStudentDisabilityType disabilityType = contact.getStudent().getDisabilityType();
+		if (disabilityType == null
+				|| disabilityType.equals(AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION)
+				|| disabilityType.equals(AvetmissStudentDisabilityType.NONE)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// TODO useless if we display disabilityType list select
+	public void setHasDisability(boolean hasDisability) {
+		if (hasDisability) {
+			contact.getStudent().setDisabilityType(AvetmissStudentDisabilityType.OTHER);
+		} else {
+			contact.getStudent().setDisabilityType(
+					AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION);
 		}
 	}
 }

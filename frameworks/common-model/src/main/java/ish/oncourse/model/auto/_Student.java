@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.AvetmissStudentDisabilityType;
 import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
+import ish.common.types.AvetmissStudentPriorEducation;
+import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.College;
@@ -77,11 +80,11 @@ public abstract class _Student extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setDisabilityType(Integer disabilityType) {
+    public void setDisabilityType(AvetmissStudentDisabilityType disabilityType) {
         writeProperty("disabilityType", disabilityType);
     }
-    public Integer getDisabilityType() {
-        return (Integer)readProperty("disabilityType");
+    public AvetmissStudentDisabilityType getDisabilityType() {
+        return (AvetmissStudentDisabilityType)readProperty("disabilityType");
     }
 
     public void setEnglishProficiency(AvetmissStudentEnglishProficiency englishProficiency) {
@@ -91,11 +94,11 @@ public abstract class _Student extends CayenneDataObject {
         return (AvetmissStudentEnglishProficiency)readProperty("englishProficiency");
     }
 
-    public void setHighestSchoolLevel(Integer highestSchoolLevel) {
+    public void setHighestSchoolLevel(AvetmissStudentSchoolLevel highestSchoolLevel) {
         writeProperty("highestSchoolLevel", highestSchoolLevel);
     }
-    public Integer getHighestSchoolLevel() {
-        return (Integer)readProperty("highestSchoolLevel");
+    public AvetmissStudentSchoolLevel getHighestSchoolLevel() {
+        return (AvetmissStudentSchoolLevel)readProperty("highestSchoolLevel");
     }
 
     public void setId(Long id) {
@@ -147,11 +150,11 @@ public abstract class _Student extends CayenneDataObject {
         return (Date)readProperty("modified");
     }
 
-    public void setPriorEducationCode(Integer priorEducationCode) {
+    public void setPriorEducationCode(AvetmissStudentPriorEducation priorEducationCode) {
         writeProperty("priorEducationCode", priorEducationCode);
     }
-    public Integer getPriorEducationCode() {
-        return (Integer)readProperty("priorEducationCode");
+    public AvetmissStudentPriorEducation getPriorEducationCode() {
+        return (AvetmissStudentPriorEducation)readProperty("priorEducationCode");
     }
 
     public void setYearSchoolCompleted(Integer yearSchoolCompleted) {
