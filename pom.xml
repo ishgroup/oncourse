@@ -13,7 +13,7 @@
 	<groupId>ish.oncourse.willow</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>onCourse Willow Parent POM</name>
+	<name>Willow - Parent POM</name>
 	<description>Parent POM of the onCourse Willow applications.</description>
 
 
@@ -23,31 +23,34 @@
 		<module>webservices</module>
 		<module>website</module>
 		<module>searchapp</module>
-    	<module>enrol</module>
-    	<module>portal</module>
-    	<module>asset</module>
-  </modules>
+		<module>enrol</module>
+		<module>portal</module>
+		<module>asset</module>
+	</modules>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <manifest>
-            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-          </manifest>
-          <archive>
-            <manifestEntries>
-            <Implementation-Version>${BUILD_NUMBER}</Implementation-Version>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+	<build>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<manifest>
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+					</manifest>
+					<archive>
+						<manifestEntries>
+							<Implementation-Version>${BUILD_NUMBER}</Implementation-Version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
         
 	<dependencyManagement>
 		<dependencies>
+			
 			<dependency>
 				<groupId>ish.oncourse.angel</groupId>
 				<artifactId>waCommon</artifactId>
@@ -91,10 +94,10 @@
 			</dependency>
 
 			<dependency>
-     			<groupId>com.google.code.kaptcha</groupId>
-     			<artifactId>kaptcha</artifactId>
-     			<version>2.3</version>
-   			</dependency>
+				<groupId>com.google.code.kaptcha</groupId>
+				<artifactId>kaptcha</artifactId>
+				<version>2.3</version>
+			</dependency>
 		
 			<dependency>
 				<groupId>opensymphony</groupId>
@@ -122,7 +125,7 @@
 			
 			<dependency>
 				<groupId>commons-httpclient</groupId>
-	            <artifactId>commons-httpclient</artifactId>
+				<artifactId>commons-httpclient</artifactId>
 				<version>3.1</version>
 			</dependency>
 
@@ -187,9 +190,9 @@
 			
 			<dependency>
 				<groupId>org.mockito</groupId>
-  				<artifactId>mockito-core</artifactId>  
-  				<version>1.8.5</version> 
-  				<scope>test</scope>
+				<artifactId>mockito-core</artifactId>
+				<version>1.8.5</version>
+				<scope>test</scope>
 			</dependency>
 
 			<dependency>
@@ -211,14 +214,13 @@
 				<scope>provided</scope>
 			</dependency>
 
-      		<dependency>
-		     	<groupId>org.apache.maven.plugins</groupId>
-		     	<artifactId>maven-war-plugin</artifactId>
-		     	<version>3.0</version>
-		    </dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0</version>
+			</dependency>
 		
 		</dependencies>
-
 	</dependencyManagement>
 
 
@@ -233,7 +235,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-		</repository> 
+		</repository>
 		<repository>
 			<id>ish repo</id>
 			<name>ish repository</name>
@@ -244,7 +246,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-		</repository> 
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -258,7 +260,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-		</pluginRepository> 
+		</pluginRepository>
 	</pluginRepositories>
 
 
@@ -301,8 +303,10 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>emma-maven-plugin</artifactId>
+				<version>1.0-alpha-3-SNAPSHOT</version>
 				<inherited>true</inherited>
 			</plugin>
 		</plugins>
 	</reporting>
+
 </project>

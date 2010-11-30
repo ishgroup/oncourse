@@ -15,8 +15,8 @@
 	<groupId>ish.oncourse.willow.frameworks</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>onCourse Common Frameworks</name>
-	<description>Parent POM of the onCourse Frameworks</description>
+	<name>Willow - Common Frameworks</name>
+	<description>Parent POM of the Willow onCourse Frameworks</description>
 
 	<modules>
 		<module>common-model</module>

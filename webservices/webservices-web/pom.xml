@@ -11,7 +11,7 @@
 
 	<artifactId>webservices-web</artifactId>
 	<packaging>war</packaging>
-	<name>WebServices Web App</name>
+	<name>Willow - WebServices Web App</name>
 
 	<dependencies>
 

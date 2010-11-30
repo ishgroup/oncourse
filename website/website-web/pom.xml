@@ -11,7 +11,7 @@
 
 	<artifactId>website-web</artifactId>
 	<packaging>war</packaging>
-	<name>Web Site Web App</name>
+	<name>Willow - Web Site Web App</name>
 
 	<dependencies>
 

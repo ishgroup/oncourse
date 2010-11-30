@@ -13,7 +13,7 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 
-	<name>onCourse Enrol app</name>
+	<name>Willow - Enrol Web App</name>
 
 	<dependencies>
 		<dependency>

@@ -15,7 +15,7 @@
 	<artifactId>webservices</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>WebServices Parent</name>
+	<name>Willow - WebServices Parent POM</name>
 	<description>Parent POM of the onCourse Web Services application</description>
 
 	<modules>

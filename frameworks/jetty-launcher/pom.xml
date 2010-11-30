@@ -12,7 +12,7 @@
 	</parent>
 
 	<artifactId>jetty-launcher</artifactId>
-	<name>Jetty Launcher</name>
+	<name>Willow - Jetty Launcher</name>
 
 	<dependencies>
 		<dependency>

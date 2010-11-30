@@ -12,7 +12,7 @@
 
 	<artifactId>common-model</artifactId>
 	<packaging>jar</packaging>
-	<name>onCourse Common Model Framework</name>
+	<name>Willow - Common Model Framework</name>
 	<description>Contains the onCourse (Cayenne) Model and associated classes.</description>
 
 	<dependencies>

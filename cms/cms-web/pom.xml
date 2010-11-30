@@ -12,7 +12,7 @@
 
 	<artifactId>cms-web</artifactId>
 	<packaging>war</packaging>
-	<name>CMS Web App</name>
+	<name>Willow - CMS Web App</name>
 	<description>onCourse Willow Content Management System for managing college specific online content.</description>
 
 	<dependencies>

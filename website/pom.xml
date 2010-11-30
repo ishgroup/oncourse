@@ -15,7 +15,7 @@
 	<groupId>ish.oncourse.willow.website</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Web Site Parent</name>
+	<name>Willow - Web Site Parent POM</name>
 	<description>Parent POM of the onCourse Website</description>
 
 	<modules>

@@ -11,7 +11,7 @@
 
 	<artifactId>cms-services</artifactId>
 	<packaging>jar</packaging>
-	<name>CMS Services</name>
+	<name>Willow - CMS Services</name>
 	<description>onCourse Willow CMS-specific services.</description>
 
 	<dependencies>

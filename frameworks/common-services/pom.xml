@@ -13,7 +13,7 @@
 
 	<artifactId>common-services</artifactId>
 	<packaging>jar</packaging>
-	<name>onCourse Common Service Framework</name>
+	<name>Willow - Common Service Framework</name>
 	<description>Contains onCourse Willow Services.</description>
 
 	<dependencies>
