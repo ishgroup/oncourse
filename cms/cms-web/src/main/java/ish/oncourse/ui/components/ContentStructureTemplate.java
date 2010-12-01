@@ -136,7 +136,7 @@ public class ContentStructureTemplate {
 	
 	public Object getSelectedTemplate() {
 		PrivateResource template = resourceService.getTemplateResource(node.getWebNodeType().getLayoutKey(), "ContentStructure.tml");
-		return (template == null) ? contentStructureTml : template;
+		return (template.exists()) ? template : contentStructureTml;
 	}
 	
 	public String getTemplateId() {

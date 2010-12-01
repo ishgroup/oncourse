@@ -76,6 +76,6 @@ public class BodyStructureTemplate {
 
 	public Object getSelectedTemplate() {
 		PrivateResource template = resourceService.getTemplateResource(webNodeType.getLayoutKey(), "BodyStructure.tml");
-		return (template == null) ? bodyStructureTml : template;
+		return (template.exists()) ? template : bodyStructureTml;
 	}
 }
