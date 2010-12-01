@@ -43,7 +43,7 @@ public class BodyStructureTemplate {
 	private ITextileConverter textileConverter;
 
 	@Parameter("selectedTemplate")
-	private DynamicTemplate template;
+	private DynamicTemplate selectedTemplate;
 
 	@Parameter
 	@Property
@@ -51,7 +51,7 @@ public class BodyStructureTemplate {
 
 	@BeginRender
 	RenderCommand beginRender() {
-		return template.createRenderCommand(new DynamicDelegate() {
+		return selectedTemplate.createRenderCommand(new DynamicDelegate() {
 			public Block getBlock(final String regionKey) {
 				Block paramBlock = resources.getBlockParameter(regionKey);
 				if (paramBlock != null) {

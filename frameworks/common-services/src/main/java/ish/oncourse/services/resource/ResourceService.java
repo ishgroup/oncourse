@@ -113,13 +113,19 @@ public class ResourceService implements IResourceService {
 
 		String subfolder = (templateKey != null) ? templateKey : DEFAULT_FOLDER;
 
-		FileResource res = new FileResource(roots[0] + File.separator
-				+ LAYOUT_FOLDER + File.separator + subfolder, fileName);
+		FileResource res = null;
 
-		FileResource defaultRes = new FileResource(roots[1] + File.separator
-				+ LAYOUT_FOLDER + File.separator + subfolder, fileName);
+		for (File file : roots) {
+			if (file != null) {
+				res = new FileResource(file + File.separator
+						+ LAYOUT_FOLDER + File.separator + subfolder, fileName);
+			}
+			if (res.exists()) {
+				break;
+			}
+		}
 
-		return (res.exists()) ? res : defaultRes;
+		return res;
 	}
 	
 	/**
