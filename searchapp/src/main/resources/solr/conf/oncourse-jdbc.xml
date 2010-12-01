@@ -23,13 +23,13 @@
 
 			<entity name="contact" dataSource="onCourseDS" pk="id"
 				transformer="TemplateTransformer"
-				query="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmn from Contact ct
+				query="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct
                     inner join Tutor t on ct.tutorId = t.id
            			inner join TutorRole tr on t.id = tr.tutorId
            			inner join CourseClass cc on tr.courseClassId=cc.id
            			inner join Course c on cc.courseId=c.id where c.id='${course.id}'
            			and cc.isCancelled=0"
-				deltaImportQuery="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmn from Contact ct where ct.id='${dataimporter.delta.id}'" 
+				deltaImportQuery="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct where ct.id='${dataimporter.delta.id}'"
 				deltaQuery="select ct.id from Contact ct where ct.modified &gt; '${dataimporter.last_index_time}'" 
 				parentDeltaQuery="select c.id from Contact ct 
 					inner join Tutor t on ct.tutorId = t.id
@@ -37,9 +37,9 @@
            			inner join CourseClass cc on tr.courseClassId=cc.id
            			inner join Course c on cc.courseId=c.id where ct.id='${contact.id}'">
 				<field name="id" column="id" />
-				<field name="givenName" column="gvName"/>
-				<field name="familyName" column="fmn"/>
-				<field name="tutor" column="TUTOR" template="${contact.givenName} ${contact.familyName}" />
+				<field name="gvName" column="gvName"/>
+				<field name="fmName" column="fmName"/>
+				<field name="tutor" column="TUTOR" template="${contact.gvName} ${contact.fmName}" />
 			</entity>
 
 			<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
@@ -49,7 +49,7 @@
                 and cc.isCancelled=0"
                 deltaImportQuery="select s.id as id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s where s.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from Session where modified &gt; '${dataimporter.last_index_time}'" 
-				parentDeltaQuery="select c.id as id from Session s inner join CourseClass cc on s.courseClassId=cc.id nner join Course c on cc.courseId=c.id where s.id='${course_session.id}'">
+				parentDeltaQuery="select c.id as id from Session s inner join CourseClass cc on s.courseClassId=cc.id inner join Course c on cc.courseId=c.id where s.id='${course_session.id}'">
 				<field name="id" column="id"/>
 				<field name="dayName" column="dayName" />
 				<field name="dayType" column="dayType" />
