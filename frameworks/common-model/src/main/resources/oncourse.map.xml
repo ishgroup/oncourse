@@ -284,7 +284,7 @@
 		<db-attribute name="description" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceDate" type="DATE" isMandatory="true" length="10"/>
-		<db-attribute name="invoiceNumber" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="invoiceNumber" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="publicNotes" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="shippingAddress" type="LONGVARCHAR" length="16777215"/>

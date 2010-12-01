@@ -1,7 +1,9 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.CreditCardType;
+import ish.oncourse.enrol.pages.EnrolmentPaymentResult;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Preference;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
@@ -32,6 +34,7 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.Request;
 
 public class EnrolmentPaymentEntry {
 	/**
@@ -50,6 +53,9 @@ public class EnrolmentPaymentEntry {
 
 	@Inject
 	private Messages messages;
+	
+	@Inject
+	private Request request;
 
 	/**
 	 * Parameters
@@ -66,6 +72,8 @@ public class EnrolmentPaymentEntry {
 	@Property
 	private PaymentIn payment;
 
+	@Parameter
+	private Invoice invoice;
 	/**
 	 * Auxiliary properties
 	 */
@@ -230,7 +238,10 @@ public class EnrolmentPaymentEntry {
 
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
-		return paymentZone.getBody();
+		invoice.setContact(payment.getContact());
+		payment.getObjectContext().commitChanges();
+		request.setAttribute("paymentCreated", payment);
+		return EnrolmentPaymentResult.class;
 	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "failure")

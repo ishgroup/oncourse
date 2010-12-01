@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
@@ -149,17 +150,25 @@ public class EnrolCourses {
 	}
 
 	private void initPayment() {
+		College currentCollege = webSiteService.getCurrentCollege();
+		College college = (College) context.localObject(
+				currentCollege.getObjectId(), currentCollege);
 		payment = context.newObject(PaymentIn.class);
+		payment.setCollege(college);
 		invoice = context.newObject(Invoice.class);
+		//fill the invoice with default values
+		invoice.setInvoiceDate(new Date());
+		invoice.setAmountOwing(BigDecimal.ZERO);
+		invoice.setDateDue(new Date());
+		
+		invoice.setCollege(college);
 		enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
 		invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol
 				.size()];
 		for (int i = 0; i < contacts.size(); i++) {
 			for (int j = 0; j < classesToEnrol.size(); j++) {
 				enrolments[i][j] = context.newObject(Enrolment.class);
-				College currentCollege = webSiteService.getCurrentCollege();
-				College college = (College) context.localObject(
-						currentCollege.getObjectId(), currentCollege);
+				
 				enrolments[i][j].setCollege(college);
 				Contact contact = contacts.get(i);
 				Student student = ((Contact) context.localObject(contact.getObjectId(), contact))
@@ -175,6 +184,14 @@ public class EnrolCourses {
 							.newObject(InvoiceLine.class);
 					invoiceLine.setPriceEachExTax(courseClass
 							.getFeeIncGst());
+					invoiceLine.setInvoice(invoice);
+					//fill the invoice line with default values
+					invoiceLine.setTitle("title");
+					invoiceLine.setQuantity(BigDecimal.ONE);
+					invoiceLine.setTaxEach(BigDecimal.TEN);
+					invoiceLine.setDiscountEachExTax(BigDecimal.ZERO);
+					invoiceLine.setCollege(college);
+					
 					enrolments[i][j].setInvoiceLine(invoiceLine);
 					invoiceLines[i][j] = invoiceLine;
 				}

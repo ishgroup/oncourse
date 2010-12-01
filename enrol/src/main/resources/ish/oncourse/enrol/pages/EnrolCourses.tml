@@ -69,7 +69,7 @@
 		<!-- end enrolments summary -->
 		<t:if test="contacts">
 			<!-- start payment form -->
-			<span t:type="EnrolmentPaymentEntry" t:id="paymentEntry" totalIncGst="totalIncGst" payers="contacts" payment="payment"/>
+			<span t:type="EnrolmentPaymentEntry" t:id="paymentEntry" totalIncGst="totalIncGst" payers="contacts" payment="payment" invoice="invoice"/>
 			<!-- end payment form -->
 		</t:if>
 		<p:else>
