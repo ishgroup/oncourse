@@ -2,6 +2,7 @@ package ish.oncourse.enrol.components;
 
 import ish.common.types.CreditCardType;
 import ish.oncourse.enrol.pages.EnrolmentPaymentResult;
+import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
@@ -135,6 +136,9 @@ public class EnrolmentPaymentEntry {
 	@InjectComponent
 	private TextField cardcvv;
 	
+	@Inject
+	private IPaymentGatewayService paymentGatewayService;
+
 
 	@SetupRender
 	void beforeRender() {
@@ -240,6 +244,7 @@ public class EnrolmentPaymentEntry {
 	Object submitted() {
 		invoice.setContact(payment.getContact());
 		payment.getObjectContext().commitChanges();
+		paymentGatewayService.method();
 		request.setAttribute("paymentCreated", payment);
 		return EnrolmentPaymentResult.class;
 	}
