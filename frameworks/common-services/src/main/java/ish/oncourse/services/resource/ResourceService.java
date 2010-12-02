@@ -127,7 +127,7 @@ public class ResourceService implements IResourceService {
 				} else if ((res.getFile() != null) && ! res.getFile().canRead()) {
 					LOGGER.error("The application does not have permission to read the '"
 							+ res.getFile().getPath()
-							+ "' file. Please check the file system permissions.");
+							+ "' template. Please check the file system permissions.");
 				}
 			}
 		}
@@ -149,7 +149,14 @@ public class ResourceService implements IResourceService {
 					+ CONFIGS_FOLDER, fileName);
 			
 			if (config.exists()) {
-				configs.add(config);
+				if ((config.getFile() != null) && config.getFile().canRead()) {
+					configs.add(config);
+				} else if ((config.getFile() != null) && ! config.getFile().canRead()) {
+					LOGGER.error("The application does not have permission to read the '"
+							+ config.getFile().getPath()
+							+ "' config. Please check the file system permissions.");
+				}
+
 			}
 		}
 
