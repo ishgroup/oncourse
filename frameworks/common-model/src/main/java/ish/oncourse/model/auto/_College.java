@@ -27,6 +27,7 @@ import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.MessageTemplate;
 import ish.oncourse.model.NotificationTemplate;
 import ish.oncourse.model.Outcome;
+import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Preference;
@@ -204,11 +205,11 @@ public abstract class _College extends CayenneDataObject {
         return (String)readProperty("paymentGatewayPass");
     }
 
-    public void setPaymentGatewayType(Integer paymentGatewayType) {
+    public void setPaymentGatewayType(PaymentGatewayType paymentGatewayType) {
         writeProperty("paymentGatewayType", paymentGatewayType);
     }
-    public Integer getPaymentGatewayType() {
-        return (Integer)readProperty("paymentGatewayType");
+    public PaymentGatewayType getPaymentGatewayType() {
+        return (PaymentGatewayType)readProperty("paymentGatewayType");
     }
 
     public void setRequiresAvetmiss(Boolean requiresAvetmiss) {

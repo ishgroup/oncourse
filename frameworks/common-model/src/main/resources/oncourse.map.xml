@@ -824,7 +824,7 @@
 		<obj-attribute name="nationalProviderCode" type="java.lang.String" db-attribute-path="nationalProviderCode"/>
 		<obj-attribute name="paymentGatewayAccount" type="java.lang.String" db-attribute-path="paymentGatewayAccount"/>
 		<obj-attribute name="paymentGatewayPass" type="java.lang.String" db-attribute-path="paymentGatewayPass"/>
-		<obj-attribute name="paymentGatewayType" type="java.lang.Integer" db-attribute-path="paymentGatewayType"/>
+		<obj-attribute name="paymentGatewayType" type="ish.oncourse.model.PaymentGatewayType" db-attribute-path="paymentGatewayType"/>
 		<obj-attribute name="requiresAvetmiss" type="java.lang.Boolean" db-attribute-path="requiresAvetmiss"/>
 		<obj-attribute name="webServicesLogin" type="java.lang.String" db-attribute-path="webServicesLogin"/>
 		<obj-attribute name="webServicesPass" type="java.lang.String" db-attribute-path="webServicesPass"/>

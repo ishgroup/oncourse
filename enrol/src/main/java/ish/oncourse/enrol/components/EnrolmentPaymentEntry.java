@@ -243,9 +243,11 @@ public class EnrolmentPaymentEntry {
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
 		invoice.setContact(payment.getContact());
-		payment.getObjectContext().commitChanges();
-		paymentGatewayService.method();
+		if(paymentGatewayService.performGatewayOperation(payment)){
+			payment.getObjectContext().commitChanges();
+		}
 		request.setAttribute("paymentCreated", payment);
+		
 		return EnrolmentPaymentResult.class;
 	}
 

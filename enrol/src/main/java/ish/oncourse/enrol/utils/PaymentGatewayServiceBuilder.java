@@ -13,7 +13,13 @@ public class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGate
 	public IPaymentGatewayService buildService(ServiceResources resources) {
 		IWebSiteService service = resources.getService(IWebSiteService.class);
 		College currentCollege = service.getCurrentCollege();
-		//TODO define payment gateway implementation depending on college
+		switch(currentCollege.getPaymentGatewayType()){
+		case PAYMENT_EXPRESS:
+			//TODO sevice for payment express
+			break;
+		case DISABLED:
+			return new TestPaymentGatewayService();
+		}
 		return new TestPaymentGatewayService();
 	}
 

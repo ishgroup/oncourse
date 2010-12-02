@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.services.payment;
 
-public interface IPaymentGatewayService {
-	//TODO remove fake method
-	void method();
+import ish.oncourse.model.PaymentIn;
 
+public interface IPaymentGatewayService {
+	boolean performGatewayOperation(PaymentIn payment);
 }
