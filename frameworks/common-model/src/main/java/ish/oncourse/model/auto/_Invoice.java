@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.PaymentSource;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
@@ -131,11 +132,11 @@ public abstract class _Invoice extends CayenneDataObject {
         return (String)readProperty("shippingAddress");
     }
 
-    public void setSource(String source) {
+    public void setSource(PaymentSource source) {
         writeProperty("source", source);
     }
-    public String getSource() {
-        return (String)readProperty("source");
+    public PaymentSource getSource() {
+        return (PaymentSource)readProperty("source");
     }
 
     public void setCollege(College college) {
