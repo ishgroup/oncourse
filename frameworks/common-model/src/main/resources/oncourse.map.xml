@@ -960,7 +960,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="reasonForStudy" type="java.lang.Integer" db-attribute-path="reasonForStudy"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
-		<obj-attribute name="status" type="ish.oncourse.model.EnrolmentStatus" db-attribute-path="status"/>
+		<obj-attribute name="status" type="ish.common.types.EnrolmentStatus" db-attribute-path="status"/>
 	</obj-entity>
 	<obj-entity name="Invoice" className="ish.oncourse.model.Invoice" dbEntityName="Invoice">
 		<obj-attribute name="amountOwing" type="java.math.BigDecimal" db-attribute-path="amountOwing"/>
@@ -1069,7 +1069,7 @@
 		<obj-attribute name="creditCardType" type="ish.common.types.CreditCardType" db-attribute-path="creditCardType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
-		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
+		<obj-attribute name="status" type="ish.common.types.PaymentStatus" db-attribute-path="status"/>
 		<obj-attribute name="totalExGst" type="java.math.BigDecimal" db-attribute-path="totalExGst"/>
 		<obj-attribute name="totalGst" type="java.math.BigDecimal" db-attribute-path="totalGst"/>
 	</obj-entity>
@@ -1087,7 +1087,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="paymentInTxnReference" type="java.lang.String" db-attribute-path="paymentInTxnReference"/>
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
-		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
+		<obj-attribute name="status" type="ish.common.types.PaymentStatus" db-attribute-path="status"/>
 		<obj-attribute name="totalAmount" type="java.math.BigDecimal" db-attribute-path="totalAmount"/>
 	</obj-entity>
 	<obj-entity name="PaymentOutTransaction" className="ish.oncourse.model.PaymentOutTransaction" dbEntityName="PaymentOutTransaction">

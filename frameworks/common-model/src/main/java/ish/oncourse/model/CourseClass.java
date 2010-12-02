@@ -1,7 +1,6 @@
 package ish.oncourse.model;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DateDV;
-
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.TimestampUtilities;
@@ -164,7 +163,7 @@ public class CourseClass extends _CourseClass {
 
 	public int validEnrolmentsCount() {
 		int result = ExpressionFactory
-				.inExp(Enrolment.STATUS_PROPERTY, ISHPayment.STATUSES_LEGIT)
+				.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.STATUSES_LEGIT)
 				.filterObjects(getEnrolments()).size();
 		return Math.max(0, result);
 	}

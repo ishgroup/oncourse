@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.math.Money;
 import ish.oncourse.model.auto._Discount;
 
@@ -175,7 +176,7 @@ public class Discount extends _Discount {
 						Enrolment.CREATED_PROPERTY, timestamp.getTime())).andExp(
 						ExpressionFactory.inExp(
 						Enrolment.STATUS_PROPERTY,
-						ISHPayment.STATUSES_LEGIT));
+						EnrolmentStatus.STATUSES_LEGIT));
 				// TODO get the count by some another way
 				int count = enrolment.getObjectContext().performQuery(
 						new SelectQuery(Enrolment.class, qualifier)).size();

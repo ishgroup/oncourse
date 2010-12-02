@@ -1,10 +1,9 @@
 package ish.oncourse.model;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.auto._Enrolment;
 
 import java.util.List;
-
-import org.apache.cayenne.PersistentObject;
 
 
 public class Enrolment extends _Enrolment {

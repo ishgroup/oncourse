@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.PaymentStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentInLine;
@@ -104,11 +105,11 @@ public abstract class _PaymentIn extends CayenneDataObject {
         return (String)readProperty("source");
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(PaymentStatus status) {
         writeProperty("status", status);
     }
-    public Integer getStatus() {
-        return (Integer)readProperty("status");
+    public PaymentStatus getStatus() {
+        return (PaymentStatus)readProperty("status");
     }
 
     public void setTotalExGst(BigDecimal totalExGst) {
