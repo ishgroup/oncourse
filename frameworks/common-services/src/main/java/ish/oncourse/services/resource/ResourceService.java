@@ -28,8 +28,9 @@ public class ResourceService implements IResourceService {
 	private final File[] noCustomFolderDefaultsRoot;
 	private IWebSiteService siteService;
 
-	private static final Logger logger = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(ResourceService.class);
+
 
 	public ResourceService(@Inject IPropertyService propertyService,
 			@Inject IWebSiteService siteService) {
@@ -39,12 +40,12 @@ public class ResourceService implements IResourceService {
 			Context ctx = new InitialContext();
 			customComponentsPath = (String) ctx.lookup("java:comp/env/"
 					+ Property.CustomComponentsPath.value());
-			if (logger.isInfoEnabled()) {
-				logger.info("CustomComponentsPath configured through JNDI to: "
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("CustomComponentsPath configured through JNDI to: "
 						+ customComponentsPath);
 			}
 		} catch (NamingException ne) {
-			logger.warn(
+			LOGGER.warn(
 					"CustomComponentsPath not defined by JNDI, falling to secondary config",
 					ne);
 		}
@@ -121,7 +122,13 @@ public class ResourceService implements IResourceService {
 						+ LAYOUT_FOLDER + File.separator + subfolder, fileName);
 			}
 			if (res.exists()) {
-				break;
+				if ((res.getFile() != null) && res.getFile().canRead()) {
+					break;
+				} else if ((res.getFile() != null) && ! res.getFile().canRead()) {
+					LOGGER.error("The application does not have permission to read the '"
+							+ res.getFile().getPath()
+							+ "' file. Please check the file system permissions.");
+				}
 			}
 		}
 
