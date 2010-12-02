@@ -1,0 +1,144 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<!-- CCE Template -->
+	<t:if t:test="showingForm">
+		<!--
+			PageDialogWrapper title="~'Waiting List - ' +
+			session.waitingListController.course.name" >
+		-->
+		<t:if t:test="hasConfirmationEmail">
+			<div class="blockbody">
+				<div class="message">
+					<p class="feedback">
+						Thank you for your request. A confirmation E-Mail has been sent to you at ${confirmationEmail}.
+						<br />
+						Please click on the link in that E-Mail to confirm your selections.
+					</p>
+				</div>
+			</div>
+			<p:else>
+				<t:if t:test="studentInWaitingList">
+					<p class="in-waiting-list">
+						You are in a waiting list for this course.
+						<t:if t:test="hasPotentialStudents">
+							(${sessionWaitingList.potentialStudents} places)
+						</t:if>
+					</p>
+					<p class="extra">
+						<a href="">My Waiting List</a>
+					</p>
+
+					<p:else>
+						<div class="waiting-list-form">
+							<t:if t:test="hasContactForRequest">
+								<p>Please tell us your preferences below.</p>
+								<p:else>
+									<p>To join the waiting list, please complete the following form:</p>
+								</p:else>
+							</t:if>
+
+							<t:form t:id="form">
+								<t:hidden t:value="true" t:id="wrap" />
+								<dl>
+									<t:if t:test="hasContactForRequest" negate="true">
+										<dt>First Name:</dt>
+										<dd>
+											<t:textfield t:id="WaitlistFirstName"
+												t:value="sessionWaitingList.student.contact.givenName" />
+										</dd>
+										<dt>Last Name:</dt>
+										<dd>
+											<t:textfield t:id="WaitlistLastName"
+												t:value="sessionWaitingList.student.contact.familyName" />
+										</dd>
+										<dt>E-Mail address:</dt>
+										<dd>
+											<t:textfield t:id="WaitlistEmail"
+												t:value="sessionWaitingList.student.contact.emailAddress" />
+										</dd>
+									</t:if>
+									<dt>
+										What you'd like:
+										<span class="description">Please tell us your preferences, eg on Tuesdays, in Newtown, etc.</span>
+									</dt>
+									<dd>
+										<t:textarea t:id="WaitlistNotes" t:value="sessionWaitingList.detail"
+											cols="30" rows="4" />
+									</dd>
+									<dt>Number of students (including you):</dt>
+									<dd>
+										<t:textfield t:id="NumberOfStudents"
+											t:value="sessionWaitingList.potentialStudents" />
+									</dd>
+									<t:if t:test="hasFeedback">
+										<p>
+											<span class="reason">
+												${feedback}
+											</span>
+										</p>
+									</t:if>
+									<t:submit t:id="addToList" t:value="Add to waiting list" />
+								</dl>
+							</t:form>
+						</div>
+					</p:else>
+				</t:if>
+			</p:else>
+		</t:if>
+
+		<!-- close PageDialogWrapper -->
+		<p:else>
+			<div class="courseWaitingList">
+				<t:if t:test="waitingListForCourse">
+					<p class="in-waiting-list">
+						You are in a waiting list for this course.
+						<t:if t:test="hasPotentialStudentsForCourse">
+							(${waitingListForCourse.potentialStudents}places)
+						</t:if>
+					</p>
+					<p class="">
+						<a href="">My Waiting List</a>
+					</p>
+					<p:else>
+						<t:if t:test="course.allowWaitingList">
+							<t:if t:test="hasConfirmationEmail" negate="true">
+
+									<a class="nyromodaliframe" href="portal/waitinglistform?courseID=${course.id}">
+										<t:if t:test="hasCourseClass">
+											<t:if t:test="courseClass.availableEnrolmentPlaces">
+												If this class doesn't suit you, please
+												<t:if t:test="hasMoreClasses">try another class or </t:if>
+												join
+												the waiting list.
+												<p:else>
+													This class is full. Please
+													<t:if t:test="hasMoreClasses">try another class or </t:if>
+													join
+													the waiting list.
+												</p:else>
+											</t:if>
+
+											<p:else>
+												<t:if t:test="hasMoreClasses">
+													<t:if t:test="hasMoreAvailablePlaces">
+														If there isn't a class to suit you, please join the waiting list.
+														<p:else>
+															Classes are full. Please join the waiting list.
+														</p:else>
+													</t:if>
+													<p:else>
+														This course has no current classes. Please join the waiting list.
+													</p:else>
+												</t:if>
+											</p:else>
+										</t:if>
+									</a>
+
+							</t:if>
+						</t:if>
+					</p:else>
+				</t:if>
+			</div>
+		</p:else>
+	</t:if>
+</t:container>

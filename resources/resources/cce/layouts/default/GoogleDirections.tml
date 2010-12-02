@@ -1,0 +1,36 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+
+	<t:if t:test="hasLocation">
+
+		<div id="directionsPanel" class="">
+
+			<t:if t:test="hideDirections" negate="true">
+				<h3 class="">Directions</h3>
+				<form id="getdir" method="post" onsubmit="return false;">
+				
+					<label for="userDirections">Get Directions
+					<input type="text" size="25" id="userDirections" name=""
+						value="${directionsFrom}" />
+					<input name="submit" type="button" value="Get Directions!"
+						class="getDirections" onclick="dirLoadForId('${dirMapId}');"/>
+					</label>
+				</form>
+
+				<div id="dirtxt" class=""></div>
+				<div id="${dirMapId}" class=""></div>
+			</t:if>
+		</div>
+		<t:if t:test="${collapseLocationMap}">
+			<span class="showLocationMap">
+				Show location map
+			</span>
+		</t:if>
+		<div id="location" class="${locationClass}">
+			<div id="${mapClass}"></div>
+		</div>
+
+
+	</t:if>
+
+</t:container>

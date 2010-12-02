@@ -1,0 +1,58 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<!-- CCE Template -->
+	<div class="classItem vevent">
+		
+		<t:if test="courseClass.detail">
+			<div class="classDescription">
+				<t:outputraw value="courseClass.detail" />
+			</div>
+		</t:if>
+
+	
+		<!--hcalendar implementation-->
+		<dl class="">
+			<dt class="classItemName">Name</dt>
+			<dd class="summary">${courseClass.course.name}</dd>
+
+			<dt class="classItemDate">Date</dt>
+			<dd class=""> 
+				<a href="/class/${courseClass.course.code}-${courseClass.code}" class="url"><abbr class="dtstart" title=""><t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/></abbr>
+				
+				<t:if t:test="courseClass.endDate">
+					- <abbr class="dtend" title=""><t:output format="literal:d MMM yyyy" value="courseClass.endDate"/></abbr>
+				</t:if>
+				</a>
+ 			</dd>
+			
+			<dt class="classItemLocation">Location</dt>
+			<dd class="location"><span t:type="ui/roomLocation" room="courseClass.room"
+								withRoomName="false" disabledLink="false" /></dd>
+			
+			<dt class="classItemTutor">Tutor</dt>
+			<dd class="">
+			<t:if test="hasTutorRoles">
+					<t:loop source="courseClass.tutorRoles" value="tutorRole"
+						index="index">
+						<a class=""
+							href="/Refresh/tutor?x=Detail&amp;id1=${tutorRole.tutor.id}&amp;z=z&amp;wrap=false"
+							title="View tutor profile">${tutorRole.tutor.fullName}</a>
+					</t:loop>
+			</t:if>
+			</dd>
+									
+
+		</dl>
+
+		<div class="classAction">
+			<dl>
+				<dt class="classItemPrice">Price</dt>
+				<dd class=""><span t:type="ui/CourseClassPrice" courseClass="courseClass" /></dd>
+			</dl>	
+			<a id="${courseClass.id}" href="enrol/EnrolCourses">Enrol Now</a>
+			<div class="classStatus">There are 6 places available</div>
+		</div>	
+		
+		<t:body />
+	</div>
+</t:container>

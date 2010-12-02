@@ -1,0 +1,30 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<!-- CCE Template -->
+	<div class="vevent courseItem">
+	<t:if t:test="isList" negate="true">
+		<h2 class="summary">${course.name}</h2>
+	</t:if>
+
+	<t:if t:test="isList">
+	<hr/>
+		<h3>
+			<a href="/course/${course.code}" class="url">${course.name}</a>
+		</h3>
+		<p class="description courseShortDescription">
+			<t:outputraw value="${courseDetail}" />
+		</p>
+		<div class="courseAvailability">${availMsg}</div>
+	</t:if>
+	<t:loop source="course.enrollableClasses" value="courseClass">
+		<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
+	</t:loop>
+	<t:if t:test="course.allowWaitingList">
+		<span t:type="ui/WaitingListItem" course="course" />
+	</t:if>
+	<t:if t:test="isList" negate="true">
+		<div class="courseDescription">
+			<t:outputraw value="${courseDetail}" />
+		</div>
+	</t:if>
+	</div>
+</t:container>

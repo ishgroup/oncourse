@@ -1,0 +1,19 @@
+<html t:type="ui/pagewrapper" title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}" bodyId="literal:DetailsPage"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<!-- CCE Template -->
+	<h2>
+			<a href="/course/${courseClass.course.code}">${courseClass.course.name}</a>
+	</h2>
+
+	<span t:type="ui/courseclassitem" courseClass="courseClass" excludePrice="true" />
+	<t:outputraw value="${courseDetail}" />
+	<t:outputraw value="${courseClassDetail}" />
+	
+	<t:if t:test="${courseClass.hasRoom}">
+		<div class="">
+		<span t:type="ui/SiteDetailsComponent" room="courseClass.room"
+			collapseLocationMap="true" />
+		</div>
+	</t:if>
+
+</html>
