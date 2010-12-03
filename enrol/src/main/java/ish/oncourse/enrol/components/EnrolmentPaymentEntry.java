@@ -1,8 +1,7 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.CreditCardType;
-import ish.oncourse.enrol.pages.EnrolmentPaymentResult;
-import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
+import ish.oncourse.enrol.pages.EnrolmentPaymentProcessing;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
@@ -23,6 +22,7 @@ import java.util.List;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -35,7 +35,6 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.Request;
 
 public class EnrolmentPaymentEntry {
 	/**
@@ -47,16 +46,16 @@ public class EnrolmentPaymentEntry {
 	 * tapestry services
 	 */
 	@Inject
-	private IPreferenceService preferenceService;
-
-	@Inject
 	private PropertyAccess propertyAccess;
 
 	@Inject
 	private Messages messages;
 	
+	/**
+	 * ish services
+	 */
 	@Inject
-	private Request request;
+	private IPreferenceService preferenceService;
 
 	/**
 	 * Parameters
@@ -136,9 +135,9 @@ public class EnrolmentPaymentEntry {
 	@InjectComponent
 	private TextField cardcvv;
 	
-	@Inject
-	private IPaymentGatewayService paymentGatewayService;
-
+	@InjectPage
+	private EnrolmentPaymentProcessing enrolmentPaymentProcessing;
+	
 
 	@SetupRender
 	void beforeRender() {
@@ -243,12 +242,8 @@ public class EnrolmentPaymentEntry {
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
 		invoice.setContact(payment.getContact());
-		if(paymentGatewayService.performGatewayOperation(payment)){
-			payment.getObjectContext().commitChanges();
-		}
-		request.setAttribute("paymentCreated", payment);
-		
-		return EnrolmentPaymentResult.class;
+		enrolmentPaymentProcessing.setPayment(payment);
+		return enrolmentPaymentProcessing;
 	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "failure")

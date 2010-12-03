@@ -1,4 +1,4 @@
-<html t:type="ui/pagestructure" bodyId="literal:EnrolmentPaymentResult" bodyClass="literal:internal-page"
+<t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="enrolmentSuccessful">
@@ -28,5 +28,4 @@
 			</t:if>
 		</p:else>
 	</t:if>
-	 
-</html>	
+</t:container>	

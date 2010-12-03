@@ -1,5 +1,6 @@
-package ish.oncourse.enrol.pages;
+package ish.oncourse.enrol.components;
 
+import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -7,12 +8,8 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class EnrolmentPaymentResult {
-
-	@Inject
-	private Request request;
 
 	@Inject
 	private Messages messages;
@@ -20,7 +17,7 @@ public class EnrolmentPaymentResult {
 	@Inject
 	private IWebSiteService webSiteService;
 
-	private PaymentIn paymentIn;
+	private PaymentIn payment;
 
 	@Property
 	private String thxMsg;
@@ -35,7 +32,6 @@ public class EnrolmentPaymentResult {
 
 	@SetupRender
 	void beforeRender() {
-		paymentIn = (PaymentIn) request.getAttribute("paymentCreated");
 		collegeName = webSiteService.getCurrentCollege().getName();
 		thxMsg = messages.format("thanksForEnrolment", collegeName);
 		paymentFailedMsg = messages.format("paymentFailed", collegeName);
@@ -43,8 +39,7 @@ public class EnrolmentPaymentResult {
 	}
 
 	public boolean isEnrolmentSuccessful() {
-		// return Payment.STATUS_SUCCEEDED.equals( getResult() );
-		return true;
+		return PaymentStatus.SUCCESS.equals(payment.getStatus());
 	}
 
 	public boolean isEnrolmentQueued() {
@@ -55,7 +50,7 @@ public class EnrolmentPaymentResult {
 
 	public boolean isEnrolmentFailed() {
 		// Payment.STATUSES_FAILED.containsObject( getResult() )
-		return false;
+		return PaymentStatus.FAILED.equals(payment.getStatus());
 	}
 
 	public boolean isPayment() {
@@ -63,11 +58,16 @@ public class EnrolmentPaymentResult {
 
 		// totalAmount = getPaymentQuery().totalAmount();
 		// return totalAmount != null && totalAmount.doubleValue() != 0.00d;
-		return false;
+		return true;
 	}
 
 	public String getPaymentId() {
 		// TODO show proper id
 		return "paymentId";
+	}
+
+	public void setPayment(PaymentIn payment) {
+		this.payment = payment;
+		
 	}
 }
