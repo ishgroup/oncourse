@@ -90,4 +90,13 @@ public class Tag extends _Tag {
 	public boolean hasParentTag() {
 		return getParent() != null;
 	}
+	
+	public Tag getRoot(){
+		Tag result=this;
+		
+		while(result.getParent()!=null){
+			result=result.getParent();
+		}
+		return result;
+	}
 }

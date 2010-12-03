@@ -108,4 +108,19 @@ public class TagService implements ITagService {
 		}
 		return ids;
 	}
+
+	@Override
+	public List<Tag> getTagsForEntity(String entityName, Long entityId) {
+
+		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
+		Expression qualifier = ExpressionFactory.matchExp(
+				pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY, entityName).andExp(
+				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY,
+						entityId));
+		
+		SelectQuery query = new SelectQuery(Tag.class, getSiteQualifier().andExp(qualifier));
+
+		return cayenneService.sharedContext().performQuery(query);
+	}
+
 }

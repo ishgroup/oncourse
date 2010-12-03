@@ -18,4 +18,5 @@ public interface ITagService {
 
 	List<Long> getEntityIdsByTagName(String tagName, String entityName);
 
+	List<Tag> getTagsForEntity(String entityName, Long entityId);
 }

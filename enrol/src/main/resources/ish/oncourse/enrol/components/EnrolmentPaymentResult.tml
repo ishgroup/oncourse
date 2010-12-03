@@ -7,7 +7,7 @@
 		<p>Your enrolment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentId}</strong>.</p>
 		<p>${message:successConfirmation}</p>
 		<p><a href="/courses">If you wish to browse other courses, click here.</a></p>
-		<!-- t:output value="analyticsContentString"/-->
+		<t:AnalyticsTransaction transaction="transaction"/>
 		<p:else>
 			<t:if test="enrolmentQueued">
 				<h2>Enrolment <span>&#187;</span> Queued</h2>

@@ -3,6 +3,7 @@ package ish.oncourse.enrol.components;
 import ish.common.types.CreditCardType;
 import ish.oncourse.enrol.pages.EnrolmentPaymentProcessing;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Preference;
@@ -137,6 +138,9 @@ public class EnrolmentPaymentEntry {
 	
 	@InjectPage
 	private EnrolmentPaymentProcessing enrolmentPaymentProcessing;
+
+	@Parameter
+	private List<Enrolment> enrolments;
 	
 
 	@SetupRender
@@ -243,6 +247,7 @@ public class EnrolmentPaymentEntry {
 	Object submitted() {
 		invoice.setContact(payment.getContact());
 		enrolmentPaymentProcessing.setPayment(payment);
+		enrolmentPaymentProcessing.setEnrolments(enrolments);
 		return enrolmentPaymentProcessing;
 	}
 

@@ -30,6 +30,7 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final String CREDIT_CARD_NAME_PROPERTY = "creditCardName";
     public static final String CREDIT_CARD_NUMBER_PROPERTY = "creditCardNumber";
     public static final String CREDIT_CARD_TYPE_PROPERTY = "creditCardType";
+    public static final String ID_PROPERTY = "id";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String SOURCE_PROPERTY = "source";
     public static final String STATUS_PROPERTY = "status";
@@ -90,6 +91,13 @@ public abstract class _PaymentIn extends CayenneDataObject {
     }
     public CreditCardType getCreditCardType() {
         return (CreditCardType)readProperty("creditCardType");
+    }
+
+    public void setId(Long id) {
+        writeProperty("id", id);
+    }
+    public Long getId() {
+        return (Long)readProperty("id");
     }
 
     public void setModified(Date modified) {

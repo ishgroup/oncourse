@@ -36,5 +36,9 @@ public class PaymentIn extends _PaymentIn {
 
 		return null;
 	}
+
+	public BigDecimal getTotalAmount() {
+		return BigDecimal.ZERO;
+	}
 	
 }

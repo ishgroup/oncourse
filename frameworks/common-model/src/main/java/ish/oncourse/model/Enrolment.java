@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.auto._Enrolment;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -34,6 +35,12 @@ public class Enrolment extends _Enrolment {
 	 */
 	public boolean isSuccessfullOrQueued() {
 		return getStatus() == null || getStatus().equals(EnrolmentStatus.SUCCESS) || getStatus().equals(EnrolmentStatus.QUEUED);
+	}
+
+
+	public BigDecimal getDiscountedExTaxAmount() {
+		// TODO Auto-generated method stub
+		return BigDecimal.ZERO;
 	}
 	
 	/**

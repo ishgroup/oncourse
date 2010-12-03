@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -264,4 +265,13 @@ public class EnrolCourses {
 		return invoiceLines;
 	}
 	
+	public List<Enrolment> getEnrolmentsList(){
+		List<Enrolment> result=new ArrayList<Enrolment>();
+		
+		for(Enrolment[]e:enrolments){
+			result.addAll(Arrays.asList(e));
+		}
+		
+		return result;
+	}
 }
