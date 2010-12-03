@@ -61,6 +61,7 @@ public class CourseSearchForm {
 	private ListSelectModel<Tag> tagModel;
 	
 	@Property
+	@Persist
 	private ListValueEncoder<Tag> tagEnc;
 
 	@SetupRender
