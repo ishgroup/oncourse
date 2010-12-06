@@ -5,7 +5,7 @@
 
 
 	<prerequisites>
-		<maven>2.0.9</maven>
+		<maven>2.2.1</maven>
 	</prerequisites>
 
 
@@ -297,16 +297,5 @@
 		<maven.emma.report.xml>true</maven.emma.report.xml>
 		<maven.emma.report.html>true</maven.emma.report.html>
 	</properties>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>emma-maven-plugin</artifactId>
-				<version>1.0-alpha-3-SNAPSHOT</version>
-				<inherited>true</inherited>
-			</plugin>
-		</plugins>
-	</reporting>
 
 </project>
