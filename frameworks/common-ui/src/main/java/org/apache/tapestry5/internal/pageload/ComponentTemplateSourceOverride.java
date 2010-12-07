@@ -29,28 +29,20 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.UpdateListener;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
 
+
 /**
  * Service implementation that manages a cache of parsed component templates.
  */
-public final class ComponentTemplateSourceOverride extends
-		InvalidationEventHubImpl implements ComponentTemplateSource,
+public final class ComponentTemplateSourceOverride extends InvalidationEventHubImpl implements ComponentTemplateSource,
 		UpdateListener {
 
 	private Request request;
-
-	private static final Logger LOGGER = Logger
-			.getLogger(ComponentTemplateSourceOverride.class);
-
+	private static final Logger LOGGER = Logger.getLogger(ComponentTemplateSourceOverride.class);
 	private static final String PACKAGE = "ish.oncourse";
-
 	private IResourceService resourceService;
-
 	private final TemplateParser parser;
-
 	private final ComponentTemplateLocator locator;
-
 	private final URLChangeTracker tracker;
-
 	/**
 	 * Caches from a key (combining component name and locale) to a resource.
 	 * Often, many different keys will point to the same resource (i.e.,
@@ -58,16 +50,13 @@ public final class ComponentTemplateSourceOverride extends
 	 * "foo.tml" resource). The resource may end up being null, meaning the
 	 * template does not exist in any locale.
 	 */
-	private final Map<MultiKey, Resource> templateResources = CollectionFactory
-			.newConcurrentMap();
-
+	private final Map<MultiKey, Resource> templateResources = CollectionFactory.newConcurrentMap();
 	/**
 	 * Cache of parsed templates, keyed on resource.
 	 */
-	private final Map<Resource, ComponentTemplate> templates = CollectionFactory
-			.newConcurrentMap();
-
+	private final Map<Resource, ComponentTemplate> templates = CollectionFactory.newConcurrentMap();
 	private final ComponentTemplate missingTemplate = new ComponentTemplate() {
+
 		public Map<String, Location> getComponentIds() {
 			return Collections.emptyMap();
 		}
@@ -96,13 +85,13 @@ public final class ComponentTemplateSourceOverride extends
 
 	public ComponentTemplateSourceOverride(TemplateParser parser,
 			@Primary ComponentTemplateLocator templateLocator,
-			ClasspathURLConverter classpathURLConverter, 
+			ClasspathURLConverter classpathURLConverter,
 			Request request,
 			IResourceService resourceService) {
-		
+
 		this(parser, templateLocator, new URLChangeTracker(
 				classpathURLConverter));
-		
+
 		this.request = request;
 		this.resourceService = resourceService;
 	}
@@ -124,7 +113,7 @@ public final class ComponentTemplateSourceOverride extends
 	 */
 	public ComponentTemplate getTemplate(ComponentModel componentModel,
 			Locale locale) {
-		
+
 		String componentName = componentModel.getComponentClassName();
 
 		MultiKey key = new MultiKey(componentName, locale,
@@ -141,6 +130,10 @@ public final class ComponentTemplateSourceOverride extends
 
 			if (resource == null) {
 				resource = locateTemplateResource(componentModel, locale);
+			}
+
+			if (resource != null) {
+				templateResources.put(key, resource);
 			}
 		}
 
@@ -161,13 +154,14 @@ public final class ComponentTemplateSourceOverride extends
 		// This will likely add
 		// the resource to the tracker multiple times. Not likely this will
 		// cause a big issue.
+		ComponentTemplate result = missingTemplate;
 
-		if (!r.exists())
-			return missingTemplate;
+		if (r.exists()) {
+			tracker.add(r.toURL());
+			result = parser.parseTemplate(r);
+		}
 
-		tracker.add(r.toURL());
-
-		return parser.parseTemplate(r);
+		return result;
 	}
 
 	private Resource locateTemplateResource(ComponentModel initialModel,
@@ -176,8 +170,9 @@ public final class ComponentTemplateSourceOverride extends
 		while (model != null) {
 			Resource localized = locator.locateTemplate(model, locale);
 
-			if (localized != null)
+			if (localized != null) {
 				return localized;
+			}
 
 			// Otherwise, this component doesn't have its own template ... lets
 			// work up to its
@@ -208,15 +203,14 @@ public final class ComponentTemplateSourceOverride extends
 				"tml");
 
 		String templatePath = templateBaseResource.getPath();
-		String templateFile = templatePath.substring(templatePath
-				.lastIndexOf("/") + 1);
+		String templateFile = templatePath.substring(templatePath.lastIndexOf("/") + 1);
 
 		PrivateResource resource = resourceService.getTemplateResource(null,
 				templateFile);
 
 		LOGGER.debug("Try to load template override for: " + templateFile);
 
-		if (resource.exists()) {
+		if ((resource != null) && resource.exists()) {
 			LOGGER.debug("Template override: " + templateFile + " found.");
 			return new T5FileResource(resource.getFile());
 		}

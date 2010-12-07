@@ -12,11 +12,7 @@
 	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
 		<div t:id="bodyStructure" t:type="ui/bodyStructureTemplate">
 			<p:header>
-				<h1><a href="${homeLink}">${collegeName}</a></h1>
-				<div id="site_toolbar">
-					<span t:type="ui/CourseSearchForm"/>
-					<span t:type="ui/ShortList"/>
-				</div>
+				<div t:type="ui/bodyheader"></div>
 			</p:header>
 			<p:menu>
 				<div t:type="ui/menu" rootMenu="menu"/>
