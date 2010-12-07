@@ -1,26 +1,27 @@
-<!-- CCE Template -->
-<div class="container">
+<div id="container">
+
 	<div id="header">
 		<span id="param:header"/>
 	</div>
-	
-	<nav>
-		<span id="param:menu"/>
-	</nav>
 
 	<div id="contentContainer" class="">
+
 		<div id="sidebarLeft" class="">
 			<span id="param:left"/>
-		</div>
+		</div>		
+	
 		<div id="content" class="">
-			<span id="param:content"/>
+			<span id="param:bodycontent"/>
 		</div>
+		
 		<div id="sidebarRight" class="">
 			<span id="param:right"/>
 		</div>
-	</div>
 	
+	</div>		
+
 	<div id="footer" class="">
 		<span id="param:footer"/>
 	</div>
+
 </div>
