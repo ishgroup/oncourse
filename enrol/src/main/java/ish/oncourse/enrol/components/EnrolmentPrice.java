@@ -1,6 +1,6 @@
 package ish.oncourse.enrol.components;
 
-import ish.oncourse.math.Money;
+import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 

@@ -1,7 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
-import ish.oncourse.math.Money;
+import ish.math.Money;
 import ish.oncourse.model.auto._Discount;
 
 import java.math.BigDecimal;
@@ -238,7 +238,7 @@ public class Discount extends _Discount {
 			}
 			if (discounts.contains(this)) {
 				if (getDiscountAmount() != null
-						&& Money.ZERO.compareTo(getDiscountAmount()) < 0) {
+						&& Money.ZERO.compareTo(new Money(getDiscountAmount())) < 0) {
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("applying discount $ : "
 								+ getDiscountAmount());
@@ -252,14 +252,14 @@ public class Discount extends _Discount {
 							getDiscountRate());
 
 					if (getMaximumDiscount() != null
-							&& Money.ZERO.compareTo(getMaximumDiscount()) < 0) {
+							&& Money.ZERO.compareTo(new Money(getMaximumDiscount())) < 0) {
 						if (result.compareTo(getMaximumDiscount()) > 0) {
 							result = getMaximumDiscount();
 						}
 					}
 
 					if (getMinimumDiscount() != null
-							&& Money.ZERO.compareTo(getMinimumDiscount()) < 0) {
+							&& Money.ZERO.compareTo(new Money(getMinimumDiscount())) < 0) {
 						if (result.compareTo(getMinimumDiscount()) < 0) {
 							result = getMinimumDiscount();
 						}

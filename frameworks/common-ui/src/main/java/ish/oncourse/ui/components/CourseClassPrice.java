@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.math.Money;
+import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountCourseClass;
@@ -62,7 +62,7 @@ public class CourseClassPrice {
 		if (discountedFee == null) {
 			discountedFee = Money.valueOf(courseClass.getFeeExGst().subtract(
 					getDiscountValue())
-					.multiply(courseClass.getTaxMultiplier()));
+					.multiply(courseClass.getTaxMultiplier())).toBigDecimal();
 
 			if (discountedFee == null) {
 				discountedFee = Money.ZERO.toBigDecimal();
@@ -131,7 +131,7 @@ public class CourseClassPrice {
 				.subtract(
 						Discount.discountValueForCourseClass(discountsList,
 								courseClass)).multiply(
-						courseClass.getTaxMultiplier()));
+						courseClass.getTaxMultiplier())).toBigDecimal();
 	}
 
 }

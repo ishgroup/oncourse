@@ -1,7 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
-import ish.oncourse.math.Money;
+import ish.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.TimestampUtilities;
 
@@ -215,8 +215,8 @@ public class CourseClass extends _CourseClass {
 	}
 
 	public BigDecimal getTaxMultiplier() {
-		if (getFeeGst() == null || Money.ZERO.compareTo(getFeeGst()) >= 0) {
-			return Money.ONE;
+		if (getFeeGst() == null || Money.ZERO.compareTo(new Money(getFeeGst())) >= 0) {
+			return Money.ONE.toBigDecimal();
 		}
 
 		// TODO grab correct rate from onCourse later
@@ -225,7 +225,7 @@ public class CourseClass extends _CourseClass {
 
 	public boolean isGstExempt() {
 		BigDecimal feeGst = getFeeGst();
-		return feeGst == null || Money.ZERO.compareTo(feeGst) == 0;
+		return feeGst == null || Money.ZERO.compareTo(new Money(feeGst)) == 0;
 	}
 
 	/**
