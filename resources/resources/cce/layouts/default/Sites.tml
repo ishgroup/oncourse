@@ -1,4 +1,4 @@
-<html t:type="ui/pagewrapper" bodyId="literal:SiteList" bodyClass="literal:internal-page"
+<html t:type="ui/pagestructure" bodyId="literal:SiteList" bodyClass="literal:internal-page"
  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<h2>Sites</h2><t:remove><!-- Should this be renamed something else? Venues? --></t:remove>
 	<span t:type="ui/GoogleMapSites" sites="sites" showLocationMap="true"/>

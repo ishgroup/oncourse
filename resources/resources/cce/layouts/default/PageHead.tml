@@ -3,9 +3,9 @@
   <t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
   <link rel="shortcut icon" type="image/ico" href="/s/img/favicon.ico" />
   
-  <link href="/s/css/site.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/s/src/css/site.css" media="screen" rel="stylesheet" type="text/css" />
   
-  <title>${title} yyy</title>
+  <title>${title} 721712712712712712712</title>
   <!-- CCE Template -->
 
 </t:container>

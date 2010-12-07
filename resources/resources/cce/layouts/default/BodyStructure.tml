@@ -4,6 +4,10 @@
 		<span id="param:header"/>
 	</div>
 
+	<nav>
+		<span id="param:menu"/>
+	</nav>
+
 	<div id="contentContainer" class="">
 
 		<div id="sidebarLeft" class="">

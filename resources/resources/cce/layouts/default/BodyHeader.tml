@@ -1,5 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<!-- CCE Template -->
+		<a href="/" id="usydlogo">The University of Sydney</a>
 				<h1><a href="${homeLink}">${collegeName}</a></h1>
 				<div id="site_toolbar">
 				xxx

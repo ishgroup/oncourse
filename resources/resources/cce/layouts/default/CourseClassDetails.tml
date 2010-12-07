@@ -1,4 +1,4 @@
-<html t:type="ui/pagewrapper" title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}" bodyId="literal:DetailsPage"
+<html t:type="ui/pagestructure" title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}" bodyId="literal:DetailsPage"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<!-- CCE Template -->
 	<h2>
