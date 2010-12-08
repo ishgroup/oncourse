@@ -13,13 +13,13 @@ INSERT INTO willow_college.College (id, isDeleted, isWebServicePaymentsEnabled, 
 INSERT INTO willow_college.Tutor (angelId, collegeId, created, isDeleted, modified, id, startDate, finishDate, resume, resume_textile)
 	SELECT tag.angelId, tag.collegeId, tag.created, tag.isDeleted, tag.modified, t.id, t.dateStarted, t.dateFinished, t.resume, t.resume_textile
 	FROM oncourse_realdata_willow_college.Tutor t
-	JOIN oncourse_realdata_willow_college.Taggable tag ON tag.id = t.id AND tag.isDeleted = 0
+	JOIN oncourse_realdata_willow_college.Taggable tag ON tag.id = t.id
 	WHERE tag.entityType = 'Tutor' AND t.id IN (SELECT tutorId FROM oncourse_realdata_willow_college.Contact WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.Student (angelId, collegeId, created, isDeleted, modified, id, countryOfBirthId, languageId, concessionType, disabilityType, englishProficiency, highestSchoolLevel, indigenousStatus, isOverseasClient, isStillAtSchool, priorEducationCode, yearSchoolCompleted, labourForceType)
 	SELECT tag.angelId, tag.collegeId, tag.created, tag.isDeleted, tag.modified, s.id, s.countryOfBirthId, s.languageId, s.concessionType, s.disabilityType, s.englishProficiency, s.highestSchoolLevel, s.indigenousStatus, s.isOverseasClient, s.isStillAtSchool, s.priorEducationCode, s.yearSchoolCompleted, s.labourForceType
 	FROM oncourse_realdata_willow_college.Student s 
-	JOIN oncourse_realdata_willow_college.Taggable tag ON tag.id = s.id AND tag.isDeleted = 0
+	JOIN oncourse_realdata_willow_college.Taggable tag ON tag.id = s.id
 	WHERE tag.entityType = 'Student' AND s.id IN (SELECT studentId FROM oncourse_realdata_willow_college.Contact WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.ConcessionType (id, collegeId, angelId, created, modified, credentialExpiryDays, hasConcessionNumber, hasExpiryDate, isConcession, isDeleted, isEnabled, requiresCredentialCheck, name) 
@@ -332,10 +332,10 @@ INSERT INTO willow_college.WebContent (id, content, content_textile, name, webSi
 
 
 INSERT INTO willow_college.WebNode ( created, id, isPublished,	modified, name, nodeNumber,	 webNodeTypeId, webSiteId )
-	SELECT	wn.created, wn.id, wn.isPublished,	wn.modified, wn.name, wn.nodeNumber, wnt.id, wn.webSiteId
-	FROM oncourse_realdata_willow_college.WebNode as wn
-	JOIN willow_college.WebNodeType as wnt ON wnt.webSiteId= wn.webSiteId
-	WHERE wn.isDeleted = 0 AND wn.webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
+  SELECT wn.created, wn.id, case when (wn.isPublished is null) then 0 else wn.isPublished end,	wn.modified, case when (wn.name is null) then '' else wn.name end, wn.nodeNumber, wnt.id, wn.webSiteId
+  FROM oncourse_realdata_willow_college.WebNode as wn
+    JOIN willow_college.WebNodeType as wnt ON wnt.webSiteId = wn.webSiteId
+  WHERE wn.isDeleted = 0 AND wn.webSiteId IN (SELECT id FROM willow_college.WebSite WHERE collegeId = @collegeId);
 
 INSERT INTO willow_college.WebURLAlias ( created, id, modified, urlPath, webNodeId, webSiteId)
 	SELECT created, id, modified, urlPath, webNodeId, webSiteId
@@ -375,7 +375,7 @@ CREATE TABLE willow_college.WebMenuTEMP (
   `webSiteId` BIGINT(20),
   `webMenuParentId` BIGINT(20),
   `weight` INT,
-  `name` VARCHAR(64)
+  `name` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci'
 );
 
 INSERT INTO willow_college.WebMenuTEMP (webNodeId, webSiteId, webMenuParentId, weight, name)

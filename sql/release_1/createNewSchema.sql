@@ -1360,6 +1360,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Preference` (
   `sqlType` INT(11) NULL DEFAULT NULL ,
   `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `value` BLOB NULL DEFAULT NULL ,
+  `value_string` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `explanation` VARCHAR(10000) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `collegeId_name_uniq_idx` (`collegeId` ASC, `name` ASC) ,
@@ -1696,7 +1697,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
   PRIMARY KEY (`id`) ,
   INDEX `webSite` (`webSiteId` ASC) ,
   INDEX `webNode` (`webNodeId` ASC) ,
-  UNIQUE INDEX `urlPath` (`urlPath` ASC, `webSiteId` ASC) ,
+--  UNIQUE INDEX `urlPath` (`urlPath` ASC, `webSiteId` ASC) ,
   CONSTRAINT `WebURLAlias_website`
     FOREIGN KEY (`webSiteId` )
     REFERENCES `willow_college`.`WebSite` (`id` ),
