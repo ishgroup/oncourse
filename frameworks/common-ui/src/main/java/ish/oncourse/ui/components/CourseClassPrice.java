@@ -60,9 +60,9 @@ public class CourseClassPrice {
 
 	public BigDecimal getDiscountedFee() {
 		if (discountedFee == null) {
-			discountedFee = Money.valueOf(courseClass.getFeeExGst().subtract(
-					getDiscountValue())
-					.multiply(courseClass.getTaxMultiplier())).toBigDecimal();
+			discountedFee = courseClass.getFeeExGst().subtract(
+					new Money(getDiscountValue()))
+					.multiply(courseClass.getTaxMultiplier()).toBigDecimal();
 
 			if (discountedFee == null) {
 				discountedFee = Money.ZERO.toBigDecimal();
@@ -127,11 +127,11 @@ public class CourseClassPrice {
 		}
 		ArrayList<Discount> discountsList = new ArrayList<Discount>();
 		discountsList.add(discountItem);
-		return Money.valueOf(courseClass.getFeeExGst()
-				.subtract(
+		return courseClass.getFeeExGst()
+				.subtract(new Money(
 						Discount.discountValueForCourseClass(discountsList,
-								courseClass)).multiply(
-						courseClass.getTaxMultiplier())).toBigDecimal();
+								courseClass))).multiply(
+						courseClass.getTaxMultiplier()).toBigDecimal();
 	}
 
 }

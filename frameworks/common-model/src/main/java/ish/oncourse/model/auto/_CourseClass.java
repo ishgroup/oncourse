@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.DiscountCourseClass;
@@ -120,11 +121,11 @@ public abstract class _CourseClass extends CayenneDataObject {
         return (Date)readProperty("endDate");
     }
 
-    public void setFeeExGst(BigDecimal feeExGst) {
+    public void setFeeExGst(Money feeExGst) {
         writeProperty("feeExGst", feeExGst);
     }
-    public BigDecimal getFeeExGst() {
-        return (BigDecimal)readProperty("feeExGst");
+    public Money getFeeExGst() {
+        return (Money)readProperty("feeExGst");
     }
 
     public void setFeeGst(BigDecimal feeGst) {

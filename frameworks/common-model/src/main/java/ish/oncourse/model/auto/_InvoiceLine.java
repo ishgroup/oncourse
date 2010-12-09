@@ -4,8 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
-
+import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -17,7 +16,7 @@ import ish.oncourse.model.InvoiceLineDiscount;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _InvoiceLine extends CayenneDataObject {
+public abstract class _InvoiceLine extends InvoicePayableLine {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
@@ -58,11 +57,11 @@ public abstract class _InvoiceLine extends CayenneDataObject {
         return (String)readProperty("description");
     }
 
-    public void setDiscountEachExTax(BigDecimal discountEachExTax) {
+    public void setDiscountEachExTax(Money discountEachExTax) {
         writeProperty("discountEachExTax", discountEachExTax);
     }
-    public BigDecimal getDiscountEachExTax() {
-        return (BigDecimal)readProperty("discountEachExTax");
+    public Money getDiscountEachExTax() {
+        return (Money)readProperty("discountEachExTax");
     }
 
     public void setModified(Date modified) {
@@ -72,11 +71,11 @@ public abstract class _InvoiceLine extends CayenneDataObject {
         return (Date)readProperty("modified");
     }
 
-    public void setPriceEachExTax(BigDecimal priceEachExTax) {
+    public void setPriceEachExTax(Money priceEachExTax) {
         writeProperty("priceEachExTax", priceEachExTax);
     }
-    public BigDecimal getPriceEachExTax() {
-        return (BigDecimal)readProperty("priceEachExTax");
+    public Money getPriceEachExTax() {
+        return (Money)readProperty("priceEachExTax");
     }
 
     public void setQuantity(BigDecimal quantity) {
@@ -93,11 +92,11 @@ public abstract class _InvoiceLine extends CayenneDataObject {
         return (Integer)readProperty("sortOrder");
     }
 
-    public void setTaxEach(BigDecimal taxEach) {
+    public void setTaxEach(Money taxEach) {
         writeProperty("taxEach", taxEach);
     }
-    public BigDecimal getTaxEach() {
-        return (BigDecimal)readProperty("taxEach");
+    public Money getTaxEach() {
+        return (Money)readProperty("taxEach");
     }
 
     public void setTitle(String title) {

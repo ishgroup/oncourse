@@ -1,10 +1,12 @@
 package ish.oncourse.model.services.persistence;
 
+import ish.math.MoneyType;
 import ish.oncourse.model.services.cache.ICacheService;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataDomain;
+import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.conf.Configuration;
 import org.apache.cayenne.conf.DefaultConfiguration;
 
@@ -23,6 +25,9 @@ public class CayenneService implements ICayenneService {
 		}
 
 		domain = cayenneConfiguration.getDomain();
+		for(DataNode dataNode: domain.getDataNodes()){
+			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
+		}
 		DataContext sharedDataContext = domain.createDataContext();
 
 		// only use global query cache with a shared context

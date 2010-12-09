@@ -248,7 +248,7 @@ public class Discount extends _Discount {
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("applying discount % : " + getDiscountRate());
 					}
-					result = courseClass.getFeeExGst().multiply(
+					result = courseClass.getFeeExGst().toBigDecimal().multiply(
 							getDiscountRate());
 
 					if (getMaximumDiscount() != null

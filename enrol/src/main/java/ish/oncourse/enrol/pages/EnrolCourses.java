@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.math.Money;
 import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.model.College;
@@ -181,16 +182,23 @@ public class EnrolCourses {
 						&& courseClass.isHasAvailableEnrolmentPlaces()) {
 					enrolments[i][j].setStudent(student);
 					enrolments[i][j].setCourseClass(courseClass);
+					
 					InvoiceLine invoiceLine = context
 							.newObject(InvoiceLine.class);
-					invoiceLine.setPriceEachExTax(courseClass
-							.getFeeIncGst());
 					invoiceLine.setInvoice(invoice);
+					//invoiceLine.setTax(courseClass.getTax());
+					invoiceLine.setPriceEachExTax(courseClass
+							.getFeeExGst());
+					
+					invoiceLine.setTitle(student.getFullName() + " " + courseClass.getCourse().getName());
+					invoiceLine.setDescription(courseClass.getUniqueIdentifier() + " " + courseClass.getCourse().getName());
+					
 					//fill the invoice line with default values
-					invoiceLine.setTitle("title");
 					invoiceLine.setQuantity(BigDecimal.ONE);
-					invoiceLine.setTaxEach(BigDecimal.TEN);
-					invoiceLine.setDiscountEachExTax(BigDecimal.ZERO);
+					//TODO for the taxEach there should be recalculation see angel/client/....../InvoiceLine.recalculateTaxEach()
+					invoiceLine.setTaxEach(new Money(BigDecimal.TEN));
+					//TODO see DISCOUNT_INC_TAX_PROPERTY
+					invoiceLine.setDiscountEachExTax(new Money(BigDecimal.ZERO));
 					invoiceLine.setCollege(college);
 					
 					enrolments[i][j].setInvoiceLine(invoiceLine);
@@ -228,7 +236,7 @@ public class EnrolCourses {
 			for (int j = 0; j < classesToEnrol.size(); j++) {
 				InvoiceLine invoiceLine = enrolments[i][j].getInvoiceLine();
 				if (invoiceLine != null) {
-					result = result.add(invoiceLine.getPriceEachExTax());
+					result = result.add(invoiceLine.getPriceEachExTax().toBigDecimal());
 				}
 			}
 		}

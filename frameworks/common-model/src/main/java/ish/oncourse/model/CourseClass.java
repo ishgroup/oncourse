@@ -201,13 +201,13 @@ public class CourseClass extends _CourseClass {
 	}
 
 	public boolean hasFeeIncTax() {
-		BigDecimal fee = getFeeIncGst();
-		return fee != null && Money.ZERO.toBigDecimal().compareTo(fee) < 0;
+		Money fee = getFeeIncGst();
+		return fee != null && Money.ZERO.compareTo(fee) < 0;
 	}
 
-	public BigDecimal getFeeIncGst() {
+	public Money getFeeIncGst() {
 		BigDecimal feeGst = getFeeGst();
-		BigDecimal feeExGst = getFeeExGst();
+		Money feeExGst = getFeeExGst();
 		if (feeGst == null || feeExGst == null) {
 			return feeExGst;
 		}

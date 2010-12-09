@@ -897,7 +897,7 @@
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
-		<obj-attribute name="feeExGst" type="java.math.BigDecimal" db-attribute-path="feeExGst"/>
+		<obj-attribute name="feeExGst" type="ish.math.Money" db-attribute-path="feeExGst"/>
 		<obj-attribute name="feeGst" type="java.math.BigDecimal" db-attribute-path="feeGst"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
@@ -978,16 +978,16 @@
 		<obj-attribute name="shippingAddress" type="java.lang.String" db-attribute-path="shippingAddress"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 	</obj-entity>
-	<obj-entity name="InvoiceLine" className="ish.oncourse.model.InvoiceLine" dbEntityName="InvoiceLine">
+	<obj-entity name="InvoiceLine" className="ish.oncourse.model.InvoiceLine" dbEntityName="InvoiceLine" superClassName="ish.oncourse.model.auto.InvoicePayableLine">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="discountEachExTax" type="java.math.BigDecimal" db-attribute-path="discountEachExTax"/>
+		<obj-attribute name="discountEachExTax" type="ish.math.Money" db-attribute-path="discountEachExTax"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="priceEachExTax" type="java.math.BigDecimal" db-attribute-path="priceEachExTax"/>
+		<obj-attribute name="priceEachExTax" type="ish.math.Money" db-attribute-path="priceEachExTax"/>
 		<obj-attribute name="quantity" type="java.math.BigDecimal" db-attribute-path="quantity"/>
 		<obj-attribute name="sortOrder" type="java.lang.Integer" db-attribute-path="sortOrder"/>
-		<obj-attribute name="taxEach" type="java.math.BigDecimal" db-attribute-path="taxEach"/>
+		<obj-attribute name="taxEach" type="ish.math.Money" db-attribute-path="taxEach"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="unit" type="java.lang.String" db-attribute-path="unit"/>
 	</obj-entity>
