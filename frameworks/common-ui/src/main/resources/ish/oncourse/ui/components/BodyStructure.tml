@@ -1,32 +1,34 @@
-<div id="contentContainer">
+<div class="layout" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="clearfix container">
+			<div id="header">
+				<div t:type="ui/bodyheader"></div>
+                <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header"></div>
+			</div>
 
-	<div id="header">
-		<span id="param:header"/>
+			<div style="float:left; width:20%">
+				<div t:type="ui/menu" rootMenu="rootMenu"/>
+			</div>
+
+			<div id="content_container" class="clearfix">
+				<div id="content" class="span-18 unitPng">
+					<t:body/>
+				</div>
+
+				<div id="sidebar" class="span-5 side_panel last">
+					<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left"></div>
+				</div>
+			</div>
+
+			<div id="footer" class="clearfix">
+				<div t:type="ui/bodyfooter"></div>
+                <div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer"></div>
+			</div>
 	</div>
 
-	<div id="menu">
-		<span id="param:menu"/>
-	</div>
-	
-	<div id="content">
-		
-		<div id="leftSidebar">
-			<span id="param:left"/>
-		</div>
+	<div id="overlay" style="display: none; height: 500px"></div>
 
-		<div id="content">
-			<span id="param:bodycontent"/>
-		</div>
-				
-		<div id="rightSidebar">
-			<span id="param:right"/>
-		</div>
-
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline"></div>
 	</div>
-			
-	<div id="footer">
-		<span id="param:footer"/>
-	</div>
-	
 </div>
 

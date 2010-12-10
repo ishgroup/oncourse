@@ -1,8 +1,11 @@
 package ish.oncourse.ui.services;
 
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.ui.template.T5FileResource;
@@ -87,11 +90,14 @@ public class UIModule {
 			TemplateParser parser, ComponentTemplateLocator locator,
 			ClasspathURLConverter classpathURLConverter,
 			UpdateListenerHub updateListenerHub, Request request,
-			IResourceService resourceService) {
+			IResourceService resourceService,
+            IWebNodeService webNodeService,
+            IWebNodeTypeService webNodeTypeService,
+            IWebSiteService webSiteService) {
 
 		ComponentTemplateSourceOverride service = new ComponentTemplateSourceOverride(
 				parser, locator, classpathURLConverter, request,
-				resourceService);
+				resourceService, webNodeService, webNodeTypeService, webSiteService);
 
 		updateListenerHub.addUpdateListener(service);
 

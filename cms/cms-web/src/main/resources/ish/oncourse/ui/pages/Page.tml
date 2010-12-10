@@ -2,6 +2,6 @@
 	bodyId="${bodyId}" bodyClass="${bodyClass}" webNodeType="prop:node.webNodeType">
 	
 	<div t:type="pageinfo" node="node" t:id="pageInfo"/>
-	<div t:type="ui/contentStructureTemplate" node="node" inspectorZone="pageInfo.inspectorZone"></div>
+	<div t:type="ui/contentStructure" node="node" inspectorZone="pageInfo.inspectorZone"></div>
 	
 </html>

@@ -1,15 +1,14 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.services.search.ISearchService;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SuburbsTextArray extends TextStringArray {
 

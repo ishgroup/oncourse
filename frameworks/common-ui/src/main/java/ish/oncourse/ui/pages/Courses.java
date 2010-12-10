@@ -7,25 +7,20 @@ import ish.oncourse.model.Site;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParam;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -36,6 +31,7 @@ import org.apache.tapestry5.services.Request;
  * 
  * @author ???
  */
+
 public class Courses {
 
 	private static final Logger LOGGER = Logger.getLogger(Courses.class);

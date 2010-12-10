@@ -2,13 +2,12 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.VideoTextileAttributes;
-
-import java.util.Map;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.Map;
 
 public class TextileVideo {
 

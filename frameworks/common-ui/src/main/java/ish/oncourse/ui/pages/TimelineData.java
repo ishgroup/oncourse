@@ -4,20 +4,15 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.util.IPageRenderer;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Meta("tapestry.response-content-type=text/xml")
 public class TimelineData {

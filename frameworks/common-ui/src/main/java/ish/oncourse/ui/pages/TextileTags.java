@@ -1,13 +1,12 @@
 package ish.oncourse.ui.pages;
 
-import java.util.List;
-
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.textile.TextileUtil;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 public class TextileTags {
 

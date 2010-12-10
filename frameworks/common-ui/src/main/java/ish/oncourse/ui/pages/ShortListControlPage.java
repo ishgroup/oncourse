@@ -1,14 +1,13 @@
 package ish.oncourse.ui.pages;
 
-import java.util.List;
-
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.services.courseclass.ICourseClassService;
+import java.util.List;
 
 public class ShortListControlPage {
 

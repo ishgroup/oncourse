@@ -1,7 +1,6 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.services.search.ISearchService;
-
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.StreamResponse;

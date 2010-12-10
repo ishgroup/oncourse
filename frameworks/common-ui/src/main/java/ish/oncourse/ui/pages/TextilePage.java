@@ -7,12 +7,11 @@ import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
-
-import java.util.List;
-
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.List;
 
 public class TextilePage {
 

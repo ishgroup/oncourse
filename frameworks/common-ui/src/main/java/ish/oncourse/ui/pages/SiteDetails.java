@@ -2,7 +2,6 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Site;
 import ish.oncourse.services.sites.ISitesService;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;

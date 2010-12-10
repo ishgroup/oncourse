@@ -1,13 +1,12 @@
 package ish.oncourse.ui.pages;
 
-import java.util.List;
-
+import ish.oncourse.model.Course;
+import ish.oncourse.services.course.ICourseService;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import ish.oncourse.model.Course;
-import ish.oncourse.services.course.ICourseService;
+import java.util.List;
 
 public class CourseDetails {
 	@Inject

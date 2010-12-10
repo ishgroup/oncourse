@@ -3,14 +3,13 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.tutor.ITutorService;
-
-import java.util.List;
-
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 public class TutorDetails {
 	@Inject

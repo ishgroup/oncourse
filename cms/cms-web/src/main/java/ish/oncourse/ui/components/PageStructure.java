@@ -1,20 +1,60 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
-
-import org.apache.tapestry5.annotations.SupportsInformalParameters;
+import ish.oncourse.model.WebNodeType;
+import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.util.RequestUtil;
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 /**
- * A page wrapper component.
+ * A page structure component.
  */
-@SupportsInformalParameters
-public class PageStructure extends GenericPageStructure {
+public class PageStructure {
+
+    @Inject
+	private IWebNodeTypeService webNodeTypeService;
+
+	@Inject
+	private Request request;
+
+	@Inject
+	private ComponentResources resources;
+
+    @Parameter
+	private String bodyClass;
+
+    @Property
+	@Parameter
+	private String bodyId;
+
+    @Property
+	@Parameter
+	private WebNodeType webNodeType;
+
+	@Property
+	@Parameter
+	private String title;
 
 	@Inject
 	private IAuthenticationService authenticationService;
 
 	public boolean isLoggedIn() {
 		return authenticationService.getUser() != null;
+	}
+
+    @SetupRender
+	public void beforeRender() {
+		if (!resources.isBound("webNodeType")) {
+			this.webNodeType = webNodeTypeService.getDefaultWebNodeType();
+		}
+	}
+
+	public String getAgentAwareBodyClass() {
+        return bodyClass + RequestUtil.getAgentAwareClass(request.getHeader("User-Agent"));
 	}
 }

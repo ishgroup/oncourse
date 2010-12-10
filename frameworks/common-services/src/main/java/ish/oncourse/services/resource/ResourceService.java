@@ -3,17 +3,15 @@ package ish.oncourse.services.resource;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.annotations.Inject;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ResourceService implements IResourceService {
 
@@ -107,19 +105,17 @@ public class ResourceService implements IResourceService {
 	/**
 	 * 
 	 */
-	public PrivateResource getTemplateResource(String templateKey,
+	public PrivateResource getTemplateResource(String layoutKey,
 			String fileName) {
 
 		File[] roots = getResourceRoots();
-
-		String subfolder = (templateKey != null) ? templateKey : DEFAULT_FOLDER;
 
 		FileResource res = null;
 
 		for (File file : roots) {
 			if (file != null) {
 				res = new FileResource(file + File.separator
-						+ LAYOUT_FOLDER + File.separator + subfolder, fileName);
+						+ LAYOUT_FOLDER + File.separator + layoutKey, fileName);
 			}
 			if (res.exists()) {
 				if ((res.getFile() != null) && res.getFile().canRead()) {

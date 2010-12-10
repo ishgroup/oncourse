@@ -62,7 +62,7 @@ public class AssetGroupServiceTest extends Assert {
 				};
 			}
 			
-			public PrivateResource getTemplateResource(String templateKey,
+			public PrivateResource getTemplateResource(String layoutKey,
 					String fileName) {
 				throw new UnsupportedOperationException();
 			}

@@ -1,14 +1,13 @@
 package org.apache.tapestry5.internal.pageload;
 
+import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.WebSite;
+import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.template.T5FileResource;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.TapestryConstants;
 import org.apache.tapestry5.internal.event.InvalidationEventHubImpl;
@@ -29,213 +28,238 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.UpdateListener;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 
 /**
  * Service implementation that manages a cache of parsed component templates.
  */
 public final class ComponentTemplateSourceOverride extends InvalidationEventHubImpl implements ComponentTemplateSource,
-		UpdateListener {
+        UpdateListener {
 
-	private Request request;
-	private static final Logger LOGGER = Logger.getLogger(ComponentTemplateSourceOverride.class);
-	private static final String PACKAGE = "ish.oncourse";
-	private IResourceService resourceService;
-	private final TemplateParser parser;
-	private final ComponentTemplateLocator locator;
-	private final URLChangeTracker tracker;
-	/**
-	 * Caches from a key (combining component name and locale) to a resource.
-	 * Often, many different keys will point to the same resource (i.e.,
-	 * "foo:en_US", "foo:en_UK", and "foo:en" may all be parsed from the same
-	 * "foo.tml" resource). The resource may end up being null, meaning the
-	 * template does not exist in any locale.
-	 */
-	private final Map<MultiKey, Resource> templateResources = CollectionFactory.newConcurrentMap();
-	/**
-	 * Cache of parsed templates, keyed on resource.
-	 */
-	private final Map<Resource, ComponentTemplate> templates = CollectionFactory.newConcurrentMap();
-	private final ComponentTemplate missingTemplate = new ComponentTemplate() {
+    private Request request;
+    private static final Logger LOGGER = Logger.getLogger(ComponentTemplateSourceOverride.class);
+    private static final String PACKAGE = "ish.oncourse";
 
-		public Map<String, Location> getComponentIds() {
-			return Collections.emptyMap();
-		}
+    private IResourceService resourceService;
+    private IWebNodeService webNodeService;
+    private IWebNodeTypeService webNodeTypeService;
+    private IWebSiteService webSiteService;
 
-		public Resource getResource() {
-			return null;
-		}
+    private final TemplateParser parser;
+    private final ComponentTemplateLocator locator;
+    private final URLChangeTracker tracker;
+    /**
+     * Caches from a key (combining component name and locale) to a resource.
+     * Often, many different keys will point to the same resource (i.e.,
+     * "foo:en_US", "foo:en_UK", and "foo:en" may all be parsed from the same
+     * "foo.tml" resource). The resource may end up being null, meaning the
+     * template does not exist in any locale.
+     */
+    private final Map<MultiKey, Resource> templateResources = CollectionFactory.newConcurrentMap();
+    /**
+     * Cache of parsed templates, keyed on resource.
+     */
+    private final Map<Resource, ComponentTemplate> templates = CollectionFactory.newConcurrentMap();
+    private final ComponentTemplate missingTemplate = new ComponentTemplate() {
 
-		public List<TemplateToken> getTokens() {
-			return Collections.emptyList();
-		}
+        public Map<String, Location> getComponentIds() {
+            return Collections.emptyMap();
+        }
 
-		public boolean isMissing() {
-			return true;
-		}
+        public Resource getResource() {
+            return null;
+        }
 
-		public List<TemplateToken> getExtensionPointTokens(
-				String extensionPointId) {
-			return null;
-		}
+        public List<TemplateToken> getTokens() {
+            return Collections.emptyList();
+        }
 
-		public boolean isExtension() {
-			return false;
-		}
-	};
+        public boolean isMissing() {
+            return true;
+        }
 
-	public ComponentTemplateSourceOverride(TemplateParser parser,
-			@Primary ComponentTemplateLocator templateLocator,
-			ClasspathURLConverter classpathURLConverter,
-			Request request,
-			IResourceService resourceService) {
+        public List<TemplateToken> getExtensionPointTokens(
+                String extensionPointId) {
+            return null;
+        }
 
-		this(parser, templateLocator, new URLChangeTracker(
-				classpathURLConverter));
+        public boolean isExtension() {
+            return false;
+        }
+    };
 
-		this.request = request;
-		this.resourceService = resourceService;
-	}
+    public ComponentTemplateSourceOverride(TemplateParser parser,
+                                           @Primary ComponentTemplateLocator locator,
+                                           ClasspathURLConverter classpathURLConverter,
+                                           Request request,
+                                           IResourceService resourceService,
+                                           IWebNodeService webNodeService,
+                                           IWebNodeTypeService webNodeTypeService,
+                                           IWebSiteService webSiteService) {
 
-	ComponentTemplateSourceOverride(TemplateParser parser,
-			ComponentTemplateLocator locator, URLChangeTracker tracker) {
-		this.parser = parser;
-		this.locator = locator;
-		this.tracker = tracker;
-	}
+        this.parser = parser;
+        this.locator = locator;
+        this.tracker = new URLChangeTracker(classpathURLConverter);
 
-	/**
-	 * Resolves the component name to a localized {@link Resource} (using the
-	 * {@link ComponentTemplateLocator} chain of command service). The localized
-	 * resource is used as the key to a cache of {@link ComponentTemplate}s.
-	 * <p/>
-	 * If a template doesn't exist, then the missing ComponentTemplate is
-	 * returned.
-	 */
-	public ComponentTemplate getTemplate(ComponentModel componentModel,
-			Locale locale) {
+        this.request = request;
+        this.resourceService = resourceService;
+        this.webNodeService = webNodeService;
+        this.webNodeTypeService = webNodeTypeService;
+        this.webSiteService = webSiteService;
 
-		String componentName = componentModel.getComponentClassName();
+        trackLayoutFolders();
+    }
 
-		MultiKey key = new MultiKey(componentName, locale,
-				request.getServerName());
+    private void trackLayoutFolders() {
+        for (WebSite site : webSiteService.getAvailableSites()) {
+            for (WebNodeType webNodeType : site.getWebNodeTypes()) {
+                Resource folder = new T5FileResource(resourceService.getTemplateResource(webNodeType.getLayoutKey(), "/").getFile());
+                tracker.add(folder.toURL());
+            }
+        }
+    }
 
-		// First cache is key to resource.
+    /**
+     * Resolves the component name to a localized {@link Resource} (using the
+     * {@link ComponentTemplateLocator} chain of command service). The localized
+     * resource is used as the key to a cache of {@link ComponentTemplate}s.
+     * <p/>
+     * If a template doesn't exist, then the missing ComponentTemplate is
+     * returned.
+     */
+    public ComponentTemplate getTemplate(ComponentModel componentModel,
+                                         Locale locale) {
 
-		Resource resource = templateResources.get(key);
+        String componentName = componentModel.getComponentClassName();
 
-		if (resource == null) {
-			if (componentName.startsWith(PACKAGE)) {
-				resource = locateSiteTemplateResource(componentModel, locale);
-			}
+        MultiKey key = new MultiKey(componentName, locale,
+                request.getServerName());
 
-			if (resource == null) {
-				resource = locateTemplateResource(componentModel, locale);
-			}
+        // First cache is key to resource.
 
-			if (resource != null) {
-				templateResources.put(key, resource);
-			}
-		}
+        Resource resource = templateResources.get(key);
 
-		// If we haven't yet parsed the template into the cache, do so now.
+        if (resource == null) {
 
-		ComponentTemplate result = templates.get(resource);
+            if (resource == null) {
+                resource = locateSiteTemplateResource(componentModel, locale);
+            }
 
-		if (result == null) {
-			result = parseTemplate(resource);
-			templates.put(resource, result);
-		}
+            if (resource != null) {
+                templateResources.put(key, resource);
+            }
+        }
 
-		return result;
-	}
+        // If we haven't yet parsed the template into the cache, do so now.
 
-	private ComponentTemplate parseTemplate(Resource r) {
-		// In a race condition, we may parse the same template more than once.
-		// This will likely add
-		// the resource to the tracker multiple times. Not likely this will
-		// cause a big issue.
-		ComponentTemplate result = missingTemplate;
+        ComponentTemplate result = templates.get(resource);
 
-		if (r.exists()) {
-			tracker.add(r.toURL());
-			result = parser.parseTemplate(r);
-		}
+        if (result == null) {
+            result = parseTemplate(resource);
+            templates.put(resource, result);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private Resource locateTemplateResource(ComponentModel initialModel,
-			Locale locale) {
-		ComponentModel model = initialModel;
-		while (model != null) {
-			Resource localized = locator.locateTemplate(model, locale);
+    private ComponentTemplate parseTemplate(Resource r) {
+        // In a race condition, we may parse the same template more than once.
+        // This will likely add
+        // the resource to the tracker multiple times. Not likely this will
+        // cause a big issue.
+        ComponentTemplate result = missingTemplate;
 
-			if (localized != null) {
-				return localized;
-			}
+        if (r.exists()) {
+            tracker.add(r.toURL());
+            result = parser.parseTemplate(r);
+        }
 
-			// Otherwise, this component doesn't have its own template ... lets
-			// work up to its
-			// base class and check there.
+        return result;
+    }
 
-			model = model.getParentModel();
-		}
+    private Resource locateTemplateResource(ComponentModel initialModel,
+                                            Locale locale) {
+        ComponentModel model = initialModel;
+        while (model != null) {
+            Resource localized = locator.locateTemplate(model, locale);
 
-		// This will be a Resource whose URL is null, which will be picked up
-		// later and force the
-		// return of the empty template.
+            if (localized != null) {
+                return localized;
+            }
 
-		return initialModel.getBaseResource().withExtension(
-				TapestryConstants.TEMPLATE_EXTENSION);
-	}
+            // Otherwise, this component doesn't have its own template ... lets
+            // work up to its
+            // base class and check there.
 
-	private Resource locateSiteTemplateResource(ComponentModel model,
-			Locale locale) {
+            model = model.getParentModel();
+        }
 
-		String componentName = model.getComponentClassName();
+        // This will be a Resource whose URL is null, which will be picked up
+        // later and force the
+        // return of the empty template.
 
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Retrieve template for component class name : "
-					+ componentName + ", if starts with : " + PACKAGE);
-		}
+        return initialModel.getBaseResource().withExtension(
+                TapestryConstants.TEMPLATE_EXTENSION);
+    }
 
-		Resource templateBaseResource = model.getBaseResource().withExtension(
-				"tml");
+    private Resource locateSiteTemplateResource(ComponentModel model,
+                                                Locale locale) {
 
-		String templatePath = templateBaseResource.getPath();
-		String templateFile = templatePath.substring(templatePath.lastIndexOf("/") + 1);
+        String componentName = model.getComponentClassName();
 
-		PrivateResource resource = resourceService.getTemplateResource(null,
-				templateFile);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Retrieve template for component class name : "
+                    + componentName + ", if starts with : " + PACKAGE);
+        }
 
-		LOGGER.debug("Try to load template override for: " + templateFile);
+        if (componentName.startsWith(PACKAGE)) {
+            Resource templateBaseResource = model.getBaseResource().withExtension("tml");
 
-		if ((resource != null) && resource.exists()) {
-			LOGGER.debug("Template override: " + templateFile + " found.");
-			return new T5FileResource(resource.getFile());
-		}
+            String templatePath = templateBaseResource.getPath();
+            String templateFile = templatePath.substring(templatePath.lastIndexOf("/") + 1);
 
-		LOGGER.debug("Template override: " + templateFile + " doesn't exist.");
+            String layoutKey = (webNodeService.getCurrentNode() != null) ? webNodeService.getCurrentNode().getWebNodeType().getLayoutKey() : webNodeTypeService.getDefaultWebNodeType().getLayoutKey();
 
-		return null;
-	}
+            PrivateResource resource = resourceService.getTemplateResource(layoutKey,
+                    templateFile);
 
-	/**
-	 * Checks to see if any parsed resource has changed. If so, then all
-	 * internal caches are cleared, and an invalidation event is fired. This is
-	 * brute force ... a more targeted dependency management strategy may come
-	 * later.
-	 */
-	public void checkForUpdates() {
-		if (tracker.containsChanges()) {
-			tracker.clear();
-			templateResources.clear();
-			templates.clear();
-			fireInvalidationEvent();
-		}
-	}
+            LOGGER.debug("Try to load template override for: " + templateFile);
 
-	public InvalidationEventHub getInvalidationEventHub() {
-		return this;
-	}
+            if ((resource != null) && resource.exists()) {
+                LOGGER.debug("Template override: " + templateFile + " found.");
+                return new T5FileResource(resource.getFile());
+            }
+
+            LOGGER.debug("Template override: " + templateFile + " doesn't exist.");
+        }
+
+        return locateTemplateResource(model, locale);
+    }
+
+    /**
+     * Checks to see if any parsed resource has changed. If so, then all
+     * internal caches are cleared, and an invalidation event is fired. This is
+     * brute force ... a more targeted dependency management strategy may come
+     * later.
+     */
+    public void checkForUpdates() {
+        if (tracker.containsChanges()) {
+
+            tracker.clear();
+            templateResources.clear();
+            templates.clear();
+
+            fireInvalidationEvent();
+            
+            trackLayoutFolders();
+        }
+    }
+
+    public InvalidationEventHub getInvalidationEventHub() {
+        return this;
+    }
 }

@@ -2,7 +2,6 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
-
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;

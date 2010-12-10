@@ -1,27 +1,22 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.WebNode;
+import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tutor.ITutorService;
+import org.apache.tapestry5.annotations.Meta;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.tapestry5.annotations.Meta;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 @Meta("tapestry.response-content-type=text/xml")
 public class SitemapXML {
 

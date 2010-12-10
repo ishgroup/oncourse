@@ -5,20 +5,19 @@ import java.util.List;
 public interface IResourceService {
 
 	/**
-	 * Template getter for a particular templateKey.
+	 * Template getter for a particular layoutKey.
 	 * 
 	 * <p>
-	 * Note that if no template is found for the templateKey the defaults
+	 * Note that if no template is found for the layoutKey the defaults
 	 * 
-	 * @param templateKey
-	 *            template key
+	 * @param layoutKey of WebNodeType
 	 * @param fileName
 	 *            resource filename
 	 * 
 	 * @return a Tapestry 5 template override resource for the current web host
 	 *         name.
 	 */
-	PrivateResource getTemplateResource(String templateKey, String fileName);
+	PrivateResource getTemplateResource(String layoutKey, String fileName);
 
 	/**
 	 * @param fileName
@@ -29,7 +28,6 @@ public interface IResourceService {
 	List<PrivateResource> getConfigResources(String fileName);
 
 	/**
-	 * @param framework
 	 * @param fileName
 	 *            resource filename
 	 * 

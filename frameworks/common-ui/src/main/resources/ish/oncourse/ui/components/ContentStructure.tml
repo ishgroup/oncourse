@@ -1,2 +1,8 @@
-<span id="param:content"/>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <t:loop source="node.webContentVisibility" value="visibility">
+        <div t:type="any" id="prop:templateId">
+            <t:outputraw value="regionContent"/>
+        </div>
+    </t:loop>
+</t:container>
 

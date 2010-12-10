@@ -2,9 +2,7 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.cms.services.access.Protected;
-import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
+import ish.oncourse.model.*;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
@@ -23,52 +21,62 @@ import org.apache.tapestry5.services.Request;
 @Protected
 public class CmsNavigation {
 
-	@Property
-	@Inject
-	private IWebNodeService webNodeService;
-	
-	@Inject
-	private IWebNodeTypeService webNodeTypeService;
+    @Property
+    @Inject
+    private IWebNodeService webNodeService;
 
-	@Inject
-	private ICayenneService cayenneService;
+    @Inject
+    private IWebNodeTypeService webNodeTypeService;
 
-	@Inject
-	private IWebSiteService webSiteService;
+    @Inject
+    private ICayenneService cayenneService;
 
-	@Inject
-	private IAuthenticationService authenticationService;
+    @Inject
+    private IWebSiteService webSiteService;
 
-	@Inject
-	private Request request;
+    @Inject
+    private IAuthenticationService authenticationService;
 
-	@Property
-	@Persist
-	private WebNode node;
+    @Inject
+    private Request request;
 
-	@SetupRender
-	public void beforeRender() {
-		this.node = webNodeService.getCurrentNode();
-	}
+    @Property
+    @Persist
+    private WebNode node;
 
-	public Object onActionFromLogout() throws IOException {
-		authenticationService.logout();
-		return null;
-	}
+    @SetupRender
+    public void beforeRender() {
+        this.node = webNodeService.getCurrentNode();
+    }
 
-	public Object onActionFromNewPage() throws IOException {
-		ObjectContext ctx = cayenneService.newContext();
-		
-		WebNode newPageNode = ctx.newObject(WebNode.class);
-		newPageNode.setName("New Page");
-		newPageNode.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
-		newPageNode.setNodeNumber(webNodeService.getNextNodeNumber());
-		
-		newPageNode.setWebNodeType((WebNodeType) ctx.localObject(
-				webNodeTypeService.getDefaultWebNodeType().getObjectId(), null));
+    public Object onActionFromLogout() throws IOException {
+        authenticationService.logout();
+        return null;
+    }
 
-		ctx.commitChanges();
-		
-		return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber());
-	}
+    public Object onActionFromNewPage() throws IOException {
+        ObjectContext ctx = cayenneService.newContext();
+
+        WebNode newPageNode = ctx.newObject(WebNode.class);
+        newPageNode.setName("New Page");
+        newPageNode.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+        newPageNode.setNodeNumber(webNodeService.getNextNodeNumber());
+
+        newPageNode.setWebNodeType((WebNodeType) ctx.localObject(
+                webNodeTypeService.getDefaultWebNodeType().getObjectId(), null));
+
+        WebContentVisibility contentVisibility = ctx.newObject(WebContentVisibility.class);
+        contentVisibility.setRegionKey(RegionKey.content);
+
+        WebContent webContent = ctx.newObject(WebContent.class);
+        webContent.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+        webContent.setContent("Sample content text.");
+        contentVisibility.setWebContent(webContent);
+
+        newPageNode.addToWebContentVisibility(contentVisibility);
+
+        ctx.commitChanges();
+
+        return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber());
+    }
 }

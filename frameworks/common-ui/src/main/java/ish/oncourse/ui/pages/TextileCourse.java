@@ -2,7 +2,6 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.services.textile.TextileUtil;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;

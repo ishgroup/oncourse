@@ -1,15 +1,14 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Session;
-
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 public class TimelineEventDetail {
 	@Inject 
