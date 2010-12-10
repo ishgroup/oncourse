@@ -27,7 +27,7 @@ import org.apache.tapestry5.runtime.RenderCommand;
 import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 
-public class ContentStructureTemplate {
+public class ContentStructure {
 
 	@Parameter
 	private WebNode node;

@@ -37,9 +37,9 @@ import org.apache.tapestry5.runtime.RenderCommand;
 import com.howardlewisship.tapx.core.dynamic.DynamicDelegate;
 import com.howardlewisship.tapx.core.dynamic.DynamicTemplate;
 
-public class ContentStructureTemplate {
+public class ContentStructure {
 
-	private static final Logger LOGGER = Logger.getLogger(ContentStructureTemplate.class);
+	private static final Logger LOGGER = Logger.getLogger(ContentStructure.class);
 
 	@Parameter
 	private WebNode node;
