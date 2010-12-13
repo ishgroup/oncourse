@@ -3,6 +3,7 @@ package ish.oncourse.enrol.pages;
 import ish.math.Money;
 import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
+import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
@@ -55,13 +56,15 @@ public class EnrolCourses {
 
 	@Inject
 	private IPreferenceService preferenceService;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
 	private ICayenneService cayenneService;
 
+    @Inject
+    private IStudentService studentService;
 
 	/**
 	 * tapestry services
@@ -130,22 +133,19 @@ public class EnrolCourses {
 		moneyFormat = new DecimalFormat("###,##0.00");
 		context = cayenneService.newContext();
 
-		String[] orderedClassesIds = cookiesService
-				.getCookieCollectionValue("shortlist");
+		String[] orderedClassesIds = cookiesService.getCookieCollectionValue("shortlist");
 		if (orderedClassesIds != null && orderedClassesIds.length != 0) {
 			classesToEnrol = courseClassService.loadByIds(orderedClassesIds);
 			List<Ordering> orderings = new ArrayList<Ordering>();
-			orderings.add(new Ordering(CourseClass.COURSE_PROPERTY + "."
-					+ Course.CODE_PROPERTY, SortOrder.ASCENDING));
-			orderings.add(new Ordering(CourseClass.CODE_PROPERTY,
-					SortOrder.DESCENDING));
+			orderings.add(new Ordering(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY,
+					SortOrder.ASCENDING));
+			orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.DESCENDING));
 			Ordering.orderList(classesToEnrol, orderings);
 		}
 
-		contacts = (List<Contact>) request.getSession(true).getAttribute(
-				"shortlistStudents");
+		contacts = studentService.getStudentsFromShortList();
 
-		if (classesToEnrol != null && contacts != null && !contacts.isEmpty()) {
+		if (contacts != null && !contacts.isEmpty() && classesToEnrol != null) {
 			initPayment();
 		}
 
@@ -153,54 +153,53 @@ public class EnrolCourses {
 
 	private void initPayment() {
 		College currentCollege = webSiteService.getCurrentCollege();
-		College college = (College) context.localObject(
-				currentCollege.getObjectId(), currentCollege);
+		College college = (College) context.localObject(currentCollege.getObjectId(),
+				currentCollege);
 		payment = context.newObject(PaymentIn.class);
 		payment.setCollege(college);
 		invoice = context.newObject(Invoice.class);
-		//fill the invoice with default values
+		// fill the invoice with default values
 		invoice.setInvoiceDate(new Date());
 		invoice.setAmountOwing(BigDecimal.ZERO);
 		invoice.setDateDue(new Date());
-		
+
 		invoice.setCollege(college);
 		enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
-		invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol
-				.size()];
+		invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol.size()];
 		for (int i = 0; i < contacts.size(); i++) {
 			for (int j = 0; j < classesToEnrol.size(); j++) {
 				enrolments[i][j] = context.newObject(Enrolment.class);
-				
+
 				enrolments[i][j].setCollege(college);
 				Contact contact = contacts.get(i);
 				Student student = ((Contact) context.localObject(contact.getObjectId(), contact))
 						.getStudent();
-				CourseClass courseClass = (CourseClass) context
-						.localObject(classesToEnrol.get(j).getObjectId(),
-								classesToEnrol.get(j));
+				CourseClass courseClass = (CourseClass) context.localObject(classesToEnrol.get(j)
+						.getObjectId(), classesToEnrol.get(j));
 				if (!enrolments[i][j].isDuplicated(student)
 						&& courseClass.isHasAvailableEnrolmentPlaces()) {
 					enrolments[i][j].setStudent(student);
 					enrolments[i][j].setCourseClass(courseClass);
-					
-					InvoiceLine invoiceLine = context
-							.newObject(InvoiceLine.class);
+
+					InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 					invoiceLine.setInvoice(invoice);
-					//invoiceLine.setTax(courseClass.getTax());
-					invoiceLine.setPriceEachExTax(courseClass
-							.getFeeExGst());
-					
-					invoiceLine.setTitle(student.getFullName() + " " + courseClass.getCourse().getName());
-					invoiceLine.setDescription(courseClass.getUniqueIdentifier() + " " + courseClass.getCourse().getName());
-					
-					//fill the invoice line with default values
+					// invoiceLine.setTax(courseClass.getTax());
+					invoiceLine.setPriceEachExTax(courseClass.getFeeExGst());
+
+					invoiceLine.setTitle(student.getFullName() + " "
+							+ courseClass.getCourse().getName());
+					invoiceLine.setDescription(courseClass.getUniqueIdentifier() + " "
+							+ courseClass.getCourse().getName());
+
+					// fill the invoice line with default values
 					invoiceLine.setQuantity(BigDecimal.ONE);
-					//TODO for the taxEach there should be recalculation see angel/client/....../InvoiceLine.recalculateTaxEach()
+					// TODO for the taxEach there should be recalculation see
+					// angel/client/....../InvoiceLine.recalculateTaxEach()
 					invoiceLine.setTaxEach(new Money(BigDecimal.TEN));
-					//TODO see DISCOUNT_INC_TAX_PROPERTY
+					// TODO see DISCOUNT_INC_TAX_PROPERTY
 					invoiceLine.setDiscountEachExTax(new Money(BigDecimal.ZERO));
 					invoiceLine.setCollege(college);
-					
+
 					enrolments[i][j].setInvoiceLine(invoiceLine);
 					invoiceLines[i][j] = invoiceLine;
 				}
@@ -229,7 +228,7 @@ public class EnrolCourses {
 		return BigDecimal.ZERO;
 	}
 
-	//FIXME temp implementation of getting payment amount, should be changed
+	// FIXME temp implementation of getting payment amount, should be changed
 	public BigDecimal getTotalIncGst() {
 		BigDecimal result = BigDecimal.ZERO;
 		for (int i = 0; i < contacts.size(); i++) {
@@ -249,8 +248,8 @@ public class EnrolCourses {
 	 * @return
 	 */
 	public Object enrolmentsUpdated() {
-		return new MultiZoneUpdate("totals", totals.getBody()).add(
-				"paymentZone", paymentEntry.getPaymentZone());
+		return new MultiZoneUpdate("totals", totals.getBody()).add("paymentZone",
+				paymentEntry.getPaymentZone());
 	}
 
 	public List<CourseClass> getCourseClasses() {
@@ -264,22 +263,22 @@ public class EnrolCourses {
 	public List<Contact> getContacts() {
 		return contacts;
 	}
-	
+
 	public void setContacts(List<Contact> contacts) {
-		this.contacts=contacts;
+		this.contacts = contacts;
 	}
 
 	public InvoiceLine[][] getInvoiceLines() {
 		return invoiceLines;
 	}
-	
-	public List<Enrolment> getEnrolmentsList(){
-		List<Enrolment> result=new ArrayList<Enrolment>();
-		
-		for(Enrolment[]e:enrolments){
+
+	public List<Enrolment> getEnrolmentsList() {
+		List<Enrolment> result = new ArrayList<Enrolment>();
+
+		for (Enrolment[] e : enrolments) {
 			result.addAll(Arrays.asList(e));
 		}
-		
+
 		return result;
 	}
 }

@@ -1,10 +1,13 @@
 package ish.oncourse.enrol.services.student;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -19,42 +22,64 @@ import ish.oncourse.services.site.IWebSiteService;
 
 public class StudentService implements IStudentService {
 
-	private static final Logger LOGGER = Logger.getLogger(StudentService.class);
-	
-	@Inject
-	private IWebSiteService webSiteService;
+    private static final Logger LOGGER = Logger.getLogger(StudentService.class);
 
-	@Inject
-	private ICayenneService cayenneService;
-	
-	@Inject
-	private Request request;
 
-	public Student getStudent(String firstName, String lastName, String email) {
-		College currentCollege = webSiteService.getCurrentCollege();
-		Expression qualifier = ExpressionFactory
-				.matchExp(Student.COLLEGE_PROPERTY, currentCollege)
-				.andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY
-						+ "." + Contact.GIVEN_NAME_PROPERTY, firstName))
-				.andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY
-						+ "." + Contact.FAMILY_NAME_PROPERTY, lastName))
-				.andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY
-						+ "." + Contact.EMAIL_ADDRESS_PROPERTY, email));
-		SelectQuery query = new SelectQuery(Student.class, qualifier);
-		List<Student> results = cayenneService.sharedContext().performQuery(
-				query);
-		return results.isEmpty() ? null : results.get(0);
-	}
+    @Inject
+    private IWebSiteService webSiteService;
 
-	public void addStudentToShortlist(Contact student) {
-		Session session = request.getSession(false);
-		List<Contact> students = (List<Contact>) session
-				.getAttribute("shortlistStudents");
-		if (students == null) {
-			students = new ArrayList<Contact>();
-		}
-		students.add(student);
-		session.setAttribute("shortlistStudents", students);
-	}
+    @Inject
+    private ICayenneService cayenneService;
+
+    @Inject
+    private Request request;
+
+    public Student getStudent(String firstName, String lastName, String email) {
+        College currentCollege = webSiteService.getCurrentCollege();
+        Expression qualifier = ExpressionFactory
+                .matchExp(Student.COLLEGE_PROPERTY, currentCollege)
+                .andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY
+                        + "." + Contact.GIVEN_NAME_PROPERTY, firstName))
+                .andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY
+                        + "." + Contact.FAMILY_NAME_PROPERTY, lastName))
+                .andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY
+                        + "." + Contact.EMAIL_ADDRESS_PROPERTY, email));
+        SelectQuery query = new SelectQuery(Student.class, qualifier);
+        List<Student> results = cayenneService.sharedContext().performQuery(
+                query);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public void addStudentToShortlist(Contact student) {
+        List<Long> studentIds = getContactsIdsFromShortList();
+        studentIds.add(student.getId());
+        request.getSession(false).setAttribute(SHORTLIST_STUDENTS_KEY, studentIds);
+    }
+
+    public List<Long> getContactsIdsFromShortList() {
+        Session session = request.getSession(false);
+        List<Long> studentIds = (List<Long>) session.getAttribute(SHORTLIST_STUDENTS_KEY );
+        if (studentIds == null) {
+            studentIds = new ArrayList<Long>();
+        }
+        return studentIds;
+    }
+
+    public List<Contact> getStudentsFromShortList() {
+        return getContactsByIds(getContactsIdsFromShortList());
+    }
+
+    public List<Contact> getContactsByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        EJBQLQuery q = new EJBQLQuery(
+                "select c from Contact c where c.id IN (:ids)");
+
+        q.setParameter("ids", ids);
+
+        return cayenneService.sharedContext().performQuery(q);
+    }
 
 }

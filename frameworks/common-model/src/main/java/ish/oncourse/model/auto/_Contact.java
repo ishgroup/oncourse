@@ -32,6 +32,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String FAX_NUMBER_PROPERTY = "faxNumber";
     public static final String GIVEN_NAME_PROPERTY = "givenName";
     public static final String HOME_PHONE_NUMBER_PROPERTY = "homePhoneNumber";
+    public static final String ID_PROPERTY = "id";
     public static final String IS_COMPANY_PROPERTY = "isCompany";
     public static final String IS_MALE_PROPERTY = "isMale";
     public static final String IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY = "isMarketingViaEmailAllowed";
@@ -132,6 +133,13 @@ public abstract class _Contact extends CayenneDataObject {
     }
     public String getHomePhoneNumber() {
         return (String)readProperty("homePhoneNumber");
+    }
+
+    public void setId(Long id) {
+        writeProperty("id", id);
+    }
+    public Long getId() {
+        return (Long)readProperty("id");
     }
 
     public void setIsCompany(Boolean isCompany) {

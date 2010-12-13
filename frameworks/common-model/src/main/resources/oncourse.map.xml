@@ -854,6 +854,7 @@
 		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="faxNumber"/>
 		<obj-attribute name="givenName" type="java.lang.String" db-attribute-path="givenName"/>
 		<obj-attribute name="homePhoneNumber" type="java.lang.String" db-attribute-path="homePhoneNumber"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isCompany" type="java.lang.Boolean" db-attribute-path="isCompany"/>
 		<obj-attribute name="isMale" type="java.lang.Boolean" db-attribute-path="isMale"/>
 		<obj-attribute name="isMarketingViaEmailAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaEmailAllowed"/>

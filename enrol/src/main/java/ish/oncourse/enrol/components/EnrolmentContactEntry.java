@@ -137,7 +137,7 @@ public class EnrolmentContactEntry {
 	}
 
 	public String getAddStudentBlockClass() {
-		List shortlistStudents = (List) request.getSession(false).getAttribute("shortlistStudents");
+		List shortlistStudents = studentService.getContactsIdsFromShortList();
 		return (shortlistStudents == null || shortlistStudents.isEmpty() || needMoreInfo) ? "show"
 				: "collapse";
 	}
