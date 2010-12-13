@@ -68,7 +68,7 @@
 			</table>
 		</t:if>
 
-		<span t:type="EnrolmentContactEntry" showConcessionsArea="showConcessionsArea"/>
+		<span t:type="EnrolmentContactEntry"/>
 
 		<!-- end enrolments summary -->
 		<t:if test="contacts">

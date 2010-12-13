@@ -69,10 +69,6 @@ public class ContactDetails {
 	@Parameter
 	private boolean showEmail;
 
-	@Parameter
-	@Property
-	private boolean showConcessionsArea;
-
 	@Property
 	@Parameter
 	private boolean requireAdditionalInfo;

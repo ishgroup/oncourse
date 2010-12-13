@@ -4,11 +4,13 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
@@ -43,6 +45,13 @@ public class EnrolmentContactEntry {
 
 	@Inject
 	private ICayenneService cayenneService;
+
+    @Inject
+	private IConcessionsService concessionsService;
+
+	@Inject
+	private IPreferenceService preferenceService;
+
 
 	/**
 	 * tapestry services
@@ -82,10 +91,6 @@ public class EnrolmentContactEntry {
 	@Persist
 	@Property
 	private boolean hasContact;
-
-	@Parameter
-	@Property
-	private boolean showConcessionsArea;
 
 	@Property
 	@Persist
@@ -217,6 +222,12 @@ public class EnrolmentContactEntry {
 		ValidationTracker defaultTracker = shortDetailsForm.getDefaultTracker();
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages
 				.get("validInput") : messages.get("validateInput");
+	}
+
+    public boolean isShowConcessionsArea() {
+		return (!concessionsService.getActiveConcessionTypes().isEmpty())
+				&& Boolean.valueOf(preferenceService.getPreferenceByKey(
+						"feature.concessionsInEnrolment").getValueString());
 	}
 
 }

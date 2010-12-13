@@ -70,7 +70,7 @@
 							</thead>
 						</table>
 						<span t:type="ContactDetails" parentZone="addStudentBlock" contact="contact" 
-								showEmail="false" requireAdditionalInfo="true"  showConcessionsArea="showConcessionsArea"/>
+								showEmail="false" requireAdditionalInfo="true"/>
 					</t:if>
 				</p:else>
 			</t:if>
