@@ -78,6 +78,31 @@
 
 	<profiles>
 		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources/dev</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>prod</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources/prod</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<profile>
 			<!-- Activate explicitly in Eclipse -->
 			<id>eclipse</id>
 			<dependencies>
