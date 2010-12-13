@@ -23,9 +23,6 @@
 	</modules>
 
 	<build>
-		<filters>
-			<filter>/src/main/resources/${env}/log4j.properties</filter>
-		</filters>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -68,31 +65,5 @@
 
 		</dependencies>
 	</dependencyManagement>
-
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/dev</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/prod</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-	</profiles>
 
 </project>
