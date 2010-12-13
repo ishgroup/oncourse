@@ -2,7 +2,7 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
 	initAddStudentButton();
-	
+	initAddConcessionButtons();
 	// if you hit the enter key in the EnrolmentContactEntry component, click "enrol" instead of paying
 	// but not in the suburb autocomplete, where enter will select the suburb
 	$j("fieldset#student_enrol_credentials input,fieldset#student_enrol_details input").keydown(function(e) { 
@@ -423,6 +423,15 @@ function initAddStudentButton(){
 	//	Show the "add a student" section
 	$j('#addstudent').click(function() {
 		$j('#addstudent-block').slideToggle(400);
+	});
+}
+
+function initAddConcessionButtons(){
+	$j('.add-concession').click(function() {
+		$j('#'+this.id+'-block').slideToggle(400);
+	});
+	$j('a.cancelConcessionAdd').click(function() {
+		$j('#add-concession_'+this.id.split('_')[1]+'-block').slideToggle(400);
 	});
 }
 

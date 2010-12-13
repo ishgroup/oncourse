@@ -2,7 +2,9 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._College;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class College extends _College {
@@ -23,5 +25,15 @@ public class College extends _College {
 		}
 		
 		return states;
+	}
+	
+	public List<ConcessionType> getActiveConcessionTypes(){
+		List<ConcessionType> activeConcessionTypes=new ArrayList<ConcessionType>();
+		for(ConcessionType concessionType: getConcessionTypes()){
+			if(concessionType.getIsConcession()&&concessionType.getIsEnabled()){
+				activeConcessionTypes.add(concessionType);
+			}
+		}
+		return activeConcessionTypes;
 	}
 }

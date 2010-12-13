@@ -29,15 +29,19 @@
 								<div class="left">${contact.fullName} <span>- ${contact.emailAddress}</span></div>
 								<div class="right">
 									<t:if test="showConcessionsArea">
-										<t:actionlink t:id="addStudentConcession" title="Add a concession" class="add-concession">
+										<a id="add-concession_${studentIndex}" class="add-concession">
 											<span>Add Concession</span>
-										</t:actionlink>
+										</a>
 									</t:if>
 								</div>
 							</th>
 						</tr>
+						<t:if test="showConcessionsArea">
+							<tr colspan="3"><th colspan="3"><span t:type="ConcessionEntry" student="contact.student" index="studentIndex"/></th></tr>
+						</t:if>	
 					</thead>
 					<tbody>
+					
 						<t:loop source="classesToEnrol" value="courseClass" index="courseClassIndex">
 							<span t:type="EnrolmentListItem" studentIndex="studentIndex" courseClassIndex="courseClassIndex"/>
 						</t:loop>
