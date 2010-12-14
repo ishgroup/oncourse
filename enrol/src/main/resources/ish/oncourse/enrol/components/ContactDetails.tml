@@ -122,27 +122,21 @@
 			</p>
 		</fieldset>
 
-		<!-- TODO remove the concessions area from parameter, rearrange this block layout -->
-		<!-- t:if test = "contact.student">
-			<t:if test = "showConcessionsArea">
+        <t:if test = "contact.student">
+			<t:if test = "collegeHasConcessions">
 				<t:if test="newStudent">
-					<wo:PreferenceConditional college="$contact.college" key="feature.concessionsInEnrolment">
-						<fieldset class="concessions">
-							<wo:StudentConcessionEditor callback="doCallbackAction" student="$contact.student"/>
+					<t:if test="showConcessionsEditor">
+                        <fieldset class="concessions">
+                            <br/>
+							<t:ConcessionEditor student="contact.student" parentForm="contactDetailsForm"/>
 						</fieldset>
-					</wo:PreferenceConditional>
-					<p:else>
-						<wo:PreferenceConditional college="$contact.college" key="feature.concession.existing.users.create">
-							<fieldset class="concessions">
-								<wo:StudentConcessionEditor callback="doCallbackAction" student="$contact.student"/>
-							</fieldset>
-						</wo:PreferenceConditional>
-					</p:else>
+					</t:if>
 				</t:if>
 			</t:if>
-		</t:if-->
+		</t:if>
 
-		<fieldset class="opt-in">
+
+        <fieldset class="opt-in">
 			<p class="fieldset-intro">I would like to receive marketing material via:</p>
 			<p><label for="allowEmail">E-Mail</label><t:checkbox id="allowEmail" value="contact.isMarketingViaEmailAllowed"/></p>
 			<p><label for="allowSms">SMS</label><t:checkbox id="allowSms" value="contact.isMarketingViaSMSAllowed"/></p>
