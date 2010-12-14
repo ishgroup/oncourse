@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.jws.WebService;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
+import javax.servlet.ServletContext;
 
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
@@ -28,25 +27,32 @@ import ish.oncourse.webservices.soap.stubs.Language_Stub;
 import ish.oncourse.webservices.soap.stubs.Module_Stub;
 import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
 import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
+import javax.ws.rs.core.Context;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.TapestryFilter;
+import org.apache.tapestry5.ioc.Registry;
 
 
 /**
- * Implementation of the Reference Data API for the replication of Reference 
+ * Implementation of the ReferenceService Data API for the replication of ReferenceService
  * data set.
  * 
  * @see IReferenceService
  *
  * @author Marek Wawrzyczny
  */
-@WebService(endpointInterface="ish.oncourse.webservices.soap.IReferenceService")
-public class ReferenceService extends AbstractAuthenticatedService
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.IReferenceService",
+			serviceName = "ReferenceService",
+			portName = "ReferencePort")
+public class ReferenceService /*extends AbstractAuthenticatedService*/
 		implements IReferenceService {
 
 	private static final int BATCH_SIZE = 100;
 
-	@Inject
-	CountryService countryService;
-	@Inject
+	@Context
+	private ServletContext servletContext;
+	private CountryService countryService;
+/*	@Inject
 	LanguageService languageService;
 	@Inject
 	ModuleService moduleService;
@@ -54,42 +60,53 @@ public class ReferenceService extends AbstractAuthenticatedService
 	QualificationService qualificationService;
 	@Inject
 	TrainingPackageService trainingPackageService;
+*/
+	private static final Logger LOGGER = Logger.getLogger(ReferenceService.class);
 
 
 	@Override
-	public HashMap<String, Long> checkVersions() throws AuthenticationException {
+	public HashMap<String, Long> checkVersions() {
 
-		if (! hasHttpSession()) {
+/*		if (!hasHttpSession()) {
 //			throw new AuthenticationException("Service requires Authentication");
-		}
+		}*/
 
 		HashMap<String, Long> versions = new HashMap<String, Long>();
 
+		Registry registry = (Registry) servletContext.getAttribute(
+				TapestryFilter.REGISTRY_CONTEXT_NAME);
+
+		if (countryService == null) {
+			countryService = registry.getService(CountryService.class);
+		}
+		if (countryService == null) {
+			LOGGER.debug("Country Service not initialised!!!");
+		}
 		Long version = countryService.findMaxIshVersion();
 		if (version != null) {
 			versions.put(Country.class.getName(), version);
 		}
-		version = languageService.findMaxIshVersion();
+/*		version = languageService.findMaxIshVersion();
 		if (version != null) {
-		 	versions.put(Language.class.getName(), version);
+			versions.put(Language.class.getName(), version);
 		}
 		version = moduleService.findMaxIshVersion();
 		if (version != null) {
-		 	versions.put(Module.class.getName(), version);
+			versions.put(Module.class.getName(), version);
 		}
 		version = qualificationService.findMaxIshVersion();
 		if (version != null) {
-		 	versions.put(Qualification.class.getName(), version);
+			versions.put(Qualification.class.getName(), version);
 		}
 		version = trainingPackageService.findMaxIshVersion();
 		if (version != null) {
-		 	versions.put(TrainingPackage.class.getName(), version);
-		}
+			versions.put(TrainingPackage.class.getName(), version);
+		}*/
 
 		return versions;
 	}
 
-	@Override
+/*	@Override
 	public List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber)
 			throws AuthenticationException {
 
@@ -173,6 +190,5 @@ public class ReferenceService extends AbstractAuthenticatedService
 		}
 
 		return stubs;
-	}
-
+	}*/
 }

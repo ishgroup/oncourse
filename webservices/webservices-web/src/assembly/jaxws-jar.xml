@@ -1,0 +1,13 @@
+<assembly>
+   <id>jaxws</id>
+   <formats>
+      <format>jar</format>
+   </formats>
+   <includeBaseDirectory>false</includeBaseDirectory>
+   <fileSets>
+      <fileSet>
+         <directory>target/classes/ish/oncourse/webservices/soap</directory>
+         <outputDirectory>/ish/oncourse/webservices/soap</outputDirectory>
+      </fileSet>
+   </fileSets>
+</assembly>

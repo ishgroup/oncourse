@@ -32,7 +32,7 @@ import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
  * @author Marek Wawrzyczny
  */
 @WebService
-public interface IReferenceService extends AuthenticatedService {
+public interface IReferenceService /*extends AuthenticatedService*/ {
 
 	/**
 	 * Call to find out the most recent version of each of the replicable
@@ -40,7 +40,7 @@ public interface IReferenceService extends AuthenticatedService {
 	 *
 	 * @return Map containing the Entity name as key and the version as value
 	 */
-	HashMap<String, Long> checkVersions() throws AuthenticationException;
+	HashMap<String, Long> checkVersions();
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -57,7 +57,7 @@ public interface IReferenceService extends AuthenticatedService {
 	 *
 	 * @return
 	 */
-	List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber) throws AuthenticationException;
+//	List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -74,7 +74,7 @@ public interface IReferenceService extends AuthenticatedService {
 	 *
 	 * @return
 	 */
-	List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber) throws AuthenticationException;
+//	List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -91,7 +91,7 @@ public interface IReferenceService extends AuthenticatedService {
 	 *
 	 * @return
 	 */
-	List<Module_Stub> getModules(Long angelVersion, Integer batchNumber) throws AuthenticationException;
+//	List<Module_Stub> getModules(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -108,7 +108,7 @@ public interface IReferenceService extends AuthenticatedService {
 	 *
 	 * @return
 	 */
-	List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber) throws AuthenticationException;
+//	List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -125,6 +125,6 @@ public interface IReferenceService extends AuthenticatedService {
 	 *
 	 * @return
 	 */
-	List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber) throws AuthenticationException;
+//	List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber);
 
 }
