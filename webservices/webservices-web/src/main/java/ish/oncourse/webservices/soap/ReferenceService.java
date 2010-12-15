@@ -27,10 +27,8 @@ import ish.oncourse.webservices.soap.stubs.Language_Stub;
 import ish.oncourse.webservices.soap.stubs.Module_Stub;
 import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
 import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
-import javax.ws.rs.core.Context;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.TapestryFilter;
-import org.apache.tapestry5.ioc.Registry;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 
 /**
@@ -49,8 +47,7 @@ public class ReferenceService /*extends AbstractAuthenticatedService*/
 
 	private static final int BATCH_SIZE = 100;
 
-	@Context
-	private ServletContext servletContext;
+	@Inject
 	private CountryService countryService;
 /*	@Inject
 	LanguageService languageService;
@@ -73,18 +70,13 @@ public class ReferenceService /*extends AbstractAuthenticatedService*/
 
 		HashMap<String, Long> versions = new HashMap<String, Long>();
 
-		Registry registry = (Registry) servletContext.getAttribute(
-				TapestryFilter.REGISTRY_CONTEXT_NAME);
-
 		if (countryService == null) {
-			countryService = registry.getService(CountryService.class);
-		}
-		if (countryService == null) {
-			LOGGER.debug("Country Service not initialised!!!");
-		}
-		Long version = countryService.findMaxIshVersion();
-		if (version != null) {
-			versions.put(Country.class.getName(), version);
+			LOGGER.error("Country Service not initialised!!!");
+		} else {
+			Long version = countryService.findMaxIshVersion();
+			if (version != null) {
+				versions.put(Country.class.getName(), version);
+			}
 		}
 /*		version = languageService.findMaxIshVersion();
 		if (version != null) {

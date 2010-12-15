@@ -7,35 +7,33 @@
 
 	<display-name>webservices</display-name>
 
+<!--
 	<listener>
-		<listener-class>
-             org.springframework.web.context.ContextLoaderListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+-->
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-	      classpath:application-context.xml
-		</param-value>
+		<param-value>classpath:application-context.xml</param-value>
 	</context-param>
 
 	<servlet>
-		<servlet-name>webservices</servlet-name>
+		<servlet-name>WebServicesServlet</servlet-name>
 		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>webservices</servlet-name>
+		<servlet-name>WebServicesServlet</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 
 	<filter>
-		<filter-name>CayenneFilter</filter-name>
+		<filter-name>WebServicesCayenneFilter</filter-name>
 		<filter-class>org.apache.cayenne.conf.WebApplicationContextFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>CayenneFilter</filter-name>
+		<filter-name>WebServicesCayenneFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
@@ -44,11 +42,11 @@
 		<param-value>ish.oncourse.webservices</param-value>
 	</context-param>
 	<filter>
-		<filter-name>tapestryIoC</filter-name>
-		<filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
+		<filter-name>WebServicesTapestryFilter</filter-name>
+		<filter-class>org.apache.tapestry5.spring.TapestrySpringFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>tapestryIoC</filter-name>
+		<filter-name>WebServicesTapestryFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 

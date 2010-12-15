@@ -22,6 +22,11 @@
 
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
 		</dependency>
 
@@ -36,27 +41,32 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-spring</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -69,26 +79,29 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
-	 <dependency>
-	  <groupId>javax.ws.rs</groupId>
-	  <artifactId>jsr311-api</artifactId>
-	  <version>1.1.1</version>
-	 </dependency>
+
 	</dependencies>
 
 	<build>
 		<finalName>services</finalName>
 		<plugins>
-			<plugin><!--use mvn tomcat:deploy or mvn tomcat:undeploy -->
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<version>1.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+						<version>${servlet-api.version}</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<server>myTomcat</server>
 					<path>/${project.build.finalName}</path>
-               <!--url>Place URL if different from http://localhost:8080/manager</url -->
 				</configuration>
 			</plugin>
+
          <!-- Below plugin provides a separate JAR for the JAX-WS artifacts 
             (i.e., the Java classes created by running wsdl2java or wsimport), as this 
             JAR will also be used by the SOAP client. -->
@@ -112,51 +125,50 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-java2ws-plugin</artifactId>
+				<version>${cxf.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+						<version>${servlet-api.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>process-classes</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>ish.oncourse.webservices.soap.ReferenceService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>process-classes-2</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>ish.oncourse.webservices.soap.DoubleItPortTypeImpl</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
 	<profiles>
-		<profile>
-			<id>CXF</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.cxf</groupId>
-						<artifactId>cxf-java2ws-plugin</artifactId>
-						<version>${cxf.version}</version>
-						<executions>
-							<execution>
-								<id>process-classes</id>
-								<phase>process-classes</phase>
-								<configuration>
-									<className>ish.oncourse.webservices.soap.ReferenceService</className>
-									<genWsdl>true</genWsdl>
-									<verbose>true</verbose>
-								</configuration>
-								<goals>
-									<goal>java2ws</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>process-classes-2</id>
-								<phase>process-classes</phase>
-								<configuration>
-									<className>ish.oncourse.webservices.soap.DoubleItPortTypeImpl</className>
-									<genWsdl>true</genWsdl>
-									<verbose>true</verbose>
-								</configuration>
-								<goals>
-									<goal>java2ws</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 
 		<profile>
 			<id>dev</id>
@@ -186,6 +198,7 @@
 	</profiles>
 
 	<properties>
+		<spring.version>3.0.5.RELEASE</spring.version>
 		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
 	</properties>
 	
