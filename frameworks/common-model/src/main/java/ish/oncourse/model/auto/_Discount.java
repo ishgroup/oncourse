@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.math.MoneyRounding;
 import ish.oncourse.model.College;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
@@ -143,11 +144,11 @@ public abstract class _Discount extends CayenneDataObject {
         return (String)readProperty("name");
     }
 
-    public void setRoundingMode(Integer roundingMode) {
+    public void setRoundingMode(MoneyRounding roundingMode) {
         writeProperty("roundingMode", roundingMode);
     }
-    public Integer getRoundingMode() {
-        return (Integer)readProperty("roundingMode");
+    public MoneyRounding getRoundingMode() {
+        return (MoneyRounding)readProperty("roundingMode");
     }
 
     public void setStudentAge(Integer studentAge) {

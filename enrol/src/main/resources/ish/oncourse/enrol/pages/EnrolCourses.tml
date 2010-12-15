@@ -37,13 +37,16 @@
 							</th>
 						</tr>
 						<t:if test="showConcessionsArea">
-							<tr colspan="3"><th colspan="3"><span t:type="ConcessionEntry" student="contact.student" index="studentIndex"/></th></tr>
+							<tr colspan="3">
+                                <th colspan="3"><span t:type="ConcessionEntry" index="studentIndex"/></th>
+                            </tr>
 						</t:if>	
 					</thead>
 					<tbody>
 					
 						<t:loop source="classesToEnrol" value="courseClass" index="courseClassIndex">
-							<span t:type="EnrolmentListItem" studentIndex="studentIndex" courseClassIndex="courseClassIndex"/>
+							<span t:type="EnrolmentListItem" studentIndex="studentIndex"
+                                  courseClassIndex="courseClassIndex"/>
 						</t:loop>
 					</tbody>
 				</t:loop>

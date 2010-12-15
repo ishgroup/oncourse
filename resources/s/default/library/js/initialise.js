@@ -430,9 +430,6 @@ function initAddConcessionButtons(){
 	$j('.add-concession').click(function() {
 		$j('#'+this.id+'-block').slideToggle(400);
 	});
-	$j('a.cancelConcessionAdd').click(function() {
-		$j('#add-concession_'+this.id.split('_')[1]+'-block').slideToggle(400);
-	});
 }
 
 function initSuburbAutoComplete(){

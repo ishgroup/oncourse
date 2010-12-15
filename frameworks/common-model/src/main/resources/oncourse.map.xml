@@ -932,7 +932,7 @@
 		<obj-attribute name="minimumDiscount" type="java.math.BigDecimal" db-attribute-path="minimumDiscount"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="roundingMode" type="java.lang.Integer" db-attribute-path="roundingMode"/>
+		<obj-attribute name="roundingMode" type="ish.math.MoneyRounding" db-attribute-path="roundingMode"/>
 		<obj-attribute name="studentAge" type="java.lang.Integer" db-attribute-path="studentAge"/>
 		<obj-attribute name="studentAgeOperator" type="java.lang.String" db-attribute-path="studentAgeOperator"/>
 		<obj-attribute name="studentEnrolledWithinDays" type="java.lang.Integer" db-attribute-path="studentEnrolledWithinDays"/>
@@ -1193,6 +1193,7 @@
 		<obj-attribute name="concessionNumber" type="java.lang.String" db-attribute-path="concessionNumber"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="expiresOn" type="java.util.Date" db-attribute-path="expiresOn"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>

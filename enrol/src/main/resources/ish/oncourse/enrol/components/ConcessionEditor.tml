@@ -1,11 +1,13 @@
 <t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
+    <t:hidden value="savePressed" t:id="savePressedHiddenField"/>
     <p>
   		<label for="concessionType">New Concession</label>
     	<t:select value="concessionType" model="activeConcessionTypesModel" encoder="concessionTypesEncoder"
     		blankLabel="no concession" clientId="concessionType"
-            onchange="$(${parentForm.clientId}).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"/>
+            onchange="$(${savePressedHiddenField.clientId}).value=false;
+                        $(${parentForm.clientId}).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"/>
     </p>
   	<t:if test="concessionType">
   		<t:if test="concessionType.hasConcessionNumber">
@@ -24,13 +26,16 @@
     	      	<t:datefield  value="studentConcession.expiresOn" clientId="concession-expiry" class="input-fixed"/>
         	</p>
   	    </t:if>
-  	    <div class="conditions">
+        <div class="conditions">
    		    <label>
    			    <t:checkbox value="hasCertifiedConcession" class="concession-agree" />
                 I certify that the concession I have claimed is valid and I understand that the details may be checked with the issuing body.
             	<em title="This field is required">*</em>
 	        </label>
   		</div>
- 		<t:submit t:id="saveConcession" value="save concession" class="concession-button"/>
+
+        <t:if test="showSaveButton">
+            <t:submit t:id="saveConcession" value="save concession" class="concession-button"/>
+        </t:if>
 	</t:if>
 </t:container>

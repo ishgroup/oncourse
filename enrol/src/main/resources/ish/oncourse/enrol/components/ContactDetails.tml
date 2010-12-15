@@ -128,7 +128,8 @@
 					<t:if test="showConcessionsEditor">
                         <fieldset class="concessions">
                             <br/>
-							<t:ConcessionEditor student="contact.student" parentForm="contactDetailsForm"/>
+							<t:ConcessionEditor student="contact.student" parentForm="contactDetailsForm"
+                                                t:id="concessionEditor" context="contact.objectContext"/>
 						</fieldset>
 					</t:if>
 				</t:if>
