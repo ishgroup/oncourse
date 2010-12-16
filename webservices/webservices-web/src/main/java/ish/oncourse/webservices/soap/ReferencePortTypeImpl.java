@@ -32,53 +32,58 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 
 /**
- * Implementation of the ReferenceService Data API for the replication of ReferenceService
+ * Implementation of the ReferencePortTypeImpl Data API for the replication of ReferencePortTypeImpl
  * data set.
  * 
- * @see IReferenceService
+ * @see ReferencePortType
  *
  * @author Marek Wawrzyczny
  */
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.IReferenceService",
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.ReferencePortType",
 			serviceName = "ReferenceService",
 			portName = "ReferencePort")
-public class ReferenceService /*extends AbstractAuthenticatedService*/
-		implements IReferenceService {
+public class ReferencePortTypeImpl /*extends AbstractAuthenticatedService*/
+		implements ReferencePortType {
 
 	private static final int BATCH_SIZE = 100;
 
 	@Inject
-	private CountryService countryService;
-/*	@Inject
-	LanguageService languageService;
+	CountryService countryService;
+/*
 	@Inject
-	ModuleService moduleService;
+	private LanguageService languageService;
 	@Inject
-	QualificationService qualificationService;
+	private ModuleService moduleService;
 	@Inject
-	TrainingPackageService trainingPackageService;
+	private QualificationService qualificationService;
+	@Inject
+	private TrainingPackageService trainingPackageService;
 */
-	private static final Logger LOGGER = Logger.getLogger(ReferenceService.class);
+	private static final Logger LOGGER = Logger.getLogger(ReferencePortTypeImpl.class);
 
 
 	@Override
 	public HashMap<String, Long> checkVersions() {
 
-/*		if (!hasHttpSession()) {
-//			throw new AuthenticationException("Service requires Authentication");
-		}*/
+/*
+		if (!hasHttpSession()) {
+			throw new AuthenticationException("Service requires Authentication");
+		}
+ */
+
 
 		HashMap<String, Long> versions = new HashMap<String, Long>();
 
 		if (countryService == null) {
-			LOGGER.error("Country Service not initialised!!!");
+			LOGGER.error("Country Service is not initialised!");
 		} else {
 			Long version = countryService.findMaxIshVersion();
 			if (version != null) {
 				versions.put(Country.class.getName(), version);
 			}
 		}
-/*		version = languageService.findMaxIshVersion();
+/*
+		version = languageService.findMaxIshVersion();
 		if (version != null) {
 			versions.put(Language.class.getName(), version);
 		}
@@ -93,8 +98,8 @@ public class ReferenceService /*extends AbstractAuthenticatedService*/
 		version = trainingPackageService.findMaxIshVersion();
 		if (version != null) {
 			versions.put(TrainingPackage.class.getName(), version);
-		}*/
-
+		}
+*/
 		return versions;
 	}
 

@@ -13,7 +13,7 @@ import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
 import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
 
 /**
- * The IReferenceService defines the API for one-way (Willow to Angel)
+ * The ReferencePortType defines the API for one-way (Willow to Angel)
  * replication of Reference Data.
  * 
  * <p>Reference Data consist of the following Entities:</p>
@@ -32,7 +32,7 @@ import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
  * @author Marek Wawrzyczny
  */
 @WebService
-public interface IReferenceService /*extends AuthenticatedService*/ {
+public interface ReferencePortType /*extends AuthenticatedService*/ {
 
 	/**
 	 * Call to find out the most recent version of each of the replicable

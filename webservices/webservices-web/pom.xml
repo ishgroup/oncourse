@@ -83,7 +83,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>services</finalName>
+		<finalName>webservices</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -142,7 +142,7 @@
 						<id>process-classes</id>
 						<phase>process-classes</phase>
 						<configuration>
-							<className>ish.oncourse.webservices.soap.ReferenceService</className>
+							<className>ish.oncourse.webservices.soap.ReferencePortTypeImpl</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>
@@ -178,6 +178,9 @@
 			<build>
 				<resources>
 					<resource>
+						<directory>src/main/resources/common</directory>
+					</resource>
+					<resource>
 						<directory>src/main/resources/dev</directory>
 					</resource>
 				</resources>
@@ -188,6 +191,9 @@
 			<id>prod</id>
 			<build>
 				<resources>
+					<resource>
+						<directory>src/main/resources/common</directory>
+					</resource>
 					<resource>
 						<directory>src/main/resources/prod</directory>
 					</resource>
