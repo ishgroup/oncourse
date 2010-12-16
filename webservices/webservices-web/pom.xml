@@ -13,6 +13,12 @@
 	<packaging>war</packaging>
 	<name>Willow - WebServices Web App</name>
 
+	<properties>
+		<spring.version>3.0.5.RELEASE</spring.version>
+		<config.dir>dev</config.dir>
+		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+	</properties>
+
 	<dependencies>
 
 		<dependency>
@@ -84,6 +90,25 @@
 
 	<build>
 		<finalName>webservices</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/config/${config.dir}</directory>
+            </resource>
+        </resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -171,41 +196,19 @@
 	<profiles>
 
 		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/common</directory>
-					</resource>
-					<resource>
-						<directory>src/main/resources/dev</directory>
-					</resource>
-				</resources>
-			</build>
+			<id>test</id>
+			<properties>
+				<config.dir>test</config.dir>
+			</properties>
 		</profile>
 		
 		<profile>
 			<id>prod</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/common</directory>
-					</resource>
-					<resource>
-						<directory>src/main/resources/prod</directory>
-					</resource>
-				</resources>
-			</build>
+			<properties>
+				<config.dir>prod</config.dir>
+			</properties>
 		</profile>
 
 	</profiles>
 
-	<properties>
-		<spring.version>3.0.5.RELEASE</spring.version>
-		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-	</properties>
-	
 </project>
