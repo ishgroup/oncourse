@@ -15,8 +15,12 @@
 	<name>Willow - CMS Web App</name>
 	<description>onCourse Willow Content Management System for managing college specific online content.</description>
 
-	<dependencies>
+	<properties>
+		<config.dir>dev</config.dir>
+		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+	</properties>
 
+	<dependencies>
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-model</artifactId>
@@ -51,28 +55,17 @@
 
 	<profiles>
 		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/dev</directory>
-					</resource>
-				</resources>
-			</build>
+			<id>test</id>
+			<properties>
+				<config.dir>test</config.dir>
+			</properties>
 		</profile>
 
 		<profile>
 			<id>prod</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/prod</directory>
-					</resource>
-				</resources>
-			</build>
+			<properties>
+				<config.dir>prod</config.dir>
+			</properties>
 		</profile>
 
 		<profile>
@@ -91,6 +84,25 @@
 
 	<build>
 		<finalName>cms</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/config/${config.dir}</directory>
+            </resource>
+        </resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -110,9 +122,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<properties>
-		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-	</properties>
 
 </project>
