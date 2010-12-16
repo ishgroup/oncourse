@@ -15,6 +15,10 @@
 
 	<name>Willow - Enrol Web App</name>
 
+	<properties>
+		<config.dir>dev</config.dir>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
@@ -50,45 +54,54 @@
 		</dependency>
 	</dependencies>
 
-	<!-- profiles>
+	<profiles>
 		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/dev</directory>
-					</resource>
-				</resources>
-			</build>
+			<id>test</id>
+			<properties>
+				<config.dir>test</config.dir>
+			</properties>
 		</profile>
 		
 		<profile>
 			<id>prod</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/prod</directory>
-					</resource>
-				</resources>
-			</build>
+			<properties>
+				<config.dir>prod</config.dir>
+			</properties>
 		</profile>
-	</profiles-->
+	</profiles>
 
 	<build>
+		<finalName>enrol</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/config/${config.dir}</directory>
+            </resource>
+        </resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>enrol</finalName>
 	</build>
+
 </project>

@@ -21,7 +21,6 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -142,7 +141,7 @@ public class EnrolmentContactEntry {
 	}
 
 	public String getAddStudentBlockClass() {
-		List shortlistStudents = studentService.getContactsIdsFromShortList();
+		List<Long> shortlistStudents = studentService.getContactsIdsFromShortList();
 		return (shortlistStudents == null || shortlistStudents.isEmpty() || needMoreInfo) ? "show"
 				: "collapse";
 	}
