@@ -16,6 +16,10 @@
 
 	<name>Willow - Asset Web App</name>
 
+	<properties>
+		<config.dir>dev</config.dir>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
@@ -59,28 +63,17 @@
 
 	<profiles>
 		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/dev</directory>
-					</resource>
-				</resources>
-			</build>
+			<id>test</id>
+			<properties>
+				<config.dir>test</config.dir>
+			</properties>
 		</profile>
 		
 		<profile>
 			<id>prod</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources/prod</directory>
-					</resource>
-				</resources>
-			</build>
+			<properties>
+				<config.dir>prod</config.dir>
+			</properties>
 		</profile>
 
 		<profile>
@@ -99,6 +92,24 @@
 
 	<build>
 		<finalName>asset</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/config/${config.dir}</directory>
+            </resource>
+        </resources>
 
 		<plugins>
 			<plugin>
