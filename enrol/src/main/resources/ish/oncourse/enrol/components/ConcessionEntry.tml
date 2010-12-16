@@ -6,6 +6,7 @@
 			<t:form t:id="concessionForm" zone="concessionZone">
 				<h3>Add concession for ${student.fullName}</h3>
     			<div class="xcollapse">
+                    <t:errors banner="message:errors" class="literal:validation"/>
                     <span t:type="ConcessionEditor" t:id="concessionEditor" student="student"
                           parentForm="concessionForm" showSaveButton="true" context="editorContext"/>
                     <p>
@@ -37,7 +38,7 @@
                         </td>
                         <td class="erxEditDate">
                             <t:if test="studentConcessionItem.concessionType.hasExpiryDate">
-                                ${studentConcessionItem.expiresOn}
+                                <t:output value="studentConcessionItem.expiresOn" format="dateFormat"/>
                                 <p:else>
                                     Not required
                                 </p:else>

@@ -12,25 +12,29 @@
   	<t:if test="concessionType">
   		<t:if test="concessionType.hasConcessionNumber">
   		    <p>
-  			    <label for="concession-number">Concession number <em title="This field is required">*</em></label>
+  			    <label for="concession-number">Concession number <em title="${message:required}">*</em></label>
         		<span class="${concessionNumberInputClass}">
 	    			<t:textfield value="studentConcession.concessionNumber" class ="input-fixed"
 		    			clientId="concession-number" t:id="concessionNumber" width="15" />
-			    	<span t:type="ui/HintComponent" validationMessage="literal:Please enter the concession card number"/>
+			    	<span t:type="ui/HintComponent" validationMessage="concessionNumberErrorMessage"/>
     			</span>
         	</p>
   	    </t:if>
   	    <t:if test="concessionType.hasExpiryDate">
   		    <p>
-      		    <label for="concession-expiry">Expiry date <em title="This field is required">*</em></label>
-    	      	<t:datefield  value="studentConcession.expiresOn" clientId="concession-expiry" class="input-fixed"/>
+      		    <label for="concession-expiry">Expiry date <em title="${message:required}">*</em></label>
+    	      	<span class="${expiryDateInputClass}">
+                    <t:datefield t:id="expiryDate" value="studentConcession.expiresOn"
+                                 clientId="concession-expiry" class="input-fixed"/>
+                    <span t:type="ui/HintComponent" validationMessage="expiryDateErrorMessage"/>
+                </span>
         	</p>
   	    </t:if>
         <div class="conditions">
    		    <label>
    			    <t:checkbox value="hasCertifiedConcession" class="concession-agree" />
-                I certify that the concession I have claimed is valid and I understand that the details may be checked with the issuing body.
-            	<em title="This field is required">*</em>
+                ${message:concessionConfirmationMessage}
+            	<em title="${message:required}">*</em>
 	        </label>
   		</div>
 

@@ -11,6 +11,9 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+
 public class ConcessionEntry {
 
 	@Inject
@@ -42,15 +45,29 @@ public class ConcessionEntry {
 	@Persist
 	private ObjectContext context;
 
+    @Persist
+    @Property
+	private Format dateFormat;
+
 	@SetupRender
 	void beforeRender() {
 		enrolCoursesPage = (EnrolCourses) componentResources.getPage();
 		context = cayenneService.newContext();
+        dateFormat=new SimpleDateFormat("EEE dd MMM yyyy");
 	}
+
+    @OnEvent(component = "concessionForm", value = "validate")
+    void validateNewConcession(){
+        if(concessionEditor.isSavePressed()){
+            concessionEditor.validateConcession();
+        }else{
+            concessionForm.clearErrors();
+        }
+    }
 
 	@OnEvent(component = "concessionForm", value = "submit")
 	Object submitConcession() {
-		if (concessionEditor.isSavePressed()) {
+		if (concessionEditor.isSavePressed()&&!concessionForm.getHasErrors()) {
 			StudentConcession studentConcession = concessionEditor.getStudentConcession();
 			Student student = enrolCoursesPage.getContacts().get(index).getStudent();
 			studentConcession.setStudent((Student) studentConcession.getObjectContext()

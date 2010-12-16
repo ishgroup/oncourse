@@ -9,14 +9,19 @@ import ish.oncourse.selectutils.ListValueEncoder;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.Field;
+import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.DateField;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Hidden;
+import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
@@ -24,6 +29,9 @@ public class ConcessionEditor {
 
 	@Inject
 	private PropertyAccess propertyAccess;
+
+    @Inject
+	private Messages messages;
 
 	@Property
 	@Persist
@@ -47,7 +55,6 @@ public class ConcessionEditor {
 	private StudentConcession studentConcession;
 
 	@Property
-	@Persist
 	private boolean hasCertifiedConcession;
 
 	@Property
@@ -62,6 +69,18 @@ public class ConcessionEditor {
 
 	@Parameter
 	private ObjectContext context;
+
+    @Property
+    private String concessionNumberErrorMessage;
+
+    @Property
+    private String expiryDateErrorMessage;
+
+    @InjectComponent
+    private TextField concessionNumber;
+
+    @InjectComponent
+    private DateField expiryDate;
 
 	@SetupRender
 	void beginRender() {
@@ -82,12 +101,28 @@ public class ConcessionEditor {
 	}
 
 	public String getConcessionNumberInputClass() {
-		return "valid";
+		return getInputSectionClass(concessionNumber);
 	}
 
+    public String getExpiryDateInputClass() {
+       return getInputSectionClass(expiryDate);
+    }
+	private String getInputSectionClass(Field field) {
+		ValidationTracker defaultTracker = parentForm.getDefaultTracker();
+		return defaultTracker == null || !defaultTracker.inError(field) ? messages
+				.get("validInput") : messages.get("validateInput");
+	}
 	public boolean isSavePressed() {
 		return savePressed;
 	}
+
+    /**
+     * indicates that submit of form was performed because of concessionType refresh
+     * @return
+     */
+    public boolean isConcessionTypeRefreshed(){
+        return !isSavePressed();
+    }
 
 	public void setSavePressed(boolean savePressed) {
 		this.savePressed = savePressed;
@@ -110,4 +145,19 @@ public class ConcessionEditor {
 		studentConcession.setConcessionType((ConcessionType) studentConcession.getObjectContext()
 				.localObject(concessionType.getObjectId(), concessionType));
 	}
+
+
+    public void validateConcession(){
+        concessionNumberErrorMessage=studentConcession.validateConcessionNumber();
+        if(concessionNumberErrorMessage!=null){
+            parentForm.recordError(concessionNumber, concessionNumberErrorMessage);
+        }
+        expiryDateErrorMessage =studentConcession.validateExpiresDate();
+        if(expiryDateErrorMessage !=null){
+            parentForm.recordError(expiryDate, expiryDateErrorMessage);
+        }
+        if(!hasCertifiedConcession){
+            parentForm.recordError(messages.get("certificationRequiredMessage"));
+        }
+    }
 }

@@ -226,7 +226,9 @@ public class ContactDetails {
 
 	@OnEvent(component = "contactDetailsForm", value = "success")
 	Object submitted() {
-		if (reset) {
+        //validate only if submit buttons were pressed
+        if(!concessionEditor.isConcessionTypeRefreshed()){
+        if (reset) {
 			contact.setStreet(null);
 			contact.setSuburb(null);
 			contact.setPostcode(null);
@@ -254,16 +256,23 @@ public class ContactDetails {
 					AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
 			contact.getStudent().setDisabilityType(
 					AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION);
+            concessionEditor.setConcessionType(null);
 			return parentZone.getBody();
 		} else {
 			StudentConcession studentConcession = concessionEditor.getStudentConcession();
 			if (studentConcession != null) {
-				contact.getStudent().addToStudentConcessions(studentConcession);
+                if(studentConcession.getConcessionType()!=null){
+				    contact.getStudent().addToStudentConcessions(studentConcession);
+                }else{
+                    contact.getObjectContext().deleteObject(studentConcession);
+                }
 			}
 			contact.getObjectContext().commitChanges();
 			studentService.addStudentToShortlist(contact);
 			return "EnrolCourses";
 		}
+        }
+        return parentZone.getBody();
 	}
 
 	@OnEvent(component = "addDetailsAction", value = "selected")
@@ -278,6 +287,7 @@ public class ContactDetails {
 
 	@OnEvent(component = "contactDetailsForm", value = "validate")
 	void validate() {
+        if(!concessionEditor.isConcessionTypeRefreshed()){
 		if (reset) {
 			contactDetailsForm.clearErrors();
 		} else {
@@ -341,7 +351,8 @@ public class ContactDetails {
 			if (schoolYearErrorMessage != null) {
 				contactDetailsForm.recordError(schoolYear, schoolYearErrorMessage);
 			}
-		}
+            concessionEditor.validateConcession();
+		}}
 	}
 
 	public String getEmailInputClass() {
