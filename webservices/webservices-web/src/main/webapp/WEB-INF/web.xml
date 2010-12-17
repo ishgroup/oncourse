@@ -7,12 +7,6 @@
 
 	<display-name>webservices</display-name>
 
-<!--
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
--->
-
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:application-context.xml</param-value>
@@ -40,6 +34,10 @@
 	<context-param>
 		<param-name>tapestry.app-package</param-name>
 		<param-value>ish.oncourse.webservices</param-value>
+	</context-param>
+	<context-param>
+		<param-name>tapestry.production-mode</param-name>
+		<param-value>false</param-value>
 	</context-param>
 	<filter>
 		<filter-name>app</filter-name>
