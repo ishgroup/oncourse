@@ -28,4 +28,6 @@ public interface IBaseService<T> {
 
 	List<T> findByQualifier(Expression qualifier);
 	
+	Class<T> getEntityClass();
+	
 }

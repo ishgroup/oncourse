@@ -60,13 +60,18 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
+import org.apache.log4j.Logger;
 
 /**
  * A Tapestry IoC module definition for all common services.
  */
 public class ServiceModule {
 
+	private static Logger LOGGER = Logger.getLogger(ServiceModule.class);
+
 	public static void bind(ServiceBinder binder) {
+
+		LOGGER.info("Registering Willow Common Services");
 
 		// Tapestry and environment specific services
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);

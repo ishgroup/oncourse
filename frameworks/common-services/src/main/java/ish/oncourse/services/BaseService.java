@@ -39,7 +39,7 @@ public class BaseService<T> implements IBaseService<T> {
 		this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
-	public Class<T> getEntityClas() {
+	public Class<T> getEntityClass() {
 		return entityClass;
 	}
 
@@ -82,7 +82,7 @@ public class BaseService<T> implements IBaseService<T> {
 	public List<T> findByQualifier(Expression qualifier) {
 
 		List<T> results = new ArrayList<T>();
-		SelectQuery query = new SelectQuery(getEntityClas());
+		SelectQuery query = new SelectQuery(getEntityClass());
 		query.andQualifier(qualifier);
 
 		try {

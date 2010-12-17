@@ -45,7 +45,7 @@ public abstract class ReferenceService<T> extends BaseService<T> implements IRef
 			Expression qualifier = ExpressionFactory.matchExp(
 					IReferenceService.ISH_VERSION_PROPERTY, ishVersion);
 
-			SelectQuery query = new SelectQuery(getEntityClas());
+			SelectQuery query = new SelectQuery(getEntityClass());
 			query.andQualifier(qualifier);
 			query.addOrdering(ID_PK_COLUMN, SortOrder.ASCENDING);
 			query.setPageSize(BATCH_SIZE);
@@ -69,8 +69,8 @@ public abstract class ReferenceService<T> extends BaseService<T> implements IRef
 
 		Long max = null;
 
-		String sql = "select max(ish_version) from " + getEntityClas().getName();
-		SQLTemplate query = new SQLTemplate(getEntityClas(), sql);
+		String sql = "select max(ish_version) from " + getEntityClass().getName();
+		SQLTemplate query = new SQLTemplate(getEntityClass(), sql);
 		List<?> results = getCayenneService().sharedContext().performQuery(query);
 
 		if ((results != null) && ! results.isEmpty()) {

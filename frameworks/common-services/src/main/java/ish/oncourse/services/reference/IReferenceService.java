@@ -5,6 +5,7 @@
 
 package ish.oncourse.services.reference;
 
+import ish.oncourse.services.IBaseService;
 import java.util.List;
 
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author Marek Wawrzyczny
  */
-public interface IReferenceService<T> {
+public interface IReferenceService<T> extends IBaseService<T> {
 
 	public static final String ISH_VERSION_PROPERTY = "ishVersion";
 
