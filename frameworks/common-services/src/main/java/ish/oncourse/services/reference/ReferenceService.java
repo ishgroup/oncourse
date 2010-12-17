@@ -69,7 +69,7 @@ public abstract class ReferenceService<T> extends BaseService<T> implements IRef
 
 		Long max = null;
 
-		String sql = "select max(ish_version) from " + getEntityClass().getName();
+		String sql = "select max(ishVersion) from " + getEntityClass().getSimpleName();
 		SQLTemplate query = new SQLTemplate(getEntityClass(), sql);
 		List<?> results = getCayenneService().sharedContext().performQuery(query);
 

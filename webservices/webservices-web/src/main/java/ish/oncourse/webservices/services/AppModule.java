@@ -24,8 +24,6 @@ public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
 		LOGGER.info("Registering Willow WebServices");
-
-		//binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 	}
 	
 }
