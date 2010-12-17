@@ -16,87 +16,93 @@ import java.text.SimpleDateFormat;
 
 public class ConcessionEntry {
 
-	@Inject
-	private ICayenneService cayenneService;
+    @Inject
+    private ICayenneService cayenneService;
 
-	@Inject
-	private ComponentResources componentResources;
+    @Inject
+    private ComponentResources componentResources;
 
-	@InjectComponent
-	@Property
-	private Form concessionForm;
+    @InjectComponent
+    @Property
+    private Form concessionForm;
 
-	@InjectComponent
-	private Zone concessionZone;
+    @InjectComponent
+    private Zone concessionZone;
 
-	@InjectComponent
-	private ConcessionEditor concessionEditor;
+    @InjectComponent
+    private ConcessionEditor concessionEditor;
 
-	@Property
-	@Parameter
-	private int index;
+    @Property
+    @Parameter
+    private int index;
 
-	@Persist
-	private EnrolCourses enrolCoursesPage;
+    @Property
+    private StudentConcession studentConcessionItem;
 
-	@Property
-	private StudentConcession studentConcessionItem;
-
-	@Persist
-	private ObjectContext context;
+    @Persist
+    private ObjectContext context;
 
     @Persist
     @Property
-	private Format dateFormat;
+    private Format dateFormat;
 
-	@SetupRender
-	void beforeRender() {
-		enrolCoursesPage = (EnrolCourses) componentResources.getPage();
-		context = cayenneService.newContext();
-        dateFormat=new SimpleDateFormat("EEE dd MMM yyyy");
-	}
+    @SetupRender
+    void beforeRender() {
+        context = cayenneService.newContext();
+        dateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
+    }
 
     @OnEvent(component = "concessionForm", value = "validate")
-    void validateNewConcession(){
-        if(concessionEditor.isSavePressed()){
+    void validateNewConcession() {
+        if (concessionEditor.isSavePressed()) {
             concessionEditor.validateConcession();
-        }else{
+        } else {
             concessionForm.clearErrors();
         }
     }
 
-	@OnEvent(component = "concessionForm", value = "submit")
-	Object submitConcession() {
-		if (concessionEditor.isSavePressed()&&!concessionForm.getHasErrors()) {
-			StudentConcession studentConcession = concessionEditor.getStudentConcession();
-			Student student = enrolCoursesPage.getContacts().get(index).getStudent();
-			studentConcession.setStudent((Student) studentConcession.getObjectContext()
-					.localObject(student.getObjectId(), student));
-			studentConcession.getObjectContext().commitChanges();
-		}
-		return concessionZone.getBody();
-	}
+    @OnEvent(component = "concessionForm", value = "submit")
+    Object submitConcession() {
+        index = concessionEditor.getCurrentIndex();
+        if (concessionEditor.isSavePressed() && !concessionForm.getHasErrors()) {
+            StudentConcession studentConcession = concessionEditor.getStudentConcession();
+            Student student = getCurrentStudent();
+            studentConcession.setStudent((Student) studentConcession.getObjectContext()
+                    .localObject(student.getObjectId(), student));
+            studentConcession.getObjectContext().commitChanges();
+        }
+        return concessionZone.getBody();
+    }
 
-	@OnEvent(component = "deleteConcession", value = "action")
-	Object deleteConcession(Long id) {
-		for (StudentConcession sc : getStudent().getStudentConcessions()) {
-			if (sc.getId().equals(id)) {
-				getStudent().removeFromStudentConcessions(sc);
-				context.deleteObject(sc);
-				context.commitChanges();
-				break;
-			}
-		}
-		return concessionZone.getBody();
-	}
+    @OnEvent(component = "deleteConcession", value = "action")
+    Object deleteConcession(Long id, int currentIndex) {
+        index = currentIndex;
+        for (StudentConcession sc : getStudent().getStudentConcessions()) {
+            if (sc.getId().equals(id)) {
+                getStudent().removeFromStudentConcessions(sc);
+                context.deleteObject(sc);
+                context.commitChanges();
+                break;
+            }
+        }
+        return concessionZone.getBody();
+    }
 
-	public Student getStudent() {
-		Student student = enrolCoursesPage.getContacts().get(index).getStudent();
-		return (Student) context.localObject(student.getObjectId(), student);
+    public Student getStudent() {
+        Student student = getCurrentStudent();
+        return (Student)context.localObject(student.getObjectId(), student);
 
-	}
+    }
 
-	public ObjectContext getEditorContext() {
-		return cayenneService.newContext();
-	}
+    private Student getCurrentStudent(){
+        return ((EnrolCourses) componentResources.getPage()).getContacts().get(index).getStudent();
+    }
+
+    public ObjectContext getEditorContext() {
+        return cayenneService.newContext();
+    }
+
+    public Object[] getDeleteConcessionContext() {
+        return new Object[]{studentConcessionItem.getId(), index};
+    }
 }

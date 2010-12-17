@@ -2,13 +2,13 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<div id="add-concession_${index}-block" class="collapse">
-		<t:zone t:id="concessionZone">
-			<t:form t:id="concessionForm" zone="concessionZone">
+		<t:zone t:id="concessionZone" id="concessionZone_${index}">
+			<t:form t:id="concessionForm" zone="concessionZone_${index}">
 				<h3>Add concession for ${student.fullName}</h3>
     			<div class="xcollapse">
                     <t:errors banner="message:errors" class="literal:validation"/>
                     <span t:type="ConcessionEditor" t:id="concessionEditor" student="student"
-                          parentForm="concessionForm" showSaveButton="true" context="editorContext"/>
+                          parentForm="concessionForm" showSaveButton="true" context="editorContext" index="index"/>
                     <p>
                         <a id="cancelConcessionAdding_${index}" class="cancelConcessionAdd concession-button"
                            onclick="$j('#add-concession_'+this.id.split('_')[1]+'-block').slideToggle(400);">cancel</a>
@@ -45,8 +45,8 @@
                             </t:if>
                         </td>
                         <td>
-                            <t:actionLink t:id="deleteConcession" zone="concessionZone" class="btn delete"
-                                          context="studentConcessionItem.id">
+                            <t:actionLink t:id="deleteConcession" zone="concessionZone_${index}" class="btn delete"
+                                          context="deleteConcessionContext">
                                 Remove
                             </t:actionLink>
                         </td>

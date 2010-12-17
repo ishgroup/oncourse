@@ -17,58 +17,58 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.DateField;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Hidden;
-import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.corelib.components.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 public class ConcessionEditor {
 
-	@Inject
-	private PropertyAccess propertyAccess;
+    @Property
+    private static final String SEPARATOR = "_";
 
     @Inject
-	private Messages messages;
+    private PropertyAccess propertyAccess;
 
-	@Property
-	@Persist
-	private ListSelectModel<ConcessionType> activeConcessionTypesModel;
+    @Inject
+    private Messages messages;
 
-	@Property
-	@Persist
-	private ListValueEncoder<ConcessionType> concessionTypesEncoder;
+    @Property
+    @Persist
+    private ListSelectModel<ConcessionType> activeConcessionTypesModel;
 
-	@Parameter
-	@Property
-	private Student student;
+    @Property
+    @Persist
+    private ListValueEncoder<ConcessionType> concessionTypesEncoder;
 
-	@Parameter
-	@Property
-	private Form parentForm;
+    @Parameter
+    @Property
+    private Student student;
 
-	private ConcessionType concessionType;
+    @Parameter
+    @Property
+    private Form parentForm;
 
-	@Persist
-	private StudentConcession studentConcession;
+    private ConcessionType concessionType;
 
-	@Property
-	private boolean hasCertifiedConcession;
+    @Persist
+    private StudentConcession studentConcession;
 
-	@Property
-	@Parameter
-	private boolean showSaveButton;
+    @Property
+    private boolean hasCertifiedConcession;
 
-	private boolean savePressed;
+    @Property
+    @Parameter
+    private boolean showSaveButton;
 
-	@InjectComponent
-	@Property
-	private Hidden savePressedHiddenField;
+    private boolean savePressed;
 
-	@Parameter
-	private ObjectContext context;
+    @InjectComponent
+    @Property
+    private Hidden savePressedHiddenField;
+
+    @Parameter
+    private ObjectContext context;
 
     @Property
     private String concessionNumberErrorMessage;
@@ -82,82 +82,104 @@ public class ConcessionEditor {
     @InjectComponent
     private DateField expiryDate;
 
-	@SetupRender
-	void beginRender() {
-		if (student != null) {
-			List<ConcessionType> activeConcessionTypes = student.getCollege()
-					.getActiveConcessionTypes();
-			activeConcessionTypesModel = new ListSelectModel<ConcessionType>(activeConcessionTypes,
-					ConcessionType.NAME_PROPERTY, propertyAccess);
-			concessionTypesEncoder = new ListValueEncoder<ConcessionType>(activeConcessionTypes,
-					ConcessionType.ANGEL_ID_PROPERTY, propertyAccess);
-			studentConcession = context.newObject(StudentConcession.class);
-		}
-	}
+    @InjectComponent
+    private Select concessionTypeSelect;
 
-	@OnEvent(component = "saveConcession", value = "selected")
-	void saveButtonPressed() {
-		savePressed = true;
-	}
+    @Property
+    @Parameter
+    private int index;
 
-	public String getConcessionNumberInputClass() {
-		return getInputSectionClass(concessionNumber);
-	}
+    @SetupRender
+    void beginRender() {
+        if (student != null) {
+            List<ConcessionType> activeConcessionTypes = student.getCollege()
+                    .getActiveConcessionTypes();
+            activeConcessionTypesModel = new ListSelectModel<ConcessionType>(activeConcessionTypes,
+                    ConcessionType.NAME_PROPERTY, propertyAccess);
+            concessionTypesEncoder = new ListValueEncoder<ConcessionType>(activeConcessionTypes,
+                    ConcessionType.ANGEL_ID_PROPERTY, propertyAccess);
+            studentConcession = context.newObject(StudentConcession.class);
+        }
+    }
+
+    @OnEvent(component = "saveConcession", value = "selected")
+    void saveButtonPressed() {
+        savePressed = true;
+    }
+
+    public String getConcessionNumberInputClass() {
+        return getInputSectionClass(concessionNumber);
+    }
 
     public String getExpiryDateInputClass() {
-       return getInputSectionClass(expiryDate);
+        return getInputSectionClass(expiryDate);
     }
-	private String getInputSectionClass(Field field) {
-		ValidationTracker defaultTracker = parentForm.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? messages
-				.get("validInput") : messages.get("validateInput");
-	}
-	public boolean isSavePressed() {
-		return savePressed;
-	}
+
+    private String getInputSectionClass(Field field) {
+        ValidationTracker defaultTracker = parentForm.getDefaultTracker();
+        return defaultTracker == null || !defaultTracker.inError(field) ? messages
+                .get("validInput") : messages.get("validateInput");
+    }
+
+    public boolean isSavePressed() {
+        return savePressed;
+    }
 
     /**
      * indicates that submit of form was performed because of concessionType refresh
+     *
      * @return
      */
-    public boolean isConcessionTypeRefreshed(){
+    public boolean isConcessionTypeRefreshed() {
         return !isSavePressed();
     }
 
-	public void setSavePressed(boolean savePressed) {
-		this.savePressed = savePressed;
-	}
+    public void setSavePressed(boolean savePressed) {
+        this.savePressed = savePressed;
+    }
 
-	public StudentConcession getStudentConcession() {
-		return studentConcession;
-	}
+    public StudentConcession getStudentConcession() {
+        return studentConcession;
+    }
 
-	public void setStudentConcession(StudentConcession studentConcession) {
-		this.studentConcession = studentConcession;
-	}
+    public void setStudentConcession(StudentConcession studentConcession) {
+        this.studentConcession = studentConcession;
+    }
 
-	public ConcessionType getConcessionType() {
-		return concessionType;
-	}
+    public ConcessionType getConcessionType() {
+        return concessionType;
+    }
 
-	public void setConcessionType(ConcessionType concessionType) {
-		this.concessionType = concessionType;
-		studentConcession.setConcessionType((ConcessionType) studentConcession.getObjectContext()
-				.localObject(concessionType.getObjectId(), concessionType));
-	}
+    public void setConcessionType(ConcessionType concessionType) {
+        this.concessionType = concessionType;
+        studentConcession.setConcessionType((ConcessionType) studentConcession.getObjectContext()
+                .localObject(concessionType.getObjectId(), concessionType));
+    }
 
 
-    public void validateConcession(){
-        concessionNumberErrorMessage=studentConcession.validateConcessionNumber();
-        if(concessionNumberErrorMessage!=null){
+    public void validateConcession() {
+        concessionNumberErrorMessage = studentConcession.validateConcessionNumber();
+        if (concessionNumberErrorMessage != null) {
             parentForm.recordError(concessionNumber, concessionNumberErrorMessage);
         }
-        expiryDateErrorMessage =studentConcession.validateExpiresDate();
-        if(expiryDateErrorMessage !=null){
+        expiryDateErrorMessage = studentConcession.validateExpiresDate();
+        if (expiryDateErrorMessage != null) {
             parentForm.recordError(expiryDate, expiryDateErrorMessage);
         }
-        if(!hasCertifiedConcession){
+        if (!hasCertifiedConcession) {
             parentForm.recordError(messages.get("certificationRequiredMessage"));
         }
+    }
+
+    /**
+     * Return the index of currently editing component.
+     * <p/>
+     * The concessionTypeSelect contains "name = concessionType_${index}" that contains this index, while the index parameter is
+     * changed in loop iterations
+     *
+     * @return
+     */
+    public int getCurrentIndex() {
+        return Integer.parseInt(concessionTypeSelect.getControlName().split(SEPARATOR)[1]);
     }
 }

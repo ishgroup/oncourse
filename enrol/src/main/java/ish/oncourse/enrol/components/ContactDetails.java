@@ -226,7 +226,6 @@ public class ContactDetails {
 
 	@OnEvent(component = "contactDetailsForm", value = "success")
 	Object submitted() {
-        //validate only if submit buttons were pressed
         if(!concessionEditor.isConcessionTypeRefreshed()){
         if (reset) {
 			contact.setStreet(null);
@@ -277,6 +276,7 @@ public class ContactDetails {
 
 	@OnEvent(component = "addDetailsAction", value = "selected")
 	void onSelectedFromAddStudentAction() {
+        concessionEditor.setSavePressed(true);
 		reset = false;
 	}
 

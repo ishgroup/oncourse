@@ -5,7 +5,7 @@
     <p>
   		<label for="concessionType">New Concession</label>
     	<t:select value="concessionType" model="activeConcessionTypesModel" encoder="concessionTypesEncoder"
-    		blankLabel="no concession" clientId="concessionType"
+    		blankLabel="no concession" clientId="concessionType${separator}${index}"  t:id="concessionTypeSelect"
             onchange="$(${savePressedHiddenField.clientId}).value=false;
                         $(${parentForm.clientId}).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"/>
     </p>
