@@ -1,6 +1,8 @@
 package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.EnrolCourses;
+import ish.oncourse.model.College;
+import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.services.persistence.ICayenneService;
@@ -65,11 +67,22 @@ public class ConcessionEntry {
     Object submitConcession() {
         index = concessionEditor.getCurrentIndex();
         if (concessionEditor.isSavePressed() && !concessionForm.getHasErrors()) {
-            StudentConcession studentConcession = concessionEditor.getStudentConcession();
+
             Student student = getCurrentStudent();
-            studentConcession.setStudent((Student) studentConcession.getObjectContext()
+            ObjectContext newContext = cayenneService.newContext();
+            StudentConcession studentConcession = newContext.newObject(StudentConcession.class);
+            College college = student.getCollege();
+            studentConcession.setCollege((College) newContext
+                    .localObject(college.getObjectId(), college));
+            ConcessionType concessionType = concessionEditor.getConcessionType();
+            studentConcession.setConcessionType((ConcessionType) newContext
+                    .localObject(concessionType.getObjectId(), concessionType));
+            studentConcession.setConcessionNumber(concessionEditor.getConcessionNumberValue());
+            studentConcession.setExpiresOn(concessionEditor.getExpiryDateValue());
+            studentConcession.setStudent((Student) newContext
                     .localObject(student.getObjectId(), student));
-            studentConcession.getObjectContext().commitChanges();
+            newContext.commitChanges();
+            concessionEditor.clearEditor();
         }
         return concessionZone.getBody();
     }
@@ -90,16 +103,12 @@ public class ConcessionEntry {
 
     public Student getStudent() {
         Student student = getCurrentStudent();
-        return (Student)context.localObject(student.getObjectId(), student);
+        return (Student) context.localObject(student.getObjectId(), student);
 
     }
 
-    private Student getCurrentStudent(){
+    private Student getCurrentStudent() {
         return ((EnrolCourses) componentResources.getPage()).getContacts().get(index).getStudent();
-    }
-
-    public ObjectContext getEditorContext() {
-        return cayenneService.newContext();
     }
 
     public Object[] getDeleteConcessionContext() {

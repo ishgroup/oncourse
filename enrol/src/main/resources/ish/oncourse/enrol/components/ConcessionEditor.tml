@@ -14,7 +14,7 @@
   		    <p>
   			    <label for="concession-number">Concession number <em title="${message:required}">*</em></label>
         		<span class="${concessionNumberInputClass}">
-	    			<t:textfield value="studentConcession.concessionNumber" class ="input-fixed"
+	    			<t:textfield value="concessionNumberValue" class ="input-fixed"
 		    			clientId="concession-number" t:id="concessionNumber" width="15" />
 			    	<span t:type="ui/HintComponent" validationMessage="concessionNumberErrorMessage"/>
     			</span>
@@ -24,7 +24,7 @@
   		    <p>
       		    <label for="concession-expiry">Expiry date <em title="${message:required}">*</em></label>
     	      	<span class="${expiryDateInputClass}">
-                    <t:datefield t:id="expiryDate" value="studentConcession.expiresOn"
+                    <t:datefield t:id="expiryDate" value="expiryDateValue"
                                  clientId="concession-expiry" class="input-fixed"/>
                     <span t:type="ui/HintComponent" validationMessage="expiryDateErrorMessage"/>
                 </span>

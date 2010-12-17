@@ -2,13 +2,12 @@ package ish.oncourse.enrol.components;
 
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
-import ish.oncourse.model.StudentConcession;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 
+import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -51,11 +50,12 @@ public class ConcessionEditor {
 
     private ConcessionType concessionType;
 
-    @Persist
-    private StudentConcession studentConcession;
-
     @Property
     private boolean hasCertifiedConcession;
+
+    private String concessionNumberValue;
+
+    private Date expiryDateValue;
 
     @Property
     @Parameter
@@ -66,9 +66,6 @@ public class ConcessionEditor {
     @InjectComponent
     @Property
     private Hidden savePressedHiddenField;
-
-    @Parameter
-    private ObjectContext context;
 
     @Property
     private String concessionNumberErrorMessage;
@@ -98,7 +95,6 @@ public class ConcessionEditor {
                     ConcessionType.NAME_PROPERTY, propertyAccess);
             concessionTypesEncoder = new ListValueEncoder<ConcessionType>(activeConcessionTypes,
                     ConcessionType.ANGEL_ID_PROPERTY, propertyAccess);
-            studentConcession = context.newObject(StudentConcession.class);
         }
     }
 
@@ -138,31 +134,13 @@ public class ConcessionEditor {
         this.savePressed = savePressed;
     }
 
-    public StudentConcession getStudentConcession() {
-        return studentConcession;
-    }
-
-    public void setStudentConcession(StudentConcession studentConcession) {
-        this.studentConcession = studentConcession;
-    }
-
-    public ConcessionType getConcessionType() {
-        return concessionType;
-    }
-
-    public void setConcessionType(ConcessionType concessionType) {
-        this.concessionType = concessionType;
-        studentConcession.setConcessionType((ConcessionType) studentConcession.getObjectContext()
-                .localObject(concessionType.getObjectId(), concessionType));
-    }
-
 
     public void validateConcession() {
-        concessionNumberErrorMessage = studentConcession.validateConcessionNumber();
+        concessionNumberErrorMessage = validateConcessionNumber();
         if (concessionNumberErrorMessage != null) {
             parentForm.recordError(concessionNumber, concessionNumberErrorMessage);
         }
-        expiryDateErrorMessage = studentConcession.validateExpiresDate();
+        expiryDateErrorMessage = validateExpiresDate();
         if (expiryDateErrorMessage != null) {
             parentForm.recordError(expiryDate, expiryDateErrorMessage);
         }
@@ -181,5 +159,77 @@ public class ConcessionEditor {
      */
     public int getCurrentIndex() {
         return Integer.parseInt(concessionTypeSelect.getControlName().split(SEPARATOR)[1]);
+    }
+
+    /**
+     * If this concession's type has a concession number, will only validate if
+     * the concession number is not empty
+     *
+     * @return error message
+     */
+    public String validateConcessionNumber() {
+
+        if (concessionType != null && concessionType.getHasConcessionNumber()) {
+            if (concessionNumberValue == null || concessionNumberValue.length() == 0) {
+                return String.format("A %s concession requires a card number.", concessionType
+                        .getName());
+            }
+        }
+        return null;
+    }
+
+    /**
+     * If this concession's type has an expiry date, will only validate if the
+     * expiry date is not empty
+     *
+     * @return error message
+     */
+    public String validateExpiresDate() {
+        if (concessionType != null && concessionType.getHasExpiryDate()) {
+            if (expiryDateValue == null) {
+                return String.format("A %s concession requires an expiry date.",
+                        concessionType.getName());
+            }
+            if (new Date().compareTo(expiryDateValue) > 0) {
+                return "Expiry date shouldn't be at the past.";
+            }
+        }
+        return null;
+    }
+
+    public void clearEditor(){
+        setConcessionType(null);
+        setConcessionNumberValue(null);
+        setExpiryDateValue(null);
+        hasCertifiedConcession=false;
+    }
+
+    public void setConcessionNumberValue(String concessionNumberValue) {
+        if (concessionNumberValue != null) {
+            concessionNumberValue = concessionNumberValue.trim();
+        }
+        this.concessionNumberValue = concessionNumberValue;
+    }
+
+    public String getConcessionNumberValue() {
+        return concessionNumberValue;
+    }
+
+
+    public Date getExpiryDateValue() {
+        return expiryDateValue;
+    }
+
+    public void setExpiryDateValue(Date expiryDateValue) {
+        this.expiryDateValue = expiryDateValue;
+    }
+
+
+    public ConcessionType getConcessionType() {
+        return concessionType;
+    }
+
+    public void setConcessionType(ConcessionType concessionType) {
+        this.concessionType = concessionType;
     }
 }

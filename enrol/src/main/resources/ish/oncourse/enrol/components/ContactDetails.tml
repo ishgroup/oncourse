@@ -129,7 +129,7 @@
                         <fieldset class="concessions">
                             <br/>
 							<t:ConcessionEditor student="contact.student" parentForm="contactDetailsForm"
-                                                t:id="concessionEditor" context="contact.objectContext"/>
+                                                t:id="concessionEditor"/>
 						</fieldset>
 					</t:if>
 				</t:if>
