@@ -16,9 +16,7 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-modules-maven-jaxws.dont_5f_ask_5f_for_5f_nonjsr109_5f_config>true</org-netbeans-modules-maven-jaxws.dont_5f_ask_5f_for_5f_nonjsr109_5f_config>
     </properties>
     <spring-data xmlns="http://www.netbeans.org/ns/spring-data/1">
-        <config-files>
-            <config-file>src/main/resources/dev/application-context.xml</config-file>
-        </config-files>
+        <config-files/>
         <config-file-groups/>
     </spring-data>
 </project-shared-configuration>

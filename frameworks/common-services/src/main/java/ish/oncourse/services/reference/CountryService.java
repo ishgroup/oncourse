@@ -17,12 +17,15 @@ import ish.oncourse.model.Country;
  * 
  * @author Marek Wawrzyczny
  */
-public class CountryService extends ReferenceService<Country> implements ICountryService {
-	
+public class CountryService extends ReferenceService<Country>
+		implements ICountryService {
+
+	@Override
 	public Country getCountryByName(String countryName) {
 		Expression qualifier = ExpressionFactory.matchExp(
 				Country.NAME_PROPERTY, countryName);
 		List<Country> results = findByQualifier(qualifier);
+
 		return results.isEmpty() ? null : results.get(0);
 	}
 	

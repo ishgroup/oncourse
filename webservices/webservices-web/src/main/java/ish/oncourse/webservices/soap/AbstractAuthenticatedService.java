@@ -12,6 +12,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import ish.oncourse.model.College;
 import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.system.ICollegeService;
+import javax.jws.WebService;
 
 /**
  * 

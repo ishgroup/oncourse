@@ -32,7 +32,7 @@ import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
  * @author Marek Wawrzyczny
  */
 @WebService
-public interface ReferencePortType /*extends AuthenticatedService*/ {
+public interface ReferencePortType {
 
 	/**
 	 * Call to find out the most recent version of each of the replicable

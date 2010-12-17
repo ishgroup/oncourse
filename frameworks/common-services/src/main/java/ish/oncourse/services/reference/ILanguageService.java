@@ -8,13 +8,13 @@ import ish.oncourse.model.Language;
  *
  */
 
-public interface ILanguageService {
+public interface ILanguageService extends IReferenceService<Language>{
 
 	/**
 	 * Returns Language with the given name if such a language exists, null otherwise
-	 * @param languageName
+	 * @param name
 	 * @return
 	 */
-	Language getLanguageByName(String languageName);
+	Language getLanguageByName(String name);
 	
 }

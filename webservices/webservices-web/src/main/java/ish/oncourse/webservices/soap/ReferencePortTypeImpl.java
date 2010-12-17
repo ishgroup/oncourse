@@ -1,34 +1,22 @@
 package ish.oncourse.webservices.soap;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.jws.WebService;
-import javax.servlet.ServletContext;
 
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
-import ish.oncourse.services.reference.CountryService;
-import ish.oncourse.services.reference.LanguageService;
-import ish.oncourse.services.reference.ModuleService;
-import ish.oncourse.services.reference.QualificationService;
-import ish.oncourse.services.reference.TrainingPackageService;
-import ish.oncourse.webservices.soap.builders.CountryStubBuilder;
-import ish.oncourse.webservices.soap.builders.LanguageStubBuilder;
-import ish.oncourse.webservices.soap.builders.ModuleStubBuilder;
-import ish.oncourse.webservices.soap.builders.QualificationStubBuilder;
-import ish.oncourse.webservices.soap.builders.TrainingPackageStubBuilder;
-import ish.oncourse.webservices.soap.stubs.Country_Stub;
-import ish.oncourse.webservices.soap.stubs.Language_Stub;
-import ish.oncourse.webservices.soap.stubs.Module_Stub;
-import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
-import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
+import ish.oncourse.services.reference.ICountryService;
+import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.services.reference.IModuleService;
+import ish.oncourse.services.reference.IQualificationService;
+import ish.oncourse.services.reference.ITrainingPackageService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -42,23 +30,21 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.ReferencePortType",
 			serviceName = "ReferenceService",
 			portName = "ReferencePort")
-public class ReferencePortTypeImpl /*extends AbstractAuthenticatedService*/
-		implements ReferencePortType {
+public class ReferencePortTypeImpl implements ReferencePortType {
 
 	private static final int BATCH_SIZE = 100;
 
-	@Inject
-	CountryService countryService;
-/*
-	@Inject
-	private LanguageService languageService;
-	@Inject
-	private ModuleService moduleService;
-	@Inject
-	private QualificationService qualificationService;
-	@Inject
-	private TrainingPackageService trainingPackageService;
-*/
+	@Inject @Autowired
+	private ICountryService countryService;
+	@Inject @Autowired
+	private ILanguageService languageService;
+	@Inject @Autowired
+	private IModuleService moduleService;
+	@Inject @Autowired
+	private IQualificationService qualificationService;
+	@Inject @Autowired
+	private ITrainingPackageService trainingPackageService;
+
 	private static final Logger LOGGER = Logger.getLogger(ReferencePortTypeImpl.class);
 
 
@@ -71,35 +57,50 @@ public class ReferencePortTypeImpl /*extends AbstractAuthenticatedService*/
 		}
  */
 
-
+		Long version = null;
 		HashMap<String, Long> versions = new HashMap<String, Long>();
 
 		if (countryService == null) {
 			LOGGER.error("Country Service is not initialised!");
 		} else {
-			Long version = countryService.findMaxIshVersion();
+			version = countryService.findMaxIshVersion();
 			if (version != null) {
 				versions.put(Country.class.getName(), version);
 			}
 		}
-/*
-		version = languageService.findMaxIshVersion();
-		if (version != null) {
-			versions.put(Language.class.getName(), version);
+		if (languageService == null) {
+			LOGGER.error("Language Service is not initialised!");
+		} else {
+			version = languageService.findMaxIshVersion();
+			if (version != null) {
+				versions.put(Language.class.getName(), version);
+			}
 		}
-		version = moduleService.findMaxIshVersion();
-		if (version != null) {
-			versions.put(Module.class.getName(), version);
+		if (moduleService == null) {
+			LOGGER.error("Module Service is not initialised!");
+		} else {
+			version = moduleService.findMaxIshVersion();
+			if (version != null) {
+				versions.put(Module.class.getName(), version);
+			}
 		}
-		version = qualificationService.findMaxIshVersion();
-		if (version != null) {
-			versions.put(Qualification.class.getName(), version);
+		if (qualificationService == null) {
+			LOGGER.error("Qualification Service is not initialised!");
+		} else {
+			version = qualificationService.findMaxIshVersion();
+			if (version != null) {
+				versions.put(Qualification.class.getName(), version);
+			}
 		}
-		version = trainingPackageService.findMaxIshVersion();
-		if (version != null) {
-			versions.put(TrainingPackage.class.getName(), version);
+		if (trainingPackageService == null) {
+			LOGGER.error("Training Package Service is not initialised!");
+		} else {
+			version = trainingPackageService.findMaxIshVersion();
+			if (version != null) {
+				versions.put(TrainingPackage.class.getName(), version);
+			}
 		}
-*/
+
 		return versions;
 	}
 

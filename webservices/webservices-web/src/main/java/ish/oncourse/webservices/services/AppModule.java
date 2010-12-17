@@ -6,6 +6,8 @@ package ish.oncourse.webservices.services;
 
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.webservices.soap.ReferencePortType;
+import ish.oncourse.webservices.soap.ReferencePortTypeImpl;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
@@ -22,6 +24,8 @@ public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
 		LOGGER.info("Registering Willow WebServices");
+
+		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 	}
 	
 }

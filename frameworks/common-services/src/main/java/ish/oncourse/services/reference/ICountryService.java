@@ -6,11 +6,11 @@ import ish.oncourse.model.Country;
  * @author ksenia
  *
  */
-public interface ICountryService {
+public interface ICountryService extends IReferenceService<Country> {
 	/**
 	 * Returns Country with the given name if such a country exists, null otherwise
-	 * @param countryName
+	 * @param name
 	 * @return
 	 */
-	Country getCountryByName(String countryName);
+	Country getCountryByName(String name);
 }
