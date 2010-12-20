@@ -535,9 +535,12 @@ public class ContactDetails {
     }
 
     public boolean isShowConcessionsEditor() {
-        return Boolean.valueOf(preferenceService.getPreferenceByKey(
-                "feature.concessionsInEnrolment").getValueString())
-                || Boolean.valueOf(preferenceService.getPreferenceByKey(
-                "feature.concession.existing.users.create").getValueString());
+
+        Preference concessionsInEnrolment = preferenceService.getPreferenceByKey(
+                "feature.concessionsInEnrolment");
+        Preference concessionForExistingUsers = preferenceService.getPreferenceByKey(
+                "feature.concession.existing.users.create");
+        return  (concessionsInEnrolment!=null&&Boolean.valueOf(concessionsInEnrolment.getValueString()))
+                || (concessionForExistingUsers!=null&&Boolean.valueOf(concessionForExistingUsers.getValueString()));
     }
 }

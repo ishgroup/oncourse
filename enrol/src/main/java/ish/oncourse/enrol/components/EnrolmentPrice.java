@@ -23,6 +23,7 @@ public class EnrolmentPrice {
 	private IPreferenceService preferenceService;
 
 	@Parameter
+    @Property
 	private Enrolment enrolment;
 
 	@Parameter

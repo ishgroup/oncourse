@@ -5,10 +5,9 @@
 		<t:output value="courseClass.feeIncGst" format="moneyFormat"/>
 	</span>
 	<span class="${feeDiscountedClass})">
-		<t:output value="courseClass.feeIncGst" format="moneyFormat"/><!-- todo discountedIncTaxAmount for enrolment! -->
+		<t:output value="enrolment.discountedIncTaxAmount" format="moneyFormat"/>
 	</span>
 	<span id="d${index}" style="display:none;">
-		<t:output value="courseClass.feeIncGst" format="numberFormat"/>
-		<!-- wo:string numberformat="0.00" value="$totalDiscountIncTax" /-->
+		<t:output value="enrolment.totalDiscountIncTax" format="numberFormat"/>
 	</span>
 </t:container>	

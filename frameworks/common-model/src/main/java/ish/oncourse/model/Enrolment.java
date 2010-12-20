@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
+import ish.math.Money;
 import ish.oncourse.model.auto._Enrolment;
 
 import java.math.BigDecimal;
@@ -38,21 +39,35 @@ public class Enrolment extends _Enrolment {
 	}
 
 
-	public BigDecimal getDiscountedExTaxAmount() {
-		// TODO Auto-generated method stub
-		return BigDecimal.ZERO;
-	}
-	
-	/**
-	 * checks for PersistentObject equality (even if in another context)
-	 * 
-	 * @param obj a persistent object to compare to
-	 * @return true if the same object
-	 */
+
 	/*public boolean equalsIgnoreContext(Object obj) {
 		if (obj instanceof PersistentObject) {
 			return super.equals(obj) || getObjectId().equals(((PersistentObject) obj).getObjectId());
 		}
 		return false;
 	}*/
+
+    public BigDecimal getDiscountedExTaxAmount(){
+        if (getDiscount() == null) {
+            return getCourseClass().getFeeExGst().toBigDecimal();
+        }
+        BigDecimal discountRate = getDiscount().getDiscountRate();
+        if (discountRate != null) {
+            return getCourseClass().getFeeExGst().toBigDecimal().multiply(discountRate);
+        } else {
+            return getDiscount().getDiscountAmount();
+        }
+    }
+
+    public BigDecimal getDiscountedIncTaxAmount() {
+        BigDecimal exTaxAmount = getDiscountedExTaxAmount();
+        BigDecimal taxAmount = getCourseClass().getFeeGst();
+        return exTaxAmount.add(taxAmount);
+    }
+
+
+    public BigDecimal getTotalDiscountIncTax() {
+        return getCourseClass().getFeeIncGst().toBigDecimal().subtract(getDiscountedIncTaxAmount());
+    }
+
 }
