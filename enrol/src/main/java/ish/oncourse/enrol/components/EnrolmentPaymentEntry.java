@@ -51,7 +51,7 @@ public class EnrolmentPaymentEntry {
 
 	@Inject
 	private Messages messages;
-	
+
 	/**
 	 * ish services
 	 */
@@ -135,13 +135,12 @@ public class EnrolmentPaymentEntry {
 
 	@InjectComponent
 	private TextField cardcvv;
-	
+
 	@InjectPage
 	private EnrolmentPaymentProcessing enrolmentPaymentProcessing;
 
 	@Parameter
 	private List<Enrolment> enrolments;
-	
 
 	@SetupRender
 	void beforeRender() {
@@ -151,11 +150,9 @@ public class EnrolmentPaymentEntry {
 
 		initPayers();
 
-		payersModel = new ListSelectModel<Contact>(payers, "fullName",
-				propertyAccess);
+		payersModel = new ListSelectModel<Contact>(payers, "fullName", propertyAccess);
 
-		payersEncoder = new ListValueEncoder<Contact>(payers, "id",
-				propertyAccess);
+		payersEncoder = new ListValueEncoder<Contact>(payers, "id", propertyAccess);
 
 		cardTypeModel = new ISHEnumSelectModel(CreditCardType.class, messages);
 	}
@@ -182,8 +179,8 @@ public class EnrolmentPaymentEntry {
 	private void initPayers() {
 		List<Contact> localPayers = new ArrayList<Contact>(payers.size());
 		for (Contact payer : payers) {
-			localPayers.add((Contact) payment.getObjectContext().localObject(
-					payer.getObjectId(), payer));
+			localPayers.add((Contact) payment.getObjectContext().localObject(payer.getObjectId(),
+					payer));
 		}
 
 		payers = localPayers;
@@ -201,23 +198,30 @@ public class EnrolmentPaymentEntry {
 	}
 
 	public boolean isHasConcessionsCollege() {
-		// feature.concessionsInEnrolment
-		return true;
+		return Boolean.valueOf(preferenceService.getPreferenceByKey(
+				"feature.concessionsInEnrolment").getValueString());
 	}
 
 	public boolean isHasConcessionsEnrolment() {
-		// enrolmentController.hasConcessionPricing
-		return true;
+		for (Enrolment enrolment : enrolments) {
+			if (!enrolment.getCourseClass().getConcessionDiscounts().isEmpty()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isHasStudentWithoutConcessions() {
-		// enrolmentController.hasStudentWithoutConcession
-		return true;
+		for (Enrolment enrolment : enrolments) {
+			if (enrolment.getStudent().getStudentConcessions().isEmpty()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public String getSubmitButtonText() {
-		// ~payment.isZeroTotalIncGst ? 'Confirm enrolment' : 'Make Payment'
-		return "Make Payment";
+		return isZeroPayment() ? "Confirm enrolment" : "Make Payment";
 	}
 
 	public String getCardTypeClass() {
@@ -237,8 +241,7 @@ public class EnrolmentPaymentEntry {
 	}
 
 	private String getInputSectionClass(Field field) {
-		ValidationTracker defaultTracker = paymentDetailsForm
-				.getDefaultTracker();
+		ValidationTracker defaultTracker = paymentDetailsForm.getDefaultTracker();
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages
 				.get("validInput") : messages.get("validateInput");
 	}
@@ -259,13 +262,11 @@ public class EnrolmentPaymentEntry {
 	@OnEvent(component = "paymentDetailsForm", value = "validate")
 	void validate() {
 		if (payment.getCreditCardType() == null) {
-			paymentDetailsForm.recordError(cardTypeSelect,
-					messages.get("cardTypeErrorMessage"));
+			paymentDetailsForm.recordError(cardTypeSelect, messages.get("cardTypeErrorMessage"));
 		}
 		String creditCardName = payment.getCreditCardName();
 		if (creditCardName == null || creditCardName.equals("")) {
-			paymentDetailsForm.recordError(cardName,
-					messages.get("cardNameErrorMessage"));
+			paymentDetailsForm.recordError(cardName, messages.get("cardNameErrorMessage"));
 		}
 
 		cardNumberErrorMessage = payment.validateCCNumber();
@@ -298,7 +299,7 @@ public class EnrolmentPaymentEntry {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
 		}
 	}
-	
+
 	public Zone getPaymentZone() {
 		return paymentZone;
 	}

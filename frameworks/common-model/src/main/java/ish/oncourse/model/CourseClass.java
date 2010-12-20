@@ -50,8 +50,7 @@ public class CourseClass extends _CourseClass {
 	public Integer getTotalDurationMinutes() {
 		int sum = 0;
 		for (Session s : getSessions()) {
-			sum += (s.getDurationMinutes() != null) ? s.getDurationMinutes()
-					: 0;
+			sum += (s.getDurationMinutes() != null) ? s.getDurationMinutes() : 0;
 		}
 		return sum;
 	}
@@ -104,9 +103,8 @@ public class CourseClass extends _CourseClass {
 						endCalendar = Calendar.getInstance(timezone);
 						endCalendar.setTimeInMillis(sessionEnd.getTime());
 					}
-				} else if (sessionStart == null && startCalendar != null
-						|| sessionStart != null && startCalendar == null
-						|| sessionEnd == null && endCalendar != null
+				} else if (sessionStart == null && startCalendar != null || sessionStart != null
+						&& startCalendar == null || sessionEnd == null && endCalendar != null
 						|| sessionEnd != null && endCalendar == null) {
 					return false;
 				} else {
@@ -143,8 +141,7 @@ public class CourseClass extends _CourseClass {
 		}
 
 		List<Session> list = new ArrayList<Session>(getSessions());
-		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING)
-				.orderList(list);
+		new Ordering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING).orderList(list);
 		return list.get(0);
 	}
 
@@ -178,8 +175,7 @@ public class CourseClass extends _CourseClass {
 
 	public boolean isHasAnyTimelineableSessions() {
 		for (Session session : getSessions()) {
-			if ((session.getStartDate() != null)
-					&& (session.getEndDate() != null)) {
+			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
 				return true;
 			}
 		}
@@ -237,21 +233,21 @@ public class CourseClass extends _CourseClass {
 			if (getSessions().size() > 0) {
 				ArrayList<String> days = new ArrayList<String>();
 				for (Session s : getSessions()) {
-					days.add(TimestampUtilities.dayOfWeek(s.getStartDate(),
-							true, TimeZone.getTimeZone(s.getTimeZone())));
+					days.add(TimestampUtilities.dayOfWeek(s.getStartDate(), true,
+							TimeZone.getTimeZone(s.getTimeZone())));
 				}
 				daysOfWeek = TimestampUtilities.uniqueDaysInOrder(days);
 			} else {
 				// no sessions recorded, so guess from class start / finish time
 				daysOfWeek = new HashSet<String>();
 				if (getStartDate() != null) {
-					daysOfWeek.add(TimestampUtilities.dayOfWeek(getStartDate(),
-							true, TimeZone.getTimeZone(getTimeZone())));
+					daysOfWeek.add(TimestampUtilities.dayOfWeek(getStartDate(), true,
+							TimeZone.getTimeZone(getTimeZone())));
 
 				}
 				if (getEndDate() != null) {
-					daysOfWeek.add(TimestampUtilities.dayOfWeek(getEndDate(),
-							true, TimeZone.getTimeZone(getTimeZone())));
+					daysOfWeek.add(TimestampUtilities.dayOfWeek(getEndDate(), true,
+							TimeZone.getTimeZone(getTimeZone())));
 
 				}
 
@@ -265,8 +261,7 @@ public class CourseClass extends _CourseClass {
 		// current definition is that any session that starts before 6 pm is
 		// daytime
 		if (earliest == null) {
-			Calendar t = Calendar.getInstance(TimeZone
-					.getTimeZone(getTimeZone()));
+			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 			// no sessions, so guess from start and end dates
 			if (getStartDate() != null) {
 				t.setTime(getStartDate());
@@ -303,8 +298,7 @@ public class CourseClass extends _CourseClass {
 		// current definition is that any session that ends on or after 6 pm is
 		// evening
 		if (latest == null) {
-			Calendar t = Calendar.getInstance(TimeZone
-					.getTimeZone(getTimeZone()));
+			Calendar t = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 			// no sessions, so guess from start and end dates
 			if (getStartDate() != null) {
 				t.setTime(getStartDate());
@@ -357,8 +351,7 @@ public class CourseClass extends _CourseClass {
 		List<Session> classSessions = getSessions();
 		List<Session> validSessions = new ArrayList<Session>();
 		for (Session session : classSessions) {
-			if ((session.getStartDate() != null)
-					&& (session.getEndDate() != null)) {
+			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
 				validSessions.add(session);
 			}
 		}
@@ -376,18 +369,18 @@ public class CourseClass extends _CourseClass {
 			uniqueDays.addAll(getDaysOfWeek());
 			for (String day : uniqueDays) {
 				String lowerDay = day.toLowerCase();
-				if (TimestampUtilities.DaysOfWeekNamesLowerCase
-						.contains(lowerDay) && lowerDay.equalsIgnoreCase(day)) {
+				if (TimestampUtilities.DaysOfWeekNamesLowerCase.contains(lowerDay)
+						&& lowerDay.equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
-				if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase
-						.contains(lowerDay) && "weekday".equalsIgnoreCase(day)) {
+				if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(lowerDay)
+						&& "weekday".equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
-				if (TimestampUtilities.DaysOfWeekendNamesLowerCase
-						.contains(lowerDay) && "weekend".equalsIgnoreCase(day)) {
+				if (TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(lowerDay)
+						&& "weekend".equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
@@ -407,8 +400,7 @@ public class CourseClass extends _CourseClass {
 		// daytime, any that starts after 5pm is evening
 		boolean isEvening = latestHour != null && latestHour >= 17;
 		boolean isDaytime = earliestHour != null && earliestHour < 17;
-		if (isEvening && isDaytime || isDaytime
-				&& "daytime".equalsIgnoreCase(time) || isEvening
+		if (isEvening && isDaytime || isDaytime && "daytime".equalsIgnoreCase(time) || isEvening
 				&& "evening".equalsIgnoreCase(time)) {
 			result = 1.0f;
 		}
@@ -421,8 +413,7 @@ public class CourseClass extends _CourseClass {
 		float maxPrice = price;
 		if (hasFeeIncTax()) {
 			if (getFeeIncGst().floatValue() > maxPrice) {
-				result = 0.75f - (getFeeIncGst().floatValue() - maxPrice)
-						/ maxPrice * 0.25f;
+				result = 0.75f - (getFeeIncGst().floatValue() - maxPrice) / maxPrice * 0.25f;
 				if (result < 0.25f) {
 					result = 0.25f;
 				}
@@ -446,8 +437,7 @@ public class CourseClass extends _CourseClass {
 		float result = 0.0f;
 
 		if (nearLatitude != null && nearLongitude != null && getRoom() != null
-				&& getRoom().getSite() != null
-				&& getRoom().getSite().isHasCoordinates()) {
+				&& getRoom().getSite() != null && getRoom().getSite().isHasCoordinates()) {
 			Site site = getRoom().getSite();
 
 			double earthRadius = 6371; // km
@@ -459,8 +449,8 @@ public class CourseClass extends _CourseClass {
 
 			double dLat = lat2 - lat1;
 			double dLon = lon2 - lon1;
-			double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1)
-					* Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+			double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1) * Math.cos(lat2)
+					* Math.sin(dLon / 2) * Math.sin(dLon / 2);
 			double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 			double distance = earthRadius * c;
@@ -470,32 +460,45 @@ public class CourseClass extends _CourseClass {
 			} else if (distance <= searchKilometers) {
 				result = 1f;
 			} else {
-				result = 1 - ((float) distance - searchKilometers)
-						/ (4f * searchKilometers);
+				result = 1 - ((float) distance - searchKilometers) / (4f * searchKilometers);
 			}
 
 		}
 		return result;
 
 	}
-	
-	public boolean hasEnded()
-	{
+
+	public boolean hasEnded() {
 		Date end = getEndDate();
-		return end != null && new Date().after( end );
+		return end != null && new Date().after(end);
 	}
-	
-	
-	
-	public boolean hasStarted()
-	{
+
+	public boolean hasStarted() {
 		Date start = getStartDate();
-		return start != null && new Date().after( start ) ;
+		return start != null && new Date().after(start);
 	}
-	
-	
-	public boolean isRunning()
-	{
+
+	public boolean isRunning() {
 		return hasStarted() && !hasEnded();
+	}
+
+	/**
+	 * All CourseClass-related discounts that require concessions instead of
+	 * discount codes
+	 * 
+	 * @return
+	 */
+	public List<Discount> getConcessionDiscounts() {
+		List<DiscountCourseClass> discountCourseClasses = getDiscountCourseClasses();
+
+		List<Discount> discounts = new ArrayList<Discount>(discountCourseClasses.size());
+		for (DiscountCourseClass dcc : discountCourseClasses) {
+
+			Discount discount = dcc.getDiscount();
+			if (!discount.getDiscountConcessionTypes().isEmpty()) {
+				discounts.add(discount);
+			}
+		}
+		return discounts;
 	}
 }
