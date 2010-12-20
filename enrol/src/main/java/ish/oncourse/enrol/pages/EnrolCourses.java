@@ -79,9 +79,6 @@ public class EnrolCourses {
 	@Property
 	private CourseClass courseClass;
 
-	/**
-	 * studentsSet.allObjects.@sort.contact.fullName
-	 */
 	@Persist
 	private List<Contact> contacts;
 
@@ -139,7 +136,7 @@ public class EnrolCourses {
 			List<Ordering> orderings = new ArrayList<Ordering>();
 			orderings.add(new Ordering(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY,
 					SortOrder.ASCENDING));
-			orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.DESCENDING));
+			orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.ASCENDING));
 			Ordering.orderList(classesToEnrol, orderings);
 		}
 

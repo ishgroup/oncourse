@@ -8,6 +8,8 @@ import java.util.List;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -66,7 +68,12 @@ public class StudentService implements IStudentService {
     }
 
     public List<Contact> getStudentsFromShortList() {
-        return getContactsByIds(getContactsIdsFromShortList());
+        List<Contact> contacts = getContactsByIds(getContactsIdsFromShortList());
+        List<Ordering> orderings = new ArrayList<Ordering>();
+        orderings.add(new Ordering(Contact.GIVEN_NAME_PROPERTY, SortOrder.ASCENDING));
+        orderings.add(new Ordering(Contact.FAMILY_NAME_PROPERTY, SortOrder.ASCENDING));
+        Ordering.orderList(contacts, orderings);
+        return contacts;
     }
 
     public List<Contact> getContactsByIds(List<Long> ids) {
