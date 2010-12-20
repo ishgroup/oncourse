@@ -10,10 +10,10 @@ public class TestPaymentGatewayService implements IPaymentGatewayService{
 
 	public boolean performGatewayOperation(PaymentIn payment) {
 		if(payment.getCreditCardType().equals(CreditCardType.MASTERCARD)){
-			payment.setStatus(PaymentStatus.SUCCESS);
+			payment.setStatus("Success");
 			return true;
 		}
-		payment.setStatus(PaymentStatus.FAILED);
+		payment.setStatus("Failed");
 		return false;
 	}
 

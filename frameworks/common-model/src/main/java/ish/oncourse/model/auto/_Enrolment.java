@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
-import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
@@ -74,11 +73,11 @@ public abstract class _Enrolment extends CayenneDataObject {
         return (PaymentSource)readProperty("source");
     }
 
-    public void setStatus(EnrolmentStatus status) {
+    public void setStatus(String status) {
         writeProperty("status", status);
     }
-    public EnrolmentStatus getStatus() {
-        return (EnrolmentStatus)readProperty("status");
+    public String getStatus() {
+        return (String)readProperty("status");
     }
 
     public void setCollege(College college) {
