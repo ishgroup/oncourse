@@ -102,7 +102,7 @@ public class EnrolmentPaymentResult {
 	}
 
 	public boolean isEnrolmentSuccessful() {
-		return PaymentStatus.SUCCESS.equals(payment.getStatus());
+		return "Success".equals(payment.getStatus());
 	}
 
 	public boolean isEnrolmentQueued() {
@@ -113,7 +113,7 @@ public class EnrolmentPaymentResult {
 
 	public boolean isEnrolmentFailed() {
 		// Payment.STATUSES_FAILED.containsObject( getResult() )
-		return PaymentStatus.FAILED.equals(payment.getStatus());
+		return "Failed".equals(payment.getStatus());
 	}
 
 	public boolean isPayment() {
