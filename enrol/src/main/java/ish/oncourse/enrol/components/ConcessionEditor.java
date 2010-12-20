@@ -144,7 +144,7 @@ public class ConcessionEditor {
         if (expiryDateErrorMessage != null) {
             parentForm.recordError(expiryDate, expiryDateErrorMessage);
         }
-        if (!hasCertifiedConcession) {
+        if (concessionType != null && !hasCertifiedConcession) {
             parentForm.recordError(messages.get("certificationRequiredMessage"));
         }
     }
