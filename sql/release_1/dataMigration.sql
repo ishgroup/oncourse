@@ -118,8 +118,24 @@ INSERT INTO willow_college.DiscountCourseClass (courseClassId, discountId, colle
 	JOIN willow_college.CourseClass AS cc ON dcc.courseClassId = cc.id
 	WHERE dcc.collegeId = @collegeId; 
 
-INSERT INTO willow_college.Enrolment (id, collegeId, courseClassId, studentId, discountId, angelId, isDeleted, created, modified, reasonForStudy, source, status)
-	SELECT e.id, e.collegeId, e.courseClassId, e.studentId, e.discountId, e.angelId, e.isDeleted, e.created, e.modified, e.reasonForStudy, e.source, e.status
+INSERT INTO willow_college.Enrolment (id, collegeId, courseClassId, studentId, discountId, angelId, isDeleted, created, modified, reasonForStudy, source, status, statusNotes)
+	SELECT e.id, e.collegeId, e.courseClassId, e.studentId, e.discountId, e.angelId, e.isDeleted, e.created, e.modified, e.reasonForStudy, e.source, 
+  		CASE 
+			WHEN (e.status = 1) THEN "Pending"
+			WHEN (e.status = 2) THEN "In Transaction"
+			WHEN (e.status = 3) THEN "Success"
+			WHEN (e.status = 4) THEN "Failed"
+			WHEN (e.status = 6) THEN "Failed"
+			WHEN (e.status = 7) THEN "Failed"
+			WHEN (e.status = 8) THEN "Cancelled"
+			WHEN (e.status = 9) THEN "Cancelled"
+			ELSE "Failed"
+		END
+		, CASE 
+			WHEN (e.status = 6) THEN "Card declined"
+			WHEN (e.status = 7) THEN "No places"
+			WHEN (e.status = 9) THEN "Credited"
+		END			
 	FROM oncourse_realdata_willow_college.Enrolment AS e
 	JOIN willow_college.Student AS s ON e.studentid= s.id
 	WHERE e.collegeId = @collegeId AND e.isDeleted = 0;
@@ -159,6 +175,17 @@ INSERT INTO willow_college.InvoiceLine (id, collegeId, invoiceId, enrolmentId, p
 INSERT INTO willow_college.InvoiceLine_Discount (invoiceLineId, discountId, created, modified)
 	SELECT e.id, e.discountId, e.created, e.modified
 	FROM oncourse_realdata_willow_college.Enrolment e WHERE e.collegeId = @collegeId AND e.isDeleted = 0 AND e.discountId is not null;
+
+UPDATE willow_college.Invoice i
+   JOIN willow_college.InvoiceLine il ON i.id = il.invoiceId
+   JOIN willow_college.Enrolment e ON e.id = il.enrolmentId
+SET
+  i.status = CASE
+      WHEN (e.status = "Failed") THEN "Failed"
+      WHEN (e.status = "Success") THEN "Success"
+      WHEN (e.status = "Cancelled") THEN "Success"
+  END
+WHERE i.collegeId = @collegeid;
 
 INSERT INTO willow_college.LicenseFee (id, college_id, key_code, fee, valid_until, free_transactions, plan_name)
 	SELECT id, college_id, `key`, fee, valid_until, free_transactions, plan_name
@@ -207,8 +234,24 @@ INSERT INTO willow_college.CertificateOutcome (certificateId, outcomeId, college
 	JOIN willow_college.Outcome as o ON co.outcomeid = o.id
 	WHERE co.collegeId = @collegeId;
 
-INSERT INTO willow_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, isDeleted, modified, source, status, studentId, totalExGst, totalGst)
+INSERT INTO willow_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, isDeleted, modified, source, studentId, totalExGst, totalGst, status, statusNotes)
 	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.isDeleted, p.modified, p.source, p.status, NULL, p.totalExGst, p.totalGst
+  		CASE 
+			WHEN (p.status = 1) THEN "Pending"
+			WHEN (p.status = 2) THEN "In Transaction"
+			WHEN (p.status = 3) THEN "Success"
+			WHEN (p.status = 4) THEN "Failed"
+			WHEN (p.status = 6) THEN "Failed"
+			WHEN (p.status = 7) THEN "Failed"
+			WHEN (p.status = 8) THEN "Refunded"
+			WHEN (p.status = 9) THEN "Refunded"
+			ELSE "Failed"
+		END
+		, CASE 
+			WHEN (p.status = 6) THEN "Card declined"
+			WHEN (p.status = 7) THEN "No places"
+			WHEN (p.status = 9) THEN "Credited"
+		END			
 	FROM oncourse_realdata_willow_college.Payment AS p
 	JOIN willow_college.Contact AS c ON p.contactid = c.id
 	WHERE p.collegeId = @collegeId 
