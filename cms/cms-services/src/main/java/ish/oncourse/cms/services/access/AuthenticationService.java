@@ -45,8 +45,8 @@ public class AuthenticationService implements IAuthenticationService {
 
 		query.andQualifier(ExpressionFactory.matchExp(
 				WillowUser.COLLEGE_PROPERTY, college));
-		query.orQualifier(ExpressionFactory.matchExp(
-				WillowUser.COLLEGE_PROPERTY, null));
+		query.orQualifier(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, null)
+				.andExp(ExpressionFactory.matchExp(WillowUser.IS_SUPER_USER_PROPERTY, true)));
 
 		query.andQualifier(ExpressionFactory.matchExp(
 				WillowUser.EMAIL_PROPERTY, userName));
@@ -76,7 +76,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 		if (user != null) {
 
-			boolean belongToCollege = (user.getCollege() == null)
+			boolean belongToCollege = (user.getIsSuperUser())
 					|| siteService.getCurrentCollege().getId()
 							.equals(user.getCollege().getId());
 
