@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.CreditCardType;
+import ish.math.Money;
 import ish.oncourse.enrol.pages.EnrolmentPaymentProcessing;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
@@ -63,7 +64,7 @@ public class EnrolmentPaymentEntry {
 	 */
 	@Parameter
 	@Property
-	private BigDecimal totalIncGst;
+	private Money totalIncGst;
 
 	@Parameter
 	@Property

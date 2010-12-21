@@ -225,14 +225,13 @@ public class EnrolCourses {
 		return BigDecimal.ZERO;
 	}
 
-	// FIXME temp implementation of getting payment amount, should be changed
-	public BigDecimal getTotalIncGst() {
-		BigDecimal result = BigDecimal.ZERO;
+	public Money getTotalIncGst() {
+		Money result = Money.ZERO;
 		for (int i = 0; i < contacts.size(); i++) {
 			for (int j = 0; j < classesToEnrol.size(); j++) {
 				InvoiceLine invoiceLine = enrolments[i][j].getInvoiceLine();
 				if (invoiceLine != null) {
-					result = result.add(invoiceLine.getPriceEachExTax().toBigDecimal());
+					result = result.add(result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax())));
 				}
 			}
 		}

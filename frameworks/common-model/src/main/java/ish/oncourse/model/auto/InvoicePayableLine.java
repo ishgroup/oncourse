@@ -23,7 +23,7 @@ public class InvoicePayableLine extends CayenneDataObject implements IInvoiceLin
 	private InvoicePayableLineWrapper waPayableLine;
 
 	public InvoicePayableLine() {
-		new InvoicePayableLineWrapper(this);
+		waPayableLine=new InvoicePayableLineWrapper(this);
 	}
 
 	/**
