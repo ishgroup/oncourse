@@ -93,6 +93,7 @@
 	</db-entity>
 	<db-entity name="College" catalog="willow_college">
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
+		<db-attribute name="communication_key" type="BIGINT"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -810,6 +811,7 @@
 	</obj-entity>
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College">
 		<obj-attribute name="billingCode" type="java.lang.String" db-attribute-path="billingCode"/>
+		<obj-attribute name="communicationKey" type="java.lang.Long" db-attribute-path="communication_key"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
 		<obj-attribute name="isTestingWebServicePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebServicePayments"/>
@@ -2042,6 +2044,7 @@
 	<obj-relationship name="sessionTutors" source="College" target="SessionTutor" deleteRule="Deny" db-relationship-path="sessionTutors"/>
 	<obj-relationship name="sites" source="College" target="Site" deleteRule="Deny" db-relationship-path="sites"/>
 	<obj-relationship name="studentConcessions" source="College" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
+	<obj-relationship name="students" source="College" target="Student" deleteRule="Deny" db-relationship-path="students"/>
 	<obj-relationship name="tagGroupRequirements" source="College" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="tagGroupRequirements"/>
 	<obj-relationship name="taggableTags" source="College" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggableTags"/>
 	<obj-relationship name="taggables" source="College" target="Taggable" deleteRule="Deny" db-relationship-path="taggables"/>

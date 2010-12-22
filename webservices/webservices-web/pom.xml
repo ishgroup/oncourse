@@ -42,6 +42,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-security</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
@@ -91,23 +96,23 @@
 	<build>
 		<finalName>webservices</finalName>
 
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/config/${config.dir}</directory>
-            </resource>
-        </resources>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/config/${config.dir}</directory>
+			</resource>
+		</resources>
 
 		<plugins>
 			<plugin>
@@ -127,9 +132,9 @@
 				</configuration>
 			</plugin>
 
-         <!-- Below plugin provides a separate JAR for the JAX-WS artifacts 
-            (i.e., the Java classes created by running wsdl2java or wsimport), as this 
-            JAR will also be used by the SOAP client. -->
+			<!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
+				the Java classes created by running wsdl2java or wsimport), as this JAR will 
+				also be used by the SOAP client. -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2</version>
@@ -201,7 +206,7 @@
 				<config.dir>test</config.dir>
 			</properties>
 		</profile>
-		
+
 		<profile>
 			<id>prod</id>
 			<properties>

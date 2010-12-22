@@ -1,0 +1,1 @@
+alter table college add column communication_key BIGINT;

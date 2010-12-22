@@ -14,17 +14,53 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<bean id="referencePortTypeBean" class="ish.oncourse.webservices.soap.ReferencePortTypeImpl" />
-
+	<bean id="authenticationPortType" class="ish.oncourse.webservices.soap.auth.AuthenticationPortTypeImpl"/>
+	<bean id="communicationKeyCallback" class="ish.oncourse.webservices.soap.auth.CommunicationKeyCallback"/>
+	
+	<jaxws:endpoint id="auth"
+                  implementor="#authenticationPortType"
+                  address="/auth">
+                  
+    </jaxws:endpoint>
+	
 	<jaxws:endpoint
         id="reference"
         implementor="#referencePortTypeBean"
         address="/reference">
+        <jaxws:inInterceptors>
+        	<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
+        	<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        		<constructor-arg>
+		          <map>
+		            <entry key="action" value="UsernameToken" />
+		            <entry key="passwordType" value="PasswordText" />
+		            <entry key="passwordCallbackClass">
+		            	<ref bean="communicationKeyCallback"/>
+		            </entry>
+		          </map>
+       			</constructor-arg>
+        	</bean>
+        </jaxws:inInterceptors>
     </jaxws:endpoint>
 
     <jaxws:endpoint
         id="doubleit"
         implementor="ish.oncourse.webservices.soap.DoubleItPortTypeImpl"
         address="/doubleIt">
+        <jaxws:inInterceptors>
+        	<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
+        	<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        		<constructor-arg>
+		          <map>
+		            <entry key="action" value="UsernameToken" />
+		            <entry key="passwordType" value="PasswordText" />
+		            <entry key="passwordCallbackClass">
+		            	<ref bean="communicationKeyCallback"/>
+		            </entry>
+		          </map>
+       			</constructor-arg>
+        	</bean>
+        </jaxws:inInterceptors>
     </jaxws:endpoint>
 
 </beans>

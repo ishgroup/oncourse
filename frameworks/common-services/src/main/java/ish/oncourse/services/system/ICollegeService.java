@@ -12,7 +12,5 @@ import ish.oncourse.model.College;
  * @author marek
  */
 public interface ICollegeService {
-
-	College findBySecurityCode(String securityCode);
-	
+	College findBySecurityCode(String securityCode);	
 }

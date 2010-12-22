@@ -35,6 +35,7 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Site;
+import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TagGroupRequirement;
@@ -55,6 +56,7 @@ import ish.oncourse.model.WillowUser;
 public abstract class _College extends CayenneDataObject {
 
     public static final String BILLING_CODE_PROPERTY = "billingCode";
+    public static final String COMMUNICATION_KEY_PROPERTY = "communicationKey";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
     public static final String IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY = "isTestingWebServicePayments";
@@ -103,6 +105,7 @@ public abstract class _College extends CayenneDataObject {
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
     public static final String SITES_PROPERTY = "sites";
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
+    public static final String STUDENTS_PROPERTY = "students";
     public static final String TAG_GROUP_REQUIREMENTS_PROPERTY = "tagGroupRequirements";
     public static final String TAGGABLE_TAGS_PROPERTY = "taggableTags";
     public static final String TAGGABLES_PROPERTY = "taggables";
@@ -119,6 +122,13 @@ public abstract class _College extends CayenneDataObject {
     }
     public String getBillingCode() {
         return (String)readProperty("billingCode");
+    }
+
+    public void setCommunicationKey(Long communicationKey) {
+        writeProperty("communicationKey", communicationKey);
+    }
+    public Long getCommunicationKey() {
+        return (Long)readProperty("communicationKey");
     }
 
     public void setCreated(Date created) {
@@ -609,6 +619,18 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<StudentConcession> getStudentConcessions() {
         return (List<StudentConcession>)readProperty("studentConcessions");
+    }
+
+
+    public void addToStudents(Student obj) {
+        addToManyTarget("students", obj, true);
+    }
+    public void removeFromStudents(Student obj) {
+        removeToManyTarget("students", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Student> getStudents() {
+        return (List<Student>)readProperty("students");
     }
 
 
