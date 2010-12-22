@@ -140,22 +140,15 @@ INSERT INTO willow_college.Enrolment (id, collegeId, courseClassId, studentId, d
 	JOIN willow_college.Student AS s ON e.studentid= s.id
 	WHERE e.collegeId = @collegeId AND e.isDeleted = 0;
 
-INSERT INTO willow_college.DiscountEnrolment (discountId, enrolmentId)
-	SELECT de.discountId, de.enrolmentId
-	FROM oncourse_realdata_willow_college.DiscountEnrolment as de 
-	JOIN willow_college.Enrolment AS e ON de.enrolmentid = e.id
-	JOIN willow_college.Discount AS d ON de.discountid = d.id
-	WhERE e.collegeid = @collegeid;
-
-INSERT INTO willow_college.Invoice (amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
-	SELECT 0, p.collegeId, p.contactID, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
+INSERT INTO willow_college.Invoice (totalExGst, totalGst, amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
+	SELECT p.totalExGst, p.totalGst, 0, p.collegeId, p.contactID, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
 	FROM oncourse_realdata_willow_college.Payment AS p 
 	JOIN willow_college.Contact AS c ON p.contactid = c.id
 	WHERE p.collegeId = @collegeId;
 
 -- deal with legacy data joined on student id instead of contact id
-INSERT INTO willow_college.Invoice (amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
-	SELECT 0, p.collegeId, c.id, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
+INSERT INTO willow_college.Invoice (totalExGst, totalGst, amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
+	SELECT p.totalExGst, p.totalGst, 0, p.collegeId, c.id, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
 	FROM oncourse_realdata_willow_college.Payment p
 	JOIN willow_college.Contact c ON p.studentID = c.studentID
 	JOIN willow_college.Student AS s ON s.id = p.studentID
@@ -234,8 +227,8 @@ INSERT INTO willow_college.CertificateOutcome (certificateId, outcomeId, college
 	JOIN willow_college.Outcome as o ON co.outcomeid = o.id
 	WHERE co.collegeId = @collegeId;
 
-INSERT INTO willow_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, isDeleted, modified, source, studentId, totalExGst, totalGst, status, statusNotes)
-	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.isDeleted, p.modified, p.source, p.status, NULL, p.totalExGst, p.totalGst
+INSERT INTO willow_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, isDeleted, modified, source, studentId, amount, status, statusNotes)
+	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.isDeleted, p.modified, p.source, p.status, NULL, (p.totalExGst + p.totalGst)
   		CASE 
 			WHEN (p.status = 1) THEN "Pending"
 			WHEN (p.status = 2) THEN "In Transaction"

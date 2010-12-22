@@ -878,25 +878,6 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`DiscountEnrolment`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountEnrolment` (
-  `discountId` BIGINT(20) NOT NULL ,
-  `enrolmentId` BIGINT(20) NOT NULL ,
-  PRIMARY KEY (`discountId`, `enrolmentId`) ,
-  INDEX `DiscountEnrolment_ibfk_2` (`enrolmentId` ASC) ,
-  CONSTRAINT `DiscountEnrolment_ibfk_1`
-    FOREIGN KEY (`discountId` )
-    REFERENCES `willow_college`.`Discount` (`id` ),
-  CONSTRAINT `DiscountEnrolment_ibfk_2`
-    FOREIGN KEY (`enrolmentId` )
-    REFERENCES `willow_college`.`Enrolment` (`id` ))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
 -- Table `willow_college`.`Invoice`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `willow_college`.`Invoice` (
@@ -908,7 +889,9 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Invoice` (
   `invoiceDate` DATE NOT NULL ,
   `invoiceNumber` BIGINT(20) NOT NULL ,
   `status` ENUM('Pending', 'In Transaction', 'Success', 'Failed') CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT 'Pending' ,
-  `amountOwing` DECIMAL(10,2) NOT NULL ,
+  `totalExGst` DECIMAL(14,2) NOT NULL DEFAULT '0.00' ,
+  `totalGst` DECIMAL(14,2) NOT NULL DEFAULT '0.00' ,
+  `amountOwing` DECIMAL(14,2) NOT NULL DEFAULT '0.00' ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
   `customerPO` VARCHAR(500) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
@@ -1217,8 +1200,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentIn` (
   `statusNotes` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  `totalExGst` DECIMAL(14,2) NULL DEFAULT NULL ,
-  `totalGst` DECIMAL(14,2) NULL DEFAULT NULL ,
+  `amount` DECIMAL(14,2) NOT NULL DEFAULT '0.00',
   `creditCardCVV` VARCHAR(4) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `creditCardExpiry` VARCHAR(16) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `creditCardName` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,

@@ -6,6 +6,7 @@ import ish.oncourse.enrol.pages.EnrolmentPaymentProcessing;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Preference;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
@@ -249,7 +250,20 @@ public class EnrolmentPaymentEntry {
 
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
+		BigDecimal totalGst = BigDecimal.ZERO;
+		BigDecimal totalExGst = BigDecimal.ZERO;
+
+		for (InvoiceLine invLine : invoice.getInvoiceLines()) {
+			totalExGst = totalGst.add(
+					new BigDecimal(invLine.getPriceTotalExTax().doubleValue()));
+			totalGst = totalGst.add(
+					new BigDecimal(invLine.getPriceTotalIncTax().subtract(
+							invLine.getPriceTotalExTax()).doubleValue()));
+		}
+
 		invoice.setContact(payment.getContact());
+		invoice.setTotalExGst(totalExGst);
+		invoice.setTotalGst(totalGst);
 		enrolmentPaymentProcessing.setPayment(payment);
 		enrolmentPaymentProcessing.setEnrolments(enrolments);
 		return enrolmentPaymentProcessing;

@@ -35,6 +35,8 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String SHIPPING_ADDRESS_PROPERTY = "shippingAddress";
     public static final String SOURCE_PROPERTY = "source";
     public static final String STATUS_PROPERTY = "status";
+    public static final String TOTAL_EX_GST_PROPERTY = "totalExGst";
+    public static final String TOTAL_GST_PROPERTY = "totalGst";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
@@ -145,6 +147,20 @@ public abstract class _Invoice extends CayenneDataObject {
     }
     public String getStatus() {
         return (String)readProperty("status");
+    }
+
+    public void setTotalExGst(BigDecimal totalExGst) {
+        writeProperty("totalExGst", totalExGst);
+    }
+    public BigDecimal getTotalExGst() {
+        return (BigDecimal)readProperty("totalExGst");
+    }
+
+    public void setTotalGst(BigDecimal totalGst) {
+        writeProperty("totalGst", totalGst);
+    }
+    public BigDecimal getTotalGst() {
+        return (BigDecimal)readProperty("totalGst");
     }
 
     public void setCollege(College college) {

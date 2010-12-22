@@ -3,15 +3,16 @@ package ish.oncourse.enrol.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import ish.common.types.PaymentStatus;
 import ish.oncourse.enrol.components.AnalyticsTransaction.Item;
 import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import java.math.BigDecimal;
 
 import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.annotations.Property;
@@ -94,8 +95,12 @@ public class EnrolmentPaymentResult {
 					transaction.setOrderNumber("W" + payment.getId());
 					transaction.setShippingAmount(null);
 					transaction.setState(payment.getContact().getState());
-					transaction.setTax(payment.getTotalGst());
-					transaction.setTotal(payment.getTotalAmount());
+					BigDecimal tax = new BigDecimal(0);
+					for (PaymentInLine pil : payment.getPaymentInLines()) {
+						tax = tax.add(pil.getInvoice().getTotalGst());
+					}
+					transaction.setTax(tax);
+					transaction.setTotal(payment.getAmount());
 				}
 			}
 		}

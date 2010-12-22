@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.services.payment;
 
 import ish.common.types.CreditCardType;
-import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 
 

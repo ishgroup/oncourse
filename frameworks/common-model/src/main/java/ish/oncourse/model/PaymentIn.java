@@ -4,21 +4,18 @@ import ish.common.util.ExternalValidation;
 import ish.oncourse.model.auto._PaymentIn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class PaymentIn extends _PaymentIn {
 
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+
+	@Deprecated
+	// FIXME No longer used as payment doesn't store tax - replaced by "amount"
 	public BigDecimal totalIncGst() {
-		BigDecimal totalExGst = getTotalExGst();
-		BigDecimal totalGst = getTotalGst();
-		BigDecimal total = new BigDecimal(BigInteger.ZERO);
-		if (totalExGst != null) {
-			total = total.add(totalExGst);
-		}
-		if (totalGst != null) {
-			total = total.add(totalGst);
-		}
-		return total;
+		return getAmount();
 	}
 
 	public String validateCCNumber() {
@@ -37,8 +34,10 @@ public class PaymentIn extends _PaymentIn {
 		return null;
 	}
 
+	@Deprecated
+	// FIXME: Isn't this the "amount"?
 	public BigDecimal getTotalAmount() {
-		return BigDecimal.ZERO;
+		return getAmount();
 	}
 	
 }

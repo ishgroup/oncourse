@@ -254,10 +254,6 @@
 		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
-	<db-entity name="DiscountEnrolment" catalog="willow_college">
-		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="enrolmentId" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-	</db-entity>
 	<db-entity name="Enrolment" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -272,7 +268,7 @@
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="Invoice" catalog="willow_college">
-		<db-attribute name="amountOwing" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
+		<db-attribute name="amountOwing" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="billToAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -290,6 +286,8 @@
 		<db-attribute name="shippingAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="source" type="CHAR" length="1"/>
 		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
+		<db-attribute name="totalExGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
+		<db-attribute name="totalGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 	</db-entity>
 	<db-entity name="InvoiceLine" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -399,6 +397,7 @@
 		<db-attribute name="status" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="PaymentIn" catalog="willow_college">
+		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
@@ -413,8 +412,6 @@
 		<db-attribute name="source" type="VARCHAR" length="1"/>
 		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
-		<db-attribute name="totalExGst" type="DECIMAL" length="14" scale="2"/>
-		<db-attribute name="totalGst" type="DECIMAL" length="14" scale="2"/>
 	</db-entity>
 	<db-entity name="PaymentInLine" catalog="willow_college">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -855,7 +852,6 @@
 		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="faxNumber"/>
 		<obj-attribute name="givenName" type="java.lang.String" db-attribute-path="givenName"/>
 		<obj-attribute name="homePhoneNumber" type="java.lang.String" db-attribute-path="homePhoneNumber"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isCompany" type="java.lang.Boolean" db-attribute-path="isCompany"/>
 		<obj-attribute name="isMale" type="java.lang.Boolean" db-attribute-path="isMale"/>
 		<obj-attribute name="isMarketingViaEmailAllowed" type="java.lang.Boolean" db-attribute-path="isMarketingViaEmailAllowed"/>
@@ -901,7 +897,6 @@
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="feeExGst" type="ish.math.Money" db-attribute-path="feeExGst"/>
 		<obj-attribute name="feeGst" type="java.math.BigDecimal" db-attribute-path="feeGst"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="materials_textile"/>
@@ -954,8 +949,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
-	<obj-entity name="DiscountEnrolment" className="ish.oncourse.model.DiscountEnrolment" dbEntityName="DiscountEnrolment">
-	</obj-entity>
 	<obj-entity name="Enrolment" className="ish.oncourse.model.Enrolment" dbEntityName="Enrolment">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -980,6 +973,8 @@
 		<obj-attribute name="shippingAddress" type="java.lang.String" db-attribute-path="shippingAddress"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="java.lang.String" db-attribute-path="status"/>
+		<obj-attribute name="totalExGst" type="java.math.BigDecimal" db-attribute-path="totalExGst"/>
+		<obj-attribute name="totalGst" type="java.math.BigDecimal" db-attribute-path="totalGst"/>
 	</obj-entity>
 	<obj-entity name="InvoiceLine" className="ish.oncourse.model.InvoiceLine" dbEntityName="InvoiceLine" superClassName="ish.oncourse.model.auto.InvoicePayableLine">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1063,6 +1058,7 @@
 		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
 	</obj-entity>
 	<obj-entity name="PaymentIn" className="ish.oncourse.model.PaymentIn" dbEntityName="PaymentIn">
+		<obj-attribute name="amount" type="java.math.BigDecimal" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditCardCVV" type="java.lang.String" db-attribute-path="creditCardCVV"/>
@@ -1070,12 +1066,9 @@
 		<obj-attribute name="creditCardName" type="java.lang.String" db-attribute-path="creditCardName"/>
 		<obj-attribute name="creditCardNumber" type="java.lang.String" db-attribute-path="creditCardNumber"/>
 		<obj-attribute name="creditCardType" type="ish.common.types.CreditCardType" db-attribute-path="creditCardType"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="java.lang.String" db-attribute-path="status"/>
-		<obj-attribute name="totalExGst" type="java.math.BigDecimal" db-attribute-path="totalExGst"/>
-		<obj-attribute name="totalGst" type="java.math.BigDecimal" db-attribute-path="totalGst"/>
 	</obj-entity>
 	<obj-entity name="PaymentInLine" className="ish.oncourse.model.PaymentInLine" dbEntityName="PaymentInLine">
 		<obj-attribute name="amount" type="java.math.BigDecimal" db-attribute-path="amount"/>
@@ -1178,7 +1171,6 @@
 		<obj-attribute name="disabilityType" type="ish.common.types.AvetmissStudentDisabilityType" db-attribute-path="disabilityType"/>
 		<obj-attribute name="englishProficiency" type="ish.common.types.AvetmissStudentEnglishProficiency" db-attribute-path="englishProficiency"/>
 		<obj-attribute name="highestSchoolLevel" type="ish.common.types.AvetmissStudentSchoolLevel" db-attribute-path="highestSchoolLevel"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="indigenousStatus" type="ish.common.types.AvetmissStudentIndigenousStatus" db-attribute-path="indigenousStatus"/>
 		<obj-attribute name="isOverseasClient" type="java.lang.Boolean" db-attribute-path="isOverseasClient"/>
 		<obj-attribute name="isStillAtSchool" type="java.lang.Boolean" db-attribute-path="isStillAtSchool"/>
@@ -1195,7 +1187,6 @@
 		<obj-attribute name="concessionNumber" type="java.lang.String" db-attribute-path="concessionNumber"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="expiresOn" type="java.util.Date" db-attribute-path="expiresOn"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>
@@ -1580,9 +1571,6 @@
 	<db-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
-	<db-relationship name="discountEnrolments" source="Discount" target="DiscountEnrolment" toDependentPK="true" toMany="true">
-		<db-attribute-pair source="id" target="discountId"/>
-	</db-relationship>
 	<db-relationship name="enrolments" source="Discount" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
@@ -1604,12 +1592,6 @@
 	<db-relationship name="discount" source="DiscountCourseClass" target="Discount" toMany="false">
 		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discount" source="DiscountEnrolment" target="Discount" toMany="false">
-		<db-attribute-pair source="discountId" target="id"/>
-	</db-relationship>
-	<db-relationship name="enrolment" source="DiscountEnrolment" target="Enrolment" toMany="false">
-		<db-attribute-pair source="enrolmentId" target="id"/>
-	</db-relationship>
 	<db-relationship name="college" source="Enrolment" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -1618,9 +1600,6 @@
 	</db-relationship>
 	<db-relationship name="discount" source="Enrolment" target="Discount" toMany="false">
 		<db-attribute-pair source="discountId" target="id"/>
-	</db-relationship>
-	<db-relationship name="discountEnrolments" source="Enrolment" target="DiscountEnrolment" toDependentPK="true" toMany="true">
-		<db-attribute-pair source="id" target="enrolmentId"/>
 	</db-relationship>
 	<db-relationship name="invoiceLine" source="Enrolment" target="InvoiceLine" toMany="false">
 		<db-attribute-pair source="id" target="enrolmentId"/>
@@ -2096,7 +2075,6 @@
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
-	<obj-relationship name="discountEnrolments" source="Discount" target="DiscountEnrolment" deleteRule="Deny" db-relationship-path="discountEnrolments"/>
 	<obj-relationship name="enrolments" source="Discount" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="college" source="DiscountConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -2104,12 +2082,9 @@
 	<obj-relationship name="discount" source="DiscountConcessionType" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="courseClass" source="DiscountCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="discount" source="DiscountCourseClass" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
-	<obj-relationship name="discount" source="DiscountEnrolment" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
-	<obj-relationship name="enrolment" source="DiscountEnrolment" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="discount" source="Enrolment" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
-	<obj-relationship name="discountEnrolments" source="Enrolment" target="DiscountEnrolment" deleteRule="Deny" db-relationship-path="discountEnrolments"/>
 	<obj-relationship name="invoiceLine" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>

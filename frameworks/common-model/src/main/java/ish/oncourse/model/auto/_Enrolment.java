@@ -9,7 +9,6 @@ import ish.common.types.PaymentSource;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountEnrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.model.Student;
@@ -31,7 +30,6 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String DISCOUNT_PROPERTY = "discount";
-    public static final String DISCOUNT_ENROLMENTS_PROPERTY = "discountEnrolments";
     public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
     public static final String OUTCOMES_PROPERTY = "outcomes";
     public static final String STUDENT_PROPERTY = "student";
@@ -104,18 +102,6 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     public Discount getDiscount() {
         return (Discount)readProperty("discount");
-    }
-
-
-    public void addToDiscountEnrolments(DiscountEnrolment obj) {
-        addToManyTarget("discountEnrolments", obj, true);
-    }
-    public void removeFromDiscountEnrolments(DiscountEnrolment obj) {
-        removeToManyTarget("discountEnrolments", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<DiscountEnrolment> getDiscountEnrolments() {
-        return (List<DiscountEnrolment>)readProperty("discountEnrolments");
     }
 
 

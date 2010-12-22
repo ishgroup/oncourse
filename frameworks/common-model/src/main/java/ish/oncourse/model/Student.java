@@ -8,11 +8,15 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.validation.ValidationFailure;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 public class Student extends _Student {
+
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? 
+				(Long) getObjectId() .getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
 
 	/**
 	 * @return the number of years since the contact's birth date.

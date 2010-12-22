@@ -22,6 +22,7 @@ import ish.oncourse.model.Student;
  */
 public abstract class _PaymentIn extends CayenneDataObject {
 
+    public static final String AMOUNT_PROPERTY = "amount";
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String CREDIT_CARD_CVV_PROPERTY = "creditCardCVV";
@@ -29,12 +30,9 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final String CREDIT_CARD_NAME_PROPERTY = "creditCardName";
     public static final String CREDIT_CARD_NUMBER_PROPERTY = "creditCardNumber";
     public static final String CREDIT_CARD_TYPE_PROPERTY = "creditCardType";
-    public static final String ID_PROPERTY = "id";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String SOURCE_PROPERTY = "source";
     public static final String STATUS_PROPERTY = "status";
-    public static final String TOTAL_EX_GST_PROPERTY = "totalExGst";
-    public static final String TOTAL_GST_PROPERTY = "totalGst";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
@@ -42,6 +40,13 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";
+
+    public void setAmount(BigDecimal amount) {
+        writeProperty("amount", amount);
+    }
+    public BigDecimal getAmount() {
+        return (BigDecimal)readProperty("amount");
+    }
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
@@ -92,13 +97,6 @@ public abstract class _PaymentIn extends CayenneDataObject {
         return (CreditCardType)readProperty("creditCardType");
     }
 
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
-    }
-
     public void setModified(Date modified) {
         writeProperty("modified", modified);
     }
@@ -118,20 +116,6 @@ public abstract class _PaymentIn extends CayenneDataObject {
     }
     public String getStatus() {
         return (String)readProperty("status");
-    }
-
-    public void setTotalExGst(BigDecimal totalExGst) {
-        writeProperty("totalExGst", totalExGst);
-    }
-    public BigDecimal getTotalExGst() {
-        return (BigDecimal)readProperty("totalExGst");
-    }
-
-    public void setTotalGst(BigDecimal totalGst) {
-        writeProperty("totalGst", totalGst);
-    }
-    public BigDecimal getTotalGst() {
-        return (BigDecimal)readProperty("totalGst");
     }
 
     public void setCollege(College college) {

@@ -8,6 +8,11 @@ import ish.oncourse.utils.TimestampUtilities;
 
 public class Contact extends _Contact {
 
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ?
+				(Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+
 	public String getFullName() {
 		StringBuilder buff = new StringBuilder();
 		String familyName = getFamilyName();
