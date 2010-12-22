@@ -917,7 +917,7 @@
 	<obj-entity name="Discount" className="ish.oncourse.model.Discount" dbEntityName="Discount">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
-		<obj-attribute name="combinationType" type="java.lang.Integer" db-attribute-path="combinationType"/>
+		<obj-attribute name="combinationType" type="java.lang.Boolean" db-attribute-path="combinationType"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>

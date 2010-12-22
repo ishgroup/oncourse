@@ -16,6 +16,8 @@ import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.CourseClassService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.discount.DiscountService;
+import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
@@ -107,6 +109,7 @@ public class ServiceModule {
 		binder.bind(IWebSiteService.class, WebSiteService.class);
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
+		binder.bind(IDiscountService.class, DiscountService.class);
 
 		// Reference Data services
 		binder.bind(ICountryService.class, CountryService.class).withId("CountryService");

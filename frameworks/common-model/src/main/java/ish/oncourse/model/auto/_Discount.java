@@ -65,11 +65,11 @@ public abstract class _Discount extends CayenneDataObject {
         return (String)readProperty("code");
     }
 
-    public void setCombinationType(Integer combinationType) {
+    public void setCombinationType(Boolean combinationType) {
         writeProperty("combinationType", combinationType);
     }
-    public Integer getCombinationType() {
-        return (Integer)readProperty("combinationType");
+    public Boolean getCombinationType() {
+        return (Boolean)readProperty("combinationType");
     }
 
     public void setCreated(Date created) {

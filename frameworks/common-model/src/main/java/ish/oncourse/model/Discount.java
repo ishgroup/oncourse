@@ -32,6 +32,7 @@ public class Discount extends _Discount {
 	 *            - the course class
 	 * @return the discount value that could be obtained from the given list..
 	 */
+	@Deprecated
 	public static BigDecimal discountValueForCourseClass(
 			List<? extends Discount> discounts, CourseClass aClass) {
 		BigDecimal result = Money.ZERO.toBigDecimal();
@@ -51,6 +52,7 @@ public class Discount extends _Discount {
 	 *            - the class.
 	 * @return a collection of discounts that provide the best deal.
 	 */
+	@Deprecated
 	public static <T extends Discount> List<T> discountsForCourseClass(
 			List<T> discounts, CourseClass aClass) {
 		return discountsForAbstractType(discounts, aClass);
@@ -128,6 +130,7 @@ public class Discount extends _Discount {
 	 *            - an enrolment to determine the discount value.
 	 * @return the discount if the student and class are applicable or zero.
 	 */
+	@Deprecated
 	public BigDecimal valueForEnrolment(Enrolment enrolment) {
 		boolean isEligible = false;
 		if (isValidWithGracePeriod()) {

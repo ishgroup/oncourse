@@ -210,15 +210,6 @@ public class CourseClass extends _CourseClass {
 		return feeExGst.add(feeGst);
 	}
 
-	public BigDecimal getTaxMultiplier() {
-		if (getFeeGst() == null || Money.ZERO.compareTo(new Money(getFeeGst())) >= 0) {
-			return Money.ONE.toBigDecimal();
-		}
-
-		// TODO grab correct rate from onCourse later
-		return new BigDecimal("1.10");
-	}
-
 	public boolean isGstExempt() {
 		BigDecimal feeGst = getFeeGst();
 		return feeGst == null || Money.ZERO.compareTo(new Money(feeGst)) == 0;
@@ -495,8 +486,23 @@ public class CourseClass extends _CourseClass {
 		for (DiscountCourseClass dcc : discountCourseClasses) {
 
 			Discount discount = dcc.getDiscount();
-			if (!discount.getDiscountConcessionTypes().isEmpty()) {
+			if (discount != null && !discount.getDiscountConcessionTypes().isEmpty()) {
 				discounts.add(discount);
+			}
+		}
+		return discounts;
+	}
+	
+	/**
+	 * This is a faked flattened relationship via discountCourseClasses.discount.
+	 * 
+	 * @return the discounts for this class
+	 */
+	public List<Discount> getDiscounts() {
+		List<Discount> discounts = new ArrayList<Discount>();
+		for (DiscountCourseClass dcc : getDiscountCourseClasses()) {
+			if (dcc.getDiscount() != null) {
+				discounts.add(dcc.getDiscount());
 			}
 		}
 		return discounts;
