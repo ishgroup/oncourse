@@ -61,10 +61,7 @@ public class CourseClassService implements ICourseClassService {
 
 		List<Object> params = Arrays.asList(ids);
 
-		EJBQLQuery q = new EJBQLQuery(
-				"select cc from CourseClass cc where cc.id IN (:ids)");
-
-		q.setParameter("ids", params);
+		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, params));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
