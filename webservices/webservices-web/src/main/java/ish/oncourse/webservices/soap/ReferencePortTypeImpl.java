@@ -62,17 +62,9 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 
 	private static final Logger LOGGER = Logger.getLogger(ReferencePortTypeImpl.class);
 
-	public ReferencePortTypeImpl() {
-	}
 
 	@Override
 	public HashMap<String, Long> checkVersions() {
-
-/*
-		if (!hasHttpSession()) {
-			throw new AuthenticationException("Service requires Authentication");
-		}
- */
 
 		Long version = null;
 		HashMap<String, Long> versions = new HashMap<String, Long>();
@@ -92,90 +84,77 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	}
 
 	@Override
-	public List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber) {
+	public List<Country_Stub> getCountries(Long ishVersion) {
 
 		List<Country_Stub> stubs = new ArrayList<Country_Stub>();
-		List<Country> records = countryService.getForReplication(
-				angelVersion);
+		List<Country> records = countryService.getForReplication(ishVersion);
 
-		int startIndex = BATCH_SIZE * (batchNumber - 1);
-		int endIndex = BATCH_SIZE * batchNumber;
-
-		for (int i = startIndex; (i < endIndex) && (i < records.size()); i++) {
-			stubs.add(CountryStubBuilder.convert(records.get(i)));
+		for (Country record : records) {
+			stubs.add(CountryStubBuilder.convert(record));
 		}
 
 		return stubs;
 	}
 
 	@Override
-	public List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber) {
+	public List<Language_Stub> getLanguages(Long ishVersion) {
 
 		List<Language_Stub> stubs = new ArrayList<Language_Stub>();
-		List<Language> records = languageService.getForReplication(
-				angelVersion);
+		List<Language> records = languageService.getForReplication(ishVersion);
 
-		int startIndex = BATCH_SIZE * (batchNumber - 1);
-		int endIndex = BATCH_SIZE * batchNumber;
-
-		for (int i = startIndex; (i < endIndex) && (i < records.size()); i++) {
-			stubs.add(LanguageStubBuilder.convert(records.get(i)));
+		for (Language record : records) {
+			stubs.add(LanguageStubBuilder.convert(record));
 		}
 
 		return stubs;
 	}
 
 	@Override
-	public List<Module_Stub> getModules(Long angelVersion, Integer batchNumber) {
+	public List<Module_Stub> getModules(Long ishVersion) {
 
 		List<Module_Stub> stubs = new ArrayList<Module_Stub>();
-		List<Module> records = moduleService.getForReplication(
-				angelVersion);
+		List<Module> records = moduleService.getForReplication(ishVersion);
 
-		int startIndex = BATCH_SIZE * (batchNumber - 1);
-		int endIndex = BATCH_SIZE * batchNumber;
-
-		for (int i = startIndex; (i < endIndex) && (i < records.size()); i++) {
-			stubs.add(ModuleStubBuilder.convert(records.get(i)));
+		for (Module record : records) {
+			stubs.add(ModuleStubBuilder.convert(record));
 		}
 
 		return stubs;
 	}
 
 	@Override
-	public List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber) {
+	public List<Qualification_Stub> getQualifications(Long ishVersion) {
 
 		List<Qualification_Stub> stubs = new ArrayList<Qualification_Stub>();
 		List<Qualification> records = qualificationService.getForReplication(
-				angelVersion);
+				ishVersion);
 
-		int startIndex = BATCH_SIZE * (batchNumber - 1);
-		int endIndex = BATCH_SIZE * batchNumber;
-
-		for (int i = startIndex; (i < endIndex) && (i < records.size()); i++) {
-			stubs.add(QualificationStubBuilder.convert(records.get(i)));
+		for (Qualification record : records) {
+			stubs.add(QualificationStubBuilder.convert(record));
 		}
 
 		return stubs;
 	}
 
 	@Override
-	public List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber) {
+	public List<TrainingPackage_Stub> getTrainingPackages(Long ishVersion) {
 
 		List<TrainingPackage_Stub> stubs = new ArrayList<TrainingPackage_Stub>();
 		List<TrainingPackage> records = trainingPackageService.getForReplication(
-				angelVersion);
+				ishVersion);
 
-		int startIndex = BATCH_SIZE * (batchNumber - 1);
-		int endIndex = BATCH_SIZE * batchNumber;
-
-		for (int i = startIndex; (i < endIndex) && (i < records.size()); i++) {
-			stubs.add(TrainingPackageStubBuilder.convert(records.get(i)));
+		for (TrainingPackage record : records) {
+			stubs.add(TrainingPackageStubBuilder.convert(record));
 		}
 
 		return stubs;
 	}
 
+	/**
+	 * Helper method for providing way to enumerate through all services.
+	 *
+	 * @return
+	 */
 	private List<IReferenceService<?>> getAllServices() {
 		if (allServices == null) {
 			allServices = new ArrayList<IReferenceService<?>>();

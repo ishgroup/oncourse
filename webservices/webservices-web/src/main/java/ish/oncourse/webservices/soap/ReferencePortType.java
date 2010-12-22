@@ -15,7 +15,7 @@ import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
 /**
  * The ReferencePortType defines the API for one-way (Willow to Angel)
  * replication of Reference Data.
- * 
+ *
  * <p>Reference Data consist of the following Entities:</p>
  *
  * <ul>
@@ -26,8 +26,18 @@ import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
  *		<li>@see ish.oncourse.model.TrainingPackage</li>
  * </ul>
  *
- * This data is sent to all customers.
+ * <p>This data is sent to all customers.</p>
  *
+ * <p>The procedure is as follows:</p>
+ *
+ * <ol>
+ *		<li>Call @see #checkVersions() to get the latest Willow version number for each
+ *			entity</li>
+ *		<li>Verify that a newer version(s) exist and call
+ *			get{Entity}(ishVersion) for each i++ such that i is
+ *			AngelVersion < i <= WillowVersion</li>
+ *		<li>Repeat the above for every Entity that needs updating.</li>
+ * </ol>
  *
  * @author Marek Wawrzyczny
  */
@@ -43,88 +53,53 @@ public interface ReferencePortType {
 	HashMap<String, Long> checkVersions();
 
 	/**
-	 * Call to get the next batch of records from the queue.
+	 * Call to get all records for this version.
 	 *
-	 * <p>An empty list is returned when there are no more records to
-	 * replicate.</p>
+	 * @param ishVersion - the version of records to fetch
 	 *
-	 * <p><i>Please ensure that the angelVersion is the last successfully
-	 * replicated version in Angel <b>and not the current max version</b>!
-	 * </i></p>
-	 *
-	 * @param angelVersion - the last successful replicated version on Angel
-	 * @param batchNumber  - the batch being requested
-	 *
-	 * @return
+	 * @return all records with this version or empty list if no records with
+	 *		that version exist
 	 */
-	List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber);
+	List<Country_Stub> getCountries(Long ishVersion);
 
 	/**
-	 * Call to get the next batch of records from the queue.
+	 * Call to get all records for this version.
 	 *
-	 * <p>An empty list is returned when there are no more records to
-	 * replicate.</p>
+	 * @param ishVersion - the version of records to fetch
 	 *
-	 * <p><i>Please ensure that the angelVersion is the last successfully
-	 * replicated version in Angel <b>and not the current max version</b>!
-	 * </i></p>
-	 *
-	 * @param angelVersion - the last successful replicated version on Angel
-	 * @param batchNumber  - the batch being requested
-	 *
-	 * @return
+	 * @return all records with this version or empty list if no records with
+	 *		that version exist
 	 */
-	List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber);
+	List<Language_Stub> getLanguages(Long ishVersion);
 
 	/**
-	 * Call to get the next batch of records from the queue.
+	 * Call to get all records for this version.
 	 *
-	 * <p>An empty list is returned when there are no more records to
-	 * replicate.</p>
+	 * @param ishVersion - the version of records to fetch
 	 *
-	 * <p><i>Please ensure that the angelVersion is the last successfully
-	 * replicated version in Angel <b>and not the current max version</b>!
-	 * </i></p>
-	 *
-	 * @param angelVersion - the last successful replicated version on Angel
-	 * @param batchNumber  - the batch being requested
-	 *
-	 * @return
+	 * @return all records with this version or empty list if no records with
+	 *		that version exist
 	 */
-	List<Module_Stub> getModules(Long angelVersion, Integer batchNumber);
+	List<Module_Stub> getModules(Long ishVersion);
 
 	/**
-	 * Call to get the next batch of records from the queue.
+	 * Call to get all records for this version.
 	 *
-	 * <p>An empty list is returned when there are no more records to
-	 * replicate.</p>
+	 * @param ishVersion - the version of records to fetch
 	 *
-	 * <p><i>Please ensure that the angelVersion is the last successfully
-	 * replicated version in Angel <b>and not the current max version</b>!
-	 * </i></p>
-	 *
-	 * @param angelVersion - the last successful replicated version on Angel
-	 * @param batchNumber  - the batch being requested
-	 *
-	 * @return
+	 * @return all records with this version or empty list if no records with
+	 *		that version exist
 	 */
-	List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber);
+	List<Qualification_Stub> getQualifications(Long ishVersion);
 
 	/**
-	 * Call to get the next batch of records from the queue.
+	 * Call to get all records for this version.
 	 *
-	 * <p>An empty list is returned when there are no more records to
-	 * replicate.</p>
+	 * @param ishVersion - the version of records to fetch
 	 *
-	 * <p><i>Please ensure that the angelVersion is the last successfully
-	 * replicated version in Angel <b>and not the current max version</b>!
-	 * </i></p>
-	 *
-	 * @param angelVersion - the last successful replicated version on Angel
-	 * @param batchNumber  - the batch being requested
-	 *
-	 * @return
+	 * @return all records with this version or empty list if no records with
+	 *		that version exist
 	 */
-	List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber);
+	List<TrainingPackage_Stub> getTrainingPackages(Long ishVersion);
 
 }

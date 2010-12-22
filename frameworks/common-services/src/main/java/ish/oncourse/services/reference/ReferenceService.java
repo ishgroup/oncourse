@@ -14,8 +14,8 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
 import ish.oncourse.services.BaseService;
+import java.util.Map;
 import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SortOrder;
 
 
 /**
@@ -26,7 +26,6 @@ import org.apache.cayenne.query.SortOrder;
 public abstract class ReferenceService<T> extends BaseService<T> implements IReferenceService<T> {
 
 	private static final Logger LOGGER = Logger.getLogger(ReferenceService.class);
-	private static int BATCH_SIZE = 200;
 
 
 	public ReferenceService() {
@@ -34,21 +33,18 @@ public abstract class ReferenceService<T> extends BaseService<T> implements IRef
 	}
 
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked"})
 	@Override
 	public List<T> getForReplication(Long ishVersion) {
 
 		List<T> records = null;
 
-		if ((ishVersion != null) && (ishVersion > 0)) {
+		if ((ishVersion != null) && (ishVersion >= 0)) {
 
-			Expression qualifier = ExpressionFactory.matchExp(
-					IReferenceService.ISH_VERSION_PROPERTY, ishVersion);
+			Expression qualifier = ExpressionFactory.matchExp(ISH_VERSION_PROPERTY, ishVersion);
 
 			SelectQuery query = new SelectQuery(getEntityClass());
-			query.andQualifier(qualifier);
-			query.addOrdering(ID_PK_COLUMN, SortOrder.ASCENDING);
-			query.setPageSize(BATCH_SIZE);
+			query.setQualifier(qualifier);
 
 			try {
 				records = (List<T>) getCayenneService().sharedContext().performQuery(query);
@@ -71,11 +67,13 @@ public abstract class ReferenceService<T> extends BaseService<T> implements IRef
 
 		String sql = "select max(ishVersion) from " + getEntityClass().getSimpleName();
 		SQLTemplate query = new SQLTemplate(getEntityClass(), sql);
+		query.setFetchingDataRows(true);
 		List<?> results = getCayenneService().sharedContext().performQuery(query);
 
 		if ((results != null) && ! results.isEmpty()) {
 			try {
-				max = (Long) results.get(0);
+				Map row = (Map)results.get(0);
+				max = (Long) row.get("max(ishVersion)");
 			} catch(Exception e) {
 				LOGGER.error("Error while attempting to convert ish_version", e);
 			}
