@@ -57,7 +57,7 @@ public interface ReferencePortType {
 	 *
 	 * @return
 	 */
-//	List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber);
+	List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -74,7 +74,7 @@ public interface ReferencePortType {
 	 *
 	 * @return
 	 */
-//	List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber);
+	List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -91,7 +91,7 @@ public interface ReferencePortType {
 	 *
 	 * @return
 	 */
-//	List<Module_Stub> getModules(Long angelVersion, Integer batchNumber);
+	List<Module_Stub> getModules(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -108,7 +108,7 @@ public interface ReferencePortType {
 	 *
 	 * @return
 	 */
-//	List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber);
+	List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber);
 
 	/**
 	 * Call to get the next batch of records from the queue.
@@ -125,6 +125,6 @@ public interface ReferencePortType {
 	 *
 	 * @return
 	 */
-//	List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber);
+	List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber);
 
 }

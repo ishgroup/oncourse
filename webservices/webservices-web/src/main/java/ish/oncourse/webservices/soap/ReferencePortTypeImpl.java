@@ -13,7 +13,20 @@ import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.services.reference.IModuleService;
 import ish.oncourse.services.reference.IQualificationService;
+import ish.oncourse.services.reference.IReferenceService;
 import ish.oncourse.services.reference.ITrainingPackageService;
+import ish.oncourse.webservices.soap.builders.CountryStubBuilder;
+import ish.oncourse.webservices.soap.builders.LanguageStubBuilder;
+import ish.oncourse.webservices.soap.builders.ModuleStubBuilder;
+import ish.oncourse.webservices.soap.builders.QualificationStubBuilder;
+import ish.oncourse.webservices.soap.builders.TrainingPackageStubBuilder;
+import ish.oncourse.webservices.soap.stubs.Country_Stub;
+import ish.oncourse.webservices.soap.stubs.Language_Stub;
+import ish.oncourse.webservices.soap.stubs.Module_Stub;
+import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
+import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +57,13 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	private IQualificationService qualificationService;
 	@Inject @Autowired
 	private ITrainingPackageService trainingPackageService;
+	
+	private List<IReferenceService<?>> allServices;
 
 	private static final Logger LOGGER = Logger.getLogger(ReferencePortTypeImpl.class);
 
+	public ReferencePortTypeImpl() {
+	}
 
 	@Override
 	public HashMap<String, Long> checkVersions() {
@@ -60,53 +77,22 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 		Long version = null;
 		HashMap<String, Long> versions = new HashMap<String, Long>();
 
-		if (countryService == null) {
-			LOGGER.error("Country Service is not initialised!");
-		} else {
-			version = countryService.findMaxIshVersion();
-			if (version != null) {
-				versions.put(Country.class.getName(), version);
-			}
-		}
-		if (languageService == null) {
-			LOGGER.error("Language Service is not initialised!");
-		} else {
-			version = languageService.findMaxIshVersion();
-			if (version != null) {
-				versions.put(Language.class.getName(), version);
-			}
-		}
-		if (moduleService == null) {
-			LOGGER.error("Module Service is not initialised!");
-		} else {
-			version = moduleService.findMaxIshVersion();
-			if (version != null) {
-				versions.put(Module.class.getName(), version);
-			}
-		}
-		if (qualificationService == null) {
-			LOGGER.error("Qualification Service is not initialised!");
-		} else {
-			version = qualificationService.findMaxIshVersion();
-			if (version != null) {
-				versions.put(Qualification.class.getName(), version);
-			}
-		}
-		if (trainingPackageService == null) {
-			LOGGER.error("Training Package Service is not initialised!");
-		} else {
-			version = trainingPackageService.findMaxIshVersion();
-			if (version != null) {
-				versions.put(TrainingPackage.class.getName(), version);
+		for (IReferenceService<?> service : getAllServices()) {
+			if (service == null) {
+				LOGGER.error("Service is null!");
+			} else {
+				version = service.findMaxIshVersion();
+				if (version != null) {
+					versions.put(service.getEntityClass().getSimpleName(), version);
+				}
 			}
 		}
 
 		return versions;
 	}
 
-/*	@Override
-	public List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber)
-			throws AuthenticationException {
+	@Override
+	public List<Country_Stub> getCountries(Long angelVersion, Integer batchNumber) {
 
 		List<Country_Stub> stubs = new ArrayList<Country_Stub>();
 		List<Country> records = countryService.getForReplication(
@@ -122,8 +108,8 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 		return stubs;
 	}
 
-	public List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber)
-			throws AuthenticationException {
+	@Override
+	public List<Language_Stub> getLanguages(Long angelVersion, Integer batchNumber) {
 
 		List<Language_Stub> stubs = new ArrayList<Language_Stub>();
 		List<Language> records = languageService.getForReplication(
@@ -139,8 +125,8 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 		return stubs;
 	}
 
-	public List<Module_Stub> getModules(Long angelVersion, Integer batchNumber)
-			throws AuthenticationException {
+	@Override
+	public List<Module_Stub> getModules(Long angelVersion, Integer batchNumber) {
 
 		List<Module_Stub> stubs = new ArrayList<Module_Stub>();
 		List<Module> records = moduleService.getForReplication(
@@ -156,8 +142,8 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 		return stubs;
 	}
 
-	public List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber)
-			throws AuthenticationException {
+	@Override
+	public List<Qualification_Stub> getQualifications(Long angelVersion, Integer batchNumber) {
 
 		List<Qualification_Stub> stubs = new ArrayList<Qualification_Stub>();
 		List<Qualification> records = qualificationService.getForReplication(
@@ -173,8 +159,8 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 		return stubs;
 	}
 
-	public List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber)
-			throws AuthenticationException {
+	@Override
+	public List<TrainingPackage_Stub> getTrainingPackages(Long angelVersion, Integer batchNumber) {
 
 		List<TrainingPackage_Stub> stubs = new ArrayList<TrainingPackage_Stub>();
 		List<TrainingPackage> records = trainingPackageService.getForReplication(
@@ -188,5 +174,19 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 		}
 
 		return stubs;
-	}*/
+	}
+
+	private List<IReferenceService<?>> getAllServices() {
+		if (allServices == null) {
+			allServices = new ArrayList<IReferenceService<?>>();
+			allServices.add(countryService);
+			allServices.add(languageService);
+			allServices.add(moduleService);
+			allServices.add(qualificationService);
+			allServices.add(trainingPackageService);
+		}
+
+		return allServices;
+	}
+
 }
