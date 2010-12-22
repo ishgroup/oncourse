@@ -84,11 +84,9 @@
 				</li>
 			</t:if>
 			<t:if test="excludePrice" negate="true">
-				<p:else>
-					<li>
-						<span t:type="ui/CourseClassPrice" courseClass="courseClass" />
-					</li>
-				</p:else>
+				<li>
+					<span t:type="ui/CourseClassPrice" courseClass="courseClass" />
+				</li>
 			</t:if>
 		</ul>
 		<t:body />

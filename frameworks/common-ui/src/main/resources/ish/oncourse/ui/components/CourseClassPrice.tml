@@ -6,6 +6,7 @@
 				<t:output value="courseClass.feeIncGst" format="feeFormat" />
 			</span>
 			<t:output value="discountedFee" format="feeFormat" />
+			<p:else><t:output value="courseClass.feeIncGst" format="feeFormat" /></p:else>
 		</t:if>
 
 		<span class="gst">
