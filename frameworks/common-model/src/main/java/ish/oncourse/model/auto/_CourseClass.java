@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -127,11 +126,11 @@ public abstract class _CourseClass extends CayenneDataObject {
         return (Money)readProperty("feeExGst");
     }
 
-    public void setFeeGst(BigDecimal feeGst) {
+    public void setFeeGst(Money feeGst) {
         writeProperty("feeGst", feeGst);
     }
-    public BigDecimal getFeeGst() {
-        return (BigDecimal)readProperty("feeGst");
+    public Money getFeeGst() {
+        return (Money)readProperty("feeGst");
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {

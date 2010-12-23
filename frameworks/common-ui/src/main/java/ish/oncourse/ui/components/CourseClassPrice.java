@@ -60,7 +60,7 @@ public class CourseClassPrice {
 	}
 
 	public boolean isHasDiscountValue() {
-		return Money.ZERO.compareTo(discountValue) != 0;
+		return !discountValue.isZero();
 	}
 
 	public boolean isTaxExempt() {

@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.components;
 
 import ish.math.Country;
-import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Preference;
@@ -62,7 +61,7 @@ public class EnrolmentPrice {
 	}
 
 	private boolean hasDiscountValue() {
-		return Money.ZERO.compareTo(enrolment.getInvoiceLine().getDiscountTotalExTax()) != 0;
+		return !enrolment.getInvoiceLine().getDiscountTotalExTax().isZero();
 	}
 
 }

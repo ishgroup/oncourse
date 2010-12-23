@@ -215,14 +215,29 @@ public class EnrolCourses {
 	}
 
 	public boolean isHasDiscount() {
-		// TODO discounts from enrolments - wo:ISHKeyValueConditional
-		// key="payment.totalDiscountAmount" value="$0" operator="gt"
-		return true;
+		Money result = Money.ZERO;
+		for (int i = 0; i < contacts.size(); i++) {
+			for (int j = 0; j < classesToEnrol.size(); j++) {
+				InvoiceLine invoiceLine = enrolments[i][j].getInvoiceLine();
+				if (invoiceLine != null) {
+					result = result.add(invoiceLine.getDiscountTotalExTax());
+				}
+			}
+		}
+		return !result.isZero();
 	}
 
-	public BigDecimal getTotalDiscountAmountIncTax() {
-		// TODO payment.totalDiscountAmountIncTax
-		return BigDecimal.ZERO;
+	public Money getTotalDiscountAmountIncTax() {
+		Money result = Money.ZERO;
+		for (int i = 0; i < contacts.size(); i++) {
+			for (int j = 0; j < classesToEnrol.size(); j++) {
+				InvoiceLine invoiceLine = enrolments[i][j].getInvoiceLine();
+				if (invoiceLine != null) {
+					result = result.add(invoiceLine.getDiscountTotalIncTax());
+				}
+			}
+		}
+		return result;
 	}
 
 	public Money getTotalIncGst() {

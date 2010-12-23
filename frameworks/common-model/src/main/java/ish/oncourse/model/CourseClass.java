@@ -198,11 +198,11 @@ public class CourseClass extends _CourseClass {
 
 	public boolean hasFeeIncTax() {
 		Money fee = getFeeIncGst();
-		return fee != null && Money.ZERO.compareTo(fee) < 0;
+		return fee != null && !fee.isZero();
 	}
 
 	public Money getFeeIncGst() {
-		BigDecimal feeGst = getFeeGst();
+		Money feeGst = getFeeGst();
 		Money feeExGst = getFeeExGst();
 		if (feeGst == null || feeExGst == null) {
 			return feeExGst;
@@ -211,8 +211,8 @@ public class CourseClass extends _CourseClass {
 	}
 
 	public boolean isGstExempt() {
-		BigDecimal feeGst = getFeeGst();
-		return feeGst == null || Money.ZERO.compareTo(new Money(feeGst)) == 0;
+		Money feeGst = getFeeGst();
+		return feeGst == null || feeGst.isZero();
 	}
 
 	/**

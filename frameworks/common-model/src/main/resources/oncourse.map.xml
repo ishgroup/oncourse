@@ -897,7 +897,7 @@
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="feeExGst" type="ish.math.Money" db-attribute-path="feeExGst"/>
-		<obj-attribute name="feeGst" type="java.math.BigDecimal" db-attribute-path="feeGst"/>
+		<obj-attribute name="feeGst" type="ish.math.Money" db-attribute-path="feeGst"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="materials_textile"/>

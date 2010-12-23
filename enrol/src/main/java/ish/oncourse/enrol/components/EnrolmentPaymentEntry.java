@@ -199,8 +199,7 @@ public class EnrolmentPaymentEntry {
 	}
 
 	public boolean isZeroPayment() {
-		// TODO payment.isZeroTotalIncGst
-		return false;
+		return totalIncGst.isZero();
 	}
 
 	public boolean isHasConcessionsCollege() {
