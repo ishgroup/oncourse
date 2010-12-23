@@ -38,6 +38,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`College` (
   `isWebSitePaymentsEnabled` TINYINT(1) NULL DEFAULT NULL ,
   `isTestingWebServicePayments` TINYINT(1) NULL DEFAULT NULL ,
   `isTestingWebSitePayments` TINYINT(1) NULL DEFAULT NULL ,
+  `communication_key` BIGINT(20) NULL DEFAULT NULL ,
   `requiresAvetmiss` TINYINT(1) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,

@@ -93,7 +93,7 @@
 	</db-entity>
 	<db-entity name="College" catalog="willow_college">
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
-		<db-attribute name="communication_key" type="BIGINT"/>
+		<db-attribute name="communication_key" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
