@@ -82,7 +82,7 @@ public class EnrolmentPaymentResult {
 						item.setProductName(enrolment.getCourseClass().getCourse().getName());
 						item.setQuantity(1);
 						item.setSkuCode(enrolment.getCourseClass().getCourse().getCode());
-						item.setUnitPrice(enrolment.getDiscountedExTaxAmount());
+						item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax().toBigDecimal());
 						transactionItems.add(item);
 					}
 

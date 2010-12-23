@@ -1,10 +1,8 @@
 package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
-import ish.math.Money;
 import ish.oncourse.model.auto._Enrolment;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -46,28 +44,5 @@ public class Enrolment extends _Enrolment {
 		}
 		return false;
 	}*/
-
-    public BigDecimal getDiscountedExTaxAmount(){
-        if (getDiscount() == null) {
-            return getCourseClass().getFeeExGst().toBigDecimal();
-        }
-        BigDecimal discountRate = getDiscount().getDiscountRate();
-        if (discountRate != null) {
-            return getCourseClass().getFeeExGst().toBigDecimal().multiply(discountRate);
-        } else {
-            return getDiscount().getDiscountAmount();
-        }
-    }
-
-    public BigDecimal getDiscountedIncTaxAmount() {
-        BigDecimal exTaxAmount = getDiscountedExTaxAmount();
-        BigDecimal taxAmount = getCourseClass().getFeeGst();
-        return exTaxAmount.add(taxAmount);
-    }
-
-
-    public BigDecimal getTotalDiscountIncTax() {
-        return getCourseClass().getFeeIncGst().toBigDecimal().subtract(getDiscountedIncTaxAmount());
-    }
 
 }

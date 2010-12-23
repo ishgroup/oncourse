@@ -62,10 +62,7 @@ public class EnrolmentPrice {
 	}
 
 	private boolean hasDiscountValue() {
-		if (enrolment.getDiscount() == null) {
-			return false;
-		}
-		return Money.ZERO.toBigDecimal().compareTo(enrolment.getDiscount().getDiscountAmount()) != 0;
+		return Money.ZERO.compareTo(enrolment.getInvoiceLine().getDiscountTotalExTax()) != 0;
 	}
 
 }

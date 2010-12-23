@@ -260,7 +260,6 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="discountId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
@@ -1573,9 +1572,6 @@
 	<db-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
-	<db-relationship name="enrolments" source="Discount" target="Enrolment" toMany="true">
-		<db-attribute-pair source="id" target="discountId"/>
-	</db-relationship>
 	<db-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLine_Discount" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
@@ -1599,9 +1595,6 @@
 	</db-relationship>
 	<db-relationship name="courseClass" source="Enrolment" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
-	</db-relationship>
-	<db-relationship name="discount" source="Enrolment" target="Discount" toMany="false">
-		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="invoiceLine" source="Enrolment" target="InvoiceLine" toMany="false">
 		<db-attribute-pair source="id" target="enrolmentId"/>
@@ -2078,7 +2071,6 @@
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
-	<obj-relationship name="enrolments" source="Discount" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="college" source="DiscountConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
@@ -2087,7 +2079,6 @@
 	<obj-relationship name="discount" source="DiscountCourseClass" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
-	<obj-relationship name="discount" source="Enrolment" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>

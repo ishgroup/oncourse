@@ -520,7 +520,6 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Enrolment` (
   `collegeId` BIGINT(20) NOT NULL ,
   `courseClassId` BIGINT(20) NOT NULL ,
   `studentId` BIGINT(20) NOT NULL ,
-  `discountId` BIGINT(20) NULL DEFAULT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
   `isDeleted` TINYINT(1) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
@@ -533,7 +532,6 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Enrolment` (
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `Enrolment_ibfk_2` (`courseClassId` ASC) ,
   INDEX `Enrolment_ibfk_3` (`studentId` ASC) ,
-  INDEX `Enrolment_ibfk_4` (`discountId` ASC) ,
   CONSTRAINT `Enrolment_ibfk_1`
     FOREIGN KEY (`collegeId` )
     REFERENCES `willow_college`.`College` (`id` ),
@@ -542,10 +540,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Enrolment` (
     REFERENCES `willow_college`.`CourseClass` (`id` ),
   CONSTRAINT `Enrolment_ibfk_3`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ),
-  CONSTRAINT `Enrolment_ibfk_4`
-    FOREIGN KEY (`discountId` )
-    REFERENCES `willow_college`.`Discount` (`id` ))
+    REFERENCES `willow_college`.`Student` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 140104
 DEFAULT CHARACTER SET = utf8

@@ -8,7 +8,6 @@ import org.apache.cayenne.CayenneDataObject;
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.model.Student;
@@ -29,7 +28,6 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String STATUS_PROPERTY = "status";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
-    public static final String DISCOUNT_PROPERTY = "discount";
     public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
     public static final String OUTCOMES_PROPERTY = "outcomes";
     public static final String STUDENT_PROPERTY = "student";
@@ -93,15 +91,6 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     public CourseClass getCourseClass() {
         return (CourseClass)readProperty("courseClass");
-    }
-
-
-    public void setDiscount(Discount discount) {
-        setToOneTarget("discount", discount, true);
-    }
-
-    public Discount getDiscount() {
-        return (Discount)readProperty("discount");
     }
 
 
