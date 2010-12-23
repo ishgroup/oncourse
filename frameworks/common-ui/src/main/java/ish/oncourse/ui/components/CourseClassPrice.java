@@ -48,7 +48,7 @@ public class CourseClassPrice {
 		this.feeFormat = new DecimalFormat("#,##0.00");
 		discountedFee=discountService.discountedFeeIncTax(getDiscounts(), courseClass);
 		discountValue = discountService.discountValueForListFiltered(getDiscounts(), courseClass);
-		discountsWithConcessions = courseClass.getConcessionDiscounts();
+		discountsWithConcessions = discountService.getConcessionDiscounts(courseClass);
 	}
 
 	public boolean isHasFee() {

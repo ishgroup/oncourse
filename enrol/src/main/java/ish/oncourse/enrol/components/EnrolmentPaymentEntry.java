@@ -12,6 +12,7 @@ import ish.oncourse.model.Preference;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
+import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.IPreferenceService;
 
 import java.math.BigDecimal;
@@ -59,6 +60,9 @@ public class EnrolmentPaymentEntry {
 	 */
 	@Inject
 	private IPreferenceService preferenceService;
+	
+	@Inject
+	private IDiscountService discountService;
 
 	/**
 	 * Parameters
@@ -206,7 +210,7 @@ public class EnrolmentPaymentEntry {
 
 	public boolean isHasConcessionsEnrolment() {
 		for (Enrolment enrolment : enrolments) {
-			if (!enrolment.getCourseClass().getConcessionDiscounts().isEmpty()) {
+			if (!discountService.getConcessionDiscounts(enrolment.getCourseClass()).isEmpty()) {
 				return true;
 			}
 		}

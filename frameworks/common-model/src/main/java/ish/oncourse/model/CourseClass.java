@@ -472,26 +472,6 @@ public class CourseClass extends _CourseClass {
 	public boolean isRunning() {
 		return hasStarted() && !hasEnded();
 	}
-
-	/**
-	 * All CourseClass-related discounts that require concessions instead of
-	 * discount codes
-	 * 
-	 * @return
-	 */
-	public List<Discount> getConcessionDiscounts() {
-		List<DiscountCourseClass> discountCourseClasses = getDiscountCourseClasses();
-
-		List<Discount> discounts = new ArrayList<Discount>(discountCourseClasses.size());
-		for (DiscountCourseClass dcc : discountCourseClasses) {
-
-			Discount discount = dcc.getDiscount();
-			if (discount != null && !discount.getDiscountConcessionTypes().isEmpty()) {
-				discounts.add(discount);
-			}
-		}
-		return discounts;
-	}
 	
 	/**
 	 * This is a faked flattened relationship via discountCourseClasses.discount.

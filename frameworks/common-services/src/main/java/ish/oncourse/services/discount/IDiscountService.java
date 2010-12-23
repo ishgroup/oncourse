@@ -91,4 +91,14 @@ public interface IDiscountService {
 	 */
 	Money discountedValue(Discount discount, Money price);
 
+	/**
+	 * All discounts bound to the given courseClass that require concessions instead of
+	 * discount codes.
+	 * 
+	 * @param aClass
+	 *            - the course class
+	 *            
+	 * @return the list of discounts.
+	 */
+	List<Discount> getConcessionDiscounts(CourseClass aClass);
 }

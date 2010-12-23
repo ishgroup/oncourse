@@ -3,6 +3,7 @@ package ish.oncourse.services.discount;
 import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountCourseClass;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -169,4 +170,21 @@ public class DiscountService implements IDiscountService {
 		return price.subtract(discountValue(discount, price));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see ish.oncourse.services.discount.IDiscountService#getConcessionDiscounts(ish.oncourse.model.CourseClass)
+	 */
+	@Override
+	public List<Discount> getConcessionDiscounts(CourseClass aClass) {
+		List<Discount> availableDiscounts = getApplicableDiscounts(aClass);
+		
+		List<Discount> discounts = new ArrayList<Discount>(availableDiscounts.size());
+		for (Discount discount : availableDiscounts) {
+			if (!discount.getDiscountConcessionTypes().isEmpty()) {
+				discounts.add(discount);
+			}
+		}
+		return discounts;
+	}
+	
 }
