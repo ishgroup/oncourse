@@ -20,7 +20,6 @@ import ish.oncourse.model.Language;
 public class LanguageService extends ReferenceService<Language>
 		implements ILanguageService {
 
-	@Override
 	public Language getLanguageByName(String languageName) {
 		Expression qualifier = ExpressionFactory.matchExp(
 				Language.NAME_PROPERTY, languageName);

@@ -51,7 +51,6 @@ public class BaseService<T> implements IBaseService<T> {
 		return webSiteService;
 	}
 
-	@Override
 	public T findById(Long willowId) {
 
 		T record = null;
@@ -77,7 +76,6 @@ public class BaseService<T> implements IBaseService<T> {
 		return record;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public List<T> findByQualifier(Expression qualifier) {
 

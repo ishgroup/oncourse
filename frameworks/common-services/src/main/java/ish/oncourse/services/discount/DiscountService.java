@@ -25,7 +25,6 @@ public class DiscountService implements IDiscountService {
 	 *      angel/client/ish.oncourse.cayenne.
 	 *      Discount.getApplicableDiscounts(CourseClass courseClass)
 	 */
-	@Override
 	public List<Discount> getApplicableDiscounts(CourseClass courseClass) {
 		List<Discount> results = new ArrayList<Discount>();
 
@@ -51,7 +50,6 @@ public class DiscountService implements IDiscountService {
 	 *      combined/notToCombine discounts is based on
 	 *      angel/client/ish.oncourse.cayenne.InvoiceLine.updateDiscount()
 	 */
-	@Override
 	public List<Discount> chooseDiscounts(List<Discount> discounts, CourseClass aClass) {
 		Vector<Discount> chosenDiscounts = new Vector<Discount>();
 		if (discounts != null && !discounts.isEmpty()) {
@@ -95,7 +93,6 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#discountedFeeExTax(java.util.List,
 	 *      ish.oncourse.model.CourseClass)
 	 */
-	@Override
 	public Money discountedFeeExTax(List<Discount> discounts, CourseClass aClass) {
 		Money feeExGst = aClass.getFeeExGst();
 		Money result = aClass.getFeeExGst().subtract(
@@ -109,7 +106,6 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#discountedFeeIncTax(java.util.List,
 	 *      ish.oncourse.model.CourseClass)
 	 */
-	@Override
 	public Money discountedFeeIncTax(List<Discount> discounts, CourseClass aClass) {
 		Money feeIncGst = aClass.getFeeIncGst();
 		Money result = aClass.getFeeIncGst().subtract(
@@ -123,7 +119,6 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#discountValueForList(java.util.List,
 	 *      ish.math.Money)
 	 */
-	@Override
 	public Money discountValueForList(List<Discount> discounts, Money price) {
 		Money result = Money.ZERO;
 		for (Discount d : discounts) {
@@ -138,7 +133,6 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#discountValueForListFiltered(java.util.List,
 	 *      ish.oncourse.model.CourseClass)
 	 */
-	@Override
 	public Money discountValueForListFiltered(List<Discount> discounts, CourseClass aClass) {
 		return discountValueForList(chooseDiscounts(discounts, aClass), aClass.getFeeExGst());
 	}
@@ -149,7 +143,6 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#discountValue(ish.oncourse.model.Discount,
 	 *      ish.math.Money)
 	 */
-	@Override
 	public Money discountValue(Discount discount, Money price) {
 		Money discountValue = Money.ZERO;
 		BigDecimal discountRate = discount.getDiscountRate();
@@ -165,7 +158,6 @@ public class DiscountService implements IDiscountService {
 	 * {@inheritDoc}
 	 * @see ish.oncourse.services.discount.IDiscountService#discountedValue(ish.oncourse.model.Discount, ish.math.Money)
 	 */
-	@Override
 	public Money discountedValue(Discount discount, Money price) {
 		return price.subtract(discountValue(discount, price));
 	}
@@ -174,7 +166,6 @@ public class DiscountService implements IDiscountService {
 	 * {@inheritDoc}
 	 * @see ish.oncourse.services.discount.IDiscountService#getConcessionDiscounts(ish.oncourse.model.CourseClass)
 	 */
-	@Override
 	public List<Discount> getConcessionDiscounts(CourseClass aClass) {
 		List<Discount> availableDiscounts = getApplicableDiscounts(aClass);
 		

@@ -34,7 +34,6 @@ public abstract class ReferenceService<T> extends BaseService<T> implements IRef
 
 	
 	@SuppressWarnings({"unchecked"})
-	@Override
 	public List<T> getForReplication(Long ishVersion) {
 
 		List<T> records = null;
@@ -60,7 +59,6 @@ public abstract class ReferenceService<T> extends BaseService<T> implements IRef
 		return records;
 	}
 
-	@Override
 	public Long findMaxIshVersion() {
 
 		Long max = null;

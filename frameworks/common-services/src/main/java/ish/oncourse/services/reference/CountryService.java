@@ -20,7 +20,6 @@ import ish.oncourse.model.Country;
 public class CountryService extends ReferenceService<Country>
 		implements ICountryService {
 
-	@Override
 	public Country getCountryByName(String countryName) {
 		Expression qualifier = ExpressionFactory.matchExp(
 				Country.NAME_PROPERTY, countryName);

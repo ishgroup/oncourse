@@ -14,7 +14,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 public class ModuleService extends ReferenceService<Module>
 		implements IModuleService {
 
-	@Override
 	public Module getModuleByTitle(String title) {
 		Expression qualifier = ExpressionFactory.matchExp(
 				Module.TITLE_PROPERTY, title);

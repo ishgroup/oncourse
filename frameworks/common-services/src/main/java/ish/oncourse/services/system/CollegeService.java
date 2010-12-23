@@ -23,7 +23,6 @@ public class CollegeService extends BaseService<College> implements ICollegeServ
 	private static final Logger LOGGER = Logger.getLogger(CollegeService.class);
 
 
-	@Override
 	public College findBySecurityCode(String securityCode) {
 
 		College college = null;

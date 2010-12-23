@@ -14,7 +14,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 public class TrainingPackageService extends ReferenceService<TrainingPackage>
 		implements ITrainingPackageService {
 
-	@Override
 	public TrainingPackage getTrainingPackageByTitle(String name) {
 		Expression qualifier = ExpressionFactory.matchExp(
 				TrainingPackage.TITLE_PROPERTY, name);

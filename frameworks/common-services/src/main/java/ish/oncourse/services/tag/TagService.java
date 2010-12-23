@@ -109,7 +109,6 @@ public class TagService implements ITagService {
 		return ids;
 	}
 
-	@Override
 	public List<Tag> getTagsForEntity(String entityName, Long entityId) {
 
 		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
