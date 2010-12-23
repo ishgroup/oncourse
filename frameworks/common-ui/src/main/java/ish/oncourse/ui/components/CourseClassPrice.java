@@ -80,7 +80,7 @@ public class CourseClassPrice {
 	
 
 	public Money getDiscountItemFeeIncTax() {
-		return discountService.discountValue(discountItem, courseClass.getFeeExGst());
+		return discountService.discountedValue(discountItem, courseClass.getFeeExGst());
 	}
 
 }

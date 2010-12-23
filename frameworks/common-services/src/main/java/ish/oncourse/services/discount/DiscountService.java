@@ -160,4 +160,13 @@ public class DiscountService implements IDiscountService {
 		return discountValue;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see ish.oncourse.services.discount.IDiscountService#discountedValue(ish.oncourse.model.Discount, ish.math.Money)
+	 */
+	@Override
+	public Money discountedValue(Discount discount, Money price) {
+		return price.subtract(discountValue(discount, price));
+	}
+
 }

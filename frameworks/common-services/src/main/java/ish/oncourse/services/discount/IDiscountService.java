@@ -4,7 +4,6 @@ import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface IDiscountService {
@@ -81,5 +80,15 @@ public interface IDiscountService {
 	 */
 	Money discountValue(Discount discount, Money price);
 
+	/**
+	 * Returns the discounted value for the given price 
+	 * if apply the given discount.
+	 * @param discount
+	 *            - the given discount.
+	 * @param price
+	 *            - the price for discount
+	 * @return the discount value
+	 */
+	Money discountedValue(Discount discount, Money price);
 
 }
