@@ -3,12 +3,19 @@ package ish.oncourse.services.discount;
 import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Student;
+import ish.oncourse.model.StudentConcession;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -16,6 +23,9 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
 public class DiscountService implements IDiscountService {
+	
+	public static final String AGE_UNDER = "<";
+	public static final String AGE_OVER = ">";
 
 	/**
 	 * {@inheritDoc}
@@ -54,6 +64,124 @@ public class DiscountService implements IDiscountService {
 		e = e.andExp(getCurrentDateFilter());
 
 		return e.filterObjects(discounts);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see ish.oncourse.services.discount.IDiscountService#getEnrolmentDiscounts(ish.oncourse.model.Enrolment)
+	 */
+	public List<Discount> getEnrolmentDiscounts(Enrolment enrolment) {
+
+		List<Discount> result = new ArrayList<Discount>();
+
+		for (Discount discount : getApplicableDiscounts(enrolment.getCourseClass())) {
+			if (isStudentEligibile(enrolment.getStudent(), discount)) {
+				result.add(discount);
+			}
+		}
+
+		// TODO process added discounts with promocodes
+
+		result = chooseBestDiscountsVariant(result, enrolment.getCourseClass());
+
+		return result;
+	}
+
+	/**
+	 * Determines if the given student is eligible for this Discount, based on:
+	 * enrolled within X days; student age; postcode; and concessions (test not
+	 * performed if this Discount is not related to any ConcessionTypes). If the
+	 * student has ANY of the concessions related to this Discount, they will be
+	 * eligible. If the student has none of them (and one or more are related to
+	 * this discount), they will NOT be eligible.
+	 * 
+	 * the implementation of this method is brought from
+	 * angel/client/ish.oncourse.cayenne.Discount#isStudentEligibile(Student
+	 * student)[97]
+	 * 
+	 * @param student
+	 * @return
+	 */
+	public boolean isStudentEligibile(Student student, Discount discount) {
+		if (student == null || discount == null) {
+			return false;
+		}
+
+		if (discount.getStudentEnrolledWithinDays() != null) {
+			if (student.getEnrolments() == null || student.getEnrolments().size() == 0) {
+				return false;// not eligibile
+			}
+
+			boolean notEligibile = true;
+			Calendar tresholdDate = new GregorianCalendar();
+			tresholdDate.add(Calendar.DATE, 0 - discount.getStudentEnrolledWithinDays());
+
+			for (Enrolment enr : student.getEnrolments()) {
+				Date startDate = enr.getCourseClass().getStartDate();
+				if (startDate.after(tresholdDate.getTime())) {
+					notEligibile = false;// not eligibile
+				}
+			}
+
+			if (notEligibile) {
+				return false;// not eligibile
+			}
+		}
+		if (discount.getStudentAge() != null) {
+			if (student.getContact().getDateOfBirth() == null) {
+				return false;// not eligibile
+			}
+
+			Calendar studentBirthDay = new GregorianCalendar();
+			studentBirthDay.setTime(student.getContact().getDateOfBirth());
+
+			Calendar thresholdYear = new GregorianCalendar();
+
+			int age = discount.getStudentAge();
+
+			thresholdYear.add(Calendar.YEAR, 0 - age);
+
+			if (AGE_UNDER.equals(discount.getStudentAgeOperator())
+					&& studentBirthDay.before(thresholdYear)) {
+				return false;// not eligibile
+			} else if (AGE_OVER.equals(discount.getStudentAgeOperator())
+					&& studentBirthDay.after(thresholdYear)) {
+				return false;// not eligibile
+			} else if (!AGE_OVER.equals(discount.getStudentAgeOperator())
+					&& !AGE_UNDER.equals(discount.getStudentAgeOperator())) {
+				return false;// not eligibile
+			}
+		}
+		if (!discount.getDiscountConcessionTypes().isEmpty()) {
+			boolean notEligibile = true;
+			for (DiscountConcessionType dct : discount.getDiscountConcessionTypes()) {
+				for (StudentConcession concession : student.getStudentConcessions()) {
+					if (concession.getConcessionType().equals(dct.getConcessionType())) {
+						if (!Boolean.TRUE.equals(concession.getConcessionType().getHasExpiryDate())
+								|| (concession.getExpiresOn() != null && concession.getExpiresOn()
+										.after(new Date()))) {
+							notEligibile = false;
+							break;
+						}
+					}
+				}
+			}
+			if (notEligibile)
+				return false; // does not have any of the concession types that
+								// give this discount
+		}
+
+		List<String> postcodes = Arrays.asList(discount.getStudentPostcodes().split("\\s*,\\s"));
+		if (!postcodes.isEmpty()) {
+			if (student.getContact().getPostcode() == null) {
+				return false;// not eligibile
+			}
+			if (!postcodes.contains(student.getContact().getPostcode())) {
+				return false;// not eligibile
+			}
+		}
+		return true;// eligibile
 	}
 
 	/**
@@ -164,7 +292,8 @@ public class DiscountService implements IDiscountService {
 			discountValue = maximumDiscount;
 		} else {
 			Money minimumDiscount = discount.getMinimumDiscount();
-			if (Money.ZERO.isLessThan(minimumDiscount) && discountValue.compareTo(minimumDiscount) < 0) {
+			if (Money.ZERO.isLessThan(minimumDiscount)
+					&& discountValue.compareTo(minimumDiscount) < 0) {
 				discountValue = minimumDiscount;
 			}
 		}

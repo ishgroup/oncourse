@@ -3,6 +3,7 @@ package ish.oncourse.services.discount;
 import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.Enrolment;
 
 import java.util.List;
 
@@ -26,6 +27,17 @@ public interface IDiscountService {
 	 * @return list of discounts
 	 */
 	List<Discount> filterDiscounts(List<Discount> discounts, CourseClass courseClass);
+
+	/**
+	 * Returns the best discounting variant for this enrolment assuming the
+	 * applicability to enrolment's courseClass and student's eligibility for
+	 * discount.
+	 * 
+	 * @param enrolment
+	 *            the enrolment under consideration
+	 * @return list of discounts
+	 */
+	List<Discount> getEnrolmentDiscounts(Enrolment enrolment);
 
 	/**
 	 * Chooses the best option (the max discount value) from the proposed
