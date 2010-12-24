@@ -34,7 +34,7 @@
 		          <map>
 		            <entry key="action" value="UsernameToken" />
 		            <entry key="passwordType" value="PasswordText" />
-		            <entry key="passwordCallbackClass">
+		            <entry key="passwordCallbackRef">
 		            	<ref bean="communicationKeyCallback"/>
 		            </entry>
 		          </map>
@@ -47,20 +47,6 @@
         id="doubleit"
         implementor="ish.oncourse.webservices.soap.DoubleItPortTypeImpl"
         address="/doubleIt">
-        <jaxws:inInterceptors>
-        	<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
-        	<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-        		<constructor-arg>
-		          <map>
-		            <entry key="action" value="UsernameToken" />
-		            <entry key="passwordType" value="PasswordText" />
-		            <entry key="passwordCallbackClass">
-		            	<ref bean="communicationKeyCallback"/>
-		            </entry>
-		          </map>
-       			</constructor-arg>
-        	</bean>
-        </jaxws:inInterceptors>
     </jaxws:endpoint>
 
 </beans>

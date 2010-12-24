@@ -13,6 +13,7 @@ import javax.xml.ws.WebServiceContext;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Web service which initiates/finishes conversations for Angel-Willow replication. 
@@ -29,7 +30,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 
 	private final static Logger LOGGER = Logger.getLogger(AuthenticationPortTypeImpl.class);
 
-	@Inject
+	@Inject @Autowired
 	private ICollegeService collegeService;
 
 	@Resource
@@ -49,9 +50,10 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 			throw new AuthenticationException("Invalid security code");
 		}
 
-		// Now check if communication key is valid
-
-		if (!lastCommKey.equals(college.getCommunicationKey())) {
+		// Now check if communication key is valid (note that a null college
+		// comm key means one has not been used yet or has been reset on Willow
+		// i.e. is communication valid
+		if ((college.getCommunicationKey() != null) && ! lastCommKey.equals(college.getCommunicationKey())) {
 			throw new AuthenticationException(String.format("Invalid communication key: %s.", lastCommKey));
 		}
 
