@@ -21,7 +21,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  * @author Marek Wawrzyczny
  */
 
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.AuthenticationPortType",
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.auth.AuthenticationPortType",
 		serviceName = "AuthenticationService",
 		portName = "AuthenticationPort")
 
