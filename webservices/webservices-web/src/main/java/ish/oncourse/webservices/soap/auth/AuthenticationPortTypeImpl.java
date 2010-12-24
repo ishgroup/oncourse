@@ -6,13 +6,13 @@ import ish.oncourse.webservices.soap.Status;
 
 import javax.annotation.Resource;
 import javax.jws.WebService;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceContext;
 
-import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -30,16 +30,17 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 
 	private final static Logger LOGGER = Logger.getLogger(AuthenticationPortTypeImpl.class);
 
-	@Inject @Autowired
+    @Inject @Autowired
 	private ICollegeService collegeService;
-
-	@Resource
-	private WebServiceContext webServiceContext;
+	
+	@Inject
+	@Autowired
+	private Request request;
 
 	@Override
 	public Long authenticate(String webServicesSecurityCode, Long lastCommKey) {
 
-		if (getHttpServletRequest().isRequestedSessionIdValid()) {
+		if (request.getSession(false) != null) {
 			throw new AuthenticationException("Authentication failure, existing session must be terminated first.");
 		}
 
@@ -60,7 +61,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		// Generate and store new communication key.
 		long newCommunicationKey = System.nanoTime();
 
-		HttpSession session = getHttpSession(true);
+		Session session = request.getSession(true);
 
 		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(webServicesSecurityCode, newCommunicationKey));
 
@@ -72,28 +73,8 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		Status status = new Status();
 
 		// clean up current session
-		getHttpSession(false).invalidate();
+		request.getSession(false).invalidate();
 
 		return status;
-	}
-
-	/**
-	 * Returns the HTTP Session associated with the request.
-	 * 
-	 * @param doCreate
-	 *            create a session if one does not exist if true
-	 * @return
-	 */
-	private HttpSession getHttpSession(boolean doCreate) {
-		return getHttpServletRequest().getSession(doCreate);
-	}
-
-	/**
-	 * Convenience method to extract http request from injected cxf objects.
-	 * 
-	 * @return http request
-	 */
-	private HttpServletRequest getHttpServletRequest() {
-		return (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
 	}
 }

@@ -1,7 +1,5 @@
 package ish.oncourse.services;
 
-import org.apache.tapestry5.ioc.ServiceBinder;
-
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.assetgroup.AssetGroupService;
@@ -16,8 +14,6 @@ import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.CourseClassService;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.discount.DiscountService;
-import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
@@ -66,7 +62,9 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
+
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.ServiceBinder;
 
 /**
  * A Tapestry IoC module definition for all common services.
@@ -109,7 +107,7 @@ public class ServiceModule {
 		binder.bind(IWebSiteService.class, WebSiteService.class);
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
-		binder.bind(IDiscountService.class, DiscountService.class);
+		//binder.bind(IDiscountService.class, DiscountService.class);
 
 		// Reference Data services
 		binder.bind(ICountryService.class, CountryService.class).withId("CountryService");

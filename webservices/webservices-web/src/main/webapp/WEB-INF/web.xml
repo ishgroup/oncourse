@@ -26,14 +26,17 @@
 		<param-name>tapestry.app-package</param-name>
 		<param-value>ish.oncourse.webservices</param-value>
 	</context-param>
+	
 	<context-param>
 		<param-name>tapestry.production-mode</param-name>
 		<param-value>false</param-value>
 	</context-param>
+	
 	<filter>
 		<filter-name>app</filter-name>
 		<filter-class>org.apache.tapestry5.spring.TapestrySpringFilter</filter-class>
 	</filter>
+	
 	<filter-mapping>
 		<filter-name>app</filter-name>
 		<url-pattern>/*</url-pattern>
