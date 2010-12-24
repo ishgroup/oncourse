@@ -59,6 +59,7 @@ public class Discount extends _Discount {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	protected static <T extends Discount> List<T> discountsForAbstractType(
 			List<T> discounts, CayenneDataObject obj) {
 		if (!(obj instanceof CourseClass) && !(obj instanceof Enrolment)) {
@@ -225,8 +226,9 @@ public class Discount extends _Discount {
 	 * @return zero if the class is not assigned for discount or a discount
 	 *         value.
 	 */
+	@Deprecated
 	public BigDecimal valueForCourseClass(CourseClass courseClass) {
-		BigDecimal result = Money.ZERO.toBigDecimal();
+		Money result = Money.ZERO;
 		if (courseClass != null && courseClass.hasFeeIncTax()
 				&& isValidWithGracePeriod()) {
 			if (LOG.isDebugEnabled()) {
@@ -241,7 +243,7 @@ public class Discount extends _Discount {
 			}
 			if (discounts.contains(this)) {
 				if (getDiscountAmount() != null
-						&& Money.ZERO.compareTo(new Money(getDiscountAmount())) < 0) {
+						&& Money.ZERO.compareTo(getDiscountAmount()) < 0) {
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("applying discount $ : "
 								+ getDiscountAmount());
@@ -251,32 +253,32 @@ public class Discount extends _Discount {
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("applying discount % : " + getDiscountRate());
 					}
-					result = courseClass.getFeeExGst().toBigDecimal().multiply(
+					result = courseClass.getFeeExGst().multiply(
 							getDiscountRate());
 
 					if (getMaximumDiscount() != null
-							&& Money.ZERO.compareTo(new Money(getMaximumDiscount())) < 0) {
+							&& Money.ZERO.compareTo(getMaximumDiscount()) < 0) {
 						if (result.compareTo(getMaximumDiscount()) > 0) {
 							result = getMaximumDiscount();
 						}
 					}
 
 					if (getMinimumDiscount() != null
-							&& Money.ZERO.compareTo(new Money(getMinimumDiscount())) < 0) {
+							&& Money.ZERO.compareTo(getMinimumDiscount()) < 0) {
 						if (result.compareTo(getMinimumDiscount()) < 0) {
 							result = getMinimumDiscount();
 						}
 					}
 				}
-				Money value = Money.valueOf(result);
+				Money value = result;
 				if (getRoundingMode() != null) {
 					value = value.round(getRoundingMode());
 				}
 
-				result = value.toBigDecimal();
+				result = value;
 			}
 		}
-		return result;
+		return result.toBigDecimal();
 	}
 
 	public boolean isValidWithGracePeriod() {

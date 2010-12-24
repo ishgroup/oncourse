@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.College;
 import ish.oncourse.model.DiscountConcessionType;
@@ -91,11 +92,11 @@ public abstract class _Discount extends CayenneDataObject {
         return (String)readProperty("detailTextile");
     }
 
-    public void setDiscountAmount(BigDecimal discountAmount) {
+    public void setDiscountAmount(Money discountAmount) {
         writeProperty("discountAmount", discountAmount);
     }
-    public BigDecimal getDiscountAmount() {
-        return (BigDecimal)readProperty("discountAmount");
+    public Money getDiscountAmount() {
+        return (Money)readProperty("discountAmount");
     }
 
     public void setDiscountRate(BigDecimal discountRate) {
@@ -112,18 +113,18 @@ public abstract class _Discount extends CayenneDataObject {
         return (Boolean)readProperty("isCodeRequired");
     }
 
-    public void setMaximumDiscount(BigDecimal maximumDiscount) {
+    public void setMaximumDiscount(Money maximumDiscount) {
         writeProperty("maximumDiscount", maximumDiscount);
     }
-    public BigDecimal getMaximumDiscount() {
-        return (BigDecimal)readProperty("maximumDiscount");
+    public Money getMaximumDiscount() {
+        return (Money)readProperty("maximumDiscount");
     }
 
-    public void setMinimumDiscount(BigDecimal minimumDiscount) {
+    public void setMinimumDiscount(Money minimumDiscount) {
         writeProperty("minimumDiscount", minimumDiscount);
     }
-    public BigDecimal getMinimumDiscount() {
-        return (BigDecimal)readProperty("minimumDiscount");
+    public Money getMinimumDiscount() {
+        return (Money)readProperty("minimumDiscount");
     }
 
     public void setModified(Date modified) {

@@ -16,9 +16,8 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-
 public class CourseClassPrice {
-	
+
 	@Inject
 	private IDiscountService discountService;
 
@@ -43,11 +42,17 @@ public class CourseClassPrice {
 	@Property
 	private Money discountValue;
 
+	private List<Discount> applicableDiscounts;
+
 	@SetupRender
 	public void beforeRender() {
 		this.feeFormat = new DecimalFormat("#,##0.00");
-		discountedFee=discountService.discountedFeeIncTax(getDiscounts(), courseClass);
-		discountValue = discountService.discountValueForListFiltered(getDiscounts(), courseClass);
+		applicableDiscounts = discountService.chooseBestDiscountsVariant(getDiscounts(),
+				courseClass);
+		discountedFee = discountService.discountedValueForList(applicableDiscounts,
+				courseClass.getFeeIncGst());
+		discountValue = discountService.discountValueForList(applicableDiscounts,
+				courseClass.getFeeIncGst());
 		discountsWithConcessions = discountService.getConcessionDiscounts(courseClass);
 	}
 
@@ -77,10 +82,10 @@ public class CourseClassPrice {
 		return new ArrayList<Discount>();
 	}
 
-	
-
 	public Money getDiscountItemFeeIncTax() {
-		return discountService.discountedValue(discountItem, courseClass.getFeeExGst());
+		ArrayList<Discount> disc = new ArrayList<Discount>(1);
+		disc.add(discountItem);
+		return discountService.discountedValueForList(disc, courseClass.getFeeExGst());
 	}
 
 }

@@ -8,59 +8,54 @@ import java.util.List;
 
 public interface IDiscountService {
 	/**
-	 * Returns the list of discounts, applicable to the given class:
-	 * current discounts of this class without promo codes.
+	 * Returns the list of discounts, applicable to the given class: current
+	 * discounts of this class without promo codes.
 	 * 
-	 * @param courseClass given class
+	 * @param courseClass
+	 *            given class
 	 * @return list of discounts
 	 */
 	List<Discount> getApplicableDiscounts(CourseClass courseClass);
-	
+
 	/**
-	 * Chooses the best option (the max discount value) from the proposed discounts: 
-	 * use the combination of "combinable" discounts, or use the best of "uncombinable"
-	 * @param discounts proposed discounts(eg promotions)
-	 * @param aClass the given class
+	 * Filters the given list of discounts and returns the discounts, applicable
+	 * to the given class.
+	 * 
+	 * @param courseClass
+	 *            given class
+	 * @return list of discounts
+	 */
+	List<Discount> filterDiscounts(List<Discount> discounts, CourseClass courseClass);
+
+	/**
+	 * Chooses the best option (the max discount value) from the proposed
+	 * discounts (assuming all the discounts in list are applicable): uses the
+	 * combination of "combinable" discounts, or uses the best one of
+	 * "uncombinable"
+	 * 
+	 * @param discounts
+	 *            proposed discounts(eg promotions)
+	 * @param aClass
+	 *            the given class
 	 * @return
 	 */
-	List<Discount> chooseDiscounts(List<Discount> discounts, CourseClass aClass);
-	
+	List<Discount> chooseBestDiscountsVariant(List<Discount> discounts, CourseClass aClass);
+
 	/**
-	 * Returns the discounted fee (without tax) for the given CourseClass 
-	 * if apply the discounts that could be obtained from the given list.
-	 * @param discounts
-	 *            - a collection of discounts to filter.
+	 * All discounts bound to the given courseClass that require concessions
+	 * instead of discount codes.
+	 * 
 	 * @param aClass
 	 *            - the course class
-	 * @return the discounted value
+	 * 
+	 * @return the list of discounts.
 	 */
-	Money discountedFeeExTax(List<Discount> discounts, CourseClass aClass);
-	
+	List<Discount> getConcessionDiscounts(CourseClass aClass);
+
 	/**
-	 * Returns the discounted fee (with tax) for the given CourseClass 
-	 * if apply the discounts that could be obtained from the given list.
-	 * @param discounts
-	 *            - a collection of discounts to filter.
-	 * @param aClass
-	 *            - the course class
-	 * @return the discounted value
-	 */
-	Money discountedFeeIncTax(List<Discount> discounts, CourseClass aClass);
-	
-	/**
-	 * Returns the discount value for the given CourseClass
-	 * if apply the discounts that could be obtained from the given list.
-	 * @param discounts
-	 *            - a collection of discounts to filter.
-	 * @param aClass
-	 *            - the course class
-	 * @return the discount value
-	 */
-	Money discountValueForListFiltered(List<Discount> discounts,  CourseClass aClass);
-	
-	/**
-	 * Returns the discount value for the given price 
-	 * if apply the discounts from the given list.
+	 * Returns the discount value for the given price if apply the discounts
+	 * from the given list(don't check the applicability, just calculate).
+	 * 
 	 * @param discounts
 	 *            - a collection of discounts to apply.
 	 * @param price
@@ -68,37 +63,17 @@ public interface IDiscountService {
 	 * @return the discount value
 	 */
 	Money discountValueForList(List<Discount> discounts, Money price);
-	
-	/**
-	 * Returns the discount value for the given price 
-	 * if apply the given discount.
-	 * @param discount
-	 *            - the given discount.
-	 * @param price
-	 *            - the price for discount
-	 * @return the discount value
-	 */
-	Money discountValue(Discount discount, Money price);
 
 	/**
-	 * Returns the discounted value for the given price 
-	 * if apply the given discount.
-	 * @param discount
-	 *            - the given discount.
-	 * @param price
-	 *            - the price for discount
-	 * @return the discount value
-	 */
-	Money discountedValue(Discount discount, Money price);
-
-	/**
-	 * All discounts bound to the given courseClass that require concessions instead of
-	 * discount codes.
+	 * Returns the discounted value for the given price if apply the discounts
+	 * from the given list(don't check the applicability, just calculate).
 	 * 
-	 * @param aClass
-	 *            - the course class
-	 *            
-	 * @return the list of discounts.
+	 * @param discounts
+	 *            - a collection of discounts to apply.
+	 * @param price
+	 *            - the price for discount
+	 * @return the discounted value
 	 */
-	List<Discount> getConcessionDiscounts(CourseClass aClass);
+	Money discountedValueForList(List<Discount> discounts, Money price);
+
 }

@@ -7,6 +7,7 @@ import ish.oncourse.model.DiscountCourseClass;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -30,12 +31,8 @@ public class DiscountService implements IDiscountService {
 
 		results.addAll(courseClass.getDiscounts());
 
-		Date now = new Date();
 		Expression e = ExpressionFactory.matchExp(Discount.CODE_PROPERTY, null);
-		e = e.andExp(ExpressionFactory.greaterExp(Discount.VALID_TO_PROPERTY, now).orExp(
-				ExpressionFactory.matchExp(Discount.VALID_TO_PROPERTY, null)));
-		e = e.andExp(ExpressionFactory.lessExp(Discount.VALID_FROM_PROPERTY, now).orExp(
-				ExpressionFactory.matchExp(Discount.VALID_FROM_PROPERTY, null)));
+		e = e.andExp(getCurrentDateFilter());
 
 		results = e.filterObjects(results);
 
@@ -45,12 +42,29 @@ public class DiscountService implements IDiscountService {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.services.discount.IDiscountService#chooseDiscounts(java.util.List,
+	 * @see ish.oncourse.services.discount.IDiscountService#filterDiscounts(java.util.List,
+	 *      ish.oncourse.model.CourseClass)
+	 */
+	public List<Discount> filterDiscounts(List<Discount> discounts, CourseClass courseClass) {
+		if (discounts == null) {
+			return Collections.emptyList();
+		}
+		Expression e = ExpressionFactory.matchExp(Discount.DISCOUNT_COURSE_CLASSES_PROPERTY + "."
+				+ DiscountCourseClass.COURSE_CLASS_PROPERTY, courseClass);
+		e = e.andExp(getCurrentDateFilter());
+
+		return e.filterObjects(discounts);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see ish.oncourse.services.discount.IDiscountService#chooseBestDiscountsVariant(java.util.List,
 	 *      ish.oncourse.model.CourseClass) The processing of
 	 *      combined/notToCombine discounts is based on
 	 *      angel/client/ish.oncourse.cayenne.InvoiceLine.updateDiscount()
 	 */
-	public List<Discount> chooseDiscounts(List<Discount> discounts, CourseClass aClass) {
+	public List<Discount> chooseBestDiscountsVariant(List<Discount> discounts, CourseClass aClass) {
 		Vector<Discount> chosenDiscounts = new Vector<Discount>();
 		if (discounts != null && !discounts.isEmpty()) {
 			// figure out the best deal for the customer.
@@ -90,32 +104,6 @@ public class DiscountService implements IDiscountService {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.services.discount.IDiscountService#discountedFeeExTax(java.util.List,
-	 *      ish.oncourse.model.CourseClass)
-	 */
-	public Money discountedFeeExTax(List<Discount> discounts, CourseClass aClass) {
-		Money feeExGst = aClass.getFeeExGst();
-		Money result = aClass.getFeeExGst().subtract(
-				discountValueForList(chooseDiscounts(discounts, aClass), feeExGst));
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see ish.oncourse.services.discount.IDiscountService#discountedFeeIncTax(java.util.List,
-	 *      ish.oncourse.model.CourseClass)
-	 */
-	public Money discountedFeeIncTax(List<Discount> discounts, CourseClass aClass) {
-		Money feeIncGst = aClass.getFeeIncGst();
-		Money result = aClass.getFeeIncGst().subtract(
-				discountValueForList(chooseDiscounts(discounts, aClass), feeIncGst));
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see ish.oncourse.services.discount.IDiscountService#discountValueForList(java.util.List,
 	 *      ish.math.Money)
 	 */
@@ -130,45 +118,21 @@ public class DiscountService implements IDiscountService {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.services.discount.IDiscountService#discountValueForListFiltered(java.util.List,
-	 *      ish.oncourse.model.CourseClass)
+	 * @see ish.oncourse.services.discount.IDiscountService#discountedValueForList(java.util.List,
+	 *      ish.math.Money)
 	 */
-	public Money discountValueForListFiltered(List<Discount> discounts, CourseClass aClass) {
-		return discountValueForList(chooseDiscounts(discounts, aClass), aClass.getFeeExGst());
+	public Money discountedValueForList(List<Discount> discounts, Money price) {
+		return price.subtract(discountValueForList(discounts, price));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.services.discount.IDiscountService#discountValue(ish.oncourse.model.Discount,
-	 *      ish.math.Money)
-	 */
-	public Money discountValue(Discount discount, Money price) {
-		Money discountValue = Money.ZERO;
-		BigDecimal discountRate = discount.getDiscountRate();
-		if (discountRate == null) {
-			discountRate = discount.getDiscountAmount().divide(price.toBigDecimal());
-		}
-		discountValue = price.multiply(discountRate);
-
-		return discountValue;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @see ish.oncourse.services.discount.IDiscountService#discountedValue(ish.oncourse.model.Discount, ish.math.Money)
-	 */
-	public Money discountedValue(Discount discount, Money price) {
-		return price.subtract(discountValue(discount, price));
-	}
-
-	/**
-	 * {@inheritDoc}
 	 * @see ish.oncourse.services.discount.IDiscountService#getConcessionDiscounts(ish.oncourse.model.CourseClass)
 	 */
 	public List<Discount> getConcessionDiscounts(CourseClass aClass) {
 		List<Discount> availableDiscounts = getApplicableDiscounts(aClass);
-		
+
 		List<Discount> discounts = new ArrayList<Discount>(availableDiscounts.size());
 		for (Discount discount : availableDiscounts) {
 			if (!discount.getDiscountConcessionTypes().isEmpty()) {
@@ -177,5 +141,64 @@ public class DiscountService implements IDiscountService {
 		}
 		return discounts;
 	}
-	
+
+	/**
+	 * Returns the discount value for the given price if apply the given
+	 * discount.
+	 * 
+	 * @param discount
+	 *            - the given discount.
+	 * @param price
+	 *            - the price for discount
+	 * @return the discount value
+	 */
+	public Money discountValue(Discount discount, Money price) {
+		Money discountValue = Money.ZERO;
+		BigDecimal discountRate = discount.getDiscountRate();
+		if (discountRate == null) {
+			discountRate = discount.getDiscountAmount().divide(price).toBigDecimal();
+		}
+		discountValue = price.multiply(discountRate);
+		Money maximumDiscount = discount.getMaximumDiscount();
+		if (Money.ZERO.isLessThan(maximumDiscount) && discountValue.compareTo(maximumDiscount) > 0) {
+			discountValue = maximumDiscount;
+		} else {
+			Money minimumDiscount = discount.getMinimumDiscount();
+			if (Money.ZERO.isLessThan(minimumDiscount) && discountValue.compareTo(minimumDiscount) < 0) {
+				discountValue = minimumDiscount;
+			}
+		}
+		return discountValue;
+	}
+
+	/**
+	 * Returns the discounted value for the given price if apply the given
+	 * discount.
+	 * 
+	 * @param discount
+	 *            - the given discount.
+	 * @param price
+	 *            - the price for discount
+	 * @return the discounted value
+	 */
+	public Money discountedValue(Discount discount, Money price) {
+		return price.subtract(discountValue(discount, price));
+	}
+
+	/**
+	 * Returns filter for retrieving the current discounts(with valid or
+	 * undefined date range)
+	 * 
+	 * @return expression
+	 */
+	private Expression getCurrentDateFilter() {
+		Date now = new Date();
+
+		Expression e = ExpressionFactory.greaterExp(Discount.VALID_TO_PROPERTY, now).orExp(
+				ExpressionFactory.matchExp(Discount.VALID_TO_PROPERTY, null));
+		e = e.andExp(ExpressionFactory.lessExp(Discount.VALID_FROM_PROPERTY, now).orExp(
+				ExpressionFactory.matchExp(Discount.VALID_FROM_PROPERTY, null)));
+		return e;
+	}
+
 }
