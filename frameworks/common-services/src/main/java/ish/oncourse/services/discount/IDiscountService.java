@@ -88,4 +88,17 @@ public interface IDiscountService {
 	 */
 	Money discountedValueForList(List<Discount> discounts, Money price);
 
+	/**
+	 * Retrieves the list of promotions(discounts with "promo-codes") stored in cookies
+	 * @return
+	 */
+	List<Discount> getPromotions();
+	
+	/**
+	 * Retrieves the discounts with the given ids.
+	 * 
+	 * @param ids the array of ids for search.
+	 * @return list of discounts.
+	 */
+	List<Discount> loadByIds(Object... ids);
 }

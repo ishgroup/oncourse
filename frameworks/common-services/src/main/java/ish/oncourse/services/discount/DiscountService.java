@@ -8,6 +8,8 @@ import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.cookies.ICookiesService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,8 +23,16 @@ import java.util.Vector;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class DiscountService implements IDiscountService {
+	
+	@Inject
+	private ICookiesService cookiesService;
+	
+	@Inject
+	private ICayenneService cayenneService;
 	
 	public static final String AGE_UNDER = "<";
 	public static final String AGE_OVER = ">";
@@ -72,22 +82,23 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#getEnrolmentDiscounts(ish.oncourse.model.Enrolment)
 	 */
 	public List<Discount> getEnrolmentDiscounts(Enrolment enrolment) {
-
 		List<Discount> result = new ArrayList<Discount>();
 
-		for (Discount discount : getApplicableDiscounts(enrolment.getCourseClass())) {
+		List<Discount> potentialDiscounts = getApplicableDiscounts(enrolment.getCourseClass());
+		potentialDiscounts.addAll(filterDiscounts(getPromotions(), enrolment.getCourseClass()));
+		
+		for (Discount discount : potentialDiscounts) {
 			if (isStudentEligibile(enrolment.getStudent(), discount)) {
 				result.add(discount);
 			}
 		}
-
-		// TODO process added discounts with promocodes
 
 		result = chooseBestDiscountsVariant(result, enrolment.getCourseClass());
 
 		return result;
 	}
 
+	
 	/**
 	 * Determines if the given student is eligible for this Discount, based on:
 	 * enrolled within X days; student age; postcode; and concessions (test not
@@ -330,4 +341,30 @@ public class DiscountService implements IDiscountService {
 		return e;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see ish.oncourse.services.discount.IDiscountService#getPromotions()
+	 */
+	public List<Discount> getPromotions() {
+		String[] discountIds = cookiesService.getCookieCollectionValue("promotions");
+		return loadByIds(discountIds);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see ish.oncourse.services.discount.IDiscountService#loadByIds(java.lang.Object[])
+	 */
+	@Override
+	public List<Discount> loadByIds(Object... ids) {
+		if (ids==null || ids.length == 0) {
+			return Collections.emptyList();
+		}
+
+		SelectQuery q = new SelectQuery(Discount.class);
+		q.andQualifier(ExpressionFactory.inDbExp(Discount.ID_PK_COLUMN, ids));
+		
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	
 }

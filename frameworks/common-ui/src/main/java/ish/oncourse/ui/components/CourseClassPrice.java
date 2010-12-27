@@ -76,10 +76,7 @@ public class CourseClassPrice {
 	 * @return the list of promotion discounts
 	 */
 	private List<Discount> getDiscounts() {
-		// TODO get discounts from request
-		// myApplication().discountsForRequest( context().request(),
-		// EOSharedEditingContext.defaultSharedEditingContext() );
-		return new ArrayList<Discount>();
+		return discountService.filterDiscounts(discountService.getPromotions(), courseClass);
 	}
 
 	public Money getDiscountItemFeeIncTax() {
