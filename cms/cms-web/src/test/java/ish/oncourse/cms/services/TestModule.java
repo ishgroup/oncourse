@@ -178,7 +178,10 @@ public class TestModule {
 
 		IAuthenticationService mockService = mock(IAuthenticationService.class);
 
-		when(mockService.authenticate(anyString(), anyString())).thenReturn(AuthenticationStatus.SUCCESS);
+		when(mockService.authenticate("test@right.com", "rpasswd")).thenReturn(AuthenticationStatus.SUCCESS);
+		when(mockService.authenticate("test@right.com", "wpasswd")).thenReturn(AuthenticationStatus.INVALID_CREDENTIALS);
+		when(mockService.authenticate("test@wrong.com", "rpasswd")).thenReturn(AuthenticationStatus.NO_MATCHING_USER);
+		when(mockService.authenticate("test@dups.com", "rpasswd")).thenReturn(AuthenticationStatus.MORE_THAN_ONE_USER);
 
 		Date today = new Date();
 
