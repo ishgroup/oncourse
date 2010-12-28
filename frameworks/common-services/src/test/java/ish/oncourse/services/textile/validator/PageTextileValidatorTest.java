@@ -54,12 +54,10 @@ public class PageTextileValidatorTest extends CommonValidatorTest {
 		errors = new ValidationErrors();
 		page = new WebNode();
 		validator = new PageTextileValidator(webNodeService);
-		when(
-				webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY,
-						TEST_PAGE_CODE)).thenReturn(page);
-		when(
-				webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY,
-						NOT_EXISTING_PAGE_CODE)).thenReturn(null);
+		when(webNodeService.getNodeForNodeNumber(eq(TEST_PAGE_CODE)))
+				.thenReturn(page);
+		when(webNodeService.getNodeForNodeNumber(eq(NOT_EXISTING_PAGE_CODE)))
+				.thenReturn(null);
 	}
 
 	/**
@@ -75,9 +73,10 @@ public class PageTextileValidatorTest extends CommonValidatorTest {
 		tag = "{page code:\"" + NOT_EXISTING_PAGE_CODE + "\"}";
 		validator.validate(tag, errors);
 		assertTrue(errors.hasFailures());
-		assertEquals(((PageTextileValidator) validator)
-				.getPageNotFoundByCode(NOT_EXISTING_PAGE_CODE), errors
-				.toString());
+		assertEquals(
+				((PageTextileValidator) validator)
+						.getPageNotFoundByCode(NOT_EXISTING_PAGE_CODE),
+				errors.toString());
 	}
 
 }

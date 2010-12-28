@@ -200,7 +200,10 @@ public class CustomTextileConverterTest {
 	public void smokePageConvertTest() {
 		page = new WebNode();
 		String successfulResult = "successfully rendered page block";
-		when(webNodeService.getNode(null, null)).thenReturn(page);
+		
+		when(webNodeService.getNodeForNodeNumber(anyInt())).thenReturn(page);
+		when(webNodeService.getRandomNode()).thenReturn(page);
+		
 		testPageRenderParams(PAGE, TextileUtil.TEXTILE_PAGE_PAGE,
 				successfulResult);
 
@@ -227,9 +230,12 @@ public class CustomTextileConverterTest {
 	 */
 	private void testPageRenderParams(String textile, String pageName,
 			String successfulResult) {
+		
 		when(pageRenderer.renderPage(eq(pageName), anyMap())).thenReturn(
 				successfulResult);
+		
 		String result = textileConverter.convertCustomTextile(textile, errors);
+		
 		assertEquals(successfulResult, result);
 		assertFalse(errors.hasFailures());
 	}

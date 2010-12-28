@@ -1,17 +1,16 @@
 package ish.oncourse.services.resource;
 
+import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ResourceService implements IResourceService {
 
@@ -31,22 +30,9 @@ public class ResourceService implements IResourceService {
 
 
 	public ResourceService(@Inject IPropertyService propertyService,
-			@Inject IWebSiteService siteService) {
+			@Inject IWebSiteService siteService, @Inject ILookupService lookupService) {
 
-		String customComponentsPath = "";
-		try {
-			Context ctx = new InitialContext();
-			customComponentsPath = (String) ctx.lookup("java:comp/env/"
-					+ Property.CustomComponentsPath.value());
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("CustomComponentsPath configured through JNDI to: "
-						+ customComponentsPath);
-			}
-		} catch (NamingException ne) {
-			LOGGER.warn(
-					"CustomComponentsPath not defined by JNDI, falling to secondary config",
-					ne);
-		}
+		String customComponentsPath = (String) lookupService.lookup(Property.CustomComponentsPath.value());
 
 		if ((customComponentsPath == null) || ("".equals(customComponentsPath))) {
 			customComponentsPath = propertyService
@@ -91,7 +77,7 @@ public class ResourceService implements IResourceService {
 	private File[] getResourceRoots() {
 
 		File[] resourceRoots = noCustomFolderDefaultsRoot;
-		String siteFolder = siteService.getResourceFolderName();
+		String siteFolder = siteService.getCurrentWebSite().getResourceFolderName();
 
 		if (siteFolder != null) {
 			resourceRoots = new File[] {
@@ -137,7 +123,7 @@ public class ResourceService implements IResourceService {
 	public List<PrivateResource> getConfigResources(String fileName) {
 		List<PrivateResource> configs = new LinkedList<PrivateResource>();
 
-		String siteFolder = siteService.getResourceFolderName();
+		String siteFolder = siteService.getCurrentWebSite().getResourceFolderName();
 
 		if (siteFolder != null) {
 			PrivateResource config = new FileResource(customComponentsRoot

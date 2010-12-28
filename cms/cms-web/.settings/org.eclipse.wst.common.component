@@ -4,6 +4,8 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/config/dev"/>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-model/common-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -11,6 +13,9 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-services/common-services">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/cms-services/cms-services">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/cms-web1/target/classes"/>

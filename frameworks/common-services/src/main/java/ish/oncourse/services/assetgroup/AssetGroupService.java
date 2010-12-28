@@ -121,7 +121,7 @@ public class AssetGroupService implements IAssetGroupService {
 
 	private String createKeyForAssetTypeCollection(AssetType type) {
 		return AssetGroupService.class.getName() + ":"
-				+ siteService.getResourceFolderName() + "@" + type.name();
+				+ siteService.getCurrentWebSite().getResourceFolderName() + "@" + type.name();
 	}
 
 }

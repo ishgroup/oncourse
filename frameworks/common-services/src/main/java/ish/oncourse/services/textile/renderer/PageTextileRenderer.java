@@ -47,18 +47,19 @@ public class PageTextileRenderer extends AbstractRenderer {
 	@Override
 	public String render(String tag, ValidationErrors errors) {
 		tag = super.render(tag, errors);
+		
 		if (!errors.hasFailures()) {
 			WebNode node = null;
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					PageTextileAttributes.getAttrValues());
+		
 			String code = tagParams.get(PageTextileAttributes.PAGE_CODE_PARAM
 					.getValue());
 
 			if (code != null) {
-				node = webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY,
-						Integer.valueOf(code));
+				node = webNodeService.getNodeForNodeNumber(Integer.valueOf(code)); 
 			} else {
-				node = webNodeService.getNode(null, null);
+				node = webNodeService.getRandomNode();
 			}
 			if (node != null) {
 				Map<String, Object> parameters = new HashMap<String, Object>();

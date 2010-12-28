@@ -13,14 +13,14 @@ public interface IWebNodeTypeService {
 	WebNodeType getDefaultWebNodeType();
 	
 	/**
-	 * Returns all available web node types for the current site.
+	 * Returns all available web node types for the current site. Used in CMS on PageOptions screen.
 	 * 
 	 * @return available web node types.
 	 */
 	List<WebNodeType> getWebNodeTypes();
 	
 	/**
-	 * Gets webNode type by id.
+	 * Gets webNode type by id. Used in CMS on PageTypes screen.
 	 * @param willowId
 	 * @return
 	 */

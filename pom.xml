@@ -92,7 +92,14 @@
 				<artifactId>tapestry-spring</artifactId>
 				<version>${tapestry5version}</version>
 			</dependency>
-
+			
+			<dependency>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-test</artifactId>
+				<version>${tapestry5version}</version>
+				<scope>test</scope>
+			</dependency>
+			
 			<dependency>
 				<groupId>com.howardlewisship</groupId>
 				<artifactId>tapx-core</artifactId>
@@ -299,7 +306,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tapestry5version>5.2.2</tapestry5version>
+		<tapestry5version>5.2.4</tapestry5version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<maven.emma.report.xml>true</maven.emma.report.xml>
 		<maven.emma.report.html>true</maven.emma.report.html>

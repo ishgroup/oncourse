@@ -78,7 +78,7 @@ public class SitemapXML {
 		hostName = request.getServerName();
 		siteModificationDate=setupSiteModificationDate();
 		courses=courseService.getCourses(0, courseService.getCoursesCount());
-		sites = webSiteService.getCollegeSites();
+		sites = webSiteService.getCurrentCollege().getSites();
 		tutors = tutorService.getTutors();
 		pages = webNodeService.getNodes();
 	}

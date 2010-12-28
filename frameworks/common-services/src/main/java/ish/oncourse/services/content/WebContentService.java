@@ -7,24 +7,16 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.textile.TextileUtil;
-import ish.oncourse.util.ValidationErrors;
-import ish.oncourse.util.ValidationException;
 
 import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WebContentService extends BaseService<WebContent> implements IWebContentService {
@@ -53,27 +45,6 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 
         return !listResult.isEmpty() ? listResult.get(new Random()
                 .nextInt(listResult.size())) : null;
-    }
-
-    public List<WebContent> getBlocks() {
-
-        SelectQuery q = new SelectQuery(WebContent.class);
-
-        q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
-                webSiteService.getCurrentWebSite()));
-
-        Expression expr = ExpressionFactory.matchExp(
-                WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "+."
-                        + WebContentVisibility.WEB_NODE_PROPERTY, null);
-
-        expr = expr.orExp(ExpressionFactory.matchExp(
-                WebContent.WEB_CONTENT_VISIBILITY_PROPERTY, null));
-
-        q.andQualifier(expr);
-
-        q.addOrdering(new Ordering(WebContent.MODIFIED_PROPERTY, SortOrder.DESCENDING));
-
-        return cayenneService.sharedContext().performQuery(q);
     }
 
     public SortedSet<WebContent> getBlocksForRegionKey(RegionKey regionKey) {

@@ -331,7 +331,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if (nodePath.endsWith("/")) {
 			nodePath = nodePath.substring(0, nodePath.length() - 1);
 		}
-		if (webNodeService.isNodeExist(nodePath)) {
+		if (webNodeService.getNodeForNodePath(nodePath) != null) {
 			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
 			return new PageRenderRequestParameters("ui/Page",
 					new EmptyEventContext(), false);

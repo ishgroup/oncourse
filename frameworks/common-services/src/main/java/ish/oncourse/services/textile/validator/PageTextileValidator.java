@@ -32,8 +32,7 @@ public class PageTextileValidator implements IValidator {
 		WebNode node = null;
 		if (code != null && code.matches("(\\d+)")) {
 			Integer codeNum = Integer.valueOf(code);
-			node = webNodeService
-					.getNode(WebNode.NODE_NUMBER_PROPERTY, codeNum);
+			node = webNodeService.getNodeForNodeNumber(codeNum);
 			if (node == null) {
 				errors.addFailure(getPageNotFoundByCode(codeNum));
 			}

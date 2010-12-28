@@ -1,15 +1,12 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
+import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.Map;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -31,6 +28,9 @@ public class SearchService implements ISearchService {
 
 	@Inject
 	private IPropertyService propertyService;
+	
+	@Inject
+	private ILookupService lookupService;
 
 	private SolrServer solrServer;
 
@@ -38,24 +38,11 @@ public class SearchService implements ISearchService {
 		if (solrServer == null) {
 
 			try {
-				String solrURL = null;
-
-				try {
-					Context ctx = new InitialContext();
-					solrURL = (String) ctx.lookup("java:comp/env/"
-							+ Property.SolrServer.value());
-					if (logger.isInfoEnabled()) {
-						logger.info("SolrUrl configured through JNDI to: "
-								+ solrURL);
-					}
-				} catch (NamingException ne) {
-					logger.warn(
-							"SolrUrl not defined by JNDI, falling to secondary config",
-							ne);
-				}
+				String solrURL = (String) lookupService.lookup(Property.SolrServer.value());
 
 				solrURL = (solrURL == null) ? propertyService
 						.string(Property.SolrServer) : solrURL;
+						
 				solrURL = (solrURL == null) ? System
 						.getProperty(Property.SolrServer.value()) : solrURL;
 

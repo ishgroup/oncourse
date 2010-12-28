@@ -60,7 +60,7 @@ public class CourseClassShortList {
 	}
 
 	public boolean isPaymentGatewayEnabled() {
-		return webSiteService.isCollegePaymentEnabled();
+		return webSiteService.getCurrentCollege().getIsWebSitePaymentsEnabled();
 	}
 	public String getEnrolLinkText() {
 		return "Enrol in "

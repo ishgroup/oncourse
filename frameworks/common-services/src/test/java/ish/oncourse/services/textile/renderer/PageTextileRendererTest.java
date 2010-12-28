@@ -20,23 +20,23 @@ import ish.oncourse.util.ValidationErrors;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PageTextileRendererTest {
-	
+
 	private static final int TEST_PAGE_CODE = 100;
-	
+
 	private static final String SUCCESSFULLY_RENDERED = "success";
-	
+
 	private ValidationErrors errors;
-	
+
 	private WebNode page;
 
 	/**
 	 * service under the test
 	 */
 	private PageTextileRenderer pageTextileRenderer;
-	
+
 	@Mock
 	private IWebNodeService webNodeService;
-	
+
 	@Mock
 	private IPageRenderer pageRenderer;
 
@@ -44,11 +44,13 @@ public class PageTextileRendererTest {
 	public void init() {
 		errors = new ValidationErrors();
 		page = new WebNode();
+
 		pageTextileRenderer = new PageTextileRenderer(webNodeService,
 				pageRenderer);
-		when(
-				webNodeService.getNode(WebNode.NODE_NUMBER_PROPERTY,
-						TEST_PAGE_CODE)).thenReturn(page);
+
+		when(webNodeService.getNodeForNodeNumber(eq(TEST_PAGE_CODE)))
+				.thenReturn(page);
+
 		when(
 				pageRenderer.renderPage(eq(TextileUtil.TEXTILE_PAGE_PAGE),
 						anyMap())).thenReturn(SUCCESSFULLY_RENDERED);

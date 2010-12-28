@@ -20,6 +20,8 @@ import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
+import ish.oncourse.services.jndi.ILookupService;
+import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.menu.IWebMenuService;
@@ -110,6 +112,7 @@ public class ServiceModule {
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
+		binder.bind(ILookupService.class, LookupService.class);
 
 		// Reference Data services
 		binder.bind(ICountryService.class, CountryService.class).withId("CountryService");

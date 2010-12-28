@@ -115,7 +115,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
     }
 
     private void trackLayoutFolders() {
-        for (WebSite site : webSiteService.getAvailableSites()) {
+        for (WebSite site : webSiteService.getCurrentCollege().getWebSites()) {
             for (WebNodeType webNodeType : site.getWebNodeTypes()) {
                 Resource folder = new T5FileResource(resourceService.getTemplateResource(webNodeType.getLayoutKey(), "/").getFile());
                 tracker.add(folder.toURL());

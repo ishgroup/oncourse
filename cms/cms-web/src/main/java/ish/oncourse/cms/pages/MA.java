@@ -15,6 +15,11 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+/**
+ * The ajax backed page for Menu editor in CMS. This page is responsible for persisting 
+ * @author anton
+ *
+ */
 public class MA {
 
 	@Inject
@@ -55,7 +60,11 @@ public class MA {
 
 		return new TextStreamResponse("text/json", obj.toString());
 	}
-
+	
+	/**
+	 * Ajax call to handle in-place edit of menu item. 
+	 * @return
+	 */
 	StreamResponse onActionFromSave() {
 		String[] id = request.getParameter("id").split("_");
 		String value = request.getParameter("value");
@@ -82,6 +91,10 @@ public class MA {
 		return new TextStreamResponse("text/html", value);
 	}
 
+	/**
+	 * Handles ajax call to remove menu item.
+	 * @return json-status
+	 */
 	StreamResponse onActionFromRemove() {
 
 		String id = request.getParameter("id");
@@ -96,6 +109,10 @@ public class MA {
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 
+	/**
+	 * Handles ajax call to sort menu items. Done when user sorts items with drag&drop.
+	 * @return
+	 */
 	StreamResponse onActionFromSort() {
 
 		String id = request.getParameter("id");

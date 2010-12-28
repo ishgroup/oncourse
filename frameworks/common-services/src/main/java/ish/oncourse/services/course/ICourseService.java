@@ -16,7 +16,10 @@ public interface ICourseService {
 	
 	Course getCourse(String searchProperty, Object value);
 	Course getCourse(Boolean enrollable, String taggedWith, Boolean currentSearch);
+	
 	Integer getCoursesCount();
+	
 	Date getLatestModifiedDate();
-	Map<SearchParam, String>getCourseSearchParams();
+	
+	Map<SearchParam, String> getCourseSearchParams();
 }

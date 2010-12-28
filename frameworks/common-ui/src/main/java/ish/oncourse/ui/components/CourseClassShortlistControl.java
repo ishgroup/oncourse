@@ -56,7 +56,7 @@ public class CourseClassShortlistControl {
 	}
 
 	public boolean isPaymentGatewayEnabled() {
-		return webSiteService.isCollegePaymentEnabled();
+		return webSiteService.getCurrentCollege().getIsWebSitePaymentsEnabled();
 	}
 	
 	public boolean isContainedInShortList(){

@@ -36,9 +36,6 @@ public class WebNodeService extends BaseService<WebNode> implements
 	private ICayenneService cayenneService;
 
 	@Inject
-	private IWebNodeTypeService webNodeTypeService;
-
-	@Inject
 	private Request request;
 
 	@SuppressWarnings("unchecked")
@@ -110,16 +107,15 @@ public class WebNodeService extends BaseService<WebNode> implements
 		return expression;
 	}
 
-	public WebNode getNode(String searchProperty, Object value) {
+	public WebNode getRandomNode() {
 		SelectQuery query = new SelectQuery(WebNode.class);
+		
 		query.andQualifier(siteQualifier());
-		if (searchProperty != null) {
-			query.andQualifier(ExpressionFactory.matchDbExp(searchProperty,
-					value));
-		}
+		
 		@SuppressWarnings("unchecked")
 		List<WebNode> nodes = cayenneService.sharedContext()
 				.performQuery(query);
+		
 		return !nodes.isEmpty() ? nodes.get(new Random().nextInt(nodes.size()))
 				: null;
 	}
@@ -132,14 +128,6 @@ public class WebNodeService extends BaseService<WebNode> implements
 								"select max(wn.modified) from WebNode wn where "
 										+ siteQualifier().toEJBQL("wn")))
 				.get(0);
-	}
-
-	public boolean isNodeExist(String path) {
-		WebUrlAlias alias = webUrlAliasService.getAliasByPath(path);
-		if (alias == null) {
-			return false;
-		}
-		return true;
 	}
 
 	public Integer getNextNodeNumber() {

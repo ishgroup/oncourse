@@ -8,11 +8,7 @@ public interface ITagService {
 
 	Tag getRootTag();
 
-	Tag getTag(String searchProperty, Object value);
-
 	List<Tag> loadByIds(Object... ids);
-
-	List<Tag> getTags(String searchProperty, Object value);
 
 	Tag getSubTagByName(String name);
 

@@ -72,5 +72,4 @@ public class Login {
 		
 		return (loginForm.getHasErrors()) ? this : new URL("http://" + request.getServerName());
 	}
-
 }

@@ -1,7 +1,8 @@
 package ish.oncourse.services.assetgroup;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import ish.oncourse.services.resource.IResourceService;
-import ish.oncourse.services.resource.MockResource;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
 
@@ -53,13 +54,11 @@ public class AssetGroupServiceTest extends Assert {
 			
 
 			public Resource getWebResource(final String fileName) {
-
-				return new MockResource() {
-					@Override
-					public String getPublicUrl() {
-						return "http://dummy/" + fileName;
-					}
-				};
+				Resource mockResource = mock(Resource.class);
+				
+				when(mockResource.getPublicUrl()).thenReturn("http://dummy/" + fileName);
+				
+				return mockResource;
 			}
 			
 			public PrivateResource getTemplateResource(String layoutKey,

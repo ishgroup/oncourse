@@ -16,6 +16,6 @@ public class BodyHeader {
 	}
 
 	public String getHomeLink() {
-		return siteService.getHomeLink();
+		return "/";
 	}
 }

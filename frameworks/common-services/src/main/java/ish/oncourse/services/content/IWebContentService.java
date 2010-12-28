@@ -1,11 +1,10 @@
 package ish.oncourse.services.content;
 
-import java.util.List;
-import java.util.SortedSet;
-
 import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
+
+import java.util.SortedSet;
 
 public interface IWebContentService {
 
@@ -24,11 +23,6 @@ public interface IWebContentService {
      * @return
      */
 	WebContent findById(Long willowId);
-
-	/**
-	 * Returns all web blocks for the current site or current college.
-	 */
-	List<WebContent> getBlocks();
 
 	/**
 	 * Gets blocks for location key, sorted by weight property.

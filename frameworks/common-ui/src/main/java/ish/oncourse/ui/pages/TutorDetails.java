@@ -17,20 +17,20 @@ public class TutorDetails {
 
 	@Inject
 	private Request request;
-	
+
 	@Persist
 	@Property
 	private Tutor tutor;
-	
+
 	@Property
 	private TutorRole role;
 
 	@SetupRender
 	public void beforeRender() {
 		String id = (String) request.getAttribute("tutorId");
-		tutor = tutorService.getTutorById(Long.valueOf(id));
+		tutor = tutorService.findById(Long.valueOf(id));
 	}
-	
+
 	public boolean getTutorFound() {
 		return tutor != null;
 	}
@@ -40,11 +40,11 @@ public class TutorDetails {
 	}
 
 	public boolean getHasRoles() {
-		return !tutorService.getCurrentVisibleTutorRoles(tutor).isEmpty();
+		return !tutor.getCurrentVisibleTutorRoles().isEmpty();
 	}
 
 	public List<TutorRole> getCurrentVisibleTutorRoles() {
-		return tutorService.getCurrentVisibleTutorRoles(tutor);
+		return tutor.getCurrentVisibleTutorRoles();
 	}
 
 }

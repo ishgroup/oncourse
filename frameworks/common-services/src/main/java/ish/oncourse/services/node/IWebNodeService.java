@@ -62,23 +62,15 @@ public interface IWebNodeService {
 	 * @return the current page
 	 */
 	WebNode getCurrentNode();
-
+	
 	/**
-	 * Search by property and value.
-	 * 
-	 * @param searchProperty
-	 * @param value
+	 * Return random webNode for the current website.
 	 * @return
 	 */
-	WebNode getNode(String searchProperty, Object value);
+	WebNode getRandomNode();
 
 	/**
 	 * The latest date when site page was modified.
 	 */
 	Date getLatestModifiedDate();
-
-	/**
-	 * If node exists for path.
-	 */
-	boolean isNodeExist(String path);
 }
