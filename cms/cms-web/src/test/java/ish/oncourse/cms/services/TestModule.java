@@ -1,11 +1,9 @@
 package ish.oncourse.cms.services;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import ish.oncourse.cms.services.access.AuthenticationStatus;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.College;

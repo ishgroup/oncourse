@@ -19,47 +19,44 @@ public class LastEditedVisitor extends BaseVisitor<String> {
 	}
 
 	public String visitWebNode(WebNode node) {
-		return getLastEdited(node.getModified());
+		String[] lastEdited = getLastEdited(node.getModified());
+		return messages.format("lastedited", lastEdited[0], lastEdited[1]);
 	}
-	
+
 	public String visitWebContent(WebContent block) {
-		return getLastEdited(block.getModified());
+		String[] lastEdited = getLastEdited(block.getModified());
+		return messages.format("lastedited", lastEdited[0], lastEdited[1]);
 	}
-	
+
 	public String visitWebNodeType(WebNodeType type) {
-		return getLastEdited(type.getModified());
+		String[] lastEdited = getLastEdited(type.getModified());
+		return messages.format("lastedited", lastEdited[0], lastEdited[1]);
 	}
 
-	private String getLastEdited(Date modifiedDate) {
+	String[] getLastEdited(Date modifiedDate) {
 
-		long passedSeconds = ((new Date()).getTime() - modifiedDate.getTime()) / 1000;
-
-		String message;
+		Date today = new Date();
+		
+		long passedSeconds = (today.getTime() - modifiedDate.getTime()) / 1000;
+		
+		long passedTime;
+		String passedDesc;
 
 		if (passedSeconds < 60) {
-			message = messages.format("lastedited", passedSeconds,
-					passedSeconds > 1 ? "seconds" : "second");
-
+			passedTime = passedSeconds;
+			passedDesc = passedTime > 1 ? "seconds" : "second";
 		} else if (passedSeconds < 3600) {
-			long passedMinutes = passedSeconds / 60;
-
-			message = messages.format("lastedited", passedMinutes,
-					passedMinutes > 1 ? "minutes" : "minute");
-
-		} else if (passedSeconds < 3600 * 60 * 24) {
-			long passedHours = passedSeconds / (3600 * 60);
-
-			message = messages.format("lastedited", passedHours,
-					passedHours > 1 ? "hours" : "hour");
-
+			passedTime = passedSeconds / 60;
+			passedDesc = passedTime > 1 ? "minutes" : "minute";
+		} else if (passedSeconds < 3600 * 24) {
+			passedTime = passedSeconds / 3600;
+			passedDesc = passedTime > 1 ? "hours" : "hour";
 		} else {
-			long passedDays = passedSeconds / (3600 * 60 * 24);
-
-			message = messages.format("lastedited", passedDays,
-					passedDays > 1 ? "days" : "day");
+			passedTime = passedSeconds / (3600 * 24);
+			passedDesc = passedTime > 1 ? "days" : "day";
 		}
 
-		return message;
+		return new String[] { String.valueOf(passedTime), passedDesc };
 	}
 
 }
