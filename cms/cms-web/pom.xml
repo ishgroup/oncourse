@@ -48,6 +48,11 @@
 
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-json</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-upload</artifactId>
 		</dependency>
 
