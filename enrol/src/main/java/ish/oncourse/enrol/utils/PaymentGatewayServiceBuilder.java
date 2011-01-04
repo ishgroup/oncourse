@@ -1,6 +1,8 @@
 package ish.oncourse.enrol.utils;
 
+import ish.oncourse.enrol.services.payment.DisabledPaymentGatewayService;
 import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
+import ish.oncourse.enrol.services.payment.PaymentExpressGatewayService;
 import ish.oncourse.enrol.services.payment.TestPaymentGatewayService;
 import ish.oncourse.model.College;
 import ish.oncourse.services.site.IWebSiteService;
@@ -8,17 +10,23 @@ import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
 
-public class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGatewayService>{
-	
+public class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGatewayService> {
+
+	/**
+	 * Defines the appropriate payment gateway service in dependence on the college.paymentGatewayType property.
+	 * {@inheritDoc} 
+	 * 
+	 */
 	public IPaymentGatewayService buildService(ServiceResources resources) {
 		IWebSiteService service = resources.getService(IWebSiteService.class);
 		College currentCollege = service.getCurrentCollege();
-		switch(currentCollege.getPaymentGatewayType()){
+		switch (currentCollege.getPaymentGatewayType()) {
 		case PAYMENT_EXPRESS:
-			//TODO sevice for payment express
-			break;
-		case DISABLED:
+			return new PaymentExpressGatewayService();
+		case TEST:
 			return new TestPaymentGatewayService();
+		case DISABLED:
+			return new DisabledPaymentGatewayService();
 		}
 		return new TestPaymentGatewayService();
 	}
