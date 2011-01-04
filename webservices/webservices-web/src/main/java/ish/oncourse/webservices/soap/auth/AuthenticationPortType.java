@@ -1,6 +1,8 @@
 package ish.oncourse.webservices.soap.auth;
 
 import ish.oncourse.webservices.soap.Status;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 
 import javax.jws.WebService;
 
@@ -16,14 +18,27 @@ public interface AuthenticationPortType {
 	/**
 	 * Authenticates user, stores details in HTTP Session.
 	 * 
-	 * @param securityCode code generated/stored within Angel database.
+	 * @param securityCode code generated/stored within Angel database
+	 * @param lastCommunicationKey communication key used in the last
+	 *			communication session
+	 *
 	 * @return next communication key to track current conversation.
 	 */
-	Long authenticate(String securityCode, Long lastCommunicationKey);
+	@WebMethod(operationName="authenticate")
+	Long authenticate(
+			@WebParam(name="securityCode") String securityCode,
+			@WebParam(name="lastCommunicationKey") Long lastCommunicationKey);
 
 	/**
 	 * End the session on Willow - this will discard the HTTP Session.
+	 *
+	 * @param communicationKey the communication key returned for this
+	 *			communication session
+	 *
+	 * @return logout status
 	 */
-	Status logout(Long communicationKey);
+	@WebMethod(operationName="logout")
+	Status logout(
+			@WebParam(name="communicationKey") Long communicationKey);
 	
 }
