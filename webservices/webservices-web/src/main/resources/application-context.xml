@@ -43,10 +43,4 @@
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 
-    <jaxws:endpoint
-        id="doubleit"
-        implementor="ish.oncourse.webservices.soap.DoubleItPortTypeImpl"
-        address="/doubleIt">
-    </jaxws:endpoint>
-
 </beans>
