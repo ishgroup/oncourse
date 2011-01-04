@@ -82,8 +82,11 @@ public class LastEditedVisitorTest {
 		assertNotNull(lastEdited);
 		assertTrue(lastEdited.length == 2);
 
-		assertTrue("1".equals(lastEdited[0]));
-		assertTrue("day".equals(lastEdited[1]));
+		assertNotNull("Null returned", lastEdited);
+		assertTrue("Incorrect array length", lastEdited.length == 2);
+
+		assertTrue("Wrong time value","1".equals(lastEdited[0]));
+		assertTrue("Wrong time unit", "day".equals(lastEdited[1]));
 
 		cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, -2);
@@ -92,8 +95,12 @@ public class LastEditedVisitorTest {
 
 		lastEdited = visitor.getLastEdited(lastModified);
 
-		assertTrue("2".equals(lastEdited[0]));
-		assertTrue("days".equals(lastEdited[1]));
+		assertNotNull("Null returned", lastEdited);
+		assertTrue("Incorrect array length", lastEdited.length == 2);
+
+		assertTrue("Wrong time value","2".equals(lastEdited[0]));
+		assertTrue("Wrong time unit", "days".equals(lastEdited[1]));
+
 
 		cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, -567);
@@ -102,8 +109,12 @@ public class LastEditedVisitorTest {
 
 		lastEdited = visitor.getLastEdited(lastModified);
 		
-		assertTrue("567".equals(lastEdited[0]));
-		assertTrue("days".equals(lastEdited[1]));
+		assertNotNull("Null returned", lastEdited);
+		assertTrue("Incorrect array length", lastEdited.length == 2);
+
+		assertTrue("Wrong time value","567".equals(lastEdited[0]));
+		assertTrue("Wrong time unit", "days".equals(lastEdited[1]));
+
 	}
 	
 	@Test
@@ -115,11 +126,11 @@ public class LastEditedVisitorTest {
 
 		String[] lastEdited = visitor.getLastEdited(lastModified);
 
-		assertNotNull(lastEdited);
-		assertTrue(lastEdited.length == 2);
+		assertNotNull("Null returned", lastEdited);
+		assertTrue("Incorrect array length", lastEdited.length == 2);
 
-		assertTrue("1".equals(lastEdited[0]));
-		assertTrue("hour".equals(lastEdited[1]));
+		assertTrue("Wrong time value","1".equals(lastEdited[0]));
+		assertTrue("Wrong time unit", "hour".equals(lastEdited[1]));
 
 		cal = Calendar.getInstance();
 		cal.add(Calendar.HOUR, -2);
@@ -128,8 +139,11 @@ public class LastEditedVisitorTest {
 
 		lastEdited = visitor.getLastEdited(lastModified);
 
-		assertTrue("2".equals(lastEdited[0]));
-		assertTrue("hours".equals(lastEdited[1]));
+		assertNotNull("Null returned", lastEdited);
+		assertTrue("Incorrect array length", lastEdited.length == 2);
+
+		assertTrue("Wrong time value","2".equals(lastEdited[0]));
+		assertTrue("Wrong time unit", "hours".equals(lastEdited[1]));
 
 		cal = Calendar.getInstance();
 		cal.add(Calendar.HOUR, -23);
@@ -138,8 +152,11 @@ public class LastEditedVisitorTest {
 
 		lastEdited = visitor.getLastEdited(lastModified);
 		
-		assertTrue("23".equals(lastEdited[0]));
-		assertTrue("hours".equals(lastEdited[1]));
+		assertNotNull("Null returned", lastEdited);
+		assertTrue("Incorrect array length", lastEdited.length == 2);
+
+		assertTrue("Wrong time value","23".equals(lastEdited[0]));
+		assertTrue("Wrong time unit", "hours".equals(lastEdited[1]));
 	}
 	
 	@Test
