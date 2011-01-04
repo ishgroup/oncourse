@@ -75,17 +75,15 @@ public class StudentService implements IStudentService {
         return contacts;
     }
 
-    public List<Contact> getContactsByIds(List<Long> ids) {
-        if (ids == null || ids.isEmpty()) {
-            return Collections.emptyList();
-        }
+	public List<Contact> getContactsByIds(List<Long> ids) {
+		if (ids == null || ids.isEmpty()) {
+			return Collections.emptyList();
+		}
 
-        EJBQLQuery q = new EJBQLQuery(
-                "select c from Contact c where c.id IN (:ids)");
+		SelectQuery q = new SelectQuery(Contact.class, ExpressionFactory.inDbExp(
+				Contact.ID_PK_COLUMN, ids));
 
-        q.setParameter("ids", ids);
-
-        return cayenneService.sharedContext().performQuery(q);
-    }
+		return cayenneService.sharedContext().performQuery(q);
+	}
 
 }

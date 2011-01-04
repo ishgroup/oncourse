@@ -2,6 +2,8 @@ package ish.oncourse.enrol.services;
 
 import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
+import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
+import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
 import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
@@ -23,7 +25,9 @@ public class AppModule {
 	public static void bind(ServiceBinder binder) {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
 		binder.bind(IStudentService.class, StudentService.class);
+		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
 		binder.bind(IPaymentGatewayService.class, new PaymentGatewayServiceBuilder()).scope(
 				ScopeConstants.PERTHREAD);
+		
 	}
 }
