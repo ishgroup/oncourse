@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
@@ -10,9 +11,12 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -151,17 +155,34 @@ public class EnrolCourses {
 
 	}
 
+	/**
+	 * Creates and initializes the set of payment/enrolment-related entities:
+	 * <ul>
+	 * <li> {@link PaymentIn} - one payment entity is created for all the
+	 * selected courses and contacts</li>
+	 * <li> {@link Invoice} - one invoice entity is created for all the selected
+	 * courses and contacts</li>
+	 * <li> {@link Enrolment} - separate enrolment entity is created for the each
+	 * element of the cartesian product of the selected courses and contacts</li>
+	 * <li> {@link InvoiceLine} - the new entity is created for each enrolment if
+	 * the class is enrolable, linked to the invoice entity.</li>
+	 * </ul>
+	 * 
+	 */
 	private void initPayment() {
 		College currentCollege = webSiteService.getCurrentCollege();
 		College college = (College) context.localObject(currentCollege.getObjectId(),
 				currentCollege);
 		payment = context.newObject(PaymentIn.class);
+		payment.setStatus(PaymentStatus.PENDING);
+		payment.setSource(PaymentSource.SOURCE_WEB);
 		payment.setCollege(college);
 		invoice = context.newObject(Invoice.class);
 		// fill the invoice with default values
 		invoice.setInvoiceDate(new Date());
 		invoice.setAmountOwing(BigDecimal.ZERO);
 		invoice.setDateDue(new Date());
+		invoice.setStatus(InvoiceStatus.PENDING);
 
 		invoice.setCollege(college);
 		enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
@@ -169,6 +190,8 @@ public class EnrolCourses {
 		for (int i = 0; i < contacts.size(); i++) {
 			for (int j = 0; j < classesToEnrol.size(); j++) {
 				enrolments[i][j] = context.newObject(Enrolment.class);
+				enrolments[i][j].setStatus(EnrolmentStatus.PENDING);
+				enrolments[i][j].setSource(PaymentSource.SOURCE_WEB);
 
 				enrolments[i][j].setCollege(college);
 				Contact contact = contacts.get(i);

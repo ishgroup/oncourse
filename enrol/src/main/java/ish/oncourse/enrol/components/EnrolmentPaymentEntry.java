@@ -5,9 +5,13 @@ import ish.math.Money;
 import ish.oncourse.enrol.pages.EnrolmentPaymentProcessing;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.model.Preference;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
@@ -23,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -60,7 +65,7 @@ public class EnrolmentPaymentEntry {
 	 */
 	@Inject
 	private IPreferenceService preferenceService;
-	
+
 	@Inject
 	private IDiscountService discountService;
 
@@ -251,23 +256,55 @@ public class EnrolmentPaymentEntry {
 				.get("validInput") : messages.get("validateInput");
 	}
 
+	/**
+	 * Invoked when the paymentDetailsForm is submitted and validated
+	 * successfully. Fills in the rest of the needed properties, sets the
+	 * transactional status to entites to be committed and commits the
+	 * appropriate set of entities to context:
+	 * <ul>
+	 * <li>if payment amount is not zero, commits the payment with lines,
+	 * invoice with lines, enrolment</li>
+	 * <li>if payment amount is zero, commits only the enrolment(the others are
+	 * deleted)</li>
+	 * </ul>
+	 * 
+	 * @return the block that displays the processing of payment {@see
+	 *         EnrolmentPaymentProcessing}.
+	 */
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
-		BigDecimal totalGst = BigDecimal.ZERO;
-		BigDecimal totalExGst = BigDecimal.ZERO;
+		ObjectContext context = payment.getObjectContext();
+		if (!isZeroPayment()) {
+			payment.setAmount(totalIncGst.toBigDecimal());
+			BigDecimal totalGst = BigDecimal.ZERO;
+			BigDecimal totalExGst = BigDecimal.ZERO;
 
-		for (InvoiceLine invLine : invoice.getInvoiceLines()) {
-			totalExGst = totalGst.add(
-					new BigDecimal(invLine.getPriceTotalExTax().doubleValue()));
-			totalGst = totalGst.add(
-					new BigDecimal(invLine.getPriceTotalIncTax().subtract(
-							invLine.getPriceTotalExTax()).doubleValue()));
+			for (InvoiceLine invLine : invoice.getInvoiceLines()) {
+				totalExGst = totalGst.add(invLine.getPriceTotalExTax().toBigDecimal());
+				totalGst = totalGst.add(invLine.getPriceTotalIncTax()
+						.subtract(invLine.getPriceTotalExTax()).toBigDecimal());
+			}
+
+			invoice.setTotalExGst(totalExGst);
+			invoice.setTotalGst(totalGst);
+
+			PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
+			paymentInLine.setInvoice(invoice);
+			paymentInLine.setPaymentIn(payment);
+			paymentInLine.setAmount(payment.getAmount());
+
+			enrolmentPaymentProcessing.setPayment(payment);
+			invoice.setContact(payment.getContact());
+			payment.setStatus(PaymentStatus.IN_TRANSACTION);
+			invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
+		} else {
+			context.deleteObject(payment);
+			context.deleteObject(invoice);
 		}
-
-		invoice.setContact(payment.getContact());
-		invoice.setTotalExGst(totalExGst);
-		invoice.setTotalGst(totalGst);
-		enrolmentPaymentProcessing.setPayment(payment);
+		for (Enrolment e : enrolments) {
+			e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+		}
+		context.commitChanges();
 		enrolmentPaymentProcessing.setEnrolments(enrolments);
 		return enrolmentPaymentProcessing;
 	}

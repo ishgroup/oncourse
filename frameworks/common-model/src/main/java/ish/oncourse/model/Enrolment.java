@@ -1,6 +1,5 @@
 package ish.oncourse.model;
 
-import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.auto._Enrolment;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class Enrolment extends _Enrolment {
 	 * @return true if the enrolment is considered as successful
 	 */
 	public boolean isSuccessfullOrQueued() {
-		return getStatus() == null || getStatus().equals(EnrolmentStatus.SUCCESS) || getStatus().equals(EnrolmentStatus.QUEUED);
+		return getStatus() == null || getStatus().equals(EnrolmentStatus.SUCCESS);
 	}
 
 

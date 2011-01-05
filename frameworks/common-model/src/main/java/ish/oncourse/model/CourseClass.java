@@ -1,6 +1,5 @@
 package ish.oncourse.model;
 
-import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.TimestampUtilities;
@@ -158,10 +157,14 @@ public class CourseClass extends _CourseClass {
 		return Math.max(0, result);
 	}
 
+	/**
+	 * Calculates the count of current valid enrolments of this class.
+	 * @return count of enrolments.
+	 */
 	public int validEnrolmentsCount() {
 		int result = ExpressionFactory
-				.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.STATUSES_LEGIT)
-				.filterObjects(getEnrolments()).size();
+				.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS, EnrolmentStatus.PENDING,
+						EnrolmentStatus.IN_TRANSACTION).filterObjects(getEnrolments()).size();
 		return Math.max(0, result);
 	}
 
@@ -472,9 +475,10 @@ public class CourseClass extends _CourseClass {
 	public boolean isRunning() {
 		return hasStarted() && !hasEnded();
 	}
-	
+
 	/**
-	 * This is a faked flattened relationship via discountCourseClasses.discount.
+	 * This is a faked flattened relationship via
+	 * discountCourseClasses.discount.
 	 * 
 	 * @return the discounts for this class
 	 */

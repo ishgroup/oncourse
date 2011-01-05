@@ -11,6 +11,7 @@ import ish.common.types.PaymentSource;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.model.Student;
 
@@ -111,11 +112,11 @@ public abstract class _PaymentIn extends CayenneDataObject {
         return (PaymentSource)readProperty("source");
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PaymentStatus status) {
         writeProperty("status", status);
     }
-    public String getStatus() {
-        return (String)readProperty("status");
+    public PaymentStatus getStatus() {
+        return (PaymentStatus)readProperty("status");
     }
 
     public void setCollege(College college) {

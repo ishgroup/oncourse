@@ -1,20 +1,20 @@
 package ish.oncourse.enrol.components;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ish.oncourse.enrol.components.AnalyticsTransaction.Item;
 import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import java.math.BigDecimal;
 
-import org.apache.cayenne.PersistenceState;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
@@ -60,73 +60,93 @@ public class EnrolmentPaymentResult {
 
 	}
 
+	/**
+	 * Fills in the record for google analytics component {@see
+	 * AnalyticsTransaction}.
+	 */
 	private void initAnalyticTransaction() {
 		String googleAnalyticsAccount = webSiteService.getCurrentWebSite()
 				.getGoogleAnalyticsAccount();
 
 		if (googleAnalyticsAccount != null && !googleAnalyticsAccount.equals("")) {
-			if (payment.getPersistenceState() == PersistenceState.COMMITTED) {
-				if (payment != null && isEnrolmentSuccessful() && !enrolments.isEmpty()) {
-					List<Item> transactionItems = new ArrayList<Item>(enrolments.size());
-					for (Enrolment enrolment : enrolments) {
-						Item item = new Item();
+			if (payment != null && isEnrolmentSuccessful() && !enrolments.isEmpty()) {
+				List<Item> transactionItems = new ArrayList<Item>(enrolments.size());
+				for (Enrolment enrolment : enrolments) {
+					Item item = new Item();
 
-						for (Tag tag : tagService.getTagsForEntity(Course.class.getSimpleName(),
-								enrolment.getCourseClass().getCourse().getId())) {
-							if ("Subjects".equalsIgnoreCase(tag.getRoot().getName())) {
-								item.setCategoryName(tag.getDefaultPath().replace('/', '.')
-										.substring(1));
-								break;
-							}
+					for (Tag tag : tagService.getTagsForEntity(Course.class.getSimpleName(),
+							enrolment.getCourseClass().getCourse().getId())) {
+						if ("Subjects".equalsIgnoreCase(tag.getRoot().getName())) {
+							item.setCategoryName(tag.getDefaultPath().replace('/', '.')
+									.substring(1));
+							break;
 						}
-						item.setProductName(enrolment.getCourseClass().getCourse().getName());
-						item.setQuantity(1);
-						item.setSkuCode(enrolment.getCourseClass().getCourse().getCode());
-						item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax().toBigDecimal());
-						transactionItems.add(item);
 					}
-
-					transaction = new Transaction();
-					transaction.setAffiliation(null);
-					transaction.setCity(payment.getContact().getSuburb());
-					// TODO only Australia?
-					transaction.setCountry("Australia");
-					transaction.setItems(transactionItems);
-					transaction.setOrderNumber("W" + payment.getId());
-					transaction.setShippingAmount(null);
-					transaction.setState(payment.getContact().getState());
-					BigDecimal tax = new BigDecimal(0);
-					for (PaymentInLine pil : payment.getPaymentInLines()) {
-						tax = tax.add(pil.getInvoice().getTotalGst());
-					}
-					transaction.setTax(tax);
-					transaction.setTotal(payment.getAmount());
+					item.setProductName(enrolment.getCourseClass().getCourse().getName());
+					item.setQuantity(1);
+					item.setSkuCode(enrolment.getCourseClass().getCourse().getCode());
+					item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax()
+							.toBigDecimal());
+					transactionItems.add(item);
 				}
+
+				transaction = new Transaction();
+				transaction.setAffiliation(null);
+				transaction.setCity(payment.getContact().getSuburb());
+				// TODO only Australia?
+				transaction.setCountry("Australia");
+				transaction.setItems(transactionItems);
+				transaction.setOrderNumber("W" + payment.getId());
+				transaction.setShippingAmount(null);
+				transaction.setState(payment.getContact().getState());
+				BigDecimal tax = new BigDecimal(0);
+				for (PaymentInLine pil : payment.getPaymentInLines()) {
+					tax = tax.add(pil.getInvoice().getTotalGst());
+				}
+				transaction.setTax(tax);
+				transaction.setTotal(payment.getAmount());
 			}
+
 		}
 	}
 
+	/**
+	 * Returns true if the enrolment(payment?) was successful and false
+	 * otherwise.
+	 * 
+	 * @return
+	 */
 	public boolean isEnrolmentSuccessful() {
-		return "Success".equals(payment.getStatus());
+		// TODO sort out the processing of payments with zero amount
+		if (!isPayment()) {
+			return true;
+		}
+		return PaymentStatus.SUCCESS.equals(payment.getStatus());
 	}
 
 	public boolean isEnrolmentQueued() {
-		// Payment.STATUS_QUEUED.equals( getResult() ) ||
-		// Payment.STATUS_IN_TRANSACTION.equals( getResult() )
-		return false;
+		// FIXME do we need this method at all?
+		return PaymentStatus.IN_TRANSACTION.equals(payment.getStatus());
 	}
 
+	/**
+	 * Returns true if the enrolment(payment?) was failed and false otherwise.
+	 * 
+	 * @return
+	 */
 	public boolean isEnrolmentFailed() {
-		// Payment.STATUSES_FAILED.containsObject( getResult() )
-		return "Failed".equals(payment.getStatus());
+		PaymentStatus status = payment.getStatus();
+		return PaymentStatus.FAILED.equals(status) || PaymentStatus.REFUNDED.equals(status);
 	}
 
+	/**
+	 * Returns true if the payment parameter was passed to the component and
+	 * false otherwise.
+	 * 
+	 * @return
+	 */
 	public boolean isPayment() {
-		// BigDecimal totalAmount;
-
-		// totalAmount = getPaymentQuery().totalAmount();
-		// return totalAmount != null && totalAmount.doubleValue() != 0.00d;
-		return true;
+		return payment != null;
 	}
 
 	public String getPaymentId() {
