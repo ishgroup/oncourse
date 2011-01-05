@@ -1,14 +1,19 @@
 package ish.oncourse.enrol.components;
 
 import ish.math.Country;
+import ish.math.Money;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Preference;
+import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.IPreferenceService;
 
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.tapestry5.annotations.Parameter;
@@ -21,8 +26,11 @@ public class EnrolmentPrice {
 	@Inject
 	private IPreferenceService preferenceService;
 
+	@Inject
+	private IDiscountService discountService;
+
 	@Parameter
-    @Property
+	@Property
 	private Enrolment enrolment;
 
 	@Parameter
@@ -39,6 +47,13 @@ public class EnrolmentPrice {
 	@Property
 	private Format numberFormat;
 
+	private List<Discount> discounts;
+
+	/**
+	 * Initial setup of the component's instances. Formats; applicable discounts
+	 * if the enrolment isn't invoiced and thus doesn't have discounts
+	 * calculated.
+	 */
 	@SetupRender
 	void beforeRender() {
 		Preference currencyPref = preferenceService.getPreferenceByKey("default.currency");
@@ -50,6 +65,9 @@ public class EnrolmentPrice {
 		}
 		moneyFormat = NumberFormat.getCurrencyInstance(locale);
 		numberFormat = new DecimalFormat("0.00");
+		if (!isInvoiced()) {
+			discounts = discountService.getEnrolmentDiscounts(enrolment);
+		}
 	}
 
 	public String getFeeClass() {
@@ -60,8 +78,57 @@ public class EnrolmentPrice {
 		return "fee-discounted" + (!hasDiscountValue() ? " collapse" : "");
 	}
 
+	/**
+	 * Checks if the discount value for the enrolment is greater than zero -
+	 * returns true, otherwise false.
+	 * 
+	 * @return
+	 */
 	private boolean hasDiscountValue() {
-		return !enrolment.getInvoiceLine().getDiscountTotalExTax().isZero();
+		if (isInvoiced()) {
+			return !enrolment.getInvoiceLine().getDiscountTotalExTax().isZero();
+		} else {
+			return !discountService.discountValueForList(discounts,
+					enrolment.getCourseClass().getFeeExGst()).isZero();
+		}
+
 	}
 
+	/**
+	 * Discounted price of the enrolment including tax.
+	 * 
+	 * @return price
+	 */
+	public Money getDiscountedPriceIncTax() {
+		if (isInvoiced()) {
+			return enrolment.getInvoiceLine().getDiscountedPriceTotalIncTax();
+		} else {
+			return discountService.discountedValueForList(discounts, enrolment.getCourseClass()
+					.getFeeIncGst());
+		}
+	}
+
+	/**
+	 * Discount amount of the enrolment including tax.
+	 * 
+	 * @return discount
+	 */
+	public Money getDiscountIncTax() {
+		if (isInvoiced()) {
+			return enrolment.getInvoiceLine().getDiscountTotalIncTax();
+		} else {
+			return discountService.discountValueForList(discounts, enrolment.getCourseClass()
+					.getFeeIncGst());
+		}
+	}
+
+	/**
+	 * Checks if the {@link EnrolmentPrice#enrolment} has a not nul reference to
+	 * the {@link InvoiceLine}.
+	 * 
+	 * @return
+	 */
+	private boolean isInvoiced() {
+		return enrolment.getInvoiceLine() != null;
+	}
 }

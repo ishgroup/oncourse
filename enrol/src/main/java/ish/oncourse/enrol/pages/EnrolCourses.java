@@ -199,11 +199,12 @@ public class EnrolCourses {
 						.getStudent();
 				CourseClass courseClass = (CourseClass) context.localObject(classesToEnrol.get(j)
 						.getObjectId(), classesToEnrol.get(j));
+
+				enrolments[i][j].setStudent(student);
+				enrolments[i][j].setCourseClass(courseClass);
+
 				if (!enrolments[i][j].isDuplicated(student)
 						&& courseClass.isHasAvailableEnrolmentPlaces()) {
-					enrolments[i][j].setStudent(student);
-					enrolments[i][j].setCourseClass(courseClass);
-
 					InvoiceLine invoiceLine = invoiceProcessingService
 							.createInvoiceLineForEnrolment(enrolments[i][j]);
 					invoiceLine.setInvoice(invoice);

@@ -27,13 +27,13 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class DiscountService implements IDiscountService {
-	
+
 	@Inject
 	private ICookiesService cookiesService;
-	
+
 	@Inject
 	private ICayenneService cayenneService;
-	
+
 	public static final String AGE_UNDER = "<";
 	public static final String AGE_OVER = ">";
 
@@ -86,7 +86,7 @@ public class DiscountService implements IDiscountService {
 
 		List<Discount> potentialDiscounts = getApplicableDiscounts(enrolment.getCourseClass());
 		potentialDiscounts.addAll(filterDiscounts(getPromotions(), enrolment.getCourseClass()));
-		
+
 		for (Discount discount : potentialDiscounts) {
 			if (isStudentEligibile(enrolment.getStudent(), discount)) {
 				result.add(discount);
@@ -98,7 +98,6 @@ public class DiscountService implements IDiscountService {
 		return result;
 	}
 
-	
 	/**
 	 * Determines if the given student is eligible for this Discount, based on:
 	 * enrolled within X days; student age; postcode; and concessions (test not
@@ -182,14 +181,16 @@ public class DiscountService implements IDiscountService {
 				return false; // does not have any of the concession types that
 								// give this discount
 		}
-
-		List<String> postcodes = Arrays.asList(discount.getStudentPostcodes().split("\\s*,\\s"));
-		if (!postcodes.isEmpty()) {
-			if (student.getContact().getPostcode() == null) {
-				return false;// not eligibile
-			}
-			if (!postcodes.contains(student.getContact().getPostcode())) {
-				return false;// not eligibile
+		if (discount.getStudentPostcodes() != null) {
+			List<String> postcodes = Arrays
+					.asList(discount.getStudentPostcodes().split("\\s*,\\s"));
+			if (!postcodes.isEmpty()) {
+				if (student.getContact().getPostcode() == null) {
+					return false;// not eligibile
+				}
+				if (!postcodes.contains(student.getContact().getPostcode())) {
+					return false;// not eligibile
+				}
 			}
 		}
 		return true;// eligibile
@@ -343,6 +344,7 @@ public class DiscountService implements IDiscountService {
 
 	/**
 	 * {@inheritDoc}
+	 * 
 	 * @see ish.oncourse.services.discount.IDiscountService#getPromotions()
 	 */
 	public List<Discount> getPromotions() {
@@ -352,19 +354,19 @@ public class DiscountService implements IDiscountService {
 
 	/**
 	 * {@inheritDoc}
+	 * 
 	 * @see ish.oncourse.services.discount.IDiscountService#loadByIds(java.lang.Object[])
 	 */
 	@Override
 	public List<Discount> loadByIds(Object... ids) {
-		if (ids==null || ids.length == 0) {
+		if (ids == null || ids.length == 0) {
 			return Collections.emptyList();
 		}
 
 		SelectQuery q = new SelectQuery(Discount.class);
 		q.andQualifier(ExpressionFactory.inDbExp(Discount.ID_PK_COLUMN, ids));
-		
+
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
-	
 }

@@ -279,10 +279,20 @@ public class EnrolmentPaymentEntry {
 			BigDecimal totalGst = BigDecimal.ZERO;
 			BigDecimal totalExGst = BigDecimal.ZERO;
 
+			for (Enrolment e : enrolments) {
+				if (e.getInvoiceLine() == null) {
+					context.deleteObject(e);
+				}
+			}
+
 			for (InvoiceLine invLine : invoice.getInvoiceLines()) {
-				totalExGst = totalGst.add(invLine.getPriceTotalExTax().toBigDecimal());
-				totalGst = totalGst.add(invLine.getPriceTotalIncTax()
-						.subtract(invLine.getPriceTotalExTax()).toBigDecimal());
+				if (invLine.getEnrolment() == null) {
+					context.deleteObject(invLine);
+				} else {
+					totalExGst = totalGst.add(invLine.getPriceTotalExTax().toBigDecimal());
+					totalGst = totalGst.add(invLine.getPriceTotalIncTax()
+							.subtract(invLine.getPriceTotalExTax()).toBigDecimal());
+				}
 			}
 
 			invoice.setTotalExGst(totalExGst);

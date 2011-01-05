@@ -27,11 +27,19 @@ public class CookiesService implements ICookiesService {
 	@Inject
 	private Cookies cookies;
 
+	/**
+	 * Splits the cookie value by
+	 * {@value CookiesService#COOKIES_COLLECTION_SEPARATOR}.
+	 * 
+	 * {@inheritDoc}
+	 * 
+	 * @see ish.oncourse.services.cookies.ICookiesService#getCookieCollectionValue(java.lang.String)
+	 */
 	public String[] getCookieCollectionValue(String cookieKey) {
 		String[] result = (String[]) getCookieFromDictionary(cookieKey);
 		if (result == null) {
 			String resultString = getCookieValue(cookieKey);
-			if (resultString == null) {
+			if (resultString == null || resultString.equals("")) {
 				return null;
 			}
 			result = resultString.split(COOKIES_COLLECTION_SEPARATOR_REGEXP);
@@ -60,8 +68,7 @@ public class CookiesService implements ICookiesService {
 	private Object getCookieFromDictionary(String cookieKey) {
 		Map<String, Object> cookiesDictionary = (Map<String, Object>) request
 				.getAttribute(COOKIES_DICTIONARY_REQUEST_ATTR);
-		if (cookiesDictionary != null
-				&& cookiesDictionary.containsKey(cookieKey)) {
+		if (cookiesDictionary != null && cookiesDictionary.containsKey(cookieKey)) {
 			return cookiesDictionary.get(cookieKey);
 		}
 		return null;
@@ -71,8 +78,7 @@ public class CookiesService implements ICookiesService {
 		return cookies.readCookieValue(cookieKey);
 	}
 
-	public void appendValueToCookieCollection(String cookieKey,
-			String cookieValue) {
+	public void appendValueToCookieCollection(String cookieKey, String cookieValue) {
 		String existingValue = getCookieValue(cookieKey);
 		StringBuffer strBuff = new StringBuffer();
 		if (existingValue != null && !"".equals(existingValue)) {
@@ -92,19 +98,18 @@ public class CookiesService implements ICookiesService {
 		requestGlobals.getHTTPServletResponse().addCookie(cookie);
 	}
 
-	public void removeValueFromCookieCollection(String cookieKey,
-			String cookieValue) {
+	public void removeValueFromCookieCollection(String cookieKey, String cookieValue) {
 		String existingValue = getCookieValue(cookieKey);
 		String result;
 		if (existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) == -1) {
 			result = existingValue.replaceAll(cookieValue, "");
 		} else if (existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) > existingValue
 				.indexOf(cookieValue)) {
-			result = existingValue.replaceAll(cookieValue
-					+ COOKIES_COLLECTION_SEPARATOR_REGEXP, "");
+			result = existingValue
+					.replaceAll(cookieValue + COOKIES_COLLECTION_SEPARATOR_REGEXP, "");
 		} else {
-			result = existingValue.replaceAll(
-					COOKIES_COLLECTION_SEPARATOR_REGEXP + cookieValue, "");
+			result = existingValue
+					.replaceAll(COOKIES_COLLECTION_SEPARATOR_REGEXP + cookieValue, "");
 		}
 		writeCookieValue(cookieKey, result);
 	}

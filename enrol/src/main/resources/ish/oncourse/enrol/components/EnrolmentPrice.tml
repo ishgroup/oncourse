@@ -5,9 +5,9 @@
 		<t:output value="courseClass.feeIncGst" format="moneyFormat"/>
 	</span>
 	<span class="${feeDiscountedClass})">
-		<t:output value="enrolment.invoiceLine.discountedPriceTotalIncTax" format="moneyFormat"/>
+		<t:output value="discountedPriceIncTax" format="moneyFormat"/>
 	</span>
 	<span id="d${index}" style="display:none;">
-		<t:output value="enrolment.invoiceLine.discountTotalIncTax" format="numberFormat"/>
+		<t:output value="discountIncTax" format="numberFormat"/>
 	</span>
 </t:container>	
