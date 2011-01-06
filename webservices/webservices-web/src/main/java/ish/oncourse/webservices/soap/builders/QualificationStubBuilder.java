@@ -6,7 +6,8 @@
 package ish.oncourse.webservices.soap.builders;
 
 import ish.oncourse.model.Qualification;
-import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Qualification_Stub;
+
 import java.math.BigDecimal;
 
 /**

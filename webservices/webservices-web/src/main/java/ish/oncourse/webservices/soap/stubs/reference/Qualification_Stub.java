@@ -3,7 +3,8 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.soap.stubs;
+package ish.oncourse.webservices.soap.stubs.reference;
+
 
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author marek
  */
-public class Qualification_Stub extends WillowEntity_Stub {
+public class Qualification_Stub extends SoapReference_Stub {
 
 	private String anzsco;
 	private String anzsic;

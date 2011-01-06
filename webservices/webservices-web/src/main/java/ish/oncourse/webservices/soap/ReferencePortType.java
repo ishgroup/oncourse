@@ -8,11 +8,11 @@ import javax.jws.WebParam;
 
 import javax.jws.WebService;
 
-import ish.oncourse.webservices.soap.stubs.Country_Stub;
-import ish.oncourse.webservices.soap.stubs.Language_Stub;
-import ish.oncourse.webservices.soap.stubs.Module_Stub;
-import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
-import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Country_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Language_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Module_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Qualification_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.TrainingPackage_Stub;
 
 /**
  * The ReferencePortType defines the API for one-way (Willow to Angel)

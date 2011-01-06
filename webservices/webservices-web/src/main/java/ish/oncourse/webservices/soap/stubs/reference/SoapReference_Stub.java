@@ -3,14 +3,14 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.soap.stubs;
+package ish.oncourse.webservices.soap.stubs.reference;
 
 
 /**
  *
  * @author marek
  */
-public abstract class WillowEntity_Stub {
+public abstract class SoapReference_Stub {
 
 	private Long willowId;
 

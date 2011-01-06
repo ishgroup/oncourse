@@ -6,7 +6,7 @@
 package ish.oncourse.webservices.soap.builders;
 
 import ish.oncourse.model.Country;
-import ish.oncourse.webservices.soap.stubs.Country_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Country_Stub;
 
 /**
  *

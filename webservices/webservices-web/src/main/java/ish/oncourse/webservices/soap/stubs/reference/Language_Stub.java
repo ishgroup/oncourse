@@ -1,5 +1,6 @@
 
-package ish.oncourse.webservices.soap.stubs;
+package ish.oncourse.webservices.soap.stubs.reference;
+
 
 import java.util.Date;
 
@@ -8,7 +9,7 @@ import java.util.Date;
  *
  * @author Marek Wawrzyczny
  */
-public class Language_Stub extends WillowEntity_Stub {
+public class Language_Stub extends SoapReference_Stub {
 
 	private String absCode;
 	private Date created;

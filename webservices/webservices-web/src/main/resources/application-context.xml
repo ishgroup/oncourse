@@ -16,11 +16,16 @@
 	<bean id="referencePortTypeBean" class="ish.oncourse.webservices.soap.ReferencePortTypeImpl" />
 	<bean id="authenticationPortType" class="ish.oncourse.webservices.soap.auth.AuthenticationPortTypeImpl"/>
 	<bean id="communicationKeyCallback" class="ish.oncourse.webservices.soap.auth.CommunicationKeyCallback"/>
+	<bean id="replicationPortType" class="ish.oncourse.webservices.soap.ReplicationPortTypeImpl"/>
 	
 	<jaxws:endpoint id="auth"
                   implementor="#authenticationPortType"
                   address="/auth">
-                  
+    </jaxws:endpoint>
+    
+    <jaxws:endpoint id="replication"
+                  implementor="#replicationPortType"
+                  address="/replication">
     </jaxws:endpoint>
 	
 	<jaxws:endpoint

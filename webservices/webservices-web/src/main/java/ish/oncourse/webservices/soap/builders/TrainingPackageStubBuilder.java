@@ -6,7 +6,7 @@
 package ish.oncourse.webservices.soap.builders;
 
 import ish.oncourse.model.TrainingPackage;
-import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.TrainingPackage_Stub;
 
 /**
  *

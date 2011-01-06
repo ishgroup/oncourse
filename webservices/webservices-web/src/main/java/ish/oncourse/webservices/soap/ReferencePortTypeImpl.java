@@ -20,11 +20,12 @@ import ish.oncourse.webservices.soap.builders.LanguageStubBuilder;
 import ish.oncourse.webservices.soap.builders.ModuleStubBuilder;
 import ish.oncourse.webservices.soap.builders.QualificationStubBuilder;
 import ish.oncourse.webservices.soap.builders.TrainingPackageStubBuilder;
-import ish.oncourse.webservices.soap.stubs.Country_Stub;
-import ish.oncourse.webservices.soap.stubs.Language_Stub;
-import ish.oncourse.webservices.soap.stubs.Module_Stub;
-import ish.oncourse.webservices.soap.stubs.Qualification_Stub;
-import ish.oncourse.webservices.soap.stubs.TrainingPackage_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Country_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Language_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Module_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Qualification_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.TrainingPackage_Stub;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;

@@ -6,7 +6,7 @@
 package ish.oncourse.webservices.soap.builders;
 
 import ish.oncourse.model.Language;
-import ish.oncourse.webservices.soap.stubs.Language_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.Language_Stub;
 
 /**
  *
