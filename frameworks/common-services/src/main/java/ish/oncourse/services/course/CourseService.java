@@ -3,6 +3,7 @@ package ish.oncourse.services.course;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
@@ -56,6 +57,10 @@ public class CourseService implements ICourseService {
 		}
 		q.setFetchOffset(startDefault);
 		q.setFetchLimit(rowsDefault);
+		
+		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
+		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY+"."+CourseClass.ENROLMENTS_PROPERTY);
+		
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
