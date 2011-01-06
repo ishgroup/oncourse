@@ -54,14 +54,4 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 				.matchExp(WebUrlAlias.WEB_SITE_PROPERTY, site);
 		return expression;
 	}
-
-	public List<WebUrlAlias> loadForCurrentSite() {
-		WebSite site = webSiteService.getCurrentWebSite();
-
-		SelectQuery q = new SelectQuery(WebUrlAlias.class);
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebUrlAlias.WEB_SITE_PROPERTY, site));
-
-		return cayenneService.sharedContext().performQuery(q);
-	}
 }
