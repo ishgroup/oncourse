@@ -24,6 +24,7 @@ public class Discount extends _Discount {
 	private static final Logger LOG = Logger.getLogger(Discount.class);
 	public static final Integer COMBINATION_ANY = Integer.valueOf(1);
 	public static final Integer COMBINATION_NONE = Integer.valueOf(0);
+	public static final String PROMOTIONS_KEY="promotions";
 
 	/**
 	 * @param discounts

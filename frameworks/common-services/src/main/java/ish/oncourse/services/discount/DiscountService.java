@@ -348,7 +348,10 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#getPromotions()
 	 */
 	public List<Discount> getPromotions() {
-		String[] discountIds = cookiesService.getCookieCollectionValue("promotions");
+		String[] discountIds = cookiesService.getCookieCollectionValue(Discount.PROMOTIONS_KEY);
+		if (discountIds == null) {
+			return Collections.emptyList();
+		}
 		return loadByIds(discountIds);
 	}
 

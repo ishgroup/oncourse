@@ -132,12 +132,23 @@ public class EnrolCourses {
 	@Property
 	private EnrolmentPaymentEntry paymentEntry;
 
+	/**
+	 * Initial setup of the EnrolCourses page. Retrieves all the shortlisted
+	 * classes and students.<br/>
+	 * If there're no shortlisted classes, the message for user to return to the
+	 * courses list and order some is appeared. <br/>
+	 * If there're no shortlisted students, the user adds it in the proposed
+	 * form.<br/>
+	 * When there exist both students and classes list, the payment-related
+	 * entities are created: {@see EnrolCourses#initPayment()}.
+	 */
 	@SetupRender
 	void beforeRender() {
 		moneyFormat = new DecimalFormat("###,##0.00");
 		context = cayenneService.newContext();
 
-		String[] orderedClassesIds = cookiesService.getCookieCollectionValue("shortlist");
+		String[] orderedClassesIds = cookiesService
+				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
 		if (orderedClassesIds != null && orderedClassesIds.length != 0) {
 			classesToEnrol = courseClassService.loadByIds(orderedClassesIds);
 			List<Ordering> orderings = new ArrayList<Ordering>();

@@ -26,13 +26,14 @@ public class ShortList {
 	private List<CourseClass> ordered;
 
 	@SetupRender
-	void beforeRender(){
-		String[] orderedClassesIds = cookiesService.getCookieCollectionValue("shortlist");
-		if(orderedClassesIds!=null&&orderedClassesIds.length!=0){
-			ordered=courseClassService.loadByIds(orderedClassesIds);
+	void beforeRender() {
+		String[] orderedClassesIds = cookiesService
+				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
+		if (orderedClassesIds != null) {
+			ordered = courseClassService.loadByIds(orderedClassesIds);
 		}
 	}
-	
+
 	public Integer getOrderedCount() {
 		if (ordered == null) {
 			return 0;
@@ -41,8 +42,7 @@ public class ShortList {
 	}
 
 	public String getSelectedMessage() {
-		return "course" + (ordered == null || ordered.size() != 1 ? "s" : "")
-				+ " selected";
+		return "course" + (ordered == null || ordered.size() != 1 ? "s" : "") + " selected";
 	}
 
 	public boolean isHasObjects() {

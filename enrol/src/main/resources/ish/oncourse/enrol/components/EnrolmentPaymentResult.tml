@@ -2,6 +2,16 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="enrolmentSuccessful">
+		<script type="text/javascript">
+			<!--TODO define functions for refreshing the shortlist and the control in application.js and use it--> 
+			$j.ajax({
+				type: "GET",
+				url:  '/refreshShortList',
+				success: function(msg){
+						$j('#shortlist').replaceWith(msg);
+				}
+			});
+		</script>
 		<h2>Enrolment <span>&#187;</span> Successful</h2>
 		<p>${thxMsg}</p>
 		<p>Your enrolment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentId}</strong>.</p>

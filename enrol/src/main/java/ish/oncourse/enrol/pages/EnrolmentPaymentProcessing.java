@@ -4,9 +4,14 @@ import java.util.List;
 
 import ish.oncourse.enrol.components.EnrolmentPaymentResult;
 import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
+import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentStatus;
+import ish.oncourse.services.cookies.ICookiesService;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -21,6 +26,12 @@ public class EnrolmentPaymentProcessing {
 	 */
 	@Inject
 	private IPaymentGatewayService paymentGatewayService;
+
+	@Inject
+	private ICookiesService cookiesService;
+
+	@Inject
+	private IStudentService studentService;
 
 	@InjectComponent
 	private EnrolmentPaymentResult result;
@@ -37,7 +48,7 @@ public class EnrolmentPaymentProcessing {
 
 	/**
 	 * Method that is performed when the processHolder displays its content and
-	 * when it finishes , the result component is shown. 
+	 * when it finishes , the result component is shown.
 	 * 
 	 * @return the result block. {@see EnrolmentPaymentResult}
 	 */
@@ -60,8 +71,16 @@ public class EnrolmentPaymentProcessing {
 			}
 			context = enrolments.get(0).getObjectContext();
 		}
+
 		if (context != null) {
 			context.commitChanges();
+		}
+		// FIXME consider how to deal with "null" payment
+		if (payment == null || PaymentStatus.SUCCESS.equals(payment.getStatus())) {
+			// clear all the short lists
+			cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKEY_KEY, "");
+			cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
+			studentService.clearStudentsShortList();
 		}
 		result.setPayment(payment);
 		result.setEnrolments(enrolments);
