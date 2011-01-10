@@ -4,7 +4,6 @@ import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Student;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,36 +31,36 @@ public class EnrolmentListItem {
 
 	@Parameter
 	private int courseClassIndex;
-	
+
 	@Property
 	private int sIndex;
 
 	@Property
 	private int cCIndex;
-	
+
 	@Inject
 	private ComponentResources componentResources;
-	
+
 	@Property
 	@Persist
 	private DateFormat dateFormat;
-	
+
 	@InjectComponent
 	@Property
 	private Form enrolmentCheckboxForm;
 
 	@InjectComponent
 	private Checkbox enrolmentCheckbox;
-	
+
 	@Persist
 	private EnrolCourses enrolCoursesPage;
-	
+
 	@SetupRender
 	void beforeRender() {
 		dateFormat = new SimpleDateFormat("EEE d MMM yy h:mm a");
-		enrolCoursesPage=(EnrolCourses)componentResources.getPage();
-		sIndex=studentIndex;
-		cCIndex=courseClassIndex;
+		enrolCoursesPage = (EnrolCourses) componentResources.getPage();
+		sIndex = studentIndex;
+		cCIndex = courseClassIndex;
 		dateFormat.setTimeZone(getCourseClass().getClassTimeZone());
 	}
 
@@ -70,8 +69,10 @@ public class EnrolmentListItem {
 	}
 
 	/**
-	 * Before performing checking/unchecking, first of all it looks if the checkbox is enabled, 
-	 * that's why the updating of indexes is performing here
+	 * Before performing checking/unchecking, first of all it looks if the
+	 * checkbox is enabled, that's why the updating of indexes is performing
+	 * here
+	 * 
 	 * @return
 	 */
 	public boolean isDisabled() {
@@ -80,21 +81,13 @@ public class EnrolmentListItem {
 	}
 
 	private void updateItemIndexes() {
-		String[]indexes=enrolmentCheckbox.getControlName().split(SEPARATOR);
-		String sIndexStr = indexes[indexes.length-2];
-		String cCIndexStr = indexes[indexes.length-1];
-		if(sIndexStr.matches(DIGIT_PATTERN)&&cCIndexStr.matches(DIGIT_PATTERN)){
-			sIndex=Integer.parseInt(sIndexStr);
-			cCIndex=Integer.parseInt(cCIndexStr);
+		String[] indexes = enrolmentCheckbox.getControlName().split(SEPARATOR);
+		String sIndexStr = indexes[indexes.length - 2];
+		String cCIndexStr = indexes[indexes.length - 1];
+		if (sIndexStr.matches(DIGIT_PATTERN) && cCIndexStr.matches(DIGIT_PATTERN)) {
+			sIndex = Integer.parseInt(sIndexStr);
+			cCIndex = Integer.parseInt(cCIndexStr);
 		}
-	}
-
-	public boolean isEnrolled() {
-		return getEnrolment().isDuplicated(getStudent());
-	}
-
-	public boolean canEnrol() {
-		return !isEnrolled() && getCourseClass().isHasAvailableEnrolmentPlaces();
 	}
 
 	public boolean isEnrolmentSelected() {
@@ -102,38 +95,64 @@ public class EnrolmentListItem {
 	}
 
 	public void setEnrolmentSelected(boolean value) {
-		
+
 		if (value) {
 			getEnrolment().setInvoiceLine(getInvoiceLine());
 		} else {
 			getEnrolment().setInvoiceLine(null);
 		}
-	
+
 	}
-	
-	@OnEvent(component="enrolmentCheckboxForm", value="submit")
-	Object enrolmentChClicked(){
+
+	@OnEvent(component = "enrolmentCheckboxForm", value = "submit")
+	Object enrolmentChClicked() {
 		return enrolCoursesPage.enrolmentsUpdated();
 	}
+
 	public String getDisabledMessage() {
-		if (isEnrolled()) {
+		if (isDuplicated()) {
 			return "already enrolled";
 		}
-		if (!canEnrol()) {
+		if (!hasAvailablePlaces()) {
 			return "places unavailable";
 		}
 		return "";
 	}
 
-	public Enrolment getEnrolment(){
+	/**
+	 * Checks if the enrolment with the same student and class already exists.
+	 * 
+	 * @return true if the enrolment under consideration is duplicated.
+	 */
+	private boolean isDuplicated() {
+		return getEnrolment().isDuplicated();
+	}
+
+	/**
+	 * Checks if the courseClass under consideration has available places.
+	 * 
+	 * @return true if there are available places for enrolment.
+	 */
+	private boolean hasAvailablePlaces() {
+		return getCourseClass().isHasAvailableEnrolmentPlaces();
+	}
+
+	/**
+	 * Checks if the enrolment is possible, ie if it is not duplicated and if
+	 * there are available places in class.
+	 * 
+	 * @return
+	 */
+	public boolean canEnrol() {
+		return !isDuplicated() && hasAvailablePlaces();
+	}
+
+	public Enrolment getEnrolment() {
 		return enrolCoursesPage.getEnrolments()[sIndex][cCIndex];
 	}
-	
+
 	public InvoiceLine getInvoiceLine() {
 		return enrolCoursesPage.getInvoiceLines()[sIndex][cCIndex];
-	}
-	public Student getStudent() {
-		return enrolCoursesPage.getContacts().get(sIndex).getStudent();
 	}
 
 	public CourseClass getCourseClass() {

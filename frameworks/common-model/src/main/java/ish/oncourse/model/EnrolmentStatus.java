@@ -51,6 +51,12 @@ public enum EnrolmentStatus implements Serializable, DisplayableExtendedEnumerat
 	 */
 	private String databaseValue;
 
+	/**
+	 * Statuses for which the class place is considered to be occupied.
+	 */
+	public static EnrolmentStatus[] VALID_ENROLMENTS = new EnrolmentStatus[] { IN_TRANSACTION,
+			SUCCESS };
+
 	private EnrolmentStatus(String databaseValue, String displayName) {
 		this.databaseValue = databaseValue;
 		this.displayName = displayName;

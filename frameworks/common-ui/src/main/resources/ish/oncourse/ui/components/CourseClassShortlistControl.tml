@@ -2,19 +2,16 @@
 	xmlns:p="tapestry:parameter">
 	<ul id="m${courseClass.id}" class="class_options noprint">
 		<t:if t:test="courseClass.cancelled" negate="true">
-			<t:if t:test="enrolled" negate="true">
-				<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
-					<t:if t:test="paymentGatewayEnabled">
-						<li class="class_enrol">
-							<a id="${courseClass.id}"
-								href="enrol/EnrolCourses">Enrol Now</a>
-						</li>
-					</t:if>
-					<p:else>
-						<li class="class_full">No places</li>
-					</p:else>
+			<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+				<t:if t:test="paymentGatewayEnabled">
+					<li class="class_enrol">
+						<a id="${courseClass.id}"
+							href="enrol/EnrolCourses">Enrol Now</a>
+					</li>
 				</t:if>
-
+				<p:else>
+					<li class="class_full">No places</li>
+				</p:else>
 			</t:if>
 			<p:else>
 				<li class="class_cancelled">Class was cancelled</li>

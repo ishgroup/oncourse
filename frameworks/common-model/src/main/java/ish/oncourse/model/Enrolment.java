@@ -2,46 +2,25 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Enrolment;
 
-import java.util.List;
-
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Enrolment extends _Enrolment {
 
-	public boolean isDuplicated(Student student) {
-		if (getCourseClass() != null && isSuccessfullOrQueued()) {
-			List<Enrolment> enrolments = getStudent().getEnrolments();
-			boolean duplicateEnroment = false;
-			if (enrolments != null)
-				for (Enrolment enrolment : enrolments)
-					if (!equals(enrolment))//TODO equalsIgnoreContext
-						if (getCourseClass().equals(enrolment.getCourseClass()))//TODO equalsIgnoreContext
-							if (enrolment.isSuccessfullOrQueued())
-								duplicateEnroment = true;
-
-			if (duplicateEnroment) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	
 	/**
-	 * An enrolments is successfull when its status is 'success' or 'queued', or null (the latter means, not processed yet, not even committed)
+	 * Checks if this enrolment is duplicated, ie checks if there is a record
+	 * with such a courseClass and student, that this enrolment has.
 	 * 
-	 * @return true if the enrolment is considered as successful
+	 * @return true if the student is already enrolled to the courseClass.
 	 */
-	public boolean isSuccessfullOrQueued() {
-		return getStatus() == null || getStatus().equals(EnrolmentStatus.SUCCESS);
-	}
-
-
-
-	/*public boolean equalsIgnoreContext(Object obj) {
-		if (obj instanceof PersistentObject) {
-			return super.equals(obj) || getObjectId().equals(((PersistentObject) obj).getObjectId());
+	public Boolean isDuplicated() {
+		if (getStudent() == null || getCourseClass() == null) {
+			return null;
 		}
-		return false;
-	}*/
+
+		Expression filter = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, getStudent());
+
+		return !filter.filterObjects(getCourseClass().getValidEnrolments()).isEmpty();
+	}
 
 }

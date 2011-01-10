@@ -214,7 +214,7 @@ public class EnrolCourses {
 				enrolments[i][j].setStudent(student);
 				enrolments[i][j].setCourseClass(courseClass);
 
-				if (!enrolments[i][j].isDuplicated(student)
+				if (!enrolments[i][j].isDuplicated()
 						&& courseClass.isHasAvailableEnrolmentPlaces()) {
 					InvoiceLine invoiceLine = invoiceProcessingService
 							.createInvoiceLineForEnrolment(enrolments[i][j]);

@@ -159,13 +159,25 @@ public class CourseClass extends _CourseClass {
 
 	/**
 	 * Calculates the count of current valid enrolments of this class.
+	 * 
 	 * @return count of enrolments.
 	 */
 	public int validEnrolmentsCount() {
-		int result = ExpressionFactory
-				.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS, EnrolmentStatus.PENDING,
-						EnrolmentStatus.IN_TRANSACTION).filterObjects(getEnrolments()).size();
+		List<Enrolment> validEnrolments = getValidEnrolments();
+		int result = validEnrolments.size();
 		return Math.max(0, result);
+	}
+
+	/**
+	 * Gets all the "valid" enrolments of this class {@see
+	 * EnrolmentStatus#VALID_ENROLMENTS}.
+	 * 
+	 * @return list of valid enrolments.
+	 */
+	public List<Enrolment> getValidEnrolments() {
+		List<Enrolment> validEnrolments = ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY,
+				EnrolmentStatus.VALID_ENROLMENTS).filterObjects(getEnrolments());
+		return validEnrolments;
 	}
 
 	public Long getRecordId() {

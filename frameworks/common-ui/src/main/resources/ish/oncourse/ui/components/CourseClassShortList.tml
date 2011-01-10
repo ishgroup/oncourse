@@ -16,7 +16,7 @@
 								</a>
 							</li>
 						</t:loop>
-						<t:if test="showEnrolNow">
+						<t:if test="paymentGatewayEnabled">
 							<li class="enrolnow">
 								<a id="enrolNowLink" href="/enrol/EnrolCourses">
 									${enrolLinkText}

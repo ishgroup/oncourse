@@ -2,7 +2,6 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Student;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,28 +31,6 @@ public class Student extends _Student {
 		}
 
 		return age;
-	}
-
-	/**
-	 * @return all enrolments for this student where the payment succeeded and
-	 *         the course was not cancelled or deleted.
-	 */
-	public List<Enrolment> getActiveEnrolments() {
-		List<Enrolment> enrolments = getEnrolments();
-		if ((enrolments == null) || (enrolments.isEmpty())) {
-			return new ArrayList<Enrolment>();
-		}
-
-		Expression qualifier = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, 0/*
-																					 * TODO
-																					 * Payment
-																					 * .
-																					 * STATUS_SUCCEEDED
-																					 */).andExp(
-				ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "."
-						+ CourseClass.CANCELLED_PROPERTY, false));
-
-		return qualifier.filterObjects(enrolments);
 	}
 
 	public WaitingList getActiveWaitingListForCourse(Course course) {
