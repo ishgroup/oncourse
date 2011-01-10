@@ -18,9 +18,6 @@ public class CourseClassShortlistControl {
 	private CourseClass courseClass;
 
 	@Inject
-	private IWebSiteService webSiteService;
-
-	@Inject
 	private ICookiesService cookiesService;
 
 	private Collection<String> shortListedClassesIds;
@@ -32,10 +29,6 @@ public class CourseClassShortlistControl {
 		if (idsArray != null) {
 			shortListedClassesIds = Arrays.asList(idsArray);
 		}
-	}
-
-	public boolean isPaymentGatewayEnabled() {
-		return webSiteService.getCurrentCollege().getIsWebSitePaymentsEnabled();
 	}
 
 	public boolean isContainedInShortList() {

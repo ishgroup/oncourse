@@ -8,32 +8,41 @@ import java.util.List;
 import java.util.Set;
 
 public class College extends _College {
-	
+
 	public Integer getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN)).intValue()
-				: null;
+				.getIdSnapshot().get(ID_PK_COLUMN)).intValue() : null;
 	}
 
 	public Set<String> getCollegeSiteStates() {
 		Set<String> states = new HashSet<String>();
-		
+
 		for (Site site : getSites()) {
 			if (site.getState() != null) {
 				states.add(site.getState());
 			}
 		}
-		
+
 		return states;
 	}
-	
-	public List<ConcessionType> getActiveConcessionTypes(){
-		List<ConcessionType> activeConcessionTypes=new ArrayList<ConcessionType>();
-		for(ConcessionType concessionType: getConcessionTypes()){
-			if(concessionType.getIsConcession()&&concessionType.getIsEnabled()){
+
+	public List<ConcessionType> getActiveConcessionTypes() {
+		List<ConcessionType> activeConcessionTypes = new ArrayList<ConcessionType>();
+		for (ConcessionType concessionType : getConcessionTypes()) {
+			if (concessionType.getIsConcession() && concessionType.getIsEnabled()) {
 				activeConcessionTypes.add(concessionType);
 			}
 		}
 		return activeConcessionTypes;
+	}
+
+	/**
+	 * Checks if the payment gateway processing is enabled for this college
+	 * 
+	 * @return
+	 */
+	public boolean isPaymentGatewayEnabled() {
+		return getPaymentGatewayType() != null
+				&& !PaymentGatewayType.DISABLED.equals(getPaymentGatewayType());
 	}
 }

@@ -144,26 +144,28 @@ public class EnrolCourses {
 	 */
 	@SetupRender
 	void beforeRender() {
-		moneyFormat = new DecimalFormat("###,##0.00");
-		context = cayenneService.newContext();
+		if (isPaymentGatewayEnabled()) {
+			moneyFormat = new DecimalFormat("###,##0.00");
+			context = cayenneService.newContext();
 
-		String[] orderedClassesIds = cookiesService
-				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
-		if (orderedClassesIds != null && orderedClassesIds.length != 0) {
-			classesToEnrol = courseClassService.loadByIds(orderedClassesIds);
-			List<Ordering> orderings = new ArrayList<Ordering>();
-			orderings.add(new Ordering(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY,
-					SortOrder.ASCENDING));
-			orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.ASCENDING));
-			Ordering.orderList(classesToEnrol, orderings);
+			String[] orderedClassesIds = cookiesService
+					.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
+			if (orderedClassesIds != null) {
+				classesToEnrol = courseClassService.loadByIds(orderedClassesIds);
+				List<Ordering> orderings = new ArrayList<Ordering>();
+				orderings.add(new Ordering(
+						CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY,
+						SortOrder.ASCENDING));
+				orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.ASCENDING));
+				Ordering.orderList(classesToEnrol, orderings);
+			}
+
+			contacts = studentService.getStudentsFromShortList();
+
+			if (!contacts.isEmpty() && classesToEnrol != null) {
+				initPayment();
+			}
 		}
-
-		contacts = studentService.getStudentsFromShortList();
-
-		if (contacts != null && !contacts.isEmpty() && classesToEnrol != null) {
-			initPayment();
-		}
-
 	}
 
 	/**
@@ -214,8 +216,7 @@ public class EnrolCourses {
 				enrolments[i][j].setStudent(student);
 				enrolments[i][j].setCourseClass(courseClass);
 
-				if (!enrolments[i][j].isDuplicated()
-						&& courseClass.isHasAvailableEnrolmentPlaces()) {
+				if (!enrolments[i][j].isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces()) {
 					InvoiceLine invoiceLine = invoiceProcessingService
 							.createInvoiceLineForEnrolment(enrolments[i][j]);
 					invoiceLine.setInvoice(invoice);
@@ -225,6 +226,16 @@ public class EnrolCourses {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks if the payment gateway processing is enabled for the current
+	 * college. If not, the enrolling is impossible.
+	 * 
+	 * @return true if payment gateway is enabled.
+	 */
+	public boolean isPaymentGatewayEnabled() {
+		return webSiteService.getCurrentCollege().isPaymentGatewayEnabled();
 	}
 
 	public boolean isShowConcessionsArea() {

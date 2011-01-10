@@ -31,8 +31,14 @@ public class CourseClassShortList {
 		return orderedClasses != null && !orderedClasses.isEmpty();
 	}
 
+	/**
+	 * Checks if the payment gateway processing is enabled for the current
+	 * college. 
+	 * 
+	 * @return true if payment gateway is enabled.
+	 */
 	public boolean isPaymentGatewayEnabled() {
-		return webSiteService.getCurrentCollege().getIsWebSitePaymentsEnabled();
+		return webSiteService.getCurrentCollege().isPaymentGatewayEnabled();
 	}
 
 	public String getEnrolLinkText() {

@@ -3,7 +3,7 @@
 	<ul id="m${courseClass.id}" class="class_options noprint">
 		<t:if t:test="courseClass.cancelled" negate="true">
 			<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
-				<t:if t:test="paymentGatewayEnabled">
+				<t:if t:test="courseClass.college.paymentGatewayEnabled">
 					<li class="class_enrol">
 						<a id="${courseClass.id}"
 							href="enrol/EnrolCourses">Enrol Now</a>
@@ -24,7 +24,7 @@
 			<p:else>
 				<t:if t:test="courseClass.cancelled" negate="true">
 					<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
-						<t:if t:test="paymentGatewayEnabled">
+						<t:if t:test="courseClass.college.paymentGatewayEnabled">
 							<li class="class_addorder addshortlist">
 								<a id="${courseClass.id}" href="#">Add to order</a>
 							</li>
