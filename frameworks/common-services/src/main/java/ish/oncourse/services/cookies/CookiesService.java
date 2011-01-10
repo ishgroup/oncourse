@@ -28,10 +28,10 @@ public class CookiesService implements ICookiesService {
 	private Cookies cookies;
 
 	/**
-	 * Splits the cookie value by
-	 * {@value CookiesService#COOKIES_COLLECTION_SEPARATOR}.
+	 * {@inheritDoc} <br/>
+	 * Splits the cookie value by '
+	 * {@value CookiesService#COOKIES_COLLECTION_SEPARATOR}.'
 	 * 
-	 * {@inheritDoc}
 	 * 
 	 * @see ish.oncourse.services.cookies.ICookiesService#getCookieCollectionValue(java.lang.String)
 	 */

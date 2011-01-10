@@ -1,25 +1,24 @@
 package ish.oncourse.enrol.services.student;
 
+import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Student;
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
-
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
 
 public class StudentService implements IStudentService {
 
@@ -85,8 +84,9 @@ public class StudentService implements IStudentService {
 	}
 
 	/**
+	 * {@inheritDoc} <br/>
 	 * Sets null to the session attribute with name
-	 * {@value IStudentService#SHORTLIST_STUDENTS_KEY}. {@inheritDoc}
+	 * {@value IStudentService#SHORTLIST_STUDENTS_KEY}.
 	 * 
 	 * @see ish.oncourse.enrol.services.student.IStudentService#clearStudentsShortList()
 	 */

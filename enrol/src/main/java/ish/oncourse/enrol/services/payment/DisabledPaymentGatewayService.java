@@ -12,8 +12,8 @@ import ish.oncourse.model.PaymentIn;
 public class DisabledPaymentGatewayService implements IPaymentGatewayService {
 
 	/**
-	 * Do nothing if the gateway operation is invoked within payment gateway
-	 * disabled college. {@inheritDoc}
+	 * {@inheritDoc} Do nothing if the gateway operation is invoked within
+	 * payment gateway disabled college.
 	 * 
 	 * @see ish.oncourse.enrol.services.payment.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
 	 */

@@ -43,7 +43,7 @@ public interface IDiscountService {
 	 * Chooses the best option (the max discount value) from the proposed
 	 * discounts (assuming all the discounts in list are applicable): uses the
 	 * combination of "combinable" discounts, or uses the best one of
-	 * "uncombinable"
+	 * "uncombinable".
 	 * 
 	 * @param discounts
 	 *            proposed discounts(eg promotions)
@@ -89,7 +89,7 @@ public interface IDiscountService {
 	Money discountedValueForList(List<Discount> discounts, Money price);
 
 	/**
-	 * Retrieves the list of promotions(discounts with "promo-codes") stored in cookies
+	 * Retrieves the list of promotions(discounts with "promo-codes") stored in cookies.
 	 * @return
 	 */
 	List<Discount> getPromotions();

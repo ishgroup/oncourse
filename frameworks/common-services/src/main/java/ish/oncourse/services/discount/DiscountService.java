@@ -38,13 +38,12 @@ public class DiscountService implements IDiscountService {
 	public static final String AGE_OVER = ">";
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} <br/>
+	 * The implementation is brought from angel/client/ish.oncourse.cayenne.
+	 * Discount.getApplicableDiscounts(CourseClass courseClass).
 	 * 
 	 * @see ish.oncourse.services.discount.IDiscountService#getApplicableDiscounts(ish.oncourse.model.CourseClass)
 	 * 
-	 *      The implementation is brought from
-	 *      angel/client/ish.oncourse.cayenne.
-	 *      Discount.getApplicableDiscounts(CourseClass courseClass)
 	 */
 	public List<Discount> getApplicableDiscounts(CourseClass courseClass) {
 		List<Discount> results = new ArrayList<Discount>();
@@ -197,12 +196,12 @@ public class DiscountService implements IDiscountService {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc}<br/>
+	 * The processing of combined/notToCombine discounts is based on
+	 * angel/client/ish.oncourse.cayenne.InvoiceLine.updateDiscount().
 	 * 
 	 * @see ish.oncourse.services.discount.IDiscountService#chooseBestDiscountsVariant(java.util.List,
-	 *      ish.oncourse.model.CourseClass) The processing of
-	 *      combined/notToCombine discounts is based on
-	 *      angel/client/ish.oncourse.cayenne.InvoiceLine.updateDiscount()
+	 *      ish.oncourse.model.CourseClass)
 	 */
 	public List<Discount> chooseBestDiscountsVariant(List<Discount> discounts, CourseClass aClass) {
 		Vector<Discount> chosenDiscounts = new Vector<Discount>();

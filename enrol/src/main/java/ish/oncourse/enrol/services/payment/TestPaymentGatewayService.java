@@ -12,8 +12,9 @@ import ish.oncourse.model.PaymentIn;
 public class TestPaymentGatewayService implements IPaymentGatewayService {
 
 	/**
+	 * {@inheritDoc} <br/>
 	 * Success if the credit card type is {@link CreditCardType#MASTERCARD},
-	 * fail otherwise. {@inheritDoc}
+	 * fail otherwise.
 	 * 
 	 * @see ish.oncourse.enrol.services.payment.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
 	 */
