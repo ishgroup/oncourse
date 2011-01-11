@@ -8,6 +8,7 @@ import org.apache.cayenne.CayenneDataObject;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseModule;
+import ish.oncourse.model.Qualification;
 import ish.oncourse.model.WaitingList;
 
 /**
@@ -31,11 +32,11 @@ public abstract class _Course extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String NOMINAL_HOURS_PROPERTY = "nominalHours";
-    public static final String QUALIFICATION_ID_PROPERTY = "qualificationId";
     public static final String SEARCH_TEXT_PROPERTY = "searchText";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
+    public static final String QUALIFICATION_PROPERTY = "qualification";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
     public static final String ID_PK_COLUMN = "id";
@@ -131,13 +132,6 @@ public abstract class _Course extends CayenneDataObject {
         return (Float)readProperty("nominalHours");
     }
 
-    public void setQualificationId(Long qualificationId) {
-        writeProperty("qualificationId", qualificationId);
-    }
-    public Long getQualificationId() {
-        return (Long)readProperty("qualificationId");
-    }
-
     public void setSearchText(String searchText) {
         writeProperty("searchText", searchText);
     }
@@ -175,6 +169,15 @@ public abstract class _Course extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<CourseModule> getCourseModules() {
         return (List<CourseModule>)readProperty("courseModules");
+    }
+
+
+    public void setQualification(Qualification qualification) {
+        setToOneTarget("qualification", qualification, true);
+    }
+
+    public Qualification getQualification() {
+        return (Qualification)readProperty("qualification");
     }
 
 

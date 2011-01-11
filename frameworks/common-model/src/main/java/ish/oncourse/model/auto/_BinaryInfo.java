@@ -1,5 +1,6 @@
 package ish.oncourse.model.auto;
 
+import ish.oncourse.model.BinaryData;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public abstract class _BinaryInfo extends CayenneDataObject {
     public static final String PIXEL_HEIGHT_PROPERTY = "pixelHeight";
     public static final String PIXEL_WIDTH_PROPERTY = "pixelWidth";
     public static final String REFERENCE_NUMBER_PROPERTY = "referenceNumber";
+    public static final String BINARY_DATA_PROPERTY = "binaryData";
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
     public static final String COLLEGE_PROPERTY = "college";
 
@@ -100,6 +102,15 @@ public abstract class _BinaryInfo extends CayenneDataObject {
     public Integer getReferenceNumber() {
         return (Integer)readProperty("referenceNumber");
     }
+
+    public void setBinaryData(BinaryData binaryData) {
+        setToOneTarget("binaryData", binaryData, true);
+    }
+
+    public BinaryData getBinaryData() {
+        return (BinaryData)readProperty("binaryData");
+    }
+
 
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
         addToManyTarget("binaryInfoRelations", obj, true);

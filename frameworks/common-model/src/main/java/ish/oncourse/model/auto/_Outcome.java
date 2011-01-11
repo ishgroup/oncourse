@@ -24,7 +24,6 @@ public abstract class _Outcome extends CayenneDataObject {
     public static final String FUNDING_SOURCE_PROPERTY = "fundingSource";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String MODULE_ID_PROPERTY = "moduleId";
-    public static final String PRIOR_LEARNING_ID_PROPERTY = "priorLearningId";
     public static final String REPORTABLE_HOURS_PROPERTY = "reportableHours";
     public static final String START_DATE_PROPERTY = "startDate";
     public static final String STATUS_PROPERTY = "status";
@@ -81,13 +80,6 @@ public abstract class _Outcome extends CayenneDataObject {
     }
     public Long getModuleId() {
         return (Long)readProperty("moduleId");
-    }
-
-    public void setPriorLearningId(Long priorLearningId) {
-        writeProperty("priorLearningId", priorLearningId);
-    }
-    public Long getPriorLearningId() {
-        return (Long)readProperty("priorLearningId");
     }
 
     public void setReportableHours(Double reportableHours) {

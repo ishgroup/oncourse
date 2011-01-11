@@ -69,8 +69,8 @@
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml</map>
 							<!-- excluded entities should be generated manually by CayenneModeler's "Generate Classes"  -->
-							<!-- excluding this entity depending on the onCourse datamap till the CAY-1494 will be done-->
-							<excludeEntitiesPattern>Student</excludeEntitiesPattern>
+							<!-- excluding these entities depending on the onCourse datamap till the CAY-1494 will be done-->
+							<excludeEntitiesPattern>BinaryInfo,Course,CourseModule,Certificate,Site,Student</excludeEntitiesPattern>
 						</configuration>
 						<goals>
 							<goal>cgen</goal>

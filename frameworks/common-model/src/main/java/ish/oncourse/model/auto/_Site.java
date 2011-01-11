@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Country;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.WaitingListSite;
 
@@ -38,6 +39,7 @@ public abstract class _Site extends CayenneDataObject {
     public static final String SUBURB_PROPERTY = "suburb";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String COUNTRY_PROPERTY = "country";
     public static final String ROOMS_PROPERTY = "rooms";
     public static final String WAITING_LIST_SITES_PROPERTY = "waitingListSites";
 
@@ -182,6 +184,15 @@ public abstract class _Site extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty("college");
+    }
+
+
+    public void setCountry(Country country) {
+        setToOneTarget("country", country, true);
+    }
+
+    public Country getCountry() {
+        return (Country)readProperty("country");
     }
 
 

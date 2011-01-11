@@ -16,7 +16,6 @@
 	</db-entity>
 	<obj-entity name="BinaryData" className="ish.oncourse.model.BinaryData" dbEntityName="BinaryData">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="binaryInfoId" type="java.lang.Long" db-attribute-path="binaryInfoId"/>
 		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 		<obj-attribute name="content" type="byte[]" db-attribute-path="content"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>

@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Qualification;
 import ish.oncourse.model.Student;
 
 /**
@@ -33,6 +34,7 @@ public abstract class _Certificate extends CayenneDataObject {
     public static final String STUDENT_LAST_NAME_PROPERTY = "studentLastName";
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String QUALIFICATION_PROPERTY = "qualification";
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";
@@ -153,6 +155,15 @@ public abstract class _Certificate extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty("college");
+    }
+
+
+    public void setQualification(Qualification qualification) {
+        setToOneTarget("qualification", qualification, true);
+    }
+
+    public Qualification getQualification() {
+        return (Qualification)readProperty("qualification");
     }
 
 
