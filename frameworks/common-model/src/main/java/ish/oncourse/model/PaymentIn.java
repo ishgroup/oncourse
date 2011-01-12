@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.PaymentSource;
 import ish.common.util.ExternalValidation;
 import ish.oncourse.model.auto._PaymentIn;
 
@@ -89,6 +90,14 @@ public class PaymentIn extends _PaymentIn {
 		if (student != null) {
 			setStudent(student);
 		}
+	}
+
+	/**
+	 * Retrieves the "client" identificator, ie with the "W" addon.
+	 * @return client identificator string.
+	 */
+	public String getClientReference() {
+		return PaymentSource.SOURCE_WEB.getDatabaseValue() + getId();
 	}
 
 }
