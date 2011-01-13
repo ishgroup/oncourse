@@ -13,22 +13,25 @@ import org.apache.tapestry5.ioc.ServiceResources;
 public class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGatewayService> {
 
 	/**
-	 * Defines the appropriate payment gateway service in dependence on the college.paymentGatewayType property.
-	 * {@inheritDoc} 
+	 * Defines the appropriate payment gateway service in dependence on the
+	 * college.paymentGatewayType property. {@inheritDoc}
 	 * 
 	 */
 	public IPaymentGatewayService buildService(ServiceResources resources) {
 		IWebSiteService service = resources.getService(IWebSiteService.class);
 		College currentCollege = service.getCurrentCollege();
+		if (!currentCollege.isPaymentGatewayEnabled()) {
+			return new DisabledPaymentGatewayService();
+		}
 		switch (currentCollege.getPaymentGatewayType()) {
 		case PAYMENT_EXPRESS:
 			return new PaymentExpressGatewayService();
 		case TEST:
 			return new TestPaymentGatewayService();
-		case DISABLED:
-			return new DisabledPaymentGatewayService();
+		default:
+			return new TestPaymentGatewayService();
 		}
-		return new TestPaymentGatewayService();
+
 	}
 
 }

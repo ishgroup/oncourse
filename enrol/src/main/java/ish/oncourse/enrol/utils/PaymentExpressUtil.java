@@ -19,7 +19,8 @@ public class PaymentExpressUtil {
 		DECIMAL_AMOUNT_FORMATTER.setMinimumFractionDigits( 2 );
 		DECIMAL_AMOUNT_FORMATTER.setMinimumIntegerDigits( 1 );
 		DECIMAL_AMOUNT_FORMATTER.setGroupingUsed( false );
-		DECIMAL_AMOUNT_FORMATTER.setRoundingMode( RoundingMode.UNNECESSARY );
+		//FIXME ArithmeticException is thrown with this mode.
+		//DECIMAL_AMOUNT_FORMATTER.setRoundingMode( RoundingMode.UNNECESSARY );
 		DECIMAL_AMOUNT_FORMATTER.setParseBigDecimal( true );
 		
 		IN_CENTS_AMOUNT_FORMATTER = ( DecimalFormat )NumberFormat.getNumberInstance( Locale.US );
@@ -27,7 +28,7 @@ public class PaymentExpressUtil {
 		IN_CENTS_AMOUNT_FORMATTER.setMinimumFractionDigits( 0 );
 		IN_CENTS_AMOUNT_FORMATTER.setMinimumIntegerDigits( 1 );
 		IN_CENTS_AMOUNT_FORMATTER.setGroupingUsed( false );
-		IN_CENTS_AMOUNT_FORMATTER.setRoundingMode( RoundingMode.UNNECESSARY );
+		//IN_CENTS_AMOUNT_FORMATTER.setRoundingMode( RoundingMode.UNNECESSARY );
 		IN_CENTS_AMOUNT_FORMATTER.setMultiplier( 100 );
 		IN_CENTS_AMOUNT_FORMATTER.setParseBigDecimal( true );
 	}

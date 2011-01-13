@@ -14,7 +14,10 @@ import com.paymentexpress.stubs.TransactionDetails;
 import com.paymentexpress.stubs.TransactionResult;
 
 /**
- * Payment Express gateway processing. {@inheritDoc}
+ * Payment Express gateway processing. {@inheritDoc} <br/>
+ * Uses the external web service. See
+ * http://www.paymentexpress.com/technical_resources
+ * /ecommerce_nonhosted/webservice.html
  * 
  * @author ksenia
  * 
@@ -129,7 +132,7 @@ public class PaymentExpressGatewayService implements IPaymentGatewayService {
 		transactionDetails.append(", cardExpiry: ").append(details.getDateExpiry());
 		
 		// TODO use other currencies
-		details.setInputCurrency("Australian Dollar");
+		details.setInputCurrency("AUD");
 		transactionDetails.append(", currency: ").append(details.getInputCurrency());
 		
 		String ref = payment.getClientReference();
