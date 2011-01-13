@@ -94,6 +94,7 @@
 	<db-entity name="College" catalog="willow_college">
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
 		<db-attribute name="communication_key" type="BIGINT" length="19"/>
+		<db-attribute name="communication_key_status" type="VARCHAR" length="20"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -810,6 +811,7 @@
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College">
 		<obj-attribute name="billingCode" type="java.lang.String" db-attribute-path="billingCode"/>
 		<obj-attribute name="communicationKey" type="java.lang.Long" db-attribute-path="communication_key"/>
+		<obj-attribute name="communicationKeyStatus" type="ish.oncourse.model.KeyStatus" db-attribute-path="communication_key_status"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
 		<obj-attribute name="isTestingWebServicePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebServicePayments"/>

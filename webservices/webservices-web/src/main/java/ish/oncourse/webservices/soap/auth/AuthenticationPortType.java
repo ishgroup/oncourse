@@ -27,7 +27,7 @@ public interface AuthenticationPortType {
 	@WebMethod(operationName="authenticate")
 	Long authenticate(
 			@WebParam(name="securityCode") String securityCode,
-			@WebParam(name="lastCommunicationKey") Long lastCommunicationKey);
+			@WebParam(name="lastCommunicationKey") Long lastCommunicationKey) throws AuthenticationFailureException;
 
 	/**
 	 * End the session on Willow - this will discard the HTTP Session.

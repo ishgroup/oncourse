@@ -20,6 +20,7 @@ import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.KeyStatus;
 import ish.oncourse.model.LicenseFee;
 import ish.oncourse.model.Log;
 import ish.oncourse.model.Message;
@@ -57,6 +58,7 @@ public abstract class _College extends CayenneDataObject {
 
     public static final String BILLING_CODE_PROPERTY = "billingCode";
     public static final String COMMUNICATION_KEY_PROPERTY = "communicationKey";
+    public static final String COMMUNICATION_KEY_STATUS_PROPERTY = "communicationKeyStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
     public static final String IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY = "isTestingWebServicePayments";
@@ -129,6 +131,13 @@ public abstract class _College extends CayenneDataObject {
     }
     public Long getCommunicationKey() {
         return (Long)readProperty("communicationKey");
+    }
+
+    public void setCommunicationKeyStatus(KeyStatus communicationKeyStatus) {
+        writeProperty("communicationKeyStatus", communicationKeyStatus);
+    }
+    public KeyStatus getCommunicationKeyStatus() {
+        return (KeyStatus)readProperty("communicationKeyStatus");
     }
 
     public void setCreated(Date created) {

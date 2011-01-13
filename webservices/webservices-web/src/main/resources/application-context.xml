@@ -1,6 +1,5 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -14,38 +13,49 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<bean id="referencePortTypeBean" class="ish.oncourse.webservices.soap.ReferencePortTypeImpl" />
-	<bean id="authenticationPortType" class="ish.oncourse.webservices.soap.auth.AuthenticationPortTypeImpl"/>
-	<bean id="communicationKeyCallback" class="ish.oncourse.webservices.soap.auth.CommunicationKeyCallback"/>
-	<bean id="replicationPortType" class="ish.oncourse.webservices.soap.ReplicationPortTypeImpl"/>
-	
-	<jaxws:endpoint id="auth"
-                  implementor="#authenticationPortType"
-                  address="/auth">
-    </jaxws:endpoint>
-    
-    <jaxws:endpoint id="replication"
-                  implementor="#replicationPortType"
-                  address="/replication">
-    </jaxws:endpoint>
-	
-	<jaxws:endpoint
-        id="reference"
-        implementor="#referencePortTypeBean"
-        address="/reference">
-        <jaxws:inInterceptors>
-        	<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
-        	<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-        		<constructor-arg>
-		          <map>
-		            <entry key="action" value="UsernameToken" />
-		            <entry key="passwordType" value="PasswordText" />
-		            <entry key="passwordCallbackRef">
-		            	<ref bean="communicationKeyCallback"/>
-		            </entry>
-		          </map>
-       			</constructor-arg>
-        	</bean>
-        </jaxws:inInterceptors>
-    </jaxws:endpoint>
+	<bean id="authenticationPortType" class="ish.oncourse.webservices.soap.auth.AuthenticationPortTypeImpl" />
+	<bean id="securityCodeCallback" class="ish.oncourse.webservices.soap.auth.SecurityCodeCallback"/>
+	<bean id="communicationKeyCallback" class="ish.oncourse.webservices.soap.auth.CommunicationKeyCallback" />
+	<bean id="replicationPortType" class="ish.oncourse.webservices.soap.ReplicationPortTypeImpl" />
+
+	<jaxws:endpoint id="auth" implementor="#authenticationPortType"
+		address="/auth">
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="replication" implementor="#replicationPortType"
+		address="/replication">
+		<jaxws:inInterceptors>
+			<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
+			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+				<constructor-arg>
+					<map>
+						<entry key="action" value="UsernameToken" />
+						<entry key="passwordType" value="PasswordText" />
+						<entry key="passwordCallbackRef">
+							<ref bean="communicationKeyCallback" />
+						</entry>
+					</map>
+				</constructor-arg>
+			</bean>
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="reference" implementor="#referencePortTypeBean"
+		address="/reference">
+		<jaxws:inInterceptors>
+			<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
+			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+				<constructor-arg>
+					<map>
+						<entry key="action" value="UsernameToken" />
+						<entry key="passwordType" value="PasswordText" />
+						<entry key="passwordCallbackRef">
+							<ref bean="securityCodeCallback" />
+						</entry>
+					</map>
+				</constructor-arg>
+			</bean>
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
 
 </beans>

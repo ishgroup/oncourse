@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<College id="1" name="Sydney Community College"  communication_key="7059522699886202880"  webServicesSecurityCode="345ttn44$%9" communication_key_status="VALID"/>
+	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT"/>
+</dataset>
