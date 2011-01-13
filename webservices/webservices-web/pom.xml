@@ -122,6 +122,12 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>commons-pool</groupId>
+		    <artifactId>commons-pool</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		
+		<dependency>
 			<groupId>dbunit</groupId>
 			<artifactId>dbunit</artifactId>
 			<scope>test</scope>
