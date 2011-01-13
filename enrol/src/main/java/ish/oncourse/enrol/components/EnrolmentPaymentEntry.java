@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -153,6 +154,7 @@ public class EnrolmentPaymentEntry {
 
 	@Parameter
 	private List<Enrolment> enrolments;
+	private final ReentrantLock lock = new ReentrantLock();
 
 	@SetupRender
 	void beforeRender() {
@@ -327,17 +329,25 @@ public class EnrolmentPaymentEntry {
 			objectsToDelete.add(payment);
 		}
 		context.deleteObjects(objectsToDelete);
-		if (isAllEnrolmentsAvailable()) {
-			for (Enrolment e : enrolments) {
-				if (e.getPersistenceState() != PersistenceState.DELETED) {
-					e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+
+		lock.lock();
+		// block until checking and the change of state holds
+		try {
+			if (isAllEnrolmentsAvailable()) {
+				for (Enrolment e : enrolments) {
+					if (e.getPersistenceState() != PersistenceState.DELETED) {
+						e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+					}
 				}
+				context.commitChanges();
+				enrolmentPaymentProcessing.setEnrolments(enrolments);
+			} else {
+				context.rollbackChanges();
 			}
-			context.commitChanges();
-			enrolmentPaymentProcessing.setEnrolments(enrolments);
-		} else {
-			context.rollbackChanges();
+		} finally {
+			lock.unlock();
 		}
+		
 		return enrolmentPaymentProcessing;
 	}
 
