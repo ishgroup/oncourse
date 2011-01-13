@@ -2,6 +2,7 @@ package ish.oncourse.enrol.services.payment;
 
 import ish.oncourse.enrol.utils.PaymentExpressUtil;
 import ish.oncourse.model.PaymentIn;
+import ish.util.CreditCardUtil;
 
 import java.rmi.RemoteException;
 
@@ -116,11 +117,13 @@ public class PaymentExpressGatewayService implements IPaymentGatewayService {
 		transactionDetails.append(", cardHolderName: ").append(details.getCardHolderName());
 		
 		details.setCardNumber(payment.getCreditCardNumber());
-		transactionDetails.append(", cardNumber: ").append(details.getCardNumber());
-		
+		transactionDetails.append(", cardNumber: ").append(
+				CreditCardUtil.obfuscateCCNumber(details.getCardNumber()));
+
 		details.setCvc2(payment.getCreditCardCVV());
-		transactionDetails.append(", cardCVV: ").append(details.getCvc2());
-		
+		transactionDetails.append(", cardCVV: ").append(
+				CreditCardUtil.obfuscateCVVNumber(details.getCvc2()));
+	
 		details.setDateExpiry(PaymentExpressUtil.translateInputExpiryDate(payment
 				.getCreditCardExpiry()));
 		transactionDetails.append(", cardExpiry: ").append(details.getDateExpiry());
