@@ -19,11 +19,12 @@
 		<p><a href="/courses">If you wish to browse other courses, click here.</a></p>
 		<t:AnalyticsTransaction transaction="transaction"/>
 		<p:else>
-			<t:if test="enrolmentQueued">
+			<!-- TODO sort out whether we need the queued enrollments -->
+			<!-- t:if test="enrolmentQueued">
 				<h2>Enrolment <span>&#187;</span> Queued</h2>
 				<p>${thxMsg}</p>
 				<p>${message:enrolmentQueued} Your payment has been recorded in our system against reference number <strong>W${paymentId}</strong>.</p>
-			</t:if>
+			</t:if-->
 			<t:if test="enrolmentFailed">
 				<t:if test="payment">
 					<h2>Enrolment <span>&#187;</span> Payment rejected</h2>

@@ -111,30 +111,30 @@ public class EnrolmentPaymentResult {
 	}
 
 	/**
-	 * Returns true if the enrolment(payment?) was successful and false
+	 * Returns true if the enrol operation was successful and false
 	 * otherwise.
 	 * 
 	 * @return
 	 */
 	public boolean isEnrolmentSuccessful() {
-		// TODO sort out the processing of payments with zero amount
 		if (!isPayment()) {
-			return true;
+			return enrolments != null;
 		}
 		return PaymentStatus.SUCCESS.equals(payment.getStatus());
 	}
 
-	public boolean isEnrolmentQueued() {
-		// FIXME do we need this method at all?
-		return PaymentStatus.IN_TRANSACTION.equals(payment.getStatus());
-	}
-
 	/**
-	 * Returns true if the enrolment(payment?) was failed and false otherwise.
+	 * Returns true if the enrol operation was failed and false otherwise.
 	 * 
 	 * @return
 	 */
 	public boolean isEnrolmentFailed() {
+		if (payment == null && enrolments == null) {
+			return true;
+		}
+		if (!isPayment()) {
+			return false;
+		}
 		PaymentStatus status = payment.getStatus();
 		return PaymentStatus.FAILED.equals(status) || PaymentStatus.REFUNDED.equals(status);
 	}

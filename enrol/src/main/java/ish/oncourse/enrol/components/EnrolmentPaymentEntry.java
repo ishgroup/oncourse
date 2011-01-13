@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -198,8 +199,20 @@ public class EnrolmentPaymentEntry {
 		payment.setContact(payers.get(0));
 	}
 
+	/**
+	 * Iterates through all the enrolments selected(ie which has the related
+	 * invoiceLine) and checks if the related class has any available places for
+	 * enrolling.
+	 * 
+	 * @return true if all the selected classes are available for enrolling.
+	 */
 	public boolean isAllEnrolmentsAvailable() {
-		// check if some of the enrolments are corrupted
+		for (Enrolment enrolment : enrolments) {
+			if (enrolment.getInvoiceLine() != null
+					&& !enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -259,13 +272,13 @@ public class EnrolmentPaymentEntry {
 	/**
 	 * Invoked when the paymentDetailsForm is submitted and validated
 	 * successfully. Fills in the rest of the needed properties, sets the
-	 * transactional status to entites to be committed and commits the
+	 * transaction status to entities to be committed and commits the
 	 * appropriate set of entities to context:
 	 * <ul>
 	 * <li>if payment amount is not zero, commits the payment with lines,
-	 * invoice with lines, enrolment</li>
-	 * <li>if payment amount is zero, commits only the enrolment(the others are
-	 * deleted)</li>
+	 * invoice with lines, enrolments</li>
+	 * <li>if payment amount is zero, commits only the enrolments with related
+	 * invoice and invoice lines(the others are deleted)</li>
 	 * </ul>
 	 * 
 	 * @return the block that displays the processing of payment {@see
@@ -274,6 +287,8 @@ public class EnrolmentPaymentEntry {
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
 		ObjectContext context = payment.getObjectContext();
+		List<Object> objectsToDelete = new ArrayList<Object>();
+
 		if (!isZeroPayment()) {
 			payment.setAmount(totalIncGst.toBigDecimal());
 			BigDecimal totalGst = BigDecimal.ZERO;
@@ -281,17 +296,18 @@ public class EnrolmentPaymentEntry {
 
 			for (Enrolment e : enrolments) {
 				if (e.getInvoiceLine() == null) {
-					context.deleteObject(e);
+					objectsToDelete.add(e);
 				}
 			}
 
 			for (InvoiceLine invLine : invoice.getInvoiceLines()) {
 				if (invLine.getEnrolment() == null) {
-					context.deleteObject(invLine);
+					objectsToDelete.add(invLine);
 				} else {
 					totalExGst = totalGst.add(invLine.getPriceTotalExTax().toBigDecimal());
 					totalGst = totalGst.add(invLine.getPriceTotalIncTax()
 							.subtract(invLine.getPriceTotalExTax()).toBigDecimal());
+
 				}
 			}
 
@@ -308,14 +324,20 @@ public class EnrolmentPaymentEntry {
 			payment.setStatus(PaymentStatus.IN_TRANSACTION);
 			invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
 		} else {
-			context.deleteObject(payment);
-			context.deleteObject(invoice);
+			objectsToDelete.add(payment);
 		}
-		for (Enrolment e : enrolments) {
-			e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+		context.deleteObjects(objectsToDelete);
+		if (isAllEnrolmentsAvailable()) {
+			for (Enrolment e : enrolments) {
+				if (e.getPersistenceState() != PersistenceState.DELETED) {
+					e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+				}
+			}
+			context.commitChanges();
+			enrolmentPaymentProcessing.setEnrolments(enrolments);
+		} else {
+			context.rollbackChanges();
 		}
-		context.commitChanges();
-		enrolmentPaymentProcessing.setEnrolments(enrolments);
 		return enrolmentPaymentProcessing;
 	}
 

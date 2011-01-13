@@ -2,6 +2,7 @@ package ish.oncourse.enrol.pages;
 
 import java.util.List;
 
+import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
 import ish.oncourse.enrol.components.EnrolmentPaymentResult;
 import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
 import ish.oncourse.enrol.services.student.IStudentService;
@@ -47,43 +48,48 @@ public class EnrolmentPaymentProcessing {
 	}
 
 	/**
-	 * Method that is performed when the processHolder displays its content and
-	 * when it finishes , the result component is shown.
+	 * The processHolder displays its content while this method is being
+	 * performed and when it is finished, the
+	 * {@link EnrolmentPaymentProcessing#result} component is shown instead the
+	 * processHolder's content.
 	 * 
 	 * @return the result block. {@see EnrolmentPaymentResult}
 	 */
 	@OnEvent(component = "processHolder", value = "progressiveDisplay")
 	Object performGateway() {
-		// Emulates the gateway delay
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		ObjectContext context = null;
-		if (payment != null) {
-			paymentGatewayService.performGatewayOperation(payment);
-			context = payment.getObjectContext();
-		} else if (!enrolments.isEmpty()) {
-			// FIXME or some other processing of enrolment without payment
-			for (Enrolment enrolment : enrolments) {
-				enrolment.setStatus(EnrolmentStatus.SUCCESS);
+		if (enrolments != null) {
+			// Emulates the gateway delay
+			// TODO remove this try/catch block
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			context = enrolments.get(0).getObjectContext();
-		}
+			ObjectContext context = null;
+			if (payment != null) {
+				paymentGatewayService.performGatewayOperation(payment);
+				context = payment.getObjectContext();
+			} else if (!enrolments.isEmpty()) {
+				// FIXME or some other processing of enrolment without payment
+				for (Enrolment enrolment : enrolments) {
+					enrolment.setStatus(EnrolmentStatus.SUCCESS);
+				}
+				context = enrolments.get(0).getObjectContext();
+			}
 
-		if (context != null) {
-			context.commitChanges();
+			if (context != null) {
+				context.commitChanges();
+			}
+			// FIXME consider how to deal with "null" payment
+			if (payment == null || PaymentStatus.SUCCESS.equals(payment.getStatus())) {
+				// clear all the short lists
+				cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKEY_KEY, "");
+				cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
+				studentService.clearStudentsShortList();
+			}
+			result.setPayment(payment);
+			result.setEnrolments(enrolments);
 		}
-		// FIXME consider how to deal with "null" payment
-		if (payment == null || PaymentStatus.SUCCESS.equals(payment.getStatus())) {
-			// clear all the short lists
-			cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKEY_KEY, "");
-			cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
-			studentService.clearStudentsShortList();
-		}
-		result.setPayment(payment);
-		result.setEnrolments(enrolments);
 		return result;
 	}
 

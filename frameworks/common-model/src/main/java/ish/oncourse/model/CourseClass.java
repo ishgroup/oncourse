@@ -16,6 +16,7 @@ import java.util.TimeZone;
 
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -175,9 +176,11 @@ public class CourseClass extends _CourseClass {
 	 * @return list of valid enrolments.
 	 */
 	public List<Enrolment> getValidEnrolments() {
-		List<Enrolment> validEnrolments = ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY,
-				EnrolmentStatus.VALID_ENROLMENTS).filterObjects(getEnrolments());
-		return validEnrolments;
+		SelectQuery query = new SelectQuery(Enrolment.class);
+		query.andQualifier(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, this)
+				.andExp(ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY,
+						EnrolmentStatus.VALID_ENROLMENTS)));
+		return getObjectContext().performQuery(query);
 	}
 
 	public Long getRecordId() {
