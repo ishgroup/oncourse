@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.soap;
 
-import java.util.HashMap;
-
 import javax.jws.WebService;
 
 import ish.oncourse.model.Country;
@@ -20,11 +18,7 @@ import ish.oncourse.webservices.soap.builders.LanguageStubBuilder;
 import ish.oncourse.webservices.soap.builders.ModuleStubBuilder;
 import ish.oncourse.webservices.soap.builders.QualificationStubBuilder;
 import ish.oncourse.webservices.soap.builders.TrainingPackageStubBuilder;
-import ish.oncourse.webservices.soap.stubs.reference.Country_Stub;
-import ish.oncourse.webservices.soap.stubs.reference.Language_Stub;
-import ish.oncourse.webservices.soap.stubs.reference.Module_Stub;
-import ish.oncourse.webservices.soap.stubs.reference.Qualification_Stub;
-import ish.oncourse.webservices.soap.stubs.reference.TrainingPackage_Stub;
+import ish.oncourse.webservices.soap.stubs.reference.SoapReference_Stub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,86 +59,48 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 
 
 	@Override
-	public HashMap<String, Long> checkVersions() {
+	public Long getMaximumVersion() {
 
 		Long version = null;
-		HashMap<String, Long> versions = new HashMap<String, Long>();
 
-		for (IReferenceService<?> service : getAllServices()) {
-			if (service == null) {
-				LOGGER.error("Service is null!");
-			} else {
-				version = service.findMaxIshVersion();
-				if (version != null) {
-					versions.put(service.getEntityClass().getSimpleName(), version);
-				}
-			}
+		IReferenceService<?> service = getAllServices().get(0);
+		if (service == null) {
+			LOGGER.error("Service is null!");
+		} else {
+			version = service.findMaxIshVersion();
 		}
 
-		return versions;
+		return version;
 	}
 
 	@Override
-	public List<Country_Stub> getCountries(Long ishVersion) {
+	public List<SoapReference_Stub> getRecords(Long ishVersion) {
 
-		List<Country_Stub> stubs = new ArrayList<Country_Stub>();
-		List<Country> records = countryService.getForReplication(ishVersion);
+		List<SoapReference_Stub> stubs = new ArrayList<SoapReference_Stub>();
 
-		for (Country record : records) {
+		// FIXME: Iterating through services can be done generically
+		List<Country> cRecords = countryService.getForReplication(ishVersion);
+		for (Country record : cRecords) {
 			stubs.add(CountryStubBuilder.convert(record));
 		}
 
-		return stubs;
-	}
-
-	@Override
-	public List<Language_Stub> getLanguages(Long ishVersion) {
-
-		List<Language_Stub> stubs = new ArrayList<Language_Stub>();
-		List<Language> records = languageService.getForReplication(ishVersion);
-
-		for (Language record : records) {
+		List<Language> lRecords = languageService.getForReplication(ishVersion);
+		for (Language record : lRecords) {
 			stubs.add(LanguageStubBuilder.convert(record));
 		}
 
-		return stubs;
-	}
-
-	@Override
-	public List<Module_Stub> getModules(Long ishVersion) {
-
-		List<Module_Stub> stubs = new ArrayList<Module_Stub>();
-		List<Module> records = moduleService.getForReplication(ishVersion);
-
-		for (Module record : records) {
+		List<Module> mRecords = moduleService.getForReplication(ishVersion);
+		for (Module record : mRecords) {
 			stubs.add(ModuleStubBuilder.convert(record));
 		}
 
-		return stubs;
-	}
-
-	@Override
-	public List<Qualification_Stub> getQualifications(Long ishVersion) {
-
-		List<Qualification_Stub> stubs = new ArrayList<Qualification_Stub>();
-		List<Qualification> records = qualificationService.getForReplication(
-				ishVersion);
-
-		for (Qualification record : records) {
+		List<Qualification> qRecords = qualificationService.getForReplication(ishVersion);
+		for (Qualification record : qRecords) {
 			stubs.add(QualificationStubBuilder.convert(record));
 		}
 
-		return stubs;
-	}
-
-	@Override
-	public List<TrainingPackage_Stub> getTrainingPackages(Long ishVersion) {
-
-		List<TrainingPackage_Stub> stubs = new ArrayList<TrainingPackage_Stub>();
-		List<TrainingPackage> records = trainingPackageService.getForReplication(
-				ishVersion);
-
-		for (TrainingPackage record : records) {
+		List<TrainingPackage> tpRecords = trainingPackageService.getForReplication(ishVersion);
+		for (TrainingPackage record : tpRecords) {
 			stubs.add(TrainingPackageStubBuilder.convert(record));
 		}
 

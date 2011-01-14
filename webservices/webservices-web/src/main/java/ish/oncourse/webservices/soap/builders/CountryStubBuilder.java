@@ -14,6 +14,7 @@ import ish.oncourse.webservices.soap.stubs.reference.Country_Stub;
  */
 public class CountryStubBuilder {
 
+
 	public static Country_Stub convert(Country record) {
 
 		Country_Stub stub = new Country_Stub();
