@@ -1,14 +1,14 @@
 package ish.oncourse.enrol.services.payment;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import ish.oncourse.enrol.utils.PaymentExpressUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentStatus;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -19,9 +19,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.paymentexpress.stubs.TransactionResult;
-
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 /**
  * Test for the {@link PaymentExpressGatewayService}.
