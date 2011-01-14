@@ -43,10 +43,6 @@ public class EnrolmentPaymentProcessing {
 	@Persist
 	private List<Enrolment> enrolments;
 
-	public void setPayment(PaymentIn payment) {
-		this.payment = payment;
-	}
-
 	/**
 	 * The processHolder displays its content while this method is being
 	 * performed and when it is finished, the
@@ -87,14 +83,19 @@ public class EnrolmentPaymentProcessing {
 				cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
 				studentService.clearStudentsShortList();
 			}
-			result.setPayment(payment);
-			result.setEnrolments(enrolments);
+			
 		}
+		result.setPayment(payment);
+		result.setEnrolments(enrolments);
 		return result;
 	}
 
 	public void setEnrolments(List<Enrolment> enrolments) {
 		this.enrolments = enrolments;
+	}
+
+	public void setPayment(PaymentIn payment) {
+		this.payment = payment;
 	}
 
 }

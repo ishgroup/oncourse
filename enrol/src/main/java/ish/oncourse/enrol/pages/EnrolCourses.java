@@ -144,6 +144,7 @@ public class EnrolCourses {
 	 */
 	@SetupRender
 	void beforeRender() {
+		clearPersistedProperties();
 		if (isPaymentGatewayEnabled()) {
 			moneyFormat = new DecimalFormat("###,##0.00");
 			context = cayenneService.newContext();
@@ -166,6 +167,19 @@ public class EnrolCourses {
 				initPayment();
 			}
 		}
+	}
+
+	/**
+	 * Clears all the properties with the @Persist annotation.
+	 */
+	private void clearPersistedProperties() {
+		classesToEnrol = null;
+		contacts = null;
+		enrolments = null;
+		invoiceLines = null;
+		payment = null;
+		invoice = null;
+		context = null;
 	}
 
 	/**

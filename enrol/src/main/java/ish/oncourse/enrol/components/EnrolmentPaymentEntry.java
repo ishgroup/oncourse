@@ -290,7 +290,7 @@ public class EnrolmentPaymentEntry {
 	Object submitted() {
 		ObjectContext context = payment.getObjectContext();
 		List<Object> objectsToDelete = new ArrayList<Object>();
-
+		List<Enrolment>validEnrolments=new ArrayList<Enrolment>();
 		if (!isZeroPayment()) {
 			payment.setAmount(totalIncGst.toBigDecimal());
 			BigDecimal totalGst = BigDecimal.ZERO;
@@ -299,9 +299,10 @@ public class EnrolmentPaymentEntry {
 			for (Enrolment e : enrolments) {
 				if (e.getInvoiceLine() == null) {
 					objectsToDelete.add(e);
+				}else{
+					validEnrolments.add(e);
 				}
 			}
-
 			for (InvoiceLine invLine : invoice.getInvoiceLines()) {
 				if (invLine.getEnrolment() == null) {
 					objectsToDelete.add(invLine);
@@ -327,22 +328,21 @@ public class EnrolmentPaymentEntry {
 			invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
 		} else {
 			objectsToDelete.add(payment);
+			enrolmentPaymentProcessing.setPayment(null);
 		}
 		context.deleteObjects(objectsToDelete);
-
 		lock.lock();
 		// block until checking and the change of state holds
 		try {
 			if (isAllEnrolmentsAvailable()) {
-				for (Enrolment e : enrolments) {
-					if (e.getPersistenceState() != PersistenceState.DELETED) {
-						e.setStatus(EnrolmentStatus.IN_TRANSACTION);
-					}
+				for (Enrolment e : validEnrolments) {
+					e.setStatus(EnrolmentStatus.IN_TRANSACTION);
 				}
 				context.commitChanges();
-				enrolmentPaymentProcessing.setEnrolments(enrolments);
+				enrolmentPaymentProcessing.setEnrolments(validEnrolments);
 			} else {
 				context.rollbackChanges();
+				enrolmentPaymentProcessing.setEnrolments(null);
 			}
 		} finally {
 			lock.unlock();
