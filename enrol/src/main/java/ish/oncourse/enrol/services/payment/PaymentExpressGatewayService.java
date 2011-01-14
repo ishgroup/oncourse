@@ -51,20 +51,20 @@ public class PaymentExpressGatewayService implements IPaymentGatewayService {
 				}
 
 				resultDetails.append(" authCode:").append(tr.getAuthCode())
-						.append(" authorized:").append(tr.getAuthorized())
-						.append(" cardHolderHelpText:").append(tr.getCardHolderHelpText())
-						.append(" cardHolderName:").append(tr.getCardHolderName())
-						.append(" cardHolderResponseDescription:").append(tr.getCardHolderResponseDescription())
-						.append(" currencyRate:").append(tr.getCurrencyRate())
-						.append(" currencyType:").append(tr.getCurrencyName())
-						.append(" ourTransactionRef:").append(tr.getTxnRef())
-						.append(" responseCode:").append(tr.getReco())
-						.append(" responseText:").append(tr.getResponseText())
-						.append(" retry:").append(tr.getRetry())
-						.append(" settlementDate:").append(tr.getDateSettlement())
-						.append(" statusRequired:").append(tr.getStatusRequired())
-						.append(" testMode:").append(tr.getTestMode())
-						.append(" transactionRef:").append(tr.getDpsTxnRef());
+						.append(", authorized:").append(tr.getAuthorized())
+						.append(", cardHolderHelpText:").append(tr.getCardHolderHelpText())
+						.append(", cardHolderName:").append(tr.getCardHolderName())
+						.append(", cardHolderResponseDescription:").append(tr.getCardHolderResponseDescription())
+						.append(", currencyRate:").append(tr.getCurrencyRate())
+						.append(", currencyType:").append(tr.getCurrencyName())
+						.append(", ourTransactionRef:").append(tr.getTxnRef())
+						.append(", responseCode:").append(tr.getReco())
+						.append(", responseText:").append(tr.getResponseText())
+						.append(", retry:").append(tr.getRetry())
+						.append(", settlementDate:").append(tr.getDateSettlement())
+						.append(", statusRequired:").append(tr.getStatusRequired())
+						.append(", testMode:").append(tr.getTestMode())
+						.append(", transactionRef:").append(tr.getDpsTxnRef());
 			}else{
 				resultDetails.append("Payment failed with null transaction response");
 				payment.failed();

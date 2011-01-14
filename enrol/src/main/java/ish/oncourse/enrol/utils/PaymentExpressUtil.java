@@ -32,23 +32,26 @@ public class PaymentExpressUtil {
 		IN_CENTS_AMOUNT_FORMATTER.setMultiplier( 100 );
 		IN_CENTS_AMOUNT_FORMATTER.setParseBigDecimal( true );
 	}
-	
+	/**
+	 * Indicates card expiry date. Format is MMYY where MM is month 01-12 and Year 00-99. do not insert "/" or other delimiter. 
+	 * @param expiryDate "M/YY", or "M/YYYY", or "MM/YY", or "MM/YYYY""
+	 * @return
+	 */
 	public static String translateInputExpiryDate( String expiryDate )
 	{
 		StringBuffer buff = new StringBuffer();
-		if ( expiryDate != null && ( expiryDate.matches( "^\\d{2}/?\\d{2}$" ) || expiryDate.matches( "^\\d{2}/?\\d{4}$" ) ) )
+		if ( expiryDate != null )
 		{
-			buff.append( expiryDate );
-			switch ( buff.length() )
-			{
-				case 4:
-					break;
-				case 6:
-					buff.replace( 2, 4, "" );
-					break;
-				case 7:
-					buff.replace( 2, 5, "" );
-					break;
+			if(( expiryDate.matches( "^(\\d{1}|\\d{2})/(\\d{2}|\\d{4})" ) )){
+				String[] dateParts = expiryDate.split("/");
+				if(dateParts[0].length()==1){
+				buff.append("0");
+				}
+				buff.append(dateParts[0]);
+				if(dateParts[1].length()==4){
+					dateParts[1]=dateParts[1].substring(2);
+				}
+				buff.append(dateParts[1]);
 			}
 		}
 		return buff.toString();

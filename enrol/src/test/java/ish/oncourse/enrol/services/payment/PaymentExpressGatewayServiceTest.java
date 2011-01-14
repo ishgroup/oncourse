@@ -10,6 +10,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentStatus;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,9 +39,9 @@ public class PaymentExpressGatewayServiceTest {
 
 	private static final String GATEWAY_ACCOUNT = "ishGroup_Dev";
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d/M/y");
-
 	private static final Calendar VALID_EXPIRY_DATE = Calendar.getInstance();
+
+	private static final String VALID_EXPIRY_DATE_STR = VALID_EXPIRY_DATE.get(Calendar.MONTH)+1+"/"+VALID_EXPIRY_DATE.get(Calendar.YEAR);
 
 	private static final String CARD_NUMBER = "4111111111111111";
 
@@ -77,6 +78,19 @@ public class PaymentExpressGatewayServiceTest {
 		college.setPaymentGatewayAccount(GATEWAY_ACCOUNT);
 		college.setPaymentGatewayPass(GATEWAY_PASSWORD);
 	}
+	/**
+	 * Performs common operations for every method.
+	 */
+	@Before
+	public void initMethod(){
+		when(payment.getCollege()).thenReturn(college);
+		when(payment.getPaymentInLines()).thenReturn(Collections.EMPTY_LIST);
+		when(payment.getClientReference()).thenReturn(PAYMENT_REF);
+		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
+		when(payment.getCreditCardNumber()).thenReturn(CARD_NUMBER);
+		when(payment.getCreditCardExpiry()).thenReturn(VALID_EXPIRY_DATE_STR);
+	}
+
 
 	/**
 	 * Emulates the successful transaction,
@@ -85,15 +99,8 @@ public class PaymentExpressGatewayServiceTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void testSuccessfulPaymentGateway() throws Exception {
-		when(payment.getCollege()).thenReturn(college);
-		when(payment.getClientReference()).thenReturn(PAYMENT_REF);
-		when(payment.getPaymentInLines()).thenReturn(Collections.EMPTY_LIST);
+	public void testSuccessfulDoTransaction() throws Exception {
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
-		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
-		when(payment.getCreditCardNumber()).thenReturn(CARD_NUMBER);
-		when(payment.getCreditCardExpiry()).thenReturn(
-				DATE_FORMAT.format(VALID_EXPIRY_DATE.getTime()));
 		TransactionResult tr = gatewayService.doTransaction(payment);
 		assertTrue(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
 	}
@@ -106,19 +113,38 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	@Ignore
-	public void testUnsuccessfulPaymentGateway() throws Exception {
-		when(payment.getCollege()).thenReturn(college);
-		when(payment.getClientReference()).thenReturn(PAYMENT_REF);
-		when(payment.getPaymentInLines()).thenReturn(Collections.EMPTY_LIST);
+	public void testUnsuccessfulDoTransaction() throws Exception {
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
-		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
-		when(payment.getCreditCardNumber()).thenReturn(CARD_NUMBER);
-		when(payment.getCreditCardExpiry()).thenReturn(
-				DATE_FORMAT.format(VALID_EXPIRY_DATE.getTime()));
 		TransactionResult tr = gatewayService.doTransaction(payment);
 		// Somewhy the transaction is successful
 		// May be incorrectly generated stubs....
 		assertFalse(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
-
+	}
+	
+	/**
+	 * Emulates the successful payment,
+	 * {@link PaymentIn#succeed()} should be invoked.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testSuccessfulPerformGatewayOperation() throws Exception {
+		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+		gatewayService.performGatewayOperation(payment);
+		verify(payment).succeed();
+	}
+	
+	/**
+	 * Emulates the unsuccessful payment(with the declined gateway response),
+	 * {@link PaymentIn#failed()} should be invoked.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	@Ignore
+	public void testUnsuccessfulPerformGatewayOperation() throws Exception {
+		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
+		gatewayService.performGatewayOperation(payment);
+		verify(payment).failed();
 	}
 }
