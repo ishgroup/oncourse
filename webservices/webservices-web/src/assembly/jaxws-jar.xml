@@ -1,13 +1,13 @@
 <assembly>
-   <id>jaxws</id>
+   <id>client-v4</id>
    <formats>
       <format>jar</format>
    </formats>
    <includeBaseDirectory>false</includeBaseDirectory>
    <fileSets>
       <fileSet>
-         <directory>target/classes/ish/oncourse/webservices/soap</directory>
-         <outputDirectory>/ish/oncourse/webservices/soap</outputDirectory>
+         <directory>target/generated/client/java/ish/oncourse/webservices/soap/v4</directory>
+         <outputDirectory>/ish/oncourse/webservices/soap/v4</outputDirectory>
       </fileSet>
    </fileSets>
 </assembly>

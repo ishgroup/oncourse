@@ -12,18 +12,18 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-	<bean id="referencePortTypeBean" class="ish.oncourse.webservices.soap.ReferencePortTypeImpl" />
-	<bean id="authenticationPortType" class="ish.oncourse.webservices.soap.auth.AuthenticationPortTypeImpl" />
-	<bean id="securityCodeCallback" class="ish.oncourse.webservices.soap.auth.SecurityCodeCallback"/>
-	<bean id="communicationKeyCallback" class="ish.oncourse.webservices.soap.auth.CommunicationKeyCallback" />
-	<bean id="replicationPortType" class="ish.oncourse.webservices.soap.ReplicationPortTypeImpl" />
+	<bean id="v4_referencePortTypeBean" class="ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl" />
+	<bean id="v4_authenticationPortType" class="ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl" />
+	<bean id="v4_securityCodeCallback" class="ish.oncourse.webservices.soap.v4.auth.SecurityCodeCallback"/>
+	<bean id="v4_communicationKeyCallback" class="ish.oncourse.webservices.soap.v4.auth.CommunicationKeyCallback" />
+	<bean id="v4_replicationPortType" class="ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl" />
 
-	<jaxws:endpoint id="auth" implementor="#authenticationPortType"
-		address="/auth">
+	<jaxws:endpoint id="v4_auth" implementor="#v4_authenticationPortType"
+		address="/v4/auth">
 	</jaxws:endpoint>
 
-	<jaxws:endpoint id="replication" implementor="#replicationPortType"
-		address="/replication">
+	<jaxws:endpoint id="v4_replication" implementor="#v4_replicationPortType"
+		address="/v4/replication">
 		<jaxws:inInterceptors>
 			<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
 			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
@@ -32,7 +32,7 @@
 						<entry key="action" value="UsernameToken" />
 						<entry key="passwordType" value="PasswordText" />
 						<entry key="passwordCallbackRef">
-							<ref bean="communicationKeyCallback" />
+							<ref bean="v4_communicationKeyCallback" />
 						</entry>
 					</map>
 				</constructor-arg>
@@ -40,8 +40,8 @@
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 
-	<jaxws:endpoint id="reference" implementor="#referencePortTypeBean"
-		address="/reference">
+	<jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
+		address="/v4/reference">
 	</jaxws:endpoint>
 
 </beans>

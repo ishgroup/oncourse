@@ -122,9 +122,9 @@
 		</dependency>
 		
 		<dependency>
-		    <groupId>commons-pool</groupId>
-		    <artifactId>commons-pool</artifactId>
-		    <scope>test</scope>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<scope>test</scope>
 		</dependency>
 		
 		<dependency>
@@ -211,15 +211,55 @@
 				</dependencies>
 				<executions>
 					<execution>
-						<id>process-classes</id>
+						<id>process-v4-auth-classes</id>
 						<phase>process-classes</phase>
 						<configuration>
-							<className>ish.oncourse.webservices.soap.ReferencePortTypeImpl</className>
+							<className>ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl</className>
+							<outputFile>${project.build.directory}/generated/client/wsdl/v4_auth.wsdl</outputFile>
 							<genWsdl>true</genWsdl>
-							<verbose>true</verbose>
 						</configuration>
 						<goals>
 							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>process-v4-reference-classes</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl</className>
+							<outputFile>${project.build.directory}/generated/client/wsdl/v4_reference.wsdl</outputFile>
+							<genWsdl>true</genWsdl>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- Willow SOAP/WSDL -->
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>${cxf.version}</version>
+				<executions>
+					<execution>
+						<id>generate-client-sources</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<sourceRoot>${project.build.directory}/generated/client/java</sourceRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>${project.build.directory}/generated/client/wsdl/v4_auth.wsdl</wsdl>
+								</wsdlOption>
+								<wsdlOption>
+									<wsdl>${project.build.directory}/generated/client/wsdl/v4_reference.wsdl</wsdl>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
+						<goals>
+							<goal>wsdl2java</goal>
 						</goals>
 					</execution>
 				</executions>
