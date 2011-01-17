@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap.v4;
 
-import ish.oncourse.webservices.soap.stubs.reference.SoapReference_Stub;
+import ish.oncourse.webservices.soap.v4.stubs.reference.SoapReference_Stub;
 
 import java.util.List;
 

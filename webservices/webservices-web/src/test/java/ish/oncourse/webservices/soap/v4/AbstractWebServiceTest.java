@@ -1,6 +1,6 @@
-package ish.oncourse.webservices.soap;
+package ish.oncourse.webservices.soap.v4;
 
-import ish.oncourse.webservices.soap.auth.AuthenticationPortTypeTest;
+import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeTest;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -111,6 +111,7 @@ public abstract class AbstractWebServiceTest {
 		
 		for (Database db : Database.values()) {
 			DataMap map = loadDataMap(db.dataMapName);
+			map.setName(db.dataMapName);
 			m.put(map, DATASOURCES.get(db));
 			domain.addMap(map);
 		}
@@ -142,7 +143,7 @@ public abstract class AbstractWebServiceTest {
 		File webapp = new File(main, "webapp");
 
 		try {
-			return webapp.toURL().toExternalForm();
+			return webapp.toURI().toURL().toExternalForm();
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("Error building project URL", e);
 		}

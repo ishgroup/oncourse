@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<Country id="2" ishVersion="2" name="Kiribati" isoCodeAlpha2="KI" isoCodeAlpha3="KIR" isoCodeNumeric="296" asccssCode="1503" saccCode="1402"/>
 </dataset>

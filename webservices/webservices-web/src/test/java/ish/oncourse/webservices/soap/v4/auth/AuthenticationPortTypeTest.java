@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.auth;
+package ish.oncourse.webservices.soap.v4.auth;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import ish.oncourse.model.KeyStatus;
-import ish.oncourse.webservices.soap.AbstractWebServiceTest;
+import ish.oncourse.webservices.soap.v4.AbstractWebServiceTest;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -27,7 +27,9 @@ import org.junit.Test;
  * 
  */
 public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
-
+	
+	private static final String WSDL_LOCATION = String.format("http://localhost:%s/services/v4/auth?wsdl", PORT);
+	
 	/**
 	 * Tests basic flow of authentication. We pass valid college securityCode,
 	 * and lastCommunicationKey here. New generated communication key is
@@ -43,7 +45,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-		Client client = dcf.createClient(new URL(String.format("http://localhost:%s/services/auth?wsdl", String.valueOf(PORT))));
+		Client client = dcf.createClient(new URL(WSDL_LOCATION));
 
 		Object[] results = client.invoke("authenticate", "345ttn44$%9", 7059522699886202880L);
 
@@ -69,7 +71,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-		Client client = dcf.createClient(new URL(String.format("http://localhost:%s/services/auth?wsdl", String.valueOf(PORT))));
+		Client client = dcf.createClient(new URL(WSDL_LOCATION));
 
 		try {
 			Object[] results = client.invoke("authenticate", "123456", 7059522699886202880L);
@@ -95,7 +97,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-		Client client = dcf.createClient(new URL(String.format("http://localhost:%s/services/auth?wsdl", String.valueOf(PORT))));
+		Client client = dcf.createClient(new URL(WSDL_LOCATION));
 
 		try {
 			Object[] results = client.invoke("authenticate", "345ttn44$%9", 12345L);
@@ -123,7 +125,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-		Client client = dcf.createClient(new URL(String.format("http://localhost:%s/services/auth?wsdl", String.valueOf(PORT))));
+		Client client = dcf.createClient(new URL(WSDL_LOCATION));
 
 		Object[] results = client.invoke("authenticate", "147ttn44$%9", 705952269988620267L);
 		
