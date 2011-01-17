@@ -5,11 +5,21 @@
 
 package ish.oncourse.webservices.soap.stubs.reference;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+
 
 /**
  *
  * @author marek
  */
+ @XmlSeeAlso({
+	Country_Stub.class,
+	Language_Stub.class,
+	Module_Stub.class,
+	Qualification_Stub.class,
+	TrainingPackage_Stub.class
+ })
 public abstract class SoapReference_Stub {
 
 	private Long willowId;

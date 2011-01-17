@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.soap;
 
-
-import java.util.HashMap;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
