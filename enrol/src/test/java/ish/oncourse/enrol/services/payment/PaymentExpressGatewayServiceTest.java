@@ -12,7 +12,6 @@ import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -40,7 +39,9 @@ public class PaymentExpressGatewayServiceTest {
 
 	private static final String VALID_EXPIRY_DATE_STR = VALID_EXPIRY_DATE.get(Calendar.MONTH)+1+"/"+VALID_EXPIRY_DATE.get(Calendar.YEAR);
 
-	private static final String CARD_NUMBER = "4111111111111111";
+	private static final String VALID_CARD_NUMBER = "4111111111111111";
+	
+	private static final String INVALID_CARD_NUMBER = "9999990000000378";
 
 	private static final String CARD_HOLDER_NAME = "john smith";
 
@@ -84,7 +85,6 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getPaymentInLines()).thenReturn(Collections.EMPTY_LIST);
 		when(payment.getClientReference()).thenReturn(PAYMENT_REF);
 		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
-		when(payment.getCreditCardNumber()).thenReturn(CARD_NUMBER);
 		when(payment.getCreditCardExpiry()).thenReturn(VALID_EXPIRY_DATE_STR);
 	}
 
@@ -97,6 +97,7 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testSuccessfulDoTransaction() throws Exception {
+		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		TransactionResult tr = gatewayService.doTransaction(payment);
 		assertTrue(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
@@ -109,12 +110,10 @@ public class PaymentExpressGatewayServiceTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
 	public void testUnsuccessfulDoTransaction() throws Exception {
+		when(payment.getCreditCardNumber()).thenReturn(INVALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		TransactionResult tr = gatewayService.doTransaction(payment);
-		// Somewhy the transaction is successful
-		// May be incorrectly generated stubs....
 		assertFalse(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
 	}
 	
@@ -126,6 +125,7 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testSuccessfulPerformGatewayOperation() throws Exception {
+		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		gatewayService.performGatewayOperation(payment);
 		verify(payment).succeed();
@@ -138,8 +138,8 @@ public class PaymentExpressGatewayServiceTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
 	public void testUnsuccessfulPerformGatewayOperation() throws Exception {
+		when(payment.getCreditCardNumber()).thenReturn(INVALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		gatewayService.performGatewayOperation(payment);
 		verify(payment).failed();
