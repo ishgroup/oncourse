@@ -1,10 +1,13 @@
-package ish.oncourse.webservices.soap.auth;
+package ish.oncourse.webservices.soap;
+
+import ish.oncourse.webservices.soap.auth.AuthenticationPortTypeTest;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
@@ -37,13 +40,15 @@ public abstract class AbstractWebServiceTest {
 	protected static int PORT = 8888;
 
 	protected static enum Database {
-		ONCOURSE("oncourse"), ONCOURSE_BINARY("oncourse_binary"), ONCOURSE_REFERENCE("oncourse_reference");
+		ONCOURSE("oncourse", "oncourse.map.xml"), ONCOURSE_BINARY("oncourse_binary", "oncourseBinary.map.xml"), ONCOURSE_REFERENCE("oncourse_reference", "oncourseReference.map.xml");
 
-		private Database(String name) {
+		private Database(String name, String dataMapName) {
 			this.name = name;
+			this.dataMapName = dataMapName;
 		}
 
 		String name;
+		String dataMapName;
 	};
 
 	protected static Map<Database, DataSource> DATASOURCES;
@@ -99,22 +104,27 @@ public abstract class AbstractWebServiceTest {
 	 * @throws Exception
 	 */
 	private static void createTables() throws Exception {
-		DataMap onCourseMap = loadDataMap("oncourse.map.xml");
-		DataMap binaryMap = loadDataMap("oncourseBinary.map.xml");
-		DataMap referenceMap = loadDataMap("oncourseReference.map.xml");
-
+		
 		DataDomain domain = new DataDomain("test");
-		domain.addMap(onCourseMap);
-		domain.addMap(binaryMap);
-		domain.addMap(referenceMap);
-
-		DbGenerator generator = new DbGenerator(new HSQLDBAdapter(), onCourseMap, Collections.<DbEntity> emptyList(), domain);
-		generator.setShouldCreateTables(true);
-		generator.setShouldCreateFKConstraints(true);
-		generator.setShouldCreatePKSupport(true);
-		generator.setShouldDropTables(true);
-
-		generator.runGenerator(DATASOURCES.get(Database.ONCOURSE));
+		
+		Map<DataMap, DataSource> m = new HashMap<DataMap, DataSource>();
+		
+		for (Database db : Database.values()) {
+			DataMap map = loadDataMap(db.dataMapName);
+			m.put(map, DATASOURCES.get(db));
+			domain.addMap(map);
+		}
+		
+		for (Entry<DataMap, DataSource> e : m.entrySet()) {
+			
+			DbGenerator generator = new DbGenerator(new HSQLDBAdapter(), e.getKey(), Collections.<DbEntity> emptyList(), domain);
+			generator.setShouldCreateTables(true);
+			generator.setShouldCreateFKConstraints(true);
+			generator.setShouldCreatePKSupport(true);
+			generator.setShouldDropTables(true);
+			
+			generator.runGenerator(e.getValue());
+		}
 	}
 
 	private static DataMap loadDataMap(String dataMap) throws Exception {

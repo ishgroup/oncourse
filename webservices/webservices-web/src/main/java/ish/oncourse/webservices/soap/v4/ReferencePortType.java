@@ -1,12 +1,12 @@
 package ish.oncourse.webservices.soap.v4;
 
+import ish.oncourse.webservices.soap.stubs.reference.SoapReference_Stub;
+
 import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-
 import javax.jws.WebService;
-
-import ish.oncourse.webservices.soap.v4.stubs.reference.SoapReference_Stub;
 
 /**
  * The ReferencePortType defines the API for one-way (Willow to Angel)
@@ -31,7 +31,7 @@ import ish.oncourse.webservices.soap.v4.stubs.reference.SoapReference_Stub;
  * <ol>
  *		<li>Call @see #getMaximumVersion() to get the latest Willow version
  *			number</li>
- *		<<li>Loop through the missing versions, starting with the lowest
+ *		<li>Loop through the missing versions, starting with the lowest
  *			through to the highest.<br/><strong>Remember to save the received
  *			lists between subsequent calls.</strong>
  *		</li>

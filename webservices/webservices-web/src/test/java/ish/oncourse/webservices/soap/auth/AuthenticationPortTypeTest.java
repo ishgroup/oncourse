@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import ish.oncourse.model.KeyStatus;
+import ish.oncourse.webservices.soap.AbstractWebServiceTest;
 
 import java.io.InputStream;
 import java.net.URL;
