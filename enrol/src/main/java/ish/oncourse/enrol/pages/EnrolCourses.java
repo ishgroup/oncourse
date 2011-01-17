@@ -3,6 +3,7 @@ package ish.oncourse.enrol.pages;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
+import ish.oncourse.enrol.components.EnrolmentPaymentProcessing;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
@@ -36,8 +37,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
+import org.apache.tapestry5.annotations.CleanupRender;
 import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -99,8 +100,14 @@ public class EnrolCourses {
 	private int courseClassIndex;
 
 	@Property
-	@Parameter
 	private boolean hadPreviousPaymentFailure;
+
+	/**
+	 * Indicates if this page is used for displaying the enrolment checkout(if
+	 * false), and the result of previous chechout otherwise.
+	 */
+	@Persist
+	private boolean pageResult;
 
 	@Persist
 	private Enrolment[][] enrolments;
@@ -132,6 +139,10 @@ public class EnrolCourses {
 	@Property
 	private EnrolmentPaymentEntry paymentEntry;
 
+	@InjectComponent
+	@Property
+	private EnrolmentPaymentProcessing resultComponent;
+
 	/**
 	 * Initial setup of the EnrolCourses page. Retrieves all the shortlisted
 	 * classes and students.<br/>
@@ -145,7 +156,7 @@ public class EnrolCourses {
 	@SetupRender
 	void beforeRender() {
 		clearPersistedProperties();
-		if (isPaymentGatewayEnabled()) {
+		if (!isPageResult() && isPaymentGatewayEnabled()) {
 			moneyFormat = new DecimalFormat("###,##0.00");
 			context = cayenneService.newContext();
 
@@ -167,6 +178,11 @@ public class EnrolCourses {
 				initPayment();
 			}
 		}
+	}
+
+	@CleanupRender
+	void cleanupRender() {
+		pageResult = false;
 	}
 
 	/**
@@ -341,4 +357,32 @@ public class EnrolCourses {
 
 		return result;
 	}
+
+	/**
+	 * Returns the embedded {@link EnrolmentPaymentProcessing} component for
+	 * displaying the checkout results.
+	 * 
+	 * @return
+	 */
+	public EnrolmentPaymentProcessing getResultingElement() {
+		return resultComponent;
+	}
+
+	/**
+	 * Sets value to the {@link #pageResult}.
+	 * 
+	 * @param isResult
+	 *            .
+	 */
+	public void setPageResult(boolean pageResult) {
+		this.pageResult = pageResult;
+	}
+
+	/**
+	 * @return the pageResult
+	 */
+	public boolean isPageResult() {
+		return pageResult;
+	}
+
 }

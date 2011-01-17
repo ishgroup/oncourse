@@ -2,7 +2,7 @@ package ish.oncourse.enrol.components;
 
 import ish.common.types.CreditCardType;
 import ish.math.Money;
-import ish.oncourse.enrol.pages.EnrolmentPaymentProcessing;
+import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.EnrolmentStatus;
@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -150,7 +149,7 @@ public class EnrolmentPaymentEntry {
 	private TextField cardcvv;
 
 	@InjectPage
-	private EnrolmentPaymentProcessing enrolmentPaymentProcessing;
+	private EnrolCourses enrolCourses;
 
 	@Parameter
 	private List<Enrolment> enrolments;
@@ -290,7 +289,9 @@ public class EnrolmentPaymentEntry {
 	Object submitted() {
 		ObjectContext context = payment.getObjectContext();
 		List<Object> objectsToDelete = new ArrayList<Object>();
-		List<Enrolment>validEnrolments=new ArrayList<Enrolment>();
+		List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
+		enrolCourses.setPageResult(true);
+		EnrolmentPaymentProcessing enrolmentPaymentProcessing = enrolCourses.getResultingElement();
 		if (!isZeroPayment()) {
 			payment.setAmount(totalIncGst.toBigDecimal());
 			BigDecimal totalGst = BigDecimal.ZERO;
@@ -299,7 +300,7 @@ public class EnrolmentPaymentEntry {
 			for (Enrolment e : enrolments) {
 				if (e.getInvoiceLine() == null) {
 					objectsToDelete.add(e);
-				}else{
+				} else {
 					validEnrolments.add(e);
 				}
 			}
@@ -347,8 +348,8 @@ public class EnrolmentPaymentEntry {
 		} finally {
 			lock.unlock();
 		}
-		
-		return enrolmentPaymentProcessing;
+
+		return enrolCourses;
 	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "failure")

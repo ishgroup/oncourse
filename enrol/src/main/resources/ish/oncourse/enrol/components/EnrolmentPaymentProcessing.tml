@@ -1,4 +1,4 @@
-<html t:type="ui/pagestructure" bodyId="literal:enrolmentPaymentProcessing" bodyClass="literal:internal-page"
+<t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:progressivedisplay t:id="processHolder" initial="block:process"/>
@@ -12,4 +12,4 @@
     <t:block>
     	<span t:type="EnrolmentPaymentResult" t:id="result"/>
     </t:block>
-</html>	
+</t:container>	

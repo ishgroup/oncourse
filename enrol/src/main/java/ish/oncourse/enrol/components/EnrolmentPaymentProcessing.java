@@ -1,9 +1,7 @@
-package ish.oncourse.enrol.pages;
+package ish.oncourse.enrol.components;
 
 import java.util.List;
 
-import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
-import ish.oncourse.enrol.components.EnrolmentPaymentResult;
 import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.CourseClass;
@@ -83,7 +81,7 @@ public class EnrolmentPaymentProcessing {
 				cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
 				studentService.clearStudentsShortList();
 			}
-			
+
 		}
 		result.setPayment(payment);
 		result.setEnrolments(enrolments);
