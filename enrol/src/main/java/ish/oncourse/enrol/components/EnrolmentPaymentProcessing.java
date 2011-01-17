@@ -2,6 +2,7 @@ package ish.oncourse.enrol.components;
 
 import java.util.List;
 
+import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.CourseClass;
@@ -14,6 +15,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -40,6 +42,9 @@ public class EnrolmentPaymentProcessing {
 
 	@Persist
 	private List<Enrolment> enrolments;
+
+	@InjectPage
+	private EnrolCourses enrolCourses;
 
 	/**
 	 * The processHolder displays its content while this method is being
@@ -80,6 +85,7 @@ public class EnrolmentPaymentProcessing {
 				cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKEY_KEY, "");
 				cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
 				studentService.clearStudentsShortList();
+				enrolCourses.clearPersistedProperties();
 			}
 
 		}

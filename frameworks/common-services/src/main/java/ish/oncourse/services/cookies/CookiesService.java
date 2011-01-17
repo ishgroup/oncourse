@@ -80,14 +80,18 @@ public class CookiesService implements ICookiesService {
 
 	public void appendValueToCookieCollection(String cookieKey, String cookieValue) {
 		String existingValue = getCookieValue(cookieKey);
-		StringBuffer strBuff = new StringBuffer();
-		if (existingValue != null && !"".equals(existingValue)) {
-			strBuff.append(existingValue);
-			strBuff.append(COOKIES_COLLECTION_SEPARATOR);
+		//checks if this value already exists in this collection
+		if (!existingValue.equals(cookieValue)
+				&& !existingValue.contains(cookieValue + COOKIES_COLLECTION_SEPARATOR)
+				&& !existingValue.contains(COOKIES_COLLECTION_SEPARATOR + cookieValue)) {
+			StringBuffer strBuff = new StringBuffer();
+			if (existingValue != null && !"".equals(existingValue)) {
+				strBuff.append(existingValue);
+				strBuff.append(COOKIES_COLLECTION_SEPARATOR);
+			}
+			strBuff.append(cookieValue);
+			writeCookieValue(cookieKey, strBuff.toString());
 		}
-		strBuff.append(cookieValue);
-		writeCookieValue(cookieKey, strBuff.toString());
-
 	}
 
 	public void writeCookieValue(String cookieKey, String cookieValue) {

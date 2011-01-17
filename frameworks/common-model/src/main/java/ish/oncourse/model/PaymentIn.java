@@ -72,8 +72,6 @@ public class PaymentIn extends _PaymentIn {
 			for (InvoiceLine il : invoice.getInvoiceLines()) {
 				il.getEnrolment().setStatus(EnrolmentStatus.PENDING);
 			}
-			// FIXME should this dependency be removed?
-			invoice.removeFromPaymentInLines(pl);
 		}
 	}
 
@@ -94,6 +92,7 @@ public class PaymentIn extends _PaymentIn {
 
 	/**
 	 * Retrieves the "client" identificator, ie with the "W" addon.
+	 * 
 	 * @return client identificator string.
 	 */
 	public String getClientReference() {

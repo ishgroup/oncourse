@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
@@ -155,28 +156,83 @@ public class EnrolCourses {
 	 */
 	@SetupRender
 	void beforeRender() {
-		clearPersistedProperties();
+		if (payment != null) {
+			payment = null;
+		}
+		// No need to create the entities if the page is used just to display
+		// the checkout result, or if the payment processing is disabled at all
 		if (!isPageResult() && isPaymentGatewayEnabled()) {
 			moneyFormat = new DecimalFormat("###,##0.00");
-			context = cayenneService.newContext();
-
-			String[] orderedClassesIds = cookiesService
-					.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
-			if (orderedClassesIds != null) {
-				classesToEnrol = courseClassService.loadByIds(orderedClassesIds);
-				List<Ordering> orderings = new ArrayList<Ordering>();
-				orderings.add(new Ordering(
-						CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY,
-						SortOrder.ASCENDING));
-				orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.ASCENDING));
-				Ordering.orderList(classesToEnrol, orderings);
+			if (context == null) {
+				context = cayenneService.newContext();
 			}
 
-			contacts = studentService.getStudentsFromShortList();
+			initClassesToEnrol();
 
+			if (contacts == null || contacts.isEmpty()) {
+				contacts = studentService.getStudentsFromShortList();
+			}
 			if (!contacts.isEmpty() && classesToEnrol != null) {
+				// init the payment and the related entities only if there exist
+				// shortlisted classes and students
 				initPayment();
 			}
+		}
+	}
+
+	/**
+	 * Initializes the {@link #classesToEnrol} list. Checks if the
+	 * {@link #classesToEnrol} needs to be filled(refilled) or should be null:
+	 * <ul>
+	 * <li>if there no any shortlisted classes, the {@link #classesToEnrol} is
+	 * set with null.</li>
+	 * <li>if the {@link #classesToEnrol} is already filled, then it checks if
+	 * the shortlisted classes hasn't been changed, and if they hasn't, refill
+	 * the {@link #classesToEnrol} with the new values.</li>
+	 * </ul>
+	 */
+	public void initClassesToEnrol() {
+		String[] orderedClassesIds = cookiesService
+				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
+		boolean shouldCreateNewClasses = orderedClassesIds != null;
+		if (!shouldCreateNewClasses) {
+			// if there no any shortlisted classes, the list is set with null.
+			classesToEnrol = null;
+			return;
+		}
+
+		// checks if the list is already filled
+		shouldCreateNewClasses = shouldCreateNewClasses && classesToEnrol == null;
+
+		if (!shouldCreateNewClasses) {
+			// checks id the list of shortlisted classes hasn't been changed
+			if (orderedClassesIds.length != classesToEnrol.size()) {
+				// if the sizes are not equal, the shortlisted classes list has
+				// been changed and we need to refill the list.
+				shouldCreateNewClasses = true;
+			} else {
+				// checks if the both lists contains the same classes: if the
+				// any element from one of lists isn't contained in another
+				// list(assuming that sizes of lists are equal), then the lists
+				// don't contain the same classes
+				List<String> idsList = Arrays.asList(orderedClassesIds);
+				for (CourseClass courseClass : classesToEnrol) {
+					if (!idsList.contains(courseClass.getId().toString())) {
+						shouldCreateNewClasses = true;
+						break;
+					}
+				}
+			}
+		}
+
+		// if the list should be filled or refilled
+		if (shouldCreateNewClasses) {
+			classesToEnrol = courseClassService.loadByIds(orderedClassesIds);
+			List<Ordering> orderings = new ArrayList<Ordering>();
+			orderings.add(new Ordering(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY,
+					SortOrder.ASCENDING));
+			orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.ASCENDING));
+			Ordering.orderList(classesToEnrol, orderings);
 		}
 	}
 
@@ -188,7 +244,7 @@ public class EnrolCourses {
 	/**
 	 * Clears all the properties with the @Persist annotation.
 	 */
-	private void clearPersistedProperties() {
+	public void clearPersistedProperties() {
 		classesToEnrol = null;
 		contacts = null;
 		enrolments = null;
@@ -220,42 +276,56 @@ public class EnrolCourses {
 		payment.setStatus(PaymentStatus.PENDING);
 		payment.setSource(PaymentSource.SOURCE_WEB);
 		payment.setCollege(college);
-		invoice = context.newObject(Invoice.class);
-		// fill the invoice with default values
-		invoice.setInvoiceDate(new Date());
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setStatus(InvoiceStatus.PENDING);
+		if (invoice == null) {
+			invoice = context.newObject(Invoice.class);
+			// fill the invoice with default values
+			invoice.setInvoiceDate(new Date());
+			invoice.setAmountOwing(BigDecimal.ZERO);
+			invoice.setDateDue(new Date());
+			invoice.setStatus(InvoiceStatus.PENDING);
 
-		invoice.setCollege(college);
-		enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
-		invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol.size()];
-		for (int i = 0; i < contacts.size(); i++) {
-			for (int j = 0; j < classesToEnrol.size(); j++) {
-				enrolments[i][j] = context.newObject(Enrolment.class);
-				enrolments[i][j].setStatus(EnrolmentStatus.PENDING);
-				enrolments[i][j].setSource(PaymentSource.SOURCE_WEB);
-
-				enrolments[i][j].setCollege(college);
-				Contact contact = contacts.get(i);
-				Student student = ((Contact) context.localObject(contact.getObjectId(), contact))
-						.getStudent();
-				CourseClass courseClass = (CourseClass) context.localObject(classesToEnrol.get(j)
-						.getObjectId(), classesToEnrol.get(j));
-
-				enrolments[i][j].setStudent(student);
-				enrolments[i][j].setCourseClass(courseClass);
-
-				if (!enrolments[i][j].isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces()) {
-					InvoiceLine invoiceLine = invoiceProcessingService
-							.createInvoiceLineForEnrolment(enrolments[i][j]);
-					invoiceLine.setInvoice(invoice);
-
-					enrolments[i][j].setInvoiceLine(invoiceLine);
-					invoiceLines[i][j] = invoiceLine;
+			invoice.setCollege(college);
+			enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
+			invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol.size()];
+			for (int i = 0; i < contacts.size(); i++) {
+				for (int j = 0; j < classesToEnrol.size(); j++) {
+					enrolments[i][j] = createEnrolment(classesToEnrol.get(j), contacts.get(i));
+					invoiceLines[i][j] = enrolments[i][j].getInvoiceLine();
+				}
+			}
+		} else {
+			for (int i = 0; i < contacts.size(); i++) {
+				for (int j = 0; j < classesToEnrol.size(); j++) {
+					if (enrolments[i][j].getPersistenceState() == PersistenceState.TRANSIENT) {
+						enrolments[i][j] = createEnrolment(classesToEnrol.get(j), contacts.get(i));
+						invoiceLines[i][j] = enrolments[i][j].getInvoiceLine();
+					}
 				}
 			}
 		}
+	}
+
+	public Enrolment createEnrolment(CourseClass courseClass, Contact contact) {
+		Enrolment enrolment = context.newObject(Enrolment.class);
+		enrolment.setStatus(EnrolmentStatus.PENDING);
+		enrolment.setSource(PaymentSource.SOURCE_WEB);
+
+		Student student = ((Contact) context.localObject(contact.getObjectId(), contact))
+				.getStudent();
+
+		enrolment.setCollege(student.getCollege());
+		enrolment.setStudent(student);
+		enrolment.setCourseClass((CourseClass) context.localObject(courseClass.getObjectId(),
+				courseClass));
+
+		if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces()) {
+			InvoiceLine invoiceLine = invoiceProcessingService
+					.createInvoiceLineForEnrolment(enrolment);
+			invoiceLine.setInvoice(invoice);
+
+			enrolment.setInvoiceLine(invoiceLine);
+		}
+		return enrolment;
 	}
 
 	/**
