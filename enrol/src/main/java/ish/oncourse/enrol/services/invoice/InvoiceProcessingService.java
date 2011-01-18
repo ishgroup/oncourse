@@ -6,6 +6,7 @@ package ish.oncourse.enrol.services.invoice;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.math.Money;
@@ -14,6 +15,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.discount.IDiscountService;
 
@@ -32,7 +34,8 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(ish.oncourse.model.Enrolment)
 	 */
 	public InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment) {
-		InvoiceLine invoiceLine = enrolment.getObjectContext().newObject(InvoiceLine.class);
+		ObjectContext context = enrolment.getObjectContext();
+		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		
 		CourseClass courseClass = enrolment.getCourseClass();
 		Student student= enrolment.getStudent();
@@ -48,6 +51,11 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		invoiceLine.setPriceEachExTax(fee);
 
 		List<Discount> enrolmentDiscounts = discountService.getEnrolmentDiscounts(enrolment);
+		for(Discount discount:enrolmentDiscounts){
+			InvoiceLineDiscount invoiceLineDiscount = context.newObject(InvoiceLineDiscount.class);
+			invoiceLineDiscount.setInvoiceLine(invoiceLine);
+			invoiceLineDiscount.setDiscount(discount);
+		}
 		invoiceLine.setDiscountEachExTax(discountService.discountValueForList(enrolmentDiscounts, fee));
 		
 		invoiceLine.setTaxEach(discountService.discountedValueForList(enrolmentDiscounts, courseClass.getFeeGst()));
