@@ -309,8 +309,8 @@
 	</db-entity>
 	<db-entity name="InvoiceLine_Discount" catalog="willow_college">
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="invoiceLineId" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="invoiceLineId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<db-entity name="LicenseFee" catalog="willow_college">

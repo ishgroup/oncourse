@@ -828,3 +828,28 @@ function initHints(){
 		$j(this).next().next().children('.reason').toggleClass('hidden-text');
 	});
 }
+
+/**
+ * Refreshes the shortList component and if the courseClassToRefresh!=null, 
+ * refreshes the shortlistControl for this class.
+ */
+function refreshShortList(courseClassToRefresh){
+	$j.ajax({
+		type: "GET",
+		url:  '/refreshShortList',
+		success: function(msg){
+					$j('#shortlist').replaceWith(msg);	
+					if(courseClassToRefresh!=null){
+						$j.ajax({
+							type: "GET",
+							url:  '/refreshShortListControl?courseClassId=' + courseClassToRefresh,
+							success: function(msg){
+									$j('#m' + courseClassToRefresh).replaceWith(msg);
+									// set up the 'email a friend' modal link for ajax-loaded content
+									$j('.nyromodaliframe').nyroModal( { type:'iframe'} );
+									}
+						});
+					}	
+			}
+	});	
+}

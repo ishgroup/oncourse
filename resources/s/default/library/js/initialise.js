@@ -103,22 +103,7 @@ $j(document).ready(function() {
 			type: "GET",
 			url:  '/addToCookies?courseClassId=' + listid,
 			success: function(){
-						$j.ajax({
-							type: "GET",
-							url:  '/refreshShortList',
-							success: function(msg){
-										$j('#shortlist').replaceWith(msg);	
-											$j.ajax({
-												type: "GET",
-												url:'/refreshShortListControl?courseClassId=' + listid ,
-												success: function(msg){
-													$j('#m' + listid).replaceWith(msg);
-													// set up the 'email a friend' modal link for ajax-loaded content
-													$j('.nyromodaliframe').nyroModal( {type:'iframe'} );
-												}
-											});
-							}
-						});		 	
+						refreshShortList(listid);
 					}
 		});
 		return false; 
@@ -135,22 +120,7 @@ $j(document).ready(function() {
 				type: "GET",
 				url:  '/removeFromCookies?courseClassId=' + itemId,
 				success: function(){
-							$j.ajax({
-								type: "GET",
-								url: '/refreshShortList',
-								success: function(msg){
-											$j('#shortlist').replaceWith(msg);
-											$j.ajax({
-												type: "GET",
-												url: '/refreshShortListControl?courseClassId=' + itemId,
-												success: function(msg){		
-															$j('#m' + itemId).replaceWith(msg);
-															// set up the 'email a friend' modal link for ajax-loaded content
-															$j('.nyromodaliframe').nyroModal( { type:'iframe' } );
-														}
-											});
-										}
-							});
+							refreshShortList(itemId);
 						}
 			});
 		//});
@@ -167,27 +137,13 @@ $j(document).ready(function() {
 				type: "GET",
 				url:  '/removeFromCookies?courseClassId=' + itemId,
 				success: function(){
-							$j.ajax({
-								type: "GET",
-								url:  '/refreshShortList',
-								success: function(msg){
-											$j('#shortlist').replaceWith(msg);	
-											$j.ajax({
-												type: "GET",
-												url:  '/refreshShortListControl?courseClassId=' + itemId,
-												success: function(msg){
-															$j('#m' + itemId).replaceWith(msg);
-															// set up the 'email a friend' modal link for ajax-loaded content
-															$j('.nyromodaliframe').nyroModal( { type:'iframe'} );
-															}
-											});
-										}
-							});		 
+							refreshShortList(itemId);	 
 						}
 			});
  		//});	
  		return false;
 	});
+	
 	
 	$j('li.class_enrol a').live("click", function(){
 		var listid = this.id.match(/(\d+)/)[1];

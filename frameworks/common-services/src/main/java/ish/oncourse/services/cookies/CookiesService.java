@@ -91,6 +91,8 @@ public class CookiesService implements ICookiesService {
 			}
 			strBuff.append(cookieValue);
 			writeCookieValue(cookieKey, strBuff.toString());
+		} else {
+			writeCookieValue(cookieKey, cookieValue);
 		}
 	}
 

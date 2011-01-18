@@ -3,14 +3,7 @@
 	xmlns:p="tapestry:parameter">
 	<t:if test="enrolmentSuccessful">
 		<script type="text/javascript">
-			<!--TODO define functions for refreshing the shortlist and the control in application.js and use it--> 
-			$j.ajax({
-				type: "GET",
-				url:  '/refreshShortList',
-				success: function(msg){
-						$j('#shortlist').replaceWith(msg);
-				}
-			});
+			refreshShortList();
 		</script>
 		<h2>Enrolment <span>&#187;</span> Successful</h2>
 		<p>${thxMsg}</p>
