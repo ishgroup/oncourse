@@ -2089,7 +2089,7 @@
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
-	<obj-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
+	<obj-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="college" source="DiscountConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
 	<obj-relationship name="discount" source="DiscountConcessionType" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
@@ -2107,7 +2107,7 @@
 	<obj-relationship name="college" source="InvoiceLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
-	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoicelineDiscounts"/>
+	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoicelineDiscounts"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="college" source="LicenseFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>

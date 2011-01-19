@@ -2,7 +2,7 @@
 	bodyClass="literal:internal-page"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-<t:if test="pageResult">
+<t:if test="checkoutResult">
 	<t:EnrolmentPaymentProcessing t:id="resultComponent" />
 	<p:else>
 		<t:if test="paymentGatewayEnabled">

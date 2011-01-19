@@ -290,7 +290,7 @@ public class EnrolmentPaymentEntry {
 		ObjectContext context = payment.getObjectContext();
 		List<Object> objectsToDelete = new ArrayList<Object>();
 		List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
-		enrolCourses.setPageResult(true);
+		enrolCourses.setCheckoutResult(true);
 		EnrolmentPaymentProcessing enrolmentPaymentProcessing = enrolCourses.getResultingElement();
 		if (!isZeroPayment()) {
 			payment.setAmount(totalIncGst.toBigDecimal());

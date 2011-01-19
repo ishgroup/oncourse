@@ -31,10 +31,14 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
@@ -48,6 +52,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class EnrolCourses {
+
+	private static final String INDEX_SEPARATOR = "_";
 
 	/**
 	 * ish services
@@ -108,7 +114,7 @@ public class EnrolCourses {
 	 * false), and the result of previous chechout otherwise.
 	 */
 	@Persist
-	private boolean pageResult;
+	private boolean checkoutResult;
 
 	@Persist
 	private Enrolment[][] enrolments;
@@ -156,25 +162,29 @@ public class EnrolCourses {
 	 */
 	@SetupRender
 	void beforeRender() {
-		if (payment != null) {
-			payment = null;
-		}
+
 		// No need to create the entities if the page is used just to display
 		// the checkout result, or if the payment processing is disabled at all
-		if (!isPageResult() && isPaymentGatewayEnabled()) {
+		if (!isCheckoutResult() && isPaymentGatewayEnabled()) {
 			moneyFormat = new DecimalFormat("###,##0.00");
+
 			if (context == null) {
 				context = cayenneService.newContext();
 			}
 
 			initClassesToEnrol();
+			if (classesToEnrol != null) {
+				contacts = studentService.getStudentsFromShortList();
 
-			contacts = studentService.getStudentsFromShortList();
-
-			if (!contacts.isEmpty() && classesToEnrol != null) {
-				// init the payment and the related entities only if there exist
-				// shortlisted classes and students
-				initPayment();
+				if (!contacts.isEmpty()) {
+					// init the payment and the related entities only if there
+					// exist
+					// shortlisted classes and students
+					initPayment();
+				}
+			} else {
+				// if there no shortlisted classes, send user to select them
+				clearPersistedProperties();
 			}
 		}
 	}
@@ -237,7 +247,7 @@ public class EnrolCourses {
 
 	@CleanupRender
 	void cleanupRender() {
-		pageResult = false;
+		checkoutResult = false;
 	}
 
 	/**
@@ -287,40 +297,83 @@ public class EnrolCourses {
 
 			invoice.setCollege(college);
 		}
-		if (enrolments == null || enrolments.length != contacts.size()
-				|| enrolments[0].length != classesToEnrol.size()) {
-			enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
-			invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol.size()];
-			for (int i = 0; i < contacts.size(); i++) {
-				for (int j = 0; j < classesToEnrol.size(); j++) {
-					enrolments[i][j] = createEnrolment(classesToEnrol.get(j), contacts.get(i));
-					invoiceLines[i][j] = enrolments[i][j].getInvoiceLine();
-				}
-			}
-		} else {
-			for (int i = 0; i < contacts.size(); i++) {
-				for (int j = 0; j < classesToEnrol.size(); j++) {
-					if (enrolments[i][j].getPersistenceState() == PersistenceState.TRANSIENT) {
-						enrolments[i][j] = createEnrolment(classesToEnrol.get(j), contacts.get(i));
-						invoiceLines[i][j] = enrolments[i][j].getInvoiceLine();
-					}
-				}
-			}
-		}
+
+		initEnrolments();
 	}
 
-	public Enrolment createEnrolment(CourseClass courseClass, Contact contact) {
+	/**
+	 * Checks the newly inited classes and contacts, init {@link #enrolments} properly: 
+	 * create new ones or use created previously if they are correct.
+	 */
+	public void initEnrolments() {
+		Enrolment[][] enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
+
+		InvoiceLine[][] invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol.size()];
+		Map<Enrolment, String> currentEnrolmentsMap = getEnrolmentsIndexesMap();
+		List<Enrolment> currentEnrolments = new ArrayList<Enrolment>(currentEnrolmentsMap.keySet());
+		// Checks the current contacts and classes to create proper enrolments
+		for (int i = 0; i < contacts.size(); i++) {
+			for (int j = 0; j < classesToEnrol.size(); j++) {
+				Enrolment enrolmentToAdd = null;
+				InvoiceLine invoiceLineToAdd = null;
+				Enrolment existingEnrolment = null;
+				Student student = ((Contact) context.localObject(contacts.get(i).getObjectId(),
+						contacts.get(i))).getStudent();
+				CourseClass courseClass = (CourseClass) context.localObject(classesToEnrol.get(j)
+						.getObjectId(), classesToEnrol.get(j));
+				if (!currentEnrolments.isEmpty()) {
+					// checks if the enrolment with such a class and student is
+					// already created
+					Expression sameStudentAndClass = ExpressionFactory.matchExp(
+							Enrolment.STUDENT_PROPERTY, student).andExp(
+							ExpressionFactory
+									.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass));
+					List<Enrolment> sameStudentAndClassResult = sameStudentAndClass
+							.filterObjects(currentEnrolments);
+					if (!sameStudentAndClassResult.isEmpty()) {
+						existingEnrolment = sameStudentAndClassResult.get(0);
+					}
+				}
+				if (existingEnrolment == null
+						|| existingEnrolment.getPersistenceState() == PersistenceState.TRANSIENT) {
+					// create new enrolment if it doen't exist or has been
+					// deleted
+					enrolmentToAdd = createEnrolment(courseClass, student);
+					invoiceLineToAdd = enrolmentToAdd.getInvoiceLine();
+				} else {
+					// use previously created enrolment
+					enrolmentToAdd = existingEnrolment;
+					if (enrolmentToAdd.getInvoiceLine() == null) {
+						// the invoiceLine could be null because of unticked
+						// enrolment, use the corresponded from existing array
+						String[] index = currentEnrolmentsMap.get(enrolmentToAdd).split(
+								INDEX_SEPARATOR);
+						invoiceLineToAdd = this.invoiceLines[Integer.parseInt(index[0])][Integer
+								.parseInt(index[1])];
+					}
+				}
+				enrolments[i][j] = enrolmentToAdd;
+				invoiceLines[i][j] = invoiceLineToAdd;
+			}
+		}
+		this.enrolments = enrolments;
+		this.invoiceLines = invoiceLines;
+	}
+
+	/**
+	 * Creates the new {@link Enrolment} entity for the given courseClass and Student.
+	 * @param courseClass
+	 * @param student
+	 * @return
+	 */
+	public Enrolment createEnrolment(CourseClass courseClass, Student student) {
 		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setStatus(EnrolmentStatus.PENDING);
 		enrolment.setSource(PaymentSource.SOURCE_WEB);
 
-		Student student = ((Contact) context.localObject(contact.getObjectId(), contact))
-				.getStudent();
-
 		enrolment.setCollege(student.getCollege());
 		enrolment.setStudent(student);
-		enrolment.setCourseClass((CourseClass) context.localObject(courseClass.getObjectId(),
-				courseClass));
+		enrolment.setCourseClass(courseClass);
 
 		if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces()) {
 			InvoiceLine invoiceLine = invoiceProcessingService
@@ -425,10 +478,26 @@ public class EnrolCourses {
 	public List<Enrolment> getEnrolmentsList() {
 		List<Enrolment> result = new ArrayList<Enrolment>();
 
-		for (Enrolment[] e : enrolments) {
-			result.addAll(Arrays.asList(e));
+		if (enrolments != null) {
+			for (Enrolment[] e : enrolments) {
+				if (e != null) {
+					result.addAll(Arrays.asList(e));
+				}
+			}
 		}
 
+		return result;
+	}
+
+	public Map<Enrolment, String> getEnrolmentsIndexesMap() {
+		Map<Enrolment, String> result = new HashMap<Enrolment, String>();
+		if (enrolments != null) {
+			for (int i = 0; i < enrolments.length; i++) {
+				for (int j = 0; j < enrolments[0].length; j++) {
+					result.put(enrolments[i][j], i + INDEX_SEPARATOR + j);
+				}
+			}
+		}
 		return result;
 	}
 
@@ -443,20 +512,20 @@ public class EnrolCourses {
 	}
 
 	/**
-	 * Sets value to the {@link #pageResult}.
+	 * Sets value to the {@link #checkoutResult}.
 	 * 
-	 * @param isResult
+	 * @param checkoutResult
 	 *            .
 	 */
-	public void setPageResult(boolean pageResult) {
-		this.pageResult = pageResult;
+	public void setCheckoutResult(boolean checkoutResult) {
+		this.checkoutResult = checkoutResult;
 	}
 
 	/**
-	 * @return the pageResult
+	 * @return the checkoutResult
 	 */
-	public boolean isPageResult() {
-		return pageResult;
+	public boolean isCheckoutResult() {
+		return checkoutResult;
 	}
 
 }
