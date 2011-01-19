@@ -169,9 +169,8 @@ public class EnrolCourses {
 
 			initClassesToEnrol();
 
-			if (contacts == null || contacts.isEmpty()) {
-				contacts = studentService.getStudentsFromShortList();
-			}
+			contacts = studentService.getStudentsFromShortList();
+
 			if (!contacts.isEmpty() && classesToEnrol != null) {
 				// init the payment and the related entities only if there exist
 				// shortlisted classes and students
@@ -272,10 +271,12 @@ public class EnrolCourses {
 		College currentCollege = webSiteService.getCurrentCollege();
 		College college = (College) context.localObject(currentCollege.getObjectId(),
 				currentCollege);
-		payment = context.newObject(PaymentIn.class);
-		payment.setStatus(PaymentStatus.PENDING);
-		payment.setSource(PaymentSource.SOURCE_WEB);
-		payment.setCollege(college);
+		if (payment == null || payment.getStatus() == PaymentStatus.FAILED) {
+			payment = context.newObject(PaymentIn.class);
+			payment.setStatus(PaymentStatus.PENDING);
+			payment.setSource(PaymentSource.SOURCE_WEB);
+			payment.setCollege(college);
+		}
 		if (invoice == null) {
 			invoice = context.newObject(Invoice.class);
 			// fill the invoice with default values
@@ -285,6 +286,9 @@ public class EnrolCourses {
 			invoice.setStatus(InvoiceStatus.PENDING);
 
 			invoice.setCollege(college);
+		}
+		if (enrolments == null || enrolments.length != contacts.size()
+				|| enrolments[0].length != classesToEnrol.size()) {
 			enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
 			invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol.size()];
 			for (int i = 0; i < contacts.size(); i++) {
@@ -380,8 +384,8 @@ public class EnrolCourses {
 			for (int j = 0; j < classesToEnrol.size(); j++) {
 				InvoiceLine invoiceLine = enrolments[i][j].getInvoiceLine();
 				if (invoiceLine != null) {
-					result = result.add(result.add(invoiceLine.getPriceTotalIncTax().subtract(
-							invoiceLine.getDiscountTotalIncTax())));
+					result = result.add(invoiceLine.getPriceTotalIncTax().subtract(
+							invoiceLine.getDiscountTotalIncTax()));
 				}
 			}
 		}
