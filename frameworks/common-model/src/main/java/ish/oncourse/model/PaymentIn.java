@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.util.ExternalValidation;
 import ish.oncourse.model.auto._PaymentIn;
@@ -35,7 +36,7 @@ public class PaymentIn extends _PaymentIn {
 		result = validatePaymentAmount() && result;
 		result = validateCCType() && result;
 		result = validateCCName() && result;
-		result = validateCCNumber() != null && result;
+		result = validateCCNumber() == null && result;
 		result = validateCCExpiry() && result;
 		return result;
 	}
@@ -46,9 +47,10 @@ public class PaymentIn extends _PaymentIn {
 	 * @return true if the payment amount is greater or equal to zero.
 	 */
 	public boolean validatePaymentAmount() {
-		boolean isValid = getAmount() != null && getAmount().compareTo(BigDecimal.ZERO) != -1;
+		BigDecimal amount = getAmount();
+		boolean isValid = amount != null && amount.compareTo(BigDecimal.ZERO) != -1;
 		if (!isValid) {
-			LOG.warn("The payment amount cannot be negative:" + getAmount());
+			LOG.warn("The payment amount cannot be negative:" + amount);
 		}
 		return isValid;
 	}
@@ -59,9 +61,10 @@ public class PaymentIn extends _PaymentIn {
 	 * @return true if the credit card type is not null.
 	 */
 	public boolean validateCCType() {
-		boolean isValid = getCreditCardType() != null;
+		CreditCardType creditCardType = getCreditCardType();
+		boolean isValid = creditCardType != null;
 		if (!isValid) {
-			LOG.warn("The credit card type " + getCreditCardType() + " is invalid");
+			LOG.warn("The credit card type " + creditCardType + " is invalid");
 		}
 		return isValid;
 	}
@@ -87,15 +90,17 @@ public class PaymentIn extends _PaymentIn {
 	 * @return The error message.
 	 */
 	public String validateCCNumber() {
-		if (getCreditCardNumber() == null || getCreditCardNumber().equals("")) {
+		String creditCardNumber = getCreditCardNumber();
+		if (creditCardNumber == null || creditCardNumber.equals("")) {
 			LOG.warn("The credit card number is invalid blank");
 			return "The credit card number cannot be blank.";
 		}
 
-		if (!ExternalValidation.validateCreditCardNumber(getCreditCardNumber())
-				|| (getCreditCardType() != null && !ExternalValidation.validateCreditCardNumber(
-						getCreditCardNumber(), getCreditCardType()))) {
-			LOG.warn("The credit card number " + getCreditCardNumber() + " is invalid");
+		CreditCardType creditCardType = getCreditCardType();
+		if (!ExternalValidation.validateCreditCardNumber(creditCardNumber)
+				|| (creditCardType != null && !ExternalValidation.validateCreditCardNumber(
+						creditCardNumber, creditCardType))) {
+			LOG.warn("The credit card number " + creditCardNumber + " is invalid");
 			return "Invalid credit card number.";
 		}
 
@@ -109,23 +114,26 @@ public class PaymentIn extends _PaymentIn {
 	 * @return true if the expiry date is valid.
 	 */
 	public boolean validateCCExpiry() {
-		if (getCreditCardExpiry() == null || getCreditCardExpiry().equals("")) {
+		String creditCardExpiry = getCreditCardExpiry();
+		if (creditCardExpiry == null || creditCardExpiry.equals("")) {
 			LOG.warn("The credit card expiry date cannot be empty");
 			return false;
 		}
-		String[] dateParts = getCreditCardExpiry().split("/");
+		String[] dateParts = creditCardExpiry.split("/");
 		if (dateParts.length != 2 || !dateParts[0].matches("\\d{1,2}")
 				&& !dateParts[0].matches("\\d{4}")) {
-			LOG.warn("The credit card expiry date " + getCreditCardExpiry() + " has invalid format");
+			LOG.warn("The credit card expiry date " + creditCardExpiry + " has invalid format");
 			return false;
 		}
 		int ccExpiryMonth = Integer.parseInt(dateParts[0]) - 1;
 		int ccExpiryYear = Integer.parseInt(dateParts[1]);
+		Calendar today=Calendar.getInstance();
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, ccExpiryMonth);
 		cal.set(Calendar.YEAR, ccExpiryYear);
-		if (cal.getTime().before(new Date())) {
-			LOG.warn("The credit card has expired: the date " + getCreditCardExpiry()
+		
+		if (cal.getTime().before(today.getTime())) {
+			LOG.warn("The credit card has expired: the date " + creditCardExpiry
 					+ " is in past");
 			return false;
 		}
