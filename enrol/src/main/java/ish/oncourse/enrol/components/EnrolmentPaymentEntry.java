@@ -357,13 +357,15 @@ public class EnrolmentPaymentEntry {
 		return paymentZone.getBody();
 	}
 
+	/**
+	 * Invokes when the {@link #paymentDetailsForm} is attempted to submit.
+	 */
 	@OnEvent(component = "paymentDetailsForm", value = "validate")
 	void validate() {
-		if (payment.getCreditCardType() == null) {
+		if (!payment.validateCCType()) {
 			paymentDetailsForm.recordError(cardTypeSelect, messages.get("cardTypeErrorMessage"));
 		}
-		String creditCardName = payment.getCreditCardName();
-		if (creditCardName == null || creditCardName.equals("")) {
+		if (!payment.validateCCName()) {
 			paymentDetailsForm.recordError(cardName, messages.get("cardNameErrorMessage"));
 		}
 
@@ -381,18 +383,16 @@ public class EnrolmentPaymentEntry {
 		if (ccExpiryMonth == null || ccExpiryYear == null) {
 			hasErrorInDate = true;
 		} else {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.MONTH, Integer.parseInt(ccExpiryMonth) - 1);
-			cal.set(Calendar.YEAR, ccExpiryYear);
-			if (cal.getTime().before(new Date())) {
-				hasErrorInDate = true;
-			}
-		}
-		if (hasErrorInDate) {
-			paymentDetailsForm.recordError(messages.get("expiryDateError"));
-		} else {
+			// don't check the format of ccExpiryMonth and ccExpiryYear because
+			// they are filled with dropdown lists with predefined values
 			payment.setCreditCardExpiry(ccExpiryMonth + "/" + ccExpiryYear);
 		}
+
+		hasErrorInDate = !payment.validateCCExpiry();
+		if (hasErrorInDate) {
+			paymentDetailsForm.recordError(messages.get("expiryDateError"));
+		}
+
 		if (!userAgreed) {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
 		}

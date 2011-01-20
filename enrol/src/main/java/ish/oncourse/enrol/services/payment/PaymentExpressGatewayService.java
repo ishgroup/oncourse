@@ -22,19 +22,19 @@ import com.paymentexpress.stubs.TransactionResult;
  * @author ksenia
  * 
  */
-public class PaymentExpressGatewayService implements IPaymentGatewayService {
+public class PaymentExpressGatewayService extends AbstractPaymentGatewayService {
 	/**
 	 * Logger for service.
 	 */
 	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayService.class);
 
 	/**
-	 * Performs Payment Express gateway. {@inheritDoc}
+	 * {@inheritDoc} Performs Payment Express gateway.
 	 * 
-	 * @see ish.oncourse.enrol.services.payment.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
+	 * @see AbstractPaymentGatewayService#processGateway(ish.oncourse.model.PaymentIn)
 	 */
 	@Override
-	public void performGatewayOperation(PaymentIn payment) {
+	public void processGateway(PaymentIn payment) {
 		TransactionResult tr;
 		try {
 			tr = doTransaction(payment);
@@ -43,29 +43,28 @@ public class PaymentExpressGatewayService implements IPaymentGatewayService {
 				if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
 					resultDetails.append("Payment succeed.");
 					payment.succeed();
-					
+
 				} else {
 					// TODO set statusNotes="cardDeclined" to payment here
 					resultDetails.append("Payment failed.");
 					payment.failed();
 				}
 
-				resultDetails.append(" authCode:").append(tr.getAuthCode())
-						.append(", authorized:").append(tr.getAuthorized())
-						.append(", cardHolderHelpText:").append(tr.getCardHolderHelpText())
-						.append(", cardHolderName:").append(tr.getCardHolderName())
-						.append(", cardHolderResponseDescription:").append(tr.getCardHolderResponseDescription())
-						.append(", currencyRate:").append(tr.getCurrencyRate())
-						.append(", currencyType:").append(tr.getCurrencyName())
-						.append(", ourTransactionRef:").append(tr.getTxnRef())
-						.append(", responseCode:").append(tr.getReco())
-						.append(", responseText:").append(tr.getResponseText())
-						.append(", retry:").append(tr.getRetry())
-						.append(", settlementDate:").append(tr.getDateSettlement())
-						.append(", statusRequired:").append(tr.getStatusRequired())
-						.append(", testMode:").append(tr.getTestMode())
-						.append(", transactionRef:").append(tr.getDpsTxnRef());
-			}else{
+				resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:")
+						.append(tr.getAuthorized()).append(", cardHolderHelpText:")
+						.append(tr.getCardHolderHelpText()).append(", cardHolderName:")
+						.append(tr.getCardHolderName()).append(", cardHolderResponseDescription:")
+						.append(tr.getCardHolderResponseDescription()).append(", currencyRate:")
+						.append(tr.getCurrencyRate()).append(", currencyType:")
+						.append(tr.getCurrencyName()).append(", ourTransactionRef:")
+						.append(tr.getTxnRef()).append(", responseCode:").append(tr.getReco())
+						.append(", responseText:").append(tr.getResponseText()).append(", retry:")
+						.append(tr.getRetry()).append(", settlementDate:")
+						.append(tr.getDateSettlement()).append(", statusRequired:")
+						.append(tr.getStatusRequired()).append(", testMode:")
+						.append(tr.getTestMode()).append(", transactionRef:")
+						.append(tr.getDpsTxnRef());
+			} else {
 				resultDetails.append("Payment failed with null transaction response");
 				payment.failed();
 			}
@@ -77,11 +76,14 @@ public class PaymentExpressGatewayService implements IPaymentGatewayService {
 			payment.failed();
 			LOG.error("Failed to obtain a status for transaction", e);
 		}
+
 	}
 
 	/**
 	 * Performs the payment transaction trought the payment express gateway.
-	 * @param payment the paymment to be processed.
+	 * 
+	 * @param payment
+	 *            the paymment to be processed.
 	 * @return the result of submitted transaction.
 	 * @throws Exception
 	 */
@@ -109,16 +111,16 @@ public class PaymentExpressGatewayService implements IPaymentGatewayService {
 	 */
 	public TransactionDetails getTransactionDetails(PaymentIn payment) {
 		TransactionDetails details = new TransactionDetails();
-		
+
 		StringBuilder transactionDetails = new StringBuilder("Preparing payment transaction data. ");
-		
+
 		details.setAmount(PaymentExpressUtil.translateInputAmountAsDecimalString(payment
 				.getAmount()));
 		transactionDetails.append("amount: ").append(details.getAmount());
-		
+
 		details.setCardHolderName(payment.getCreditCardName());
 		transactionDetails.append(", cardHolderName: ").append(details.getCardHolderName());
-		
+
 		details.setCardNumber(payment.getCreditCardNumber());
 		transactionDetails.append(", cardNumber: ").append(
 				CreditCardUtil.obfuscateCCNumber(details.getCardNumber()));
@@ -126,28 +128,28 @@ public class PaymentExpressGatewayService implements IPaymentGatewayService {
 		details.setCvc2(payment.getCreditCardCVV());
 		transactionDetails.append(", cardCVV: ").append(
 				CreditCardUtil.obfuscateCVVNumber(details.getCvc2()));
-	
+
 		details.setDateExpiry(PaymentExpressUtil.translateInputExpiryDate(payment
 				.getCreditCardExpiry()));
 		transactionDetails.append(", cardExpiry: ").append(details.getDateExpiry());
-		
+
 		// TODO use other currencies
 		details.setInputCurrency("AUD");
 		transactionDetails.append(", currency: ").append(details.getInputCurrency());
-		
+
 		String ref = payment.getClientReference();
-		
+
 		details.setMerchantReference(ref);
 		transactionDetails.append(", merchantReference: ").append(details.getMerchantReference());
-		
+
 		details.setTxnRef(ref);
 		transactionDetails.append(", transactionReference: ").append(details.getTxnRef());
-		
+
 		details.setTxnType(PaymentExpressUtil.PAYMENT_EXPRESS_TXN_TYPE);
 		transactionDetails.append(", transaction type: ").append(details.getTxnType());
-		
+
 		LOG.debug(transactionDetails.toString());
-		
+
 		return details;
 	}
 

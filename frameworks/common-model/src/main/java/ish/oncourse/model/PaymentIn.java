@@ -1,10 +1,18 @@
 package ish.oncourse.model;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.apache.log4j.Logger;
+
 import ish.common.types.PaymentSource;
 import ish.common.util.ExternalValidation;
 import ish.oncourse.model.auto._PaymentIn;
 
 public class PaymentIn extends _PaymentIn {
+
+	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
 
 	/**
 	 * Returns the primary key property - id of {@link PaymentIn}.
@@ -17,6 +25,62 @@ public class PaymentIn extends _PaymentIn {
 	}
 
 	/**
+	 * Validates the payment details: amount, credit card type, name credit card
+	 * of owner, credit card number, credit card expiry date.
+	 * 
+	 * @return true if no errors exist.
+	 */
+	public boolean validateBeforeSend() {
+		boolean result = true;
+		result = validatePaymentAmount() && result;
+		result = validateCCType() && result;
+		result = validateCCName() && result;
+		result = validateCCNumber() != null && result;
+		result = validateCCExpiry() && result;
+		return result;
+	}
+
+	/**
+	 * Checks if the payment amount is not null and not negative.
+	 * 
+	 * @return true if the payment amount is greater or equal to zero.
+	 */
+	public boolean validatePaymentAmount() {
+		boolean isValid = getAmount() != null && getAmount().compareTo(BigDecimal.ZERO) != -1;
+		if (!isValid) {
+			LOG.warn("The payment amount cannot be negative:" + getAmount());
+		}
+		return isValid;
+	}
+
+	/**
+	 * Checks if the credit card type is filled.
+	 * 
+	 * @return true if the credit card type is not null.
+	 */
+	public boolean validateCCType() {
+		boolean isValid = getCreditCardType() != null;
+		if (!isValid) {
+			LOG.warn("The credit card type " + getCreditCardType() + " is invalid");
+		}
+		return isValid;
+	}
+
+	/**
+	 * Checks if the credit card owner's name is filled.
+	 * 
+	 * @return true if the credit card owner's name is not empty.
+	 */
+	public boolean validateCCName() {
+		String creditCardName = getCreditCardName();
+		boolean isValid = creditCardName != null && !creditCardName.equals("");
+		if (!isValid) {
+			LOG.warn("The credit card name " + creditCardName + " is invalid");
+		}
+		return isValid;
+	}
+
+	/**
 	 * Validates the syntax of the credit card number,
 	 * {@link PaymentIn#getCreditCardNumber()}.
 	 * 
@@ -24,17 +88,48 @@ public class PaymentIn extends _PaymentIn {
 	 */
 	public String validateCCNumber() {
 		if (getCreditCardNumber() == null || getCreditCardNumber().equals("")) {
+			LOG.warn("The credit card number is invalid blank");
 			return "The credit card number cannot be blank.";
 		}
 
 		if (!ExternalValidation.validateCreditCardNumber(getCreditCardNumber())
 				|| (getCreditCardType() != null && !ExternalValidation.validateCreditCardNumber(
 						getCreditCardNumber(), getCreditCardType()))) {
-
+			LOG.warn("The credit card number " + getCreditCardNumber() + " is invalid");
 			return "Invalid credit card number.";
 		}
 
 		return null;
+	}
+
+	/**
+	 * Validates the credit card expiry date - it should be filed and not in the
+	 * past.
+	 * 
+	 * @return true if the expiry date is valid.
+	 */
+	public boolean validateCCExpiry() {
+		if (getCreditCardExpiry() == null || getCreditCardExpiry().equals("")) {
+			LOG.warn("The credit card expiry date cannot be empty");
+			return false;
+		}
+		String[] dateParts = getCreditCardExpiry().split("/");
+		if (dateParts.length != 2 || !dateParts[0].matches("\\d{1,2}")
+				&& !dateParts[0].matches("\\d{4}")) {
+			LOG.warn("The credit card expiry date " + getCreditCardExpiry() + " has invalid format");
+			return false;
+		}
+		int ccExpiryMonth = Integer.parseInt(dateParts[0]) - 1;
+		int ccExpiryYear = Integer.parseInt(dateParts[1]);
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, ccExpiryMonth);
+		cal.set(Calendar.YEAR, ccExpiryYear);
+		if (cal.getTime().before(new Date())) {
+			LOG.warn("The credit card has expired: the date " + getCreditCardExpiry()
+					+ " is in past");
+			return false;
+		}
+		return true;
 	}
 
 	/**

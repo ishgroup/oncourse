@@ -118,30 +118,30 @@ public class PaymentExpressGatewayServiceTest {
 	}
 	
 	/**
-	 * Emulates the successful payment,
+	 * Emulates the successful payment processing,
 	 * {@link PaymentIn#succeed()} should be invoked.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testSuccessfulPerformGatewayOperation() throws Exception {
+	public void testSuccessfulProcessGateway() throws Exception {
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
-		gatewayService.performGatewayOperation(payment);
+		gatewayService.processGateway(payment);
 		verify(payment).succeed();
 	}
 	
 	/**
-	 * Emulates the unsuccessful payment(with the declined gateway response),
+	 * Emulates the unsuccessful payment processing(with the declined gateway response),
 	 * {@link PaymentIn#failed()} should be invoked.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testUnsuccessfulPerformGatewayOperation() throws Exception {
+	public void testUnsuccessfulProcessGateway() throws Exception {
 		when(payment.getCreditCardNumber()).thenReturn(INVALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
-		gatewayService.performGatewayOperation(payment);
+		gatewayService.processGateway(payment);
 		verify(payment).failed();
 	}
 }
