@@ -1,0 +1,37 @@
+<!-- 
+	Template: Courses.tml
+	Purpose: Defines logic of course listings page (searching/browsing).
+-->
+
+<html t:type="ui/pagestructure" bodyId="literal:ListPage" bodyClass="literal:internal-page" 
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if t:test="hasInvalidSearchTerms">
+		<!--
+			TODO implement SearchTermsClarificationView
+			<wo:SearchTermsClarificationView />
+		-->
+		<p:else>
+			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"/>
+			<t:zone t:id="sitesMap" id="sitesMap">
+				<span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites" collapsed="true" showLocationMap="false" />
+			</t:zone>
+			<t:if t:test="hasAnyItems" negate="true">
+				<h2>No results</h2>
+				<p:else>
+					<t:zone t:id="coursesZone" id="coursesZone">
+						<t:loop source="courses" value="course">
+							<span t:type="ui/courseitem" linkToLocationsMap="true"
+								course="course" isList="true" />
+						</t:loop>
+
+						<t:if t:test="hasMoreItems">
+							<t:actionLink t:id="showMoreCourses" zone="coursesZone">
+								<div class="showMoreAction">Show more courses</div>
+							</t:actionLink>
+						</t:if>
+					</t:zone>
+				</p:else>
+			</t:if>
+		</p:else>
+	</t:if>	
+</html>

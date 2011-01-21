@@ -1,0 +1,17 @@
+<!-- 
+	Template: GoogleDirections.tml
+	Purpose: Defines the logic and markup for Gmap directions functionality. Currently broken. 
+-->
+
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+
+	<t:if t:test="hasLocation">
+
+		<div id="directionsPanel" class="">
+			Directions from: <input type="text"/>
+		</div>
+
+
+	</t:if>
+</t:container>

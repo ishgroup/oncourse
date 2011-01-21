@@ -1,0 +1,52 @@
+<!-- 
+	Template: SitesDetailsComponent.tml
+	Purpose: The logic and markup for display site information in Class and Site detail pages. Incomplete (markup for GMaps broken).
+-->
+	
+
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<div class="vcard locationInfo">
+	
+	<!-- if this is being viewed in the class info page, i want to hide this title! -->
+	<h3>Location</h3>
+	
+	<dl class="adr" id="">
+		
+		<t:if t:test="hasAddress">
+			<dt class="classSiteAddress">Address</dt>
+			<dd>
+				<div>${site.name}</div>
+				<div class="street-address">${site.street}</div>
+				<span class="locality">${site.suburb}</span>
+				<t:if t:test="hasPostCode">
+					<span class="postal-code">${site.postcode}</span>
+			</t:if>
+			</dd>
+		</t:if>
+
+
+		<t:if t:test="hasDrivingDirections">
+
+			<dt class="locationInfo_driving">Directions</dt>
+			<dd><t:outputRaw value="${site.drivingDirections}"/></dd>
+
+		</t:if>
+		<t:if t:test="hasPublicTransportDirections">
+			<dt class="locationInfo_publicTransport">Public Transport</dt>
+			<dd><t:outputRaw value="${site.publicTransportDirections}"/></dd>
+		</t:if>
+		
+		<t:if t:test="hasSpecialInstructions">
+			<dt class="locationInfo_instructions">Other Information</dt>
+			<dd><t:outputRaw value="${site.specialInstructions}"/></dd>
+		</t:if>
+	</dl>
+	</div>
+	<t:if t:test="site.hasCoordinates">
+		<span t:type="ui/GoogleDirections" sites="mapSites"
+			showDirections="true" collapseLocationMap="collapseLocationMap" showLocationMap="true" />
+	</t:if>
+	
+	<div id="gmapCanvas"></div>
+</t:container>

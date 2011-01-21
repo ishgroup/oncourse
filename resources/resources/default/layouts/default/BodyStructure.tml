@@ -1,0 +1,49 @@
+<!-- 
+	Template: BodyStructure.tml
+	Purpose: Defines the base HTML structure of each page.
+-->
+
+<div class="layout" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div id="container">
+
+		<div id="header">
+			<div t:type="ui/bodyheader"></div>
+			<t:remove><div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header"></div></t:remove>
+		</div>
+
+		<nav>
+			<div t:type="ui/menu" rootMenu="rootMenu"/>
+		</nav>
+
+		<div id="contentContainer">
+			<div id="sidebarLeft">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left"></div>
+			</div>
+			
+			
+			<div id="content">
+			
+				<!-- This confirmation dialog is for experimenting. -->
+				<div class="confirmOrderDialog">
+					<p>Thanks for adding <div>HSC Preparation: Mathematics - 2 Unit Exam Preparation Workshop <br/> <span>(3 Mar 2010 - 22 Sep 2010)</span></div></p>
+					
+					<p><button>Make Payment</button> <a href="#">Continue shopping</a> </p>
+				</div>
+				<!-- -->
+				
+				<t:body/>
+			</div>
+
+			<div id="sidebarRight">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right"></div>
+			</div>
+		</div>
+
+		<div id="footer">
+			<div t:type="ui/bodyfooter"></div>
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer"></div>
+		</div>
+	
+	</div>		
+
+</div>
