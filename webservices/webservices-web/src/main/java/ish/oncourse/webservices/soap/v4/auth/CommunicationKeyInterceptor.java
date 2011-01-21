@@ -1,34 +1,44 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
+import ish.oncourse.model.College;
+import ish.oncourse.services.system.ICollegeService;
+import ish.oncourse.webservices.util.SoapUtil;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
 	@Inject
 	@Autowired
-	private Request request;
-	
+	private ICollegeService collegeService;
+
 	public CommunicationKeyInterceptor() {
 		super(Phase.PRE_INVOKE);
 	}
 
 	@Override
 	public void handleMessage(SoapMessage message) throws Fault {
-		Session session = request.getSession(false);
-		
-		if (session != null) {
-			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-			/*
-			if (token != null && pc.getIdentifier().equals(token.getSecurityCode())) {
-				pc.setPassword(String.valueOf(token.getCommunicationKey()));
-			}*/
+		String securityCode = SoapUtil.getHeader(message, SoapUtil.SECURITY_CODE_HEADER);
+
+		if (securityCode == null) {
+			throw new AuthenticationFailureException("empty.securityCode");
+		}
+
+		College college = collegeService.findBySecurityCode(securityCode);
+
+		if (college == null) {
+			throw new AuthenticationFailureException("invalid.securityCode", securityCode);
+		}
+
+		String communicationKey = SoapUtil.getHeader(message, SoapUtil.COMMUNICATION_KEY_HEADER);
+
+		if (communicationKey == null || !String.valueOf(college.getCommunicationKey()).equals(communicationKey)) {
+			throw new AuthenticationFailureException("communicationKey.invalid", communicationKey);
 		}
 	}
 }

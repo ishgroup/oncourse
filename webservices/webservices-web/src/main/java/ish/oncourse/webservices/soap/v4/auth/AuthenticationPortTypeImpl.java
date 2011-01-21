@@ -49,28 +49,26 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	public Long authenticate(String webServicesSecurityCode, Long lastCommKey) throws AuthenticationFailureException {
 
 		if (request.getSession(false) != null) {
-			throw new AuthenticationFailureException("Authentication failure, existing session must be terminated first.",
-					AuthenticationFailureException.INVALID_SESSION);
+			throw new AuthenticationFailureException("invalid.session");
 		}
 
 		College college = collegeService.findBySecurityCode(webServicesSecurityCode);
 
 		if (college == null) {
 			LOGGER.error("No college found for 'security code': " + webServicesSecurityCode);
-			throw new AuthenticationFailureException("Invalid security code", AuthenticationFailureException.INVALID_SECURITY_CODE);
+			throw new AuthenticationFailureException("invalid.securityCode", webServicesSecurityCode);
 		}
 
 		ObjectContext ctx = cayenneService.newContext();
 
 		if (college.getCommunicationKey() == null && college.getCommunicationKeyStatus() == KeyStatus.VALID) {
 			// Null key set as valid.
-			throw new AuthenticationFailureException("Can not have NULL as valid key.", AuthenticationFailureException.NULL_AS_VALID_KEY);
+			throw new AuthenticationFailureException("null.communicationKey");
 		}
 
 		if (college.getCommunicationKey() != null && college.getCommunicationKeyStatus() == KeyStatus.HALT) {
 			// Communication key in a HALT state. Refuse authentication attempt.
-			throw new AuthenticationFailureException("Communication key in a HALT state.",
-					AuthenticationFailureException.COMMUNICATION_KEY_HALTED);
+			throw new AuthenticationFailureException("communicationKey.halt");
 		}
 		
 		boolean invalidKey = college.getCommunicationKey() != null && college.getCommunicationKeyStatus() == KeyStatus.VALID && !lastCommKey.equals(college.getCommunicationKey());
@@ -81,8 +79,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 			local.setCommunicationKeyStatus(KeyStatus.HALT);
 			ctx.commitChanges();
 
-			throw new AuthenticationFailureException(String.format("Invalid communication key: %s.", lastCommKey),
-					AuthenticationFailureException.INVALID_COMMUNICATION_KEY);
+			throw new AuthenticationFailureException("communicationKey.invalid", lastCommKey);
 		}
 
 		// Normal flow or recovering from HALT state. Generate and store new

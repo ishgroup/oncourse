@@ -12,24 +12,23 @@ import org.apache.cxf.service.model.BindingOperationInfo;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.log4j.Logger;
 
-public class LogRequestInterceptor extends AbstractSoapInterceptor {
+public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 
-	private static final Logger LOGGER = Logger.getLogger(LogRequestInterceptor.class);
+	private static final Logger LOGGER = Logger.getLogger(CollegeRequestInterceptor.class);
 
-	public LogRequestInterceptor() {
+	public CollegeRequestInterceptor() {
 		super(Phase.PRE_INVOKE);
 	}
 
 	@Override
 	public void handleMessage(SoapMessage message) throws Fault {
 		HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
-
-		String ip = req.getRemoteAddr();
+		
+		String ip = (req != null) ? req.getRemoteAddr() : "unknown";
 		Date time = new Date();
 		
 		BindingOperationInfo boi = message.getExchange().get(BindingOperationInfo.class);
 
 		LOGGER.info(String.format("Invoke %s from %s at %s.", boi.getName(),  ip, time));
-
 	}
 }
