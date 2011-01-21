@@ -12,9 +12,9 @@
 	<target name="clean">
 		<delete dir="dist"/>
 		<mkdir dir="dist/web"/>
-		<mkdir dir="dist/manual" />
+		<mkdir dir="dist/manual"/>
 	</target>
-	
+
 	<target name="html" description="Build the html documentation">
 		<copy overwrite="true" preservelastmodified="true" todir="dist/manual/css/">
 			<fileset dir="css"/>
@@ -27,7 +27,7 @@
 			<arg line="--xinclude"/>
 			<arg line="stylesheets/html.xsl ${manual.input}"/>
 		</exec>
-		
+
 		<copy overwrite="true" preservelastmodified="true" todir="dist/web/css/">
 			<fileset dir="css"/>
 		</copy>
@@ -40,7 +40,7 @@
 			<arg line="stylesheets/html.xsl ${web.input}"/>
 		</exec>
 	</target>
-	
+
 	<target name="pdf" description="Build the pdf documentation">
 		<exec executable="xsltproc">
 			<arg line="--output dist/manual/oncourse-manual.fo"/>
@@ -52,10 +52,21 @@
 			<arg line="-pdf dist/manual/oncourse-manual.pdf"/>
 		</exec>
 		<delete file="dist/manual/oncourse-manual.fo"/>
-	</target>
-	
-	<target name="build" description="Build the pdf and html documentation" depends="pdf, html"/>
 		
+		<exec executable="xsltproc">
+			<arg line="--output dist/web/oncourse-web-manual.fo"/>
+			<arg line="--xinclude"/>
+			<arg line="stylesheets/pdf.xsl ${web.input}"/>
+		</exec>
+		<exec executable="fop">
+			<arg line="-fo dist/web/oncourse-web-manual.fo"/>
+			<arg line="-pdf dist/web/oncourse-web-manual.pdf"/>
+		</exec>
+		<delete file="dist/web/oncourse-web-manual.fo"/>
+	</target>
+
+	<target name="build" description="Build the pdf and html documentation" depends="pdf, html"/>
+
 	<!--
 	=================================
 	target: upload-ftp
@@ -67,22 +78,11 @@
 			<include name="**/*"/>
 			<exclude name=".svn"/>
 		</fileset>
-		<ftp 
-			server="ftp.ish.com.au"
-			userid="${ftpUser}"
-			password="${ftpPass}"
-			action="mkdir"
-			remotedir="ish-static/onCourse/doc/${version.major}"
-		/>
+		<ftp server="ftp.ish.com.au" userid="${ftpUser}" password="${ftpPass}" action="mkdir"
+			remotedir="ish-static/onCourse/doc/${version.major}"/>
 
-		<ftp 
-			server="ftp.ish.com.au"
-			userid="${ftpUser}"
-			password="${ftpPass}"
-			binary="yes" 
-			action="put"
-			passive="yes"
-			depends="yes"
+		<ftp server="ftp.ish.com.au" userid="${ftpUser}" password="${ftpPass}" binary="yes"
+			action="put" passive="yes" depends="yes"
 			remotedir="ish-static/onCourse/doc/${version.major}">
 			<fileset refid="upload.files"/>
 		</ftp>
