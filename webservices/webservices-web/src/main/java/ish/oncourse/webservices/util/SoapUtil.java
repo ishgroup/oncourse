@@ -14,6 +14,8 @@ public class SoapUtil {
 
 	public static final String SECURITY_CODE_HEADER = "SecurityCode";
 	public static final String COMMUNICATION_KEY_HEADER = "CommunicationKey";
+	public static final String ANGEL_VERSION_HEADER = "AngelVersion";
+	
 	public static final String DEFAULT_NAMESPACE = "http://ish.com.au";
 
 	public static String getHeader(SoapMessage message, String localName) {

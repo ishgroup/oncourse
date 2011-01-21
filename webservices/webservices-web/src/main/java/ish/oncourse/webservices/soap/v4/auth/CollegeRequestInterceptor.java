@@ -21,11 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 
 	private static final Logger LOGGER = Logger.getLogger(CollegeRequestInterceptor.class);
-	
+
 	@Inject
 	@Autowired
 	private ICollegeService collegeService;
-	
+
 	public CollegeRequestInterceptor() {
 		super(Phase.PRE_INVOKE);
 	}
@@ -33,22 +33,25 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 	@Override
 	public void handleMessage(SoapMessage message) throws Fault {
 		HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
-		
+
 		String ip = (req != null) ? req.getRemoteAddr() : "unknown";
 		Date time = new Date();
-		
+
 		BindingOperationInfo boi = message.getExchange().get(BindingOperationInfo.class);
-		
+
 		String securityCode = SoapUtil.getHeader(message, SoapUtil.SECURITY_CODE_HEADER);
-		
-		Long version = null;
+
+		String collegeName = null;
+
 		if (securityCode != null) {
 			College college = collegeService.findBySecurityCode(securityCode);
 			if (college != null) {
-				//assing ish version here
+				collegeName = college.getName();
 			}
 		}
 
-		LOGGER.info(String.format("Invoke %s from %s with version %s at %s.", boi.getName(),  ip, version, time));
+		String version = SoapUtil.getHeader(message, SoapUtil.ANGEL_VERSION_HEADER);
+
+		LOGGER.info(String.format("Invoke %s by %s from %s with version %s at %s.", boi.getName(), collegeName, ip, version, time));
 	}
 }
