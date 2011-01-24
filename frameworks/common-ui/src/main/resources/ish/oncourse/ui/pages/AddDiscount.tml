@@ -1,0 +1,34 @@
+<html t:type="ui/dialogstructure" title="literal:My Discounts"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	
+	<p>${message:message.enter.discount}</p>
+	<t:zone t:id="addDiscountZone">
+	<t:form t:id="addDiscountForm" zone="addDiscountZone">
+		<label for="promo">${message:label.discount.code}</label>
+		<t:textField name="promo" value="promoCode" />
+		<t:submit value="message:submit.add" />
+		<t:errors class="literal:EntryError" />
+	</t:form>
+	<t:if test="addedPromotions.empty" negate="true">
+		<p class="discount_options">
+			${message:message.list.discount} 
+			<br />
+			<a href="#" onclick="window.parent.location.reload(true);">${message:link.update.page}</a>
+		</p>
+
+		<t:loop source="addedPromotions" value="addedPromotion">
+			<div class="popup-name">${addedPromotion.code}</div>
+			<div class="clear"></div>
+			<p>${addedPromotion.detail}</p>
+			<div class="divideline"></div>
+		</t:loop>
+		<p>${message:message.update.page}</p>
+	</t:if>
+	</t:zone>
+
+	<p class="note">
+		<strong class="alert">${message:message.note}</strong>${message:message.discount.expiery}
+	</p>
+
+</html>
