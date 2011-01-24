@@ -97,12 +97,14 @@
 		<db-attribute name="communication_key_status" type="VARCHAR" length="20"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" length="19"/>
+		<db-attribute name="firstSeen" type="DATE"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isTestingWebServicePayments" type="BIT"/>
 		<db-attribute name="isTestingWebSitePayments" type="BIT"/>
 		<db-attribute name="isWebServicePaymentsEnabled" type="BIT"/>
 		<db-attribute name="isWebSitePaymentsEnabled" type="BIT"/>
 		<db-attribute name="lastRemoteAuthentication" type="TIMESTAMP" length="19"/>
+		<db-attribute name="lastSeen" type="DATE"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="nationalProviderCode" type="VARCHAR" length="16"/>
@@ -814,11 +816,13 @@
 		<obj-attribute name="communicationKeyStatus" type="ish.oncourse.model.KeyStatus" db-attribute-path="communication_key_status"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
+		<obj-attribute name="firstSeen" type="java.util.Date" db-attribute-path="firstSeen"/>
 		<obj-attribute name="isTestingWebServicePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebServicePayments"/>
 		<obj-attribute name="isTestingWebSitePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebSitePayments"/>
 		<obj-attribute name="isWebServicePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebServicePaymentsEnabled"/>
 		<obj-attribute name="isWebSitePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebSitePaymentsEnabled"/>
 		<obj-attribute name="lastRemoteAuthentication" type="java.util.Date" db-attribute-path="lastRemoteAuthentication"/>
+		<obj-attribute name="lastSeen" type="java.util.Date" db-attribute-path="lastSeen"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="nationalProviderCode" type="java.lang.String" db-attribute-path="nationalProviderCode"/>

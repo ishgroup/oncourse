@@ -6,6 +6,7 @@ import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.soap.v4.Status;
 
+import java.util.Date;
 import java.util.Random;
 
 import javax.jws.WebService;
@@ -60,6 +61,8 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		}
 
 		ObjectContext ctx = cayenneService.newContext();
+		
+		Date today = new Date();
 
 		if (college.getCommunicationKey() == null && college.getCommunicationKeyStatus() == KeyStatus.VALID) {
 			// Null key set as valid.
@@ -94,6 +97,12 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		College local = (College) ctx.localObject(college.getObjectId(), null);
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
+		
+		if (local.getFirstSeen() == null) {
+			local.setFirstSeen(today);
+		}
+		
+		local.setLastSeen(today);
 
 		ctx.commitChanges();
 
