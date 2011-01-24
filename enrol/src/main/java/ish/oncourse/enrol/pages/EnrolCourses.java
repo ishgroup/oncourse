@@ -11,6 +11,8 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
@@ -19,6 +21,7 @@ import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -531,6 +534,28 @@ public class EnrolCourses {
 	 */
 	public boolean isCheckoutResult() {
 		return checkoutResult;
+	}
+
+	// TODO port this method to some service(it is a part of
+	// DiscountService#isStudentElifible)
+	public boolean hasSuitableClasses(StudentConcession studentConcession) {
+		for (CourseClass cc : classesToEnrol) {
+			for (DiscountCourseClass dcc : cc.getDiscountCourseClasses()) {
+				for (DiscountConcessionType dct : dcc.getDiscount().getDiscountConcessionTypes()) {
+					if (studentConcession.getConcessionType().equals(dct.getConcessionType())) {
+						if (!Boolean.TRUE.equals(studentConcession.getConcessionType()
+								.getHasExpiryDate())
+								|| (studentConcession.getExpiresOn() != null && studentConcession
+										.getExpiresOn().after(new Date()))) {
+							return true;
+						}
+					}
+
+				}
+			}
+		}
+		return false;
+
 	}
 
 }

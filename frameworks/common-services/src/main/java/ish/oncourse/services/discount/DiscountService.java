@@ -172,7 +172,11 @@ public class DiscountService implements IDiscountService {
 		if (!discount.getDiscountConcessionTypes().isEmpty()) {
 			boolean notEligibile = true;
 			for (DiscountConcessionType dct : discount.getDiscountConcessionTypes()) {
-				for (StudentConcession concession : student.getStudentConcessions()) {
+				SelectQuery studentConcessionQuery = new SelectQuery(StudentConcession.class,
+						ExpressionFactory.matchExp(StudentConcession.STUDENT_PROPERTY, student));
+				List<StudentConcession> studentConcessions = (List<StudentConcession>) student
+						.getObjectContext().performQuery(studentConcessionQuery);
+				for (StudentConcession concession : studentConcessions) {
 					if (concession.getConcessionType().equals(dct.getConcessionType())) {
 						if (!Boolean.TRUE.equals(concession.getConcessionType().getHasExpiryDate())
 								|| (concession.getExpiresOn() != null && concession.getExpiresOn()

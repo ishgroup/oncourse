@@ -6,15 +6,22 @@ import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.services.persistence.ICayenneService;
-import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Zone;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+
+import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ConcessionEntry {
 
@@ -33,6 +40,9 @@ public class ConcessionEntry {
 
     @InjectComponent
     private ConcessionEditor concessionEditor;
+
+    @InjectPage
+    private EnrolCourses enrolCourses;
 
     @Property
     @Parameter
@@ -72,17 +82,19 @@ public class ConcessionEntry {
             ObjectContext newContext = cayenneService.newContext();
             StudentConcession studentConcession = newContext.newObject(StudentConcession.class);
             College college = student.getCollege();
-            studentConcession.setCollege((College) newContext
-                    .localObject(college.getObjectId(), college));
+            studentConcession.setCollege((College) newContext.localObject(college.getObjectId(),
+                    college));
             ConcessionType concessionType = concessionEditor.getConcessionType();
-            studentConcession.setConcessionType((ConcessionType) newContext
-                    .localObject(concessionType.getObjectId(), concessionType));
+            studentConcession.setConcessionType((ConcessionType) newContext.localObject(
+                    concessionType.getObjectId(), concessionType));
             studentConcession.setConcessionNumber(concessionEditor.getConcessionNumberValue());
             studentConcession.setExpiresOn(concessionEditor.getExpiryDateValue());
-            studentConcession.setStudent((Student) newContext
-                    .localObject(student.getObjectId(), student));
+            studentConcession.setStudent((Student) newContext.localObject(student.getObjectId(),
+                    student));
             newContext.commitChanges();
-            concessionEditor.clearEditor();
+            if (enrolCourses.hasSuitableClasses(studentConcession)) {
+                return enrolCourses;
+            }
         }
         return concessionZone.getBody();
     }
@@ -90,13 +102,18 @@ public class ConcessionEntry {
     @OnEvent(component = "deleteConcession", value = "action")
     Object deleteConcession(Long id, int currentIndex) {
         index = currentIndex;
+        boolean shouldReload = false;
         for (StudentConcession sc : getStudent().getStudentConcessions()) {
             if (sc.getId().equals(id)) {
+                shouldReload = enrolCourses.hasSuitableClasses(sc);
                 getStudent().removeFromStudentConcessions(sc);
                 context.deleteObject(sc);
                 context.commitChanges();
                 break;
             }
+        }
+        if (shouldReload) {
+            return enrolCourses;
         }
         return concessionZone.getBody();
     }
