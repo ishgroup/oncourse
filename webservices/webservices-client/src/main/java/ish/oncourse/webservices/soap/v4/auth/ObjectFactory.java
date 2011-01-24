@@ -26,7 +26,6 @@ public class ObjectFactory {
 
     private final static QName _Authenticate_QNAME = new QName("http://auth.v4.soap.webservices.oncourse.ish/", "authenticate");
     private final static QName _Logout_QNAME = new QName("http://auth.v4.soap.webservices.oncourse.ish/", "logout");
-    private final static QName _AuthenticationFailure_QNAME = new QName("http://auth.v4.soap.webservices.oncourse.ish/", "AuthenticationFailure");
     private final static QName _AuthenticateResponse_QNAME = new QName("http://auth.v4.soap.webservices.oncourse.ish/", "authenticateResponse");
     private final static QName _LogoutResponse_QNAME = new QName("http://auth.v4.soap.webservices.oncourse.ish/", "logoutResponse");
 
@@ -38,6 +37,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Status }
+     * 
+     */
+    public Status createStatus() {
+        return new Status();
+    }
+
+    /**
      * Create an instance of {@link Logout }
      * 
      */
@@ -46,11 +53,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AuthenticationFailure }
+     * Create an instance of {@link Authenticate }
      * 
      */
-    public AuthenticationFailure createAuthenticationFailure() {
-        return new AuthenticationFailure();
+    public Authenticate createAuthenticate() {
+        return new Authenticate();
     }
 
     /**
@@ -70,22 +77,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Status }
-     * 
-     */
-    public Status createStatus() {
-        return new Status();
-    }
-
-    /**
-     * Create an instance of {@link Authenticate }
-     * 
-     */
-    public Authenticate createAuthenticate() {
-        return new Authenticate();
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Authenticate }{@code >}}
      * 
      */
@@ -101,15 +92,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://auth.v4.soap.webservices.oncourse.ish/", name = "logout")
     public JAXBElement<Logout> createLogout(Logout value) {
         return new JAXBElement<Logout>(_Logout_QNAME, Logout.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AuthenticationFailure }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://auth.v4.soap.webservices.oncourse.ish/", name = "AuthenticationFailure")
-    public JAXBElement<AuthenticationFailure> createAuthenticationFailure(AuthenticationFailure value) {
-        return new JAXBElement<AuthenticationFailure>(_AuthenticationFailure_QNAME, AuthenticationFailure.class, null, value);
     }
 
     /**

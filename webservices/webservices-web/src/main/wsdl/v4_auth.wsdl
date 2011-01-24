@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="AuthenticationService" targetNamespace="http://auth.v4.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://auth.v4.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://auth.v4.soap.webservices.oncourse.ish/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://auth.v4.soap.webservices.oncourse.ish/">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://auth.v4.soap.webservices.oncourse.ish/" elementFormDefault="unqualified" targetNamespace="http://auth.v4.soap.webservices.oncourse.ish/" version="1.0">
 <xs:element name="authenticate" type="tns:authenticate"/>
 <xs:element name="authenticateResponse" type="tns:authenticateResponse"/>
 <xs:element name="logout" type="tns:logout"/>
@@ -30,18 +30,8 @@
 <xs:complexType name="status">
 <xs:sequence/>
 </xs:complexType>
-<xs:element name="AuthenticationFailure" type="tns:AuthenticationFailure"/>
-<xs:complexType name="AuthenticationFailure">
-<xs:sequence>
-<xs:element name="status" nillable="true" type="xs:int"/>
-</xs:sequence>
-</xs:complexType>
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="AuthenticationFailureException">
-    <wsdl:part name="AuthenticationFailureException" element="tns:AuthenticationFailure">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="authenticate">
     <wsdl:part name="parameters" element="tns:authenticate">
     </wsdl:part>
@@ -64,8 +54,6 @@
     </wsdl:input>
       <wsdl:output name="authenticateResponse" message="tns:authenticateResponse">
     </wsdl:output>
-      <wsdl:fault name="AuthenticationFailureException" message="tns:AuthenticationFailureException">
-    </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="logout">
       <wsdl:input name="logout" message="tns:logout">
@@ -84,9 +72,6 @@
       <wsdl:output name="authenticateResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="AuthenticationFailureException">
-        <soap:fault name="AuthenticationFailureException" use="literal"/>
-      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="logout">
       <soap:operation soapAction="" style="document"/>

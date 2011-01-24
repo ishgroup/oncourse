@@ -16,6 +16,14 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>ish.oncourse.willow.webservices</groupId>
+			<artifactId>webservices-web</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 		</dependency>

@@ -37,30 +37,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetMaximumVersionResponse }
-     * 
-     */
-    public GetMaximumVersionResponse createGetMaximumVersionResponse() {
-        return new GetMaximumVersionResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetRecords }
-     * 
-     */
-    public GetRecords createGetRecords() {
-        return new GetRecords();
-    }
-
-    /**
-     * Create an instance of {@link CountryStub }
-     * 
-     */
-    public CountryStub createCountryStub() {
-        return new CountryStub();
-    }
-
-    /**
      * Create an instance of {@link GetMaximumVersion }
      * 
      */
@@ -77,11 +53,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetRecordsResponse }
+     * Create an instance of {@link LanguageStub }
      * 
      */
-    public GetRecordsResponse createGetRecordsResponse() {
-        return new GetRecordsResponse();
+    public LanguageStub createLanguageStub() {
+        return new LanguageStub();
     }
 
     /**
@@ -93,6 +69,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CountryStub }
+     * 
+     */
+    public CountryStub createCountryStub() {
+        return new CountryStub();
+    }
+
+    /**
      * Create an instance of {@link ModuleStub }
      * 
      */
@@ -101,11 +85,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LanguageStub }
+     * Create an instance of {@link GetMaximumVersionResponse }
      * 
      */
-    public LanguageStub createLanguageStub() {
-        return new LanguageStub();
+    public GetMaximumVersionResponse createGetMaximumVersionResponse() {
+        return new GetMaximumVersionResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetRecords }
+     * 
+     */
+    public GetRecords createGetRecords() {
+        return new GetRecords();
+    }
+
+    /**
+     * Create an instance of {@link GetRecordsResponse }
+     * 
+     */
+    public GetRecordsResponse createGetRecordsResponse() {
+        return new GetRecordsResponse();
     }
 
     /**
