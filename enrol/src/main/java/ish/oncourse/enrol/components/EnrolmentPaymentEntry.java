@@ -4,10 +4,12 @@ import ish.common.types.CreditCardType;
 import ish.math.Money;
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
@@ -24,7 +26,6 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -304,10 +305,18 @@ public class EnrolmentPaymentEntry {
 					validEnrolments.add(e);
 				}
 			}
+
 			for (InvoiceLine invLine : invoice.getInvoiceLines()) {
 				if (invLine.getEnrolment() == null) {
 					objectsToDelete.add(invLine);
 				} else {
+					for (Discount discount : discountService.getEnrolmentDiscounts(invLine
+							.getEnrolment())) {
+						InvoiceLineDiscount invoiceLineDiscount = context
+								.newObject(InvoiceLineDiscount.class);
+						invoiceLineDiscount.setInvoiceLine(invLine);
+						invoiceLineDiscount.setDiscount(discount);
+					}
 					totalExGst = totalGst.add(invLine.getPriceTotalExTax().toBigDecimal());
 					totalGst = totalGst.add(invLine.getPriceTotalIncTax()
 							.subtract(invLine.getPriceTotalExTax()).toBigDecimal());

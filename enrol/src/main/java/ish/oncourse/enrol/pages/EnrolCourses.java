@@ -302,8 +302,8 @@ public class EnrolCourses {
 	}
 
 	/**
-	 * Checks the newly inited classes and contacts, init {@link #enrolments} properly: 
-	 * create new ones or use created previously if they are correct.
+	 * Checks the newly inited classes and contacts, init {@link #enrolments}
+	 * properly: create new ones or use created previously if they are correct.
 	 */
 	public void initEnrolments() {
 		Enrolment[][] enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
@@ -343,15 +343,18 @@ public class EnrolCourses {
 				} else {
 					// use previously created enrolment
 					enrolmentToAdd = existingEnrolment;
-					if (enrolmentToAdd.getInvoiceLine() == null) {
-						// the invoiceLine could be null because of unticked
-						// enrolment, use the corresponded from existing array
-						String[] index = currentEnrolmentsMap.get(enrolmentToAdd).split(
-								INDEX_SEPARATOR);
-						invoiceLineToAdd = this.invoiceLines[Integer.parseInt(index[0])][Integer
-								.parseInt(index[1])];
+					// the invoiceLine could be null because of unticked
+					// enrolment, use the corresponded from existing array
+					String[] index = currentEnrolmentsMap.get(enrolmentToAdd)
+							.split(INDEX_SEPARATOR);
+					invoiceLineToAdd = this.invoiceLines[Integer.parseInt(index[0])][Integer
+							.parseInt(index[1])];
+					if (invoiceLineToAdd != null) {
+						// recalculate discounts that possibly have changed
+						invoiceProcessingService.setupDiscounts(enrolmentToAdd, invoiceLineToAdd);
 					}
 				}
+
 				enrolments[i][j] = enrolmentToAdd;
 				invoiceLines[i][j] = invoiceLineToAdd;
 			}
@@ -361,7 +364,9 @@ public class EnrolCourses {
 	}
 
 	/**
-	 * Creates the new {@link Enrolment} entity for the given courseClass and Student.
+	 * Creates the new {@link Enrolment} entity for the given courseClass and
+	 * Student.
+	 * 
 	 * @param courseClass
 	 * @param student
 	 * @return

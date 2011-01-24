@@ -35,4 +35,11 @@ public interface IInvoiceProcessingService {
 	 * @return invoiceLine object created
 	 */
 	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment);
+	
+	/**
+	 * Sets the discounted values to the given invoiceLine for the given enrolment.
+	 * @param enrolment
+	 * @param invoiceLine
+	 */
+	void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine);
 }

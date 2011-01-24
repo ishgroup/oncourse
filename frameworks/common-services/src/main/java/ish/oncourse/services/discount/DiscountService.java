@@ -21,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -84,7 +85,13 @@ public class DiscountService implements IDiscountService {
 		List<Discount> result = new ArrayList<Discount>();
 
 		List<Discount> potentialDiscounts = getApplicableDiscounts(enrolment.getCourseClass());
-		potentialDiscounts.addAll(filterDiscounts(getPromotions(), enrolment.getCourseClass()));
+		List<Discount> promotions = new ArrayList<Discount>();
+		ObjectContext objectContext = enrolment.getObjectContext();
+		for (Discount pDiscount : getPromotions()) {
+			promotions
+					.add((Discount) objectContext.localObject(pDiscount.getObjectId(), pDiscount));
+		}
+		potentialDiscounts.addAll(filterDiscounts(promotions, enrolment.getCourseClass()));
 
 		for (Discount discount : potentialDiscounts) {
 			if (isStudentEligibile(enrolment.getStudent(), discount)) {
