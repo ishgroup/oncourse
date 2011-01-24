@@ -98,11 +98,11 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
 		
-		if (local.getFirstSeen() == null) {
-			local.setFirstSeen(today);
+		if (local.getFirstRemoteAuthentication() == null) {
+			local.setFirstRemoteAuthentication(today);
 		}
 		
-		local.setLastSeen(today);
+		local.setLastRemoteAuthentication(today);
 
 		ctx.commitChanges();
 

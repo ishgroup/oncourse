@@ -61,13 +61,11 @@ public abstract class _College extends CayenneDataObject {
     public static final String COMMUNICATION_KEY_STATUS_PROPERTY = "communicationKeyStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
-    public static final String FIRST_SEEN_PROPERTY = "firstSeen";
     public static final String IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY = "isTestingWebServicePayments";
     public static final String IS_TESTING_WEB_SITE_PAYMENTS_PROPERTY = "isTestingWebSitePayments";
     public static final String IS_WEB_SERVICE_PAYMENTS_ENABLED_PROPERTY = "isWebServicePaymentsEnabled";
     public static final String IS_WEB_SITE_PAYMENTS_ENABLED_PROPERTY = "isWebSitePaymentsEnabled";
     public static final String LAST_REMOTE_AUTHENTICATION_PROPERTY = "lastRemoteAuthentication";
-    public static final String LAST_SEEN_PROPERTY = "lastSeen";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String NATIONAL_PROVIDER_CODE_PROPERTY = "nationalProviderCode";
@@ -156,13 +154,6 @@ public abstract class _College extends CayenneDataObject {
         return (Date)readProperty("firstRemoteAuthentication");
     }
 
-    public void setFirstSeen(Date firstSeen) {
-        writeProperty("firstSeen", firstSeen);
-    }
-    public Date getFirstSeen() {
-        return (Date)readProperty("firstSeen");
-    }
-
     public void setIsTestingWebServicePayments(Boolean isTestingWebServicePayments) {
         writeProperty("isTestingWebServicePayments", isTestingWebServicePayments);
     }
@@ -196,13 +187,6 @@ public abstract class _College extends CayenneDataObject {
     }
     public Date getLastRemoteAuthentication() {
         return (Date)readProperty("lastRemoteAuthentication");
-    }
-
-    public void setLastSeen(Date lastSeen) {
-        writeProperty("lastSeen", lastSeen);
-    }
-    public Date getLastSeen() {
-        return (Date)readProperty("lastSeen");
     }
 
     public void setModified(Date modified) {
