@@ -357,6 +357,19 @@ public class DiscountService implements IDiscountService {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see ish.oncourse.services.discount.IDiscountService#addPromotion(ish.oncourse.model.Discount)
+	 */
+	@Override
+	public void addPromotion(Discount promotion) {
+		if (promotion != null) {
+			cookiesService.appendValueToCookieCollection(Discount.PROMOTIONS_KEY, promotion.getId()
+					.toString());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see ish.oncourse.services.discount.IDiscountService#loadByIds(java.lang.Object[])
 	 */
 	@Override
@@ -371,4 +384,21 @@ public class DiscountService implements IDiscountService {
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * 
+	 * @see ish.oncourse.services.discount.IDiscountService#getByCode(java.lang.String)
+	 */
+	@Override
+	public Discount getByCode(String code) {
+		if (code == null || code.equals("")) {
+			return null;
+		}
+		Expression qualifier = ExpressionFactory.matchExp(Discount.CODE_PROPERTY, code).andExp(
+				getCurrentDateFilter());
+		SelectQuery query = new SelectQuery(Discount.class, qualifier);
+		List<Discount> result = cayenneService.sharedContext().performQuery(query);
+		return result.isEmpty() ? null : result.get(0);
+	}
 }

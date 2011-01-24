@@ -26,6 +26,10 @@ public class Discount extends _Discount {
 	public static final Integer COMBINATION_NONE = Integer.valueOf(0);
 	public static final String PROMOTIONS_KEY="promotions";
 
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
 	/**
 	 * @param discounts
 	 *            - a collection of discounts to filter.

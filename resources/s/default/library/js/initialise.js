@@ -101,7 +101,7 @@ $j(document).ready(function() {
 		var listid = this.id.match(/(\d+)/)[1];
 		$j.ajax({
 			type: "GET",
-			url:  '/addToCookies?courseClassId=' + listid,
+			url:  '/addToCookies?key=shortlist&itemId=' + listid,
 			success: function(){
 						refreshShortList(listid);
 					}
@@ -111,16 +111,23 @@ $j(document).ready(function() {
 	
 	
 	// Drop our shortlisted items in the shortlist box
-	$j('li.onshortlist a.cutitem').live("click", function() {
-		var itemId = this.id.match(/(\d+)/)[1];			
+	$j('li.onshortlist a.cutitem,li.onshortlist-x a.cutitem').live("click", function() {
+		isPromotion=this.parentNode.className.endsWith("x");
+		key=isPromotion?"promotions":"shortlist";
+		var itemId = this.id.match(/(\d+)/)[1];	
+		link=this.href;
 		// this line is commented because otherwise the shortlist remove is not working
 		//$j(this).parent('li:first').css({'background-color':'666666'}).hide("drop", { direction: "up" }, 300, function () { 
 			//$j(this).hide("slide", { direction: "down" }, 300);
 			$j.ajax({
 				type: "GET",
-				url:  '/removeFromCookies?courseClassId=' + itemId,
+				url:  '/removeFromCookies?key='+key+'&itemId='+ itemId,
 				success: function(){
-							refreshShortList(itemId);
+							if(isPromotion){
+								window.location=link;
+							}else{
+								refreshShortList(itemId);
+							}
 						}
 			});
 		//});
@@ -135,7 +142,7 @@ $j(document).ready(function() {
 			$j(/*this*/'#shortlist a#x' + itemId).hide("slide", { direction: "down" }, 300);
 			$j.ajax({
 				type: "GET",
-				url:  '/removeFromCookies?courseClassId=' + itemId,
+				url:  '/removeFromCookies?key=shortlist&itemId=' + itemId,
 				success: function(){
 							refreshShortList(itemId);	 
 						}
@@ -150,7 +157,7 @@ $j(document).ready(function() {
 		var link=this.href;
 		$j.ajax({
 			type: "GET",
-			url:  '/addToCookies?courseClassId=' + listid,
+			url:  '/addToCookies?key=shortlist&itemId=' + listid,
 			success: function(){
 				window.location=link;		 	
 			}
