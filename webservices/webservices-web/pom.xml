@@ -20,7 +20,6 @@
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-services</artifactId>
@@ -132,7 +131,6 @@
 			<artifactId>dbunit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -174,30 +172,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
-				the Java classes created by running wsdl2java or wsimport), as this JAR will 
-				also be used by the SOAP client. -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<descriptors>
-						<descriptor>src/assembly/jaxws-jar.xml</descriptor>
-					</descriptors>
-					<appendAssemblyId>true</appendAssemblyId>
-					<attach>true</attach>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-java2ws-plugin</artifactId>
@@ -215,7 +189,7 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<className>ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl</className>
-							<outputFile>${project.build.directory}/generated/client/wsdl/v4_auth.wsdl</outputFile>
+							<outputFile>${basedir}/src/main/wsdl/v4_auth.wsdl</outputFile>
 							<genWsdl>true</genWsdl>
 						</configuration>
 						<goals>
@@ -227,39 +201,11 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<className>ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl</className>
-							<outputFile>${project.build.directory}/generated/client/wsdl/v4_reference.wsdl</outputFile>
+							<outputFile>${basedir}/src/main/wsdl/v4_reference.wsdl</outputFile>
 							<genWsdl>true</genWsdl>
 						</configuration>
 						<goals>
 							<goal>java2ws</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-
-			<!-- Willow SOAP/WSDL -->
-			<plugin>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-codegen-plugin</artifactId>
-				<version>${cxf.version}</version>
-				<executions>
-					<execution>
-						<id>generate-client-sources</id>
-						<phase>process-classes</phase>
-						<configuration>
-							<sourceRoot>${project.build.directory}/generated/client/java</sourceRoot>
-							<wsdlOptions>
-								<wsdlOption>
-									<wsdl>${project.build.directory}/generated/client/wsdl/v4_auth.wsdl</wsdl>
-								</wsdlOption>
-								<wsdlOption>
-									<wsdl>${project.build.directory}/generated/client/wsdl/v4_reference.wsdl</wsdl>
-								</wsdlOption>
-							</wsdlOptions>
-						</configuration>
-						<goals>
-							<goal>wsdl2java</goal>
 						</goals>
 					</execution>
 				</executions>

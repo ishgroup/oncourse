@@ -1,12 +1,12 @@
 <assembly>
-   <id>client-v4</id>
+   <id>v4</id>
    <formats>
       <format>jar</format>
    </formats>
    <includeBaseDirectory>false</includeBaseDirectory>
    <fileSets>
       <fileSet>
-         <directory>target/generated/classes/ish/oncourse/webservices/soap/v4</directory>
+         <directory>target/classes/ish/oncourse/webservices/soap/v4</directory>
          <outputDirectory>/ish/oncourse/webservices/soap/v4</outputDirectory>
       </fileSet>
    </fileSets>
