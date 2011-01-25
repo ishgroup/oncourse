@@ -217,13 +217,6 @@
 	<profiles>
 
 		<profile>
-			<id>test</id>
-			<properties>
-				<config.dir>test</config.dir>
-			</properties>
-		</profile>
-
-		<profile>
 			<id>prod</id>
 			<properties>
 				<config.dir>prod</config.dir>
