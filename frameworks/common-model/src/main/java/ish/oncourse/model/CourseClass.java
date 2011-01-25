@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.apache.cayenne.ejbql.parser.EJBQL;
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
@@ -164,9 +167,17 @@ public class CourseClass extends _CourseClass {
 	 * @return count of enrolments.
 	 */
 	public int validEnrolmentsCount() {
-		List<Enrolment> validEnrolments = getValidEnrolments();
-		int result = validEnrolments.size();
-		return Math.max(0, result);
+		EJBQLQuery query = new EJBQLQuery(
+				"Select count(e) from Enrolment e where e.courseClass=?1 and e.status in (?2)");
+		query.setParameter(1, this);
+		List<String> statusesValues = new ArrayList<String>();
+		// use values, because the EJBQL in cayenne 3.0 doesn't convert enums in
+		// this expression
+		for (EnrolmentStatus es : EnrolmentStatus.VALID_ENROLMENTS) {
+			statusesValues.add((String) es.getDatabaseValue());
+		}
+		query.setParameter(2, statusesValues);
+		return ((Number) getObjectContext().performQuery(query).get(0)).intValue();
 	}
 
 	/**
@@ -176,10 +187,10 @@ public class CourseClass extends _CourseClass {
 	 * @return list of valid enrolments.
 	 */
 	public List<Enrolment> getValidEnrolments() {
-		SelectQuery query = new SelectQuery(Enrolment.class);
-		query.andQualifier(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, this)
-				.andExp(ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY,
-						EnrolmentStatus.VALID_ENROLMENTS)));
+		SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
+				Enrolment.COURSE_CLASS_PROPERTY, this).andExp(
+				ExpressionFactory
+						.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.VALID_ENROLMENTS)));
 		return getObjectContext().performQuery(query);
 	}
 

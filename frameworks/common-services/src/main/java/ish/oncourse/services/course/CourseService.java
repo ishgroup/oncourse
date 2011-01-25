@@ -58,9 +58,6 @@ public class CourseService implements ICourseService {
 		q.setFetchOffset(startDefault);
 		q.setFetchLimit(rowsDefault);
 		
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY+"."+CourseClass.ENROLMENTS_PROPERTY);
-		
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
