@@ -21,7 +21,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.jetty.plus.jndi.Resource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
-import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -61,7 +60,7 @@ public abstract class AbstractWebServiceTest {
 	@BeforeClass
 	public static void setup() throws Exception {
 
-		Log.setLog(null);
+		//Log.setLog(null);
 		server = new Server();
 		server.setStopAtShutdown(true);
 
