@@ -7,6 +7,7 @@ import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Preference;
+import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.IPreferenceService;
 
@@ -66,7 +67,10 @@ public class EnrolmentPrice {
 		moneyFormat = NumberFormat.getCurrencyInstance(locale);
 		numberFormat = new DecimalFormat("0.00");
 		if (!isInvoiced()) {
-			discounts = discountService.getEnrolmentDiscounts(enrolment);
+			discounts = enrolment.getCourseClass()
+					.getDiscountsToApply(
+							new RealDiscountsPolicy(discountService.getPromotions(), enrolment
+									.getStudent()));
 		}
 	}
 
@@ -88,8 +92,7 @@ public class EnrolmentPrice {
 		if (isInvoiced()) {
 			return !enrolment.getInvoiceLine().getDiscountTotalExTax().isZero();
 		} else {
-			return !discountService.discountValueForList(discounts,
-					enrolment.getCourseClass().getFeeExGst()).isZero();
+			return !enrolment.getCourseClass().getDiscountAmountExTax(discounts).isZero();
 		}
 
 	}
@@ -103,8 +106,7 @@ public class EnrolmentPrice {
 		if (isInvoiced()) {
 			return enrolment.getInvoiceLine().getDiscountedPriceTotalIncTax();
 		} else {
-			return discountService.discountedValueForList(discounts, enrolment.getCourseClass()
-					.getFeeIncGst());
+			return enrolment.getCourseClass().getDiscountedFeeIncTax(discounts);
 		}
 	}
 
@@ -117,8 +119,7 @@ public class EnrolmentPrice {
 		if (isInvoiced()) {
 			return enrolment.getInvoiceLine().getDiscountTotalIncTax();
 		} else {
-			return discountService.discountValueForList(discounts, enrolment.getCourseClass()
-					.getFeeIncGst());
+			return enrolment.getCourseClass().getDiscountAmountIncTax(discounts);
 		}
 	}
 

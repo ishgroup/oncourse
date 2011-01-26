@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import ish.math.Money;
 import ish.oncourse.model.auto._CourseClass;
+import ish.oncourse.utils.DiscountUtils;
 import ish.oncourse.utils.TimestampUtilities;
 
 import java.math.BigDecimal;
@@ -14,8 +15,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.apache.cayenne.ejbql.parser.EJBQL;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
@@ -503,18 +502,115 @@ public class CourseClass extends _CourseClass {
 	}
 
 	/**
-	 * This is a faked flattened relationship via
-	 * discountCourseClasses.discount.
+	 * Discounts with the valid date ranges that are bound to this courseClass
+	 * via {@link #getDiscountCourseClasses()} relationship.
 	 * 
 	 * @return the discounts for this class
 	 */
 	public List<Discount> getDiscounts() {
-		List<Discount> discounts = new ArrayList<Discount>();
-		for (DiscountCourseClass dcc : getDiscountCourseClasses()) {
-			if (dcc.getDiscount() != null) {
-				discounts.add(dcc.getDiscount());
+		SelectQuery query = new SelectQuery(Discount.class, ExpressionFactory.matchExp(
+				Discount.DISCOUNT_COURSE_CLASSES_PROPERTY + "."
+						+ DiscountCourseClass.COURSE_CLASS_PROPERTY, this).andExp(
+				Discount.getCurrentDateFilter()));
+		return getObjectContext().performQuery(query);
+	}
+
+	/**
+	 * All discounts bound to the given courseClass that require concessions
+	 * instead of discount codes.
+	 * 
+	 * @return
+	 */
+	public List<Discount> getConcessionDiscounts() {
+		List<Discount> availableDiscountsWithoutCode = ExpressionFactory.matchExp(
+				Discount.CODE_PROPERTY, null).filterObjects(getDiscounts());
+
+		List<Discount> discounts = new ArrayList<Discount>(availableDiscountsWithoutCode.size());
+		for (Discount discount : availableDiscountsWithoutCode) {
+			if (!discount.getDiscountConcessionTypes().isEmpty()) {
+				discounts.add(discount);
 			}
 		}
 		return discounts;
+	}
+
+	/**
+	 * Retrieves the discounts that should be applied to this class prices by
+	 * the given policy.
+	 * 
+	 * @param policy
+	 * @return
+	 */
+	public List<Discount> getDiscountsToApply(DiscountPolicy policy) {
+		return policy.filterDiscounts(getDiscounts());
+	}
+
+	/**
+	 * The value of discount without tax if the selectedDiscounts are applied to
+	 * the courseClass price.
+	 * 
+	 * @param selectedDiscounts
+	 * @return
+	 */
+	public Money getDiscountAmountExTax(List<Discount> selectedDiscounts) {
+		return DiscountUtils.discountValueForList(selectedDiscounts, getFeeExGst());
+	}
+
+	/**
+	 * The value of discount with tax if the selectedDiscounts are applied to
+	 * the courseClass price.
+	 * 
+	 * @param selectedDiscounts
+	 * @return
+	 */
+	public Money getDiscountAmountIncTax(List<Discount> selectedDiscounts) {
+		Money discountAmountForFee = getDiscountAmountExTax(selectedDiscounts);
+		return discountAmountForFee.add(discountAmountForFee.multiply(getTaxRate()));
+	}
+
+	/**
+	 * The value of discounted tax if the selectedDiscounts are applied to the
+	 * courseClass price.
+	 * 
+	 * @param selectedDiscounts
+	 * @return
+	 */
+	public Money getDiscountedTax(List<Discount> selectedDiscounts) {
+		return getDiscountedFee(selectedDiscounts).multiply(getTaxRate());
+	}
+
+	/**
+	 * The value of discounted fee with tax if the selectedDiscounts are applied
+	 * to the courseClass price.
+	 * 
+	 * @param selectedDiscounts
+	 * @return
+	 */
+	public Money getDiscountedFeeIncTax(List<Discount> selectedDiscounts) {
+		Money discountedFee = getDiscountedFee(selectedDiscounts);
+		return discountedFee.add(discountedFee.multiply(getTaxRate()));
+	}
+
+	/**
+	 * The value of discounted fee without tax if the selectedDiscounts are
+	 * applied to the courseClass price.
+	 * 
+	 * @param selectedDiscounts
+	 * @return
+	 */
+	public Money getDiscountedFee(List<Discount> selectedDiscounts) {
+		return getFeeExGst().subtract(getDiscountAmountExTax(selectedDiscounts));
+	}
+
+	/**
+	 * The tax rate for the class: tax/fee.
+	 * 
+	 * @return
+	 */
+	private BigDecimal getTaxRate() {
+		if(getFeeExGst().isZero()){
+			return BigDecimal.ZERO;
+		}
+		return getFeeGst().divide(getFeeExGst()).toBigDecimal();
 	}
 }

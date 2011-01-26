@@ -15,6 +15,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.model.Preference;
+import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
@@ -229,7 +230,7 @@ public class EnrolmentPaymentEntry {
 
 	public boolean isHasConcessionsEnrolment() {
 		for (Enrolment enrolment : enrolments) {
-			if (!discountService.getConcessionDiscounts(enrolment.getCourseClass()).isEmpty()) {
+			if (!enrolment.getCourseClass().getConcessionDiscounts().isEmpty()) {
 				return true;
 			}
 		}
@@ -307,11 +308,13 @@ public class EnrolmentPaymentEntry {
 			}
 
 			for (InvoiceLine invLine : invoice.getInvoiceLines()) {
-				if (invLine.getEnrolment() == null) {
+				Enrolment enrolment = invLine.getEnrolment();
+				if (enrolment == null) {
 					objectsToDelete.add(invLine);
 				} else {
-					for (Discount discount : discountService.getEnrolmentDiscounts(invLine
-							.getEnrolment())) {
+					for (Discount discount : enrolment.getCourseClass().getDiscountsToApply(
+							new RealDiscountsPolicy(discountService.getPromotions(), enrolment
+									.getStudent()))) {
 						InvoiceLineDiscount invoiceLineDiscount = context
 								.newObject(InvoiceLineDiscount.class);
 						invoiceLineDiscount.setInvoiceLine(invLine);

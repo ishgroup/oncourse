@@ -9,6 +9,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.discount.IDiscountService;
 
@@ -66,14 +67,12 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	 */
 	public void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine) {
 		CourseClass courseClass = enrolment.getCourseClass();
-		Money fee = courseClass.getFeeExGst();
-		List<Discount> enrolmentDiscounts = discountService.getEnrolmentDiscounts(enrolment);
+		List<Discount> enrolmentDiscounts = enrolment.getCourseClass().getDiscountsToApply(
+				new RealDiscountsPolicy(discountService.getPromotions(), enrolment.getStudent()));
 
-		invoiceLine.setDiscountEachExTax(discountService.discountValueForList(enrolmentDiscounts,
-				fee));
+		invoiceLine.setDiscountEachExTax(courseClass.getDiscountAmountExTax(enrolmentDiscounts));
 
-		invoiceLine.setTaxEach(discountService.discountedValueForList(enrolmentDiscounts,
-				courseClass.getFeeGst()));
+		invoiceLine.setTaxEach(courseClass.getDiscountedTax(enrolmentDiscounts));
 	}
 
 }

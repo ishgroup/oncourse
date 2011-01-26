@@ -3,6 +3,7 @@ package ish.oncourse.ui.components;
 import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.PotentialDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
 
 import java.text.DecimalFormat;
@@ -47,13 +48,12 @@ public class CourseClassPrice {
 	@SetupRender
 	public void beforeRender() {
 		this.feeFormat = new DecimalFormat("#,##0.00");
-		applicableDiscounts = discountService.chooseBestDiscountsVariant(getDiscounts(),
-				courseClass);
-		discountedFee = discountService.discountedValueForList(applicableDiscounts,
-				courseClass.getFeeIncGst());
-		discountValue = discountService.discountValueForList(applicableDiscounts,
-				courseClass.getFeeIncGst());
-		discountsWithConcessions = discountService.getConcessionDiscounts(courseClass);
+		List<Discount> promotions = discountService.getPromotions();
+		applicableDiscounts = courseClass.getDiscountsToApply(new PotentialDiscountsPolicy(
+				promotions));
+		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscounts);
+		discountValue = courseClass.getDiscountAmountIncTax(applicableDiscounts);
+		discountsWithConcessions = courseClass.getConcessionDiscounts();
 	}
 
 	public boolean isHasFee() {
@@ -72,17 +72,10 @@ public class CourseClassPrice {
 		return courseClass.isGstExempt();
 	}
 
-	/**
-	 * @return the list of promotion discounts
-	 */
-	private List<Discount> getDiscounts() {
-		return discountService.filterDiscounts(discountService.getPromotions(), courseClass);
-	}
-
 	public Money getDiscountItemFeeIncTax() {
 		ArrayList<Discount> disc = new ArrayList<Discount>(1);
 		disc.add(discountItem);
-		return discountService.discountedValueForList(disc, courseClass.getFeeExGst());
+		return courseClass.getDiscountedFeeIncTax(disc);
 	}
 
 }
