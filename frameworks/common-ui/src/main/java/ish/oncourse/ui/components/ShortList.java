@@ -31,6 +31,10 @@ public class ShortList {
 	@Property
 	private List<CourseClass> items;
 
+	@Property
+	private CourseClass courseClass;
+
+
 	@SetupRender
 	void beforeRender() {
 		String[] shortlistedClassIds = cookiesService.getCookieCollectionValue(

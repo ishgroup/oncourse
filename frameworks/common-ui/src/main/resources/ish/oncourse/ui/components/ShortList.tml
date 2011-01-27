@@ -9,11 +9,11 @@
 				<div class="box" id="myShortList">
 					<h3><span>My Order</span></h3>
 					<ul class="menu">
-						<t:loop source="items" value="class">
+						<t:loop source="items" value="courseClass">
 							<li class="onshortlist">
-								<a href="/removeFromCookies?key=shortlist&amp;itemId=${class.id}" class="cutitem" id="${class.id}"><span class="hide" title="Remove item">X</span></a>
-								<a href="/class/${class.uniqueIdentifier}" class = "viewitem" title = "${class.uniqueIdentifier}">
-									${class.course.name}
+								<a href="/removeFromCookies?key=shortlist%26itemId=${courseClass.id}" class="cutitem" id="${courseClass.id}"><span class="hide" title="Remove item">X</span></a>
+								<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
+									${courseClass.course.name}
 								</a>
 							</li>
 						</t:loop>
