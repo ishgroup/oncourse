@@ -28,6 +28,9 @@ public class DiscountUtils {
 	 * @return the discount value
 	 */
 	public static Money discountValue(Discount discount, Money price) {
+		if (price.isZero()) {
+			return price;
+		}
 		Money discountValue = Money.ZERO;
 		BigDecimal discountRate = discount.getDiscountRate();
 		if (discountRate == null) {
@@ -45,6 +48,9 @@ public class DiscountUtils {
 				discountValue = minimumDiscount;
 			}
 		}
+		if (price.compareTo(discountValue) < 0) {
+			return price;
+		}
 		return discountValue;
 	}
 
@@ -60,8 +66,13 @@ public class DiscountUtils {
 	 */
 	public static Money discountValueForList(List<Discount> discounts, Money price) {
 		Money result = Money.ZERO;
-		for (Discount d : discounts) {
-			result = result.add(discountValue(d, price));
+		if (discounts != null) {
+			for (Discount d : discounts) {
+				result = result.add(discountValue(d, price));
+			}
+		}
+		if (price.compareTo(result) < 0) {
+			return price;
 		}
 		return result;
 	}
