@@ -4,7 +4,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.soap.v4.Status;
+import ish.oncourse.webservices.v4.stubs.auth.Status;
 
 import java.util.Date;
 import java.util.Random;
@@ -26,10 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Marek Wawrzyczny
  */
 
-@WebService(
-	endpointInterface = "ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType",
-	serviceName = "AuthenticationService",
-	portName = "AuthenticationPort")
+@WebService(targetNamespace="http://auth.v4.soap.webservices.oncourse.ish/", endpointInterface = "ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType", serviceName = "AuthenticationService", portName = "AuthenticationPort")
 public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 
 	private final static Logger LOGGER = Logger.getLogger(AuthenticationPortTypeImpl.class);
@@ -46,8 +43,18 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	@Autowired
 	private Request request;
 
+	/**
+	 * Authenticates user, stores details in HTTP Session.
+	 * 
+	 * @param securityCode
+	 *            code generated/stored within Angel database
+	 * @param lastCommunicationKey
+	 *            communication key used in the last communication session
+	 * 
+	 * @return next communication key to track current conversation.
+	 */
 	@Override
-	public Long authenticate(String webServicesSecurityCode, Long lastCommKey) throws AuthenticationFailureException {
+	public long authenticate(String webServicesSecurityCode, long lastCommKey) {
 
 		if (request.getSession(false) != null) {
 			throw new AuthenticationFailureException("invalid.session");
@@ -61,7 +68,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		}
 
 		ObjectContext ctx = cayenneService.newContext();
-		
+
 		Date today = new Date();
 
 		if (college.getCommunicationKey() == null && college.getCommunicationKeyStatus() == KeyStatus.VALID) {
@@ -73,8 +80,9 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 			// Communication key in a HALT state. Refuse authentication attempt.
 			throw new AuthenticationFailureException("communicationKey.halt");
 		}
-		
-		boolean invalidKey = college.getCommunicationKey() != null && college.getCommunicationKeyStatus() == KeyStatus.VALID && !lastCommKey.equals(college.getCommunicationKey());
+
+		boolean invalidKey = college.getCommunicationKey() != null && college.getCommunicationKeyStatus() == KeyStatus.VALID
+				&& ! college.getCommunicationKey().equals(lastCommKey);
 
 		if (invalidKey) {
 			// Invalid communication key put college in a HALT state.
@@ -97,20 +105,29 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		College local = (College) ctx.localObject(college.getObjectId(), null);
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
-		
+
 		if (local.getFirstRemoteAuthentication() == null) {
 			local.setFirstRemoteAuthentication(today);
 		}
-		
+
 		local.setLastRemoteAuthentication(today);
 
 		ctx.commitChanges();
 
 		return newCommunicationKey;
 	}
+	
+	/**
+	 * End the session on Willow - this will discard the HTTP Session.
+	 * 
+	 * @param communicationKey
+	 *            the communication key returned for this communication session
+	 * 
+	 * @return logout status
+	 */
 
 	@Override
-	public Status logout(Long newCommKey) {
+	public Status logout(long newCommKey) {
 		Status status = new Status();
 
 		// clean up current session

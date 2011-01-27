@@ -6,7 +6,7 @@
 package ish.oncourse.webservices.soap.v4.builders;
 
 import ish.oncourse.model.Language;
-import ish.oncourse.webservices.soap.v4.stubs.reference.Language_Stub;
+import ish.oncourse.webservices.v4.stubs.reference.LanguageStub;
 
 /**
  *
@@ -14,9 +14,9 @@ import ish.oncourse.webservices.soap.v4.stubs.reference.Language_Stub;
  */
 public class LanguageStubBuilder {
 
-	public static Language_Stub convert(Language record) {
+	public static LanguageStub convert(Language record) {
 
-		Language_Stub stub = new Language_Stub();
+		LanguageStub stub = new LanguageStub();
 
 		stub.setWillowId((Long) record.readProperty(Language.ID_PK_COLUMN));
 		stub.setAbsCode(record.getAbsCode());

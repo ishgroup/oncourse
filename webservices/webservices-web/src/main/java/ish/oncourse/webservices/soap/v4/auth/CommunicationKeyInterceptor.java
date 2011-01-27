@@ -23,7 +23,7 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
 	@Override
 	public void handleMessage(SoapMessage message) throws Fault {
-		String securityCode = SoapUtil.getHeader(message, SoapUtil.SECURITY_CODE_HEADER);
+		String securityCode = SoapUtil.getSecurityCode(message);
 
 		if (securityCode == null) {
 			throw new AuthenticationFailureException("empty.securityCode");
@@ -35,7 +35,7 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			throw new AuthenticationFailureException("invalid.securityCode", securityCode);
 		}
 
-		String communicationKey = SoapUtil.getHeader(message, SoapUtil.COMMUNICATION_KEY_HEADER);
+		String communicationKey = SoapUtil.getCommunicationKey(message);
 
 		if (communicationKey == null || !String.valueOf(college.getCommunicationKey()).equals(communicationKey)) {
 			throw new AuthenticationFailureException("communicationKey.invalid", communicationKey);

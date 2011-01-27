@@ -39,7 +39,7 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 
 		BindingOperationInfo boi = message.getExchange().get(BindingOperationInfo.class);
 
-		String securityCode = SoapUtil.getHeader(message, SoapUtil.SECURITY_CODE_HEADER);
+		String securityCode = SoapUtil.getSecurityCode(message);
 
 		String collegeName = null;
 
@@ -50,7 +50,7 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 			}
 		}
 
-		String version = SoapUtil.getHeader(message, SoapUtil.ANGEL_VERSION_HEADER);
+		String version = SoapUtil.getAngelVersion(message);
 
 		LOGGER.info(String.format("Invoke %s by %s from %s with version %s at %s.", boi.getName(), collegeName, ip, version, time));
 	}

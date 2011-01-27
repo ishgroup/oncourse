@@ -6,9 +6,7 @@
 package ish.oncourse.webservices.soap.v4.builders;
 
 import ish.oncourse.model.Qualification;
-import ish.oncourse.webservices.soap.v4.stubs.reference.Qualification_Stub;
-
-import java.math.BigDecimal;
+import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
 
 /**
  *
@@ -16,9 +14,9 @@ import java.math.BigDecimal;
  */
 public class QualificationStubBuilder {
 
-	public static final Qualification_Stub convert(Qualification record) {
+	public static final QualificationStub convert(Qualification record) {
 
-		Qualification_Stub stub = new Qualification_Stub();
+		QualificationStub stub = new QualificationStub();
 
 		stub.setWillowId((Long) record.readProperty(Qualification.ID_PK_COLUMN));
 		stub.setAnzsco(record.getAnzsco());

@@ -6,7 +6,7 @@
 package ish.oncourse.webservices.soap.v4.builders;
 
 import ish.oncourse.model.Module;
-import ish.oncourse.webservices.soap.v4.stubs.reference.Module_Stub;
+import ish.oncourse.webservices.v4.stubs.reference.ModuleStub;
 
 /**
  *
@@ -14,9 +14,9 @@ import ish.oncourse.webservices.soap.v4.stubs.reference.Module_Stub;
  */
 public class ModuleStubBuilder {
 
-	public static final Module_Stub convert(Module record) {
+	public static final ModuleStub convert(Module record) {
 
-		Module_Stub stub = new Module_Stub();
+		ModuleStub stub = new ModuleStub();
 
 		stub.setWillowId((Long) record.readProperty(Module.ID_PK_COLUMN));
 		stub.setCreated(record.getCreated());

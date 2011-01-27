@@ -6,7 +6,7 @@
 package ish.oncourse.webservices.soap.v4.builders;
 
 import ish.oncourse.model.Country;
-import ish.oncourse.webservices.soap.v4.stubs.reference.Country_Stub;
+import ish.oncourse.webservices.v4.stubs.reference.CountryStub;
 
 /**
  *
@@ -15,9 +15,9 @@ import ish.oncourse.webservices.soap.v4.stubs.reference.Country_Stub;
 public class CountryStubBuilder {
 
 
-	public static Country_Stub convert(Country record) {
+	public static CountryStub convert(Country record) {
 
-		Country_Stub stub = new Country_Stub();
+		CountryStub stub = new CountryStub();
 
 		stub.setWillowId((Long) record.readProperty(Country.ID_PK_COLUMN));
 		stub.setAsccssCode(record.getAsccssCode());

@@ -23,7 +23,7 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 
 	@Override
 	public void handleMessage(SoapMessage message) throws Fault {
-		String securityCode = SoapUtil.getHeader(message, SoapUtil.SECURITY_CODE_HEADER);
+		String securityCode = SoapUtil.getSecurityCode(message);
 		
 		if (securityCode == null) {
 			throw new AuthenticationFailureException("empty.securityCode");

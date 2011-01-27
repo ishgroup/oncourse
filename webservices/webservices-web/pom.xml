@@ -131,6 +131,13 @@
 			<artifactId>dbunit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>ish.oncourse.willow.webservices</groupId>
+			<artifactId>webservices-client</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -171,46 +178,6 @@
 					<path>/${project.build.finalName}</path>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-java2ws-plugin</artifactId>
-				<version>${cxf.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>javax.servlet</groupId>
-						<artifactId>servlet-api</artifactId>
-						<version>${servlet-api.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>process-v4-auth-classes</id>
-						<phase>process-classes</phase>
-						<configuration>
-							<className>ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl</className>
-							<outputFile>${basedir}/src/main/wsdl/v4_auth.wsdl</outputFile>
-							<genWsdl>true</genWsdl>
-						</configuration>
-						<goals>
-							<goal>java2ws</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>process-v4-reference-classes</id>
-						<phase>process-classes</phase>
-						<configuration>
-							<className>ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl</className>
-							<outputFile>${basedir}/src/main/wsdl/v4_reference.wsdl</outputFile>
-							<genWsdl>true</genWsdl>
-						</configuration>
-						<goals>
-							<goal>java2ws</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 		</plugins>
 	</build>
 

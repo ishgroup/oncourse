@@ -1,14 +1,14 @@
 package ish.oncourse.webservices.soap.v4;
 
-import javax.jws.WebService;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicationRequest;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
 
-import ish.oncourse.webservices.soap.v4.stubs.replication.ReplicationRequest;
-import ish.oncourse.webservices.soap.v4.stubs.replication.ReplicationResult;
+import javax.jws.WebService;
 
 @WebService(
 	endpointInterface = "ish.oncourse.webservices.soap.v4.ReplicationPortType",
 	serviceName = "ReplicationService",
-	portName = "ReplicationPort")
+	portName = "ReplicationPort", targetNamespace="http://repl.v4.soap.webservices.oncourse.ish/")
 		
 public class ReplicationPortTypeImpl implements ReplicationPortType {
 

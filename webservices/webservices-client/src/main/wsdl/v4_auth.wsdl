@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AuthenticationService"
+	targetNamespace="http://auth.v4.soap.webservices.oncourse.ish/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://auth.v4.soap.webservices.oncourse.ish/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	<wsdl:types>
+		<xsd:schema xmlns:tns="http://auth.v4.soap.webservices.oncourse.ish/"
+			elementFormDefault="unqualified" targetNamespace="http://auth.v4.soap.webservices.oncourse.ish/"
+			version="1.0">
+			<xsd:complexType name="status">
+				<xsd:sequence />
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="authenticateRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		<wsdl:part name="securityCode" type="xs:string"/>
+		<wsdl:part name="lastCommunicationKey" type="xs:long"/>
+	</wsdl:message>
+	
+	<wsdl:message name="authenticateResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		<wsdl:part name="parameters" type="xsd:long"/>
+	</wsdl:message>
+	
+	<wsdl:message name="logoutRequest">
+		<wsdl:part name="communicationKey" type="xsd:long"/>
+	</wsdl:message>
+	
+	<wsdl:message name="logoutResponse">
+		<wsdl:part name="status" type="tns:status"/>
+	</wsdl:message>
+
+	<wsdl:message name="authenticationFailure">
+		<wsdl:part name="status" type="xsd:long"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:portType name="AuthenticationPortType">
+		<wsdl:operation name="authenticate">
+			<wsdl:input name="authenticateRequest" message="tns:authenticateRequest"/>
+			<wsdl:output name="authenticateResponse" message="tns:authenticateResponse"/>
+        </wsdl:operation>
+		<wsdl:operation name="logout">
+			<wsdl:input name="logoutRequest" message="tns:logoutRequest"/>
+			<wsdl:output name="logoutResponse" message="tns:logoutResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="AuthenticationServiceSoapBinding"
+		type="tns:AuthenticationPortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="authenticate">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="authenticateRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="authenticateResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="logoutRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="logoutResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="AuthenticationService">
+		<wsdl:port name="AuthenticationPort" binding="tns:AuthenticationServiceSoapBinding">
+			<soap:address location="http://localhost:9090/AuthenticationPort" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

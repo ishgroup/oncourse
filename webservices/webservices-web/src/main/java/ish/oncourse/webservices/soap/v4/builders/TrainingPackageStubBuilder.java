@@ -6,7 +6,7 @@
 package ish.oncourse.webservices.soap.v4.builders;
 
 import ish.oncourse.model.TrainingPackage;
-import ish.oncourse.webservices.soap.v4.stubs.reference.TrainingPackage_Stub;
+import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
 
 /**
  *
@@ -14,9 +14,9 @@ import ish.oncourse.webservices.soap.v4.stubs.reference.TrainingPackage_Stub;
  */
 public class TrainingPackageStubBuilder {
 
-	public static TrainingPackage_Stub convert(TrainingPackage record) {
+	public static TrainingPackageStub convert(TrainingPackage record) {
 
-		TrainingPackage_Stub stub = new TrainingPackage_Stub();
+		TrainingPackageStub stub = new TrainingPackageStub();
 
 		stub.setWillowId((Long) record.readProperty(TrainingPackage.ID_PK_COLUMN));
 		stub.setCopyrightCategory(record.getCopyrightCategory());

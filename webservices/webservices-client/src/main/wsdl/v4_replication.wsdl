@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ReplicationService"
+	targetNamespace="http://repl.v4.soap.webservices.oncourse.ish/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://repl.v4.soap.webservices.oncourse.ish/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="http://repl.v4.soap.webservices.oncourse.ish/"
+			elementFormDefault="unqualified" targetNamespace="http://repl.v4.soap.webservices.oncourse.ish/"
+			version="1.0">
+			<xs:element name="course" type="tns:courseStub" />
+			<xs:element name="courseClass" type="tns:courseClassStub" />
+			<xs:element name="courseModule" type="tns:courseModuleStub" />
+			<xs:element name="session" type="tns:sessionStub" />
+			<xs:element name="sessionTutor" type="tns:sessionTutorStub" />
+			<xs:complexType name="getRecords">
+				<xs:sequence />
+			</xs:complexType>
+			<xs:complexType name="getRecordsResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return" type="tns:replicationResult" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="replicationResult">
+				<xs:sequence>
+					<xs:choice maxOccurs="unbounded" minOccurs="0">
+						<xs:element ref="tns:course" />
+						<xs:element ref="tns:courseClass" />
+						<xs:element ref="tns:courseModule" />
+						<xs:element ref="tns:session" />
+						<xs:element ref="tns:sessionTutor" />
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="courseStub">
+				<xs:complexContent>
+					<xs:extension base="tns:soapStub">
+						<xs:sequence>
+							<xs:element name="name" type="xs:string" />
+							<xs:element name="detail" type="xs:string" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType abstract="true" name="soapStub">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="angelId" type="xs:long" />
+					<xs:element minOccurs="0" name="willowId" type="xs:long" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="courseClassStub">
+				<xs:complexContent>
+					<xs:extension base="tns:soapStub">
+						<xs:sequence>
+							<xs:element minOccurs="0" name="code" type="xs:string" />
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="courseModuleStub">
+				<xs:complexContent>
+					<xs:extension base="tns:soapStub">
+						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="sessionStub">
+				<xs:complexContent>
+					<xs:extension base="tns:soapStub">
+						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="sessionTutorStub">
+				<xs:complexContent>
+					<xs:extension base="tns:soapStub">
+						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="sendRecords">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="req" type="tns:replicationRequest" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="replicationRequest">
+				<xs:sequence>
+					<xs:choice maxOccurs="unbounded" minOccurs="0">
+						<xs:element ref="tns:course" />
+						<xs:element ref="tns:courseClass" />
+						<xs:element ref="tns:courseModule" />
+						<xs:element ref="tns:session" />
+						<xs:element ref="tns:sessionTutor" />
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="sendRecordsResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return" type="tns:replicationResult" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="sendRecords">
+		<wsdl:part name="records" type="tns:replicationRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="sendRecordsResponse">
+		<wsdl:part name="result" type="tns:replicationResult"/>
+	</wsdl:message>
+	<wsdl:message name="getRecordsResponse">
+		<wsdl:part name="parameters" type="tns:replicationResult"/>
+	</wsdl:message>
+	<wsdl:message name="getRecords"/>
+	<wsdl:portType name="ReplicationPortType">
+		<wsdl:operation name="getRecords">
+			<wsdl:input name="getRecords" message="tns:getRecords">
+			</wsdl:input>
+			<wsdl:output name="getRecordsResponse" message="tns:getRecordsResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="sendRecords">
+			<wsdl:input name="sendRecords" message="tns:sendRecords">
+			</wsdl:input>
+			<wsdl:output name="sendRecordsResponse" message="tns:sendRecordsResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ReplicationServiceSoapBinding" type="tns:ReplicationPortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getRecords">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="getRecords">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="getRecordsResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="sendRecords">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="sendRecords">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="sendRecordsResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ReplicationService">
+		<wsdl:port name="ReplicationPort" binding="tns:ReplicationServiceSoapBinding">
+			<soap:address location="http://localhost:9090/ReplicationPort" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
