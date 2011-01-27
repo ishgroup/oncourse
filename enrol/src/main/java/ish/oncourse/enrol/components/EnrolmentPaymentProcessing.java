@@ -82,7 +82,7 @@ public class EnrolmentPaymentProcessing {
 			// FIXME consider how to deal with "null" payment
 			if (payment == null || PaymentStatus.SUCCESS.equals(payment.getStatus())) {
 				// clear all the short lists
-				cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKEY_KEY, "");
+				cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "");
 				cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
 				studentService.clearStudentsShortList();
 				enrolCourses.clearPersistedProperties();

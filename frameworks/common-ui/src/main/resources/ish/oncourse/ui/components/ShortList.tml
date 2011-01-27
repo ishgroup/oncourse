@@ -1,6 +1,50 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<div id="shortlist" class="noprint">
-		<span t:type="ui/CourseClassShortList" orderedClasses="ordered"/>
-	</div>
+<div id="shortlist" class="noprint">
+	<div id="updater"></div>
+	<t:if test="hasItems">
+		<div id="cover"></div>
+		<div id="shortListWrapper">
+			<div id="shortListInner">
+				<div class="box" id="myShortList">
+					<h3><span>My Order</span></h3>
+					<ul class="menu">
+						<t:loop source="items" value="class">
+							<li class="onshortlist">
+								<a href="/removeFromCookies?key=shortlist&itemId=${class.id}" class="cutitem" id="${class.id}"><span class="hide" title="Remove item">X</span></a>
+								<a href="/class/${class.uniqueIdentifier}" class = "viewitem" title = "${class.uniqueIdentifier}">
+									${class.course.name}
+								</a>
+							</li>
+						</t:loop>
+						<t:if test="paymentGatewayEnabled">
+							<li class="enrolnow">
+								<a id="enrolNowLink" href="/enrol/EnrolCourses">
+									<t:if test="hasMultipleItems">
+										Enrol in these classes
+									</t:if>
+									<t:if test="hasMultipleItems" negate="true">
+										Enrol in this class
+									</t:if>
+								</a>
+							</li>
+						</t:if>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</t:if>
+	<script type="text/javascript">
+		if (typeof enrolmentEntryDisplayed != 'undefined'){
+			if(enrolmentEntryDisplayed) {
+			document.getElementById("shortListWrapper").setAttribute("class", "highlightWrapper");
+			document.getElementById("shortListWrapper").setAttribute("className", "highlightWrapper");
+			document.getElementById("shortListInner").setAttribute("class", "highlightBalloon");
+			document.getElementById("shortListInner").setAttribute("className", "highlightBalloon");
+			document.getElementById("enrolNowLink").style.visibility = "hidden";
+			document.getElementById("enrolNowLink").style.display = "none";
+			}
+		}
+	</script>
+</div>
 </t:container>

@@ -32,9 +32,9 @@ public class CourseClass extends _CourseClass {
 	public static final String COURSE_CLASS_ID_PARAMETER = "courseClassId";
 
 	/**
-	 * ordered classes cookey name
+	 * ordered classes cookie name
 	 */
-	public static final String SHORTLIST_COOKEY_KEY = "shortlist";
+	public static final String SHORTLIST_COOKIE_KEY = "shortlist";
 
 	public static final int EARLIEST_END_FOR_EVENING = 18;
 	public static final int LATEST_START_FOR_DAYTIME = 18;

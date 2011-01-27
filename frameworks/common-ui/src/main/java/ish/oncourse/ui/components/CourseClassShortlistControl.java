@@ -2,7 +2,6 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.cookies.ICookiesService;
-import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +24,7 @@ public class CourseClassShortlistControl {
 	@SetupRender
 	void beginRender() {
 		String[] idsArray = cookiesService
-				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
+				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY);
 		if (idsArray != null) {
 			shortListedClassesIds = Arrays.asList(idsArray);
 		}

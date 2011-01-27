@@ -205,7 +205,7 @@ public class EnrolCourses {
 	 */
 	public void initClassesToEnrol() {
 		String[] orderedClassesIds = cookiesService
-				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKEY_KEY);
+				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY);
 		boolean shouldCreateNewClasses = orderedClassesIds != null;
 		if (!shouldCreateNewClasses) {
 			// if there no any shortlisted classes, the list is set with null.
