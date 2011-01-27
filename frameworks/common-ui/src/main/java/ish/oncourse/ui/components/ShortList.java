@@ -56,10 +56,6 @@ public class ShortList {
 		return items.size();
 	}
 
-	public String getSelectedMessage() {
-		return "course" + (items == null || items.size() != 1 ? "s" : "") + " selected";
-	}
-
 	/**
 	 * Test to see if there are any items in shortlist
 	 * @return true if shortlist has ANY items
