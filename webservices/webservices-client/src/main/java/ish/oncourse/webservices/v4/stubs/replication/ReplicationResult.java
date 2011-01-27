@@ -42,11 +42,11 @@ import javax.xml.bind.annotation.XmlType;
 public class ReplicationResult {
 
     @XmlElements({
-        @XmlElement(name = "courseClass", type = CourseClassStub.class),
-        @XmlElement(name = "course", type = CourseStub.class),
         @XmlElement(name = "courseModule", type = CourseModuleStub.class),
+        @XmlElement(name = "session", type = SessionStub.class),
         @XmlElement(name = "sessionTutor", type = SessionTutorStub.class),
-        @XmlElement(name = "session", type = SessionStub.class)
+        @XmlElement(name = "courseClass", type = CourseClassStub.class),
+        @XmlElement(name = "course", type = CourseStub.class)
     })
     protected List<SoapStub> courseOrCourseClassOrCourseModule;
 
@@ -68,11 +68,11 @@ public class ReplicationResult {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
+     * {@link CourseModuleStub }
+     * {@link SessionStub }
+     * {@link SessionTutorStub }
      * {@link CourseClassStub }
      * {@link CourseStub }
-     * {@link CourseModuleStub }
-     * {@link SessionTutorStub }
-     * {@link SessionStub }
      * 
      * 
      */

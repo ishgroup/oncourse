@@ -13,14 +13,6 @@
 			<xs:element name="courseModule" type="tns:courseModuleStub" />
 			<xs:element name="session" type="tns:sessionStub" />
 			<xs:element name="sessionTutor" type="tns:sessionTutorStub" />
-			<xs:complexType name="getRecords">
-				<xs:sequence />
-			</xs:complexType>
-			<xs:complexType name="getRecordsResponse">
-				<xs:sequence>
-					<xs:element minOccurs="0" name="return" type="tns:replicationResult" />
-				</xs:sequence>
-			</xs:complexType>
 			<xs:complexType name="replicationResult">
 				<xs:sequence>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -78,11 +70,6 @@
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
-			<xs:complexType name="sendRecords">
-				<xs:sequence>
-					<xs:element minOccurs="0" name="req" type="tns:replicationRequest" />
-				</xs:sequence>
-			</xs:complexType>
 			<xs:complexType name="replicationRequest">
 				<xs:sequence>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -92,11 +79,6 @@
 						<xs:element ref="tns:session" />
 						<xs:element ref="tns:sessionTutor" />
 					</xs:choice>
-				</xs:sequence>
-			</xs:complexType>
-			<xs:complexType name="sendRecordsResponse">
-				<xs:sequence>
-					<xs:element minOccurs="0" name="return" type="tns:replicationResult" />
 				</xs:sequence>
 			</xs:complexType>
 		</xs:schema>

@@ -4,7 +4,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.v4.stubs.auth.Status;
 
 import java.util.Date;
 import java.util.Random;

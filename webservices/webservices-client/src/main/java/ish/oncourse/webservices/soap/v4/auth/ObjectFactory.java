@@ -1,5 +1,5 @@
 
-package ish.oncourse.webservices.v4.stubs.auth;
+package ish.oncourse.webservices.soap.v4.auth;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the ish.oncourse.webservices.v4.stubs.auth package. 
+ * generated in the ish.oncourse.webservices.soap.v4.auth package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -23,7 +23,7 @@ public class ObjectFactory {
 
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ish.oncourse.webservices.v4.stubs.auth
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ish.oncourse.webservices.soap.v4.auth
      * 
      */
     public ObjectFactory() {

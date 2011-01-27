@@ -1,5 +1,5 @@
 
-package ish.oncourse.webservices.v4.stubs.auth;
+package ish.oncourse.webservices.soap.v4.auth;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

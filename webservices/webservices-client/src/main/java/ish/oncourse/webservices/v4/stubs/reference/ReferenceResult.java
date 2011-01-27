@@ -43,10 +43,10 @@ public class ReferenceResult {
 
     @XmlElements({
         @XmlElement(name = "trainingPackage", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = TrainingPackageStub.class),
-        @XmlElement(name = "language", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = LanguageStub.class),
         @XmlElement(name = "country", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = CountryStub.class),
-        @XmlElement(name = "module", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = ModuleStub.class),
-        @XmlElement(name = "qualification", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = QualificationStub.class)
+        @XmlElement(name = "language", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = LanguageStub.class),
+        @XmlElement(name = "qualification", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = QualificationStub.class),
+        @XmlElement(name = "module", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = ModuleStub.class)
     })
     protected List<SoapReferenceStub> countryOrLanguageOrModule;
 
@@ -69,10 +69,10 @@ public class ReferenceResult {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link TrainingPackageStub }
-     * {@link LanguageStub }
      * {@link CountryStub }
-     * {@link ModuleStub }
+     * {@link LanguageStub }
      * {@link QualificationStub }
+     * {@link ModuleStub }
      * 
      * 
      */

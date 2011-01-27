@@ -38,11 +38,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CourseModuleStub }
+     * 
+     */
+    public CourseModuleStub createCourseModuleStub() {
+        return new CourseModuleStub();
+    }
+
+    /**
      * Create an instance of {@link ReplicationResult }
      * 
      */
     public ReplicationResult createReplicationResult() {
         return new ReplicationResult();
+    }
+
+    /**
+     * Create an instance of {@link SessionTutorStub }
+     * 
+     */
+    public SessionTutorStub createSessionTutorStub() {
+        return new SessionTutorStub();
     }
 
     /**
@@ -67,54 +83,6 @@ public class ObjectFactory {
      */
     public CourseStub createCourseStub() {
         return new CourseStub();
-    }
-
-    /**
-     * Create an instance of {@link SendRecords }
-     * 
-     */
-    public SendRecords createSendRecords() {
-        return new SendRecords();
-    }
-
-    /**
-     * Create an instance of {@link GetRecordsResponse }
-     * 
-     */
-    public GetRecordsResponse createGetRecordsResponse() {
-        return new GetRecordsResponse();
-    }
-
-    /**
-     * Create an instance of {@link CourseModuleStub }
-     * 
-     */
-    public CourseModuleStub createCourseModuleStub() {
-        return new CourseModuleStub();
-    }
-
-    /**
-     * Create an instance of {@link GetRecords }
-     * 
-     */
-    public GetRecords createGetRecords() {
-        return new GetRecords();
-    }
-
-    /**
-     * Create an instance of {@link SendRecordsResponse }
-     * 
-     */
-    public SendRecordsResponse createSendRecordsResponse() {
-        return new SendRecordsResponse();
-    }
-
-    /**
-     * Create an instance of {@link SessionTutorStub }
-     * 
-     */
-    public SessionTutorStub createSessionTutorStub() {
-        return new SessionTutorStub();
     }
 
     /**
