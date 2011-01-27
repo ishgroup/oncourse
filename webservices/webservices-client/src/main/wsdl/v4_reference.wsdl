@@ -15,12 +15,6 @@
 			<xs:element name="qualification" type="tns:qualificationStub" />
 			<xs:element name="referenceResult" type="tns:referenceResult" />
 			<xs:element name="trainingPackage" type="tns:trainingPackageStub" />
-		
-			<xs:complexType name="getMaximumVersionResponse">
-				<xs:sequence>
-					<xs:element minOccurs="0" name="return" type="xs:long" />
-				</xs:sequence>
-			</xs:complexType>
 			
 			<xs:complexType name="referenceResult">
 				<xs:sequence>

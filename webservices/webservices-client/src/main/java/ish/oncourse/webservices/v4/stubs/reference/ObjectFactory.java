@@ -39,35 +39,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetMaximumVersionResponse }
-     * 
-     */
-    public GetMaximumVersionResponse createGetMaximumVersionResponse() {
-        return new GetMaximumVersionResponse();
-    }
-
-    /**
      * Create an instance of {@link CountryStub }
      * 
      */
     public CountryStub createCountryStub() {
         return new CountryStub();
-    }
-
-    /**
-     * Create an instance of {@link QualificationStub }
-     * 
-     */
-    public QualificationStub createQualificationStub() {
-        return new QualificationStub();
-    }
-
-    /**
-     * Create an instance of {@link TrainingPackageStub }
-     * 
-     */
-    public TrainingPackageStub createTrainingPackageStub() {
-        return new TrainingPackageStub();
     }
 
     /**
@@ -79,6 +55,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ReferenceResult }
+     * 
+     */
+    public ReferenceResult createReferenceResult() {
+        return new ReferenceResult();
+    }
+
+    /**
      * Create an instance of {@link LanguageStub }
      * 
      */
@@ -87,11 +71,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ReferenceResult }
+     * Create an instance of {@link TrainingPackageStub }
      * 
      */
-    public ReferenceResult createReferenceResult() {
-        return new ReferenceResult();
+    public TrainingPackageStub createTrainingPackageStub() {
+        return new TrainingPackageStub();
+    }
+
+    /**
+     * Create an instance of {@link QualificationStub }
+     * 
+     */
+    public QualificationStub createQualificationStub() {
+        return new QualificationStub();
     }
 
     /**
