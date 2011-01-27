@@ -11,7 +11,7 @@
 					<ul class="menu">
 						<t:loop source="items" value="class">
 							<li class="onshortlist">
-								<a href="/removeFromCookies?key=shortlist&itemId=${class.id}" class="cutitem" id="${class.id}"><span class="hide" title="Remove item">X</span></a>
+								<a href="/removeFromCookies?key=shortlist&amp;itemId=${class.id}" class="cutitem" id="${class.id}"><span class="hide" title="Remove item">X</span></a>
 								<a href="/class/${class.uniqueIdentifier}" class = "viewitem" title = "${class.uniqueIdentifier}">
 									${class.course.name}
 								</a>
