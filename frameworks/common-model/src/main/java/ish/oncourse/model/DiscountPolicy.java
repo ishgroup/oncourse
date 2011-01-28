@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.oncourse.utils.DiscountUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,7 +27,11 @@ public abstract class DiscountPolicy {
 	 *            the list to init the {@link #promotions}.
 	 */
 	public DiscountPolicy(List<Discount> promotions) {
-		this.promotions = promotions;
+		if (promotions != null) {
+			this.promotions = promotions;
+		} else {
+			this.promotions = Collections.EMPTY_LIST;
+		}
 	}
 
 	/**
@@ -56,7 +61,5 @@ public abstract class DiscountPolicy {
 	 * @return filtered discounts.
 	 */
 	protected abstract List<Discount> getApplicableByPolicy(List<Discount> discounts);
-
-	
 
 }

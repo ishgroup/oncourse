@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domains project-version="3.0.0.1">
+<domain name="oncourse">
+	<map name="oncourse" location="oncourse.map.xml"/>
+	<map name="oncourseBinary" location="oncourseBinary.map.xml"/>
+	<map name="oncourseReference" location="oncourseReference.map.xml"/>
+
+	<node name="oncourse"
+		 datasource="oncourse.driver.xml"
+		 factory="org.apache.cayenne.conf.DriverDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
+			<map-ref name="oncourse"/>
+	 </node>
+	<node name="oncourseBinary"
+		 datasource="oncourseBinary.driver.xml"
+		 factory="org.apache.cayenne.conf.DriverDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
+			<map-ref name="oncourseBinary"/>
+	 </node>
+	<node name="oncourseReference"
+		 datasource="oncourseReference.driver.xml"
+		 factory="org.apache.cayenne.conf.DriverDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
+			<map-ref name="oncourseReference"/>
+	 </node>
+</domain>
+</domains>

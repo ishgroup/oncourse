@@ -51,7 +51,13 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-ioc</artifactId>
 		</dependency>
-
+		<!-- TODO use test JNDI source instead -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.5.3.0_1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

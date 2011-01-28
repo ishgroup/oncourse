@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 
@@ -41,8 +42,12 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 	 * @param student
 	 */
 	public RealDiscountsPolicy(List<Discount> promotions, Student student) {
-		super(promotions);
+		this(promotions);
 		this.student = student;
+	}
+
+	public RealDiscountsPolicy(List<Discount> promotions) {
+		super(promotions);
 	}
 
 	/**
@@ -54,12 +59,14 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 	@Override
 	public List<Discount> getApplicableByPolicy(List<Discount> discounts) {
 		List<Discount> result = new ArrayList<Discount>();
-		for (Discount discount : discounts) {
-			if (discount.getCode() != null && !promotions.contains(discount)) {
-				continue;
-			}
-			if (isStudentEligibile(student, discount)) {
-				result.add(discount);
+		if (discounts != null) {
+			for (Discount discount : discounts) {
+				if (discount.getCode() != null && !promotions.contains(discount)) {
+					continue;
+				}
+				if (isStudentEligibile(student, discount)) {
+					result.add(discount);
+				}
 			}
 		}
 		return result;
@@ -90,19 +97,15 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 				return false;// not eligibile
 			}
 
-			boolean notEligibile = true;
 			Calendar tresholdDate = new GregorianCalendar();
 			tresholdDate.add(Calendar.DATE, 0 - discount.getStudentEnrolledWithinDays());
 
-			for (Enrolment enr : student.getEnrolments()) {
-				Date startDate = enr.getCourseClass().getStartDate();
-				if (startDate.after(tresholdDate.getTime())) {
-					notEligibile = false;// not eligibile
-				}
-			}
+			Expression enrolledWithinDaysQualifier = ExpressionFactory.greaterExp(
+					Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.START_DATE_PROPERTY,
+					tresholdDate.getTime());
 
-			if (notEligibile) {
-				return false;// not eligibile
+			if (enrolledWithinDaysQualifier.filterObjects(student.getEnrolments()).isEmpty()) {
+				return false;
 			}
 		}
 		if (discount.getStudentAge() != null) {
@@ -130,13 +133,14 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 				return false;// not eligibile
 			}
 		}
-		if (!discount.getDiscountConcessionTypes().isEmpty()) {
+		if (discount.getDiscountConcessionTypes() != null
+				&& !discount.getDiscountConcessionTypes().isEmpty()) {
 			boolean notEligibile = true;
+			SelectQuery studentConcessionQuery = new SelectQuery(StudentConcession.class,
+					ExpressionFactory.matchExp(StudentConcession.STUDENT_PROPERTY, student));
+			List<StudentConcession> studentConcessions = (List<StudentConcession>) student
+					.getObjectContext().performQuery(studentConcessionQuery);
 			for (DiscountConcessionType dct : discount.getDiscountConcessionTypes()) {
-				SelectQuery studentConcessionQuery = new SelectQuery(StudentConcession.class,
-						ExpressionFactory.matchExp(StudentConcession.STUDENT_PROPERTY, student));
-				List<StudentConcession> studentConcessions = (List<StudentConcession>) student
-						.getObjectContext().performQuery(studentConcessionQuery);
 				for (StudentConcession concession : studentConcessions) {
 					if (concession.getConcessionType().equals(dct.getConcessionType())) {
 						if (!Boolean.TRUE.equals(concession.getConcessionType().getHasExpiryDate())
@@ -146,6 +150,9 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 							break;
 						}
 					}
+				}
+				if (!notEligibile) {
+					break;
 				}
 			}
 			if (notEligibile)

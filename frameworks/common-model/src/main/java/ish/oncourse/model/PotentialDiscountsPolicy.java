@@ -30,9 +30,11 @@ public class PotentialDiscountsPolicy extends DiscountPolicy {
 	@Override
 	public List<Discount> getApplicableByPolicy(List<Discount> discounts) {
 		List<Discount> result = new ArrayList<Discount>();
-		for (Discount discount : discounts) {
-			if (discount.getCode() != null && promotions.contains(discount)) {
-				result.add(discount);
+		if (discounts != null) {
+			for (Discount discount : discounts) {
+				if (discount.getCode() != null && promotions.contains(discount)) {
+					result.add(discount);
+				}
 			}
 		}
 		return result;

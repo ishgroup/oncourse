@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+  project-version="3.0.0.1">
+	<property name="defaultPackage" value="ish.oncourse.model"/>
+	<db-entity name="Country" catalog="willow_reference">
+		<db-attribute name="asccssCode" type="VARCHAR" length="10"/>
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="isoCodeAlpha2" type="CHAR" length="3"/>
+		<db-attribute name="isoCodeAlpha3" type="CHAR" length="3"/>
+		<db-attribute name="isoCodeNumeric" type="INTEGER" length="10"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="name" type="VARCHAR" length="64"/>
+		<db-attribute name="saccCode" type="INTEGER" length="10"/>
+	</db-entity>
+	<db-entity name="Language" catalog="willow_reference">
+		<db-attribute name="absCode" type="VARCHAR" length="10"/>
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="isActive" type="TINYINT" isMandatory="true" length="3"/>
+		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
+	</db-entity>
+	<db-entity name="Module" catalog="willow_reference">
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="disciplineCode" type="VARCHAR" length="8"/>
+		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="isModule" type="TINYINT" isMandatory="true" length="3"/>
+		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="nationalCode" type="VARCHAR" isMandatory="true" length="16"/>
+		<db-attribute name="title" type="VARCHAR" length="256"/>
+		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
+	</db-entity>
+	<db-entity name="Qualification" catalog="willow_reference">
+		<db-attribute name="anzsco" type="VARCHAR" length="256"/>
+		<db-attribute name="anzsic" type="VARCHAR" length="64"/>
+		<db-attribute name="asco" type="VARCHAR" length="64"/>
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
+		<db-attribute name="fieldOfStudy" type="VARCHAR" length="4"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="isAccreditedCourse" type="TINYINT" length="3"/>
+		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="level" type="VARCHAR" length="256"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="nationalCode" type="VARCHAR" length="16"/>
+		<db-attribute name="newApprenticeship" type="VARCHAR" length="64"/>
+		<db-attribute name="nominalHours" type="REAL" length="12"/>
+		<db-attribute name="reviewDate" type="DATE" length="10"/>
+		<db-attribute name="title" type="VARCHAR" length="256"/>
+		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
+	</db-entity>
+	<db-entity name="TrainingPackage" catalog="willow_reference">
+		<db-attribute name="copyrightCategory" type="VARCHAR" length="64"/>
+		<db-attribute name="copyrightContact" type="VARCHAR" length="64"/>
+		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="developer" type="VARCHAR" length="64"/>
+		<db-attribute name="endorsementFrom" type="TIMESTAMP" length="19"/>
+		<db-attribute name="endorsementTo" type="TIMESTAMP" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+		<db-attribute name="nationalISC" type="VARCHAR" length="64"/>
+		<db-attribute name="purchaseFrom" type="VARCHAR" length="128"/>
+		<db-attribute name="title" type="VARCHAR" length="256"/>
+		<db-attribute name="type" type="VARCHAR" length="32"/>
+	</db-entity>
+	<db-entity name="postcode" catalog="willow_reference">
+		<db-attribute name="BSPname" type="VARCHAR" isMandatory="true" length="60"/>
+		<db-attribute name="BSPnumber" type="SMALLINT" isMandatory="true" length="5"/>
+		<db-attribute name="category" type="VARCHAR" isMandatory="true" length="60"/>
+		<db-attribute name="comments" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="deliveryOffice" type="VARCHAR" isMandatory="true" length="60"/>
+		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="locality" type="VARCHAR" isMandatory="true" length="60"/>
+		<db-attribute name="parcelZone" type="CHAR" isMandatory="true" length="3"/>
+		<db-attribute name="postcode" type="SMALLINT" isPrimaryKey="true" isMandatory="true" length="5"/>
+		<db-attribute name="presortIndicator" type="SMALLINT" isMandatory="true" length="5"/>
+		<db-attribute name="state" type="CHAR" isMandatory="true" length="3"/>
+	</db-entity>
+	<db-entity name="postcode_db" catalog="willow_reference">
+		<db-attribute name="dc" type="VARCHAR" isMandatory="true" length="45"/>
+		<db-attribute name="lat" type="DOUBLE" isMandatory="true" length="22"/>
+		<db-attribute name="lon" type="DOUBLE" isMandatory="true" length="22"/>
+		<db-attribute name="postcode" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="state" type="VARCHAR" isMandatory="true" length="4"/>
+		<db-attribute name="suburb" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="45"/>
+		<db-attribute name="type" type="VARCHAR" isMandatory="true" length="45"/>
+	</db-entity>
+	<obj-entity name="Country" className="ish.oncourse.model.Country" dbEntityName="Country">
+		<obj-attribute name="asccssCode" type="java.lang.String" db-attribute-path="asccssCode"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
+		<obj-attribute name="isoCodeAlpha2" type="java.lang.String" db-attribute-path="isoCodeAlpha2"/>
+		<obj-attribute name="isoCodeAlpha3" type="java.lang.String" db-attribute-path="isoCodeAlpha3"/>
+		<obj-attribute name="isoCodeNumeric" type="java.lang.Integer" db-attribute-path="isoCodeNumeric"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="saccCode" type="java.lang.Integer" db-attribute-path="saccCode"/>
+	</obj-entity>
+	<obj-entity name="Language" className="ish.oncourse.model.Language" dbEntityName="Language">
+		<obj-attribute name="absCode" type="java.lang.String" db-attribute-path="absCode"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="isActive" type="java.lang.Byte" db-attribute-path="isActive"/>
+		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<obj-entity name="Module" className="ish.oncourse.model.Module" dbEntityName="Module">
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="disciplineCode" type="java.lang.String" db-attribute-path="disciplineCode"/>
+		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
+		<obj-attribute name="isModule" type="java.lang.Byte" db-attribute-path="isModule"/>
+		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="nationalCode" type="java.lang.String" db-attribute-path="nationalCode"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
+		<obj-attribute name="trainingPackageId" type="java.lang.Long" db-attribute-path="trainingPackageId"/>
+	</obj-entity>
+	<obj-entity name="Postcode" className="ish.oncourse.model.Postcode" dbEntityName="postcode">
+		<obj-attribute name="bSPname" type="java.lang.String" db-attribute-path="BSPname"/>
+		<obj-attribute name="bSPnumber" type="java.lang.Short" db-attribute-path="BSPnumber"/>
+		<obj-attribute name="category" type="java.lang.String" db-attribute-path="category"/>
+		<obj-attribute name="comments" type="java.lang.String" db-attribute-path="comments"/>
+		<obj-attribute name="deliveryOffice" type="java.lang.String" db-attribute-path="deliveryOffice"/>
+		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
+		<obj-attribute name="locality" type="java.lang.String" db-attribute-path="locality"/>
+		<obj-attribute name="parcelZone" type="java.lang.String" db-attribute-path="parcelZone"/>
+		<obj-attribute name="postcode" type="java.lang.Short" db-attribute-path="postcode"/>
+		<obj-attribute name="presortIndicator" type="java.lang.Short" db-attribute-path="presortIndicator"/>
+		<obj-attribute name="state" type="java.lang.String" db-attribute-path="state"/>
+	</obj-entity>
+	<obj-entity name="PostcodeDb" className="ish.oncourse.model.PostcodeDb" dbEntityName="postcode_db">
+		<obj-attribute name="dc" type="java.lang.String" db-attribute-path="dc"/>
+		<obj-attribute name="lat" type="java.lang.Double" db-attribute-path="lat"/>
+		<obj-attribute name="lon" type="java.lang.Double" db-attribute-path="lon"/>
+		<obj-attribute name="postcode" type="java.lang.Long" db-attribute-path="postcode"/>
+		<obj-attribute name="state" type="java.lang.String" db-attribute-path="state"/>
+		<obj-attribute name="suburb" type="java.lang.String" db-attribute-path="suburb"/>
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>
+	</obj-entity>
+	<obj-entity name="Qualification" className="ish.oncourse.model.Qualification" dbEntityName="Qualification">
+		<obj-attribute name="anzsco" type="java.lang.String" db-attribute-path="anzsco"/>
+		<obj-attribute name="anzsic" type="java.lang.String" db-attribute-path="anzsic"/>
+		<obj-attribute name="asco" type="java.lang.String" db-attribute-path="asco"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
+		<obj-attribute name="fieldOfStudy" type="java.lang.String" db-attribute-path="fieldOfStudy"/>
+		<obj-attribute name="isAccreditedCourse" type="java.lang.Byte" db-attribute-path="isAccreditedCourse"/>
+		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
+		<obj-attribute name="level" type="java.lang.String" db-attribute-path="level"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="nationalCode" type="java.lang.String" db-attribute-path="nationalCode"/>
+		<obj-attribute name="newApprenticeship" type="java.lang.String" db-attribute-path="newApprenticeship"/>
+		<obj-attribute name="nominalHours" type="java.lang.Float" db-attribute-path="nominalHours"/>
+		<obj-attribute name="reviewDate" type="java.util.Date" db-attribute-path="reviewDate"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
+		<obj-attribute name="trainingPackageId" type="java.lang.Long" db-attribute-path="trainingPackageId"/>
+	</obj-entity>
+	<obj-entity name="TrainingPackage" className="ish.oncourse.model.TrainingPackage" dbEntityName="TrainingPackage">
+		<obj-attribute name="copyrightCategory" type="java.lang.String" db-attribute-path="copyrightCategory"/>
+		<obj-attribute name="copyrightContact" type="java.lang.String" db-attribute-path="copyrightContact"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="developer" type="java.lang.String" db-attribute-path="developer"/>
+		<obj-attribute name="endorsementFrom" type="java.util.Date" db-attribute-path="endorsementFrom"/>
+		<obj-attribute name="endorsementTo" type="java.util.Date" db-attribute-path="endorsementTo"/>
+		<obj-attribute name="ishVersion" type="java.lang.Long" db-attribute-path="ishVersion"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="nationalISC" type="java.lang.String" db-attribute-path="nationalISC"/>
+		<obj-attribute name="purchaseFrom" type="java.lang.String" db-attribute-path="purchaseFrom"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>
+	</obj-entity>
+</data-map>
