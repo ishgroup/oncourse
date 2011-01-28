@@ -46,7 +46,7 @@
 	<jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
 		address="/v4/reference">
 		<jaxws:inInterceptors>
-			<ref bean="v4_securityCodeInterceptor"/>
+			<ref bean="v4_collegeRequestInterceptor"/>
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 

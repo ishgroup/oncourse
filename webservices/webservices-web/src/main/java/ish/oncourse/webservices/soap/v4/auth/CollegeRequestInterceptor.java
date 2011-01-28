@@ -19,6 +19,22 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+/**
+ * This interceptor inspect incoming requests and does the following:
+ *
+ * <ul>
+ *	<li>If a college is found for a given security code, it updates it's IP,
+ *	Angel version and access times.</li>
+ *	<li>If a college is not found for a given security code, one is created and
+ *	the IP, Angel version and access times are recorded.</li>
+ * </ul>
+ *
+ * <p>This interceptor should only be used for unsecured, Willow to Angel  data 
+ * transfers.</p>
+ *
+ *
+ * @author Anton
+ */
 public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 
 	private static final Logger LOGGER = Logger.getLogger(CollegeRequestInterceptor.class);
