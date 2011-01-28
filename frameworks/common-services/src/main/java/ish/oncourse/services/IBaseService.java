@@ -19,15 +19,24 @@ public interface IBaseService<T> {
 
 	
 	/**
-	 * Find record by ID.
+	 * @return Class of the Entity handled by the service
+	 */
+	Class<T> getEntityClass();
+
+	/**
+	 * Generic lookup of records by Willow ID
 	 *
 	 * @param willowId
-	 * @return matching record if found, null otherwise
+	 * @return record matching the Willow ID or null otherwise
 	 */
 	T findById(Long willowId);
 
+	/**
+	 * Generic lookup of records using a qualifier
+	 *
+	 * @param qualifier query expression as Cayenne object
+	 * @return Records matching the qualifier or empty list otherwise
+	 */
 	List<T> findByQualifier(Expression qualifier);
-	
-	Class<T> getEntityClass();
 	
 }

@@ -56,11 +56,13 @@ import ish.oncourse.model.WillowUser;
  */
 public abstract class _College extends CayenneDataObject {
 
+    public static final String ANGEL_VERSION_PROPERTY = "angelVersion";
     public static final String BILLING_CODE_PROPERTY = "billingCode";
     public static final String COMMUNICATION_KEY_PROPERTY = "communicationKey";
     public static final String COMMUNICATION_KEY_STATUS_PROPERTY = "communicationKeyStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
+    public static final String IP_ADDRESS_PROPERTY = "ipAddress";
     public static final String IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY = "isTestingWebServicePayments";
     public static final String IS_TESTING_WEB_SITE_PAYMENTS_PROPERTY = "isTestingWebSitePayments";
     public static final String IS_WEB_SERVICE_PAYMENTS_ENABLED_PROPERTY = "isWebServicePaymentsEnabled";
@@ -119,6 +121,13 @@ public abstract class _College extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
+    public void setAngelVersion(String angelVersion) {
+        writeProperty("angelVersion", angelVersion);
+    }
+    public String getAngelVersion() {
+        return (String)readProperty("angelVersion");
+    }
+
     public void setBillingCode(String billingCode) {
         writeProperty("billingCode", billingCode);
     }
@@ -152,6 +161,13 @@ public abstract class _College extends CayenneDataObject {
     }
     public Date getFirstRemoteAuthentication() {
         return (Date)readProperty("firstRemoteAuthentication");
+    }
+
+    public void setIpAddress(String ipAddress) {
+        writeProperty("ipAddress", ipAddress);
+    }
+    public String getIpAddress() {
+        return (String)readProperty("ipAddress");
     }
 
     public void setIsTestingWebServicePayments(Boolean isTestingWebServicePayments) {

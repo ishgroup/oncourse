@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SQLTemplate;
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Marek Wawrzyczny
  */
-public abstract class ReferenceService<T> extends BaseService<T> implements IReferenceService<T> {
+public abstract class ReferenceService<T extends CayenneDataObject> extends BaseService<T> implements IReferenceService<T> {
 
 	private static final Logger LOGGER = Logger.getLogger(ReferenceService.class);
 

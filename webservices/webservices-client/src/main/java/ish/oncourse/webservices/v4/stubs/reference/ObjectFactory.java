@@ -39,14 +39,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CountryStub }
-     * 
-     */
-    public CountryStub createCountryStub() {
-        return new CountryStub();
-    }
-
-    /**
      * Create an instance of {@link ModuleStub }
      * 
      */
@@ -84,6 +76,14 @@ public class ObjectFactory {
      */
     public QualificationStub createQualificationStub() {
         return new QualificationStub();
+    }
+
+    /**
+     * Create an instance of {@link CountryStub }
+     * 
+     */
+    public CountryStub createCountryStub() {
+        return new CountryStub();
     }
 
     /**

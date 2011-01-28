@@ -43,10 +43,10 @@ public class ReplicationRequest {
 
     @XmlElements({
         @XmlElement(name = "sessionTutor", type = SessionTutorStub.class),
+        @XmlElement(name = "courseModule", type = CourseModuleStub.class),
         @XmlElement(name = "courseClass", type = CourseClassStub.class),
         @XmlElement(name = "course", type = CourseStub.class),
-        @XmlElement(name = "session", type = SessionStub.class),
-        @XmlElement(name = "courseModule", type = CourseModuleStub.class)
+        @XmlElement(name = "session", type = SessionStub.class)
     })
     protected List<SoapStub> courseOrCourseClassOrCourseModule;
 
@@ -69,10 +69,10 @@ public class ReplicationRequest {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link SessionTutorStub }
+     * {@link CourseModuleStub }
      * {@link CourseClassStub }
      * {@link CourseStub }
      * {@link SessionStub }
-     * {@link CourseModuleStub }
      * 
      * 
      */

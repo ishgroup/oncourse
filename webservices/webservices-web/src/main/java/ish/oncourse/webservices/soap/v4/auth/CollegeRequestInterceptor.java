@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 
 	private static final Logger LOGGER = Logger.getLogger(CollegeRequestInterceptor.class);
@@ -40,18 +41,32 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 		BindingOperationInfo boi = message.getExchange().get(BindingOperationInfo.class);
 
 		String securityCode = SoapUtil.getSecurityCode(message);
+		String version = SoapUtil.getAngelVersion(message);
 
 		String collegeName = null;
 
 		if (securityCode != null) {
 			College college = collegeService.findBySecurityCode(securityCode);
+
+			if (college == null) {
+				// This must be a never seen before installation - record
+				college = collegeService.recordNewCollege(securityCode, ip, version, time);
+			} else {
+				collegeService.recordWSAccess(college, ip, version, time);
+			}
+
 			if (college != null) {
 				collegeName = college.getName();
+			} else {
+				LOGGER.error("College could not be found or created");
+				// TODO: Should the request be interrupted at this point?
 			}
+		} else {
+			LOGGER.error("No security code sent by remote!");
+			// TODO: This is probably an error condition that should result in an
+			// exception being thrown to the client.
 		}
 
-		String version = SoapUtil.getAngelVersion(message);
-
-		LOGGER.info(String.format("Invoke %s by %s from %s with version %s at %s.", boi.getName(), collegeName, ip, version, time));
+		LOGGER.info(String.format("Invoked %s by %s from %s with version %s at %s.", boi.getName(), collegeName, ip, version, time));
 	}
 }

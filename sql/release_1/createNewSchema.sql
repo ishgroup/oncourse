@@ -54,6 +54,8 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`College` (
   `webServicesSecurityCode` VARCHAR(16) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `firstRemoteAuthentication` DATETIME NULL DEFAULT NULL ,
   `lastRemoteAuthentication` DATETIME NULL DEFAULT NULL , 
+  `ipAddress` VARCHAR(39) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `angelVersion` VARCHAR(40) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `webServicesSecurityCode_uniq_idx` (`webServicesSecurityCode` ASC) ,
   UNIQUE INDEX `billingCode_uniq_idx` (`billingCode` ASC) ,

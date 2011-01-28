@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ish.oncourse.services;
 
 import java.lang.reflect.ParameterizedType;
@@ -17,13 +12,16 @@ import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.cayenne.CayenneDataObject;
 
 
 /**
+ * Base class for majority of services containing the implementation of many 
+ * generic and essential services.
  *
- * @author marek
+ * @author Marek
  */
-public class BaseService<T> implements IBaseService<T> {
+public class BaseService<T extends CayenneDataObject> implements IBaseService<T> {
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -39,18 +37,12 @@ public class BaseService<T> implements IBaseService<T> {
 		this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
+	@Override
 	public Class<T> getEntityClass() {
 		return entityClass;
 	}
 
-	protected ICayenneService getCayenneService() {
-		return cayenneService;
-	}
-
-	protected IWebSiteService getWebSiteService() {
-		return webSiteService;
-	}
-
+	@Override
 	public T findById(Long willowId) {
 
 		T record = null;
@@ -67,34 +59,61 @@ public class BaseService<T> implements IBaseService<T> {
 					record = results.get(0);
 				} else {
 					LOGGER.error("Query returned multiple results where only one expected");
+					//TODO: Should an exception be thrown to indicate the condition to the client?
 				}
 			} catch (Exception e) {
 				LOGGER.error("Query resulted in Exception thrown", e);
+				//TODO: Should the exception be rethrown to indicate error condition to the client code?
 			}
 		}
 
 		return record;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<T> findByQualifier(Expression qualifier) {
 
-		List<T> results = new ArrayList<T>();
+		List<T> results = null;
 		SelectQuery query = new SelectQuery(getEntityClass());
 		query.andQualifier(qualifier);
 
 		try {
 			results = (List<T>) getCayenneService().sharedContext().performQuery(query);
-			
-			if ((results == null) || (results.isEmpty())) {
-				if (LOGGER.isInfoEnabled()) {
-					LOGGER.info("Query returned no results: " + query);
-				}
-			}
 		} catch (Exception e) {
 			LOGGER.error("Query resulted in Exception thrown", e);
+			//TODO: Should the exception be rethrown to indicate error condition to the client code?
+		}
+
+		if (results == null) {
+			results = new ArrayList<T>();
+		}
+
+		if (results.isEmpty()) {
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("Query returned no results: " + query);
+			}
 		}
 
 		return results;
 	}
+
+	/**
+	 * Wrapper around the injected Cayenne service
+	 *
+	 * @return Cayenne service used internally
+	 */
+	protected ICayenneService getCayenneService() {
+		return cayenneService;
+	}
+
+	/**
+	 * Wrapper around the inject Web Site service
+	 *
+	 * @return Web Site service used internally
+	 */
+	protected IWebSiteService getWebSiteService() {
+		return webSiteService;
+	}
+
 }
