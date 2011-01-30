@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.cayenne.Persistent;
 
+@SuppressWarnings("rawtypes")
 public class StubBuilderComposite implements IStubBuilder {
 
 	private Map<String, IStubBuilder> builders = new HashMap<String, IStubBuilder>();
@@ -19,6 +20,7 @@ public class StubBuilderComposite implements IStubBuilder {
 		builders.put("TrainingPackage", new TrainingPackageStubBuilder());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public SoapReferenceStub convert(Persistent record) {
 		String key = record.getObjectId().getEntityName();

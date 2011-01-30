@@ -13,6 +13,6 @@ import org.apache.cayenne.Persistent;
  * 
  * @author marek
  */
-public interface IStubBuilder {
-	 SoapReferenceStub convert(Persistent record);
+public interface IStubBuilder<T extends Persistent> {
+	SoapReferenceStub convert(T record);
 }

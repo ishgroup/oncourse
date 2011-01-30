@@ -7,18 +7,22 @@ import ish.oncourse.services.reference.IQualificationService;
 import ish.oncourse.services.reference.IReferenceService;
 import ish.oncourse.services.reference.ITrainingPackageService;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.cayenne.Persistent;
-import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ReferenceServiceComposite implements IReferenceServiceComposite {
+/**
+ * 
+ * @author anton
+ *
+ */
 
-	private static final Logger LOGGER = Logger.getLogger(ReferenceServiceComposite.class);
+public class ReferenceServiceComposite implements IReferenceServiceComposite {
 
 	private List<IReferenceService<? extends Persistent>> allServices;
 
@@ -31,13 +35,17 @@ public class ReferenceServiceComposite implements IReferenceServiceComposite {
 	public ReferenceServiceComposite(@Inject ICountryService countryService, @Inject ILanguageService languageService,
 			@Inject IQualificationService qualificationService, @Inject IModuleService moduleService,
 			@Inject ITrainingPackageService trainingPackageService) {
-		allServices = new ArrayList<IReferenceService<? extends Persistent>>();
+		allServices = new LinkedList<IReferenceService<? extends Persistent>>();
 		allServices.add(countryService);
 		allServices.add(languageService);
+		allServices.add(trainingPackageService);
 		allServices.add(moduleService);
 		allServices.add(qualificationService);
-		allServices.add(trainingPackageService);
 	}
+	
+	/**
+	 * 
+	 */
 
 	@Override
 	public List<Persistent> getForReplication(Long ishVersion) {
@@ -48,18 +56,19 @@ public class ReferenceServiceComposite implements IReferenceServiceComposite {
 		}
 		return list;
 	}
+	
+	/**
+	 * Finds maximun ishVersion accross all Reference services, thus accross all reference entities.
+	 */
 
 	@Override
 	public Long findMaxIshVersion() {
-		Long version = null;
-
-		IReferenceService<?> service = allServices.get(0);
-		if (service == null) {
-			LOGGER.error("Service is null!");
-		} else {
-			version = service.findMaxIshVersion();
+		SortedSet<Long> versions = new TreeSet<Long>();
+		
+		for (IReferenceService<?> service : allServices) {
+			versions.add(service.findMaxIshVersion());
 		}
 
-		return version;
+		return versions.last();
 	}
 }
