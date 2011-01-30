@@ -4,12 +4,16 @@
  */
 package ish.oncourse.webservices.services;
 
+import ish.oncourse.model.services.ModelModule;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.webservices.services.builders.IStubBuilder;
+import ish.oncourse.webservices.services.builders.StubBuilderComposite;
+import ish.oncourse.webservices.services.reference.IReferenceServiceComposite;
+import ish.oncourse.webservices.services.reference.ReferenceServiceComposite;
+
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-
-import ish.oncourse.model.services.ModelModule;
-import ish.oncourse.services.ServiceModule;
 
 
 /**
@@ -23,6 +27,8 @@ public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
 		LOGGER.info("Registering Willow WebServices");
+		binder.bind(IReferenceServiceComposite.class, ReferenceServiceComposite.class);
+		binder.bind(IStubBuilder.class, StubBuilderComposite.class);
 	}
 	
 }
