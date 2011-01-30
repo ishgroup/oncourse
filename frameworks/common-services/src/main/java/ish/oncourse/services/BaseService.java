@@ -1,18 +1,17 @@
 package ish.oncourse.services;
 
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
+
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.cayenne.CayenneDataObject;
 
 
 /**
@@ -21,7 +20,7 @@ import org.apache.cayenne.CayenneDataObject;
  *
  * @author Marek
  */
-public class BaseService<T extends CayenneDataObject> implements IBaseService<T> {
+public class BaseService<T> implements IBaseService<T> {
 
 	@Inject
 	private ICayenneService cayenneService;

@@ -39,11 +39,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ReferenceResult }
+     * Create an instance of {@link TrainingPackageStub }
      * 
      */
-    public ReferenceResult createReferenceResult() {
-        return new ReferenceResult();
+    public TrainingPackageStub createTrainingPackageStub() {
+        return new TrainingPackageStub();
     }
 
     /**
@@ -55,6 +55,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link LanguageStub }
+     * 
+     */
+    public LanguageStub createLanguageStub() {
+        return new LanguageStub();
+    }
+
+    /**
      * Create an instance of {@link CountryStub }
      * 
      */
@@ -63,19 +71,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TrainingPackageStub }
+     * Create an instance of {@link ReferenceResult }
      * 
      */
-    public TrainingPackageStub createTrainingPackageStub() {
-        return new TrainingPackageStub();
-    }
-
-    /**
-     * Create an instance of {@link LanguageStub }
-     * 
-     */
-    public LanguageStub createLanguageStub() {
-        return new LanguageStub();
+    public ReferenceResult createReferenceResult() {
+        return new ReferenceResult();
     }
 
     /**

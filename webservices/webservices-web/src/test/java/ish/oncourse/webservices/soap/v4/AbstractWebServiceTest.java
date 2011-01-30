@@ -123,7 +123,6 @@ public abstract class AbstractWebServiceTest {
 			generator.setShouldCreateTables(true);
 			generator.setShouldCreateFKConstraints(true);
 			generator.setShouldCreatePKSupport(true);
-			generator.setShouldDropTables(true);
 			
 			generator.runGenerator(e.getValue());
 		}
