@@ -52,7 +52,6 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	 * 
 	 * @return next communication key to track current conversation.
 	 */
-	@Override
 	public long authenticate(String webServicesSecurityCode, long lastCommKey) {
 
 		if (request.getSession(false) != null) {
@@ -124,8 +123,6 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	 * 
 	 * @return logout status
 	 */
-
-	@Override
 	public Status logout(long newCommKey) {
 		Status status = new Status();
 

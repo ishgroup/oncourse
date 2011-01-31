@@ -21,7 +21,7 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 		super(Phase.PRE_INVOKE);
 	}
 
-	@Override
+
 	public void handleMessage(SoapMessage message) throws Fault {
 		String securityCode = SoapUtil.getSecurityCode(message);
 		

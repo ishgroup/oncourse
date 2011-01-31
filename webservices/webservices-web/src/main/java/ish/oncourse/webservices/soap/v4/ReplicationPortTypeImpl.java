@@ -12,13 +12,11 @@ import javax.jws.WebService;
 		
 public class ReplicationPortTypeImpl implements ReplicationPortType {
 
-	@Override
 	public ReplicationResult sendRecords(ReplicationRequest req) {
 		ReplicationResult result = new ReplicationResult();
 		return result;
 	}
 
-	@Override
 	public ReplicationResult getRecords() {
 		ReplicationResult result = new ReplicationResult();
 		return result;

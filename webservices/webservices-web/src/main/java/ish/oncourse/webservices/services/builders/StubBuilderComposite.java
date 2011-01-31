@@ -21,7 +21,6 @@ public class StubBuilderComposite implements IStubBuilder {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public SoapReferenceStub convert(Persistent record) {
 		String key = record.getObjectId().getEntityName();
 		IStubBuilder builder = builders.get(key);

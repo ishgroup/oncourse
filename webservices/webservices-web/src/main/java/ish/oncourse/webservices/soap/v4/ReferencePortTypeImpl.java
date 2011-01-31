@@ -68,7 +68,6 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	 *
 	 * @return Map the max version
 	 */
-	@Override
 	public long getMaximumVersion() {
 		return referenceService.findMaxIshVersion();
 	}
@@ -81,7 +80,6 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	 * @return all records with this version or empty list if no records with
 	 *		that version exist
 	 */
-	@Override
 	public ReferenceResult getRecords(long ishVersion) {
 
 		List<SoapReferenceStub> stubs = new ArrayList<SoapReferenceStub>();

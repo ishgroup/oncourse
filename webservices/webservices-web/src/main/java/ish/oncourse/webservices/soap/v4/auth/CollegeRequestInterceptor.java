@@ -47,7 +47,6 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 		super(Phase.PRE_INVOKE);
 	}
 
-	@Override
 	public void handleMessage(SoapMessage message) throws Fault {
 		HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
 

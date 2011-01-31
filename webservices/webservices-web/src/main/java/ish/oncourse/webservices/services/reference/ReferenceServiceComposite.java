@@ -46,8 +46,6 @@ public class ReferenceServiceComposite implements IReferenceServiceComposite {
 	/**
 	 * 
 	 */
-
-	@Override
 	public List<Persistent> getForReplication(Long ishVersion) {
 		List<Persistent> list = new LinkedList<Persistent>();
 		for (IReferenceService<? extends Persistent> service : allServices) {
@@ -60,8 +58,6 @@ public class ReferenceServiceComposite implements IReferenceServiceComposite {
 	/**
 	 * Finds maximun ishVersion accross all Reference services, thus accross all reference entities.
 	 */
-
-	@Override
 	public Long findMaxIshVersion() {
 		SortedSet<Long> versions = new TreeSet<Long>();
 		
