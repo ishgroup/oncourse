@@ -77,7 +77,6 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 			addAfter(SoapPreProtocolOutInterceptor.class.getName());
 		}
 		
-		@Override
 		public void handleMessage(SoapMessage message) throws Fault {
 			SoapUtil.addSecurityCode(message, "345ttn44$%9");
 		}
