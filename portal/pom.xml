@@ -49,6 +49,16 @@
 	<build>
 		<finalName>portal</finalName>
 
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+
         <resources>
             <resource>
                 <directory>src/main/java</directory>
