@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.model.auto._Discount;
+import ish.oncourse.test.context.ContextUtils;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -12,7 +13,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.naming.NamingException;
+
 import org.apache.cayenne.access.DataContext;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,10 +69,13 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	/**
 	 * Initializes instance variables.
+	 * @throws NamingException 
 	 */
 	@BeforeClass
-	public static void initPolicy() {
+	public static void initPolicy() throws NamingException {
 		testDate = new GregorianCalendar();
+		
+		ContextUtils.setupDataSources();
 		context = DataContext.createDataContext();
 
 		// prepare and commit data that should be stored(to prevent using of
@@ -80,6 +87,12 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount.setDiscountRate(new BigDecimal("0.25"));
 
 	}
+	
+	@AfterClass
+	public static void cleanUp(){
+		ContextUtils.cleanUpContext();
+	}
+	
 
 	/**
 	 * Commits the data needed to be committed for
@@ -308,6 +321,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void filterDiscountsSmokeTest() {
+		discountPolicy = new RealDiscountsPolicy(promotions, student);
 		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(discount,
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
 				singleDiscountWithRateMin));

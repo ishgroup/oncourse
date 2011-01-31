@@ -266,6 +266,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.apache.derby</groupId>
+				<artifactId>derby</artifactId>
+				<version>10.5.3.0_1</version>
+			</dependency>
+		
+			<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-solrj</artifactId>
 				<version>1.4.99</version>

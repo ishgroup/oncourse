@@ -7,17 +7,20 @@
 
 	<node name="oncourse"
 		 datasource="jdbc/oncourse"
-		 factory="org.apache.cayenne.conf.JNDIDataSourceFactory">
+		 factory="org.apache.cayenne.conf.JNDIDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
 			<map-ref name="oncourse"/>
 	 </node>
 	<node name="oncourseBinary"
 		 datasource="jdbc/oncourse_binary"
-		 factory="org.apache.cayenne.conf.JNDIDataSourceFactory">
+		 factory="org.apache.cayenne.conf.JNDIDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
 			<map-ref name="oncourseBinary"/>
 	 </node>
 	<node name="oncourseReference"
 		 datasource="jdbc/oncourse_reference"
-		 factory="org.apache.cayenne.conf.JNDIDataSourceFactory">
+		 factory="org.apache.cayenne.conf.JNDIDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy">
 			<map-ref name="oncourseReference"/>
 	 </node>
 </domain>
