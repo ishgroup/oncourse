@@ -527,7 +527,8 @@ public class CourseClass extends _CourseClass {
 
 		List<Discount> discounts = new ArrayList<Discount>(availableDiscountsWithoutCode.size());
 		for (Discount discount : availableDiscountsWithoutCode) {
-			if (!discount.getDiscountConcessionTypes().isEmpty()) {
+			if (discount.getDiscountConcessionTypes() != null
+					&& !discount.getDiscountConcessionTypes().isEmpty()) {
 				discounts.add(discount);
 			}
 		}
@@ -607,10 +608,39 @@ public class CourseClass extends _CourseClass {
 	 * 
 	 * @return
 	 */
-	private BigDecimal getTaxRate() {
-		if(getFeeExGst().isZero()){
+	public BigDecimal getTaxRate() {
+		if (getFeeExGst().isZero()) {
 			return BigDecimal.ZERO;
 		}
 		return getFeeGst().divide(getFeeExGst()).toBigDecimal();
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see ish.oncourse.model.auto._CourseClass#getFeeExGst()
+	 */
+	@Override
+	public Money getFeeExGst() {
+		Money fee = super.getFeeExGst();
+		if (fee == null) {
+			setFeeExGst(Money.ZERO);
+		}
+		return super.getFeeExGst();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see ish.oncourse.model.auto._CourseClass#getFeeGst()
+	 */
+	@Override
+	public Money getFeeGst() {
+		Money feeGst = super.getFeeGst();
+		if (feeGst == null) {
+			setFeeGst(Money.ZERO);
+		}
+		return super.getFeeGst();
+	}
+
 }
