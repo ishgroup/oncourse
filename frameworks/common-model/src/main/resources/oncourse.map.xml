@@ -177,7 +177,7 @@
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="nominalHours" type="REAL" length="12"/>
+		<db-attribute name="nominalHours" type="REAL"/>
 		<db-attribute name="qualificationId" type="BIGINT" length="19"/>
 		<db-attribute name="searchText" type="LONGVARCHAR" length="65535"/>
 	</db-entity>

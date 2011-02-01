@@ -51,7 +51,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="nationalCode" type="VARCHAR" length="16"/>
 		<db-attribute name="newApprenticeship" type="VARCHAR" length="64"/>
-		<db-attribute name="nominalHours" type="REAL" length="12"/>
+		<db-attribute name="nominalHours" type="REAL"/>
 		<db-attribute name="reviewDate" type="DATE" length="10"/>
 		<db-attribute name="title" type="VARCHAR" length="256"/>
 		<db-attribute name="trainingPackageId" type="BIGINT" length="19"/>
