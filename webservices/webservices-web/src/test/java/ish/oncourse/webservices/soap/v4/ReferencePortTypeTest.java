@@ -15,9 +15,9 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.ext.hsqldb.HsqldbConnection;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,13 +31,13 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseReferenceDataSet.xml");
 		
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE_REFERENCE).getConnection(), null),
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE_REFERENCE).getConnection(), null),
 				dataSet);
 		
 		st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 		
-		DatabaseOperation.INSERT.execute(new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null),
+		DatabaseOperation.INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null),
 				dataSet);
 	}
 	

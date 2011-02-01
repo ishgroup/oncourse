@@ -1,10 +1,9 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.webservices.soap.v4.AbstractWebServiceTest;
 
@@ -13,10 +12,10 @@ import java.net.URL;
 
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.ext.hsqldb.HsqldbConnection;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Test;
 
@@ -42,7 +41,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 		Client client = dcf.createClient(new URL(WSDL_LOCATION));
@@ -68,7 +67,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 		Client client = dcf.createClient(new URL(WSDL_LOCATION));
@@ -93,7 +92,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		HsqldbConnection dbUnitConnection = new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
@@ -121,7 +120,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		HsqldbConnection dbUnitConnection = new HsqldbConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();

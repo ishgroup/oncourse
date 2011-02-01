@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DbGenerator;
-import org.apache.cayenne.dba.hsqldb.HSQLDBAdapter;
+import org.apache.cayenne.dba.derby.DerbyAdapter;
 import org.apache.cayenne.map.DataMap;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.MapLoader;
@@ -93,9 +93,9 @@ public abstract class AbstractWebServiceTest {
 
 	private static DataSource createDataSource(String name) {
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-		dataSource.setUrl("jdbc:hsqldb:mem:" + name);
-		dataSource.setUsername("sa");
+		dataSource.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
+		dataSource.setUrl(String.format("jdbc:derby:memory:%s;create=true", name));
+		dataSource.setUsername("");
 		dataSource.setPassword("");
 		return dataSource;
 	}
@@ -119,7 +119,7 @@ public abstract class AbstractWebServiceTest {
 		
 		for (Entry<DataMap, DataSource> e : m.entrySet()) {
 			
-			DbGenerator generator = new DbGenerator(new HSQLDBAdapter(), e.getKey(), Collections.<DbEntity> emptyList(), domain);
+			DbGenerator generator = new DbGenerator(new DerbyAdapter(), e.getKey(), Collections.<DbEntity> emptyList(), domain);
 			generator.setShouldCreateTables(true);
 			generator.setShouldCreateFKConstraints(true);
 			generator.setShouldCreatePKSupport(true);
