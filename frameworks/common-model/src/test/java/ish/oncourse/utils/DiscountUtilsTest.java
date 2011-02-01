@@ -14,6 +14,12 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Test for the {@link DiscountUtils}.
+ * 
+ * @author ksenia
+ * 
+ */
 public class DiscountUtilsTest {
 
 	/**

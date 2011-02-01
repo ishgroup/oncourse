@@ -11,6 +11,11 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Contains fields and tests common for {@link PotentialDiscountsPolicyTest} and {@link RealDiscountsPolicyTest}
+ * @author ksenia
+ *
+ */
 public abstract class AbstractDiscountPolicyTest {
 	/**
 	 * Combinable discount with amount=10.

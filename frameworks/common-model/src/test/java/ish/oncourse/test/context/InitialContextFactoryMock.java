@@ -9,12 +9,22 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.naming.spi.InitialContextFactory;
 
-import org.junit.Ignore;
-@Ignore
-public class InitialContextFactoryForTest implements InitialContextFactory {
+/**
+ * Mock for the {@link InitialContextFactory} that is used in tests.
+ * 
+ * @author ksenia
+ * 
+ */
+public class InitialContextFactoryMock implements InitialContextFactory {
 
+	/**
+	 * The context instance to store jndi properties.
+	 */
 	private static Context context;
 
+	/**
+	 * Block which initializes the context.
+	 */
 	static {
 		try {
 			context = new InitialContext(true) {
@@ -35,10 +45,21 @@ public class InitialContextFactoryForTest implements InitialContextFactory {
 		}
 	}
 
+	/**
+	 * Returns the context. {@inheritDoc}
+	 * 
+	 * @see javax.naming.spi.InitialContextFactory#getInitialContext(java.util.Hashtable)
+	 */
 	public Context getInitialContext(Hashtable<?, ?> environment) throws NamingException {
 		return context;
 	}
 
+	/**
+	 * Binds the object "obj" to context with the name "name".
+	 * 
+	 * @param name
+	 * @param obj
+	 */
 	public static void bind(String name, Object obj) {
 		try {
 			context.bind(name, obj);

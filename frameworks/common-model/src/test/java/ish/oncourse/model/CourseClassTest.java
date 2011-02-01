@@ -24,28 +24,61 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test for {@link CourseClass} methods.
  * 
  * @author marek
  */
 public class CourseClassTest {
 
+	/**
+	 * Data context for persistent objects.
+	 */
 	private static DataContext context;
+	/**
+	 * The courseClass which will contain reference to 3 date-valid discounts.
+	 */
 	private static CourseClass firstClass;
+	/**
+	 * The courseClass which will contain reference to 1 invalid discount.
+	 */
 	private static CourseClass secondClass;
+	/**
+	 * The discount for {@link #secondClass} with expired date.
+	 */
 	private static Discount pastSecondClassDiscount;
+	/**
+	 * The discount for {@link #firstClass} with code.
+	 */
 	private static Discount currentPromotion;
+	/**
+	 * The discount for {@link #firstClass} with the reference to
+	 * {@link ConcessionType}.
+	 */
 	private static Discount currentConcession;
+	/**
+	 * The discount for {@link #firstClass} without refererences to
+	 * {@link ConcessionType}
+	 */
 	private static Discount concessionEmpty;
+	/**
+	 * The discount for {@link #firstClass} that will be available in future.
+	 */
 	private static Discount futureDicount;
-	private static Collection<?> uncommittedObjects;
 
+	/**
+	 * Initializes entities, commit needed changes.
+	 * 
+	 * @throws Exception
+	 */
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		Calendar now = Calendar.getInstance();
+		Calendar date = Calendar.getInstance();
 		ContextUtils.setupDataSources();
 		context = DataContext.createDataContext();
+
 		College college = context.newObject(College.class);
 		college.setName("name");
+
 		Course course = context.newObject(Course.class);
 		course.setCollege(college);
 
@@ -56,17 +89,21 @@ public class CourseClassTest {
 		currentPromotion = context.newObject(Discount.class);
 		currentPromotion.setCollege(college);
 		currentPromotion.setCode("currentPromotion");
-		now.add(Calendar.DATE, -2);
-		currentPromotion.setValidFrom(now.getTime());
+		// two days ago
+		date.add(Calendar.DATE, -2);
+		currentPromotion.setValidFrom(date.getTime());
+
 		DiscountCourseClass dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(currentPromotion);
 		dcc.setCourseClass(firstClass);
 
 		currentConcession = context.newObject(Discount.class);
 		currentConcession.setCollege(college);
-		now.add(Calendar.MONTH, 1);
-		currentConcession.setValidTo(now.getTime());
+		// almost one month in future
+		date.add(Calendar.MONTH, 1);
+		currentConcession.setValidTo(date.getTime());
 		currentConcession.setName("name");
+
 		ConcessionType ct = context.newObject(ConcessionType.class);
 		ct.setName("name");
 		DiscountConcessionType dct = context.newObject(DiscountConcessionType.class);
@@ -85,7 +122,7 @@ public class CourseClassTest {
 
 		futureDicount = context.newObject(Discount.class);
 		futureDicount.setCollege(college);
-		futureDicount.setValidFrom(now.getTime());
+		futureDicount.setValidFrom(date.getTime());
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(futureDicount);
 		dcc.setCourseClass(firstClass);
@@ -93,13 +130,16 @@ public class CourseClassTest {
 		secondClass = context.newObject(CourseClass.class);
 		secondClass.setCourse(course);
 		secondClass.setCollege(college);
+
 		pastSecondClassDiscount = context.newObject(Discount.class);
 		pastSecondClassDiscount.setCollege(college);
-		now.add(Calendar.MONTH, -2);
-		pastSecondClassDiscount.setValidTo(now.getTime());
+		// almost one month ago
+		date.add(Calendar.MONTH, -2);
+		pastSecondClassDiscount.setValidTo(date.getTime());
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(pastSecondClassDiscount);
 		dcc.setCourseClass(secondClass);
+
 		context.commitChanges();
 	}
 
@@ -141,7 +181,8 @@ public class CourseClassTest {
 	}
 
 	/**
-	 * Emulates the date restrictions to discounts.
+	 * Emulates the situation when some of the class's discounts are restricted
+	 * with dates and thus not retrieved by {@link CourseClass#getDiscounts()}.
 	 */
 	@Test
 	public void getDiscountsTest() {
@@ -156,6 +197,10 @@ public class CourseClassTest {
 		assertTrue(secondClassDiscounts.isEmpty());
 	}
 
+	/**
+	 * Emulates the retrieving of the class's discounts that have references to
+	 * concession types.
+	 */
 	@Test
 	public void getConcessionDiscountsTest() {
 		List<Discount> firstClassConcessionDiscounts = firstClass.getConcessionDiscounts();
@@ -167,6 +212,11 @@ public class CourseClassTest {
 		assertTrue(secondClassDiscounts.isEmpty());
 	}
 
+	/**
+	 * Test for {@link CourseClass#getTaxRate()}. Emulates the situations when
+	 * the fee and tax are zero, when fee is zero and when the fee and tax are
+	 * both not zero.
+	 */
 	@Test
 	public void getTaxRateTest() {
 		assertEquals(Money.ZERO, firstClass.getFeeExGst());
@@ -178,6 +228,12 @@ public class CourseClassTest {
 		assertTrue(new BigDecimal("0.10").compareTo(firstClass.getTaxRate()) == 0);
 	}
 
+	/**
+	 * Emulates the applying of the discount with amount: <br/>
+	 * Assumptions: fee=100, tax=10; discountAmount=20. <br/>
+	 * Digits when applied: discountAmountExTax=20, discountAmountIncTax=22,
+	 * discountedFee=80, discountedTax=8, discountedFeeIncTax=88.
+	 */
 	@Test
 	public void applyDiscountWithAmountTest() {
 		firstClass.setFeeExGst(new Money("100"));
@@ -192,14 +248,21 @@ public class CourseClassTest {
 		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(discWithAmount));
 		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(discWithAmount));
 		Money discountedFee = firstClass.getDiscountedFee(discWithAmount);
-		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(discWithAmount));
 		assertEquals(new Money("80"), discountedFee);
 		Money discountedTax = firstClass.getDiscountedTax(discWithAmount);
 		assertEquals(new Money("8"), discountedTax);
 		assertTrue(firstClass.getTaxRate().compareTo(
 				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
+		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(discWithAmount));
+
 	}
 
+	/**
+	 * Emulates the applying of the discount with rate: <br/>
+	 * Assumptions: fee=100, tax=10; discountRate=20%. <br/>
+	 * Digits when applied: discountAmountExTax=20, discountAmountIncTax=22,
+	 * discountedFee=80, discountedTax=8, discountedFeeIncTax=88.
+	 */
 	@Test
 	public void applyDiscountWithRateTest() {
 		firstClass.setFeeExGst(new Money("100"));
@@ -209,19 +272,25 @@ public class CourseClassTest {
 		assertEquals(new Money("110"), firstClass.getFeeIncGst());
 		// 20% discount
 		currentConcession.setDiscountRate(new BigDecimal("0.2"));
+
 		List<Discount> discWithRate = Arrays.asList(currentConcession);
 		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(discWithRate));
 		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(discWithRate));
 		Money discountedFee = firstClass.getDiscountedFee(discWithRate);
-		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(discWithRate));
 		assertEquals(new Money("80"), discountedFee);
 		Money discountedTax = firstClass.getDiscountedTax(discWithRate);
 		assertEquals(new Money("8"), discountedTax);
 		assertTrue(firstClass.getTaxRate().compareTo(
 				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
 
+		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(discWithRate));
+
 	}
 
+	/**
+	 * Emulates the applying of the list of dicounts: with amount of 20, with
+	 * rate 20% and with rate 70%. Leads to 100% discount to price of 100.
+	 */
 	@Test
 	public void applyMultipleDiscountsWithRateTest() {
 		firstClass.setFeeExGst(new Money("100"));

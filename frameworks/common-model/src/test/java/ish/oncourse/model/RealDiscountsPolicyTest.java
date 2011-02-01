@@ -69,12 +69,13 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	/**
 	 * Initializes instance variables.
-	 * @throws NamingException 
+	 * 
+	 * @throws NamingException
 	 */
 	@BeforeClass
 	public static void initPolicy() throws NamingException {
 		testDate = new GregorianCalendar();
-		
+
 		ContextUtils.setupDataSources();
 		context = DataContext.createDataContext();
 
@@ -87,12 +88,11 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount.setDiscountRate(new BigDecimal("0.25"));
 
 	}
-	
+
 	@AfterClass
-	public static void cleanUp(){
+	public static void cleanUp() {
 		ContextUtils.cleanUpContext();
 	}
-	
 
 	/**
 	 * Commits the data needed to be committed for
