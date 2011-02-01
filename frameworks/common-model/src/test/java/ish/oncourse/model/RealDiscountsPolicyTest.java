@@ -69,11 +69,10 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	/**
 	 * Initializes instance variables.
-	 * 
-	 * @throws NamingException
+	 * @throws Exception 
 	 */
 	@BeforeClass
-	public static void initPolicy() throws NamingException {
+	public static void initPolicy() throws Exception {
 		testDate = new GregorianCalendar();
 
 		ContextUtils.setupDataSources();
