@@ -67,7 +67,8 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 		ReferenceResult result = referencePort.getRecords(1L);
 		
 		assertNotNull(result);
-		assertTrue("Test results length", result.getCountryOrLanguageOrModule().size() == 7);
+		int size = result.getCountryOrLanguageOrModule().size();
+		assertTrue("Test results length. Expect 8 here.",  size == 8);
 	}
 
 	private static class AddSecurityCodeInterceptor extends AbstractSoapInterceptor {
