@@ -96,19 +96,73 @@ $j(document).ready(function() {
 	}
 	if (document.getElementById("dirmap")) dirLoad();
 
-	// Add items to the shortlist & update the add/remove link
+	/* New Shortlist functionality */
+	/* Show/Hide shortlist */
+	$j(".shortlistActionShow a").live("click", function() {
+
+			$j("#shortlist .shortlistChoices").fadeToggle("fast");
+			return false;
+		});	
+
+	// Add items to the shortlist return a response to the user
 	$j('li.class_addorder a').live("click", function(){
-		var listid = this.id.match(/(\d+)/)[1];
-		$j.ajax({
-			type: "GET",
-			url:  '/addToCookies?key=shortlist&itemId=' + listid,
-			success: function(){
-						refreshShortList(listid);
-					}
-		});
+		//grab the classid of the enrol button that's just been clicked.  
+		var listid = $j(this).parents(".classItem").data("classid");
+		var buttonPos = $j('.classItem[data-classid=' + listid + ']').position();
+		
+		// does it already exist in the shortlist? if not, make that ajax call.
+		if (($j('.shortlistChoices li[data-classid=' + listid + ']') == null) | ($j('.shortlistChoices li[data-classid=' + listid + ']').length == 0)) { 
+			
+			$j.ajax({
+				type: "GET",
+				url:  '/addToCookies?key=shortlist&itemId=' + listid,
+				success: function(){
+							refreshShortList(listid);
+							
+							//Make the order confirmation box appear
+							$j(".confirmOrderDialog p:first").text("Thanks for adding: ");
+							$j(".confirmOrderDialog .className").show().text($j('.classItem[data-classid=' + listid + '] .classItemName + dd').text());
+							$j(".confirmOrderDialog .classDate").show().text($j('.classItem[data-classid=' + listid + '] .classItemDate + dd').text());
+							
+							$j(".confirmOrderDialog").css({
+								top: buttonPos.top,
+								right: "150px"
+							});
+							
+							$j(".confirmOrderDialog").stop(true, false).fadeIn("fast").delay(5000).fadeOut("fast");
+						}
+			});
+		} else {
+			// Else, let them know that it's already on their shortlist and get them to go to checkout
+			$j(".confirmOrderDialog p:first").text("You've already added this class to your shortlist. Do you want to proceed to checkout?");
+			$j(".confirmOrderDialog .className").empty();
+			$j(".confirmOrderDialog .classDate").empty()
+			
+			$j(".confirmOrderDialog").css({
+				top: buttonPos.top,
+				right: "150px"
+			});
+			
+			$j(".confirmOrderDialog").stop(true, false).fadeIn("fast").delay(5000).fadeOut("fast");
+		}
 		return false; 
 	});
 	
+	
+	/* Remove an item from the shortlist */
+	$j("#shortlist .deleteItem a").live("click", function() {
+		// This is accessing the custom data attribute set in Shortlist.tml - See http://html5doctor.com/html5-custom-data-attributes/
+		var itemId = $(this).parent().parent().data('classid');
+		
+		$j.ajax({
+			type: "GET",
+			url:  '/removeFromCookies?key=shortlist&itemId='+ itemId,
+			success: function(){
+				refreshShortList(itemId);
+			}
+		});	
+	});
+
 	
 	// Drop our shortlisted items in the shortlist box
 	$j('li.onshortlist a.cutitem,li.onshortlist-x a.cutitem').live("click", function() {
