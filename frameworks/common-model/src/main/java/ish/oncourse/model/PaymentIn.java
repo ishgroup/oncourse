@@ -164,11 +164,12 @@ public class PaymentIn extends _PaymentIn {
 	 * initial statuses to the related invoice ( {@link InvoiceStatus#PENDING} )
 	 * and enrolment ( {@link EnrolmentStatus#PENDING} ).
 	 * 
-	 * Invoked when the payment gateway processing is failed.
+	 * Invoked when the payment gateway processing is failed(the payment is failed because of declined card).
 	 * 
 	 */
 	public void failed() {
 		setStatus(PaymentStatus.FAILED);
+		setStatusNotes("Card declined");
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
 			invoice.setStatus(InvoiceStatus.PENDING);

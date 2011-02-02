@@ -34,6 +34,7 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String SOURCE_PROPERTY = "source";
     public static final String STATUS_PROPERTY = "status";
+    public static final String STATUS_NOTES_PROPERTY = "statusNotes";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
@@ -117,6 +118,13 @@ public abstract class _PaymentIn extends CayenneDataObject {
     }
     public PaymentStatus getStatus() {
         return (PaymentStatus)readProperty("status");
+    }
+
+    public void setStatusNotes(String statusNotes) {
+        writeProperty("statusNotes", statusNotes);
+    }
+    public String getStatusNotes() {
+        return (String)readProperty("statusNotes");
     }
 
     public void setCollege(College college) {

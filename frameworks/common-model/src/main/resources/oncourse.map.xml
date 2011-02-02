@@ -413,6 +413,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="source" type="VARCHAR" length="1"/>
 		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
+		<db-attribute name="statusNotes" type="VARCHAR" length="100"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="PaymentInLine" catalog="willow_college">
@@ -1073,6 +1074,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.oncourse.model.PaymentStatus" db-attribute-path="status"/>
+		<obj-attribute name="statusNotes" type="java.lang.String" db-attribute-path="statusNotes"/>
 	</obj-entity>
 	<obj-entity name="PaymentInLine" className="ish.oncourse.model.PaymentInLine" dbEntityName="PaymentInLine">
 		<obj-attribute name="amount" type="java.math.BigDecimal" db-attribute-path="amount"/>
