@@ -38,19 +38,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SessionStub }
+     * Create an instance of {@link CourseClassStub }
      * 
      */
-    public SessionStub createSessionStub() {
-        return new SessionStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicationResult }
-     * 
-     */
-    public ReplicationResult createReplicationResult() {
-        return new ReplicationResult();
+    public CourseClassStub createCourseClassStub() {
+        return new CourseClassStub();
     }
 
     /**
@@ -62,11 +54,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CourseClassStub }
+     * Create an instance of {@link SessionTutorStub }
      * 
      */
-    public CourseClassStub createCourseClassStub() {
-        return new CourseClassStub();
+    public SessionTutorStub createSessionTutorStub() {
+        return new SessionTutorStub();
     }
 
     /**
@@ -78,11 +70,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SessionTutorStub }
+     * Create an instance of {@link ReplicationResult }
      * 
      */
-    public SessionTutorStub createSessionTutorStub() {
-        return new SessionTutorStub();
+    public ReplicationResult createReplicationResult() {
+        return new ReplicationResult();
     }
 
     /**
@@ -91,6 +83,14 @@ public class ObjectFactory {
      */
     public CourseModuleStub createCourseModuleStub() {
         return new CourseModuleStub();
+    }
+
+    /**
+     * Create an instance of {@link SessionStub }
+     * 
+     */
+    public SessionStub createSessionStub() {
+        return new SessionStub();
     }
 
     /**

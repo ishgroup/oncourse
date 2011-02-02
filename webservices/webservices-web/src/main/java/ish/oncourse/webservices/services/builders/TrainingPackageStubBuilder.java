@@ -5,8 +5,6 @@
 
 package ish.oncourse.webservices.services.builders;
 
-import org.apache.cayenne.Persistent;
-
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
 
@@ -14,15 +12,13 @@ import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
  *
  * @author marek
  */
-public final class TrainingPackageStubBuilder implements IStubBuilder {
+public final class TrainingPackageStubBuilder implements IStubBuilder<TrainingPackage> {
 
-	public TrainingPackageStub convert(Persistent p) {
-
-		TrainingPackage record = (TrainingPackage) p;
+	public TrainingPackageStub convert(TrainingPackage record) {
 		
 		TrainingPackageStub stub = new TrainingPackageStub();
 
-		stub.setWillowId((Long) record.readProperty(TrainingPackage.ID_PK_COLUMN));
+		stub.setWillowId(record.getId());
 		stub.setCopyrightCategory(record.getCopyrightCategory());
 		stub.setCopyrightContract(record.getCopyrightContact());
 		stub.setCreated(record.getCreated());

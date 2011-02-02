@@ -39,14 +39,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TrainingPackageStub }
-     * 
-     */
-    public TrainingPackageStub createTrainingPackageStub() {
-        return new TrainingPackageStub();
-    }
-
-    /**
      * Create an instance of {@link QualificationStub }
      * 
      */
@@ -55,19 +47,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LanguageStub }
+     * Create an instance of {@link TrainingPackageStub }
      * 
      */
-    public LanguageStub createLanguageStub() {
-        return new LanguageStub();
-    }
-
-    /**
-     * Create an instance of {@link CountryStub }
-     * 
-     */
-    public CountryStub createCountryStub() {
-        return new CountryStub();
+    public TrainingPackageStub createTrainingPackageStub() {
+        return new TrainingPackageStub();
     }
 
     /**
@@ -84,6 +68,22 @@ public class ObjectFactory {
      */
     public ModuleStub createModuleStub() {
         return new ModuleStub();
+    }
+
+    /**
+     * Create an instance of {@link LanguageStub }
+     * 
+     */
+    public LanguageStub createLanguageStub() {
+        return new LanguageStub();
+    }
+
+    /**
+     * Create an instance of {@link CountryStub }
+     * 
+     */
+    public CountryStub createCountryStub() {
+        return new CountryStub();
     }
 
     /**

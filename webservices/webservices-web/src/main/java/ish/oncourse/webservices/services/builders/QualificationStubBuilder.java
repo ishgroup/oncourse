@@ -5,8 +5,6 @@
 
 package ish.oncourse.webservices.services.builders;
 
-import org.apache.cayenne.Persistent;
-
 import ish.oncourse.model.Qualification;
 import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
 
@@ -14,15 +12,13 @@ import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
  *
  * @author marek
  */
-public final class QualificationStubBuilder implements IStubBuilder {
+public final class QualificationStubBuilder implements IStubBuilder<Qualification> {
 
-	public QualificationStub convert(Persistent p) {
-
-		Qualification record = (Qualification) p;
+	public QualificationStub convert(Qualification record) {
 		
 		QualificationStub stub = new QualificationStub();
 
-		stub.setWillowId((Long) record.readProperty(Qualification.ID_PK_COLUMN));
+		stub.setWillowId(record.getId());
 		stub.setAnzsco(record.getAnzsco());
 		stub.setAnzsic(record.getAnzsic());
 		stub.setAsco(record.getAsco());

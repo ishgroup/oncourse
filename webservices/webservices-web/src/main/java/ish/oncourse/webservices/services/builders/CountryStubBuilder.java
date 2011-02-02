@@ -18,7 +18,7 @@ public final class CountryStubBuilder implements IStubBuilder<Country> {
 		
 		CountryStub stub = new CountryStub();
 
-		stub.setWillowId((Long) record.readProperty(Country.ID_PK_COLUMN));
+		stub.setWillowId(record.getId());
 		stub.setAsccssCode(record.getAsccssCode());
 		stub.setCreated(record.getCreated());
 		stub.setIshVersion(record.getIshVersion());

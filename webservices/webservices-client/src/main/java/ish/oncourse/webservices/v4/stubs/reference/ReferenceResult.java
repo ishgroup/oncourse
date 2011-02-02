@@ -42,11 +42,11 @@ import javax.xml.bind.annotation.XmlType;
 public class ReferenceResult {
 
     @XmlElements({
-        @XmlElement(name = "module", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = ModuleStub.class),
-        @XmlElement(name = "language", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = LanguageStub.class),
-        @XmlElement(name = "trainingPackage", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = TrainingPackageStub.class),
         @XmlElement(name = "qualification", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = QualificationStub.class),
-        @XmlElement(name = "country", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = CountryStub.class)
+        @XmlElement(name = "language", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = LanguageStub.class),
+        @XmlElement(name = "module", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = ModuleStub.class),
+        @XmlElement(name = "country", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = CountryStub.class),
+        @XmlElement(name = "trainingPackage", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = TrainingPackageStub.class)
     })
     protected List<SoapReferenceStub> countryOrLanguageOrModule;
 
@@ -68,11 +68,11 @@ public class ReferenceResult {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link ModuleStub }
-     * {@link LanguageStub }
-     * {@link TrainingPackageStub }
      * {@link QualificationStub }
+     * {@link LanguageStub }
+     * {@link ModuleStub }
      * {@link CountryStub }
+     * {@link TrainingPackageStub }
      * 
      * 
      */

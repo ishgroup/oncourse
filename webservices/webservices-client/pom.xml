@@ -53,21 +53,21 @@
 							<sourceRoot>${basedir}/src/main/java</sourceRoot>
 							<wsdlOptions>
 								<wsdlOption>
-									<wsdl>src/main/wsdl/v4_auth.wsdl</wsdl>
+									<wsdl>${basedir}/src/main/resources/wsdl/v4_auth.wsdl</wsdl>
 									<bindingFiles>
-										<bindingFile>src/main/wsdl/auth_binding.xml</bindingFile>
+										<bindingFile>${basedir}/src/main/resources/wsdl/auth_binding.xml</bindingFile>
 									</bindingFiles>
 								</wsdlOption>
 								<wsdlOption>
-									<wsdl>src/main/wsdl/v4_reference.wsdl</wsdl>
+									<wsdl>${basedir}/src/main/resources/wsdl/v4_reference.wsdl</wsdl>
 									<bindingFiles>
-										<bindingFile>src/main/wsdl/reference_binding.xml</bindingFile>
+										<bindingFile>${basedir}/src/main/resources/wsdl/reference_binding.xml</bindingFile>
 									</bindingFiles>
 								</wsdlOption>
 								<wsdlOption>
-									<wsdl>src/main/wsdl/v4_replication.wsdl</wsdl>
+									<wsdl>${basedir}/src/main/resources/wsdl/v4_replication.wsdl</wsdl>
 									<bindingFiles>
-										<bindingFile>src/main/wsdl/replication_binding.xml</bindingFile>
+										<bindingFile>${basedir}/src/main/resources/wsdl/replication_binding.xml</bindingFile>
 									</bindingFiles>
 								</wsdlOption>
 							</wsdlOptions>

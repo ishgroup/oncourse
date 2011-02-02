@@ -18,7 +18,7 @@ public final class LanguageStubBuilder implements IStubBuilder<Language> {
 
 		LanguageStub stub = new LanguageStub();
 
-		stub.setWillowId((Long) record.readProperty(Language.ID_PK_COLUMN));
+		stub.setWillowId(record.getId());
 		stub.setAbsCode(record.getAbsCode());
 		stub.setCreated(record.getCreated());
 		Boolean isActive = (record.getIsActive() == null) ? null : record.getIsActive().intValue() == 1;

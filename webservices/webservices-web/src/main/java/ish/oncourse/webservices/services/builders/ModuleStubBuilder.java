@@ -18,7 +18,7 @@ public final class ModuleStubBuilder implements IStubBuilder<Module> {
 		
 		ModuleStub stub = new ModuleStub();
 
-		stub.setWillowId((Long) record.readProperty(Module.ID_PK_COLUMN));
+		stub.setWillowId(record.getId());
 		stub.setCreated(record.getCreated());
 		stub.setDisciplineCode(record.getDisciplineCode());
 		stub.setFieldOfEducation(record.getFieldOfEducation());
