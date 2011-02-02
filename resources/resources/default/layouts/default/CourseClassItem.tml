@@ -5,7 +5,7 @@
 
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<div class="classItem vevent">
+	<div class="classItem vevent"  data-classid="${courseClass.id}">
 		
 		<t:if test="courseClass.detail">
 			<div class="classDescription">
@@ -54,7 +54,10 @@
 		</dl>
 
 		<div class="classAction">
-			<button class="enrolAction" id="${courseClass.id}" href="enrol/EnrolCourses">Enrol Now</button>			
+			<ul>
+				<li class="class_addorder"><a class="enrolAction" id="${courseClass.id}">Enrol Now</a>	</li>
+			</ul>
+					
 			<div class="classStatus">There are 6 places available</div>
 		</div>	
 		
