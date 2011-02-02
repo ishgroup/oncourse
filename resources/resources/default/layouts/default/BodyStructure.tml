@@ -19,18 +19,14 @@
 			<div id="sidebarLeft">
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left"></div>
 			</div>
-			
-			
+
 			<div id="content">
-			
-				<!-- This confirmation dialog is for experimenting. -->
-				<div class="confirmOrderDialog">
-					<p>Thanks for adding <div>HSC Preparation: Mathematics - 2 Unit Exam Preparation Workshop <br/> <span>(3 Mar 2010 - 22 Sep 2010)</span></div></p>
+				<div class="confirmOrderDialog dialogContainer">
+					<p>Thanks for adding: <div class="className"></div><div class="classDate"></div></p>
 					
-					<p><button>Make Payment</button> <a href="#">Continue shopping</a> </p>
+					<p><button>Proceed to Checkout</button></p>
+					<div class="closeButton">X</div>
 				</div>
-				<!-- -->
-				
 				<t:body/>
 			</div>
 
