@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -315,10 +317,15 @@ public class EnrolmentPaymentEntry {
 					for (Discount discount : enrolment.getCourseClass().getDiscountsToApply(
 							new RealDiscountsPolicy(discountService.getPromotions(), enrolment
 									.getStudent()))) {
-						InvoiceLineDiscount invoiceLineDiscount = context
-								.newObject(InvoiceLineDiscount.class);
-						invoiceLineDiscount.setInvoiceLine(invLine);
-						invoiceLineDiscount.setDiscount(discount);
+						Expression discountQualifier = ExpressionFactory.matchExp(
+								InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
+						if (discountQualifier.filterObjects(invLine.getInvoiceLineDiscounts())
+								.isEmpty()) {
+							InvoiceLineDiscount invoiceLineDiscount = context
+									.newObject(InvoiceLineDiscount.class);
+							invoiceLineDiscount.setInvoiceLine(invLine);
+							invoiceLineDiscount.setDiscount(discount);
+						}
 					}
 					totalExGst = totalGst.add(invLine.getPriceTotalExTax().toBigDecimal());
 					totalGst = totalGst.add(invLine.getPriceTotalIncTax()

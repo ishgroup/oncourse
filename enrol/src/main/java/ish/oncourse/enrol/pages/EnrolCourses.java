@@ -44,6 +44,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.CleanupRender;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -89,6 +90,9 @@ public class EnrolCourses {
 	 */
 	@Inject
 	private Request request;
+	
+	@Inject
+	private ComponentResources componentResources;
 
 	@Property
 	@Persist
@@ -252,18 +256,12 @@ public class EnrolCourses {
 	void cleanupRender() {
 		checkoutResult = false;
 	}
-
+	
 	/**
 	 * Clears all the properties with the @Persist annotation.
 	 */
 	public void clearPersistedProperties() {
-		classesToEnrol = null;
-		contacts = null;
-		enrolments = null;
-		invoiceLines = null;
-		payment = null;
-		invoice = null;
-		context = null;
+		componentResources.discardPersistentFieldChanges();
 	}
 
 	/**
