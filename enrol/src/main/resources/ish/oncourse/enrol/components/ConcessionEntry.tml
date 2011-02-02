@@ -57,8 +57,8 @@
 	</div>
 	
 	<script type="text/javascript">
-		Event.observe('concessionZone', Tapestry.ZONE_UPDATED_EVENT, function(){
-			initHints();
+		Event.observe('concessionZone_${index}', Tapestry.ZONE_UPDATED_EVENT, function(){
+			initHints("concessionZone_${index}");
 		});
 	</script>
 </t:container>

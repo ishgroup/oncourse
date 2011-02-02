@@ -813,19 +813,38 @@ function editWebContentWithCKEditor(fieldID) {
 	CKEDITOR.replace(fieldID );
 }
 
-function initHints(){
+function initHints(parentBlockId){
+	parentBlockToUpdate='';
+	if(parentBlockId!=null){
+		parentBlockToUpdate = '#'+parentBlockId+' ';
+	}
 	// Show us hints on entering the field if the input is not invalid
-	$j('span.valid input').bind("focus blur", function() {
-		$j(this).next().next().children('.hint').toggleClass('hidden-text');
+	$j(parentBlockToUpdate+'span.valid input').bind("focus blur", function() {
+		parent=$j(this).next().next();
+		if(parent.children('.hint').length==0){
+			//for the inputs that have one more image before hint (like calendar tapestry component)
+			parent=parent.next();
+		}
+		parent.children('.hint').toggleClass('hidden-text');
 		//$j(this).parent().nextAll('.hint:first').toggle();
 	});
 
 	// Show us reasons for errors on entering the field if the input IS invalid
-	$j('span.validate input').bind("focus blur", function() {
-		$j(this).next().next().children('.reason').toggleClass('hidden-text');
+	$j(parentBlockToUpdate+'span.validate input').bind("focus blur", function() {
+		parent=$j(this).next().next();
+		if(parent.children('.reason').length==0){
+			//for the inputs that have one more image before hint (like calendar tapestry component)
+			parent=parent.next();
+		}
+		parent.children('.reason').toggleClass('hidden-text');
 	});
-	$j('span.validate select').bind("focus blur", function() {
-		$j(this).next().next().children('.reason').toggleClass('hidden-text');
+	$j(parentBlockToUpdate+'span.validate select').bind("focus blur", function() {
+		parent=$j(this).next().next();
+		if(parent.children('.reason').length==0){
+			//for the inputs that have one more image before hint (like calendar tapestry component)
+			parent=parent.next();
+		}
+		parent.children('.reason').toggleClass('hidden-text');
 	});
 }
 

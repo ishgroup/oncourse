@@ -77,6 +77,8 @@
 		</t:zone>
 	</div>
 	<script type="text/javascript">
-		Event.observe('addStudentBlock', Tapestry.ZONE_UPDATED_EVENT, initHints);
+		Event.observe('addStudentBlock', Tapestry.ZONE_UPDATED_EVENT, function(){
+			initHints("addStudentBlock");
+		});
 	</script>
 </t:container>

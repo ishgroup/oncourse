@@ -38,7 +38,4 @@
 		</td>
 	</tr>
  
-	<script type="text/javascript">
-		Event.observe('addStudentBlock', Tapestry.ZONE_UPDATED_EVENT, initHints);
-	</script>
 </t:container>	

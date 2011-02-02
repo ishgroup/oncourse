@@ -102,8 +102,8 @@
 	<script type="text/javascript">
 		Event.observe('paymentZone', Tapestry.ZONE_UPDATED_EVENT, 
 				function(){
-					initHints();  
-					$j('.nyromodal').nyroModal( {debug:false } );
+					initHints('paymentZone');  
+					$j('#paymentZone .nyromodal').nyroModal( {debug:false } );
 				}
 		);
 	</script>
