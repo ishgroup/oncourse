@@ -7,10 +7,12 @@ import java.util.Map;
 
 import org.apache.cayenne.Persistent;
 
+
 @SuppressWarnings("rawtypes")
 public class StubBuilderComposite implements IStubBuilder {
 
 	private Map<String, IStubBuilder> builders = new HashMap<String, IStubBuilder>();
+
 
 	public StubBuilderComposite() {
 		builders.put("Country", new CountryStubBuilder());
@@ -20,10 +22,21 @@ public class StubBuilderComposite implements IStubBuilder {
 		builders.put("TrainingPackage", new TrainingPackageStubBuilder());
 	}
 
+	/**
+	 *
+	 *
+	 * @param record
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
-	public SoapReferenceStub convert(Persistent record) {
+	public SoapReferenceStub convert(Persistent record) throws StubBuilderNotFoundException {
 		String key = record.getObjectId().getEntityName();
 		IStubBuilder builder = builders.get(key);
+
+		if (builder == null) {
+			throw new StubBuilderNotFoundException(
+					"Builder not found during record conversion", key);
+		}
 		return builder.convert(record);
 	}
 }

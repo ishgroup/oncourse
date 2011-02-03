@@ -14,5 +14,5 @@ import org.apache.cayenne.Persistent;
  * @author marek
  */
 public interface IStubBuilder<T extends Persistent> {
-	SoapReferenceStub convert(T record);
+	SoapReferenceStub convert(T record) throws StubBuilderNotFoundException;
 }

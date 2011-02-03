@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.soap.v4;
 
+import ish.oncourse.webservices.services.builders.StubBuilderNotFoundException;
 import ish.oncourse.webservices.services.builders.IStubBuilder;
 import ish.oncourse.webservices.services.reference.IReferenceServiceComposite;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
@@ -9,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
+import javax.ws.rs.WebApplicationException;
 
 import org.apache.cayenne.Persistent;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,6 +64,9 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	@Inject
 	@Autowired
 	private IStubBuilder stubBuilder;
+
+	private static final Logger LOGGER = Logger.getLogger(ReferencePortTypeImpl.class);
+
 	
 	/**
 	 * Call to find out the most recent version of Reference Data - note that
@@ -80,13 +86,21 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	 * @return all records with this version or empty list if no records with
 	 *		that version exist
 	 */
+	@SuppressWarnings("unchecked")
 	public ReferenceResult getRecords(long ishVersion) {
 
 		List<SoapReferenceStub> stubs = new ArrayList<SoapReferenceStub>();
 		List<Persistent> records = referenceService.getForReplication(ishVersion);
 		
 		for (Persistent p: records) {
-			stubs.add(stubBuilder.convert(p));
+			try {
+				SoapReferenceStub stub = stubBuilder.convert(p);
+				stubs.add(stub);
+			} catch (StubBuilderNotFoundException e) {
+				LOGGER.error("Exception while converting records to stubs", e);
+				// Return HTTP 500 code - internal server error
+				throw new WebApplicationException();
+			}
 		}
 		
 		ReferenceResult result = new ReferenceResult();
