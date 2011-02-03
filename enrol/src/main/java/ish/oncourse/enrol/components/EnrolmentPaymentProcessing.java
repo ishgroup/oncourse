@@ -1,7 +1,5 @@
 package ish.oncourse.enrol.components;
 
-import java.util.List;
-
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
 import ish.oncourse.enrol.services.student.IStudentService;
@@ -9,9 +7,12 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.EnrolmentStatus;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.services.cookies.ICookiesService;
+
+import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -41,6 +42,9 @@ public class EnrolmentPaymentProcessing {
 	private PaymentIn payment;
 
 	@Persist
+	private Invoice invoice;
+
+	@Persist
 	private List<Enrolment> enrolments;
 
 	@InjectPage
@@ -68,19 +72,18 @@ public class EnrolmentPaymentProcessing {
 			if (payment != null) {
 				paymentGatewayService.performGatewayOperation(payment);
 				context = payment.getObjectContext();
-			} else if (!enrolments.isEmpty()) {
-				// FIXME or some other processing of enrolment without payment
+			} else if (enrolments != null) {
+				invoice.setStatus(InvoiceStatus.SUCCESS);
 				for (Enrolment enrolment : enrolments) {
 					enrolment.setStatus(EnrolmentStatus.SUCCESS);
 				}
-				context = enrolments.get(0).getObjectContext();
+				context = invoice.getObjectContext();
 			}
 
 			if (context != null) {
 				context.commitChanges();
 			}
-			// FIXME consider how to deal with "null" payment
-			if (payment == null || PaymentStatus.SUCCESS.equals(payment.getStatus())) {
+			if (InvoiceStatus.SUCCESS.equals(invoice.getStatus())) {
 				// clear all the short lists
 				cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "");
 				cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
@@ -90,6 +93,7 @@ public class EnrolmentPaymentProcessing {
 
 		}
 		result.setPayment(payment);
+		result.setInvoice(invoice);
 		result.setEnrolments(enrolments);
 		return result;
 	}
@@ -102,4 +106,7 @@ public class EnrolmentPaymentProcessing {
 		this.payment = payment;
 	}
 
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
 }

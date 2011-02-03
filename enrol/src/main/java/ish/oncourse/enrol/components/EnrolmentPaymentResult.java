@@ -4,6 +4,8 @@ import ish.oncourse.enrol.components.AnalyticsTransaction.Item;
 import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentStatus;
@@ -32,6 +34,8 @@ public class EnrolmentPaymentResult {
 	private ITagService tagService;
 
 	private PaymentIn payment;
+
+	private Invoice invoice;
 
 	private List<Enrolment> enrolments;
 
@@ -111,14 +115,13 @@ public class EnrolmentPaymentResult {
 	}
 
 	/**
-	 * Returns true if the enrol operation was successful and false
-	 * otherwise.
+	 * Returns true if the enrol operation was successful and false otherwise.
 	 * 
 	 * @return
 	 */
 	public boolean isEnrolmentSuccessful() {
 		if (!isPayment()) {
-			return enrolments != null;
+			return InvoiceStatus.SUCCESS.equals(invoice.getStatus());
 		}
 		return PaymentStatus.SUCCESS.equals(payment.getStatus());
 	}
@@ -129,11 +132,9 @@ public class EnrolmentPaymentResult {
 	 * @return
 	 */
 	public boolean isEnrolmentFailed() {
-		if (payment == null && enrolments == null) {
-			return true;
-		}
+
 		if (!isPayment()) {
-			return false;
+			return !InvoiceStatus.SUCCESS.equals(invoice.getStatus());
 		}
 		PaymentStatus status = payment.getStatus();
 		return PaymentStatus.FAILED.equals(status) || PaymentStatus.REFUNDED.equals(status);
@@ -150,12 +151,18 @@ public class EnrolmentPaymentResult {
 	}
 
 	public String getPaymentId() {
-		return "" + payment.getId();
+		if (isPayment()) {
+			return payment.getId().toString();
+		}
+		return invoice.getId().toString();
 	}
 
 	public void setPayment(PaymentIn payment) {
 		this.payment = payment;
+	}
 
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
 	}
 
 	public void setEnrolments(List<Enrolment> enrolments) {

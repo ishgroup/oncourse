@@ -294,46 +294,53 @@ public class EnrolmentPaymentEntry {
 		ObjectContext context = payment.getObjectContext();
 		List<Object> objectsToDelete = new ArrayList<Object>();
 		List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
+		List<InvoiceLine> validInvoiceLines = new ArrayList<InvoiceLine>();
 		enrolCourses.setCheckoutResult(true);
 		EnrolmentPaymentProcessing enrolmentPaymentProcessing = enrolCourses.getResultingElement();
+		enrolmentPaymentProcessing.setInvoice(invoice);
+		for (Enrolment e : enrolments) {
+			if (e.getInvoiceLine() == null) {
+				objectsToDelete.add(e);
+			} else {
+				validEnrolments.add(e);
+			}
+		}
+
+		for (InvoiceLine invLine : invoice.getInvoiceLines()) {
+			Enrolment enrolment = invLine.getEnrolment();
+			if (enrolment == null) {
+				objectsToDelete.add(invLine);
+			} else {
+				validInvoiceLines.add(invLine);
+				for (Discount discount : enrolment.getCourseClass().getDiscountsToApply(
+						new RealDiscountsPolicy(discountService.getPromotions(), enrolment
+								.getStudent()))) {
+					Expression discountQualifier = ExpressionFactory.matchExp(
+							InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
+					if (discountQualifier.filterObjects(invLine.getInvoiceLineDiscounts())
+							.isEmpty()) {
+						InvoiceLineDiscount invoiceLineDiscount = context
+								.newObject(InvoiceLineDiscount.class);
+						invoiceLineDiscount.setInvoiceLine(invLine);
+						invoiceLineDiscount.setDiscount(discount);
+					}
+				}
+
+			}
+		}
+		invoice.setContact(payment.getContact());
+		invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
+
 		if (!isZeroPayment()) {
 			payment.setAmount(totalIncGst.toBigDecimal());
 			BigDecimal totalGst = BigDecimal.ZERO;
 			BigDecimal totalExGst = BigDecimal.ZERO;
 
-			for (Enrolment e : enrolments) {
-				if (e.getInvoiceLine() == null) {
-					objectsToDelete.add(e);
-				} else {
-					validEnrolments.add(e);
-				}
+			for (InvoiceLine il : validInvoiceLines) {
+				totalExGst = totalGst.add(il.getPriceTotalExTax().toBigDecimal());
+				totalGst = totalGst.add(il.getPriceTotalIncTax().subtract(il.getPriceTotalExTax())
+						.toBigDecimal());
 			}
-
-			for (InvoiceLine invLine : invoice.getInvoiceLines()) {
-				Enrolment enrolment = invLine.getEnrolment();
-				if (enrolment == null) {
-					objectsToDelete.add(invLine);
-				} else {
-					for (Discount discount : enrolment.getCourseClass().getDiscountsToApply(
-							new RealDiscountsPolicy(discountService.getPromotions(), enrolment
-									.getStudent()))) {
-						Expression discountQualifier = ExpressionFactory.matchExp(
-								InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
-						if (discountQualifier.filterObjects(invLine.getInvoiceLineDiscounts())
-								.isEmpty()) {
-							InvoiceLineDiscount invoiceLineDiscount = context
-									.newObject(InvoiceLineDiscount.class);
-							invoiceLineDiscount.setInvoiceLine(invLine);
-							invoiceLineDiscount.setDiscount(discount);
-						}
-					}
-					totalExGst = totalGst.add(invLine.getPriceTotalExTax().toBigDecimal());
-					totalGst = totalGst.add(invLine.getPriceTotalIncTax()
-							.subtract(invLine.getPriceTotalExTax()).toBigDecimal());
-
-				}
-			}
-
 			invoice.setTotalExGst(totalExGst);
 			invoice.setTotalGst(totalGst);
 
@@ -343,12 +350,13 @@ public class EnrolmentPaymentEntry {
 			paymentInLine.setAmount(payment.getAmount());
 
 			enrolmentPaymentProcessing.setPayment(payment);
-			invoice.setContact(payment.getContact());
 			payment.setStatus(PaymentStatus.IN_TRANSACTION);
-			invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
+
 		} else {
 			objectsToDelete.add(payment);
 			enrolmentPaymentProcessing.setPayment(null);
+			invoice.setTotalExGst(BigDecimal.ZERO);
+			invoice.setTotalGst(BigDecimal.ZERO);
 		}
 		context.deleteObjects(objectsToDelete);
 		lock.lock();
@@ -358,11 +366,11 @@ public class EnrolmentPaymentEntry {
 				for (Enrolment e : validEnrolments) {
 					e.setStatus(EnrolmentStatus.IN_TRANSACTION);
 				}
-				context.commitChanges();
 				enrolmentPaymentProcessing.setEnrolments(validEnrolments);
+				context.commitChanges();
 			} else {
-				context.rollbackChanges();
 				enrolmentPaymentProcessing.setEnrolments(null);
+				context.rollbackChanges();
 			}
 		} finally {
 			lock.unlock();
@@ -381,37 +389,40 @@ public class EnrolmentPaymentEntry {
 	 */
 	@OnEvent(component = "paymentDetailsForm", value = "validate")
 	void validate() {
-		if (!payment.validateCCType()) {
-			paymentDetailsForm.recordError(cardTypeSelect, messages.get("cardTypeErrorMessage"));
-		}
-		if (!payment.validateCCName()) {
-			paymentDetailsForm.recordError(cardName, messages.get("cardNameErrorMessage"));
-		}
+		if (!isZeroPayment()) {
+			if (!payment.validateCCType()) {
+				paymentDetailsForm
+						.recordError(cardTypeSelect, messages.get("cardTypeErrorMessage"));
+			}
+			if (!payment.validateCCName()) {
+				paymentDetailsForm.recordError(cardName, messages.get("cardNameErrorMessage"));
+			}
 
-		cardNumberErrorMessage = payment.validateCCNumber();
-		if (cardNumberErrorMessage != null) {
-			paymentDetailsForm.recordError(cardNumber, cardNumberErrorMessage);
-		}
+			cardNumberErrorMessage = payment.validateCCNumber();
+			if (cardNumberErrorMessage != null) {
+				paymentDetailsForm.recordError(cardNumber, cardNumberErrorMessage);
+			}
 
-		String creditCardCVV = payment.getCreditCardCVV();
-		if (creditCardCVV == null || creditCardCVV.equals("")) {
-			paymentDetailsForm.recordError(cardcvv, messages.get("cardcvv"));
-		}
+			String creditCardCVV = payment.getCreditCardCVV();
+			if (creditCardCVV == null || creditCardCVV.equals("")) {
+				paymentDetailsForm.recordError(cardcvv, messages.get("cardcvv"));
+			}
 
-		boolean hasErrorInDate = false;
-		if (ccExpiryMonth == null || ccExpiryYear == null) {
-			hasErrorInDate = true;
-		} else {
-			// don't check the format of ccExpiryMonth and ccExpiryYear because
-			// they are filled with dropdown lists with predefined values
-			payment.setCreditCardExpiry(ccExpiryMonth + "/" + ccExpiryYear);
-		}
+			boolean hasErrorInDate = false;
+			if (ccExpiryMonth == null || ccExpiryYear == null) {
+				hasErrorInDate = true;
+			} else {
+				// don't check the format of ccExpiryMonth and ccExpiryYear
+				// because
+				// they are filled with dropdown lists with predefined values
+				payment.setCreditCardExpiry(ccExpiryMonth + "/" + ccExpiryYear);
+			}
 
-		hasErrorInDate = !payment.validateCCExpiry();
-		if (hasErrorInDate) {
-			paymentDetailsForm.recordError(messages.get("expiryDateError"));
+			hasErrorInDate = !payment.validateCCExpiry();
+			if (hasErrorInDate) {
+				paymentDetailsForm.recordError(messages.get("expiryDateError"));
+			}
 		}
-
 		if (!userAgreed) {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
 		}
