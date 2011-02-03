@@ -93,9 +93,12 @@
     				</t:if>
     			</t:if>
 	    	</t:if>
-   			<div class="form-controls">
-    			<t:submit t:id="paymentSubmit" value="${submitButtonText}" class="btn"  clientId="makepayment"/>
-  			</div>
+	    	<t:if test="hasAnyEnrolmentsSelected">
+   				<div class="form-controls">
+    				<t:submit t:id="paymentSubmit" value="${submitButtonText}" class="btn"  
+    					clientId="makepayment"/>
+  				</div>
+  			</t:if>
 		</div>
 	</t:form>
 	</t:zone>

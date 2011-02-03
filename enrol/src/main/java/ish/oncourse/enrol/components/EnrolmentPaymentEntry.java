@@ -172,6 +172,8 @@ public class EnrolmentPaymentEntry {
 		payersEncoder = new ListValueEncoder<Contact>(payers, "id", propertyAccess);
 
 		cardTypeModel = new ISHEnumSelectModel(CreditCardType.class, messages);
+		
+		userAgreed = false;
 	}
 
 	private void initYears() {
@@ -359,7 +361,7 @@ public class EnrolmentPaymentEntry {
 
 	/**
 	 * Defines which enrolments are "checked" and should be included into the
-	 * processing.
+	 * processing and deletes the non-checked. Invoked on submit the checkout.
 	 * 
 	 * @return
 	 */
@@ -382,14 +384,15 @@ public class EnrolmentPaymentEntry {
 
 	/**
 	 * Defines which invoiceLines have the not-null reference to enrolment and
-	 * should be included into the processing.
+	 * should be included into the processing and deletes the others. Invoked on
+	 * submit the checkout.
 	 * 
 	 * @return
 	 */
 	public List<InvoiceLine> getInvoiceLinesToPersist() {
 		ObjectContext context = payment.getObjectContext();
 		List<InvoiceLine> validInvoiceLines = new ArrayList<InvoiceLine>();
-		
+
 		List<InvoiceLine> invoiceLinesToDelete = new ArrayList<InvoiceLine>();
 		// define which invoiceLines have the reference to enrolment and should
 		// be included into the processing
@@ -419,9 +422,9 @@ public class EnrolmentPaymentEntry {
 				}
 			}
 		}
-		
+
 		context.deleteObjects(invoiceLinesToDelete);
-		
+
 		return validInvoiceLines;
 	}
 
@@ -476,5 +479,21 @@ public class EnrolmentPaymentEntry {
 
 	public Zone getPaymentZone() {
 		return paymentZone;
+	}
+
+	/**
+	 * Checks if it is need to show or hide the submit button.
+	 * 
+	 * @return true if there is at least one enrolment selected(show submit
+	 *         button), false id there no any enrolments selected(hide submit
+	 *         button).
+	 */
+	public boolean isHasAnyEnrolmentsSelected() {
+		for (Enrolment enrolment : enrolments) {
+			if (enrolment.getInvoiceLine() != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
