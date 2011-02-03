@@ -83,6 +83,8 @@ public class EnrolmentPaymentProcessing {
 			if (context != null) {
 				context.commitChanges();
 			}
+			// if the invoice's status is successful, then the whole checkout is
+			// successful
 			if (InvoiceStatus.SUCCESS.equals(invoice.getStatus())) {
 				// clear all the short lists
 				cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "");

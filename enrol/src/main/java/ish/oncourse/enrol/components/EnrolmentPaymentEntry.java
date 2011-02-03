@@ -249,7 +249,8 @@ public class EnrolmentPaymentEntry {
 	}
 
 	public String getSubmitButtonText() {
-		return isZeroPayment() ? "Confirm enrolment" : "Make Payment";
+		return isZeroPayment() ? messages.get("submit.button.text.enrol") : messages
+				.get("submit.button.text.payment");
 	}
 
 	public String getCardTypeClass() {
@@ -292,44 +293,18 @@ public class EnrolmentPaymentEntry {
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
 		ObjectContext context = payment.getObjectContext();
-		List<Object> objectsToDelete = new ArrayList<Object>();
-		List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
-		List<InvoiceLine> validInvoiceLines = new ArrayList<InvoiceLine>();
-		enrolCourses.setCheckoutResult(true);
+		// enrolments to be persisted
+		List<Enrolment> validEnrolments = getEnrolmentsToPersist();
+		// invoiceLines to be persisted
+		List<InvoiceLine> validInvoiceLines = getInvoiceLinesToPersist();
+
+		// fill the processing result component with proper values
 		EnrolmentPaymentProcessing enrolmentPaymentProcessing = enrolCourses.getResultingElement();
 		enrolmentPaymentProcessing.setInvoice(invoice);
-		for (Enrolment e : enrolments) {
-			if (e.getInvoiceLine() == null) {
-				objectsToDelete.add(e);
-			} else {
-				validEnrolments.add(e);
-			}
-		}
 
-		for (InvoiceLine invLine : invoice.getInvoiceLines()) {
-			Enrolment enrolment = invLine.getEnrolment();
-			if (enrolment == null) {
-				objectsToDelete.add(invLine);
-			} else {
-				validInvoiceLines.add(invLine);
-				for (Discount discount : enrolment.getCourseClass().getDiscountsToApply(
-						new RealDiscountsPolicy(discountService.getPromotions(), enrolment
-								.getStudent()))) {
-					Expression discountQualifier = ExpressionFactory.matchExp(
-							InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
-					if (discountQualifier.filterObjects(invLine.getInvoiceLineDiscounts())
-							.isEmpty()) {
-						InvoiceLineDiscount invoiceLineDiscount = context
-								.newObject(InvoiceLineDiscount.class);
-						invoiceLineDiscount.setInvoiceLine(invLine);
-						invoiceLineDiscount.setDiscount(discount);
-					}
-				}
-
-			}
-		}
+		// even if the payment amount is zero, the contact for it is
+		// selected(the first in list by default)
 		invoice.setContact(payment.getContact());
-		invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
 
 		if (!isZeroPayment()) {
 			payment.setAmount(totalIncGst.toBigDecimal());
@@ -353,12 +328,14 @@ public class EnrolmentPaymentEntry {
 			payment.setStatus(PaymentStatus.IN_TRANSACTION);
 
 		} else {
-			objectsToDelete.add(payment);
+			context.deleteObject(payment);
 			enrolmentPaymentProcessing.setPayment(null);
 			invoice.setTotalExGst(BigDecimal.ZERO);
 			invoice.setTotalGst(BigDecimal.ZERO);
 		}
-		context.deleteObjects(objectsToDelete);
+
+		invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
+
 		lock.lock();
 		// block until checking and the change of state holds
 		try {
@@ -376,7 +353,76 @@ public class EnrolmentPaymentEntry {
 			lock.unlock();
 		}
 
+		enrolCourses.setCheckoutResult(true);
 		return enrolCourses;
+	}
+
+	/**
+	 * Defines which enrolments are "checked" and should be included into the
+	 * processing.
+	 * 
+	 * @return
+	 */
+	public List<Enrolment> getEnrolmentsToPersist() {
+		List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
+		ObjectContext context = payment.getObjectContext();
+
+		// define which enrolments are "checked" and should be included into the
+		// processing
+		for (Enrolment e : enrolments) {
+			if (e.getInvoiceLine() == null) {
+				context.deleteObject(e);
+			} else {
+				validEnrolments.add(e);
+			}
+		}
+
+		return validEnrolments;
+	}
+
+	/**
+	 * Defines which invoiceLines have the not-null reference to enrolment and
+	 * should be included into the processing.
+	 * 
+	 * @return
+	 */
+	public List<InvoiceLine> getInvoiceLinesToPersist() {
+		ObjectContext context = payment.getObjectContext();
+		List<InvoiceLine> validInvoiceLines = new ArrayList<InvoiceLine>();
+		
+		List<InvoiceLine> invoiceLinesToDelete = new ArrayList<InvoiceLine>();
+		// define which invoiceLines have the reference to enrolment and should
+		// be included into the processing
+		for (InvoiceLine invLine : invoice.getInvoiceLines()) {
+			Enrolment enrolment = invLine.getEnrolment();
+			if (enrolment == null) {
+				invoiceLinesToDelete.add(invLine);
+			} else {
+				validInvoiceLines.add(invLine);
+				// discounts that could be applied to the courseClass and the
+				// student of enrolment
+				List<Discount> discountsToApply = enrolment.getCourseClass().getDiscountsToApply(
+						new RealDiscountsPolicy(discountService.getPromotions(), enrolment
+								.getStudent()));
+				// iterate through the list of discounts and create the
+				// appropriate InvoiceLineDiscount objects
+				for (Discount discount : discountsToApply) {
+					Expression discountQualifier = ExpressionFactory.matchExp(
+							InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
+					if (discountQualifier.filterObjects(invLine.getInvoiceLineDiscounts())
+							.isEmpty()) {
+						InvoiceLineDiscount invoiceLineDiscount = context
+								.newObject(InvoiceLineDiscount.class);
+						invoiceLineDiscount.setInvoiceLine(invLine);
+						invoiceLineDiscount.setDiscount(discount);
+					}
+				}
+			}
+		}
+		
+		context.deleteObjects(invoiceLinesToDelete);
+		
+		return validInvoiceLines;
 	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "failure")
