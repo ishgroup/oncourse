@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -54,6 +53,7 @@ public class CourseClassService implements ICourseClassService {
 		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<CourseClass> loadByIds(Object... ids) {
 		if (ids.length == 0) {
 			return Collections.emptyList();
@@ -63,6 +63,15 @@ public class CourseClassService implements ICourseClassService {
 
 		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, params));
 
+		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<CourseClass> loadByIds(List<Long> ids) {
+		if ((ids == null) || (ids.isEmpty())) {
+			return Collections.emptyList();
+		}
+		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids));
 		return cayenneService.sharedContext().performQuery(q);
 	}
 }

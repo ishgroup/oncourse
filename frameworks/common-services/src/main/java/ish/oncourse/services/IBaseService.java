@@ -6,6 +6,7 @@
 package ish.oncourse.services;
 
 import java.util.List;
+import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 
 
@@ -13,7 +14,7 @@ import org.apache.cayenne.exp.Expression;
  *
  * @author marek
  */
-public interface IBaseService<T> {
+public interface IBaseService<T extends Persistent> {
 
     public static final String ID_PK_COLUMN = "id";
 

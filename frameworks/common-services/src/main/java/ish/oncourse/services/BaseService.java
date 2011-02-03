@@ -7,6 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -20,7 +21,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  *
  * @author Marek
  */
-public class BaseService<T> implements IBaseService<T> {
+public class BaseService<T extends Persistent> implements IBaseService<T> {
 
 	@Inject
 	private ICayenneService cayenneService;

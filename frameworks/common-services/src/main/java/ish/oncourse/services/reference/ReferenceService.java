@@ -5,24 +5,25 @@
 
 package ish.oncourse.services.reference;
 
-import ish.oncourse.services.BaseService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SQLTemplate;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
+import ish.oncourse.services.BaseService;
+
 /**
  * Implementation of the Reference Service.
  * 
  * @author Marek Wawrzyczny
  */
-public abstract class ReferenceService<T> extends BaseService<T> implements IReferenceService<T> {
+public abstract class ReferenceService<T extends Persistent> extends BaseService<T> implements IReferenceService<T> {
 
 	private static final Logger LOGGER = Logger.getLogger(ReferenceService.class);
 

@@ -6,7 +6,6 @@
 package ish.oncourse.linktransform;
 
 import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -14,7 +13,6 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.tag.ITagService;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -130,6 +128,16 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * courseClasses with ids of 123 and 456
 	 */
 	private static final String TIMELINE_PATH = "/Timeline/sessions";
+
+	/**
+	 * Path of the refreshing the shortlist
+	 */
+	private static final String SHORTLIST_PATH = "/shortlist";
+
+	/**
+	 * Path of the refreshing the shortlist
+	 */
+	private static final String DISCOUNTS_PATH = "/discounts";
 
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -267,6 +275,16 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if (ADVANCED_SUBURB_PATH.equals(path)) {
 			return new PageRenderRequestParameters("ui/SuburbsTextArray", new EmptyEventContext(),
 					false);
+		}
+
+		if (SHORTLIST_PATH.equalsIgnoreCase(path)) {
+			if (request.isXHR()) {
+				return new PageRenderRequestParameters(
+						"ui/ShortList", new EmptyEventContext(), false);
+			} else {
+				return new PageRenderRequestParameters(
+						"ui/ShortListPage", new EmptyEventContext(), false);
+			}
 		}
 
 		if (ADD_TO_COOKIES_PATH.equalsIgnoreCase(path)) {
