@@ -7,7 +7,8 @@
 				<label id="i${index}">
 					<t:checkbox t:id="enrolmentCheckbox" disabled="disabled" value="enrolmentSelected"  
 						clientId="enrolmentCheckbox${separator}${sIndex}${separator}${cCIndex}"
-						onclick="$(${enrolmentCheckboxForm.clientId}).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"/>
+						onclick="$(paymentDetailsFormClientId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+									$(${enrolmentCheckboxForm.clientId}).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"/>
 					${courseClass.course.name}
 	  			</label>
 	  		</t:form>

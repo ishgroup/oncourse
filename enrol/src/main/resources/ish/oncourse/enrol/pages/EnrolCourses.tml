@@ -47,6 +47,9 @@
 								</t:if>
 							</thead>
 							<tbody>
+								<script type="text/javascript">
+									paymentDetailsFormClientId="paymentDetailsForm";
+								</script>
 
 								<t:loop source="classesToEnrol" value="courseClass"
 									index="courseClassIndex">

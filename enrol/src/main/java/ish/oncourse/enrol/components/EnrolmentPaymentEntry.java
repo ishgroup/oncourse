@@ -138,6 +138,7 @@ public class EnrolmentPaymentEntry {
 	private Zone paymentZone;
 
 	@InjectComponent
+	@Property
 	private Form paymentDetailsForm;
 
 	@InjectComponent
@@ -159,6 +160,11 @@ public class EnrolmentPaymentEntry {
 	private List<Enrolment> enrolments;
 	private final ReentrantLock lock = new ReentrantLock();
 
+	/**
+	 * Indicates if the submit was because of pressing the submit button.
+	 */
+	private boolean isSubmitted;
+
 	@SetupRender
 	void beforeRender() {
 		moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
@@ -172,7 +178,7 @@ public class EnrolmentPaymentEntry {
 		payersEncoder = new ListValueEncoder<Contact>(payers, "id", propertyAccess);
 
 		cardTypeModel = new ISHEnumSelectModel(CreditCardType.class, messages);
-		
+
 		userAgreed = false;
 	}
 
@@ -294,6 +300,9 @@ public class EnrolmentPaymentEntry {
 	 */
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
+		if (!isSubmitted) {
+			return paymentZone.getBody();
+		}
 		ObjectContext context = payment.getObjectContext();
 		// enrolments to be persisted
 		List<Enrolment> validEnrolments = getEnrolmentsToPersist();
@@ -433,11 +442,19 @@ public class EnrolmentPaymentEntry {
 		return paymentZone.getBody();
 	}
 
+	@OnEvent(component = "paymentSubmit", value = "selected")
+	void submitButtonPressed() {
+		isSubmitted = true;
+	}
+
 	/**
 	 * Invokes when the {@link #paymentDetailsForm} is attempted to submit.
 	 */
 	@OnEvent(component = "paymentDetailsForm", value = "validate")
 	void validate() {
+		if (!isSubmitted) {
+			return;
+		}
 		if (!isZeroPayment()) {
 			if (!payment.validateCCType()) {
 				paymentDetailsForm
@@ -463,7 +480,8 @@ public class EnrolmentPaymentEntry {
 			} else {
 				// don't check the format of ccExpiryMonth and ccExpiryYear
 				// because
-				// they are filled with dropdown lists with predefined values
+				// they are filled with dropdown lists with predefined
+				// values
 				payment.setCreditCardExpiry(ccExpiryMonth + "/" + ccExpiryYear);
 			}
 
@@ -475,6 +493,7 @@ public class EnrolmentPaymentEntry {
 		if (!userAgreed) {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
 		}
+
 	}
 
 	public Zone getPaymentZone() {
@@ -496,4 +515,5 @@ public class EnrolmentPaymentEntry {
 		}
 		return false;
 	}
+	
 }

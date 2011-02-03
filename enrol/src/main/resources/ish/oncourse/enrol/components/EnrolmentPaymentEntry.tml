@@ -101,6 +101,9 @@
   			</t:if>
 		</div>
 	</t:form>
+	<script type="text/javascript">
+		paymentDetailsFormClientId=${paymentDetailsForm.clientId};
+	</script>
 	</t:zone>
 	<script type="text/javascript">
 		Event.observe('paymentZone', Tapestry.ZONE_UPDATED_EVENT, 

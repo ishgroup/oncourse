@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -52,20 +53,19 @@ public class EnrolmentListItem {
 	@InjectComponent
 	private Checkbox enrolmentCheckbox;
 
-	@Persist
-	private EnrolCourses enrolCoursesPage;
+	@InjectPage
+	private EnrolCourses enrolCourses;
 
 	@SetupRender
 	void beforeRender() {
 		dateFormat = new SimpleDateFormat("EEE d MMM yy h:mm a");
-		enrolCoursesPage = (EnrolCourses) componentResources.getPage();
 		sIndex = studentIndex;
 		cCIndex = courseClassIndex;
 		dateFormat.setTimeZone(getCourseClass().getClassTimeZone());
 	}
 
 	public int getIndex() {
-		return studentIndex * enrolCoursesPage.getCourseClasses().size() + courseClassIndex;
+		return studentIndex * enrolCourses.getCourseClasses().size() + courseClassIndex;
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class EnrolmentListItem {
 
 	@OnEvent(component = "enrolmentCheckboxForm", value = "submit")
 	Object enrolmentChClicked() {
-		return enrolCoursesPage.enrolmentsUpdated();
+		return enrolCourses.enrolmentsUpdated();
 	}
 
 	public String getDisabledMessage() {
@@ -148,14 +148,15 @@ public class EnrolmentListItem {
 	}
 
 	public Enrolment getEnrolment() {
-		return enrolCoursesPage.getEnrolments()[sIndex][cCIndex];
+		return enrolCourses.getEnrolments()[sIndex][cCIndex];
 	}
 
 	public InvoiceLine getInvoiceLine() {
-		return enrolCoursesPage.getInvoiceLines()[sIndex][cCIndex];
+		return enrolCourses.getInvoiceLines()[sIndex][cCIndex];
 	}
 
 	public CourseClass getCourseClass() {
-		return enrolCoursesPage.getCourseClasses().get(cCIndex);
+		return enrolCourses.getCourseClasses().get(cCIndex);
 	}
+
 }
