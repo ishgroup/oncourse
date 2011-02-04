@@ -1,15 +1,20 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.util.CookieUtils;
+import java.util.Collections;
 
 import java.util.List;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.Parameter;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Cookies;
+import org.apache.tapestry5.services.Request;
 
 /**
  * Based on DynamicCookieView
@@ -23,7 +28,7 @@ public class ShortList {
 	private IWebSiteService webSiteService;
 
 	@Inject
-	private ICookiesService cookiesService;
+	private Cookies cookies;
 
 	@Inject
 	private ICourseClassService courseClassService;
@@ -34,13 +39,46 @@ public class ShortList {
 	@Property
 	private CourseClass courseClass;
 
+	@Inject
+	private Request request;
+
+	private static final Logger LOGGER = Logger.getLogger(ShortList.class);
+
 
 	@SetupRender
 	void beforeRender() {
-		String[] shortlistedClassIds = cookiesService.getCookieCollectionValue(
-				CourseClass.SHORTLIST_COOKIE_KEY);
-		if (shortlistedClassIds != null) {
-			items = courseClassService.loadByIds(shortlistedClassIds);
+
+		List<Long> classIds = CookieUtils.convertToIds(
+				cookies, CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
+
+		if (request.getParameter("addClass") != null) {
+			Long id = null;
+			try {
+				id = Long.parseLong(request.getParameter("addClass"));
+				if ((id != null) && !(classIds.contains(id))) {
+					classIds.add(id);
+				}
+			} catch (Exception e) {
+				LOGGER.debug("Error converting ID", e);
+			}
+		} else if (request.getParameter("removeClass") != null) {
+			Long id = null;
+			try {
+				id = Long.parseLong(request.getParameter("removeClass"));
+				if ((id != null) && (classIds.contains(id))) {
+					classIds.remove(id);
+				}
+			} catch (Exception e) {
+				LOGGER.debug("Error converting ID", e);
+			}
+		}
+
+		CookieUtils.convertToCookie(cookies, CourseClass.SHORTLIST_COOKIE_KEY, classIds);
+
+		if ((classIds != null) && !(classIds.isEmpty())) {
+			items = courseClassService.loadByIds(classIds);
+		} else {
+			items = Collections.emptyList();
 		}
 	}
 
@@ -50,10 +88,7 @@ public class ShortList {
 	 * @return a count of items
 	 */
 	public Integer getItemCount() {
-		if (items == null) {
-			return 0;
-		}
-		return items.size();
+		return (items == null) ? 0 : items.size();
 	}
 
 	/**

@@ -46,7 +46,7 @@ public class TimelineData {
 					validIds.add(Long.valueOf(idStr));
 				}
 			}
-			courseClasses = courseClassService.loadByIds(validIds.toArray());
+			courseClasses = courseClassService.loadByIds(validIds);
 			records = new ArrayList<Session>();
 			for (CourseClass cc : courseClasses) {
 				records.addAll(cc.getTimelineableSessions());
