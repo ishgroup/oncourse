@@ -1,4 +1,4 @@
 <html t:type="ui/pagestructure" bodyId="literal:PageNotFound" bodyClass="literal:internal-page"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<span t:type="ui/ShortList" doRenderAsContent="true" />
+	<span t:type="ui/ShortList"/>
 </html>

@@ -280,7 +280,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if (SHORTLIST_PATH.equalsIgnoreCase(path)) {
 			if (request.isXHR()) {
 				return new PageRenderRequestParameters(
-						"ui/ShortList", new EmptyEventContext(), false);
+						"ui/ShortListAjax", new EmptyEventContext(), false);
 			} else {
 				return new PageRenderRequestParameters(
 						"ui/ShortListPage", new EmptyEventContext(), false);
