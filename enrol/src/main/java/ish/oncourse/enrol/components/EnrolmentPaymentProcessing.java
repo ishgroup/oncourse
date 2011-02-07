@@ -20,6 +20,8 @@ import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 public class EnrolmentPaymentProcessing {
 
@@ -50,6 +52,8 @@ public class EnrolmentPaymentProcessing {
 	@InjectPage
 	private EnrolCourses enrolCourses;
 
+	@Inject
+	private Request request;
 	/**
 	 * The processHolder displays its content while this method is being
 	 * performed and when it is finished, the
@@ -68,20 +72,18 @@ public class EnrolmentPaymentProcessing {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			ObjectContext context = null;
 			if (payment != null) {
 				paymentGatewayService.performGatewayOperation(payment);
-				context = payment.getObjectContext();
 			} else if (enrolments != null) {
 				invoice.setStatus(InvoiceStatus.SUCCESS);
 				for (Enrolment enrolment : enrolments) {
 					enrolment.setStatus(EnrolmentStatus.SUCCESS);
 				}
-				context = invoice.getObjectContext();
 			}
 
-			if (context != null) {
-				context.commitChanges();
+			if (enrolments != null) {
+				invoice.getObjectContext().commitChanges();
+				enrolCourses.clearPersistedProperties();
 			}
 			// if the invoice's status is successful, then the whole checkout is
 			// successful
@@ -90,7 +92,11 @@ public class EnrolmentPaymentProcessing {
 				cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "");
 				cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
 				studentService.clearStudentsShortList();
-				enrolCourses.clearPersistedProperties();
+			}else{
+				Session session = request.getSession(false);
+				if(session!=null){
+					session.setAttribute("failedPayment", payment);
+				}
 			}
 
 		}

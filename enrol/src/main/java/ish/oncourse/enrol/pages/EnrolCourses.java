@@ -54,6 +54,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 public class EnrolCourses {
 
@@ -282,11 +283,29 @@ public class EnrolCourses {
 		College currentCollege = webSiteService.getCurrentCollege();
 		College college = (College) context.localObject(currentCollege.getObjectId(),
 				currentCollege);
+		
 		if (payment == null || payment.getStatus() == PaymentStatus.FAILED) {
+			
 			payment = context.newObject(PaymentIn.class);
 			payment.setStatus(PaymentStatus.PENDING);
 			payment.setSource(PaymentSource.SOURCE_WEB);
 			payment.setCollege(college);
+			
+			PaymentIn failedPayment=null;
+			Session session = request.getSession(false);
+			if(session!=null){
+				failedPayment=(PaymentIn) session.getAttribute("failedPayment");
+			}
+			if(failedPayment!=null){
+				hadPreviousPaymentFailure=true;
+				payment.setCreditCardCVV(failedPayment.getCreditCardCVV());
+				payment.setCreditCardExpiry(failedPayment.getCreditCardExpiry());
+				payment.setCreditCardName(failedPayment.getCreditCardName());
+				payment.setCreditCardNumber(failedPayment.getCreditCardNumber());
+				payment.setCreditCardType(failedPayment.getCreditCardType());
+				session.setAttribute("failedPayment", null);
+			}
+			
 		}
 		if (invoice == null) {
 			invoice = context.newObject(Invoice.class);

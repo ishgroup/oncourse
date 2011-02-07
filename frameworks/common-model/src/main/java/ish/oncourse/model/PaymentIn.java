@@ -164,8 +164,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	/**
 	 * Sets the status of payment to {@link PaymentStatus#FAILED}, and sets the
-	 * initial statuses to the related invoice ( {@link InvoiceStatus#PENDING} )
-	 * and enrolment ( {@link EnrolmentStatus#PENDING} ).
+	 * failed statuses to the related invoice ( {@link InvoiceStatus#FAILED} )
+	 * and enrolment ( {@link EnrolmentStatus#FAILED} ).
 	 * 
 	 * Invoked when the payment gateway processing is failed(the payment is failed because of declined card).
 	 * 
@@ -175,9 +175,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		setStatusNotes("Card declined");
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
-			invoice.setStatus(InvoiceStatus.PENDING);
+			invoice.setStatus(InvoiceStatus.FAILED);
 			for (InvoiceLine il : invoice.getInvoiceLines()) {
-				il.getEnrolment().setStatus(EnrolmentStatus.PENDING);
+				il.getEnrolment().setStatus(EnrolmentStatus.FAILED);
 			}
 		}
 	}
