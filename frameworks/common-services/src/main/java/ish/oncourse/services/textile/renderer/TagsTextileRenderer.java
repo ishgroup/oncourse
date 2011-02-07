@@ -87,21 +87,14 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			Tag rootTag = tagService.getRootTag();
 			if (paramName != null) {
 				parentTag = tagService.getSubTagByName(paramName);
-
 			} else {
 				parentTag = rootTag;
-
 			}
 			if (parentTag != null) {
 				Map<String, Object> parameters = new HashMap<String, Object>();
-				List<Tag> textileTags = new ArrayList<Tag>();
-				if (parentTag.equals(rootTag)) {
-					textileTags.addAll(parentTag.getWebVisibleTags());
-				} else {
-					textileTags.add(parentTag);
-				}
-				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_TAGS_PARAM,
-						textileTags);
+				
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM,
+						parentTag);
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM,
 						entityType);
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM,

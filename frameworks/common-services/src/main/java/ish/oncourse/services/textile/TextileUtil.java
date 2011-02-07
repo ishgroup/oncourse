@@ -52,7 +52,7 @@ public class TextileUtil {
 	public static final String TEXTILE_IMAGE_PAGE_PARAM = "additionalImageParameters";
 	public static final String TEXTILE_TAGS_PAGE_DETAILS_PARAM = "textileTagsShowDetails";
 	public static final String TEXTILE_TAGS_PAGE_ENTITY_PARAM = "textileTagsEntityType";
-	public static final String TEXTILE_TAGS_PAGE_TAGS_PARAM = "textileTags";
+	public static final String TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM = "textileTags";
 	public static final String TEXTILE_VIDEO_PAGE_PARAM = "videoParameters";
 	
 	/**
