@@ -11,25 +11,29 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.services.Cookies;
 
-
 /**
- *
+ * 
  * @author marek
  */
 public class CookieUtils {
 
 	private static final Logger LOGGER = Logger.getLogger(CookieUtils.class);
 
-	public static <T extends Number> List<T> convertToIds(Cookies cookies, String name, Class<T> clazz) {
+	public static <T extends Number> List<T> convertToIds(Cookies cookies, String name,
+			Class<T> clazz) {
 		List<T> ids = new ArrayList<T>();
-		String[] stringIds = cookies.readCookieValue(name).split("[%]");
+		String cookieValue = cookies.readCookieValue(name);
+		if (cookieValue == null) {
+			return ids;
+		}
+		String[] stringIds = cookieValue.split("[%]");
 
 		if ((stringIds != null) && (stringIds.length > 0)) {
 			try {
 				for (String id : stringIds) {
 					ids.add(convertToNumber(id, clazz));
 				}
-			} catch(Exception e) {
+			} catch (Exception e) {
 				LOGGER.error("Exception while converting IDs", e);
 			}
 		}
