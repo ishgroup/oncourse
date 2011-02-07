@@ -10,11 +10,18 @@ import org.apache.cayenne.query.SelectQuery;
 
 import ish.oncourse.model.auto._Tutor;
 
-public class Tutor extends _Tutor {
+public class Tutor extends _Tutor implements Queueable {
 
-	public Integer getId() {
-		return ((getObjectId() != null) && !getObjectId().isTemporary()) ? ((Number) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN)).intValue() : null;
+	private transient boolean doQueue = true;
+
+
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ?
+				(Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+
+	public College getCollege() {
+		return getContact().getCollege();
 	}
 
 	public String getFullName() {
@@ -62,4 +69,13 @@ public class Tutor extends _Tutor {
 
 		return result == null ? new ArrayList<TutorRole>() : result;
 	}
+
+	public boolean getDoQueue() {
+		return doQueue;
+	}
+
+	public void setDoQueue(boolean doQueue) {
+		this.doQueue = doQueue;
+	}
+
 }

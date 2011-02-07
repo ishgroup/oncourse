@@ -10,7 +10,10 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
-public class Student extends _Student {
+public class Student extends _Student implements Queueable {
+
+	private transient boolean doQueue = true;
+
 
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? 
@@ -60,6 +63,14 @@ public class Student extends _Student {
 			}
 		}
 		return null;
+	}
+
+	public boolean getDoQueue() {
+		return doQueue;
+	}
+
+	public void setDoQueue(boolean doQueue) {
+		this.doQueue = doQueue;
 	}
 
 }

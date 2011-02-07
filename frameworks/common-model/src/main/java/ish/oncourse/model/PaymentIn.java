@@ -11,9 +11,12 @@ import ish.common.types.PaymentSource;
 import ish.common.util.ExternalValidation;
 import ish.oncourse.model.auto._PaymentIn;
 
-public class PaymentIn extends _PaymentIn {
+public class PaymentIn extends _PaymentIn implements Queueable {
+
+	private transient boolean doQueue = true;
 
 	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
+
 
 	/**
 	 * Returns the primary key property - id of {@link PaymentIn}.
@@ -201,6 +204,14 @@ public class PaymentIn extends _PaymentIn {
 	 */
 	public String getClientReference() {
 		return PaymentSource.SOURCE_WEB.getDatabaseValue() + getId();
+	}
+
+	public boolean getDoQueue() {
+		return doQueue;
+	}
+
+	public void setDoQueue(boolean doQueue) {
+		this.doQueue = doQueue;
 	}
 
 }

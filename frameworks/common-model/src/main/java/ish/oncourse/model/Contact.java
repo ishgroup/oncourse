@@ -6,7 +6,9 @@ import ish.oncourse.model.auto._Contact;
 import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.TimestampUtilities;
 
-public class Contact extends _Contact {
+public class Contact extends _Contact implements Queueable {
+
+	private transient boolean doQueue = true;
 
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ?
@@ -225,4 +227,12 @@ public class Contact extends _Contact {
 		return null;
 	}
 
+	public boolean getDoQueue() {
+		return doQueue;
+	}
+
+	public void setDoQueue(boolean doQueue) {
+		this.doQueue = doQueue;
+	}
+	
 }
