@@ -14,12 +14,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.services.Request;
 
-
 @Scope("perthread")
 public class WebSiteService implements IWebSiteService {
 
+	private static final String TECHNICAL_SITES_DOMAIN_PATTERN = "([a-z])+[.](live|staging|test|dev|local)[.]oncourse[.]net[.]au";
+
 	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
-	
+
 	@Inject
 	private Request request;
 
@@ -27,7 +28,7 @@ public class WebSiteService implements IWebSiteService {
 	private ICayenneService cayenneService;
 
 	private transient WebHostName collegeDomain;
-	
+
 	private final static Logger LOGGER = Logger.getLogger(WebSiteService.class);
 
 	public WebHostName getCurrentDomain() {
@@ -36,29 +37,42 @@ public class WebSiteService implements IWebSiteService {
 
 			String serverName = request.getServerName().toLowerCase();
 
-			SelectQuery query = new SelectQuery(WebHostName.class);
-			query.andQualifier(ExpressionFactory.matchExp(
-					WebHostName.NAME_PROPERTY, serverName));
+			if (serverName.matches(TECHNICAL_SITES_DOMAIN_PATTERN)) {
+				String siteKey = serverName.substring(0, serverName.indexOf('.'));
+				SelectQuery query = new SelectQuery(WebSite.class, ExpressionFactory.matchExp(
+						WebSite.SITE_KEY_PROPERTY, siteKey));
+				WebSite site = (WebSite) DataObjectUtils.objectForQuery(
+						cayenneService.sharedContext(), query);
+				if (site != null) {
+					// use fake WebHostName for the "technical" sites
+					collegeDomain = new WebHostName();
+					collegeDomain.setName(serverName);
+					collegeDomain.setWebSite(site);
+					collegeDomain.setCollege(site.getCollege());
+				}
 
-			query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-			query.setCacheGroups(COLLEGE_DOMAIN_CACHE_GROUP);
+			} else {
+				SelectQuery query = new SelectQuery(WebHostName.class);
+				query.andQualifier(ExpressionFactory
+						.matchExp(WebHostName.NAME_PROPERTY, serverName));
 
-			collegeDomain = (WebHostName) DataObjectUtils.objectForQuery(
-					cayenneService.sharedContext(), query);
+				query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+				query.setCacheGroups(COLLEGE_DOMAIN_CACHE_GROUP);
 
-
+				collegeDomain = (WebHostName) DataObjectUtils.objectForQuery(
+						cayenneService.sharedContext(), query);
+			}
 			if (collegeDomain == null) {
-				throw new IllegalStateException(
-						"Can't determine college domain for server name: '"
+				throw new IllegalStateException("Can't determine college domain for server name: '"
 						+ serverName + "'");
 			}
 		}
 
 		if (collegeDomain != null) {
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Request server name: " + request.getServerName()
-						+ " for Request #" + request.hashCode()
-						+ " ; returning domain object with " + collegeDomain.getName());
+				LOGGER.debug("Request server name: " + request.getServerName() + " for Request #"
+						+ request.hashCode() + " ; returning domain object with "
+						+ collegeDomain.getName());
 			}
 		}
 
