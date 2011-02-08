@@ -17,10 +17,10 @@ import org.apache.tapestry5.services.Request;
 public class TagItem {
 	@Parameter(required = true, cache = false)
 	private Tag tag;
-	
+
 	@Parameter
 	private int childPosition;
-	
+
 	@Inject
 	private Request request;
 
@@ -28,7 +28,7 @@ public class TagItem {
 	private Messages messages;
 
 	private String entityType;
-	
+
 	private boolean showDetails;
 
 	@SetupRender
@@ -87,18 +87,19 @@ public class TagItem {
 	}
 
 	public String getTagItemClass() {
+
 		StringBuffer result = new StringBuffer();
 		if (!tag.getWebVisibleTags().isEmpty()) {
 			result.append(messages.get("li.class.hasChildren"));
 		}
 		String tagLink = getTagLink().toLowerCase();
 		String requestPath = request.getPath().toLowerCase();
-		String searchTagParameter = request.getParameter("subject").toLowerCase();
+		String searchTagParameter = request.getParameter("subject") == null ? "" : request
+				.getParameter("subject").toLowerCase();
 		String defaultPath = tag.getDefaultPath().toLowerCase();
 		if (requestPath.endsWith(tagLink) || defaultPath.equals(searchTagParameter)) {
 			result.append(" ").append(messages.get("li.class.selected"));
-		} else if (requestPath.contains(tagLink)
-				|| (searchTagParameter != null && searchTagParameter.contains(defaultPath))) {
+		} else if (requestPath.contains(tagLink) || searchTagParameter.contains(defaultPath)) {
 			result.append(" ").append(messages.get("li.class.childSelected"));
 		}
 		return result.toString();
