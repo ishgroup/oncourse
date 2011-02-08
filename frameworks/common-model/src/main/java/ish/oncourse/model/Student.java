@@ -12,9 +12,6 @@ import org.joda.time.PeriodType;
 
 public class Student extends _Student implements Queueable {
 
-	private transient boolean doQueue = true;
-
-
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? 
 				(Long) getObjectId() .getIdSnapshot().get(ID_PK_COLUMN) : null;
@@ -63,14 +60,6 @@ public class Student extends _Student implements Queueable {
 			}
 		}
 		return null;
-	}
-
-	public boolean getDoQueue() {
-		return doQueue;
-	}
-
-	public void setDoQueue(boolean doQueue) {
-		this.doQueue = doQueue;
 	}
 
 }

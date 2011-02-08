@@ -5,6 +5,8 @@
 
 package ish.oncourse.utils;
 
+import ish.oncourse.model.Queueable;
+import ish.oncourse.model.access.ISHDataContext;
 import org.apache.cayenne.Persistent;
 
 
@@ -23,5 +25,9 @@ public final class EntityUtils {
 	public static Long getEntityId(Persistent entity) {
 		return (entity.getObjectId() != null && !entity.getObjectId().isTemporary()) ?
 				(Long) entity.getObjectId().getIdSnapshot().get("id") : null;
+	}
+
+	public static boolean doQueue(Queueable entity) {
+		return ((ISHDataContext) entity.getObjectContext()).getIsRecordQueueingEnabled();
 	}
 }

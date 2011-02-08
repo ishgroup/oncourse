@@ -14,8 +14,4 @@ public interface Queueable extends Persistent {
 
 	College getCollege();
 
-	boolean getDoQueue();
-
-	void setDoQueue(boolean doQueue);
-	
 }

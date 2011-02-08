@@ -5,10 +5,6 @@
 
 package ish.oncourse.model.services.lifecycle;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +16,12 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import ish.oncourse.model.College;
+import ish.oncourse.model.Queueable;
+import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.utils.EntityUtils;
 
 
 /**
@@ -89,7 +91,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	 */
 	private void enqueue(Queueable entity, boolean isForDeletion) {
 
-		if (entity.getDoQueue()) {
+		if (EntityUtils.doQueue(entity)) {
 			String entityName = entity.getObjectId().getEntityName();
 			Long entityId = entity.getId();
 			College entityCollege = entity.getCollege();

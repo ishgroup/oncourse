@@ -12,9 +12,6 @@ import ish.oncourse.model.auto._Tutor;
 
 public class Tutor extends _Tutor implements Queueable {
 
-	private transient boolean doQueue = true;
-
-
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ?
 				(Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
@@ -68,14 +65,6 @@ public class Tutor extends _Tutor implements Queueable {
 		List<TutorRole> result = getObjectContext().performQuery(query);
 
 		return result == null ? new ArrayList<TutorRole>() : result;
-	}
-
-	public boolean getDoQueue() {
-		return doQueue;
-	}
-
-	public void setDoQueue(boolean doQueue) {
-		this.doQueue = doQueue;
 	}
 
 }

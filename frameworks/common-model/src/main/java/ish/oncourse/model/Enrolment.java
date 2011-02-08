@@ -7,9 +7,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Enrolment extends _Enrolment implements Queueable {
 
-	private transient boolean doQueue = true;
-
-
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ?
 				(Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
@@ -29,14 +26,6 @@ public class Enrolment extends _Enrolment implements Queueable {
 		Expression filter = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, getStudent());
 
 		return !filter.filterObjects(getCourseClass().getValidEnrolments()).isEmpty();
-	}
-
-	public boolean getDoQueue() {
-		return doQueue;
-	}
-
-	public void setDoQueue(boolean doQueue) {
-		this.doQueue = doQueue;
 	}
 
 }
