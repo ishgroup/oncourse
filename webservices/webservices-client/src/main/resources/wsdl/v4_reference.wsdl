@@ -29,7 +29,7 @@
 			</xs:complexType>
 			<xs:complexType name="countryStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapReferenceStub">
+					<xs:extension base="tns:referenceStub">
 						<xs:sequence>
 							<xs:element minOccurs="0" name="asccssCode" type="xs:string" />
 							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
@@ -44,14 +44,16 @@
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
-			<xs:complexType abstract="true" name="soapReferenceStub">
+			
+			<xs:complexType abstract="true" name="referenceStub">
 				<xs:sequence>
 					<xs:element minOccurs="0" name="willowId" type="xs:long" />
 				</xs:sequence>
 			</xs:complexType>
+			
 			<xs:complexType name="languageStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapReferenceStub">
+					<xs:extension base="tns:referenceStub">
 						<xs:sequence>
 							<xs:element minOccurs="0" name="absCode" type="xs:string" />
 							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
@@ -65,7 +67,7 @@
 			</xs:complexType>
 			<xs:complexType name="moduleStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapReferenceStub">
+					<xs:extension base="tns:referenceStub">
 						<xs:sequence>
 							<xs:element minOccurs="0" name="created" type="xs:dateTime" />
 							<xs:element minOccurs="0" name="disciplineCode" type="xs:string" />
@@ -84,7 +86,7 @@
 			</xs:complexType>
 			<xs:complexType name="qualificationStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapReferenceStub">
+					<xs:extension base="tns:referenceStub">
 						<xs:sequence>
 							<xs:element minOccurs="0" name="anzsco" type="xs:string" />
 							<xs:element minOccurs="0" name="anzsic" type="xs:string" />
@@ -111,7 +113,7 @@
 			</xs:complexType>
 			<xs:complexType name="trainingPackageStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapReferenceStub">
+					<xs:extension base="tns:referenceStub">
 						<xs:sequence>
 							<xs:element minOccurs="0" name="copyrightCategory"
 								type="xs:string" />

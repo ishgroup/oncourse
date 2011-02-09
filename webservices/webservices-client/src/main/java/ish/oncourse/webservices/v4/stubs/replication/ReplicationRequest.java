@@ -42,13 +42,13 @@ import javax.xml.bind.annotation.XmlType;
 public class ReplicationRequest {
 
     @XmlElements({
-        @XmlElement(name = "courseModule", type = CourseModuleStub.class),
-        @XmlElement(name = "session", type = SessionStub.class),
-        @XmlElement(name = "courseClass", type = CourseClassStub.class),
-        @XmlElement(name = "course", type = CourseStub.class),
-        @XmlElement(name = "sessionTutor", type = SessionTutorStub.class)
+        @XmlElement(name = "sessionTutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionTutorStub.class),
+        @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class),
+        @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class),
+        @XmlElement(name = "session", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionStub.class),
+        @XmlElement(name = "course", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseStub.class)
     })
-    protected List<SoapStub> courseOrCourseClassOrCourseModule;
+    protected List<ReplicationStub> courseOrCourseClassOrCourseModule;
 
     /**
      * Gets the value of the courseOrCourseClassOrCourseModule property.
@@ -68,17 +68,17 @@ public class ReplicationRequest {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link CourseModuleStub }
-     * {@link SessionStub }
-     * {@link CourseClassStub }
-     * {@link CourseStub }
      * {@link SessionTutorStub }
+     * {@link CourseModuleStub }
+     * {@link CourseClassStub }
+     * {@link SessionStub }
+     * {@link CourseStub }
      * 
      * 
      */
-    public List<SoapStub> getCourseOrCourseClassOrCourseModule() {
+    public List<ReplicationStub> getCourseOrCourseClassOrCourseModule() {
         if (courseOrCourseClassOrCourseModule == null) {
-            courseOrCourseClassOrCourseModule = new ArrayList<SoapStub>();
+            courseOrCourseClassOrCourseModule = new ArrayList<ReplicationStub>();
         }
         return this.courseOrCourseClassOrCourseModule;
     }

@@ -39,22 +39,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QualificationStub }
-     * 
-     */
-    public QualificationStub createQualificationStub() {
-        return new QualificationStub();
-    }
-
-    /**
-     * Create an instance of {@link TrainingPackageStub }
-     * 
-     */
-    public TrainingPackageStub createTrainingPackageStub() {
-        return new TrainingPackageStub();
-    }
-
-    /**
      * Create an instance of {@link ReferenceResult }
      * 
      */
@@ -71,11 +55,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TrainingPackageStub }
+     * 
+     */
+    public TrainingPackageStub createTrainingPackageStub() {
+        return new TrainingPackageStub();
+    }
+
+    /**
      * Create an instance of {@link LanguageStub }
      * 
      */
     public LanguageStub createLanguageStub() {
         return new LanguageStub();
+    }
+
+    /**
+     * Create an instance of {@link QualificationStub }
+     * 
+     */
+    public QualificationStub createQualificationStub() {
+        return new QualificationStub();
     }
 
     /**

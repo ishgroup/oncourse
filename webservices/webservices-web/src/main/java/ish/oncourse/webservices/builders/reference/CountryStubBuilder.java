@@ -3,18 +3,23 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.services.builders;
+package ish.oncourse.webservices.builders.reference;
+
+import org.apache.cayenne.Persistent;
 
 import ish.oncourse.model.Country;
+import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.CountryStub;
 
 /**
  *
  * @author marek
  */
-public final class CountryStubBuilder implements IStubBuilder<Country> {
+public final class CountryStubBuilder implements IReferenceStubBuilder {
 	
-	public CountryStub convert(Country record) {
+	public CountryStub convert(Persistent entity) {
+		
+		Country record = (Country) entity;
 		
 		CountryStub stub = new CountryStub();
 

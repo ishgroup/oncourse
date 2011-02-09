@@ -23,11 +23,11 @@ import ish.oncourse.services.BaseService;
  * 
  * @author Marek Wawrzyczny
  */
-public abstract class ReferenceService<T extends Persistent> extends BaseService<T> implements IReferenceService<T> {
+public abstract class AbstractReferenceService<T extends Persistent> extends BaseService<T> implements IReferenceService<T> {
 
-	private static final Logger LOGGER = Logger.getLogger(ReferenceService.class);
+	private static final Logger LOGGER = Logger.getLogger(AbstractReferenceService.class);
 
-	public ReferenceService() {
+	public AbstractReferenceService() {
 		super();
 	}
 

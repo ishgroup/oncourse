@@ -1,11 +1,10 @@
 package ish.oncourse.model;
 
-import ish.oncourse.model.access.ISHDataContext;
-import java.util.Date;
-
 import ish.oncourse.model.auto._Contact;
 import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.TimestampUtilities;
+
+import java.util.Date;
 
 public class Contact extends _Contact implements Queueable {
 

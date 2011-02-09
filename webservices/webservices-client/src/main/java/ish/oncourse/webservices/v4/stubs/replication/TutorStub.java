@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for sessionStub complex type.
+ * <p>Java class for tutorStub complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="sessionStub">
+ * &lt;complexType name="tutorStub">
  *   &lt;complexContent>
  *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "sessionStub")
-public class SessionStub
+@XmlType(name = "tutorStub")
+public class TutorStub
     extends ReplicationStub
 {
 

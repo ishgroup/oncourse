@@ -19,10 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 
  * @author anton
- *
+ * 
  */
 
-public class ReferenceServiceComposite implements IReferenceServiceComposite {
+public class ReferenceService {
 
 	private List<IReferenceService<? extends Persistent>> allServices;
 
@@ -32,9 +32,8 @@ public class ReferenceServiceComposite implements IReferenceServiceComposite {
 	 * @return
 	 */
 	@Autowired
-	public ReferenceServiceComposite(@Inject ICountryService countryService, @Inject ILanguageService languageService,
-			@Inject IQualificationService qualificationService, @Inject IModuleService moduleService,
-			@Inject ITrainingPackageService trainingPackageService) {
+	public ReferenceService(@Inject ICountryService countryService, @Inject ILanguageService languageService,
+			@Inject IQualificationService qualificationService, @Inject IModuleService moduleService, @Inject ITrainingPackageService trainingPackageService) {
 		allServices = new LinkedList<IReferenceService<? extends Persistent>>();
 		allServices.add(countryService);
 		allServices.add(languageService);
@@ -42,7 +41,7 @@ public class ReferenceServiceComposite implements IReferenceServiceComposite {
 		allServices.add(moduleService);
 		allServices.add(qualificationService);
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -54,13 +53,14 @@ public class ReferenceServiceComposite implements IReferenceServiceComposite {
 		}
 		return list;
 	}
-	
+
 	/**
-	 * Finds maximun ishVersion accross all Reference services, thus accross all reference entities.
+	 * Finds maximun ishVersion accross all Reference services, thus accross all
+	 * reference entities.
 	 */
 	public Long findMaxIshVersion() {
 		SortedSet<Long> versions = new TreeSet<Long>();
-		
+
 		for (IReferenceService<?> service : allServices) {
 			versions.add(service.findMaxIshVersion());
 		}

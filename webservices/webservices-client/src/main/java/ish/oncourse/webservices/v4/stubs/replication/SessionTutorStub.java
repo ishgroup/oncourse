@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="sessionTutorStub">
  *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}soapStub">
+ *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "sessionTutorStub")
 public class SessionTutorStub
-    extends SoapStub
+    extends ReplicationStub
 {
 
 

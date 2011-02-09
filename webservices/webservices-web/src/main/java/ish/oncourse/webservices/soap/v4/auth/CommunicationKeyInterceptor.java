@@ -9,6 +9,8 @@ import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
@@ -16,6 +18,10 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 	@Inject
 	@Autowired
 	private ICollegeService collegeService;
+	
+	@Inject
+	@Autowired
+	private Request request;
 
 	public CommunicationKeyInterceptor() {
 		super(Phase.PRE_INVOKE);
@@ -39,5 +45,12 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 		if (communicationKey == null || !String.valueOf(college.getCommunicationKey()).equals(communicationKey)) {
 			throw new AuthenticationFailureException("communicationKey.invalid", communicationKey);
 		}
+		
+		Session session = request.getSession(false);
+		
+		if (session == null) {
+			throw new AuthenticationFailureException("session.expired");
+		}
+		
 	}
 }

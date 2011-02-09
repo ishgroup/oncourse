@@ -97,12 +97,10 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		Random randomGen = new Random();
 		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
 
-		Session session = request.getSession(true);
-		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(webServicesSecurityCode, newCommunicationKey));
-
 		College local = (College) ctx.localObject(college.getObjectId(), null);
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
+		
 
 		if (local.getFirstRemoteAuthentication() == null) {
 			local.setFirstRemoteAuthentication(today);
@@ -112,6 +110,9 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 
 		ctx.commitChanges();
 
+		Session session = request.getSession(true);
+		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(local));
+		
 		return newCommunicationKey;
 	}
 	

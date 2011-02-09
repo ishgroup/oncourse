@@ -3,7 +3,6 @@ package ish.oncourse.webservices.v4.stubs.replication;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -15,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="courseClassStub">
  *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}soapStub">
+ *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
@@ -31,10 +30,9 @@ import javax.xml.bind.annotation.XmlType;
     "code"
 })
 public class CourseClassStub
-    extends SoapStub
+    extends ReplicationStub
 {
 
-    @XmlElement(namespace = "")
     protected String code;
 
     /**

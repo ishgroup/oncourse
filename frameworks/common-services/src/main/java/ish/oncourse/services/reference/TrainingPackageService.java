@@ -11,7 +11,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
  *
  * @author Marek Wawrzyczny
  */
-public class TrainingPackageService extends ReferenceService<TrainingPackage>
+public class TrainingPackageService extends AbstractReferenceService<TrainingPackage>
 		implements ITrainingPackageService {
 
 	public TrainingPackage getTrainingPackageByTitle(String name) {

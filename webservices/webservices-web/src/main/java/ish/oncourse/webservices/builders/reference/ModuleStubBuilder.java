@@ -3,18 +3,23 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.services.builders;
+package ish.oncourse.webservices.builders.reference;
+
+import org.apache.cayenne.Persistent;
 
 import ish.oncourse.model.Module;
+import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.ModuleStub;
 
 /**
  *
  * @author marek
  */
-public final class ModuleStubBuilder implements IStubBuilder<Module> {
+public final class ModuleStubBuilder implements IReferenceStubBuilder {
 
-	public ModuleStub convert(Module record) {
+	public ModuleStub convert(Persistent entity) {
+		
+		Module record = (Module) entity;
 		
 		ModuleStub stub = new ModuleStub();
 

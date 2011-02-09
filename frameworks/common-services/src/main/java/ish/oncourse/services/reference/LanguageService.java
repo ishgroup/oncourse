@@ -17,7 +17,7 @@ import ish.oncourse.model.Language;
  * 
  * @author Marek Wawrzyczny
  */
-public class LanguageService extends ReferenceService<Language>
+public class LanguageService extends AbstractReferenceService<Language>
 		implements ILanguageService {
 
 	public Language getLanguageByName(String languageName) {

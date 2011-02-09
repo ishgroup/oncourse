@@ -11,7 +11,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
  *
  * @author Marek Wawrzyczny
  */
-public class QualificationService extends ReferenceService<Qualification> 
+public class QualificationService extends AbstractReferenceService<Qualification> 
 		implements IQualificationService {
 
 	public Qualification getQualificationByTitle(String QualificationName) {

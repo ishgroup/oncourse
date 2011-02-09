@@ -11,7 +11,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
  *
  * @author Marek Wawrzyczny
  */
-public class ModuleService extends ReferenceService<Module>
+public class ModuleService extends AbstractReferenceService<Module>
 		implements IModuleService {
 
 	public Module getModuleByTitle(String title) {

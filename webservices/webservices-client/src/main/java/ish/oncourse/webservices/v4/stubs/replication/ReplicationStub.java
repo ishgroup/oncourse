@@ -1,5 +1,5 @@
 
-package ish.oncourse.webservices.v4.stubs.reference;
+package ish.oncourse.webservices.v4.stubs.replication;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,15 +8,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for soapReferenceStub complex type.
+ * <p>Java class for replicationStub complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="soapReferenceStub">
+ * &lt;complexType name="replicationStub">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="angelId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="willowId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -27,19 +28,50 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "soapReferenceStub", propOrder = {
+@XmlType(name = "replicationStub", propOrder = {
+    "angelId",
     "willowId"
 })
 @XmlSeeAlso({
-    QualificationStub.class,
-    ModuleStub.class,
-    TrainingPackageStub.class,
-    LanguageStub.class,
-    CountryStub.class
+    CourseStub.class,
+    CourseClassStub.class,
+    SessionStub.class,
+    BinaryInfoStub.class,
+    TutorStub.class,
+    AttendanceStub.class,
+    CourseModuleStub.class,
+    ContactStub.class,
+    BinaryDataStub.class,
+    SessionTutorStub.class
 })
-public abstract class SoapReferenceStub {
+public abstract class ReplicationStub {
 
+    protected Long angelId;
     protected Long willowId;
+
+    /**
+     * Gets the value of the angelId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getAngelId() {
+        return angelId;
+    }
+
+    /**
+     * Sets the value of the angelId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setAngelId(Long value) {
+        this.angelId = value;
+    }
 
     /**
      * Gets the value of the willowId property.

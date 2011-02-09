@@ -3,19 +3,24 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.services.builders;
+package ish.oncourse.webservices.builders.reference;
+
+import org.apache.cayenne.Persistent;
 
 import ish.oncourse.model.Language;
+import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.LanguageStub;
 
 /**
  * 
  * @author marek
  */
-public final class LanguageStubBuilder implements IStubBuilder<Language> {
+public final class LanguageStubBuilder implements IReferenceStubBuilder {
 
-	public LanguageStub convert(Language record) {
-
+	public LanguageStub convert(Persistent entity) {
+		
+		Language record = (Language) entity;
+		
 		LanguageStub stub = new LanguageStub();
 
 		stub.setWillowId(record.getId());

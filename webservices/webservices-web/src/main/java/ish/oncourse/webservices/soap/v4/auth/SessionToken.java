@@ -1,31 +1,31 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
+import ish.oncourse.model.College;
+
 import java.io.Serializable;
 
 public class SessionToken implements Serializable {
 
-    final static String SESSION_TOKEN_KEY = "ish_session_token";
+    public final static String SESSION_TOKEN_KEY = "ish_session_token";
+    
+	private College college;
 	
-	private String securityCode;
-	private Long communicationKey;
-	
-	public SessionToken(String securityCode, Long communicationKey) {
+	public SessionToken(College college) {
 		super();
-		this.securityCode = securityCode;
-		this.communicationKey = communicationKey;
+		this.college = college;
 	}
 	
-	public String getSecurityCode() {
-		return securityCode;
-	}
-	public void setSecurityCode(String securityCode) {
-		this.securityCode = securityCode;
-	}
-	public Long getCommunicationKey() {
-		return communicationKey;
-	}
-	public void setCommunicationKey(Long communicationKey) {
-		this.communicationKey = communicationKey;
+	/**
+	 * @return the college
+	 */
+	public College getCollege() {
+		return college;
 	}
 
+	/**
+	 * @param college the college to set
+	 */
+	public void setCollege(College college) {
+		this.college = college;
+	}
 }

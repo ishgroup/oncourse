@@ -42,13 +42,13 @@ import javax.xml.bind.annotation.XmlType;
 public class ReferenceResult {
 
     @XmlElements({
-        @XmlElement(name = "qualification", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = QualificationStub.class),
-        @XmlElement(name = "language", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = LanguageStub.class),
-        @XmlElement(name = "module", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = ModuleStub.class),
         @XmlElement(name = "country", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = CountryStub.class),
-        @XmlElement(name = "trainingPackage", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = TrainingPackageStub.class)
+        @XmlElement(name = "language", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = LanguageStub.class),
+        @XmlElement(name = "trainingPackage", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = TrainingPackageStub.class),
+        @XmlElement(name = "module", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = ModuleStub.class),
+        @XmlElement(name = "qualification", namespace = "http://ref.v4.soap.webservices.oncourse.ish/", type = QualificationStub.class)
     })
-    protected List<SoapReferenceStub> countryOrLanguageOrModule;
+    protected List<ReferenceStub> countryOrLanguageOrModule;
 
     /**
      * Gets the value of the countryOrLanguageOrModule property.
@@ -68,17 +68,17 @@ public class ReferenceResult {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link QualificationStub }
-     * {@link LanguageStub }
-     * {@link ModuleStub }
      * {@link CountryStub }
+     * {@link LanguageStub }
      * {@link TrainingPackageStub }
+     * {@link ModuleStub }
+     * {@link QualificationStub }
      * 
      * 
      */
-    public List<SoapReferenceStub> getCountryOrLanguageOrModule() {
+    public List<ReferenceStub> getCountryOrLanguageOrModule() {
         if (countryOrLanguageOrModule == null) {
-            countryOrLanguageOrModule = new ArrayList<SoapReferenceStub>();
+            countryOrLanguageOrModule = new ArrayList<ReferenceStub>();
         }
         return this.countryOrLanguageOrModule;
     }

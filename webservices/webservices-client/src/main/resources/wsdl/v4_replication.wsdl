@@ -8,25 +8,117 @@
 			xmlns:tns="http://repl.v4.soap.webservices.oncourse.ish/"
 			elementFormDefault="unqualified" targetNamespace="http://repl.v4.soap.webservices.oncourse.ish/"
 			version="1.0">
+			<xs:element name="attendance" type="tns:attendanceStub"/>
+			<xs:element name="binaryData" type="tns:binaryDataStub"/>
+			<xs:element name="binaryInfo" type="tns:binaryInfoStub"/>
+			<xs:element name="contact" type="tns:contactStub"/>
 			<xs:element name="course" type="tns:courseStub" />
 			<xs:element name="courseClass" type="tns:courseClassStub" />
 			<xs:element name="courseModule" type="tns:courseModuleStub" />
 			<xs:element name="session" type="tns:sessionStub" />
 			<xs:element name="sessionTutor" type="tns:sessionTutorStub" />
+			<xs:element name="tutor" type="tns:tutorStub"/>
 			<xs:complexType name="replicationResult">
 				<xs:sequence>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
+						<xs:element ref="tns:attendance"/>
+						<xs:element ref="tns:binaryData"/>
+						<xs:element ref="tns:binaryInfo"/>
+						<xs:element ref="tns:contact"/>
 						<xs:element ref="tns:course" />
 						<xs:element ref="tns:courseClass" />
 						<xs:element ref="tns:courseModule" />
 						<xs:element ref="tns:session" />
 						<xs:element ref="tns:sessionTutor" />
+						<xs:element ref="tns:tutor"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:complexType>
+			<xs:complexType name="attendanceStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="attendanceType" type="xs:int"/>
+							<xs:element name="created" type="xs:dateTime"/>
+							<xs:element name="modified" type="xs:dateTime"/>
+							<xs:element name="marker" type="tns:replicationStub"/>
+							<xs:element name="session" type="tns:replicationStub"/>
+							<xs:element name="student" type="tns:replicationStub"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="binaryDataStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="collegeId" type="xs:long"/>
+							<xs:element name="content" type="xs:base64Binary"/>
+							<xs:element name="created" type="xs:dateTime"/>
+							<xs:element name="isDeleted" type="xs:boolean"/>
+							<xs:element name="modified" type="xs:dateTime"/>
+							<xs:element name="binaryInfo" type="tns:replicationStub"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="binaryInfoStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="byteSize" type="xs:long"/>
+							<xs:element name="created" type="xs:dateTime"/>
+							<xs:element name="isWebVisible" type="xs:boolean"/>
+							<xs:element name="mimeType" type="xs:string"/>
+							<xs:element name="modified" type="xs:dateTime"/>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="pixelHeight" type="xs:int"/>
+							<xs:element name="pixelWidth" type="xs:int"/>
+							<xs:element name="referenceNumber" type="xs:int"/>
+							<xs:element name="binaryData" type="tns:replicationStub"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="contactStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+							<xs:sequence>
+								<xs:element name="businessPhoneNumber" type="xs:string"/>
+								<xs:element name="cookieHash" type="xs:string"/>
+								<xs:element name="countryId" type="xs:long"/>
+								<xs:element name="created" type="xs:dateTime"/>
+								<xs:element name="dateOfBirth" type="xs:dateTime"/>
+								<xs:element name="emailAddress" type="xs:string"/>
+								<xs:element name="familyName" type="xs:string"/>
+								<xs:element name="faxNumber" type="xs:string"/>
+								<xs:element name="givenName" type="xs:string"/>
+								<xs:element name="homePhoneNumber" type="xs:string"/>
+								<xs:element name="isCompany" type="xs:boolean"/>
+								<xs:element name="isMale" type="xs:boolean"/>
+								<xs:element name="isMarketingViaEmailAllowed" type="xs:boolean"/>
+								<xs:element name="isMarketingViaPostAllowed" type="xs:boolean"/>
+								<xs:element name="isMarketingViaSMSAllowed" type="xs:boolean"/>
+								<xs:element name="mobilePhoneNumber" type="xs:string"/>
+								<xs:element name="modified" type="xs:dateTime"/>
+								<xs:element name="password" type="xs:string"/>
+								<xs:element name="passwordHash" type="xs:string"/>
+								<xs:element name="postcode" type="xs:string"/>
+								<xs:element name="state" type="xs:string"/>
+								<xs:element name="street" type="xs:string"/>
+								<xs:element name="suburb" type="xs:string"/>
+								<xs:element name="taxFileNumber" type="xs:string"/>
+								<xs:element name="uniqueCode" type="xs:string"/>
+								<xs:element name="college" type="tns:replicationStub"/>
+								<xs:element name="student" type="tns:replicationStub"/>
+								<xs:element name="tutor" type="tns:replicationStub"/>
+	 						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
 			<xs:complexType name="courseStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapStub">
+					<xs:extension base="tns:replicationStub">
 						<xs:sequence>
 							<xs:element name="name" type="xs:string" />
 							<xs:element name="detail" type="xs:string" />
@@ -34,7 +126,7 @@
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
-			<xs:complexType abstract="true" name="soapStub">
+			<xs:complexType abstract="true" name="replicationStub">
 				<xs:sequence>
 					<xs:element minOccurs="0" name="angelId" type="xs:long" />
 					<xs:element minOccurs="0" name="willowId" type="xs:long" />
@@ -42,7 +134,7 @@
 			</xs:complexType>
 			<xs:complexType name="courseClassStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapStub">
+					<xs:extension base="tns:replicationStub">
 						<xs:sequence>
 							<xs:element minOccurs="0" name="code" type="xs:string" />
 						</xs:sequence>
@@ -51,22 +143,30 @@
 			</xs:complexType>
 			<xs:complexType name="courseModuleStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapStub">
+					<xs:extension base="tns:replicationStub">
 						<xs:sequence />
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
 			<xs:complexType name="sessionStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapStub">
+					<xs:extension base="tns:replicationStub">
 						<xs:sequence />
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
 			<xs:complexType name="sessionTutorStub">
 				<xs:complexContent>
-					<xs:extension base="tns:soapStub">
+					<xs:extension base="tns:replicationStub">
 						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="tutorStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>

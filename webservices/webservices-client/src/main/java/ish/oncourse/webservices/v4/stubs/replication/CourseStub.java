@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="courseStub">
  *   &lt;complexContent>
- *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}soapStub">
+ *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="detail" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -33,12 +33,12 @@ import javax.xml.bind.annotation.XmlType;
     "detail"
 })
 public class CourseStub
-    extends SoapStub
+    extends ReplicationStub
 {
 
-    @XmlElement(namespace = "", required = true)
+    @XmlElement(required = true)
     protected String name;
-    @XmlElement(namespace = "", required = true)
+    @XmlElement(required = true)
     protected String detail;
 
     /**

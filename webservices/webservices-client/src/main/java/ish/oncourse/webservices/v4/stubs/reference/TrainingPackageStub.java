@@ -19,7 +19,7 @@ import org.w3._2001.xmlschema.Adapter1;
  * <pre>
  * &lt;complexType name="trainingPackageStub">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ref.v4.soap.webservices.oncourse.ish/}soapReferenceStub">
+ *     &lt;extension base="{http://ref.v4.soap.webservices.oncourse.ish/}referenceStub">
  *       &lt;sequence>
  *         &lt;element name="copyrightCategory" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="copyrightContract" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -57,7 +57,7 @@ import org.w3._2001.xmlschema.Adapter1;
     "type"
 })
 public class TrainingPackageStub
-    extends SoapReferenceStub
+    extends ReferenceStub
 {
 
     protected String copyrightCategory;

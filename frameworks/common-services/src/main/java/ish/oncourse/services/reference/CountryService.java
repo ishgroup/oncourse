@@ -17,7 +17,7 @@ import ish.oncourse.model.Country;
  * 
  * @author Marek Wawrzyczny
  */
-public class CountryService extends ReferenceService<Country>
+public class CountryService extends AbstractReferenceService<Country>
 		implements ICountryService {
 
 	public Country getCountryByName(String countryName) {

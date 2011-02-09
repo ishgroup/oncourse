@@ -3,18 +3,23 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.services.builders;
+package ish.oncourse.webservices.builders.reference;
+
+import org.apache.cayenne.Persistent;
 
 import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
 
 /**
  *
  * @author marek
  */
-public final class TrainingPackageStubBuilder implements IStubBuilder<TrainingPackage> {
+public final class TrainingPackageStubBuilder implements IReferenceStubBuilder {
 
-	public TrainingPackageStub convert(TrainingPackage record) {
+	public TrainingPackageStub convert(Persistent entity) {
+		
+		TrainingPackage record = (TrainingPackage) entity; 
 		
 		TrainingPackageStub stub = new TrainingPackageStub();
 

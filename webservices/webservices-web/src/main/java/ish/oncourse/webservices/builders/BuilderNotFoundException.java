@@ -3,14 +3,14 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices.services.builders;
+package ish.oncourse.webservices.builders;
 
 /**
  * Exception thrown when a builder for an Entity could not be located.
  *
  * @author marek
  */
-public class StubBuilderNotFoundException extends Exception {
+public class BuilderNotFoundException extends RuntimeException {
 
 	private String entityName;
 
@@ -19,7 +19,7 @@ public class StubBuilderNotFoundException extends Exception {
 	 * @param message
 	 * @param entityName
 	 */
-	public StubBuilderNotFoundException(String message, String entityName) {
+	public BuilderNotFoundException(String message, String entityName) {
 		super(message);
 		this.entityName = entityName;
 	}

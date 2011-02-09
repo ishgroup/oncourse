@@ -19,7 +19,7 @@ import org.w3._2001.xmlschema.Adapter1;
  * <pre>
  * &lt;complexType name="countryStub">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ref.v4.soap.webservices.oncourse.ish/}soapReferenceStub">
+ *     &lt;extension base="{http://ref.v4.soap.webservices.oncourse.ish/}referenceStub">
  *       &lt;sequence>
  *         &lt;element name="asccssCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
@@ -51,7 +51,7 @@ import org.w3._2001.xmlschema.Adapter1;
     "saccCode"
 })
 public class CountryStub
-    extends SoapReferenceStub
+    extends ReferenceStub
 {
 
     protected String asccssCode;
