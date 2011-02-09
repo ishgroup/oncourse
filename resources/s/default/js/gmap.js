@@ -1,3 +1,11 @@
+/**
+ *  gmap.js
+ *
+ *  GMap3 implementation.
+ *
+ *
+ */
+ 
 var sites;
 
 function mapLoad(mapID, sites) {
@@ -70,3 +78,66 @@ function zoomMapForSite(siteId){
 	}
 	
 }
+
+ 
+function dirLoad() {
+	dirLoader('dirmap','dirtxt');
+}
+
+function dirLoadForId(dirId) {
+	dirLoader(dirId,'dirtxt');
+}
+
+function dirLoader( dirmap, dirtxt ) {
+	var geocoder = null;
+	var addressMarker;
+	var gMap = null;
+	mapControl = document.getElementById('displayDirectionsMap');
+		if (dirmap && document.getElementById(dirmap)) {
+			document.getElementById(dirmap).innerHTML = '';
+		}
+		if (dirmap && document.getElementById(dirmap) && (mapControl==null || mapControl.value)) {
+			dmap = document.getElementById(dirmap);
+			dmap.removeClassName("mapCollapsed");
+			dmap.addClassName("mapExpanded");
+			var gMapOptions = {
+					zoom : 12,
+					center : new google.maps.LatLng(vLatitude,vLongitude),
+					mapTypeId : google.maps.MapTypeId.ROADMAP,
+					mapTypeControl : true,
+					navigationControl: true,
+					navigationControlOptions: {
+					      style: google.maps.NavigationControlStyle.ZOOM_PAN
+					}
+			};
+			gMap = new google.maps.Map(dmap, gMapOptions);
+			
+		}
+		if (dirtxt && document.getElementById(dirtxt)) {
+			document.getElementById(dirtxt).innerHTML = '';
+			var directionsRenderer = new google.maps.DirectionsRenderer();
+			directionsRenderer.setMap(gMap);    
+			directionsRenderer.setPanel(document.getElementById(dirtxt));
+			
+			var directionsService = new google.maps.DirectionsService();
+			var request = {
+			  origin: document.getElementById('from').value, 
+			  destination: vSiteAddress,
+			  travelMode: google.maps.DirectionsTravelMode.DRIVING,
+			  unitSystem: google.maps.DirectionsUnitSystem.METRIC
+			};
+			directionsService.route(request, function(response, status) {
+			  if (status == google.maps.DirectionsStatus.OK) {
+			    directionsRenderer.setDirections(response);
+			  } else {
+			    alert('Error: ' + status);
+			  }
+			});
+		}
+	
+} 	
+
+
+$j(document).ready(function() {
+
+});
