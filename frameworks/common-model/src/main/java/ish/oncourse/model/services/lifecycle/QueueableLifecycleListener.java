@@ -20,6 +20,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.QueuedRecordAction;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.utils.EntityUtils;
 
@@ -48,7 +49,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			Queueable queueable = (Queueable) entity;
 			LOGGER.debug("Post Persist event on : Entity: " + queueable.getClass().getSimpleName()
 					+ " with ID : " + queueable.getObjectId());
-			enqueue(queueable, false);
+			enqueue(queueable, QueuedRecordAction.CREATE);
 		}
 	}
 
@@ -62,7 +63,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			Queueable queueable = (Queueable) entity;
 			LOGGER.debug("Post Remove event on : Entity: " + queueable.getClass().getSimpleName()
 					+ " with ID : " + queueable.getObjectId());
-			enqueue(queueable, true);
+			enqueue(queueable, QueuedRecordAction.DELETE);
 		}
 	}
 
@@ -76,56 +77,32 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			Queueable queueable = (Queueable) entity;
 			LOGGER.debug("Post Update event on : Entity: " + queueable.getClass().getSimpleName()
 				+ " with ID : " + queueable.getObjectId());
-			enqueue(queueable, false);
+			enqueue(queueable, QueuedRecordAction.UPDATE);
 		}
 	}
 
 	/**
-	 * Attempts to find existing Queue Records for the entity.
+	 * Adds a new record to the queue.
 	 *
-	 * <p>If found, these will be reused with attempt information reset and
-	 * deletion information adjusted accordingly.</p>
+	 * <p>Note that the code does not check for existing instances of the same
+	 * record in the queue.</p>
 	 *
-	 * @param entity
-	 * @param isForDeletion
+	 * @param entity record to enqueue
+	 * @param action the type of action that triggered the queueing {@see QueuedRecordAction}
 	 */
-	private void enqueue(Queueable entity, boolean isForDeletion) {
+	private void enqueue(Queueable entity, QueuedRecordAction action) {
 
 		if (EntityUtils.doQueue(entity)) {
 			String entityName = entity.getObjectId().getEntityName();
 			Long entityId = entity.getId();
 			College entityCollege = entity.getCollege();
 
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(QueuedRecord.COLLEGE_PROPERTY, entityCollege);
-			map.put(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, entityName);
-			map.put(QueuedRecord.ENTITY_WILLOW_ID_PROPERTY, entityId);
-
-			Expression exp = ExpressionFactory.matchAllExp(map, Expression.EQUAL_TO);
-			SelectQuery query = new SelectQuery(QueuedRecord.class);
-			query.andQualifier(exp);
-			@SuppressWarnings("unchecked")
-			List<QueuedRecord> records = cayenneService.sharedContext().performQuery(query);
-
 			ObjectContext oc = cayenneService.newContext();
-			QueuedRecord qr = null;
-
-			if ((records == null) || (records.isEmpty())) {
-				qr = oc.newObject(QueuedRecord.class);
-				qr.setCollege(entityCollege);
-				qr.setEntityIdentifier(entityName);
-				qr.setEntityWillowId(entityId);
-			} else if (records.size() > 1) {
-				// TODO: Should this be an exception instead or delete the others and create new?
-				LOGGER.error("More than one Queue record for entity:" + entityName
-						+ " with id:" + entityId);
-				return;
-			} else {
-				QueuedRecord temp = records.get(0);
-				qr = (QueuedRecord) oc.localObject(temp.getObjectId(), temp);
-			}
-
-			// TODO: Add for deletion marker
+			QueuedRecord qr = oc.newObject(QueuedRecord.class);
+			qr.setCollege(entityCollege);
+			qr.setEntityIdentifier(entityName);
+			qr.setEntityWillowId(entityId);
+			qr.setAction(action);
 			qr.setNumberOfAttempts(0);
 			qr.setLastAttemptTimestamp(null);
 

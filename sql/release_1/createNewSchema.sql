@@ -1366,6 +1366,7 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`QueuedRecord` (
   `collegeId` BIGINT(20) NOT NULL ,
   `entityIdentifier` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `entityWillowId` BIGINT(20) NULL DEFAULT NULL ,
+  `action` ENUM('New', 'Update', 'Delete') CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL ,
   `numberOfAttempts` INT(11) NULL DEFAULT NULL ,
   `lastAttemptTimestamp` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
