@@ -55,7 +55,7 @@
 							<xs:element name="collegeId" type="xs:long"/>
 							<xs:element name="content" type="xs:base64Binary"/>
 							<xs:element name="created" type="xs:dateTime"/>
-							<xs:element name="isDeleted" type="xs:boolean"/>
+							<xs:element name="isDeleted" type="xs:short"/>
 							<xs:element name="modified" type="xs:dateTime"/>
 							<xs:element name="binaryInfo" type="tns:replicationStub"/>
 						</xs:sequence>
@@ -128,10 +128,16 @@
 			</xs:complexType>
 			<xs:complexType abstract="true" name="replicationStub">
 				<xs:sequence>
-					<xs:element minOccurs="0" name="angelId" type="xs:long" />
-					<xs:element minOccurs="0" name="willowId" type="xs:long" />
+					<xs:element minOccurs="1" maxOccurs="1" name="angelId" type="xs:long" />
+					<xs:element minOccurs="1" maxOccurs="1" name="willowId" type="xs:long" />
+					<xs:element name="state"  minOccurs="1" maxOccurs="1" type="tns:stubState"/>
 				</xs:sequence>
 			</xs:complexType>
+			<xsd:simpleType name="stubState">
+			    <xsd:restriction base="xsd:token">
+			        <xsd:pattern value="FULL | HOLLOW | DELETED"/>
+			    </xsd:restriction>
+			</xsd:simpleType>
 			<xs:complexType name="courseClassStub">
 				<xs:complexContent>
 					<xs:extension base="tns:replicationStub">

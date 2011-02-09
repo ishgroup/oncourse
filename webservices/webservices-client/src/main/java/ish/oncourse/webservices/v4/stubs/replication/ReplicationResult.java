@@ -47,16 +47,16 @@ import javax.xml.bind.annotation.XmlType;
 public class ReplicationResult {
 
     @XmlElements({
-        @XmlElement(name = "tutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = TutorStub.class),
-        @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class),
         @XmlElement(name = "attendance", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = AttendanceStub.class),
-        @XmlElement(name = "sessionTutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionTutorStub.class),
-        @XmlElement(name = "contact", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = ContactStub.class),
-        @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class),
         @XmlElement(name = "session", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionStub.class),
-        @XmlElement(name = "binaryInfo", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryInfoStub.class),
+        @XmlElement(name = "sessionTutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionTutorStub.class),
+        @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class),
+        @XmlElement(name = "contact", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = ContactStub.class),
         @XmlElement(name = "course", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseStub.class),
-        @XmlElement(name = "binaryData", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryDataStub.class)
+        @XmlElement(name = "binaryData", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryDataStub.class),
+        @XmlElement(name = "binaryInfo", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryInfoStub.class),
+        @XmlElement(name = "tutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = TutorStub.class),
+        @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class)
     })
     protected List<ReplicationStub> attendanceOrBinaryDataOrBinaryInfo;
 
@@ -78,16 +78,16 @@ public class ReplicationResult {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link TutorStub }
-     * {@link CourseModuleStub }
      * {@link AttendanceStub }
-     * {@link SessionTutorStub }
-     * {@link ContactStub }
-     * {@link CourseClassStub }
      * {@link SessionStub }
-     * {@link BinaryInfoStub }
+     * {@link SessionTutorStub }
+     * {@link CourseModuleStub }
+     * {@link ContactStub }
      * {@link CourseStub }
      * {@link BinaryDataStub }
+     * {@link BinaryInfoStub }
+     * {@link TutorStub }
+     * {@link CourseClassStub }
      * 
      * 
      */

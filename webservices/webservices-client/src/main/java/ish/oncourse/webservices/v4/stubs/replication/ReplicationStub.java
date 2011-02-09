@@ -3,8 +3,11 @@ package ish.oncourse.webservices.v4.stubs.replication;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -17,8 +20,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="angelId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="willowId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="angelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="willowId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="state" type="{http://repl.v4.soap.webservices.oncourse.ish/}stubState"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -30,7 +34,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "replicationStub", propOrder = {
     "angelId",
-    "willowId"
+    "willowId",
+    "state"
 })
 @XmlSeeAlso({
     CourseStub.class,
@@ -46,55 +51,66 @@ import javax.xml.bind.annotation.XmlType;
 })
 public abstract class ReplicationStub {
 
-    protected Long angelId;
-    protected Long willowId;
+    protected long angelId;
+    protected long willowId;
+    @XmlElement(required = true)
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    protected String state;
 
     /**
      * Gets the value of the angelId property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
      */
-    public Long getAngelId() {
+    public long getAngelId() {
         return angelId;
     }
 
     /**
      * Sets the value of the angelId property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
-     *     
      */
-    public void setAngelId(Long value) {
+    public void setAngelId(long value) {
         this.angelId = value;
     }
 
     /**
      * Gets the value of the willowId property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
      */
-    public Long getWillowId() {
+    public long getWillowId() {
         return willowId;
     }
 
     /**
      * Sets the value of the willowId property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
+     */
+    public void setWillowId(long value) {
+        this.willowId = value;
+    }
+
+    /**
+     * Gets the value of the state property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
      *     
      */
-    public void setWillowId(Long value) {
-        this.willowId = value;
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * Sets the value of the state property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setState(String value) {
+        this.state = value;
     }
 
 }

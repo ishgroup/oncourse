@@ -1,10 +1,13 @@
 package ish.oncourse.webservices.services.replication;
 
+import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.webservices.soap.v4.auth.SessionToken;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -13,7 +16,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class QueuedRecordService implements IQueuedRecordService {
+public class ReplicationQueueService implements IReplicationQueueService {
 
 	@Inject
 	@Autowired
@@ -24,16 +27,24 @@ public class QueuedRecordService implements IQueuedRecordService {
 	private ICayenneService cayenneService;
 
 	@Override
-	public List<QueuedRecord> getRecords() {
-
+	public Map<QueuedKey, QueuedRecord> getReplicationQueue() {
+		
+		Map<QueuedKey, QueuedRecord> m = new LinkedHashMap<QueuedKey, QueuedRecord>();
+		
 		Session session = request.getSession(false);
 
 		SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
 
 		SelectQuery q = new SelectQuery(QueuedRecord.class);
-		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, token.getCollege()));
-
-		return cayenneService.sharedContext().performQuery(q);
+		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, token.getCollege()));	
+		
+		List<QueuedRecord> list = cayenneService.sharedContext().performQuery(q);
+		
+		for (QueuedRecord r : list) {
+			m.put(new QueuedKey(r.getEntityWillowId(), r.getEntityIdentifier()), r);
+		}
+		
+		return m;
 	}
 
 }

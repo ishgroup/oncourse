@@ -24,7 +24,7 @@ import org.w3._2001.xmlschema.Adapter1;
  *         &lt;element name="collegeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="content" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/>
  *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="isDeleted" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="isDeleted" type="{http://www.w3.org/2001/XMLSchema}short"/>
  *         &lt;element name="modified" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="binaryInfo" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
  *       &lt;/sequence>
@@ -55,7 +55,7 @@ public class BinaryDataStub
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date created;
-    protected boolean isDeleted;
+    protected short isDeleted;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
@@ -129,7 +129,7 @@ public class BinaryDataStub
      * Gets the value of the isDeleted property.
      * 
      */
-    public boolean isIsDeleted() {
+    public short getIsDeleted() {
         return isDeleted;
     }
 
@@ -137,7 +137,7 @@ public class BinaryDataStub
      * Sets the value of the isDeleted property.
      * 
      */
-    public void setIsDeleted(boolean value) {
+    public void setIsDeleted(short value) {
         this.isDeleted = value;
     }
 

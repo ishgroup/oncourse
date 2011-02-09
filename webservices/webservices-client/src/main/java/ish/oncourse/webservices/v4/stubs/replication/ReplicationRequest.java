@@ -43,9 +43,9 @@ public class ReplicationRequest {
 
     @XmlElements({
         @XmlElement(name = "sessionTutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionTutorStub.class),
+        @XmlElement(name = "session", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionStub.class),
         @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class),
         @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class),
-        @XmlElement(name = "session", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionStub.class),
         @XmlElement(name = "course", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseStub.class)
     })
     protected List<ReplicationStub> courseOrCourseClassOrCourseModule;
@@ -69,9 +69,9 @@ public class ReplicationRequest {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link SessionTutorStub }
+     * {@link SessionStub }
      * {@link CourseModuleStub }
      * {@link CourseClassStub }
-     * {@link SessionStub }
      * {@link CourseStub }
      * 
      * 
