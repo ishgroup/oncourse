@@ -2,15 +2,15 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `willow_binary` DEFAULT CHARACTER SET latin1 ;
-CREATE SCHEMA IF NOT EXISTS `willow_college` DEFAULT CHARACTER SET latin1 ;
-CREATE SCHEMA IF NOT EXISTS `willow_reference` DEFAULT CHARACTER SET latin1 ;
-USE `willow_binary` ;
+CREATE SCHEMA IF NOT EXISTS `w2_binary` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `w2_college` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `w2_reference` DEFAULT CHARACTER SET utf8 ;
+USE `w2_binary` ;
 
 -- -----------------------------------------------------
--- Table `willow_binary`.`BinaryData`
+-- Table `w2_binary`.`BinaryData`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_binary`.`BinaryData` (
+CREATE  TABLE IF NOT EXISTS `w2_binary`.`BinaryData` (
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
   `binaryInfoId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -26,12 +26,12 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-USE `willow_college` ;
+USE `w2_college` ;
 
 -- -----------------------------------------------------
--- Table `willow_college`.`College`
+-- Table `w2_college`.`College`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`College` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`College` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `isDeleted` TINYINT(1) NULL DEFAULT NULL ,
   `isWebServicePaymentsEnabled` TINYINT(1) NULL DEFAULT NULL ,
@@ -67,9 +67,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Student`
+-- Table `w2_college`.`Student`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Student` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Student` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -97,9 +97,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Course`
+-- Table `w2_college`.`Course`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Course` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Course` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `qualificationId` BIGINT(20) NULL DEFAULT NULL ,
@@ -124,7 +124,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Course` (
   INDEX `code_idx` (`code` ASC) ,
   CONSTRAINT `Course_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1186952
 DEFAULT CHARACTER SET = utf8
@@ -132,9 +132,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Site`
+-- Table `w2_college`.`Site`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Site` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Site` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -161,7 +161,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Site` (
   INDEX `Site_ibfk_1` (`collegeId` ASC) ,
   CONSTRAINT `Site_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1181610
 DEFAULT CHARACTER SET = utf8
@@ -169,9 +169,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Room`
+-- Table `w2_college`.`Room`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Room` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Room` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `siteId` BIGINT(20) NULL DEFAULT NULL ,
@@ -190,10 +190,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Room` (
   INDEX `Room_ibfk_2` (`siteId` ASC) ,
   CONSTRAINT `Room_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Room_ibfk_2`
     FOREIGN KEY (`siteId` )
-    REFERENCES `willow_college`.`Site` (`id` ))
+    REFERENCES `w2_college`.`Site` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1181746
 DEFAULT CHARACTER SET = utf8
@@ -201,9 +201,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`CourseClass`
+-- Table `w2_college`.`CourseClass`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`CourseClass` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`CourseClass` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `code` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
@@ -241,13 +241,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`CourseClass` (
   INDEX `startDate_idx` (`startDate` ASC) ,
   CONSTRAINT `CourseClass_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `CourseClass_ibfk_2`
     FOREIGN KEY (`courseId` )
-    REFERENCES `willow_college`.`Course` (`id` ),
+    REFERENCES `w2_college`.`Course` (`id` ),
   CONSTRAINT `CourseClass_ibfk_3`
     FOREIGN KEY (`roomId` )
-    REFERENCES `willow_college`.`Room` (`id` ))
+    REFERENCES `w2_college`.`Room` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1186958
 DEFAULT CHARACTER SET = utf8
@@ -255,9 +255,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Tutor`
+-- Table `w2_college`.`Tutor`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Tutor` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Tutor` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -277,9 +277,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Session`
+-- Table `w2_college`.`Session`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Session` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Session` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
   `courseClassId` BIGINT(20) NULL DEFAULT NULL ,
@@ -301,13 +301,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Session` (
   INDEX `Session_endDate_idx` (`endDate` ASC) ,
   CONSTRAINT `Session_ibfk_2`
     FOREIGN KEY (`courseClassId` )
-    REFERENCES `willow_college`.`CourseClass` (`id` ),
+    REFERENCES `w2_college`.`CourseClass` (`id` ),
   CONSTRAINT `Session_ibfk_3`
     FOREIGN KEY (`roomId` )
-    REFERENCES `willow_college`.`Room` (`id` ),
+    REFERENCES `w2_college`.`Room` (`id` ),
   CONSTRAINT `Session_ibfk_4`
     FOREIGN KEY (`markerId` )
-    REFERENCES `willow_college`.`Tutor` (`id` ))
+    REFERENCES `w2_college`.`Tutor` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1186969
 DEFAULT CHARACTER SET = utf8
@@ -315,9 +315,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Attendance`
+-- Table `w2_college`.`Attendance`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Attendance` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Attendance` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -334,16 +334,16 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Attendance` (
   INDEX `Attendance_ibfk_4` (`markerId` ASC) ,
   CONSTRAINT `Attendance_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Attendance_ibfk_2`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ),
+    REFERENCES `w2_college`.`Student` (`id` ),
   CONSTRAINT `Attendance_ibfk_3`
     FOREIGN KEY (`sessionId` )
-    REFERENCES `willow_college`.`Session` (`id` ),
+    REFERENCES `w2_college`.`Session` (`id` ),
   CONSTRAINT `Attendance_ibfk_4`
     FOREIGN KEY (`markerId` )
-    REFERENCES `willow_college`.`Tutor` (`id` ))
+    REFERENCES `w2_college`.`Tutor` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 657187
 DEFAULT CHARACTER SET = utf8
@@ -351,9 +351,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`BinaryInfo`
+-- Table `w2_college`.`BinaryInfo`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`BinaryInfo` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`BinaryInfo` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -374,7 +374,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`BinaryInfo` (
   INDEX `mimeType_idx` (`mimeType`(255) ASC) ,
   CONSTRAINT `BinaryInfo_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1181948
 DEFAULT CHARACTER SET = utf8
@@ -382,9 +382,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`BinaryInfoRelation`
+-- Table `w2_college`.`BinaryInfoRelation`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`BinaryInfoRelation` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`BinaryInfoRelation` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `isDeleted` TINYINT(1) NULL DEFAULT NULL ,
@@ -402,10 +402,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`BinaryInfoRelation` (
   INDEX `entityWillowId_idx` (`entityWillowId` ASC) ,
   CONSTRAINT `BinaryInfoRelation_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `BinaryInfoRelation_ibfk_2`
     FOREIGN KEY (`binaryInfoId` )
-    REFERENCES `willow_college`.`BinaryInfo` (`id` ))
+    REFERENCES `w2_college`.`BinaryInfo` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 679
 DEFAULT CHARACTER SET = utf8
@@ -413,9 +413,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Certificate`
+-- Table `w2_college`.`Certificate`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Certificate` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Certificate` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `studentId` BIGINT(20) NOT NULL ,
@@ -439,10 +439,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Certificate` (
   INDEX `Certificate_ibfk_2` (`studentId` ASC) ,
   CONSTRAINT `Certificate_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Certificate_ibfk_2`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ))
+    REFERENCES `w2_college`.`Student` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 930
 DEFAULT CHARACTER SET = utf8
@@ -450,9 +450,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_reference`.`Module`
+-- Table `w2_reference`.`Module`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`Module` (
+CREATE  TABLE IF NOT EXISTS `w2_reference`.`Module` (
   `ishVersion` BIGINT(11) NOT NULL ,
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `nationalCode` VARCHAR(16) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
@@ -474,9 +474,9 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Discount`
+-- Table `w2_college`.`Discount`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Discount` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Discount` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -508,7 +508,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Discount` (
   INDEX `validTo_validFrom_idx` (`collegeId` ASC, `validTo` ASC, `validFrom` ASC) ,
   CONSTRAINT `Discount_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 12416
 DEFAULT CHARACTER SET = utf8
@@ -516,9 +516,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Enrolment`
+-- Table `w2_college`.`Enrolment`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Enrolment` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Enrolment` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `courseClassId` BIGINT(20) NOT NULL ,
@@ -537,13 +537,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Enrolment` (
   INDEX `Enrolment_ibfk_3` (`studentId` ASC) ,
   CONSTRAINT `Enrolment_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Enrolment_ibfk_2`
     FOREIGN KEY (`courseClassId` )
-    REFERENCES `willow_college`.`CourseClass` (`id` ),
+    REFERENCES `w2_college`.`CourseClass` (`id` ),
   CONSTRAINT `Enrolment_ibfk_3`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ))
+    REFERENCES `w2_college`.`Student` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 140104
 DEFAULT CHARACTER SET = utf8
@@ -551,9 +551,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Outcome`
+-- Table `w2_college`.`Outcome`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Outcome` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Outcome` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `moduleId` BIGINT(20) NULL DEFAULT NULL ,
@@ -575,13 +575,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Outcome` (
   INDEX `Outcome_ibfk_3` (`enrolmentId` ASC) ,
   CONSTRAINT `Outcome_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Outcome_ibfk_2`
     FOREIGN KEY (`moduleId` )
-    REFERENCES `willow_reference`.`Module` (`id` ),
+    REFERENCES `w2_reference`.`Module` (`id` ),
   CONSTRAINT `Outcome_ibfk_3`
     FOREIGN KEY (`enrolmentId` )
-    REFERENCES `willow_college`.`Enrolment` (`id` ))
+    REFERENCES `w2_college`.`Enrolment` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 88041
 DEFAULT CHARACTER SET = utf8
@@ -589,9 +589,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`CertificateOutcome`
+-- Table `w2_college`.`CertificateOutcome`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`CertificateOutcome` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`CertificateOutcome` (
   `certificateId` BIGINT(20) NOT NULL ,
   `outcomeId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -603,22 +603,22 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`CertificateOutcome` (
   INDEX `CertificateOutcome_ibfk_3` (`outcomeId` ASC) ,
   CONSTRAINT `CertificateOutcome_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `CertificateOutcome_ibfk_2`
     FOREIGN KEY (`certificateId` )
-    REFERENCES `willow_college`.`Certificate` (`id` ),
+    REFERENCES `w2_college`.`Certificate` (`id` ),
   CONSTRAINT `CertificateOutcome_ibfk_3`
     FOREIGN KEY (`outcomeId` )
-    REFERENCES `willow_college`.`Outcome` (`id` ))
+    REFERENCES `w2_college`.`Outcome` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`ChangeRequest`
+-- Table `w2_college`.`ChangeRequest`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`ChangeRequest` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`ChangeRequest` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `status` INT(11) NOT NULL ,
@@ -630,7 +630,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`ChangeRequest` (
   INDEX `ChangeRequest_ibfk_1` (`collegeId` ASC) ,
   CONSTRAINT `ChangeRequest_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 29393
 DEFAULT CHARACTER SET = utf8
@@ -638,9 +638,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`ChangeRequestItem`
+-- Table `w2_college`.`ChangeRequestItem`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`ChangeRequestItem` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`ChangeRequestItem` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `changeRequestId` BIGINT(20) NOT NULL ,
   `mainEntityName` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
@@ -658,7 +658,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`ChangeRequestItem` (
   INDEX `ChangeRequestItem_ibfk_1` (`changeRequestId` ASC) ,
   CONSTRAINT `ChangeRequestItem_ibfk_1`
     FOREIGN KEY (`changeRequestId` )
-    REFERENCES `willow_college`.`ChangeRequest` (`id` ))
+    REFERENCES `w2_college`.`ChangeRequest` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 29458
 DEFAULT CHARACTER SET = utf8
@@ -666,9 +666,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebSite`
+-- Table `w2_college`.`WebSite`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebSite` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebSite` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `siteKey` VARCHAR(25) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
@@ -683,10 +683,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebSite` (
   UNIQUE INDEX `Website_SSLhostname` (`SSLhostNameId` ASC) ,
   CONSTRAINT `Website_college`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Website_SSLhostname`
     FOREIGN KEY (`SSLhostNameId` )
-    REFERENCES `willow_college`.`WebHostName` (`id` )
+    REFERENCES `w2_college`.`WebHostName` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -696,9 +696,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebHostName`
+-- Table `w2_college`.`WebHostName`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebHostName` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebHostName` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `webSiteId` BIGINT(20) NULL DEFAULT NULL ,
@@ -711,10 +711,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebHostName` (
   INDEX `WebHostName_name` (`name` ASC) ,
   CONSTRAINT `WebHostName_college`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `WebHostName_website`
     FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ))
+    REFERENCES `w2_college`.`WebSite` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1004
 DEFAULT CHARACTER SET = utf8
@@ -722,9 +722,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`ConcessionType`
+-- Table `w2_college`.`ConcessionType`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`ConcessionType` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`ConcessionType` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -742,7 +742,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`ConcessionType` (
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   CONSTRAINT `ConcessionType_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 82
 DEFAULT CHARACTER SET = utf8
@@ -750,9 +750,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Contact`
+-- Table `w2_college`.`Contact`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Contact` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Contact` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `studentId` BIGINT(20) NULL DEFAULT NULL ,
@@ -795,13 +795,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Contact` (
   INDEX `email_names_idx` (`emailAddress`(15) ASC, `familyName`(10) ASC, `givenName`(10) ASC) ,
   CONSTRAINT `Contact_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Contact_ibfk_2`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ),
+    REFERENCES `w2_college`.`Student` (`id` ),
   CONSTRAINT `Contact_ibfk_3`
     FOREIGN KEY (`tutorId` )
-    REFERENCES `willow_college`.`Tutor` (`id` ))
+    REFERENCES `w2_college`.`Tutor` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1189156
 DEFAULT CHARACTER SET = utf8
@@ -809,9 +809,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`CourseModule`
+-- Table `w2_college`.`CourseModule`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`CourseModule` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`CourseModule` (
   `courseId` BIGINT(20) NOT NULL ,
   `moduleId` BIGINT(20) NOT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
@@ -819,16 +819,16 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`CourseModule` (
   PRIMARY KEY (`courseId`, `moduleId`) ,
   CONSTRAINT `CourseModule_ibfk_1`
     FOREIGN KEY (`courseId` )
-    REFERENCES `willow_college`.`Course` (`id` ))
+    REFERENCES `w2_college`.`Course` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`DiscountConcessionType`
+-- Table `w2_college`.`DiscountConcessionType`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountConcessionType` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountConcessionType` (
   `concessionTypeId` BIGINT(20) NOT NULL DEFAULT '0' ,
   `discountId` BIGINT(20) NOT NULL DEFAULT '0' ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -840,22 +840,22 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountConcessionType` (
   INDEX `DiscountConcessionType_ibfk_3` (`discountId` ASC) ,
   CONSTRAINT `DiscountConcessionType_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `DiscountConcessionType_ibfk_2`
     FOREIGN KEY (`concessionTypeId` )
-    REFERENCES `willow_college`.`ConcessionType` (`id` ),
+    REFERENCES `w2_college`.`ConcessionType` (`id` ),
   CONSTRAINT `DiscountConcessionType_ibfk_3`
     FOREIGN KEY (`discountId` )
-    REFERENCES `willow_college`.`Discount` (`id` ))
+    REFERENCES `w2_college`.`Discount` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`DiscountCourseClass`
+-- Table `w2_college`.`DiscountCourseClass`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountCourseClass` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountCourseClass` (
   `courseClassId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -867,19 +867,19 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`DiscountCourseClass` (
   INDEX `DiscountCourseClass_ibfk_3` (`discountId` ASC) ,
   CONSTRAINT `DiscountCourseClass_ibfk_2`
     FOREIGN KEY (`courseClassId` )
-    REFERENCES `willow_college`.`CourseClass` (`id` ),
+    REFERENCES `w2_college`.`CourseClass` (`id` ),
   CONSTRAINT `DiscountCourseClass_ibfk_3`
     FOREIGN KEY (`discountId` )
-    REFERENCES `willow_college`.`Discount` (`id` ))
+    REFERENCES `w2_college`.`Discount` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Invoice`
+-- Table `w2_college`.`Invoice`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Invoice` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Invoice` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `contactId` BIGINT(20) NOT NULL ,
@@ -910,10 +910,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Invoice` (
   INDEX `angelId_idx` (`angelId` ASC) ,
   CONSTRAINT `Invoice_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Invoice_ibfk_2`
     FOREIGN KEY (`contactId` )
-    REFERENCES `willow_college`.`Contact` (`id` ))
+    REFERENCES `w2_college`.`Contact` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 93539
 DEFAULT CHARACTER SET = utf8
@@ -921,9 +921,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`InvoiceLine`
+-- Table `w2_college`.`InvoiceLine`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`InvoiceLine` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `invoiceId` BIGINT(20) NOT NULL ,
@@ -947,13 +947,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`InvoiceLine` (
   INDEX `angelId_idx` (`angelId` ASC) ,
   CONSTRAINT `InvoiceLine_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `InvoiceLine_ibfk_2`
     FOREIGN KEY (`enrolmentId` )
-    REFERENCES `willow_college`.`Enrolment` (`id` ),
+    REFERENCES `w2_college`.`Enrolment` (`id` ),
   CONSTRAINT `InvoiceLine_ibfk_3`
     FOREIGN KEY (`invoiceId` )
-    REFERENCES `willow_college`.`Invoice` (`id` ))
+    REFERENCES `w2_college`.`Invoice` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 140103
 DEFAULT CHARACTER SET = utf8
@@ -961,9 +961,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`InvoiceLine_Discount`
+-- Table `w2_college`.`InvoiceLine_Discount`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`InvoiceLine_Discount` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine_Discount` (
   `invoiceLineId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
@@ -972,19 +972,19 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`InvoiceLine_Discount` (
   INDEX `InvoiceLine_Discount_ibfk_1` (`discountId` ASC) ,
   CONSTRAINT `InvoiceLine_Discount_ibfk_1`
     FOREIGN KEY (`discountId` )
-    REFERENCES `willow_college`.`Discount` (`id` ),
+    REFERENCES `w2_college`.`Discount` (`id` ),
   CONSTRAINT `InvoiceLine_Discount_ibfk_2`
     FOREIGN KEY (`invoiceLineId` )
-    REFERENCES `willow_college`.`InvoiceLine` (`id` ))
+    REFERENCES `w2_college`.`InvoiceLine` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`LicenseFee`
+-- Table `w2_college`.`LicenseFee`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`LicenseFee` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`LicenseFee` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `college_id` BIGINT(11) NOT NULL ,
   `key_code` ENUM('sms','cc-office','cc-web','ecommerce','support','hosting') NOT NULL ,
@@ -997,16 +997,16 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`LicenseFee` (
   INDEX `college_id_idx` (`college_id` ASC) ,
   CONSTRAINT `LicenseFee_ibfk_1`
     FOREIGN KEY (`college_id` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 389
 DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WillowUser`
+-- Table `w2_college`.`WillowUser`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WillowUser` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WillowUser` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1028,7 +1028,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WillowUser` (
   UNIQUE INDEX `collegeId_email_uniq_idx` (`collegeId` ASC, `email` ASC) ,
   CONSTRAINT `WillowUser_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 57
 DEFAULT CHARACTER SET = utf8
@@ -1036,9 +1036,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Log`
+-- Table `w2_college`.`Log`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Log` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Log` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `userId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1052,19 +1052,19 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Log` (
   INDEX `Log_ibfk_2` (`userId` ASC) ,
   CONSTRAINT `Log_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Log_ibfk_2`
     FOREIGN KEY (`userId` )
-    REFERENCES `willow_college`.`WillowUser` (`id` ))
+    REFERENCES `w2_college`.`WillowUser` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Message`
+-- Table `w2_college`.`Message`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Message` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Message` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1078,7 +1078,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Message` (
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   CONSTRAINT `Message_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 88324
 DEFAULT CHARACTER SET = utf8
@@ -1086,9 +1086,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`MessagePerson`
+-- Table `w2_college`.`MessagePerson`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`MessagePerson` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`MessagePerson` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `messageId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1114,19 +1114,19 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`MessagePerson` (
   INDEX `statusType_idx` (`type` ASC, `status` ASC) ,
   CONSTRAINT `MessagePerson_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `MessagePerson_ibfk_2`
     FOREIGN KEY (`messageId` )
-    REFERENCES `willow_college`.`Message` (`id` ),
+    REFERENCES `w2_college`.`Message` (`id` ),
   CONSTRAINT `MessagePerson_ibfk_3`
     FOREIGN KEY (`contactId` )
-    REFERENCES `willow_college`.`Contact` (`id` ),
+    REFERENCES `w2_college`.`Contact` (`id` ),
   CONSTRAINT `MessagePerson_ibfk_4`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ),
+    REFERENCES `w2_college`.`Student` (`id` ),
   CONSTRAINT `MessagePerson_ibfk_5`
     FOREIGN KEY (`tutorId` )
-    REFERENCES `willow_college`.`Tutor` (`id` ))
+    REFERENCES `w2_college`.`Tutor` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 147621
 DEFAULT CHARACTER SET = utf8
@@ -1134,9 +1134,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`MessageTemplate`
+-- Table `w2_college`.`MessageTemplate`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`MessageTemplate` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`MessageTemplate` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1150,7 +1150,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`MessageTemplate` (
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   CONSTRAINT `MessageTemplate_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 131
 DEFAULT CHARACTER SET = utf8
@@ -1158,9 +1158,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`NotificationTemplate`
+-- Table `w2_college`.`NotificationTemplate`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`NotificationTemplate` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`NotificationTemplate` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1177,7 +1177,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`NotificationTemplate` (
   UNIQUE INDEX `collegeId_name_uniq_idx` (`collegeId` ASC, `name` ASC) ,
   CONSTRAINT `NotificationTemplate_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 10
 DEFAULT CHARACTER SET = utf8
@@ -1185,9 +1185,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`PaymentIn`
+-- Table `w2_college`.`PaymentIn`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentIn` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentIn` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `contactId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1211,13 +1211,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentIn` (
   INDEX `PaymentIn_ibfk_3` (`studentId` ASC) ,
   CONSTRAINT `PaymentIn_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `PaymentIn_ibfk_2`
     FOREIGN KEY (`contactId` )
-    REFERENCES `willow_college`.`Contact` (`id` ),
+    REFERENCES `w2_college`.`Contact` (`id` ),
   CONSTRAINT `PaymentIn_ibfk_3`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ))
+    REFERENCES `w2_college`.`Student` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 93539
 DEFAULT CHARACTER SET = utf8
@@ -1225,9 +1225,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`PaymentInLine`
+-- Table `w2_college`.`PaymentInLine`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentInLine` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentInLine` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `paymentInId` BIGINT(20) NOT NULL ,
   `invoiceId` BIGINT(20) NOT NULL ,
@@ -1243,10 +1243,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentInLine` (
   INDEX `PaymentInLine_angelId` (`angelId` ASC) ,
   CONSTRAINT `PaymentInLine_ibfk_1`
     FOREIGN KEY (`invoiceId` )
-    REFERENCES `willow_college`.`Invoice` (`id` ),
+    REFERENCES `w2_college`.`Invoice` (`id` ),
   CONSTRAINT `PaymentInLine_ibfk_2`
     FOREIGN KEY (`paymentInId` )
-    REFERENCES `willow_college`.`PaymentIn` (`id` ))
+    REFERENCES `w2_college`.`PaymentIn` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 140103
 DEFAULT CHARACTER SET = utf8
@@ -1254,9 +1254,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`PaymentOut`
+-- Table `w2_college`.`PaymentOut`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentOut` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentOut` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `contactId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1275,10 +1275,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentOut` (
   INDEX `PaymentOut_ibfk_2` (`contactId` ASC) ,
   CONSTRAINT `PaymentOut_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `PaymentOut_ibfk_2`
     FOREIGN KEY (`contactId` )
-    REFERENCES `willow_college`.`Contact` (`id` ))
+    REFERENCES `w2_college`.`Contact` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 53806
 DEFAULT CHARACTER SET = utf8
@@ -1286,9 +1286,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`PaymentOutTransaction`
+-- Table `w2_college`.`PaymentOutTransaction`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentOutTransaction` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentOutTransaction` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `paymentOutId` BIGINT(20) NULL DEFAULT NULL ,
   `isDeleted` TINYINT(1) NULL DEFAULT NULL ,
@@ -1301,7 +1301,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentOutTransaction` (
   INDEX `PaymentOutTransaction_ibfk_1` (`paymentOutId` ASC) ,
   CONSTRAINT `PaymentOutTransaction_ibfk_1`
     FOREIGN KEY (`paymentOutId` )
-    REFERENCES `willow_college`.`PaymentOut` (`id` ))
+    REFERENCES `w2_college`.`PaymentOut` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2743
 DEFAULT CHARACTER SET = utf8
@@ -1309,9 +1309,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`PaymentTransaction`
+-- Table `w2_college`.`PaymentTransaction`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentTransaction` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentTransaction` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `paymentId` BIGINT(20) NULL DEFAULT NULL ,
   `isDeleted` TINYINT(1) NULL DEFAULT NULL ,
@@ -1324,7 +1324,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`PaymentTransaction` (
   INDEX `PaymentTransaction_ibfk_1` (`paymentId` ASC) ,
   CONSTRAINT `PaymentTransaction_ibfk_1`
     FOREIGN KEY (`paymentId` )
-    REFERENCES `willow_college`.`PaymentIn` (`id` ))
+    REFERENCES `w2_college`.`PaymentIn` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 88593
 DEFAULT CHARACTER SET = utf8
@@ -1332,9 +1332,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Preference`
+-- Table `w2_college`.`Preference`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Preference` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Preference` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1351,7 +1351,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Preference` (
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   CONSTRAINT `Preference_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2418
 DEFAULT CHARACTER SET = utf8
@@ -1359,9 +1359,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`QueuedRecord`
+-- Table `w2_college`.`QueuedRecord`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`QueuedRecord` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`QueuedRecord` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `entityIdentifier` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
@@ -1372,7 +1372,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`QueuedRecord` (
   INDEX `QueuedRecord_ibfk_1` (`collegeId` ASC) ,
   CONSTRAINT `QueuedRecord_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 804270
 DEFAULT CHARACTER SET = utf8
@@ -1380,9 +1380,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`SessionTutor`
+-- Table `w2_college`.`SessionTutor`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`SessionTutor` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`SessionTutor` (
   `sessionId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1395,22 +1395,22 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`SessionTutor` (
   INDEX `SessionTutor_ibfk_3` (`tutorId` ASC) ,
   CONSTRAINT `SessionTutor_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `SessionTutor_ibfk_2`
     FOREIGN KEY (`sessionId` )
-    REFERENCES `willow_college`.`Session` (`id` ),
+    REFERENCES `w2_college`.`Session` (`id` ),
   CONSTRAINT `SessionTutor_ibfk_3`
     FOREIGN KEY (`tutorId` )
-    REFERENCES `willow_college`.`Tutor` (`id` ))
+    REFERENCES `w2_college`.`Tutor` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`StudentConcession`
+-- Table `w2_college`.`StudentConcession`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`StudentConcession` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`StudentConcession` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `studentId` BIGINT(20) NULL DEFAULT NULL ,
   `concessionTypeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1430,13 +1430,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`StudentConcession` (
   INDEX `StudentConcession_ibfk_3` (`concessionTypeId` ASC) ,
   CONSTRAINT `StudentConcession_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `StudentConcession_ibfk_2`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ),
+    REFERENCES `w2_college`.`Student` (`id` ),
   CONSTRAINT `StudentConcession_ibfk_3`
     FOREIGN KEY (`concessionTypeId` )
-    REFERENCES `willow_college`.`ConcessionType` (`id` ))
+    REFERENCES `w2_college`.`ConcessionType` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 10969
 DEFAULT CHARACTER SET = utf8
@@ -1444,9 +1444,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Tag`
+-- Table `w2_college`.`Tag`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Tag` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Tag` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `parentId` BIGINT(20) NULL DEFAULT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1470,10 +1470,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Tag` (
   INDEX `shortName_idx` (`shortName` ASC) ,
   CONSTRAINT `Tag_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `Tag_ibfk_2`
     FOREIGN KEY (`parentId` )
-    REFERENCES `willow_college`.`Tag` (`id` ))
+    REFERENCES `w2_college`.`Tag` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3471
 DEFAULT CHARACTER SET = utf8
@@ -1481,9 +1481,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`TagGroupRequirement`
+-- Table `w2_college`.`TagGroupRequirement`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`TagGroupRequirement` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`TagGroupRequirement` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `tagId` BIGINT(20) NULL DEFAULT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1499,10 +1499,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`TagGroupRequirement` (
   INDEX `TagGroupRequirement_ibfk_2` (`tagId` ASC) ,
   CONSTRAINT `TagGroupRequirement_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `TagGroupRequirement_ibfk_2`
     FOREIGN KEY (`tagId` )
-    REFERENCES `willow_college`.`Tag` (`id` ))
+    REFERENCES `w2_college`.`Tag` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 477
 DEFAULT CHARACTER SET = utf8
@@ -1510,9 +1510,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`Taggable`
+-- Table `w2_college`.`Taggable`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`Taggable` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Taggable` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1527,7 +1527,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`Taggable` (
   INDEX `entityIdentifier_isDeleted_idx` (`entityIdentifier` ASC, `isDeleted` ASC) ,
   CONSTRAINT `Taggable_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1189156
 DEFAULT CHARACTER SET = utf8
@@ -1535,9 +1535,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`TaggableTag`
+-- Table `w2_college`.`TaggableTag`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`TaggableTag` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`TaggableTag` (
   `tagId` BIGINT(20) NOT NULL ,
   `taggableId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1550,22 +1550,22 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`TaggableTag` (
   INDEX `TaggableTag_ibfk_3` (`taggableId` ASC) ,
   CONSTRAINT `TaggableTag_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `TaggableTag_ibfk_2`
     FOREIGN KEY (`tagId` )
-    REFERENCES `willow_college`.`Tag` (`id` ),
+    REFERENCES `w2_college`.`Tag` (`id` ),
   CONSTRAINT `TaggableTag_ibfk_3`
     FOREIGN KEY (`taggableId` )
-    REFERENCES `willow_college`.`Taggable` (`id` ))
+    REFERENCES `w2_college`.`Taggable` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`TutorRole`
+-- Table `w2_college`.`TutorRole`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`TutorRole` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`TutorRole` (
   `courseClassId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1582,22 +1582,22 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`TutorRole` (
   INDEX `TutorRole_ibfk_3` (`tutorId` ASC) ,
   CONSTRAINT `TutorRole_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `TutorRole_ibfk_2`
     FOREIGN KEY (`courseClassId` )
-    REFERENCES `willow_college`.`CourseClass` (`id` ),
+    REFERENCES `w2_college`.`CourseClass` (`id` ),
   CONSTRAINT `TutorRole_ibfk_3`
     FOREIGN KEY (`tutorId` )
-    REFERENCES `willow_college`.`Tutor` (`id` ))
+    REFERENCES `w2_college`.`Tutor` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WaitingList`
+-- Table `w2_college`.`WaitingList`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WaitingList` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WaitingList` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `collegeId` BIGINT(20) NOT NULL ,
   `courseId` BIGINT(20) NOT NULL ,
@@ -1614,13 +1614,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WaitingList` (
   INDEX `WaitingList_ibfk_3` (`studentId` ASC) ,
   CONSTRAINT `WaitingList_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `willow_college`.`College` (`id` ),
+    REFERENCES `w2_college`.`College` (`id` ),
   CONSTRAINT `WaitingList_ibfk_2`
     FOREIGN KEY (`courseId` )
-    REFERENCES `willow_college`.`Course` (`id` ),
+    REFERENCES `w2_college`.`Course` (`id` ),
   CONSTRAINT `WaitingList_ibfk_3`
     FOREIGN KEY (`studentId` )
-    REFERENCES `willow_college`.`Student` (`id` ))
+    REFERENCES `w2_college`.`Student` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 24483
 DEFAULT CHARACTER SET = utf8
@@ -1628,28 +1628,28 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WaitingListSite`
+-- Table `w2_college`.`WaitingListSite`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WaitingListSite` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WaitingListSite` (
   `siteId` BIGINT(20) NOT NULL ,
   `waitingListId` BIGINT(20) NOT NULL ,
   PRIMARY KEY (`siteId`, `waitingListId`) ,
   INDEX `WaitingListSite_ibfk_2` (`waitingListId` ASC) ,
   CONSTRAINT `WaitingListSite_ibfk_1`
     FOREIGN KEY (`siteId` )
-    REFERENCES `willow_college`.`Site` (`id` ),
+    REFERENCES `w2_college`.`Site` (`id` ),
   CONSTRAINT `WaitingListSite_ibfk_2`
     FOREIGN KEY (`waitingListId` )
-    REFERENCES `willow_college`.`WaitingList` (`id` ))
+    REFERENCES `w2_college`.`WaitingList` (`id` ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebNodeType`
+-- Table `w2_college`.`WebNodeType`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNodeType` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebNodeType` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webSiteId` BIGINT(20) NOT NULL ,
   `name` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
@@ -1661,7 +1661,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNodeType` (
   INDEX `name_idx` (`name` ASC) ,
   CONSTRAINT `WebNodeType_website`
     FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ))
+    REFERENCES `w2_college`.`WebSite` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8
@@ -1669,9 +1669,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebURLAlias`
+-- Table `w2_college`.`WebURLAlias`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebURLAlias` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webSiteId` BIGINT(20) NOT NULL ,
   `webNodeId` BIGINT(20) NOT NULL ,
@@ -1684,10 +1684,10 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebURLAlias` (
 --  UNIQUE INDEX `urlPath` (`urlPath` ASC, `webSiteId` ASC) ,
   CONSTRAINT `WebURLAlias_website`
     FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ),
+    REFERENCES `w2_college`.`WebSite` (`id` ),
   CONSTRAINT `WebURLAlias_webNode`
     FOREIGN KEY (`webNodeId` )
-    REFERENCES `willow_college`.`WebNode` (`id` ))
+    REFERENCES `w2_college`.`WebNode` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 552
 DEFAULT CHARACTER SET = utf8
@@ -1695,9 +1695,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebNode`
+-- Table `w2_college`.`WebNode`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebNode` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webSiteId` BIGINT(20) NOT NULL ,
   `webNodeTypeId` BIGINT(20) NOT NULL ,
@@ -1715,13 +1715,13 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebNode` (
   UNIQUE INDEX `WebNode_defaultWebURLalias` (`defaultURLalias` ASC) ,
   CONSTRAINT `WebNode_webSite`
     FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` ),
+    REFERENCES `w2_college`.`WebSite` (`id` ),
   CONSTRAINT `WebNode_webNodeType`
     FOREIGN KEY (`webNodeTypeId` )
-    REFERENCES `willow_college`.`WebNodeType` (`id` ),
+    REFERENCES `w2_college`.`WebNodeType` (`id` ),
   CONSTRAINT `WebNode_defaultWebURLalias`
     FOREIGN KEY (`defaultURLalias` )
-    REFERENCES `willow_college`.`WebURLAlias` (`id` )
+    REFERENCES `w2_college`.`WebURLAlias` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -1731,9 +1731,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebContent`
+-- Table `w2_college`.`WebContent`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContent` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebContent` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `content` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `content_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
@@ -1746,7 +1746,7 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContent` (
   INDEX `webContent_name` (`name` ASC) ,
   CONSTRAINT `webContent_webSite`
     FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` )
+    REFERENCES `w2_college`.`WebSite` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -1756,9 +1756,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebMenu`
+-- Table `w2_college`.`WebMenu`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebMenu` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebMenu` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `webNodeId` BIGINT(20) NULL ,
   `URL` TEXT NULL ,
@@ -1774,17 +1774,17 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebMenu` (
   INDEX `WebMenu_menuParent` (`webMenuParentId` ASC) ,
   CONSTRAINT `WebMenu_webNode`
     FOREIGN KEY (`webNodeId` )
-    REFERENCES `willow_college`.`WebNode` (`id` )
+    REFERENCES `w2_college`.`WebNode` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `WebMenu_webSite`
     FOREIGN KEY (`webSiteId` )
-    REFERENCES `willow_college`.`WebSite` (`id` )
+    REFERENCES `w2_college`.`WebSite` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `WebMenu_menuParent`
     FOREIGN KEY (`webMenuParentId` )
-    REFERENCES `willow_college`.`WebMenu` (`id` )
+    REFERENCES `w2_college`.`WebMenu` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -1793,9 +1793,9 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `willow_college`.`WebContentVisibility`
+-- Table `w2_college`.`WebContentVisibility`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
+CREATE  TABLE IF NOT EXISTS `w2_college`.`WebContentVisibility` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
   `WebNodeTypeId` BIGINT(20) NULL ,
   `WebNodeId` BIGINT(20) NULL ,
@@ -1808,17 +1808,17 @@ CREATE  TABLE IF NOT EXISTS `willow_college`.`WebContentVisibility` (
   INDEX `WebContentVisibility_WebNode` (`WebNodeId` ASC) ,
   CONSTRAINT `WebContentVisibility_WebContent`
     FOREIGN KEY (`WebContentId` )
-    REFERENCES `willow_college`.`WebContent` (`id` )
+    REFERENCES `w2_college`.`WebContent` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `WebContentVisibility_WebNodeType`
     FOREIGN KEY (`WebNodeTypeId` )
-    REFERENCES `willow_college`.`WebNodeType` (`id` )
+    REFERENCES `w2_college`.`WebNodeType` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `WebContentVisibility_WebNode`
     FOREIGN KEY (`WebNodeId` )
-    REFERENCES `willow_college`.`WebNode` (`id` )
+    REFERENCES `w2_college`.`WebNode` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -1827,34 +1827,34 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Placeholder table for view `willow_college`.`StudentView`
+-- Placeholder table for view `w2_college`.`StudentView`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `willow_college`.`StudentView` (`id` INT, `collegeId` INT, `studentId` INT, `tutorId` INT, `angelId` INT, `countryId` INT, `created` INT, `modified` INT, `isCompany` INT, `isDeleted` INT, `isMale` INT, `uniqueCode` INT, `cookieHash` INT, `familyName` INT, `givenName` INT, `emailAddress` INT, `password` INT, `passwordHash` INT, `dateOfBirth` INT, `homePhoneNumber` INT, `businessPhoneNumber` INT, `faxNumber` INT, `mobilePhoneNumber` INT, `street` INT, `suburb` INT, `state` INT, `postcode` INT, `isMarketingViaEmailAllowed` INT, `isMarketingViaPostAllowed` INT, `isMarketingViaSMSAllowed` INT, `taxFileNumber` INT, `countryOfBirthId` INT, `languageId` INT, `concessionType` INT, `disabilityType` INT, `englishProficiency` INT, `highestSchoolLevel` INT, `indigenousStatus` INT, `isOverseasClient` INT, `isStillAtSchool` INT, `priorEducationCode` INT, `yearSchoolCompleted` INT, `labourForceType` INT, `sIsDeleted` INT, `sCreated` INT, `sModified` INT);
+CREATE TABLE IF NOT EXISTS `w2_college`.`StudentView` (`id` INT, `collegeId` INT, `studentId` INT, `tutorId` INT, `angelId` INT, `countryId` INT, `created` INT, `modified` INT, `isCompany` INT, `isDeleted` INT, `isMale` INT, `uniqueCode` INT, `cookieHash` INT, `familyName` INT, `givenName` INT, `emailAddress` INT, `password` INT, `passwordHash` INT, `dateOfBirth` INT, `homePhoneNumber` INT, `businessPhoneNumber` INT, `faxNumber` INT, `mobilePhoneNumber` INT, `street` INT, `suburb` INT, `state` INT, `postcode` INT, `isMarketingViaEmailAllowed` INT, `isMarketingViaPostAllowed` INT, `isMarketingViaSMSAllowed` INT, `taxFileNumber` INT, `countryOfBirthId` INT, `languageId` INT, `concessionType` INT, `disabilityType` INT, `englishProficiency` INT, `highestSchoolLevel` INT, `indigenousStatus` INT, `isOverseasClient` INT, `isStillAtSchool` INT, `priorEducationCode` INT, `yearSchoolCompleted` INT, `labourForceType` INT, `sIsDeleted` INT, `sCreated` INT, `sModified` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `willow_college`.`TutorView`
+-- Placeholder table for view `w2_college`.`TutorView`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `willow_college`.`TutorView` (`id` INT, `collegeId` INT, `studentId` INT, `tutorId` INT, `angelId` INT, `countryId` INT, `created` INT, `modified` INT, `isCompany` INT, `isDeleted` INT, `isMale` INT, `uniqueCode` INT, `cookieHash` INT, `familyName` INT, `givenName` INT, `emailAddress` INT, `password` INT, `passwordHash` INT, `dateOfBirth` INT, `homePhoneNumber` INT, `businessPhoneNumber` INT, `faxNumber` INT, `mobilePhoneNumber` INT, `street` INT, `suburb` INT, `state` INT, `postcode` INT, `isMarketingViaEmailAllowed` INT, `isMarketingViaPostAllowed` INT, `isMarketingViaSMSAllowed` INT, `taxFileNumber` INT, `startDate` INT, `finishDate` INT, `resume` INT, `resume_textile` INT, `tIsDeleted` INT, `tCreated` INT, `tModified` INT);
+CREATE TABLE IF NOT EXISTS `w2_college`.`TutorView` (`id` INT, `collegeId` INT, `studentId` INT, `tutorId` INT, `angelId` INT, `countryId` INT, `created` INT, `modified` INT, `isCompany` INT, `isDeleted` INT, `isMale` INT, `uniqueCode` INT, `cookieHash` INT, `familyName` INT, `givenName` INT, `emailAddress` INT, `password` INT, `passwordHash` INT, `dateOfBirth` INT, `homePhoneNumber` INT, `businessPhoneNumber` INT, `faxNumber` INT, `mobilePhoneNumber` INT, `street` INT, `suburb` INT, `state` INT, `postcode` INT, `isMarketingViaEmailAllowed` INT, `isMarketingViaPostAllowed` INT, `isMarketingViaSMSAllowed` INT, `taxFileNumber` INT, `startDate` INT, `finishDate` INT, `resume` INT, `resume_textile` INT, `tIsDeleted` INT, `tCreated` INT, `tModified` INT);
 
 -- -----------------------------------------------------
--- View `willow_college`.`StudentView`
+-- View `w2_college`.`StudentView`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `willow_college`.`StudentView`;
-USE `willow_college`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `willow_college`.`StudentView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`s`.`countryOfBirthId` AS `countryOfBirthId`,`s`.`languageId` AS `languageId`,`s`.`concessionType` AS `concessionType`,`s`.`disabilityType` AS `disabilityType`,`s`.`englishProficiency` AS `englishProficiency`,`s`.`highestSchoolLevel` AS `highestSchoolLevel`,`s`.`indigenousStatus` AS `indigenousStatus`,`s`.`isOverseasClient` AS `isOverseasClient`,`s`.`isStillAtSchool` AS `isStillAtSchool`,`s`.`priorEducationCode` AS `priorEducationCode`,`s`.`yearSchoolCompleted` AS `yearSchoolCompleted`,`s`.`labourForceType` AS `labourForceType`,`s`.`isDeleted` AS `sIsDeleted`,`s`.`created` AS `sCreated`,`s`.`modified` AS `sModified` from (`willow_college`.`Student` `s` join `willow_college`.`Contact` `c` on((`c`.`studentId` = `s`.`id`)));
+DROP TABLE IF EXISTS `w2_college`.`StudentView`;
+USE `w2_college`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `w2_college`.`StudentView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`s`.`countryOfBirthId` AS `countryOfBirthId`,`s`.`languageId` AS `languageId`,`s`.`concessionType` AS `concessionType`,`s`.`disabilityType` AS `disabilityType`,`s`.`englishProficiency` AS `englishProficiency`,`s`.`highestSchoolLevel` AS `highestSchoolLevel`,`s`.`indigenousStatus` AS `indigenousStatus`,`s`.`isOverseasClient` AS `isOverseasClient`,`s`.`isStillAtSchool` AS `isStillAtSchool`,`s`.`priorEducationCode` AS `priorEducationCode`,`s`.`yearSchoolCompleted` AS `yearSchoolCompleted`,`s`.`labourForceType` AS `labourForceType`,`s`.`isDeleted` AS `sIsDeleted`,`s`.`created` AS `sCreated`,`s`.`modified` AS `sModified` from (`w2_college`.`Student` `s` join `w2_college`.`Contact` `c` on((`c`.`studentId` = `s`.`id`)));
 
 -- -----------------------------------------------------
--- View `willow_college`.`TutorView`
+-- View `w2_college`.`TutorView`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `willow_college`.`TutorView`;
-USE `willow_college`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `willow_college`.`TutorView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`t`.`startDate` AS `startDate`,`t`.`finishDate` AS `finishDate`,`t`.`resume` AS `resume`,`t`.`resume_textile` AS `resume_textile`,`t`.`isDeleted` AS `tIsDeleted`,`t`.`created` AS `tCreated`,`t`.`modified` AS `tModified` from (`willow_college`.`Tutor` `t` join `willow_college`.`Contact` `c` on((`c`.`tutorId` = `t`.`id`)));
-USE `willow_reference` ;
+DROP TABLE IF EXISTS `w2_college`.`TutorView`;
+USE `w2_college`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `w2_college`.`TutorView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`t`.`startDate` AS `startDate`,`t`.`finishDate` AS `finishDate`,`t`.`resume` AS `resume`,`t`.`resume_textile` AS `resume_textile`,`t`.`isDeleted` AS `tIsDeleted`,`t`.`created` AS `tCreated`,`t`.`modified` AS `tModified` from (`w2_college`.`Tutor` `t` join `w2_college`.`Contact` `c` on((`c`.`tutorId` = `t`.`id`)));
+USE `w2_reference` ;
 
 -- -----------------------------------------------------
--- Table `willow_reference`.`Country`
+-- Table `w2_reference`.`Country`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`Country` (
+CREATE  TABLE IF NOT EXISTS `w2_reference`.`Country` (
   `asccssCode` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `id` BIGINT(20) NOT NULL DEFAULT '0' ,
@@ -1875,9 +1875,9 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
--- Table `willow_reference`.`Language`
+-- Table `w2_reference`.`Language`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`Language` (
+CREATE  TABLE IF NOT EXISTS `w2_reference`.`Language` (
   `absCode` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `id` BIGINT(20) NOT NULL DEFAULT '0' ,
@@ -1894,9 +1894,9 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
--- Table `willow_reference`.`Qualification`
+-- Table `w2_reference`.`Qualification`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`Qualification` (
+CREATE  TABLE IF NOT EXISTS `w2_reference`.`Qualification` (
   `ishVersion` BIGINT(11) NULL DEFAULT '0' ,
   `id` BIGINT(20) NOT NULL DEFAULT '0' ,
   `nationalCode` VARCHAR(16) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
@@ -1923,9 +1923,9 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
--- Table `willow_reference`.`TrainingPackage`
+-- Table `w2_reference`.`TrainingPackage`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`TrainingPackage` (
+CREATE  TABLE IF NOT EXISTS `w2_reference`.`TrainingPackage` (
   `ishVersion` BIGINT(11) NULL DEFAULT '0' ,
   `id` BIGINT(20) NOT NULL DEFAULT '0' ,
   `nationalISC` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
@@ -1948,9 +1948,9 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
--- Table `willow_reference`.`postcode`
+-- Table `w2_reference`.`postcode`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`postcode` (
+CREATE  TABLE IF NOT EXISTS `w2_reference`.`postcode` (
   `ishVersion` BIGINT(11) NULL DEFAULT NULL ,
   `postcode` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `locality` VARCHAR(60) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL DEFAULT '' ,
@@ -1970,9 +1970,9 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
--- Table `willow_reference`.`postcode_db`
+-- Table `w2_reference`.`postcode_db`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `willow_reference`.`postcode_db` (
+CREATE  TABLE IF NOT EXISTS `w2_reference`.`postcode_db` (
   `postcode` INT(4) UNSIGNED NOT NULL ,
   `suburb` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   `state` VARCHAR(4) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
