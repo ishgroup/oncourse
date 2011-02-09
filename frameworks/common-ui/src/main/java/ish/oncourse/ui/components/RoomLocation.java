@@ -6,7 +6,7 @@ import org.apache.tapestry5.annotations.Property;
 import ish.oncourse.model.Room;
 
 public class RoomLocation {
-	@Parameter(required=true)
+	@Parameter(required = true)
 	@Property
 	private Room room;
 
@@ -22,8 +22,10 @@ public class RoomLocation {
 	@Property
 	private boolean disabledLink;
 
-
 	public String getMapLink() {
-		return withRoomName?"/room/"+room.getAngelId():"/site/"+room.getSite().getAngelId();
+		if (room == null) {
+			return "";
+		}
+		return withRoomName ? "/room/" + room.getAngelId() : "/site/" + room.getSite().getAngelId();
 	}
 }

@@ -1,9 +1,14 @@
+<!-- 
+	Template: BodyStructure.tml
+	Purpose: Defines the base HTML structure of each page.
+-->
+
 <div class="layout" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div id="container">
 
 		<div id="header">
 			<div t:type="ui/bodyheader"></div>
-			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header"></div>
+			<!--FIXME ensure that t:remove is needed here --><t:remove><div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header"></div></t:remove>
 		</div>
 
 		<nav>
@@ -16,6 +21,12 @@
 			</div>
 
 			<div id="content">
+				<div class="confirmOrderDialog dialogContainer">
+					<p>Thanks for adding: <div class="className"></div><div class="classDate"></div></p>
+					
+					<p><a href="/enrol/EnrolCourses"><button>Proceed to Checkout</button></a></p>
+					<div class="closeButton">X</div>
+				</div>
 				<t:body/>
 			</div>
 

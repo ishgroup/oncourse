@@ -1,33 +1,44 @@
+<!-- 
+	Template: Sites.tml
+	Purpose: Defines logic of site listing page.
+-->
+
 <html t:type="ui/pagestructure" bodyId="literal:SiteList" bodyClass="literal:internal-page"
  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<h2>Sites</h2>
+	
+	<h2>Sites</h2><t:remove><!-- Should this be renamed something else? Venues? --></t:remove>
 	<span t:type="ui/GoogleMapSites" sites="sites" showLocationMap="true"/>
-	<ul class="site_list">
+	<ul class="siteList">
 		<t:loop source="sites" value="site">
-			<li>
+			<li class="vcard">
 				<h3>${site.name}</h3>
-				<div class="site_map_links">
-					<t:if t:test="site.hasCoordinates">
-						<span>
-							<a href="#" onclick="zoomMapForSite(${site.angelId})" title="click to show on the map above"
-								class="class_location">show on map</a>
-						</span>
-					</t:if>
-
-					<span>
-						<a href="/site/${site.angelId}" class="site_directions"
-							title="click to show more information and get directions">details and directions</a>
-					</span>
-				</div>
-				<div class="site_address">
+				<t:if t:test="site.hasCoordinates">
+					<h3 class="fn org"><a class="url" href="/site/${site.angelId}">${site.name}</a></h3>
+					<a href="#" onclick="zoomMapForSite(${site.angelId})" title="click to show on the map above"
+							class="class_location">
+						<div class="siteAddress adr">
+							<span class="street-address">${site.street}</span>
+							<span class="extended-address">
+								<span class="locality">${site.suburb}</span>
+								<abbr class="region">${site.postcode}</abbr>
+								<span class="postal-code">${site.state}</span>
+							</span>
+						</div>
+					</a>
+					<p:else>
+				       	<h3>${site.name}</h3>
+				    </p:else>
+				</t:if>
+				
+				<!-- div class="site_address">
 					<span class="site_address1">${site.street}</span>
 					<span class="site_address2">
 						${site.suburb}
 						${site.postcode}
 						${site.state}
 					</span>
-				</div>
-				<br class="clear" />
+				</div-->
+				
 			</li>
 		</t:loop>
 	</ul>

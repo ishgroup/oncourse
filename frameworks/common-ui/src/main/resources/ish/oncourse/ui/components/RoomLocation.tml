@@ -1,3 +1,8 @@
+<!-- 
+	Template: RoomLocation.tml
+	Purpose: How the link to a venue in the class panel should be presented. Currently disabled as GMaps3 functionality is not implemented.
+-->
+	
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="disabledLink">

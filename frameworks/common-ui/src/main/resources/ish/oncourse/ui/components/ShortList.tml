@@ -1,50 +1,69 @@
+<!-- 
+	Template: Shortlist.tml
+	Purpose: Defines the base HTML structure for the shortlist.
+-->
+
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-<div id="shortlist" class="noprint">
-	<div id="updater"></div>
+<div id="shortlist" class="">
+	
 	<t:if test="hasItems">
-		<div id="cover"></div>
-		<div id="shortListWrapper">
-			<div id="shortListInner">
-				<div class="box" id="myShortList">
-					<h3><span>My Order</span></h3>
-					<ul class="menu">
-						<t:loop source="items" value="courseClass">
-							<li class="onshortlist">
-								<a href="#" class="cutitem" id="${courseClass.id}"><span class="hide" title="Remove item">X</span></a>
-								<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
-									${courseClass.course.name}
-								</a>
-							</li>
-						</t:loop>
-						<t:if test="paymentGatewayEnabled">
-							<li class="enrolnow">
-								<a id="enrolNowLink" href="/enrol/EnrolCourses">
-									<t:if test="hasMultipleItems">
-										Enrol in these classes
-									</t:if>
-									<t:if test="hasMultipleItems" negate="true">
-										Enrol in this class
-									</t:if>
-								</a>
-							</li>
+		
+		<h3><span>My Order</span></h3>
+		<div class="shortlistChoices dialogContainer">
+			<ul>
+				<t:loop source="items" value="courseClass">
+					<li data-classid="${courseClass.id}"><a href="/class/${courseClass.uniqueIdentifier}">${courseClass.course.name}</a>
+					
+					<div>
+					<t:if t:test="courseClass.firstSession">
+					<abbr class="dtstart" title=""><t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/></abbr>
+					</t:if>
+				
+					<t:if t:test="courseClass.endDate">
+						- <abbr class="dtend" title=""><t:output format="literal:d MMM yyyy" value="courseClass.endDate"/></abbr>
+					</t:if>
+					</div>
+					
+					<span class="deleteItem" title="Remove item"><a href="#PHDeleteItemShortlist">[remove]</a></span></li>
+				</t:loop>
+			</ul>
+			<div class="closeButton">X</div>
+		</div>
+		<!-- ul class="menu">
+			<t:loop source="items" value="courseClass">
+				<li class="onshortlist">
+					<a href="#" class="cutitem" id="${courseClass.id}"><span class="hide" title="Remove item">X</span></a>
+					<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
+						${courseClass.course.name}
+					</a>
+				</li>
+			</t:loop>
+			<t:if test="paymentGatewayEnabled">
+				<li class="enrolnow">
+					<a id="enrolNowLink" href="/enrol/EnrolCourses">
+						<t:if test="hasMultipleItems">
+							Enrol in these classes
 						</t:if>
-					</ul>
-				</div>
-			</div>
+						<t:if test="hasMultipleItems" negate="true">
+							Enrol in this class
+						</t:if>
+					</a>
+				</li>
+			</t:if>
+		</ul-->		
+	</t:if>
+	
+	<div class="shortlistInfo"><span>${itemCount}</span> courses selected</div>
+
+	<t:if test="hasItems">
+		<div class="shortlistAction">
+			<ul>
+				<li class="shortlistActionShow"><a href="#PHShowShortlist">Show Shortlist</a></li>
+				<li class="shortlistActionEnrol"><a href="#PHEnrolment">Enrol</a></li>
+			</ul>
 		</div>
 	</t:if>
-	<script type="text/javascript">
-		if (typeof enrolmentEntryDisplayed != 'undefined'){
-			if(enrolmentEntryDisplayed) {
-			document.getElementById("shortListWrapper").setAttribute("class", "highlightWrapper");
-			document.getElementById("shortListWrapper").setAttribute("className", "highlightWrapper");
-			document.getElementById("shortListInner").setAttribute("class", "highlightBalloon");
-			document.getElementById("shortListInner").setAttribute("className", "highlightBalloon");
-			document.getElementById("enrolNowLink").style.visibility = "hidden";
-			document.getElementById("enrolNowLink").style.display = "none";
-			}
-		}
-	</script>
+	
 </div>
 </t:container>

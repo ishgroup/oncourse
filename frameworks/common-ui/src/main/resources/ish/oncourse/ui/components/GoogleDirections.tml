@@ -6,10 +6,9 @@
 		<div id="directions" class="blockwrap">
 
 			<t:if t:test="hideDirections" negate="true">
-				<h3 class="blockhead">Directions</h3>
 				<form id="getdir" method="post" onsubmit="return false;">
 					<dl class="details">
-						<dt>From:</dt>
+						<dt>Directions from:</dt>
 						<dd>
 							<input type="text" size="25" id="from" name="from"
 								value="${directionsFrom}" />
