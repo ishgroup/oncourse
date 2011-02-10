@@ -34,99 +34,14 @@
 			</dd>
 			
 			<dt class="classItemLocation">Location</dt>
-			<dd class="location"><span t:type="ui/roomLocation" room="courseClass.room"
-								withRoomName="false" disabledLink="false" /></dd>
-			
-			<dt class="classItemTutor">Tutor</dt>
-			<dd class="">
-			<t:if test="hasTutorRoles">
-					<t:loop source="courseClass.tutorRoles" value="tutorRole"
-						index="index">
-						<a class=""
-							href="/tutor/${tutorRole.tutor.angelId}"
-							title="View tutor profile">${tutorRole.tutor.fullName}</a>,
-					</t:loop>
-			</t:if>
-			</dd>
-			<dt class="classItemPrice">Price</dt>
-			<dd class=""><span t:type="ui/CourseClassPrice" courseClass="courseClass" /></dd>
-
-		</dl>
-
-		<div class="classAction">
-			<ul>
-				<li class="class_addorder"><a class="enrolAction" id="${courseClass.id}">Enrol Now</a>	</li>
-			</ul>
-					
-			<div class="classStatus">There are 6 places available</div>
-		</div>	
-		
-		
-		<t:body />
-	</div>
-	<!-- div class="class_details clearfix trigger">
-		<ul class="${timedateClass}" title="View calendar">
-			<t:if t:test="courseClass.hasSessions">
-				<li class="class_date">
-					<a class="timeline" rel="session"
-						href="/Timeline/sessions?ids=${courseClass.id}" timezone="10">
-						<span t:type="ui/DateRangeDisplay" date1="courseClass.startDate"
-							date2="courseClass.endDate" timezone="courseClass.classTimeZone" />
-					</a>
-				</li>
-				<li class="class_time">
-					<a class="timeline" rel="session"
-						href="/Timeline/sessions?ids=${courseClass.id}" timezone="10">
-						<span style="text-transform: lowercase;">
-							<span t:type="ui/TimeRangeDisplay" startTime="courseClass.firstSession.startDate"
-								endTime="courseClass.firstSession.endDate" timezone="courseClass.classTimeZone" />
-						</span>
-						<t:if t:test="courseClass.hasManySessions">
-							<span class="class_session_exp">
-								(<t:if test="courseClass.sessionsHaveDifferentTimes">first session<p:else>all sessions</p:else></t:if>)
-							</span>
-						</t:if>
-					</a>
-				</li>
-				<t:if t:test="courseClass.hasManySessions">
-					<li class="class_session">
-						<a class="timeline" rel="session"
-							href="/Timeline/sessions?ids=${courseClass.id}" timezone="10">
-							${courseClass.sessions.size()} sessions,
-							<t:output value="courseClass.totalDurationHours" format="hoursFormat" />
-							hours total
-						</a>
-					</li>
-				</t:if>
-				<p:else>
-					<t:if test="courseClass.startDate">
-						<t:if test="courseClass.endDate">
-							<li class="class_date">
-								<span t:type="ui/DateRangeDisplay" date1="courseClass.startDate"
-									date2="courseClass.endDate" timezone="courseClass.classTimeZone" />
-							</li>
-							<li class="class_time">
-								<span style="text-transform: lowercase;">
-									<span t:type="ui/TimeRangeDisplay" startTime="courseClass.startDate"
-										endTime="courseClass.endDate" timezone="courseClass.classTimeZone" />
-								</span>
-							</li>
-						</t:if>
-					</t:if>
-				</p:else>
-			</t:if>
-		</ul>
-		<ul class="class_locationtutor">
-			<li class="class_location">
+			<dd class="location">
 				<t:if test="hasLinkToLocation">
-					<t:if test="hasSiteSuburb" negate="true">
-						<dd>TBA</dd>
-						<p:else>
+					<t:if test="hasSiteSuburb">
 							<a href="#"
 								onclick="zoomMapForSite(${courseClass.room.site.angelId})"
 								title="Show venue on map" class="tooltip">${courseClass.room.site.suburb}
 							</a>
-						</p:else>
+						<p:else>TBA</p:else>
 					</t:if>
 					<p:else>
 						<t:if test="hasSite">
@@ -136,36 +51,46 @@
 						</t:if>
 					</p:else>
 				</t:if>
-			</li>
+			<span t:type="ui/roomLocation" room="courseClass.room"
+								withRoomName="false" disabledLink="false" /></dd>
+			
+			<dt class="classItemTutor">Tutor</dt>
+			<dd class="">
 			<t:if test="hasTutorRoles">
-				<li class="class_tutor">
 					<t:loop source="courseClass.tutorRoles" value="tutorRole"
 						index="index">
-						<a class="tutorlink tooltip nyromodal tutorlink ${index}"
-							href="/Refresh/tutor?x=Detail&amp;id1=${tutorRole.tutor.id}&amp;z=z&amp;wrap=false"
-							title="View tutor profile">${tutorRole.tutor.fullName}</a>
+						<a class="nyromodal"
+							href="/tutor/${tutorRole.tutor.angelId}"
+							title="View tutor profile">${tutorRole.tutor.fullName}</a>,
 					</t:loop>
-				</li>
 			</t:if>
+			</dd>
 			<t:if test="excludePrice" negate="true">
-				<li>
-					<span t:type="ui/CourseClassPrice" courseClass="courseClass" />
-				</li>
+				<dt class="classItemPrice">Price</dt>
+				<dd class=""><span t:type="ui/CourseClassPrice" courseClass="courseClass" /></dd>
 			</t:if>
-		</ul>
-		<t:body />
-		<t:if test="tutorPortal" negate="true">
-			<span t:type="ui/CourseClassShortlistControl" courseClass="courseClass" />
-		</t:if>
-		<t:if test="courseClass.detail">
-			<div class="detail_for_class" id="detail_for_class_${courseClass.id}"
-				style="clear:both;">
-				<p class="class_detail">
-					<t:outputraw value="courseClass.detail" />
-				</p>
+
+		</dl>
+
+		<div class="classAction">
+			<ul>
+				<li class="class_addorder"><a class="enrolAction" id="${courseClass.id}">Enrol Now</a>	</li>
+			</ul>
+					
+			<div class="classStatus">
+				<t:if test="courseClass.availableEnrolmentPlaces">
+					<span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass" />
+					<t:if test="hasSiteName"> at ${courseClass.room.site.name}.</t:if>
+					<p:else>
+						<span t:type="ui/WaitingListItem" courseClass="courseClass"
+									course="courseClass.course" />
+						<br style="clear:left;" />
+					</p:else>
+				</t:if>
 			</div>
-		</t:if>
-		<t:if test="${courseClass.cancelled}" negate="true">
+		</div>	
+	</div>
+	<!-- t:if test="${courseClass.cancelled}" negate="true">
 			<div class="bubbleInfo">
 				<div class="tooltip_popup enrol_tooltip">
 					<div class="bubble_top bubble_content clearfix">
@@ -208,6 +133,6 @@
 						dateFormat="dateFormat" timeFormat="timeFormat" />
 				</div>
 			</t:if>
-		</t:if>
-	</div-->
+		</t:if-->
+	
 </t:container>

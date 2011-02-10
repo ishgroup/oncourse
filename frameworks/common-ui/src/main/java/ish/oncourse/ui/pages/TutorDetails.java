@@ -28,7 +28,7 @@ public class TutorDetails {
 	@SetupRender
 	public void beforeRender() {
 		String id = (String) request.getAttribute("tutorId");
-		tutor = tutorService.findById(Long.valueOf(id));
+		tutor = tutorService.findByAngelId(Long.valueOf(id));
 	}
 
 	public boolean getTutorFound() {
@@ -36,7 +36,7 @@ public class TutorDetails {
 	}
 
 	public boolean getHasResume() {
-		return !"".equals(tutor.getResume());
+		return tutor.getResume()!=null && !"".equals(tutor.getResume());
 	}
 
 	public boolean getHasRoles() {
@@ -45,6 +45,13 @@ public class TutorDetails {
 
 	public List<TutorRole> getCurrentVisibleTutorRoles() {
 		return tutor.getCurrentVisibleTutorRoles();
+	}
+
+	public String getTutorDetailsTitle() {
+		if (getTutorFound()) {
+			return tutor.getFullName();
+		}
+		return "Tutor not found";
 	}
 
 }
