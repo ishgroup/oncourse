@@ -1119,7 +1119,7 @@
 		<obj-attribute name="valueString" type="java.lang.String" db-attribute-path="value_string"/>
 	</obj-entity>
 	<obj-entity name="QueuedRecord" className="ish.oncourse.model.QueuedRecord" dbEntityName="QueuedRecord">
-		<obj-attribute name="action" type="ish.oncourse.model.QueuedRecordStatus" db-attribute-path="action"/>
+		<obj-attribute name="action" type="ish.oncourse.model.QueuedRecordAction" db-attribute-path="action"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="entityWillowId" type="java.lang.Long" db-attribute-path="entityWillowId"/>
 		<obj-attribute name="lastAttemptTimestamp" type="java.util.Date" db-attribute-path="lastAttemptTimestamp"/>
