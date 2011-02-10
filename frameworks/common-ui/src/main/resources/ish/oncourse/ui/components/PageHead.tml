@@ -13,30 +13,15 @@
 	<link rel="shortcut icon" type="image/ico" href="/s/img/favicon.ico" />
 	<link rel="apple-touch-icon" href="/s/img/apple-touch-icon.png" />
 	
-	<link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
-	
 	<!-- This needs to be given some thought: How do we want page titles to be constructed? --> 
 	<title>${title}</title>
 
-	<t:remove>	
-		<!-- Taking out the JS calls as the use of JS across the site has not been settled on --> 
-		<script t:type="ui/jsassetgroup" group="literal:core"/>
-		<script t:type="ui/jsassetgroup" group="literal:core-application"/>
-		<script t:type="ui/jsassetgroup" group="literal:site"/>
-		<script t:type="ui/jsassetgroup" group="literal:site"/>
-	</t:remove>
-
+	<!-- CSS -->
+	<link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
+	
+	<!-- JS -->
+	<script t:type="ui/jsassetgroup" group="literal:core"/>
+	<script t:type="ui/jsassetgroup" group="literal:core-application"/>
 	<script t:type="ui/jsassetgroup" group="literal:site"/>
-	<!-- link t:type="ui/cssassetgroup" group="literal:core" media="literal:screen, projection" />
-	<link t:type="ui/cssassetgroup" group="literal:core-ie" media="literal:screen, projection" />
-	<link t:type="ui/cssassetgroup" group="literal:core-print" media="literal:print" />
 
-	<link t:type="ui/cssassetgroup" group="literal:site" media="literal:screen, projection" />
-	<link t:type="ui/cssassetgroup" group="literal:print" media="literal:print" />
-
-	<script t:type="ui/jsassetgroup" group="literal:core" />
-	<script t:type="ui/jsassetgroup" group="literal:core-application" />
-	<script t:type="ui/jsassetgroup" group="literal:site" />
-
-	<script type="text/javascript">jQuery.noConflict();</script-->
 </t:container>

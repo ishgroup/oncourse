@@ -5,13 +5,11 @@
 
 <html t:type="ui/pagestructure" title="${courseClass.uniqueIdentifier} | ${courseClass.course.name}" bodyId="literal:DetailsPage" 
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<!-- CCE Template -->
+	
 	<h2>${courseClass.course.name}</h2>
-	<t:remove>
-		<span t:type="ui/courseclassitem" courseClass="courseClass" excludePrice="true" />
-		<t:outputraw value="${courseDetail}" />
-		<t:outputraw value="${courseClassDetail}"/>
-	</t:remove>
+	<span t:type="ui/courseclassitem" courseClass="courseClass" excludePrice="true" />
+	<t:outputraw value="${courseDetail}" />
+	<t:outputraw value="${courseClassDetail}"/>
 	
 	<t:if t:test="${courseClass.hasRoom}">
 		<h3>Where to find us</h3>
@@ -20,6 +18,8 @@
 				collapseLocationMap="true" />
 		</div>
 	</t:if>
+	
+	
 	<!-- FIXME remove the old mark-up when sort out the new one -->
 	<!-- h2 class="clearfix">
 		<span>

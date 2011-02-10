@@ -15,8 +15,7 @@
 				<div class="description courseShortDescription">
 					<t:outputraw value="${courseDetail}" />
 				</div>
-				<!-- FIXME should we use t:remove here? -->
-				<t:remove><div class="courseAvailability">${availMsg}</div></t:remove>
+				<div class="courseAvailability">${availMsg}</div>
 			</p:else>
 		</t:if>
 	
