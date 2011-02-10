@@ -18,37 +18,16 @@
 				collapseLocationMap="true" />
 		</div>
 	</t:if>
-	
-	
-	<!-- FIXME remove the old mark-up when sort out the new one -->
-	<!-- h2 class="clearfix">
-		<span>
-			<a href="/course/${courseClass.course.code}">${courseClass.course.name}</a>
-		</span>
-	</h2>
-	<p class="print-page noprint" onclick="window.print();">
-		Print this page
-		<input type="button" value="Print" />
-	</p>
-	<div id="class_detail" class="new_course_item">
-		<span t:type="ui/courseclassitem" courseClass="courseClass" />
-		<t:outputraw value="${courseDetail}" />
-		<t:outputraw value="${courseClassDetail}" />
-		<t:if t:test="${courseClass.hasRoom}">
-			<h3>Location</h3>
-			<span t:type="ui/SiteDetailsComponent" room="courseClass.room"
-				collapseLocationMap="true" />
-		</t:if>
-		<div class="blockdetail">
-			<t:if t:test="${showInlineTimetable}">
-				<t:if t:test="courseClass.hasAnyTimelineableSessions">
-					<h2>Sessions</h2>
-					<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
-						headerLabels="timetableLabels" cssTableClass="cssTableClass"
-						cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"
-						dateFormat="dateFormat" timeFormat="timeFormat" />
-				</t:if>
+	<!-- TODO enable the timetable -->
+	<!-- div class="blockdetail">
+		<t:if t:test="${showInlineTimetable}">
+			<t:if t:test="courseClass.hasAnyTimelineableSessions">
+				<h2>Sessions</h2>
+				<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
+					headerLabels="timetableLabels" cssTableClass="cssTableClass"
+					cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"
+					dateFormat="dateFormat" timeFormat="timeFormat" />
 			</t:if>
-		</div>
+		</t:if>
 	</div-->
 </html>

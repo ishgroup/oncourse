@@ -11,9 +11,10 @@
 		
 		<div class="siteName"><strong><a href="${homeLink}">${collegeName}</a></strong></div>
 		-->
-	<!-- TODO: uncomment if we need these components-->	
-	<!-- div id="site_toolbar">
+	<div id="site_toolbar">
 		<span t:type="ui/CourseSearchForm"/>
 		<span t:type="ui/ShortList"/>
-	</div-->
+		<!-- TODO move promotions view to some another place by default -->
+		<span t:type="ui/PromoCodesView"/>
+	</div>
 </t:container>

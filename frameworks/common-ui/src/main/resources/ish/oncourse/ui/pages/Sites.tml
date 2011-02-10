@@ -27,18 +27,16 @@
 					</a>
 					<p:else>
 				       	<h3>${site.name}</h3>
+				       	<div class="siteAddress adr">
+							<span class="street-address">${site.street}</span>
+							<span class="extended-address">
+								<span class="locality">${site.suburb}</span>
+								<abbr class="region">${site.postcode}</abbr>
+								<span class="postal-code">${site.state}</span>
+							</span>
+						</div>
 				    </p:else>
 				</t:if>
-				
-				<!-- div class="site_address">
-					<span class="site_address1">${site.street}</span>
-					<span class="site_address2">
-						${site.suburb}
-						${site.postcode}
-						${site.state}
-					</span>
-				</div-->
-				
 			</li>
 		</t:loop>
 	</ul>
