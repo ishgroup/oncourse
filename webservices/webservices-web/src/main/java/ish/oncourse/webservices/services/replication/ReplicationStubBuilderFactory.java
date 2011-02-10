@@ -19,7 +19,6 @@ public class ReplicationStubBuilderFactory {
 			builderMap.put("BinaryData", new BinaryDataStubBuilder(queue, this));
 		}
 
-		@Override
 		public ReplicationStub convert(QueuedRecord entity) {
 			return builderMap.get(entity.getObjectId().getEntityName()).convert(entity);
 		}

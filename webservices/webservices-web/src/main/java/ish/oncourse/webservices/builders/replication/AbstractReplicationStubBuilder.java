@@ -38,7 +38,6 @@ public abstract class AbstractReplicationStubBuilder implements IReplicationStub
 	 * ish.oncourse.webservices.builders.IReplicationStubBuilder#convert(ish
 	 * .oncourse.model.QueuedRecord)
 	 */
-	@Override
 	public ReplicationStub convert(QueuedRecord entity) {
 		switch (entity.getAction()) {
 		case CREATE:

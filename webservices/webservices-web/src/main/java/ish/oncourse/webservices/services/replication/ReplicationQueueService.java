@@ -26,7 +26,6 @@ public class ReplicationQueueService implements IReplicationQueueService {
 	@Autowired
 	private ICayenneService cayenneService;
 
-	@Override
 	public Map<QueuedKey, QueuedRecord> getReplicationQueue() {
 		
 		Map<QueuedKey, QueuedRecord> m = new LinkedHashMap<QueuedKey, QueuedRecord>();
