@@ -164,12 +164,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		final String path = request.getPath().toLowerCase();
 
-		for (String p : IMMUTABLE_PATHS) {
-			if (path.startsWith(p)) {
-				return null;
-			}
-		}
-
 		if (HOME_PAGE_PATH.equals(path)) {
 			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, "/");
 			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
@@ -334,6 +328,12 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if (webNodeService.getNodeForNodePath(nodePath) != null) {
 			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
 			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
+		}
+		
+		for (String p : IMMUTABLE_PATHS) {
+			if (path.startsWith(p)) {
+				return null;
+			}
 		}
 
 		return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(), false);
