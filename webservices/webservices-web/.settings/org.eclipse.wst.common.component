@@ -13,6 +13,9 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-model/common-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/waCommon/waCommon">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/webservices-client/webservices-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>

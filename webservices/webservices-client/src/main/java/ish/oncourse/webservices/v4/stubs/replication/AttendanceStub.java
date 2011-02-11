@@ -1,14 +1,10 @@
 
 package ish.oncourse.webservices.v4.stubs.replication;
 
-import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.w3._2001.xmlschema.Adapter1;
 
 
 /**
@@ -22,8 +18,6 @@ import org.w3._2001.xmlschema.Adapter1;
  *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="modified" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="marker" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
  *         &lt;element name="session" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
  *         &lt;element name="student" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
@@ -38,8 +32,6 @@ import org.w3._2001.xmlschema.Adapter1;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "attendanceStub", propOrder = {
     "attendanceType",
-    "created",
-    "modified",
     "marker",
     "session",
     "student"
@@ -49,14 +41,6 @@ public class AttendanceStub
 {
 
     protected int attendanceType;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
-    @XmlSchemaType(name = "dateTime")
-    protected Date created;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
-    @XmlSchemaType(name = "dateTime")
-    protected Date modified;
     @XmlElement(required = true)
     protected ReplicationStub marker;
     @XmlElement(required = true)
@@ -78,54 +62,6 @@ public class AttendanceStub
      */
     public void setAttendanceType(int value) {
         this.attendanceType = value;
-    }
-
-    /**
-     * Gets the value of the created property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * Sets the value of the created property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCreated(Date value) {
-        this.created = value;
-    }
-
-    /**
-     * Gets the value of the modified property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * Sets the value of the modified property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setModified(Date value) {
-        this.modified = value;
     }
 
     /**

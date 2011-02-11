@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;element ref="{http://repl.v4.soap.webservices.oncourse.ish/}attendance"/>
  *           &lt;element ref="{http://repl.v4.soap.webservices.oncourse.ish/}binaryData"/>
  *           &lt;element ref="{http://repl.v4.soap.webservices.oncourse.ish/}binaryInfo"/>
+ *           &lt;element ref="{http://repl.v4.soap.webservices.oncourse.ish/}binaryInfoRelation"/>
  *           &lt;element ref="{http://repl.v4.soap.webservices.oncourse.ish/}contact"/>
  *           &lt;element ref="{http://repl.v4.soap.webservices.oncourse.ish/}course"/>
  *           &lt;element ref="{http://repl.v4.soap.webservices.oncourse.ish/}courseClass"/>
@@ -47,16 +48,17 @@ import javax.xml.bind.annotation.XmlType;
 public class ReplicationResult {
 
     @XmlElements({
-        @XmlElement(name = "attendance", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = AttendanceStub.class),
-        @XmlElement(name = "session", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionStub.class),
-        @XmlElement(name = "sessionTutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionTutorStub.class),
-        @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class),
-        @XmlElement(name = "contact", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = ContactStub.class),
         @XmlElement(name = "course", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseStub.class),
         @XmlElement(name = "binaryData", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryDataStub.class),
-        @XmlElement(name = "binaryInfo", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryInfoStub.class),
+        @XmlElement(name = "session", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionStub.class),
         @XmlElement(name = "tutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = TutorStub.class),
-        @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class)
+        @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class),
+        @XmlElement(name = "binaryInfoRelation", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryInfoRelationStub.class),
+        @XmlElement(name = "binaryInfo", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = BinaryInfoStub.class),
+        @XmlElement(name = "contact", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = ContactStub.class),
+        @XmlElement(name = "attendance", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = AttendanceStub.class),
+        @XmlElement(name = "sessionTutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionTutorStub.class),
+        @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class)
     })
     protected List<ReplicationStub> attendanceOrBinaryDataOrBinaryInfo;
 
@@ -78,16 +80,17 @@ public class ReplicationResult {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link AttendanceStub }
-     * {@link SessionStub }
-     * {@link SessionTutorStub }
-     * {@link CourseModuleStub }
-     * {@link ContactStub }
      * {@link CourseStub }
      * {@link BinaryDataStub }
-     * {@link BinaryInfoStub }
+     * {@link SessionStub }
      * {@link TutorStub }
      * {@link CourseClassStub }
+     * {@link BinaryInfoRelationStub }
+     * {@link BinaryInfoStub }
+     * {@link ContactStub }
+     * {@link AttendanceStub }
+     * {@link SessionTutorStub }
+     * {@link CourseModuleStub }
      * 
      * 
      */

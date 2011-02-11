@@ -27,34 +27,39 @@ import org.w3._2001.xmlschema.Adapter1;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _Session_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "session");
+    private final static QName _Enrolment_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "enrolment");
     private final static QName _Attendance_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "attendance");
-    private final static QName _Tutor_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "tutor");
     private final static QName _BinaryInfo_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "binaryInfo");
-    private final static QName _Course_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "course");
-    private final static QName _CourseClass_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "courseClass");
+    private final static QName _Invoice_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "invoice");
     private final static QName _BinaryData_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "binaryData");
     private final static QName _Contact_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "contact");
-    private final static QName _SessionTutor_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "sessionTutor");
+    private final static QName _PaymentIn_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "paymentIn");
     private final static QName _CourseModule_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "courseModule");
+    private final static QName _Session_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "session");
+    private final static QName _Tutor_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "tutor");
+    private final static QName _Course_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "course");
+    private final static QName _CourseClass_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "courseClass");
+    private final static QName _SessionTutor_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "sessionTutor");
+    private final static QName _PaymentInLine_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "paymentInLine");
+    private final static QName _InvoiceLine_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "invoiceLine");
+    private final static QName _BinaryInfoRelation_QNAME = new QName("http://repl.v4.soap.webservices.oncourse.ish/", "binaryInfoRelation");
     private final static QName _ContactStubDateOfBirth_QNAME = new QName("", "dateOfBirth");
     private final static QName _ContactStubStreet_QNAME = new QName("", "street");
-    private final static QName _ContactStubFamilyName_QNAME = new QName("", "familyName");
     private final static QName _ContactStubState_QNAME = new QName("", "state");
-    private final static QName _ContactStubCollege_QNAME = new QName("", "college");
+    private final static QName _ContactStubFamilyName_QNAME = new QName("", "familyName");
     private final static QName _ContactStubIsMarketingViaEmailAllowed_QNAME = new QName("", "isMarketingViaEmailAllowed");
     private final static QName _ContactStubGivenName_QNAME = new QName("", "givenName");
     private final static QName _ContactStubHomePhoneNumber_QNAME = new QName("", "homePhoneNumber");
-    private final static QName _ContactStubPassword_QNAME = new QName("", "password");
     private final static QName _ContactStubMobilePhoneNumber_QNAME = new QName("", "mobilePhoneNumber");
-    private final static QName _ContactStubIsMale_QNAME = new QName("", "isMale");
+    private final static QName _ContactStubPassword_QNAME = new QName("", "password");
     private final static QName _ContactStubPasswordHash_QNAME = new QName("", "passwordHash");
+    private final static QName _ContactStubIsMale_QNAME = new QName("", "isMale");
     private final static QName _ContactStubFaxNumber_QNAME = new QName("", "faxNumber");
     private final static QName _ContactStubStudent_QNAME = new QName("", "student");
-    private final static QName _ContactStubCreated_QNAME = new QName("", "created");
     private final static QName _ContactStubSuburb_QNAME = new QName("", "suburb");
     private final static QName _ContactStubTutor_QNAME = new QName("", "tutor");
     private final static QName _ContactStubIsMarketingViaSMSAllowed_QNAME = new QName("", "isMarketingViaSMSAllowed");
+    private final static QName _ContactStubCollegeId_QNAME = new QName("", "collegeId");
     private final static QName _ContactStubCountryId_QNAME = new QName("", "countryId");
     private final static QName _ContactStubCookieHash_QNAME = new QName("", "cookieHash");
     private final static QName _ContactStubEmailAddress_QNAME = new QName("", "emailAddress");
@@ -74,91 +79,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ContactStub }
-     * 
-     */
-    public ContactStub createContactStub() {
-        return new ContactStub();
-    }
-
-    /**
-     * Create an instance of {@link SessionStub }
-     * 
-     */
-    public SessionStub createSessionStub() {
-        return new SessionStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseClassStub }
-     * 
-     */
-    public CourseClassStub createCourseClassStub() {
-        return new CourseClassStub();
-    }
-
-    /**
      * Create an instance of {@link TutorStub }
      * 
      */
     public TutorStub createTutorStub() {
         return new TutorStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicationResult }
-     * 
-     */
-    public ReplicationResult createReplicationResult() {
-        return new ReplicationResult();
-    }
-
-    /**
-     * Create an instance of {@link CourseModuleStub }
-     * 
-     */
-    public CourseModuleStub createCourseModuleStub() {
-        return new CourseModuleStub();
-    }
-
-    /**
-     * Create an instance of {@link ReplicationRequest }
-     * 
-     */
-    public ReplicationRequest createReplicationRequest() {
-        return new ReplicationRequest();
-    }
-
-    /**
-     * Create an instance of {@link SessionTutorStub }
-     * 
-     */
-    public SessionTutorStub createSessionTutorStub() {
-        return new SessionTutorStub();
-    }
-
-    /**
-     * Create an instance of {@link AttendanceStub }
-     * 
-     */
-    public AttendanceStub createAttendanceStub() {
-        return new AttendanceStub();
-    }
-
-    /**
-     * Create an instance of {@link CourseStub }
-     * 
-     */
-    public CourseStub createCourseStub() {
-        return new CourseStub();
-    }
-
-    /**
-     * Create an instance of {@link BinaryDataStub }
-     * 
-     */
-    public BinaryDataStub createBinaryDataStub() {
-        return new BinaryDataStub();
     }
 
     /**
@@ -170,12 +95,140 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SessionStub }{@code >}}
+     * Create an instance of {@link BinaryDataStub }
      * 
      */
-    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "session")
-    public JAXBElement<SessionStub> createSession(SessionStub value) {
-        return new JAXBElement<SessionStub>(_Session_QNAME, SessionStub.class, null, value);
+    public BinaryDataStub createBinaryDataStub() {
+        return new BinaryDataStub();
+    }
+
+    /**
+     * Create an instance of {@link SessionStub }
+     * 
+     */
+    public SessionStub createSessionStub() {
+        return new SessionStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseModuleStub }
+     * 
+     */
+    public CourseModuleStub createCourseModuleStub() {
+        return new CourseModuleStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseStub }
+     * 
+     */
+    public CourseStub createCourseStub() {
+        return new CourseStub();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceLineStub }
+     * 
+     */
+    public InvoiceLineStub createInvoiceLineStub() {
+        return new InvoiceLineStub();
+    }
+
+    /**
+     * Create an instance of {@link EnrolmentStub }
+     * 
+     */
+    public EnrolmentStub createEnrolmentStub() {
+        return new EnrolmentStub();
+    }
+
+    /**
+     * Create an instance of {@link AttendanceStub }
+     * 
+     */
+    public AttendanceStub createAttendanceStub() {
+        return new AttendanceStub();
+    }
+
+    /**
+     * Create an instance of {@link BinaryInfoRelationStub }
+     * 
+     */
+    public BinaryInfoRelationStub createBinaryInfoRelationStub() {
+        return new BinaryInfoRelationStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicationResult }
+     * 
+     */
+    public ReplicationResult createReplicationResult() {
+        return new ReplicationResult();
+    }
+
+    /**
+     * Create an instance of {@link PaymentInLineStub }
+     * 
+     */
+    public PaymentInLineStub createPaymentInLineStub() {
+        return new PaymentInLineStub();
+    }
+
+    /**
+     * Create an instance of {@link PaymentInStub }
+     * 
+     */
+    public PaymentInStub createPaymentInStub() {
+        return new PaymentInStub();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceStub }
+     * 
+     */
+    public InvoiceStub createInvoiceStub() {
+        return new InvoiceStub();
+    }
+
+    /**
+     * Create an instance of {@link CourseClassStub }
+     * 
+     */
+    public CourseClassStub createCourseClassStub() {
+        return new CourseClassStub();
+    }
+
+    /**
+     * Create an instance of {@link ReplicationRequest }
+     * 
+     */
+    public ReplicationRequest createReplicationRequest() {
+        return new ReplicationRequest();
+    }
+
+    /**
+     * Create an instance of {@link ContactStub }
+     * 
+     */
+    public ContactStub createContactStub() {
+        return new ContactStub();
+    }
+
+    /**
+     * Create an instance of {@link SessionTutorStub }
+     * 
+     */
+    public SessionTutorStub createSessionTutorStub() {
+        return new SessionTutorStub();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EnrolmentStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "enrolment")
+    public JAXBElement<EnrolmentStub> createEnrolment(EnrolmentStub value) {
+        return new JAXBElement<EnrolmentStub>(_Enrolment_QNAME, EnrolmentStub.class, null, value);
     }
 
     /**
@@ -188,15 +241,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link TutorStub }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "tutor")
-    public JAXBElement<TutorStub> createTutor(TutorStub value) {
-        return new JAXBElement<TutorStub>(_Tutor_QNAME, TutorStub.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link BinaryInfoStub }{@code >}}
      * 
      */
@@ -206,21 +250,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CourseStub }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link InvoiceStub }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "course")
-    public JAXBElement<CourseStub> createCourse(CourseStub value) {
-        return new JAXBElement<CourseStub>(_Course_QNAME, CourseStub.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CourseClassStub }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "courseClass")
-    public JAXBElement<CourseClassStub> createCourseClass(CourseClassStub value) {
-        return new JAXBElement<CourseClassStub>(_CourseClass_QNAME, CourseClassStub.class, null, value);
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "invoice")
+    public JAXBElement<InvoiceStub> createInvoice(InvoiceStub value) {
+        return new JAXBElement<InvoiceStub>(_Invoice_QNAME, InvoiceStub.class, null, value);
     }
 
     /**
@@ -242,12 +277,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SessionTutorStub }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link PaymentInStub }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "sessionTutor")
-    public JAXBElement<SessionTutorStub> createSessionTutor(SessionTutorStub value) {
-        return new JAXBElement<SessionTutorStub>(_SessionTutor_QNAME, SessionTutorStub.class, null, value);
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "paymentIn")
+    public JAXBElement<PaymentInStub> createPaymentIn(PaymentInStub value) {
+        return new JAXBElement<PaymentInStub>(_PaymentIn_QNAME, PaymentInStub.class, null, value);
     }
 
     /**
@@ -257,6 +292,78 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "courseModule")
     public JAXBElement<CourseModuleStub> createCourseModule(CourseModuleStub value) {
         return new JAXBElement<CourseModuleStub>(_CourseModule_QNAME, CourseModuleStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SessionStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "session")
+    public JAXBElement<SessionStub> createSession(SessionStub value) {
+        return new JAXBElement<SessionStub>(_Session_QNAME, SessionStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link TutorStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "tutor")
+    public JAXBElement<TutorStub> createTutor(TutorStub value) {
+        return new JAXBElement<TutorStub>(_Tutor_QNAME, TutorStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CourseStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "course")
+    public JAXBElement<CourseStub> createCourse(CourseStub value) {
+        return new JAXBElement<CourseStub>(_Course_QNAME, CourseStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CourseClassStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "courseClass")
+    public JAXBElement<CourseClassStub> createCourseClass(CourseClassStub value) {
+        return new JAXBElement<CourseClassStub>(_CourseClass_QNAME, CourseClassStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SessionTutorStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "sessionTutor")
+    public JAXBElement<SessionTutorStub> createSessionTutor(SessionTutorStub value) {
+        return new JAXBElement<SessionTutorStub>(_SessionTutor_QNAME, SessionTutorStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link PaymentInLineStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "paymentInLine")
+    public JAXBElement<PaymentInLineStub> createPaymentInLine(PaymentInLineStub value) {
+        return new JAXBElement<PaymentInLineStub>(_PaymentInLine_QNAME, PaymentInLineStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InvoiceLineStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "invoiceLine")
+    public JAXBElement<InvoiceLineStub> createInvoiceLine(InvoiceLineStub value) {
+        return new JAXBElement<InvoiceLineStub>(_InvoiceLine_QNAME, InvoiceLineStub.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link BinaryInfoRelationStub }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://repl.v4.soap.webservices.oncourse.ish/", name = "binaryInfoRelation")
+    public JAXBElement<BinaryInfoRelationStub> createBinaryInfoRelation(BinaryInfoRelationStub value) {
+        return new JAXBElement<BinaryInfoRelationStub>(_BinaryInfoRelation_QNAME, BinaryInfoRelationStub.class, null, value);
     }
 
     /**
@@ -282,27 +389,18 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "familyName", scope = ContactStub.class)
-    public JAXBElement<String> createContactStubFamilyName(String value) {
-        return new JAXBElement<String>(_ContactStubFamilyName_QNAME, String.class, ContactStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
     @XmlElementDecl(namespace = "", name = "state", scope = ContactStub.class)
     public JAXBElement<String> createContactStubState(String value) {
         return new JAXBElement<String>(_ContactStubState_QNAME, String.class, ContactStub.class, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ReplicationStub }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "college", scope = ContactStub.class)
-    public JAXBElement<ReplicationStub> createContactStubCollege(ReplicationStub value) {
-        return new JAXBElement<ReplicationStub>(_ContactStubCollege_QNAME, ReplicationStub.class, ContactStub.class, value);
+    @XmlElementDecl(namespace = "", name = "familyName", scope = ContactStub.class)
+    public JAXBElement<String> createContactStubFamilyName(String value) {
+        return new JAXBElement<String>(_ContactStubFamilyName_QNAME, String.class, ContactStub.class, value);
     }
 
     /**
@@ -336,6 +434,15 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
+    @XmlElementDecl(namespace = "", name = "mobilePhoneNumber", scope = ContactStub.class)
+    public JAXBElement<String> createContactStubMobilePhoneNumber(String value) {
+        return new JAXBElement<String>(_ContactStubMobilePhoneNumber_QNAME, String.class, ContactStub.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
     @XmlElementDecl(namespace = "", name = "password", scope = ContactStub.class)
     public JAXBElement<String> createContactStubPassword(String value) {
         return new JAXBElement<String>(_ContactStubPassword_QNAME, String.class, ContactStub.class, value);
@@ -345,9 +452,9 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "mobilePhoneNumber", scope = ContactStub.class)
-    public JAXBElement<String> createContactStubMobilePhoneNumber(String value) {
-        return new JAXBElement<String>(_ContactStubMobilePhoneNumber_QNAME, String.class, ContactStub.class, value);
+    @XmlElementDecl(namespace = "", name = "passwordHash", scope = ContactStub.class)
+    public JAXBElement<String> createContactStubPasswordHash(String value) {
+        return new JAXBElement<String>(_ContactStubPasswordHash_QNAME, String.class, ContactStub.class, value);
     }
 
     /**
@@ -357,15 +464,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "isMale", scope = ContactStub.class)
     public JAXBElement<Boolean> createContactStubIsMale(Boolean value) {
         return new JAXBElement<Boolean>(_ContactStubIsMale_QNAME, Boolean.class, ContactStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "passwordHash", scope = ContactStub.class)
-    public JAXBElement<String> createContactStubPasswordHash(String value) {
-        return new JAXBElement<String>(_ContactStubPasswordHash_QNAME, String.class, ContactStub.class, value);
     }
 
     /**
@@ -384,16 +482,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "student", scope = ContactStub.class)
     public JAXBElement<ReplicationStub> createContactStubStudent(ReplicationStub value) {
         return new JAXBElement<ReplicationStub>(_ContactStubStudent_QNAME, ReplicationStub.class, ContactStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Date }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "created", scope = ContactStub.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
-    public JAXBElement<Date> createContactStubCreated(Date value) {
-        return new JAXBElement<Date>(_ContactStubCreated_QNAME, Date.class, ContactStub.class, value);
     }
 
     /**
@@ -421,6 +509,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "isMarketingViaSMSAllowed", scope = ContactStub.class)
     public JAXBElement<Boolean> createContactStubIsMarketingViaSMSAllowed(Boolean value) {
         return new JAXBElement<Boolean>(_ContactStubIsMarketingViaSMSAllowed_QNAME, Boolean.class, ContactStub.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Long }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "collegeId", scope = ContactStub.class)
+    public JAXBElement<Long> createContactStubCollegeId(Long value) {
+        return new JAXBElement<Long>(_ContactStubCollegeId_QNAME, Long.class, ContactStub.class, value);
     }
 
     /**

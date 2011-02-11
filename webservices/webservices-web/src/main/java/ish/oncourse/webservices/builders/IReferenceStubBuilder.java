@@ -13,6 +13,6 @@ import org.apache.cayenne.Persistent;
  * 
  * @author marek
  */
-public interface IReferenceStubBuilder {
-	ReferenceStub convert(Persistent record);
+public interface IReferenceStubBuilder<T extends Persistent> {
+	ReferenceStub convert(T record);
 }

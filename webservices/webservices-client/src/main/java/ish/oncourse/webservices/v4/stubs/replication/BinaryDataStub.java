@@ -1,14 +1,10 @@
 
 package ish.oncourse.webservices.v4.stubs.replication;
 
-import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.w3._2001.xmlschema.Adapter1;
 
 
 /**
@@ -23,10 +19,8 @@ import org.w3._2001.xmlschema.Adapter1;
  *       &lt;sequence>
  *         &lt;element name="collegeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="content" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/>
- *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="isDeleted" type="{http://www.w3.org/2001/XMLSchema}short"/>
- *         &lt;element name="modified" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="binaryInfo" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
+ *         &lt;element name="binaryInfo" type="{http://repl.v4.soap.webservices.oncourse.ish/}binaryInfoStub"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -39,9 +33,7 @@ import org.w3._2001.xmlschema.Adapter1;
 @XmlType(name = "binaryDataStub", propOrder = {
     "collegeId",
     "content",
-    "created",
     "isDeleted",
-    "modified",
     "binaryInfo"
 })
 public class BinaryDataStub
@@ -51,17 +43,9 @@ public class BinaryDataStub
     protected long collegeId;
     @XmlElement(required = true)
     protected byte[] content;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
-    @XmlSchemaType(name = "dateTime")
-    protected Date created;
     protected short isDeleted;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
-    @XmlSchemaType(name = "dateTime")
-    protected Date modified;
     @XmlElement(required = true)
-    protected ReplicationStub binaryInfo;
+    protected BinaryInfoStub binaryInfo;
 
     /**
      * Gets the value of the collegeId property.
@@ -102,30 +86,6 @@ public class BinaryDataStub
     }
 
     /**
-     * Gets the value of the created property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * Sets the value of the created property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCreated(Date value) {
-        this.created = value;
-    }
-
-    /**
      * Gets the value of the isDeleted property.
      * 
      */
@@ -142,38 +102,14 @@ public class BinaryDataStub
     }
 
     /**
-     * Gets the value of the modified property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * Sets the value of the modified property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setModified(Date value) {
-        this.modified = value;
-    }
-
-    /**
      * Gets the value of the binaryInfo property.
      * 
      * @return
      *     possible object is
-     *     {@link ReplicationStub }
+     *     {@link BinaryInfoStub }
      *     
      */
-    public ReplicationStub getBinaryInfo() {
+    public BinaryInfoStub getBinaryInfo() {
         return binaryInfo;
     }
 
@@ -182,10 +118,10 @@ public class BinaryDataStub
      * 
      * @param value
      *     allowed object is
-     *     {@link ReplicationStub }
+     *     {@link BinaryInfoStub }
      *     
      */
-    public void setBinaryInfo(ReplicationStub value) {
+    public void setBinaryInfo(BinaryInfoStub value) {
         this.binaryInfo = value;
     }
 

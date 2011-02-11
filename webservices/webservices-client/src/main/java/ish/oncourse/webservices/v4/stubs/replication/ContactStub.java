@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="businessPhoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="cookieHash" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="countryId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="dateOfBirth" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="emailAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="familyName" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -47,7 +46,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="suburb" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="taxFileNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="college" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
+ *         &lt;element name="collegeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="student" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
  *         &lt;element name="tutor" type="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub"/>
  *       &lt;/sequence>
@@ -67,34 +66,33 @@ public class ContactStub
 {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "isMale", type = JAXBElement.class),
-        @XmlElementRef(name = "state", type = JAXBElement.class),
-        @XmlElementRef(name = "isMarketingViaPostAllowed", type = JAXBElement.class),
-        @XmlElementRef(name = "modified", type = JAXBElement.class),
-        @XmlElementRef(name = "tutor", type = JAXBElement.class),
-        @XmlElementRef(name = "countryId", type = JAXBElement.class),
-        @XmlElementRef(name = "postcode", type = JAXBElement.class),
-        @XmlElementRef(name = "faxNumber", type = JAXBElement.class),
-        @XmlElementRef(name = "emailAddress", type = JAXBElement.class),
-        @XmlElementRef(name = "isCompany", type = JAXBElement.class),
-        @XmlElementRef(name = "password", type = JAXBElement.class),
-        @XmlElementRef(name = "taxFileNumber", type = JAXBElement.class),
-        @XmlElementRef(name = "dateOfBirth", type = JAXBElement.class),
-        @XmlElementRef(name = "homePhoneNumber", type = JAXBElement.class),
-        @XmlElementRef(name = "street", type = JAXBElement.class),
-        @XmlElementRef(name = "isMarketingViaEmailAllowed", type = JAXBElement.class),
-        @XmlElementRef(name = "mobilePhoneNumber", type = JAXBElement.class),
-        @XmlElementRef(name = "student", type = JAXBElement.class),
-        @XmlElementRef(name = "familyName", type = JAXBElement.class),
-        @XmlElementRef(name = "college", type = JAXBElement.class),
-        @XmlElementRef(name = "created", type = JAXBElement.class),
-        @XmlElementRef(name = "cookieHash", type = JAXBElement.class),
+        @XmlElementRef(name = "collegeId", type = JAXBElement.class),
         @XmlElementRef(name = "isMarketingViaSMSAllowed", type = JAXBElement.class),
-        @XmlElementRef(name = "suburb", type = JAXBElement.class),
+        @XmlElementRef(name = "cookieHash", type = JAXBElement.class),
+        @XmlElementRef(name = "faxNumber", type = JAXBElement.class),
         @XmlElementRef(name = "givenName", type = JAXBElement.class),
-        @XmlElementRef(name = "uniqueCode", type = JAXBElement.class),
+        @XmlElementRef(name = "mobilePhoneNumber", type = JAXBElement.class),
+        @XmlElementRef(name = "street", type = JAXBElement.class),
+        @XmlElementRef(name = "isMarketingViaPostAllowed", type = JAXBElement.class),
+        @XmlElementRef(name = "password", type = JAXBElement.class),
+        @XmlElementRef(name = "isCompany", type = JAXBElement.class),
+        @XmlElementRef(name = "tutor", type = JAXBElement.class),
+        @XmlElementRef(name = "taxFileNumber", type = JAXBElement.class),
+        @XmlElementRef(name = "emailAddress", type = JAXBElement.class),
+        @XmlElementRef(name = "state", type = JAXBElement.class),
+        @XmlElementRef(name = "isMale", type = JAXBElement.class),
+        @XmlElementRef(name = "familyName", type = JAXBElement.class),
         @XmlElementRef(name = "passwordHash", type = JAXBElement.class),
-        @XmlElementRef(name = "businessPhoneNumber", type = JAXBElement.class)
+        @XmlElementRef(name = "isMarketingViaEmailAllowed", type = JAXBElement.class),
+        @XmlElementRef(name = "student", type = JAXBElement.class),
+        @XmlElementRef(name = "suburb", type = JAXBElement.class),
+        @XmlElementRef(name = "modified", type = JAXBElement.class),
+        @XmlElementRef(name = "businessPhoneNumber", type = JAXBElement.class),
+        @XmlElementRef(name = "uniqueCode", type = JAXBElement.class),
+        @XmlElementRef(name = "homePhoneNumber", type = JAXBElement.class),
+        @XmlElementRef(name = "postcode", type = JAXBElement.class),
+        @XmlElementRef(name = "countryId", type = JAXBElement.class),
+        @XmlElementRef(name = "dateOfBirth", type = JAXBElement.class)
     })
     protected List<JAXBElement<?>> rest;
 
@@ -103,7 +101,7 @@ public class ContactStub
      * 
      * <p>
      * You are getting this "catch-all" property because of the following reason: 
-     * The field name "State" is used by two different parts of a schema. See: 
+     * The field name "Modified" is used by two different parts of a schema. See: 
      * line 0 of file:/Users/anton/willow/code/webservices/webservices-client/src/main/resources/wsdl/v4_replication.wsdl#types1
      * line 0 of file:/Users/anton/willow/code/webservices/webservices-client/src/main/resources/wsdl/v4_replication.wsdl#types1
      * <p>
@@ -126,34 +124,33 @@ public class ContactStub
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
-     * {@link JAXBElement }{@code <}{@link Date }{@code >}
-     * {@link JAXBElement }{@code <}{@link ReplicationStub }{@code >}
      * {@link JAXBElement }{@code <}{@link Long }{@code >}
+     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
+     * {@link JAXBElement }{@code <}{@link ReplicationStub }{@code >}
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
+     * {@link JAXBElement }{@code <}{@link ReplicationStub }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link Date }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link ReplicationStub }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link ReplicationStub }{@code >}
      * {@link JAXBElement }{@code <}{@link Date }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link Long }{@code >}
      * 
      * 
      */

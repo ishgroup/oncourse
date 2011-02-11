@@ -5,9 +5,9 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.webservices.soap.v4.auth.SessionToken;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -26,9 +26,9 @@ public class ReplicationQueueService implements IReplicationQueueService {
 	@Autowired
 	private ICayenneService cayenneService;
 
-	public Map<QueuedKey, QueuedRecord> getReplicationQueue() {
+	public SortedMap<QueuedKey, QueuedRecord> getReplicationQueue() {
 		
-		Map<QueuedKey, QueuedRecord> m = new LinkedHashMap<QueuedKey, QueuedRecord>();
+		SortedMap<QueuedKey, QueuedRecord> m = new TreeMap<QueuedKey, QueuedRecord>();
 		
 		Session session = request.getSession(false);
 

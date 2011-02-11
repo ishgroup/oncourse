@@ -5,8 +5,6 @@
 
 package ish.oncourse.webservices.builders.reference;
 
-import org.apache.cayenne.Persistent;
-
 import ish.oncourse.model.Country;
 import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.CountryStub;
@@ -15,11 +13,9 @@ import ish.oncourse.webservices.v4.stubs.reference.CountryStub;
  *
  * @author marek
  */
-public final class CountryStubBuilder implements IReferenceStubBuilder {
+public final class CountryStubBuilder implements IReferenceStubBuilder<Country> {
 	
-	public CountryStub convert(Persistent entity) {
-		
-		Country record = (Country) entity;
+	public CountryStub convert(Country record) {
 		
 		CountryStub stub = new CountryStub();
 

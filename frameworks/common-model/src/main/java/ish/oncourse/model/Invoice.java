@@ -1,6 +1,5 @@
 package ish.oncourse.model;
 
-import ish.oncourse.model.access.ISHDataContext;
 import ish.oncourse.model.auto._Invoice;
 
 public class Invoice extends _Invoice implements Queueable {

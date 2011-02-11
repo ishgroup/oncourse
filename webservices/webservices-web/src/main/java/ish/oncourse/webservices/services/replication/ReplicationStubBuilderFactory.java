@@ -4,6 +4,7 @@ import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.builders.IReplicationStubBuilder;
 import ish.oncourse.webservices.builders.replication.BinaryDataStubBuilder;
+import ish.oncourse.webservices.builders.replication.BinaryInfoStubBuilder;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class ReplicationStubBuilderFactory {
 
 		public ReplicationStubBuilderImpl(Map<QueuedKey, QueuedRecord> queue) {
 			builderMap.put("BinaryData", new BinaryDataStubBuilder(queue, this));
+			builderMap.put("BinaryInfo", new BinaryInfoStubBuilder(queue, this));
 		}
 
 		public ReplicationStub convert(QueuedRecord entity) {

@@ -42,11 +42,11 @@ import javax.xml.bind.annotation.XmlType;
 public class ReplicationRequest {
 
     @XmlElements({
+        @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class),
         @XmlElement(name = "sessionTutor", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionTutorStub.class),
         @XmlElement(name = "session", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = SessionStub.class),
-        @XmlElement(name = "courseModule", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseModuleStub.class),
-        @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class),
-        @XmlElement(name = "course", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseStub.class)
+        @XmlElement(name = "course", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseStub.class),
+        @XmlElement(name = "courseClass", namespace = "http://repl.v4.soap.webservices.oncourse.ish/", type = CourseClassStub.class)
     })
     protected List<ReplicationStub> courseOrCourseClassOrCourseModule;
 
@@ -68,11 +68,11 @@ public class ReplicationRequest {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
+     * {@link CourseModuleStub }
      * {@link SessionTutorStub }
      * {@link SessionStub }
-     * {@link CourseModuleStub }
-     * {@link CourseClassStub }
      * {@link CourseStub }
+     * {@link CourseClassStub }
      * 
      * 
      */

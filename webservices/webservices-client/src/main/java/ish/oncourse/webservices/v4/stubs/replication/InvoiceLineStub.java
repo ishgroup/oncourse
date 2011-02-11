@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for deletedStub complex type.
+ * <p>Java class for invoiceLineStub complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="deletedStub">
+ * &lt;complexType name="invoiceLineStub">
  *   &lt;complexContent>
  *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "deletedStub")
-public class DeletedStub
+@XmlType(name = "invoiceLineStub")
+public class InvoiceLineStub
     extends ReplicationStub
 {
 

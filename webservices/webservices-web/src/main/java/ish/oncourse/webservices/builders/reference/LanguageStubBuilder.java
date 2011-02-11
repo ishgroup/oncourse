@@ -5,8 +5,6 @@
 
 package ish.oncourse.webservices.builders.reference;
 
-import org.apache.cayenne.Persistent;
-
 import ish.oncourse.model.Language;
 import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.LanguageStub;
@@ -15,11 +13,9 @@ import ish.oncourse.webservices.v4.stubs.reference.LanguageStub;
  * 
  * @author marek
  */
-public final class LanguageStubBuilder implements IReferenceStubBuilder {
+public final class LanguageStubBuilder implements IReferenceStubBuilder<Language> {
 
-	public LanguageStub convert(Persistent entity) {
-		
-		Language record = (Language) entity;
+	public LanguageStub convert(Language record) {
 		
 		LanguageStub stub = new LanguageStub();
 

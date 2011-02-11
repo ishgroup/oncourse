@@ -5,8 +5,6 @@
 
 package ish.oncourse.webservices.builders.reference;
 
-import org.apache.cayenne.Persistent;
-
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
@@ -15,11 +13,9 @@ import ish.oncourse.webservices.v4.stubs.reference.TrainingPackageStub;
  *
  * @author marek
  */
-public final class TrainingPackageStubBuilder implements IReferenceStubBuilder {
+public final class TrainingPackageStubBuilder implements IReferenceStubBuilder<TrainingPackage> {
 
-	public TrainingPackageStub convert(Persistent entity) {
-		
-		TrainingPackage record = (TrainingPackage) entity; 
+	public TrainingPackageStub convert(TrainingPackage record) {
 		
 		TrainingPackageStub stub = new TrainingPackageStub();
 

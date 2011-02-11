@@ -10,7 +10,7 @@ import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
 
 import javax.jws.WebService;
 
@@ -38,16 +38,16 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	public ReplicationResult getRecords() {
 		ReplicationResult result = new ReplicationResult();
 
-		Map<QueuedKey, QueuedRecord> queue = queueService.getReplicationQueue();
+		SortedMap<QueuedKey, QueuedRecord> queue = queueService.getReplicationQueue();
 		
 		List<ReplicationStub> records = result.getAttendanceOrBinaryDataOrBinaryInfo();
 
 		IReplicationStubBuilder builder = stubBuilderFactory.newReplicationStubBuilder(queue);
 
 		while (!queue.isEmpty()) {
-			Map.Entry<QueuedKey, QueuedRecord> entry = queue.entrySet().iterator().next();
-			records.add(builder.convert(entry.getValue()));
-			queue.remove(entry.getKey());
+			QueuedKey key = queue.firstKey();
+			records.add(builder.convert(queue.get(key)));
+			queue.remove(key);
 		}
 
 		return result;

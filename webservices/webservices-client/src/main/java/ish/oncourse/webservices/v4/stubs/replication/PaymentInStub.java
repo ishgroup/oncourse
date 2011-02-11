@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for hollowStub complex type.
+ * <p>Java class for paymentInStub complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="hollowStub">
+ * &lt;complexType name="paymentInStub">
  *   &lt;complexContent>
  *     &lt;extension base="{http://repl.v4.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "hollowStub")
-public class HollowStub
+@XmlType(name = "paymentInStub")
+public class PaymentInStub
     extends ReplicationStub
 {
 

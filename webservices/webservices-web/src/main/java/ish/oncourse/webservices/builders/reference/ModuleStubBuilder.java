@@ -5,8 +5,6 @@
 
 package ish.oncourse.webservices.builders.reference;
 
-import org.apache.cayenne.Persistent;
-
 import ish.oncourse.model.Module;
 import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.ModuleStub;
@@ -15,11 +13,9 @@ import ish.oncourse.webservices.v4.stubs.reference.ModuleStub;
  *
  * @author marek
  */
-public final class ModuleStubBuilder implements IReferenceStubBuilder {
+public final class ModuleStubBuilder implements IReferenceStubBuilder<Module> {
 
-	public ModuleStub convert(Persistent entity) {
-		
-		Module record = (Module) entity;
+	public ModuleStub convert(Module record) {
 		
 		ModuleStub stub = new ModuleStub();
 

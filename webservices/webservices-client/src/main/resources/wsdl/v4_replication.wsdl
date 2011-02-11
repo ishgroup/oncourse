@@ -11,10 +11,16 @@
 			<xs:element name="attendance" type="tns:attendanceStub"/>
 			<xs:element name="binaryData" type="tns:binaryDataStub"/>
 			<xs:element name="binaryInfo" type="tns:binaryInfoStub"/>
+			<xs:element name="binaryInfoRelation" type="tns:binaryInfoRelationStub"/>
 			<xs:element name="contact" type="tns:contactStub"/>
 			<xs:element name="course" type="tns:courseStub" />
 			<xs:element name="courseClass" type="tns:courseClassStub" />
 			<xs:element name="courseModule" type="tns:courseModuleStub" />
+			<xs:element name="enrolment" type="tns:enrolmentStub"/>
+			<xs:element name="invoice" type="tns:invoiceStub"/>
+			<xs:element name="invoiceLine" type="tns:invoiceLineStub"/>
+			<xs:element name="paymentIn" type="tns:paymentInStub"/>
+			<xs:element name="paymentInLine" type="tns:paymentInLineStub"/>
 			<xs:element name="session" type="tns:sessionStub" />
 			<xs:element name="sessionTutor" type="tns:sessionTutorStub" />
 			<xs:element name="tutor" type="tns:tutorStub"/>
@@ -24,6 +30,7 @@
 						<xs:element ref="tns:attendance"/>
 						<xs:element ref="tns:binaryData"/>
 						<xs:element ref="tns:binaryInfo"/>
+						<xs:element ref="tns:binaryInfoRelation"/>
 						<xs:element ref="tns:contact"/>
 						<xs:element ref="tns:course" />
 						<xs:element ref="tns:courseClass" />
@@ -39,8 +46,6 @@
 					<xs:extension base="tns:replicationStub">
 						<xs:sequence>
 							<xs:element name="attendanceType" type="xs:int"/>
-							<xs:element name="created" type="xs:dateTime"/>
-							<xs:element name="modified" type="xs:dateTime"/>
 							<xs:element name="marker" type="tns:replicationStub"/>
 							<xs:element name="session" type="tns:replicationStub"/>
 							<xs:element name="student" type="tns:replicationStub"/>
@@ -54,10 +59,8 @@
 						<xs:sequence>
 							<xs:element name="collegeId" type="xs:long"/>
 							<xs:element name="content" type="xs:base64Binary"/>
-							<xs:element name="created" type="xs:dateTime"/>
 							<xs:element name="isDeleted" type="xs:short"/>
-							<xs:element name="modified" type="xs:dateTime"/>
-							<xs:element name="binaryInfo" type="tns:replicationStub"/>
+							<xs:element name="binaryInfo" type="tns:binaryInfoStub"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -67,15 +70,25 @@
 					<xs:extension base="tns:replicationStub">
 						<xs:sequence>
 							<xs:element name="byteSize" type="xs:long"/>
-							<xs:element name="created" type="xs:dateTime"/>
 							<xs:element name="isWebVisible" type="xs:boolean"/>
 							<xs:element name="mimeType" type="xs:string"/>
-							<xs:element name="modified" type="xs:dateTime"/>
 							<xs:element name="name" type="xs:string"/>
 							<xs:element name="pixelHeight" type="xs:int"/>
 							<xs:element name="pixelWidth" type="xs:int"/>
 							<xs:element name="referenceNumber" type="xs:int"/>
-							<xs:element name="binaryData" type="tns:replicationStub"/>
+							<xs:element name="binaryData" type="tns:binaryDataStub"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="binaryInfoRelationStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="entityAngelId" type="xs:long"/>
+							<xs:element name="entityWillowId" type="xs:long"/>
+							<xs:element name="binaryInfo" type="tns:binaryInfoStub"/>
+							<xs:element name="collegeId" type="xs:long"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -87,7 +100,6 @@
 								<xs:element name="businessPhoneNumber" type="xs:string"/>
 								<xs:element name="cookieHash" type="xs:string"/>
 								<xs:element name="countryId" type="xs:long"/>
-								<xs:element name="created" type="xs:dateTime"/>
 								<xs:element name="dateOfBirth" type="xs:dateTime"/>
 								<xs:element name="emailAddress" type="xs:string"/>
 								<xs:element name="familyName" type="xs:string"/>
@@ -109,7 +121,7 @@
 								<xs:element name="suburb" type="xs:string"/>
 								<xs:element name="taxFileNumber" type="xs:string"/>
 								<xs:element name="uniqueCode" type="xs:string"/>
-								<xs:element name="college" type="tns:replicationStub"/>
+								<xs:element name="collegeId" type="xs:long"/>
 								<xs:element name="student" type="tns:replicationStub"/>
 								<xs:element name="tutor" type="tns:replicationStub"/>
 	 						</xs:sequence>
@@ -130,14 +142,11 @@
 				<xs:sequence>
 					<xs:element minOccurs="1" maxOccurs="1" name="angelId" type="xs:long" />
 					<xs:element minOccurs="1" maxOccurs="1" name="willowId" type="xs:long" />
+					<xs:element name="created" type="xs:dateTime"/>
+					<xs:element name="modified" type="xs:dateTime"/>
 					<xs:element name="state"  minOccurs="1" maxOccurs="1" type="tns:stubState"/>
 				</xs:sequence>
 			</xs:complexType>
-			<xsd:simpleType name="stubState">
-			    <xsd:restriction base="xsd:token">
-			        <xsd:pattern value="FULL | HOLLOW | DELETED"/>
-			    </xsd:restriction>
-			</xsd:simpleType>
 			<xs:complexType name="courseClassStub">
 				<xs:complexContent>
 					<xs:extension base="tns:replicationStub">
@@ -154,6 +163,55 @@
 					</xs:extension>
 				</xs:complexContent>
 			</xs:complexType>
+			<xs:complexType name="enrolmentStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="reasonForStudy" type="xs:int"/>
+							<xs:element name="source" type="xs:string"/>
+							<xs:element name="status" type="xs:string"/>
+							<xs:element name="collegeId" type="xs:long"/>
+							<xs:element name="courseClass" type="tns:courseClassStub"/>
+							<xs:element name="invoiceLine" type="tns:invoiceLineStub"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="invoiceStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="invoiceLineStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="paymentInStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="paymentInLineStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence />
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xsd:simpleType name="stubState">
+			    <xsd:restriction base="xsd:string">
+     				<xsd:enumeration value="FULL"/>
+      				<xsd:enumeration value="HOLLOW"/>
+      				<xsd:enumeration value="DELETED"/>
+    			</xsd:restriction>
+			</xsd:simpleType>
 			<xs:complexType name="sessionStub">
 				<xs:complexContent>
 					<xs:extension base="tns:replicationStub">

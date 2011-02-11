@@ -5,8 +5,6 @@
 
 package ish.oncourse.webservices.builders.reference;
 
-import org.apache.cayenne.Persistent;
-
 import ish.oncourse.model.Qualification;
 import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
@@ -15,11 +13,9 @@ import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
  *
  * @author marek
  */
-public final class QualificationStubBuilder implements IReferenceStubBuilder {
+public final class QualificationStubBuilder implements IReferenceStubBuilder<Qualification> {
 
-	public QualificationStub convert(Persistent entity) {
-		
-		Qualification record = (Qualification) entity;
+	public QualificationStub convert(Qualification record) {
 		
 		QualificationStub stub = new QualificationStub();
 
