@@ -28,11 +28,13 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@Autowired
 	private ReplicationStubBuilderFactory stubBuilderFactory;
 
+	@Override
 	public ReplicationResult sendRecords(ReplicationRequest req) {
 		ReplicationResult result = new ReplicationResult();
 		return result;
 	}
 
+	@Override
 	public ReplicationResult getRecords() {
 		ReplicationResult result = new ReplicationResult();
 
