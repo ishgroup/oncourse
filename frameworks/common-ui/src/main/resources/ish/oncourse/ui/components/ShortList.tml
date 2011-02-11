@@ -25,33 +25,12 @@
 					</t:if>
 					</div>
 					
-					<span class="deleteItem" title="Remove item"><a href="#PHDeleteItemShortlist">[remove]</a></span></li>
+					<span class="deleteItem" title="Remove item"><a href="#">[remove]</a></span></li>
 				</t:loop>
 			</ul>
 			<div class="closeButton">X</div>
 		</div>
-		<!-- ul class="menu">
-			<t:loop source="items" value="courseClass">
-				<li class="onshortlist">
-					<a href="#" class="cutitem" id="${courseClass.id}"><span class="hide" title="Remove item">X</span></a>
-					<a href="/class/${courseClass.uniqueIdentifier}" class = "viewitem" title = "${courseClass.uniqueIdentifier}">
-						${courseClass.course.name}
-					</a>
-				</li>
-			</t:loop>
-			<t:if test="paymentGatewayEnabled">
-				<li class="enrolnow">
-					<a id="enrolNowLink" href="/enrol/EnrolCourses">
-						<t:if test="hasMultipleItems">
-							Enrol in these classes
-						</t:if>
-						<t:if test="hasMultipleItems" negate="true">
-							Enrol in this class
-						</t:if>
-					</a>
-				</li>
-			</t:if>
-		</ul-->		
+		
 	</t:if>
 	
 	<div class="shortlistInfo"><span>${itemCount}</span> courses selected</div>
@@ -59,8 +38,8 @@
 	<t:if test="hasItems">
 		<div class="shortlistAction">
 			<ul>
-				<li class="shortlistActionShow"><a href="#PHShowShortlist">Show Shortlist</a></li>
-				<li class="shortlistActionEnrol"><a href="#PHEnrolment">Enrol</a></li>
+				<li class="shortlistActionShow"><a href="#">Show Shortlist</a></li>
+				<li class="shortlistActionEnrol"><a href="/enrol/enrolCourses">Enrol</a></li>
 			</ul>
 		</div>
 	</t:if>

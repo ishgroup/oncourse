@@ -96,27 +96,6 @@
 					<div class="bubble_top bubble_content clearfix">
 						<span t:type="ui/ClassTimingDisplay" courseClass="courseClass" />
 					</div>
-					<div class="bubble_middle bubble_content clearfix">
-						<t:if test="courseClass.availableEnrolmentPlaces">
-							<span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass" />
-							<t:if test="hasSiteName"> at ${courseClass.room.site.name}.</t:if>
-							<p:else>
-								<span t:type="ui/WaitingListItem" courseClass="courseClass"
-									course="courseClass.course" />
-								<br style="clear:left;" />
-							</p:else>
-						</t:if>
-						<div class="class-link">
-							<a href="/class/${courseClass.course.code}-${courseClass.code}">Print this class...</a>
-						</div>
-						<div class="course-link">
-							<a href="/course/${courseClass.course.code}">
-								More about
-								<em>${courseClass.course.name}</em>
-								...
-							</a>
-						</div>
-					</div>
 					<div class="bubble_bottom clearfix"> </div>
 					<br style="clear:both;" />
 				</div>

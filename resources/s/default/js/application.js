@@ -188,17 +188,6 @@ $j(document).ready(function() {
 		$j(this).nextAll('.user-details:first').slideToggle(400);
 	});   
 
-	// set up the date picker fields
-	//birthdate is disabled because the earliest date datepicker shows is 1981.
-	//if ($j("#birthdate")) {
-	//	$j("#birthdate").datepicker({ dateFormat:'dd/mm/yy', goToCurrent:true, 
-	//		maxDate:0, minDate:-10000,  yearRange: '1900:2010',  hideIfNoPrevNext:true });
-	//}
-
-	if ($j("#datepicker")) {
-		$j("#datepicker").datepicker();
-	}
-    
 	// show default text in text fields with class defaultText using "default" attribute
 	$j(".defaultText").focus(function(srcc)
     {
@@ -312,3 +301,38 @@ $j(document).ready(function() {
 			return false;
 		});
 });
+
+function initHints(parentBlockId){
+	parentBlockToUpdate='';
+		if(parentBlockId!=null){
+			parentBlockToUpdate = '#'+parentBlockId+' ';
+		}
+	 	// Show us hints on entering the field if the input is not invalid
+		$j(parentBlockToUpdate+'span.valid input').bind("focus blur", function() {
+			parent=$j(this).next().next();
+			if(parent.children('.hint').length==0){
+				//for the inputs that have one more image before hint (like calendar tapestry component)
+				parent=parent.next();
+			}
+			parent.children('.hint').toggleClass('hidden-text');
+	 		//$j(this).parent().nextAll('.hint:first').toggle();
+	 	});
+	 
+	 	// Show us reasons for errors on entering the field if the input IS invalid
+		$j(parentBlockToUpdate+'span.validate input').bind("focus blur", function() {
+			parent=$j(this).next().next();
+			if(parent.children('.reason').length==0){
+				//for the inputs that have one more image before hint (like calendar tapestry component)
+				parent=parent.next();
+			}
+			parent.children('.reason').toggleClass('hidden-text');
+	 	});
+		$j(parentBlockToUpdate+'span.validate select').bind("focus blur", function() {
+			parent=$j(this).next().next();
+			if(parent.children('.reason').length==0){
+				//for the inputs that have one more image before hint (like calendar tapestry component)
+				parent=parent.next();
+			}
+			parent.children('.reason').toggleClass('hidden-text');
+	 	});
+	 }
