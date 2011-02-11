@@ -1,34 +1,10 @@
 /**
- *  _base.scss
+ *  _functions.scss
  *
- *  Application-wide SCSS file for all onCourse apps.
- * 
+ *  Shared styles and functions.
+ *
+ *
  */
- 
-
-$font-color: #444 !default; 
-$link-color: #607890 !default;
-$link-hover-color: #036 !default;
-$link-active-color: #607890 !default;
-$link-visited-color: #607890 !default;
-$selected-font-color: #fff !default;
-$selected-background-color: #ff5e99 !default;
-$list-left-margin: 1.8em !default;
-
-/* Include other application CSS files 
-forms
-courses/classes
-enrol
-search
-
-*/
-
-@import "fancy-buttons";
-
-
-//
-// Minimal base styles
-//
 
 @mixin html5-boilerplate-styles {
   body, select, input, textarea { color: $font-color; }
@@ -151,4 +127,45 @@ search
 
 @mixin headings { 
 	h1, h2, h3, h4, h5, h6 { margin: 0 0 1em 0; }
+}
+
+/* onCourse specific mixins */
+
+@mixin new_school_panel { outline: 1px solid #444; background: #f7f7f7;
+	dt { display: none; }
+	.classItemName + dd { display: none; }
+	.classItemDate + dd { font-size: 1.6em; }
+	}
+	
+@mixin old_school_panel { background: #FDFDF8; border: 1px solid #EEEEEE; border-width: 1px 1px 1px 6px; margin-bottom: 10px; padding: 5px; min-height: 66px; position: relative;
+@include clearfix;
+	.classDescription { clear: both; }
+	dt { display: none; }
+	dd { float: left;  }
+	.classItemName, .classItemName + dd { display: none;  } // This should use the HTML5 BP visually hidden class
+	.classItemDate + dd { min-height: 56px; width: 33%; background: transparent url(/s/img/calendar.png) no-repeat; padding-left: 20px; }
+	.classItemTutor + dd, .classItemLocation + dd, .classItemPrice + dd { width: 45%; background: transparent url(/s/img/person.png) 0 1px no-repeat; padding-left: 20px; }
+	.classItemLocation + dd { background-image: url(/s/img/location.png);  background-position-y: 0px; }
+	.classItemPrice + dd { background: none; padding-left: 0; }
+	
+	.classAction { position: absolute; right: 5px; text-align: right; 
+		dl { @include clearfix; }
+	}
+	&:hover { border-color: #999; }
+}
+
+@mixin dialogBox {
+	background: rgba(255, 255, 255, 0.94);
+	width: 250px; 
+	position: absolute; right: 100px; top: 100px;
+	@include box-shadow(rgba(68, 68, 68, 0.5), 0px, 0px, 20px);
+	@include border-radius(4px);
+}
+
+
+@mixin closeButton() { 
+	border: 3px solid #fff; padding: 4; display: block; background: #444; color: #eee; text-align: center; font-weight: bold; content: "x"; font-size: 10px; line-height: 1; cursor: pointer; width: 10px; height: 10px; -webkit-background-clip: padding-box;
+	@include border-radius(20px);
+	@include box-shadow(rgba(68, 68, 68, 0.5), 0px, 0px, 10px);
+	&:hover { color: #fff; background: #000; cursor: pointer; -webkit-background-clip: padding-box; }
 }

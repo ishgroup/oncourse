@@ -1,0 +1,32 @@
+/**
+ *  _shortlist.scss
+ *
+ *  Shortlist styling.
+ *
+ *
+ */
+
+#shortlist { 
+	position: relative; padding: 10px;
+	
+	h3 { display: none; }
+	.shortlistInfo { height: 38px; text-transform: uppercase;
+		span {  font-size: 4em; float: left; display: block; line-height: 1;}
+	}
+	.shortlistAction ul { @include inline-block-list-container; border-bottom: 1px solid black; padding: 0px 0 0 0; clear: both;
+		li { @include inline-block-list-item; }	
+	}	
+	.shortlistChoices { display: none; background: rgba(0,0,0,0.85); z-index: 1000; position: absolute; top: 82px; right: 0; margin: 0; width: 250px; 
+		ul { margin: 0; }
+		li { padding: 5px 55px 5px 10px; position: relative; 
+			&:hover { background: rgba(0,0,0,0.95); }
+			div { font-size: 0.8em; color: #999; }
+		}
+		.deleteItem { position: absolute; top: 5px; right: 5px; display: block; font-size: 9px; background: #444; color: #ccc; line-height: 1; padding: 2px; margin: 4px 0 0 0;
+			a { color: #ccc; 
+				&:hover { text-decoration: none; color: #fff; }
+			}
+		}
+	}
+	.closeButton { @include closeButton(); position: absolute; top: -14px; right: -14px; }
+}
