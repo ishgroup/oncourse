@@ -8,16 +8,29 @@
 	
 	<h2>${courseClass.course.name}</h2>
 	<span t:type="ui/courseclassitem" courseClass="courseClass" excludePrice="true" />
-	<t:outputraw value="${courseDetail}" />
-	<t:outputraw value="${courseClassDetail}"/>
+	
+	<div class="description">
+		<t:outputraw value="${courseClassDetail}" />
+	</div>
+	
+	<div class="courseDescription expandable">	
+		<t:outputraw value="${courseDetail}"/>
+	</div>
+	
+	<div class="printAction">Print this page</div>
+	
+	<hr width="75%" />	
 	
 	<t:if t:test="${courseClass.hasRoom}">
-		<h3>Where to find us</h3>
 		<div class="courseClassLocationFinder">
 			<span t:type="ui/SiteDetailsComponent" room="courseClass.room"
 				collapseLocationMap="true" />
 		</div>
 	</t:if>
+	
+	<hr width="75%" />
+	<h3>Timetable</h3>
+	
 	<!-- TODO enable the timetable -->
 	<!-- div class="blockdetail">
 		<t:if t:test="${showInlineTimetable}">
