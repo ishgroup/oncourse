@@ -40,6 +40,10 @@
 
 	<build>
 		<plugins>
+			<!--
+			Compile using JDK 1.5 compatibility to ensure it works in Angel on
+			OS X PPC.
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
