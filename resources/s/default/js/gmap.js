@@ -139,5 +139,23 @@ function dirLoader( dirmap, dirtxt ) {
 
 
 $j(document).ready(function() {
+	// Google maps
+	try {
+		if ($j('#map').length) mapLoad(); 
+	} catch(e) {
+		// ignore this-- it means there was no real map on the page after all
+	}
+	if (document.getElementById("dirmap")) dirLoad();
+	
 
+	// hide the location map after it has been filled by Google (above), then reveal it when its control is clicked.
+	$j('.collapsedLocationMap').hide();
+	$j('.showLocationMap').click( function() {
+		$j('.showLocationMap').hide();
+		$j('#location').show();
+		//$j('#location').removeClass('collapsedLocationMap');
+		//mapLoadForID('map');
+		return false;
+	});
+	
 });

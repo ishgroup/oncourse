@@ -199,16 +199,6 @@ $j(document).ready(function() {
 		$j("#datepicker").datepicker();
 	}
     
-	// Google maps
-	try {
-		if ($j('#map').length) mapLoad(); 
-	} catch(e) {
-		// ignore this-- it means there was no real map on the page after all
-	}
-	if (document.getElementById("dirmap")) dirLoad();
-
-
-
 	// show default text in text fields with class defaultText using "default" attribute
 	$j(".defaultText").focus(function(srcc)
     {
