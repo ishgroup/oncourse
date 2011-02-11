@@ -37,7 +37,12 @@
 			<artifactId>common-ui</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>ish.oncourse.angel</groupId>
+			<artifactId>waCommon</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
