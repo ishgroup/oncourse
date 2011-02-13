@@ -300,6 +300,8 @@ $j(document).ready(function() {
 			mapLoadForID('map');
 			return false;
 		});
+		
+		$j('body').css('border-bottom', '5px solid #f7f7f7');
 });
 
 function initHints(parentBlockId){
