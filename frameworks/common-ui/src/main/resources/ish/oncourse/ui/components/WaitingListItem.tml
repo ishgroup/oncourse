@@ -126,18 +126,15 @@
 												<t:if t:test="hasMoreClasses">
 													<t:if t:test="hasMoreAvailablePlaces">
 														If there isn't a class to suit you, please
-														<img src="/s/img/button_join.png" />
-														the waiting list.
+														join the waiting list.
 														<p:else>
 															Classes are full. Please
-															<img src="/s/img/button_join.png" />
-															the waiting list.
+															join the waiting list.
 														</p:else>
 													</t:if>
 													<p:else>
 														This course has no current classes. Please
-														<img src="/s/img/button_join.png" />
-														the waiting list.
+														join the waiting list.
 													</p:else>
 												</t:if>
 											</p:else>

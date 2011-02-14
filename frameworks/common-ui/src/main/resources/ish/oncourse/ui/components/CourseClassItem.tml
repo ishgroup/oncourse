@@ -61,7 +61,7 @@
 						index="index">
 						<a class="nyromodal"
 							href="/tutor/${tutorRole.tutor.angelId}"
-							title="View tutor profile">${tutorRole.tutor.fullName}</a>,
+							title="View tutor profile">${tutorRole.tutor.fullName}</a>
 					</t:loop>
 			</t:if>
 			</dd>
@@ -73,45 +73,31 @@
 		</dl>
 
 		<div class="classAction">
-			<ul>
-				<li class="class_addorder"><a class="enrolAction" id="${courseClass.id}">Enrol Now</a>	</li>
-			</ul>
+			<a class="enrolAction" id="${courseClass.id}">Enrol Now</a>
+			
 					
 			<div class="classStatus">
 				<t:if test="courseClass.availableEnrolmentPlaces">
 					<span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass" />
-					<t:if test="hasSiteName"> at ${courseClass.room.site.name}.</t:if>
-					<p:else>
-						<span t:type="ui/WaitingListItem" courseClass="courseClass"
-									course="courseClass.course" />
-						<br style="clear:left;" />
-					</p:else>
+
 				</t:if>
 			</div>
 		</div>	
-	</div>
-	<!-- t:if test="${courseClass.cancelled}" negate="true">
-			<div class="bubbleInfo">
-				<div class="tooltip_popup enrol_tooltip">
-					<div class="bubble_top bubble_content clearfix">
-						<span t:type="ui/ClassTimingDisplay" courseClass="courseClass" />
-					</div>
-					<div class="bubble_bottom clearfix"> </div>
-					<br style="clear:both;" />
-				</div>
-			</div-->
+
+	<t:if test="${courseClass.cancelled}" negate="true">
 			<!--
 				sessions for all classes, displayed for tutor portal, hidden
 				otherwise
 			-->
-			<!-- t:if test="courseClass.hasAnyTimelineableSessions">
-				<div id="sessions_for_class_${courseClass.id}" class="${sessionForClass}">
+			<t:if test="courseClass.hasAnyTimelineableSessions">
+				<div class="classSessions">
 					<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
 						headerLabels="timetableLabels" cssTableClass="cssTableClass"
 						cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"
 						dateFormat="dateFormat" timeFormat="timeFormat" />
 				</div>
 			</t:if>
-		</t:if-->
+		</t:if>
+	</div>	
 	
 </t:container>
