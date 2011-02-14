@@ -43,7 +43,7 @@ $j(document).ready(function() {
 		});	
 
 	// Add items to the shortlist return a response to the user
-	$j('li.class_addorder a').live("click", function(){
+	$j('.enrolAction').live("click", function(){
 		//grab the classid of the enrol button that's just been clicked.  
 		var listid = $j(this).parents(".classItem").data("classid");
 		var buttonPos = $j('.classItem[data-classid=' + listid + ']').position();
@@ -55,7 +55,7 @@ $j(document).ready(function() {
 				type: "GET",
 				url:  '/addToCookies?key=shortlist&itemId=' + listid,
 				success: function(){
-							refreshShortList(listid);
+							alert('success add');
 							
 							//Make the order confirmation box appear
 							$j(".confirmOrderDialog p:first").text("Thanks for adding: ");
@@ -70,6 +70,8 @@ $j(document).ready(function() {
 							});
 							
 							$j(".confirmOrderDialog").stop(true, false).fadeIn("fast").delay(5000).fadeOut("fast");
+							refreshShortList(listid);
+							
 						}
 			});
 		} else {

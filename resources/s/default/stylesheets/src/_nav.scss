@@ -6,13 +6,13 @@
  *
  */
 
-@mixin horizontal_nav {  
-	nav { padding: 15px 0px 0 10px; outline: 1px solid pink; }
-	nav ul { @include inline-block-list-container; height: 28px; 
+@mixin horizontal_nav { 
+	padding: 15px 0px 0 10px; outline: 1px solid pink;
+	ul { @include inline-block-list-container; height: 28px; 
 		> li { @include inline-block-list-item; width: auto;  margin: 0px 0px 0 0;
 			> a { padding: 4px 11px; border: 1px solid #fdebc5; border-bottom-width: 0; background-color: #f9cf66; font-size: 0.85em; display: block; }
 			}
-		ul {  }	
+		ul { display: none; }	
 	}
 }	 
 
