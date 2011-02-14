@@ -353,6 +353,17 @@
 		</snapshotRepository>
 	</distributionManagement>
 
+	<issueManagement>
+		<system>squish</system>
+		<url>https://squish.ish.com.au</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:https://svn.ish.com.au/ish/willow/trunk</connection>
+		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/trunk</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://websvn.ish.com.au/ish/willow</url>
+	</scm>
 
 	<ciManagement>
 		<system>hudson</system>
