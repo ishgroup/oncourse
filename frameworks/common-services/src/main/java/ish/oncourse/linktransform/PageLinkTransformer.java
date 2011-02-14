@@ -109,11 +109,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final String ADD_TO_COOKIES_PATH = "/addToCookies";
 
 	/**
-	 * Path of the refreshing the shortlist control
-	 */
-	private static final String REFRESH_SHORT_LIST_CONTROL_PATH = "/refreshShortListControl";
-
-	/**
 	 * Path of the refreshing the shortlist
 	 */
 	private static final String REFRESH_SHORT_LIST_PATH = "/refreshShortList";
@@ -130,12 +125,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final String TIMELINE_PATH = "/Timeline/sessions";
 
 	/**
-	 * Path of the refreshing the shortlist
-	 */
-	private static final String SHORTLIST_PATH = "/shortlist";
-
-	/**
-	 * Path of the refreshing the shortlist
+	 * Path of the refreshing the discounts' shortlist
 	 */
 	private static final String DISCOUNTS_PATH = "/discounts";
 
@@ -271,32 +261,23 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 					false);
 		}
 
-		if (SHORTLIST_PATH.equalsIgnoreCase(path)) {
-			if (request.isXHR()) {
-				return new PageRenderRequestParameters(
-						"ui/ShortListAjax", new EmptyEventContext(), false);
-			} else {
-				return new PageRenderRequestParameters(
-						"ui/ShortListPage", new EmptyEventContext(), false);
-			}
-		}
-
-		if (ADD_TO_COOKIES_PATH.equalsIgnoreCase(path)) {
+		if (ADD_TO_COOKIES_PATH.equalsIgnoreCase(path)
+				|| REMOVE_FROM_COOKIES_PATH.equalsIgnoreCase(path)) {
+			boolean isAddAction = ADD_TO_COOKIES_PATH.equalsIgnoreCase(path);
 			String key = request.getParameter("key");
-			String value = request.getParameter("itemId");
+			String value = isAddAction ? request.getParameter("addItemId") : request
+					.getParameter("removeItemId");
 			if (key != null && value.matches(DIGIT_REGEXP)) {
-				cookiesService.appendValueToCookieCollection(key, value);
+				if (isAddAction) {
+					cookiesService.appendValueToCookieCollection(key, value);
+				} else {
+					cookiesService.removeValueFromCookieCollection(key, value);
+				}
 
 			}
-			return null;
-		}
-
-		if (REMOVE_FROM_COOKIES_PATH.equalsIgnoreCase(path)) {
-			String key = request.getParameter("key");
-			String value = request.getParameter("itemId");
-			if (key != null && value.matches(DIGIT_REGEXP)) {
-				cookiesService.removeValueFromCookieCollection(key, value);
-
+			if (key.equalsIgnoreCase("shortlist")) {
+				return new PageRenderRequestParameters("ui/ShortListPage", new EmptyEventContext(),
+						false);
 			}
 			return null;
 		}
@@ -304,11 +285,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if (REFRESH_SHORT_LIST_PATH.equalsIgnoreCase(path)) {
 			return new PageRenderRequestParameters("ui/ShortListPage", new EmptyEventContext(),
 					false);
-		}
-
-		if (REFRESH_SHORT_LIST_CONTROL_PATH.equalsIgnoreCase(path)) {
-			return new PageRenderRequestParameters("ui/ShortListControlPage",
-					new EmptyEventContext(), false);
 		}
 
 		if (ADD_DISCOUNT_PATH.equalsIgnoreCase(path)) {
@@ -329,7 +305,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
 			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
 		}
-		
+
 		for (String p : IMMUTABLE_PATHS) {
 			if (path.startsWith(p)) {
 				return null;

@@ -7,10 +7,12 @@
 	xmlns:p="tapestry:parameter">
 <div id="shortlist" class="">
 	
+	<div class="shortlistInfo"><span>${itemCount}</span> courses selected</div>
+	
 	<t:if test="hasItems">
 		
 		<h3><span>My Order</span></h3>
-		<div class="shortlistChoices dialogContainer">
+		<div class="${classForList}">
 			<ul>
 				<t:loop source="items" value="courseClass">
 					<li data-classid="${courseClass.id}"><a href="/class/${courseClass.uniqueIdentifier}">${courseClass.course.name}</a>
@@ -25,20 +27,19 @@
 					</t:if>
 					</div>
 					
-					<span class="deleteItem" title="Remove item"><a href="#">[remove]</a></span></li>
+					<span class="deleteItem" title="Remove item"><a href="/removeFromCookies?key=shortlist&amp;removeItemId=${courseClass.id}">[remove]</a></span></li>
 				</t:loop>
 			</ul>
-			<div class="closeButton">X</div>
+			<t:if test="expandComponent" negate="true">
+				<div class="closeButton">X</div>
+			</t:if>
 		</div>
 		
-	</t:if>
-	
-	<div class="shortlistInfo"><span>${itemCount}</span> courses selected</div>
-
-	<t:if test="hasItems">
 		<div class="shortlistAction">
 			<ul>
-				<li class="shortlistActionShow"><a href="#">Show Shortlist</a></li>
+				<t:if test="expandComponent" negate="true">
+					<li class="shortlistActionShow"><a href="#">Show Shortlist</a></li>
+				</t:if>
 				<li class="shortlistActionEnrol"><a href="/enrol/enrolCourses">Enrol</a></li>
 			</ul>
 		</div>

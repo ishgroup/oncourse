@@ -26,11 +26,12 @@ public class DiscountService implements IDiscountService {
 	 * @see ish.oncourse.services.discount.IDiscountService#getPromotions()
 	 */
 	public List<Discount> getPromotions() {
-		String[] discountIds = cookiesService.getCookieCollectionValue(Discount.PROMOTIONS_KEY);
+		List<Long> discountIds = cookiesService.getCookieCollectionValue(Discount.PROMOTIONS_KEY,
+				Long.class);
 		if (discountIds == null) {
 			return Collections.emptyList();
 		}
-		return loadByIds(discountIds);
+		return loadByIds(discountIds.toArray());
 	}
 
 	/**

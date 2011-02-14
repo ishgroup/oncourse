@@ -5,12 +5,13 @@ import ish.oncourse.services.cookies.ICookiesService;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
+@Deprecated
 public class CourseClassShortlistControl {
 	@Parameter
 	@Property
@@ -19,15 +20,13 @@ public class CourseClassShortlistControl {
 	@Inject
 	private ICookiesService cookiesService;
 
-	private Collection<String> shortListedClassesIds;
+	private Collection<Long> shortListedClassesIds;
 
 	@SetupRender
 	void beginRender() {
-		String[] idsArray = cookiesService
-				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY);
-		if (idsArray != null) {
-			shortListedClassesIds = Arrays.asList(idsArray);
-		}
+		shortListedClassesIds  = cookiesService.getCookieCollectionValue(
+				CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
+		
 	}
 
 	public boolean isContainedInShortList() {
@@ -35,6 +34,6 @@ public class CourseClassShortlistControl {
 		if (shortListedClassesIds == null) {
 			return false;
 		}
-		return shortListedClassesIds.contains(courseClass.getId().toString());
+		return shortListedClassesIds.contains(courseClass.getId());
 	}
 }

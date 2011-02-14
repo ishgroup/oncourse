@@ -1,8 +1,12 @@
 package ish.oncourse.services.cookies;
+
+import java.util.List;
+
 /**
  * Service for manipulating with cookies.
+ * 
  * @author ksenia
- *
+ * 
  */
 public interface ICookiesService {
 	String getCookieValue(String cookieKey);
@@ -12,9 +16,11 @@ public interface ICookiesService {
 	 * item with given cookieKey and splits its value to get the needed array.
 	 * 
 	 * @param cookieKey
+	 * @param clazz
+	 *            the class for cookie representation(if null return String)
 	 * @return array of values
 	 */
-	String[] getCookieCollectionValue(String cookieKey);
+	<T> List<T> getCookieCollectionValue(String cookieKey, Class<T> clazz);
 
 	void writeCookieValue(String cookieKey, String cookieValue);
 

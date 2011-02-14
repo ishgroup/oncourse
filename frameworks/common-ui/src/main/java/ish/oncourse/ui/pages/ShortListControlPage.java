@@ -8,7 +8,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.util.List;
-
+@Deprecated
 public class ShortListControlPage {
 
 	@Inject

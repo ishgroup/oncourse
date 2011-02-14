@@ -1,19 +1,19 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.util.CookieUtils;
-import java.util.Collections;
 
+import java.util.Collections;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
 
 /**
@@ -24,11 +24,15 @@ import org.apache.tapestry5.services.Request;
  */
 public class ShortList {
 
+	@Parameter
+	@Property
+	private boolean expandComponent;
+
 	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
-	private Cookies cookies;
+	private ICookiesService cookiesService;
 
 	@Inject
 	private ICourseClassService courseClassService;
@@ -42,38 +46,35 @@ public class ShortList {
 	@Inject
 	private Request request;
 
-	private static final Logger LOGGER = Logger.getLogger(ShortList.class);
+	@Inject
+	private Messages messages;
 
+	private static final Logger LOGGER = Logger.getLogger(ShortList.class);
 
 	@SetupRender
 	void beforeRender() {
+		List<Long> classIds = cookiesService.getCookieCollectionValue(
+				CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
 
-		List<Long> classIds = CookieUtils.convertToIds(
-				cookies, CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
+		String key = request.getParameter("key");
 
-		if (request.getParameter("addClass") != null) {
-			Long id = null;
-			try {
-				id = Long.parseLong(request.getParameter("addClass"));
-				if ((id != null) && !(classIds.contains(id))) {
-					classIds.add(id);
+		if ("shortlist".equalsIgnoreCase(key)) {
+			String addItem = request.getParameter("addItemId");
+			String removeItem = request.getParameter("removeItemId");
+			if (addItem != null && addItem.matches("\\d+")) {
+
+				if (!classIds.contains(Long.valueOf(addItem))) {
+					classIds.add(Long.valueOf(addItem));
 				}
-			} catch (Exception e) {
-				LOGGER.debug("Error converting ID", e);
+
 			}
-		} else if (request.getParameter("removeClass") != null) {
-			Long id = null;
-			try {
-				id = Long.parseLong(request.getParameter("removeClass"));
-				if ((id != null) && (classIds.contains(id))) {
-					classIds.remove(id);
+			if (removeItem != null && removeItem.matches("\\d+")) {
+				if (classIds.contains(Long.valueOf(removeItem))) {
+					classIds.remove(Long.valueOf(removeItem));
 				}
-			} catch (Exception e) {
-				LOGGER.debug("Error converting ID", e);
+
 			}
 		}
-
-		CookieUtils.convertToCookie(cookies, CourseClass.SHORTLIST_COOKIE_KEY, classIds);
 
 		if ((classIds != null) && !(classIds.isEmpty())) {
 			items = courseClassService.loadByIds(classIds);
@@ -84,7 +85,7 @@ public class ShortList {
 
 	/**
 	 * Obtain the count of items in the shortlist
-	 *
+	 * 
 	 * @return a count of items
 	 */
 	public Integer getItemCount() {
@@ -93,6 +94,7 @@ public class ShortList {
 
 	/**
 	 * Test to see if there are any items in shortlist
+	 * 
 	 * @return true if shortlist has ANY items
 	 */
 	public boolean isHasItems() {
@@ -101,6 +103,7 @@ public class ShortList {
 
 	/**
 	 * Test to see if there are multiple items in the shortlist
+	 * 
 	 * @return true if the shortlist contains more than one item
 	 */
 	public boolean isHasMultipleItems() {
@@ -110,11 +113,18 @@ public class ShortList {
 	/**
 	 * Checks if the payment gateway processing is enabled for the current
 	 * college.
-	 *
+	 * 
 	 * @return true if payment gateway is enabled.
 	 */
 	public boolean isPaymentGatewayEnabled() {
 		return webSiteService.getCurrentCollege().isPaymentGatewayEnabled();
+	}
+
+	public String getClassForList() {
+		if (expandComponent) {
+			return "";
+		}
+		return messages.get("css.class.list");
 	}
 
 }

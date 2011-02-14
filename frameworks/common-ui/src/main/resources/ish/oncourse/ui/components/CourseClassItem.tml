@@ -73,9 +73,8 @@
 		</dl>
 
 		<div class="classAction">
-			<a class="enrolAction" id="${courseClass.id}">Enrol Now</a>
+			<a class="enrolAction" href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}">Enrol Now</a>
 			
-					
 			<div class="classStatus">
 				<t:if test="courseClass.availableEnrolmentPlaces">
 					<span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass" />

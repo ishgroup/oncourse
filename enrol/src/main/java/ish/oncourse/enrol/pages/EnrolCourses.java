@@ -91,7 +91,7 @@ public class EnrolCourses {
 	 */
 	@Inject
 	private Request request;
-	
+
 	@Inject
 	private ComponentResources componentResources;
 
@@ -209,8 +209,8 @@ public class EnrolCourses {
 	 * </ul>
 	 */
 	public void initClassesToEnrol() {
-		String[] orderedClassesIds = cookiesService
-				.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY);
+		List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(
+				CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
 		boolean shouldCreateNewClasses = orderedClassesIds != null;
 		if (!shouldCreateNewClasses) {
 			// if there no any shortlisted classes, the list is set with null.
@@ -223,7 +223,7 @@ public class EnrolCourses {
 
 		if (!shouldCreateNewClasses) {
 			// checks id the list of shortlisted classes hasn't been changed
-			if (orderedClassesIds.length != classesToEnrol.size()) {
+			if (orderedClassesIds.size() != classesToEnrol.size()) {
 				// if the sizes are not equal, the shortlisted classes list has
 				// been changed and we need to refill the list.
 				shouldCreateNewClasses = true;
@@ -232,9 +232,8 @@ public class EnrolCourses {
 				// any element from one of lists isn't contained in another
 				// list(assuming that sizes of lists are equal), then the lists
 				// don't contain the same classes
-				List<String> idsList = Arrays.asList(orderedClassesIds);
 				for (CourseClass courseClass : classesToEnrol) {
-					if (!idsList.contains(courseClass.getId().toString())) {
+					if (!orderedClassesIds.contains(courseClass.getId())) {
 						shouldCreateNewClasses = true;
 						break;
 					}
@@ -257,7 +256,7 @@ public class EnrolCourses {
 	void cleanupRender() {
 		checkoutResult = false;
 	}
-	
+
 	/**
 	 * Clears all the properties with the @Persist annotation.
 	 */
@@ -283,21 +282,21 @@ public class EnrolCourses {
 		College currentCollege = webSiteService.getCurrentCollege();
 		College college = (College) context.localObject(currentCollege.getObjectId(),
 				currentCollege);
-		
+
 		if (payment == null || payment.getStatus() == PaymentStatus.FAILED) {
-			
+
 			payment = context.newObject(PaymentIn.class);
 			payment.setStatus(PaymentStatus.PENDING);
 			payment.setSource(PaymentSource.SOURCE_WEB);
 			payment.setCollege(college);
-			
-			PaymentIn failedPayment=null;
+
+			PaymentIn failedPayment = null;
 			Session session = request.getSession(false);
-			if(session!=null){
-				failedPayment=(PaymentIn) session.getAttribute("failedPayment");
+			if (session != null) {
+				failedPayment = (PaymentIn) session.getAttribute("failedPayment");
 			}
-			if(failedPayment!=null){
-				hadPreviousPaymentFailure=true;
+			if (failedPayment != null) {
+				hadPreviousPaymentFailure = true;
 				payment.setCreditCardCVV(failedPayment.getCreditCardCVV());
 				payment.setCreditCardExpiry(failedPayment.getCreditCardExpiry());
 				payment.setCreditCardName(failedPayment.getCreditCardName());
@@ -305,7 +304,7 @@ public class EnrolCourses {
 				payment.setCreditCardType(failedPayment.getCreditCardType());
 				session.setAttribute("failedPayment", null);
 			}
-			
+
 		}
 		if (invoice == null) {
 			invoice = context.newObject(Invoice.class);
