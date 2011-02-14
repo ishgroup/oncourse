@@ -32,25 +32,26 @@
 			<div id="${mapClass}"></div>
 		</div>
 
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true" />
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 		<script type="text/javascript">
-		
-			var vLatitude = "${mapPositionLatitude}";
-			var vLongitude = "${mapPositionLongitude}";
-			var gMapOptions = {
+				
+				var vLat = "${mapPositionLatitude}";
+				var vLong = "${mapPositionLongitude}";
+				var gMapOptions = {
 					zoom: 16,
 					center: new google.maps.LatLng(vLat, vLong),
 					mapTypeId : google.maps.MapTypeId.ROADMAP
-			};
-			var near ="${searchingNear}";
-			var vSiteAddress = "${address}";
-			var vFrom ="${directionsFrom}";
-			var showNearMarker ="${hasGlobalPosition}";
-			var showMapItems = "${showMapItems}";
-			var map;
-			var siteMarkers = new Array();
-			var sites=${sitesArray};
-			var infowindow;
+				}
+				var near ="${searchingNear}";
+				var vSiteAddress = "${address}";
+				var vFrom ="${directionsFrom}";
+				var showNearMarker ="${hasGlobalPosition}";
+				var showMapItems = "${showMapItems}";
+				var zoom = null;
+				var map;
+				var siteMarkers = new Array();
+				var gMapSites=${sitesArray};
+					var infowindow;			
 		</script>
 	</t:if>
 
