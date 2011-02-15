@@ -3,7 +3,6 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.tutor.ITutorService;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -18,7 +17,6 @@ public class TutorDetails {
 	@Inject
 	private Request request;
 
-	@Persist
 	@Property
 	private Tutor tutor;
 

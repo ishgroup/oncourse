@@ -20,6 +20,10 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	<listener>
+    	<listener-class>ish.oncourse.website.listener.SessionListener</listener-class>
+  	</listener>
+	
 	<resource-ref>
 		<res-ref-name>jdbc/oncourse</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>

@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -22,7 +21,7 @@ public class CourseSearchForm {
 
 	@Inject
 	private ITagService tagService;
-	
+
 	@Inject
 	private PropertyAccess access;
 
@@ -30,38 +29,29 @@ public class CourseSearchForm {
 	private Request request;
 
 	@Property
-	@Persist
 	private String s;
 
 	@Property
-	@Persist
 	private String searchNear;
 
 	@Property
-	@Persist
 	private String searchPrice;
 
 	@Property
-	@Persist
 	private String day;
 
 	@Property
-	@Persist
 	private String time;
 
 	@Property
-	@Persist
 	private Tag subject;
 
-	@Persist
 	private List<Tag> subjectTagChildTags;
 
 	@Property
-	@Persist
 	private ListSelectModel<Tag> tagModel;
-	
+
 	@Property
-	@Persist
 	private ListValueEncoder<Tag> tagEnc;
 
 	@SetupRender
@@ -74,19 +64,17 @@ public class CourseSearchForm {
 			}
 		});
 
-		this.tagModel = new ListSelectModel<Tag>(subjectTagChildTags, Tag.NAME_PROPERTY, access); 
+		this.tagModel = new ListSelectModel<Tag>(subjectTagChildTags, Tag.NAME_PROPERTY, access);
 		this.tagEnc = new ListValueEncoder<Tag>(subjectTagChildTags, "id", access);
 	}
 
 	URL onActionFromSearch() {
 		try {
-			String url = "http://" + request.getServerName() + "/courses?s="
-					+ (s == null ? "" : s) + "&subject="
-					+ (subject == null ? "" : subject.getDefaultPath())
-					+ "&near=" + (searchNear == null ? "" : searchNear)
-					+ "&price=" + (searchPrice == null ? "" : searchPrice)
-					+ "&time=" + (time == null ? "" : time) + "&day="
-					+ (day == null ? "" : day);
+			String url = "http://" + request.getServerName() + "/courses?s=" + (s == null ? "" : s)
+					+ "&subject=" + (subject == null ? "" : subject.getDefaultPath()) + "&near="
+					+ (searchNear == null ? "" : searchNear) + "&price="
+					+ (searchPrice == null ? "" : searchPrice) + "&time="
+					+ (time == null ? "" : time) + "&day=" + (day == null ? "" : day);
 			return new URL(url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

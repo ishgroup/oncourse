@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -30,45 +29,35 @@ public class SearchInputs {
 	private Request request;
 
 	@Property
-	@Persist
 	private String advKeyword;
 
-	@Persist
 	private List<Tag> subjectTagChildTags;
 
 	@Property
-	@Persist
 	private ListSelectModel<Tag> tagModel;
 	
 	@Property
 	private ListValueEncoder<Tag> tagEnc;
 
-	@Persist
 	@Property
 	private Tag browseTagLevel2Ancestor;
 
 	@Property
-	@Persist
 	private String searchNear;
 
 	@Property
-	@Persist
 	private String searchPrice;
 
 	@Property
-	@Persist
 	private boolean daytime;
 
 	@Property
-	@Persist
 	private boolean evening;
 
 	@Property
-	@Persist
 	private boolean weekday;
 
 	@Property
-	@Persist
 	private boolean weekend;
 
 	@SetupRender

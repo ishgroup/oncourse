@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -28,18 +27,15 @@ public class CourseClassPrice {
 
 	private Format feeFormat;
 
-	@Persist
 	@Property
 	private Money discountedFee;
 
 	@Property
 	private Discount discountItem;
 
-	@Persist
 	@Property
 	private List<Discount> discountsWithConcessions;
 
-	@Persist
 	@Property
 	private Money discountValue;
 

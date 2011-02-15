@@ -22,14 +22,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Page component representing a Course list.
  * 
- * <p>Corresponds to the page template at 
- * <i>/common-ui/src/main/resources/ish.oncourse.ui.pages/Courses.tml</i>.</p>
+ * <p>
+ * Corresponds to the page template at
+ * <i>/common-ui/src/main/resources/ish.oncourse.ui.pages/Courses.tml</i>.
+ * </p>
  * 
- * @author ???
+ * @author ksenia
  */
 
 public class Courses {
@@ -44,24 +45,27 @@ public class Courses {
 	@Inject
 	private Request request;
 	@Property
-	@Persist
 	private List<Course> courses;
+	@Persist("client")
+	private List<Long> coursesIds;
 	@Property
 	private Course course;
 	@Property
-	@Persist
+	@Persist("client")
 	private Integer coursesCount;
 	@Property
-	@Persist
+	@Persist("client")
 	private Integer itemIndex;
-	@Persist
+	@Persist("client")
 	private Map<SearchParam, String> searchParams;
 	@Property
-	@Persist
 	private List<Site> mapSites;
 	@Property
-	@Persist
 	private Map<Integer, Float> focusesForMapSites;
+	@InjectComponent
+	private Zone coursesZone;
+	@InjectComponent
+	private Zone sitesMap;
 
 	@SetupRender
 	public void beforeRender() {
@@ -76,24 +80,31 @@ public class Courses {
 			this.courses = searchCourses();
 
 		}
-		this.itemIndex = courses.size();
-		setupMapSites();
+		coursesIds = new ArrayList<Long>();
+
+		updateIdsAndIndexes();
 	}
-	@InjectComponent
-	private Zone coursesZone;
-	@InjectComponent
-	private Zone sitesMap;
 
 	@OnEvent(component = "showMoreCourses")
 	Object onActionFromShowMoreCourses() {
+		courses = courseService.loadByIds(coursesIds.toArray());
 		if (searchParams == null) {
 			courses.addAll(courseService.getCourses(itemIndex, ROWS_DEFAULT));
 		} else {
 			courses.addAll(searchCourses(itemIndex, ROWS_DEFAULT));
 		}
+
+		updateIdsAndIndexes();
+		return new MultiZoneUpdate("coursesZone", coursesZone).add("sitesMap", sitesMap);
+	}
+
+	private void updateIdsAndIndexes() {
 		itemIndex = courses.size();
-		return new MultiZoneUpdate("coursesZone", coursesZone).add("sitesMap",
-				sitesMap);
+		for (Course course : courses) {
+			if (!coursesIds.contains(course.getId()))
+				coursesIds.add(course.getId());
+		}
+		setupMapSites();
 	}
 
 	private void setupMapSites() {
@@ -106,20 +117,16 @@ public class Courses {
 				Room room = courseClass.getRoom();
 				if (room != null) {
 					Site site = room.getSite();
-					if (site != null && site.getSuburb() != null
-							&& !"".equals(site.getSuburb())
-							&& site.getLatitude() != null
-							&& site.getLongitude() != null) {
+					if (site != null && site.getSuburb() != null && !"".equals(site.getSuburb())
+							&& site.isHasCoordinates()) {
 						if (!mapSites.contains(site)) {
 							mapSites.add(site);
 						}
 						if (hasAnyFormValuesForFocus()) {
 							float focusMatchForClass = focusMatchForClass(courseClass);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
-							if (focusMatchForSite == null
-									|| focusMatchForClass > focusMatchForSite) {
-								focusesForMapSites.put(site.getId(),
-										focusMatchForClass);
+							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
+								focusesForMapSites.put(site.getId(), focusMatchForClass);
 							}
 						}
 					}
@@ -169,15 +176,16 @@ public class Courses {
 					String place = searchParams.get(SearchParam.near);
 					int separator = place.lastIndexOf(" ");
 					if (separator > 0) {
-						String[] suburbParams = {
-							place.substring(0, separator),
-							place.substring(separator + 1)};
+						String[] suburbParams = { place.substring(0, separator),
+								place.substring(separator + 1) };
 
-						SolrDocumentList responseResults = searchService.searchSuburb(suburbParams[0], suburbParams[1]).getResults();
+						SolrDocumentList responseResults = searchService.searchSuburb(
+								suburbParams[0], suburbParams[1]).getResults();
 						if (!responseResults.isEmpty()) {
 							SolrDocument doc = responseResults.get(0);
 							String[] points = ((String) doc.get("loc")).split(",");
-							nearMatch = courseClass.focusMatchForNear(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
+							nearMatch = courseClass.focusMatchForNear(
+									Double.parseDouble(points[0]), Double.parseDouble(points[1]));
 						}
 					}
 				} catch (NumberFormatException e) {
@@ -214,8 +222,7 @@ public class Courses {
 	 * @return
 	 */
 	private List<Course> searchCourses(int start, int rows) {
-		QueryResponse resp = searchService.searchCourses(searchParams, start,
-				rows);
+		QueryResponse resp = searchService.searchCourses(searchParams, start, rows);
 
 		LOGGER.info(String.format("The number of courses found: %s", resp.getResults().size()));
 		if (coursesCount == null) {

@@ -38,10 +38,13 @@ public class AddDiscount {
 	/**
 	 * Already added by this load of page promotions.
 	 */
-	@Persist
+
 	@Property
 	private List<Discount> addedPromotions;
-	
+
+	@Persist("client")
+	private List<Long> addedPromotionsIds;
+
 	/**
 	 * The item used for iteration through {@link #addedPromotions}.
 	 */
@@ -58,7 +61,7 @@ public class AddDiscount {
 	 */
 	@InjectComponent
 	private Form addDiscountForm;
-	
+
 	/**
 	 * Zone component for udation the changed area.
 	 */
@@ -71,6 +74,7 @@ public class AddDiscount {
 	@SetupRender
 	void beforeRender() {
 		addedPromotions = new ArrayList<Discount>();
+		addedPromotionsIds = new ArrayList<Long>();
 	}
 
 	/**
@@ -88,7 +92,7 @@ public class AddDiscount {
 			if (promotion == null) {
 				addDiscountForm.recordError(String.format(
 						"Discount for code \"%s\" is unavailable.", promoCode));
-			} else if (addedPromotions.contains(promotion)
+			} else if (addedPromotionsIds.contains(promotion.getId())
 					|| discountService.getPromotions().contains(promotion)) {
 				addDiscountForm.recordError(String.format(
 						"Discount for code \"%s\" already exists in list.", promoCode));
@@ -105,10 +109,13 @@ public class AddDiscount {
 	 */
 	@OnEvent(component = "addDiscountForm", value = "submit")
 	Object addDiscount() {
+		addedPromotions = discountService.loadByIds(addedPromotionsIds.toArray());
 		if (!addDiscountForm.getHasErrors()) {
 			discountService.addPromotion(promotion);
 			addedPromotions.add(promotion);
+			addedPromotionsIds.add(promotion.getId());
 		}
+
 		return addDiscountZone.getBody();
 	}
 }

@@ -6,7 +6,6 @@ import ish.oncourse.model.Student;
 import ish.oncourse.model.WaitingList;
 
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 
@@ -28,11 +27,9 @@ public class WaitingListItem {
 	private String feedBack;
 
 	@Property
-	@Persist
 	private WaitingList waitingList;
 
 	@Property
-	@Persist
 	private WaitingList sessionWaitingList;
 
 	@SetupRender
@@ -97,7 +94,7 @@ public class WaitingListItem {
 			return null;
 		}
 		try {
-			return student.getActiveWaitingListForCourse( course );
+			return student.getActiveWaitingListForCourse(course);
 		} catch (Exception e) {
 			// ignore
 		}
@@ -112,7 +109,7 @@ public class WaitingListItem {
 			return null;
 		}
 		try {
-			 return student.getActiveWaitingListForCourse( course );
+			return student.getActiveWaitingListForCourse(course);
 		} catch (Exception e) {
 			// ignore
 		}
