@@ -4,19 +4,13 @@
 	
 	<!-- if this is being viewed in the class info page, i want to hide this title! -->
 	<h3>Location</h3>
-	<dl class=" adr" id="">
-		<t:if t:test="room">
-			<dt>Room</dt>
-			<dd>
-				<t:if t:test="hasName">
-					${room.name},
- 				</t:if>
- 				<span class="fn"><t:outputraw value="site.name" /></span>
-			</dd>
-		</t:if>
+	
+	<dl class="adr" id="">
+		
 		<t:if t:test="hasAddress">
-			<dt>Address</dt>
+			<dt class="classSiteAddress">Address</dt>
 			<dd>
+				<div>${site.name}</div>
 				<div class="street-address">${site.street}</div>
 				<span class="locality">${site.suburb}</span>
 				<t:if t:test="hasPostCode">
@@ -24,6 +18,7 @@
 			</t:if>
 			</dd>
 		</t:if>
+
 
 		<t:if t:test="hasDrivingDirections">
 
@@ -37,7 +32,7 @@
 		</t:if>
 		
 		<t:if t:test="hasSpecialInstructions">
-			<dt class="locationInfo_instructions">Instructions</dt>
+			<dt class="locationInfo_instructions">Other Information</dt>
 			<dd><t:outputRaw value="${site.specialInstructions}"/></dd>
 		</t:if>
 	</dl>
@@ -46,4 +41,6 @@
 		<span t:type="ui/GoogleDirections" sites="mapSites"
 			showDirections="true" collapseLocationMap="collapseLocationMap" showLocationMap="true" />
 	</t:if>
+	
+	<div id="gmapCanvas"></div>
 </t:container>

@@ -21,7 +21,7 @@
 
 						<t:if t:test="hasMoreItems">
 							<t:actionLink t:id="showMoreCourses" zone="coursesZone">
-								<p class="more-results">show more Courses...</p>
+								<div class="showMoreAction">Show more courses</div>
 							</t:actionLink>
 						</t:if>
 					</t:zone>

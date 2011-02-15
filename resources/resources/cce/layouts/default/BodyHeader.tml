@@ -1,8 +1,12 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<!-- CCE Template -->
-		<a href="/" id="usydlogo">The University of Sydney</a>
-				<h1><a href="${homeLink}">${collegeName}</a></h1>
-				<div id="site_toolbar">
-				xxx
-				</div>	
+	<h1><a href="${homeLink}">${collegeName}</a></h1>
+
+	<!-- This should have some logic to determine if we a viewing any page 
+		other than the main page. HTML served should be:
+		
+		<div class="siteName"><strong><a href="${homeLink}">${collegeName}</a></strong></div>
+		-->
+	<div id="site_toolbar">
+		<span t:type="ui/ShortList"/>
+	</div>
 </t:container>
