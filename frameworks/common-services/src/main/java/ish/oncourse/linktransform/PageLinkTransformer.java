@@ -6,6 +6,7 @@
 package ish.oncourse.linktransform;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -275,7 +276,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				}
 
 			}
-			if (key.equalsIgnoreCase("shortlist")) {
+			if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)) {
 				return new PageRenderRequestParameters("ui/ShortListPage", new EmptyEventContext(),
 						false);
 			}

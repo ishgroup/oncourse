@@ -73,12 +73,16 @@
 		</dl>
 
 		<div class="classAction">
-			<a class="enrolAction" href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}">Enrol Now</a>
-			
+			<t:if t:test="courseClass.cancelled" negate="true">
+				<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+					<t:if t:test="courseClass.college.paymentGatewayEnabled">
+						<a class="enrolAction" href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}">Enrol Now</a>
+					</t:if>
+				</t:if>
+			</t:if>		
 			<div class="classStatus">
 				<t:if test="courseClass.availableEnrolmentPlaces">
 					<span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass" />
-
 				</t:if>
 			</div>
 		</div>	

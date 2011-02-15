@@ -58,7 +58,7 @@ public class ShortList {
 
 		String key = request.getParameter("key");
 
-		if ("shortlist".equalsIgnoreCase(key)) {
+		if (CourseClass.SHORTLIST_COOKIE_KEY.equalsIgnoreCase(key)) {
 			String addItem = request.getParameter("addItemId");
 			String removeItem = request.getParameter("removeItemId");
 			if (addItem != null && addItem.matches("\\d+")) {

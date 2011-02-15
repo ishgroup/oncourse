@@ -1,5 +1,8 @@
 package ish.oncourse.services.cookies;
 
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.services.courseclass.ICourseClassService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,9 @@ public class CookiesService implements ICookiesService {
 
 	@Inject
 	private Cookies cookies;
+
+	@Inject
+	private ICourseClassService courseClassService;
 
 	/**
 	 * {@inheritDoc} <br/>
@@ -117,6 +123,9 @@ public class CookiesService implements ICookiesService {
 	}
 
 	public void appendValueToCookieCollection(String cookieKey, String cookieValue) {
+		if (!checkParameters(cookieKey, cookieValue)) {
+			return;
+		}
 		String existingValue = getCookieValue(cookieKey);
 		// checks if this value already exists in this collection
 		if (existingValue != null && !existingValue.equals(cookieValue)
@@ -139,6 +148,9 @@ public class CookiesService implements ICookiesService {
 	}
 
 	public void removeValueFromCookieCollection(String cookieKey, String cookieValue) {
+		if (!checkParameters(cookieKey, cookieValue)) {
+			return;
+		}
 		String existingValue = getCookieValue(cookieKey);
 		String result;
 		if (existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) == -1) {
@@ -154,4 +166,15 @@ public class CookiesService implements ICookiesService {
 		writeCookieValue(cookieKey, result);
 	}
 
+	private boolean checkParameters(String cookieKey, String cookieValue) {
+		if (cookieKey == null || cookieValue == null) {
+			return false;
+		}
+		if (cookieKey.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)
+				&& (!cookieValue.matches("\\d+") || courseClassService.loadByIds(cookieValue)
+						.isEmpty())) {
+			return false;
+		}
+		return true;
+	}
 }

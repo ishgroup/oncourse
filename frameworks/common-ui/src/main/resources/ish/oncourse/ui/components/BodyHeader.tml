@@ -13,7 +13,7 @@
 		-->
 	<div id="site_toolbar">
 		<span t:type="ui/CourseSearchForm"/>
-		<span t:type="ui/ShortList"/>
+		<t:if t:test="college.paymentGatewayEnabled"><span t:type="ui/ShortList"/></t:if>
 		<!-- TODO move promotions view to some another place by default -->
 		<span t:type="ui/PromoCodesView"/>
 	</div>
