@@ -7,8 +7,9 @@
 	</t:remove>
 	<head>
 		<title>${title}</title>
+		<link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
 	</head>
-	<body>
+	<body class="dialogBox">
 		<div id="popup-header"></div>
 		<div id="popup-content">
 			<h2>${title}</h2>
