@@ -98,26 +98,16 @@ $j(document).ready(function() {
 
 	
 	// Drop our shortlisted items in the shortlist box
-	$j('li.onshortlist a.cutitem,li.onshortlist-x a.cutitem').live("click", function() {
-		isPromotion=this.parentNode.className.endsWith("x");
-		key=isPromotion?"promotions":"shortlist";
+	$j('li.onshortlist-x a.cutitem').live("click", function() {
+		var link=this.href;
 		var itemId = this.id.match(/(\d+)/)[1];	
-		link=this.href;
-		// this line is commented because otherwise the shortlist remove is not working
-		//$j(this).parent('li:first').css({'background-color':'666666'}).hide("drop", { direction: "up" }, 300, function () { 
-			//$j(this).hide("slide", { direction: "down" }, 300);
 			$j.ajax({
 				type: "GET",
-				url:  '/removeFromCookies?key='+key+'&itemId='+ itemId,
+				url:  link,
 				success: function(){
-							if(isPromotion){
-								window.location=link;
-							}else{
-								refreshShortList();
-							}
+							window.parent.location.reload(true);
 						}
 			});
-		//});
 		return false;
 	});
 

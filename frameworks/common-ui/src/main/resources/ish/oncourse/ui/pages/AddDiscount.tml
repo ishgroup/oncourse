@@ -8,19 +8,19 @@
 		<label for="promo">${message:label.discount.code}</label>
 		<t:textField name="promo" value="promoCode" />
 		<t:submit value="message:submit.add" />
-		<t:errors class="literal:EntryError" />
+		${errorMessage}
 	</t:form>
 	<t:if test="addedPromotions.empty" negate="true">
 		<p class="discount_options">
 			${message:message.list.discount} 
 			<br />
-			<a href="#" onclick="window.parent.location.reload(true);">${message:link.update.page}</a>
+			<a href="/" onclick="window.parent.location.reload(true);return false;">${message:link.update.page}</a>
 		</p>
 
 		<t:loop source="addedPromotions" value="addedPromotion">
 			<div class="popup-name">${addedPromotion.code}</div>
 			<div class="clear"></div>
-			<p>${addedPromotion.detail}</p>
+			<p><t:outputRaw value="addedPromotion.detail"/></p>
 			<div class="divideline"></div>
 		</t:loop>
 		<p>${message:message.update.page}</p>

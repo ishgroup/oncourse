@@ -7,6 +7,7 @@ package ish.oncourse.linktransform;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -118,6 +119,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * Path for the page of adding the discount.
 	 */
 	private static final String ADD_DISCOUNT_PATH = "/addDiscount";
+
+	/**
+	 * Path for the page displaying promotions.
+	 */
+	private static final String PROMOTIONS_PATH = "/promotions";
 
 	/**
 	 * /Timeline/sessions?ids=123,456 Show the timeline view for the sessions of
@@ -268,18 +274,24 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			String key = request.getParameter("key");
 			String value = isAddAction ? request.getParameter("addItemId") : request
 					.getParameter("removeItemId");
-			if (key != null && value.matches(DIGIT_REGEXP)) {
-				if (isAddAction) {
-					cookiesService.appendValueToCookieCollection(key, value);
-				} else {
-					cookiesService.removeValueFromCookieCollection(key, value);
+			if (key != null && value != null) {
+				if (value.matches(DIGIT_REGEXP)) {
+					if (isAddAction) {
+						cookiesService.appendValueToCookieCollection(key, value);
+					} else {
+						cookiesService.removeValueFromCookieCollection(key, value);
+					}
 				}
+				if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)) {
+					return new PageRenderRequestParameters("ui/ShortListPage",
+							new EmptyEventContext(), false);
+				}
+				if (key.equalsIgnoreCase(Discount.PROMOTIONS_KEY)) {
+					return new PageRenderRequestParameters("ui/PromoCodesPage",
+							new EmptyEventContext(), false);
+				}
+			}
 
-			}
-			if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)) {
-				return new PageRenderRequestParameters("ui/ShortListPage", new EmptyEventContext(),
-						false);
-			}
 			return null;
 		}
 
@@ -290,6 +302,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		if (ADD_DISCOUNT_PATH.equalsIgnoreCase(path)) {
 			return new PageRenderRequestParameters("ui/AddDiscount", new EmptyEventContext(), false);
+		}
+
+		if (PROMOTIONS_PATH.equalsIgnoreCase(path)) {
+			return new PageRenderRequestParameters("ui/PromoCodesPage", new EmptyEventContext(),
+					false);
 		}
 
 		if (TIMELINE_PATH.equalsIgnoreCase(path)) {

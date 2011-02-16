@@ -7,7 +7,7 @@
 			<ul class="menu">
 				<t:loop source="promotions" value="promotion">
 					<li class="onshortlist-x">
-						<a class="cutitem" id="${promotion.id}"> 
+						<a class="cutitem" id="${promotion.id}" href="/removeFromCookies?key=promotions&amp;removeItemId=${promotion.id}"> 
 							<span class="hide" title="Remove item">X</span>
 						</a>	
 						<a class="viewitem" title="${promotion.code}" href="#" disabled="true">${promotion.name}</a> 

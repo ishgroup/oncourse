@@ -4,7 +4,7 @@ import ish.oncourse.model.Discount;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.cookies.ICookiesService;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -29,7 +29,7 @@ public class DiscountService implements IDiscountService {
 		List<Long> discountIds = cookiesService.getCookieCollectionValue(Discount.PROMOTIONS_KEY,
 				Long.class);
 		if (discountIds == null) {
-			return Collections.emptyList();
+			return new ArrayList<Discount>();
 		}
 		return loadByIds(discountIds.toArray());
 	}
@@ -55,7 +55,7 @@ public class DiscountService implements IDiscountService {
 	@Override
 	public List<Discount> loadByIds(Object... ids) {
 		if (ids == null || ids.length == 0) {
-			return Collections.emptyList();
+			return new ArrayList<Discount>();
 		}
 
 		SelectQuery q = new SelectQuery(Discount.class);

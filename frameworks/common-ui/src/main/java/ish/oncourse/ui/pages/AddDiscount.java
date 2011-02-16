@@ -3,6 +3,8 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 /**
  * The page for adding the promotion to the cookies.
@@ -29,11 +32,18 @@ public class AddDiscount {
 	@Inject
 	private IDiscountService discountService;
 
+	@Inject
+	private Request request;
+
 	/**
 	 * The input value by which the promotion to add is been searched.
 	 */
 	@Property
+	@Persist("client")
 	private String promoCode;
+
+	@Property
+	private String errorMessage;
 
 	/**
 	 * Already added by this load of page promotions.
@@ -86,16 +96,15 @@ public class AddDiscount {
 	@OnEvent(component = "addDiscountForm", value = "validate")
 	void validateDiscount() {
 		if (promoCode == null || promoCode.equals("")) {
-			addDiscountForm.recordError("Enter discount code, please");
+			errorMessage = "Enter discount code, please";
 		} else {
 			promotion = discountService.getByCode(promoCode);
 			if (promotion == null) {
-				addDiscountForm.recordError(String.format(
-						"Discount for code \"%s\" is unavailable.", promoCode));
+				errorMessage = String.format("Discount for code \"%s\" is unavailable.", promoCode);
 			} else if (addedPromotionsIds.contains(promotion.getId())
 					|| discountService.getPromotions().contains(promotion)) {
-				addDiscountForm.recordError(String.format(
-						"Discount for code \"%s\" already exists in list.", promoCode));
+				errorMessage = String.format("Discount for code \"%s\" already exists in list.",
+						promoCode);
 			}
 		}
 	}
@@ -106,16 +115,23 @@ public class AddDiscount {
 	 * and updates the {@link #addDiscountZone}.
 	 * 
 	 * @return
+	 * @throws MalformedURLException
 	 */
 	@OnEvent(component = "addDiscountForm", value = "submit")
-	Object addDiscount() {
-		addedPromotions = discountService.loadByIds(addedPromotionsIds.toArray());
-		if (!addDiscountForm.getHasErrors()) {
+	Object addDiscount() throws MalformedURLException {
+
+		Object[] array = addedPromotionsIds.toArray();
+		addedPromotions = discountService.loadByIds(array);
+		if (errorMessage == null) {
 			discountService.addPromotion(promotion);
 			addedPromotions.add(promotion);
 			addedPromotionsIds.add(promotion.getId());
 		}
+		if (request.isXHR()) {
+			return addDiscountZone.getBody();
+		}
+		String url = "http://" + request.getServerName() + "/promotions";
+		return new URL(url);
 
-		return addDiscountZone.getBody();
 	}
 }

@@ -1,7 +1,9 @@
 package ish.oncourse.services.cookies;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.discount.IDiscountService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestGlobals;
 
 public class CookiesService implements ICookiesService {
 
@@ -26,13 +27,13 @@ public class CookiesService implements ICookiesService {
 	private Request request;
 
 	@Inject
-	private RequestGlobals requestGlobals;
-
-	@Inject
 	private Cookies cookies;
 
 	@Inject
 	private ICourseClassService courseClassService;
+
+	@Inject
+	private IDiscountService discountService;
 
 	/**
 	 * {@inheritDoc} <br/>
@@ -172,6 +173,11 @@ public class CookiesService implements ICookiesService {
 		}
 		if (cookieKey.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)
 				&& (!cookieValue.matches("\\d+") || courseClassService.loadByIds(cookieValue)
+						.isEmpty())) {
+			return false;
+		}
+		if (cookieKey.equalsIgnoreCase(Discount.PROMOTIONS_KEY)
+				&& (!cookieValue.matches("\\d+") || discountService.loadByIds(cookieValue)
 						.isEmpty())) {
 			return false;
 		}
