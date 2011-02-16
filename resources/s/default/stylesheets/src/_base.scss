@@ -1,0 +1,41 @@
+/**
+ *  _base.scss
+ *
+ *  Application-wide SCSS file for all onCourse apps.
+ * 
+ */
+ 
+
+$font-color: #444 !default; 
+$link-color: #607890 !default;
+$link-hover-color: #036 !default;
+$link-active-color: #607890 !default;
+$link-visited-color: #607890 !default;
+$selected-font-color: #fff !default;
+$selected-background-color: #ff5e99 !default;
+$list-left-margin: 1.8em !default;
+
+
+/**
+ * File includes 
+ */
+ 
+@import "compass";
+@import "compass/reset";
+@import "fancy-buttons"; 
+@import "functions";
+@import "cms";
+@import "courses";
+@import "enrol";
+@import "nav";
+@import "nyromodal";
+@import "search";
+@import "shortlist";
+
+
+
+/**
+ * Time to call all the mixins 
+ */
+ 
+@include html5-boilerplate-styles;
