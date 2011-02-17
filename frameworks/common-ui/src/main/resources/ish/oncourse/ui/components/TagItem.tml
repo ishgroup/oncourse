@@ -5,9 +5,7 @@
 			${tag.detail}
 		</div>
 	</t:if>
-	<t:if test="tag.webVisibleTags.empty" negate="true">
-   		<ul>
-   			<t:body/>
-   		</ul>
-   	</t:if>
+	<ul>
+   		<t:body/>
+   	</ul>
 </li>

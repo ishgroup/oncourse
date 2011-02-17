@@ -1,9 +1,10 @@
 package ish.oncourse.util;
 
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.tapestry5.dom.MarkupModel;
-import org.apache.tapestry5.internal.services.RequestPageCache;
+import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.structure.Page;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -13,7 +14,7 @@ import org.apache.tapestry5.services.Response;
 public class PageRenderer implements IPageRenderer {
 
 	@Inject
-	private RequestPageCache cache;
+	private PageLoader pageLoader;
 
 	@Inject
 	private RequestGlobals requestGlobals;
@@ -31,7 +32,7 @@ public class PageRenderer implements IPageRenderer {
 		GetStrResponseWrapper wrapper = new GetStrResponseWrapper(response);
 
 		requestGlobals.storeRequestResponse(request, wrapper);
-		Page page = cache.get(pageName);
+		Page page = pageLoader.loadPage(pageName, Locale.getDefault());
 
 		try {
 			pageResponseRenderer.renderPageResponse(page);
