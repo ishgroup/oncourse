@@ -8,14 +8,9 @@
  
 var sites;
 
-function mapLoad(mapID, sites) {
-	var myOptions = {
-		zoom : 0,
-		center : latlng,
-		mapTypeId : google.maps.MapTypeId.ROADMAP
-	}
-	map = new google.maps.Map(document.getElementById(mapID), myOptions);
-	setMarkers(map, sites);
+function mapLoad(mapID, vSites, vOptions) {
+	map = new google.maps.Map(document.getElementById(mapID), vOptions);
+	setMarkers(map, vSites);
 	return "success";
 }
 
@@ -38,14 +33,15 @@ function setMarkers(map, locations) {
 			id : loc[4]            
 		});
 		sites[i]=marker;
-		attachMessage(map, marker, "<h4>" + loc[2] + "</h4><h5>" + loc[3]
-				+ "</h5>" + "<p><a href=\"/site/" + loc[4]
+		attachMessage(map, marker, "<h4>" + loc[2] + "</h4><div>" + loc[3]
+				+ "</div>" + "<p><a href=\"/site/" + loc[4]
 				+ "\">Information and directions</a></p>");
 		latlngbounds.extend(siteLatLng);
 
 	}
-	map.fitBounds(latlngbounds);
-
+	if (sites.length > 1) {
+		map.fitBounds(latlngbounds);
+	}
 }
 
 function getSiteMarkerBySiteId(siteId){
@@ -92,6 +88,8 @@ function dirLoader( dirmap, dirtxt ) {
 	var geocoder = null;
 	var addressMarker;
 	var gMap = null;
+	var latLng = new google.maps.LatLng(vLat, vLong);
+	
 	mapControl = document.getElementById('displayDirectionsMap');
 		if (dirmap && document.getElementById(dirmap)) {
 			document.getElementById(dirmap).innerHTML = '';
@@ -102,7 +100,7 @@ function dirLoader( dirmap, dirtxt ) {
 			dmap.addClassName("mapExpanded");
 			var gMapOptions = {
 					zoom : 12,
-					center : new google.maps.LatLng(vLatitude,vLongitude),
+					center : latLng,
 					mapTypeId : google.maps.MapTypeId.ROADMAP,
 					mapTypeControl : true,
 					navigationControl: true,
@@ -122,7 +120,7 @@ function dirLoader( dirmap, dirtxt ) {
 			var directionsService = new google.maps.DirectionsService();
 			var request = {
 			  origin: document.getElementById('from').value, 
-			  destination: vSiteAddress,
+			  destination: latLng,
 			  travelMode: google.maps.DirectionsTravelMode.DRIVING,
 			  unitSystem: google.maps.DirectionsUnitSystem.METRIC
 			};
@@ -139,22 +137,36 @@ function dirLoader( dirmap, dirtxt ) {
 
 
 $j(document).ready(function() {
-	// Google maps
+	
 	try {
-		if ($j('#map').length) mapLoad(); 
+		if ($j('#gmapCanvas').length) mapLoad('gmapCanvas', gMapSites, gMapOptions); 
 	} catch(e) {
 		// ignore this-- it means there was no real map on the page after all
 	}
-	if (document.getElementById("dirmap")) dirLoad();
 	
-
 	// hide the location map after it has been filled by Google (above), then reveal it when its control is clicked.
-	$j('.collapsedLocationMap').hide();
+	//$j('.collapsedLocationMap').hide();
+	
 	$j('.showLocationMap').click( function() {
-		$j('.showLocationMap').hide();
-		$j('#location').show();
-		//$j('#location').removeClass('collapsedLocationMap');
-		//mapLoadForID('map');
+		return false;
+	});
+	
+	// Lets collapse the course list gMap after populating it. 
+	//$j("#ListPage #gmapCanvas").hide();
+	
+	$j('.classItemLocation + dd a').click(function() {
+		//var siteLink = $j(this).attr("href");
+		//var siteID =  siteLink.split("/");
+		
+		$j("body").animate({ scrollTop: 0 }, "slow"); 
+		//$j("#ListPage #gmapCanvas").show();
+		
+		/* The next 2 lines will get around the gmaps "grey box" problem */
+		//google.maps.event.trigger(map, 'resize');
+		//map.setZoom(14);
+		
+		/* TODO - show info window for the site clicked, center the map*/
+		
 		return false;
 	});
 	
