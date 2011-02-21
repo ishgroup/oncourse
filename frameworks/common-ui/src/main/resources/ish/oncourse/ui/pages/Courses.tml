@@ -12,9 +12,14 @@
 		-->
 		<p:else>
 			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"/>
+			<div id="gmapCanvas"></div>
 			<t:zone t:id="sitesMap" id="sitesMap">
-				<div id="gmapCanvas"></div>
 				<span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites" collapsed="true" showLocationMap="false" />
+				<script type="text/javascript">
+					if ($j('#gmapCanvas').length){
+						mapLoad('gmapCanvas', gMapSites, gMapOptions);
+					}
+				</script>
 			</t:zone>
 			<t:if t:test="hasAnyItems" negate="true">
 				<h2>No results</h2>

@@ -8,10 +8,15 @@
 	<t:if test="disabledLink">
 		<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
 		<p:else>
-		<t:if test="room">
-			<a title="Show venue details" class="tooltip" onclick="zoomMapForSite(${room.site.angelId})" href="${mapLink}" >
-				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
-			</a>
+			<t:if test="room.site.hasCoordinates">
+				<a title="Show venue details" class="tooltip" onclick="zoomMapForSite(${room.site.angelId});" href="#" >
+					<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
+				</a>
+				<p:else>
+					<a href="mapLink">
+						<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
+					</a>
+				</p:else>
 			</t:if>
 		</p:else>
 	</t:if>

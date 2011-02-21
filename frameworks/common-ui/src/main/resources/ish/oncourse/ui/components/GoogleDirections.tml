@@ -21,8 +21,7 @@
 				var zoom = null;
 				var map;
 				var siteMarkers = new Array();
-				var gMapSites=${sitesArray};
-					var infowindow;			
+				gMapSites=${sitesArray};
 		</script>
 		
 		<div id="directions">
