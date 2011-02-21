@@ -18,7 +18,6 @@
 
 	<modules>
 		<module>webservices-web</module>
-		<module>webservices-client</module>
 	</modules>
 
 	<build>
@@ -39,7 +38,7 @@
 			<dependency>
 				<groupId>ish.oncourse.willow.frameworks</groupId>
 				<artifactId>common-services</artifactId>
-				<version>${version}</version>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
