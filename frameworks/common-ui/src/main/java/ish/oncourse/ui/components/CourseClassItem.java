@@ -58,8 +58,7 @@ public class CourseClassItem {
 	}
 
 	public boolean isHasSite() {
-		return courseClass.getRoom() != null
-				&& courseClass.getRoom().getSite() != null;
+		return courseClass.getRoom() != null && courseClass.getRoom().getSite() != null;
 	}
 
 	public boolean isHasTutorRoles() {
@@ -70,7 +69,7 @@ public class CourseClassItem {
 		return linkToLocationsMap && isList;
 	}
 
-	public boolean isHasSiteSuburb() {
+	public boolean isExistsOnMap() {
 		Room room = courseClass.getRoom();
 		if (room == null) {
 			return false;
@@ -80,9 +79,7 @@ public class CourseClassItem {
 			return false;
 		}
 
-		String suburb = site.getSuburb();
-		return suburb != null && !"".equals(suburb)
-				&& site.getLatitude() != null && site.getLongitude() != null;
+		return site.isHasCoordinates();
 
 	}
 
@@ -120,8 +117,8 @@ public class CourseClassItem {
 				Room room1 = o1.getRoom();
 				Room room2 = o2.getRoom();
 				if (room1 != null && room2 != null) {
-					siteNameComparison = room1.getSite().getName().compareTo(
-							room2.getSite().getName());
+					siteNameComparison = room1.getSite().getName()
+							.compareTo(room2.getSite().getName());
 				}
 				if (siteNameComparison == 0) {
 					return o1.getStartDate().compareTo(o2.getStartDate());
@@ -153,7 +150,6 @@ public class CourseClassItem {
 	}
 
 	public String getTimedateClass() {
-		return "class_timedate"
-				+ (courseClass.isHasSessions() ? " tooltip" : "");
+		return "class_timedate" + (courseClass.isHasSessions() ? " tooltip" : "");
 	}
 }

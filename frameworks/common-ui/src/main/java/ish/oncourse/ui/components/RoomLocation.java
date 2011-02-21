@@ -2,6 +2,7 @@ package ish.oncourse.ui.components;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 
 import ish.oncourse.model.Room;
 
@@ -21,6 +22,12 @@ public class RoomLocation {
 	@Parameter
 	@Property
 	private boolean disabledLink;
+
+	@SetupRender
+	boolean beforeRender() {
+		// prevent displaying null room
+		return room != null;
+	}
 
 	public String getMapLink() {
 		if (room == null) {

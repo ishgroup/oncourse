@@ -36,23 +36,19 @@
 			<dt class="classItemLocation">Location</dt>
 			<dd class="location">
 				<t:if test="hasLinkToLocation">
-					<t:if test="hasSiteSuburb">
-							<a href="#"
-								onclick="zoomMapForSite(${courseClass.room.site.angelId})"
-								title="Show venue on map" class="tooltip">${courseClass.room.site.suburb}
-							</a>
-						<p:else>TBA</p:else>
-					</t:if>
-					<p:else>
-						<t:if test="hasSite">
+					<t:if test="hasSite">
+						<t:if test="existsOnMap">
 							<span t:type="ui/roomLocation" room="courseClass.room"
 								withRoomName="false" disabledLink="false" />
-							<p:else>TBA</p:else>
+							<p:else>
+								<span t:type="ui/roomLocation" room="courseClass.room"
+									withRoomName="false" disabledLink="true" />
+							</p:else>
 						</t:if>
-					</p:else>
-				</t:if>
-			<span t:type="ui/roomLocation" room="courseClass.room"
-								withRoomName="false" disabledLink="false" /></dd>
+						<p:else>TBA</p:else>
+					</t:if>
+				</t:if>	
+			</dd>
 			
 			<dt class="classItemTutor">Tutor</dt>
 			<dd class="">

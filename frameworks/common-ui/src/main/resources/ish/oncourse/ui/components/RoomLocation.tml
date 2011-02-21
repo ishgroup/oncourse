@@ -8,9 +8,11 @@
 	<t:if test="disabledLink">
 		<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
 		<p:else>
-			<a title="Show venue details" class="tooltip" href="${mapLink}" >
+		<t:if test="room">
+			<a title="Show venue details" class="tooltip" onclick="zoomMapForSite(${room.site.angelId})" href="${mapLink}" >
 				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress"/>
 			</a>
+			</t:if>
 		</p:else>
 	</t:if>
 </t:container>
