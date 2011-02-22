@@ -5,7 +5,6 @@ import ish.oncourse.services.discount.IDiscountService;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -50,13 +49,10 @@ public class AddDiscount {
 	 */
 
 	@Property
-	private List<Discount> addedPromotions;
-
-	@Persist("client")
-	private List<Long> addedPromotionsIds;
+	private List<Discount> promotionsList;
 
 	/**
-	 * The item used for iteration through {@link #addedPromotions}.
+	 * The item used for iteration through {@link #promotionsList}.
 	 */
 	@Property
 	private Discount addedPromotion;
@@ -83,8 +79,7 @@ public class AddDiscount {
 	 */
 	@SetupRender
 	void beforeRender() {
-		addedPromotions = new ArrayList<Discount>();
-		addedPromotionsIds = new ArrayList<Long>();
+		promotionsList = discountService.getPromotions();
 	}
 
 	/**
@@ -101,8 +96,7 @@ public class AddDiscount {
 			promotion = discountService.getByCode(promoCode);
 			if (promotion == null) {
 				errorMessage = String.format("Discount for code \"%s\" is unavailable.", promoCode);
-			} else if (addedPromotionsIds.contains(promotion.getId())
-					|| discountService.getPromotions().contains(promotion)) {
+			} else if (discountService.getPromotions().contains(promotion)) {
 				errorMessage = String.format("Discount for code \"%s\" already exists in list.",
 						promoCode);
 			}
@@ -119,13 +113,10 @@ public class AddDiscount {
 	 */
 	@OnEvent(component = "addDiscountForm", value = "submit")
 	Object addDiscount() throws MalformedURLException {
-
-		Object[] array = addedPromotionsIds.toArray();
-		addedPromotions = discountService.loadByIds(array);
+		promotionsList=discountService.getPromotions();
 		if (errorMessage == null) {
 			discountService.addPromotion(promotion);
-			addedPromotions.add(promotion);
-			addedPromotionsIds.add(promotion.getId());
+			promotionsList.add(0, promotion);
 		}
 		if (request.isXHR()) {
 			return addDiscountZone.getBody();

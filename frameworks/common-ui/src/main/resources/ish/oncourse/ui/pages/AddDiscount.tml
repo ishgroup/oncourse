@@ -10,14 +10,14 @@
 		<t:submit value="message:submit.add" />
 		${errorMessage}
 	</t:form>
-	<t:if test="addedPromotions.empty" negate="true">
+	<t:if test="promotionsList.empty" negate="true">
 		<p class="discount_options">
 			${message:message.list.discount} 
 			<br />
 			<a href="/" onclick="window.parent.location.reload(true);return false;">${message:link.update.page}</a>
 		</p>
 
-		<t:loop source="addedPromotions" value="addedPromotion">
+		<t:loop source="promotionsList" value="addedPromotion">
 			<div class="popup-name">${addedPromotion.code}</div>
 			<div class="clear"></div>
 			<p><t:outputRaw value="addedPromotion.detail"/></p>
