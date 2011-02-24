@@ -1826,32 +1826,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-
--- -----------------------------------------------------
--- Placeholder table for view `w2_college`.`StudentView`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `w2_college`.`StudentView` (`id` INT, `collegeId` INT, `studentId` INT, `tutorId` INT, `angelId` INT, `countryId` INT, `created` INT, `modified` INT, `isCompany` INT, `isDeleted` INT, `isMale` INT, `uniqueCode` INT, `cookieHash` INT, `familyName` INT, `givenName` INT, `emailAddress` INT, `password` INT, `passwordHash` INT, `dateOfBirth` INT, `homePhoneNumber` INT, `businessPhoneNumber` INT, `faxNumber` INT, `mobilePhoneNumber` INT, `street` INT, `suburb` INT, `state` INT, `postcode` INT, `isMarketingViaEmailAllowed` INT, `isMarketingViaPostAllowed` INT, `isMarketingViaSMSAllowed` INT, `taxFileNumber` INT, `countryOfBirthId` INT, `languageId` INT, `concessionType` INT, `disabilityType` INT, `englishProficiency` INT, `highestSchoolLevel` INT, `indigenousStatus` INT, `isOverseasClient` INT, `isStillAtSchool` INT, `priorEducationCode` INT, `yearSchoolCompleted` INT, `labourForceType` INT, `sIsDeleted` INT, `sCreated` INT, `sModified` INT);
-
--- -----------------------------------------------------
--- Placeholder table for view `w2_college`.`TutorView`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `w2_college`.`TutorView` (`id` INT, `collegeId` INT, `studentId` INT, `tutorId` INT, `angelId` INT, `countryId` INT, `created` INT, `modified` INT, `isCompany` INT, `isDeleted` INT, `isMale` INT, `uniqueCode` INT, `cookieHash` INT, `familyName` INT, `givenName` INT, `emailAddress` INT, `password` INT, `passwordHash` INT, `dateOfBirth` INT, `homePhoneNumber` INT, `businessPhoneNumber` INT, `faxNumber` INT, `mobilePhoneNumber` INT, `street` INT, `suburb` INT, `state` INT, `postcode` INT, `isMarketingViaEmailAllowed` INT, `isMarketingViaPostAllowed` INT, `isMarketingViaSMSAllowed` INT, `taxFileNumber` INT, `startDate` INT, `finishDate` INT, `resume` INT, `resume_textile` INT, `tIsDeleted` INT, `tCreated` INT, `tModified` INT);
-
--- -----------------------------------------------------
--- View `w2_college`.`StudentView`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `w2_college`.`StudentView`;
-USE `w2_college`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `w2_college`.`StudentView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`s`.`countryOfBirthId` AS `countryOfBirthId`,`s`.`languageId` AS `languageId`,`s`.`concessionType` AS `concessionType`,`s`.`disabilityType` AS `disabilityType`,`s`.`englishProficiency` AS `englishProficiency`,`s`.`highestSchoolLevel` AS `highestSchoolLevel`,`s`.`indigenousStatus` AS `indigenousStatus`,`s`.`isOverseasClient` AS `isOverseasClient`,`s`.`isStillAtSchool` AS `isStillAtSchool`,`s`.`priorEducationCode` AS `priorEducationCode`,`s`.`yearSchoolCompleted` AS `yearSchoolCompleted`,`s`.`labourForceType` AS `labourForceType`,`s`.`isDeleted` AS `sIsDeleted`,`s`.`created` AS `sCreated`,`s`.`modified` AS `sModified` from (`w2_college`.`Student` `s` join `w2_college`.`Contact` `c` on((`c`.`studentId` = `s`.`id`)));
-
--- -----------------------------------------------------
--- View `w2_college`.`TutorView`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `w2_college`.`TutorView`;
-USE `w2_college`;
-CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`203.29.62.%` SQL SECURITY DEFINER VIEW `w2_college`.`TutorView` AS select `c`.`id` AS `id`,`c`.`collegeId` AS `collegeId`,`c`.`studentId` AS `studentId`,`c`.`tutorId` AS `tutorId`,`c`.`angelId` AS `angelId`,`c`.`countryId` AS `countryId`,`c`.`created` AS `created`,`c`.`modified` AS `modified`,`c`.`isCompany` AS `isCompany`,`c`.`isDeleted` AS `isDeleted`,`c`.`isMale` AS `isMale`,`c`.`uniqueCode` AS `uniqueCode`,`c`.`cookieHash` AS `cookieHash`,`c`.`familyName` AS `familyName`,`c`.`givenName` AS `givenName`,`c`.`emailAddress` AS `emailAddress`,`c`.`password` AS `password`,`c`.`passwordHash` AS `passwordHash`,`c`.`dateOfBirth` AS `dateOfBirth`,`c`.`homePhoneNumber` AS `homePhoneNumber`,`c`.`businessPhoneNumber` AS `businessPhoneNumber`,`c`.`faxNumber` AS `faxNumber`,`c`.`mobilePhoneNumber` AS `mobilePhoneNumber`,`c`.`street` AS `street`,`c`.`suburb` AS `suburb`,`c`.`state` AS `state`,`c`.`postcode` AS `postcode`,`c`.`isMarketingViaEmailAllowed` AS `isMarketingViaEmailAllowed`,`c`.`isMarketingViaPostAllowed` AS `isMarketingViaPostAllowed`,`c`.`isMarketingViaSMSAllowed` AS `isMarketingViaSMSAllowed`,`c`.`taxFileNumber` AS `taxFileNumber`,`t`.`startDate` AS `startDate`,`t`.`finishDate` AS `finishDate`,`t`.`resume` AS `resume`,`t`.`resume_textile` AS `resume_textile`,`t`.`isDeleted` AS `tIsDeleted`,`t`.`created` AS `tCreated`,`t`.`modified` AS `tModified` from (`w2_college`.`Tutor` `t` join `w2_college`.`Contact` `c` on((`c`.`tutorId` = `t`.`id`)));
-USE `w2_reference` ;
-
 -- -----------------------------------------------------
 -- Table `w2_reference`.`Country`
 -- -----------------------------------------------------
