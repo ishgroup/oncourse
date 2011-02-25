@@ -116,6 +116,9 @@
 		<field name="when" type="textgen" indexed="true" stored="true"
 			multiValued="true" boost="5.0" />
 
+		<field name="end" type="date" indexed="true" stored="true"  multiValued="true"
+			boost="5.0"/>
+		
 		<field name="course_loc" type="location" indexed="true" stored="true" multiValued="true"
 			boost="5.0" />
 

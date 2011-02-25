@@ -43,17 +43,18 @@
 			</entity>
 
 			<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
-				query="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s
+				query="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time, s.endDate as end from Session s
                 inner join CourseClass cc on s.courseClassId=cc.id
                 inner join Course c on cc.courseId=c.id where c.id='${course.id}'
                 and cc.isCancelled=0"
-                deltaImportQuery="select s.id as id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s where s.id='${dataimporter.delta.id}'"
+                deltaImportQuery="select s.id as id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time, s.endDate as end from Session s where s.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from Session where modified &gt; '${dataimporter.last_index_time}'" 
 				parentDeltaQuery="select c.id as id from Session s inner join CourseClass cc on s.courseClassId=cc.id inner join Course c on cc.courseId=c.id where s.id='${course_session.id}'">
 				<field name="id" column="id"/>
 				<field name="dayName" column="dayName" />
 				<field name="dayType" column="dayType" />
-				<field name="dayName" column="dayName" />
+				<field name="time" column="time" />
+				<field name="end" column="end" template="${course_session.end}"/>
 				<field name="when" column="when" template="${course_session.dayName} ${course_session.dayType} ${course_session.time}"/>
 			</entity>
 

@@ -15,7 +15,9 @@
 		<t:remove><div class="courseAvailability">${availMsg}</div></t:remove>
 	</t:if>
     <t:loop source="course.enrollableClasses" value="courseClass">
+    	<t:if test="shouldHideClass" negate="true">
             <span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
+        </t:if>   
     </t:loop>
 	
 	<t:if t:test="course.allowWaitingList">

@@ -84,4 +84,11 @@ public class CourseItem {
 			return "new_course_item";
 		}
 	}
+	/**
+	 * Shows, whether to hide the class if it is outdated for the list view.
+	 * @return
+	 */
+	public boolean isShouldHideClass(){
+		return isList && courseClass.hasEnded();
+	}
 }
