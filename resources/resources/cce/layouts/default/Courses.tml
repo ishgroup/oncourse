@@ -1,3 +1,8 @@
+<!-- 
+	Template: Courses.tml
+	Purpose: Defines logic of course listings page (searching/browsing).
+-->
+
 <html t:type="ui/pagestructure" bodyId="literal:ListPage" bodyClass="literal:internal-page" 
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:if t:test="hasInvalidSearchTerms">
@@ -7,8 +12,17 @@
 		-->
 		<p:else>
 			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"/>
+			<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		
 			<t:zone t:id="sitesMap" id="sitesMap">
+			<t:if test="hasMapItemList"><div id="gmapCanvas"></div></t:if>
+			
 				<span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites" collapsed="true" showLocationMap="false" />
+				<script type="text/javascript">
+					if ($j('#gmapCanvas').length){
+						mapLoad('gmapCanvas', gMapSites, gMapOptions);
+					}
+				</script>
 			</t:zone>
 			<t:if t:test="hasAnyItems" negate="true">
 				<h2>No results</h2>

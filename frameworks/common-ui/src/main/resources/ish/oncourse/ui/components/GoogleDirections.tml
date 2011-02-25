@@ -8,7 +8,7 @@
 				
 				var vLat = "${mapPositionLatitude}";
 				var vLong = "${mapPositionLongitude}";
-				var gMapOptions = {
+				gMapOptions = {
 					zoom: 14,
 					center: new google.maps.LatLng(vLat, vLong),
 					mapTypeId : google.maps.MapTypeId.ROADMAP
