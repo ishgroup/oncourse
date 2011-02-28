@@ -61,17 +61,10 @@ public class CourseTextileValidatorTest extends CommonValidatorTest {
 				data.put(CourseTextileAttributes.COURSE_PARAM_CODE.getValue(),
 						"{course code:\"code1\" code:\"code2\"}");
 				break;
-			case COURSE_PARAM_CURRENT_SEARCH:
-				data
-						.put(
-								CourseTextileAttributes.COURSE_PARAM_CURRENT_SEARCH
-										.getValue(),
-								"{course currentsearch:\"true\" currentsearch:\"false\"}");
-				break;
-			case COURSE_PARAM_ENROLLABLE:
-				data.put(CourseTextileAttributes.COURSE_PARAM_ENROLLABLE
+			case COURSE_PARAM_SHOW_CLASSES:
+				data.put(CourseTextileAttributes.COURSE_PARAM_SHOW_CLASSES
 						.getValue(),
-						"{course enrollable:\"true\" enrollable:\"false\"}");
+						"{course showclasses:\"true\" showclasses:\"false\"}");
 				break;
 			case COURSE_PARAM_TAG:
 				data.put(CourseTextileAttributes.COURSE_PARAM_TAG.getValue(),
@@ -89,7 +82,7 @@ public class CourseTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	protected String getIncorrectFormatTextile() {
-		return "{course enrollable:\"bbbbbbb\"}";
+		return "{course showclasses:\"bbbbbbb\"}";
 	}
 
 	/**

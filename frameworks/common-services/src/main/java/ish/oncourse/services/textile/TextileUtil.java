@@ -13,7 +13,7 @@ public class TextileUtil {
 	public static final String BOOLEAN_IN_QUOTS = "("+QUOT_REGEXP+")(true|false)("+QUOT_REGEXP+")";
 	public static final String PIXELS_ATTR_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)(px)?("+QUOT_REGEXP+")";
 	public static final String DIGIT_IN_QUOTS = "("+QUOT_REGEXP+")(\\d+)("+QUOT_REGEXP+")";
-	public static final String STR_WITH_WHITESPACE= "("+QUOT_REGEXP+")((\\w|\\s)+)("+QUOT_REGEXP+")";
+	public static final String STR_WITH_WHITESPACE= "("+QUOT_REGEXP+")((\\w|\\s|/)+)("+QUOT_REGEXP+")";
 	public static final String STR_IN_QUOTS= "("+QUOT_REGEXP+")((\\w)+)("+QUOT_REGEXP+")";
 	
 	public static final String IMAGE_REGEXP = "\\{image( ((name:"+STR_WITH_WHITESPACE+")|(id:"
@@ -30,8 +30,7 @@ public class TextileUtil {
 	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+PIXELS_ATTR_IN_QUOTS+")|(height:"+PIXELS_ATTR_IN_QUOTS+"))){1,4}}";
 	public static final String COURSE_REGEXP = "\\{course( ((code:" + STR_IN_QUOTS + ")|" +
 															"(tag:" + STR_WITH_WHITESPACE + ")|" +
-															"(enrollable:" + BOOLEAN_IN_QUOTS + ")|" +
-															"(currentsearch:"+BOOLEAN_IN_QUOTS+"))){0,4}}";
+															"(showclasses:" + BOOLEAN_IN_QUOTS + "))){0,3}}";
 	public static final String PAGE_REGEXP = "\\{page( ((code:"+DIGIT_IN_QUOTS+"))){0,1}}";
 	public static final String TAGS_REGEXP="\\{tags( ((entityType:"+STR_WITH_WHITESPACE+")|(maxLevels:"
 													+DIGIT_IN_QUOTS+")|(showtopdetail:"
@@ -49,11 +48,13 @@ public class TextileUtil {
 	public static final String TEXTILE_VIDEO_PAGE = "ui/TextileVideo";
 	
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
+	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
 	public static final String TEXTILE_IMAGE_PAGE_PARAM = "additionalImageParameters";
 	public static final String TEXTILE_TAGS_PAGE_DETAILS_PARAM = "textileTagsShowDetails";
 	public static final String TEXTILE_TAGS_PAGE_ENTITY_PARAM = "textileTagsEntityType";
 	public static final String TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM = "textileTags";
 	public static final String TEXTILE_VIDEO_PAGE_PARAM = "videoParameters";
+	
 	
 	/**
 	 * @param tag

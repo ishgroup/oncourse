@@ -43,6 +43,7 @@ public class CourseTextileValidator implements IValidator {
 			}
 		}
 		if (tagged != null) {
+			tagged=tagged.substring(tagged.lastIndexOf("/")+1);
 			Tag tagEntity = tagService.getSubTagByName(tagged);
 			if (tagEntity == null) {
 				errors.addFailure(getTagNotFoundByName(tagged));
@@ -59,7 +60,7 @@ public class CourseTextileValidator implements IValidator {
 	public String getFormatErrorMessage(String tag) {
 		return "The course tag '" + tag
 				+ "' doesn't match {course code:\"code\" tag:\"tag\" "
-				+ "enrollable:\"true|false\" currentsearch:\"true|false\"}";
+				+ "showclasses:\"true|false\"}";
 	}
 
 	public String getCourseNotFoundByCode(String code) {

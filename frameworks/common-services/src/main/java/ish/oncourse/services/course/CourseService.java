@@ -57,7 +57,7 @@ public class CourseService implements ICourseService {
 		}
 		q.setFetchOffset(startDefault);
 		q.setFetchLimit(rowsDefault);
-		
+
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
@@ -66,8 +66,7 @@ public class CourseService implements ICourseService {
 	 */
 	private Expression getSiteQualifier() {
 		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege()).andExp(
-				getAvailabilityQualifier());
+				webSiteService.getCurrentCollege()).andExp(getAvailabilityQualifier());
 	}
 
 	/**
@@ -93,15 +92,14 @@ public class CourseService implements ICourseService {
 	public Course getCourse(String searchProperty, Object value) {
 		College currentCollege = webSiteService.getCurrentCollege();
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		Expression qualifier = ExpressionFactory.matchExp(
-				BinaryInfo.COLLEGE_PROPERTY, currentCollege);
+		Expression qualifier = ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY,
+				currentCollege);
 		if (searchProperty != null) {
 			if (searchProperty.equals(Course.CODE_PROPERTY)) {
-				qualifier = qualifier.andExp(getSearchStringPropertyQualifier(
-						searchProperty, value));
+				qualifier = qualifier
+						.andExp(getSearchStringPropertyQualifier(searchProperty, value));
 			} else {
-				qualifier = qualifier.andExp(ExpressionFactory.matchExp(
-						searchProperty, value));
+				qualifier = qualifier.andExp(ExpressionFactory.matchExp(searchProperty, value));
 			}
 		}
 		SelectQuery q = new SelectQuery(Course.class, qualifier);
@@ -109,65 +107,23 @@ public class CourseService implements ICourseService {
 		return !result.isEmpty() ? result.get(0) : null;
 	}
 
-	public Expression getSearchStringPropertyQualifier(String searchProperty,
-			Object value) {
+	public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
 		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
 	}
 
-	public Course getCourse(Boolean enrollable, String taggedWith,
-			Boolean currentSearch) {
+	public Course getCourse(String taggedWith) {
 		List<Course> result = new ArrayList<Course>();
 
 		SelectQuery q = new SelectQuery(Course.class);
 		q.andQualifier(getSiteQualifier());
 		if (taggedWith != null) {
-			q.andQualifier(ExpressionFactory.inExp(
-					"db:ID",
-					tagService.getEntityIdsByTagName(taggedWith,
-							Course.class.getSimpleName())));
+			q.andQualifier(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN,
+					tagService.getEntityIdsByTagName(taggedWith, Course.class.getSimpleName())));
 		}
 
-		if (currentSearch != null) {
+		result = cayenneService.sharedContext().performQuery(q);
 
-			Map<SearchParam, String> courseSearchParams = getCourseSearchParams();
-			if (!courseSearchParams.isEmpty()) {
-
-				QueryResponse resp = searchService.searchCourses(
-						courseSearchParams, 0, 100);
-
-				List<String> ids = new ArrayList<String>(resp.getResults()
-						.size());
-
-				for (SolrDocument doc : resp.getResults()) {
-					ids.add((String) doc.getFieldValue("id"));
-				}
-				if (currentSearch) {
-					q.andQualifier(ExpressionFactory.inExp("db:ID", ids));
-				} else {
-					q.andQualifier(ExpressionFactory.notInExp("db:ID", ids));
-				}
-			}
-		}
-		List<Course> courses = cayenneService.sharedContext().performQuery(q);
-		if (enrollable == null) {
-			result.addAll(courses);
-		} else {
-			if (enrollable) {
-				for (Course course : courses) {
-					if (!course.getEnrollableClasses().isEmpty()) {
-						result.add(course);
-					}
-				}
-			} else {
-				for (Course course : courses) {
-					if (course.getEnrollableClasses().isEmpty()) {
-						result.add(course);
-					}
-				}
-			}
-		}
-
-		return result.get(new Random().nextInt(result.size()));
+		return result.isEmpty() ? null : result.get(new Random().nextInt(result.size()));
 	}
 
 	public Integer getCoursesCount() {
@@ -175,18 +131,15 @@ public class CourseService implements ICourseService {
 				.sharedContext()
 				.performQuery(
 						new EJBQLQuery("select count(c) from Course c where "
-								+ getSiteQualifier().toEJBQL("c"))).get(0))
-				.intValue();
+								+ getSiteQualifier().toEJBQL("c"))).get(0)).intValue();
 	}
 
 	public Date getLatestModifiedDate() {
 		return (Date) cayenneService
 				.sharedContext()
 				.performQuery(
-						new EJBQLQuery(
-								"select max(c.modified) from Course c where "
-										+ getSiteQualifier().toEJBQL("c")))
-				.get(0);
+						new EJBQLQuery("select max(c.modified) from Course c where "
+								+ getSiteQualifier().toEJBQL("c"))).get(0);
 	}
 
 	public Map<SearchParam, String> getCourseSearchParams() {
@@ -201,8 +154,7 @@ public class CourseService implements ICourseService {
 		Tag browseTag = null;
 		if (searchParams.containsKey(SearchParam.subject)) {
 			String path = searchParams.get(SearchParam.subject);
-			browseTag = tagService.getSubTagByName(path.substring(path
-					.lastIndexOf("/") + 1));
+			browseTag = tagService.getSubTagByName(path.substring(path.lastIndexOf("/") + 1));
 		} else {
 			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
 			if (browseTag != null) {

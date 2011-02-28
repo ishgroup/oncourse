@@ -13,40 +13,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Displays a single course, using either the defined template or the default
- * CourseListItem.
+ * Displays a single course. common-ui/TextileCourse.tml
  * 
  * <pre>
  * Example: 
  * 
- * {course template:&quot;Course with image&quot; code:&quot;abc&quot; tag:&quot;tag name&quot; enrollable:&quot;true&quot; currentsearch:&quot;false&quot; } 
+ * {course code:"cmp21" tag:"/subjects/arts" showclasses:"true"} 
  * 
  * The parameters are as follows: 
  * 
- * template: the name of the Template used to display the course.
- * 
- * code: if specified, only the course with that code will be displayed.
- * Otherwise, a random course will be displayed. 
- * 
- * tag: if specified, the random choice is restricted to courses with this tag. 
- * 
- * enrollable: if true, the random choice is restricted to courses that have
- * classes that are not full and still enrollable.
- * 
- * currentsearch: if true, the random choice is restricted to courses in the
- * current advanced search results. If there is no current search, or there
- * are no advanced search parameters, this will be ignored.
+ * <br/>Tag - Optional. Defines a path to a tag.
+ * <br/>Code - Optional. Specifies a particular course code to display. If
+ * this option is not defined, a random course will be shown.
+ * <br/>Showclasses - [true, false] Optional. A short list of classes
+ * available for this course will also be displayed.
  * </pre>
  */
-// TODO deal with the template attribute (left not implemented)
 public class CourseTextileRenderer extends AbstractRenderer {
 
 	private ICourseService courseService;
 
 	private IPageRenderer pageRenderer;
 
-	public CourseTextileRenderer(ICourseService courseService,
-			IPageRenderer pageRenderer, ITagService tagService) {
+	public CourseTextileRenderer(ICourseService courseService, IPageRenderer pageRenderer,
+			ITagService tagService) {
 		this.courseService = courseService;
 		this.pageRenderer = pageRenderer;
 		validator = new CourseTextileValidator(courseService, tagService);
@@ -59,30 +49,21 @@ public class CourseTextileRenderer extends AbstractRenderer {
 
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					CourseTextileAttributes.getAttrValues());
-			String code = tagParams
-					.get(CourseTextileAttributes.COURSE_PARAM_CODE.getValue());
-			String enrollable = tagParams
-					.get(CourseTextileAttributes.COURSE_PARAM_ENROLLABLE
-							.getValue());
-			String tagName = tagParams
-					.get(CourseTextileAttributes.COURSE_PARAM_TAG.getValue());
-			String currentSearch = tagParams
-					.get(CourseTextileAttributes.COURSE_PARAM_CURRENT_SEARCH
-							.getValue());
+			String code = tagParams.get(CourseTextileAttributes.COURSE_PARAM_CODE.getValue());
+			String showClasses = tagParams.get(CourseTextileAttributes.COURSE_PARAM_SHOW_CLASSES
+					.getValue());
+			String tagName = tagParams.get(CourseTextileAttributes.COURSE_PARAM_TAG.getValue());
 			Course course = null;
 			if (code != null) {
 				course = courseService.getCourse(Course.CODE_PROPERTY, code);
 			} else {
-				course = courseService.getCourse(enrollable == null ? null
-						: Boolean.parseBoolean(enrollable), tagName,
-						currentSearch == null ? null : Boolean
-								.parseBoolean(currentSearch));
+				course = courseService.getCourse(tagName!=null?tagName.substring(tagName.lastIndexOf("/")+1):null);
 			}
 			if (course != null) {
 				Map<String, Object> parameters = new HashMap<String, Object>();
 				parameters.put(TextileUtil.TEXTILE_COURSE_PAGE_PARAM, course);
-				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_PAGE,
-						parameters);
+				parameters.put(TextileUtil.TEXTILE_COURSE_SHOW_CLASSES_PARAM, showClasses);
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_PAGE, parameters);
 			}
 		}
 		return tag;

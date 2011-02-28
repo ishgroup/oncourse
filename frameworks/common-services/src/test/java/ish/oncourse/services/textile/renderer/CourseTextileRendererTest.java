@@ -57,7 +57,7 @@ public class CourseTextileRendererTest {
 		when(courseService.getCourse(Course.CODE_PROPERTY, TEST_COURSE_CODE))
 				.thenReturn(course);
 		when(tagService.getSubTagByName(TAG_NAME)).thenReturn(tag);
-		when(courseService.getCourse(true, TAG_NAME, true)).thenReturn(course);
+		when(courseService.getCourse(TAG_NAME)).thenReturn(course);
 		when(
 				pageRenderer.renderPage(eq(TextileUtil.TEXTILE_COURSE_PAGE),
 						anyMap())).thenReturn(SUCCESSFULLY_RENDERED);
@@ -77,12 +77,12 @@ public class CourseTextileRendererTest {
 	/**
 	 * Emulates the situation when random choice of the course is restricted
 	 * with attributes, ie {course tag:&quot;tag name&quot;
-	 * enrollable:&quot;true&quot; currentsearch:&quot;true&quot; } is rendered
+	 * showclasses:&quot;true&quot;} is rendered
 	 */
 	@Test
 	public void renderRandomRestrictedCourse() {
 		String result = courseTextileRenderer.render("{course tag:\""
-				+ TAG_NAME + "\" enrollable:\"true\" currentsearch:\"true\"}",
+				+ TAG_NAME + "\" showclasses:\"true\"}",
 				errors);
 		assertFalse(errors.hasFailures());
 		assertEquals(SUCCESSFULLY_RENDERED, result);

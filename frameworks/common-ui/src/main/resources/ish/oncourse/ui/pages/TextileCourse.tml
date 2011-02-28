@@ -1,3 +1,25 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div><span t:type="ui/courseitem" course="course"/></div>
+	<div class="courseContainer" data-courseCode="${course.code}">
+		<div>${course.name}</div>
+		<!-- p><t:outputraw value="course.detail"/></p-->
+		<t:if test="showClasses">
+			<ul>
+				<t:loop source="classesToShow" value="courseClass">
+					<a href="/class/${course.code}-${courseClass.code}" class="url">
+						<t:if t:test="courseClass.firstSession">
+							<abbr class="dtstart" title="">
+								<t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/>
+							</abbr>
+							<t:if t:test="courseClass.endDate">
+								- <abbr class="dtend" title="">
+									<t:output format="literal:d MMM yyyy" value="courseClass.endDate"/>
+								  </abbr>
+							</t:if>
+							<p:else><b>no session</b></p:else>
+						</t:if>
+					</a>
+				</t:loop>
+			</ul>
+		</t:if>
+</div> 
 </t:container>

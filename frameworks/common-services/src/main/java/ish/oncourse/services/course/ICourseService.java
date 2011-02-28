@@ -15,7 +15,7 @@ public interface ICourseService {
 	List<Course> loadByIds(Object... ids);
 	
 	Course getCourse(String searchProperty, Object value);
-	Course getCourse(Boolean enrollable, String taggedWith, Boolean currentSearch);
+	Course getCourse(String taggedWith);
 	
 	Integer getCoursesCount();
 	

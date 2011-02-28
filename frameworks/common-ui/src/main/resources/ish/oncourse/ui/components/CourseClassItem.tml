@@ -22,15 +22,14 @@
 			<dt class="classItemDate">Date</dt>
 			<dd class="">
 				<t:if t:test="courseClass.firstSession">
-				<a href="/class/${courseClass.course.code}-${courseClass.code}" class="url"><abbr class="dtstart" title=""><t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/></abbr>
-				
-			
-				<t:if t:test="courseClass.endDate">
-					- <abbr class="dtend" title=""><t:output format="literal:d MMM yyyy" value="courseClass.endDate"/></abbr>
+					<a href="/class/${courseClass.course.code}-${courseClass.code}" class="url">
+						<abbr class="dtstart" title=""><t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/></abbr>
+						<t:if t:test="courseClass.endDate">
+							- <abbr class="dtend" title=""><t:output format="literal:d MMM yyyy" value="courseClass.endDate"/></abbr>
+						</t:if>
+					</a>
+					<p:else><b>no session</b></p:else>
 				</t:if>
-				</a>
-				</t:if>
-				<t:if t:test="courseClass.firstSession" negate="true"><b>no session</b></t:if>
 			</dd>
 			
 			<dt class="classItemLocation">Location</dt>

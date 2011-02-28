@@ -186,7 +186,7 @@ public class CustomTextileConverterTest {
 	public void smokeCourseConvertTest() {
 		course = new Course();
 		String successfulResult = "successfully rendered course block";
-		when(courseService.getCourse((Boolean) null, null, null)).thenReturn(
+		when(courseService.getCourse(null)).thenReturn(
 				course);
 		testPageRenderParams(COURSE, TextileUtil.TEXTILE_COURSE_PAGE,
 				successfulResult);

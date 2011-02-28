@@ -5,8 +5,7 @@ import java.util.List;
 
 public enum CourseTextileAttributes {
 	COURSE_PARAM_CODE("code:"), 
-	COURSE_PARAM_ENROLLABLE("enrollable:"), 
-	COURSE_PARAM_CURRENT_SEARCH("currentsearch:"), 
+	COURSE_PARAM_SHOW_CLASSES("showclasses:"), 
 	COURSE_PARAM_TAG("tag:");
 
 	private String value;
