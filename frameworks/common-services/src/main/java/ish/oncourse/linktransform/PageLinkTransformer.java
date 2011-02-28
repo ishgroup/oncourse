@@ -39,7 +39,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * courses/arts/drama Show course list page, optionally filtered by the
 	 * subject tag identified by arts -> drama
 	 */
-	private static final Pattern COURSES_PATTERN = Pattern.compile("/courses(/(.+)+)*");
+	private static final Pattern COURSES_PATTERN = Pattern.compile("/courses(/(.+)*)*");
 
 	/**
 	 * course/ABC Show course detail for the cource with code ABC
