@@ -23,13 +23,13 @@
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-model</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-services</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
