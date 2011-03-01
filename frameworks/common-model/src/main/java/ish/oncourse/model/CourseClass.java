@@ -24,7 +24,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
-public class CourseClass extends _CourseClass {
+public class CourseClass extends _CourseClass implements Queueable {
 
 	/**
 	 * parameter for add/remove cookies actions

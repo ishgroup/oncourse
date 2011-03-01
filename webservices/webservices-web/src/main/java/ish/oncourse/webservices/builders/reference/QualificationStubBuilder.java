@@ -6,7 +6,6 @@
 package ish.oncourse.webservices.builders.reference;
 
 import ish.oncourse.model.Qualification;
-import ish.oncourse.webservices.builders.IReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
 
 /**

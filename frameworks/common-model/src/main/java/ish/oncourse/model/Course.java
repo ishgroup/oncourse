@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Course extends _Course {
+public class Course extends _Course implements Queueable {
 
 	public static final String COURSE_TAG = "courseTag";
 	

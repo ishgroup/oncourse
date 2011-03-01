@@ -1,8 +1,13 @@
 package ish.oncourse.webservices.services.reference;
 
-import ish.oncourse.webservices.builders.BuilderNotFoundException;
-import ish.oncourse.webservices.builders.IReferenceStubBuilder;
+import ish.oncourse.model.Country;
+import ish.oncourse.model.Language;
+import ish.oncourse.model.Module;
+import ish.oncourse.model.Qualification;
+import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.webservices.BuilderNotFoundException;
 import ish.oncourse.webservices.builders.reference.CountryStubBuilder;
+import ish.oncourse.webservices.builders.reference.IReferenceStubBuilder;
 import ish.oncourse.webservices.builders.reference.LanguageStubBuilder;
 import ish.oncourse.webservices.builders.reference.ModuleStubBuilder;
 import ish.oncourse.webservices.builders.reference.QualificationStubBuilder;
@@ -20,11 +25,11 @@ public class ReferenceStubBuilder {
 	private Map<String, IReferenceStubBuilder> builders = new HashMap<String, IReferenceStubBuilder>();
 
 	public ReferenceStubBuilder() {
-		builders.put("Country", new CountryStubBuilder());
-		builders.put("Language", new LanguageStubBuilder());
-		builders.put("Module", new ModuleStubBuilder());
-		builders.put("Qualification", new QualificationStubBuilder());
-		builders.put("TrainingPackage", new TrainingPackageStubBuilder());
+		builders.put(getClassName(Country.class), new CountryStubBuilder());
+		builders.put(getClassName(Language.class), new LanguageStubBuilder());
+		builders.put(getClassName(Module.class), new ModuleStubBuilder());
+		builders.put(getClassName(Qualification.class), new QualificationStubBuilder());
+		builders.put(getClassName(TrainingPackage.class), new TrainingPackageStubBuilder());
 	}
 
 	/**
@@ -34,7 +39,7 @@ public class ReferenceStubBuilder {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public ReferenceStub convert(Persistent record) throws BuilderNotFoundException {
+	public ReferenceStub convert(Persistent record) {
 		String key = record.getObjectId().getEntityName();
 		IReferenceStubBuilder builder = builders.get(key);
 
@@ -43,5 +48,10 @@ public class ReferenceStubBuilder {
 		}
 
 		return builder.convert(record);
+	}
+	
+	private static String getClassName(Class<?> clazz) {
+		int index = clazz.getName().lastIndexOf(".") + 1;
+		return clazz.getName().substring(index);
 	}
 }
