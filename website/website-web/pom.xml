@@ -84,7 +84,7 @@
 				<dependency>
 					<groupId>ish.oncourse</groupId>
 					<artifactId>jetty-launcher</artifactId>
-					<version>${version}</version>
+					<version>${project.version}</version>
 					<scope>runtime</scope>
 				</dependency>
 			</dependencies>
