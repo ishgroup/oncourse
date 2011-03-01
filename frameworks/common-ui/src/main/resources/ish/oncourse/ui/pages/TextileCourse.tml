@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="courseContainer" data-courseCode="${course.code}">
 		<div>${course.name}</div>
-		<!-- p><t:outputraw value="course.detail"/></p-->
+		<p><t:outputraw value="course.detail"/></p>
 		<t:if test="showClasses">
 			<ul>
 				<t:loop source="classesToShow" value="courseClass">

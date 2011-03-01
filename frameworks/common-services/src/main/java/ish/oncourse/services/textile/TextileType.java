@@ -5,6 +5,7 @@ public enum TextileType {
 	VIDEO("\\{video([^}]*)}"), 
 	BLOCK("\\{block([^}]*)}"),
 	COURSE("\\{course([^}]*)}"),
+	COURSE_LIST("\\{courses([^}]*)}"),
 	PAGE("\\{page([^}]*)}"),
 	TAGS("\\{tags([^}]*)}");
 	

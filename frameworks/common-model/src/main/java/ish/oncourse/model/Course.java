@@ -17,7 +17,7 @@ public class Course extends _Course implements Queueable {
 	}
 
 	public List<CourseClass> getEnrollableClasses() {
-		List<CourseClass> list = new ArrayList<CourseClass>(getCourseClasses()
+		List<CourseClass> list = new ArrayList<CourseClass>(getCurrentClasses()
 				.size());
 
 		for (CourseClass courseClass : getCourseClasses()) {

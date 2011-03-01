@@ -6,6 +6,7 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
+import ish.oncourse.services.textile.renderer.CourseListTextileRenderer;
 import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
 import ish.oncourse.services.textile.renderer.IRenderer;
 import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
@@ -127,6 +128,8 @@ public class TextileConverter implements ITextileConverter {
 			return new VideoTextileRenderer(pageRenderer);
 		case COURSE:
 			return new CourseTextileRenderer(courseService, pageRenderer, tagService);
+		case COURSE_LIST:
+			return new CourseListTextileRenderer(courseService, pageRenderer, tagService);
 		case PAGE:
 			return new PageTextileRenderer(webNodeService, pageRenderer);
 		case TAGS:
@@ -134,7 +137,5 @@ public class TextileConverter implements ITextileConverter {
 		}
 		return null;
 	}
-
-	
 
 }

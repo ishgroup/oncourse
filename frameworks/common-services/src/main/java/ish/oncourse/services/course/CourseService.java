@@ -10,9 +10,12 @@ import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParam;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.attrs.CourseListSortValue;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +26,10 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SQLTemplate;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -59,6 +63,55 @@ public class CourseService implements ICourseService {
 		q.setFetchLimit(rowsDefault);
 
 		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	@Override
+	public List<Course> getCourses(String tagName, CourseListSortValue sort, Boolean isAscending,
+			Integer limit) {
+		List<Course> result = new ArrayList<Course>();
+
+		String defaultTemplate = "select * from Course c where c.collegeId=#bind($collegeId) and c.isWebVisible=true";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("collegeId", webSiteService.getCurrentCollege().getId());
+
+		// q.andQualifier(getSiteQualifier());
+		if (tagName != null) {
+			defaultTemplate += " and c.id in (#bind($tagged))";
+			parameters.put("tagged",
+					tagService.getEntityIdsByTagName(tagName, Course.class.getSimpleName()));
+		}
+		if (sort == null) {
+			sort = CourseListSortValue.ALPHABETICAL;
+		}
+
+		if (limit == null) {
+			limit = ROWS_DEFAULT;
+		}
+		// random list
+		defaultTemplate += " order by rand()";
+
+		SQLTemplate q = new SQLTemplate(Course.class, defaultTemplate);
+
+		q.setFetchLimit(limit);
+		q.setParameters(parameters);
+
+		result = cayenneService.sharedContext().performQuery(q);
+
+		switch (sort) {
+		case ALPHABETICAL:
+			Ordering ordering = new Ordering(Course.NAME_PROPERTY,
+					isAscending ? SortOrder.ASCENDING : SortOrder.DESCENDING);
+			ordering.orderList(result);
+			break;
+		case AVAILABILITY:
+			sortByAvailability(isAscending, result);
+			break;
+		case DATE:
+			sortByStartDate(isAscending, result);
+			break;
+		}
+		return result;
+
 	}
 
 	/**
@@ -117,13 +170,17 @@ public class CourseService implements ICourseService {
 		SelectQuery q = new SelectQuery(Course.class);
 		q.andQualifier(getSiteQualifier());
 		if (taggedWith != null) {
-			q.andQualifier(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN,
-					tagService.getEntityIdsByTagName(taggedWith, Course.class.getSimpleName())));
+			q.andQualifier(getTaggedWithQualifier(taggedWith));
 		}
 
 		result = cayenneService.sharedContext().performQuery(q);
 
 		return result.isEmpty() ? null : result.get(new Random().nextInt(result.size()));
+	}
+
+	private Expression getTaggedWithQualifier(String taggedWith) {
+		return ExpressionFactory.inDbExp(Course.ID_PK_COLUMN,
+				tagService.getEntityIdsByTagName(taggedWith, Course.class.getSimpleName()));
 	}
 
 	public Integer getCoursesCount() {
@@ -165,4 +222,57 @@ public class CourseService implements ICourseService {
 
 		return searchParams;
 	}
+
+	private void sortByStartDate(final Boolean isAscending, List<Course> result) {
+		Collections.sort(result, new Comparator<Course>() {
+
+			@Override
+			public int compare(Course o1, Course o2) {
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.YEAR, 5);
+				Date start1 = cal.getTime();
+				for (CourseClass cc : o1.getCurrentClasses()) {
+					Date startDate = cc.getStartDate();
+					if (startDate != null && startDate.before(start1)) {
+						start1 = startDate;
+					}
+				}
+
+				Date start2 = cal.getTime();
+				for (CourseClass cc : o2.getCurrentClasses()) {
+					Date startDate = cc.getStartDate();
+					if (startDate != null && startDate.before(start2)) {
+						start2 = startDate;
+					}
+				}
+				if (isAscending) {
+					return start1.compareTo(start2);
+				}
+				return start2.compareTo(start1);
+			}
+		});
+	}
+
+	private void sortByAvailability(final Boolean isAscending, List<Course> result) {
+		Collections.sort(result, new Comparator<Course>() {
+
+			@Override
+			public int compare(Course o1, Course o2) {
+				Integer places1 = 0;
+				for (CourseClass cc : o1.getCurrentClasses()) {
+					places1 += cc.getAvailableEnrolmentPlaces();
+				}
+
+				Integer places2 = 0;
+				for (CourseClass cc : o2.getCurrentClasses()) {
+					places2 += cc.getAvailableEnrolmentPlaces();
+				}
+				if (isAscending) {
+					return places1.compareTo(places2);
+				}
+				return places2.compareTo(places1);
+			}
+		});
+	}
+
 }
