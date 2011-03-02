@@ -18,7 +18,6 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 		EnrolmentStub stub = new EnrolmentStub();
 		
 		stub.setAngelId(entity.getAngelId());
-		stub.setCollegeId(entity.getCollege().getId());
 		stub.setCourseClass(findRelatedStub(entity.getCourseClass()));
 		stub.setCreated(entity.getCreated());
 		stub.setInvoiceLine(findRelatedStub(entity.getInvoiceLine()));

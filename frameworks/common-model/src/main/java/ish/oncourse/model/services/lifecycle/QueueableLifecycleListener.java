@@ -5,24 +5,17 @@
 
 package ish.oncourse.model.services.lifecycle;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.cayenne.LifecycleListener;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.annotations.Inject;
-
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.utils.EntityUtils;
+
+import org.apache.cayenne.LifecycleListener;
+import org.apache.cayenne.ObjectContext;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 
 /**

@@ -15,6 +15,20 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 
 	@Override
 	protected PaymentInStub createFullStub(PaymentIn entity) {
-		return null;
+		PaymentInStub stub = new PaymentInStub();
+		
+		stub.setAmount(entity.getAmount());
+		stub.setContact(findRelatedStub(entity.getContact()));
+		stub.setCreated(entity.getCreated());
+		stub.setCreditCardCVV(entity.getCreditCardCVV());
+		stub.setCreditCardExpiry(entity.getCreditCardExpiry());
+		stub.setCreditCardName(entity.getCreditCardName());
+		stub.setCreditCardNumber(entity.getCreditCardNumber());
+		stub.setCreditCardType(entity.getCreditCardType().getDatabaseValue());
+		stub.setModified(entity.getModified());
+		stub.setStudent(findRelatedStub(entity.getStudent()));
+		stub.setWillowId(entity.getId());
+		
+		return stub;
 	}
 }

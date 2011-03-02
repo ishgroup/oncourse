@@ -4,12 +4,12 @@ import ish.oncourse.model.auto._PaymentInLine;
 
 public class PaymentInLine extends _PaymentInLine implements Queueable {
 
-	public Long getId() {
-		return null;
+	public College getCollege() {
+		return getPaymentIn().getCollege();
 	}
 
-	public College getCollege() {
-		// TODO Auto-generated method stub
-		return null;
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
 }

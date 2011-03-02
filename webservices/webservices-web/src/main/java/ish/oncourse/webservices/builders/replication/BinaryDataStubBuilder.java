@@ -18,7 +18,6 @@ public class BinaryDataStubBuilder extends AbstractWillowStubBuilder<BinaryData,
 		BinaryDataStub stub = new BinaryDataStub();
 		
 		stub.setBinaryInfo(findRelatedStub(entity.getBinaryInfo()));
-		stub.setCollegeId(entity.getCollegeId());
 		stub.setContent(entity.getContent());
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());

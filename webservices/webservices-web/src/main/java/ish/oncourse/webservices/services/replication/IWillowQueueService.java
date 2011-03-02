@@ -7,4 +7,5 @@ import java.util.SortedMap;
 
 public interface IWillowQueueService {
 	SortedMap<QueuedKey, QueuedRecord> getReplicationQueue();
+	QueuedRecord find(Long willowId, String entityName);
 }

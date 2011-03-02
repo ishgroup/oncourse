@@ -2,12 +2,14 @@ package ish.oncourse.webservices.soap.v4;
 
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.webservices.builders.replication.IWillowStubBuilder;
 import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.services.replication.WillowStubBuilderFactory;
 import ish.oncourse.webservices.services.replication.WillowUpdaterFactory;
 import ish.oncourse.webservices.updaters.replication.IWillowUpdater;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
+import ish.oncourse.webservices.v4.stubs.replication.RecordStatus;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRequest;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
@@ -17,6 +19,7 @@ import java.util.SortedMap;
 
 import javax.jws.WebService;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,6 +37,10 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@Inject
 	@Autowired
 	private WillowUpdaterFactory updaterFactory;
+	
+	@Inject
+	@Autowired
+	private ICayenneService cayenneService;
 
 	@Override
 	public ReplicationResult sendRecords(ReplicationRequest req) {
@@ -73,8 +80,28 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	}
 
 	@Override
-	public ReplicationResult sendResults(ReplicationRequest records) {
-		// TODO Auto-generated method stub
-		return null;
+	public ReplicationResult sendResults(ReplicationRequest request) {
+		
+		List<ReplicationStub> confirmedStubs = request.getAttendanceOrBinaryDataOrBinaryInfo();
+		
+		ObjectContext ctx = cayenneService.newContext();
+		
+		for (ReplicationStub stub : confirmedStubs) {
+			QueuedRecord record = queueService.find(stub.getWillowId(), stub.getEntityIdentifier());
+			
+			if (record != null) {
+				QueuedRecord local = (QueuedRecord) ctx.localObject(record.getObjectId(), null);
+				ctx.deleteObject(local);
+				stub.setRecordStatus(RecordStatus.SUCCESS);
+			}
+			else {
+				stub.setRecordStatus(RecordStatus.FAILURE);
+			}
+		}
+		
+		ReplicationResult result = new ReplicationResult();
+		result.getAttendanceOrBinaryDataOrBinaryInfo().addAll(confirmedStubs);
+		
+		return result;
 	}
 }

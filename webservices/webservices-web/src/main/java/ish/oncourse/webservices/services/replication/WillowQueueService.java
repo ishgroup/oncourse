@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -44,5 +45,15 @@ public class WillowQueueService implements IWillowQueueService {
 		}
 		
 		return m;
+	}
+
+	@Override
+	public QueuedRecord find(Long willowId, String entityIdentifier) {
+		SelectQuery q = new SelectQuery(QueuedRecord.class);
+		
+		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_WILLOW_ID_PROPERTY, willowId));
+		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, entityIdentifier));
+		
+		return (QueuedRecord) DataObjectUtils.objectForQuery(cayenneService.sharedContext(), q);
 	}
 }

@@ -18,7 +18,6 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		InvoiceStub stub = new InvoiceStub();
 		stub.setAmountOwing(entity.getAmountOwing());
 		stub.setBillToAddress(entity.getBillToAddress());
-		stub.setCollegeId(entity.getCollege().getId());
 		stub.setContact(findRelatedStub(entity.getContact()));
 		stub.setCreated(entity.getCreated());
 		stub.setCustomerPO(entity.getCustomerPO());
