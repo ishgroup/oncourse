@@ -10,6 +10,7 @@ import org.apache.tapestry5.annotations.AfterRenderBody;
 import org.apache.tapestry5.annotations.BeforeRenderBody;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -23,6 +24,9 @@ public class MenuItem {
 
 	@Inject
 	private Request request;
+
+	@Inject
+	private Messages messages;
 
 	@SetupRender
 	boolean setup() {
@@ -77,4 +81,13 @@ public class MenuItem {
 
 		return menu.getUrl();
 	}
+
+	public String getMenuItemClass() {
+		String requestPath = request.getPath();
+		if (requestPath.endsWith(getItemHref())) {
+			return messages.get("cssclass.activePage");
+		}
+		return "";
+	}
+
 }
