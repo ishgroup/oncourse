@@ -22,7 +22,8 @@ public class Tutor extends _Tutor implements Queueable {
 	}
 
 	public String getFullName() {
-		return getContact().getGivenName() + " " + getContact().getFamilyName();
+		
+		return getContact().getFullName();
 	}
     
 	/**

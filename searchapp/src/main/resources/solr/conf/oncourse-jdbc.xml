@@ -22,7 +22,7 @@
 			<field name="collegeId" column="collegeId" />
 
 			<entity name="contact" dataSource="onCourseDS" pk="id"
-				transformer="TemplateTransformer"
+				transformer="RegexTransformer"
 				query="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct
                     inner join Tutor t on ct.tutorId = t.id
            			inner join TutorRole tr on t.id = tr.tutorId
@@ -39,7 +39,7 @@
 				<field name="id" column="id" />
 				<field name="gvName" column="gvName"/>
 				<field name="fmName" column="fmName"/>
-				<field name="tutor" column="TUTOR" template="${contact.gvName} ${contact.fmName}" />
+				<field name="tutor" column="TUTOR" regex="^(.*)$" relpaceWith="$1 ${contact.fmName}" sourceColName="gvName" /> 
 			</entity>
 
 			<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
