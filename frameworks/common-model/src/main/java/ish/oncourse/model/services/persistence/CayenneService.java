@@ -6,6 +6,7 @@ import ish.oncourse.model.access.ISHDataContextFactory;
 import ish.oncourse.model.services.cache.ICacheService;
 import ish.oncourse.model.services.lifecycle.QueueableLifecycleListener;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataNode;
@@ -17,7 +18,7 @@ import org.apache.cayenne.reflect.LifecycleCallbackRegistry;
 public class CayenneService implements ICayenneService {
 
 	private DataDomain domain;
-	private DataContext sharedContext;
+	private ObjectContext sharedContext;
 
 	
 	public CayenneService(ICacheService cacheService) {
@@ -45,12 +46,12 @@ public class CayenneService implements ICayenneService {
 		this.sharedContext = sharedDataContext;
 	}
 
-	public DataContext newContext() {
+	public ObjectContext newContext() {
 		return domain.createDataContext();
 	}
 
-	public DataContext newNonReplicatingContext() {
-		DataContext dc = newContext();
+	public ObjectContext newNonReplicatingContext() {
+		ObjectContext dc = newContext();
 		if (dc instanceof ISHDataContext) {
 			((ISHDataContext) dc).setRecordQueueingEnabled(false);
 		} else {
@@ -59,7 +60,7 @@ public class CayenneService implements ICayenneService {
 		return dc;
 	}
 
-	public DataContext sharedContext() {
+	public ObjectContext sharedContext() {
 		return sharedContext;
 	}
 }

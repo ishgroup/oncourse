@@ -8,6 +8,7 @@ import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.webservices.services.reference.ReferenceService;
 import ish.oncourse.webservices.services.reference.ReferenceStubBuilder;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.services.replication.WillowQueueService;
 import ish.oncourse.webservices.services.replication.WillowStubBuilderFactory;
 import ish.oncourse.webservices.services.replication.WillowUpdaterFactory;
@@ -31,7 +32,7 @@ public class AppModule {
 		binder.bind(ReferenceService.class);
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(WillowStubBuilderFactory.class);
-		binder.bind(WillowQueueService.class);
+		binder.bind(IWillowQueueService.class, WillowQueueService.class);
 		binder.bind(WillowUpdaterFactory.class);
 	}
 	

@@ -17,4 +17,10 @@ public interface ICayenneService {
 	 * A read-only shared context reused between requests and threads.
 	 */
 	ObjectContext sharedContext();
+	
+	/**
+	 * A context in which updates do not trigger new QueuedRecords.
+	 * @return
+	 */
+	ObjectContext newNonReplicatingContext();
 }
