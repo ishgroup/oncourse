@@ -1,7 +1,12 @@
 package ish.oncourse.ui.components;
 
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.services.textile.TextileUtil;
 
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -23,11 +28,11 @@ public class CourseItem {
 
 	@Property
 	private CourseClass courseClass;
-	
+
 	@Parameter
 	@Property
 	private boolean isList;
-	
+
 	@Parameter
 	@Property
 	private boolean linkToLocationsMap;
@@ -53,42 +58,97 @@ public class CourseItem {
 
 	public String getCourseDetail() {
 		String detail = course.getDetail();
-		if(detail==null){
+		if (detail == null) {
 			return "";
 		}
 		if (isList) {
-			String result = detail.length() > COURSE_DETAILS_LENGTH ? detail.substring(0, COURSE_DETAILS_LENGTH)
-					: detail;
-			int closingExpanded = result.lastIndexOf("</");
-			int closingCollapsed = result.lastIndexOf("/>");
-			int lastOpenClosing=Math.max(closingExpanded, closingCollapsed);
-			int lastOpening=result.lastIndexOf("<");
-			int lastClosing=result.lastIndexOf(">");
-			if(lastOpening>lastOpenClosing){
-				result=result.substring(0,lastOpening);
-			}else if(lastClosing<closingExpanded){
-				result=result.substring(0,closingExpanded);
-				lastOpening=result.indexOf("<");
-				result=result.substring(0,lastOpening);
-			}
+			String result = truncateHTML(detail, COURSE_DETAILS_LENGTH);
 			return result + "...";
 		} else {
 			return detail;
 		}
 	}
-	
-	public String getCourseItemClass(){
-		if(isList){
+
+	public String getCourseItemClass() {
+		if (isList) {
 			return "new_course_item small_class_detail clearfix";
-		}else{
+		} else {
 			return "new_course_item";
 		}
 	}
+
 	/**
 	 * Shows, whether to hide the class if it is outdated for the list view.
+	 * 
 	 * @return
 	 */
-	public boolean isShouldHideClass(){
+	public boolean isShouldHideClass() {
 		return isList && courseClass.hasEnded();
 	}
+
+	private String truncateHTML(String text, int size) {
+		boolean inTag = false;
+		int cntr = 0;
+		int cntrContent = 0;
+
+		// loop through html, counting only viewable content
+		for (char c : text.toCharArray()) {
+			if (cntrContent == size)
+				break;
+			cntr++;
+			if (c == '<') {
+				inTag = true;
+				continue;
+			}
+
+			if (c == '>') {
+				inTag = false;
+				continue;
+			}
+			if (!inTag)
+				cntrContent++;
+		}
+
+		String substr = text.substring(0, cntr);
+
+		// search for nonclosed tags
+		Matcher openedTags = Pattern.compile("<[^/](.|\n)*?[^/]>").matcher(substr);
+		Matcher closedTags = Pattern.compile("<[/](.|\n)*?>").matcher(substr);
+
+		// create stack
+		Stack<String> opentagsStack = new Stack<String>();
+		Stack<String> closedtagsStack = new Stack<String>();
+
+		while (openedTags.find()) {
+			String tag = openedTags.group();
+
+			String openedtag = tag.substring(1, tag.length() - 1);
+			// strip any attributes
+			if (openedtag.indexOf(" ") >= 0) {
+				openedtag = openedtag.substring(0, openedtag.indexOf(" "));
+			}
+		}
+
+		while (closedTags.find()) {
+			String tag = closedTags.group();
+
+			String closedtag = tag.substring(2, tag.length() - 1);
+			closedtagsStack.push(closedtag);
+		}
+
+		if (closedtagsStack.size() < opentagsStack.size()) {
+			while (opentagsStack.size() > 0) {
+				String tagstr = opentagsStack.pop();
+
+				if (closedtagsStack.size() == 0 || tagstr != closedtagsStack.peek()) {
+					substr += "</" + tagstr + ">";
+				} else {
+					closedtagsStack.pop();
+				}
+			}
+		}
+
+		return substr;
+	}
+
 }

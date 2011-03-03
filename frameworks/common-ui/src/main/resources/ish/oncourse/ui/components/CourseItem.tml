@@ -14,6 +14,7 @@
 				</h3>
 				<div class="description courseShortDescription">
 					<t:outputraw value="${courseDetail}" />
+					<a href="/course/${course.code}"><strong>More</strong></a>
 				</div>
 			</p:else>
 		</t:if>
