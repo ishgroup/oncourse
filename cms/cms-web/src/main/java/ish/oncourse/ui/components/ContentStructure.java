@@ -71,11 +71,6 @@ public class ContentStructure {
 		return visibility.getWebContent().accept(new ParsedContentVisitor(textileConverter));
 	}
 	
-	public String getTemplateId() {
-		return (webNodeService.getHomePage().getId() == this.node.getId()) ? IWebNodeService.WELCOME_TEMPLATE_ID
-				: "";
-	}
-
 	Object onActionFromEditRegion(String id) {
 
 		if (LOGGER.isDebugEnabled()) {

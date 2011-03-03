@@ -11,9 +11,7 @@
 
     <t:block id="regionContentBlock">
 		<div class="edit_region_link"><a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">Edit this region</a></div>
-        <div t:type="any" id="prop:templateId">
-            <t:outputraw value="regionContent" />
-        </div>
+        <t:outputraw value="regionContent" />
    </t:block>
 
     <t:block id="editorBlock">

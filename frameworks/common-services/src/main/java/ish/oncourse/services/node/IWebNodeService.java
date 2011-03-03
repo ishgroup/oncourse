@@ -12,8 +12,7 @@ public interface IWebNodeService {
 	 String NODE_NUMBER_PARAMETER = "n";
 	 String PAGE_PATH_PARAMETER = "p";
 	 String WEB_NODE_PAGE_TYPE_KEY = "Page";
-	 String WELCOME_TEMPLATE_ID = "welcome";
-
+	 
 	/**
 	 * Returns next node number which is unique within the site.
 	 * @return next node number.
