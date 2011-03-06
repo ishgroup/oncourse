@@ -2,11 +2,14 @@ package ish.oncourse.webservices.updaters.replication;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
+import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
-import ish.oncourse.webservices.v4.stubs.replication.RecordStatus;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.v4.stubs.replication.Status;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.cayenne.DataObjectUtils;
@@ -14,7 +17,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 
 public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends Queueable> implements IWillowUpdater<V> {
-
+	
 	private static final Logger logger = Logger.getLogger(AbstractWillowUpdater.class);
 
 	protected College college;
@@ -35,7 +38,7 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Queueable updateRelatedEntity(List<HollowStub> relationStubs, ReplicationStub stub) {
+	protected Queueable updateRelatedEntity(ReplicationStub stub, List<ReplicatedRecord> relationStubs) {
 		if (stub instanceof HollowStub) {
 			return findMatchingEntity(stub);
 		}
@@ -52,66 +55,50 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 	}
 
 	@Override
-	public List<HollowStub> updateRecord(V stub) {
+	public List<ReplicatedRecord> updateRecord(V stub) {
 		
-		List<HollowStub> respStubs = new ArrayList<HollowStub>();
+		List<ReplicatedRecord> respStubs = new LinkedList<ReplicatedRecord>();
+		
+		ReplicatedRecord record = new ReplicatedRecord();
 		
 		HollowStub hollowStub = new HollowStub();
 		hollowStub.setEntityIdentifier(stub.getEntityIdentifier());
 		hollowStub.setAngelId(stub.getAngelId());
-		hollowStub.setAction(stub.getAction());
+		hollowStub.setModified(new Date());
 		
-		respStubs.add(hollowStub);
+		record.setStub(hollowStub);
 		
-		ObjectContext ctx = college.getObjectContext();
-
+		respStubs.add(record);
+		
 		try {
-			switch (stub.getAction()) {
-			case CREATE:
-			{
-				T newEntity = ctx.newObject(getEntityClass(stub));
-				
-				List<HollowStub> relStubs = updateEntity(stub, newEntity);
-				respStubs.addAll(relStubs);
-				
-				ctx.commitChanges();
-				
-				hollowStub.setWillowId(newEntity.getId());
-				
-				break;
-			}
-			case UPDATE:
-			{
-				T updatedEntity = findMatchingEntity(stub);
-				
-				List<HollowStub> relStubs = updateEntity(stub, updatedEntity);
-				respStubs.addAll(relStubs);
-				
-				ctx.commitChanges();
-				
-				hollowStub.setWillowId(updatedEntity.getId());
-				break;
-			}
-			case DELETE:
+			if (stub instanceof DeletedStub) {
 				T deletedEntity = findMatchingEntity(stub);
-				
 				ctx.deleteObject(deletedEntity);
 				ctx.commitChanges();
-				
-				break;
-			default:
-				throw new IllegalArgumentException("ReplicationStub with null action is not allowed.");
 			}
-
-			hollowStub.setRecordStatus(RecordStatus.SUCCESS);
-
-		} catch (Exception e) {
-			logger.error("Failed to replicate record.", e);
-			hollowStub.setRecordStatus(RecordStatus.FAILURE);
+			else {
+				T entity = findMatchingEntity(stub);
+				
+				if (entity == null) {
+					entity = ctx.newObject(getEntityClass(stub));
+					hollowStub.setCreated(new Date());
+				}
+				
+				updateEntity(stub, entity, respStubs);
+				
+				ctx.commitChanges();
+				
+				hollowStub.setWillowId(entity.getId());
+				record.setStatus(Status.SUCCESS);
+			}
 		}
-
+		catch (Exception e) {
+			logger.error("Failed to update record.", e);
+			record.setStatus(Status.FAILURE);
+		}
+		
 		return respStubs;
 	}
 
-	protected abstract List<HollowStub> updateEntity(V stub, T entity);
+	protected abstract void updateEntity(V stub, T entity, List<ReplicatedRecord> relationStubs);
 }

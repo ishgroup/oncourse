@@ -3,14 +3,15 @@ package ish.oncourse.webservices.builders.replication;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.ConcessionTypeStub;
 
 import java.util.Map;
 
 public class ConcessionTypeStubBuilder extends AbstractWillowStubBuilder<ConcessionType, ConcessionTypeStub> {
 	
-	public ConcessionTypeStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
-		super(queue, next);
+	public ConcessionTypeStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
+		super(queue, queueService, next);
 	}
 
 	@Override

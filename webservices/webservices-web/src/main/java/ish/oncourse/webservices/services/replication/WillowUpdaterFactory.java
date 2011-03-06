@@ -35,7 +35,7 @@ public class WillowUpdaterFactory {
 		Session session = request.getSession(true);
 		SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
 		
-		ObjectContext ctx = cayenneService.newContext();
+		ObjectContext ctx = cayenneService.newNonReplicatingContext();
 		
 		College college = (College) ctx.localObject(token.getCollege().getObjectId(), null);
 		

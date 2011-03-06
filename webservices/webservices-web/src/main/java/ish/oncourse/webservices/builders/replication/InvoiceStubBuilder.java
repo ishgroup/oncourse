@@ -5,12 +5,13 @@ import java.util.Map;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
 
 public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, InvoiceStub> {
 	
-	public InvoiceStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
-		super(queue, next);
+	public InvoiceStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
+		super(queue, queueService, next);
 	}
 	
 	@Override
@@ -18,7 +19,7 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		InvoiceStub stub = new InvoiceStub();
 		stub.setAmountOwing(entity.getAmountOwing());
 		stub.setBillToAddress(entity.getBillToAddress());
-		stub.setContact(findRelatedStub(entity.getContact()));
+		stub.setContact(findRelationshipStub(entity.getContact()));
 		stub.setCreated(entity.getCreated());
 		stub.setCustomerPO(entity.getCustomerPO());
 		stub.setCustomerReference(entity.getCustomerReference());

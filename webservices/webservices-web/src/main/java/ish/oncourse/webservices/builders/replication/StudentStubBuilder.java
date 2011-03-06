@@ -3,14 +3,15 @@ package ish.oncourse.webservices.builders.replication;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Student;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.StudentStub;
 
 import java.util.Map;
 
 public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, StudentStub> {
 	
-	public StudentStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
-		super(queue, next);
+	public StudentStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
+		super(queue, queueService, next);
 	}
 
 	@Override
@@ -19,7 +20,7 @@ public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, Stude
 		
 		stub.setWillowId(entity.getId());
 		stub.setConcessionType(entity.getConcessionType());
-		stub.setContact(findRelatedStub(entity.getContact()));
+		stub.setContact(findRelationshipStub(entity.getContact()));
 		stub.setCountryOfBirthId(entity.getCountryOfBirth().getId());
 		stub.setCreated(entity.getCreated());
 		stub.setDisabilityType(entity.getDisabilityType().getDatabaseValue());

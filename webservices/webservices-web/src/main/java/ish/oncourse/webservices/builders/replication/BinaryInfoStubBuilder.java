@@ -3,14 +3,15 @@ package ish.oncourse.webservices.builders.replication;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.BinaryInfoStub;
 
 import java.util.Map;
 
 public class BinaryInfoStubBuilder extends AbstractWillowStubBuilder<BinaryInfo, BinaryInfoStub> {
 	
-	public BinaryInfoStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
-		super(queue, next);
+	public BinaryInfoStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
+		super(queue, queueService, next);
 	}
 	
 	@Override
@@ -18,7 +19,7 @@ public class BinaryInfoStubBuilder extends AbstractWillowStubBuilder<BinaryInfo,
 		BinaryInfoStub stub = new BinaryInfoStub();
 		
 		stub.setAngelId(entity.getAngelId());
-		stub.setBinaryData(findRelatedStub(entity.getBinaryData()));
+		stub.setBinaryData(findRelationshipStub(entity.getBinaryData()));
 		stub.setByteSize(entity.getByteSize());
 		stub.setCreated(entity.getCreated());
 		stub.setMimeType(entity.getMimeType());

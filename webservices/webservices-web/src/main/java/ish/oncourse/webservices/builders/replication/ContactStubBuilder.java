@@ -5,12 +5,13 @@ import java.util.Map;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.ContactStub;
 
 public class ContactStubBuilder extends AbstractWillowStubBuilder<Contact, ContactStub> {
 	
-	public ContactStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
-		super(queue, next);
+	public ContactStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
+		super(queue, queueService, next);
 	}
 
 	@Override
@@ -47,10 +48,10 @@ public class ContactStubBuilder extends AbstractWillowStubBuilder<Contact, Conta
 		stub.setWillowId(entity.getId());
 		
 		if (entity.getStudent() != null) {
-			stub.setStudent(findRelatedStub(entity.getStudent()));
+			stub.setStudent(findRelationshipStub(entity.getStudent()));
 		}
 		else {
-			stub.setTutor(findRelatedStub(entity.getTutor()));
+			stub.setTutor(findRelationshipStub(entity.getTutor()));
 		}
 		
 		return stub;

@@ -1,35 +1,30 @@
 package ish.oncourse.webservices.builders.replication;
 
 import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedKey;
-import ish.oncourse.webservices.v4.stubs.replication.Action;
+import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
 import java.util.Map;
 
-import org.apache.cayenne.DataObjectUtils;
-
 public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends ReplicationStub> implements IWillowStubBuilder {
 
 	private IWillowStubBuilder next;
+	
 	private Map<QueuedKey, QueuedRecord> queue;
 
-	public AbstractWillowStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
+	private IWillowQueueService queueService;
+	
+	public AbstractWillowStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
 		this.queue = queue;
+		this.queueService = queueService;
 		this.next = next;
 	}
 
-	private T findMatchingEntity(QueuedRecord entity) {
-		@SuppressWarnings("unchecked")
-		Class<T> entityClass = (Class<T>) entity.getObjectContext().getEntityResolver().getObjEntity(entity.getEntityIdentifier())
-				.getClass();
-		return DataObjectUtils.objectForPK(entity.getObjectContext(), entityClass, entity.getEntityWillowId());
-	}
-
-	protected ReplicationStub findRelatedStub(Queueable parent) {
+	protected ReplicationStub findRelationshipStub(Queueable parent) {
 		QueuedKey key = new QueuedKey(parent.getId(), parent.getObjectId().getEntityName());
 		QueuedRecord bRecord = queue.get(key);
 
@@ -48,16 +43,15 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 		switch (record.getAction()) {
 		case CREATE:
 		case UPDATE:
-			T entity = findMatchingEntity(record);
+			@SuppressWarnings("unchecked")
+			T entity = (T) queueService.findRelatedEntity(record);
 			ReplicationStub fullStub = createFullStub(entity);
 			fullStub.setEntityIdentifier(record.getEntityIdentifier());
-			fullStub.setAction(Action.valueOf(record.getAction().name()));
 			return fullStub;
 		case DELETE:
 			DeletedStub deletedStub = new DeletedStub();
 			deletedStub.setEntityIdentifier(record.getEntityIdentifier());
 			deletedStub.setWillowId(record.getEntityWillowId());
-			deletedStub.setAction(Action.valueOf(record.getAction().name()));
 			return deletedStub;
 		default:
 			throw new IllegalArgumentException("QueuedRecord with null action is not allowed.");

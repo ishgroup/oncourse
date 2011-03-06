@@ -4,9 +4,8 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.webservices.v4.stubs.replication.CourseStub;
-import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
@@ -16,9 +15,7 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 	}
 	
 	@Override
-	protected List<HollowStub> updateEntity(CourseStub stub, Course entity) {
-		
-		List<HollowStub> relationStubs = new ArrayList<HollowStub>();
+	protected void updateEntity(CourseStub stub, Course entity, List<ReplicatedRecord> relationStubs) {
 		
 		entity.setAllowWaitingList(stub.isAllowWaitingList());
 		entity.setAngelId(stub.getAngelId());
@@ -34,9 +31,7 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 				
-		entity.setQualification((Qualification) updateRelatedEntity(relationStubs, stub));
+		entity.setQualification((Qualification) updateRelatedEntity(stub, relationStubs));
 		entity.setSearchText(stub.getSearchText());
-		
-		return relationStubs;
 	}
 }

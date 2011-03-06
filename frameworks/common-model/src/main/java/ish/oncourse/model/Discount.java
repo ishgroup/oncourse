@@ -9,7 +9,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 
 
-public class Discount extends _Discount {
+public class Discount extends _Discount implements Queueable {
 
 	private static final Logger LOG = Logger.getLogger(Discount.class);
 	public static final String PROMOTIONS_KEY="promotions";

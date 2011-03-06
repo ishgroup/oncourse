@@ -5,12 +5,13 @@ import java.util.Map;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
 
 public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, PaymentInStub> {
 	
-	public PaymentInStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
-		super(queue, next);
+	public PaymentInStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
+		super(queue, queueService, next);
 	}
 
 	@Override
@@ -18,7 +19,7 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 		PaymentInStub stub = new PaymentInStub();
 		
 		stub.setAmount(entity.getAmount());
-		stub.setContact(findRelatedStub(entity.getContact()));
+		stub.setContact(findRelationshipStub(entity.getContact()));
 		stub.setCreated(entity.getCreated());
 		stub.setCreditCardCVV(entity.getCreditCardCVV());
 		stub.setCreditCardExpiry(entity.getCreditCardExpiry());
@@ -26,7 +27,7 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 		stub.setCreditCardNumber(entity.getCreditCardNumber());
 		stub.setCreditCardType(entity.getCreditCardType().getDatabaseValue());
 		stub.setModified(entity.getModified());
-		stub.setStudent(findRelatedStub(entity.getStudent()));
+		stub.setStudent(findRelationshipStub(entity.getStudent()));
 		stub.setWillowId(entity.getId());
 		
 		return stub;

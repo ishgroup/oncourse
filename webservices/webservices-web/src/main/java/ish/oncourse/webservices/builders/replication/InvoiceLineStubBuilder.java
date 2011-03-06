@@ -5,12 +5,13 @@ import java.util.Map;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub;
 
 public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLine, InvoiceLineStub> {
-	
-	public InvoiceLineStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowStubBuilder next) {
-		super(queue, next);
+
+	public InvoiceLineStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
+		super(queue, queueService, next);
 	}
 
 	@Override
@@ -21,9 +22,9 @@ public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLin
 		stub.setCreated(entity.getCreated());
 		stub.setDescription(entity.getDescription());
 		stub.setDiscountEachExTax(entity.getDiscountEachExTax().toBigDecimal());
-		stub.setEnrolment(findRelatedStub(entity.getEnrolment()));
+		stub.setEnrolment(findRelationshipStub(entity.getEnrolment()));
 		stub.setEntityIdentifier(entity.getObjectId().getEntityName());
-		stub.setInvoice(findRelatedStub(entity.getInvoice()));
+		stub.setInvoice(findRelationshipStub(entity.getInvoice()));
 		stub.setModified(entity.getModified());
 		stub.setPriceEachExTax(entity.getPriceEachExTax().toBigDecimal());
 		stub.setQuantity(entity.getQuantity());

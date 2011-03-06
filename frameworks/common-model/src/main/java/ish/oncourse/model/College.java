@@ -9,9 +9,9 @@ import java.util.Set;
 
 public class College extends _College {
 
-	public Integer getId() {
+	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN)).intValue() : null;
+				.getIdSnapshot().get(ID_PK_COLUMN)).longValue() : null;
 	}
 
 	public Set<String> getCollegeSiteStates() {

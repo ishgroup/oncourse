@@ -1,11 +1,14 @@
 package ish.oncourse.webservices.services.replication;
 
-import ish.oncourse.model.QueuedKey;
+import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 
-import java.util.SortedMap;
+import java.util.List;
 
 public interface IWillowQueueService {
-	SortedMap<QueuedKey, QueuedRecord> getReplicationQueue();
-	QueuedRecord find(Long willowId, String entityName);
+	List<QueuedRecord> getReplicationQueue();
+
+	Queueable findRelatedEntity(QueuedRecord entity);
+
+	void confirmRecord(Long willowId, Long angelId, String entityName, boolean isSuccess);
 }

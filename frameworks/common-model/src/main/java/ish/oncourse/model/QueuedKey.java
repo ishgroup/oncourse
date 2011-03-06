@@ -1,10 +1,10 @@
 package ish.oncourse.model;
 
 public class QueuedKey {
-	
+
 	private Long id;
 	private String entityName;
-	
+
 	public QueuedKey(Long id, String entityName) {
 		this.id = id;
 		this.entityName = entityName;
@@ -17,7 +17,7 @@ public class QueuedKey {
 			QueuedKey k = (QueuedKey) obj;
 			return this.id.equals(k.id) && this.entityName.equals(k.entityName);
 		}
-		
+
 		return false;
 	}
 
