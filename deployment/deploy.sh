@@ -47,8 +47,8 @@ test_servers="freebsd.vm.ish.com.au"
 staging_servers="splash.internal"
 
 #set binary's
-rsync="/usr/local/bin/rsync -avv"
-ssh="/usr/bin/ssh"
+rsync="rsync -avv"
+ssh="ssh"
 
 if [ "${environment}" = "dev" ]; then
   servers=${test_servers}
