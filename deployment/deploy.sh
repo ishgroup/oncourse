@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/sh
 
 # A script to deploy the onCourse web application suite from Jenkins
 
