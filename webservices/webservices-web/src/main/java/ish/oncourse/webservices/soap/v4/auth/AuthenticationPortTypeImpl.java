@@ -93,11 +93,15 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 
 		// Normal flow or recovering from HALT state. Generate and store new
 		// communication key.
-
+		
+		College local = (College) ctx.localObject(college.getObjectId(), null);
+		
 		Random randomGen = new Random();
 		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
+		
+		Session session = request.getSession(true);
+		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(local, newCommunicationKey));
 
-		College local = (College) ctx.localObject(college.getObjectId(), null);
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
 		
@@ -109,9 +113,6 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		local.setLastRemoteAuthentication(today);
 
 		ctx.commitChanges();
-
-		Session session = request.getSession(true);
-		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(local));
 		
 		return newCommunicationKey;
 	}
@@ -124,12 +125,16 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	 * 
 	 * @return logout status
 	 */
-	public Status logout(long newCommKey) {
-		Status status = new Status();
-
-		// clean up current session
-		request.getSession(false).invalidate();
-
-		return status;
+	public long logout(long newCommKey) {
+		Session session = request.getSession(false);
+		if (session != null) {
+			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
+			if (token.getCommunicationKey().equals(newCommKey)) {
+				session.invalidate();
+				return 0;
+			}
+		}
+		
+		return 1;
 	}
 }

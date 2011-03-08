@@ -24,8 +24,15 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 		stub.setInvoiceLine(findRelationshipStub(entity.getInvoiceLine()));
 		stub.setModified(entity.getModified());
 		stub.setReasonForStudy(entity.getReasonForStudy());
-		stub.setSource(entity.getSource().name());
-		stub.setStatus(entity.getStatus().name());
+		
+		if (entity.getSource() != null) {
+			stub.setSource(entity.getSource().name());
+		}
+		
+		if (entity.getStatus() != null) {
+			stub.setStatus(entity.getStatus().name());
+		}
+		
 		stub.setStudent(findRelationshipStub(entity.getStudent()));
 		stub.setWillowId(entity.getId());
 		

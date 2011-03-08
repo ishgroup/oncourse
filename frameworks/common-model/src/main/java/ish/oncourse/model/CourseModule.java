@@ -18,4 +18,9 @@ public class CourseModule extends _CourseModule implements Queueable {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public Long getAngelId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

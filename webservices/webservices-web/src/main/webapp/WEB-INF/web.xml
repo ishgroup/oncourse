@@ -11,6 +11,10 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:application-context.xml</param-value>
 	</context-param>
+	
+	<listener>
+		<listener-class>ish.oncourse.webservices.listeners.CollegeSessions</listener-class>
+	</listener>
 
 	<servlet>
 		<servlet-name>WebServicesServlet</servlet-name>

@@ -3,6 +3,7 @@ package ish.oncourse.webservices.updaters.replication;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Qualification;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.CourseStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
@@ -10,8 +11,8 @@ import java.util.List;
 
 public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 	
-	public CourseUpdater(College college, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		super(college, next);
+	public CourseUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
+		super(college, queueService, next);
 	}
 	
 	@Override

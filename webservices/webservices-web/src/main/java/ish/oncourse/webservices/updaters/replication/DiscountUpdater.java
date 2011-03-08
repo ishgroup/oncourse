@@ -4,6 +4,7 @@ import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.DiscountStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
@@ -11,8 +12,8 @@ import java.util.List;
 
 public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discount> {
 	
-	public DiscountUpdater(College college, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		super(college, next);
+	public DiscountUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
+		super(college, queueService, next);
 	}
 
 	@Override

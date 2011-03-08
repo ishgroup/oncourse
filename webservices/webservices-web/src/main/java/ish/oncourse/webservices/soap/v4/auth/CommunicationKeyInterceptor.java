@@ -1,7 +1,10 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
+import javax.servlet.http.HttpSession;
+
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
+import ish.oncourse.webservices.listeners.CollegeSessions;
 import ish.oncourse.webservices.util.SoapUtil;
 
 import org.apache.cxf.binding.soap.SoapMessage;
@@ -10,7 +13,6 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
@@ -46,11 +48,12 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			throw new AuthenticationFailureException("communicationKey.invalid", communicationKey);
 		}
 		
-		Session session = request.getSession(false);
+		HttpSession session = CollegeSessions.getCollegeSession(college.getId());
 		
 		if (session == null) {
-			throw new AuthenticationFailureException("session.expired");
+			throw new AuthenticationFailureException("session.expired.for.key", communicationKey);
 		}
 		
+		request.setAttribute(SoapUtil.REQUESTING_COLLEGE, college);
 	}
 }

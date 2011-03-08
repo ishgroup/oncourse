@@ -2,11 +2,10 @@ package ish.oncourse.webservices.services.replication;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.webservices.UpdaterNotFoundException;
-import ish.oncourse.webservices.soap.v4.auth.SessionToken;
 import ish.oncourse.webservices.updaters.replication.CourseClassUpdater;
 import ish.oncourse.webservices.updaters.replication.IWillowUpdater;
+import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
@@ -14,10 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WillowUpdaterFactory {
@@ -27,28 +24,22 @@ public class WillowUpdaterFactory {
 	private Request request;
 	
 	@Inject
-	private ICayenneService cayenneService;
+	@Autowired
+	private IWillowQueueService queueService;
 
 	@SuppressWarnings("rawtypes")
 	public IWillowUpdater newReplicationUpdater() {
-		
-		Session session = request.getSession(true);
-		SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-		
-		ObjectContext ctx = cayenneService.newNonReplicatingContext();
-		
-		College college = (College) ctx.localObject(token.getCollege().getObjectId(), null);
-		
+		College college = (College) request.getAttribute(SoapUtil.REQUESTING_COLLEGE);
 		return new WillowUpdaterImpl(college);
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static class WillowUpdaterImpl implements IWillowUpdater {
+	private class WillowUpdaterImpl implements IWillowUpdater {
 
 		private Map<String, IWillowUpdater> updaterMap = new HashMap<String, IWillowUpdater>();
 
 		private WillowUpdaterImpl(College college) {
-			updaterMap.put(getClassName(CourseClass.class), new CourseClassUpdater(college, this));
+			updaterMap.put(getClassName(CourseClass.class), new CourseClassUpdater(college, queueService, this));
 		}
 
 		@SuppressWarnings("unchecked")
@@ -70,5 +61,13 @@ public class WillowUpdaterFactory {
 	private static String getClassName(Class<?> clazz) {
 		int index = clazz.getName().lastIndexOf(".") + 1;
 		return clazz.getName().substring(index);
+	}
+
+	public void setRequest(Request request) {
+		this.request = request;
+	}
+
+	public void setQueueService(IWillowQueueService queueService) {
+		this.queueService = queueService;
 	}
 }

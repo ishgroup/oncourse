@@ -1,10 +1,11 @@
 package ish.oncourse.webservices.services.replication;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.webservices.soap.v4.auth.SessionToken;
+import ish.oncourse.webservices.util.SoapUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,6 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WillowQueueService implements IWillowQueueService {
@@ -36,24 +36,47 @@ public class WillowQueueService implements IWillowQueueService {
 
 		SortedMap<QueuedKey, QueuedRecord> m = new TreeMap<QueuedKey, QueuedRecord>();
 
-		Session session = request.getSession(false);
-
-		SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-
 		SelectQuery q = new SelectQuery(QueuedRecord.class);
-		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, token.getCollege()));
+		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, (College) request.getAttribute(SoapUtil.REQUESTING_COLLEGE)));
 
-		q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.DESCENDING));
+		q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
+
+	@Override
+	public Queueable findRelatedEntity(String entityIdentifier, Long willowId) {
+		return DataObjectUtils.objectForPK(cayenneService.sharedContext(), getEntityClass(entityIdentifier), willowId);
+	}
 	
 	@Override
-	public Queueable findRelatedEntity(QueuedRecord entity) {
+	public <T extends Queueable> void remove(T object) {
+		ObjectContext ctx = cayenneService.newNonReplicatingContext();
+		Queueable local = (T) ctx.localObject(object.getObjectId(), object);
+		ctx.deleteObject(local);
+		ctx.commitChanges();
+	}
+
+	@Override
+	public <T extends Queueable> T update(T object) {
+		ObjectContext ctx = cayenneService.newNonReplicatingContext();
+		T local = (T) ctx.localObject(object.getObjectId(), object);
+		ctx.commitChanges();
+		return local;
+	}
+
+	@Override
+	public <T extends Queueable> T createNew(Class<T> clazz) {
+		ObjectContext ctx = cayenneService.newNonReplicatingContext();
+		return ctx.newObject(clazz);
+	}
+
+	@Override
+	public Class<? extends Queueable> getEntityClass(String entityIdentifier) {
 		@SuppressWarnings("unchecked")
-		Class<? extends Queueable> entityClass = (Class<? extends Queueable>) entity.getObjectContext().getEntityResolver().getObjEntity(entity.getEntityIdentifier())
-				.getClass();
-		return DataObjectUtils.objectForPK(entity.getObjectContext(), entityClass, entity.getEntityWillowId());
+		Class<? extends Queueable> entityClass = (Class<? extends Queueable>) cayenneService.sharedContext().getEntityResolver()
+				.getObjEntity(entityIdentifier).getJavaClass();
+		return entityClass;
 	}
 
 	@Override

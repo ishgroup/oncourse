@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.eq;
 import ish.common.types.AvetmissStudentDisabilityType;
 import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
@@ -61,10 +62,10 @@ public class WillowStubBuilderTest {
 		Student studentStub = studentMock(ctx);
 		
 		
-		when(queueService.findRelatedEntity(enrolmentRecord)).thenReturn(enrlMock);
-		when(queueService.findRelatedEntity(courseClassRecord)).thenReturn(courseClassStub);
-		when(queueService.findRelatedEntity(invoiceLineRecord)).thenReturn(invoiceLineStub);
-		when(queueService.findRelatedEntity(studentRecord)).thenReturn(studentStub);
+		when(queueService.findRelatedEntity(eq("Enrolment"), eq(1l))).thenReturn(enrlMock);
+		when(queueService.findRelatedEntity(eq("CourseClass"), eq(1l))).thenReturn(courseClassStub);
+		when(queueService.findRelatedEntity(eq("InvoiceLine"), eq(1l))).thenReturn(invoiceLineStub);
+		when(queueService.findRelatedEntity(eq("Student"), eq(1l))).thenReturn(studentStub);
 
 		factory.setQueueService(queueService);
 

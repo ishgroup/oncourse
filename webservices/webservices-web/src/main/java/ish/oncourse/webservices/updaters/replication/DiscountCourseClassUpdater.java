@@ -4,6 +4,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountCourseClass;
+import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.DiscountCourseClassStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
@@ -11,8 +12,8 @@ import java.util.List;
 
 public class DiscountCourseClassUpdater extends AbstractWillowUpdater<DiscountCourseClassStub, DiscountCourseClass> {
 	
-	public DiscountCourseClassUpdater(College college, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		super(college, next);
+	public DiscountCourseClassUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
+		super(college, queueService, next);
 	}
 
 	@Override
