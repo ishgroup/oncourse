@@ -62,10 +62,10 @@ public class WillowStubBuilderTest {
 		Student studentStub = studentMock(ctx);
 		
 		
-		when(queueService.findRelatedEntity(eq("Enrolment"), eq(1l))).thenReturn(enrlMock);
-		when(queueService.findRelatedEntity(eq("CourseClass"), eq(1l))).thenReturn(courseClassStub);
-		when(queueService.findRelatedEntity(eq("InvoiceLine"), eq(1l))).thenReturn(invoiceLineStub);
-		when(queueService.findRelatedEntity(eq("Student"), eq(1l))).thenReturn(studentStub);
+		when(queueService.findEntityByWillowId(eq("Enrolment"), eq(1l))).thenReturn(enrlMock);
+		when(queueService.findEntityByWillowId(eq("CourseClass"), eq(1l))).thenReturn(courseClassStub);
+		when(queueService.findEntityByWillowId(eq("InvoiceLine"), eq(1l))).thenReturn(invoiceLineStub);
+		when(queueService.findEntityByWillowId(eq("Student"), eq(1l))).thenReturn(studentStub);
 
 		factory.setQueueService(queueService);
 

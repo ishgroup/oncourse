@@ -8,7 +8,9 @@ import java.util.List;
 public interface IWillowQueueService {
 	List<QueuedRecord> getReplicationQueue();
 
-	Queueable findRelatedEntity(String entityIdentifier, Long willowId);
+	Queueable findEntityByWillowId(String entityIdentifier, Long willowId);
+	
+	Queueable findEntityByAngelId(String entityIdentifier, Long angelId);
 	
 	Class<? extends Queueable> getEntityClass(String entityIdentifier);
 	

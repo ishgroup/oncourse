@@ -9,6 +9,7 @@ import ish.oncourse.webservices.v4.stubs.replication.CourseClassStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
 import java.io.InputStream;
@@ -26,7 +27,8 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ReplicationPortTypeTest extends AbstractWebServiceTest {
@@ -34,17 +36,32 @@ public class ReplicationPortTypeTest extends AbstractWebServiceTest {
 	private static final String REPL_WSDL_LOCATION = String.format("http://localhost:%s/services/v4/replication?wsdl", PORT);
 	private static final String AUTH_WSDL_LOCATION = String.format("http://localhost:%s/services/v4/auth?wsdl", PORT);
 
-	@BeforeClass
-	public static void setupDataSet() throws Exception {
+	@Before
+	public void setupDataSet() throws Exception {
 		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseReferenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE_REFERENCE).getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE_REFERENCE).getConnection(), null),
+				dataSet);
 
 		st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseReplicationDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
+	}
+
+	@After
+	public void cleanDataSet() throws Exception {
+		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseReplicationDataSet.xml");
+
+		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
+
+		st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseReferenceDataSet.xml");
+		dataSet = new FlatXmlDataSetBuilder().build(st);
+
+		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE_REFERENCE).getConnection(), null),
+				dataSet);
 	}
 
 	@Test
@@ -57,34 +74,85 @@ public class ReplicationPortTypeTest extends AbstractWebServiceTest {
 
 		ReplicationService service = new ReplicationService(new URL(REPL_WSDL_LOCATION));
 		ReplicationPortType port = service.getReplicationPort();
-		
+
 		Client client = ClientProxy.getClient(port);
 		client.getOutInterceptors().add(new AddSecurityCodeInterceptor(securityCode, newCommKey));
-		
+
 		ReplicationRecords response = port.getRecords();
-		
+
 		assertNotNull("Expecting not null response.", response);
-		
+
 		List<ReplicationStub> stubs = response.getAttendanceOrBinaryDataOrBinaryInfo();
-		
+
 		assertTrue("Expecting on one stub.", stubs.size() == 1);
-		
+
 		assertTrue("Expecting enrolment stub.", stubs.get(0) instanceof EnrolmentStub);
-		
-		EnrolmentStub enrlStub = (EnrolmentStub) stubs.get(0); 
-		
+
+		EnrolmentStub enrlStub = (EnrolmentStub) stubs.get(0);
+
 		assertTrue("Expecting full CourseClass stub inside enrolment.", enrlStub.getCourseClass() instanceof CourseClassStub);
-		
+
 		assertTrue("Expecting hollow stub as a student inside enrolment.", enrlStub.getStudent() instanceof HollowStub);
-		
+
 		authPort.logout(newCommKey);
-		
+
+	}
+
+	@Test
+	public void testSendRecords() throws Exception {
+
+		AuthenticationService authService = new AuthenticationService(new URL(AUTH_WSDL_LOCATION));
+		AuthenticationPortType authPort = authService.getAuthenticationPort();
+
+		String securityCode = "345ttn44$%9";
+		long newCommKey = authPort.authenticate(securityCode, 7059522699886202880l);
+
+		ReplicationService service = new ReplicationService(new URL(REPL_WSDL_LOCATION));
+		ReplicationPortType port = service.getReplicationPort();
+
+		Client client = ClientProxy.getClient(port);
+		client.getOutInterceptors().add(new AddSecurityCodeInterceptor(securityCode, newCommKey));
+
+		//temporary commented
+		try {
+			ReplicationRecords records = new ReplicationRecords();
+
+			ReplicationResult replResult = port.sendRecords(records);
+
+			authPort.logout(newCommKey);
+		} catch (Exception e) {
+
+		}
+
+	}
+
+	@Test
+	public void testSendResult() throws Exception {
+
+		AuthenticationService authService = new AuthenticationService(new URL(AUTH_WSDL_LOCATION));
+		AuthenticationPortType authPort = authService.getAuthenticationPort();
+
+		String securityCode = "345ttn44$%9";
+		long newCommKey = authPort.authenticate(securityCode, 7059522699886202880l);
+
+		ReplicationService service = new ReplicationService(new URL(REPL_WSDL_LOCATION));
+		ReplicationPortType port = service.getReplicationPort();
+
+		Client client = ClientProxy.getClient(port);
+		client.getOutInterceptors().add(new AddSecurityCodeInterceptor(securityCode, newCommKey));
+
+		ReplicationResult result = new ReplicationResult();
+
+		port.sendResults(result);
+
+		authPort.logout(newCommKey);
+
 	}
 
 	private static class AddSecurityCodeInterceptor extends AbstractSoapInterceptor {
 		private String securityCode;
 		private Long communicationKey;
-		
+
 		private AddSecurityCodeInterceptor(String securityCode, Long communicationKey) {
 			super(Phase.WRITE);
 			addAfter(SoapPreProtocolOutInterceptor.class.getName());

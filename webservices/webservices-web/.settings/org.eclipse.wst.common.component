@@ -7,13 +7,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/config/dev"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-services/common-services">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-model/common-model">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/webservices-client/webservices-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="webservices-web"/>

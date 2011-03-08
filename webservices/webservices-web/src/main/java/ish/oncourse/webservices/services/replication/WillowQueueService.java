@@ -45,10 +45,17 @@ public class WillowQueueService implements IWillowQueueService {
 	}
 
 	@Override
-	public Queueable findRelatedEntity(String entityIdentifier, Long willowId) {
+	public Queueable findEntityByWillowId(String entityIdentifier, Long willowId) {
 		return DataObjectUtils.objectForPK(cayenneService.sharedContext(), getEntityClass(entityIdentifier), willowId);
 	}
 	
+	@Override
+	public Queueable findEntityByAngelId(String entityIdentifier, Long angelId) {
+		SelectQuery q = new SelectQuery(getEntityClass(entityIdentifier));
+		q.andQualifier(ExpressionFactory.matchDbExp("angelId", angelId));
+		return (Queueable) DataObjectUtils.objectForQuery(cayenneService.sharedContext(), q);
+	}
+
 	@Override
 	public <T extends Queueable> void remove(T object) {
 		ObjectContext ctx = cayenneService.newNonReplicatingContext();

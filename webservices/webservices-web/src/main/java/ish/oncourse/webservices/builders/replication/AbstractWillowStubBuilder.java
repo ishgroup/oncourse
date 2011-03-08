@@ -44,7 +44,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 		case CREATE:
 		case UPDATE:
 			@SuppressWarnings("unchecked")
-			T entity = (T) queueService.findRelatedEntity(record.getEntityIdentifier(), record.getEntityWillowId());
+			T entity = (T) queueService.findEntityByWillowId(record.getEntityIdentifier(), record.getEntityWillowId());
 			ReplicationStub fullStub = createFullStub(entity);
 			fullStub.setEntityIdentifier(record.getEntityIdentifier());
 			return fullStub;

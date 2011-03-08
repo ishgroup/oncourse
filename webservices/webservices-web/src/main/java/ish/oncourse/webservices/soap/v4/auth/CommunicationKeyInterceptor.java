@@ -1,18 +1,19 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
-import javax.servlet.http.HttpSession;
-
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.listeners.CollegeSessions;
 import ish.oncourse.webservices.util.SoapUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
+import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
@@ -20,10 +21,6 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 	@Inject
 	@Autowired
 	private ICollegeService collegeService;
-	
-	@Inject
-	@Autowired
-	private Request request;
 
 	public CommunicationKeyInterceptor() {
 		super(Phase.PRE_INVOKE);
@@ -54,6 +51,7 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			throw new AuthenticationFailureException("session.expired.for.key", communicationKey);
 		}
 		
-		request.setAttribute(SoapUtil.REQUESTING_COLLEGE, college);
+		HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
+		req.setAttribute(SoapUtil.REQUESTING_COLLEGE, college);
 	}
 }

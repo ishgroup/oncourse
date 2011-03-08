@@ -34,7 +34,7 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 
 	@SuppressWarnings("unchecked")
 	private T findMatchingEntity(ReplicationStub stub) {
-		return (T) queueService.findRelatedEntity(stub.getEntityIdentifier(), stub.getWillowId());
+		return (T) queueService.findEntityByWillowId(stub.getEntityIdentifier(), stub.getWillowId());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -79,15 +79,24 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 			} else {
 				if (objectToUpdate.getAngelId() != stub.getAngelId()) {
 					record.setStatus(Status.FAILURE);
-					String message = String
-							.format("AngelId doesn't match. Got %s while expected %s.", stub.getAngelId(), objectToUpdate.getAngelId());
+					String message = String.format("AngelId doesn't match. Got %s while expected %s.", stub.getAngelId(),
+							objectToUpdate.getAngelId());
 					logger.error(message);
 					record.setMessage(message);
 				}
 			}
 		} else {
 			if (stub.getAngelId() != 0) {
-				objectToUpdate = queueService.createNew((Class<T>) queueService.getEntityClass(stub.getEntityIdentifier()));
+				objectToUpdate = (T) queueService.findEntityByAngelId(stub.getEntityIdentifier(), stub.getAngelId());
+				if (objectToUpdate != null) {
+					record.setStatus(Status.FAILURE);
+					String message = String.format("Have willowId:null but found existing record for entity:%s and angelId:%s", stub.getEntityIdentifier(), stub.getAngelId());
+					logger.error(message);
+					record.setMessage(message);
+				} else {
+					objectToUpdate = queueService.createNew((Class<T>) queueService.getEntityClass(stub.getEntityIdentifier()));
+				}
+
 			} else {
 				record.setStatus(Status.FAILURE);
 				String message = String.format("Both angelId and willowId are empty for object %s.", stub.getEntityIdentifier());
@@ -96,7 +105,7 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 			}
 		}
 
-		if (record.getStatus() != Status.FAILURE) {
+		if (record.getStatus() != Status.FAILURE && objectToUpdate != null) {
 			try {
 				if (stub instanceof DeletedStub) {
 					queueService.remove(objectToUpdate);
