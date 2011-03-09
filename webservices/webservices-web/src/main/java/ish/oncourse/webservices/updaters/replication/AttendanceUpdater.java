@@ -22,13 +22,13 @@ public class AttendanceUpdater extends AbstractWillowUpdater<AttendanceStub, Att
 		entity.setAngelId(stub.getAngelId());
 		entity.setAttendanceType(stub.getAttendanceType());
 		
-		entity.setCollege(college);
+		entity.setCollege(getCollege(entity.getObjectContext()));
 		
 		entity.setCreated(stub.getCreated());
-		entity.setMarker((Tutor) updateRelatedEntity(stub.getMarker(), relationStubs));
+		entity.setMarker((Tutor) updateRelatedEntity(entity.getObjectContext(), stub.getMarker(), relationStubs));
 		entity.setModified(stub.getModified());
-		entity.setSession((Session) updateRelatedEntity(stub.getSession(), relationStubs));
-		entity.setStudent((Student) updateRelatedEntity(stub.getStudent(), relationStubs));
+		entity.setSession((Session) updateRelatedEntity(entity.getObjectContext(), stub.getSession(), relationStubs));
+		entity.setStudent((Student) updateRelatedEntity(entity.getObjectContext(), stub.getStudent(), relationStubs));
 	}
 	
 }

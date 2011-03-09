@@ -28,7 +28,7 @@ public class CollegeSessions implements HttpSessionListener, HttpSessionAttribut
 	public void sessionDestroyed(HttpSessionEvent se) {
 		SessionToken token = (SessionToken) se.getSession().getAttribute(SessionToken.SESSION_TOKEN_KEY);
 		if (token != null) {
-			logger.info(String.format("Terminating session for college:%s, with id:%s.", token.getCollege().getName(), token.getCollege().getId()));
+			logger.info(String.format("Terminating session for college:%s, with collegeId:%s.", token.getCollege().getName(), token.getCollege().getId()));
 			SESSION_MAP.remove(token.getCollege().getId());
 		}
 	}

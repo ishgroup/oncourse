@@ -24,11 +24,11 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setCancelled(stub.isCancelled());
 		entity.setCode(stub.getCode());
 		
-		entity.setCollege(college);
+		entity.setCollege(getCollege(entity.getObjectContext()));
 		
 		entity.setCountOfSessions(stub.getCountOfSessions());
 		
-		entity.setCourse((Course) updateRelatedEntity(stub.getCourse(), relationStubs));
+		entity.setCourse((Course) updateRelatedEntity(entity.getObjectContext(), stub.getCourse(), relationStubs));
 		
 		entity.setCreated(stub.getCreated());
 		entity.setDeliveryMode(stub.getDeliveryMode());
@@ -45,7 +45,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setMinutesPerSession(stub.getMinutesPerSession());
 		entity.setModified(stub.getModified());
 		
-		entity.setRoom((Room) updateRelatedEntity(stub.getRoom(), relationStubs));
+		entity.setRoom((Room) updateRelatedEntity(entity.getObjectContext(), stub.getRoom(), relationStubs));
 		
 		entity.setSessionDetail(stub.getSessionDetail());
 		entity.setSessionDetailTextile(stub.getSessionDetailTextile());

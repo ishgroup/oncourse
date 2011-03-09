@@ -8,7 +8,6 @@ import ish.oncourse.model.KeyStatus;
 import ish.oncourse.webservices.soap.v4.AbstractWebServiceTest;
 
 import java.io.InputStream;
-import java.net.URL;
 
 import javax.xml.ws.BindingProvider;
 
@@ -27,13 +26,14 @@ import org.junit.Test;
  */
 public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 
-	private static final String WSDL_LOCATION = String.format("http://localhost:%s/services/v4/auth?wsdl", PORT);
-
 	public static AuthenticationPortType getAuthenticationPort() throws Exception {
-		AuthenticationService authService = new AuthenticationService(new URL(WSDL_LOCATION));
+		AuthenticationService authService = new AuthenticationService(AuthenticationPortType.class.getClassLoader().getResource(
+				"wsdl/v4_auth.wsdl"));
 		AuthenticationPortType authPort = authService.getAuthenticationPort();
 
 		BindingProvider provider = (BindingProvider) authPort;
+		provider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+				String.format("http://localhost:%s/services/v4/auth", PORT));
 		provider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
 
 		return authPort;
@@ -150,9 +150,9 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		AuthenticationPortType port = getAuthenticationPort();
 
 		long newCommunicationKey = port.authenticate("345ttn44$%9", 7059522699886202880L);
-		
+
 		long result = port.logout(newCommunicationKey);
-		
+
 		assertEquals("Expecting success logout.", result, 0);
 	}
 }

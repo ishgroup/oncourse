@@ -6,7 +6,8 @@ import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
 
 import java.io.InputStream;
-import java.net.URL;
+
+import javax.xml.ws.BindingProvider;
 
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
@@ -24,8 +25,16 @@ import org.junit.Test;
 
 public class ReferencePortTypeTest extends AbstractWebServiceTest {
 
-	private static final String WSDL_LOCATION = String.format("http://localhost:%s/services/v4/reference?wsdl", PORT);
-
+	private static ReferencePortType getReferencePort() {
+		ReferenceService service = new ReferenceService(ReferencePortType.class.getClassLoader().getResource("wsdl/v4_reference.wsdl"));
+		ReferencePortType referencePort = service.getReferencePort();
+		
+		BindingProvider provider = (BindingProvider) referencePort;
+		provider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, String.format("http://localhost:%s/services/v4/reference", PORT));
+		
+		return referencePort;
+	}
+	
 	@BeforeClass
 	public static void setupDataSet() throws Exception {
 		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseReferenceDataSet.xml");
@@ -43,8 +52,7 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 	
 	@Test
 	public void testGetMaximumVersion() throws Exception {
-		ReferenceService service = new ReferenceService(new URL(WSDL_LOCATION));
-		ReferencePortType referencePort = service.getReferencePort();
+		ReferencePortType referencePort = getReferencePort();
 		
 		Client client = ClientProxy.getClient(referencePort);
 		client.getOutInterceptors().add(new AddSecurityCodeInterceptor());
@@ -58,8 +66,7 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 
 	@Test
 	public void testGetRecords() throws Exception {
-		ReferenceService service = new ReferenceService(new URL(WSDL_LOCATION));
-		ReferencePortType referencePort = service.getReferencePort();
+		ReferencePortType referencePort = getReferencePort();
 		
 		Client client = ClientProxy.getClient(referencePort);
 		client.getOutInterceptors().add(new AddSecurityCodeInterceptor());

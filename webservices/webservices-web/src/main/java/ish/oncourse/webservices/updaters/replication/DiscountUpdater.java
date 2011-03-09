@@ -20,7 +20,7 @@ public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discoun
 	protected void updateEntity(DiscountStub stub, Discount entity, List<ReplicatedRecord> relationStubs) {	
 		entity.setAngelId(stub.getAngelId());
 		entity.setCode(stub.getCode());
-		entity.setCollege(college);
+		entity.setCollege(getCollege(entity.getObjectContext()));
 		entity.setCombinationType(stub.isCombinationType());
 		entity.setCreated(stub.getCreated());
 		entity.setDetail(stub.getDetail());

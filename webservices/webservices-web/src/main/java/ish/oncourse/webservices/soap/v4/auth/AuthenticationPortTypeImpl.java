@@ -125,13 +125,16 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	 * 
 	 * @return logout status
 	 */
-	public long logout(long newCommKey) {
+	public short logout(long newCommKey) {
 		Session session = request.getSession(false);
 		if (session != null) {
 			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
 			if (token.getCommunicationKey().equals(newCommKey)) {
 				session.invalidate();
 				return 0;
+			}
+			else {
+				throw new AuthenticationFailureException("communicationKey.invalid", newCommKey);
 			}
 		}
 		

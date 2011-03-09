@@ -13,13 +13,14 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 
 public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends Queueable> implements IWillowUpdater<V> {
 
 	private static final Logger logger = Logger.getLogger(AbstractWillowUpdater.class);
 
-	protected College college;
+	private College college;
 
 	@SuppressWarnings("rawtypes")
 	private IWillowUpdater next;
@@ -36,15 +37,23 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 	private T findMatchingEntity(ReplicationStub stub) {
 		return (T) queueService.findEntityByWillowId(stub.getEntityIdentifier(), stub.getWillowId());
 	}
+	
+	protected College getCollege(ObjectContext ctx) {
+		return (College) ctx.localObject(college.getObjectId(), null);
+	}
 
 	@SuppressWarnings("unchecked")
-	protected Queueable updateRelatedEntity(ReplicationStub stub, List<ReplicatedRecord> relationStubs) {
+	protected Queueable updateRelatedEntity(ObjectContext ctx, ReplicationStub stub, List<ReplicatedRecord> relationStubs) {
+		Queueable entity = null;
+		
 		if (stub instanceof HollowStub) {
-			return findMatchingEntity(stub);
+			entity = findMatchingEntity(stub);
 		} else {
 			relationStubs.addAll(next.updateRecord(stub));
-			return findMatchingEntity(stub);
+			entity = findMatchingEntity(stub);
 		}
+		
+		return (Queueable) ctx.localObject(entity.getObjectId(), null);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -69,7 +78,7 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 
 		T objectToUpdate = null;
 
-		if (stub.getWillowId() != 0) {
+		if (stub.getWillowId() != null) {
 			objectToUpdate = findMatchingEntity(stub);
 			if (objectToUpdate == null) {
 				record.setStatus(Status.FAILURE);
@@ -86,7 +95,7 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 				}
 			}
 		} else {
-			if (stub.getAngelId() != 0) {
+			if (stub.getAngelId() != null) {
 				objectToUpdate = (T) queueService.findEntityByAngelId(stub.getEntityIdentifier(), stub.getAngelId());
 				if (objectToUpdate != null) {
 					record.setStatus(Status.FAILURE);
@@ -106,14 +115,14 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 		}
 
 		if (record.getStatus() != Status.FAILURE && objectToUpdate != null) {
+			ObjectContext ctx = objectToUpdate.getObjectContext();
 			try {
 				if (stub instanceof DeletedStub) {
-					queueService.remove(objectToUpdate);
+					ctx.deleteObject(objectToUpdate);
+					ctx.commitChanges();
 				} else {
 					updateEntity(stub, objectToUpdate, respStubs);
-
-					objectToUpdate = queueService.update(objectToUpdate);
-
+					ctx.commitChanges();
 					hollowStub.setWillowId(objectToUpdate.getId());
 					record.setStatus(Status.SUCCESS);
 				}

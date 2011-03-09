@@ -46,30 +46,14 @@ public class WillowQueueService implements IWillowQueueService {
 
 	@Override
 	public Queueable findEntityByWillowId(String entityIdentifier, Long willowId) {
-		return DataObjectUtils.objectForPK(cayenneService.sharedContext(), getEntityClass(entityIdentifier), willowId);
+		return DataObjectUtils.objectForPK(cayenneService.newNonReplicatingContext(), getEntityClass(entityIdentifier), willowId);
 	}
 	
 	@Override
 	public Queueable findEntityByAngelId(String entityIdentifier, Long angelId) {
 		SelectQuery q = new SelectQuery(getEntityClass(entityIdentifier));
 		q.andQualifier(ExpressionFactory.matchDbExp("angelId", angelId));
-		return (Queueable) DataObjectUtils.objectForQuery(cayenneService.sharedContext(), q);
-	}
-
-	@Override
-	public <T extends Queueable> void remove(T object) {
-		ObjectContext ctx = cayenneService.newNonReplicatingContext();
-		Queueable local = (T) ctx.localObject(object.getObjectId(), object);
-		ctx.deleteObject(local);
-		ctx.commitChanges();
-	}
-
-	@Override
-	public <T extends Queueable> T update(T object) {
-		ObjectContext ctx = cayenneService.newNonReplicatingContext();
-		T local = (T) ctx.localObject(object.getObjectId(), object);
-		ctx.commitChanges();
-		return local;
+		return (Queueable) DataObjectUtils.objectForQuery(cayenneService.newNonReplicatingContext(), q);
 	}
 
 	@Override
@@ -99,8 +83,7 @@ public class WillowQueueService implements IWillowQueueService {
 		QueuedRecord record = (QueuedRecord) DataObjectUtils.objectForQuery(ctx, q);
 
 		if (isSuccess && angelId != null) {
-			Class<?> entityClass = (Class<?>) ctx.getEntityResolver().getObjEntity(entityName).getClass();
-			Queueable object = (Queueable) DataObjectUtils.objectForPK(ctx, entityClass, willowId);
+			Queueable object = (Queueable) DataObjectUtils.objectForPK(ctx, getEntityClass(entityName), willowId);
 			object.setAngelId(angelId);
 			ctx.deleteObject(record);
 		} else {

@@ -1,29 +1,27 @@
 package ish.oncourse.webservices.soap.v4;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType;
-import ish.oncourse.webservices.soap.v4.auth.AuthenticationService;
-import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.replication.CourseClassStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.v4.stubs.replication.Status;
 
 import java.io.InputStream;
-import java.net.URL;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.cxf.binding.soap.SoapMessage;
-import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
-import org.apache.cxf.binding.soap.interceptor.SoapPreProtocolOutInterceptor;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.phase.Phase;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
@@ -31,10 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ReplicationPortTypeTest extends AbstractWebServiceTest {
-
-	private static final String REPL_WSDL_LOCATION = String.format("http://localhost:%s/services/v4/replication?wsdl", PORT);
-	private static final String AUTH_WSDL_LOCATION = String.format("http://localhost:%s/services/v4/auth?wsdl", PORT);
+public class ReplicationPortTypeTest extends AbstractReplicationTest {
 
 	@Before
 	public void setupDataSet() throws Exception {
@@ -49,7 +44,7 @@ public class ReplicationPortTypeTest extends AbstractWebServiceTest {
 
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
 	}
-
+	
 	@After
 	public void cleanDataSet() throws Exception {
 		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("baseReplicationDataSet.xml");
@@ -66,14 +61,12 @@ public class ReplicationPortTypeTest extends AbstractWebServiceTest {
 
 	@Test
 	public void testGetRecordsSuccess() throws Exception {
-		AuthenticationService authService = new AuthenticationService(new URL(AUTH_WSDL_LOCATION));
-		AuthenticationPortType authPort = authService.getAuthenticationPort();
+		AuthenticationPortType authPort = getAuthPort();
 
 		String securityCode = "345ttn44$%9";
-		long newCommKey = authPort.authenticate(securityCode, 7059522699886202880l);
+		long newCommKey = getAuthPort().authenticate(securityCode, 7059522699886202880l);
 
-		ReplicationService service = new ReplicationService(new URL(REPL_WSDL_LOCATION));
-		ReplicationPortType port = service.getReplicationPort();
+		ReplicationPortType port = getReplicationPort();
 
 		Client client = ClientProxy.getClient(port);
 		client.getOutInterceptors().add(new AddSecurityCodeInterceptor(securityCode, newCommKey));
@@ -101,69 +94,118 @@ public class ReplicationPortTypeTest extends AbstractWebServiceTest {
 	@Test
 	public void testSendRecords() throws Exception {
 
-		AuthenticationService authService = new AuthenticationService(new URL(AUTH_WSDL_LOCATION));
-		AuthenticationPortType authPort = authService.getAuthenticationPort();
+		AuthenticationPortType authPort = getAuthPort();
 
 		String securityCode = "345ttn44$%9";
 		long newCommKey = authPort.authenticate(securityCode, 7059522699886202880l);
 
-		ReplicationService service = new ReplicationService(new URL(REPL_WSDL_LOCATION));
-		ReplicationPortType port = service.getReplicationPort();
+		ReplicationPortType port = getReplicationPort();
 
 		Client client = ClientProxy.getClient(port);
 		client.getOutInterceptors().add(new AddSecurityCodeInterceptor(securityCode, newCommKey));
 
-		//temporary commented
-		try {
-			ReplicationRecords records = new ReplicationRecords();
+		ReplicationRecords records = new ReplicationRecords();
 
-			ReplicationResult replResult = port.sendRecords(records);
+		CourseClassStub rootStub = new CourseClassStub();
 
-			authPort.logout(newCommKey);
-		} catch (Exception e) {
+		rootStub.setAngelId(123l);
+		rootStub.setEntityIdentifier("CourseClass");
+		rootStub.setCancelled(false);
+		rootStub.setCode("ABC345");
+		rootStub.setDetail("CourseDetails");
+		rootStub.setFeeExGst(new BigDecimal(1200));
+		rootStub.setFeeGst(new BigDecimal(1300));
+		rootStub.setMaximumPlaces(23);
+		rootStub.setStartDate(new Date());
+		rootStub.setCreated(new Date());
+		rootStub.setCountOfSessions(3);
 
-		}
+		HollowStub courseStub = new HollowStub();
+		courseStub.setAngelId(1l);
+		courseStub.setEntityIdentifier("Course");
+		courseStub.setWillowId(1l);
+
+		rootStub.setCourse(courseStub);
+
+		HollowStub roomStub = new HollowStub();
+		roomStub.setEntityIdentifier("Room");
+		roomStub.setAngelId(1l);
+		roomStub.setWillowId(1l);
+
+		rootStub.setRoom(roomStub);
+
+		records.getAttendanceOrBinaryDataOrBinaryInfo().add(rootStub);
+
+		ReplicationResult replResult = port.sendRecords(records);
+
+		assertNotNull("Check if replicatin results is not null.", replResult);
+
+		assertNotNull("Check if repl records is not null.", replResult.getReplicatedRecord());
+
+		assertTrue("Expecting to get one replication record.", replResult.getReplicatedRecord().size() == 1);
+
+		authPort.logout(newCommKey);
+
+		// check if courseClass was created
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
+		ITable actualData = dbUnitConnection.createQueryTable("CourseClass", String.format("select * from CourseClass where angelId=123"));
+
+		int numberOfRecords = actualData.getRowCount();
+
+		assertTrue("Expecting one courseClass record.", numberOfRecords == 1);
 
 	}
 
 	@Test
 	public void testSendResult() throws Exception {
 
-		AuthenticationService authService = new AuthenticationService(new URL(AUTH_WSDL_LOCATION));
-		AuthenticationPortType authPort = authService.getAuthenticationPort();
+		AuthenticationPortType authPort = getAuthPort();
 
 		String securityCode = "345ttn44$%9";
 		long newCommKey = authPort.authenticate(securityCode, 7059522699886202880l);
 
-		ReplicationService service = new ReplicationService(new URL(REPL_WSDL_LOCATION));
-		ReplicationPortType port = service.getReplicationPort();
+		ReplicationPortType port = getReplicationPort();
 
 		Client client = ClientProxy.getClient(port);
 		client.getOutInterceptors().add(new AddSecurityCodeInterceptor(securityCode, newCommKey));
 
 		ReplicationResult result = new ReplicationResult();
 
-		port.sendResults(result);
+		ReplicatedRecord confirmedEnrol = new ReplicatedRecord();
+		confirmedEnrol.setMessage("Record replicated.");
+		confirmedEnrol.setStatus(Status.SUCCESS);
+
+		HollowStub enrlStub = new HollowStub();
+		enrlStub.setEntityIdentifier("Enrolment");
+		enrlStub.setWillowId(1l);
+		enrlStub.setAngelId(125l);
+
+		confirmedEnrol.setStub(enrlStub);
+
+		ReplicatedRecord confirmedCourseClass = new ReplicatedRecord();
+		confirmedCourseClass.setMessage("Record replicated.");
+		confirmedCourseClass.setStatus(Status.SUCCESS);
+
+		HollowStub courseClassStub = new HollowStub();
+		courseClassStub.setEntityIdentifier("CourseClass");
+		courseClassStub.setWillowId(1482l);
+		courseClassStub.setAngelId(125l);
+
+		confirmedCourseClass.setStub(courseClassStub);
+
+		result.getReplicatedRecord().add(confirmedEnrol);
+		result.getReplicatedRecord().add(confirmedCourseClass);
+
+		short resp = port.sendResults(result);
+
+		assertTrue("Expecting zero response.", resp == 0);
 
 		authPort.logout(newCommKey);
 
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
+
+		assertEquals("Check that no queueable records exist for confirmed objects", actualData.getRowCount(), 0);
 	}
-
-	private static class AddSecurityCodeInterceptor extends AbstractSoapInterceptor {
-		private String securityCode;
-		private Long communicationKey;
-
-		private AddSecurityCodeInterceptor(String securityCode, Long communicationKey) {
-			super(Phase.WRITE);
-			addAfter(SoapPreProtocolOutInterceptor.class.getName());
-			this.securityCode = securityCode;
-			this.communicationKey = communicationKey;
-		}
-
-		public void handleMessage(SoapMessage message) throws Fault {
-			SoapUtil.addSecurityCode(message, securityCode);
-			SoapUtil.addCommunicationKey(message, communicationKey);
-		}
-	}
-
 }

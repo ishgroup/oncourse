@@ -21,7 +21,7 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		entity.setAllowWaitingList(stub.isAllowWaitingList());
 		entity.setAngelId(stub.getAngelId());
 		entity.setCode(stub.getCode());
-		entity.setCollege(college);
+		entity.setCollege(getCollege(entity.getObjectContext()));
 		entity.setCreated(stub.getCreated());
 		entity.setDetail(stub.getDetail());
 		entity.setDetailTextile(stub.getDetailTextile());
@@ -32,7 +32,7 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 				
-		entity.setQualification((Qualification) updateRelatedEntity(stub, relationStubs));
+		entity.setQualification((Qualification) updateRelatedEntity(entity.getObjectContext(), stub, relationStubs));
 		entity.setSearchText(stub.getSearchText());
 	}
 }

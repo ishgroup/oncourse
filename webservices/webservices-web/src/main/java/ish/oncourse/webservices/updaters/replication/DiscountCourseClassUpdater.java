@@ -19,10 +19,10 @@ public class DiscountCourseClassUpdater extends AbstractWillowUpdater<DiscountCo
 	@Override
 	protected void updateEntity(DiscountCourseClassStub stub, DiscountCourseClass entity, List<ReplicatedRecord> relationStubs) {
 		entity.setAngelId(stub.getAngelId());
-		entity.setCollegeId(college.getId());
-		entity.setCourseClass((CourseClass) updateRelatedEntity(stub.getCourseClass(), relationStubs));
+		entity.setCollege(getCollege(entity.getObjectContext()));
+		entity.setCourseClass((CourseClass) updateRelatedEntity(entity.getObjectContext(), stub.getCourseClass(), relationStubs));
 		entity.setCreated(stub.getCreated());
-		entity.setDiscount((Discount) updateRelatedEntity(stub.getDiscount(), relationStubs));
+		entity.setDiscount((Discount) updateRelatedEntity(entity.getObjectContext(), stub.getDiscount(), relationStubs));
 		entity.setModified(stub.getModified());		
 	}
 }
