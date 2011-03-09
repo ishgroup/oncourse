@@ -8,9 +8,4 @@ public class DiscountCourseClass extends _DiscountCourseClass implements Queueab
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(DISCOUNT_ID_PK_COLUMN) : null;
 	}
-
-	public College getCollege() {
-		return getCourseClass().getCollege();
-	}
-	
 }

@@ -952,7 +952,6 @@
 	</obj-entity>
 	<obj-entity name="DiscountCourseClass" className="ish.oncourse.model.DiscountCourseClass" dbEntityName="DiscountCourseClass">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
@@ -1426,6 +1425,9 @@
 	<db-relationship name="discountConcessionTypes" source="College" target="DiscountConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="discountCourseClasses" source="College" target="DiscountCourseClass" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="discounts" source="College" target="Discount" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1602,6 +1604,9 @@
 	</db-relationship>
 	<db-relationship name="discount" source="DiscountConcessionType" target="Discount" toMany="false">
 		<db-attribute-pair source="discountId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="DiscountCourseClass" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courseClass" source="DiscountCourseClass" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
@@ -2101,6 +2106,7 @@
 	<obj-relationship name="college" source="DiscountConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
 	<obj-relationship name="discount" source="DiscountConcessionType" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
+	<obj-relationship name="college" source="DiscountCourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="DiscountCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="discount" source="DiscountCourseClass" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
