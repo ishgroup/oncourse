@@ -93,14 +93,15 @@
 			</entity>
 
 
-			<entity name="courseClassCode" pk="id" dataSource="onCourseDS"
-				query="select cc.id as id, cc.feeExGst as pr from CourseClass cc where cc.isWebVisible=1 and cc.courseid='${course.id}'
+			<entity name="courseClassCode" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
+				query="select cc.id as id, cc.feeExGst as pr, cc.code as code from CourseClass cc where cc.isWebVisible=1 and cc.courseid='${course.id}'
                         and cc.isCancelled=0"
 				deltaImportQuery="select cc.id as id, cc.feeExGst as pr from CourseClass cc where cc.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
 				parentDeltaQuery="select id from Course where id='{courseClassCode.courseId}'">
 				<field name="id" column="id" />
 				<field name="price" column="pr" />
+				<field name="class_code" column="code" template="${course.code}-${courseClassCode.code}"/>
 			</entity>
 
 			<entity name="coursetag" dataSource="onCourseDS" pk="id"

@@ -109,6 +109,9 @@
 
 		<field name="detail" type="text" indexed="true" stored="true"
 			boost="1.0" />
+			
+		<field name="class_code" type="textgen" indexed="true" stored="true"
+			boost="10.0" />
 
 		<field name="tutor" type="textgen" indexed="true" stored="true"
 			multiValued="true" boost="5.0" />
