@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -131,14 +132,16 @@ public class CourseService implements ICourseService {
 
 	public List<Course> loadByIds(Object... ids) {
 
-		if (ids.length == 0) {
+		if (ids == null || ids.length == 0) {
 			return Collections.emptyList();
 		}
 
-		SelectQuery q = new SelectQuery(Course.class);
-		q.andQualifier(ExpressionFactory.inDbExp("id", ids));
-
-		return cayenneService.sharedContext().performQuery(q);
+		List<Course> result = new ArrayList<Course>(ids.length);
+		for (Object id : ids) {
+			result.add((Course) DataObjectUtils.objectForPK(cayenneService.sharedContext(),
+					Course.class.getSimpleName(), id));
+		}
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
