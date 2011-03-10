@@ -498,3 +498,180 @@ INSERT INTO willow_college.Attendance (id, collegeId, angelId, studentId, sessio
 	JOIN willow_college.Session AS s ON s.id = a.sessionId
 	JOIN willow_college.Student AS st ON st.id = a.studentId
 	WHERE a.collegeId = @collegeId;
+	
+	
+-- change compound primary keys to auto_increment
+
+--CertificateOutcome
+alter table willow_college.CertificateOutcome drop foreign key CertificateOutcome_ibfk_2;
+alter table willow_college.CertificateOutcome drop foreign key CertificateOutcome_ibfk_3;
+alter table willow_college.CertificateOutcome drop primary key;
+alter table willow_college.CertificateOutcome add column id BIGINT;
+update willow_college.CertificateOutcome set id=certificateId + (outcomeId << 32);
+update willow_college.CertificateOutcome co set co.angelId=(select c.angelId from willow_college.Certificate c where c.id=co.certificateId) + ((select o.angelId from willow_college.Outcome o where o.id=co.outcomeId) << 32);
+alter table willow_college.CertificateOutcome change column id id BIGINT not null primary key auto_increment;
+
+alter table willow_college.CertificateOutcome add CONSTRAINT co_certificateIdFk FOREIGN KEY (certificateId) references willow_college.Certificate(id);
+alter table willow_college.CertificateOutcome add CONSTRAINT co_outcomeIdFk FOREIGN KEY  (outcomeId) references willow_college.Outcome(id);
+alter table willow_college.CertificateOutcome add CONSTRAINT co_cert_outcome_uq UNIQUE index  (certificateId, outcomeId);
+
+--end CertificateOutcome 
+
+-- CourseModule
+
+alter table willow_college.CourseModule drop foreign key CourseModule_ibfk_1;
+alter table willow_college.CourseModule drop primary key;
+alter table willow_college.CourseModule add column id BIGINT;
+alter table willow_college.CourseModule add column angelId BIGINT;
+
+update willow_college.CourseModule set id=courseId + (moduleId << 32);
+update willow_college.CourseModule cm set cm.angelId=(select c.angelId from willow_college.Course c where c.id=cm.courseId) + (cm.moduleId << 32);
+
+alter table willow_college.CourseModule change column id id BIGINT not null primary key auto_increment;
+alter table willow_college.CourseModule add CONSTRAINT cm_courseIdFk FOREIGN KEY (courseId) references willow_college.Course(id);
+-- Note! add foreign key to willow_reference.module (id)
+alter table willow_college.CourseModule add CONSTRAINT cm_course_mod_uq UNIQUE index (courseId, moduleId);
+
+-- end CourseModule
+
+-- DiscountConcessionType
+
+alter table willow_college.DiscountConcessionType drop foreign key DiscountConcessionType_ibfk_2;
+alter table willow_college.DiscountConcessionType drop foreign key DiscountConcessionType_ibfk_3;
+
+alter table willow_college.DiscountConcessionType drop primary key;
+
+alter table willow_college.DiscountConcessionType add column id BIGINT;
+
+update willow_college.DiscountConcessionType set id=concessionTypeId + (discountId << 32);
+update willow_college.DiscountConcessionType dct set dct.angelId=(select ct.angelId from willow_college.ConcessionType ct where ct.id=dct.concessionTypeId) + ((select dc.angelId from willow_college.Discount dc where dc.id=dct.discountId) << 32);
+
+alter table willow_college.DiscountConcessionType change column id id BIGINT not null primary key auto_increment;
+alter table willow_college.DiscountConcessionType add CONSTRAINT dct_concessionTypeIdfk FOREIGN KEY(concessionTypeId) references willow_college.ConcessionType(id);
+alter table willow_college.DiscountConcessionType add CONSTRAINT dct_discountIdfk FOREIGN KEY (discountId) references willow_college.Discount(id);
+alter table willow_college.DiscountConcessionType add CONSTRAINT dct_discCon_uq UNIQUE index (concessionTypeId, discountId);
+
+-- end DiscountConcessionType
+
+--DiscountCourseClass
+alter table willow_college.DiscountCourseClass drop foreign key DiscountCourseClass_ibfk_2;
+alter table willow_college.DiscountCourseClass drop foreign key DiscountCourseClass_ibfk_3;
+
+alter table willow_college.DiscountCourseClass drop primary key;
+
+alter table willow_college.DiscountCourseClass add column id BIGINT;
+
+update willow_college.DiscountCourseClass set id=courseClassId + (discountId << 32);
+update willow_college.DiscountCourseClass dcc set dcc.angelId=(select cc.angelId from willow_college.CourseClass cc where cc.id=dcc.courseClassId) + ((select dc.angelId from willow_college.Discount dc where dc.id=dcc.discountId) << 32);
+	
+alter table willow_college.DiscountCourseClass change column id id BIGINT not null primary key auto_increment;
+alter table willow_college.DiscountCourseClass add CONSTRAINT dcc_courseClassIdfk FOREIGN KEY(courseClassId) references willow_college.CourseClass(id);
+alter table willow_college.DiscountCourseClass add CONSTRAINT dcc_discountIdfk FOREIGN KEY (discountId) references willow_college.Discount(id);
+alter table willow_college.DiscountCourseClass add CONSTRAINT dcc_discCC_uq UNIQUE index (courseClassId, discountId);
+
+--end DiscountCourseClass
+
+-- InvoiceLine_Discount
+
+alter table willow_college.InvoiceLine_Discount drop foreign key InvoiceLine_Discount_ibfk_1;
+alter table willow_college.InvoiceLine_Discount drop foreign key InvoiceLine_Discount_ibfk_2;
+
+alter table willow_college.InvoiceLine_Discount drop primary key;
+alter table willow_college.InvoiceLine_Discount add column id BIGINT;
+
+update willow_college.InvoiceLine_Discount set id=discountId + (invoiceLineId << 32);
+
+alter table willow_college.InvoiceLine_Discount add column angelId BIGINT;	
+	
+update willow_college.InvoiceLine_Discount inld set inld.angelId=(select dc.angelId from willow_college.Discount dc where dc.id=inld.discountId) + ((select inl.angelId from willow_college.InvoiceLine inl where inl.id=inld.invoiceLineId) << 32);
+	
+alter table willow_college.InvoiceLine_Discount change column id id BIGINT not null primary key auto_increment;
+
+alter table willow_college.InvoiceLine_Discount add column collegeId BIGINT not null;
+
+update willow_college.InvoiceLine_Discount inld set inld.collegeId=(select d.collegeId from willow_college.Discount d where d.id=inld.discountId);
+
+alter table willow_college.InvoiceLine_Discount add CONSTRAINT inld_InvLineIdfk FOREIGN KEY(invoiceLineId) references willow_college.InvoiceLine(id);
+alter table willow_college.InvoiceLine_Discount add CONSTRAINT inld_discountIdfk FOREIGN KEY (discountId) references willow_college.Discount(id);
+alter table willow_college.InvoiceLine_Discount add CONSTRAINT inld_disInvLin_uq UNIQUE index (discountId, invoiceLineId);
+
+-- end InvoiceLine_Discount
+
+-- SessionTutor
+
+alter table willow_college.SessionTutor drop foreign key SessionTutor_ibfk_2;
+alter table willow_college.SessionTutor drop foreign key SessionTutor_ibfk_3;
+
+alter table willow_college.SessionTutor drop primary key;
+
+alter table willow_college.SessionTutor add column id BIGINT;
+
+update willow_college.SessionTutor set id=sessionId + (tutorId << 32);
+update willow_college.SessionTutor st set st.angelId=(select s.angelId from willow_college.Session s where s.id=st.sessionId) + ((select t.angelId from willow_college.Tutor t where t.id=st.tutorId) << 32);
+	
+alter table willow_college.SessionTutor change column id id BIGINT not null primary key auto_increment;
+alter table willow_college.SessionTutor add CONSTRAINT st_sessionIdfk FOREIGN KEY(sessionId) references willow_college.Session(id);
+alter table willow_college.SessionTutor add CONSTRAINT st_tutorIdfk FOREIGN KEY (tutorId) references willow_college.Tutor(id);
+alter table willow_college.SessionTutor add CONSTRAINT st_sTut_uq UNIQUE index (sessionId, tutorId);
+
+--end SessionTutor
+
+-- TutorRole
+alter table willow_college.TutorRole drop foreign key TutorRole_ibfk_2;
+alter table willow_college.TutorRole drop foreign key TutorRole_ibfk_3;
+
+alter table willow_college.TutorRole drop primary key;
+
+alter table willow_college.TutorRole add column id BIGINT;
+
+update willow_college.TutorRole set id=courseClassId + (tutorId << 32);
+update willow_college.TutorRole tr set tr.angelId=(select cc.angelId from willow_college.CourseClass cc where cc.id=tr.courseClassId) + ((select t.angelId from willow_college.Tutor t where t.id=tr.tutorId) << 32);
+
+alter table willow_college.TutorRole change column id id BIGINT not null primary key auto_increment;
+
+alter table willow_college.TutorRole add CONSTRAINT tur_courseClassIdfk FOREIGN KEY(courseClassId) references willow_college.CourseClass(id);
+alter table willow_college.TutorRole add CONSTRAINT tur_tutorIdfk FOREIGN KEY (tutorId) references willow_college.Tutor(id);
+alter table willow_college.TutorRole add CONSTRAINT tur_ccTr_uq UNIQUE index (courseClassId, tutorId);
+
+-- end TutorRole
+
+-- WaitingListSite
+
+alter table willow_college.WaitingListSite drop foreign key WaitingListSite_ibfk_1;
+alter table willow_college.WaitingListSite drop foreign key WaitingListSite_ibfk_2;
+
+alter table willow_college.WaitingListSite drop primary key;
+
+alter table willow_college.WaitingListSite add column id BIGINT;
+alter table willow_college.WaitingListSite add column angelId BIGINT;
+
+update willow_college.WaitingListSite set id=siteId + (waitingListId << 32);
+update willow_college.WaitingListSite wls set wls.angelId=(select s.angelId from willow_college.Site s where s.id=wls.siteId) + ((select w.angelId from willow_college.WaitingList w where w.id=wls.waitingListId) << 32);
+
+alter table willow_college.WaitingListSite change column id id BIGINT not null primary key auto_increment;
+
+alter table willow_college.WaitingListSite add CONSTRAINT wls_wlIdfk FOREIGN KEY (waitingListId) references willow_college.WaitingList(id); 
+alter table willow_college.WaitingListSite add CONSTRAINT wls_siteIdfk FOREIGN KEY (siteId) references willow_college.Site(id);
+alter table willow_college.WaitingListSite add CONSTRAINT wls_wlStuq UNIQUE index (siteId, waitingListId);
+
+-- end WaitingListSite
+
+-- TaggableTag
+
+alter table willow_college.TaggableTag drop foreign key TaggableTag_ibfk_2;
+alter table willow_college.TaggableTag drop foreign key TaggableTag_ibfk_3;
+
+alter table willow_college.TaggableTag drop primary key;
+
+alter table willow_college.TaggableTag add column id BIGINT;
+
+update willow_college.TaggableTag set id=tagId + (taggableId << 32);
+update willow_college.TaggableTag tt set tt.angelId=(select t.angelId from willow_college.Tag t where t.id=tt.tagId) + ((select ta.angelId from willow_college.Taggable ta where ta.id=tt.taggableId) << 32);
+	
+alter table willow_college.TaggableTag change column id id BIGINT not null primary key auto_increment;
+
+alter table willow_college.TaggableTag add CONSTRAINT tt_tagIdfk FOREIGN KEY (tagId) references willow_college.Tag(id); 
+alter table willow_college.TaggableTag add CONSTRAINT tt_taggabeIdfk FOREIGN KEY (taggableId) references willow_college.Taggable(id);
+alter table willow_college.TaggableTag add CONSTRAINT tt_tTagable_uq UNIQUE index (tagId, taggableId);
+
+-- end TaggableTag
