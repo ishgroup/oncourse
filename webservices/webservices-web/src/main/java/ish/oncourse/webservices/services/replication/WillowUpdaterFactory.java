@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.services.replication;
 
 import ish.oncourse.model.Attendance;
+import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.College;
@@ -10,9 +11,12 @@ import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.SessionTutor;
+import ish.oncourse.model.Tag;
+import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.webservices.UpdaterNotFoundException;
 import ish.oncourse.webservices.updaters.replication.AttendanceUpdater;
+import ish.oncourse.webservices.updaters.replication.BinaryInfoRelationUpdater;
 import ish.oncourse.webservices.updaters.replication.CertificateOutcomeUpdater;
 import ish.oncourse.webservices.updaters.replication.CertificateUpdater;
 import ish.oncourse.webservices.updaters.replication.CourseClassUpdater;
@@ -22,6 +26,8 @@ import ish.oncourse.webservices.updaters.replication.DiscountConcessionTypeUpdat
 import ish.oncourse.webservices.updaters.replication.DiscountUpdater;
 import ish.oncourse.webservices.updaters.replication.IWillowUpdater;
 import ish.oncourse.webservices.updaters.replication.SessionTutorUpdater;
+import ish.oncourse.webservices.updaters.replication.TagUpdater;
+import ish.oncourse.webservices.updaters.replication.TaggableTagUpdater;
 import ish.oncourse.webservices.updaters.replication.TutorRoleUpdater;
 import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
@@ -58,6 +64,7 @@ public class WillowUpdaterFactory {
 
 		private WillowUpdaterImpl(College college) {
 			updaterMap.put(getClassName(Attendance.class), new AttendanceUpdater(college, queueService, this));
+			updaterMap.put(getClassName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater(college, queueService, this));
 			updaterMap.put(getClassName(Course.class), new CourseUpdater(college, queueService, this));
 			updaterMap.put(getClassName(CourseClass.class), new CourseClassUpdater(college, queueService, this));
 			updaterMap.put(getClassName(CourseModule.class), new CourseModuleUpdater(college, queueService, this));
@@ -66,6 +73,8 @@ public class WillowUpdaterFactory {
 			updaterMap.put(getClassName(Discount.class), new DiscountUpdater(college, queueService, this));
 			updaterMap.put(getClassName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater(college, queueService, this));
 			updaterMap.put(getClassName(SessionTutor.class), new SessionTutorUpdater(college, queueService, this));
+			updaterMap.put(getClassName(Tag.class), new TagUpdater(college, queueService, this));
+			updaterMap.put(getClassName(TaggableTag.class), new TaggableTagUpdater(college, queueService, this));
 			updaterMap.put(getClassName(TutorRole.class), new TutorRoleUpdater(college, queueService, this));
 		}
 
