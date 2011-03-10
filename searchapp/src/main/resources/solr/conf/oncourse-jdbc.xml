@@ -101,7 +101,7 @@
 				parentDeltaQuery="select id from Course where id='{courseClassCode.courseId}'">
 				<field name="id" column="id" />
 				<field name="price" column="pr" />
-				<field name="class_code" column="code" template="${course.code}-${courseClassCode.code}"/>
+				<field name="class_code" column="code" template="${course.code}\-${courseClassCode.code}"/>
 			</entity>
 
 			<entity name="coursetag" dataSource="onCourseDS" pk="id"
