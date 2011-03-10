@@ -13,11 +13,26 @@ import ish.oncourse.model.WaitingList;
  */
 public abstract class _WaitingListSite extends CayenneDataObject {
 
+    public static final String ANGEL_ID_PROPERTY = "angelId";
+    public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String SITE_PROPERTY = "site";
     public static final String WAITING_LIST_PROPERTY = "waitingList";
 
-    public static final String SITE_ID_PK_COLUMN = "siteId";
-    public static final String WAITING_LIST_ID_PK_COLUMN = "waitingListId";
+    public static final String ID_PK_COLUMN = "id";
+
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
+    }
+
+    public void setCollegeId(Long collegeId) {
+        writeProperty("collegeId", collegeId);
+    }
+    public Long getCollegeId() {
+        return (Long)readProperty("collegeId");
+    }
 
     public void setSite(Site site) {
         setToOneTarget("site", site, true);

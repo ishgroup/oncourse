@@ -23,8 +23,7 @@ public abstract class _CertificateOutcome extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String OUTCOME_PROPERTY = "outcome";
 
-    public static final String CERTIFICATE_ID_PK_COLUMN = "certificateId";
-    public static final String OUTCOME_ID_PK_COLUMN = "outcomeId";
+    public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

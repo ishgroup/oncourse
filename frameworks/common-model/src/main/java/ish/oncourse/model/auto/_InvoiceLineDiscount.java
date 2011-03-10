@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.InvoiceLine;
 
@@ -15,13 +16,21 @@ import ish.oncourse.model.InvoiceLine;
  */
 public abstract class _InvoiceLineDiscount extends CayenneDataObject {
 
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String DISCOUNT_PROPERTY = "discount";
     public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
 
-    public static final String DISCOUNT_ID_PK_COLUMN = "discountId";
-    public static final String INVOICE_LINE_ID_PK_COLUMN = "invoiceLineId";
+    public static final String ID_PK_COLUMN = "id";
+
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
+    }
 
     public void setCreated(Date created) {
         writeProperty("created", created);
@@ -36,6 +45,15 @@ public abstract class _InvoiceLineDiscount extends CayenneDataObject {
     public Date getModified() {
         return (Date)readProperty("modified");
     }
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
+    }
+
 
     public void setDiscount(Discount discount) {
         setToOneTarget("discount", discount, true);

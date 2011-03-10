@@ -177,4 +177,7 @@
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>
 	</obj-entity>
+	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
+		<db-attribute-pair source="id" target="qualificationId"/>
+	</db-relationship>
 </data-map>

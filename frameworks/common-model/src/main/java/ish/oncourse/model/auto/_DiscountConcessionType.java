@@ -23,8 +23,7 @@ public abstract class _DiscountConcessionType extends CayenneDataObject {
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
     public static final String DISCOUNT_PROPERTY = "discount";
 
-    public static final String CONCESSION_TYPE_ID_PK_COLUMN = "concessionTypeId";
-    public static final String DISCOUNT_ID_PK_COLUMN = "discountId";
+    public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

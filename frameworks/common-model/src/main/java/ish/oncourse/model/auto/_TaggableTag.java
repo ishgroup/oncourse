@@ -23,8 +23,7 @@ public abstract class _TaggableTag extends CayenneDataObject {
     public static final String TAG_PROPERTY = "tag";
     public static final String TAGGABLE_PROPERTY = "taggable";
 
-    public static final String TAG_ID_PK_COLUMN = "tagId";
-    public static final String TAGGABLE_ID_PK_COLUMN = "taggableId";
+    public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

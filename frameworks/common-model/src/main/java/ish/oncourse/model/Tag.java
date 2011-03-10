@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
 
-public class Tag extends _Tag {
+public class Tag extends _Tag implements Queueable {
 
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()

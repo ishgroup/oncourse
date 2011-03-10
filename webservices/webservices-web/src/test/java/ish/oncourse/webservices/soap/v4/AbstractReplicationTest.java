@@ -11,8 +11,12 @@ import javax.xml.ws.BindingProvider;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.binding.soap.interceptor.SoapPreProtocolOutInterceptor;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 public abstract class AbstractReplicationTest extends AbstractWebServiceTest {
 	
@@ -21,6 +25,16 @@ public abstract class AbstractReplicationTest extends AbstractWebServiceTest {
 		ReplicationService service = new ReplicationService(url);
 
 		ReplicationPortType port = service.getReplicationPort();
+		
+		Client cl = ClientProxy.getClient(port);
+		 
+		HTTPConduit http = (HTTPConduit) cl.getConduit();
+		 
+		HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+		httpClientPolicy.setConnectionTimeout(0);
+		httpClientPolicy.setReceiveTimeout(0);
+		 
+		http.setClient(httpClientPolicy);
 
 		BindingProvider provider = (BindingProvider) port;
 		provider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
@@ -35,6 +49,16 @@ public abstract class AbstractReplicationTest extends AbstractWebServiceTest {
 				"wsdl/v4_auth.wsdl"));
 
 		AuthenticationPortType authPort = authService.getAuthenticationPort();
+		
+		Client cl = ClientProxy.getClient(authPort);
+		 
+		HTTPConduit http = (HTTPConduit) cl.getConduit();
+		 
+		HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+		httpClientPolicy.setConnectionTimeout(0);
+		httpClientPolicy.setReceiveTimeout(0);
+		 
+		http.setClient(httpClientPolicy);
 
 		BindingProvider provider = (BindingProvider) authPort;
 		provider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,

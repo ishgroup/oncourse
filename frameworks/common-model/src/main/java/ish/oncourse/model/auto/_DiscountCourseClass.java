@@ -23,8 +23,7 @@ public abstract class _DiscountCourseClass extends CayenneDataObject {
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String DISCOUNT_PROPERTY = "discount";
 
-    public static final String COURSE_CLASS_ID_PK_COLUMN = "courseClassId";
-    public static final String DISCOUNT_ID_PK_COLUMN = "discountId";
+    public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

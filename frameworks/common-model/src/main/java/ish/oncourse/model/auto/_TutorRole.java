@@ -27,8 +27,7 @@ public abstract class _TutorRole extends CayenneDataObject {
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String TUTOR_PROPERTY = "tutor";
 
-    public static final String COURSE_CLASS_ID_PK_COLUMN = "courseClassId";
-    public static final String TUTOR_ID_PK_COLUMN = "tutorId";
+    public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

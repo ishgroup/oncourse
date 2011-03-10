@@ -24,8 +24,7 @@ public abstract class _SessionTutor extends CayenneDataObject {
     public static final String SESSION_PROPERTY = "session";
     public static final String TUTOR_PROPERTY = "tutor";
 
-    public static final String SESSION_ID_PK_COLUMN = "sessionId";
-    public static final String TUTOR_ID_PK_COLUMN = "tutorId";
+    public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

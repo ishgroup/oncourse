@@ -61,11 +61,12 @@
 	</db-entity>
 	<db-entity name="CertificateOutcome" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="certificateId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="certificateId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="outcomeId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="ChangeRequest" catalog="willow_college">
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -211,10 +212,12 @@
 		<db-attribute name="timeZone" type="VARCHAR" length="32"/>
 	</db-entity>
 	<db-entity name="CourseModule" catalog="willow_college">
-		<db-attribute name="courseId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="moduleId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="moduleId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="Discount" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -245,17 +248,19 @@
 	<db-entity name="DiscountConcessionType" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
-		<db-attribute name="concessionTypeId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="concessionTypeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<db-entity name="DiscountCourseClass" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
-		<db-attribute name="courseClassId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<db-entity name="Enrolment" catalog="willow_college">
@@ -310,9 +315,12 @@
 		<db-attribute name="unit" type="VARCHAR" length="50"/>
 	</db-entity>
 	<db-entity name="InvoiceLine_Discount" catalog="willow_college">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="discountId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="invoiceLineId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<db-entity name="LicenseFee" catalog="willow_college">
@@ -509,9 +517,10 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="sessionId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="tutorId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="sessionId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="tutorId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="type" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="Site" catalog="willow_college">
@@ -611,9 +620,10 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="tagId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="taggableId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="tagId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="taggableId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="Tutor" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -630,13 +640,14 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmedDate" type="TIMESTAMP" length="19"/>
-		<db-attribute name="courseClassId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isConfirmed" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="tutorId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="tutorId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="WaitingList" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -650,8 +661,11 @@
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="WaitingListSite" catalog="willow_college">
-		<db-attribute name="siteId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
-		<db-attribute name="waitingListId" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="siteId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="waitingListId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="WebContent" catalog="willow_college">
 		<db-attribute name="content" type="LONGVARCHAR" length="16777215"/>
@@ -782,7 +796,6 @@
 		<obj-attribute name="printedWhen" type="java.util.Date" db-attribute-path="printedWhen"/>
 		<obj-attribute name="privateNotes" type="java.lang.String" db-attribute-path="privateNotes"/>
 		<obj-attribute name="publicNotes" type="java.lang.String" db-attribute-path="publicNotes"/>
-		<obj-attribute name="qualificationId" type="java.lang.Long" db-attribute-path="qualificationId"/>
 		<obj-attribute name="revokedWhen" type="java.util.Date" db-attribute-path="revokedWhen"/>
 		<obj-attribute name="studentFirstName" type="java.lang.String" db-attribute-path="studentFirstName"/>
 		<obj-attribute name="studentLastName" type="java.lang.String" db-attribute-path="studentLastName"/>
@@ -918,6 +931,7 @@
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>
 	<obj-entity name="CourseModule" className="ish.oncourse.model.CourseModule" dbEntityName="CourseModule">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
@@ -996,6 +1010,7 @@
 		<obj-attribute name="unit" type="java.lang.String" db-attribute-path="unit"/>
 	</obj-entity>
 	<obj-entity name="InvoiceLineDiscount" className="ish.oncourse.model.InvoiceLineDiscount" dbEntityName="InvoiceLine_Discount">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
@@ -1258,6 +1273,8 @@
 		<obj-attribute name="potentialStudents" type="java.lang.Integer" db-attribute-path="potentialStudents"/>
 	</obj-entity>
 	<obj-entity name="WaitingListSite" className="ish.oncourse.model.WaitingListSite" dbEntityName="WaitingListSite">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 	</obj-entity>
 	<obj-entity name="WebContent" className="ish.oncourse.model.WebContent" dbEntityName="WebContent">
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
@@ -1359,7 +1376,7 @@
 	<db-relationship name="college" source="BinaryInfoRelation" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" toDependentPK="true" toMany="true">
+	<db-relationship name="certificateOutcomes" source="Certificate" target="CertificateOutcome" toMany="true">
 		<db-attribute-pair source="id" target="certificateId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Certificate" target="College" toMany="false">
@@ -1432,6 +1449,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="enrolments" source="College" target="Enrolment" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="invoiceLines" source="College" target="InvoiceLine" toMany="true">
@@ -1515,7 +1535,7 @@
 	<db-relationship name="college" source="ConcessionType" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" toDependentPK="true" toMany="true">
+	<db-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="concessionTypeId"/>
 	</db-relationship>
 	<db-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" toMany="true">
@@ -1548,7 +1568,7 @@
 	<db-relationship name="courseClasses" source="Course" target="CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
-	<db-relationship name="courseModules" source="Course" target="CourseModule" toDependentPK="true" toMany="true">
+	<db-relationship name="courseModules" source="Course" target="CourseModule" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
 	<db-relationship name="qualification" source="Course" target="Qualification" toMany="false">
@@ -1563,7 +1583,7 @@
 	<db-relationship name="course" source="CourseClass" target="Course" toMany="false">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discountCourseClasses" source="CourseClass" target="DiscountCourseClass" toDependentPK="true" toMany="true">
+	<db-relationship name="discountCourseClasses" source="CourseClass" target="DiscountCourseClass" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
 	<db-relationship name="enrolments" source="CourseClass" target="Enrolment" toMany="true">
@@ -1575,7 +1595,7 @@
 	<db-relationship name="sessions" source="CourseClass" target="Session" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
-	<db-relationship name="tutorRoles" source="CourseClass" target="TutorRole" toDependentPK="true" toMany="true">
+	<db-relationship name="tutorRoles" source="CourseClass" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
 	<db-relationship name="course" source="CourseModule" target="Course" toMany="false">
@@ -1587,13 +1607,13 @@
 	<db-relationship name="college" source="Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" toDependentPK="true" toMany="true">
+	<db-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
-	<db-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" toDependentPK="true" toMany="true">
+	<db-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
-	<db-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLine_Discount" toDependentPK="true" toMany="true">
+	<db-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
 	<db-relationship name="college" source="DiscountConcessionType" target="College" toMany="false">
@@ -1650,8 +1670,11 @@
 	<db-relationship name="invoice" source="InvoiceLine" target="Invoice" toMany="false">
 		<db-attribute-pair source="invoiceId" target="id"/>
 	</db-relationship>
-	<db-relationship name="invoicelineDiscounts" source="InvoiceLine" target="InvoiceLine_Discount" toDependentPK="true" toMany="true">
+	<db-relationship name="invoicelineDiscounts" source="InvoiceLine" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="invoiceLineId"/>
+	</db-relationship>
+	<db-relationship name="college" source="InvoiceLine_Discount" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="discount" source="InvoiceLine_Discount" target="Discount" toMany="false">
 		<db-attribute-pair source="discountId" target="id"/>
@@ -1695,7 +1718,7 @@
 	<db-relationship name="college" source="NotificationTemplate" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="certificateOutcomes" source="Outcome" target="CertificateOutcome" toDependentPK="true" toMany="true">
+	<db-relationship name="certificateOutcomes" source="Outcome" target="CertificateOutcome" toMany="true">
 		<db-attribute-pair source="id" target="outcomeId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Outcome" target="College" toMany="false">
@@ -1770,7 +1793,7 @@
 	<db-relationship name="room" source="Session" target="Room" toMany="false">
 		<db-attribute-pair source="roomId" target="id"/>
 	</db-relationship>
-	<db-relationship name="sessionTutors" source="Session" target="SessionTutor" toDependentPK="true" toMany="true">
+	<db-relationship name="sessionTutors" source="Session" target="SessionTutor" toMany="true">
 		<db-attribute-pair source="id" target="sessionId"/>
 	</db-relationship>
 	<db-relationship name="college" source="SessionTutor" target="College" toMany="false">
@@ -1791,7 +1814,7 @@
 	<db-relationship name="rooms" source="Site" target="Room" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
-	<db-relationship name="waitingListSites" source="Site" target="WaitingListSite" toDependentPK="true" toMany="true">
+	<db-relationship name="waitingListSites" source="Site" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
 	<db-relationship name="attendances" source="Student" target="Attendance" toMany="true">
@@ -1845,7 +1868,7 @@
 	<db-relationship name="tagGroupRequirements" source="Tag" target="TagGroupRequirement" toMany="true">
 		<db-attribute-pair source="id" target="tagId"/>
 	</db-relationship>
-	<db-relationship name="taggableTags" source="Tag" target="TaggableTag" toDependentPK="true" toMany="true">
+	<db-relationship name="taggableTags" source="Tag" target="TaggableTag" toMany="true">
 		<db-attribute-pair source="id" target="tagId"/>
 	</db-relationship>
 	<db-relationship name="tags" source="Tag" target="Tag" toMany="true">
@@ -1860,7 +1883,7 @@
 	<db-relationship name="college" source="Taggable" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="taggableTags" source="Taggable" target="TaggableTag" toDependentPK="true" toMany="true">
+	<db-relationship name="taggableTags" source="Taggable" target="TaggableTag" toMany="true">
 		<db-attribute-pair source="id" target="taggableId"/>
 	</db-relationship>
 	<db-relationship name="college" source="TaggableTag" target="College" toMany="false">
@@ -1881,13 +1904,13 @@
 	<db-relationship name="messagePeople" source="Tutor" target="MessagePerson" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
-	<db-relationship name="sessionTutors" source="Tutor" target="SessionTutor" toDependentPK="true" toMany="true">
+	<db-relationship name="sessionTutors" source="Tutor" target="SessionTutor" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
 	<db-relationship name="sessions" source="Tutor" target="Session" toMany="true">
 		<db-attribute-pair source="id" target="markerId"/>
 	</db-relationship>
-	<db-relationship name="tutorRoles" source="Tutor" target="TutorRole" toDependentPK="true" toMany="true">
+	<db-relationship name="tutorRoles" source="Tutor" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
 	<db-relationship name="college" source="TutorRole" target="College" toMany="false">
@@ -1908,7 +1931,7 @@
 	<db-relationship name="student" source="WaitingList" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" toDependentPK="true" toMany="true">
+	<db-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="waitingListId"/>
 	</db-relationship>
 	<db-relationship name="site" source="WaitingListSite" target="Site" toMany="false">
@@ -2122,6 +2145,7 @@
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoicelineDiscounts"/>
+	<obj-relationship name="college" source="InvoiceLineDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="college" source="LicenseFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
