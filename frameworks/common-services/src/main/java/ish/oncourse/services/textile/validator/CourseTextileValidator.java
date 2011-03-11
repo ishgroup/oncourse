@@ -43,8 +43,7 @@ public class CourseTextileValidator implements IValidator {
 			}
 		}
 		if (tagged != null) {
-			tagged=tagged.substring(tagged.lastIndexOf("/")+1);
-			Tag tagEntity = tagService.getSubTagByName(tagged);
+			Tag tagEntity = tagService.getTagByFullPath(tagged);
 			if (tagEntity == null) {
 				errors.addFailure(getTagNotFoundByName(tagged));
 			}

@@ -29,8 +29,7 @@ public class CourseListTextileValidator implements IValidator {
 		String tagged = tagParams.get(CourseListTextileAttributes.COURSE_LIST_PARAM_TAG.getValue());
 
 		if (tagged != null) {
-			tagged = tagged.substring(tagged.lastIndexOf("/") + 1);
-			Tag tagEntity = tagService.getSubTagByName(tagged);
+			Tag tagEntity = tagService.getTagByFullPath(tagged);
 			if (tagEntity == null) {
 				errors.addFailure(getTagNotFoundByName(tagged));
 			}

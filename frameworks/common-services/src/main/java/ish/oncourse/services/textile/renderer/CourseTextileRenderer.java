@@ -57,7 +57,7 @@ public class CourseTextileRenderer extends AbstractRenderer {
 			if (code != null) {
 				course = courseService.getCourse(Course.CODE_PROPERTY, code);
 			} else {
-				course = courseService.getCourse(tagName!=null?tagName.substring(tagName.lastIndexOf("/")+1):null);
+				course = courseService.getCourse(tagName);
 			}
 			if (course != null) {
 				Map<String, Object> parameters = new HashMap<String, Object>();

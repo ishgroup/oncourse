@@ -59,7 +59,6 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 					.getValue());
 			String tagName = tagParams.get(CourseListTextileAttributes.COURSE_LIST_PARAM_TAG
 					.getValue());
-			tagName = tagName != null ? tagName.substring(tagName.lastIndexOf("/") + 1) : null;
 
 			List<Course> courses = courseService.getCourses(tagName, CourseListSortValue
 					.getByName(sort), Boolean.valueOf(order),

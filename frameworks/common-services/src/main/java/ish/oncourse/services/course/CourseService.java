@@ -75,11 +75,15 @@ public class CourseService implements ICourseService {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("collegeId", webSiteService.getCurrentCollege().getId());
 
-		// q.andQualifier(getSiteQualifier());
 		if (tagName != null) {
+			List<Long> taggedIds = tagService.getEntityIdsByTagPath(tagName,
+					Course.class.getSimpleName());
+			if (taggedIds.isEmpty()) {
+				return result;
+			}
 			defaultTemplate += " and c.id in (#bind($tagged))";
-			parameters.put("tagged",
-					tagService.getEntityIdsByTagName(tagName, Course.class.getSimpleName()));
+			parameters.put("tagged", taggedIds);
+
 		}
 		if (sort == null) {
 			sort = CourseListSortValue.ALPHABETICAL;
@@ -183,7 +187,7 @@ public class CourseService implements ICourseService {
 
 	private Expression getTaggedWithQualifier(String taggedWith) {
 		return ExpressionFactory.inDbExp(Course.ID_PK_COLUMN,
-				tagService.getEntityIdsByTagName(taggedWith, Course.class.getSimpleName()));
+				tagService.getEntityIdsByTagPath(taggedWith, Course.class.getSimpleName()));
 	}
 
 	public Integer getCoursesCount() {

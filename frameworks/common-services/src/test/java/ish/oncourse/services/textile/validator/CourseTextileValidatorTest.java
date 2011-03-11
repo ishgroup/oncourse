@@ -47,8 +47,8 @@ public class CourseTextileValidatorTest extends CommonValidatorTest {
 				courseService.getCourse(Course.CODE_PROPERTY,
 						NOT_EXISTING_COURSE_CODE)).thenReturn(null);
 
-		when(tagService.getSubTagByName(EXISTING_COURSE_TAG)).thenReturn(tag);
-		when(tagService.getSubTagByName(NOT_EXISTING_COURSE_TAG)).thenReturn(
+		when(tagService.getTagByFullPath(EXISTING_COURSE_TAG)).thenReturn(tag);
+		when(tagService.getTagByFullPath(NOT_EXISTING_COURSE_TAG)).thenReturn(
 				null);
 	}
 
