@@ -25,8 +25,7 @@
 				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end from CourseClass cc 
 							where cc.isWebVisible=1 
 									and cc.courseid='${course.id}'
-                       				and cc.isCancelled=0 
-                       				and cc.endDate &gt; CURDATE()"
+                       				and cc.isCancelled=0"
 				deltaImportQuery="select cc.id as id, cc.feeExGst as pr from CourseClass cc where cc.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
 				parentDeltaQuery="select id from Course where id='{courseClass.courseId}'">
