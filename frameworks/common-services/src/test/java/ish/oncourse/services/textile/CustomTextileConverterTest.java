@@ -236,7 +236,7 @@ public class CustomTextileConverterTest {
 	public void smokeTagsConvertTest() {
 		tag = new Tag();
 		String successfulResult = "successfully rendered tags block";
-		when(tagService.getRootTag()).thenReturn(tag);
+		when(tagService.getSubjectsTag()).thenReturn(tag);
 		testPageRenderParams(TAGS, TextileUtil.TEXTILE_TAGS_PAGE,
 				successfulResult);
 

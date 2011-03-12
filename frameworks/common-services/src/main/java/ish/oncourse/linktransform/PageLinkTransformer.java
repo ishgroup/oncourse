@@ -186,7 +186,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 					tagsPath = tagsPath.substring(0, tagsPath.length() - 1);
 				}
 				String tags[] = tagsPath.split("/");
-				Tag rootTag = tagService.getRootTag();
+				Tag rootTag = tagService.getSubjectsTag();
 				for (String tag : tags) {
 					tag = tag.replaceAll("[+]", " ").replaceAll("[|]", "/");
 					if (rootTag.hasChildWithName(tag)) {

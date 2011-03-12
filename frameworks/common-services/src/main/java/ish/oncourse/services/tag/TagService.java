@@ -17,7 +17,7 @@ import org.apache.cayenne.query.SelectQuery;
 
 public class TagService extends BaseService<Tag> implements ITagService {
 
-	public Tag getRootTag() {
+	public Tag getSubjectsTag() {
 		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
 				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, "Subjects")));
 		return (tags.size() > 0) ? tags.get(0) : null;
@@ -40,7 +40,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 
 	public Tag getSubTagByName(String name) {
-		Tag rootTag = getRootTag();
+		Tag rootTag = getSubjectsTag();
 
 		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
 				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)));

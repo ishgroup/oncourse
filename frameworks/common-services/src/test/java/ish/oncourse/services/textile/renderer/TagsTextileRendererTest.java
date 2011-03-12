@@ -46,7 +46,7 @@ public class TagsTextileRendererTest {
 		tag = new Tag();
 		tag.setName(TEST_TAG_NAME);
 		tagsTextileRenderer = new TagsTextileRenderer(tagService, pageRenderer);
-		when(tagService.getRootTag()).thenReturn(rootTag);
+		when(tagService.getSubjectsTag()).thenReturn(rootTag);
 		when(tagService.getSubTagByName(TEST_TAG_NAME)).thenReturn(tag);
 		when(
 				pageRenderer.renderPage(eq(TextileUtil.TEXTILE_TAGS_PAGE),

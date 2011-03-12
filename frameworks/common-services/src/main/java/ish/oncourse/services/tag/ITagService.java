@@ -6,7 +6,11 @@ import ish.oncourse.model.Tag;
 
 public interface ITagService {
 
-	Tag getRootTag();
+	/**
+	 * Retrieves the "special" tag with name "Subjects".
+	 * @return
+	 */
+	Tag getSubjectsTag();
 
 	List<Tag> loadByIds(Object... ids);
 

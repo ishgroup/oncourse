@@ -84,7 +84,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 					.get(TagsTextileAttributes.TAGS_PARAM_NAME.getValue());
 
 			Tag parentTag = null;
-			Tag rootTag = tagService.getRootTag();
+			Tag rootTag = tagService.getSubjectsTag();
 			if (paramName != null) {
 				parentTag = tagService.getSubTagByName(paramName);
 			} else {

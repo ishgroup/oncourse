@@ -98,7 +98,7 @@ public class TestModule {
 
 		when(tag.getName()).thenReturn("Subjects");
 
-		when(mockService.getRootTag().getWebVisibleTags()).thenReturn(Arrays.asList(tag));
+		when(mockService.getSubjectsTag().getWebVisibleTags()).thenReturn(Arrays.asList(tag));
 
 		return mockService;
 	}

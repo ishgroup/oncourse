@@ -56,7 +56,7 @@ public class CourseSearchForm {
 
 	@SetupRender
 	void beforeRender() {
-		subjectTagChildTags = tagService.getRootTag().getWebVisibleTags();
+		subjectTagChildTags = tagService.getSubjectsTag().getWebVisibleTags();
 
 		Collections.sort(subjectTagChildTags, new Comparator<Tag>() {
 			public int compare(Tag tag1, Tag tag2) {
