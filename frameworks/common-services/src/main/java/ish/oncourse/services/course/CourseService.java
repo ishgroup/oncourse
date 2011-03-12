@@ -89,15 +89,13 @@ public class CourseService implements ICourseService {
 			sort = CourseListSortValue.ALPHABETICAL;
 		}
 
-		if (limit == null) {
-			limit = ROWS_DEFAULT;
-		}
 		// random list
 		defaultTemplate += " order by rand()";
 
 		SQLTemplate q = new SQLTemplate(Course.class, defaultTemplate);
-
-		q.setFetchLimit(limit);
+		if (limit != null) {
+			q.setFetchLimit(limit);
+		}
 		q.setParameters(parameters);
 
 		result = cayenneService.sharedContext().performQuery(q);
