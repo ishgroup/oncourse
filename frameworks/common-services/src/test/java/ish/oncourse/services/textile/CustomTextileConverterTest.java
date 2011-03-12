@@ -2,6 +2,9 @@ package ish.oncourse.services.textile;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 import ish.oncourse.model.BinaryData;
@@ -34,6 +37,8 @@ public class CustomTextileConverterTest {
 	private static final String PAGE = "{page}";
 
 	private static final String COURSE = "{course}";
+	
+	private static final String COURSE_LIST = "{courses}";
 
 	private static final String TEST_WEB_BLOCK_CONTENT = "web block content";
 
@@ -189,6 +194,20 @@ public class CustomTextileConverterTest {
 		when(courseService.getCourse(null)).thenReturn(
 				course);
 		testPageRenderParams(COURSE, TextileUtil.TEXTILE_COURSE_PAGE,
+				successfulResult);
+	}
+
+	/**
+	 * Emulates the situation when {courses} is converted. Should pass without
+	 * errors.
+	 */
+	@Test
+	public void smokeCourseListConvertTest() {
+		List<Course> courses=new ArrayList<Course>();
+		String successfulResult = "successfully rendered courses block";
+		when(courseService.getCourses(null, null, null, null)).thenReturn(
+				courses);
+		testPageRenderParams(COURSE_LIST, TextileUtil.TEXTILE_COURSE_LIST_PAGE,
 				successfulResult);
 	}
 
