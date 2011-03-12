@@ -6,8 +6,6 @@ import ish.oncourse.model.Tag;
 
 public interface ITagService {
 
-	String SUBJECTS_TAG_NAME = "Subjects";
-
 	/**
 	 * Retrieves the "special" tag with name "Subjects".
 	 * 

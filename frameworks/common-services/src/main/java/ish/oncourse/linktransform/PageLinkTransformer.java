@@ -182,21 +182,12 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				tagsPath = tagsPath.replaceFirst("/", "");
 			}
 			if (!tagsPath.equals("")) {
-				if (tagsPath.endsWith("/")) {
-					tagsPath = tagsPath.substring(0, tagsPath.length() - 1);
-				}
-				String tags[] = tagsPath.split("/");
-				Tag rootTag = tagService.getSubjectsTag();
-				for (String tag : tags) {
-					tag = tag.replaceAll("[+]", " ").replaceAll("[|]", "/");
-					if (rootTag.hasChildWithName(tag)) {
-						rootTag = tagService.getSubTagByName(tag);
-					} else {
-						return new PageRenderRequestParameters("ui/PageNotFound",
+				Tag tag=tagService.getTagByFullPath(tagsPath);
+				if (tag==null) {
+					return new PageRenderRequestParameters("ui/PageNotFound",
 								new EmptyEventContext(), false);
-					}
 				}
-				request.setAttribute(Course.COURSE_TAG, rootTag);
+				request.setAttribute(Course.COURSE_TAG, tag);
 			}
 			return new PageRenderRequestParameters("ui/Courses", new EmptyEventContext(), false);
 		}

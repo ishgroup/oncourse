@@ -10,6 +10,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Tag extends _Tag implements Queueable {
 
+	public static final String SUBJECTS_TAG_NAME = "Subjects";
+
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(ID_PK_COLUMN) : null;
@@ -60,13 +62,19 @@ public class Tag extends _Tag implements Queueable {
 	public String getDefaultPath() {
 		String path = "";
 		Tag subTag = this;
-		while (subTag.getParent() != null) {
+		while (subTag != null) {
 			String shortName = subTag.getShortName();
 			String name = shortName != null ? shortName : subTag.getName();
+			//rewrite for url
 			path = "/" + name.replaceAll(" ", "+").replaceAll("/", "|") + path;
-			subTag = subTag.getParent();
+			Tag parent = subTag.getParent();
+			//hide "Subjects" from url
+			if (parent == null || parent.getName().equalsIgnoreCase(SUBJECTS_TAG_NAME)) {
+				subTag = null;
+			} else {
+				subTag = parent;
+			}
 		}
-
 		return path;
 	}
 

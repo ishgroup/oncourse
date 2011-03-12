@@ -10,16 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 
 public class TagService extends BaseService<Tag> implements ITagService {
 
 	public Tag getSubjectsTag() {
 		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
-				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, SUBJECTS_TAG_NAME)));
+				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
@@ -111,17 +109,17 @@ public class TagService extends BaseService<Tag> implements ITagService {
 			return null;
 		}
 		String tagNames[] = path.split("/");
-		if (path.contains("[+]") || path.contains("[|]")) {
-			for (String name : tagNames) {
+		if (path.contains("+") || path.contains("|")) {
+			for (int j=0;j<tagNames.length ;j++) {
 				// rewrite url
-				name = name.replaceAll("[+]", " ").replaceAll("[|]", "/");
+				tagNames[j] = tagNames[j].replaceAll("[+]", " ").replaceAll("[|]", "/");
 			}
 		}
 
 		Tag rootTag = null;
 		Tag subjectsTag = getSubjectsTag();
 		int i = 0;
-		if (tagNames[0].equalsIgnoreCase(SUBJECTS_TAG_NAME)) {
+		if (tagNames[0].equalsIgnoreCase(Tag.SUBJECTS_TAG_NAME)) {
 			rootTag = subjectsTag;
 			//don't process subjects tag in loop
 			i = 1;
