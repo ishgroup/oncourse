@@ -5,6 +5,7 @@ import ish.oncourse.utils.TagsTextileEntityTypes;
 
 import java.util.List;
 
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Tag extends _Tag implements Queueable {
@@ -15,26 +16,27 @@ public class Tag extends _Tag implements Queueable {
 	}
 
 	public List<Tag> getWebVisibleTags() {
-		return ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true)
-				.filterObjects(getTags());
+		return ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
 	}
 
 	public boolean hasChildWithName(String name) {
+		return getChildWithName(name) != null;
+	}
+
+	public Tag getChildWithName(String name) {
 		for (Tag tag : getWebVisibleTags()) {
-			if (((tag.getShortName() != null) && tag.getShortName()
-					.toUpperCase().equals(name.toUpperCase()))
-					|| ((tag.getName() != null) && tag.getName().toUpperCase()
-							.equals(name.toUpperCase()))) {
-				return true;
+			if (((tag.getShortName() != null) && tag.getShortName().equalsIgnoreCase(name))
+					|| ((tag.getName() != null) && tag.getName().equalsIgnoreCase(name))) {
+				return tag;
 			}
 		}
-		return false;
+
+		return null;
 	}
 
 	public String getLink(String entityType) {
 		if (entityType != null) {
-			TagsTextileEntityTypes type = TagsTextileEntityTypes
-					.valueOf(entityType);
+			TagsTextileEntityTypes type = TagsTextileEntityTypes.valueOf(entityType);
 			// TODO add the calculation of plural entity name for all the
 			// taggable entities
 			switch (type) {
@@ -90,12 +92,12 @@ public class Tag extends _Tag implements Queueable {
 	public boolean hasParentTag() {
 		return getParent() != null;
 	}
-	
-	public Tag getRoot(){
-		Tag result=this;
-		
-		while(result.getParent()!=null){
-			result=result.getParent();
+
+	public Tag getRoot() {
+		Tag result = this;
+
+		while (result.getParent() != null) {
+			result = result.getParent();
 		}
 		return result;
 	}

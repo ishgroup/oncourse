@@ -19,7 +19,14 @@ public class TagService extends BaseService<Tag> implements ITagService {
 
 	public Tag getSubjectsTag() {
 		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
-				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, "Subjects")));
+				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, SUBJECTS_TAG_NAME)));
+		return (tags.size() > 0) ? tags.get(0) : null;
+	}
+
+	public Tag getTagGroupByName(String name) {
+		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
+				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)).andExp(
+				ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
@@ -104,18 +111,45 @@ public class TagService extends BaseService<Tag> implements ITagService {
 			return null;
 		}
 		String tagNames[] = path.split("/");
-		Expression qualifier = getSiteQualifier();
-		for (int i = 0; i < tagNames.length; i++) {
-			StringBuffer prop = new StringBuffer();
-			for (int j = tagNames.length - i - 1; j > 0; j--) {
-				prop.append(Tag.PARENT_PROPERTY).append(".");
+		if (path.contains("[+]") || path.contains("[|]")) {
+			for (String name : tagNames) {
+				// rewrite url
+				name = name.replaceAll("[+]", " ").replaceAll("[|]", "/");
 			}
-			prop.append(Tag.NAME_PROPERTY);
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(prop.toString(), tagNames[i]));
 		}
 
-		SelectQuery query = new SelectQuery(Tag.class, qualifier);
-		return (Tag) DataObjectUtils.objectForQuery(getCayenneService().sharedContext(), query);
+		Tag rootTag = null;
+		Tag subjectsTag = getSubjectsTag();
+		int i = 0;
+		if (tagNames[0].equalsIgnoreCase(SUBJECTS_TAG_NAME)) {
+			rootTag = subjectsTag;
+			//don't process subjects tag in loop
+			i = 1;
+		}
+		if (rootTag == null) {
+			if (subjectsTag.hasChildWithName(tagNames[0])) {
+				rootTag = subjectsTag;
+			} else {
+				rootTag = getTagGroupByName(tagNames[0]);
+			}
+		}
+
+		if(rootTag==null){
+			return null;
+		}
+		
+		
+		for (; i < tagNames.length; i++) {
+			Tag tag = rootTag.getChildWithName(tagNames[i]);
+			if(tag==null){
+				return null;
+			}else{
+				rootTag=tag;
+			}
+			
+		}
+
+		return rootTag;
 	}
 
 }
