@@ -4,25 +4,46 @@ import java.util.List;
 
 import ish.oncourse.model.Tag;
 
+/**
+ * Service for manipulations with {@link Tag} entities.
+ * 
+ * @author ksenia
+ * 
+ */
 public interface ITagService {
 
 	/**
-	 * Retrieves the "special" tag with name "Subjects".
+	 * Retrieves the "special" tag with name {@value Tag#SUBJECTS_TAG_NAME}.
 	 * 
 	 * @return
 	 */
 	Tag getSubjectsTag();
 
 	/**
-	 * Retrieves taggroup with the given name.
+	 * Retrieves web visible taggroup with the given name.
 	 * 
 	 * @param name
 	 * @return
 	 */
 	Tag getTagGroupByName(String name);
 
+	/**
+	 * Retrieves the list of tags with ids within the given ids.
+	 * 
+	 * @param ids
+	 *            the given ids
+	 * @return
+	 */
 	List<Tag> loadByIds(Object... ids);
 
+	/**
+	 * Retrieves the list of tags which the entity with given id and given name
+	 * is tagged with.
+	 * 
+	 * @param entityName
+	 * @param entityId
+	 * @return
+	 */
 	List<Tag> getTagsForEntity(String entityName, Long entityId);
 
 	/**
@@ -30,7 +51,10 @@ public interface ITagService {
 	 * will find the tag with name "Arts" and with parent "Subjects".<br/>
 	 * If the path doesn't start with "Subjects" special tag, then it checks if
 	 * the root tag belongs to "Subjects" and if no, looks for the tag group
-	 * with this root name.
+	 * with this root name.<br/>
+	 * Path can start or end with "/", or it can contain "+" and "|" symbols
+	 * from url rewriting, all these are processed properly.
+	 * 
 	 * 
 	 * @param path
 	 *            the given path
