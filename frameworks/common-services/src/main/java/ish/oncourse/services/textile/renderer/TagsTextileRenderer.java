@@ -15,50 +15,40 @@ import java.util.Map;
  * Displays a tree of tags links
  * 
  * <pre>
- * Example: 
+ * <p>Example:</p> 
+ * <br/>
+ * {tags maxLevels:&quot;3&quot; isShowDetail:&quot;false&quot; 
+ *  hideTopLevel:&quot;true&quot; name:&quot;/Subjects/tag&quot; } 
  * 
- * {tags entityType:&quot;Course&quot; maxLevels:&quot;3&quot; showtopdetail:&quot;false&quot; 
- *  isHidingTopLevelTags:&quot;true&quot; isFiltered:&quot;false&quot; name:&quot;name&quot; } 
  * 
- * The parameters are as follows: 
- * 
- * entityType: the name of the entity you want to get the tags tree for. Default is Course.
- * 
- * maxLevels: parameter that shows how deep we want to render the tree 
- * 
- * showtopdetail: if true, the top level tags will display their detail text if they have
- * any.
- * 
- * isHidingTopLevelTags: if true, the top level tag is not displayed
- * 
- * isFiltered: If true tags will only be shown if they or any of their child tags have
- * visible linked items (such as classes)
- * 
- * name: allows you to query for a named branch "WITHIN" the "Subjects" tree and display that.
- * 
- * If none of the attributes is specified, it displays the whole tree with Course entity type.
+ * <p>Description:</p>
+ * <ul>
+ * <li>name - Optional. Defines the path to a tag. The full path to the tag must be specified. e.g. "/Subjects/Leisure/Arts and Craft" and will display all child tags including the specified tag.</li>
+ * <li>maxLevels - Optional. Defining this option will limit how many levels of the tag tree will be displayed. For example, "1" will only show the top level tag and nothing else.</li>
+ * <li>showDetail - [true, false] Optional. If true, a tag's description will also be displayed. The default option is false.</li>
+ * <li>hideTopLevel - [true, false] Optional. If true, the top level tag is not displayed. The default option is false.</li>
+ * </ul>
+ * If none of the attributes is specified, it displays the whole tree.
  * </pre>
  */
-// TODO implement filtered attribute
 public class TagsTextileRenderer extends AbstractRenderer {
 
 	private ITagService tagService;
 
 	private IPageRenderer pageRenderer;
 
-	public TagsTextileRenderer(ITagService tagService,
-			IPageRenderer pageRenderer) {
+	public TagsTextileRenderer(ITagService tagService, IPageRenderer pageRenderer) {
 		this.tagService = tagService;
 		this.pageRenderer = pageRenderer;
 		validator = new TagsTextileValidator(tagService);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * ish.oncourse.services.textile.renderer.AbstractRenderer#render(java.lang
-	 * .String, ish.oncourse.util.ValidationErrors)
+	 * {@inheritDoc}
+	 * 
+	 * @see ish.oncourse.services.textile.renderer.AbstractRenderer#render(java.lang.String,
+	 *      ish.oncourse.util.ValidationErrors)
 	 */
 	@Override
 	public String render(String tag, ValidationErrors errors) {
@@ -66,20 +56,13 @@ public class TagsTextileRenderer extends AbstractRenderer {
 		if (!errors.hasFailures()) {
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					TagsTextileAttributes.getAttrValues());
-			String entityType = tagParams
-					.get(TagsTextileAttributes.TAGS_ENTITY_TYPE_PARAM
-							.getValue());
-			// String maxLevels =
-			// tagParams.get(TextileUtil.TAGS_MAX_LEVELS_PARAM);
-			String showDetails = tagParams
-					.get(TagsTextileAttributes.TAGS_SHOW_DETAIL_PARAM
-							.getValue());
-			// String hideTopLevel = tagParams
-			// .get(TextileUtil.TAGS_HIDE_TOP_LEVEL);
-			String filteredParam = tagParams
-					.get(TagsTextileAttributes.TAGS_FILTERED_PARAM.getValue());
-			String paramName = tagParams
-					.get(TagsTextileAttributes.TAGS_PARAM_NAME.getValue());
+			String paramName = tagParams.get(TagsTextileAttributes.TAGS_PARAM_NAME.getValue());
+			String maxLevels = tagParams
+					.get(TagsTextileAttributes.TAGS_MAX_LEVELS_PARAM.getValue());
+			String showDetails = tagParams.get(TagsTextileAttributes.TAGS_SHOW_DETAIL_PARAM
+					.getValue());
+			String hideTopLevel = tagParams.get(TagsTextileAttributes.TAGS_HIDE_TOP_LEVEL
+					.getValue());
 
 			Tag parentTag = null;
 			Tag rootTag = tagService.getSubjectsTag();
@@ -90,15 +73,15 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			}
 			if (parentTag != null) {
 				Map<String, Object> parameters = new HashMap<String, Object>();
-				
-				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM,
-						parentTag);
-				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM,
-						entityType);
+
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM, parentTag);
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_MAX_LEVEL_PARAM,
+						maxLevels == null ? null : Integer.valueOf(maxLevels));
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM,
-						showDetails);
-				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE,
-						parameters);
+						Boolean.valueOf(showDetails));
+				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM,
+						Boolean.valueOf(hideTopLevel));
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE, parameters);
 
 			}
 		}

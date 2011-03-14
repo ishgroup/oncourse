@@ -36,11 +36,10 @@ public class TextileUtil {
 																"(sort:"+inQuots("(date|alphabetical|availability)")+")|" +
 																"(order:"+inQuots("(asc|desc)")+"))){0,4}}";
 	public static final String PAGE_REGEXP = "\\{page( ((code:"+DIGIT_IN_QUOTS+"))){0,1}}";
-	public static final String TAGS_REGEXP="\\{tags( ((entityType:"+STR_WHITESPACE+")|(maxLevels:"
-													+DIGIT_IN_QUOTS+")|(showtopdetail:"
-													+BOOLEAN_IN_QUOTS+")|(isHidingTopLevelTags:"
-													+BOOLEAN_IN_QUOTS+")|(isFiltered:"
-													+BOOLEAN_IN_QUOTS+")|(name:"+STR_WHITESPACE_SLASH+"))){0,6}}";
+	public static final String TAGS_REGEXP="\\{tags( ((maxLevels:"
+													+DIGIT_IN_QUOTS+")|(showDetail:"
+													+BOOLEAN_IN_QUOTS+")|(hideTopLevel:"
+													+BOOLEAN_IN_QUOTS+")|(name:"+STR_WHITESPACE_SLASH+"))){0,4}}";
 	
 	public static final String VIDEO_WIDTH_DEFAULT = "425";
 	public static final String VIDEO_HEIGHT_DEFAULT = "344";
@@ -55,27 +54,33 @@ public class TextileUtil {
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
 	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
 	public static final String TEXTILE_COURSE_LIST_PAGE_PARAM = "courseList";
+	
 	public static final String TEXTILE_IMAGE_PAGE_PARAM = "additionalImageParameters";
+	
 	public static final String TEXTILE_TAGS_PAGE_DETAILS_PARAM = "textileTagsShowDetails";
-	public static final String TEXTILE_TAGS_PAGE_ENTITY_PARAM = "textileTagsEntityType";
+	public static final String TEXTILE_TAGS_PAGE_MAX_LEVEL_PARAM ="textileTagsMaxLevels";
+	public static final String TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM="textileTagsHideTopLevel";
+	
 	public static final String TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM = "textileTags";
 	public static final String TEXTILE_VIDEO_PAGE_PARAM = "videoParameters";
 	
 	private static String inQuots(String param) {
-		return "("+QUOT+")"+param+"("+QUOT+")";
+		return "(" + QUOT + ")" + param + "(" + QUOT + ")";
 	}
+
 	/**
 	 * @param tag
 	 * @return
 	 */
 	public static String getValueInFirstQuots(String tag) {
-		return tag.split(QUOT)[1];
+		String[] splitted = tag.split(QUOT);
+		return splitted.length > 2 ? splitted[1] : null;
 	}
-	
-	public static Map<String, String> getTagParams(String tag, List<String>paramKeys){
-		Map<String, String> params= new HashMap<String, String>();
-		for(String key:paramKeys){
-			if(tag.contains(key)){
+
+	public static Map<String, String> getTagParams(String tag, List<String> paramKeys) {
+		Map<String, String> params = new HashMap<String, String>();
+		for (String key : paramKeys) {
+			if (tag.contains(key)) {
 				params.put(key, getValueInFirstQuots(tag.substring(tag.indexOf(key))));
 			}
 		}

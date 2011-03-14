@@ -28,19 +28,30 @@ public class TextileTags {
 
 	@Property
 	@Component(id = "childTag", parameters = { "tag=currentTag",
-			"childPosition=currentChildPosition" })
+			"childPosition=currentChildPosition", "maxLevels=maxLevelsForChild" })
 	private TagItem childTag;
 
 	private Tag currentTag;
 
 	private Map<Tag, Integer> childPositions;
 
+	private Integer maxLevels;
+	@Property
+	private boolean showTopLevel;
+	@Property
+	private Integer maxLevelsForChild;
+
 	@SetupRender
-	void beginRender() {
+	boolean beginRender() {
 		childPositions = new HashMap<Tag, Integer>();
 		rootTag = (Tag) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM);
-		entityType = (String) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM);
-
+		maxLevels = (Integer) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_MAX_LEVEL_PARAM);
+		if (maxLevels != null) {
+			maxLevelsForChild = maxLevels - 1;
+		}
+		showTopLevel = !(Boolean) request
+				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM);
+		return rootTag != null && (maxLevels == null || maxLevels > 0);
 	}
 
 	public Tag getCurrentTag() {

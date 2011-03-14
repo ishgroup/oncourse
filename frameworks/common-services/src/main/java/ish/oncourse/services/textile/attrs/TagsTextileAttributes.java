@@ -5,11 +5,9 @@ import java.util.List;
 
 public enum TagsTextileAttributes {
 	TAGS_PARAM_NAME("name:"),
-	TAGS_ENTITY_TYPE_PARAM("entityType:"),
 	TAGS_MAX_LEVELS_PARAM("maxLevels:"),
-	TAGS_SHOW_DETAIL_PARAM("showtopdetail:"),
-	TAGS_HIDE_TOP_LEVEL("isHidingTopLevelTags:"),
-	TAGS_FILTERED_PARAM("isFiltered:");
+	TAGS_SHOW_DETAIL_PARAM("showDetail:"),
+	TAGS_HIDE_TOP_LEVEL("hideTopLevel:");
 	
 	private String value;
 

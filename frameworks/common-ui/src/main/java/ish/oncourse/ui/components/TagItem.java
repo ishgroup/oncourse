@@ -21,31 +21,37 @@ public class TagItem {
 	@Parameter
 	private int childPosition;
 
+	@Parameter
+	private Integer maxLevels;
+
 	@Inject
 	private Request request;
 
 	@Inject
 	private Messages messages;
 
-	private String entityType;
-
 	private boolean showDetails;
+
+	private Integer currentDepth = 0;
 
 	@SetupRender
 	boolean beginRender() {
-		entityType = (String) request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_ENTITY_PARAM);
 		showDetails = Boolean.TRUE.equals(request
 				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM));
-		// prevents rending with the menu parameter is null.
-		return tag != null;
+		// prevents rending with the menu parameter is null or it can't be
+		// rendered
+		final boolean render = tag != null && (maxLevels == null || maxLevels > 0);
+		return render;
 	}
 
 	@BeforeRenderBody
 	boolean beforeChild() {
 		List<Tag> webVisibleTags = tag.getWebVisibleTags();
 		// if the tag has children, render the body to render a child
-		final boolean render = webVisibleTags.size() > 0;
+		currentDepth++;
 
+		final boolean render = webVisibleTags.size() > 0
+				&& (maxLevels == null || maxLevels > currentDepth);
 		if (render) {
 			// sets the container's currentTag to the tag's child at the given
 			// index.
@@ -60,6 +66,7 @@ public class TagItem {
 		// container's currentTag set back to the menu before the body was
 		// rendered.
 		childPosition = childPosition + 1;
+		currentDepth--;
 		// return true on last child index, finishing the iteration over the
 		// children, otherwise re-render the body (to render the next child)
 		return tag.getWebVisibleTags().size() <= childPosition;
@@ -67,6 +74,7 @@ public class TagItem {
 
 	@AfterRender
 	void after() {
+
 		// set the currentTag to the parent after render (pop the stack)
 		Tag parentTag = tag.getParent();
 		if (parentTag != null) {
@@ -78,10 +86,6 @@ public class TagItem {
 		return tag;
 	}
 
-	public String getEntityType() {
-		return entityType;
-	}
-
 	public boolean isShowDetails() {
 		return showDetails && tag.getDetail() != null;
 	}
@@ -89,7 +93,10 @@ public class TagItem {
 	public String getTagItemClass() {
 
 		StringBuffer result = new StringBuffer();
-		if (!tag.getWebVisibleTags().isEmpty()) {
+		System.out.println(!tag.getWebVisibleTags().isEmpty());
+		System.out.println(maxLevels + ">" + currentDepth);
+		if ((!tag.getWebVisibleTags().isEmpty())
+				&& (maxLevels == null || maxLevels > currentDepth + 1)) {
 			result.append(messages.get("li.class.hasChildren"));
 		}
 		String tagLink = getTagLink().toLowerCase();
@@ -106,6 +113,6 @@ public class TagItem {
 	}
 
 	public String getTagLink() {
-		return tag.getLink(entityType);
+		return tag.getLink();
 	}
 }

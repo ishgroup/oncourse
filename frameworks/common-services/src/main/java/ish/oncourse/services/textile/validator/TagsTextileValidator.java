@@ -1,14 +1,13 @@
 package ish.oncourse.services.textile.validator;
 
-import java.util.List;
-import java.util.Map;
-
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
-import ish.oncourse.utils.TagsTextileEntityTypes;
+
+import java.util.List;
+import java.util.Map;
 
 public class TagsTextileValidator implements IValidator {
 
@@ -29,19 +28,11 @@ public class TagsTextileValidator implements IValidator {
 				attrValues);
 		String name = tagParams.get(TagsTextileAttributes.TAGS_PARAM_NAME
 				.getValue());
-		String entityType = tagParams
-				.get(TagsTextileAttributes.TAGS_ENTITY_TYPE_PARAM.getValue());
+	
 		if (name != null) {
 			Tag tagObj = tagService.getTagByFullPath(name);
 			if (tagObj == null) {
 				errors.addFailure(getTagNotFoundByName(name));
-			}
-		}
-		if (entityType != null) {
-			try {
-				TagsTextileEntityTypes.valueOf(entityType);
-			} catch (IllegalArgumentException e) {
-				errors.addFailure(getEntityTypeNotFoundByName(entityType));
 			}
 		}
 	}
@@ -49,9 +40,9 @@ public class TagsTextileValidator implements IValidator {
 	public String getFormatErrorMessage(String tag) {
 		return "The {tags} tag '"
 				+ tag
-				+ "' doesn't match {tags entityType:\"Course\" maxLevels:\"digit\" "
-				+ "showtopdetail:\"true|false\" isHidingTopLevelTags:\"true|false\""
-				+ " isFiltered:\"true|false\" name:\"name\" }";
+				+ "' doesn't match {tags maxLevels:\"digit\" "
+				+ "showDetail:\"true|false\" hideTopLevel:\"true|false\""
+				+ " name:\"name\" }";
 	}
 
 	public String getTagNotFoundByName(String name) {

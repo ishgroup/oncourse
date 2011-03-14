@@ -19,7 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TagsTextileValidatorTest extends CommonValidatorTest {
 
-	private static final String NOT_EXISTING_ENTITY_TYPE = "NotExistingEntity";
 	private static final String EXISTING_TAG_NAME = "tag1";
 	private static final String NOT_EXISTING_TAG_NAME = "tag2";
 
@@ -32,21 +31,11 @@ public class TagsTextileValidatorTest extends CommonValidatorTest {
 		Map<String, String> data = new HashMap<String, String>();
 		for (TagsTextileAttributes attr : TagsTextileAttributes.values()) {
 			switch (attr) {
-			case TAGS_ENTITY_TYPE_PARAM:
-				data
-						.put(TagsTextileAttributes.TAGS_ENTITY_TYPE_PARAM
-								.getValue(),
-								"{tags entityType:\"Course\" entityType:\"AnotherType\"");
-				break;
-			case TAGS_FILTERED_PARAM:
-				data.put(TagsTextileAttributes.TAGS_FILTERED_PARAM.getValue(),
-						"{tags isFiltered:\"true\" isFiltered:\"false\"");
-				break;
 			case TAGS_HIDE_TOP_LEVEL:
 				data
 						.put(TagsTextileAttributes.TAGS_HIDE_TOP_LEVEL
 								.getValue(),
-								"{tags isHidingTopLevelTags:\"true\" isHidingTopLevelTags:\"false\"");
+								"{tags hideTopLevel:\"true\" hideTopLevel:\"false\"");
 				break;
 			case TAGS_MAX_LEVELS_PARAM:
 				data.put(
@@ -60,7 +49,7 @@ public class TagsTextileValidatorTest extends CommonValidatorTest {
 			case TAGS_SHOW_DETAIL_PARAM:
 				data.put(TagsTextileAttributes.TAGS_SHOW_DETAIL_PARAM
 						.getValue(),
-						"{tags showtopdetail:\"true\" showtopdetail:\"false\"");
+						"{tags showDetail:\"true\" showDetail:\"false\"");
 				break;
 			}
 		}
@@ -104,21 +93,4 @@ public class TagsTextileValidatorTest extends CommonValidatorTest {
 				.getTagNotFoundByName(NOT_EXISTING_TAG_NAME), errors.toString());
 	}
 
-	/**
-	 * Emulates the situations when there's entityType with given name and when
-	 * there's no entityType with such a name
-	 */
-	@Test
-	public void testEntityTypeAttribute() {
-		String tag = "{tags entityType:\"Course\"}";
-		validator.validate(tag, errors);
-		assertFalse(errors.hasFailures());
-
-		tag = "{tags entityType:\"" + NOT_EXISTING_ENTITY_TYPE + "\"}";
-		validator.validate(tag, errors);
-		assertTrue(errors.hasFailures());
-		assertEquals(((TagsTextileValidator) validator)
-				.getEntityTypeNotFoundByName(NOT_EXISTING_ENTITY_TYPE), errors
-				.toString());
-	}
 }
