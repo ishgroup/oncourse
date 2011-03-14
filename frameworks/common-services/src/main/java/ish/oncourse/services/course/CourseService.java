@@ -216,7 +216,7 @@ public class CourseService implements ICourseService {
 		Tag browseTag = null;
 		if (searchParams.containsKey(SearchParam.subject)) {
 			String path = searchParams.get(SearchParam.subject);
-			browseTag = tagService.getSubTagByName(path.substring(path.lastIndexOf("/") + 1));
+			browseTag = tagService.getTagByFullPath(path);
 		} else {
 			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
 			if (browseTag != null) {

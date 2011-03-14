@@ -32,7 +32,7 @@ public class TagsTextileValidator implements IValidator {
 		String entityType = tagParams
 				.get(TagsTextileAttributes.TAGS_ENTITY_TYPE_PARAM.getValue());
 		if (name != null) {
-			Tag tagObj = tagService.getSubTagByName(name);
+			Tag tagObj = tagService.getTagByFullPath(name);
 			if (tagObj == null) {
 				errors.addFailure(getTagNotFoundByName(name));
 			}

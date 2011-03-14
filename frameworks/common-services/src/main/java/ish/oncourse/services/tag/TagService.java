@@ -44,27 +44,6 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		return qualifier;
 	}
 
-	public Tag getSubTagByName(String name) {
-		Tag rootTag = getSubjectsTag();
-
-		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
-				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)));
-
-		for (Tag tag : tags) {
-			Tag parent = tag;
-			if (parent.equals(rootTag)) {
-				return tag;
-			}
-			while (parent.getParent() != null) {
-				parent = parent.getParent();
-				if (parent.equals(rootTag)) {
-					return tag;
-				}
-			}
-		}
-		return null;
-	}
-
 	public List<Long> getEntityIdsByTagPath(String tagPath, String entityName) {
 		List<Long> ids = new ArrayList<Long>();
 

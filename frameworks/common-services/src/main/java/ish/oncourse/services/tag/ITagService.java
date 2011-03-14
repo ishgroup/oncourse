@@ -23,8 +23,6 @@ public interface ITagService {
 
 	List<Tag> loadByIds(Object... ids);
 
-	Tag getSubTagByName(String name);
-
 	List<Tag> getTagsForEntity(String entityName, Long entityId);
 
 	/**

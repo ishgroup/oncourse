@@ -1,10 +1,5 @@
 package ish.oncourse.services.textile.renderer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
@@ -12,6 +7,9 @@ import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.services.textile.validator.TagsTextileValidator;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Displays a tree of tags links
@@ -86,7 +84,7 @@ public class TagsTextileRenderer extends AbstractRenderer {
 			Tag parentTag = null;
 			Tag rootTag = tagService.getSubjectsTag();
 			if (paramName != null) {
-				parentTag = tagService.getSubTagByName(paramName);
+				parentTag = tagService.getTagByFullPath(paramName);
 			} else {
 				parentTag = rootTag;
 			}

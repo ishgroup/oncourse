@@ -82,8 +82,8 @@ public class TagsTextileValidatorTest extends CommonValidatorTest {
 		errors = new ValidationErrors();
 		validator = new TagsTextileValidator(tagService);
 		tag = new Tag();
-		when(tagService.getSubTagByName(EXISTING_TAG_NAME)).thenReturn(tag);
-		when(tagService.getSubTagByName(NOT_EXISTING_TAG_NAME))
+		when(tagService.getTagByFullPath(EXISTING_TAG_NAME)).thenReturn(tag);
+		when(tagService.getTagByFullPath(NOT_EXISTING_TAG_NAME))
 				.thenReturn(null);
 	}
 
