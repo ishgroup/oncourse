@@ -91,10 +91,7 @@ public class TagItem {
 	}
 
 	public String getTagItemClass() {
-
 		StringBuffer result = new StringBuffer();
-		System.out.println(!tag.getWebVisibleTags().isEmpty());
-		System.out.println(maxLevels + ">" + currentDepth);
 		if ((!tag.getWebVisibleTags().isEmpty())
 				&& (maxLevels == null || maxLevels > currentDepth + 1)) {
 			result.append(messages.get("li.class.hasChildren"));

@@ -43,7 +43,6 @@ public class TextileCourse {
 	}
 
 	public List<CourseClass> getClassesToShow() {
-		System.out.println(course.getEnrollableClasses().size());
 		return CURRENT_CLASS_QUALIFIER.filterObjects(course.getEnrollableClasses());
 	}
 }
