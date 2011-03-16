@@ -2,15 +2,15 @@ package ish.oncourse.services.textile.validator;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
-import java.util.List;
 import java.util.Map;
 
-public class TagsTextileValidator implements IValidator {
+public class TagsTextileValidator extends AbstractTextileValidator {
 
 	private ITagService tagService;
 
@@ -18,14 +18,14 @@ public class TagsTextileValidator implements IValidator {
 		this.tagService = tagService;
 	}
 
-	public void validate(String tag, ValidationErrors errors) {
-		if (!tag.matches(TextileUtil.TAGS_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
-		}
+	@Override
+	protected void initValidator() {
+		textileType = TextileType.TAGS;
+	}
 
-		List<String> attrValues = TagsTextileAttributes.getAttrValues();
-		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
-		Map<String, String> tagParams = TextileUtil.getTagParams(tag, attrValues);
+	@Override
+	protected void specificTextileValidate(String tag, ValidationErrors errors) {
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String name = tagParams.get(TagsTextileAttributes.TAGS_PARAM_NAME.getValue());
 
 		if (name != null) {

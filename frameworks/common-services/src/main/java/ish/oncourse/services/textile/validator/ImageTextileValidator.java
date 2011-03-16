@@ -1,16 +1,16 @@
 package ish.oncourse.services.textile.validator;
 
-import java.util.List;
-import java.util.Map;
-
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
-public class ImageTextileValidator implements IValidator {
+import java.util.Map;
+
+public class ImageTextileValidator extends AbstractTextileValidator {
 
 	private IBinaryDataService binaryDataService;
 
@@ -18,19 +18,21 @@ public class ImageTextileValidator implements IValidator {
 		this.binaryDataService = binaryDataService;
 	}
 
-	public void validate(String tag, ValidationErrors errors) {
+	@Override
+	protected void initValidator() {
+		textileType = TextileType.IMAGE;
+	}
+
+	@Override
+	protected void specificTextileValidate(String tag, ValidationErrors errors) {
 		BinaryInfo result = null;
-		if (!tag.matches(TextileUtil.IMAGE_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
-		}
+
 		if (!TextileUtil.hasRequiredParam(tag, ImageTextileAttributes.IMAGE_PARAM_ID.getValue())
 				&& !TextileUtil.hasRequiredParam(tag,
 						ImageTextileAttributes.IMAGE_PARAM_NAME.getValue())) {
 			errors.addFailure(getRequiredAttrsMessage(tag), ValidationFailureType.SYNTAX);
 		}
-		List<String> attrValues = ImageTextileAttributes.getAttrValues();
-		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
-		Map<String, String> tagParams = TextileUtil.getTagParams(tag, attrValues);
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String id = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_ID.getValue());
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());
 		if (id != null) {

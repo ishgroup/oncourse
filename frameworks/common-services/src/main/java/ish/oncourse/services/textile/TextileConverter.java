@@ -91,16 +91,19 @@ public class TextileConverter implements ITextileConverter {
 			if (renderer != null) {
 				String replacement = renderer.render(tag, tempErrors);
 				if (tempErrors.hasSyntaxFailures()) {
-					replacement = "<!-- ERROR in " + tag + ". Syntax error --!> ";
+					replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag);
 				} else if (tempErrors.hasContentNotFoundFailures() || replacement == null) {
 					replacement = "<div></div>";
 				}
 				result = result.replace(tag, replacement);
 			}
+			errors.appendErrors(tempErrors);
+			tempErrors.clear();
 		}
-
+		
 		return result;
 	}
+
 
 	private IRenderer getRendererForTag(String tag) {
 		IRenderer renderer = null;

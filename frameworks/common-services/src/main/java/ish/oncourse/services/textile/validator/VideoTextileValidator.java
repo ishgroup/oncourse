@@ -1,25 +1,26 @@
 package ish.oncourse.services.textile.validator;
 
-import java.util.List;
-import java.util.Map;
-
+import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.VideoTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
-public class VideoTextileValidator implements IValidator {
+import java.util.Map;
 
-	public void validate(String tag, ValidationErrors errors) {
-		if (!tag.matches(TextileUtil.VIDEO_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
-		}
+public class VideoTextileValidator extends AbstractTextileValidator {
+
+	@Override
+	protected void initValidator() {
+		textileType = TextileType.VIDEO;
+	}
+
+	@Override
+	protected void specificTextileValidate(String tag, ValidationErrors errors) {
 		TextileUtil.checkRequiredParams(tag, errors,
 				VideoTextileAttributes.VIDEO_PARAM_ID.getValue(),
 				VideoTextileAttributes.VIDEO_PARAM_TYPE.getValue());
-		List<String> attrValues = VideoTextileAttributes.getAttrValues();
-		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
-		Map<String, String> tagParams = TextileUtil.getTagParams(tag, attrValues);
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String type = tagParams.get(VideoTextileAttributes.VIDEO_PARAM_TYPE.getValue());
 
 		if (!"youtube".equals(type)) {

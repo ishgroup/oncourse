@@ -59,6 +59,6 @@ public class BlockTextileRendererTest {
 		when(webContentService.getWebContent(null, null)).thenReturn(null);
 		String result = blockTextileRenderer.render("{block}", errors);
 		assertFalse(errors.hasFailures());
-		assertEquals("", result);
+		assertNull(result);
 	}
 }

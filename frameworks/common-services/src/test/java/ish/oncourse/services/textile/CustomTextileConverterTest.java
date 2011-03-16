@@ -204,8 +204,9 @@ public class CustomTextileConverterTest {
 	@Test
 	public void smokeCourseListConvertTest() {
 		List<Course> courses=new ArrayList<Course>();
+		courses.add(new Course());
 		String successfulResult = "successfully rendered courses block";
-		when(courseService.getCourses(null, null, null, null)).thenReturn(
+		when(courseService.getCourses(null, null, false, null)).thenReturn(
 				courses);
 		testPageRenderParams(COURSE_LIST, TextileUtil.TEXTILE_COURSE_LIST_PAGE,
 				successfulResult);
@@ -265,9 +266,18 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void errorsInTextilesConvertTest() {
-		String tag = "{block test}{course test}{image test}{page test}{tags test}{video test}";
+		String tag = "{block test}{course test}{courses test}{image test}{page test}{tags test}{video test}";
 		String result = textileConverter.convertCustomTextile(tag, errors);
-		assertEquals(tag, result);
+		StringBuffer expecting=new StringBuffer();
+		expecting.append(TextileUtil.getReplacementForSyntaxErrorTag("{block test}")).
+					append(TextileUtil.getReplacementForSyntaxErrorTag("{course test}")).
+					append(TextileUtil.getReplacementForSyntaxErrorTag("{courses test}")).
+					append(TextileUtil.getReplacementForSyntaxErrorTag("{image test}")).
+					append(TextileUtil.getReplacementForSyntaxErrorTag("{page test}")).
+					append(TextileUtil.getReplacementForSyntaxErrorTag("{tags test}")).
+					append(TextileUtil.getReplacementForSyntaxErrorTag("{video test}"));
+		
+		assertEquals(expecting.toString(), result);
 		assertTrue(errors.hasFailures());
 	}
 

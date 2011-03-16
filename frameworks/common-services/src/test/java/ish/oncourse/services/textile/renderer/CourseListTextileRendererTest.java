@@ -55,6 +55,7 @@ public class CourseListTextileRendererTest {
 	public void courseListWithParameters() {
 
 		List<Course> courses = new ArrayList<Course>();
+		courses.add(new Course());
 		String tagName = "/tag";
 		CourseListSortValue sort = CourseListSortValue.DATE;
 		Boolean isAscending = false;

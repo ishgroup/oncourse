@@ -2,15 +2,15 @@ package ish.oncourse.services.textile.validator;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.CourseListTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
-import java.util.List;
 import java.util.Map;
 
-public class CourseListTextileValidator implements IValidator {
+public class CourseListTextileValidator extends AbstractTextileValidator {
 
 	private ITagService tagService;
 
@@ -19,14 +19,13 @@ public class CourseListTextileValidator implements IValidator {
 	}
 
 	@Override
-	public void validate(String tag, ValidationErrors errors) {
-		if (!tag.matches(TextileUtil.COURSE_LIST_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
-		}
+	protected void initValidator() {
+		textileType = TextileType.COURSE_LIST;
+	}
 
-		List<String> attrValues = CourseListTextileAttributes.getAttrValues();
-		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
-		Map<String, String> tagParams = TextileUtil.getTagParams(tag, attrValues);
+	@Override
+	protected void specificTextileValidate(String tag, ValidationErrors errors) {
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String tagged = tagParams.get(CourseListTextileAttributes.COURSE_LIST_PARAM_TAG.getValue());
 
 		if (tagged != null) {
@@ -36,7 +35,6 @@ public class CourseListTextileValidator implements IValidator {
 						ValidationFailureType.CONTENT_NOT_FOUND);
 			}
 		}
-
 	}
 
 	@Override

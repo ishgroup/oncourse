@@ -18,30 +18,7 @@ public class TextileUtil {
 	public static final String STR_WHITESPACE_SLASH= inQuots("((\\w|\\s|/)+)");
 	public static final String STR_IN_QUOTS= inQuots("((\\w)+)");
 	
-	public static final String IMAGE_REGEXP = "\\{image( ((name:"+STR_WHITESPACE+")|(id:"
-												+DIGIT_IN_QUOTS+")|(align:"+inQuots("(right|left|center)")+")|(caption:"
-												+STR_WHITESPACE+")|(alt:"
-												+STR_WHITESPACE+")|(link:"
-												+"(((\\w)|(\\W))+))|(title:"
-												+STR_IN_QUOTS+")|(width:"
-												+PIXELS_IN_QUOTS+")|(height:"
-												+PIXELS_IN_QUOTS+")|(class:"+STR_IN_QUOTS+"))){1,10}}";
-	
-	public static final String BLOCK_REGEXP = "\\{block( ((name:"+STR_WHITESPACE+")|(tag:"+STR_WHITESPACE_SLASH+"))){0,2}}";
-	public static final String VIDEO_REGEXP="\\{video( ((id:"+STR_IN_QUOTS+")|(type:"+STR_IN_QUOTS+")|(width:"+PIXELS_IN_QUOTS+")|(height:"+PIXELS_IN_QUOTS+"))){1,4}}";
-	public static final String COURSE_REGEXP = "\\{course( ((code:" + STR_IN_QUOTS + ")|" +
-															"(tag:" + STR_WHITESPACE_SLASH + ")|" +
-															"(showclasses:" + BOOLEAN_IN_QUOTS + "))){0,3}}";
-	public static final String COURSE_LIST_REGEXP = "\\{courses( ((tag:" + STR_WHITESPACE_SLASH + ")|" +
-																"(limit:" + DIGIT_IN_QUOTS+ ")|" +
-																"(sort:"+inQuots("(date|alphabetical|availability)")+")|" +
-																"(order:"+inQuots("(asc|desc)")+"))){0,4}}";
-	public static final String PAGE_REGEXP = "\\{page( ((code:"+DIGIT_IN_QUOTS+"))){0,1}}";
-	public static final String TAGS_REGEXP="\\{tags( ((maxLevels:"
-													+DIGIT_IN_QUOTS+")|(showDetail:"
-													+BOOLEAN_IN_QUOTS+")|(hideTopLevel:"
-													+BOOLEAN_IN_QUOTS+")|(name:"+STR_WHITESPACE_SLASH+"))){0,4}}";
-	
+		
 	public static final String VIDEO_WIDTH_DEFAULT = "425";
 	public static final String VIDEO_HEIGHT_DEFAULT = "344";
 	
@@ -65,7 +42,7 @@ public class TextileUtil {
 	public static final String TEXTILE_TAGS_PAGE_ROOT_TAG_PARAM = "textileTags";
 	public static final String TEXTILE_VIDEO_PAGE_PARAM = "videoParameters";
 	
-	private static String inQuots(String param) {
+	public static String inQuots(String param) {
 		return "(" + QUOT + ")" + param + "(" + QUOT + ")";
 	}
 
@@ -153,4 +130,9 @@ public class TextileUtil {
 		}
 		return true;
 	}
+	
+	public static String getReplacementForSyntaxErrorTag(String tag) {
+		return "<!-- ERROR in " + tag + ". Syntax error --!> ";
+	}
+
 }

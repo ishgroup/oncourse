@@ -2,15 +2,15 @@ package ish.oncourse.services.textile.validator;
 
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.content.IWebContentService;
+import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.BlockTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
-import java.util.List;
 import java.util.Map;
 
-public class BlockTextileValidator implements IValidator {
+public class BlockTextileValidator extends AbstractTextileValidator {
 
 	private IWebContentService webContentService;
 
@@ -18,16 +18,15 @@ public class BlockTextileValidator implements IValidator {
 		this.webContentService = webContentService;
 	}
 
-	public void validate(String tag, ValidationErrors errors) {
+	@Override
+	protected void initValidator() {
+		textileType = TextileType.BLOCK;
+	}
+
+	@Override
+	protected void specificTextileValidate(String tag, ValidationErrors errors) {
 		WebContent result = null;
-
-		if (!tag.matches(TextileUtil.BLOCK_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
-		}
-		List<String> attrValues = BlockTextileAttributes.getAttrValues();
-		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
-
-		Map<String, String> tagParams = TextileUtil.getTagParams(tag, attrValues);
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 
 		String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME.getValue());
 

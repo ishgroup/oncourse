@@ -1,16 +1,16 @@
 package ish.oncourse.services.textile.validator;
 
-import java.util.List;
-import java.util.Map;
-
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.PageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
-public class PageTextileValidator implements IValidator {
+import java.util.Map;
+
+public class PageTextileValidator extends AbstractTextileValidator {
 
 	private IWebNodeService webNodeService;
 
@@ -18,15 +18,14 @@ public class PageTextileValidator implements IValidator {
 		this.webNodeService = webNodeService;
 	}
 
-	public void validate(String tag, ValidationErrors errors) {
-		if (!tag.matches(TextileUtil.PAGE_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
-		}
+	@Override
+	protected void initValidator() {
+		textileType = TextileType.PAGE;
+	}
 
-		List<String> attrValues = PageTextileAttributes.getAttrValues();
-		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
-
-		Map<String, String> tagParams = TextileUtil.getTagParams(tag, attrValues);
+	@Override
+	protected void specificTextileValidate(String tag, ValidationErrors errors) {
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String code = tagParams.get(PageTextileAttributes.PAGE_CODE_PARAM.getValue());
 		WebNode node = null;
 		if (code != null && code.matches("(\\d+)")) {
