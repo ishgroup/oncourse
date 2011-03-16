@@ -38,24 +38,24 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private ICourseService courseService;
-	
+
 	@Inject
 	private IWebNodeService webNodeService;
 
 	@Inject
 	private IPageRenderer pageRenderer;
-	
+
 	@Inject
 	private ITagService tagService;
 
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
-	public TextileConverter() {}
-	
+	public TextileConverter() {
+	}
+
 	public TextileConverter(IBinaryDataService binaryDataService,
 			IWebContentService webContentService, ICourseService courseService,
-			IPageRenderer pageRenderer, IWebNodeService webNodeService,
-			ITagService tagService) {
+			IPageRenderer pageRenderer, IWebNodeService webNodeService, ITagService tagService) {
 		this.binaryDataService = binaryDataService;
 		this.webContentService = webContentService;
 		this.courseService = courseService;
@@ -68,38 +68,40 @@ public class TextileConverter implements ITextileConverter {
 		StringWriter writer = new StringWriter();
 
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
-		// avoid the <html> and <body> tags 
+		// avoid the <html> and <body> tags
 		builder.setEmitAsDocument(false);
 
 		TextileDialect textileDialect = new TextileDialect();
 		MarkupParser parser = new MarkupParser(textileDialect);
-	
+
 		parser.setBuilder(builder);
 
 		parser.parse(content, false);
 		return writer.toString();
 	}
-	
+
 	public String convertCustomTextile(String content, ValidationErrors errors) {
 		Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP);
 		Matcher matcher = pattern.matcher(content);
 		String result = content;
-
+		ValidationErrors tempErrors = new ValidationErrors();
 		while (matcher.find()) {
 			String tag = matcher.group();
 			IRenderer renderer = getRendererForTag(tag);
 			if (renderer != null) {
-				String replacement = renderer.render(tag, errors);
-				if (!errors.hasFailures() && replacement != null) {
-					result = result.replace(tag, replacement);
+				String replacement = renderer.render(tag, tempErrors);
+				if (tempErrors.hasSyntaxFailures()) {
+					replacement = "<!-- ERROR in " + tag + ". Syntax error --!> ";
+				} else if (tempErrors.hasContentNotFoundFailures() || replacement == null) {
+					replacement = "<div></div>";
 				}
+				result = result.replace(tag, replacement);
 			}
 		}
 
 		return result;
 	}
 
-	
 	private IRenderer getRendererForTag(String tag) {
 		IRenderer renderer = null;
 		for (TextileType type : TextileType.values()) {

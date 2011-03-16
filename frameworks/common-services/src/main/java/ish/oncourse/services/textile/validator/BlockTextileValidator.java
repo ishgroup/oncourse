@@ -5,6 +5,7 @@ import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.BlockTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.util.ValidationFailureType;
 
 import java.util.List;
 import java.util.Map;
@@ -21,22 +22,20 @@ public class BlockTextileValidator implements IValidator {
 		WebContent result = null;
 
 		if (!tag.matches(TextileUtil.BLOCK_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag));
+			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
 		}
 		List<String> attrValues = BlockTextileAttributes.getAttrValues();
 		TextileUtil.checkParamsUniquence(tag, errors, attrValues);
 
-		Map<String, String> tagParams = TextileUtil.getTagParams(tag,
-				attrValues);
+		Map<String, String> tagParams = TextileUtil.getTagParams(tag, attrValues);
 
-		String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME
-				.getValue());
+		String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME.getValue());
 
 		if (name != null) {
-			result = webContentService.getWebContent(WebContent.NAME_PROPERTY,
-					name);
+			result = webContentService.getWebContent(WebContent.NAME_PROPERTY, name);
 			if (result == null) {
-				errors.addFailure(getBlockNotFoundErrorMessage(name));
+				errors.addFailure(getBlockNotFoundErrorMessage(name),
+						ValidationFailureType.CONTENT_NOT_FOUND);
 			}
 		}
 	}
@@ -54,8 +53,7 @@ public class BlockTextileValidator implements IValidator {
 	 * @return
 	 */
 	public String getFormatErrorMessage(String tag) {
-		return "The tag: " + tag
-				+ " doesn't match pattern {block name:\"My Block\"}";
+		return "The tag: " + tag + " doesn't match pattern {block name:\"My Block\"}";
 	}
 
 }

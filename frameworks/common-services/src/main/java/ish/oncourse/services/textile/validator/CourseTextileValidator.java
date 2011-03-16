@@ -10,6 +10,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.CourseTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.util.ValidationFailureType;
 
 public class CourseTextileValidator implements IValidator {
 
@@ -25,7 +26,7 @@ public class CourseTextileValidator implements IValidator {
 
 	public void validate(String tag, ValidationErrors errors) {
 		if (!tag.matches(TextileUtil.COURSE_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag));
+			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
 		}
 
 		List<String> attrValues = CourseTextileAttributes.getAttrValues();
@@ -39,13 +40,13 @@ public class CourseTextileValidator implements IValidator {
 		if (code != null) {
 			Course course = courseService.getCourse(Course.CODE_PROPERTY, code);
 			if (course == null) {
-				errors.addFailure(getCourseNotFoundByCode(code));
+				errors.addFailure(getCourseNotFoundByCode(code), ValidationFailureType.CONTENT_NOT_FOUND);
 			}
 		}
 		if (tagged != null) {
 			Tag tagEntity = tagService.getTagByFullPath(tagged);
 			if (tagEntity == null) {
-				errors.addFailure(getTagNotFoundByName(tagged));
+				errors.addFailure(getTagNotFoundByName(tagged), ValidationFailureType.CONTENT_NOT_FOUND);
 			}
 		}
 

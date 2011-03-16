@@ -1,6 +1,7 @@
 package ish.oncourse.services.textile;
 
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.util.ValidationFailureType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -107,7 +108,7 @@ public class TextileUtil {
 			ValidationErrors errors, List<String> params) {
 		for (String param : params) {
 			if (!isUniqueParam(tag, param)) {
-				errors.addFailure(getDoubledParamErrorMessage(tag, param));
+				errors.addFailure(getDoubledParamErrorMessage(tag, param), ValidationFailureType.SYNTAX);
 			}
 		}
 	}
@@ -127,7 +128,7 @@ public class TextileUtil {
 			ValidationErrors errors, String... params) {
 		for (String param : params) {
 			if (!hasRequiredParam(tag, param)) {
-				errors.addFailure(getRequiredParamErrorMessage(tag, param));
+				errors.addFailure(getRequiredParamErrorMessage(tag, param), ValidationFailureType.SYNTAX);
 			}
 		}
 	}

@@ -5,6 +5,7 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.CourseListTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.util.ValidationFailureType;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class CourseListTextileValidator implements IValidator {
 	@Override
 	public void validate(String tag, ValidationErrors errors) {
 		if (!tag.matches(TextileUtil.COURSE_LIST_REGEXP)) {
-			errors.addFailure(getFormatErrorMessage(tag));
+			errors.addFailure(getFormatErrorMessage(tag), ValidationFailureType.SYNTAX);
 		}
 
 		List<String> attrValues = CourseListTextileAttributes.getAttrValues();
@@ -31,7 +32,8 @@ public class CourseListTextileValidator implements IValidator {
 		if (tagged != null) {
 			Tag tagEntity = tagService.getTagByFullPath(tagged);
 			if (tagEntity == null) {
-				errors.addFailure(getTagNotFoundByName(tagged));
+				errors.addFailure(getTagNotFoundByName(tagged),
+						ValidationFailureType.CONTENT_NOT_FOUND);
 			}
 		}
 

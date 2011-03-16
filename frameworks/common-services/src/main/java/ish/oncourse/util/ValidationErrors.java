@@ -10,10 +10,10 @@ public class ValidationErrors implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3675286810916569738L;
-	private List<String> failures;
+	private List<ValidationFailure> failures;
 
 	public ValidationErrors() {
-		failures = new ArrayList<String>();
+		failures = new ArrayList<ValidationFailure>();
 	}
 
 	/**
@@ -22,12 +22,13 @@ public class ValidationErrors implements Serializable {
 	 * @param failure
 	 *            failure to be added. It may not be null.
 	 */
-	public void addFailure(String failure) {
-		if (failure == null) {
-			throw new IllegalArgumentException("failure cannot be null.");
+	public void addFailure(String failure, ValidationFailureType type) {
+		if (failure == null || type == null) {
+			throw new IllegalArgumentException("failure message and type cannot be null.");
 		}
-		if (!failures.contains(failure)) {
-			failures.add(failure);
+		ValidationFailure validationFailure = new ValidationFailure(failure, type);
+		if (!failures.contains(validationFailure)) {
+			failures.add(validationFailure);
 		}
 	}
 
@@ -44,7 +45,7 @@ public class ValidationErrors implements Serializable {
 		StringBuilder ret = new StringBuilder();
 		String separator = System.getProperty("line.separator");
 
-		for (String failure : failures) {
+		for (ValidationFailure failure : failures) {
 			if (ret.length() > 0) {
 				ret.append(separator);
 			}
@@ -53,16 +54,43 @@ public class ValidationErrors implements Serializable {
 
 		return ret.toString();
 	}
-	
+
 	public void clear() {
-		failures = new ArrayList<String>();
+		failures = new ArrayList<ValidationFailure>();
 	}
-	
-	public boolean contains(String error){
-		return failures.contains(error);
+
+	public boolean contains(String error) {
+		for (ValidationFailure failure : failures) {
+			if (failure.toString().equals(error)) {
+				return true;
+			}
+		}
+		return false;
 	}
-	
-	public int getSize(){
+
+	public int getSize() {
 		return failures.size();
 	}
+
+	public boolean hasSyntaxFailures() {
+		return hasSpecificFailures(ValidationFailureType.SYNTAX);
+	}
+
+	public boolean hasContentNotFoundFailures() {
+		return hasSpecificFailures(ValidationFailureType.CONTENT_NOT_FOUND);
+	}
+
+	private boolean hasSpecificFailures(ValidationFailureType type) {
+		for (ValidationFailure failure : failures) {
+			if (failure.getType() == type) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void appendErrors(ValidationErrors errors) {
+		failures.addAll(errors.failures);
+	}
+
 }

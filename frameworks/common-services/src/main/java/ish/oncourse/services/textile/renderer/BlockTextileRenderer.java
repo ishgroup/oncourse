@@ -34,8 +34,7 @@ public class BlockTextileRenderer extends AbstractRenderer {
 
 	private ITextileConverter converter;
 
-	public BlockTextileRenderer(IWebContentService webBlockDataService,
-			ITextileConverter converter) {
+	public BlockTextileRenderer(IWebContentService webBlockDataService, ITextileConverter converter) {
 		validator = new BlockTextileValidator(webBlockDataService);
 		this.webBlockDataService = webBlockDataService;
 		this.converter = converter;
@@ -49,11 +48,9 @@ public class BlockTextileRenderer extends AbstractRenderer {
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					BlockTextileAttributes.getAttrValues());
 
-			String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME
-					.getValue());
+			String name = tagParams.get(BlockTextileAttributes.BLOCK_PARAM_NAME.getValue());
 			if (name != null) {
-				webBlock = webBlockDataService.getWebContent(
-						WebContent.NAME_PROPERTY, name);
+				webBlock = webBlockDataService.getWebContent(WebContent.NAME_PROPERTY, name);
 			} else {
 				webBlock = webBlockDataService.getWebContent(null, null);
 			}
@@ -69,7 +66,7 @@ public class BlockTextileRenderer extends AbstractRenderer {
 					tag = result;
 				}
 			} else {
-				tag = "";
+				tag = null;
 			}
 		}
 		return tag;

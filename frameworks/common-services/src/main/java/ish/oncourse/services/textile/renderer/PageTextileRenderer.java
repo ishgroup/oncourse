@@ -37,8 +37,7 @@ public class PageTextileRenderer extends AbstractRenderer {
 
 	private IPageRenderer pageRenderer;
 
-	public PageTextileRenderer(IWebNodeService webNodeService,
-			IPageRenderer pageRenderer) {
+	public PageTextileRenderer(IWebNodeService webNodeService, IPageRenderer pageRenderer) {
 		this.webNodeService = webNodeService;
 		this.pageRenderer = pageRenderer;
 		validator = new PageTextileValidator(webNodeService);
@@ -47,25 +46,25 @@ public class PageTextileRenderer extends AbstractRenderer {
 	@Override
 	public String render(String tag, ValidationErrors errors) {
 		tag = super.render(tag, errors);
-		
+
 		if (!errors.hasFailures()) {
 			WebNode node = null;
 			Map<String, String> tagParams = TextileUtil.getTagParams(tag,
 					PageTextileAttributes.getAttrValues());
-		
-			String code = tagParams.get(PageTextileAttributes.PAGE_CODE_PARAM
-					.getValue());
+
+			String code = tagParams.get(PageTextileAttributes.PAGE_CODE_PARAM.getValue());
 
 			if (code != null) {
-				node = webNodeService.getNodeForNodeNumber(Integer.valueOf(code)); 
+				node = webNodeService.getNodeForNodeNumber(Integer.valueOf(code));
 			} else {
 				node = webNodeService.getRandomNode();
 			}
 			if (node != null) {
 				Map<String, Object> parameters = new HashMap<String, Object>();
 				parameters.put(IWebNodeService.NODE, node);
-				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_PAGE_PAGE,
-						parameters);
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_PAGE_PAGE, parameters);
+			} else {
+				tag = null;
 			}
 		}
 		return tag;

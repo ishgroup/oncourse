@@ -64,10 +64,13 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 					.getByName(sort), Boolean.valueOf(order),
 					limit == null ? null : Integer.valueOf(limit));
 
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put(TextileUtil.TEXTILE_COURSE_LIST_PAGE_PARAM, courses);
-			tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_LIST_PAGE, parameters);
-
+			if (courses.isEmpty()) {
+				tag = null;
+			} else {
+				Map<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put(TextileUtil.TEXTILE_COURSE_LIST_PAGE_PARAM, courses);
+				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_COURSE_LIST_PAGE, parameters);
+			}
 		}
 		return tag;
 

@@ -82,7 +82,8 @@ public class TagsTextileRenderer extends AbstractRenderer {
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM,
 						Boolean.valueOf(hideTopLevel));
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE, parameters);
-
+			} else {
+				tag = null;
 			}
 		}
 		return tag;
