@@ -18,11 +18,9 @@ import ish.oncourse.util.ValidationErrors;
  * <pre>
  * Example: 
  * 
- * {page template:&quot;Page with intro&quot; code:&quot;123&quot;} 
+ * {page code:&quot;123&quot;} 
  * 
  * The parameters are as follows: 
- * 
- * template: the name of the Template used to display the page content.
  * 
  * code: if 123 is specified, only the page with that node number will be displayed.
  * Otherwise, a random page will be displayed.
@@ -30,7 +28,6 @@ import ish.oncourse.util.ValidationErrors;
  * 
  * </pre>
  */
-// TODO implement the template attribute
 public class PageTextileRenderer extends AbstractRenderer {
 
 	private IWebNodeService webNodeService;
