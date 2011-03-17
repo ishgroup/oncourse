@@ -17,6 +17,12 @@
 	<name>Willow - CMS Parent POM</name>
 	<description>Parent POM of the onCourse Willow CMS</description>
 
+	<properties>
+		<tomcat.cluster>B</tomcat.cluster>
+		<tomcat-test.port>7101</tomcat-test.port>
+		<tomcat-dev.port>11001</tomcat-dev.port>
+		<tomcat.path>cms</tomcat.path>
+	</properties>
 
 	<modules>
 		<module>cms-services</module>

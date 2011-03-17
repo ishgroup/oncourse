@@ -17,6 +17,10 @@
 
 	<properties>
 		<config.dir>dev</config.dir>
+		<tomcat.cluster>B</tomcat.cluster>
+		<tomcat-test.port>7101</tomcat-test.port>
+		<tomcat-dev.port>11001</tomcat-dev.port>
+		<tomcat.path>enrol</tomcat.path>
 	</properties>
 
 	<dependencies>

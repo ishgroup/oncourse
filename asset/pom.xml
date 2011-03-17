@@ -18,6 +18,10 @@
 
 	<properties>
 		<config.dir>dev</config.dir>
+		<tomcat.cluster>D</tomcat.cluster>
+		<tomcat-test.port>7301</tomcat-test.port>
+		<tomcat-dev.port>13001</tomcat-dev.port>
+		<tomcat.path>asset</tomcat.path>
 	</properties>
 
 	<dependencies>
@@ -88,6 +92,7 @@
 				</dependency>
 			</dependencies>
 		</profile>
+
 	</profiles>
 
 	<build>

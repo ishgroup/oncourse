@@ -112,7 +112,8 @@
 						<artifactId>tomcat-maven-plugin</artifactId>
 						<configuration>
 							<server>tomcat-test</server>
-							<url>http://freebsd.vm.ish.com.au:10001/manager/text</url>
+							<url>http://freebsd.vm.ish.com.au:${tomcat-test.port}/manager/text</url>
+							<path>${tomcat.path}</path>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -128,7 +129,8 @@
 						<artifactId>tomcat-maven-plugin</artifactId>
 						<configuration>
 							<server>tomcat-dev</server>
-							<url>http://freebsd.vm.ish.com.au:7001/manager/text</url>
+							<url>http://freebsd.vm.ish.com.au:${tomcat-dev.port}/manager/text</url>
+							<path>${tomcat.path}</path>
 						</configuration>
 					</plugin>
 				</plugins>
