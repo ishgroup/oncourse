@@ -21,7 +21,7 @@
 		<tomcat.cluster>B</tomcat.cluster>
 		<tomcat-test.port>7101</tomcat-test.port>
 		<tomcat-dev.port>10101</tomcat-dev.port>
-		<tomcat.path>cms</tomcat.path>
+		<tomcat.path>/cms</tomcat.path>
 	</properties>
 
 	<modules>

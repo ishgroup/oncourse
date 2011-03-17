@@ -23,7 +23,7 @@
 		<tomcat.cluster>B</tomcat.cluster>
 		<tomcat-test.port>7101</tomcat-test.port>
 		<tomcat-dev.port>10101</tomcat-dev.port>
-		<tomcat.path>portal</tomcat.path>
+		<tomcat.path>/portal</tomcat.path>
 	</properties>
 
 	<dependencies>

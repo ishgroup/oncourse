@@ -22,7 +22,7 @@
 		<tomcat.cluster>A</tomcat.cluster>
 		<tomcat-test.port>7001</tomcat-test.port>
 		<tomcat-dev.port>10001</tomcat-dev.port>
-		<tomcat.path>search</tomcat.path>
+		<tomcat.path>/search</tomcat.path>
 	</properties>
 	
 	<dependencies>

@@ -21,7 +21,7 @@
 		<tomcat.cluster>C</tomcat.cluster>
 		<tomcat-test.port>7201</tomcat-test.port>
 		<tomcat-dev.port>10201</tomcat-dev.port>
-		<tomcat.path>services</tomcat.path>
+		<tomcat.path>/services</tomcat.path>
 	</properties>
 	
 	<modules>

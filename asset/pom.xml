@@ -21,7 +21,7 @@
 		<tomcat.cluster>D</tomcat.cluster>
 		<tomcat-test.port>7301</tomcat-test.port>
 		<tomcat-dev.port>10301</tomcat-dev.port>
-		<tomcat.path>asset</tomcat.path>
+		<tomcat.path>/asset</tomcat.path>
 	</properties>
 
 	<dependencies>
