@@ -18,6 +18,7 @@
 	<description>onCourse Willow Search application wrapper over Solr.</description>
 
 	<properties>
+		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
 		<tomcat.cluster>A</tomcat.cluster>
 		<tomcat-test.port>7001</tomcat-test.port>
 		<tomcat-dev.port>10001</tomcat-dev.port>
@@ -63,8 +64,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	<properties>
-		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-	</properties>
+
 </project>
