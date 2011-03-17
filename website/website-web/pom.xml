@@ -16,10 +16,6 @@
 	<properties>
 		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
 		<config.dir>dev</config.dir>
-		<tomcat.cluster>A</tomcat.cluster>
-		<tomcat-test.port>7001</tomcat-test.port>
-		<tomcat-dev.port>10001</tomcat-dev.port>
-		<tomcat.path>web</tomcat.path>
 	</properties>
 
 	<dependencies>

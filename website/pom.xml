@@ -18,6 +18,13 @@
 	<name>Willow - Web Site Parent POM</name>
 	<description>Parent POM of the onCourse Website</description>
 
+	<properties>
+		<tomcat.cluster>A</tomcat.cluster>
+		<tomcat-test.port>7001</tomcat-test.port>
+		<tomcat-dev.port>10001</tomcat-dev.port>
+		<tomcat.path>web</tomcat.path>
+	</properties>
+	
 	<modules>
 		<module>website-web</module>
 	</modules>

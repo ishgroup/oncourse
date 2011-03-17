@@ -17,10 +17,6 @@
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<config.dir>dev</config.dir>
 		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-		<tomcat.cluster>C</tomcat.cluster>
-		<tomcat-test.port>7201</tomcat-test.port>
-		<tomcat-dev.port>12001</tomcat-dev.port>
-		<tomcat.path>services</tomcat.path>
 	</properties>
 
 	<dependencies>

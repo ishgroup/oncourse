@@ -16,6 +16,14 @@
 	<name>Willow - WebServices Parent POM</name>
 	<description>Parent POM of the onCourse Web Services application</description>
 
+	<properties>
+		<cxf.version>2.3.1</cxf.version>
+		<tomcat.cluster>C</tomcat.cluster>
+		<tomcat-test.port>7201</tomcat-test.port>
+		<tomcat-dev.port>10201</tomcat-dev.port>
+		<tomcat.path>services</tomcat.path>
+	</properties>
+	
 	<modules>
 		<module>webservices-web</module>
 	</modules>
@@ -67,9 +75,5 @@
 
 		</dependencies>
 	</dependencyManagement>
-
-	<properties>
-		<cxf.version>2.3.1</cxf.version>
-	</properties>
 
 </project>
