@@ -3,9 +3,10 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._Tag;
 import ish.oncourse.utils.TagsTextileEntityTypes;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Tag extends _Tag implements Queueable {
@@ -65,10 +66,19 @@ public class Tag extends _Tag implements Queueable {
 		while (subTag != null) {
 			String shortName = subTag.getShortName();
 			String name = shortName != null ? shortName : subTag.getName();
-			//rewrite for url
-			path = "/" + name.replaceAll(" ", "+").replaceAll("/", "|") + path;
+			// rewrite for url
+			try {
+				// FIXME setup web container and httpd correctly to prevent them
+				// from decoding URI in a way of changing "%2B" to "+", not to
+				// " "
+				path = "/"
+						+ URLEncoder.encode(name.replaceAll(" ", "_+").replaceAll("/", "|"),
+								"UTF-8") + path;
+			} catch (UnsupportedEncodingException e) {
+				path = "/";
+			}
 			Tag parent = subTag.getParent();
-			//hide "Subjects" from url
+			// hide "Subjects" from url
 			if (parent == null || parent.getName().equalsIgnoreCase(SUBJECTS_TAG_NAME)) {
 				subTag = null;
 			} else {

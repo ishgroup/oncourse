@@ -102,7 +102,10 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		if (path.contains("+") || path.contains("|")) {
 			for (int j = 0; j < tagNames.length; j++) {
 				// rewrite url
-				tagNames[j] = tagNames[j].replaceAll("[+]", " ").replaceAll("[|]", "/");
+				// FIXME setup web container and httpd correctly to prevent them
+				// from decoding URI in a way of changing "%2B" to "+", not to
+				// " "
+				tagNames[j] = tagNames[j].replaceAll("[_][+]", " ").replaceAll("[|]", "/");
 			}
 		}
 
