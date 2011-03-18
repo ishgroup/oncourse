@@ -19,8 +19,9 @@
 	<properties>
 		<config.dir>dev</config.dir>
 		<tomcat.cluster>D</tomcat.cluster>
-		<tomcat-test.port>7301</tomcat-test.port>
-		<tomcat-dev.port>10301</tomcat-dev.port>
+		<tomcat-dev.port>7301</tomcat-dev.port>
+		<tomcat-test.port>10301</tomcat-test.port>
+		<tomcat-staging.port>10301</tomcat-staging.port>
 		<tomcat.path>/asset</tomcat.path>
 	</properties>
 

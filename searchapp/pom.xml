@@ -20,8 +20,9 @@
 	<properties>
 		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
 		<tomcat.cluster>A</tomcat.cluster>
-		<tomcat-test.port>7001</tomcat-test.port>
-		<tomcat-dev.port>10001</tomcat-dev.port>
+		<tomcat-dev.port>7001</tomcat-dev.port>
+		<tomcat-test.port>10001</tomcat-test.port>
+		<tomcat-staging.port>10001</tomcat-staging.port>
 		<tomcat.path>/search</tomcat.path>
 	</properties>
 	

@@ -19,8 +19,9 @@
 	<properties>
 		<cxf.version>2.3.1</cxf.version>
 		<tomcat.cluster>C</tomcat.cluster>
-		<tomcat-test.port>7201</tomcat-test.port>
-		<tomcat-dev.port>10201</tomcat-dev.port>
+		<tomcat-dev.port>7201</tomcat-dev.port>
+		<tomcat-test.port>10201</tomcat-test.port>
+		<tomcat-staging.port>10201</tomcat-staging.port>
 		<tomcat.path>/services</tomcat.path>
 	</properties>
 	
