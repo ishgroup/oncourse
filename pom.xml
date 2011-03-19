@@ -458,7 +458,7 @@
 
 	<ciManagement>
 		<system>hudson</system>
-		<url>http://hudson.ish.com.au/</url>
+		<url>http://build.ish.com.au/</url>
 		<notifiers>
 			<notifier>
 				<sendOnError>true</sendOnError>
