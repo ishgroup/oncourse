@@ -144,6 +144,7 @@ var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
 	initAddStudentButton();
+	initSuburbAutoComplete();
 	initAddConcessionButtons();
 	// if you hit the enter key in the EnrolmentContactEntry component, click "enrol" instead of paying
 	// but not in the suburb autocomplete, where enter will select the suburb
