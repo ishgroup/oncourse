@@ -170,7 +170,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>webservices</finalName>
+		<finalName>services</finalName>
 
 		<resources>
 			<resource>
