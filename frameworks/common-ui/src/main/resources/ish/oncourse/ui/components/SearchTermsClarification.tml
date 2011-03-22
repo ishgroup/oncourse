@@ -1,0 +1,26 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:if test="paramsInError">
+		<t:if test="searchNear">
+			<p class="invalid_search_near">Sorry, the location &quot;${searchNear}&quot; is not recognised.</p>
+			<p>Please try a different location.</p>
+		</t:if>
+		<t:if test="searchDay">
+			<p class="invalid_search_day">Sorry, the day &quot;${searchDay}&quot; is not recognised.</p>
+			<p>Please try a different day.</p>
+		</t:if>
+		<t:if test="searchTime">
+			<p class="invalid_search_time">Sorry, the time of day &quot;${searchTime}&quot; is not recognised.</p>
+			<p>Please try a different time of day.</p>
+		</t:if>
+		<t:if test="searchPrice">
+			<p class="invalid_search_price">Sorry, the price &quot;${searchPrice}&quot; is not recognised.</p>
+			<p>Please try a different price.</p>
+		</t:if>
+		<t:if test="searchTag">
+			<p class="invalid_search_tag">Sorry, the subject with path &quot;${searchTag}&quot; is not recognised.</p>
+			<p>Please try a different subject.</p>
+		</t:if>
+		
+	</t:if>
+</t:container>	

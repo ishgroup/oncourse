@@ -31,7 +31,7 @@
 				<div id="adv_search_price">
 					<label title="Select the maximum price you'd like to pay for a course"
 						for="adv_price">Costing up to</label>
-					<input t:type="TextField"  id="adv_price" default="\$" t:value="searchPrice"
+					<input t:type="TextField"  id="adv_price" t:value="searchPrice"
 						name="price" size="8" />
 				</div>
 

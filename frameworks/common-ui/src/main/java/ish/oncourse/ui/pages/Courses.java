@@ -68,7 +68,8 @@ public class Courses {
 	@Persist("client")
 	private Map<SearchParam, String> searchParams;
 	@Persist("client")
-	private List<SearchParam> paramsInError;
+	@Property
+	private Map<SearchParam, String> paramsInError;
 	@Property
 	private List<Site> mapSites;
 	@Property
@@ -272,7 +273,7 @@ public class Courses {
 
 	public Map<SearchParam, String> getCourseSearchParams() {
 		Map<SearchParam, String> searchParams = new HashMap<SearchParam, String>();
-		paramsInError = new ArrayList<SearchParam>();
+		paramsInError = new HashMap<SearchParam, String>();
 		Tag browseTag = null;
 		for (SearchParam name : SearchParam.values()) {
 			String parameter = request.getParameter(name.name());
@@ -282,34 +283,36 @@ public class Courses {
 				case day:
 					if (!parameter.equalsIgnoreCase("weekday")
 							&& !parameter.equalsIgnoreCase("weekend")) {
-						paramsInError.add(name);
+						paramsInError.put(name, parameter);
 					}
 					break;
 				case near:
 					if (searchService.searchSuburb(parameter).getResults().isEmpty()) {
-						paramsInError.add(name);
+						paramsInError.put(name, parameter);
 					}
 					break;
 				case price:
-					// check the correct format of price here
+					if(!parameter.matches("(\\d)+")){
+						paramsInError.put(name, parameter);
+					}
 					break;
 				case subject:
 					browseTag = tagService.getTagByFullPath(parameter);
 					if (browseTag == null) {
-						paramsInError.add(name);
+						paramsInError.put(name, parameter);
 					}
 					break;
 				case time:
 					if (!parameter.equalsIgnoreCase("daytime")
 							&& !parameter.equalsIgnoreCase("evening")) {
-						paramsInError.add(name);
+						paramsInError.put(name, parameter);
 					}
 					break;
 				}
 			}
 		}
 
-		if (browseTag == null && !paramsInError.contains(SearchParam.subject)) {
+		if (browseTag == null && !paramsInError.keySet().contains(SearchParam.subject)) {
 			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
 			if (browseTag != null) {
 				searchParams.put(SearchParam.subject, browseTag.getName());
