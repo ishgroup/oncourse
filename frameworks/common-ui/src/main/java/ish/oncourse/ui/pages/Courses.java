@@ -281,7 +281,7 @@ public class Courses {
 				switch (name) {
 				case day:
 					if (!parameter.equalsIgnoreCase("weekday")
-							|| !parameter.equalsIgnoreCase("weekend")) {
+							&& !parameter.equalsIgnoreCase("weekend")) {
 						paramsInError.add(name);
 					}
 					break;
@@ -301,7 +301,7 @@ public class Courses {
 					break;
 				case time:
 					if (!parameter.equalsIgnoreCase("daytime")
-							|| !parameter.equalsIgnoreCase("evening")) {
+							&& !parameter.equalsIgnoreCase("evening")) {
 						paramsInError.add(name);
 					}
 					break;

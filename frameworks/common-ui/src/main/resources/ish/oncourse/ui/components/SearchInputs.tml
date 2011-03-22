@@ -1,10 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<div class="advanced-search-button clearafter">
-		<a class="show-advanced-search">
-			<span>More options</span>
-		</a>
-	</div>
 
 	<!-- Start advanced search panel -->
 	<div id="advanced_search_container">
@@ -21,7 +16,7 @@
 					<label for="subject_selection">In Subject</label>
 
 					<t:select id="subject_selection" name="subject"
-					model="tagModel" encoder="tagEnc" blankLabel="all" value="browseTagLevel2Ancestor"/>
+					model="tagNames" blankLabel="all" value="tagName"/>
 				</div>
 
 				<div id="adv_search_location">

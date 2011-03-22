@@ -108,7 +108,7 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.subject)) {
 					String subject = params.get(SearchParam.subject);
-					qString.append("tag:" + subject).append(" ");
+					qString.append("tag:" + subject.substring(subject.lastIndexOf("/"))).append(" ");
 				}
 
 				if (params.containsKey(SearchParam.near)) {

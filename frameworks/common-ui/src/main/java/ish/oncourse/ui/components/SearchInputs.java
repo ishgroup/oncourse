@@ -1,12 +1,11 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
-import ish.oncourse.selectutils.ListSelectModel;
-import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.tag.ITagService;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 
 public class SearchInputs {
@@ -23,24 +21,12 @@ public class SearchInputs {
 	private ITagService tagService;
 	
 	@Inject
-	private PropertyAccess access;
-
-	@Inject
 	private Request request;
 
 	@Property
 	private String advKeyword;
 
 	private List<Tag> subjectTagChildTags;
-
-	@Property
-	private ListSelectModel<Tag> tagModel;
-	
-	@Property
-	private ListValueEncoder<Tag> tagEnc;
-
-	@Property
-	private Tag browseTagLevel2Ancestor;
 
 	@Property
 	private String searchNear;
@@ -59,7 +45,12 @@ public class SearchInputs {
 
 	@Property
 	private boolean weekend;
-
+	@Property
+	private ArrayList<String> tagNames;
+	
+	@Property
+	private String tagName;
+	
 	@SetupRender
 	void beforeRender() {
 		subjectTagChildTags = tagService.getSubjectsTag().getWebVisibleTags();
@@ -70,24 +61,34 @@ public class SearchInputs {
 			}
 		});
 		
-		this.tagModel = new ListSelectModel<Tag>(subjectTagChildTags, Tag.NAME_PROPERTY, access);
-		this.tagEnc = new ListValueEncoder<Tag>(subjectTagChildTags, "id", access);
-		
+		tagNames = new ArrayList<String>();
+		for(Tag tag:subjectTagChildTags){
+			tagNames.add(tag.getName());
+		}
 		Tag browseTag = (Tag) request.getAttribute("browseTag");
 		if (browseTag != null) {
-			browseTagLevel2Ancestor = browseTag.getLevel2Ancestor();
+			if(tagNames.contains(browseTag.getName())){
+				tagName = browseTag.getName();
+			}
 		}
 	}
 
 	URL onActionFromSearch2() {
+		String subject="";
+		subjectTagChildTags = tagService.getSubjectsTag().getWebVisibleTags();
+		
+		for(Tag tag:subjectTagChildTags){
+			if(tagName!=null&&tag.getName().equals(tagName)){
+				subject = tag.getDefaultPath();
+				break;
+			}
+		}
 		try {
 			String url = "http://"
 					+ request.getServerName()
 					+ "/courses?s="
 					+ (advKeyword == null ? "" : advKeyword)
-					+ "&subject="
-					+ (browseTagLevel2Ancestor == null ? ""
-							: browseTagLevel2Ancestor.getDefaultPath())
+					+ "&subject=" + subject
 					+ "&near=" + (searchNear == null ? "" : searchNear)
 					+ "&price=" + (searchPrice == null ? "" : searchPrice)
 					+ "&time="
