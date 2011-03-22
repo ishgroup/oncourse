@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v4.auth;
+package ish.oncourse.webservices.exception;
 
 import java.util.ResourceBundle;
 

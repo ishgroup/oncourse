@@ -21,7 +21,7 @@
 			<groupId>ish.oncourse.angel</groupId>
 			<artifactId>waCommon</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.cayenne</groupId>
 			<artifactId>cayenne-server</artifactId>
@@ -51,19 +51,19 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-ioc</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-pool</groupId>
 			<artifactId>commons-pool</artifactId>
@@ -85,8 +85,10 @@
 						<id>cgen1</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml</map>
-							<!-- excluded entities should be generated manually by CayenneModeler's "Generate Classes"  -->
-							<!-- excluding these entities depending on the onCourse datamap till the CAY-1494 will be done-->
+							<!-- excluded entities should be generated manually by CayenneModeler's 
+								"Generate Classes" -->
+							<!-- excluding these entities depending on the onCourse datamap till 
+								the CAY-1494 will be done -->
 							<excludeEntitiesPattern>BinaryInfo,Course,CourseModule,Certificate,Site,Student</excludeEntitiesPattern>
 						</configuration>
 						<goals>
@@ -97,8 +99,10 @@
 						<id>cgen2</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourseBinary.map.xml</map>
-							<!-- excluded entities should be generated manually by CayenneModeler's "Generate Classes"  -->
-							<!-- excluding this entity depending on the onCourse datamap till the CAY-1494 will be done-->
+							<!-- excluded entities should be generated manually by CayenneModeler's 
+								"Generate Classes" -->
+							<!-- excluding this entity depending on the onCourse datamap till 
+								the CAY-1494 will be done -->
 							<excludeEntitiesPattern>BinaryData</excludeEntitiesPattern>
 						</configuration>
 						<goals>
@@ -112,6 +116,17 @@
 						</configuration>
 						<goals>
 							<goal>cgen</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
 						</goals>
 					</execution>
 				</executions>

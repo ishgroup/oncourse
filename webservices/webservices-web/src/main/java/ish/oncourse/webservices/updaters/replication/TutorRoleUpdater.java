@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.updaters.replication;
 
-import java.util.List;
-
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tutor;
@@ -9,6 +7,8 @@ import ish.oncourse.model.TutorRole;
 import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.TutorRoleStub;
+
+import java.util.List;
 
 public class TutorRoleUpdater extends AbstractWillowUpdater<TutorRoleStub, TutorRole> {
 	
@@ -27,6 +27,5 @@ public class TutorRoleUpdater extends AbstractWillowUpdater<TutorRoleStub, Tutor
 		entity.setIsConfirmed(stub.isConfirmed());
 		entity.setModified(stub.getModified());
 		entity.setTutor((Tutor) updateRelatedEntity(entity.getObjectContext(), stub.getTutor(), relationStubs));
-		
 	}
 }

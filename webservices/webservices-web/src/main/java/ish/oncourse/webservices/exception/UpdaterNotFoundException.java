@@ -1,4 +1,4 @@
-package ish.oncourse.webservices;
+package ish.oncourse.webservices.exception;
 
 public class UpdaterNotFoundException extends RuntimeException {
 	

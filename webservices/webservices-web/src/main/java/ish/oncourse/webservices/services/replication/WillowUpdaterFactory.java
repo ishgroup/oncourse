@@ -10,11 +10,13 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.Preference;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.webservices.UpdaterNotFoundException;
+import ish.oncourse.webservices.exception.UpdaterNotFoundException;
+import ish.oncourse.webservices.services.ICollegeRequestService;
 import ish.oncourse.webservices.updaters.replication.AttendanceUpdater;
 import ish.oncourse.webservices.updaters.replication.BinaryInfoRelationUpdater;
 import ish.oncourse.webservices.updaters.replication.CertificateOutcomeUpdater;
@@ -25,11 +27,12 @@ import ish.oncourse.webservices.updaters.replication.CourseUpdater;
 import ish.oncourse.webservices.updaters.replication.DiscountConcessionTypeUpdater;
 import ish.oncourse.webservices.updaters.replication.DiscountUpdater;
 import ish.oncourse.webservices.updaters.replication.IWillowUpdater;
+import ish.oncourse.webservices.updaters.replication.PreferenceUpdater;
+import ish.oncourse.webservices.updaters.replication.SessionCourseClassTutorUpdater;
 import ish.oncourse.webservices.updaters.replication.SessionTutorUpdater;
 import ish.oncourse.webservices.updaters.replication.TagUpdater;
 import ish.oncourse.webservices.updaters.replication.TaggableTagUpdater;
 import ish.oncourse.webservices.updaters.replication.TutorRoleUpdater;
-import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
@@ -38,23 +41,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WillowUpdaterFactory {
-	
+
 	@Inject
 	@Autowired
-	private Request request;
-	
+	private ICollegeRequestService collegeRequestService;
+
 	@Inject
 	@Autowired
 	private IWillowQueueService queueService;
 
 	@SuppressWarnings("rawtypes")
 	public IWillowUpdater newReplicationUpdater() {
-		College college = (College) request.getAttribute(SoapUtil.REQUESTING_COLLEGE);
-		return new WillowUpdaterImpl(college);
+		return new WillowUpdaterImpl(collegeRequestService.getRequestingCollege());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -72,10 +73,14 @@ public class WillowUpdaterFactory {
 			updaterMap.put(getClassName(CertificateOutcome.class), new CertificateOutcomeUpdater(college, queueService, this));
 			updaterMap.put(getClassName(Discount.class), new DiscountUpdater(college, queueService, this));
 			updaterMap.put(getClassName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater(college, queueService, this));
+			updaterMap.put(getClassName(Preference.class), new PreferenceUpdater(college, queueService, this));
 			updaterMap.put(getClassName(SessionTutor.class), new SessionTutorUpdater(college, queueService, this));
 			updaterMap.put(getClassName(Tag.class), new TagUpdater(college, queueService, this));
 			updaterMap.put(getClassName(TaggableTag.class), new TaggableTagUpdater(college, queueService, this));
 			updaterMap.put(getClassName(TutorRole.class), new TutorRoleUpdater(college, queueService, this));
+			
+			//special cases
+			updaterMap.put("SessionCourseClassTutor", new SessionCourseClassTutorUpdater(this));
 		}
 
 		@SuppressWarnings("unchecked")
@@ -93,14 +98,10 @@ public class WillowUpdaterFactory {
 		}
 
 	}
-
+	
 	private static String getClassName(Class<?> clazz) {
 		int index = clazz.getName().lastIndexOf(".") + 1;
 		return clazz.getName().substring(index);
-	}
-
-	public void setRequest(Request request) {
-		this.request = request;
 	}
 
 	public void setQueueService(IWillowQueueService queueService) {

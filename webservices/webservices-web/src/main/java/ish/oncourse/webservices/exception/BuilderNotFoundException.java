@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ish.oncourse.webservices;
+package ish.oncourse.webservices.exception;
 
 /**
  * Exception thrown when a builder for an Entity could not be located.

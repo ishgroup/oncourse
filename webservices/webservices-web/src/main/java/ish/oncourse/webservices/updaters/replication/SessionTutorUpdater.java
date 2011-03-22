@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.updaters.replication;
 
-import java.util.List;
-
 import ish.oncourse.model.College;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
@@ -9,6 +7,8 @@ import ish.oncourse.model.Tutor;
 import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.SessionTutorStub;
+
+import java.util.List;
 
 public class SessionTutorUpdater extends AbstractWillowUpdater<SessionTutorStub, SessionTutor> {
 	

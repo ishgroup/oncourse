@@ -1,11 +1,10 @@
 package ish.oncourse.webservices.services.replication;
 
-import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.services.persistence.ICayenneService;
-import ish.oncourse.webservices.util.SoapUtil;
+import ish.oncourse.webservices.services.ICollegeRequestService;
 
 import java.util.Date;
 import java.util.List;
@@ -19,14 +18,13 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WillowQueueService implements IWillowQueueService {
 
 	@Inject
 	@Autowired
-	private Request request;
+	private ICollegeRequestService collegeRequestService;
 
 	@Inject
 	@Autowired
@@ -37,7 +35,7 @@ public class WillowQueueService implements IWillowQueueService {
 		SortedMap<QueuedKey, QueuedRecord> m = new TreeMap<QueuedKey, QueuedRecord>();
 
 		SelectQuery q = new SelectQuery(QueuedRecord.class);
-		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, (College) request.getAttribute(SoapUtil.REQUESTING_COLLEGE)));
+		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, collegeRequestService.getRequestingCollege()));
 
 		q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING));
 

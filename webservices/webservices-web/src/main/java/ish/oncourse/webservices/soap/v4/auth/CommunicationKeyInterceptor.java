@@ -2,6 +2,7 @@ package ish.oncourse.webservices.soap.v4.auth;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
+import ish.oncourse.webservices.exception.AuthenticationFailureException;
 import ish.oncourse.webservices.listeners.CollegeSessions;
 import ish.oncourse.webservices.util.SoapUtil;
 

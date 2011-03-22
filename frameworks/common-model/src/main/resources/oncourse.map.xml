@@ -1409,6 +1409,9 @@
 	<db-relationship name="attendances" source="College" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="binaryData" source="College" target="BinaryData" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="binaryInfoRelations" source="College" target="BinaryInfoRelation" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>

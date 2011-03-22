@@ -10,11 +10,11 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.Preference;
 import ish.oncourse.model.QueuedKey;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.webservices.BuilderNotFoundException;
 import ish.oncourse.webservices.builders.replication.BinaryDataStubBuilder;
 import ish.oncourse.webservices.builders.replication.BinaryInfoStubBuilder;
 import ish.oncourse.webservices.builders.replication.ConcessionTypeStubBuilder;
@@ -26,8 +26,10 @@ import ish.oncourse.webservices.builders.replication.InvoiceLineStubBuilder;
 import ish.oncourse.webservices.builders.replication.InvoiceStubBuilder;
 import ish.oncourse.webservices.builders.replication.PaymentInLineStubBuilder;
 import ish.oncourse.webservices.builders.replication.PaymentInStubBuilder;
+import ish.oncourse.webservices.builders.replication.PreferenceStubBuilder;
 import ish.oncourse.webservices.builders.replication.StudentConcessionStubBuilder;
 import ish.oncourse.webservices.builders.replication.StudentStubBuilder;
+import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
 import java.util.HashMap;
@@ -61,6 +63,7 @@ public class WillowStubBuilderFactory {
 			builderMap.put(getClassName(InvoiceLine.class), new InvoiceLineStubBuilder(queue, queueService, this));
 			builderMap.put(getClassName(PaymentInLine.class), new PaymentInLineStubBuilder(queue, queueService, this));
 			builderMap.put(getClassName(PaymentIn.class), new PaymentInStubBuilder(queue, queueService, this));
+			builderMap.put(getClassName(Preference.class), new PreferenceStubBuilder(queue, queueService, this));
 			builderMap.put(getClassName(StudentConcession.class), new StudentConcessionStubBuilder(queue, queueService, this));
 			builderMap.put(getClassName(Student.class), new StudentStubBuilder(queue, queueService, this));
 		}
