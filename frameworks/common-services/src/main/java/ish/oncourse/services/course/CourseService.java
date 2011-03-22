@@ -204,30 +204,6 @@ public class CourseService implements ICourseService {
 								+ getSiteQualifier().toEJBQL("c"))).get(0);
 	}
 
-	public Map<SearchParam, String> getCourseSearchParams() {
-		Map<SearchParam, String> searchParams = new HashMap<SearchParam, String>();
-
-		for (SearchParam name : SearchParam.values()) {
-			String parameter = request.getParameter(name.name());
-			if (parameter != null && !"".equals(parameter)) {
-				searchParams.put(name, parameter);
-			}
-		}
-		Tag browseTag = null;
-		if (searchParams.containsKey(SearchParam.subject)) {
-			String path = searchParams.get(SearchParam.subject);
-			browseTag = tagService.getTagByFullPath(path);
-		} else {
-			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
-			if (browseTag != null) {
-				searchParams.put(SearchParam.subject, browseTag.getName());
-			}
-		}
-		request.setAttribute("browseTag", browseTag);
-
-		return searchParams;
-	}
-
 	private void sortByStartDate(final Boolean isAscending, List<Course> result) {
 		Collections.sort(result, new Comparator<Course>() {
 

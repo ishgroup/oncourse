@@ -11,5 +11,5 @@ public interface ISearchService {
 	
 	QueryResponse searchSuburbs(String term);
 	
-	QueryResponse searchSuburb(String suburbName, String postcode);
+	QueryResponse searchSuburb(String location);
 }

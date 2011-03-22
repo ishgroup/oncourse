@@ -77,10 +77,6 @@ public class SearchInputs {
 		if (browseTag != null) {
 			browseTagLevel2Ancestor = browseTag.getLevel2Ancestor();
 		}
-		// TODO define the default value for searchNear and searchPrice
-		// searchNear=
-		// CourseClassInMemoryFilter.searchingNearForContext(context());
-		// searchPrice=context().request().stringFormValueForKey( "price" );
 	}
 
 	URL onActionFromSearch2() {

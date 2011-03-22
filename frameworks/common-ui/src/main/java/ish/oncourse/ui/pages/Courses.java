@@ -4,23 +4,30 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParam;
-import org.apache.log4j.Logger;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.apache.tapestry5.ajax.MultiZoneUpdate;
-import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.Zone;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
+import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
+import org.apache.tapestry5.ajax.MultiZoneUpdate;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 /**
  * Page component representing a Course list.
@@ -43,6 +50,8 @@ public class Courses {
 	@Inject
 	private ISearchService searchService;
 	@Inject
+	private ITagService tagService;
+	@Inject
 	private Request request;
 	@Property
 	private List<Course> courses;
@@ -58,6 +67,8 @@ public class Courses {
 	private Integer itemIndex;
 	@Persist("client")
 	private Map<SearchParam, String> searchParams;
+	@Persist("client")
+	private List<SearchParam> paramsInError;
 	@Property
 	private List<Site> mapSites;
 	@Property
@@ -112,6 +123,20 @@ public class Courses {
 		if (hasAnyFormValuesForFocus()) {
 			focusesForMapSites = new HashMap<Integer, Float>();
 		}
+		Double[] locationPoints = { null, null };
+		if (searchParams.containsKey(SearchParam.near)) {
+			try {
+				String place = searchParams.get(SearchParam.near);
+				SolrDocumentList responseResults = searchService.searchSuburb(place).getResults();
+				if (!responseResults.isEmpty()) {
+					SolrDocument doc = responseResults.get(0);
+					String[] points = ((String) doc.get("loc")).split(",");
+					locationPoints[0] = Double.parseDouble(points[0]);
+					locationPoints[1] = Double.parseDouble(points[1]);
+				}
+			} catch (NumberFormatException e) {
+			}
+		}
 		for (Course course : courses) {
 			for (CourseClass courseClass : course.getEnrollableClasses()) {
 				Room room = courseClass.getRoom();
@@ -123,7 +148,8 @@ public class Courses {
 							mapSites.add(site);
 						}
 						if (hasAnyFormValuesForFocus()) {
-							float focusMatchForClass = focusMatchForClass(courseClass);
+							float focusMatchForClass = focusMatchForClass(courseClass,
+									locationPoints[0], locationPoints[1]);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
 								focusesForMapSites.put(site.getId(), focusMatchForClass);
@@ -146,7 +172,7 @@ public class Courses {
 				|| searchParams.containsKey(SearchParam.time);
 	}
 
-	private float focusMatchForClass(CourseClass courseClass) {
+	private float focusMatchForClass(CourseClass courseClass, Double locatonLat, Double locationLong) {
 		float bestFocusMatch = -1.0f;
 
 		if (!searchParams.isEmpty()) {
@@ -171,25 +197,9 @@ public class Courses {
 			}
 
 			float nearMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.near)) {
-				try {
-					String place = searchParams.get(SearchParam.near);
-					int separator = place.lastIndexOf(" ");
-					if (separator > 0) {
-						String[] suburbParams = { place.substring(0, separator),
-								place.substring(separator + 1) };
+			if (locatonLat != null && locationLong != null) {
+				nearMatch = courseClass.focusMatchForNear(locatonLat, locationLong);
 
-						SolrDocumentList responseResults = searchService.searchSuburb(
-								suburbParams[0], suburbParams[1]).getResults();
-						if (!responseResults.isEmpty()) {
-							SolrDocument doc = responseResults.get(0);
-							String[] points = ((String) doc.get("loc")).split(",");
-							nearMatch = courseClass.focusMatchForNear(
-									Double.parseDouble(points[0]), Double.parseDouble(points[1]));
-						}
-					}
-				} catch (NumberFormatException e) {
-				}
 			}
 
 			float result = daysMatch * timeMatch * priceMatch * nearMatch;
@@ -209,11 +219,11 @@ public class Courses {
 		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
 
-		searchParams = courseService.getCourseSearchParams();
+		searchParams = getCourseSearchParams();
 		if (searchParams.isEmpty()) {
 			searchParams.put(SearchParam.s, "");
 		}
-		return searchCourses(start, rows);
+		return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
 	}
 
 	/**
@@ -257,8 +267,57 @@ public class Courses {
 	}
 
 	public boolean isHasInvalidSearchTerms() {
-		// TODO CourseClassInMemoryFilter.hasInvalidSearchTermsForContext(
-		// context() );
-		return false;
+		return paramsInError != null && !paramsInError.isEmpty();
 	}
+
+	public Map<SearchParam, String> getCourseSearchParams() {
+		Map<SearchParam, String> searchParams = new HashMap<SearchParam, String>();
+		paramsInError = new ArrayList<SearchParam>();
+		Tag browseTag = null;
+		for (SearchParam name : SearchParam.values()) {
+			String parameter = request.getParameter(name.name());
+			if (parameter != null && !"".equals(parameter)) {
+				searchParams.put(name, parameter);
+				switch (name) {
+				case day:
+					if (!parameter.equalsIgnoreCase("weekday")
+							|| !parameter.equalsIgnoreCase("weekend")) {
+						paramsInError.add(name);
+					}
+					break;
+				case near:
+					if (searchService.searchSuburb(parameter).getResults().isEmpty()) {
+						paramsInError.add(name);
+					}
+					break;
+				case price:
+					// check the correct format of price here
+					break;
+				case subject:
+					browseTag = tagService.getTagByFullPath(parameter);
+					if (browseTag == null) {
+						paramsInError.add(name);
+					}
+					break;
+				case time:
+					if (!parameter.equalsIgnoreCase("daytime")
+							|| !parameter.equalsIgnoreCase("evening")) {
+						paramsInError.add(name);
+					}
+					break;
+				}
+			}
+		}
+
+		if (browseTag == null && !paramsInError.contains(SearchParam.subject)) {
+			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
+			if (browseTag != null) {
+				searchParams.put(SearchParam.subject, browseTag.getName());
+			}
+		}
+		request.setAttribute("browseTag", browseTag);
+
+		return searchParams;
+	}
+
 }
