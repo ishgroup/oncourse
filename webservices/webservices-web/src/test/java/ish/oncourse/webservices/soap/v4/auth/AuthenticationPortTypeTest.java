@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import ish.oncourse.model.KeyStatus;
-import ish.oncourse.webservices.soap.v4.AbstractWebServiceTest;
+import ish.oncourse.webservices.AbstractWebServiceTest;
 
 import java.io.InputStream;
 
@@ -51,7 +51,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
 
 		AuthenticationPortType port = getAuthenticationPort();
 
@@ -71,7 +71,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
 
 		AuthenticationPortType port = getAuthenticationPort();
 
@@ -95,7 +95,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		AuthenticationPortType port = getAuthenticationPort();
@@ -124,7 +124,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		AuthenticationPortType port = getAuthenticationPort();
@@ -144,7 +144,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(DATASOURCES.get(Database.ONCOURSE).getConnection(), null);
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		AuthenticationPortType port = getAuthenticationPort();

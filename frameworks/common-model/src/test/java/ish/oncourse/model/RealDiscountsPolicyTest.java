@@ -13,8 +13,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import org.apache.cayenne.access.DataContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
