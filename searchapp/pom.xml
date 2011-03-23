@@ -28,6 +28,11 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-webapp</artifactId>
 			<version>4.99</version>
