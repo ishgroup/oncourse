@@ -9,7 +9,6 @@
 
 	<property name="manual.input" value="manual/oncourse-manual.xml"/>
 	<property name="web.input" value="manual-web/website_administration.xml"/>
-	<property environment="env"/>
 	<target name="clean">
 		<delete dir="dist"/>
 		<mkdir dir="dist/web"/>
@@ -80,11 +79,11 @@
 			<exclude name=".svn"/>
 		</fileset>
 		<ftp server="ftp.ish.com.au" userid="${ftpUser}" password="${ftpPass}" action="mkdir"
-			remotedir="ish-static/onCourse/doc/${env.RELEASE_VERSION}"/>
+			remotedir="ish-static/onCourse/doc/${RELEASE_VERSION}"/>
 
 		<ftp server="ftp.ish.com.au" userid="${ftpUser}" password="${ftpPass}" binary="yes"
 			action="put" passive="yes" depends="yes"
-			remotedir="ish-static/onCourse/doc/${env.RELEASE_VERSION}">
+			remotedir="ish-static/onCourse/doc/${RELEASE_VERSION}">
 			<fileset refid="upload.files"/>
 		</ftp>
 	</target>
