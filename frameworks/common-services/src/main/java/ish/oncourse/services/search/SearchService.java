@@ -108,7 +108,8 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.subject)) {
 					String subject = params.get(SearchParam.subject);
-					qString.append("tag:" + subject.substring(subject.lastIndexOf("/"))).append(" ");
+					qString.append("tag:" + subject.substring(subject.lastIndexOf("/")))
+							.append(" ");
 				}
 
 				if (params.containsKey(SearchParam.near)) {
@@ -218,6 +219,10 @@ public class SearchService implements ISearchService {
 			String[] suburbParams = separator > 0 ? new String[] {
 					location.substring(0, separator), location.substring(separator + 1) }
 					: new String[] { location, null };
+			if (suburbParams[1] != null && !suburbParams[1].matches("(\\d)+")) {
+				suburbParams[0] = location;
+				suburbParams[1] = null;
+			}
 			SolrQuery q = new SolrQuery();
 
 			StringBuilder query = new StringBuilder();
