@@ -125,7 +125,7 @@ public class Courses {
 			focusesForMapSites = new HashMap<Integer, Float>();
 		}
 		Double[] locationPoints = { null, null };
-		if (searchParams.containsKey(SearchParam.near)) {
+		if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
 			try {
 				String place = searchParams.get(SearchParam.near);
 				SolrDocumentList responseResults = searchService.searchSuburb(place).getResults();
@@ -292,7 +292,7 @@ public class Courses {
 					}
 					break;
 				case price:
-					if(!parameter.matches("(\\d)+")){
+					if (!parameter.matches("(\\d)+")) {
 						paramsInError.put(name, parameter);
 					}
 					break;
