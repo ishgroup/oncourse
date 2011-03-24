@@ -1,11 +1,15 @@
 package ish.oncourse.webservices.soap.v4;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.services.cache.CacheGroup;
+import ish.oncourse.model.services.cache.CachedObjectProvider;
+import ish.oncourse.model.services.cache.ICacheService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.services.ICollegeRequestService;
 
 import java.io.IOException;
 
+import org.apache.cayenne.cache.QueryCache;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -46,5 +50,24 @@ public class ReplicationTestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local ICollegeRequestService collegeRequestService) {
 		configuration.add(ICollegeRequestService.class, collegeRequestService);
+	}
+
+	public ICacheService buildCacheServiceServiceOverride() {
+		return new ICacheService() {
+
+			@Override
+			public QueryCache cayenneCache() {
+				return null;
+			}
+
+			@Override
+			public <T> T get(String key, CachedObjectProvider<T> objectProvider, CacheGroup... cacheGroups) {
+				return null;
+			}
+		};
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ICacheService cacheService) {
+		configuration.add(ICacheService.class, cacheService);
 	}
 }
