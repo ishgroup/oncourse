@@ -9,7 +9,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
-import ish.oncourse.model.access.ISHDataContext;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.utils.EntityUtils;
 
@@ -101,7 +100,6 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			qr.setAction(action);
 			qr.setNumberOfAttempts(0);
 			qr.setLastAttemptTimestamp(null);
-			qr.setTransactionKey((String) entity.getObjectContext().getUserProperty(ISHDataContext.TRANSACTION_KEY));
 
 			oc.commitChanges();
 		}
