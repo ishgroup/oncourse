@@ -33,7 +33,7 @@ public class CayenneService implements ICayenneService {
 		domain = cayenneConfiguration.getDomain();
 
 		LifecycleCallbackRegistry registry = domain.getEntityResolver().getCallbackRegistry();
-		registry.addDefaultListener(new QueueableLifecycleListener());
+		registry.addDefaultListener(new QueueableLifecycleListener(this));
 
 		for(DataNode dataNode: domain.getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());

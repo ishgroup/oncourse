@@ -9,13 +9,13 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
+import ish.oncourse.model.access.ISHDataContext;
 import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.utils.EntityUtils;
 
 import org.apache.cayenne.LifecycleListener;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 
 /**
@@ -26,11 +26,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  */
 public class QueueableLifecycleListener implements LifecycleListener {
 
-	@Inject
-	private ICayenneService cayenneService;
-
 	private static final Logger LOGGER = Logger.getLogger(QueueableLifecycleListener.class);
-
+	
+	private ICayenneService cayenneService;
+	
+	public QueueableLifecycleListener(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService;
+	}
 
 	/**
 	 * New record event - post save.
@@ -91,6 +93,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			College entityCollege = entity.getCollege();
 
 			ObjectContext oc = cayenneService.newContext();
+			
 			QueuedRecord qr = oc.newObject(QueuedRecord.class);
 			qr.setCollege(entityCollege);
 			qr.setEntityIdentifier(entityName);
@@ -98,6 +101,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			qr.setAction(action);
 			qr.setNumberOfAttempts(0);
 			qr.setLastAttemptTimestamp(null);
+			qr.setTransactionKey((String) entity.getObjectContext().getUserProperty(ISHDataContext.TRANSACTION_KEY));
 
 			oc.commitChanges();
 		}
