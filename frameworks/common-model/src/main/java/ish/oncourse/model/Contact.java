@@ -40,7 +40,7 @@ public class Contact extends _Contact implements Queueable {
 		if (getStudent() != null) {
 			return "student";
 		}
-		if (getIsCompany()) {
+		if (Boolean.TRUE.equals(getIsCompany())) {
 			return "company";
 		}
 		if (getTutor() != null) {

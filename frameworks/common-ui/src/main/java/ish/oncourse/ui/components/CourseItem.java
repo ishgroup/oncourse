@@ -151,4 +151,11 @@ public class CourseItem {
 		return substr;
 	}
 
+	public boolean isHasMoreAvailablePlaces() {
+		int places = 0;
+		for (CourseClass courseClass : course.getEnrollableClasses()) {
+			places += courseClass.getAvailableEnrolmentPlaces();
+		}
+		return places > 0;
+	}
 }

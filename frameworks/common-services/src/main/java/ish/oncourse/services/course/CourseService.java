@@ -140,8 +140,10 @@ public class CourseService implements ICourseService {
 
 		List<Course> result = new ArrayList<Course>(ids.length);
 		for (Object id : ids) {
-			result.add((Course) DataObjectUtils.objectForPK(cayenneService.sharedContext(),
-					Course.class.getSimpleName(), id));
+			if (id != null) {
+				result.add((Course) DataObjectUtils.objectForPK(cayenneService.sharedContext(),
+						Course.class.getSimpleName(), id));
+			}
 		}
 		return result;
 	}

@@ -24,9 +24,24 @@
 	 			<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
 	 		</t:if>	
         </t:loop>
-	
+
 		<t:if t:test="course.allowWaitingList">
-			<span t:type="ui/WaitingListItem" course="course" />
+			<p class="waiting-list-title" id="wl${course.id}">
+				<a class="nyromodalreload actionLink" href="/enrol/waitinglistform?courseId=${course.id}" target="_blank">
+					<t:if t:test="course.enrollableClasses.empty" negate="true">
+						<t:if t:test="hasMoreAvailablePlaces">
+							If there isn't a class to suit you, please 
+							<p:else>
+								Classes are full. Please 
+							</p:else>
+						</t:if>
+						<p:else>
+							This course has no current classes. Please 
+						</p:else>
+					</t:if>
+					<img src="/s/img/button_join.png" /> the waiting list.
+				</a>
+			</p>
 		</t:if>
 	
 		<t:if t:test="isList" negate="true">
