@@ -17,6 +17,7 @@ import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.menu.IWebMenuService;
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
@@ -211,5 +212,15 @@ public class TestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local ICayenneService cayenneServiceOverride) {
 		configuration.add(ICayenneService.class, cayenneServiceOverride);
+	}
+	
+	public IWebNodeService buildWebNodeOverride() {
+		IWebNodeService mock = mock(IWebNodeService.class);
+		return mock;
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+			@Local IWebNodeService webNodeServiceOverride) {
+		configuration.add(IWebNodeService.class, webNodeServiceOverride);
 	}
 }

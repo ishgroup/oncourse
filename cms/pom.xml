@@ -52,12 +52,6 @@
 				<version>${project.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>ish.oncourse.willow.cms</groupId>
-				<artifactId>cms-services</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
