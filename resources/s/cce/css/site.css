@@ -1,0 +1,1343 @@
+/**
+ *  _base.scss
+ *
+ *  Application-wide SCSS file for all onCourse apps.
+ * 
+ */
+/**
+ * File includes 
+ */
+@charset "UTF-8";
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+  color: black;
+  background: white;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: "" "";
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+}
+
+a img {
+  border: none;
+}
+
+/* incase an inverted custom gradient isn't specified */
+.fancy-button-reset-base-class, .classItem .enrolAction, .courseAvailability a, .confirmOrderDialog button {
+  font-family: "Lucida Grande", Lucida, Arial, sans-serif;
+  background: url('/s/img/button_bg.png?1292392367') repeat-x bottom left;
+  margin: 0;
+  width: auto;
+  overflow: visible;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  border-style: solid;
+  font-weight: bold;
+}
+.fancy-button-reset-base-class::-moz-focus-inner, .classItem .enrolAction::-moz-focus-inner, .courseAvailability a::-moz-focus-inner, .confirmOrderDialog button::-moz-focus-inner {
+  border: none;
+  padding: 0;
+}
+.fancy-button-reset-base-class:focus, .classItem .enrolAction:focus, .courseAvailability a:focus, .confirmOrderDialog button:focus {
+  outline: none;
+}
+
+/**
+ *  _functions.scss
+ *
+ *  Shared styles and functions.
+ *
+ *
+ */
+/* onCourse specific mixins */
+/**
+ *  _cms.scss
+ *
+ *  CMS styling.
+ *
+ *
+ */
+body.cms_loggedin {
+  margin: 0 0 60px 0;
+}
+
+#cms_nav {
+  position: fixed;
+  width: 100%;
+  height: 50px;
+  bottom: 0px;
+  font-size: 140%;
+  z-index: 9000;
+  background: #444;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+#cms_actions {
+  float: left;
+}
+
+#cms_links {
+  float: right;
+}
+
+#cms_nav a {
+  color: #eee !important;
+}
+
+#cms_nav a:hover {
+  color: green;
+}
+
+#cms_actions, #cms_links, #cms_actions li, #cms_links li {
+  margin: 0 0 10px 0;
+  padding: 6px;
+  list-style: none;
+  display: inline-block;
+}
+
+#cms_pageinfo {
+  background: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  bottom: 100px;
+  left: 10px;
+  padding: 10px 100px 10px 10px;
+  color: #fff;
+}
+
+#cms_pageinfo dl, #cms_pageinfo dd {
+  padding: 0;
+  margin: 0;
+}
+
+.cms_pagename {
+  font-size: 1.6em;
+}
+
+.cms_pagestate {
+  color: orange;
+}
+
+.cms_pagemodified {
+  font-size: 0.8em;
+  color: #999;
+}
+
+#cms_pageinfo a {
+  display: block;
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  color: red;
+  text-decoration: none;
+}
+
+#cms_pageinfo .noteditable {
+  display: none;
+}
+
+#cms_editor {
+  position: fixed;
+  width: 800px;
+  height: 475px;
+  left: 200px;
+  top: 40px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 20px 20px 60px 20px;
+}
+
+#cms_editor form {
+  height: 100%;
+  position: relative;
+}
+
+#cms_editor textarea {
+  height: 390px;
+  width: 100%;
+}
+
+.cms_editor_tabs {
+  height: 100%;
+}
+
+.cms_editor_tabs_1 {
+  position: relative;
+}
+
+.cms_form_actions {
+  text-align: right;
+}
+
+/**
+ *  _courses.scss
+ *
+ *  Styling for all course and class information.
+ *
+ *
+ */
+#gMapCanvas {
+  outline: 2px solid #444;
+  outline: 2px solid rgba(68, 68, 68, 0.4);
+  width: 100%;
+  height: 400px;
+}
+
+/* Directions form */
+#getdir {
+  padding: 10px;
+  background: #444;
+  background: rgba(68, 68, 68, 0.4);
+}
+
+.classItem {
+  /* This mixin is to separate out the different panel types one could use. */
+  background: #FDFDF8;
+  border: 1px solid #EEEEEE;
+  border-width: 1px 1px 1px 6px;
+  margin-bottom: 10px;
+  padding: 5px;
+  min-height: 66px;
+  position: relative;
+  overflow: hidden;
+  *zoom: 1;
+}
+.classItem .classDescription {
+  clear: both;
+}
+.classItem dt {
+  display: none;
+}
+.classItem dd {
+  float: left;
+}
+.classItem .classItemName, .classItem .classItemName + dd {
+  display: none;
+}
+.classItem .classItemDate + dd {
+  min-height: 56px;
+  width: 33%;
+  background: transparent url(/s/img/common/calendar.png) no-repeat;
+  padding-left: 20px;
+}
+.classItem .classItemTutor + dd, .classItem .classItemLocation + dd, .classItem .classItemPrice + dd {
+  width: 40%;
+  background: transparent url(/s/img/common/person.png) 0 1px no-repeat;
+  padding-left: 20px;
+}
+.classItem .classItemLocation + dd {
+  background-image: url(/s/img/common/marker.png);
+  background-position-y: 0px;
+}
+.classItem .classItemPrice + dd {
+  background: none;
+  padding-left: 0;
+}
+.classItem .classAction {
+  position: absolute;
+  right: 5px;
+  text-align: right;
+}
+.classItem .classAction dl {
+  overflow: hidden;
+  *zoom: 1;
+}
+.classItem .enrolAction {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1.2em;
+  padding: 0.3em 1em;
+  border-width: 1px;
+  background-color: #444444;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #989898), color-stop(10%, #6a6a6a), color-stop(50%, #3c3c3c), color-stop(50%, #353535), color-stop(100%, #4e4e4e));
+  background-image: -moz-linear-gradient(top, #989898 0%, #6a6a6a 10%, #3c3c3c 50%, #353535 50%, #4e4e4e 100%);
+  background-image: linear-gradient(top, #989898 0%, #6a6a6a 10%, #3c3c3c 50%, #353535 50%, #4e4e4e 100%);
+  border-color: #1e1e1e;
+  text-shadow: #040404 0px 1px 1px;
+  -moz-box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.classItem .enrolAction, .classItem .enrolAction:visited {
+  color: white;
+}
+.classItem .enrolAction:hover, .classItem .enrolAction:focus {
+  background-color: #3c3c3c;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #919191), color-stop(10%, #636363), color-stop(50%, #353535), color-stop(50%, #2d2d2d), color-stop(100%, #474747));
+  background-image: -moz-linear-gradient(top, #919191 0%, #636363 10%, #353535 50%, #2d2d2d 50%, #474747 100%);
+  background-image: linear-gradient(top, #919191 0%, #636363 10%, #353535 50%, #2d2d2d 50%, #474747 100%);
+  border-color: #161616;
+  text-shadow: black 0px 1px 1px;
+}
+.classItem .enrolAction:hover, .classItem .enrolAction:hover:visited, .classItem .enrolAction:focus, .classItem .enrolAction:focus:visited {
+  color: white;
+}
+.classItem .enrolAction:active {
+  background-color: #353535;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #353535), color-stop(30%, #3a3a3a), color-stop(50%, #303030), color-stop(50%, #282828), color-stop(100%, #494949));
+  background-image: -moz-linear-gradient(top, #353535 0%, #3a3a3a 30%, #303030 50%, #282828 50%, #494949 100%);
+  background-image: linear-gradient(top, #353535 0%, #3a3a3a 30%, #303030 50%, #282828 50%, #494949 100%);
+  border-color: #0e0e0e;
+  text-shadow: black 0px -1px -1px;
+  -moz-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+}
+.classItem .enrolAction:active, .classItem .enrolAction:active:visited {
+  color: white;
+}
+.classItem:hover {
+  border-color: #999;
+}
+
+.courseItem {
+  overflow: hidden;
+  *zoom: 1;
+}
+
+.courseShortDescription {
+  /* float: left; width: 50%;*/
+}
+
+.courseAvailability {
+  float: right;
+  width: 200px;
+  outline: 0px dashed #444;
+}
+.courseAvailability a {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1.2em;
+  padding: 0.3em 1em;
+  border-width: 1px;
+  background-color: #444444;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #989898), color-stop(10%, #6a6a6a), color-stop(50%, #3c3c3c), color-stop(50%, #353535), color-stop(100%, #4e4e4e));
+  background-image: -moz-linear-gradient(top, #989898 0%, #6a6a6a 10%, #3c3c3c 50%, #353535 50%, #4e4e4e 100%);
+  background-image: linear-gradient(top, #989898 0%, #6a6a6a 10%, #3c3c3c 50%, #353535 50%, #4e4e4e 100%);
+  border-color: #1e1e1e;
+  text-shadow: #040404 0px 1px 1px;
+  -moz-box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255, 255, 255, 0.266666666666667) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.courseAvailability a, .courseAvailability a:visited {
+  color: white;
+}
+.courseAvailability a:hover, .courseAvailability a:focus {
+  background-color: #3c3c3c;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #919191), color-stop(10%, #636363), color-stop(50%, #353535), color-stop(50%, #2d2d2d), color-stop(100%, #474747));
+  background-image: -moz-linear-gradient(top, #919191 0%, #636363 10%, #353535 50%, #2d2d2d 50%, #474747 100%);
+  background-image: linear-gradient(top, #919191 0%, #636363 10%, #353535 50%, #2d2d2d 50%, #474747 100%);
+  border-color: #161616;
+  text-shadow: black 0px 1px 1px;
+}
+.courseAvailability a:hover, .courseAvailability a:hover:visited, .courseAvailability a:focus, .courseAvailability a:focus:visited {
+  color: white;
+}
+.courseAvailability a:active {
+  background-color: #353535;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #353535), color-stop(30%, #3a3a3a), color-stop(50%, #303030), color-stop(50%, #282828), color-stop(100%, #494949));
+  background-image: -moz-linear-gradient(top, #353535 0%, #3a3a3a 30%, #303030 50%, #282828 50%, #494949 100%);
+  background-image: linear-gradient(top, #353535 0%, #3a3a3a 30%, #303030 50%, #282828 50%, #494949 100%);
+  border-color: #0e0e0e;
+  text-shadow: black 0px -1px -1px;
+  -moz-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+  box-shadow: #1e1e1e 0 0.08em 0.1em 1px inset;
+}
+.courseAvailability a:active, .courseAvailability a:active:visited {
+  color: white;
+}
+
+.confirmOrderDialog {
+  /* TODO Pass options from site stylesheets */
+  background: rgba(255, 255, 255, 0.98);
+  position: absolute;
+  right: 100px;
+  top: 100px;
+  -moz-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -webkit-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -o-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+  z-index: 100;
+  padding: 20px;
+  display: none;
+}
+.confirmOrderDialog div {
+  color: #ccc;
+  font-size: 1.4em;
+}
+.confirmOrderDialog div span {
+  color: #999;
+  font-size: 0.6em;
+}
+.confirmOrderDialog p + p {
+  font-size: 1em;
+  margin-top: 1em;
+}
+.confirmOrderDialog button {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+  font-size: 1em;
+  line-height: 1.2em;
+  padding: 0.3em 1em;
+  border-width: 1px;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #ffffff), color-stop(10%, #ffffff), color-stop(50%, #efefef), color-stop(50%, #e8e8e8), color-stop(100%, #ffffff));
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #ffffff 10%, #efefef 50%, #e8e8e8 50%, #ffffff 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #ffffff 10%, #efefef 50%, #e8e8e8 50%, #ffffff 100%);
+  border-color: #d1d1d1;
+  text-shadow: white 0px 1px 1px;
+  -moz-box-shadow: rgba(255, 255, 255, 0.968627450980392) 0 0 0.1em 1px inset;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.968627450980392) 0 0 0.1em 1px inset;
+  -o-box-shadow: rgba(255, 255, 255, 0.968627450980392) 0 0 0.1em 1px inset;
+  box-shadow: rgba(255, 255, 255, 0.968627450980392) 0 0 0.1em 1px inset;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  -o-background-clip: padding-box;
+  -ms-background-clip: padding-box;
+  -khtml-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.confirmOrderDialog button, .confirmOrderDialog button:visited {
+  color: #222222;
+}
+.confirmOrderDialog button:hover, .confirmOrderDialog button:focus {
+  background-color: white;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #ffffff), color-stop(10%, #ffffff), color-stop(50%, #e8e8e8), color-stop(50%, #e0e0e0), color-stop(100%, #fafafa));
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #ffffff 10%, #e8e8e8 50%, #e0e0e0 50%, #fafafa 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #ffffff 10%, #e8e8e8 50%, #e0e0e0 50%, #fafafa 100%);
+  border-color: #c9c9c9;
+  text-shadow: white 0px 1px 1px;
+}
+.confirmOrderDialog button:hover, .confirmOrderDialog button:hover:visited, .confirmOrderDialog button:focus, .confirmOrderDialog button:focus:visited {
+  color: #222222;
+}
+.confirmOrderDialog button:active {
+  background-color: white;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #e8e8e8), color-stop(30%, #ededed), color-stop(50%, #e3e3e3), color-stop(50%, #dbdbdb), color-stop(100%, #fcfcfc));
+  background-image: -moz-linear-gradient(top, #e8e8e8 0%, #ededed 30%, #e3e3e3 50%, #dbdbdb 50%, #fcfcfc 100%);
+  background-image: linear-gradient(top, #e8e8e8 0%, #ededed 30%, #e3e3e3 50%, #dbdbdb 50%, #fcfcfc 100%);
+  border-color: #c1c1c1;
+  text-shadow: white 0px -1px -1px;
+  -moz-box-shadow: #d1d1d1 0 0.08em 0.1em 1px inset;
+  -webkit-box-shadow: #d1d1d1 0 0.08em 0.1em 1px inset;
+  -o-box-shadow: #d1d1d1 0 0.08em 0.1em 1px inset;
+  box-shadow: #d1d1d1 0 0.08em 0.1em 1px inset;
+}
+.confirmOrderDialog button:active, .confirmOrderDialog button:active:visited {
+  color: #222222;
+}
+
+.classSessions {
+  /* TODO Make it all nice and pretty */
+  background: rgba(255, 255, 255, 0.98);
+  position: absolute;
+  right: 100px;
+  top: 100px;
+  -moz-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -webkit-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -o-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+  z-index: 100;
+  padding: 20px;
+  display: none;
+}
+
+.printAction {
+  width: auto;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  background: #f7f7f7;
+  border: 1px solid #eee;
+  color: #ccc;
+  padding: 4px 10px;
+}
+.printAction:hover {
+  color: #444;
+  border-color: #999;
+  cursor: pointer;
+}
+
+/**
+ *  _enrol.scss
+ *
+ *  Enrolment styling.
+ *
+ *
+ */
+/**
+ *  _nav.scss
+ *
+ *  Styling for navigation - page nav, subject nav.
+ *
+ *
+ */
+/**
+ *  _nyromodal.scss
+ *
+ *  Styling for nyryModal dialog boxes.
+ * 
+ */
+.nyroModalBg {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  opacity: 0.1;
+  display: none !important;
+}
+
+.nmReposition {
+  position: absolute;
+}
+
+.nyroModalCloseButton {
+  top: -13px;
+  right: -13px;
+  width: 12px;
+  height: 12px;
+  text-indent: -9999em;
+  border: 3px solid #fff;
+  padding: 4;
+  display: block;
+  background: #444;
+  color: #eee;
+  text-align: center;
+  font-weight: bold;
+  content: "x";
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -o-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+  -moz-box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+  -webkit-box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+  -o-box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+  box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+}
+.nyroModalCloseButton:hover {
+  color: #fff;
+  background: #000;
+  cursor: pointer;
+  -webkit-background-clip: padding-box;
+}
+
+.nyroModalTitle {
+  top: -16px;
+  left: -10;
+  margin: 0;
+  font-size: 1.6em;
+  padding: .4em;
+  color: #444;
+  background: #f7f7f7;
+  border: 3px solid #fff;
+  -moz-box-shadow: rgba(68, 68, 68, 0.2) 0px 0px 10px 0;
+  -webkit-box-shadow: rgba(68, 68, 68, 0.2) 0px 0px 10px 0;
+  -o-box-shadow: rgba(68, 68, 68, 0.2) 0px 0px 10px 0;
+  box-shadow: rgba(68, 68, 68, 0.2) 0px 0px 10px 0;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.nyroModalCont {
+  position: absolute;
+  margin: 25px;
+  background: #fff;
+  width: 600px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.98);
+  position: absolute;
+  right: 100px;
+  top: 100px;
+  -moz-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -webkit-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -o-box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  box-shadow: rgba(68, 68, 68, 0.3) 0px 0px 20px 0;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.nyroModalCont iframe {
+  width: 600px;
+  height: 400px;
+}
+
+.dialogBox {
+  overflow-y: auto;
+}
+.dialogBox body {
+  /* Since we are reusing the site stylesheet, reset body/html tags to prevent any formatting weirdness */
+  width: auto;
+  border: none;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+.nyroModalError {
+  border: 4px solid red;
+  color: red;
+  width: 250px;
+  height: 250px;
+}
+
+.nyroModalError div {
+  min-width: 0;
+  min-height: 0;
+  padding: 10px;
+}
+
+.nyroModalLink, .nyroModalDom, .nyroModalForm, .nyroModalFormFile {
+  position: relative;
+  padding: 10px;
+  min-height: 250px;
+  min-width: 250px;
+  max-width: 1000px;
+}
+
+.nyroModalImage, .nyroModalSwf, .nyroModalIframe, .nyroModalIframeForm {
+  position: relative;
+  overflow: hidden;
+}
+
+.nyroModalHidden {
+  left: -9999em;
+  top: -9999em;
+}
+
+.nyroModalLoad {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: white url(/s/img/common/ajaxLoader.gif) no-repeat center;
+  padding: 0;
+}
+
+.nyroModalPrev, .nyroModalNext {
+  outline: none;
+  position: absolute;
+  top: 0;
+  height: 60%;
+  width: 150px;
+  min-height: 50px;
+  max-height: 300px;
+  cursor: pointer;
+  text-indent: -9999em;
+  background: transparent url("data:image/gif;base64,AAAA") left 20% no-repeat;
+}
+
+.nyroModalImage .nyroModalPrev, .nyroModalImage .nyroModalNext {
+  height: 100%;
+  width: 40%;
+  max-height: none;
+}
+
+.nyroModalPrev {
+  left: 0;
+}
+
+.nyroModalPrev:hover {
+  background-image: url(/s/img/common/prev.gif);
+}
+
+.nyroModalNext {
+  right: 0;
+  background-position: right 20%;
+}
+
+.nyroModalNext:hover {
+  background-position: right 20%;
+  background-image: url(/s/img/common/next.gif);
+}
+
+/**
+ *  _.scss
+ *
+ *  Basic styling for search panels, search results.
+ *
+ *
+ */
+/* Search Box */
+div#search_box h3 {
+  display: none;
+}
+
+div#header form#cse-search-box {
+  width: 250px;
+  outline: 0px solid red;
+  height: 50px;
+  position: absolute;
+  top: 90px;
+  right: 135px;
+}
+
+div#header form#cse-search-box input#q {
+  width: 175px;
+}
+
+form#cse-search-box input.find {
+  display: inline-block;
+  width: auto;
+  background: #CE1126;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 2px 5px 4px 5px;
+  border: 0;
+}
+
+form#cse-search-box input#find:hover {
+  background-color: #A90E1F;
+}
+
+div#search_box #search .quicksearch:focus {
+  outline: 0;
+}
+
+.show-advanced-search-slide {
+  color: #A9BACA;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+#search_box div#advanced_search {
+  display: none;
+}
+
+#advanced_search {
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 175px;
+  width: 480px;
+  top: 45px;
+  right: 0px;
+  position: absolute;
+  z-index: 2000;
+  color: #fff;
+}
+
+div#search_box form div {
+  position: absolute;
+  margin: 0;
+  height: auto;
+}
+
+div#search_box div#adv_search_keyword {
+  display: none;
+}
+
+div#search_box div#adv_search_tag {
+  top: 10px;
+  left: 10px;
+}
+
+div#search_box div#adv_search_location {
+  top: 55px;
+  left: 10px;
+}
+
+div#search_box div#adv_search_price {
+  top: 100px;
+  left: 10px;
+}
+
+div#search_box div#adv_search_time {
+  top: 12px;
+  right: 10px;
+}
+
+div#search_box div#adv_search_day {
+  top: 50px;
+  right: 10px;
+}
+
+div#search_box div#adv_search_submit {
+  top: 140px;
+  right: 30px;
+}
+
+#advanced_search_slide label {
+  width: auto;
+}
+
+/**
+ *  _shortlist.scss
+ *
+ *  Shortlist styling.
+ *
+ *
+ */
+#shortlist {
+  position: relative;
+  padding: 10px;
+}
+#shortlist h3 {
+  display: none;
+}
+#shortlist .shortlistInfo {
+  height: 38px;
+  text-transform: uppercase;
+}
+#shortlist .shortlistInfo span {
+  font-size: 4em;
+  float: left;
+  display: block;
+  line-height: 1;
+}
+#shortlist .shortlistAction ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  overflow: hidden;
+  *zoom: 1;
+  border-bottom: 1px solid black;
+  padding: 0px 0 0 0;
+  clear: both;
+}
+#shortlist .shortlistAction ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  white-space: nowrap;
+}
+#shortlist .shortlistAction ul li {
+  *display: inline;
+}
+#shortlist .shortlistChoices {
+  display: none;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  position: absolute;
+  top: 82px;
+  right: 0;
+  margin: 0;
+  width: 250px;
+}
+#shortlist .shortlistChoices ul {
+  margin: 0;
+}
+#shortlist .shortlistChoices li {
+  padding: 5px 55px 5px 10px;
+  position: relative;
+}
+#shortlist .shortlistChoices li:hover {
+  background: rgba(0, 0, 0, 0.95);
+}
+#shortlist .shortlistChoices li div {
+  font-size: 0.8em;
+  color: #999;
+}
+#shortlist .shortlistChoices .deleteItem {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: block;
+  font-size: 9px;
+  background: #444;
+  color: #ccc;
+  line-height: 1;
+  padding: 2px;
+  margin: 4px 0 0 0;
+}
+#shortlist .shortlistChoices .deleteItem a {
+  color: #ccc;
+}
+#shortlist .shortlistChoices .deleteItem a:hover {
+  text-decoration: none;
+  color: #fff;
+}
+#shortlist .closeButton {
+  border: 3px solid #fff;
+  padding: 4;
+  display: block;
+  background: #444;
+  color: #eee;
+  text-align: center;
+  font-weight: bold;
+  content: "x";
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -o-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+  -moz-box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+  -webkit-box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+  -o-box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+  box-shadow: rgba(68, 68, 68, 0.5) 0px 0px 10px 0;
+  position: absolute;
+  top: -14px;
+  right: -14px;
+}
+#shortlist .closeButton:hover {
+  color: #fff;
+  background: #000;
+  cursor: pointer;
+  -webkit-background-clip: padding-box;
+}
+
+/**
+ * Time to call all the mixins 
+ */
+body, select, input, textarea {
+  color: #444444;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+a, a:active, a:visited {
+  color: #607890;
+}
+
+a:hover {
+  color: #003366;
+}
+
+ul, ol {
+  margin-left: 1.8em;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+td, td img {
+  vertical-align: top;
+}
+
+sub {
+  vertical-align: sub;
+  font-size: smaller;
+}
+
+sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+textarea {
+  overflow: auto;
+}
+
+a:hover, a:active {
+  outline: none;
+}
+
+pre {
+  padding: 15px;
+  white-space: pre;
+  white-space: pre-wrap;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+input[type="radio"] {
+  vertical-align: text-bottom;
+}
+
+input[type="checkbox"] {
+  vertical-align: bottom;
+}
+
+.ie7 input[type="checkbox"] {
+  vertical-align: baseline;
+}
+
+.ie6 input {
+  vertical-align: text-bottom;
+}
+
+label, input[type="button"], input[type="submit"], input[type="image"], button {
+  cursor: pointer;
+}
+
+button, input, select, textarea {
+  margin: 0;
+}
+
+::-moz-selection {
+  background: #ff5e99;
+  color: white;
+  text-shadow: none;
+}
+
+::selection {
+  background: #ff5e99;
+  color: white;
+  text-shadow: none;
+}
+
+a:link {
+  -webkit-tap-highlight-color: #ff5e99;
+}
+
+button {
+  width: auto;
+  overflow: visible;
+}
+
+.ie7 img {
+  -ms-interpolation-mode: bicubic;
+}
+
+.ie6 legend, .ie7 legend {
+  margin-left: -7px;
+}
+
+nav ul, nav li {
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1em 0;
+}
+
+/* Colours */
+/* Links */
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/*---- Content Headings -----*/
+h1, h2, h3, h4, h5 {
+  color: #ce1126;
+}
+
+h1 {
+  font-size: 3em;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1;
+}
+
+h4 {
+  font-size: 1.2em;
+  line-height: 1.25;
+}
+
+h5 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+h6 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+/*---- Structural -----*/
+body {
+  font-family: Arial, Hevetica;
+  font-size: 0.8em;
+  line-height: 1.6em;
+  width: 976px;
+  margin: 7px auto;
+  border: 1px solid #DBD3C2;
+}
+
+#header, nav, #contentContainer, #footer {
+  position: relative;
+  outline: 0px solid #12416c;
+}
+
+nav {
+  padding: 15px 0px 0 10px;
+  outline: 1px solid pink;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  overflow: hidden;
+  *zoom: 1;
+  height: 28px;
+}
+nav ul > li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  white-space: nowrap;
+  width: auto;
+  margin: 0px 0px 0 0;
+}
+nav ul > li {
+  *display: inline;
+}
+nav ul > li > a {
+  padding: 4px 11px;
+  border: 1px solid #fdebc5;
+  border-bottom-width: 0;
+  background-color: #f9cf66;
+  font-size: 0.85em;
+  display: block;
+}
+nav ul ul {
+  display: none;
+}
+
+#contentContainer {
+  margin-top: 20px;
+  overflow: hidden;
+  *zoom: 1;
+}
+
+#content {
+  min-height: 750px;
+  width: 596px;
+  margin: 0 0px;
+  float: left;
+}
+
+#sidebarLeft, #sidebarRight {
+  float: left;
+  width: 180px;
+  outline: 0px solid #12416c;
+}
+
+#sidebarLeft {
+  left: 10px;
+}
+
+#sidebarRight {
+  right: 0px;
+  top: 0px;
+}
+
+/*---- Header -----*/
+#header {
+  height: 125px;
+  background: #12416c;
+}
+
+#usydlogo {
+  width: 161px;
+  height: 70px;
+  display: block;
+  outline: 0px solid #12416c;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('/s/img/bullet.png?1293168484');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  margin-left: -20px;
+}
+
+#site_toolbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 155px;
+  background: #f5af00;
+  z-index: 10;
+}
+
+/*---- Search Box -----*/
+#search_box {
+  outline: 1px solid red;
+  position: absolute;
+  right: 200px;
+  top: 10px;
+  width: 150px;
+}
+
+/*---- Nav -----*/
+#nav {
+  padding: 15px 0px 0 10px;
+  outline: 1px solid pink;
+}
+#nav ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  overflow: hidden;
+  *zoom: 1;
+  height: 28px;
+}
+#nav ul > li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  white-space: nowrap;
+  width: auto;
+  margin: 0px 0px 0 0;
+}
+#nav ul > li {
+  *display: inline;
+}
+#nav ul > li > a {
+  padding: 4px 11px;
+  border: 1px solid #fdebc5;
+  border-bottom-width: 0;
+  background-color: #f9cf66;
+  font-size: 0.85em;
+  display: block;
+}
+#nav ul ul {
+  display: none;
+}
+
+/*--- Subject Nav ---*/
+.taggroup-2405 ul {
+  list-style: none;
+  margin: 0;
+}
+.taggroup-2405 ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.taggroup-2405 ul ul ul {
+  display: none;
+}
+
+/*---- Page Specific -----*/
+.internal-page #content, #DetailsPage #content {
+  margin-right: 0px;
+  width: 786px;
+}
+
+.internal-page #sidebarRight, #DetailsPage #sidebarRight {
+  display: none;
+}
