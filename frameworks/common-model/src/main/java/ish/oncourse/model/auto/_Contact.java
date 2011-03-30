@@ -21,7 +21,8 @@ import ish.oncourse.model.Tutor;
  * If you need to make any customizations, please use subclass.
  */
 public abstract class _Contact extends CayenneDataObject {
-
+	
+	
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BUSINESS_PHONE_NUMBER_PROPERTY = "businessPhoneNumber";
     public static final String COOKIE_HASH_PROPERTY = "cookieHash";
