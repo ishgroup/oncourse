@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+
+	<dataSource name="onCourseDS" type="JdbcDataSource"
+		jndiName="java:comp/env/jdbc/oncourse" />
+		
+	<dataSource name="onCourseRef" type="JdbcDataSource"
+		jndiName="java:comp/env/jdbc/oncourse_reference" />
+
+	<document>
+		<entity name="course" dataSource="onCourseDS"
+			query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0 and isWebVisible=1"
+			deltaImportQuery="select id, 'course' as type, name, detail, code, collegeId from Course where id='${dataimporter.delta.id}'"
+			deltaQuery="select id from Course where isDeleted=0 and isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
+			pk="id" transformer="HTMLStripTransformer">
+
+			<field name="id" column="id" />
+			<field name="doctype" column="type" />
+			<field name="name" column="name" />
+			<field name="detail" column="detail" stripHTML="true" />
+			<field name="course_code" column="code" />
+			<field name="collegeId" column="collegeId" />
+
+			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
+				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end from CourseClass cc 
+							where cc.isWebVisible=1 
+									and cc.courseid='${course.id}'
+                       				and cc.isCancelled=0 and cc.endDate &gt; CURDATE()"
+				deltaImportQuery="select cc.id as id, cc.feeExGst as pr from CourseClass cc where cc.id='${dataimporter.delta.id}'"
+				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}' or endDate &lt; CURDATE()"
+				parentDeltaQuery="select id from Course where id='{courseClass.courseId}'">
+				<field name="id" column="id" />
+				<field name="price" column="pr" />
+				<field name="class_code" column="code" template="${course.code}\-${courseClass.code}"/>
+				<field name="end" column="end"/>
+				
+				<entity name="contact" dataSource="onCourseDS" pk="id"
+					transformer="RegexTransformer"
+					query="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct
+                	    inner join Tutor t on ct.tutorId = t.id
+           				inner join TutorRole tr on t.id = tr.tutorId
+           				where tr.courseClassId='${courseClass.id}'"
+					deltaImportQuery="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct where ct.id='${dataimporter.delta.id}'"
+					deltaQuery="select ct.id from Contact ct where ct.modified &gt; '${dataimporter.last_index_time}'" 
+					parentDeltaQuery="select cc.id from Contact ct 
+						inner join Tutor t on ct.tutorId = t.id
+    	       			inner join TutorRole tr on t.id = tr.tutorId
+    	       			inner join CourseClass cc on tr.courseClassId = cc.id
+        	   			where ct.id='${contact.id}'">
+					<field name="id" column="id" />
+					<field name="gvName" column="gvName"/>
+					<field name="fmName" column="fmName"/>
+					<field name="tutor" column="TUTOR" regex="^(.*)$" replaceWith="$1 ${contact.fmName}" sourceColName="gvName" /> 
+				</entity>
+			
+				<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
+					query="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, 
+							IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s
+                				where s.courseClassId='${courseClass.id}'"
+                	deltaImportQuery="select s.id as id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, 
+                					IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time,
+                					 s.endDate as end from Session s where s.id='${dataimporter.delta.id}'"
+					deltaQuery="select id from Session where modified &gt; '${dataimporter.last_index_time}'" 
+					parentDeltaQuery="select cc.id as id from Session s inner join CourseClass cc on s.courseClassId = cc.id">
+					<field name="id" column="id"/>
+					<field name="dayName" column="dayName" />
+					<field name="dayType" column="dayType" />
+					<field name="time" column="time" />
+					<field name="when" column="when" template="${course_session.dayName} ${course_session.dayType} ${course_session.time}"/>
+				</entity>
+				<entity name="site" dataSource="onCourseDS" pk="id"
+					query="select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+            	        inner join Room r on r.siteId=s.id
+                	    inner join CourseClass cc on cc.roomId=r.id
+                    	where s.isWebVisible=1 and cc.id='${courseClass.id}'
+                  		group by s.suburb, s.postcode
+            		  union
+            			select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+		            	inner join Room r on r.siteId=s.id
+			            inner join Session ss on ss.roomId=r.id
+			            inner join CourseClass cc on cc.id=ss.courseClassId
+			            where s.isWebVisible=1 and cc.id='${courseClass.id}'
+		    	        group by s.suburb, s.postcode"
+					deltaImportQuery="select s.id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s where s.id='${dataimporter.delta.id}'"
+					deltaQuery="select id from Site where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'" 
+					parentDeltaQuery="select cc.id from Site s 
+						inner join Room r on r.siteId=s.id 
+						inner join CourseClass cc on cc.roomId=r.id 
+						where s.id='${site.id}' 
+					  union 
+					  	select cc.id from Site s 
+					  	inner join Room r on r.siteId=s.id 
+				  	inner join Session ss on ss.roomId=r.id
+				  	inner join CourseClass cc on cc.id=ss.courseClassId
+				  	where s.id='${site.id}'">
+				  	
+					<field name="id" column="id"/>
+					<field name="course_loc" column="loc" />
+					<field name="course_postcode" column="pc" />
+					<field name="course_suburb" column="sb" />
+				</entity>
+			</entity>
+
+			<entity name="coursetag" dataSource="onCourseDS" pk="id"
+				query="select t.id as id, CONCAT(t.shortName, ' ', t.name) as tag from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and tg.id = '${course.id}'"
+				deltaImportQuery="select t.id as id, CONCAT(t.shortName, ' ', t.name) as tag from Tag t where t.id='${dataimporter.delta.id}'"
+				deltaQuery="select t.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and t.modified &gt; '${dataimporter.last_index_time}' or tgt.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}'" 
+				parentDeltaQuery="select tg.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${coursetag.id}">
+				<field name="id" column="id"/>
+				<field name="tag" column="tag" />
+			</entity>
+		</entity>
+		
+		<entity name="place" dataSource="onCourseRef" pk="id"
+			query="select suburb, 'place' as type, state, postcode, CONCAT(CAST(postcode AS CHAR), suburb) as id, CONCAT(CAST(lat AS CHAR), ',', CAST(lon AS CHAR)) as loc from postcode_db">
+			<field name="id" column="id" />
+			<field name="doctype" column="type" />
+			<field name="suburb" column="suburb" />
+			<field name="state" column="state" />
+			<field name="postcode" column="postcode" />
+			<field name="loc" column="loc" />
+		</entity>
+		
+		<entity name="tag" dataSource="onCourseDS" pk="id" query="select distinct t.id, t.name as nm, 'tag' as type, t.collegeId as collegeID from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course'">
+			<field name="id" column="t.id" />
+			<field name="doctype" column="type" />
+			<field name="collegeId" column="collegeID" />
+			<field name="name" column="nm"/>
+		</entity>
+		
+	</document>
+</dataConfig>
