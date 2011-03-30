@@ -1,8 +1,8 @@
 package ish.oncourse.ui.services;
 
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.site.IWebSiteService;
