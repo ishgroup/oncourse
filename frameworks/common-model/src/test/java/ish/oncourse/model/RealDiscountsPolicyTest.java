@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.ObjectContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	/**
 	 * Cayenne context for creating entity instances.
 	 */
-	private static DataContext context;
+	private static ObjectContext context;
 	/**
 	 * The student for the eligibility tests.
 	 */
@@ -74,7 +74,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		testDate = new GregorianCalendar();
 
 		ContextUtils.setupDataSources();
-		context = DataContext.createDataContext();
+		context = ContextUtils.createObjectContext();
 
 		// prepare and commit data that should be stored(to prevent using of
 		// temp records as query parameters)

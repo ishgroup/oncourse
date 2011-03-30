@@ -1,7 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebContent;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.Component;

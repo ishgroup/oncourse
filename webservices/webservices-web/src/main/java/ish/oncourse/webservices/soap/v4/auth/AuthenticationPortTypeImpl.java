@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.v4.auth;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.exception.AuthenticationFailureException;
 

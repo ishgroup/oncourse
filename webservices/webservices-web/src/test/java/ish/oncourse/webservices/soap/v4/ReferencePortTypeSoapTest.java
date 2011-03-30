@@ -39,13 +39,13 @@ public class ReferencePortTypeSoapTest extends AbstractWebServiceTest {
 
 	@BeforeClass
 	public static void setupDataSet() throws Exception {
-		InputStream st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("baseReferenceDataSet.xml");
+		InputStream st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("reference/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse_reference").getConnection(), null),
 				dataSet);
 
-		st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
+		st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("auth/authDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);

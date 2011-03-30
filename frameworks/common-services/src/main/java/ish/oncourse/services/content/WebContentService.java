@@ -4,8 +4,8 @@ import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.BaseService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;

@@ -9,7 +9,7 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.site.IWebSiteService;
 

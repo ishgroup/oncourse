@@ -2,68 +2,172 @@ package ish.oncourse.webservices.updaters.replication;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.Status;
+import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
 public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends Queueable> implements IWillowUpdater<V> {
 
 	private static final Logger logger = Logger.getLogger(AbstractWillowUpdater.class);
 
-	private College college;
-
 	@SuppressWarnings("rawtypes")
 	private IWillowUpdater next;
 
-	private IWillowQueueService queueService;
+	private ObjectContext objectContext;
+	
+	protected College college;
 
-	public AbstractWillowUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		this.college = college;
-		this.queueService = queueService;
+	private TransactionGroup group;
+
+	public void setObjectContext(ObjectContext objectContext) {
+		this.objectContext = objectContext;
+	}
+
+	public void setCollege(College college) {
+		this.college = (College) this.objectContext.localObject(college.getObjectId(), null);
+	}
+
+	public void setGroup(TransactionGroup group) {
+		this.group = group;
+	}
+	
+	public void setNext(@SuppressWarnings("rawtypes") IWillowUpdater next) {
 		this.next = next;
 	}
 
-	@SuppressWarnings("unchecked")
-	private T findMatchingEntity(ReplicationStub stub) {
-		return (T) queueService.findEntityByWillowId(stub.getEntityIdentifier(), stub.getWillowId());
+	private Queueable findEntityByWillowId(Long entityId, String entityIdentifier) {
+		SelectQuery q = new SelectQuery(getEntityClass(entityIdentifier));
+		q.andQualifier(ExpressionFactory.matchDbExp("id", entityId));
+		q.andQualifier(ExpressionFactory.matchExp("college", this.college));
+		return (Queueable) Cayenne.objectForQuery(objectContext, q);
 	}
-	
-	protected College getCollege(ObjectContext ctx) {
-		return (College) ctx.localObject(college.getObjectId(), null);
+
+	private Queueable findEntityByAngelId(ReplicationStub stub) {
+		SelectQuery q = new SelectQuery(getEntityClass(stub.getEntityIdentifier()));
+		q.andQualifier(ExpressionFactory.matchDbExp("angelId", stub.getAngelId()));
+		q.andQualifier(ExpressionFactory.matchExp("college", this.college));
+		return (Queueable) Cayenne.objectForQuery(objectContext, q);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Queueable updateRelatedEntity(ObjectContext ctx, ReplicationStub stub, List<ReplicatedRecord> relationStubs) {
-		Queueable entity = null;
-		
-		if (stub instanceof HollowStub) {
-			entity = findMatchingEntity(stub);
-		} else {
-			relationStubs.addAll(next.updateRecord(stub));
-			entity = findMatchingEntity(stub);
+	protected Queueable updateRelationShip(Long entityId, String entityIdentifier, List<ReplicatedRecord> result) {
+		ReplicationStub stub = findInTransactionGroup(entityId, entityIdentifier);
+		if (stub != null) {
+			return next.updateRecord(stub, result);
 		}
-		
-		return (Queueable) ctx.localObject(entity.getObjectId(), null);
+		return findEntityByWillowId(entityId, entityIdentifier);
+	}
+
+	private ReplicationStub findInTransactionGroup(Long entityId, String entityIdentifier) {
+		List<ReplicationStub> stubs = new ArrayList<ReplicationStub>(group.getAttendanceOrBinaryDataOrBinaryInfo());
+		for (ReplicationStub s : stubs) {
+			if (entityId.equals(s.getAngelId()) && entityIdentifier.equals(s.getEntityIdentifier())) {
+				return s;
+			}
+		}
+		return null;
+	}
+
+	private Class<T> getEntityClass(String entityIdentifier) {
+		@SuppressWarnings("unchecked")
+		Class<T> entityClass = (Class<T>) objectContext.getEntityResolver().getObjEntity(entityIdentifier).getJavaClass();
+		return entityClass;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ReplicatedRecord> updateRecord(V stub) {
+	public Queueable updateRecord(V stub, List<ReplicatedRecord> result) {
 
-		List<ReplicatedRecord> respStubs = new LinkedList<ReplicatedRecord>();
+		ReplicatedRecord replRecord = new ReplicatedRecord();
+		replRecord.setStatus(Status.SUCCESS);
+		replRecord.setStub(toHollow(stub));
+		result.add(replRecord);
 
-		ReplicatedRecord record = new ReplicatedRecord();
-		respStubs.add(record);
+		T objectToUpdate = null;
+
+		if (stub.getWillowId() != null) {
+			objectToUpdate = (T) findEntityByWillowId(stub.getWillowId(), stub.getEntityIdentifier());
+			if (objectToUpdate == null) {
+				String message = String.format("Cannot find object:%s by willowId:%s", stub.getEntityIdentifier(),
+						stub.getWillowId());
+
+				logger.error(message);
+
+				replRecord.setStatus(Status.WILLOWID_NOT_FOUND);
+				replRecord.setMessage(message);
+			} else {
+				if (objectToUpdate.getAngelId() != stub.getAngelId()) {
+
+					String message = String.format("AngelId doesn't match. Got %s while expected %s.", stub.getAngelId(),
+							objectToUpdate.getAngelId());
+
+					logger.error(message);
+
+					replRecord.setStatus(Status.ANGELID_NOT_MATCH);
+					replRecord.setMessage(message);
+				}
+			}
+		} else {
+			if (stub.getAngelId() != null) {
+				objectToUpdate = (T) findEntityByAngelId(stub);
+				if (objectToUpdate != null) {
+
+					String message = String.format("Have willowId:null but found existing record for entity:%s and angelId:%s",
+							stub.getEntityIdentifier(), stub.getAngelId());
+
+					logger.error(message);
+
+					replRecord.setStatus(Status.DANGLING_OBJECT);
+					replRecord.setMessage(message);
+
+				} else {
+					objectToUpdate = objectContext.newObject(getEntityClass(stub.getEntityIdentifier()));
+				}
+
+			} else {
+				String message = String.format("Both angelId and willowId are empty for object %s.", stub.getEntityIdentifier());
+
+				logger.error(message);
+
+				replRecord.setStatus(Status.EMPTY_IDS);
+				replRecord.setMessage(message);
+			}
+		}
+
+		if (objectToUpdate != null) {
+			try {
+				if (stub instanceof DeletedStub) {
+					objectContext.deleteObject(objectToUpdate);
+				} else {
+					updateEntity(stub, objectToUpdate, result);
+				}
+				
+				objectContext.commitChangesToParent();
+			} catch (Exception e) {
+				logger.error("Failed to commit object.", e);
+				objectContext.rollbackChangesLocally();
+				replRecord.setStatus(Status.FAILED);
+				replRecord.setMessage(e.getMessage());
+			}
+		}
+
+		return objectToUpdate;
+	}
+
+	private static HollowStub toHollow(ReplicationStub stub) {
 
 		HollowStub hollowStub = new HollowStub();
 		hollowStub.setEntityIdentifier(stub.getEntityIdentifier());
@@ -74,67 +178,8 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 		hollowStub.setModified(today);
 		hollowStub.setCreated(today);
 
-		record.setStub(hollowStub);
-
-		T objectToUpdate = null;
-
-		if (stub.getWillowId() != null) {
-			objectToUpdate = findMatchingEntity(stub);
-			if (objectToUpdate == null) {
-				record.setStatus(Status.FAILURE);
-				String message = String.format("Cannot find object:%s by willowId:%s", stub.getEntityIdentifier(), stub.getWillowId());
-				logger.error(message);
-				record.setMessage(message);
-			} else {
-				if (objectToUpdate.getAngelId() != stub.getAngelId()) {
-					record.setStatus(Status.FAILURE);
-					String message = String.format("AngelId doesn't match. Got %s while expected %s.", stub.getAngelId(),
-							objectToUpdate.getAngelId());
-					logger.error(message);
-					record.setMessage(message);
-				}
-			}
-		} else {
-			if (stub.getAngelId() != null) {
-				objectToUpdate = (T) queueService.findEntityByAngelId(stub.getEntityIdentifier(), stub.getAngelId());
-				if (objectToUpdate != null) {
-					record.setStatus(Status.FAILURE);
-					String message = String.format("Have willowId:null but found existing record for entity:%s and angelId:%s", stub.getEntityIdentifier(), stub.getAngelId());
-					logger.error(message);
-					record.setMessage(message);
-				} else {
-					objectToUpdate = queueService.createNew((Class<T>) queueService.getEntityClass(stub.getEntityIdentifier()));
-				}
-
-			} else {
-				record.setStatus(Status.FAILURE);
-				String message = String.format("Both angelId and willowId are empty for object %s.", stub.getEntityIdentifier());
-				logger.error(message);
-				record.setMessage(message);
-			}
-		}
-
-		if (record.getStatus() != Status.FAILURE && objectToUpdate != null) {
-			ObjectContext ctx = objectToUpdate.getObjectContext();
-			try {
-				if (stub instanceof DeletedStub) {
-					ctx.deleteObject(objectToUpdate);
-					ctx.commitChanges();
-				} else {
-					updateEntity(stub, objectToUpdate, respStubs);
-					ctx.commitChanges();
-					hollowStub.setWillowId(objectToUpdate.getId());
-					record.setStatus(Status.SUCCESS);
-				}
-			} catch (Exception e) {
-				logger.error("Failed to update record.", e);
-				record.setMessage(e.getMessage());
-				record.setStatus(Status.FAILURE);
-			}
-		}
-
-		return respStubs;
+		return hollowStub;
 	}
 
-	protected abstract void updateEntity(V stub, T entity, List<ReplicatedRecord> relationStubs);
+	protected abstract void updateEntity(V stub, T entity, List<ReplicatedRecord> result);
 }

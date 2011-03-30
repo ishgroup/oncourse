@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
-  project-version="3.0.0.1">
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+	 project-version="6">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<db-entity name="Attendance" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -485,6 +485,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="lastAttemptTimestamp" type="TIMESTAMP" length="19"/>
 		<db-attribute name="numberOfAttempts" type="INTEGER" length="10"/>
+		<db-attribute name="transactionKey" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="Room" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -865,7 +866,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="businessPhoneNumber" type="java.lang.String" db-attribute-path="businessPhoneNumber"/>
 		<obj-attribute name="cookieHash" type="java.lang.String" db-attribute-path="cookieHash"/>
-		<obj-attribute name="countryId" type="java.lang.Long" db-attribute-path="countryId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="dateOfBirth" type="java.util.Date" db-attribute-path="dateOfBirth"/>
 		<obj-attribute name="emailAddress" type="java.lang.String" db-attribute-path="emailAddress"/>
@@ -1138,6 +1138,7 @@
 		<obj-attribute name="entityWillowId" type="java.lang.Long" db-attribute-path="entityWillowId"/>
 		<obj-attribute name="lastAttemptTimestamp" type="java.util.Date" db-attribute-path="lastAttemptTimestamp"/>
 		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
+		<obj-attribute name="transactionKey" type="java.lang.String" db-attribute-path="transactionKey"/>
 	</obj-entity>
 	<obj-entity name="Room" className="ish.oncourse.model.Room" dbEntityName="Room">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1197,7 +1198,6 @@
 		<obj-attribute name="isOverseasClient" type="java.lang.Boolean" db-attribute-path="isOverseasClient"/>
 		<obj-attribute name="isStillAtSchool" type="java.lang.Boolean" db-attribute-path="isStillAtSchool"/>
 		<obj-attribute name="labourForceType" type="java.lang.Integer" db-attribute-path="labourForceType"/>
-		<obj-attribute name="languageId" type="java.lang.Long" db-attribute-path="languageId"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="priorEducationCode" type="ish.common.types.AvetmissStudentPriorEducation" db-attribute-path="priorEducationCode"/>
 		<obj-attribute name="yearSchoolCompleted" type="java.lang.Integer" db-attribute-path="yearSchoolCompleted"/>
@@ -1248,7 +1248,6 @@
 	</obj-entity>
 	<obj-entity name="Tutor" className="ish.oncourse.model.Tutor" dbEntityName="Tutor">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="finishDate" type="java.util.Date" db-attribute-path="finishDate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1526,6 +1525,9 @@
 	<db-relationship name="tutorRoles" source="College" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="tutors" source="College" target="Tutor" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="waitingLists" source="College" target="WaitingList" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1546,6 +1548,9 @@
 	</db-relationship>
 	<db-relationship name="college" source="Contact" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="country" source="Contact" target="Country" toMany="false">
+		<db-attribute-pair source="countryId" target="id"/>
 	</db-relationship>
 	<db-relationship name="invoices" source="Contact" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
@@ -1838,6 +1843,9 @@
 	<db-relationship name="enrolments" source="Student" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
+	<db-relationship name="language" source="Student" target="Language" toMany="false">
+		<db-attribute-pair source="languageId" target="id"/>
+	</db-relationship>
 	<db-relationship name="languageHome" source="Student" target="Language" toMany="false">
 		<db-attribute-pair source="languageId" target="id"/>
 	</db-relationship>
@@ -1900,6 +1908,9 @@
 	</db-relationship>
 	<db-relationship name="attendances" source="Tutor" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="markerId"/>
+	</db-relationship>
+	<db-relationship name="college" source="Tutor" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contact" source="Tutor" target="Contact" toMany="false">
 		<db-attribute-pair source="id" target="tutorId"/>
@@ -2105,6 +2116,7 @@
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="college" source="Contact" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="country" source="Contact" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
@@ -2202,6 +2214,7 @@
 	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
 	<obj-relationship name="countryOfBirth" source="Student" target="Country" deleteRule="Nullify" db-relationship-path="countryOfBirth"/>
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
+	<obj-relationship name="language" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="language"/>
 	<obj-relationship name="languageHome" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="languageHome"/>
 	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Student" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentIns"/>
@@ -2223,6 +2236,7 @@
 	<obj-relationship name="tag" source="TaggableTag" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="taggable" source="TaggableTag" target="Taggable" deleteRule="Nullify" db-relationship-path="taggable"/>
 	<obj-relationship name="attendances" source="Tutor" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
+	<obj-relationship name="college" source="Tutor" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Tutor" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
 	<obj-relationship name="messagePeople" source="Tutor" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="sessionTutors" source="Tutor" target="SessionTutor" deleteRule="Deny" db-relationship-path="sessionTutors"/>

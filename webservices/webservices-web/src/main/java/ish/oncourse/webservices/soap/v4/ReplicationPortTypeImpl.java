@@ -1,8 +1,11 @@
 package ish.oncourse.webservices.soap.v4;
 
-import ish.oncourse.model.QueuedKey;
+import ish.oncourse.model.QueueKey;
+import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.builders.replication.IWillowStubBuilder;
+import ish.oncourse.webservices.services.replication.DFADeduper;
 import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.services.replication.WillowStubBuilderFactory;
 import ish.oncourse.webservices.services.replication.WillowUpdaterFactory;
@@ -12,22 +15,30 @@ import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.Status;
+import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v4.soap.webservices.oncourse.ish/")
 public class ReplicationPortTypeImpl implements ReplicationPortType {
-	
+
 	private static final Logger logger = Logger.getLogger(ReplicationPortTypeImpl.class);
-	
+
 	@Inject
 	@Autowired
 	private IWillowQueueService queueService;
@@ -40,66 +51,130 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@Autowired
 	private WillowUpdaterFactory updaterFactory;
 
+	@Inject
+	@Autowired
+	private ICayenneService cayenneService;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	@WebMethod(operationName="sendRecords")
+	@WebMethod(operationName = "sendRecords")
 	public ReplicationResult sendRecords(ReplicationRecords req) {
 
 		ReplicationResult result = new ReplicationResult();
+		
+		List<ReplicatedRecord> replicatedRecords = new ArrayList<ReplicatedRecord>();
 
-		@SuppressWarnings("rawtypes")
-		IWillowUpdater updater = updaterFactory.newReplicationUpdater();
-
-		for (ReplicationStub stub : req.getAttendanceOrBinaryDataOrBinaryInfo()) {
-			result.getReplicatedRecord().addAll(updater.updateRecord(stub));
+		for (TransactionGroup group : req.getGroups()) {
+			ObjectContext ctx = cayenneService.newNonReplicatingContext();
+			
+			IWillowUpdater updater = updaterFactory.newReplicationUpdater(ctx.createChildContext(), group);
+			
+			while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+				ReplicationStub stub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
+				updater.updateRecord(stub, replicatedRecords);
+			}
+			
+			ctx.commitChanges();
 		}
-
+		
+		result.getReplicatedRecord().addAll(replicatedRecords);
+		
 		return result;
 	}
 
 	@Override
-	@WebMethod(operationName="getRecords")
+	@WebMethod(operationName = "getRecords")
 	public ReplicationRecords getRecords() {
 
 		ReplicationRecords result = new ReplicationRecords();
 
-		LinkedHashMap<QueuedKey, QueuedRecord> queue = mapQueue(queueService.getReplicationQueue());
+		List<QueuedRecord> queue = queueService.getReplicationQueue();
 
-		List<ReplicationStub> records = result.getAttendanceOrBinaryDataOrBinaryInfo();
+		Map<QueueKey, DFADeduper> dedupMap = new LinkedHashMap<QueueKey, DFADeduper>();
 
-		IWillowStubBuilder builder = stubBuilderFactory.newReplicationStubBuilder(queue);
+		for (QueuedRecord r : queue) {
+			QueueKey key = new QueueKey(r.getEntityWillowId(), r.getEntityIdentifier());
 
-		while (!queue.isEmpty()) {
-			QueuedKey key = queue.keySet().iterator().next();
-			records.add(builder.convert(queue.get(key)));
-			queue.remove(key);
+			DFADeduper deduper = dedupMap.get(key);
+
+			if (deduper == null) {
+				deduper = new DFADeduper();
+				dedupMap.put(key, deduper);
+			}
+
+			deduper.nextState(r);
+		}
+
+		IWillowStubBuilder builder = stubBuilderFactory.newReplicationStubBuilder();
+
+		Map<String, TransactionGroup> groupMap = new LinkedHashMap<String, TransactionGroup>();
+
+		for (Map.Entry<QueueKey, DFADeduper> entry : dedupMap.entrySet()) {
+			DFADeduper deduper = entry.getValue();
+
+			QueuedRecord record = deduper.getCurrentRecord();
+
+			if (record == null) {
+				continue;
+			}
+
+			String transactionKey = deduper.getTransactionKeys().first();
+			TransactionGroup group = groupMap.get(transactionKey);
+
+			if (group == null) {
+				group = new TransactionGroup();
+
+				for (String key : deduper.getTransactionKeys()) {
+					groupMap.put(key, group);
+				}
+
+				result.getGroups().add(group);
+			}
+
+			group.getAttendanceOrBinaryDataOrBinaryInfo().add(builder.convert(record));
 		}
 
 		return result;
 	}
 
 	@Override
-	@WebMethod(operationName="sendResults")
+	@WebMethod(operationName = "sendResults")
 	public short sendResults(ReplicationResult request) {
 		try {
+			ObjectContext ctx = cayenneService.newNonReplicatingContext();
+
 			for (ReplicatedRecord record : request.getReplicatedRecord()) {
-				queueService.confirmRecord(record.getStub().getWillowId(), record.getStub().getAngelId(), record.getStub()
-						.getEntityIdentifier(), record.getStatus() == Status.SUCCESS);
+
+				SelectQuery q = new SelectQuery(QueuedRecord.class);
+
+				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_WILLOW_ID_PROPERTY, record.getStub().getWillowId()));
+				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, record.getStub()
+						.getEntityIdentifier()));
+
+				QueuedRecord queuedRecord = (QueuedRecord) Cayenne.objectForQuery(ctx, q);
+
+				if (record.getStatus() == Status.SUCCESS && record.getStub().getAngelId() != null) {
+
+					@SuppressWarnings("unchecked")
+					Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
+							.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
+
+					Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
+					object.setAngelId(record.getStub().getAngelId());
+					ctx.deleteObject(queuedRecord);
+				} else {
+					int numberAttempts = queuedRecord.getNumberOfAttempts();
+					queuedRecord.setNumberOfAttempts(numberAttempts + 1);
+					queuedRecord.setLastAttemptTimestamp(new Date());
+				}
 			}
+
+			ctx.commitChanges();
 		} catch (Exception e) {
 			logger.error("Unable to confirm replication results.", e);
 			return 1;
 		}
 
 		return 0;
-	}
-
-	private static LinkedHashMap<QueuedKey, QueuedRecord> mapQueue(List<QueuedRecord> queue) {
-		LinkedHashMap<QueuedKey, QueuedRecord> mappedQueue = new LinkedHashMap<QueuedKey, QueuedRecord>();
-
-		for (QueuedRecord r : queue) {
-			mappedQueue.put(new QueuedKey(r.getEntityWillowId(), r.getEntityIdentifier()), r);
-		}
-
-		return mappedQueue;
 	}
 }

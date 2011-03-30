@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
-  project-version="3.0.0.1">
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+	 project-version="6">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<db-entity name="Country" catalog="willow_reference">
 		<db-attribute name="asccssCode" type="VARCHAR" length="10"/>
@@ -177,6 +177,12 @@
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>
 	</obj-entity>
+	<db-relationship name="contacts" source="Country" target="Contact" toMany="true">
+		<db-attribute-pair source="id" target="countryId"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="Language" target="Student" toMany="true">
+		<db-attribute-pair source="id" target="languageId"/>
+	</db-relationship>
 	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
 	</db-relationship>

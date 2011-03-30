@@ -2,7 +2,7 @@ package ish.oncourse.enrol.services.concessions;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.ConcessionType;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;

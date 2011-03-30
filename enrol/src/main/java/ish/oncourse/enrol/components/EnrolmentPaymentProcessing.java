@@ -14,7 +14,6 @@ import ish.oncourse.services.cookies.ICookiesService;
 
 import java.util.List;
 
-import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;

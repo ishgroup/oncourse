@@ -2,7 +2,7 @@ package ish.oncourse.cms.services.access;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.WillowUser;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;

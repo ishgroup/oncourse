@@ -22,9 +22,9 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentStatus;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.site.IWebSiteService;
 

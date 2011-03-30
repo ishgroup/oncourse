@@ -1,0 +1,24 @@
+----------------------------------------------------------------
+Tue Mar 29 17:13:11 EEST 2011:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.7.1.1 - (1040133): instance a816c00e-012f-01f6-05ab-000004630f88 
+on database directory memory:/Users/anton/ish/willow/frameworks/common-services/oncourse  with class loader sun.misc.Launcher$AppClassLoader@3326b249 
+Loaded from file:/Users/anton/.m2/repository/org/apache/derby/derby/10.7.1.1/derby-10.7.1.1.jar
+java.vendor=Apple Inc.
+java.runtime.version=1.6.0_24-b07-334-10M3326
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue Mar 29 17:13:17 EEST 2011:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.7.1.1 - (1040133): instance 7ff104b8-012f-01f6-05ab-000004630f88 
+on database directory memory:/Users/anton/ish/willow/frameworks/common-services/oncourse_binary  with class loader sun.misc.Launcher$AppClassLoader@3326b249 
+Loaded from file:/Users/anton/.m2/repository/org/apache/derby/derby/10.7.1.1/derby-10.7.1.1.jar
+java.vendor=Apple Inc.
+java.runtime.version=1.6.0_24-b07-334-10M3326
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue Mar 29 17:13:21 EEST 2011:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.7.1.1 - (1040133): instance 88044962-012f-01f6-05ab-000004630f88 
+on database directory memory:/Users/anton/ish/willow/frameworks/common-services/oncourse_reference  with class loader sun.misc.Launcher$AppClassLoader@3326b249 
+Loaded from file:/Users/anton/.m2/repository/org/apache/derby/derby/10.7.1.1/derby-10.7.1.1.jar
+java.vendor=Apple Inc.
+java.runtime.version=1.6.0_24-b07-334-10M3326
+Database Class Loader started - derby.database.classpath=''

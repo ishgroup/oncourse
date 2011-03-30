@@ -1,13 +1,12 @@
 package ish.oncourse.cms.pages;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import ish.oncourse.cms.services.TestModule;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import ish.oncourse.cms.services.TestModule;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;

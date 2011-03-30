@@ -2,9 +2,9 @@ package ish.oncourse.cms.pages;
 
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import org.apache.cayenne.ObjectContext;

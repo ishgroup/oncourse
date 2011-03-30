@@ -1,8 +1,8 @@
 package ish.oncourse.services.discount;
 
 import ish.oncourse.model.Discount;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.persistence.ICayenneService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,6 +6,8 @@ import ish.oncourse.services.assetgroup.AssetGroupService;
 import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.cache.ICacheService;
+import ish.oncourse.services.cache.OSCacheService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
 import ish.oncourse.services.cookies.CookiesService;
@@ -30,6 +32,8 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
+import ish.oncourse.services.persistence.CayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.IPreferenceService;
 import ish.oncourse.services.preference.PreferenceService;
 import ish.oncourse.services.property.IPropertyService;
@@ -80,8 +84,10 @@ public class ServiceModule {
 	public static void bind(ServiceBinder binder) {
 
 		LOGGER.info("Registering Willow Common Services");
-
+		
 		// Tapestry and environment specific services
+		binder.bind(ICacheService.class, OSCacheService.class);
+		binder.bind(ICayenneService.class, CayenneService.class);
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(IComponentPageResponseRenderer.class,
 				ComponentPageResponseRenderer.class);

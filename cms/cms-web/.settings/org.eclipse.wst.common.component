@@ -8,13 +8,10 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-model/common-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/waCommon/waCommon">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-ui/common-ui">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-services/common-services">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/cms-services/cms-services">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/cms-web1/target/classes"/>

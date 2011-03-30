@@ -1,8 +1,8 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.visitor.LastEditedVisitor;
 

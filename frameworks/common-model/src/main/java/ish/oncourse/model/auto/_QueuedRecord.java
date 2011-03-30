@@ -20,6 +20,7 @@ public abstract class _QueuedRecord extends CayenneDataObject {
     public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
     public static final String LAST_ATTEMPT_TIMESTAMP_PROPERTY = "lastAttemptTimestamp";
     public static final String NUMBER_OF_ATTEMPTS_PROPERTY = "numberOfAttempts";
+    public static final String TRANSACTION_KEY_PROPERTY = "transactionKey";
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";
@@ -57,6 +58,13 @@ public abstract class _QueuedRecord extends CayenneDataObject {
     }
     public Integer getNumberOfAttempts() {
         return (Integer)readProperty("numberOfAttempts");
+    }
+
+    public void setTransactionKey(String transactionKey) {
+        writeProperty("transactionKey", transactionKey);
+    }
+    public String getTransactionKey() {
+        return (String)readProperty("transactionKey");
     }
 
     public void setCollege(College college) {

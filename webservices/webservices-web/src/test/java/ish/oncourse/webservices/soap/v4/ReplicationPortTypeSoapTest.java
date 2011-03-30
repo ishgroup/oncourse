@@ -6,11 +6,10 @@ import ish.oncourse.webservices.AbstractWebServiceTest;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationService;
 import ish.oncourse.webservices.util.SoapUtil;
-import ish.oncourse.webservices.v4.stubs.replication.CourseClassStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -41,7 +40,7 @@ public class ReplicationPortTypeSoapTest extends AbstractWebServiceTest {
 	@BeforeClass
 	public static void setupDataSet() throws Exception {
 
-		InputStream st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("baseReferenceDataSet.xml");
+		InputStream st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("reference/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
@@ -49,7 +48,7 @@ public class ReplicationPortTypeSoapTest extends AbstractWebServiceTest {
 
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 
-		st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("baseReplicationDataSet.xml");
+		st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("replication/replicationDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
@@ -58,12 +57,12 @@ public class ReplicationPortTypeSoapTest extends AbstractWebServiceTest {
 	
 	@AfterClass
 	public static void cleanDataSet() throws Exception {
-		InputStream st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("baseReplicationDataSet.xml");
+		InputStream st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("replication/replicationDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
 
-		st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("baseReferenceDataSet.xml");
+		st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("reference/referenceDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse_reference").getConnection(), null),
@@ -85,9 +84,10 @@ public class ReplicationPortTypeSoapTest extends AbstractWebServiceTest {
 		
 		assertNotNull(result);
 		
-		List<ReplicationStub> stubs = result.getAttendanceOrBinaryDataOrBinaryInfo();
+		List<TransactionGroup> groups = result.getGroups();;
+		List<ReplicationStub> stubs = groups.get(0).getAttendanceOrBinaryDataOrBinaryInfo();
 		
-		int size = result.getAttendanceOrBinaryDataOrBinaryInfo().size();
+		int size = stubs.size();
 		
 		assertTrue("Expecting only one stub.", stubs.size() == 1);
 
@@ -95,9 +95,9 @@ public class ReplicationPortTypeSoapTest extends AbstractWebServiceTest {
 
 		EnrolmentStub enrlStub = (EnrolmentStub) stubs.get(0);
 
-		assertTrue("Expecting full CourseClass stub inside enrolment.", enrlStub.getCourseClass() instanceof CourseClassStub);
+		assertTrue("Expecting full CourseClass stub inside enrolment.", enrlStub.getCourseClassId() != null);
 
-		assertTrue("Expecting hollow stub as a student inside enrolment.", enrlStub.getStudent() instanceof HollowStub);
+		assertTrue("Expecting hollow stub as a student inside enrolment.", enrlStub.getStudentId() != null);
 		
 		authPort.logout(newKey);
 	}

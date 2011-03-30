@@ -48,7 +48,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 	 */
 	@Test
 	public void testAuthenticateSuccess() throws Exception {
-		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
+		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
@@ -68,7 +68,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 	 */
 	@Test
 	public void testInvalidSecurityCode() throws Exception {
-		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
+		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
@@ -92,7 +92,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 	 */
 	@Test
 	public void testInvalidCommunicationKey() throws Exception {
-		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
+		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
@@ -121,7 +121,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 	 */
 	@Test
 	public void testRecoveringFromHaltState() throws Exception {
-		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
+		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
@@ -141,7 +141,7 @@ public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
 
 	@Test
 	public void testLogout() throws Exception {
-		InputStream st = getClass().getClassLoader().getResourceAsStream("baseCollegeDataSet.xml");
+		InputStream st = getClass().getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);

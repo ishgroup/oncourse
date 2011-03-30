@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Country;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.PaymentIn;
@@ -24,7 +25,6 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BUSINESS_PHONE_NUMBER_PROPERTY = "businessPhoneNumber";
     public static final String COOKIE_HASH_PROPERTY = "cookieHash";
-    public static final String COUNTRY_ID_PROPERTY = "countryId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DATE_OF_BIRTH_PROPERTY = "dateOfBirth";
     public static final String EMAIL_ADDRESS_PROPERTY = "emailAddress";
@@ -48,6 +48,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String TAX_FILE_NUMBER_PROPERTY = "taxFileNumber";
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
     public static final String COLLEGE_PROPERTY = "college";
+    public static final String COUNTRY_PROPERTY = "country";
     public static final String INVOICES_PROPERTY = "invoices";
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
@@ -76,13 +77,6 @@ public abstract class _Contact extends CayenneDataObject {
     }
     public String getCookieHash() {
         return (String)readProperty("cookieHash");
-    }
-
-    public void setCountryId(Long countryId) {
-        writeProperty("countryId", countryId);
-    }
-    public Long getCountryId() {
-        return (Long)readProperty("countryId");
     }
 
     public void setCreated(Date created) {
@@ -245,6 +239,15 @@ public abstract class _Contact extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty("college");
+    }
+
+
+    public void setCountry(Country country) {
+        setToOneTarget("country", country, true);
+    }
+
+    public Country getCountry() {
+        return (Country)readProperty("country");
     }
 
 

@@ -1,7 +1,7 @@
 package ish.oncourse.services.location;
 
 import ish.oncourse.model.PostcodeDb;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 
 import java.util.List;
 

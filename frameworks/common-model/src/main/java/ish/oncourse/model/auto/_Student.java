@@ -36,12 +36,10 @@ public abstract class _Student extends CayenneDataObject {
     public static final String DISABILITY_TYPE_PROPERTY = "disabilityType";
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
     public static final String HIGHEST_SCHOOL_LEVEL_PROPERTY = "highestSchoolLevel";
-    public static final String ID_PROPERTY = "id";
     public static final String INDIGENOUS_STATUS_PROPERTY = "indigenousStatus";
     public static final String IS_OVERSEAS_CLIENT_PROPERTY = "isOverseasClient";
     public static final String IS_STILL_AT_SCHOOL_PROPERTY = "isStillAtSchool";
     public static final String LABOUR_FORCE_TYPE_PROPERTY = "labourForceType";
-    public static final String LANGUAGE_ID_PROPERTY = "languageId";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PRIOR_EDUCATION_CODE_PROPERTY = "priorEducationCode";
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
@@ -51,6 +49,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final String CONTACT_PROPERTY = "contact";
     public static final String COUNTRY_OF_BIRTH_PROPERTY = "countryOfBirth";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
+    public static final String LANGUAGE_PROPERTY = "language";
     public static final String LANGUAGE_HOME_PROPERTY = "languageHome";
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
@@ -101,13 +100,6 @@ public abstract class _Student extends CayenneDataObject {
         return (AvetmissStudentSchoolLevel)readProperty("highestSchoolLevel");
     }
 
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
-    }
-
     public void setIndigenousStatus(AvetmissStudentIndigenousStatus indigenousStatus) {
         writeProperty("indigenousStatus", indigenousStatus);
     }
@@ -134,13 +126,6 @@ public abstract class _Student extends CayenneDataObject {
     }
     public Integer getLabourForceType() {
         return (Integer)readProperty("labourForceType");
-    }
-
-    public void setLanguageId(Long languageId) {
-        writeProperty("languageId", languageId);
-    }
-    public Long getLanguageId() {
-        return (Long)readProperty("languageId");
     }
 
     public void setModified(Date modified) {
@@ -224,6 +209,15 @@ public abstract class _Student extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
         return (List<Enrolment>)readProperty("enrolments");
+    }
+
+
+    public void setLanguage(Language language) {
+        setToOneTarget("language", language, true);
+    }
+
+    public Language getLanguage() {
+        return (Language)readProperty("language");
     }
 
 

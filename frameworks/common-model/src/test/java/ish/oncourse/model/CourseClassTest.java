@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -34,7 +35,7 @@ public class CourseClassTest {
 	/**
 	 * Data context for persistent objects.
 	 */
-	private static DataContext context;
+	private static ObjectContext context;
 	/**
 	 * The courseClass which will contain reference to 3 date-valid discounts.
 	 */
@@ -75,7 +76,7 @@ public class CourseClassTest {
 	public static void setUpClass() throws Exception {
 		Calendar date = Calendar.getInstance();
 		ContextUtils.setupDataSources();
-		context = DataContext.createDataContext();
+		context = ContextUtils.createObjectContext();
 
 		College college = context.newObject(College.class);
 		college.setName("name");

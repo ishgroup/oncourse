@@ -1,25 +1,16 @@
 package ish.oncourse.webservices.builders.replication;
 
-import java.util.Map;
-
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.QueuedKey;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
 
 public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, InvoiceStub> {
-	
-	public InvoiceStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
-		super(queue, queueService, next);
-	}
 	
 	@Override
 	protected InvoiceStub createFullStub(Invoice entity) {
 		InvoiceStub stub = new InvoiceStub();
 		stub.setAmountOwing(entity.getAmountOwing());
 		stub.setBillToAddress(entity.getBillToAddress());
-		stub.setContact(findRelationshipStub(entity.getContact()));
+		stub.setContactId(entity.getContact().getId());
 		stub.setCreated(entity.getCreated());
 		stub.setCustomerPO(entity.getCustomerPO());
 		stub.setCustomerReference(entity.getCustomerReference());

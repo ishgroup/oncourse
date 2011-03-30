@@ -1,9 +1,9 @@
 package ish.oncourse.webservices.soap.v4;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.services.cache.CacheGroup;
-import ish.oncourse.model.services.cache.CachedObjectProvider;
-import ish.oncourse.model.services.cache.ICacheService;
+import ish.oncourse.services.cache.CacheGroup;
+import ish.oncourse.services.cache.CachedObjectProvider;
+import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.services.ICollegeRequestService;
 

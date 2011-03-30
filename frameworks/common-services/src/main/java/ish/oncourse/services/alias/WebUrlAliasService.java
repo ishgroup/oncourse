@@ -2,8 +2,8 @@ package ish.oncourse.services.alias;
 
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebUrlAlias;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.BaseService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;

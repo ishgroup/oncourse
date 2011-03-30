@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.Attendance;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.Session;
@@ -21,7 +22,6 @@ import ish.oncourse.model.TutorRole;
 public abstract class _Tutor extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CREATED_PROPERTY = "created";
     public static final String FINISH_DATE_PROPERTY = "finishDate";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -29,6 +29,7 @@ public abstract class _Tutor extends CayenneDataObject {
     public static final String RESUME_TEXTILE_PROPERTY = "resumeTextile";
     public static final String START_DATE_PROPERTY = "startDate";
     public static final String ATTENDANCES_PROPERTY = "attendances";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
@@ -42,13 +43,6 @@ public abstract class _Tutor extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
-    }
-
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
-    }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
     }
 
     public void setCreated(Date created) {
@@ -102,6 +96,15 @@ public abstract class _Tutor extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
         return (List<Attendance>)readProperty("attendances");
+    }
+
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
     }
 
 

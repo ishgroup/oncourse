@@ -1,27 +1,24 @@
 package ish.oncourse.webservices.updaters.replication;
 
-import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Qualification;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.CourseStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
 import java.util.List;
 
+import org.apache.cayenne.Cayenne;
+
 public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 	
-	public CourseUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		super(college, queueService, next);
-	}
-	
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void updateEntity(CourseStub stub, Course entity, List<ReplicatedRecord> relationStubs) {
+	protected void updateEntity(CourseStub stub, Course entity, List<ReplicatedRecord> result) {
 		
 		entity.setAllowWaitingList(stub.isAllowWaitingList());
 		entity.setAngelId(stub.getAngelId());
 		entity.setCode(stub.getCode());
-		entity.setCollege(getCollege(entity.getObjectContext()));
+		entity.setCollege(college);
 		entity.setCreated(stub.getCreated());
 		entity.setDetail(stub.getDetail());
 		entity.setDetailTextile(stub.getDetailTextile());
@@ -31,8 +28,14 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		entity.setIsWebVisible(stub.isWebVisible());
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
-				
-		entity.setQualification((Qualification) updateRelatedEntity(entity.getObjectContext(), stub, relationStubs));
+		
+		Long qualificationId = stub.getQualificationId();
+		
+		if (qualificationId != null) {
+			Qualification q = Cayenne.objectForPK(entity.getObjectContext(), Qualification.class, qualificationId);
+			entity.setQualification(q);
+		}
+		
 		entity.setSearchText(stub.getSearchText());
 	}
 }

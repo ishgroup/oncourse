@@ -5,7 +5,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;

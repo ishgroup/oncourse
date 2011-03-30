@@ -1,34 +1,27 @@
 package ish.oncourse.webservices.updaters.replication;
 
 import ish.oncourse.model.Attendance;
-import ish.oncourse.model.College;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tutor;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.AttendanceStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
 import java.util.List;
 
 public class AttendanceUpdater extends AbstractWillowUpdater<AttendanceStub, Attendance> {
-	
-	public AttendanceUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		super(college, queueService, next);
-	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void updateEntity(AttendanceStub stub, Attendance entity, List<ReplicatedRecord> relationStubs) {
+	protected void updateEntity(AttendanceStub stub, Attendance entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
 		entity.setAttendanceType(stub.getAttendanceType());
-		
-		entity.setCollege(getCollege(entity.getObjectContext()));
-		
+		entity.setCollege(college);
 		entity.setCreated(stub.getCreated());
-		entity.setMarker((Tutor) updateRelatedEntity(entity.getObjectContext(), stub.getMarker(), relationStubs));
+		entity.setMarker((Tutor) updateRelationShip(stub.getMarkerId(), "Tutor", result));
 		entity.setModified(stub.getModified());
-		entity.setSession((Session) updateRelatedEntity(entity.getObjectContext(), stub.getSession(), relationStubs));
-		entity.setStudent((Student) updateRelatedEntity(entity.getObjectContext(), stub.getStudent(), relationStubs));
+		entity.setSession((Session) updateRelationShip(stub.getSessionId(), "Session", result));
+		entity.setStudent((Student) updateRelationShip(stub.getStudentId(), "Student", result));
 	}
-	
+
 }

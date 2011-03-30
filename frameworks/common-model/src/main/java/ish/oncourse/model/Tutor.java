@@ -17,10 +17,6 @@ public class Tutor extends _Tutor implements Queueable {
 				(Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
 
-	public College getCollege() {
-		return getContact().getCollege();
-	}
-
 	public String getFullName() {
 		
 		return getContact().getFullName();

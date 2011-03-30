@@ -1,8 +1,8 @@
 package ish.oncourse.services.assetgroup;
 
-import ish.oncourse.model.services.cache.CacheGroup;
-import ish.oncourse.model.services.cache.CachedObjectProvider;
-import ish.oncourse.model.services.cache.ICacheService;
+import ish.oncourse.services.cache.CacheGroup;
+import ish.oncourse.services.cache.CachedObjectProvider;
+import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.site.IWebSiteService;

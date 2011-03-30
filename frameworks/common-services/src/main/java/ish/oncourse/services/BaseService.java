@@ -1,6 +1,6 @@
 package ish.oncourse.services;
 
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.lang.reflect.ParameterizedType;

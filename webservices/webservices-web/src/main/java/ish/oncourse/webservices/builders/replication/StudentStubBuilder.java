@@ -1,26 +1,17 @@
 package ish.oncourse.webservices.builders.replication;
 
-import ish.oncourse.model.QueuedKey;
-import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Student;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.StudentStub;
 
-import java.util.Map;
-
 public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, StudentStub> {
-	
-	public StudentStubBuilder(Map<QueuedKey, QueuedRecord> queue, IWillowQueueService queueService, IWillowStubBuilder next) {
-		super(queue, queueService, next);
-	}
 
 	@Override
 	protected StudentStub createFullStub(Student entity) {
 		StudentStub stub = new StudentStub();
-		
+
 		stub.setWillowId(entity.getId());
 		stub.setConcessionType(entity.getConcessionType());
-		stub.setContact(findRelationshipStub(entity.getContact()));
+		stub.setContactId(entity.getContact().getId());
 		stub.setCountryOfBirthId(entity.getCountryOfBirth().getId());
 		stub.setCreated(entity.getCreated());
 		stub.setDisabilityType(entity.getDisabilityType().getDatabaseValue());
@@ -29,13 +20,13 @@ public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, Stude
 		stub.setIndigenousStatus(entity.getIndigenousStatus().getDatabaseValue());
 		stub.setLabourForceType(entity.getLabourForceType());
 		stub.setLanguageHomeId(entity.getLanguageHome().getId());
-		stub.setLanguageId(entity.getLanguageId());
+		stub.setLanguageId(entity.getLanguage().getId());
 		stub.setModified(entity.getModified());
 		stub.setOverseasClient(entity.getIsOverseasClient());
 		stub.setPriorEducationCode(entity.getPriorEducationCode().getDatabaseValue());
 		stub.setStillAtSchool(entity.getIsStillAtSchool());
 		stub.setYearSchoolCompleted(entity.getYearSchoolCompleted());
-		
+
 		return stub;
 	}
 }

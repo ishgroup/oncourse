@@ -1,35 +1,30 @@
 package ish.oncourse.webservices.updaters.replication;
 
 import ish.math.Money;
-import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.CourseClassStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
 import java.util.List;
 
 public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, CourseClass> {
-	
-	public CourseClassUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		super(college, queueService, next);
-	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void updateEntity(CourseClassStub stub, CourseClass entity, List<ReplicatedRecord> relationStubs) {
-		
+	protected void updateEntity(CourseClassStub stub, CourseClass entity, List<ReplicatedRecord> result) {
+				
 		entity.setAngelId(stub.getAngelId());
 		entity.setCancelled(stub.isCancelled());
 		entity.setCode(stub.getCode());
-		
-		entity.setCollege(getCollege(entity.getObjectContext()));
-		
+
+		entity.setCollege(college);
+
 		entity.setCountOfSessions(stub.getCountOfSessions());
-		
-		entity.setCourse((Course) updateRelatedEntity(entity.getObjectContext(), stub.getCourse(), relationStubs));
-		
+
+		entity.setCourse((Course) updateRelationShip(stub.getCourseId(), "Course", result));
+
 		entity.setCreated(stub.getCreated());
 		entity.setDeliveryMode(stub.getDeliveryMode());
 		entity.setDetail(stub.getDetail());
@@ -44,13 +39,13 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setMinimumPlaces(stub.getMinimumPlaces());
 		entity.setMinutesPerSession(stub.getMinutesPerSession());
 		entity.setModified(stub.getModified());
-		
-		entity.setRoom((Room) updateRelatedEntity(entity.getObjectContext(), stub.getRoom(), relationStubs));
-		
+
+		entity.setRoom((Room) updateRelationShip(stub.getRoomId(), "Room", result));
+
 		entity.setSessionDetail(stub.getSessionDetail());
 		entity.setSessionDetailTextile(stub.getSessionDetailTextile());
 		entity.setStartDate(stub.getStartDate());
 		entity.setStartingMinutePerSession(stub.getStartingMinutePerSession());
-		entity.setTimeZone(stub.getTimeZone());		
+		entity.setTimeZone(stub.getTimeZone());
 	}
 }

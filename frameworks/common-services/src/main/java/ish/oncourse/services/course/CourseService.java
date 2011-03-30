@@ -5,7 +5,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Tag;
-import ish.oncourse.model.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParam;
 import ish.oncourse.services.site.IWebSiteService;

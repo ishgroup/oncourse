@@ -6,9 +6,10 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DbGenerator;
-import org.apache.cayenne.conf.Configuration;
+import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.dba.derby.DerbyAdapter;
 import org.apache.cayenne.map.DataMap;
 import org.apache.cayenne.map.DbEntity;
@@ -22,6 +23,16 @@ import org.apache.commons.dbcp.BasicDataSource;
  */
 public class ContextUtils {
 
+	private static ServerRuntime cayenneRuntime;
+
+	static {
+		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
+	}
+
+	public static ObjectContext createObjectContext() {
+		return cayenneRuntime.getContext();
+	}
+
 	/**
 	 * Binds needed dataSources.
 	 * 
@@ -30,28 +41,27 @@ public class ContextUtils {
 	public static void setupDataSources() throws Exception {
 		// sets up the InitialContextFactoryForTest as default factory.
 
-		System.setProperty(Context.INITIAL_CONTEXT_FACTORY,
-				InitialContextFactoryMock.class.getName());
+		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
 
 		// bind the initial context instance, because the JNDIDataSourceFactory
 		// looks for it.
 		InitialContextFactoryMock.bind("java:comp/env", new InitialContext());
-		
+
 		DataSource oncourse = createDataSource("oncourse");
-		
+
 		InitialContextFactoryMock.bind("jdbc/oncourse", oncourse);
 		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse);
-		
+
 		DataSource oncourseBinary = createDataSource("oncourse_binary");
-		
+
 		InitialContextFactoryMock.bind("jdbc/oncourse_binary", oncourseBinary);
 		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse_binary", oncourseBinary);
-		
+
 		DataSource oncourseReference = createDataSource("oncourse_reference");
-		
+
 		InitialContextFactoryMock.bind("jdbc/oncourse_reference", oncourseReference);
 		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse_reference", oncourseReference);
-		
+
 		createTablesForDataSource(oncourse);
 		createTablesForDataSource(oncourseBinary);
 		createTablesForDataSource(oncourseReference);
@@ -74,16 +84,16 @@ public class ContextUtils {
 
 	/**
 	 * Generates table for the given dataSource.
+	 * 
 	 * @param dataSource
 	 * @throws Exception
 	 */
 	public static void createTablesForDataSource(DataSource dataSource) throws Exception {
 
-		DataDomain domain = Configuration.getSharedConfiguration().getDomain();
+		DataDomain domain = cayenneRuntime.getDataDomain();
 		for (DataMap e : domain.getDataMaps()) {
 
-			DbGenerator generator = new DbGenerator(new DerbyAdapter(), e,
-					Collections.<DbEntity> emptyList(), domain);
+			DbGenerator generator = new DbGenerator(new DerbyAdapter(), e, Collections.<DbEntity> emptyList(), domain);
 			generator.setShouldCreateTables(true);
 			generator.setShouldCreateFKConstraints(true);
 			generator.setShouldCreatePKSupport(true);

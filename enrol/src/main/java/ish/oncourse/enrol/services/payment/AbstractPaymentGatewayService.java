@@ -1,8 +1,8 @@
 package ish.oncourse.enrol.services.payment;
 
-import org.apache.log4j.Logger;
-
 import ish.oncourse.model.PaymentIn;
+
+import org.apache.log4j.Logger;
 
 /**
  * This service performs the validation of payment before sending it to the

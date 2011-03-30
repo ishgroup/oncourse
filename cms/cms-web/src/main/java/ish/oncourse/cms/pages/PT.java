@@ -3,8 +3,8 @@ package ish.oncourse.cms.pages;
 import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.services.persistence.ICayenneService;
 import ish.oncourse.services.content.IWebContentService;
+import ish.oncourse.services.persistence.ICayenneService;
 
 import java.util.Iterator;
 import java.util.SortedSet;

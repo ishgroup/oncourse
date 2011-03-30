@@ -4,23 +4,20 @@ import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.DiscountStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 
 import java.util.List;
 
+import org.apache.cayenne.ObjectContext;
+
 public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discount> {
-	
-	public DiscountUpdater(College college, IWillowQueueService queueService, @SuppressWarnings("rawtypes") IWillowUpdater next) {
-		super(college, queueService, next);
-	}
 
 	@Override
-	protected void updateEntity(DiscountStub stub, Discount entity, List<ReplicatedRecord> relationStubs) {	
+	protected void  updateEntity(DiscountStub stub, Discount entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
 		entity.setCode(stub.getCode());
-		entity.setCollege(getCollege(entity.getObjectContext()));
+		entity.setCollege(college);
 		entity.setCombinationType(stub.isCombinationType());
 		entity.setCreated(stub.getCreated());
 		entity.setDetail(stub.getDetail());
