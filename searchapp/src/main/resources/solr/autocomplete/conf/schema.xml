@@ -99,37 +99,8 @@
 		<field name="doctype" type="string" indexed="true" stored="true"
 			required="true" />
 
-		<field name="collegeId" type="int" indexed="true" stored="true" />
-
 		<field name="name" type="textgen" indexed="true" stored="true"
 			omitNorms="false" boost="10.0" />
-
-		<field name="course_code" type="textgen" indexed="true" stored="true"
-			omitNorms="false" boost="10.0" />
-
-		<field name="detail" type="text" indexed="true" stored="true"
-			omitNorms="false" boost="1.0" />
-			
-		<field name="class_code" type="text" indexed="true" stored="true" multiValued="true"
-			omitNorms="false" boost="10.0" />
-
-		<field name="tutor" type="textgen" indexed="true" stored="true"
-			omitNorms="false" multiValued="true" boost="5.0" />
-
-		<field name="when" type="textgen" indexed="true" stored="true"
-			omitNorms="false" multiValued="true" boost="5.0" />
-
-		<field name="end" type="date" indexed="true" stored="true"  multiValued="true"
-			omitNorms="false" boost="5.0"/>
-		
-		<field name="course_loc" type="location" indexed="true" stored="true" multiValued="true"
-			omitNorms="false" boost="5.0" />
-
-		<field name="course_suburb" type="textgen" indexed="true"
-			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
-
-		<field name="course_postcode" type="string" indexed="true"
-			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
 
 		<field name="loc" type="location" indexed="true" stored="true"
 			omitNorms="false" boost="5.0" />
@@ -139,9 +110,6 @@
 
 		<field name="postcode" type="string" indexed="true" stored="true"
 			omitNorms="false" boost="5.0" />
-
-		<field name="price" type="sfloat" indexed="true" stored="true"
-			multiValued="true" omitNorms="false" boost="5.0" />
 
 		<field name="tag" type="textgen" indexed="true" stored="true"
 			multiValued="true" omitNorms="false" boost="5.0" />

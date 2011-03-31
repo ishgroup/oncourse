@@ -6,6 +6,7 @@ import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -34,9 +35,14 @@ public class SearchService implements ISearchService {
 	@Inject
 	private ILookupService lookupService;
 
-	private SolrServer solrServer;
+	private Map<SolrCore, SolrServer> solrServers = new HashMap<SolrCore, SolrServer>();
 
-	private SolrServer getSolrServer() {
+	private SolrServer getSolrServer(SolrCore core) {
+		SolrServer solrServer = null;
+		if (solrServers.keySet().contains(core)) {
+			solrServer = solrServers.get(core);
+		}
+
 		if (solrServer == null) {
 
 			try {
@@ -51,9 +57,11 @@ public class SearchService implements ISearchService {
 					throw new IllegalStateException("Undefined property: " + Property.SolrServer);
 				}
 
-				CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(solrURL);
+				CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(solrURL + "/"
+						+ core.toString());
 
 				solrServer = httpSolrServer;
+				solrServers.put(core, solrServer);
 
 			} catch (Exception e) {
 				throw new RuntimeException("Unable to connect to solr server.", e);
@@ -139,7 +147,7 @@ public class SearchService implements ISearchService {
 				q.setQuery(qString.toString());
 			}
 
-			return getSolrServer().query(q);
+			return getSolrServer(SolrCore.courses).query(q);
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
 			throw new SearchException("Unable to find courses.", e);
@@ -159,7 +167,8 @@ public class SearchService implements ISearchService {
 			String[] terms = term.split("[\\s]+");
 			for (int i = 0; i < terms.length; i++) {
 				String t = terms[i].toLowerCase().trim() + "*";
-
+				// FIXME !!!!!!!!! autocomplete for tags should count the
+				// courses!
 				query.append(String.format("(name:%s && collegeId:%s)", t, collegeId)).append("||");
 
 				query.append(
@@ -178,7 +187,7 @@ public class SearchService implements ISearchService {
 
 			q.setQuery(query.toString());
 
-			return getSolrServer().query(q);
+			return getSolrServer(SolrCore.autocomplete).query(q);
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
 			throw new SearchException("Unable to find courses.", e);
@@ -205,7 +214,7 @@ public class SearchService implements ISearchService {
 
 			q.setQuery(query.toString());
 
-			return getSolrServer().query(q);
+			return getSolrServer(SolrCore.autocomplete).query(q);
 		} catch (Exception e) {
 			logger.error("Failed to search suburbs.", e);
 			throw new SearchException("Unable to find suburbs.", e);
@@ -239,10 +248,14 @@ public class SearchService implements ISearchService {
 
 			q.setQuery(query.toString());
 
-			return getSolrServer().query(q);
+			return getSolrServer(SolrCore.autocomplete).query(q);
 		} catch (Exception e) {
 			logger.error("Failed to search suburb.", e);
 			throw new SearchException("Unable to find suburb.", e);
 		}
+	}
+
+	enum SolrCore {
+		courses, autocomplete
 	}
 }

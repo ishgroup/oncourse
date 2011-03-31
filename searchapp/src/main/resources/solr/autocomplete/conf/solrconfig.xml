@@ -189,7 +189,7 @@
 
        <!-- Query settings -->
        <str name="defType">dismax</str>
-       <str name="qf">name^10 course_code^10 class_code^10 suburb^5 postcode^5 tutor^5 when^5 detail^1</str>
+       <str name="qf">name^10 suburb^5 postcode^5</str>
        <str name="q.alt">*:*</str>
        <str name="rows">10</str>
        <str name="fl">*,score</str>
@@ -226,13 +226,10 @@
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
-     <str name="qf">name^10 course_code^10 class_code^10 suburb^5
-				postcode^5 tutor^5 when^5 detail^1</str>
-	 <str name="pf">name^10 course_code^10 class_code^10 suburb^5
-				postcode^5 tutor^5 when^5 detail^1</str>
+     <str name="qf">name^10 suburb^5 postcode^5</str>
+	 <str name="pf">name^10 suburb^5 postcode^5</str>
 	<str name="bf"></str>
-	<str name="fl">name course_code class_code suburb postcode
-				tutor when detail</str>
+	<str name="fl">name suburb postcode</str>
      <str name="mm">1</str>
      <int name="ps">100</int>
      <str name="q.alt">*:*</str>
@@ -250,16 +247,16 @@
   <!-- Note how you can register the same handler multiple times with
        different names (and different init parameters)
     -->
-  <requestHandler name="partitioned" class="solr.SearchHandler" >
+  <!-- requestHandler name="partitioned" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
      <str name="qf">text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0</str>
-     <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str>
+     <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str-->
      <!-- This is an example of using Date Math to specify a constantly
           moving date range in a config...
        -->
-     <str name="bq">incubationdate_dt:[* TO NOW/DAY-1MONTH]^2.2</str>
+     <!-- str name="bq">incubationdate_dt:[* TO NOW/DAY-1MONTH]^2.2</str>
     </lst>
     <lst name="appends">
       <str name="fq">inStock:true</str>
@@ -270,7 +267,7 @@
       <str name="facet.query">price:[* TO 500]</str>
       <str name="facet.query">price:[500 TO *]</str>
     </lst>
-  </requestHandler>
+  </requestHandler-->
 
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
 

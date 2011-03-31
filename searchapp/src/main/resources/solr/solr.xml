@@ -22,14 +22,14 @@
   persistent: Save changes made via the API to this file
   sharedLib: path to a lib directory that will be shared across all cores
 -->
-<solr persistent="false">
+<solr persistent="true">
 
   <!--
   adminPath: RequestHandler path to manage cores.  
     If 'null' (or absent), cores will not be manageable via request handler
   -->
-  <cores adminPath="/admin/cores" defaultCoreName="courses">
+  <cores adminPath="/admin/cores">
     <core name="courses" instanceDir="courses" />
-    <core name="suburbs" instanceDir="suburbs" />
+    <core name="autocomplete" instanceDir="autocomplete" />
   </cores>
 </solr>

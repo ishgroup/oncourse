@@ -131,15 +131,6 @@
 		<field name="course_postcode" type="string" indexed="true"
 			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
 
-		<field name="loc" type="location" indexed="true" stored="true"
-			omitNorms="false" boost="5.0" />
-
-		<field name="suburb" type="textgen" indexed="true" stored="true"
-			omitNorms="false" boost="5.0" />
-
-		<field name="postcode" type="string" indexed="true" stored="true"
-			omitNorms="false" boost="5.0" />
-
 		<field name="price" type="sfloat" indexed="true" stored="true"
 			multiValued="true" omitNorms="false" boost="5.0" />
 

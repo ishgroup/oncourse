@@ -4,9 +4,6 @@
 	<dataSource name="onCourseDS" type="JdbcDataSource"
 		jndiName="java:comp/env/jdbc/oncourse" />
 		
-	<dataSource name="onCourseRef" type="JdbcDataSource"
-		jndiName="java:comp/env/jdbc/oncourse_reference" />
-
 	<document>
 		<entity name="course" dataSource="onCourseDS"
 			query="select id, 'course' as type, name, detail, code, collegeId from Course where isDeleted=0 and isWebVisible=1"
@@ -109,23 +106,6 @@
 				<field name="id" column="id"/>
 				<field name="tag" column="tag" />
 			</entity>
-		</entity>
-		
-		<entity name="place" dataSource="onCourseRef" pk="id"
-			query="select suburb, 'place' as type, state, postcode, CONCAT(CAST(postcode AS CHAR), suburb) as id, CONCAT(CAST(lat AS CHAR), ',', CAST(lon AS CHAR)) as loc from postcode_db">
-			<field name="id" column="id" />
-			<field name="doctype" column="type" />
-			<field name="suburb" column="suburb" />
-			<field name="state" column="state" />
-			<field name="postcode" column="postcode" />
-			<field name="loc" column="loc" />
-		</entity>
-		
-		<entity name="tag" dataSource="onCourseDS" pk="id" query="select distinct t.id, t.name as nm, 'tag' as type, t.collegeId as collegeID from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course'">
-			<field name="id" column="t.id" />
-			<field name="doctype" column="type" />
-			<field name="collegeId" column="collegeID" />
-			<field name="name" column="nm"/>
 		</entity>
 		
 	</document>
