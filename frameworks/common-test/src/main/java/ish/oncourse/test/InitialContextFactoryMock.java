@@ -1,8 +1,8 @@
 package ish.oncourse.test;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,17 +16,20 @@ import javax.naming.spi.InitialContextFactory;
  * 
  */
 public class InitialContextFactoryMock implements InitialContextFactory {
-	
-	private static Map<String, Object> bindings = new ConcurrentHashMap<String, Object>();
-	
+
 	/**
 	 * The context instance to store jndi properties.
 	 */
-	private Context context;
+	private static Context context;
 
-	public InitialContextFactoryMock() {
+	/**
+	 * Block which initializes the context.
+	 */
+	static {
 		try {
 			context = new InitialContext(true) {
+				Map<String, Object> bindings = new HashMap<String, Object>();
+
 				@Override
 				public void bind(String name, Object obj) throws NamingException {
 					bindings.put(name, obj);
@@ -58,6 +61,10 @@ public class InitialContextFactoryMock implements InitialContextFactory {
 	 * @param obj
 	 */
 	public static void bind(String name, Object obj) {
-		bindings.put(name, obj);
+		try {
+			context.bind(name, obj);
+		} catch (NamingException e) { // can't happen.
+			throw new RuntimeException(e);
+		}
 	}
 }

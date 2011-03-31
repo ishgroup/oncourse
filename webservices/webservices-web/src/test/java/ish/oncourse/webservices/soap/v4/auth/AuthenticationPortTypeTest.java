@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import ish.oncourse.model.KeyStatus;
+import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.services.AppModule;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
@@ -16,6 +17,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,10 +32,16 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
+		ContextUtils.setupDataSources();
 	}
 	
 	public AuthenticationPortType getAuthenticationPort() throws Exception {
 		return getService(AuthenticationPortType.class);
+	}
+	
+	@After
+	public void cleanUp() throws Exception {
+		cleanDataSource(getDataSource("jdbc/oncourse"));
 	}
 
 	/**

@@ -74,7 +74,7 @@ public class CourseClassTest {
 	public static void setUpClass() throws Exception {
 		Calendar date = Calendar.getInstance();
 		
-		ContextUtils.setupOnCourseDataSource();
+		ContextUtils.setupDataSources();
 		
 		context = ContextUtils.createObjectContext();
 

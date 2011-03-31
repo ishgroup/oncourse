@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.builders.replication.IWillowStubBuilder;
 import ish.oncourse.webservices.services.AppModule;
@@ -20,19 +21,23 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class WillowStubBuilderTest extends ServiceTest {
-
-	@BeforeClass
-	public static void setup() throws Exception {
-		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
+	
+	@After
+	public void cleanUp() throws Exception {
+		cleanDataSource(getDataSource("jdbc/oncourse_reference"));
+		cleanDataSource(getDataSource("jdbc/oncourse"));
 	}
 	
 	@Before
 	public void setupDataSet() throws Exception {
+		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
+		ContextUtils.setupDataSources();
+		
 		InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);

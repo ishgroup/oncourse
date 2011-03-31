@@ -2,6 +2,7 @@ package ish.oncourse.webservices.soap.v4;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.services.AppModule;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
@@ -14,7 +15,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ReferencePortTypeTest extends ServiceTest {
@@ -23,13 +23,12 @@ public class ReferencePortTypeTest extends ServiceTest {
 		return getService(ReferencePortType.class);
 	}
 	
-	@BeforeClass
-	public static void setup() throws Exception {
-		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
-	}
 
 	@Before
 	public void setupDataSet() throws Exception {
+		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
+		
+		ContextUtils.setupDataSources();
 		
 		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
 
@@ -44,17 +43,9 @@ public class ReferencePortTypeTest extends ServiceTest {
 	}
 	
 	@After
-	public void cleanDataSet() throws Exception {
-		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
-
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
-
-		st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
-
-		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse_reference").getConnection(), null),
-				dataSet);
+	public void cleanUp() throws Exception {
+		cleanDataSource(getDataSource("jdbc/oncourse_reference"));
+		cleanDataSource(getDataSource("jdbc/oncourse"));
 	}
 
 	@Test

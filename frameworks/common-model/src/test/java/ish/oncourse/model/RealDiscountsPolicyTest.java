@@ -72,7 +72,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	public static void initPolicy() throws Exception {
 		testDate = new GregorianCalendar();
 
-		ContextUtils.setupOnCourseDataSource();
+		ContextUtils.setupDataSources();
 		
 		context = ContextUtils.createObjectContext();
 

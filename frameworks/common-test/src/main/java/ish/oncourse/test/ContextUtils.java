@@ -4,6 +4,7 @@ import java.util.Collections;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.cayenne.ObjectContext;
@@ -26,58 +27,97 @@ public class ContextUtils {
 	private static ServerRuntime cayenneRuntime;
 
 	static {
-
-		try {
-			// sets up the InitialContextFactoryForTest as default factory.
-			System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-
-			// bind the initial context instance, because the
-			// JNDIDataSourceFactory
-			// looks for it.
-			InitialContextFactoryMock.bind("java:comp/env", new InitialContext());
-			
-			cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
 	}
 
 	public static ObjectContext createObjectContext() {
 		return cayenneRuntime.getContext();
 	}
 
-	public static void setupOnCourseDataSource() throws Exception {
+	/**
+	 * Binds needed dataSources.
+	 * 
+	 * @throws Exception
+	 */
+	public static void setupDataSources() throws Exception {
+		// sets up the InitialContextFactoryForTest as default factory.
+
+		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
+
+		// bind the initial context instance, because the JNDIDataSourceFactory
+		// looks for it.
+		InitialContextFactoryMock.bind("java:comp/env", new InitialContext());
+
 		DataSource oncourse = createDataSource("oncourse");
+
 		InitialContextFactoryMock.bind("jdbc/oncourse", oncourse);
-		createOnCourseTables(oncourse);
-	}
+		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse);
 
-	public static void setupOnCourseBinaryDataSource() throws Exception {
 		DataSource oncourseBinary = createDataSource("oncourse_binary");
+
 		InitialContextFactoryMock.bind("jdbc/oncourse_binary", oncourseBinary);
-		createOnCourseBinaryTables(oncourseBinary);
-	}
+		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse_binary", oncourse);
 
-	public static void setupOnCourseReferenceDataSource() throws Exception {
 		DataSource oncourseReference = createDataSource("oncourse_reference");
+
 		InitialContextFactoryMock.bind("jdbc/oncourse_reference", oncourseReference);
-		createOnCourseReferenceTables(oncourseReference);
+		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse_reference", oncourseReference);
+
+		DataDomain domain = cayenneRuntime.getDataDomain();
+
+		createTablesForDataSource(oncourse, domain.getDataMap("oncourse"));
+		createTablesForDataSource(oncourseBinary, domain.getDataMap("oncourseBinary"));
+		createTablesForDataSource(oncourseReference, domain.getDataMap("oncourseReference"));
 	}
 
+	public static DataSource getDataSource(String location) throws Exception {
+		Context context = new InitialContext();
+		DataSource dataSource;
+		try {
+			Context envContext = (Context) context.lookup("java:comp/env");
+			dataSource = (DataSource) envContext.lookup(location);
+		} catch (NamingException namingEx) {
+			dataSource = (DataSource) context.lookup(location);
+		}
+
+		return dataSource;
+	}
+
+	public static void createOnCourseTables() throws Exception {
+		DataDomain domain = cayenneRuntime.getDataDomain();
+		createTablesForDataSource(getDataSource("jdbc/oncourse"), domain.getDataMap("oncourse"));
+	}
+	
 	public static void createOnCourseTables(DataSource dataSource) throws Exception {
 		DataDomain domain = cayenneRuntime.getDataDomain();
 		createTablesForDataSource(dataSource, domain.getDataMap("oncourse"));
 	}
-
+	
 	public static void createOnCourseBinaryTables(DataSource dataSource) throws Exception {
 		DataDomain domain = cayenneRuntime.getDataDomain();
 		createTablesForDataSource(dataSource, domain.getDataMap("oncourseBinary"));
 	}
-
+	
 	public static void createOnCourseReferenceTables(DataSource dataSource) throws Exception {
 		DataDomain domain = cayenneRuntime.getDataDomain();
 		createTablesForDataSource(dataSource, domain.getDataMap("oncourseReference"));
+	}
+
+	/**
+	 * Generates table for the given dataSource.
+	 * 
+	 * @param dataSource
+	 * @throws Exception
+	 */
+	private static void createTablesForDataSource(DataSource dataSource, DataMap map) throws Exception {
+		DataDomain domain = cayenneRuntime.getDataDomain();
+
+		DbGenerator generator = new DbGenerator(new DerbyAdapter(), map, Collections.<DbEntity> emptyList(), domain);
+		generator.setShouldCreateTables(true);
+		generator.setShouldCreateFKConstraints(true);
+		generator.setShouldCreatePKSupport(true);
+
+		generator.runGenerator(dataSource);
 	}
 
 	/**
@@ -96,19 +136,10 @@ public class ContextUtils {
 	}
 
 	/**
-	 * Generates table for the given dataSource.
-	 * 
-	 * @param dataSource
-	 * @throws Exception
+	 * Sets empty string to the {@link Context#INITIAL_CONTEXT_FACTORY} system
+	 * property.
 	 */
-	private static void createTablesForDataSource(DataSource dataSource, DataMap map) throws Exception {
-		DataDomain domain = cayenneRuntime.getDataDomain();
-
-		DbGenerator generator = new DbGenerator(new DerbyAdapter(), map, Collections.<DbEntity> emptyList(), domain);
-		generator.setShouldCreateTables(true);
-		generator.setShouldCreateFKConstraints(true);
-		generator.setShouldCreatePKSupport(true);
-
-		generator.runGenerator(dataSource);
+	public static void cleanUpContext() {
+		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "");
 	}
 }

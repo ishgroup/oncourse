@@ -32,16 +32,15 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class QueueableLifecycleListenerTest extends ServiceTest {
 
-	@BeforeClass
-	public static void setup() throws Exception {
+	@Before
+	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
 		
-		ContextUtils.setupOnCourseReferenceDataSource();
+		ContextUtils.setupDataSources();
 		
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
@@ -49,20 +48,16 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-	}
-
-	@Before
-	public void setupDataSet() throws Exception {
-		ContextUtils.setupOnCourseDataSource();
 		
-		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+		st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
+		dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}
-
+	
 	@After
-	public void cleanDataSet() throws Exception {
+	public void cleanUp() throws Exception {
+		cleanDataSource(getDataSource("jdbc/oncourse_reference"));
 		cleanDataSource(getDataSource("jdbc/oncourse"));
 	}
 
