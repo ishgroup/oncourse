@@ -1,5 +1,6 @@
 package ish.oncourse.cms.pages;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -34,6 +35,7 @@ public class LoginTest {
 	public void testPageLoaded() {
 		PageTester tester = new PageTester(appPackage, appName, "src/main/webapp", TestModule.class);
 		Document doc = tester.renderPage("Login");
+		assertEquals("test", doc.toString());
 		assertNotNull(doc.getElementById("email"));
 		assertNotNull(doc.getElementById("password"));
 		tester.shutdown();
