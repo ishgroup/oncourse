@@ -64,7 +64,7 @@ public class TestModule {
 	public IPropertyService buildPropertyServiceOverride() {
 		IPropertyService mockService = mock(IPropertyService.class);
 
-		when(mockService.string(eq(Property.CustomComponentsPath))).thenReturn("/var/onCourse/resources");
+		when(mockService.string(eq(Property.CustomComponentsPath))).thenReturn("src/../../../resources/resources");
 
 		return mockService;
 	}
@@ -149,6 +149,7 @@ public class TestModule {
 
 		when(webSite.getName()).thenReturn("Sydney Community College Test Site");
 		when(webSite.getSiteKey()).thenReturn("scc");
+		when(webSite.getResourceFolderName()).thenReturn("default");
 
 		College college = mock(College.class);
 
@@ -164,7 +165,7 @@ public class TestModule {
 		when(mockService.getCurrentCollege()).thenReturn(college);
 		when(mockService.getCurrentDomain()).thenReturn(host);
 		when(mockService.getCurrentWebSite()).thenReturn(webSite);
-
+		
 		return mockService;
 	}
 

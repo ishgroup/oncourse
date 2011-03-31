@@ -35,7 +35,6 @@ public class LoginTest {
 	public void testPageLoaded() {
 		PageTester tester = new PageTester(appPackage, appName, "src/main/webapp", TestModule.class);
 		Document doc = tester.renderPage("Login");
-		assertEquals("test", doc.toString());
 		assertNotNull(doc.getElementById("email"));
 		assertNotNull(doc.getElementById("password"));
 		tester.shutdown();
