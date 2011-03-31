@@ -21,10 +21,12 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ReferencePortTypeSoapTest extends AbstractWebServiceTest {
+public class ReferencePortTypeTest extends AbstractWebServiceTest {
 
 	private static ReferencePortType getReferencePort() {
 		ReferenceService service = new ReferenceService(ReferencePortType.class.getClassLoader().getResource("wsdl/v4_reference.wsdl"));
@@ -37,18 +39,32 @@ public class ReferencePortTypeSoapTest extends AbstractWebServiceTest {
 		return referencePort;
 	}
 
-	@BeforeClass
+	@Before
 	public static void setupDataSet() throws Exception {
-		InputStream st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("reference/referenceDataSet.xml");
+		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse_reference").getConnection(), null),
 				dataSet);
 
-		st = ReferencePortTypeSoapTest.class.getClassLoader().getResourceAsStream("auth/authDataSet.xml");
+		st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
+	}
+	
+	@After
+	public void cleanDataSet() throws Exception {
+		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
+
+		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
+
+		st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
+		dataSet = new FlatXmlDataSetBuilder().build(st);
+
+		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse_reference").getConnection(), null),
+				dataSet);
 	}
 
 	@Test

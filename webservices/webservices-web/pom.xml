@@ -109,9 +109,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jndi</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.3.152</version>
 		</dependency>
 
 		<!-- The version 1.3 override is due to build dependency on OS X PPC. Please 
@@ -143,10 +155,15 @@
 
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-ioc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-model</artifactId>
@@ -154,7 +171,7 @@
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-services</artifactId>

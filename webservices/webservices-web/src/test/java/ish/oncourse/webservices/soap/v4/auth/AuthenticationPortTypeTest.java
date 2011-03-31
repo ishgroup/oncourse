@@ -5,17 +5,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import ish.oncourse.model.KeyStatus;
-import ish.oncourse.webservices.AbstractWebServiceTest;
+import ish.oncourse.services.AbstractDatabaseTest;
+import ish.oncourse.webservices.services.AppModule;
+import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 
 import java.io.InputStream;
-
-import javax.xml.ws.BindingProvider;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -24,19 +25,15 @@ import org.junit.Test;
  * @author anton
  * 
  */
-public class AuthenticationPortTypeTest extends AbstractWebServiceTest {
-
-	public static AuthenticationPortType getAuthenticationPort() throws Exception {
-		AuthenticationService authService = new AuthenticationService(AuthenticationPortType.class.getClassLoader().getResource(
-				"wsdl/v4_auth.wsdl"));
-		AuthenticationPortType authPort = authService.getAuthenticationPort();
-
-		BindingProvider provider = (BindingProvider) authPort;
-		provider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				String.format("http://localhost:%s/services/v4/auth", PORT));
-		provider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
-
-		return authPort;
+public class AuthenticationPortTypeTest extends AbstractDatabaseTest {
+	
+	@Before
+	public void setup() throws Exception {
+		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
+	}
+	
+	public AuthenticationPortType getAuthenticationPort() throws Exception {
+		return getService(AuthenticationPortType.class);
 	}
 
 	/**

@@ -11,6 +11,9 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-services/common-services">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/common-ui/common-ui">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="enrol"/>
         <property name="java-output-path" value="/enrol/target/classes"/>
     </wb-module>

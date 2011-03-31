@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.soap.v4;
 
+import static org.mockito.Mockito.mock;
 import ish.oncourse.model.College;
 import ish.oncourse.services.cache.CacheGroup;
 import ish.oncourse.services.cache.CachedObjectProvider;
@@ -18,6 +19,7 @@ import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.RequestHandler;
 import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.Session;
 
 public class ReplicationTestModule {
 
@@ -37,11 +39,21 @@ public class ReplicationTestModule {
 		final College college = collegeService.findBySecurityCode("345ttn44$%9");
 
 		ICollegeRequestService service = new ICollegeRequestService() {
+			
+			private Session session;
+			
 			@Override
 			public College getRequestingCollege() {
 				return college;
 			}
 
+			@Override
+			public Session getCollegeSession(boolean create) {
+				if (create) {
+					session = mock(Session.class);
+				}
+				return session;
+			}
 		};
 
 		return service;
@@ -51,7 +63,7 @@ public class ReplicationTestModule {
 			@Local ICollegeRequestService collegeRequestService) {
 		configuration.add(ICollegeRequestService.class, collegeRequestService);
 	}
-
+	
 	public ICacheService buildCacheServiceServiceOverride() {
 		return new ICacheService() {
 

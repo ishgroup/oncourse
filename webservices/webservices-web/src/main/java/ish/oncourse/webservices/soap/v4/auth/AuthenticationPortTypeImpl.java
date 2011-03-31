@@ -5,6 +5,7 @@ import ish.oncourse.model.KeyStatus;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.exception.AuthenticationFailureException;
+import ish.oncourse.webservices.services.ICollegeRequestService;
 
 import java.util.Date;
 import java.util.Random;
@@ -14,7 +15,6 @@ import javax.jws.WebService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,10 +38,10 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	@Inject
 	@Autowired
 	private ICayenneService cayenneService;
-
+	
 	@Inject
 	@Autowired
-	private Request request;
+	private ICollegeRequestService collegeRequestService;
 
 	/**
 	 * Authenticates user, stores details in HTTP Session.
@@ -55,7 +55,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	 */
 	public long authenticate(String webServicesSecurityCode, long lastCommKey) {
 
-		if (request.getSession(false) != null) {
+		if (collegeRequestService.getCollegeSession(false) != null) {
 			throw new AuthenticationFailureException("invalid.session");
 		}
 
@@ -100,7 +100,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		Random randomGen = new Random();
 		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
 		
-		Session session = request.getSession(true);
+		Session session = collegeRequestService.getCollegeSession(true);
 		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(local, newCommunicationKey));
 
 		local.setCommunicationKey(newCommunicationKey);
@@ -127,7 +127,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	 * @return logout status
 	 */
 	public short logout(long newCommKey) {
-		Session session = request.getSession(false);
+		Session session = collegeRequestService.getCollegeSession(false);
 		if (session != null) {
 			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
 			if (token.getCommunicationKey().equals(newCommKey)) {

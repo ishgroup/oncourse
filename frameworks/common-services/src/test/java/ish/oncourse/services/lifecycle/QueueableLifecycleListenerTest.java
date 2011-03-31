@@ -29,13 +29,13 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 public class QueueableLifecycleListenerTest extends AbstractDatabaseTest {
 
-	@BeforeClass
-	public static void setup() throws Exception {
+	@Before
+	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
 
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(

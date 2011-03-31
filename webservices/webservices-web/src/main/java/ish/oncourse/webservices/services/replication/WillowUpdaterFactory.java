@@ -81,10 +81,10 @@ public class WillowUpdaterFactory {
 			updaterMap.put(getClassName(TutorRole.class), new TutorRoleUpdater());
 			
 			for (Map.Entry<String, AbstractWillowUpdater> up : updaterMap.entrySet()) {
+				up.getValue().setObjectContext(objectContext);
 				up.getValue().setCollege(collegeRequestService.getRequestingCollege());
 				up.getValue().setGroup(group);
 				up.getValue().setNext(this);
-				up.getValue().setObjectContext(objectContext);
 			}
 			
 			updaters.putAll(updaterMap);

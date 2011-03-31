@@ -5,7 +5,7 @@ import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.builders.replication.IWillowStubBuilder;
-import ish.oncourse.webservices.services.replication.DFADeduper;
+import ish.oncourse.webservices.services.replication.DFADedupper;
 import ish.oncourse.webservices.services.replication.IWillowQueueService;
 import ish.oncourse.webservices.services.replication.WillowStubBuilderFactory;
 import ish.oncourse.webservices.services.replication.WillowUpdaterFactory;
@@ -61,24 +61,24 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	public ReplicationResult sendRecords(ReplicationRecords req) {
 
 		ReplicationResult result = new ReplicationResult();
-		
+
 		List<ReplicatedRecord> replicatedRecords = new ArrayList<ReplicatedRecord>();
 
 		for (TransactionGroup group : req.getGroups()) {
 			ObjectContext ctx = cayenneService.newNonReplicatingContext();
-			
+
 			IWillowUpdater updater = updaterFactory.newReplicationUpdater(ctx.createChildContext(), group);
-			
+
 			while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 				ReplicationStub stub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
 				updater.updateRecord(stub, replicatedRecords);
 			}
-			
+
 			ctx.commitChanges();
 		}
-		
+
 		result.getReplicatedRecord().addAll(replicatedRecords);
-		
+
 		return result;
 	}
 
@@ -90,15 +90,15 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 		List<QueuedRecord> queue = queueService.getReplicationQueue();
 
-		Map<QueueKey, DFADeduper> dedupMap = new LinkedHashMap<QueueKey, DFADeduper>();
+		Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<QueueKey, DFADedupper>();
 
 		for (QueuedRecord r : queue) {
 			QueueKey key = new QueueKey(r.getEntityWillowId(), r.getEntityIdentifier());
 
-			DFADeduper deduper = dedupMap.get(key);
+			DFADedupper deduper = dedupMap.get(key);
 
 			if (deduper == null) {
-				deduper = new DFADeduper();
+				deduper = new DFADedupper();
 				dedupMap.put(key, deduper);
 			}
 
@@ -109,10 +109,16 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 		Map<String, TransactionGroup> groupMap = new LinkedHashMap<String, TransactionGroup>();
 
-		for (Map.Entry<QueueKey, DFADeduper> entry : dedupMap.entrySet()) {
-			DFADeduper deduper = entry.getValue();
-
-			QueuedRecord record = deduper.getCurrentRecord();
+		for (Map.Entry<QueueKey, DFADedupper> entry : dedupMap.entrySet()) {
+			
+			DFADedupper deduper = entry.getValue();
+			
+			ObjectContext ctx = cayenneService.newContext();
+			List<QueuedRecord> duplicates = deduper.duplicates();
+			ctx.deleteObjects(duplicates);
+			ctx.commitChanges();
+			
+			QueuedRecord record = deduper.deDuppedRecord();
 
 			if (record == null) {
 				continue;
@@ -163,7 +169,8 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 					object.setAngelId(record.getStub().getAngelId());
 					ctx.deleteObject(queuedRecord);
 				} else {
-					int numberAttempts = queuedRecord.getNumberOfAttempts();
+					Integer numberAttempts = (queuedRecord.getNumberOfAttempts() != null) ? queuedRecord.getNumberOfAttempts()
+							: 0;
 					queuedRecord.setNumberOfAttempts(numberAttempts + 1);
 					queuedRecord.setLastAttemptTimestamp(new Date());
 				}

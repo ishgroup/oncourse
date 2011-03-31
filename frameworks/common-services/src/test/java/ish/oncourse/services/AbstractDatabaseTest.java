@@ -14,17 +14,18 @@ import org.apache.tapestry5.internal.test.PageTesterModule;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//jdbc:h2:test
 public class AbstractDatabaseTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTest.class);
 
 	private static Registry registry;
 
-	protected static void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
+	protected void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
 
 		// initialize tapestry service registry
 		assert InternalUtils.isNonBlank(appPackage);
@@ -34,7 +35,6 @@ public class AbstractDatabaseTest {
 		TapestryAppInitializer initializer = new TapestryAppInitializer(logger, provider, appName, PageTesterModule.TEST_MODE,
 				null);
 
-		initializer.addModules(PageTesterModule.class);
 		initializer.addModules(moduleClasses);
 
 		registry = initializer.createRegistry();
@@ -46,7 +46,7 @@ public class AbstractDatabaseTest {
 		return registry.getService(serviceInterface);
 	}
 
-	protected static DataSource getDataSource(String location) throws Exception {
+	protected DataSource getDataSource(String location) throws Exception {
 		Context context = new InitialContext();
 		DataSource dataSource;
 		try {
@@ -59,9 +59,11 @@ public class AbstractDatabaseTest {
 		return dataSource;
 	}
 
-	@AfterClass
-	public static void cleanup() throws Exception {
+	@After
+	public void cleanup() throws Exception {
 		ContextUtils.cleanUpContext();
-		registry.shutdown();
+		if (registry != null) {
+			registry.shutdown();
+		}
 	}
 }
