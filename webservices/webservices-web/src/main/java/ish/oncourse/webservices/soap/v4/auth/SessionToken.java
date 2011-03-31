@@ -9,6 +9,10 @@ public class SessionToken {
 	private College college;
 	private Long communicationKey;
 	
+	public SessionToken() {
+		
+	}
+	
 	public SessionToken(College college, Long communicationKey) {
 		this.college = college;
 		this.communicationKey = communicationKey;

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.model.auto._Discount;
-import ish.oncourse.test.context.ContextUtils;
+import ish.oncourse.test.ContextUtils;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -14,7 +14,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,7 +72,8 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	public static void initPolicy() throws Exception {
 		testDate = new GregorianCalendar();
 
-		ContextUtils.setupDataSources();
+		ContextUtils.setupOnCourseDataSource();
+		
 		context = ContextUtils.createObjectContext();
 
 		// prepare and commit data that should be stored(to prevent using of
@@ -84,11 +84,6 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount = context.newObject(Discount.class);
 		discount.setDiscountRate(new BigDecimal("0.25"));
 
-	}
-
-	@AfterClass
-	public static void cleanUp() {
-		ContextUtils.cleanUpContext();
 	}
 
 	/**

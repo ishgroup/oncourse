@@ -16,6 +16,8 @@ import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
 import ish.oncourse.webservices.soap.v4.ReplicationPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl;
+import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType;
+import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -40,6 +42,7 @@ public class AppModule {
 		binder.bind(WillowUpdaterFactory.class);
 		binder.bind(ReplicationPortType.class, ReplicationPortTypeImpl.class);
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
+		binder.bind(AuthenticationPortType.class, AuthenticationPortTypeImpl.class);
 		binder.bind(ICollegeRequestService.class, CollegeRequestService.class);
 	}
 	

@@ -24,6 +24,7 @@
 		<module>common-services</module>
 		<module>common-ui</module>
 		<module>jetty-launcher</module>
+		<module>common-test</module>
 	</modules>
 
 	<dependencies>
@@ -31,6 +32,11 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 
 	</dependencies>

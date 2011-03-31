@@ -2,21 +2,12 @@ package ish.oncourse.webservices.soap.v4;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import ish.oncourse.webservices.AbstractWebServiceTest;
-import ish.oncourse.webservices.util.SoapUtil;
+import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.services.AppModule;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
 
 import java.io.InputStream;
 
-import javax.xml.ws.BindingProvider;
-
-import org.apache.cxf.binding.soap.SoapMessage;
-import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
-import org.apache.cxf.binding.soap.interceptor.SoapPreProtocolOutInterceptor;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.phase.Phase;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -26,21 +17,20 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ReferencePortTypeTest extends AbstractWebServiceTest {
+public class ReferencePortTypeTest extends ServiceTest {
 
-	private static ReferencePortType getReferencePort() {
-		ReferenceService service = new ReferenceService(ReferencePortType.class.getClassLoader().getResource("wsdl/v4_reference.wsdl"));
-		ReferencePortType referencePort = service.getReferencePort();
-
-		BindingProvider provider = (BindingProvider) referencePort;
-		provider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				String.format("http://localhost:%s/services/v4/reference", PORT));
-
-		return referencePort;
+	private ReferencePortType getReferencePort() {
+		return getService(ReferencePortType.class);
+	}
+	
+	@BeforeClass
+	public static void setup() throws Exception {
+		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
 	}
 
 	@Before
-	public static void setupDataSet() throws Exception {
+	public void setupDataSet() throws Exception {
+		
 		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
@@ -55,12 +45,12 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 	
 	@After
 	public void cleanDataSet() throws Exception {
-		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
+		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
 
-		st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
+		st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DatabaseOperation.DELETE_ALL.execute(new DatabaseConnection(getDataSource("jdbc/oncourse_reference").getConnection(), null),
@@ -70,9 +60,6 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 	@Test
 	public void testGetMaximumVersion() throws Exception {
 		ReferencePortType referencePort = getReferencePort();
-
-		Client client = ClientProxy.getClient(referencePort);
-		client.getOutInterceptors().add(new AddSecurityCodeInterceptor());
 
 		Long version = referencePort.getMaximumVersion();
 
@@ -85,25 +72,10 @@ public class ReferencePortTypeTest extends AbstractWebServiceTest {
 	public void testGetRecords() throws Exception {
 		ReferencePortType referencePort = getReferencePort();
 
-		Client client = ClientProxy.getClient(referencePort);
-		client.getOutInterceptors().add(new AddSecurityCodeInterceptor());
-
 		ReferenceResult result = referencePort.getRecords(1L);
 
 		assertNotNull(result);
 		int size = result.getCountryOrLanguageOrModule().size();
 		assertTrue("Test results length. Expect 8 here.", size == 8);
-	}
-
-	private static class AddSecurityCodeInterceptor extends AbstractSoapInterceptor {
-
-		private AddSecurityCodeInterceptor() {
-			super(Phase.WRITE);
-			addAfter(SoapPreProtocolOutInterceptor.class.getName());
-		}
-
-		public void handleMessage(SoapMessage message) throws Fault {
-			SoapUtil.addSecurityCode(message, "345ttn44$%9");
-		}
 	}
 }

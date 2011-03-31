@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.v4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import ish.oncourse.services.AbstractDatabaseTest;
+import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.services.AppModule;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
@@ -19,9 +19,15 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ReplicationSendFailedResultTest extends AbstractDatabaseTest {
+public class ReplicationSendFailedResultTest extends ServiceTest {
+	
+	@BeforeClass
+	public static void setup() throws Exception {
+		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
+	}
 	
 	@Before
 	public void setupDataSet() throws Exception {

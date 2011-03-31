@@ -1,6 +1,6 @@
 package ish.oncourse.webservices;
 
-import ish.oncourse.test.context.ContextUtils;
+import ish.oncourse.test.ContextUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -25,7 +25,7 @@ import org.junit.BeforeClass;
  * @author anton
  * 
  */
-public abstract class AbstractWebServiceTest {
+public abstract class SoapServiceTest {
 
 	private static Server server;
 
@@ -64,9 +64,9 @@ public abstract class AbstractWebServiceTest {
 		server.addBean(new Resource("jdbc/oncourse_binary", oncourseBinary));
 		server.addBean(new Resource("jdbc/oncourse_reference", oncourseReference));
 
-		ContextUtils.createTablesForDataSource(oncourse);
-		ContextUtils.createTablesForDataSource(oncourseBinary);
-		ContextUtils.createTablesForDataSource(oncourseReference);
+		ContextUtils.createOnCourseTables(oncourse);
+		ContextUtils.createOnCourseBinaryTables(oncourseBinary);
+		ContextUtils.createOnCourseReferenceTables(oncourseReference);
 
 		WebAppContext webappContext = new WebAppContext();
 		webappContext.setContextPath("/services");

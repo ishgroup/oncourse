@@ -84,13 +84,12 @@ public class ServiceModule {
 	public static void bind(ServiceBinder binder) {
 
 		LOGGER.info("Registering Willow Common Services");
-		
+
 		// Tapestry and environment specific services
 		binder.bind(ICacheService.class, OSCacheService.class);
 		binder.bind(ICayenneService.class, CayenneService.class);
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
-		binder.bind(IComponentPageResponseRenderer.class,
-				ComponentPageResponseRenderer.class);
+		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(IEnvironmentService.class, EnvironmentService.class);
 		binder.bind(IFormatService.class, FormatService.class);
@@ -127,5 +126,4 @@ public class ServiceModule {
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 	}
-
 }

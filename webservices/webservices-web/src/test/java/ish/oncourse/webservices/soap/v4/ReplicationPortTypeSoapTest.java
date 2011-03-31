@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.v4;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import ish.oncourse.webservices.AbstractWebServiceTest;
+import ish.oncourse.webservices.SoapServiceTest;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationService;
 import ish.oncourse.webservices.util.SoapUtil;
@@ -32,13 +32,13 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-public class ReplicationPortTypeSoapTest extends AbstractWebServiceTest {
+public class ReplicationPortTypeSoapTest extends SoapServiceTest {
 
-	@BeforeClass
-	public static void setupDataSet() throws Exception {
+	@Before
+	public void setupDataSet() throws Exception {
 
 		InputStream st = ReplicationPortTypeSoapTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/webservices/soap/v4/referenceDataSet.xml");

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import ish.math.Money;
-import ish.oncourse.test.context.ContextUtils;
+import ish.oncourse.test.ContextUtils;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -17,10 +17,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
 import org.joda.time.DateTime;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -75,7 +73,9 @@ public class CourseClassTest {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		Calendar date = Calendar.getInstance();
-		ContextUtils.setupDataSources();
+		
+		ContextUtils.setupOnCourseDataSource();
+		
 		context = ContextUtils.createObjectContext();
 
 		College college = context.newObject(College.class);
@@ -143,11 +143,6 @@ public class CourseClassTest {
 		dcc.setCourseClass(secondClass);
 
 		context.commitChanges();
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		ContextUtils.cleanUpContext();
 	}
 
 	@Before

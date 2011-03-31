@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import ish.oncourse.model.KeyStatus;
-import ish.oncourse.services.AbstractDatabaseTest;
+import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.services.AppModule;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 
@@ -25,7 +25,7 @@ import org.junit.Test;
  * @author anton
  * 
  */
-public class AuthenticationPortTypeTest extends AbstractDatabaseTest {
+public class AuthenticationPortTypeTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {

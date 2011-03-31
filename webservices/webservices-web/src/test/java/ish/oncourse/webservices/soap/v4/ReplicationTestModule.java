@@ -1,16 +1,15 @@
 package ish.oncourse.webservices.soap.v4;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import ish.oncourse.model.College;
-import ish.oncourse.services.cache.CacheGroup;
-import ish.oncourse.services.cache.CachedObjectProvider;
-import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.services.ICollegeRequestService;
+import ish.oncourse.webservices.soap.v4.auth.SessionToken;
 
 import java.io.IOException;
 
-import org.apache.cayenne.cache.QueryCache;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -35,8 +34,7 @@ public class ReplicationTestModule {
 		configuration.override("LogFilter", logFilter);
 	}
 
-	public ICollegeRequestService buildCollegeRequestServiceOverride(ICollegeService collegeService) {
-		final College college = collegeService.findBySecurityCode("345ttn44$%9");
+	public ICollegeRequestService buildCollegeRequestServiceOverride(final ICollegeService collegeService) {
 
 		ICollegeRequestService service = new ICollegeRequestService() {
 			
@@ -44,13 +42,28 @@ public class ReplicationTestModule {
 			
 			@Override
 			public College getRequestingCollege() {
-				return college;
+				return collegeService.findBySecurityCode("345ttn44$%9");
 			}
 
 			@Override
 			public Session getCollegeSession(boolean create) {
 				if (create) {
 					session = mock(Session.class);
+					
+					SessionToken token = new SessionToken() {
+						@Override
+						public Long getCommunicationKey() {
+							final College college =  collegeService.findBySecurityCode("345ttn44$%9");
+							return college.getCommunicationKey();
+						}
+
+						@Override
+						public College getCollege() {
+							return collegeService.findBySecurityCode("345ttn44$%9");
+						}
+					};
+					
+					when(session.getAttribute(eq(SessionToken.SESSION_TOKEN_KEY))).thenReturn(token);
 				}
 				return session;
 			}
@@ -62,24 +75,5 @@ public class ReplicationTestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local ICollegeRequestService collegeRequestService) {
 		configuration.add(ICollegeRequestService.class, collegeRequestService);
-	}
-	
-	public ICacheService buildCacheServiceServiceOverride() {
-		return new ICacheService() {
-
-			@Override
-			public QueryCache cayenneCache() {
-				return null;
-			}
-
-			@Override
-			public <T> T get(String key, CachedObjectProvider<T> objectProvider, CacheGroup... cacheGroups) {
-				return null;
-			}
-		};
-	}
-
-	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ICacheService cacheService) {
-		configuration.add(ICacheService.class, cacheService);
 	}
 }

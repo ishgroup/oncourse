@@ -3,8 +3,8 @@ package ish.oncourse.webservices.services.replication;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.services.AbstractDatabaseTest;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.builders.replication.IWillowStubBuilder;
 import ish.oncourse.webservices.services.AppModule;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
@@ -21,14 +21,18 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class WillowStubBuilderTest extends AbstractDatabaseTest {
+public class WillowStubBuilderTest extends ServiceTest {
 
+	@BeforeClass
+	public static void setup() throws Exception {
+		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
+	}
+	
 	@Before
 	public void setupDataSet() throws Exception {
-		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
-		
 		InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);

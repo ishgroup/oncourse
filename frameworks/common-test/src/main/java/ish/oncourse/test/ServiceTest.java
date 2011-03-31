@@ -1,6 +1,4 @@
-package ish.oncourse.services;
-
-import ish.oncourse.test.context.ContextUtils;
+package ish.oncourse.test;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,41 +10,33 @@ import org.apache.tapestry5.internal.SingleKeySymbolProvider;
 import org.apache.tapestry5.internal.TapestryAppInitializer;
 import org.apache.tapestry5.internal.test.PageTesterModule;
 import org.apache.tapestry5.ioc.Registry;
-import org.apache.tapestry5.ioc.internal.util.InternalUtils;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//jdbc:h2:test
-public class AbstractDatabaseTest {
+public class ServiceTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractDatabaseTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(ServiceTest.class);
 
 	private static Registry registry;
 
-	protected void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
-
-		// initialize tapestry service registry
-		assert InternalUtils.isNonBlank(appPackage);
+	public static void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
 
 		SymbolProvider provider = new SingleKeySymbolProvider(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM, appPackage);
 
-		TapestryAppInitializer initializer = new TapestryAppInitializer(logger, provider, appName, PageTesterModule.TEST_MODE,
-				null);
+		TapestryAppInitializer initializer = new TapestryAppInitializer(logger, provider, appName, PageTesterModule.TEST_MODE, null);
 
 		initializer.addModules(moduleClasses);
 
 		registry = initializer.createRegistry();
-		
-		ContextUtils.setupDataSources();
 	}
 
 	protected <T> T getService(Class<T> serviceInterface) {
 		return registry.getService(serviceInterface);
 	}
 
-	protected DataSource getDataSource(String location) throws Exception {
+	protected static DataSource getDataSource(String location) throws Exception {
 		Context context = new InitialContext();
 		DataSource dataSource;
 		try {
@@ -59,9 +49,12 @@ public class AbstractDatabaseTest {
 		return dataSource;
 	}
 
-	@After
-	public void cleanup() throws Exception {
-		ContextUtils.cleanUpContext();
+	protected static void cleanDataSource(DataSource dataSource) throws Exception {
+		DerbyUtils.cleanDatabase(dataSource.getConnection(), false);
+	}
+
+	@AfterClass
+	public static void cleanup() throws Exception {
 		if (registry != null) {
 			registry.shutdown();
 		}

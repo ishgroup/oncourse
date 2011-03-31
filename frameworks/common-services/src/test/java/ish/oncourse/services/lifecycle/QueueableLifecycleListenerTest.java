@@ -12,9 +12,10 @@ import ish.oncourse.model.SampleEntityBuilder;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
-import ish.oncourse.services.AbstractDatabaseTest;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.ServiceTest;
 
 import java.io.InputStream;
 import java.util.HashSet;
@@ -29,30 +30,40 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QueueableLifecycleListenerTest extends AbstractDatabaseTest {
+public class QueueableLifecycleListenerTest extends ServiceTest {
 
-	@Before
-	public void setup() throws Exception {
+	@BeforeClass
+	public static void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
-
+		
+		ContextUtils.setupOnCourseReferenceDataSource();
+		
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-
 		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+	}
 
-		st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/lifecycle/queuDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
-
+	@Before
+	public void setupDataSet() throws Exception {
+		ContextUtils.setupOnCourseDataSource();
+		
+		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
+		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+	}
+
+	@After
+	public void cleanDataSet() throws Exception {
+		cleanDataSource(getDataSource("jdbc/oncourse"));
 	}
 
 	@Test
@@ -70,11 +81,11 @@ public class QueueableLifecycleListenerTest extends AbstractDatabaseTest {
 		InvoiceLine invoiceLine = builder.createInvoiceLine(invoice);
 		Student student = builder.createStudent(contact);
 		CourseClass courseClass = builder.createCourseClass(course);
-		
+
 		builder.createEnrolment(invoiceLine, student, courseClass);
-				
+
 		ctx.commitChanges();
-		
+
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord"));
@@ -108,15 +119,16 @@ public class QueueableLifecycleListenerTest extends AbstractDatabaseTest {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 
 		ObjectContext ctx = cayenneService.newContext();
-		
+
 		Course course = Cayenne.objectForPK(ctx, Course.class, 3l);
 		course.setName("Test course name update");
-		
+
 		ctx.commitChanges();
-		
+
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Course' and entityWillowId=3 and action='Update'"));
-		
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='Course' and entityWillowId=3 and action='Update'"));
+
 		assertEquals("Expecting 1 queueable records.", 1, actualData.getRowCount());
 	}
 
@@ -125,43 +137,52 @@ public class QueueableLifecycleListenerTest extends AbstractDatabaseTest {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 
 		ObjectContext ctx = cayenneService.newContext();
-		
+
 		Course course = Cayenne.objectForPK(ctx, Course.class, 4l);
 		ctx.deleteObject(course);
-		
+
 		ctx.commitChanges();
-		
+
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Course' and entityWillowId=4"));
-		
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='Course' and entityWillowId=4"));
+
 		assertEquals("Expecting 1 queueable records.", 1, actualData.getRowCount());
 		assertNotNull("Expecting not null transaction id.", actualData.getValue(0, "transactionKey"));
-		
+
 		TutorRole tutorRole = Cayenne.objectForPK(ctx, TutorRole.class, 1l);
-		CourseClass courseClass =  Cayenne.objectForPK(ctx, CourseClass.class, 10l);
-		
+		CourseClass courseClass = Cayenne.objectForPK(ctx, CourseClass.class, 10l);
+
 		ctx.deleteObject(tutorRole);
 		ctx.deleteObject(courseClass);
-	    
+
 		ctx.commitChanges();
-		
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where (entityIdentifier='TutorRole' and entityWillowId=1) or (entityIdentifier='CourseClass' and entityWillowId=10)"));
-		
+
+		actualData = dbUnitConnection
+				.createQueryTable(
+						"QueuedRecord",
+						String.format("select * from QueuedRecord where (entityIdentifier='TutorRole' and entityWillowId=1) or (entityIdentifier='CourseClass' and entityWillowId=10)"));
+
 		assertEquals("Expecting courseClass and TutorRole records.", 2, actualData.getRowCount());
 		assertEquals("Expecting Delete action.", "Delete", actualData.getValue(0, "action"));
 		assertEquals("Expecting Delete action.", "Delete", actualData.getValue(1, "action"));
-		assertEquals("Expecting identical transactionKeys.", actualData.getValue(0, "transactionKey"), actualData.getValue(1, "transactionKey"));
-		
+		assertEquals("Expecting identical transactionKeys.", actualData.getValue(0, "transactionKey"),
+				actualData.getValue(1, "transactionKey"));
+
 		Course course2 = Cayenne.objectForPK(ctx, Course.class, 5l);
 		Tutor tutor = Cayenne.objectForPK(ctx, Tutor.class, 1l);
-		
+
 		ctx.deleteObject(course2);
 		ctx.deleteObject(tutor);
-		
+
 		ctx.commitChanges();
-		
-		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where (entityIdentifier='Course' and entityWillowId=5) or (entityIdentifier='Tutor' and entityWillowId=1)"));
+
+		actualData = dbUnitConnection
+				.createQueryTable(
+						"QueuedRecord",
+						String.format("select * from QueuedRecord where (entityIdentifier='Course' and entityWillowId=5) or (entityIdentifier='Tutor' and entityWillowId=1)"));
 		assertEquals("Expecting course and tutor records.", 2, actualData.getRowCount());
-		assertEquals("Expecting identical transactionKeys.", actualData.getValue(0, "transactionKey"), actualData.getValue(1, "transactionKey"));
+		assertEquals("Expecting identical transactionKeys.", actualData.getValue(0, "transactionKey"),
+				actualData.getValue(1, "transactionKey"));
 	}
 }
