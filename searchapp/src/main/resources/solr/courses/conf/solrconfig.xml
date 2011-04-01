@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>LUCENE_40</luceneMatchVersion>
+  <luceneMatchVersion>LUCENE_CURRENT</luceneMatchVersion>
 
   <lib dir="../../contrib/extraction/lib" />
   <lib dir="../../dist/" regex="apache-solr-cell-\d.*\.jar" />
@@ -171,9 +171,10 @@
        <str name="version">2.1</str>
         -->
      </lst>
-     <arr name="last-components">
-       <str>pivot</str> <!-- not included by default -->
-     </arr>
+     <!-- not included by default -->
+     <!-- arr name="last-components">
+       <str>pivot</str> 
+     </arr-->
   </requestHandler>
   
   <!-- 

@@ -41,7 +41,7 @@
 
 		<dependency>
 			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
+			<artifactId>apache-solr-solrj</artifactId>
 		</dependency>
 
 		<dependency>
