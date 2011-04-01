@@ -2,7 +2,6 @@ package ish.oncourse.webservices.services.replication;
 
 import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.College;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
@@ -12,7 +11,6 @@ import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Preference;
-import ish.oncourse.model.QueueKey;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
@@ -31,14 +29,10 @@ import ish.oncourse.webservices.builders.replication.PreferenceStubBuilder;
 import ish.oncourse.webservices.builders.replication.StudentConcessionStubBuilder;
 import ish.oncourse.webservices.builders.replication.StudentStubBuilder;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
-import ish.oncourse.webservices.services.ICollegeRequestService;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class WillowStubBuilderFactory {
 

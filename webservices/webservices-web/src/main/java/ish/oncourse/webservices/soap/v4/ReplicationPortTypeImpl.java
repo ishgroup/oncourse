@@ -164,7 +164,6 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 					@SuppressWarnings("unchecked")
 					Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
 							.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
-
 					Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
 					object.setAngelId(record.getStub().getAngelId());
 					ctx.deleteObject(queuedRecord);

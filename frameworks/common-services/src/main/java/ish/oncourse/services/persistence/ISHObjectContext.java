@@ -48,7 +48,7 @@ public class ISHObjectContext extends DataContext {
 
 	/**
 	 * Method, which returns the commit key of last commit on this context within current thread.
-	 * @return
+	 * @return transaction key
 	 */
 	public String getTransactionKey() {
 		return transactionKeyStorage.get();
