@@ -19,7 +19,7 @@ public class DFADedupper {
 	
 	private LinkedList<QueuedRecord> recordSet = new LinkedList<QueuedRecord>();
 
-	public void nextState(QueuedRecord record) throws DeduperException {
+	public void nextState(QueuedRecord record) throws DedupperException {
 		transactionKeys.add(record.getTransactionKey());
 		
 		QueuedRecord currentRecord = (recordSet.isEmpty()) ? null : recordSet.getLast();
@@ -27,7 +27,7 @@ public class DFADedupper {
 		if (currentRecord != null) {
 			if (!currentRecord.getEntityIdentifier().equals(record.getEntityIdentifier())
 					|| !currentRecord.getEntityWillowId().equals(record.getEntityWillowId())) {
-				throw new DeduperException(String.format("Expecting entity:%s, with id:%s, but got entity:%s with id:%s",
+				throw new DedupperException(String.format("Expecting entity:%s, with id:%s, but got entity:%s with id:%s",
 						currentRecord.getEntityIdentifier(), currentRecord.getEntityWillowId(), record.getEntityIdentifier(),
 						record.getEntityWillowId()));
 			}
@@ -52,7 +52,7 @@ public class DFADedupper {
 			case DFA_CREATE:
 				switch (record.getAction()) {
 					case CREATE:
-						throw new DeduperException("Can't accept secod CREATE event.");
+						throw new DedupperException("Can't accept secod CREATE event.");
 					case UPDATE:
 						break;
 					case DELETE:
@@ -63,7 +63,7 @@ public class DFADedupper {
 			case DFA_UPDATE:
 				switch (record.getAction()) {
 					case CREATE:
-						throw new DeduperException("Can't accept CREATE event after UPDATE event.");
+						throw new DedupperException("Can't accept CREATE event after UPDATE event.");
 					case UPDATE:
 						break;
 					case DELETE:
@@ -72,9 +72,9 @@ public class DFADedupper {
 				}
 				break;
 			case DFA_DELETE:
-				throw new DeduperException("Can't accept any events after DELETE event.");
+				throw new DedupperException("Can't accept any events after DELETE event.");
 			case DFA_NOP:
-				throw new DeduperException("Can't accept any events in NOP state.");
+				throw new DedupperException("Can't accept any events in NOP state.");
 		}
 	}
 
