@@ -96,6 +96,8 @@
 		<field name="id" type="string" indexed="true" stored="true"
 			required="true" />
 
+		<field name="collegeId" type="int" indexed="true" stored="true" />
+		
 		<field name="doctype" type="string" indexed="true" stored="true"
 			required="true" />
 

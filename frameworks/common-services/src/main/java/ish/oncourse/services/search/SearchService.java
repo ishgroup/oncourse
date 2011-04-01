@@ -154,40 +154,42 @@ public class SearchService implements ISearchService {
 		}
 	}
 
-	public QueryResponse autoSuggest(String term) {
+	public SolrDocumentList autoSuggest(String term) {
 		try {
 
 			College college = webSiteService.getCurrentCollege();
 			String collegeId = String.valueOf(college.getId());
 
-			SolrQuery q = new SolrQuery();
-
-			StringBuilder query = new StringBuilder();
+			StringBuilder autocompleteQuery = new StringBuilder();
+			StringBuilder coursesQuery = new StringBuilder();
 
 			String[] terms = term.split("[\\s]+");
 			for (int i = 0; i < terms.length; i++) {
 				String t = terms[i].toLowerCase().trim() + "*";
-				// FIXME !!!!!!!!! autocomplete for tags should count the
-				// courses!
-				query.append(String.format("(name:%s && collegeId:%s)", t, collegeId)).append("||");
+				coursesQuery.append(String.format("(name:%s && collegeId:%s)", t, collegeId))
+						.append("||");
 
-				query.append(
-						String.format("(course_code:%s && collegeId:%s)", t.indexOf("-") < 0 ? t
-								: t.substring(0, t.indexOf("-")), collegeId)).append("||");
+				coursesQuery.append(String.format("(course_code:%s && collegeId:%s)",
+						t.indexOf("-") < 0 ? t : t.substring(0, t.indexOf("-")), collegeId));
 
-				query.append(String.format("(doctype:place && (suburb:%s || postcode:%s)) ", t, t))
+				autocompleteQuery.append(
+						String.format("(doctype:place && (suburb:%s || postcode:%s)) ", t, t))
 						.append(" || ");
 
-				query.append(String.format("(doctype:tag && collegeId:%s && tag:%s)", collegeId, t));
+				autocompleteQuery.append(String.format("(doctype:tag && collegeId:%s && name:%s)",
+						collegeId, t));
 
 				if (i + 1 != terms.length) {
-					query.append(" || ");
+					autocompleteQuery.append(" || ");
+					coursesQuery.append(" || ");
 				}
 			}
 
-			q.setQuery(query.toString());
-
-			return getSolrServer(SolrCore.autocomplete).query(q);
+			SolrDocumentList results = getSolrServer(SolrCore.courses).query(
+					new SolrQuery(coursesQuery.toString())).getResults();
+			results.addAll(getSolrServer(SolrCore.autocomplete).query(
+					new SolrQuery(autocompleteQuery.toString())).getResults());
+			return results;
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
 			throw new SearchException("Unable to find courses.", e);

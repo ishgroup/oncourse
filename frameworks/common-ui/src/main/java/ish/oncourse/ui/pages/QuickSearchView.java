@@ -10,6 +10,7 @@ import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -69,7 +70,7 @@ public class QuickSearchView {
 		searchString = request.getParameter("text");
 		searchTerms = searchString.split("[\\s]+");
 		
-		QueryResponse suggestions = searchService.autoSuggest(searchString);
+		SolrDocumentList suggestions = searchService.autoSuggest(searchString);
 		
 		setupLists(suggestions);
 
@@ -81,14 +82,14 @@ public class QuickSearchView {
 	/**
 	 * @param suggestions
 	 */
-	private void setupLists(QueryResponse suggestions) {
+	private void setupLists(SolrDocumentList suggestions) {
 		locationDetailList = new ArrayList<PostcodeDb>();
 		
 		List<String> courseIds = new ArrayList<String>();
 		List<String> tagIds = new ArrayList<String>();
 		List<String> postCodes = new ArrayList<String>();
 		
-		for (SolrDocument doc : suggestions.getResults()) {
+		for (SolrDocument doc : suggestions) {
 
 			String doctype = (String) doc.get("doctype");
 

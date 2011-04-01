@@ -15,19 +15,9 @@
 		<servlet-class>ish.oncourse.asset.servlet.BinaryDataServlet</servlet-class>
 	</servlet>
 
-	<servlet>
-		<servlet-name>AutoSuggest</servlet-name>
-		<servlet-class>ish.oncourse.asset.servlet.AutoSuggestServlet</servlet-class>
-	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>BinaryData</servlet-name>
 		<url-pattern>/binarydata</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>AutoSuggest</servlet-name>
-		<url-pattern>/autosuggest</url-pattern>
 	</servlet-mapping>
 
 	<filter>
