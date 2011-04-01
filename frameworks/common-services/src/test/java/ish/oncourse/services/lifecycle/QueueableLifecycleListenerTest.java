@@ -8,7 +8,6 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.SampleEntityBuilder;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;

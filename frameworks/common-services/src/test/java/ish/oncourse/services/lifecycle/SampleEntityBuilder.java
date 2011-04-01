@@ -1,4 +1,4 @@
-package ish.oncourse.model;
+package ish.oncourse.services.lifecycle;
 
 import ish.common.types.AvetmissStudentDisabilityType;
 import ish.common.types.AvetmissStudentEnglishProficiency;
@@ -7,11 +7,24 @@ import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
+import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Country;
+import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.EnrolmentStatus;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.InvoiceStatus;
+import ish.oncourse.model.Language;
+import ish.oncourse.model.Qualification;
+import ish.oncourse.model.Student;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 
 public class SampleEntityBuilder {
@@ -29,7 +42,7 @@ public class SampleEntityBuilder {
 	public Enrolment createEnrolment(InvoiceLine invoiceLine, Student student, CourseClass courseClass) {
 		Enrolment enrl = ctx.newObject(Enrolment.class);
 
-		College college = DataObjectUtils.objectForPK(ctx, College.class, 1l);
+		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		enrl.setCollege(college);
 
 		enrl.setInvoiceLine(invoiceLine);
@@ -48,7 +61,7 @@ public class SampleEntityBuilder {
 		c.setCancelled(false);
 		c.setCode("12345");
 
-		College college = DataObjectUtils.objectForPK(ctx, College.class, 1l);
+		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		c.setCollege(college);
 
 		c.setCountOfSessions(5);
@@ -69,14 +82,14 @@ public class SampleEntityBuilder {
 		c.setAllowWaitingList(true);
 		c.setCode("123");
 
-		College college = DataObjectUtils.objectForPK(ctx, College.class, 1l);
+		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		c.setCollege(college);
 
 		c.setDetail("test details");
 		c.setFieldOfEducation("computers skills");
 		c.setName("computer literance");
 
-		Qualification qualification = DataObjectUtils.objectForPK(ctx, Qualification.class, 1l);
+		Qualification qualification = Cayenne.objectForPK(ctx, Qualification.class, 1l);
 		c.setQualification(qualification);
 
 		return c;
@@ -85,7 +98,7 @@ public class SampleEntityBuilder {
 	public InvoiceLine createInvoiceLine(Invoice invoice) {
 		InvoiceLine invLine = ctx.newObject(InvoiceLine.class);
 
-		College college = DataObjectUtils.objectForPK(ctx, College.class, 1l);
+		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		invLine.setCollege(college);
 
 		invLine.setTitle("Test invoice line");
@@ -105,7 +118,7 @@ public class SampleEntityBuilder {
 
 		inv.setAmountOwing(new BigDecimal(10));
 
-		College college = DataObjectUtils.objectForPK(ctx, College.class, 1l);
+		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		inv.setCollege(college);
 
 		inv.setContact(contact);
@@ -127,11 +140,11 @@ public class SampleEntityBuilder {
 	public Student createStudent(Contact contact) {
 		Student st = ctx.newObject(Student.class);
 
-		College college = DataObjectUtils.objectForPK(ctx, College.class, 1l);
+		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		st.setCollege(college);
 
 		st.setContact(contact);
-		Country country = DataObjectUtils.objectForPK(ctx, Country.class, 1l);
+		Country country = Cayenne.objectForPK(ctx, Country.class, 1l);
 		st.setCountryOfBirth(country);
 		st.setDisabilityType(AvetmissStudentDisabilityType.HEARING);
 		st.setEnglishProficiency(AvetmissStudentEnglishProficiency.VERY_WELL);
@@ -141,7 +154,7 @@ public class SampleEntityBuilder {
 		st.setIsStillAtSchool(true);
 		st.setLabourForceType(1);
 
-		Language lang = DataObjectUtils.objectForPK(ctx, Language.class, 2l);
+		Language lang = Cayenne.objectForPK(ctx, Language.class, 2l);
 		st.setLanguageHome(lang);
 		st.setLanguage(lang);
 
@@ -156,12 +169,12 @@ public class SampleEntityBuilder {
 
 		c.setBusinessPhoneNumber("724-556");
 
-		College college = DataObjectUtils.objectForPK(ctx, College.class, 1l);
+		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		c.setCollege(college);
 
 		c.setCookieHash("12345");
 
-		Country country = DataObjectUtils.objectForPK(ctx, Country.class, 1l);
+		Country country = Cayenne.objectForPK(ctx, Country.class, 1l);
 		c.setCountry(country);
 
 		c.setDateOfBirth(new Date());
