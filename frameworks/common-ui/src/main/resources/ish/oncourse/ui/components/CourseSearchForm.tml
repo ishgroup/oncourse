@@ -14,7 +14,6 @@
 				<span>More options</span>
 			</a>
 		</div>
-		<!--  TODO implement SeartInputs component-->
 		<div class="quicksearch-wrap-container">
 			<div class="quicksearch-wrap"></div>
 		</div>
