@@ -102,14 +102,6 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>ish.oncourse.willow.frameworks</groupId>
-			<artifactId>common-model</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-			<classifier>tests</classifier>
-		</dependency>
-		
-		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 			<scope>test</scope>
