@@ -190,7 +190,7 @@
 
        <!-- Query settings -->
        <str name="defType">dismax</str>
-       <str name="qf">name^10 suburb^5 postcode^5</str>
+       <str name="qf">suburb^5 postcode^5</str>
        <str name="q.alt">*:*</str>
        <str name="rows">10</str>
        <str name="fl">*,score</str>
@@ -227,10 +227,10 @@
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
-     <str name="qf">name^10 suburb^5 postcode^5</str>
-	 <str name="pf">name^10 suburb^5 postcode^5</str>
+     <str name="qf">suburb^5 postcode^5</str>
+	 <str name="pf">suburb^5 postcode^5</str>
 	<str name="bf"></str>
-	<str name="fl">name suburb postcode</str>
+	<str name="fl">suburb postcode</str>
      <str name="mm">1</str>
      <int name="ps">100</int>
      <str name="q.alt">*:*</str>

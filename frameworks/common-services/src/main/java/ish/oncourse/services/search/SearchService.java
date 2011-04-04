@@ -160,9 +160,10 @@ public class SearchService implements ISearchService {
 			College college = webSiteService.getCurrentCollege();
 			String collegeId = String.valueOf(college.getId());
 
-			StringBuilder autocompleteQuery = new StringBuilder();
 			StringBuilder coursesQuery = new StringBuilder();
-
+			StringBuilder suburbsQuery = new StringBuilder();
+			StringBuilder tagsQuery = new StringBuilder();
+			
 			String[] terms = term.split("[\\s]+");
 			for (int i = 0; i < terms.length; i++) {
 				String t = terms[i].toLowerCase().trim() + "*";
@@ -172,23 +173,27 @@ public class SearchService implements ISearchService {
 				coursesQuery.append(String.format("(course_code:%s && collegeId:%s)",
 						t.indexOf("-") < 0 ? t : t.substring(0, t.indexOf("-")), collegeId));
 
-				autocompleteQuery.append(
-						String.format("(doctype:place && (suburb:%s || postcode:%s)) ", t, t))
-						.append(" || ");
+				suburbsQuery.append(
+						String.format("(doctype:suburb && (suburb:%s || postcode:%s)) ", t, t));
 
-				autocompleteQuery.append(String.format("(doctype:tag && collegeId:%s && name:%s)",
+				tagsQuery.append(String.format("(doctype:tag && collegeId:%s && name:%s)",
 						collegeId, t));
 
 				if (i + 1 != terms.length) {
-					autocompleteQuery.append(" || ");
 					coursesQuery.append(" || ");
+					suburbsQuery.append(" || ");
+					tagsQuery.append(" || ");
 				}
 			}
 
-			SolrDocumentList results = getSolrServer(SolrCore.courses).query(
-					new SolrQuery(coursesQuery.toString())).getResults();
-			results.addAll(getSolrServer(SolrCore.autocomplete).query(
-					new SolrQuery(autocompleteQuery.toString())).getResults());
+			SolrDocumentList results = new SolrDocumentList();
+			
+			results.addAll(getSolrServer(SolrCore.courses).query(
+					new SolrQuery(coursesQuery.toString())).getResults());
+			results.addAll(getSolrServer(SolrCore.suburbs).query(
+					new SolrQuery(suburbsQuery.toString())).getResults());
+			results.addAll(getSolrServer(SolrCore.tags).query(
+					new SolrQuery(tagsQuery.toString())).getResults());
 			return results;
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
@@ -207,7 +212,7 @@ public class SearchService implements ISearchService {
 			for (int i = 0; i < terms.length; i++) {
 				String t = terms[i].toLowerCase().trim() + "*";
 
-				query.append(String.format("(doctype:place && (suburb:%s || postcode:%s)) ", t, t));
+				query.append(String.format("(doctype:suburb && (suburb:%s || postcode:%s)) ", t, t));
 
 				if (i + 1 != terms.length) {
 					query.append(" || ");
@@ -216,7 +221,7 @@ public class SearchService implements ISearchService {
 
 			q.setQuery(query.toString());
 
-			return getSolrServer(SolrCore.autocomplete).query(q);
+			return getSolrServer(SolrCore.suburbs).query(q);
 		} catch (Exception e) {
 			logger.error("Failed to search suburbs.", e);
 			throw new SearchException("Unable to find suburbs.", e);
@@ -237,7 +242,7 @@ public class SearchService implements ISearchService {
 			SolrQuery q = new SolrQuery();
 
 			StringBuilder query = new StringBuilder();
-			query.append("(doctype:place");
+			query.append("(doctype:suburb");
 			if (suburbParams[0] != null) {
 				query.append(" && suburb:").append(suburbParams[0].replaceAll("[\\s]+", "+"));
 			}
@@ -250,7 +255,7 @@ public class SearchService implements ISearchService {
 
 			q.setQuery(query.toString());
 
-			return getSolrServer(SolrCore.autocomplete).query(q);
+			return getSolrServer(SolrCore.suburbs).query(q);
 		} catch (Exception e) {
 			logger.error("Failed to search suburb.", e);
 			throw new SearchException("Unable to find suburb.", e);
@@ -258,6 +263,6 @@ public class SearchService implements ISearchService {
 	}
 
 	enum SolrCore {
-		courses, autocomplete
+		courses, suburbs, tags
 	}
 }

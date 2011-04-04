@@ -95,7 +95,7 @@ public class QuickSearchView {
 
 			if ("course".equalsIgnoreCase(doctype)) {
 				courseIds.add((String) doc.get("id"));
-			} else if ("place".equalsIgnoreCase(doctype)) {
+			} else if ("suburb".equalsIgnoreCase(doctype)) {
 				postCodes.add((String) doc.get("suburb"));
 			} else if ("tag".equals(doctype)) {
 				tagIds.add((String) doc.get("id"));
