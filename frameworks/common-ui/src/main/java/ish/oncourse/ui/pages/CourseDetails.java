@@ -28,4 +28,11 @@ public class CourseDetails {
 			course = courseService.getCourse(Course.CODE_PROPERTY, code);
 		}
 	}
+	
+	public String getCourseDetailsTitle(){
+		if(course==null){
+			return "Course Not Found";
+		}
+		return course.getName();
+	}
 }
