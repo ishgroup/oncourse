@@ -76,9 +76,9 @@ public class AuthenticationService implements IAuthenticationService {
 
 		if (user != null) {
 
-			boolean belongToCollege = (user.getIsSuperUser())
-					|| siteService.getCurrentCollege().getId()
-							.equals(user.getCollege().getId());
+			boolean belongToCollege = (Boolean.TRUE.equals(user.getIsSuperUser()))
+					|| (user.getCollege() != null && siteService.getCurrentCollege().getId()
+							.equals(user.getCollege().getId()));
 
 			if (belongToCollege) {
 				return user;
