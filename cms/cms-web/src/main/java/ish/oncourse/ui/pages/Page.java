@@ -33,7 +33,7 @@ public class Page {
 	}
 	
 	public String getBodyId() {
-		return (isHomePage()) ? "Main" : ("page" + this.node.getId());
+		return (isHomePage()) ? "Main" : ("page" + this.node.getNodeNumber());
 	}
 
 	public String getBodyClass() {
