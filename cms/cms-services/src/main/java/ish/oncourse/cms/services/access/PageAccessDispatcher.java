@@ -1,6 +1,8 @@
 package ish.oncourse.cms.services.access;
 
 
+import ish.oncourse.linktransform.PageLinkTransformer;
+
 import java.io.IOException;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -19,6 +21,11 @@ public class PageAccessDispatcher implements Dispatcher {
 			throws IOException {
 
 		String path = request.getPath();
+		for (String p : PageLinkTransformer.IMMUTABLE_PATHS) {
+			if (path.startsWith(p)) {
+				return false;
+			}
+		}
 		if (authenticationService.getUser() == null && ! path.startsWith(LOGIN_PAGE)) {
 			String loginPath = request.getContextPath() +  LOGIN_PAGE;
 			response.sendRedirect(loginPath);
