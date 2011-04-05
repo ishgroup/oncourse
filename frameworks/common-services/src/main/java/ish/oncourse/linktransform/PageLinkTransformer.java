@@ -10,11 +10,13 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.tag.ITagService;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -157,6 +159,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	@Inject
 	ICourseClassService courseClassService;
 
+	@Inject
+	ICourseService courseService;
+
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 
 		final String path = request.getPath().toLowerCase();
@@ -182,10 +187,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				tagsPath = tagsPath.replaceFirst("/", "");
 			}
 			if (!tagsPath.equals("")) {
-				Tag tag=tagService.getTagByFullPath(tagsPath);
-				if (tag==null) {
+				Tag tag = tagService.getTagByFullPath(tagsPath);
+				if (tag == null) {
 					return new PageRenderRequestParameters("ui/PageNotFound",
-								new EmptyEventContext(), false);
+							new EmptyEventContext(), false);
 				}
 				request.setAttribute(Course.COURSE_TAG, tag);
 			}
@@ -194,8 +199,17 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		matcher = COURSE_PATTERN.matcher(path);
 		if (matcher.matches()) {
+			Course course = null;
 			String courseCode = path.substring(path.lastIndexOf("/") + 1);
-			request.setAttribute("courseCode", courseCode);
+			if (courseCode != null) {
+				course = courseService.getCourse(Course.CODE_PROPERTY, courseCode);
+			}
+			if (course != null) {
+				request.setAttribute("course", course);
+			} else {
+				return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(),
+						false);
+			}
 			return new PageRenderRequestParameters("ui/CourseDetails", new EmptyEventContext(),
 					false);
 		}
