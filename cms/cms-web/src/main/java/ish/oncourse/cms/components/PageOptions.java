@@ -11,11 +11,14 @@ import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.Field;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -78,6 +81,9 @@ public class PageOptions {
 
 	@Property
 	private String urlPath;
+	
+	@InjectComponent(value="urlPath")
+	private Field urlAlias;
 
 	@SetupRender
 	public void beforeRender() {
@@ -95,8 +101,9 @@ public class PageOptions {
 	}
 
 	public boolean isNotDefault() {
+		
 		if (editNode.getDefaultWebURLAlias() != null) {
-			return !editNode.getDefaultWebURLAlias().equals(webUrlAlias.getId());
+			return !editNode.getDefaultWebURLAlias().getId().equals(webUrlAlias.getId());
 		}
 		return true;
 	}
@@ -108,17 +115,36 @@ public class PageOptions {
 	Object onActionFromRemoveUrl(String id) {
 		WebUrlAlias alias = (WebUrlAlias) editNode.getObjectContext().localObject(aliasService.findById(Long.parseLong(id)).getObjectId(), null);
 		editNode.removeFromWebUrlAliases(alias);
-		editNode.getObjectContext().commitChanges();
 		return urlZone.getBody();
 	}
 
 	Object onActionFromMakeDefault(String id) {
 		WebUrlAlias alias = (WebUrlAlias) editNode.getObjectContext().localObject(aliasService.findById(Long.parseLong(id)).getObjectId(), null);
 		editNode.setDefaultWebURLAlias(alias);
-		editNode.getObjectContext().commitChanges();
 		return urlZone.getBody();
 	}
+	
+	void onValidateFromUrlForm() {
+		if(!urlPath.startsWith("/")){
+			urlPath = "/"+urlPath;
+		}
+		WebUrlAlias alias = aliasService.getAliasByPath(urlPath);
+		if(alias==null){
+			for(Object o:editNode.getObjectContext().uncommittedObjects()){
+				if(o instanceof WebUrlAlias && ((WebUrlAlias)o).getUrlPath().equals(urlPath)){
+					alias=(WebUrlAlias) o;
+				}
+			}
+		}
+		if(alias!=null){
+			urlForm.recordError(urlAlias, "Already in use");
+		}
+	}
 
+	Object onFailureFromUrlForm(){
+		return urlZone.getBody();
+	}
+	
 	Object onSuccessFromUrlForm() {
 		ObjectContext ctx = editNode.getObjectContext();
 
@@ -127,10 +153,12 @@ public class PageOptions {
 		alias.setUrlPath(urlPath);
 
 		editNode.addToWebUrlAliases(alias);
+		urlPath=null;
 		return urlZone.getBody();
 	}
 
 	Object onSuccessFromOptionsForm() {
+		urlForm.clearErrors();
 		editNode.getObjectContext().commitChanges();
 		return updateZone.getBody();
 	}

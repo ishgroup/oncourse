@@ -14,7 +14,7 @@
     			<t:if t:test="hasDefault">
     				<li style="line-height: 1.2em">${siteUrl}${editNode.defaultWebURLAlias.urlPath}<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/></li>
     			</t:if>
-		    	<t:loop source="prop:editNode.webUrlAliases" value="prop:webUrlAlias">
+		    	<t:loop source="editNode.webUrlAliases" value="webUrlAlias">
 		    			<t:if t:test="notDefault">
 		    				<li style="line-height: 1.2em">
 		    					${siteUrl}${webUrlAlias.urlPath} 
@@ -23,13 +23,14 @@
 		    				</li>
 		    			</t:if>
 		    	</t:loop>
-	    	</t:zone>
-	    	<li>
-		    	<t:form t:id="urlForm" zone="urlZone">
-	    			${siteUrl}<t:textfield value="urlPath" validate="required" t:id="urlPath"/><a href="#" t:type="linkSubmit" t:id="addUrl"><img src="/s/img/add.png" border="0"/></a>
-	    		</t:form>
-    		</li>
-      </ul>
+	    	
+	    		<li>
+		    		<t:form t:id="urlForm" zone="urlZone">
+	    				${siteUrl}/<t:textfield value="urlPath" validate="required" t:id="urlPath"/><a href="#" t:type="linkSubmit" t:id="addUrl"><img src="/s/img/add.png" border="0"/></a> <t:error for="urlPath"/>
+	    			</t:form>
+    			</li>
+    		</t:zone>
+      	</ul>
 	</div>
 	
 	<script type="text/javascript">
