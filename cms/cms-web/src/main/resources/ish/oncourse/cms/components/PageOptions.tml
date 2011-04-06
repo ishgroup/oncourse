@@ -4,7 +4,7 @@
 	    <t:form t:id="optionsForm" zone="prop:updateZone.clientId">
 	    	<t:errors/>
 			<t:label for="pageName"></t:label><t:textfield t:id="pageName" t:value="editNode.name" t:validate="required,minlength=3"/><br/>
-			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="editNode.webNodeType"/><br/>
+			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="editNode.webNodeType" t:validate="required"/><br/>
 			<t:label for="published"/><t:checkbox t:id="published" value="editNode.published"/>
 		</t:form>
 	    
@@ -26,7 +26,7 @@
 	    	</t:zone>
 	    	<li>
 		    	<t:form t:id="urlForm" zone="urlZone">
-	    			${siteUrl}<t:textfield value="urlPath"/><a href="#" t:type="linkSubmit" t:id="addUrl"><img src="/s/img/add.png" border="0"/></a>
+	    			${siteUrl}<t:textfield value="urlPath" validate="required" t:id="urlPath"/><a href="#" t:type="linkSubmit" t:id="addUrl"><img src="/s/img/add.png" border="0"/></a>
 	    		</t:form>
     		</li>
       </ul>
