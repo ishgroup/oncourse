@@ -18,8 +18,8 @@
 		    			<t:if t:test="notDefault">
 		    				<li style="line-height: 1.2em">
 		    					${siteUrl}${webUrlAlias.urlPath} 
-		    					<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.id" zone="urlZone"><img src="/s/img/trash_16.gif" border="0" style="vertical-align: middle;"/></a>
-		    					<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/><a t:id="makeDefault" t:type="actionLink" t:context="webUrlAlias.id" zone="urlZone">&nbsp;default</a>
+		    					<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="urlZone"><img src="/s/img/trash_16.gif" border="0" style="vertical-align: middle;"/></a>
+		    					<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/><a t:id="makeDefault" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="urlZone">&nbsp;default</a>
 		    				</li>
 		    			</t:if>
 		    	</t:loop>

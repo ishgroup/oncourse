@@ -81,8 +81,8 @@ public class PageOptions {
 
 	@Property
 	private String urlPath;
-	
-	@InjectComponent(value="urlPath")
+
+	@InjectComponent(value = "urlPath")
 	private Field urlAlias;
 
 	@SetupRender
@@ -90,20 +90,21 @@ public class PageOptions {
 		ObjectContext ctx = cayenneService.newContext();
 		this.editNode = (WebNode) ctx.localObject(node.getObjectId(), node);
 
-		List<WebNodeType>  webNodeTypes = new ArrayList<WebNodeType>(15);
-		
+		List<WebNodeType> webNodeTypes = new ArrayList<WebNodeType>(15);
+
 		for (WebNodeType t : webNodeTypeService.getWebNodeTypes()) {
 			webNodeTypes.add((WebNodeType) ctx.localObject(t.getObjectId(), null));
 		}
 
-		this.pageTypeModel = new ListSelectModel<WebNodeType>(webNodeTypes, WebNodeType.LAYOUT_KEY_PROPERTY, access);
+		this.pageTypeModel = new ListSelectModel<WebNodeType>(webNodeTypes,
+				WebNodeType.LAYOUT_KEY_PROPERTY, access);
 		this.pageTypeEncoder = new ListValueEncoder<WebNodeType>(webNodeTypes, "id", access);
 	}
 
 	public boolean isNotDefault() {
-		
+
 		if (editNode.getDefaultWebURLAlias() != null) {
-			return !editNode.getDefaultWebURLAlias().getId().equals(webUrlAlias.getId());
+			return !editNode.getDefaultWebURLAlias().equals(webUrlAlias);
 		}
 		return true;
 	}
@@ -112,53 +113,55 @@ public class PageOptions {
 		return editNode.getDefaultWebURLAlias() != null;
 	}
 
-	Object onActionFromRemoveUrl(String id) {
-		WebUrlAlias alias = (WebUrlAlias) editNode.getObjectContext().localObject(aliasService.findById(Long.parseLong(id)).getObjectId(), null);
+	Object onActionFromRemoveUrl(String urlPath) {
+		WebUrlAlias alias = editNode.getWebUrlAliasByPath(urlPath);
 		editNode.removeFromWebUrlAliases(alias);
 		return urlZone.getBody();
 	}
 
-	Object onActionFromMakeDefault(String id) {
-		WebUrlAlias alias = (WebUrlAlias) editNode.getObjectContext().localObject(aliasService.findById(Long.parseLong(id)).getObjectId(), null);
+	Object onActionFromMakeDefault(String urlPath) {
+		WebUrlAlias alias = editNode.getWebUrlAliasByPath(urlPath);
 		editNode.setDefaultWebURLAlias(alias);
 		return urlZone.getBody();
 	}
-	
+
 	void onValidateFromUrlForm() {
-		if(!urlPath.startsWith("/")){
-			urlPath = "/"+urlPath;
+		if (!urlPath.startsWith("/")) {
+			urlPath = "/" + urlPath;
 		}
 		WebUrlAlias alias = aliasService.getAliasByPath(urlPath);
-		if(alias==null){
-			for(Object o:editNode.getObjectContext().uncommittedObjects()){
-				if(o instanceof WebUrlAlias && ((WebUrlAlias)o).getUrlPath().equals(urlPath)){
-					alias=(WebUrlAlias) o;
+		if (alias == null) {
+			for (Object o : editNode.getObjectContext().uncommittedObjects()) {
+				if (o instanceof WebUrlAlias && ((WebUrlAlias) o).getUrlPath().equals(urlPath)) {
+					alias = (WebUrlAlias) o;
 				}
 			}
 		}
-		if(alias!=null){
+		if (alias != null) {
 			urlForm.recordError(urlAlias, "Already in use");
 		}
 	}
 
-	Object onFailureFromUrlForm(){
+	Object onFailureFromUrlForm() {
 		return urlZone.getBody();
 	}
-	
+
 	Object onSuccessFromUrlForm() {
 		ObjectContext ctx = editNode.getObjectContext();
 
 		WebUrlAlias alias = ctx.newObject(WebUrlAlias.class);
-		alias.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+		alias.setWebSite((WebSite) ctx.localObject(
+				webSiteService.getCurrentWebSite().getObjectId(), null));
 		alias.setUrlPath(urlPath);
 
 		editNode.addToWebUrlAliases(alias);
-		urlPath=null;
+		urlPath = null;
 		return urlZone.getBody();
 	}
 
 	Object onSuccessFromOptionsForm() {
 		urlForm.clearErrors();
+		urlPath = null;
 		editNode.getObjectContext().commitChanges();
 		return updateZone.getBody();
 	}

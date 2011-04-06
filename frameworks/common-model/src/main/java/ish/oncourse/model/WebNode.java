@@ -25,8 +25,8 @@ public class WebNode extends _WebNode {
 	public String getPath() {
 		WebUrlAlias defaultAlias = getDefaultWebURLAlias();
 
-		String alias = defaultAlias == null ? ("/page/" + getNodeNumber())
-				: defaultAlias.getUrlPath();
+		String alias = defaultAlias == null ? ("/page/" + getNodeNumber()) : defaultAlias
+				.getUrlPath();
 		return alias;
 	}
 
@@ -52,9 +52,21 @@ public class WebNode extends _WebNode {
 		setModified(today);
 	}
 
-    @Override
-    public void removeFromWebUrlAliases(WebUrlAlias obj) {
-        super.removeFromWebUrlAliases(obj);
-        getObjectContext().deleteObject(obj);
-    }
+	@Override
+	public void removeFromWebUrlAliases(WebUrlAlias obj) {
+		super.removeFromWebUrlAliases(obj);
+		getObjectContext().deleteObject(obj);
+	}
+
+	public WebUrlAlias getWebUrlAliasByPath(String urlPath) {
+		if (urlPath == null) {
+			return null;
+		}
+		for (WebUrlAlias alias : getWebUrlAliases()) {
+			if (urlPath.equals(alias.getUrlPath())) {
+				return alias;
+			}
+		}
+		return null;
+	}
 }
