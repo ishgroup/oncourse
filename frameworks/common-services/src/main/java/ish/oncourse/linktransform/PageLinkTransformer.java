@@ -88,7 +88,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage",
 			"/menubuilder", "/pageoptions", "/ma.", "/site", "/sitesettings", "/pagetypes",
 			"/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.", "/site.pagetypes.",
-			"/ui/autocomplete.sub", "/pt.sort", "/ui/" };
+			"/ui/autocomplete.sub", "/pt.sort" };
 
 	private static final String HOME_PAGE_PATH = "/";
 

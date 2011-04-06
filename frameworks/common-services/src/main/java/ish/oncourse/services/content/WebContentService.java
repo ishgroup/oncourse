@@ -16,7 +16,9 @@ import java.util.TreeSet;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WebContentService extends BaseService<WebContent> implements IWebContentService {
@@ -61,6 +63,26 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
         return new TreeSet<WebContent>(cayenneService.sharedContext()
                 .performQuery(q));
     }
+    
+	public List<WebContent> getBlocks() {
+
+		SelectQuery q = new SelectQuery(WebContent.class);
+		q.andQualifier(ExpressionFactory.matchExp(WebContent.WEB_SITE_PROPERTY,
+				webSiteService.getCurrentWebSite()));
+
+		Expression expr = ExpressionFactory.matchExp(WebContent.WEB_CONTENT_VISIBILITY_PROPERTY
+				+ "+." + WebContentVisibility.WEB_NODE_PROPERTY, null);
+
+		expr = expr.orExp(ExpressionFactory.matchExp(WebContent.WEB_CONTENT_VISIBILITY_PROPERTY,
+				null));
+
+		q.andQualifier(expr);
+
+		q.addOrdering(new Ordering(WebContent.MODIFIED_PROPERTY, SortOrder.DESCENDING));
+
+		return cayenneService.sharedContext().performQuery(q);
+
+	}
 
     public SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(
             RegionKey regionKey) {

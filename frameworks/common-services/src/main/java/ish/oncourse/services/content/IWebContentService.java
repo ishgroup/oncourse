@@ -4,6 +4,7 @@ import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 
+import java.util.List;
 import java.util.SortedSet;
 
 public interface IWebContentService {
@@ -38,4 +39,6 @@ public interface IWebContentService {
 	 * @return web content visibility
 	 */
 	SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(RegionKey regionKey);
+	
+	List<WebContent> getBlocks();
 }
