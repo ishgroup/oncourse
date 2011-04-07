@@ -8,9 +8,7 @@
 	
 	<t:zone t:id="blockZone">
 	
-		<a href="#" t:type="actionLink" t:id="newBlock" zone="blockZone">
-			<button>New Block</button>
-		</a> 
+		<a href="#" t:type="actionLink" t:id="newBlock" zone="blockZone" class="button">New Block</a> 
 		
 		<input id="blockFilter" type="text" value=""/>
 		

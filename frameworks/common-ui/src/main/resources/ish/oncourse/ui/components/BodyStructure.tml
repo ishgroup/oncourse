@@ -27,7 +27,7 @@
 				<div class="confirmOrderDialog dialogContainer">
 					<p>Thanks for adding: <div class="className"></div><div class="classDate"></div></p>
 					
-					<p><a href="/enrol/EnrolCourses"><button>Proceed to Checkout</button></a></p>
+					<p><a href="/enrol/EnrolCourses" class="button">Proceed to Checkout</a></p>
 					<div class="closeButton">X</div>
 				</div>
 
