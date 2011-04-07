@@ -5,9 +5,9 @@
 		<textarea t:type="TextArea" t:id="content" value="editBlock.content" rows="18" style="width: 99%"/>
 		
 		<div>
-			<a t:id="cancel" t:type="actionLink" zone="blockZone" class="button">Cancel</a>
-			<a t:id="delete" t:type="actionLink" zone="blockZone" class="button">Delete</a>
-			<button onclick="javascript:$('${blockEditForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">Save</button>
+			<t:submit t:id="cancel" value="Cancel" mode="CANCEL"/>
+			<t:submit t:id="delete" value="Delete" mode="CANCEL"/>
+			<t:submit t:id="save" value="Save"/>
 		</div>
 	</t:form>
 </div>

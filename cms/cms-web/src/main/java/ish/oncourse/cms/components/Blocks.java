@@ -3,6 +3,7 @@ package ish.oncourse.cms.components;
 import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -22,13 +23,13 @@ public class Blocks {
 	@Property
 	@Inject
 	private IWebContentService webContentService;
-	
+
 	@Inject
 	private ICayenneService cayenneService;
 
 	@Inject
 	private Messages messages;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
 
@@ -53,20 +54,24 @@ public class Blocks {
 	private Object onActionFromNewBlock() {
 		ObjectContext ctx = cayenneService.newContext();
 		selectedBlock = ctx.newObject(WebContent.class);
-		
+
 		WebContentVisibility visibility = ctx.newObject(WebContentVisibility.class);
 		visibility.setRegionKey(RegionKey.unassigned);
 		visibility.setWebContent(selectedBlock);
 
+		selectedBlock.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(),
+				null));
+
 		return editBlock;
 	}
-	
+
 	private Object onActionFromEditBlock(String id) {
 		selectedBlock = webContentService.findById(Long.parseLong(id));
 		return editBlock;
 	}
-	
+
 	public String getEditBlockUrl() {
-		return "http://" + webSiteService.getCurrentDomain().getName() + "/cms/site.blocks.editblock/";
+		return "http://" + webSiteService.getCurrentDomain().getName()
+				+ "/cms/site.blocks.editblock/";
 	}
 }
