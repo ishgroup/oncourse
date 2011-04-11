@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.SortedSet;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
@@ -38,7 +39,7 @@ public class PageTypeEdit {
 	@Parameter
 	@Property
 	private Zone updateZone;
-	
+
 	@Property
 	@Component
 	private Form pageTypeEditForm;
@@ -49,23 +50,26 @@ public class PageTypeEdit {
 
 	@Inject
 	private IResourceService resourceService;
-	
+
 	@Inject
 	private IWebContentService webContentService;
 
-    @Inject
+	@Inject
 	private ICayenneService cayenneService;
 
 	@Property
+	@Persist
 	private RegionKey regionKey;
-	
+
 	@Property
 	private WebContent block;
-		
+
+	private Action action;
+
 	public SortedSet<WebContent> getBlocksForRegionKey() {
 		return webContentService.getBlocksForRegionKey(regionKey);
 	}
-	
+
 	public RegionKey[] getRegionKeys() {
 		return Arrays.copyOfRange(RegionKey.values(), 1, RegionKey.values().length);
 	}
@@ -85,28 +89,6 @@ public class PageTypeEdit {
 		return str.toString();
 	}
 
-	@SetupRender
-	public void beforeRender() {
-		editPageType = (WebNodeType) cayenneService.newContext().localObject(pageType.getObjectId(), pageType);
-		layoutSelectModel = new StringSelectModel(readAvailableLayouts());
-	}
-
-	Object onSuccessFromPageTypeEditForm() {
-		editPageType.getObjectContext().commitChanges();
-		return updateZone.getBody();
-	}
-
-	Object onActionFromCancel() {
-		return updateZone.getBody();
-	}
-
-	Object onActionFromDelete() {
-        ObjectContext ctx = editPageType.getObjectContext();
-		ctx.deleteObject(editPageType);
-        ctx.commitChanges();
-		return updateZone.getBody();
-	}
-
 	private String[] readAvailableLayouts() {
 		PrivateResource res = resourceService.getTemplateResource("", "");
 
@@ -119,4 +101,44 @@ public class PageTypeEdit {
 			}
 		});
 	}
+
+	@SetupRender
+	public void beforeRender() {
+		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType
+				: (WebNodeType) cayenneService.newContext().localObject(pageType.getObjectId(),
+						pageType);
+		layoutSelectModel = new StringSelectModel(readAvailableLayouts());
+	}
+
+	Object onSubmitFromPageTypeEditForm() {
+		ObjectContext ctx = editPageType.getObjectContext();
+		switch (action) {
+		case cancel:
+			ctx.rollbackChanges();
+			break;
+		case delete:
+			ctx.deleteObject(editPageType);
+		case save:
+			ctx.commitChanges();
+		}
+		pageTypeEditForm.clearErrors();
+		return updateZone.getBody();
+	}
+
+	void onSelectedFromCancel() {
+		action = Action.cancel;
+	}
+
+	void onSelectedFromDelete() {
+		action = Action.delete;
+	}
+
+	void onSelectedFromSave() {
+		action = Action.save;
+	}
+
+	enum Action {
+		save, cancel, delete
+	}
+
 }

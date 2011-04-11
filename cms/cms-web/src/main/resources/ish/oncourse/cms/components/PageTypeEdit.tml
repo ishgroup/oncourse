@@ -3,15 +3,15 @@
 	<t:form t:id="pageTypeEditForm" zone="pageTypeZone">
 		<t:errors/>	
 		<t:label for="name"></t:label><t:textfield t:id="name" t:value="editPageType.name" t:validate="required,minlength=3"/><br/>
-		<t:label for="layoutKey"></t:label><t:select t:id="layoutKey" name="layoutKey" model="layoutSelectModel" encoder="layoutSelectModel" value="editPageType.layoutKey"/>
-	</t:form>
+		<t:label for="layoutKey"></t:label><t:select t:id="layoutKey" name="layoutKey" model="layoutSelectModel" encoder="layoutSelectModel" t:validate="required" value="editPageType.layoutKey"/>
+	
 	
 	<br/>
 		
 	<t:loop source="regionKeys" value="regionKey">
 		<h2>${regionKey}</h2>
 		<ul id="b_${regionKey}" class="connectedSortable">
-			<t:loop source="blocksForRegionKey" value="block">
+			<t:loop source="blocksForRegionKey" value="block" formState="none">
 				<li id="${block.id}" class="ui-state-default">${block.name}</li>
 			</t:loop>
 			<span>&nbsp;</span>
@@ -20,11 +20,11 @@
 	</t:loop>
 		
 	<div>
-		<a t:id="cancel" t:type="actionLink" zone="blockZone" class="button">Cancel</a>
-		<a t:id="delete" t:type="actionLink" zone="blockZone" class="button">Delete</a>
-		<button onclick="javascript:$('${pageTypeEditForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">Save</button>
+		<t:submit t:id="cancel" value="Cancel" mode="CANCEL"/>
+		<t:submit t:id="delete" value="Delete" mode="CANCEL"/>
+		<t:submit t:id="save" value="Save"/>
 	</div>
-	
+	</t:form>
 	<script type="text/javascript">
 			jQuery(function() {
 				jQuery.pageTypeEditor('${blockIds}');

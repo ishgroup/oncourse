@@ -9,7 +9,9 @@
 	
 	<t:zone t:id="pageTypeZone">
 	
-		<button>New Page Type</button> <br/>
+		<a href="#" t:type="actionLink" t:id="newPageType" zone="pageTypeZone">
+			New Page Type
+		</a>  <br/>
 		
 		<h2>Page Types</h2>
 		
