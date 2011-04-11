@@ -33,6 +33,8 @@
 			tolerance: 'pointer',
 			toleranceElement: '> div',
 			update: function (event, ui) {
+				var itemId = $(ui.item).attr('id').substring(2);
+				var s = $('ol.cms_sortable').nestedSortable('toArray');
 				var parent = null, index = 0;
 				
 				for (var i=0; i< s.length; i++) {
@@ -48,24 +50,28 @@
 					index++;
 				}
 				
-				$.post('/ma.sort', {id: $(ui.item).attr('id').substring(2), pid: $(ui.item).closest('li').attr('id').substring(2), w:index}, function(data) {});
+				$.post('/ma.sort', {id: itemId, pid: parent, w:index}, function(data) {});
 			}
 			
 		});
 		
 		$(".cms_navmenu_list .cms_delete_icon a").live('click', function() {
 			var elemID = this.id;
-			var id = elemID.replace('r_', 'm_');
-			$(".cms_navmenu_list #" + id).remove();
+			response=$.post('/ma.remove', {id: elemID.substring(2)});
+			if(response.responseText=="{status: 'OK'}"){
+				var id = elemID.replace('r_', 'm_');
+				$(".cms_navmenu_list #" + id).remove();
+			}else{
+				alert("this node cannot be deleted.");
+			}
 			
-			$.post('/ma.remove', {id: elemID.substring(2)});
 		});
 		
 		$("button.cms_add_menuitem").click(function() {
 			$.post('/ma.newpage', function (data) {
 				var newitem = $('.cms_newmenuitem').clone(false);
 				
-				newitem.attr('id', data.id);
+				newitem.attr('id', 'm_'+data.id);
 				newitem.find('.cms_pagename').attr('id', 'n_' + data.id);
 				newitem.find('.cms_refurl').attr('id', 'u_' + data.id);
 				newitem.find('.cms_delete_icon a').attr('id', 'r_' + data.id);

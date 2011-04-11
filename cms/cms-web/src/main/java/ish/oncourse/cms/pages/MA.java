@@ -2,6 +2,7 @@ package ish.oncourse.cms.pages;
 
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -51,9 +52,10 @@ public class MA {
 	 */
 	StreamResponse onActionFromNewPage() {
 
-		WebMenu menu = cayenneService.newContext().newObject(WebMenu.class);
-		menu.setWebSite(webSiteService.getCurrentWebSite());
-		menu.getObjectContext().commitChanges();
+		ObjectContext ctx = cayenneService.newContext();
+		WebMenu menu = ctx.newObject(WebMenu.class);
+		menu.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
+		ctx.commitChanges();
 
 		JSONObject obj = new JSONObject();
 		obj.put("id", menu.getId());
@@ -102,6 +104,9 @@ public class MA {
 		ObjectContext ctx = cayenneService.newContext();
 
 		WebMenu menu = (WebMenu) ctx.localObject(webMenuService.findById(Long.parseLong(id)).getObjectId(), null);
+		if(!menu.getChildrenMenus().isEmpty()){
+			return new TextStreamResponse("text/json", "{status: 'FAILED'}");
+		}
 		ctx.deleteObject(menu);
 
 		ctx.commitChanges();
