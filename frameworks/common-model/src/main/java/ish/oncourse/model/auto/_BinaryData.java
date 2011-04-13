@@ -18,7 +18,6 @@ public abstract class _BinaryData extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CONTENT_PROPERTY = "content";
     public static final String CREATED_PROPERTY = "created";
-    public static final String IS_DELETED_PROPERTY = "isDeleted";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String BINARY_INFO_PROPERTY = "binaryInfo";
     public static final String COLLEGE_PROPERTY = "college";
@@ -44,13 +43,6 @@ public abstract class _BinaryData extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setIsDeleted(Short isDeleted) {
-        writeProperty("isDeleted", isDeleted);
-    }
-    public Short getIsDeleted() {
-        return (Short)readProperty("isDeleted");
     }
 
     public void setModified(Date modified) {

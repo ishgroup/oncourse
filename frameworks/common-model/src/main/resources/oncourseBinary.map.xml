@@ -11,14 +11,12 @@
 		<db-attribute name="content" type="LONGVARBINARY" length="2147483647"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="isDeleted" type="SMALLINT" length="5"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 	</db-entity>
 	<obj-entity name="BinaryData" className="ish.oncourse.model.BinaryData" dbEntityName="BinaryData">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="content" type="byte[]" db-attribute-path="content"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isDeleted" type="java.lang.Short" db-attribute-path="isDeleted"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<db-relationship name="binaryInfo" source="BinaryData" target="BinaryInfo" toMany="false">

@@ -23,7 +23,7 @@ where collegeId = @collegeId
 select 'bin: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.BinaryInfo c
 	join oncourse_realdata_willow_college.Taggable p on p.id = c.id and entityType = 'BinaryInfo'
-where p.collegeId = @collegeId and p.isDeleted = 0
+where p.collegeId = @collegeId and p.isDeleted <> 1
 	union
 select 'bin: new', count(*) 
 from willow_college.BinaryInfo 
@@ -48,7 +48,7 @@ where binaryInfoId in (
 	select c.id 
 	from oncourse_realdata_willow_college.BinaryInfo c
 		join oncourse_realdata_willow_college.Taggable p on p.id = c.id and entityType = 'BinaryInfo'
-	where p.collegeId = @collegeId and p.isDeleted = 0
+	where p.collegeId = @collegeId and p.isDeleted <> 1
 )
 	union
 select 'bir: new', count(*) 
@@ -65,7 +65,7 @@ where collegeId = @collegeId
 	union
 select 'cer: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.Certificate 
-where collegeId = @collegeId and isDeleted = 0
+where collegeId = @collegeId and isDeleted <> 1
 	union
 select 'cer: new', count(*) 
 from willow_college.Certificate 
@@ -105,7 +105,7 @@ where collegeId = @collegeId
 	union
 select 'cdn: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.CollegeDomain 
-where collegeId = @collegeId and isDeleted = 0
+where collegeId = @collegeId and isDeleted <> 1
 	union
 select 'cdn: new', count(*) 
 from willow_college.CollegeDomain 
@@ -121,7 +121,7 @@ where collegeId = @collegeId
 	union
 select 'ctp: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.ConcessionType 
-where collegeId = @collegeId and isDeleted = 0
+where collegeId = @collegeId and isDeleted <> 1
 	union
 select 'ctp: new', count(*) 
 from willow_college.ConcessionType 
@@ -139,7 +139,7 @@ where collegeId = @collegeId
 select 'con: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.Contact c
 	join oncourse_realdata_willow_college.Taggable p on p.id = c.id and entityType = 'Contact'
-where p.collegeId = @collegeId and p.isDeleted = 0
+where p.collegeId = @collegeId and p.isDeleted <> 1
 	union
 select 'new', count(*) 
 from willow_college.Contact 
@@ -157,7 +157,7 @@ where collegeId = @collegeId
 select 'old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.Course c
 	join oncourse_realdata_willow_college.Taggable p on p.id = c.id and entityType = 'Course'
-where p.collegeId = @collegeId and p.isDeleted = 0
+where p.collegeId = @collegeId and p.isDeleted <> 1
 	union
 select 'con: new', count(*) 
 from willow_college.Course 
@@ -175,7 +175,7 @@ where collegeId = @collegeId
 select 'ccl: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.CourseClass c
 	join oncourse_realdata_willow_college.Taggable p on p.id = c.id and entityType = 'CourseClass'
-where p.collegeId = @collegeId and p.isDeleted = 0
+where p.collegeId = @collegeId and p.isDeleted <> 1
 	union
 select 'ccl: new', count(*) 
 from willow_college.CourseClass 
@@ -190,7 +190,7 @@ from oncourse_realdata_willow_college.CourseModule
 where courseId in (select c.id 
 	from oncourse_realdata_willow_college.Course c
 		join oncourse_realdata_willow_college.Taggable p on p.id = c.id and p.entityType = 'Course'
-	where p.collegeId = @collegeId and p.isDeleted = 0)
+	where p.collegeId = @collegeId and p.isDeleted <> 1)
 	union
 select 'cmd: new', count(*) 
 from willow_college.CourseModule
@@ -206,7 +206,7 @@ where collegeId = @collegeId
 	union
 select 'dis: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.Discount
-where collegeId = @collegeId and isDeleted = 0
+where collegeId = @collegeId and isDeleted <> 1
 	union
 select 'dis: new', count(*) 
 from willow_college.Discount 
@@ -246,7 +246,7 @@ where enrolmentId in (select id from oncourse_realdata_willow_college.Enrolment 
 	union
 select 'de1: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.DiscountEnrolment
-where enrolmentId in (select id from oncourse_realdata_willow_college.Enrolment where collegeId = @collegeId and isDeleted = 0)
+where enrolmentId in (select id from oncourse_realdata_willow_college.Enrolment where collegeId = @collegeId and isDeleted <> 1)
 	union
 select 'de1: new', count(*) 
 from willow_college.DiscountEnrolment
@@ -262,7 +262,7 @@ where discountId in (select id from oncourse_realdata_willow_college.Discount wh
 	union
 select 'de2: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.DiscountEnrolment
-where discountId in (select id from oncourse_realdata_willow_college.Discount where collegeId = @collegeId and isDeleted = 0)
+where discountId in (select id from oncourse_realdata_willow_college.Discount where collegeId = @collegeId and isDeleted <> 1)
 	union
 select 'de2: new', count(*) 
 from willow_college.DiscountEnrolment
@@ -278,7 +278,7 @@ where collegeId = @collegeId
 	union
 select 'enr: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.Enrolment
-where collegeId = @collegeId and isDeleted = 0
+where collegeId = @collegeId and isDeleted <> 1
 	union
 select 'enr: new', count(*) 
 from willow_college.Enrolment 
@@ -302,7 +302,7 @@ where collegeId = @collegeId
 	union
 select 'pay: old ex Deleted', count(*) 
 from oncourse_realdata_willow_college.Payment
-where collegeId = @collegeId and isDeleted = 0
+where collegeId = @collegeId and isDeleted <> 1
 	union
 select 'pay: new', count(*) 
 from willow_college.PaymentIn 

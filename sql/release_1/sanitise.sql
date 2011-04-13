@@ -34,9 +34,9 @@ delete t from QueuedRecord t;
 delete t from WillowUser t;
 
 insert into WillowUser 
-    (id, created, email, firstName, isActive, isDeleted, isSuperUser, lastName, modified, password, flag1)
+    (id, created, email, firstName, isActive, isSuperUser, lastName, modified, password, flag1)
 values 
-    (3, now(), 'marek@ish.com.au', 'Marek', 0, 0, 1, 'Wawrzyczny', now(), 'test', 1);
+    (3, now(), 'marek@ish.com.au', 'Marek', 0, 1, 'Wawrzyczny', now(), 'test', 1);
 
 --  set colleges to have random webservices keys
 
