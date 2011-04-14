@@ -10,7 +10,6 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
-import ish.oncourse.model.ChangeRequest;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
@@ -83,7 +82,6 @@ public abstract class _College extends CayenneDataObject {
     public static final String BINARY_INFOS_PROPERTY = "binaryInfos";
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
     public static final String CERTIFICATES_PROPERTY = "certificates";
-    public static final String CHANGE_REQUESTS_PROPERTY = "changeRequests";
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
     public static final String CONCESSION_TYPES_PROPERTY = "concessionTypes";
     public static final String CONTACTS_PROPERTY = "contacts";
@@ -332,18 +330,6 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Certificate> getCertificates() {
         return (List<Certificate>)readProperty("certificates");
-    }
-
-
-    public void addToChangeRequests(ChangeRequest obj) {
-        addToManyTarget("changeRequests", obj, true);
-    }
-    public void removeFromChangeRequests(ChangeRequest obj) {
-        removeToManyTarget("changeRequests", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<ChangeRequest> getChangeRequests() {
-        return (List<ChangeRequest>)readProperty("changeRequests");
     }
 
 

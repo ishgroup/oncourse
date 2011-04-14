@@ -84,18 +84,6 @@ from willow_college.CertificateOutcome
 where collegeId = @collegeId
 
 	union
-select 'ChangeRequest', null
-	union
-
-select 'crq: old all', count(*) 
-from oncourse_realdata_willow_college.ChangeRequest 
-where collegeId = @collegeId
-	union
-select 'crq: new', count(*) 
-from willow_college.ChangeRequest
-where collegeId = @collegeId
-
-	union
 select 'CollegeDomain', null
 	union
 

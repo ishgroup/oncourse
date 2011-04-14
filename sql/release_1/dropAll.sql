@@ -8,8 +8,6 @@ DROP TABLE IF EXISTS BinaryInfo;
 DROP TABLE IF EXISTS BinaryInfoRelation;
 DROP TABLE IF EXISTS Certificate;
 DROP TABLE IF EXISTS CertificateOutcome;
-DROP TABLE IF EXISTS ChangeRequest;
-DROP TABLE IF EXISTS ChangeRequestItem;
 DROP TABLE IF EXISTS College;
 DROP TABLE IF EXISTS CollegeDomain;
 DROP TABLE IF EXISTS ConcessionType;

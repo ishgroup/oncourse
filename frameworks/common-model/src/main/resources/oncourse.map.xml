@@ -68,30 +68,6 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="outcomeId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
-	<db-entity name="ChangeRequest" catalog="willow_college">
-		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="identifier" type="VARCHAR" length="512"/>
-		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="result" type="VARCHAR" length="512"/>
-		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
-	</db-entity>
-	<db-entity name="ChangeRequestItem" catalog="willow_college">
-		<db-attribute name="action" type="VARCHAR" isMandatory="true" length="256"/>
-		<db-attribute name="changeRequestId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="keyPath" type="VARCHAR" length="512"/>
-		<db-attribute name="mainEntityId" type="INTEGER" length="10"/>
-		<db-attribute name="mainEntityName" type="VARCHAR" isMandatory="true" length="256"/>
-		<db-attribute name="newValueInteger" type="INTEGER" length="10"/>
-		<db-attribute name="newValueString" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="relationship" type="VARCHAR" length="256"/>
-		<db-attribute name="result" type="VARCHAR" length="512"/>
-		<db-attribute name="secondEntityId" type="INTEGER" length="10"/>
-		<db-attribute name="secondEntityName" type="VARCHAR" length="256"/>
-		<db-attribute name="sequence" type="INTEGER" isMandatory="true" length="10"/>
-	</db-entity>
 	<db-entity name="College" catalog="willow_college">
 		<db-attribute name="angelVersion" type="VARCHAR" length="40"/>
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
@@ -806,26 +782,6 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
-	<obj-entity name="ChangeRequest" className="ish.oncourse.model.ChangeRequest" dbEntityName="ChangeRequest">
-		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="identifier" type="java.lang.String" db-attribute-path="identifier"/>
-		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="result" type="java.lang.String" db-attribute-path="result"/>
-		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="status"/>
-	</obj-entity>
-	<obj-entity name="ChangeRequestItem" className="ish.oncourse.model.ChangeRequestItem" dbEntityName="ChangeRequestItem">
-		<obj-attribute name="action" type="java.lang.String" db-attribute-path="action"/>
-		<obj-attribute name="keyPath" type="java.lang.String" db-attribute-path="keyPath"/>
-		<obj-attribute name="mainEntityId" type="java.lang.Integer" db-attribute-path="mainEntityId"/>
-		<obj-attribute name="mainEntityName" type="java.lang.String" db-attribute-path="mainEntityName"/>
-		<obj-attribute name="newValueInteger" type="java.lang.Integer" db-attribute-path="newValueInteger"/>
-		<obj-attribute name="newValueString" type="java.lang.String" db-attribute-path="newValueString"/>
-		<obj-attribute name="relationship" type="java.lang.String" db-attribute-path="relationship"/>
-		<obj-attribute name="result" type="java.lang.String" db-attribute-path="result"/>
-		<obj-attribute name="secondEntityId" type="java.lang.Integer" db-attribute-path="secondEntityId"/>
-		<obj-attribute name="secondEntityName" type="java.lang.String" db-attribute-path="secondEntityName"/>
-		<obj-attribute name="sequence" type="java.lang.Integer" db-attribute-path="sequence"/>
-	</obj-entity>
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College">
 		<obj-attribute name="angelVersion" type="java.lang.String" db-attribute-path="angelVersion"/>
 		<obj-attribute name="billingCode" type="java.lang.String" db-attribute-path="billingCode"/>
@@ -1395,15 +1351,6 @@
 	<db-relationship name="outcome" source="CertificateOutcome" target="Outcome" toMany="false">
 		<db-attribute-pair source="outcomeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="changeRequestItems" source="ChangeRequest" target="ChangeRequestItem" toMany="true">
-		<db-attribute-pair source="id" target="changeRequestId"/>
-	</db-relationship>
-	<db-relationship name="college" source="ChangeRequest" target="College" toMany="false">
-		<db-attribute-pair source="collegeId" target="id"/>
-	</db-relationship>
-	<db-relationship name="changeRequest" source="ChangeRequestItem" target="ChangeRequest" toMany="false">
-		<db-attribute-pair source="changeRequestId" target="id"/>
-	</db-relationship>
 	<db-relationship name="attendances" source="College" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1420,9 +1367,6 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="certificates" source="College" target="Certificate" toMany="true">
-		<db-attribute-pair source="id" target="collegeId"/>
-	</db-relationship>
-	<db-relationship name="changeRequests" source="College" target="ChangeRequest" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="collegeDomains" source="College" target="WebHostName" toMany="true">
@@ -2074,15 +2018,11 @@
 	<obj-relationship name="certificate" source="CertificateOutcome" target="Certificate" deleteRule="Nullify" db-relationship-path="certificate"/>
 	<obj-relationship name="college" source="CertificateOutcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
-	<obj-relationship name="changeRequestItems" source="ChangeRequest" target="ChangeRequestItem" deleteRule="Deny" db-relationship-path="changeRequestItems"/>
-	<obj-relationship name="college" source="ChangeRequest" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="changeRequest" source="ChangeRequestItem" target="ChangeRequest" deleteRule="Nullify" db-relationship-path="changeRequest"/>
 	<obj-relationship name="attendances" source="College" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="binaryInfoRelations" source="College" target="BinaryInfoRelation" deleteRule="Deny" db-relationship-path="binaryInfoRelations"/>
 	<obj-relationship name="binaryInfos" source="College" target="BinaryInfo" deleteRule="Deny" db-relationship-path="binaryInfos"/>
 	<obj-relationship name="certificateOutcomes" source="College" target="CertificateOutcome" deleteRule="Deny" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="certificates" source="College" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
-	<obj-relationship name="changeRequests" source="College" target="ChangeRequest" deleteRule="Deny" db-relationship-path="changeRequests"/>
 	<obj-relationship name="collegeDomains" source="College" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="concessionTypes" source="College" target="ConcessionType" deleteRule="Deny" db-relationship-path="concessionTypes"/>
 	<obj-relationship name="contacts" source="College" target="Contact" deleteRule="Deny" db-relationship-path="contacts"/>

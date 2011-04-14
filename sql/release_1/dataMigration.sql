@@ -83,14 +83,6 @@ INSERT INTO willow_college.Certificate (id, collegeId, studentId, qualificationI
 	FROM oncourse_realdata_willow_college.Certificate WHERE collegeId = @collegeId AND isDeleted <> 1;
 
 
-INSERT INTO willow_college.ChangeRequest (id, collegeId, status, created, modified, identifier, result)
-	SELECT id, collegeId, status, created, modified, identifier, result
-	FROM oncourse_realdata_willow_college.ChangeRequest WHERE collegeId = @collegeId;
-
-INSERT INTO willow_college.ChangeRequestItem (id, changeRequestId, mainEntityName, mainEntityId, secondEntityId, secondEntityName, sequence, action, keyPath, newValueInteger, newValueString, relationship, result)
-	SELECT id, changeRequestId, mainEntityName, mainEntityId, secondEntityId, secondEntityName, sequence, action, keyPath, newValueInteger, newValueString, relationship, result
-	FROM oncourse_realdata_willow_college.ChangeRequestItem WHERE changeRequestId IN (SELECT id FROM oncourse_realdata_willow_college.ChangeRequest WHERE collegeId = @collegeId);
-
 INSERT INTO willow_college.Contact (angelId, collegeId, created, id, modified, businessPhoneNumber, cookieHash, countryID,dateOfBirth,emailAddress,familyName,faxNumber,givenName,homePhoneNumber, isCompany,isMale,isMarketingViaEmailAllowed,isMarketingViaPostAllowed,isMarketingViaSMSAllowed, mobilePhoneNumber,password,postcode,state,street,studentID,suburb,taxFileNumber,tutorID,uniqueCode )
 	SELECT t.angelId, t.collegeId, t.created, t.id, t.modified,
 	c.businessPhoneNumber,c.cookieHash,c.countryID,c.dateOfBirth,c.emailAddress,c.familyName,
