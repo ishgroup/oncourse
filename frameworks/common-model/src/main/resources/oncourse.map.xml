@@ -1273,7 +1273,6 @@
 	</obj-entity>
 	<obj-entity name="WaitingListSite" className="ish.oncourse.model.WaitingListSite" dbEntityName="WaitingListSite">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 	</obj-entity>
 	<obj-entity name="WebContent" className="ish.oncourse.model.WebContent" dbEntityName="WebContent">
 		<obj-attribute name="content" type="java.lang.String" db-attribute-path="content"/>
@@ -1526,6 +1525,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="tutors" source="College" target="Tutor" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="waitingListSites" source="College" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="waitingLists" source="College" target="WaitingList" toMany="true">
@@ -1948,6 +1950,9 @@
 	<db-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" toMany="true">
 		<db-attribute-pair source="id" target="waitingListId"/>
 	</db-relationship>
+	<db-relationship name="college" source="WaitingListSite" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
 	<db-relationship name="site" source="WaitingListSite" target="Site" toMany="false">
 		<db-attribute-pair source="siteId" target="id"/>
 	</db-relationship>
@@ -2249,6 +2254,7 @@
 	<obj-relationship name="course" source="WaitingList" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="student" source="WaitingList" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
+	<obj-relationship name="college" source="WaitingListSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="site" source="WaitingListSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="waitingList" source="WaitingListSite" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingList"/>
 	<obj-relationship name="webContentVisibility" source="WebContent" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibility"/>

@@ -2,6 +2,7 @@ package ish.oncourse.model.auto;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.WaitingList;
 
@@ -14,7 +15,7 @@ import ish.oncourse.model.WaitingList;
 public abstract class _WaitingListSite extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String SITE_PROPERTY = "site";
     public static final String WAITING_LIST_PROPERTY = "waitingList";
 
@@ -27,12 +28,14 @@ public abstract class _WaitingListSite extends CayenneDataObject {
         return (Long)readProperty("angelId");
     }
 
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
     }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
+
+    public College getCollege() {
+        return (College)readProperty("college");
     }
+
 
     public void setSite(Site site) {
         setToOneTarget("site", site, true);

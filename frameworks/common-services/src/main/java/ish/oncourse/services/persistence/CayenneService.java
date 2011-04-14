@@ -8,7 +8,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
-import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 
 
 public class CayenneService implements ICayenneService {
@@ -34,7 +33,7 @@ public class CayenneService implements ICayenneService {
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}
 		
-		cayenneRuntime.getDataDomain().addFilter(new ChangeSetFilter());
+		cayenneRuntime.getDataDomain().addFilter(new WillowChangeSetFilter());
 	}
 
 	public ObjectContext newContext() {

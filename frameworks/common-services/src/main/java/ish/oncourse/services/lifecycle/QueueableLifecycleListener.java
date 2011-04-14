@@ -11,6 +11,7 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.ISHObjectContext;
+import ish.oncourse.services.persistence.WillowChangeSetFilter;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -20,10 +21,10 @@ import org.apache.cayenne.LifecycleListener;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.lifecycle.changeset.ChangeSet;
-import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.cayenne.lifecycle.changeset.PropertyChange;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
+import org.apache.cayenne.map.Relationship;
 import org.apache.log4j.Logger;
 
 /**
@@ -146,7 +147,9 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			Long entityId = entity.getId();
 
 			ObjectContext ctx = cayenneService.newNonReplicatingContext();
-
+			
+			LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName, action, transactionKey));
+			
 			QueuedRecord qr = ctx.newObject(QueuedRecord.class);
 			
 			
@@ -165,13 +168,24 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	//Determine if any property was changes, thus skipping updates which cased by add/remove relationship
 	private boolean isPropertyChanged(Queueable entity) {
 		
-		ChangeSet changeSet = ChangeSetFilter.preCommitChangeSet();	
+		ChangeSet changeSet = WillowChangeSetFilter.preCommitChangeSet(entity.getObjectContext());	
+		
+		if (changeSet == null) {
+			return false;
+		}
+		
 		Map<String, PropertyChange> changes = changeSet.getChanges(entity);
 		
 		ObjEntity objEntity = entity.getObjectContext().getEntityResolver().getObjEntity(entity.getObjectId().getEntityName());
 		
 		for (ObjAttribute attr : objEntity.getAttributes()) {
 			if(changes.containsKey(attr.getName())) {
+				return true;
+			}
+		}
+				
+		for (Relationship r : objEntity.getRelationships()) {
+			if (!r.isToMany() && changes.containsKey(r.getName())) {
 				return true;
 			}
 		}
