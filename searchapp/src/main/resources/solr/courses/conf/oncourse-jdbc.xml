@@ -6,9 +6,9 @@
 		
 	<document>
 		<entity name="course" dataSource="onCourseDS"
-			query="select id, 'course' as type, name, detail, code, collegeId from Course where and isWebVisible=1"
+			query="select id, 'course' as type, name, detail, code, collegeId from Course where isWebVisible=1"
 			deltaImportQuery="select id, 'course' as type, name, detail, code, collegeId from Course where id='${dataimporter.delta.id}'"
-			deltaQuery="select id from Course where and isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
+			deltaQuery="select id from Course where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
 			pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
