@@ -10,14 +10,13 @@ import java.util.List;
 
 public class DiscountCourseClassUpdater extends AbstractWillowUpdater<DiscountCourseClassStub, DiscountCourseClass> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(DiscountCourseClassStub stub, DiscountCourseClass entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
 		entity.setCollege(college);
-		entity.setCourseClass((CourseClass) updateRelationShip(stub.getCourseClassId(), "CourseClass", result));
+		entity.setCourseClass(updateRelationShip(stub.getCourseClassId(), CourseClass.class, result));
 		entity.setCreated(stub.getCreated());
-		entity.setDiscount((Discount) updateRelationShip(stub.getDiscountId(), "Discount", result));
+		entity.setDiscount(updateRelationShip(stub.getDiscountId(), Discount.class, result));
 		entity.setModified(stub.getModified());
 	}
 }

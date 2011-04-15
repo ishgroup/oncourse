@@ -12,12 +12,11 @@ import org.apache.cayenne.Cayenne;
 
 public class CourseModuleUpdater extends AbstractWillowUpdater<CourseModuleStub, CourseModule> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(CourseModuleStub stub, CourseModule entity, List<ReplicatedRecord> result) {
 		
 		entity.setAngelId(stub.getAngelId());
-		entity.setCourse((Course) updateRelationShip(stub.getCourseId(), "Course", result));
+		entity.setCourse(updateRelationShip(stub.getCourseId(), Course.class, result));
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
 

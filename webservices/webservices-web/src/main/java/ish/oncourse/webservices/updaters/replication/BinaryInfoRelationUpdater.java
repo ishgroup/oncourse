@@ -9,11 +9,10 @@ import java.util.List;
 
 public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoRelationStub, BinaryInfoRelation> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
-		entity.setBinaryInfo((BinaryInfo) updateRelationShip(stub.getBinaryInfoId(), "BinaryInfo", result));
+		entity.setBinaryInfo(updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class, result));
 		entity.setCollege(college);
 		entity.setCreated(stub.getCreated());
 		entity.setEntityAngelId(stub.getEntityAngelId());

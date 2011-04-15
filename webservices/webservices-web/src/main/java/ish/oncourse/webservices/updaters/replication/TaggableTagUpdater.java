@@ -10,14 +10,13 @@ import java.util.List;
 
 public class TaggableTagUpdater extends AbstractWillowUpdater<TaggableTagStub, TaggableTag> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(TaggableTagStub stub, TaggableTag entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
 		entity.setCollege(college);
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
-		entity.setTag((Tag) updateRelationShip(stub.getTagId(), "Tag", result));
-		entity.setTaggable((Taggable) updateRelationShip(stub.getTaggableId(), "Taggable", result));
+		entity.setTag(updateRelationShip(stub.getTagId(), Tag.class, result));
+		entity.setTaggable(updateRelationShip(stub.getTaggableId(), Taggable.class, result));
 	}
 }

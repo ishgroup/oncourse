@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.updaters.replication;
 
+import static ish.oncourse.webservices.services.replication.ReplicationUtils.getEntityName;
+
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
@@ -63,12 +65,13 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Queueable updateRelationShip(Long entityId, String entityIdentifier, List<ReplicatedRecord> result) {
+	protected <M extends Queueable> M updateRelationShip(Long entityId, Class<M> clazz, List<ReplicatedRecord> result) {
+		String entityIdentifier = getEntityName(clazz);
 		ReplicationStub stub = findInTransactionGroup(entityId, entityIdentifier);
 		if (stub != null) {
-			return next.updateRecord(stub, result);
+			return (M) next.updateRecord(stub, result);
 		}
-		return findEntityByWillowId(entityId, entityIdentifier);
+		return (M) findEntityByWillowId(entityId, entityIdentifier);
 	}
 
 	private ReplicationStub findInTransactionGroup(Long entityId, String entityIdentifier) {

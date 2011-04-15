@@ -8,7 +8,6 @@ import java.util.List;
 
 public class TagUpdater extends AbstractWillowUpdater<TagStub, Tag>{
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(TagStub stub, Tag entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
@@ -21,7 +20,7 @@ public class TagUpdater extends AbstractWillowUpdater<TagStub, Tag>{
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 		entity.setNodeType(stub.getNodeType());
-		entity.setParent((Tag) updateRelationShip(stub.getParentId(), "Tag", result));
+		entity.setParent(updateRelationShip(stub.getParentId(), Tag.class, result));
 		entity.setShortName(stub.getShortName());
 		entity.setWeighting(stub.getWeighting());
 	}

@@ -1,10 +1,15 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Session;
+
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
-public class Session extends _Session {
+public class Session extends _Session implements Queueable {
+
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
 
 	/**
 	 * @return the total duration of this session in minutes or null if the
@@ -13,9 +18,7 @@ public class Session extends _Session {
 	public Long getDurationMinutes() {
 		Long minutes = null;
 		if ((getStartDate() != null) && (getEndDate() != null)) {
-			Period duration = new Period(getStartDate().getTime(), 
-					getEndDate().getTime(),
-					PeriodType.minutes());
+			Period duration = new Period(getStartDate().getTime(), getEndDate().getTime(), PeriodType.minutes());
 			minutes = new Long(duration.getMinutes());
 		}
 		return minutes;

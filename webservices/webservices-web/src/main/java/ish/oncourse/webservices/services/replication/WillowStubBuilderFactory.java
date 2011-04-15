@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.services.replication;
 
+import static ish.oncourse.webservices.services.replication.ReplicationUtils.getEntityName;
+
 import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.ConcessionType;
@@ -41,19 +43,19 @@ public class WillowStubBuilderFactory {
 		private Map<String, IWillowStubBuilder> builderMap = new HashMap<String, IWillowStubBuilder>();
 
 		public ReplicationStubBuilderImpl() {
-			builderMap.put(getClassName(BinaryData.class), new BinaryDataStubBuilder());
-			builderMap.put(getClassName(BinaryInfo.class), new BinaryInfoStubBuilder());
-			builderMap.put(getClassName(ConcessionType.class), new ConcessionTypeStubBuilder());
-			builderMap.put(getClassName(CourseClass.class), new CourseClassStubBuilder());
-			builderMap.put(getClassName(Contact.class), new ContactStubBuilder());
-			builderMap.put(getClassName(Enrolment.class), new EnrolmentStubBuilder());
-			builderMap.put(getClassName(Invoice.class), new InvoiceStubBuilder());
-			builderMap.put(getClassName(InvoiceLine.class), new InvoiceLineStubBuilder());
-			builderMap.put(getClassName(PaymentInLine.class), new PaymentInLineStubBuilder());
-			builderMap.put(getClassName(PaymentIn.class), new PaymentInStubBuilder());
-			builderMap.put(getClassName(Preference.class), new PreferenceStubBuilder());
-			builderMap.put(getClassName(StudentConcession.class), new StudentConcessionStubBuilder());
-			builderMap.put(getClassName(Student.class), new StudentStubBuilder());
+			builderMap.put(getEntityName(BinaryData.class), new BinaryDataStubBuilder());
+			builderMap.put(getEntityName(BinaryInfo.class), new BinaryInfoStubBuilder());
+			builderMap.put(getEntityName(ConcessionType.class), new ConcessionTypeStubBuilder());
+			builderMap.put(getEntityName(CourseClass.class), new CourseClassStubBuilder());
+			builderMap.put(getEntityName(Contact.class), new ContactStubBuilder());
+			builderMap.put(getEntityName(Enrolment.class), new EnrolmentStubBuilder());
+			builderMap.put(getEntityName(Invoice.class), new InvoiceStubBuilder());
+			builderMap.put(getEntityName(InvoiceLine.class), new InvoiceLineStubBuilder());
+			builderMap.put(getEntityName(PaymentInLine.class), new PaymentInLineStubBuilder());
+			builderMap.put(getEntityName(PaymentIn.class), new PaymentInStubBuilder());
+			builderMap.put(getEntityName(Preference.class), new PreferenceStubBuilder());
+			builderMap.put(getEntityName(StudentConcession.class), new StudentConcessionStubBuilder());
+			builderMap.put(getEntityName(Student.class), new StudentStubBuilder());
 		}
 
 		public ReplicationStub convert(QueuedRecord entity) {
@@ -70,10 +72,5 @@ public class WillowStubBuilderFactory {
 
 	public IWillowStubBuilder newReplicationStubBuilder() {
 		return new ReplicationStubBuilderImpl();
-	}
-
-	private static String getClassName(Class<?> clazz) {
-		int index = clazz.getName().lastIndexOf(".") + 1;
-		return clazz.getName().substring(index);
 	}
 }

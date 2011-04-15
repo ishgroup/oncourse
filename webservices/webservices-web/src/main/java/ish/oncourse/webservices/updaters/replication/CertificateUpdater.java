@@ -12,7 +12,6 @@ import org.apache.cayenne.Cayenne;
 
 public class CertificateUpdater extends AbstractWillowUpdater<CertificateStub, Certificate> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(CertificateStub stub, Certificate entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
@@ -33,7 +32,7 @@ public class CertificateUpdater extends AbstractWillowUpdater<CertificateStub, C
 		}
 
 		entity.setRevokedWhen(stub.getRevokedWhen());
-		entity.setStudent((Student) updateRelationShip(stub.getStudentId(), "Student", result));
+		entity.setStudent(updateRelationShip(stub.getStudentId(), Student.class, result));
 		entity.setStudentFirstName(stub.getStudentFirstName());
 		entity.setStudentLastName(stub.getStudentLastName());
 	}

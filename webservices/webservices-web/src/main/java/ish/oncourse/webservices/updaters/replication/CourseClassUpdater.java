@@ -11,7 +11,6 @@ import java.util.List;
 
 public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, CourseClass> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(CourseClassStub stub, CourseClass entity, List<ReplicatedRecord> result) {
 				
@@ -23,7 +22,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 
 		entity.setCountOfSessions(stub.getCountOfSessions());
 
-		entity.setCourse((Course) updateRelationShip(stub.getCourseId(), "Course", result));
+		entity.setCourse(updateRelationShip(stub.getCourseId(), Course.class, result));
 
 		entity.setCreated(stub.getCreated());
 		entity.setDeliveryMode(stub.getDeliveryMode());
@@ -40,7 +39,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setMinutesPerSession(stub.getMinutesPerSession());
 		entity.setModified(stub.getModified());
 
-		entity.setRoom((Room) updateRelationShip(stub.getRoomId(), "Room", result));
+		entity.setRoom(updateRelationShip(stub.getRoomId(), Room.class, result));
 
 		entity.setSessionDetail(stub.getSessionDetail());
 		entity.setSessionDetailTextile(stub.getSessionDetailTextile());

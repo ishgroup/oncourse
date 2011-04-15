@@ -1109,7 +1109,6 @@
 	</obj-entity>
 	<obj-entity name="Session" className="ish.oncourse.model.Session" dbEntityName="Session">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1444,6 +1443,9 @@
 	<db-relationship name="sessionTutors" source="College" target="SessionTutor" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="sessions" source="College" target="Session" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="sites" source="College" target="Site" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1737,6 +1739,9 @@
 	</db-relationship>
 	<db-relationship name="attendances" source="Session" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="sessionId"/>
+	</db-relationship>
+	<db-relationship name="college" source="Session" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courseClass" source="Session" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
@@ -2142,6 +2147,7 @@
 	<obj-relationship name="sessions" source="Room" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="attendances" source="Session" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
+	<obj-relationship name="college" source="Session" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Session" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="marker" source="Session" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
 	<obj-relationship name="room" source="Session" target="Room" deleteRule="Nullify" db-relationship-path="room"/>

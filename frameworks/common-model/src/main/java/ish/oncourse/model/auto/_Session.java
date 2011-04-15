@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.Attendance;
+import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.SessionTutor;
@@ -20,13 +21,13 @@ import ish.oncourse.model.Tutor;
 public abstract class _Session extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CREATED_PROPERTY = "created";
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String START_DATE_PROPERTY = "startDate";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String ATTENDANCES_PROPERTY = "attendances";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String MARKER_PROPERTY = "marker";
     public static final String ROOM_PROPERTY = "room";
@@ -39,13 +40,6 @@ public abstract class _Session extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
-    }
-
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
-    }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
     }
 
     public void setCreated(Date created) {
@@ -92,6 +86,15 @@ public abstract class _Session extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Attendance> getAttendances() {
         return (List<Attendance>)readProperty("attendances");
+    }
+
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
     }
 
 

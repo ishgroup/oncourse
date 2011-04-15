@@ -10,14 +10,13 @@ import java.util.List;
 
 public class CertificateOutcomeUpdater extends AbstractWillowUpdater<CertificateOutcomeStub, CertificateOutcome> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(CertificateOutcomeStub stub, CertificateOutcome entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
-		entity.setCertificate((Certificate) updateRelationShip(stub.getCertificateId(), "Certificate", result));
+		entity.setCertificate(updateRelationShip(stub.getCertificateId(), Certificate.class, result));
 		entity.setCollege(college);
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
-		entity.setOutcome((Outcome) updateRelationShip(stub.getOutcomeId(), "Outcome", result));
+		entity.setOutcome(updateRelationShip(stub.getOutcomeId(), Outcome.class, result));
 	}
 }

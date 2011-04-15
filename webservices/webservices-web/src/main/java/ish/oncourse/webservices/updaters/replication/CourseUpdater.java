@@ -11,7 +11,6 @@ import org.apache.cayenne.Cayenne;
 
 public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateEntity(CourseStub stub, Course entity, List<ReplicatedRecord> result) {
 		

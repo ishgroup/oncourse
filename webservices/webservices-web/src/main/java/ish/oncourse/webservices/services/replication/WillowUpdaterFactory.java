@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.services.replication;
 
+import static ish.oncourse.webservices.services.replication.ReplicationUtils.getEntityName;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
@@ -11,10 +12,8 @@ import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.Preference;
 import ish.oncourse.model.Queueable;
-import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
-import ish.oncourse.model.TutorRole;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.services.ICollegeRequestService;
 import ish.oncourse.webservices.updaters.replication.AbstractWillowUpdater;
@@ -29,7 +28,6 @@ import ish.oncourse.webservices.updaters.replication.DiscountConcessionTypeUpdat
 import ish.oncourse.webservices.updaters.replication.DiscountUpdater;
 import ish.oncourse.webservices.updaters.replication.IWillowUpdater;
 import ish.oncourse.webservices.updaters.replication.PreferenceUpdater;
-import ish.oncourse.webservices.updaters.replication.SessionCourseClassTutorUpdater;
 import ish.oncourse.webservices.updaters.replication.SessionTutorUpdater;
 import ish.oncourse.webservices.updaters.replication.TagUpdater;
 import ish.oncourse.webservices.updaters.replication.TaggableTagUpdater;
@@ -65,20 +63,20 @@ public class WillowUpdaterFactory {
 		private WillowUpdaterImpl(ObjectContext objectContext, TransactionGroup group) {
 			Map<String, AbstractWillowUpdater> updaterMap = new HashMap<String, AbstractWillowUpdater>();
 			
-			updaterMap.put(getClassName(Attendance.class), new AttendanceUpdater());
-			updaterMap.put(getClassName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
-			updaterMap.put(getClassName(Course.class), new CourseUpdater());
-			updaterMap.put(getClassName(CourseClass.class), new CourseClassUpdater());
-			updaterMap.put(getClassName(CourseModule.class), new CourseModuleUpdater());
-			updaterMap.put(getClassName(Certificate.class), new CertificateUpdater());
-			updaterMap.put(getClassName(CertificateOutcome.class), new CertificateOutcomeUpdater());
-			updaterMap.put(getClassName(Discount.class), new DiscountUpdater());
-			updaterMap.put(getClassName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater());
-			updaterMap.put(getClassName(Preference.class), new PreferenceUpdater());
-			updaterMap.put(getClassName(SessionTutor.class), new SessionTutorUpdater());
-			updaterMap.put(getClassName(Tag.class), new TagUpdater());
-			updaterMap.put(getClassName(TaggableTag.class), new TaggableTagUpdater());
-			updaterMap.put(getClassName(TutorRole.class), new TutorRoleUpdater());
+			updaterMap.put(getEntityName(Attendance.class), new AttendanceUpdater());
+			updaterMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
+			updaterMap.put(getEntityName(Course.class), new CourseUpdater());
+			updaterMap.put(getEntityName(CourseClass.class), new CourseClassUpdater());
+			updaterMap.put(getEntityName(CourseModule.class), new CourseModuleUpdater());
+			updaterMap.put(getEntityName(Certificate.class), new CertificateUpdater());
+			updaterMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeUpdater());
+			updaterMap.put(getEntityName(Discount.class), new DiscountUpdater());
+			updaterMap.put(getEntityName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater());
+			updaterMap.put(getEntityName(Preference.class), new PreferenceUpdater());
+			updaterMap.put("SessionCourseClassTutor", new SessionTutorUpdater());
+			updaterMap.put(getEntityName(Tag.class), new TagUpdater());
+			updaterMap.put(getEntityName(TaggableTag.class), new TaggableTagUpdater());
+			updaterMap.put("CourseClassTutor", new TutorRoleUpdater());
 			
 			for (Map.Entry<String, AbstractWillowUpdater> up : updaterMap.entrySet()) {
 				up.getValue().setObjectContext(objectContext);
@@ -88,10 +86,6 @@ public class WillowUpdaterFactory {
 			}
 			
 			updaters.putAll(updaterMap);
-			
-
-			// special cases
-			updaters.put("SessionCourseClassTutor", new SessionCourseClassTutorUpdater(objectContext, collegeRequestService.getRequestingCollege(), group, this));
 		}
 
 		@SuppressWarnings("unchecked")
@@ -108,10 +102,5 @@ public class WillowUpdaterFactory {
 			return updater.updateRecord(stub, result);
 		}
 
-	}
-
-	private static String getClassName(Class<?> clazz) {
-		int index = clazz.getName().lastIndexOf(".") + 1;
-		return clazz.getName().substring(index);
 	}
 }
