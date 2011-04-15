@@ -110,8 +110,8 @@ INSERT INTO %DESTINATIONDB%_college.DiscountCourseClass (courseClassId, discount
 	JOIN %DESTINATIONDB%_college.CourseClass AS cc ON dcc.courseClassId = cc.id
 	WHERE dcc.collegeId = @collegeId;
 
-INSERT INTO %DESTINATIONDB%_college.Enrolment (id, collegeId, courseClassId, studentId, discountId, angelId, created, modified, reasonForStudy, source, status, statusNotes)
-	SELECT e.id, e.collegeId, e.courseClassId, e.studentId, e.discountId, e.angelId, e.created, e.modified, e.reasonForStudy, e.source,
+INSERT INTO %DESTINATIONDB%_college.Enrolment (id, collegeId, courseClassId, studentId, angelId, created, modified, reasonForStudy, source, status, statusNotes)
+	SELECT e.id, e.collegeId, e.courseClassId, e.studentId, e.angelId, e.created, e.modified, e.reasonForStudy, e.source,
   		CASE
 			WHEN (e.status = 1) THEN "Pending"
 			WHEN (e.status = 2) THEN "In Transaction"
@@ -222,8 +222,8 @@ INSERT INTO %DESTINATIONDB%_college.CertificateOutcome (certificateId, outcomeId
 	JOIN %DESTINATIONDB%_college.Outcome as o ON co.outcomeid = o.id
 	WHERE co.collegeId = @collegeId;
 
-INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, oldStatus, studentId, amount, status, statusNotes)
-	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, p.status, NULL, (p.totalExGst + p.totalGst)
+INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, studentId, amount, status, statusNotes)
+	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, NULL, (p.totalExGst + p.totalGst)
   		, CASE
 			WHEN (p.status = 1) THEN "Pending"
 			WHEN (p.status = 2) THEN "In Transaction"
@@ -246,8 +246,8 @@ INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, cr
 		AND p.isDeleted <> 1;
 
 -- fixing legacy payments linked to students
-INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, oldStatus, studentId, amount, status, statusNotes)
-	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, p.status, p.studentId, (p.totalExGst + p.totalGst)
+INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, studentId, amount, status, statusNotes)
+	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, p.studentId, (p.totalExGst + p.totalGst)
   		, CASE
 			WHEN (p.status = 1) THEN "Pending"
 			WHEN (p.status = 2) THEN "In Transaction"
@@ -272,7 +272,7 @@ INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, cr
 		AND p.studentId IS NOT NULL;
 
 INSERT INTO %DESTINATIONDB%_college.PaymentInLine (amount, angelId, created, id, invoiceId, modified, paymentInId)
-	SELECT (il.priceEachExTax + il.taxEach + il.discountEachexTax), il.angelId, il.created, il.id, il.invoiceId, 0, il.modified, il.invoiceId
+	SELECT (il.priceEachExTax + il.taxEach + il.discountEachexTax), il.angelId, il.created, il.id, il.invoiceId, il.modified, il.invoiceId
 	FROM %DESTINATIONDB%_college.InvoiceLine il
 	JOIN %DESTINATIONDB%_college.Invoice i ON i.id = il.invoiceId
 	WHERE i.collegeId = @collegeId;
@@ -336,13 +336,13 @@ INSERT INTO %DESTINATIONDB%_college.TutorRole (angelId, collegeId, courseClassId
 	FROM %SOURCEDB%_college.TutorRole AS tr
 	JOIN %DESTINATIONDB%_college.Tutor AS t ON tr.tutorid = t.id
 	JOIN %DESTINATIONDB%_college.CourseClass AS cc ON tr.courseclassid=cc.id
-	WHERE tr.collegeId = @collegeId tr.isDeleted <> 1;
+	WHERE tr.collegeId = @collegeId;
 
 INSERT INTO %DESTINATIONDB%_college.WaitingList (angelId, collegeId, courseId, created, detail, id, modified, potentialStudents, studentId)
 	SELECT wl.angelId, wl.collegeId, wl.courseId, wl.created, wl.detail, wl.id, wl.modified, wl.potentialStudents, wl.studentId
 	FROM %SOURCEDB%_college.WaitingList as wl
 	JOIN %DESTINATIONDB%_college.Student as s on wl.studentid = s.id
-	WHERE wl.collegeId = @collegeId AND wl.isDeleted <> 1;
+	WHERE wl.collegeId = @collegeId;
 
 INSERT INTO %DESTINATIONDB%_college.WaitingListSite (siteId, waitingListId)
 	SELECT siteId, waitingListId
@@ -364,7 +364,7 @@ UPDATE %DESTINATIONDB%_college.WebSite AS ws
 	JOIN %SOURCEDB%_college.WebSite AS wsOld ON wsOld.id = ws.id
 	JOIN %SOURCEDB%_college.CollegeDomain AS cd ON ws.id = cd.WebSiteId AND wsOld.sslHostName = cd.name
 	SET ws.SSLhostNameId = cd.id
-	WHERE ws.collegeId = @collegeId AND ws.isDeleted <> 1;
+	WHERE ws.collegeId = @collegeId;
 
 INSERT INTO %DESTINATIONDB%_college.WebNodeType ( created,  modified, name, layoutKey, webSiteId)
 		SELECT	NOW(), NOW(), 'page', 'default', ws.id
@@ -375,8 +375,6 @@ INSERT INTO %DESTINATIONDB%_college.WebNodeType ( created,  modified, name, layo
 INSERT INTO %DESTINATIONDB%_college.WebContent (id, content, content_textile, name, webSiteId, created, modified)
 	SELECT	id, content, content_textile, name, webSiteID, created, modified
 	FROM %SOURCEDB%_college.WebBlock WHERE isDeleted <> 1 AND webSiteId IN (SELECT id FROM %DESTINATIONDB%_college.WebSite WHERE collegeId = @collegeId);
-
-
 
 INSERT INTO %DESTINATIONDB%_college.WebNode ( created, id, isPublished,	modified, name, nodeNumber,	 webNodeTypeId, webSiteId )
   SELECT wn.created, wn.id, case when (wn.isPublished is null) then 0 else wn.isPublished end,	wn.modified, case when (wn.name is null) then '' else wn.name end, wn.nodeNumber, wnt.id, wn.webSiteId
@@ -497,7 +495,7 @@ INSERT INTO %DESTINATIONDB%_college.Attendance (id, collegeId, angelId, studentI
 	
 -- change compound primary keys to auto_increment
 
---CertificateOutcome
+-- CertificateOutcome
 alter table %DESTINATIONDB%_college.CertificateOutcome drop foreign key CertificateOutcome_ibfk_2;
 alter table %DESTINATIONDB%_college.CertificateOutcome drop foreign key CertificateOutcome_ibfk_3;
 alter table %DESTINATIONDB%_college.CertificateOutcome drop primary key;
@@ -510,7 +508,7 @@ alter table %DESTINATIONDB%_college.CertificateOutcome add CONSTRAINT co_certifi
 alter table %DESTINATIONDB%_college.CertificateOutcome add CONSTRAINT co_outcomeIdFk FOREIGN KEY  (outcomeId) references %DESTINATIONDB%_college.Outcome(id);
 alter table %DESTINATIONDB%_college.CertificateOutcome add CONSTRAINT co_cert_outcome_uq UNIQUE index  (certificateId, outcomeId);
 
---end CertificateOutcome 
+-- end CertificateOutcome 
 
 -- CourseModule
 
