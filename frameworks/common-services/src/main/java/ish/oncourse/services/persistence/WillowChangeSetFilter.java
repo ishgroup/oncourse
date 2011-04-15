@@ -22,8 +22,14 @@ public class WillowChangeSetFilter implements DataChannelFilter {
     }
 
     public void init(DataChannel channel) {
-    	PRE_COMMIT_CHANGE_SET.set(new HashMap<ObjectContext, ChangeSet>());
     }
+    
+    private static Map<ObjectContext, ChangeSet> currentChangeSet() {
+		if (PRE_COMMIT_CHANGE_SET.get() == null) {
+			PRE_COMMIT_CHANGE_SET.set(new HashMap<ObjectContext, ChangeSet>());
+		}
+		return PRE_COMMIT_CHANGE_SET.get();
+	}
 
     public QueryResponse onQuery(
             ObjectContext originatingContext,
@@ -39,11 +45,11 @@ public class WillowChangeSetFilter implements DataChannelFilter {
             DataChannelFilterChain filterChain) {
 
         try {
-            PRE_COMMIT_CHANGE_SET.get().put(originatingContext, new GenericChangeSet(changes));
+        	currentChangeSet().put(originatingContext, new GenericChangeSet(changes));
             return filterChain.onSync(originatingContext, changes, syncType);
         }
         finally {
-            PRE_COMMIT_CHANGE_SET.get().remove(originatingContext);
+        	currentChangeSet().remove(originatingContext);
         }
     }
 }
