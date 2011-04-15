@@ -5,8 +5,8 @@ SET @collegeId = %COLLEGEID%;
 INSERT INTO willow_college.College (id, isWebServicePaymentsEnabled, isWebSitePaymentsEnabled,
 	isTestingWebServicePayments, isTestingWebSitePayments, requiresAvetmiss, created, modified,
 	name, nationalProviderCode, billingCode, paymentGatewayAccount, paymentGatewayPass, paymentGatewayType,
-	webServicesLogin, webServicesPass, webServicesSecurityCode, firstRemoteAuthentication, lastRemoteAuthentication)
-	SELECT id, isWebServicePaymentsEnabled, isWebSitePaymentsEnabled, isTestingWebServicePayments, isTestingWebSitePayments, requiresAvetmiss, created, modified, name, nationalProviderCode, billingCode, paymentGatewayAccount, paymentGatewayPass, paymentGatewayType, webServicesLogin, webServicesPass, webServicesSecurityCode, firstRemoteAuthentication, lastRemoteAuthentication
+	webServicesLogin, webServicesPass, firstRemoteAuthentication, lastRemoteAuthentication)
+	SELECT id, isWebServicePaymentsEnabled, isWebSitePaymentsEnabled, isTestingWebServicePayments, isTestingWebSitePayments, requiresAvetmiss, created, modified, name, nationalProviderCode, billingCode, paymentGatewayAccount, paymentGatewayPass, paymentGatewayType, webServicesLogin, webServicesPass, firstRemoteAuthentication, lastRemoteAuthentication
 	FROM oncourse_realdata_willow_college.College
 	WHERE id = @collegeId AND isDeleted <> 1;
 
@@ -670,3 +670,13 @@ alter table willow_college.TaggableTag add CONSTRAINT tt_taggabeIdfk FOREIGN KEY
 alter table willow_college.TaggableTag add CONSTRAINT tt_tTagable_uq UNIQUE index (tagId, taggableId);
 
 -- end TaggableTag
+
+-- Set the services key
+
+UPDATE willow_college.College SET webServicesSecurityCode =
+	(SELECT webServicesSecurityCode
+	FROM oncourse_realdata_willow_college.College
+	WHERE id = @collegeId AND isDeleted <> 1)
+	WHERE id = @collegeId;
+	
+-- end Set the services key
