@@ -26,17 +26,11 @@ public class CourseClassService implements ICourseClassService {
 		String[] parts = code.split("-");
 		String courseCode = parts[0];
 		String courseClassCode = parts[1];
-		SelectQuery query = new SelectQuery(CourseClass.class,
-				getSiteQualifier().andExp(
-						getSearchStringPropertyQualifier(
-								CourseClass.COURSE_PROPERTY + "."
-										+ Course.CODE_PROPERTY, courseCode))
-						.andExp(
-								getSearchStringPropertyQualifier(
-										CourseClass.CODE_PROPERTY,
-										courseClassCode)));
-		List<CourseClass> result = cayenneService.sharedContext().performQuery(
-				query);
+		SelectQuery query = new SelectQuery(CourseClass.class, getSiteQualifier().andExp(
+				getSearchStringPropertyQualifier(CourseClass.COURSE_PROPERTY + "."
+						+ Course.CODE_PROPERTY, courseCode)).andExp(
+				getSearchStringPropertyQualifier(CourseClass.CODE_PROPERTY, courseClassCode)));
+		List<CourseClass> result = cayenneService.sharedContext().performQuery(query);
 		return !result.isEmpty() ? result.get(0) : null;
 	}
 
@@ -45,11 +39,11 @@ public class CourseClassService implements ICourseClassService {
 	 */
 	private Expression getSiteQualifier() {
 		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY,
-				webSiteService.getCurrentCollege());
+				webSiteService.getCurrentCollege()).andExp(
+				ExpressionFactory.matchExp(CourseClass.IS_WEB_VISIBLE_PROPERTY, true));
 	}
 
-	public Expression getSearchStringPropertyQualifier(String searchProperty,
-			Object value) {
+	public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
 		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
 	}
 
@@ -61,7 +55,8 @@ public class CourseClassService implements ICourseClassService {
 
 		List<Object> params = Arrays.asList(ids);
 
-		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, params));
+		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(
+				CourseClass.ID_PK_COLUMN, params));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
@@ -71,7 +66,8 @@ public class CourseClassService implements ICourseClassService {
 		if ((ids == null) || (ids.isEmpty())) {
 			return Collections.emptyList();
 		}
-		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids));
+		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(
+				CourseClass.ID_PK_COLUMN, ids).andExp(getSiteQualifier()));
 		return cayenneService.sharedContext().performQuery(q);
 	}
 }

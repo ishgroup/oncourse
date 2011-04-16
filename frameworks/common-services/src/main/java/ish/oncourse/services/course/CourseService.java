@@ -1,13 +1,8 @@
 package ish.oncourse.services.course;
 
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Tag;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.search.ISearchService;
-import ish.oncourse.services.search.SearchParam;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.attrs.CourseListSortValue;
@@ -23,7 +18,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -32,7 +26,6 @@ import org.apache.cayenne.query.SQLTemplate;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class CourseService implements ICourseService {
 
@@ -44,12 +37,6 @@ public class CourseService implements ICourseService {
 
 	@Inject
 	private ITagService tagService;
-
-	@Inject
-	private Request request;
-
-	@Inject
-	ISearchService searchService;
 
 	public List<Course> getCourses(Integer startDefault, Integer rowsDefault) {
 		SelectQuery q = new SelectQuery(Course.class);
@@ -141,8 +128,12 @@ public class CourseService implements ICourseService {
 		List<Course> result = new ArrayList<Course>(ids.length);
 		for (Object id : ids) {
 			if (id != null) {
-				result.add((Course) DataObjectUtils.objectForPK(cayenneService.sharedContext(),
-						Course.class.getSimpleName(), id));
+				Course course = (Course) DataObjectUtils.objectForPK(
+						cayenneService.sharedContext(), Course.class.getSimpleName(), id);
+				if (course != null && course.getIsWebVisible()
+						&& course.getCollege().equals(webSiteService.getCurrentCollege())) {
+					result.add(course);
+				}
 			}
 		}
 		return result;
@@ -150,10 +141,7 @@ public class CourseService implements ICourseService {
 
 	@SuppressWarnings("unchecked")
 	public Course getCourse(String searchProperty, Object value) {
-		College currentCollege = webSiteService.getCurrentCollege();
-		ObjectContext sharedContext = cayenneService.sharedContext();
-		Expression qualifier = ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY,
-				currentCollege);
+		Expression qualifier = getSiteQualifier();
 		if (searchProperty != null) {
 			if (searchProperty.equals(Course.CODE_PROPERTY)) {
 				qualifier = qualifier
@@ -163,7 +151,7 @@ public class CourseService implements ICourseService {
 			}
 		}
 		SelectQuery q = new SelectQuery(Course.class, qualifier);
-		List<Course> result = sharedContext.performQuery(q);
+		List<Course> result = cayenneService.sharedContext().performQuery(q);
 		return !result.isEmpty() ? result.get(0) : null;
 	}
 

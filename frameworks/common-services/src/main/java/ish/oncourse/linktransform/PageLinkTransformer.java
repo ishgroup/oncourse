@@ -16,10 +16,6 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.tag.ITagService;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
@@ -33,74 +29,12 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 
-	private static final String DIGIT_REGEXP = "(\\d+)";
-
 	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
 
-	/**
-	 * courses/arts/drama Show course list page, optionally filtered by the
-	 * subject tag identified by arts -> drama
-	 */
-	private static final Pattern COURSES_PATTERN = Pattern.compile("/courses(/(.+)*)*");
-
-	/**
-	 * course/ABC Show course detail for the cource with code ABC
-	 */
-	private static final Pattern COURSE_PATTERN = Pattern.compile("/course/((\\w|\\s)+)");
-
-	/**
-	 * class/ABC-123 Show the class detail for the CourseClass with code ABC-123
-	 */
-	private static final Pattern CLASS_PATTERN = Pattern
-			.compile("/class/((\\w|\\s)+)-((\\w|\\s)+)");
-
-	/**
-	 * page/123 This is always available for every webpage, even if it doesn't
-	 * have a URL alias
-	 */
-	private static final Pattern PAGENUM_PATTERN = Pattern.compile("/page/(\\d+)");
-
-	/**
-	 * sites Show the site list for all sites
-	 */
-	private static final Pattern SITES_PATTERN = Pattern.compile("/sites");
-
-	/**
-	 * site/200 Show the site detail for the site with angel id of 200
-	 */
-	private static final Pattern SITE_PATTERN = Pattern.compile("/site/(\\d+)");
-
-	/**
-	 * room/200 Show the room detail for the room with angel id of 200
-	 */
-	private static final Pattern ROOM_PATTERN = Pattern.compile("/room/(\\d+)");
-
-	/**
-	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
-	 */
-	private static final Pattern TUTOR_PATTERN = Pattern.compile("/tutor/(\\d+)");
-
-	/**
-	 * /sitemap.xml Google specific sitemap file.
-	 */
-	private static final Pattern SITEMAP_PATTERN = Pattern.compile("/sitemap\\.xml");
-
-	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage",
-			"/menubuilder", "/pageoptions", "/ma.", "/site", "/sitesettings", "/pagetypes",
-			"/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.", "/site.pagetypes.",
-			"/ui/autocomplete.sub", "/pt.sort" };
-
-	private static final String HOME_PAGE_PATH = "/";
-
-	/**
-	 * Path of the search autocomplete
-	 */
-	private static final String ADVANCED_KEYWORD_PATH = "/advanced/keyword";
-
-	/**
-	 * Path of the suburbs autocomplete
-	 */
-	private static final String ADVANCED_SUBURB_PATH = "/advanced/suburbs";
+	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage",
+			"/newpage", "/menubuilder", "/pageoptions", "/ma.", "/site", "/sitesettings",
+			"/pagetypes", "/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.",
+			"/site.pagetypes.", "/ui/autocomplete.sub", "/pt.sort" };
 
 	/**
 	 * Path of the removing from cookies request
@@ -111,32 +45,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	 * Path of the adding to cookies request
 	 */
 	private static final String ADD_TO_COOKIES_PATH = "/addToCookies";
-
-	/**
-	 * Path of the refreshing the shortlist
-	 */
-	private static final String REFRESH_SHORT_LIST_PATH = "/refreshShortList";
-
-	/**
-	 * Path for the page of adding the discount.
-	 */
-	private static final String ADD_DISCOUNT_PATH = "/addDiscount";
-
-	/**
-	 * Path for the page displaying promotions.
-	 */
-	private static final String PROMOTIONS_PATH = "/promotions";
-
-	/**
-	 * /Timeline/sessions?ids=123,456 Show the timeline view for the sessions of
-	 * courseClasses with ids of 123 and 456
-	 */
-	private static final String TIMELINE_PATH = "/Timeline/sessions";
-
-	/**
-	 * Path of the refreshing the discounts' shortlist
-	 */
-	private static final String DISCOUNTS_PATH = "/discounts";
 
 	@Inject
 	PageRenderLinkSource pageRenderLinkSource;
@@ -165,23 +73,15 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 
 		final String path = request.getPath().toLowerCase();
-
-		if (HOME_PAGE_PATH.equals(path)) {
-			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, "/");
-			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
-		}
-
-		Matcher matcher;
-
 		LOGGER.info("Rewrite InBound: path is: " + path);
 
-		/*
-		 * For speed these are currently ordered from most likely to be
-		 * encountered, to least.
-		 */
+		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
 
-		matcher = COURSES_PATTERN.matcher(path);
-		if (matcher.matches()) {
+		switch (pageIdentifier) {
+		case Home:
+			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, "/");
+			break;
+		case Courses:
 			String tagsPath = path.replaceFirst("/courses", "");
 			if (tagsPath.startsWith("/")) {
 				tagsPath = tagsPath.replaceFirst("/", "");
@@ -189,16 +89,13 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			if (!tagsPath.equals("")) {
 				Tag tag = tagService.getTagByFullPath(tagsPath);
 				if (tag == null) {
-					return new PageRenderRequestParameters("ui/PageNotFound",
-							new EmptyEventContext(), false);
+					pageIdentifier = PageIdentifier.PageNotFound;
+					break;
 				}
 				request.setAttribute(Course.COURSE_TAG, tag);
 			}
-			return new PageRenderRequestParameters("ui/Courses", new EmptyEventContext(), false);
-		}
-
-		matcher = COURSE_PATTERN.matcher(path);
-		if (matcher.matches()) {
+			break;
+		case Course:
 			Course course = null;
 			String courseCode = path.substring(path.lastIndexOf("/") + 1);
 			if (courseCode != null) {
@@ -207,70 +104,54 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			if (course != null) {
 				request.setAttribute("course", course);
 			} else {
-				return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(),
-						false);
+				pageIdentifier = PageIdentifier.PageNotFound;
 			}
-			return new PageRenderRequestParameters("ui/CourseDetails", new EmptyEventContext(),
-					false);
-		}
-
-		matcher = CLASS_PATTERN.matcher(path);
-		if (matcher.matches()) {
+			break;
+		case CourseClass:
 			String courseClassCode = path.substring(path.lastIndexOf("/") + 1);
 			request.setAttribute("courseClassCode", courseClassCode);
-			return new PageRenderRequestParameters("ui/CourseClassDetails",
-					new EmptyEventContext(), false);
-		}
-
-		matcher = PAGENUM_PATTERN.matcher(path);
-		if (matcher.matches()) {
-			String nodeNumber = matcher.group(1);
+			break;
+		case Page:
+			String nodeNumber = path.substring(path.lastIndexOf("/") + 1);
 			if (nodeNumber != null) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
-				return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
+			} else {
+				pageIdentifier = PageIdentifier.PageNotFound;
 			}
-		}
-
-		matcher = SITES_PATTERN.matcher(path);
-		if (matcher.matches()) {
-			return new PageRenderRequestParameters("ui/Sites", new EmptyEventContext(), false);
-		}
-
-		matcher = SITE_PATTERN.matcher(path);
-		if (matcher.matches()) {
+			break;
+		case Sites:
+			break;
+		case Site:
 			String siteId = path.substring(path.lastIndexOf("/") + 1);
 			request.setAttribute("siteId", siteId);
-			return new PageRenderRequestParameters("ui/SiteDetails", new EmptyEventContext(), false);
-		}
-
-		matcher = ROOM_PATTERN.matcher(path);
-		if (matcher.matches()) {
+			break;
+		case Room:
 			String roomId = path.substring(path.lastIndexOf("/") + 1);
 			request.setAttribute("roomId", roomId);
-			return new PageRenderRequestParameters("ui/RoomDetails", new EmptyEventContext(), false);
-		}
-
-		matcher = TUTOR_PATTERN.matcher(path);
-		if (matcher.matches()) {
+			break;
+		case Tutor:
 			String tutorId = path.substring(path.lastIndexOf("/") + 1);
 			request.setAttribute("tutorId", tutorId);
-			return new PageRenderRequestParameters("ui/TutorDetails", new EmptyEventContext(),
-					false);
+			break;
+		case Sitemap:
+			break;
+		case AdvancedKeyword:
+			break;
+		case AdvancedSuburbs:
+			break;
+		case Shortlist:
+			break;
+		case AddDiscount:
+			break;
+		case Promotions:
+			break;
+		case Timeline:
+			break;
 		}
 
-		matcher = SITEMAP_PATTERN.matcher(path);
-		if (matcher.matches()) {
-			return new PageRenderRequestParameters("ui/SitemapXML", new EmptyEventContext(), false);
-		}
-
-		if (ADVANCED_KEYWORD_PATH.equals(path)) {
-			return new PageRenderRequestParameters("ui/QuickSearchView", new EmptyEventContext(),
-					false);
-		}
-
-		if (ADVANCED_SUBURB_PATH.equals(path)) {
-			return new PageRenderRequestParameters("ui/SuburbsTextArray", new EmptyEventContext(),
-					false);
+		if (pageIdentifier != PageIdentifier.PageNotFound) {
+			return new PageRenderRequestParameters(pageIdentifier.getPageName(),
+					new EmptyEventContext(), false);
 		}
 
 		if (ADD_TO_COOKIES_PATH.equalsIgnoreCase(path)
@@ -280,7 +161,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			String value = isAddAction ? request.getParameter("addItemId") : request
 					.getParameter("removeItemId");
 			if (key != null && value != null) {
-				if (value.matches(DIGIT_REGEXP)) {
+				if (value.matches("(\\d+)")) {
+
 					if (isAddAction) {
 						cookiesService.appendValueToCookieCollection(key, value);
 					} else {
@@ -288,35 +170,16 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 					}
 				}
 				if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)) {
-					return new PageRenderRequestParameters("ui/ShortListPage",
+					return new PageRenderRequestParameters(PageIdentifier.Shortlist.getPageName(),
 							new EmptyEventContext(), false);
 				}
 				if (key.equalsIgnoreCase(Discount.PROMOTIONS_KEY)) {
-					return new PageRenderRequestParameters("ui/PromoCodesPage",
+					return new PageRenderRequestParameters(PageIdentifier.Promotions.getPageName(),
 							new EmptyEventContext(), false);
 				}
 			}
 
 			return null;
-		}
-
-		if (REFRESH_SHORT_LIST_PATH.equalsIgnoreCase(path)) {
-			return new PageRenderRequestParameters("ui/ShortListPage", new EmptyEventContext(),
-					false);
-		}
-
-		if (ADD_DISCOUNT_PATH.equalsIgnoreCase(path)) {
-			return new PageRenderRequestParameters("ui/AddDiscount", new EmptyEventContext(), false);
-		}
-
-		if (PROMOTIONS_PATH.equalsIgnoreCase(path)) {
-			return new PageRenderRequestParameters("ui/PromoCodesPage", new EmptyEventContext(),
-					false);
-		}
-
-		if (TIMELINE_PATH.equalsIgnoreCase(path)) {
-			return new PageRenderRequestParameters("ui/TimelineData", new EmptyEventContext(),
-					false);
 		}
 
 		String nodePath = path;
@@ -326,7 +189,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 		if (webNodeService.getNodeForNodePath(nodePath) != null) {
 			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
-			return new PageRenderRequestParameters("ui/Page", new EmptyEventContext(), false);
+			return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(),
+					new EmptyEventContext(), false);
 		}
 
 		for (String p : IMMUTABLE_PATHS) {
@@ -335,7 +199,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 		}
 
-		return new PageRenderRequestParameters("ui/PageNotFound", new EmptyEventContext(), false);
+		return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(),
+				new EmptyEventContext(), false);
 	}
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
