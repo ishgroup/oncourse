@@ -2,6 +2,10 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+DROP SCHEMA IF EXISTS `w2_binary`;
+DROP SCHEMA IF EXISTS `w2_college`;
+DROP SCHEMA IF EXISTS `w2_reference`;
+
 CREATE SCHEMA IF NOT EXISTS `w2_binary` DEFAULT CHARACTER SET utf8 ;
 CREATE SCHEMA IF NOT EXISTS `w2_college` DEFAULT CHARACTER SET utf8 ;
 CREATE SCHEMA IF NOT EXISTS `w2_reference` DEFAULT CHARACTER SET utf8 ;
@@ -577,13 +581,13 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`CertificateOutcome`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`CertificateOutcome` (
+  `id` BIGINT not null primary key,
   `certificateId` BIGINT(20) NOT NULL ,
   `outcomeId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`certificateId`, `outcomeId`) ,
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `CertificateOutcome_ibfk_3` (`outcomeId` ASC) ,
   CONSTRAINT `CertificateOutcome_ibfk_1`
@@ -598,6 +602,14 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`CertificateOutcome` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+delimiter |
+
+CREATE TRIGGER `w2_college`.`CertificateOutcomePK` BEFORE INSERT ON `w2_college`.`CertificateOutcome` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.certificateId + (NEW.outcomeId << 32);
+END |
+
+delimiter ;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`WebSite`
@@ -744,11 +756,13 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`CourseModule`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`CourseModule` (
+   `id` BIGINT not null primary key,
   `courseId` BIGINT(20) NOT NULL ,
   `moduleId` BIGINT(20) NOT NULL ,
+  `collegeId` BIGINT(20) NULL DEFAULT NULL ,
+   `angelId` BIGINT,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`courseId`, `moduleId`) ,
   CONSTRAINT `CourseModule_ibfk_1`
     FOREIGN KEY (`courseId` )
     REFERENCES `w2_college`.`Course` (`id` ))
@@ -756,18 +770,26 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+delimiter |
+
+CREATE TRIGGER `w2_college`.`CourseModulePK` BEFORE INSERT ON `w2_college`.`CourseModule` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.courseId + (NEW.moduleId << 32);
+END |
+
+delimiter ;
+
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`DiscountConcessionType`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountConcessionType` (
+  `id` BIGINT not null primary key,
   `concessionTypeId` BIGINT(20) NOT NULL DEFAULT '0' ,
   `discountId` BIGINT(20) NOT NULL DEFAULT '0' ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`concessionTypeId`, `discountId`) ,
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `DiscountConcessionType_ibfk_3` (`discountId` ASC) ,
   CONSTRAINT `DiscountConcessionType_ibfk_1`
@@ -783,18 +805,25 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+delimiter |
+
+CREATE TRIGGER `w2_college`.`DiscountConcessionType` BEFORE INSERT ON `w2_college`.`DiscountConcessionType` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.concessionTypeId + (NEW.discountId << 32);
+END |
+
+delimiter ;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`DiscountCourseClass`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountCourseClass` (
+  `id` BIGINT not null primary key,
   `courseClassId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`courseClassId`, `discountId`) ,
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `DiscountCourseClass_ibfk_3` (`discountId` ASC) ,
   CONSTRAINT `DiscountCourseClass_ibfk_2`
@@ -806,6 +835,15 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountCourseClass` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+
+delimiter |
+
+CREATE TRIGGER `w2_college`.`DiscountCourseClassPK` BEFORE INSERT ON `w2_college`.`DiscountCourseClass` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.courseClassId + (NEW.discountId << 32);
+END |
+
+delimiter ;
 
 
 -- -----------------------------------------------------
@@ -896,11 +934,13 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`InvoiceLine_Discount`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine_Discount` (
+  `id` BIGINT not null primary key,	
   `invoiceLineId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
+  `collegeId` BIGINT not null,
+   `angelId` BIGINT,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`invoiceLineId`, `discountId`) ,
   INDEX `InvoiceLine_Discount_ibfk_1` (`discountId` ASC) ,
   CONSTRAINT `InvoiceLine_Discount_ibfk_1`
     FOREIGN KEY (`discountId` )
@@ -911,6 +951,14 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine_Discount` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+delimiter |
+
+CREATE TRIGGER `w2_college`.`InvoiceLine_DiscountPK` BEFORE INSERT ON `w2_college`.`InvoiceLine_Discount` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.discountId + (NEW.invoiceLineId << 32);
+END |
+
+delimiter ;
 
 
 -- -----------------------------------------------------
@@ -1304,6 +1352,7 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`SessionTutor`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`SessionTutor` (
+  `id` BIGINT not null primary key,
   `sessionId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1311,7 +1360,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`SessionTutor` (
   `type` INT(11) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`sessionId`, `tutorId`) ,
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `SessionTutor_ibfk_3` (`tutorId` ASC) ,
   CONSTRAINT `SessionTutor_ibfk_1`
@@ -1327,6 +1375,13 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+delimiter |
+
+CREATE TRIGGER `w2_college`.`SessionTutorPK` BEFORE INSERT ON `w2_college`.`SessionTutor` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.sessionId + (NEW.tutorId << 32);
+END |
+
+delimiter ;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`StudentConcession`
@@ -1453,13 +1508,13 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`TaggableTag`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`TaggableTag` (
+   `id` BIGINT not null primary key,
   `tagId` BIGINT(20) NOT NULL ,
   `taggableId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  PRIMARY KEY (`tagId`, `taggableId`) ,
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `TaggableTag_ibfk_3` (`taggableId` ASC) ,
   CONSTRAINT `TaggableTag_ibfk_1`
@@ -1475,11 +1530,18 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+delimiter |
 
+CREATE TRIGGER `w2_college`.`TaggableTagPK` BEFORE INSERT ON `w2_college`.`TaggableTag` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.tagId + (NEW.taggableId << 32);
+END |
+
+delimiter ;
 -- -----------------------------------------------------
 -- Table `w2_college`.`TutorRole`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`TutorRole` (
+  `id` BIGINT not null primary key,
   `courseClassId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1490,7 +1552,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`TutorRole` (
   `modified` DATETIME NULL DEFAULT NULL ,
   `detail` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `detail_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`courseClassId`, `tutorId`) ,
   UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `TutorRole_ibfk_3` (`tutorId` ASC) ,
   CONSTRAINT `TutorRole_ibfk_1`
@@ -1505,6 +1566,14 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`TutorRole` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+delimiter |
+
+CREATE TRIGGER `w2_college`.`TutorRolePK` BEFORE INSERT ON `w2_college`.`TutorRole` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.courseClassId + (NEW.tutorId << 32);
+END |
+
+delimiter ;
 
 
 -- -----------------------------------------------------
@@ -1543,9 +1612,11 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`WaitingListSite`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`WaitingListSite` (
+  `id` BIGINT not null primary key,
   `siteId` BIGINT(20) NOT NULL ,
   `waitingListId` BIGINT(20) NOT NULL ,
-  PRIMARY KEY (`siteId`, `waitingListId`) ,
+   `angelId` BIGINT,
+   `collegeId` BIGINT not null,
   INDEX `WaitingListSite_ibfk_2` (`waitingListId` ASC) ,
   CONSTRAINT `WaitingListSite_ibfk_1`
     FOREIGN KEY (`siteId` )
@@ -1557,6 +1628,13 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+delimiter |
+
+CREATE TRIGGER `w2_college`.`WaitingListSitePK` BEFORE INSERT ON `w2_college`.`WaitingListSite` FOR EACH ROW BEGIN
+	SET NEW.id = NEW.siteId + (NEW.waitingListId << 32);
+END |
+
+delimiter ;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`WebNodeType`

@@ -34,7 +34,7 @@ INSERT INTO %DESTINATIONDB%_college.StudentConcession (angelId, authorisationExp
 	WHERE sc.collegeId = @collegeId AND sc.isDeleted <> 1 AND t.entityType like 'Student';
 
 INSERT INTO %DESTINATIONDB%_college.Course (id, collegeId, qualificationId, angelId, code, isWebVisible, isVETCourse, isSufficientForQualification, allowWaitingList, nominalHours, name, detail, detail_textile, fieldOfEducation, searchText, created, modified)
-	SELECT c.id, t.collegeId, c.qualificationId, t.angelId, c.code, c.isWebVisible, c.isVETCourse, c.isSufficientForQualification, c.allowWaitingList, c.nominalHours, c.name, c.detail, c.detail_textile, c.fieldOfEducation, c.searchText, t.created, t.modified
+	SELECT c.id, t.collegeId, c.qualificationId, t.angelI d, c.code, c.isWebVisible, c.isVETCourse, c.isSufficientForQualification, c.allowWaitingList, c.nominalHours, c.name, c.detail, c.detail_textile, c.fieldOfEducation, c.searchText, t.created, t.modified
 	FROM %SOURCEDB%_college.Course c
 	JOIN %SOURCEDB%_college.Taggable t ON t.id = c.id
 	WHERE t.entityType = 'Course' and t.collegeId = @collegeId AND t.isDeleted <> 1;
@@ -92,22 +92,28 @@ INSERT INTO %DESTINATIONDB%_college.Contact (angelId, collegeId, created, id, mo
 	FROM %SOURCEDB%_college.Contact AS c
 	JOIN %SOURCEDB%_college.Taggable AS t ON c.id = t.id AND t.entityType = 'Contact' AND t.collegeId = @collegeId AND t.isDeleted <> 1;
 
-INSERT INTO %DESTINATIONDB%_college.CourseModule (courseId, moduleId, created, modified)
-	SELECT courseId, moduleId, created, modified
-	FROM %SOURCEDB%_college.CourseModule WHERE courseId in (SELECT id FROM %DESTINATIONDB%_college.Course WHERE collegeId = @collegeId);
+INSERT INTO %DESTINATIONDB%_college.CourseModule (id, courseId, moduleId, collegeId, angelId, created, modified)
+	SELECT (cm.courseId + (cm.moduleId << 32)), cm.courseId, cm.moduleId, @collegeId, (c.angelId + (cm.moduleId << 32)), cm.created, cm.modified
+	FROM %SOURCEDB%_college.CourseModule as cm
+	JOIN %DESTINATIONDB%_college.Course as c ON cm.courseId=c.id
+	WHERE courseId in (SELECT id FROM %DESTINATIONDB%_college.Course WHERE collegeId = @collegeId);
 
 INSERT INTO %DESTINATIONDB%_college.Discount (id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, isCodeRequired, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail, detail_textile)
 	SELECT id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, isCodeRequired, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail, detail_textile
 	FROM %SOURCEDB%_college.Discount WHERE collegeId = @collegeId AND isDeleted <> 1;
 
-INSERT INTO %DESTINATIONDB%_college.DiscountConcessionType (concessionTypeId, discountId, collegeId, angelId, created, modified)
-	SELECT concessionTypeId, discountId, collegeId, angelId, created, modified
-	FROM %SOURCEDB%_college.DiscountConcessionType WHERE collegeId = @collegeId AND discountId IN (SELECT id FROM %SOURCEDB%_college.Discount);
+INSERT INTO %DESTINATIONDB%_college.DiscountConcessionType (id, concessionTypeId, discountId, collegeId, angelId, created, modified)
+	SELECT (dct.concessionTypeId + (dct.discountId << 32)), dct.concessionTypeId, dct.discountId, dct.collegeId, (ct.angelId + (d.angelId << 32)), dct.created, dct.modified
+	FROM %SOURCEDB%_college.DiscountConcessionType as dct
+	JOIN %DESTINATIONDB%_college.Discount as d ON dct.discountId = d.id
+	JOIN %DESTINATIONDB%_college.ConcessionType as ct on dct.concessionTypeId=ct.id
+	WHERE dct.collegeId = @collegeId AND dct.discountId IN (SELECT id FROM %SOURCEDB%_college.Discount);
 
-INSERT INTO %DESTINATIONDB%_college.DiscountCourseClass (courseClassId, discountId, collegeId, angelId, created, modified)
-	SELECT dcc.courseClassId, dcc.discountId, dcc.collegeId, dcc.angelId, dcc.created, dcc.modified
+INSERT INTO %DESTINATIONDB%_college.DiscountCourseClass (id, courseClassId, discountId, collegeId, angelId, created, modified)
+	SELECT (dcc.courseClassId + (dcc.discountId << 32)), dcc.courseClassId, dcc.discountId, dcc.collegeId, (cc.angelId + (d.angelId << 32)), dcc.created, dcc.modified
 	FROM %SOURCEDB%_college.DiscountCourseClass AS dcc
 	JOIN %DESTINATIONDB%_college.CourseClass AS cc ON dcc.courseClassId = cc.id
+	JOIN %DESTINATIONDB%_college.Discount as d ON dcc.discountId = c.id
 	WHERE dcc.collegeId = @collegeId;
 
 INSERT INTO %DESTINATIONDB%_college.Enrolment (id, collegeId, courseClassId, studentId, angelId, created, modified, reasonForStudy, source, status, statusNotes)
@@ -160,9 +166,12 @@ INSERT INTO %DESTINATIONDB%_college.InvoiceLine (id, collegeId, invoiceId, enrol
 	JOIN %DESTINATIONDB%_college.CourseClass cc ON e.courseClassId = cc.id
 	WHERE e.collegeId = @collegeId	AND e.isDeleted <> 1 AND e.paymentId is not null;
 
-INSERT INTO %DESTINATIONDB%_college.InvoiceLine_Discount (invoiceLineId, discountId, created, modified)
-	SELECT e.id, e.discountId, e.created, e.modified
-	FROM %SOURCEDB%_college.Enrolment e WHERE e.collegeId = @collegeId AND e.isDeleted <> 1 AND e.discountId is not null;
+INSERT INTO %DESTINATIONDB%_college.InvoiceLine_Discount (id, invoiceLineId, discountId, collegeId, angelId, created, modified)
+	SELECT (e.discountId + (e.id << 32)), e.id, e.discountId, @collegeId, (d.angelId + (invL.angelId << 32)) e.created, e.modified
+	FROM %SOURCEDB%_college.Enrolment e 
+	JOIN %DESTINATIONDB%_college.InvoiceLine as invL ON invL.id=e.id
+	JOIN %DESTINATIONDB%_college.Discount as d ON d.id=e.discountId
+	WHERE e.collegeId = @collegeId AND e.isDeleted <> 1 AND e.discountId is not null;
 
 UPDATE %DESTINATIONDB%_college.Invoice i
    JOIN %DESTINATIONDB%_college.InvoiceLine il ON i.id = il.invoiceId
@@ -216,9 +225,10 @@ INSERT INTO %DESTINATIONDB%_college.Outcome (angelId, collegeId, created, delive
 	JOIN %DESTINATIONDB%_college.Enrolment AS e ON e.id = o.EnrolmentId
 	WHERE o.collegeId = @collegeId AND o.isDeleted <> 1;
 
-INSERT INTO %DESTINATIONDB%_college.CertificateOutcome (certificateId, outcomeId, collegeId, angelId, created, modified)
-	SELECT co.certificateId, co.outcomeId, co.collegeId, co.angelId, co.created, co.modified
+INSERT INTO %DESTINATIONDB%_college.CertificateOutcome (id, certificateId, outcomeId, collegeId, angelId, created, modified)
+	SELECT (co.certificateId + (co.outcomeId << 32)), co.certificateId, co.outcomeId, co.collegeId, (c.angelId + (o.angelId << 32)), co.created, co.modified
 	FROM %SOURCEDB%_college.CertificateOutcome as co
+	JOIN %DESTINATIONDB%_college.Certificate as c on c.id = co.certificateId
 	JOIN %DESTINATIONDB%_college.Outcome as o ON co.outcomeid = o.id
 	WHERE co.collegeId = @collegeId;
 
@@ -297,12 +307,14 @@ INSERT INTO %DESTINATIONDB%_college.QueuedRecord (collegeId, id, lastAttemptTime
 	SELECT collegeId, id, lastAttemptTimestamp, numberOfAttempts, recordEntity, recordId
 	FROM %SOURCEDB%_college.QueuedRecord WHERE collegeId = @collegeId;
 
-INSERT INTO %DESTINATIONDB%_college.SessionTutor (angelId, collegeId, created, modified, sessionId, tutorId, type)
-	SELECT angelId, collegeId, created, modified, sessionId, tutorId, type
-	FROM %SOURCEDB%_college.SessionTutor
-	WHERE collegeId = @collegeId
-		AND sessionId IN (SELECT id FROM %DESTINATIONDB%_college.Session WHERE collegeId = @collegeId)
-		AND tutorId IN (SELECT id FROM %DESTINATIONDB%_college.Tutor WHERE collegeId = @collegeId);
+INSERT INTO %DESTINATIONDB%_college.SessionTutor (id, angelId, collegeId, created, modified, sessionId, tutorId, type)
+	SELECT (st.sessionId + (st.tutorId << 32)), (s.angelId + (t.angelId << 32)), st.collegeId, st.created, st.modified, st.sessionId, st.tutorId, st.type
+	FROM %SOURCEDB%_college.SessionTutor as st
+	JOIN %DESTINATIONDB%_college.Session as s ON s.id = st.sessionId
+	JOIN %DESTINATIONDB%_college.Tutor as t ON t.id = st.tutorId
+	WHERE st.collegeId = @collegeId
+		AND st.sessionId IN (SELECT id FROM %DESTINATIONDB%_college.Session WHERE collegeId = @collegeId)
+		AND st.tutorId IN (SELECT id FROM %DESTINATIONDB%_college.Tutor WHERE collegeId = @collegeId);
 
 INSERT INTO %DESTINATIONDB%_college.Tag (angelId, collegeId, created, detail, detail_textile, id, isTagGroup, isWebVisible, modified, name, nodeType, parentId, shortName, weighting)
 	SELECT angelId, collegeId, created, detail, detail_textile, id, isTagGroup, isWebVisible, modified, name, nodeType, NULL, shortName, weighting
@@ -318,8 +330,8 @@ INSERT INTO %DESTINATIONDB%_college.Taggable (angelId, collegeId, created, id, m
 	SELECT angelId, collegeId, created, id, modified, entityType, id
 	FROM %SOURCEDB%_college.Taggable WHERE collegeId = @collegeId AND isDeleted <> 1;
 
-INSERT INTO %DESTINATIONDB%_college.TaggableTag (angelId, collegeId, created, modified, taggableId, tagId)
-	SELECT tt.angelId, tt.collegeId, tt.created, tt.modified, tt.taggableId, tt.tagId
+INSERT INTO %DESTINATIONDB%_college.TaggableTag (id, angelId, collegeId, created, modified, taggableId, tagId)
+	SELECT (tt.tagId + (tt.taggableId << 32)), (tag.angelId + (t.angelId << 32)), tt.collegeId, tt.created, tt.modified, tt.taggableId, tt.tagId
 	FROM %SOURCEDB%_college.TaggableTag AS tt
 	JOIN %DESTINATIONDB%_college.Taggable AS t ON tt.taggableid = t.id
 	JOIN %DESTINATIONDB%_college.Tag as tag ON tt.tagId = tag.id
@@ -331,8 +343,8 @@ INSERT INTO %DESTINATIONDB%_college.TagGroupRequirement (allowsMultipleTags, ang
 	JOIN %DESTINATIONDB%_college.Tag as t ON tgr.tagId = t.id
 	 WHERE tgr.collegeId = @collegeId AND tgr.isDeleted <> 1;
 
-INSERT INTO %DESTINATIONDB%_college.TutorRole (angelId, collegeId, courseClassId, created, confirmedDate, detail, detail_textile, isConfirmed, modified, tutorId)
-	SELECT tr.angelId, tr.collegeId, tr.courseClassId, tr.created, tr.dateConfirmed, tr.detail,  tr.detail_textile, tr.isConfirmed, tr.modified, tr.tutorId
+INSERT INTO %DESTINATIONDB%_college.TutorRole (id, angelId, collegeId, courseClassId, created, confirmedDate, detail, detail_textile, isConfirmed, modified, tutorId)
+	SELECT (tr.courseClassId + (tr.tutorId << 32)), (cc.angelId + (t.angelId << 32)), tr.collegeId, tr.courseClassId, tr.created, tr.dateConfirmed, tr.detail,  tr.detail_textile, tr.isConfirmed, tr.modified, tr.tutorId
 	FROM %SOURCEDB%_college.TutorRole AS tr
 	JOIN %DESTINATIONDB%_college.Tutor AS t ON tr.tutorid = t.id
 	JOIN %DESTINATIONDB%_college.CourseClass AS cc ON tr.courseclassid=cc.id
@@ -344,11 +356,13 @@ INSERT INTO %DESTINATIONDB%_college.WaitingList (angelId, collegeId, courseId, c
 	JOIN %DESTINATIONDB%_college.Student as s on wl.studentid = s.id
 	WHERE wl.collegeId = @collegeId;
 
-INSERT INTO %DESTINATIONDB%_college.WaitingListSite (siteId, waitingListId)
-	SELECT siteId, waitingListId
-	FROM %SOURCEDB%_college.WaitingListSite
-	WHERE siteId IN (SELECT id FROM %DESTINATIONDB%_college.Site WHERE collegeId = @collegeId)
-		AND waitingListId IN (SELECT id FROM %DESTINATIONDB%_college.WaitingList WHERE collegeId = @collegeId);
+INSERT INTO %DESTINATIONDB%_college.WaitingListSite (id, collegeId, angelId, wls.siteId, wls.waitingListId)
+	SELECT (wls.siteId + (wls.waitingListId << 32)), @collegeId, (s.angelId + (wl.angelId << 32)), siteId, waitingListId
+	FROM %SOURCEDB%_college.WaitingListSite as wls  
+	JOIN %DESTINATIONDB%_college.WaitingList as wl ON wls.waitingListId = wl.id
+	JOIN %DESTINATIONDB%_college.Site as s ON wls.siteId = s.id
+	WHERE wls.siteId IN (SELECT id FROM %DESTINATIONDB%_college.Site WHERE collegeId = @collegeId)
+		AND wls.waitingListId IN (SELECT id FROM %DESTINATIONDB%_college.WaitingList WHERE collegeId = @collegeId);
 
 INSERT INTO %DESTINATIONDB%_college.WebSite (  collegeId, created,  id, modified, name, siteKey, googleAnalyticsAccount, googleDirectionsFrom )
 	SELECT	ws.collegeId, ws.created, ws.id, ws.modified, ws.name, ws.code, cd.googleAnalyticsAccount, cd.googleDirectionsFrom
@@ -491,183 +505,6 @@ INSERT INTO %DESTINATIONDB%_college.Attendance (id, collegeId, angelId, studentI
 	JOIN %DESTINATIONDB%_college.Session AS s ON s.id = a.sessionId
 	JOIN %DESTINATIONDB%_college.Student AS st ON st.id = a.studentId
 	WHERE a.collegeId = @collegeId;
-	
-	
--- change compound primary keys to auto_increment
-
--- CertificateOutcome
-alter table %DESTINATIONDB%_college.CertificateOutcome drop foreign key CertificateOutcome_ibfk_2;
-alter table %DESTINATIONDB%_college.CertificateOutcome drop foreign key CertificateOutcome_ibfk_3;
-alter table %DESTINATIONDB%_college.CertificateOutcome drop primary key;
-alter table %DESTINATIONDB%_college.CertificateOutcome add column id BIGINT;
-update %DESTINATIONDB%_college.CertificateOutcome set id=certificateId + (outcomeId << 32);
-update %DESTINATIONDB%_college.CertificateOutcome co set co.angelId=(select c.angelId from %DESTINATIONDB%_college.Certificate c where c.id=co.certificateId) + ((select o.angelId from %DESTINATIONDB%_college.Outcome o where o.id=co.outcomeId) << 32);
-alter table %DESTINATIONDB%_college.CertificateOutcome change column id id BIGINT not null primary key auto_increment;
-
-alter table %DESTINATIONDB%_college.CertificateOutcome add CONSTRAINT co_certificateIdFk FOREIGN KEY (certificateId) references %DESTINATIONDB%_college.Certificate(id);
-alter table %DESTINATIONDB%_college.CertificateOutcome add CONSTRAINT co_outcomeIdFk FOREIGN KEY  (outcomeId) references %DESTINATIONDB%_college.Outcome(id);
-alter table %DESTINATIONDB%_college.CertificateOutcome add CONSTRAINT co_cert_outcome_uq UNIQUE index  (certificateId, outcomeId);
-
--- end CertificateOutcome 
-
--- CourseModule
-
-alter table %DESTINATIONDB%_college.CourseModule drop foreign key CourseModule_ibfk_1;
-alter table %DESTINATIONDB%_college.CourseModule drop primary key;
-alter table %DESTINATIONDB%_college.CourseModule add column id BIGINT;
-alter table %DESTINATIONDB%_college.CourseModule add column angelId BIGINT;
-
-update %DESTINATIONDB%_college.CourseModule set id=courseId + (moduleId << 32);
-update %DESTINATIONDB%_college.CourseModule cm set cm.angelId=(select c.angelId from %DESTINATIONDB%_college.Course c where c.id=cm.courseId) + (cm.moduleId << 32);
-
-alter table %DESTINATIONDB%_college.CourseModule change column id id BIGINT not null primary key auto_increment;
-alter table %DESTINATIONDB%_college.CourseModule add CONSTRAINT cm_courseIdFk FOREIGN KEY (courseId) references %DESTINATIONDB%_college.Course(id);
--- Note! add foreign key to %DESTINATIONDB%_reference.module (id)
-alter table %DESTINATIONDB%_college.CourseModule add CONSTRAINT cm_course_mod_uq UNIQUE index (courseId, moduleId);
-
--- end CourseModule
-
--- DiscountConcessionType
-
-alter table %DESTINATIONDB%_college.DiscountConcessionType drop foreign key DiscountConcessionType_ibfk_2;
-alter table %DESTINATIONDB%_college.DiscountConcessionType drop foreign key DiscountConcessionType_ibfk_3;
-
-alter table %DESTINATIONDB%_college.DiscountConcessionType drop primary key;
-
-alter table %DESTINATIONDB%_college.DiscountConcessionType add column id BIGINT;
-
-update %DESTINATIONDB%_college.DiscountConcessionType set id=concessionTypeId + (discountId << 32);
-update %DESTINATIONDB%_college.DiscountConcessionType dct set dct.angelId=(select ct.angelId from %DESTINATIONDB%_college.ConcessionType ct where ct.id=dct.concessionTypeId) + ((select dc.angelId from %DESTINATIONDB%_college.Discount dc where dc.id=dct.discountId) << 32);
-
-alter table %DESTINATIONDB%_college.DiscountConcessionType change column id id BIGINT not null primary key auto_increment;
-alter table %DESTINATIONDB%_college.DiscountConcessionType add CONSTRAINT dct_concessionTypeIdfk FOREIGN KEY(concessionTypeId) references %DESTINATIONDB%_college.ConcessionType(id);
-alter table %DESTINATIONDB%_college.DiscountConcessionType add CONSTRAINT dct_discountIdfk FOREIGN KEY (discountId) references %DESTINATIONDB%_college.Discount(id);
-alter table %DESTINATIONDB%_college.DiscountConcessionType add CONSTRAINT dct_discCon_uq UNIQUE index (concessionTypeId, discountId);
-
--- end DiscountConcessionType
-
---DiscountCourseClass
-alter table %DESTINATIONDB%_college.DiscountCourseClass drop foreign key DiscountCourseClass_ibfk_2;
-alter table %DESTINATIONDB%_college.DiscountCourseClass drop foreign key DiscountCourseClass_ibfk_3;
-
-alter table %DESTINATIONDB%_college.DiscountCourseClass drop primary key;
-
-alter table %DESTINATIONDB%_college.DiscountCourseClass add column id BIGINT;
-
-update %DESTINATIONDB%_college.DiscountCourseClass set id=courseClassId + (discountId << 32);
-update %DESTINATIONDB%_college.DiscountCourseClass dcc set dcc.angelId=(select cc.angelId from %DESTINATIONDB%_college.CourseClass cc where cc.id=dcc.courseClassId) + ((select dc.angelId from %DESTINATIONDB%_college.Discount dc where dc.id=dcc.discountId) << 32);
-	
-alter table %DESTINATIONDB%_college.DiscountCourseClass change column id id BIGINT not null primary key auto_increment;
-alter table %DESTINATIONDB%_college.DiscountCourseClass add CONSTRAINT dcc_courseClassIdfk FOREIGN KEY(courseClassId) references %DESTINATIONDB%_college.CourseClass(id);
-alter table %DESTINATIONDB%_college.DiscountCourseClass add CONSTRAINT dcc_discountIdfk FOREIGN KEY (discountId) references %DESTINATIONDB%_college.Discount(id);
-alter table %DESTINATIONDB%_college.DiscountCourseClass add CONSTRAINT dcc_discCC_uq UNIQUE index (courseClassId, discountId);
-
---end DiscountCourseClass
-
--- InvoiceLine_Discount
-
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount drop foreign key InvoiceLine_Discount_ibfk_1;
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount drop foreign key InvoiceLine_Discount_ibfk_2;
-
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount drop primary key;
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount add column id BIGINT;
-
-update %DESTINATIONDB%_college.InvoiceLine_Discount set id=discountId + (invoiceLineId << 32);
-
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount add column angelId BIGINT;	
-	
-update %DESTINATIONDB%_college.InvoiceLine_Discount inld set inld.angelId=(select dc.angelId from %DESTINATIONDB%_college.Discount dc where dc.id=inld.discountId) + ((select inl.angelId from %DESTINATIONDB%_college.InvoiceLine inl where inl.id=inld.invoiceLineId) << 32);
-	
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount change column id id BIGINT not null primary key auto_increment;
-
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount add column collegeId BIGINT not null;
-
-update %DESTINATIONDB%_college.InvoiceLine_Discount inld set inld.collegeId=(select d.collegeId from %DESTINATIONDB%_college.Discount d where d.id=inld.discountId);
-
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount add CONSTRAINT inld_InvLineIdfk FOREIGN KEY(invoiceLineId) references %DESTINATIONDB%_college.InvoiceLine(id);
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount add CONSTRAINT inld_discountIdfk FOREIGN KEY (discountId) references %DESTINATIONDB%_college.Discount(id);
-alter table %DESTINATIONDB%_college.InvoiceLine_Discount add CONSTRAINT inld_disInvLin_uq UNIQUE index (discountId, invoiceLineId);
-
--- end InvoiceLine_Discount
-
--- SessionTutor
-
-alter table %DESTINATIONDB%_college.SessionTutor drop foreign key SessionTutor_ibfk_2;
-alter table %DESTINATIONDB%_college.SessionTutor drop foreign key SessionTutor_ibfk_3;
-
-alter table %DESTINATIONDB%_college.SessionTutor drop primary key;
-
-alter table %DESTINATIONDB%_college.SessionTutor add column id BIGINT;
-
-update %DESTINATIONDB%_college.SessionTutor set id=sessionId + (tutorId << 32);
-update %DESTINATIONDB%_college.SessionTutor st set st.angelId=(select s.angelId from %DESTINATIONDB%_college.Session s where s.id=st.sessionId) + ((select t.angelId from %DESTINATIONDB%_college.Tutor t where t.id=st.tutorId) << 32);
-	
-alter table %DESTINATIONDB%_college.SessionTutor change column id id BIGINT not null primary key auto_increment;
-alter table %DESTINATIONDB%_college.SessionTutor add CONSTRAINT st_sessionIdfk FOREIGN KEY(sessionId) references %DESTINATIONDB%_college.Session(id);
-alter table %DESTINATIONDB%_college.SessionTutor add CONSTRAINT st_tutorIdfk FOREIGN KEY (tutorId) references %DESTINATIONDB%_college.Tutor(id);
-alter table %DESTINATIONDB%_college.SessionTutor add CONSTRAINT st_sTut_uq UNIQUE index (sessionId, tutorId);
-
---end SessionTutor
-
--- TutorRole
-alter table %DESTINATIONDB%_college.TutorRole drop foreign key TutorRole_ibfk_2;
-alter table %DESTINATIONDB%_college.TutorRole drop foreign key TutorRole_ibfk_3;
-
-alter table %DESTINATIONDB%_college.TutorRole drop primary key;
-
-alter table %DESTINATIONDB%_college.TutorRole add column id BIGINT;
-
-update %DESTINATIONDB%_college.TutorRole set id=courseClassId + (tutorId << 32);
-update %DESTINATIONDB%_college.TutorRole tr set tr.angelId=(select cc.angelId from %DESTINATIONDB%_college.CourseClass cc where cc.id=tr.courseClassId) + ((select t.angelId from %DESTINATIONDB%_college.Tutor t where t.id=tr.tutorId) << 32);
-
-alter table %DESTINATIONDB%_college.TutorRole change column id id BIGINT not null primary key auto_increment;
-
-alter table %DESTINATIONDB%_college.TutorRole add CONSTRAINT tur_courseClassIdfk FOREIGN KEY(courseClassId) references %DESTINATIONDB%_college.CourseClass(id);
-alter table %DESTINATIONDB%_college.TutorRole add CONSTRAINT tur_tutorIdfk FOREIGN KEY (tutorId) references %DESTINATIONDB%_college.Tutor(id);
-alter table %DESTINATIONDB%_college.TutorRole add CONSTRAINT tur_ccTr_uq UNIQUE index (courseClassId, tutorId);
-
--- end TutorRole
-
--- WaitingListSite
-
-alter table %DESTINATIONDB%_college.WaitingListSite drop foreign key WaitingListSite_ibfk_1;
-alter table %DESTINATIONDB%_college.WaitingListSite drop foreign key WaitingListSite_ibfk_2;
-
-alter table %DESTINATIONDB%_college.WaitingListSite drop primary key;
-
-alter table %DESTINATIONDB%_college.WaitingListSite add column id BIGINT;
-alter table %DESTINATIONDB%_college.WaitingListSite add column angelId BIGINT;
-
-update %DESTINATIONDB%_college.WaitingListSite set id=siteId + (waitingListId << 32);
-update %DESTINATIONDB%_college.WaitingListSite wls set wls.angelId=(select s.angelId from %DESTINATIONDB%_college.Site s where s.id=wls.siteId) + ((select w.angelId from %DESTINATIONDB%_college.WaitingList w where w.id=wls.waitingListId) << 32);
-
-alter table %DESTINATIONDB%_college.WaitingListSite change column id id BIGINT not null primary key auto_increment;
-
-alter table %DESTINATIONDB%_college.WaitingListSite add CONSTRAINT wls_wlIdfk FOREIGN KEY (waitingListId) references %DESTINATIONDB%_college.WaitingList(id); 
-alter table %DESTINATIONDB%_college.WaitingListSite add CONSTRAINT wls_siteIdfk FOREIGN KEY (siteId) references %DESTINATIONDB%_college.Site(id);
-alter table %DESTINATIONDB%_college.WaitingListSite add CONSTRAINT wls_wlStuq UNIQUE index (siteId, waitingListId);
-
--- end WaitingListSite
-
--- TaggableTag
-
-alter table %DESTINATIONDB%_college.TaggableTag drop foreign key TaggableTag_ibfk_2;
-alter table %DESTINATIONDB%_college.TaggableTag drop foreign key TaggableTag_ibfk_3;
-
-alter table %DESTINATIONDB%_college.TaggableTag drop primary key;
-
-alter table %DESTINATIONDB%_college.TaggableTag add column id BIGINT;
-
-update %DESTINATIONDB%_college.TaggableTag set id=tagId + (taggableId << 32);
-update %DESTINATIONDB%_college.TaggableTag tt set tt.angelId=(select t.angelId from %DESTINATIONDB%_college.Tag t where t.id=tt.tagId) + ((select ta.angelId from %DESTINATIONDB%_college.Taggable ta where ta.id=tt.taggableId) << 32);
-	
-alter table %DESTINATIONDB%_college.TaggableTag change column id id BIGINT not null primary key auto_increment;
-
-alter table %DESTINATIONDB%_college.TaggableTag add CONSTRAINT tt_tagIdfk FOREIGN KEY (tagId) references %DESTINATIONDB%_college.Tag(id); 
-alter table %DESTINATIONDB%_college.TaggableTag add CONSTRAINT tt_taggabeIdfk FOREIGN KEY (taggableId) references %DESTINATIONDB%_college.Taggable(id);
-alter table %DESTINATIONDB%_college.TaggableTag add CONSTRAINT tt_tTagable_uq UNIQUE index (tagId, taggableId);
-
--- end TaggableTag
 
 -- Set the services key
 
