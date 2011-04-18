@@ -356,9 +356,9 @@ INSERT INTO %DESTINATIONDB%_college.WaitingList (angelId, collegeId, courseId, c
 	JOIN %DESTINATIONDB%_college.Student as s on wl.studentid = s.id
 	WHERE wl.collegeId = @collegeId;
 
-INSERT INTO %DESTINATIONDB%_college.WaitingListSite (id, collegeId, angelId, wls.siteId, wls.waitingListId)
+INSERT INTO %DESTINATIONDB%_college.WaitingListSite (id, collegeId, angelId, siteId, waitingListId)
 	SELECT (wls.siteId + (wls.waitingListId << 32)), @collegeId, (s.angelId + (wl.angelId << 32)), siteId, waitingListId
-	FROM %SOURCEDB%_college.WaitingListSite as wls  
+	FROM %SOURCEDB%_college.WaitingListSite as wls
 	JOIN %DESTINATIONDB%_college.WaitingList as wl ON wls.waitingListId = wl.id
 	JOIN %DESTINATIONDB%_college.Site as s ON wls.siteId = s.id
 	WHERE wls.siteId IN (SELECT id FROM %DESTINATIONDB%_college.Site WHERE collegeId = @collegeId)
