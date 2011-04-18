@@ -6,7 +6,7 @@ public class MigratePreferences {
   public static void main(String[] args) {
     Connection conn = null;
     String url = "jdbc:mysql://db.office:3306/";
-    String dbName = "willow_college";
+    String dbName = "w2dev_college";
     String driver = "com.mysql.jdbc.Driver";
     String userName = "willow"; 
     String password = "T7t,RMJRPGjFSq9m";
