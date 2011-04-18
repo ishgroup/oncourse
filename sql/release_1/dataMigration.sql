@@ -490,7 +490,7 @@ DROP TABLE %DESTINATIONDB%_college.WebMenuTEMP;
 UPDATE %DESTINATIONDB%_college.WebHostName AS wh
 	JOIN %DESTINATIONDB%_college.WebSite AS ws ON ws.id = wh.webSiteId
 	SET wh.name=CONCAT(ws.siteKey, '.dev.oncourse.net.au')
-	WHERE wh.name LIKE '%.test.oncourse.net.au';
+	WHERE wh.name LIKE '%.test.oncourse.net.au' and ws.collegeid = @collegeId;
 
 -- add special aliases for the home page
 INSERT INTO %DESTINATIONDB%_college.WebURLAlias ( created, id, modified, urlPath, webNodeId, webSiteId)
