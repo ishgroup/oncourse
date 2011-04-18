@@ -1,6 +1,7 @@
 -- set the college you wish to migrate
 
 SET @collegeId = %COLLEGEID%;
+SET foreign_key_checks = 0;
 
 INSERT INTO %DESTINATIONDB%_college.College (id, isWebServicePaymentsEnabled, isWebSitePaymentsEnabled,
 	isTestingWebServicePayments, isTestingWebSitePayments, requiresAvetmiss, created, modified,
@@ -515,3 +516,5 @@ UPDATE %DESTINATIONDB%_college.College SET webServicesSecurityCode =
 	WHERE id = @collegeId;
 	
 -- end Set the services key
+
+SET foreign_key_checks = 1;
