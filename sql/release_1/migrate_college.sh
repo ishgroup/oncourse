@@ -35,7 +35,7 @@ mysql -h ${mysqlhost} -u${mysqluser} -p${mysqlpass}   < tmp.sql
 
 #Grab blob values from table and set them into a values_string column as text
 javac MigratePreferences.java
-java -cp mysql-connector-java.jar:. MigratePreferences $1
+java -cp mysql-connector-java.jar:. MigratePreferences ${collegeid}
 
 #clean up
 rm -f *.class
