@@ -1,42 +1,75 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html t:type="ui/pagestructure" title="literal:CMS Login"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div id="AdminLogin">
-		<h2>Administrator Login</h2>
-
-		<form t:id="loginForm">
-
-			<t:errors class="'error'"/>
-
-			<fieldset class="form-fields">
-				<p>
-					<t:label for="email">Login Name
-						<em title="This field is required">*</em>
-					</t:label>
-					<span class="valid">
-						<input t:type="TextField" t:id="email" t:validate="required,minlength=3" size="30"/>
-					</span>
-				</p>
-
-				<p>
-					<t:label for="password">Password
-						<em title="This field is required">*</em>
-					</t:label>
-					<span class="valid">
-						<input t:type="PasswordField" t:id="password" t:validate="required,minlength=3" size="30"/>
-					</span>
-				</p>
-
-				<p class="note">
-					<span class="note">
-						<strong class="alert">Note</strong>: Fields marked with an <em>*</em> are required.
-					</span>
-				</p>
-
-				<p class="login">
-					<input type="submit" value="Log in"/>
-				</p>
-			</fieldset>
-		</form>
-	</div>
+<html 
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter"  id="cms">
+	<head>
+		<!-- CSS -->
+		<link href="/s/stylesheets/css/browser-hacks.css" media="screen" rel="stylesheet" />
+		<link href="/s/stylesheets/css/common.css" media="screen" rel="stylesheet" />
+		<link href="/s/stylesheets/css/screen.css" media="screen" rel="stylesheet" />
+	</head>
+	<body class="main-page" id="Main">
+	
+		<!--[if lt IE 9]> <div class="ie" id="cmsWapper"> <![endif]-->
+		<!--[if IE 9 ]> <div class="ie9" id="cmsWapper"> <![endif]-->
+		<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWapper"> <!--<![endif]-->
+			<div id="cmsInner">
+				<div class="cms-login">
+					<div class="cms-login-wr">
+						<form t:id="loginForm" class="cms-login-form">
+							<t:errors class="'error'" />
+							<table>
+								<tr>
+									<td>
+										<t:label for="logEmail">
+											E-mail:<em title="This field is required">*</em>
+										</t:label>
+									</td>
+									<td>
+										<input t:type="TextField" t:id="logEmail" t:validate="required,minlength=3" 
+													size="30" maxlength="200" class="cms-field" /> 
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<t:label for="password">
+											Password:<em title="This field is required">*</em>
+										</t:label>
+									</td>
+									<td>
+										<input t:type="PasswordField" t:id="password" t:validate="required,minlength=3" 
+													size="30" maxlength="200" class="cms-field" /> 
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>
+										<input type="checkbox" id="logRem"/> 
+										<label for="logRem">Remember me</label>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<span class="note"> 
+											<strong class="alert">Note</strong>:Fields marked with an <em>*</em> are required. 
+										</span>
+									</td>
+								</tr>
+								<tr class="cms-log-btn">
+									<td></td>
+									<td>
+										<input type="submit" value="Sign In" class="cms-but" id="signIn" />
+									</td>
+								</tr>
+								<tr class="cms-log-reminder">
+									<td></td>
+									<td><a href="">Password reminder</a></td>
+								</tr>
+							</table>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>

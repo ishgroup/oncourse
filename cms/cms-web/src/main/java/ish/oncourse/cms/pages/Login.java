@@ -25,7 +25,7 @@ public class Login {
 
 	@Persist
 	@Property
-	private String email;
+	private String logEmail;
 
 	@Property
 	private String password;
@@ -36,7 +36,7 @@ public class Login {
 	@Inject
 	private Request request;
 
-	@InjectComponent("email")
+	@InjectComponent("logEmail")
 	private TextField emailField;
 
 	@InjectComponent("password")
@@ -49,7 +49,7 @@ public class Login {
 
 		// TODO: What if there is a user logged in?
 
-		if (StringUtils.isBlank(email)) {
+		if (StringUtils.isBlank(logEmail)) {
 			loginForm.recordError(emailField, "Please enter your login name");
 		}
 		if (StringUtils.isBlank(password)) {
@@ -58,7 +58,7 @@ public class Login {
 
 		if (!loginForm.getHasErrors()) {
 			AuthenticationStatus status = authenticationService.authenticate(
-					email, password);
+					logEmail, password);
 
 			if (status == AuthenticationStatus.NO_MATCHING_USER) {
 				loginForm
