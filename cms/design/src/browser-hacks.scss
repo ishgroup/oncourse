@@ -1,0 +1,305 @@
+@charset "UTF-8";
+
+/*
+Projects css styles.
+CSS Browser hacks.
+-------------------------------------------------------------*/
+$head-height: 60px;
+$menu-height: 39px;
+
+/* IE9 hacks */
+#cms {
+.ie9 {
+
+    .cms-login {
+        background:url("/images/login-back.png") left top;
+    }
+    .cms-btn-next:after {
+        display:none !important;
+    }
+
+    .cms-btn-next {
+        padding-right:19px;
+        border:0;
+        background:url(/images/btn-next-img.png) no-repeat;
+        background-size:100% 100%;
+
+        &:hover {
+            background:url(/images/btn-next-img-over.png) no-repeat;
+            background-size:100% 100%;
+        }
+
+    }
+
+    .cms-btn-prev {
+        padding-left:19px;
+        border:0;
+        background:url("/images/btn-prev-img.png") no-repeat;
+        background-size:100% 100%;
+
+        &:hover {
+            background:url(/images/btn-prev-img-over.png) no-repeat;
+            background-size:100% 100%;
+        }
+
+    }
+
+    .cms-btn-prev:after {
+        display:none !important;
+    }
+
+
+
+
+
+}
+
+
+
+/* IE8 */
+
+
+
+.ie {
+    .cms-menu-shadow {
+        display:block;
+        position:absolute;
+        z-index:9;
+        width:100%;
+        top:$head-height + $menu-height;
+        height:20px;
+        background:url("/images/m-wr-shadow.png") repeat-x left bottom;
+    }
+    .cms-menu {
+        li:hover, .active {
+            background:url("/images/sprite-menu.png") repeat-x left top;
+        }
+        li:hover span, .active span {
+            background:url("/images/sprite-menu.png") no-repeat left -70px;
+            display:block;
+        }
+        li:hover a, .active a {
+            padding:10px 11px;
+            border:0;
+            background:url("/images/sprite-menu.png") no-repeat right -35px;
+        }
+    }
+
+    .cms-btn-next:after {
+        display:none !important;
+    }
+
+    .cms-btn-next {
+        padding-right:19px;
+        border:0;
+        background:url(/images/btn-next-img.png) no-repeat;
+
+
+        &:hover {
+            background:url(/images/btn-next-img-over.png) no-repeat;
+        }
+
+    }
+
+    .cms-btn-prev {
+        padding-left:19px;
+        border:0;
+        background:url("/images/btn-prev-img.png") no-repeat;
+
+        &:hover {
+            background:url(/images/btn-prev-img-over.png) no-repeat;
+        }
+
+    }
+
+    .cms-btn-prev:after {
+        display:none !important;
+    }
+
+    .cms-btn-control {
+        border-top:3px solid #000;
+    }
+
+    .cms-btn-control:hover {
+        background:#fff url("/images/pages-contr-left-o.png") no-repeat left top;
+    }
+
+    .cms-btn-control:hover .cms-btn-control-in {
+        background:url("/images/pages-contr-right-o.png") no-repeat right top;
+    }
+
+    .cms-btn-control.active {
+        border-top:3px solid #fff;
+        background:#fff url("/images/pages-contr-left.png") no-repeat left top;
+    }
+
+    .cms-btn-control.active .cms-btn-control-in {
+        background:url("/images/pages-contr-right.png") no-repeat right top;
+    }
+
+    .cms-btn-control.active:hover {
+        border-top:3px solid #fff;
+        background:#fff url("/images/pages-contr-left.png") no-repeat left top;
+    }
+
+    .cms-btn-control.active:hover .cms-btn-control-in {
+        background:url("/images/pages-contr-right.png") no-repeat right top;
+    }
+
+
+
+    .cms-log-btn td .cms-but {
+        background:url("/images/btn-login.png") no-repeat left top;
+    }
+
+    .cms-pane-wide, .cms-pane-small {
+        position:absolute;
+        background:#fff;
+        visibility:visible;
+        height:auto;
+        opacity:1;
+        margin:0;
+    }
+
+    .cms-field-wide {
+        background:url(/images/field-wide.png) no-repeat left top;
+        width:473px;
+        border:0;
+    }
+
+    .cms-field {
+        background:url(/images/field.png) no-repeat left top;
+        width:292px;
+        border:0;
+    }
+
+    .cms-login-form .cms-field {
+        width:185px;
+    }
+
+    .cms-field-txt {
+        background:url("/images/field-txt.png") no-repeat left top;
+        height:231px;
+        border:0;
+    }
+
+    .cms-field-search {
+        background:url(/images/field-wide-ie.png) no-repeat left top;
+    }
+
+    .cms-login-form .cms-field {
+        background:url("/images/field-ie.png") no-repeat;
+    }
+
+    *[data-status="error"] {
+        border:0;
+        background:url("/images/field-over.png") no-repeat left top;
+    }
+
+    .cms-edit-area {
+        background:url("/images/edit-area.png") left top;
+    }
+
+    .cms-edit-area-in {
+        background:url("/images/edit-label.png") no-repeat center center;
+    }
+
+    .cms-cont-table tr:hover .cms-first {
+        background-image:url("/images/line-left.png");
+        background-repeat:no-repeat;
+        background-position:left top;
+    }
+
+    .cms-cont-table tr:hover .cms-last {
+        background-image:url("/images/line-right.png");
+        background-repeat:no-repeat;
+        background-position:right top;
+    }
+
+    .cms-menu-pages {
+        .cms-line-drag {
+            &:hover td, td {
+                background:url("/images/line-middle-drag.png") repeat-x left top;
+            }
+            &:hover .cms-first, .cms-first {
+                background:url("/images/line-left-drag.png") no-repeat left top;
+            }
+            &:hover .cms-last, .cms-last {
+                background:url("/images/line-right-drag.png") no-repeat right top;
+            }
+
+            .cms-ico-edit {
+                background:url("/images/icons/ico-edit-dis.png") no-repeat left top;
+            }
+            .cms-ico-del {
+                background:url("/images/icons/ico-del-dis.png") no-repeat left top;
+            }
+            .cms-ico-drag {
+                background:url("/images/icons/ico-drag-dis.png") no-repeat left top;
+            }
+        }
+    }
+
+    .cms-login {
+        background:url("/images/login-back.png") left top;
+
+    }
+}
+}
+
+
+
+
+/* Chrome & Safari  Hacks */
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    #cms {
+    .cms-btn-next {
+        padding-right:15px;
+    }
+    .cms-btn-prev {
+        padding-left:15px;
+    }
+    .cms-btn-next:after {
+        right:-10px !important;
+        bottom:-1px !important;
+        top:-1px !important;
+    }
+    .cms-btn-prev:after {
+        left:-20px !important;
+        bottom:-1px !important;
+        top:-1px !important;
+    }
+
+    #scrollbar1 .scrollbar {
+        display:none;
+    }
+
+    #scrollbar1 .viewport {
+        overflow:auto !important;
+        width: 240px !important;
+    }
+
+    .viewport::-webkit-scrollbar {
+        width: 15px;
+        height: 15px;
+        border:1px solid #afafaf;
+        background:url("/images/scrollbar-line.png") repeat-y left top;
+    }
+
+    .viewport::-webkit-scrollbar-button {
+        display:none;
+    }
+
+    .viewport::-webkit-scrollbar-thumb {
+        background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#b5b5b5));
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #afafaf;
+        -webkit-box-shadow:inset 0 1px 2px #fff, 0 0 2px #ccc;
+    }
+
+}
+}
+

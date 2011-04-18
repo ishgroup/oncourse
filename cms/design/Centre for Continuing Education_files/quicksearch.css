@@ -1,0 +1,120 @@
+/*
+ * Search input field / form
+ */
+#search {
+	margin: 0;
+}
+
+#search input {
+	color: #222;
+	font-size: 11px;
+	float: left;
+}
+
+#search input.quicksearch { 
+	width: 145px;
+	height: 15px;
+	padding: 2px;
+	font-size: 13px;	
+}
+
+/* what is this? */
+#search input#q {
+	width: 120px;
+}
+
+#search input.go {
+	margin-left: 4px;
+	width: 35px;
+	color: #fff;
+	font-weight: bold;
+	background: #6b1 url(../img/submit-go.png) no-repeat 50% 0;
+}
+
+#search input.throbber { background: transparent url('/s/img/throbber.gif') no-repeat scroll 98% 2px; }
+
+/*
+ *-------------------------------------
+ * Quicksearch div
+ *-------------------------------------
+ */
+ 
+div.quicksearch-wrap {
+	display: none;
+	position: absolute;
+	padding: 0;
+	background: #222 repeat scroll 0 0;
+	margin: 0px auto 20px auto;
+	width:200px;
+	z-index: 7000;
+	font-size:0.9em;
+}
+
+div.quicksearch-wrap li, div.box div.quicksearch-wrap li {
+	border: none;
+	list-style: none;
+	padding: 0; 
+	margin: 0;
+	color: #f4ede7;
+	background: none;
+}
+
+div.quicksearch-wrap li.title, div.box div.quicksearch-wrap li.title {
+	padding: 3px 10px 2px 10px; 
+	margin-top:1.6em;
+}
+
+div.quicksearch-wrap ul.course_list li.title, div.box div.quicksearch-wrap ul:first-child li.title {
+	margin-top:0;
+}
+
+div.quicksearch-wrap li a, div.quicksearch-wrap li a:visited {
+	padding: 5px 10px 4px 10px; 
+	width:95%;
+	display:block;
+	color: #f4ede7;
+}
+
+div.quicksearch-wrap li.hoverable:hover a, div.quicksearch-wrap li.hoverable:hover a:visited,
+div.quicksearch-wrap li.selected a, div.quicksearch-wrap li.selected a:visited {
+	color: #000033;
+}
+
+div.box div.quicksearch-wrap li.hoverable:hover, div.quicksearch-wrap li.hoverable:hover, 
+div.quicksearch-wrap li.selected, div.box div.quicksearch-wrap li.selected {
+	cursor: pointer;
+	background-color: #dddd88;
+	color: #000033;
+}
+
+div.quicksearch-wrap ul li:first-child {
+	background-color: #5a5040;
+	color: white;
+	font-weight: bold;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	text-align: left;
+}
+
+div.quicksearch-wrap ul li.coursetag {
+	padding-top: 12px;
+	color: white;
+	font-weight: bold;
+	padding: 3px 5px; 
+	color: #606060;
+}
+
+div.quicksearch-wrap ul li {
+	padding: 3px 15px 3px 10px;
+	line-height: 1.3em;
+}
+
+div.quicksearch-wrap ul li .detail {
+	display: block;
+	color: #fff;
+	padding-left: 15px;
+}
+
+div.quicksearch-wrap em {font-weight:bold; font-style:normal;}
+
+div.quicksearch-wrap a:hover {border-bottom:none;}

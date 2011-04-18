@@ -1,0 +1,3 @@
+AppName = 'onCourse';
+AppBaseURL = '/cgi-bin/WebObjects/onCourse.woa';
+WSRBaseURL = '/s/1183/WebServerResources/';

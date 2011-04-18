@@ -1,0 +1,168 @@
+@charset "UTF-8";
+/*
+Projects css styles.
+CSS Browser hacks.
+-------------------------------------------------------------*/
+/* IE9 hacks */
+#cms {
+  /* IE8 */ }
+  #cms .ie9 .cms-login {
+    background: url("../s/img/login-back.png") left top; }
+  #cms .ie9 .cms-btn-next:after {
+    display: none !important; }
+  #cms .ie9 .cms-btn-next {
+    padding-right: 19px;
+    border: 0;
+    background: url(../s/img/btn-next-img.png) no-repeat;
+    background-size: 100% 100%; }
+    #cms .ie9 .cms-btn-next:hover {
+      background: url(../s/img/btn-next-img-over.png) no-repeat;
+      background-size: 100% 100%; }
+  #cms .ie9 .cms-btn-prev {
+    padding-left: 19px;
+    border: 0;
+    background: url("../s/img/btn-prev-img.png") no-repeat;
+    background-size: 100% 100%; }
+    #cms .ie9 .cms-btn-prev:hover {
+      background: url(../s/img/btn-prev-img-over.png) no-repeat;
+      background-size: 100% 100%; }
+  #cms .ie9 .cms-btn-prev:after {
+    display: none !important; }
+  #cms .ie .cms-menu-shadow {
+    display: block;
+    position: absolute;
+    z-index: 9;
+    width: 100%;
+    top: 99px;
+    height: 20px;
+    background: url("../s/img/m-wr-shadow.png") repeat-x left bottom; }
+  #cms .ie .cms-menu li:hover, #cms .ie .cms-menu .active {
+    background: url("../s/img/sprite-menu.png") repeat-x left top; }
+  #cms .ie .cms-menu li:hover span, #cms .ie .cms-menu .active span {
+    background: url("../s/img/sprite-menu.png") no-repeat left -70px;
+    display: block; }
+  #cms .ie .cms-menu li:hover a, #cms .ie .cms-menu .active a {
+    padding: 10px 11px;
+    border: 0;
+    background: url("../s/img/sprite-menu.png") no-repeat right -35px; }
+  #cms .ie .cms-btn-next:after {
+    display: none !important; }
+  #cms .ie .cms-btn-next {
+    padding-right: 19px;
+    border: 0;
+    background: url(../s/img/btn-next-img.png) no-repeat; }
+    #cms .ie .cms-btn-next:hover {
+      background: url(../s/img/btn-next-img-over.png) no-repeat; }
+  #cms .ie .cms-btn-prev {
+    padding-left: 19px;
+    border: 0;
+    background: url("../s/img/btn-prev-img.png") no-repeat; }
+    #cms .ie .cms-btn-prev:hover {
+      background: url(../s/img/btn-prev-img-over.png) no-repeat; }
+  #cms .ie .cms-btn-prev:after {
+    display: none !important; }
+  #cms .ie .cms-btn-control {
+    border-top: 3px solid #000; }
+  #cms .ie .cms-btn-control:hover {
+    background: white url("../s/img/pages-contr-left-o.png") no-repeat left top; }
+  #cms .ie .cms-btn-control:hover .cms-btn-control-in {
+    background: url("../s/img/pages-contr-right-o.png") no-repeat right top; }
+  #cms .ie .cms-btn-control.active {
+    border-top: 3px solid #fff;
+    background: white url("../s/img/pages-contr-left.png") no-repeat left top; }
+  #cms .ie .cms-btn-control.active .cms-btn-control-in {
+    background: url("../s/img/pages-contr-right.png") no-repeat right top; }
+  #cms .ie .cms-btn-control.active:hover {
+    border-top: 3px solid #fff;
+    background: white url("../s/img/pages-contr-left.png") no-repeat left top; }
+  #cms .ie .cms-btn-control.active:hover .cms-btn-control-in {
+    background: url("../s/img/pages-contr-right.png") no-repeat right top; }
+  #cms .ie .cms-log-btn td .cms-but {
+    background: url("../s/img/btn-login.png") no-repeat left top; }
+  #cms .ie .cms-pane-wide, #cms .ie .cms-pane-small {
+    position: absolute;
+    background: #fff;
+    visibility: visible;
+    height: auto;
+    opacity: 1;
+    margin: 0; }
+  #cms .ie .cms-field-wide {
+    background: url(../s/img/field-wide.png) no-repeat left top;
+    width: 473px;
+    border: 0; }
+  #cms .ie .cms-field {
+    background: url(../s/img/field.png) no-repeat left top;
+    width: 292px;
+    border: 0; }
+  #cms .ie .cms-login-form .cms-field {
+    width: 185px; }
+  #cms .ie .cms-field-txt {
+    background: url("../s/img/field-txt.png") no-repeat left top;
+    height: 231px;
+    border: 0; }
+  #cms .ie .cms-field-search {
+    background: url(../s/img/field-wide-ie.png) no-repeat left top; }
+  #cms .ie .cms-login-form .cms-field {
+    background: url("../s/img/field-ie.png") no-repeat; }
+  #cms .ie *[data-status="error"] {
+    border: 0;
+    background: url("../s/img/field-over.png") no-repeat left top; }
+  #cms .ie .cms-edit-area {
+    background: url("../s/img/edit-area.png") left top; }
+  #cms .ie .cms-edit-area-in {
+    background: url("../s/img/edit-label.png") no-repeat center center; }
+  #cms .ie .cms-cont-table tr:hover .cms-first {
+    background-image: url("../s/img/line-left.png");
+    background-repeat: no-repeat;
+    background-position: left top; }
+  #cms .ie .cms-cont-table tr:hover .cms-last {
+    background-image: url("../s/img/line-right.png");
+    background-repeat: no-repeat;
+    background-position: right top; }
+  #cms .ie .cms-menu-pages .cms-line-drag:hover td, #cms .ie .cms-menu-pages .cms-line-drag td {
+    background: url("../s/img/line-middle-drag.png") repeat-x left top; }
+  #cms .ie .cms-menu-pages .cms-line-drag:hover .cms-first, #cms .ie .cms-menu-pages .cms-line-drag .cms-first {
+    background: url("../s/img/line-left-drag.png") no-repeat left top; }
+  #cms .ie .cms-menu-pages .cms-line-drag:hover .cms-last, #cms .ie .cms-menu-pages .cms-line-drag .cms-last {
+    background: url("../s/img/line-right-drag.png") no-repeat right top; }
+  #cms .ie .cms-menu-pages .cms-line-drag .cms-ico-edit {
+    background: url("../s/img/icons/ico-edit-dis.png") no-repeat left top; }
+  #cms .ie .cms-menu-pages .cms-line-drag .cms-ico-del {
+    background: url("../s/img/icons/ico-del-dis.png") no-repeat left top; }
+  #cms .ie .cms-menu-pages .cms-line-drag .cms-ico-drag {
+    background: url("../s/img/icons/ico-drag-dis.png") no-repeat left top; }
+  #cms .ie .cms-login {
+    background: url("../s/img/login-back.png") left top; }
+
+/* Chrome & Safari  Hacks */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  #cms .cms-btn-next {
+    padding-right: 15px; }
+  #cms .cms-btn-prev {
+    padding-left: 15px; }
+  #cms .cms-btn-next:after {
+    right: -10px !important;
+    bottom: -1px !important;
+    top: -1px !important; }
+  #cms .cms-btn-prev:after {
+    left: -20px !important;
+    bottom: -1px !important;
+    top: -1px !important; }
+  #cms #scrollbar1 .scrollbar {
+    display: none; }
+  #cms #scrollbar1 .viewport {
+    overflow: auto !important;
+    width: 240px !important; }
+  #cms .viewport::-webkit-scrollbar {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #afafaf;
+    background: url("../s/img/scrollbar-line.png") repeat-y left top; }
+  #cms .viewport::-webkit-scrollbar-button {
+    display: none; }
+  #cms .viewport::-webkit-scrollbar-thumb {
+    background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#b5b5b5));
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #afafaf;
+    -webkit-box-shadow: inset 0 1px 2px #fff, 0 0 2px #ccc; } }
