@@ -6,8 +6,8 @@
 databases="w2dev_college w2dev_reference w2dev_binary"
 
 for database in ${databases}; do
-	mysqladmin5 -f -h db.office -uroot -pxqr69Gf drop ${database}
-	mysqladmin5 -f -h db.office -uroot -pxqr69Gf create ${database}
+	mysqladmin5 -f -h db.office -uwillow -pT7t,RMJRPGjFSq9m drop ${database}
+	mysqladmin5 -f -h db.office -uwillow -pT7t,RMJRPGjFSq9m create ${database}
 done
 
 	echo "s/w2_binary/w2dev_binary/g" > edit1.sed
