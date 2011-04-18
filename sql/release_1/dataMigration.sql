@@ -34,7 +34,7 @@ INSERT INTO %DESTINATIONDB%_college.StudentConcession (angelId, authorisationExp
 	WHERE sc.collegeId = @collegeId AND sc.isDeleted <> 1 AND t.entityType like 'Student';
 
 INSERT INTO %DESTINATIONDB%_college.Course (id, collegeId, qualificationId, angelId, code, isWebVisible, isVETCourse, isSufficientForQualification, allowWaitingList, nominalHours, name, detail, detail_textile, fieldOfEducation, searchText, created, modified)
-	SELECT c.id, t.collegeId, c.qualificationId, t.angelI d, c.code, c.isWebVisible, c.isVETCourse, c.isSufficientForQualification, c.allowWaitingList, c.nominalHours, c.name, c.detail, c.detail_textile, c.fieldOfEducation, c.searchText, t.created, t.modified
+	SELECT c.id, t.collegeId, c.qualificationId, t.angelId, c.code, c.isWebVisible, c.isVETCourse, c.isSufficientForQualification, c.allowWaitingList, c.nominalHours, c.name, c.detail, c.detail_textile, c.fieldOfEducation, c.searchText, t.created, t.modified
 	FROM %SOURCEDB%_college.Course c
 	JOIN %SOURCEDB%_college.Taggable t ON t.id = c.id
 	WHERE t.entityType = 'Course' and t.collegeId = @collegeId AND t.isDeleted <> 1;
@@ -113,7 +113,7 @@ INSERT INTO %DESTINATIONDB%_college.DiscountCourseClass (id, courseClassId, disc
 	SELECT (dcc.courseClassId + (dcc.discountId << 32)), dcc.courseClassId, dcc.discountId, dcc.collegeId, (cc.angelId + (d.angelId << 32)), dcc.created, dcc.modified
 	FROM %SOURCEDB%_college.DiscountCourseClass AS dcc
 	JOIN %DESTINATIONDB%_college.CourseClass AS cc ON dcc.courseClassId = cc.id
-	JOIN %DESTINATIONDB%_college.Discount as d ON dcc.discountId = c.id
+	JOIN %DESTINATIONDB%_college.Discount as d ON dcc.discountId = cc.id
 	WHERE dcc.collegeId = @collegeId;
 
 INSERT INTO %DESTINATIONDB%_college.Enrolment (id, collegeId, courseClassId, studentId, angelId, created, modified, reasonForStudy, source, status, statusNotes)
@@ -167,7 +167,7 @@ INSERT INTO %DESTINATIONDB%_college.InvoiceLine (id, collegeId, invoiceId, enrol
 	WHERE e.collegeId = @collegeId	AND e.isDeleted <> 1 AND e.paymentId is not null;
 
 INSERT INTO %DESTINATIONDB%_college.InvoiceLine_Discount (id, invoiceLineId, discountId, collegeId, angelId, created, modified)
-	SELECT (e.discountId + (e.id << 32)), e.id, e.discountId, @collegeId, (d.angelId + (invL.angelId << 32)) e.created, e.modified
+	SELECT (e.discountId + (e.id << 32)), e.id, e.discountId, @collegeId, (d.angelId + (invL.angelId << 32)), e.created, e.modified
 	FROM %SOURCEDB%_college.Enrolment e 
 	JOIN %DESTINATIONDB%_college.InvoiceLine as invL ON invL.id=e.id
 	JOIN %DESTINATIONDB%_college.Discount as d ON d.id=e.discountId
