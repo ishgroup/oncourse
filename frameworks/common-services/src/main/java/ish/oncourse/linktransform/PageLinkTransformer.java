@@ -8,12 +8,16 @@ package ish.oncourse.linktransform;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.WebNodeService;
+import ish.oncourse.services.room.IRoomService;
+import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 
 import org.apache.log4j.Logger;
@@ -70,6 +74,12 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	@Inject
 	ICourseService courseService;
 
+	@Inject
+	ISitesService sitesService;
+
+	@Inject
+	IRoomService roomService;
+
 	public PageRenderRequestParameters decodePageRenderRequest(Request request) {
 
 		final String path = request.getPath().toLowerCase();
@@ -102,19 +112,30 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				course = courseService.getCourse(Course.CODE_PROPERTY, courseCode);
 			}
 			if (course != null) {
-				request.setAttribute("course", course);
+				request.setAttribute(Course.class.getSimpleName(), course);
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
 			break;
 		case CourseClass:
+			CourseClass courseClass = null;
 			String courseClassCode = path.substring(path.lastIndexOf("/") + 1);
-			request.setAttribute("courseClassCode", courseClassCode);
+			if (courseClassCode != null) {
+				courseClass = courseClassService.getCourseClassByFullCode(courseClassCode);
+			}
+			if (courseClass != null) {
+				request.setAttribute(CourseClass.class.getSimpleName(), courseClass);
+			} else {
+				pageIdentifier = PageIdentifier.PageNotFound;
+			}
 			break;
 		case Page:
 			String nodeNumber = path.substring(path.lastIndexOf("/") + 1);
 			if (nodeNumber != null) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
+				if (webNodeService.getCurrentNode() == null) {
+					pageIdentifier = PageIdentifier.PageNotFound;
+				}
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
@@ -122,12 +143,29 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		case Sites:
 			break;
 		case Site:
+			Site site = null;
 			String siteId = path.substring(path.lastIndexOf("/") + 1);
-			request.setAttribute("siteId", siteId);
+			if (siteId != null && siteId.matches("\\d+")) {
+				site = sitesService.getSite(Site.ANGEL_ID_PROPERTY, siteId);
+			}
+			if (site != null) {
+				request.setAttribute(Site.class.getSimpleName(), site);
+			} else {
+				return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(),
+						new EmptyEventContext(), false);
+			}
 			break;
 		case Room:
+			Room room = null;
 			String roomId = path.substring(path.lastIndexOf("/") + 1);
-			request.setAttribute("roomId", roomId);
+			if (roomId != null) {
+				room = roomService.getRoom(Room.ANGEL_ID_PROPERTY, Long.valueOf(roomId));
+			}
+			if (room != null) {
+				request.setAttribute(Room.class.getSimpleName(), room);
+			} else {
+				pageIdentifier = PageIdentifier.PageNotFound;
+			}
 			break;
 		case Tutor:
 			String tutorId = path.substring(path.lastIndexOf("/") + 1);

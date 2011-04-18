@@ -30,7 +30,7 @@ public enum PageIdentifier {
 	/**
 	 * site/200 Show the site detail for the site with angel id of 200
 	 */
-	Site("/site/(\\d+)", "ui/SiteDetails"),
+	Site("/site/(.+)", "ui/SiteDetails"),
 	/**
 	 * room/200 Show the room detail for the room with angel id of 200
 	 */

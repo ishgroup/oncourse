@@ -14,7 +14,7 @@ public class CourseDetails {
 	private Course course;
 
 	void beginRender() {
-		course = (Course) request.getAttribute("course");
+		course = (Course) request.getAttribute(Course.class.getSimpleName());
 	}
 	
 	public String getCourseDetailsTitle(){

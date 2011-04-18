@@ -2,25 +2,22 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
-import ish.oncourse.services.courseclass.ICourseClassService;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+
 public class CourseClassDetails {
 
 	@Inject
 	private Request request;
 	
-	@Inject
-	private ICourseClassService courseClassService;
-
 	@Property
 	private CourseClass courseClass;
 
@@ -28,8 +25,7 @@ public class CourseClassDetails {
 
 	@SetupRender
 	public void beforeRender() {
-		String code = (String) request.getAttribute("courseClassCode");
-		courseClass = courseClassService.getCourseClassByFullCode(code);
+		courseClass = (CourseClass) request.getAttribute(CourseClass.class.getSimpleName());
 		
 		timetableLabels = new ArrayList<String>();
 		timetableLabels.add("When");

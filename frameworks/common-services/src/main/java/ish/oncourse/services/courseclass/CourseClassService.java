@@ -24,6 +24,10 @@ public class CourseClassService implements ICourseClassService {
 	@SuppressWarnings("unchecked")
 	public CourseClass getCourseClassByFullCode(String code) {
 		String[] parts = code.split("-");
+		// courseClass code has format "course.code-courseClass.code"
+		if (parts.length < 2) {
+			return null;
+		}
 		String courseCode = parts[0];
 		String courseClassCode = parts[1];
 		SelectQuery query = new SelectQuery(CourseClass.class, getSiteQualifier().andExp(
