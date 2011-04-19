@@ -4,14 +4,14 @@ import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
-import ish.oncourse.webservices.v4.stubs.replication.SessionCourseClassTutorStub;
+import ish.oncourse.webservices.v4.stubs.replication.TutorAttendanceStub;
 
 import java.util.List;
 
-public class SessionTutorUpdater extends AbstractWillowUpdater<SessionCourseClassTutorStub, SessionTutor> {
+public class SessionTutorUpdater extends AbstractWillowUpdater<TutorAttendanceStub, SessionTutor> {
 
 	@Override
-	protected void updateEntity(SessionCourseClassTutorStub stub, SessionTutor entity, List<ReplicatedRecord> result) {
+	protected void updateEntity(TutorAttendanceStub stub, SessionTutor entity, List<ReplicatedRecord> result) {
 		entity.setAngelId(stub.getAngelId());
 		entity.setCollege(college);
 		entity.setCreated(stub.getCreated());
