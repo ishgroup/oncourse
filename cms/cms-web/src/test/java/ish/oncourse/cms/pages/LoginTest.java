@@ -35,7 +35,7 @@ public class LoginTest {
 	public void testPageLoaded() {
 		PageTester tester = new PageTester(appPackage, appName, "src/main/webapp", TestModule.class);
 		Document doc = tester.renderPage("Login");
-		assertNotNull(doc.getElementById("email"));
+		assertNotNull(doc.getElementById("logEmail"));
 		assertNotNull(doc.getElementById("password"));
 		tester.shutdown();
 	}
@@ -50,7 +50,7 @@ public class LoginTest {
 
 		Map<String, String> fieldValues = new HashMap<String, String>();
 
-		fieldValues.put("email", "test@right.com");
+		fieldValues.put("logEmail", "test@right.com");
 		fieldValues.put("password", "rpasswd");
 
 		try {
