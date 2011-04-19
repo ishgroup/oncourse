@@ -63,6 +63,7 @@ public class AuthenticationService implements IAuthenticationService {
 			
 			applicationStateManager.set(WillowUser.class, users.get(0));
 			status = AuthenticationStatus.SUCCESS;
+			cookies.writeCookieValue("cms", "true");
 			
 		} else if ((users != null) && (users.size() > 1)) {
 			status = AuthenticationStatus.MORE_THAN_ONE_USER;
@@ -94,6 +95,6 @@ public class AuthenticationService implements IAuthenticationService {
 			session.invalidate();
 		}
 
-		cookies.removeCookieValue("cms_session");
+		cookies.removeCookieValue("cms");
 	}
 }
