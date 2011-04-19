@@ -23,7 +23,6 @@
 		<module>common-model</module>
 		<module>common-services</module>
 		<module>common-ui</module>
-		<module>jetty-launcher</module>
 		<module>common-test</module>
 	</modules>
 

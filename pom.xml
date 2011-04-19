@@ -188,13 +188,13 @@
 			<dependency>
 				<groupId>org.apache.cayenne</groupId>
 				<artifactId>cayenne-server</artifactId>
-				<version>3.1M2</version>
+				<version>${cayenne.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.apache.cayenne</groupId>
 				<artifactId>cayenne-lifecycle</artifactId>
-				<version>3.1M2</version>
+				<version>${cayenne.version}</version>
 			</dependency>
 
 			<dependency>
@@ -202,36 +202,48 @@
 				<artifactId>tapestry-core</artifactId>
 				<version>${tapestry5version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry5-annotations</artifactId>
 				<version>${tapestry5version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-ioc</artifactId>
 				<version>${tapestry5version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-json</artifactId>
 				<version>${tapestry5version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-upload</artifactId>
 				<version>${tapestry5version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-spring</artifactId>
 				<version>${tapestry5version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.tapestry</groupId>
 				<artifactId>tapestry-test</artifactId>
 				<version>${tapestry5version}</version>
 				<scope>test</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 			
 			<dependency>
@@ -338,25 +350,25 @@
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-server</artifactId>
-				<version>7.0.1.v20091125</version>
+				<version>${jetty.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-webapp</artifactId>
-				<version>7.0.1.v20091125</version>
+				<version>${jetty.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-plus</artifactId>
-				<version>7.0.1.v20091125</version>
+				<version>${jetty.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-jndi</artifactId>
-				<version>7.0.1.v20091125</version>
+				<version>${jetty.version}</version>
 			</dependency>
 			
 			<dependency>
@@ -501,6 +513,9 @@
 		<servlet-api.version>2.5</servlet-api.version>
 		<maven.emma.report.xml>true</maven.emma.report.xml>
 		<maven.emma.report.html>true</maven.emma.report.html>
+		<cxf.version>2.4.0</cxf.version>
+		<jetty.version>7.0.1.v20091125</jetty.version>
+		<cayenne.version>3.1M2</cayenne.version>
 	</properties>
 
 </project>
