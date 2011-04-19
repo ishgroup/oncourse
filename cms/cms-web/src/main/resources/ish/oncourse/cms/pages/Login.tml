@@ -1,12 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html 
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter"  id="cms">
+	xmlns:p="tapestry:parameter" id="cms">
 	<head>
 		<!-- CSS -->
-		<link href="/s/stylesheets/css/browser-hacks.css" media="screen" rel="stylesheet" />
-		<link href="/s/stylesheets/css/common.css" media="screen" rel="stylesheet" />
-		<link href="/s/stylesheets/css/screen.css" media="screen" rel="stylesheet" />
+		<link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
+		<title>CMS Login Page</title>
 	</head>
 	<body class="main-page" id="Main">
 	
@@ -17,23 +16,23 @@
 				<div class="cms-login">
 					<div class="cms-login-wr">
 						<form t:id="loginForm" class="cms-login-form">
-							<t:errors class="'error'" />
+							<t:errors/>
 							<table>
 								<tr>
 									<td>
 										<t:label for="logEmail">
-											E-mail:<em title="This field is required">*</em>
+											E-mail:
 										</t:label>
 									</td>
 									<td>
-										<input t:type="TextField" t:id="logEmail" t:validate="required,minlength=3" 
+										<t:TextField t:id="logEmail" t:validate="required,minlength=3" 
 													size="30" maxlength="200" class="cms-field" /> 
 									</td>
 								</tr>
 								<tr>
 									<td>
 										<t:label for="password">
-											Password:<em title="This field is required">*</em>
+											Password:
 										</t:label>
 									</td>
 									<td>
@@ -41,29 +40,11 @@
 													size="30" maxlength="200" class="cms-field" /> 
 									</td>
 								</tr>
-								<tr>
-									<td></td>
-									<td>
-										<input type="checkbox" id="logRem"/> 
-										<label for="logRem">Remember me</label>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<span class="note"> 
-											<strong class="alert">Note</strong>:Fields marked with an <em>*</em> are required. 
-										</span>
-									</td>
-								</tr>
 								<tr class="cms-log-btn">
 									<td></td>
 									<td>
 										<input type="submit" value="Sign In" class="cms-but" id="signIn" />
 									</td>
-								</tr>
-								<tr class="cms-log-reminder">
-									<td></td>
-									<td><a href="">Password reminder</a></td>
 								</tr>
 							</table>
 						</form>
