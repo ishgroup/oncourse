@@ -486,6 +486,10 @@ UPDATE %DESTINATIONDB%_college.WebMenu AS wm
 
 DROP TABLE %DESTINATIONDB%_college.WebMenuTEMP;
 
+UPDATE %DESTINATIONDB%_college.WebHostName AS wh
+	JOIN %DESTINATIONDB%_college.WebSite AS ws ON ws.id = wh.webSiteId
+	SET wh.name=CONCAT(ws.siteKey, '.staging1.oncourse.net.au')
+	WHERE wh.name LIKE '%.test.oncourse.net.au' and ws.collegeid = @collegeId;
 
 UPDATE %DESTINATIONDB%_college.WebHostName AS wh
 	JOIN %DESTINATIONDB%_college.WebSite AS ws ON ws.id = wh.webSiteId
