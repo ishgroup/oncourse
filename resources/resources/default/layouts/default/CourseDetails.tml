@@ -1,0 +1,14 @@
+<!-- 
+	Template: CourseDetails.tml
+	Purpose: Defines the Course Detail page.
+-->
+
+<html t:type="ui/pagestructure" title="${courseDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page" 
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if t:test="course">
+		<span t:type="ui/courseitem" course="course" />
+		<p:else>
+			The requested course is not found.
+		</p:else>
+	</t:if>
+</html>

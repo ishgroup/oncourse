@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	<t:remove>
+		Name: PageWrapper
+		Purpose: html, head and body tags for the entire page. This is called for
+		every single full page which is rendered by onCourse.
+		Override: No. This component should not normally be overridden
+	</t:remove>
+	<head>
+		<head t:type="ui/pagehead" title="${title}"/>
+	</head>
+
+	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
+		<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
+            <t:body/>
+        </div>
+		<span t:type="ui/googleAnalytics"></span>
+	</body>
+</html>

@@ -1,0 +1,10 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if test="request.XHR">
+		<span t:type="ui/ShortList"/>
+		<p:else>
+			<html t:type="ui/pagestructure" bodyId="literal:ListPage" bodyClass="literal:internal-page">
+				<span t:type="ui/ShortList" expandComponent="true"/>
+			</html>
+		</p:else>
+	</t:if>
+</t:container>

@@ -1,0 +1,80 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<div>
+		<t:if t:test="hasResults" negate="true">
+			<b>
+				<a href="courses?s=${searchString}">Search...</a>
+			</b>
+			<p:else>
+				<t:if t:test="hasLocationDetailList">
+					<ul class="suburb_list">
+						<li class="title">
+							Show courses
+							<t:if t:test="hasSearchingLocationsSearchString">
+								for
+								<em>${searchingLocationsSearchString}</em>
+							</t:if>
+							near...
+						</li>
+						<t:loop source="locationDetailList" value="location">
+							<li class="location hoverable">
+								<a href="/courses?near=${location.displayName}">${location.displayName}</a>
+							</li>
+						</t:loop>
+					</ul>
+				</t:if>
+
+				<t:if test="hasMatchingCourseList">
+
+					<ul class="course_list">
+						<li class="title">Matching courses</li>
+						<t:loop source="matchingCourseList" value="course">
+							<li class="course hoverable">
+								<a href="/course/${course.code}">
+									${course.name}-
+									<em>${course.code}</em>
+								</a>
+							</li>
+						</t:loop>
+						<li>
+							<a href="/courses?s=${searchString}">Show all results...</a>
+						</li>
+					</ul>
+					<p:else>
+
+						<t:if test="hasCourseList">
+							<ul class="course_list">
+								<li class="title">Courses</li>
+								<t:loop source="courseList" value="course">
+									<li class="course hoverable">
+										<!-- TODO implement the ISHMatchedString component -->
+										<a href="/course/${course.code}">
+											<em>${course.name}</em>
+										</a>
+									</li>
+								</t:loop>
+								<li>
+									<a href="/courses?s=${searchString}">Show all results...</a>
+								</li>
+							</ul>
+						</t:if>
+
+					</p:else>
+				</t:if>
+
+
+				<t:if test="hasTagGroupResultsList">
+						<ul class="tag_list">
+							<li class="title">Subjects</li>
+							<t:loop source="tags" value="tag">
+								<li>
+									<a href="${tag.link}">${tag.name}</a>
+								</li>
+							</t:loop>
+						</ul>
+				</t:if>
+				
+			</p:else>
+		</t:if>
+	</div>
+</t:container>

@@ -1,0 +1,23 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<span class="timing-display">
+		<t:loop source="weekdays" value="stringListItem">
+			<span class="${weekdayListItemClass}">
+				${dayListItemLabel}
+			</span>
+		</t:loop>
+		<t:loop source="weekendDays" value="stringListItem" >
+			<span class="${weekendListItemClass}">
+				${dayListItemLabel}
+			</span>
+		</t:loop>
+	</span>
+	<span class="timing-display">
+		<span class="${daytimeClass}">
+			<img src="/s/img/blank.png"/>
+		</span>
+		<span class="${eveningClass}">
+			<img src="/s/img/blank.png"/>
+		</span>
+	</span>
+</t:container>

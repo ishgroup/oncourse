@@ -1,0 +1,14 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+
+	<t:if t:test="hasMapItemList">
+		<!--
+			TODO <t:if t:test="$hasTag"><t:output object="$tag"
+			displayKey="detail" escapeHTML="$false" /></t:if>
+		-->
+
+		<div id="focus-map" class="${focusMapClass}">
+			<span t:type="ui/GoogleDirections" sites="sites" focuses="focuses" showLocationMap="showLocationMap"/>
+		</div>
+	</t:if>
+</t:container>

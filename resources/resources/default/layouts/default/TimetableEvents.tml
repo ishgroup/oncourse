@@ -1,0 +1,34 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<table class="${cssTableClass}">
+
+		<thead>
+			<tr>
+				<t:loop source="headerLabels" value="label">
+					<th>${label}</th>
+				</t:loop>
+			</tr>
+		</thead>
+		<t:loop source="displayedObjects" value="event" index="listIndex">
+			<tr class="${cssRowClass}">
+
+				<td>
+					<t:output value="event.startDate" format="itemDateFormatter" />
+				</td>
+				<td>
+					<t:output value="event.startDate" format="itemTimeFormatter" />
+					<t:if test="hasItemEndDate">
+						-
+						<t:output value="event.endDate" format="itemTimeFormatter" />
+					</t:if>
+				</td>
+				<td>
+					<t:if t:test="event.room">
+						<span t:type="ui/RoomLocation" room="event.room" withRoomName="true" />
+					</t:if>
+				</td>
+			</tr>
+		</t:loop>
+
+	</table>
+</t:container>

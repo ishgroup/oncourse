@@ -1,0 +1,5 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<abbr title="${machineStartDate}" class="dtstart">${humanStartDate}</abbr> 
+	<t:if t:test="hasFullRange"> – <abbr title="${machineEndDate}" class="dtend">${humanEndDate}</abbr>
+	</t:if>
+</t:container>

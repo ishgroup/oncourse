@@ -1,0 +1,49 @@
+<!-- 
+	Template: Shortlist.tml
+	Purpose: Defines the base HTML structure for the shortlist.
+-->
+
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+<div id="shortlist" class="">
+	
+	<div class="shortlistInfo"><span>${itemCount}</span> courses selected</div>
+	
+	<t:if test="hasItems">
+		
+		<h3><span>My Order</span></h3>
+		<div class="${classForList}">
+			<ul>
+				<t:loop source="items" value="courseClass">
+					<li data-classid="${courseClass.id}"><a href="/class/${courseClass.uniqueIdentifier}">${courseClass.course.name}</a>
+					
+					<div>
+					<t:if t:test="courseClass.firstSession">
+					<abbr class="dtstart" title=""><t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/></abbr>
+					</t:if>
+				
+					<t:if t:test="courseClass.endDate">
+						- <abbr class="dtend" title=""><t:output format="literal:d MMM yyyy" value="courseClass.endDate"/></abbr>
+					</t:if>
+					</div>
+					
+					<span class="deleteItem" title="Remove item"><a href="/removeFromCookies?key=shortlist&amp;removeItemId=${courseClass.id}">[remove]</a></span></li>
+				</t:loop>
+			</ul>
+			<t:if test="expandComponent" negate="true">
+				<div class="closeButton">X</div>
+			</t:if>
+		</div>
+		
+		<div class="shortlistAction">
+			<ul>
+				<t:if test="expandComponent" negate="true">
+					<li class="shortlistActionShow"><a href="#">Show Shortlist</a></li>
+				</t:if>
+				<li class="shortlistActionEnrol"><a href="/enrol/enrolCourses">Enrol</a></li>
+			</ul>
+		</div>
+	</t:if>
+	
+</div>
+</t:container>

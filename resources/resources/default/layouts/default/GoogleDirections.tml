@@ -1,0 +1,44 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+
+	<t:if t:test="hasLocation">
+
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript">
+				
+				var vLat = "${mapPositionLatitude}";
+				var vLong = "${mapPositionLongitude}";
+				gMapOptions = {
+					zoom: 14,
+					center: new google.maps.LatLng(vLat, vLong),
+					mapTypeId : google.maps.MapTypeId.ROADMAP
+				}
+				var near ="${searchingNear}";
+				var vSiteAddress = "${address}";
+				var vFrom ="${directionsFrom}";
+				var showNearMarker ="${hasGlobalPosition}";
+				var showMapItems = "${showMapItems}";
+				var zoom = null;
+				var map;
+				var siteMarkers = new Array();
+				gMapSites=${sitesArray};
+		</script>
+		
+		<div id="directions">
+
+			<t:if t:test="hideDirections" negate="true">
+				<form id="getdir" method="post" onsubmit="return false;">
+					<label>Directions from:</label>
+					<input type="text" size="25" id="from" name="from"
+						value="${directionsFrom}" />
+					<input name="submit" type="button" value="Get Directions!"
+						class="getDirections" onclick="dirLoadForId('gmapCanvas');"/>
+				</form>
+
+				<div id="dirtxt" class=""></div>
+			</t:if>
+		</div>
+				
+	</t:if>
+
+</t:container>

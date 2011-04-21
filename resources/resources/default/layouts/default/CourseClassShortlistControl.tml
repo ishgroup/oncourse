@@ -1,0 +1,51 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<ul id="m${courseClass.id}" class="class_options noprint">
+		<t:if t:test="courseClass.cancelled" negate="true">
+			<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+				<t:if t:test="courseClass.college.paymentGatewayEnabled">
+					<li class="class_enrol">
+						<a id="${courseClass.id}"
+							href="enrol/EnrolCourses">Enrol Now</a>
+					</li>
+				</t:if>
+				<p:else>
+					<li class="class_full">No places</li>
+				</p:else>
+			</t:if>
+			<p:else>
+				<li class="class_cancelled">Class was cancelled</li>
+			</p:else>
+		</t:if>
+		<t:if t:test="${containedInShortList}">
+			<li class="shortlisted">
+				<a id="${courseClass.id}" href="#">Remove from order</a>
+			</li>
+			<p:else>
+				<t:if t:test="courseClass.cancelled" negate="true">
+					<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+						<t:if t:test="courseClass.college.paymentGatewayEnabled">
+							<li class="class_addorder addshortlist">
+								<a id="${courseClass.id}" href="#">Add to order</a>
+							</li>
+						</t:if>
+					</t:if>
+				</t:if>
+			</p:else>
+		</t:if>
+		
+
+
+		<t:if t:test="courseClass.cancelled" negate="true">
+			<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+				<li class="class_emailfriend">
+					<a class="nyromodaliframe"
+						href="/tellAFriend?wrap=true&amp;code=${courseClass.course.code}-${courseClass.code}"
+						target="_blank">
+						Email to a friend</a>
+				</li>
+			</t:if>
+		</t:if>
+
+	</ul>
+</t:container>

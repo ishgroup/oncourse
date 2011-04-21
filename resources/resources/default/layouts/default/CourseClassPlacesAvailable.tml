@@ -1,0 +1,22 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:if test="hasCommonAvailable">
+		There are places available
+		<p:else>
+			<t:if test="courseClass.hasAvailableEnrolmentPlaces" negate="true">
+				There are no places
+				<p:else>
+					There
+					<t:if test="hasManyPlaces">
+						are
+						<t:output value="courseClass.availableEnrolmentPlaces"
+							format="format" />
+						places
+						<p:else>is one place</p:else>
+					</t:if>
+					available
+				</p:else>
+			</t:if>
+		</p:else>
+	</t:if>
+</t:container>

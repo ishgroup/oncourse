@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	<t:remove>
+		Name: DialogStructure
+		Purpose: displays the dialog page for nyromodal popups.
+	</t:remove>
+	<head>
+		<title>${title}</title>
+		<link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
+	</head>
+	<body class="dialogBox">
+		<div id="popup-header"></div>
+		<div id="popup-content">
+			<h2>${title}</h2>
+			<t:body/>
+		</div>
+	</body>
+</html>
