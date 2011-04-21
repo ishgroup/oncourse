@@ -1,9 +1,17 @@
 package ish.oncourse.cms.services;
 
+import java.util.List;
+
 import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.linktransform.URLRewriteRequestFilter;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.resource.IResourceService;
+import ish.oncourse.services.resource.PrivateResource;
+import ish.oncourse.services.resource.Resource;
+import ish.oncourse.ui.components.ContentStructure;
+import ish.oncourse.ui.components.PageStructure;
+import ish.oncourse.ui.pages.Page;
 import ish.oncourse.ui.services.UIModule;
 
 import org.apache.tapestry5.SymbolConstants;
@@ -53,5 +61,28 @@ public class AppModule {
 	
 	public static void contributeHttpServletRequestHandler(OrderedConfiguration<HttpServletRequestFilter> configuration) {
 		configuration.addInstance("URLRewriteFilter", URLRewriteRequestFilter.class);
+	}
+	
+	public IResourceService decorateIResourceService(final IResourceService original) {
+		return new IResourceService() {
+
+			public Resource getWebResource(String fileName) {
+				return original.getWebResource(fileName);
+			}
+
+			public PrivateResource getTemplateResource(String layoutKey, String fileName) {
+				if (fileName.equalsIgnoreCase(Page.class.getSimpleName() + ".tml")
+						|| fileName.equalsIgnoreCase(PageStructure.class.getSimpleName() + ".tml")
+						|| fileName.equalsIgnoreCase(ContentStructure.class.getSimpleName()
+								+ ".tml")) {
+					return null;
+				}
+				return original.getTemplateResource(layoutKey, fileName);
+			}
+
+			public List<PrivateResource> getConfigResources(String fileName) {
+				return original.getConfigResources(fileName);
+			}
+		};
 	}
 }
