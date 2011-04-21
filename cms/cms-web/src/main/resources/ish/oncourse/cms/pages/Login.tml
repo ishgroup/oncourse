@@ -4,7 +4,7 @@
 	xmlns:p="tapestry:parameter" id="cms">
 	<head>
 		<!-- CSS -->
-		<link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
+		<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
 		<title>CMS Login Page</title>
 	</head>
 	<body class="main-page" id="Main">
