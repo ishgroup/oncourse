@@ -83,7 +83,7 @@ public class LoginTest {
 		Element form = doc.getElementById("loginForm");
 		assertNotNull(form);
 		
-		Element errorsDiv = form.getElementByAttributeValue("class", "error");
+		Element errorsDiv = form.getElementByAttributeValue("class", "t-error");
 		assertNotNull(errorsDiv);
 		
 		assertTrue(errorsDiv.getChildren().size() > 0);
