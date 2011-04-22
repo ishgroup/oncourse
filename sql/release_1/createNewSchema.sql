@@ -581,7 +581,7 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`CertificateOutcome`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`CertificateOutcome` (
-  `id` BIGINT not null primary key,
+  `id` BIGINT not null primary key AUTO_INCREMENT,
   `certificateId` BIGINT(20) NOT NULL ,
   `outcomeId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -602,14 +602,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`CertificateOutcome` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
-
-delimiter |
-
-CREATE TRIGGER `w2_college`.`CertificateOutcomePK` BEFORE INSERT ON `w2_college`.`CertificateOutcome` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.certificateId + (NEW.outcomeId << 32);
-END |
-
-delimiter ;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`WebSite`
@@ -756,7 +748,7 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`CourseModule`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`CourseModule` (
-   `id` BIGINT not null primary key,
+   `id` BIGINT not null primary key AUTO_INCREMENT,
   `courseId` BIGINT(20) NOT NULL ,
   `moduleId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -770,20 +762,12 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-delimiter |
-
-CREATE TRIGGER `w2_college`.`CourseModulePK` BEFORE INSERT ON `w2_college`.`CourseModule` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.courseId + (NEW.moduleId << 32);
-END |
-
-delimiter ;
-
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`DiscountConcessionType`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountConcessionType` (
-  `id` BIGINT not null primary key,
+  `id` BIGINT not null primary key AUTO_INCREMENT,
   `concessionTypeId` BIGINT(20) NOT NULL DEFAULT '0' ,
   `discountId` BIGINT(20) NOT NULL DEFAULT '0' ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -805,19 +789,11 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-delimiter |
-
-CREATE TRIGGER `w2_college`.`DiscountConcessionType` BEFORE INSERT ON `w2_college`.`DiscountConcessionType` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.concessionTypeId + (NEW.discountId << 32);
-END |
-
-delimiter ;
-
 -- -----------------------------------------------------
 -- Table `w2_college`.`DiscountCourseClass`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountCourseClass` (
-  `id` BIGINT not null primary key,
+  `id` BIGINT not null primary key AUTO_INCREMENT,
   `courseClassId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -835,16 +811,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`DiscountCourseClass` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
-
-
-delimiter |
-
-CREATE TRIGGER `w2_college`.`DiscountCourseClassPK` BEFORE INSERT ON `w2_college`.`DiscountCourseClass` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.courseClassId + (NEW.discountId << 32);
-END |
-
-delimiter ;
-
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`Invoice`
@@ -934,7 +900,7 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`InvoiceLine_Discount`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine_Discount` (
-  `id` BIGINT not null primary key,	
+  `id` BIGINT not null primary key AUTO_INCREMENT,	
   `invoiceLineId` BIGINT(20) NOT NULL ,
   `discountId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT not null,
@@ -951,15 +917,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine_Discount` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
-
-delimiter |
-
-CREATE TRIGGER `w2_college`.`InvoiceLine_DiscountPK` BEFORE INSERT ON `w2_college`.`InvoiceLine_Discount` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.discountId + (NEW.invoiceLineId << 32);
-END |
-
-delimiter ;
-
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`LicenseFee`
@@ -1352,7 +1309,7 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`SessionTutor`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`SessionTutor` (
-  `id` BIGINT not null primary key,
+  `id` BIGINT not null primary key AUTO_INCREMENT,
   `sessionId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NULL DEFAULT NULL ,
@@ -1374,14 +1331,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`SessionTutor` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
-
-delimiter |
-
-CREATE TRIGGER `w2_college`.`SessionTutorPK` BEFORE INSERT ON `w2_college`.`SessionTutor` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.sessionId + (NEW.tutorId << 32);
-END |
-
-delimiter ;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`StudentConcession`
@@ -1508,7 +1457,7 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`TaggableTag`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`TaggableTag` (
-   `id` BIGINT not null primary key,
+   `id` BIGINT not null primary key AUTO_INCREMENT,
   `tagId` BIGINT(20) NOT NULL ,
   `taggableId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1530,18 +1479,12 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-delimiter |
 
-CREATE TRIGGER `w2_college`.`TaggableTagPK` BEFORE INSERT ON `w2_college`.`TaggableTag` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.tagId + (NEW.taggableId << 32);
-END |
-
-delimiter ;
 -- -----------------------------------------------------
 -- Table `w2_college`.`TutorRole`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`TutorRole` (
-  `id` BIGINT not null primary key,
+  `id` BIGINT not null primary key AUTO_INCREMENT,
   `courseClassId` BIGINT(20) NOT NULL ,
   `tutorId` BIGINT(20) NOT NULL ,
   `collegeId` BIGINT(20) NOT NULL ,
@@ -1566,14 +1509,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`TutorRole` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
-
-delimiter |
-
-CREATE TRIGGER `w2_college`.`TutorRolePK` BEFORE INSERT ON `w2_college`.`TutorRole` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.courseClassId + (NEW.tutorId << 32);
-END |
-
-delimiter ;
 
 
 -- -----------------------------------------------------
@@ -1612,7 +1547,7 @@ COLLATE = utf8_unicode_ci;
 -- Table `w2_college`.`WaitingListSite`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`WaitingListSite` (
-  `id` BIGINT not null primary key,
+  `id` BIGINT not null primary key AUTO_INCREMENT,
   `siteId` BIGINT(20) NOT NULL ,
   `waitingListId` BIGINT(20) NOT NULL ,
    `angelId` BIGINT,
@@ -1627,14 +1562,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`WaitingListSite` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
-
-delimiter |
-
-CREATE TRIGGER `w2_college`.`WaitingListSitePK` BEFORE INSERT ON `w2_college`.`WaitingListSite` FOR EACH ROW BEGIN
-	SET NEW.id = NEW.siteId + (NEW.waitingListId << 32);
-END |
-
-delimiter ;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`WebNodeType`

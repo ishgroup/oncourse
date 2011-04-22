@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.v4.auth;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.exception.AuthenticationFailureException;
+import ish.oncourse.webservices.exception.AuthFault;
 import ish.oncourse.webservices.listeners.CollegeSessions;
 import ish.oncourse.webservices.util.SoapUtil;
 
@@ -31,25 +31,25 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 		String securityCode = SoapUtil.getSecurityCode(message);
 
 		if (securityCode == null) {
-			throw new AuthenticationFailureException("empty.securityCode");
+			throw new AuthFault("empty.securityCode");
 		}
 
 		College college = collegeService.findBySecurityCode(securityCode);
 
 		if (college == null) {
-			throw new AuthenticationFailureException("invalid.securityCode", securityCode);
+			throw new AuthFault("invalid.securityCode", securityCode);
 		}
 
 		String communicationKey = SoapUtil.getCommunicationKey(message);
 
 		if (communicationKey == null || !String.valueOf(college.getCommunicationKey()).equals(communicationKey)) {
-			throw new AuthenticationFailureException("communicationKey.invalid", communicationKey);
+			throw new AuthFault("communicationKey.invalid", communicationKey);
 		}
 		
 		HttpSession session = CollegeSessions.getCollegeSession(college.getId());
 		
 		if (session == null) {
-			throw new AuthenticationFailureException("session.expired.for.key", communicationKey);
+			throw new AuthFault("session.expired.for.key", communicationKey);
 		}
 		
 		HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);

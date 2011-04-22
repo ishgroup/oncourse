@@ -3,9 +3,9 @@ package ish.oncourse.webservices.soap.v4;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.webservices.SoapServiceTest;
+import ish.oncourse.webservices.security.AddSecurityCodeInterceptor;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationService;
-import ish.oncourse.webservices.util.SoapUtil;
 import ish.oncourse.webservices.v4.stubs.replication.CourseClassStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
@@ -19,13 +19,8 @@ import java.util.List;
 import javax.sql.DataSource;
 import javax.xml.ws.BindingProvider;
 
-import org.apache.cxf.binding.soap.SoapMessage;
-import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
-import org.apache.cxf.binding.soap.interceptor.SoapPreProtocolOutInterceptor;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.phase.Phase;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.dbunit.database.DatabaseConnection;
@@ -142,22 +137,5 @@ public class ReplicationPortTypeSoapTest extends SoapServiceTest {
 				String.format("http://localhost:%s/services/v4/auth", PORT));
 
 		return authPort;
-	}
-
-	protected static class AddSecurityCodeInterceptor extends AbstractSoapInterceptor {
-		private String securityCode;
-		private Long communicationKey;
-
-		protected AddSecurityCodeInterceptor(String securityCode, Long communicationKey) {
-			super(Phase.WRITE);
-			addAfter(SoapPreProtocolOutInterceptor.class.getName());
-			this.securityCode = securityCode;
-			this.communicationKey = communicationKey;
-		}
-
-		public void handleMessage(SoapMessage message) throws Fault {
-			SoapUtil.addSecurityCode(message, securityCode);
-			SoapUtil.addCommunicationKey(message, communicationKey);
-		}
 	}
 }

@@ -83,8 +83,9 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		try {
 			long newCommKey = port.authenticate("123456", 7059522699886202880L);
 			fail("Passed wrong Security code. Failure is expected.");
-		} catch (Exception e) {
-			assertNotNull(e.getMessage());
+		} catch (AuthFailure e) {
+			assertNotNull("Expecting not null message", e.getMessage());
+			assertEquals("Check error code.", ErrorCode.INVALID_SECURITY_CODE, e.getFaultInfo());
 		}
 	}
 
@@ -108,8 +109,9 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		try {
 			long newCommKey = port.authenticate("345ttn44$%9", 12345L);
 			fail("Passed wrong communication key. Failure is expected.");
-		} catch (Exception e) {
+		} catch (AuthFailure e) {
 			assertNotNull(e.getMessage());
+			assertEquals("Check error code.", ErrorCode.INVALID_COMMUNICATION_KEY, e.getFaultInfo());
 		}
 
 		// Check if college in a HALT state.
@@ -156,8 +158,6 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 
 		long newCommunicationKey = port.authenticate("345ttn44$%9", 7059522699886202880L);
 
-		long result = port.logout(newCommunicationKey);
-
-		assertEquals("Expecting success logout.", result, 0);
+		port.logout(newCommunicationKey);
 	}
 }
