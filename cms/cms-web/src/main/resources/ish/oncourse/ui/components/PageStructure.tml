@@ -9,8 +9,7 @@
 	<head>
 		<head t:type="ui/pagehead" title="${title}"/>
 		<t:if t:test="loggedIn">
-			<!-- TODO decide whether we need it -->
-			<!-- link t:type="ui/cssassetgroup" group="literal:core-cms" media="literal:screen, projection" /-->
+			<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
 			<script t:type="ui/jsassetgroup" group="literal:core-cms"/>
   		</t:if>
 	</head>

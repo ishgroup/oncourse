@@ -10,7 +10,13 @@
     <t:zone t:id="editorZone" visible="false"></t:zone>
 
     <t:block id="regionContentBlock">
-		<div class="edit_region_link"><a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">Edit this region</a></div>
+		<div class="cms-edit-area">
+			
+			<a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">
+				<div class="cms-edit-area-in" />
+			</a>
+			
+		</div>
         <t:outputraw value="regionContent" />
    </t:block>
 

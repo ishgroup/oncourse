@@ -32,10 +32,6 @@ public class Page {
 		node = (WebNode) cayenneService.newContext().localObject(webNodeService.getCurrentNode().getObjectId(), null);
 	}
 	
-	public String getBodyId() {
-		return (isHomePage()) ? "Main" : ("page" + this.node.getNodeNumber());
-	}
-
 	public String getBodyClass() {
 		return (isHomePage()) ? "main-page" : "internal-page";
 	}
