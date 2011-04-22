@@ -2,6 +2,7 @@ package ish.oncourse.cms.services.access;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.WillowUser;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -11,7 +12,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
-import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
@@ -27,7 +27,7 @@ public class AuthenticationService implements IAuthenticationService {
 	private Request request;
 
 	@Inject
-	private Cookies cookies;
+	private ICookiesService cookiesService;
 
 	@Inject
 	private ApplicationStateManager applicationStateManager;
@@ -63,7 +63,7 @@ public class AuthenticationService implements IAuthenticationService {
 			
 			applicationStateManager.set(WillowUser.class, users.get(0));
 			status = AuthenticationStatus.SUCCESS;
-			cookies.writeCookieValue("cms", "true");
+			cookiesService.writeCookieValue("cms", "enabled");
 			
 		} else if ((users != null) && (users.size() > 1)) {
 			status = AuthenticationStatus.MORE_THAN_ONE_USER;
@@ -95,6 +95,6 @@ public class AuthenticationService implements IAuthenticationService {
 			session.invalidate();
 		}
 
-		cookies.removeCookieValue("cms");
+		cookiesService.removeCookieValue("cms");
 	}
 }

@@ -27,4 +27,6 @@ public interface ICookiesService {
 	void appendValueToCookieCollection(String cookieKey, String cookieValue);
 
 	void removeValueFromCookieCollection(String cookieKey, String cookieValue);
+
+	void removeCookieValue(String name);
 }

@@ -10,10 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.internal.services.CookiesImpl;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.RequestGlobals;
 
 public class CookiesService implements ICookiesService {
 
@@ -25,6 +29,9 @@ public class CookiesService implements ICookiesService {
 
 	@Inject
 	private Request request;
+
+	@Inject
+	private RequestGlobals requestGlobals;
 
 	@Inject
 	private Cookies cookies;
@@ -182,5 +189,20 @@ public class CookiesService implements ICookiesService {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Implementation from @see CookiesImpl#removeCookieValue(java.lang.String),
+	 * but the difference is that this method sets root path to the processing
+	 * cookie.
+	 */
+	@Override
+	public void removeCookieValue(String name) {
+		Cookie cookie = new Cookie(name, null);
+		cookie.setPath("/");
+		cookie.setMaxAge(0);
+		cookie.setSecure(request.isSecure());
+
+		requestGlobals.getHTTPServletResponse().addCookie(cookie);
 	}
 }
