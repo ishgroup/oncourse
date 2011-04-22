@@ -54,10 +54,11 @@ public class CmsNavigation {
         this.node = webNodeService.getCurrentNode();
     }
 
-    public Object onActionFromLogout() throws IOException {
-        authenticationService.logout();
-        return null;
-    }
+	public URL onActionFromLogout() throws Exception {
+		authenticationService.logout();
+		Request request = this.request;
+		return new URL("http://" + request.getServerName());
+	}
 
     public Object onActionFromNewPage() throws IOException {
         ObjectContext ctx = cayenneService.newContext();
