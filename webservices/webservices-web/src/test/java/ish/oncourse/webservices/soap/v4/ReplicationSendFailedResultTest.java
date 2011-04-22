@@ -77,7 +77,7 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 		result.getReplicatedRecord().add(confirmedEnrol);
 		result.getReplicatedRecord().add(confirmedCourseClass);
 
-		short resp = port.sendResults(result);
+		port.sendResults(result);
 
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",

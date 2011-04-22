@@ -5,6 +5,7 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseModule;
@@ -21,6 +22,7 @@ import ish.oncourse.webservices.updaters.replication.AttendanceUpdater;
 import ish.oncourse.webservices.updaters.replication.BinaryInfoRelationUpdater;
 import ish.oncourse.webservices.updaters.replication.CertificateOutcomeUpdater;
 import ish.oncourse.webservices.updaters.replication.CertificateUpdater;
+import ish.oncourse.webservices.updaters.replication.ContactUpdater;
 import ish.oncourse.webservices.updaters.replication.CourseClassUpdater;
 import ish.oncourse.webservices.updaters.replication.CourseModuleUpdater;
 import ish.oncourse.webservices.updaters.replication.CourseUpdater;
@@ -42,6 +44,7 @@ import java.util.Map;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tools.ant.taskdefs.Concat;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WillowUpdaterFactory {
@@ -65,6 +68,7 @@ public class WillowUpdaterFactory {
 			
 			updaterMap.put(getEntityName(Attendance.class), new AttendanceUpdater());
 			updaterMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
+			updaterMap.put(getEntityName(Contact.class), new ContactUpdater());
 			updaterMap.put(getEntityName(Course.class), new CourseUpdater());
 			updaterMap.put(getEntityName(CourseClass.class), new CourseClassUpdater());
 			updaterMap.put(getEntityName(CourseModule.class), new CourseModuleUpdater());
@@ -96,7 +100,7 @@ public class WillowUpdaterFactory {
 			IWillowUpdater updater = updaters.get(key);
 
 			if (updater == null) {
-				throw new UpdaterNotFoundException("Builder not found during record conversion", key);
+				throw new UpdaterNotFoundException(String.format("Updater not found during record conversion:%s.", key), key);
 			}
 
 			return updater.updateRecord(stub, result);

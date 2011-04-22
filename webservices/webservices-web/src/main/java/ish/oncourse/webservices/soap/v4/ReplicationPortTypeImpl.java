@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -145,7 +146,8 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Override
 	@WebMethod(operationName = "sendResults")
-	public short sendResults(ReplicationResult request) {
+	@Oneway
+	public void sendResults(ReplicationResult request) {
 		try {
 			ObjectContext ctx = cayenneService.newNonReplicatingContext();
 
@@ -178,9 +180,6 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 			ctx.commitChanges();
 		} catch (Exception e) {
 			logger.error("Unable to confirm replication results.", e);
-			return 1;
 		}
-
-		return 0;
 	}
 }

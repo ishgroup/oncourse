@@ -84,7 +84,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 
 		if (college.getCommunicationKey() != null && college.getCommunicationKeyStatus() == KeyStatus.HALT) {
 			// Communication key in a HALT state. Refuse authentication attempt.
-			throw new AuthFailure(messages.get("communicationKey.halt"), ErrorCode.HALT_COMMUNICATION_KEY);
+			throw new AuthFailure(messages.format("communicationKey.halt", lastCommKey), ErrorCode.HALT_COMMUNICATION_KEY);
 		}
 
 		boolean invalidKey = college.getCommunicationKey() != null && college.getCommunicationKeyStatus() == KeyStatus.VALID

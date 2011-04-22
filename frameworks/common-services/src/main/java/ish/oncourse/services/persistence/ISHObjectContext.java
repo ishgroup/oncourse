@@ -2,23 +2,25 @@ package ish.oncourse.services.persistence;
 
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.DataChannel;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.ObjectStore;
+import org.apache.cayenne.graph.GraphDiff;
 
 /**
  * 
  * @author marek
  */
 public class ISHObjectContext extends DataContext {
-	
-	private ThreadLocal<String> transactionKeyStorage = new InheritableThreadLocal<String>();
+
+	private static final String TRANSACTION_KEY_PROP = "transaction_key";
 
 	private boolean isRecordQueueingEnabled = true;
-	
+
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
 		super(channel, objectStore);
 	}
-	
+
 	/**
 	 * @return true if record queueing is enabled.
 	 */
@@ -37,20 +39,36 @@ public class ISHObjectContext extends DataContext {
 	}
 
 	/**
-	 * Method, which assigns commit key to each commit attempt.
-	 */
-	@Override
-	public void commitChanges() throws CayenneRuntimeException {
-		String transactionKey = String.valueOf(this.hashCode()) + "_" + System.nanoTime();
-		transactionKeyStorage.set(transactionKey);
-		super.commitChanges();
-	}
-
-	/**
-	 * Method, which returns the commit key of last commit on this context within current thread.
+	 * Method, which returns the commit key of last commit on this context
+	 * within current thread.
+	 * 
 	 * @return transaction key
 	 */
 	public String getTransactionKey() {
-		return transactionKeyStorage.get();
+		return (String) getUserProperty(TRANSACTION_KEY_PROP);
+	}
+
+	/**
+	 * Method, which assigns commit key to each commit attempt.
+	 */
+	@Override
+	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType) {
+		try {
+			String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
+			setUserProperty(TRANSACTION_KEY_PROP, transactionKey);
+			return super.onSync(originatingContext, changes, syncType);
+		} finally {
+			setUserProperty(TRANSACTION_KEY_PROP, null);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.apache.cayenne.access.DataContext#commitChanges()
+	 */
+	@Override
+	public void commitChanges() throws CayenneRuntimeException {
+		String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
+		setUserProperty(TRANSACTION_KEY_PROP, transactionKey);
+		super.commitChanges();
 	}
 }

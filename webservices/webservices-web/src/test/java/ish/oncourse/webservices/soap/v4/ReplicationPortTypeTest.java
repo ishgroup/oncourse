@@ -168,9 +168,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		result.getReplicatedRecord().add(confirmedEnrol);
 		result.getReplicatedRecord().add(confirmedCourseClass);
 
-		short resp = service.sendResults(result);
-
-		assertTrue("Expecting zero response.", resp == 0);
+		service.sendResults(result);
 
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
