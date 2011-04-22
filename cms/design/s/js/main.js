@@ -203,11 +203,11 @@ function editArea() {
 
 
         if (ietrue) {
-            backWr = 'url(s/img/edit-area.png) left top';
-            backIn = 'url(s/img/edit-label.png) no-repeat center center';
+            backWr = 'url(s/cms/img/edit-area.png) left top';
+            backIn = 'url(s/cms/img/edit-label.png) no-repeat center center';
         } else {
             backWr = 'rgba(255, 180, 0, 0.8)';
-            backIn = 'rgba(255, 182, 0, 0.1) url(s/img/edit-label.png) no-repeat center center';
+            backIn = 'rgba(255, 182, 0, 0.1) url(s/cms/img/edit-label.png) no-repeat center center';
         }
 
 
