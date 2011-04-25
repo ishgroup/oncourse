@@ -44,7 +44,6 @@ import java.util.Map;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tools.ant.taskdefs.Concat;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WillowUpdaterFactory {

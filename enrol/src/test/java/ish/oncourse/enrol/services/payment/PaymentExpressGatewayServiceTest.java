@@ -108,7 +108,8 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		TransactionResult tr = gatewayService.doTransaction(payment);
-		assertTrue(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
+		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
+		assertTrue("Check if authorized.", isAuthorized);
 	}
 
 	/**

@@ -39,8 +39,6 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
 		
-		ContextUtils.setupDataSources();
-		
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
 

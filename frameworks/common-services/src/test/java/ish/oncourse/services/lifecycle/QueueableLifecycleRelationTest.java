@@ -1,10 +1,19 @@
 package ish.oncourse.services.lifecycle;
 
+import static org.junit.Assert.assertTrue;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Student;
+import ish.oncourse.model.Tutor;
+import ish.oncourse.model.WaitingList;
+import ish.oncourse.model.WaitingListSite;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
+
 import java.io.InputStream;
 
 import javax.sql.DataSource;
 
-import static org.junit.Assert.assertTrue;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
@@ -16,23 +25,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.WaitingList;
-import ish.oncourse.model.WaitingListSite;
-import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ContextUtils;
-import ish.oncourse.test.ServiceTest;
-
 public class QueueableLifecycleRelationTest extends ServiceTest {
 
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
-
-		ContextUtils.setupDataSources();
 
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/relationDataSet.xml");

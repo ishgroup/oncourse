@@ -36,6 +36,11 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-ioc</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-test</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.derby</groupId>
