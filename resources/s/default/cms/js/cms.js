@@ -7,11 +7,14 @@ jQuery(document).ready(
 		function() {
 			jQuery(".cms_editor_tabs").tabs();
 
-			$j(".cms-edit-area-in").each(
-					function() {
-						editArea = $j(this);
-						editBlock = editArea.parent().parent().parent();
-						editArea.css('width', editBlock.width() + "px").css(
-								'height', editBlock.height() + "px");
-					});
 		});
+
+function customForms() {
+    jQuery('.cms-onoff').iphoneStyle();
+    jQuery("select, input:checkbox, input:radio, input:file").uniform();
+
+    if(isChrome() != true) {
+        jQuery('#scrollbar1').tinyscrollbar();
+    }    
+
+}

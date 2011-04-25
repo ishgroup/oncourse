@@ -4,7 +4,11 @@
     <t:loop source="node.webContentVisibility" value="visibility">
        <t:zone id="prop:currentZoneKey" class="region">
            <t:delegate to="regionContentBlock"/>
+          
        </t:zone>
+       <script type="text/javascript">
+       		Event.observe('${currentZoneKey}', Tapestry.ZONE_UPDATED_EVENT,  wrapEditAreas);
+       </script>
     </t:loop>
 
     <t:zone t:id="editorZone" visible="false"></t:zone>
@@ -13,11 +17,12 @@
 		<div class="cms-edit-area">
 			
 			<a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">
-				<div class="cms-edit-area-in" />
+				<div class="cms-edit-area-in"/>
 			</a>
 			
 		</div>
         <t:outputraw value="regionContent" />
+          
    </t:block>
 
     <t:block id="editorBlock">
@@ -40,7 +45,9 @@
 							}
 						});
 					});
+					
 		</script>
 	</t:block>
+
 
 </t:container>

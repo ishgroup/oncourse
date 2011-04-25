@@ -181,101 +181,36 @@ function tabsContent() {
 
 
 function editArea() {
+	wrapEditAreas();
 
+	jQuery('#showEdit').change(function() {
+		if (this.checked) {
+			jQuery('.cms-edit-area').show();
+		} else {
 
-    var ietrue;
-    if (jQuery('.ie').size() > 0) {
-        ietrue = true;
-    } else {
-        ietrue = false;
-    }
+			jQuery('.cms-edit-area').hide();
 
-
-    var fThis = jQuery('#welcome').children('p');
-
-    var offset = fThis.offset();
-        var left = offset.left;
-        var top = offset.top;
-        var fHeight = fThis.height();
-        var fWidth = fThis.width();
-        var fHeightM = -fHeight + 'px';
-        var backWr, backIn;
-
-
-        if (ietrue) {
-            backWr = 'url(s/cms/img/edit-area.png) left top';
-            backIn = 'url(s/cms/img/edit-label.png) no-repeat center center';
-        } else {
-            backWr = 'rgba(255, 180, 0, 0.8)';
-            backIn = 'rgba(255, 182, 0, 0.1) url(s/cms/img/edit-label.png) no-repeat center center';
-        }
-
-
-        var ediBlock = jQuery('<div/>', {
-            'class': 'cms-edit-area',
-            css: {
-                border: '1px solid #ff6c00',
-                background: backWr,
-                padding: '2px',
-                position: 'absolute',
-                zIndex: '15',
-                boxShadow: '0 0 7px rgba(0, 0, 0, 0.4)',
-                marginTop: fHeightM
-            },
-            html: '<div class="cms-edit-area-in" style="border: 1px solid #ff6c00;background: ' + backIn + ';width:' + fWidth + 'px;height:' + fHeight + 'px"></div>'
-        });
-
-
-
-    jQuery(fThis).hover(function() {
-        if (document.getElementById('showEdit').checked == false) {
-            if (jQuery('.cms-edit-area').size() == 0) {
-                jQuery(fThis).append(ediBlock);
-            } else {
-                jQuery('.cms-edit-area').show();
-            }
-        }
-    }, function() {
-        if (document.getElementById('showEdit').checked == false) {
-            jQuery('.cms-edit-area').hide();
-        }
-    });
-
-
-
-
-
-    jQuery('#showEdit').change(function(){
-        if(this.checked) {
-            
-
-            if (jQuery('.cms-edit-area').size() == 0) {
-                jQuery(fThis).append(ediBlock);
-            } else {
-                jQuery('.cms-edit-area').show();
-            }
-
-        } else {
-           
-            jQuery('.cms-edit-area').hide();
-
-        }
-    });
-
-
-
-
-
+		}
+	});
+	jQuery('.cms-edit-area').hide();
 
 }
 
-
+function wrapEditAreas() {
+	$j(".cms-edit-area-in").each(
+			function() {
+				editBlockArea = $j(this);
+				editBlock = editBlockArea.parent().parent().parent();
+				editBlockArea.css('width', editBlock.width() + "px").css(
+						'height', editBlock.height() + "px");
+			});
+}
 
 // Load all
 jQuery(document).ready(function () {
     isChrome();
 
-    jQuery('#edControls').slideUp();
+    //jQuery('#edControls').slideUp();
 
     toolTips();
 

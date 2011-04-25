@@ -22,6 +22,5 @@
 	<!-- JS -->
 	<script t:type="ui/jsassetgroup" group="literal:core"/>
 	<script t:type="ui/jsassetgroup" group="literal:core-application"/>
-	<script t:type="ui/jsassetgroup" group="literal:site"/>
-
+	
 </t:container>
