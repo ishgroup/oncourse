@@ -14,6 +14,8 @@ public interface Queueable extends Persistent {
 
 	College getCollege();
 	
+	void setCollege(College college);
+	
 	void setAngelId(Long angelId);
 	
 	Long getAngelId();

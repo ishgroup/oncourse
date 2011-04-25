@@ -4,20 +4,23 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.services.ICollegeRequestService;
 
 import java.util.Date;
 import java.util.Random;
 
+import javax.annotation.Resource;
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.xml.ws.WebServiceContext;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -41,13 +44,28 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	@Autowired
 	private ICayenneService cayenneService;
 
-	@Inject
-	@Autowired
-	private ICollegeRequestService collegeRequestService;
+	@Resource
+	private WebServiceContext webServiceContext;
 
 	@Inject
 	@Autowired
 	private Messages messages;
+	
+	/**
+	 * Default constructor for DI container.
+	 */
+	public AuthenticationPortTypeImpl() {
+		
+	}
+
+	public AuthenticationPortTypeImpl(ICollegeService collegeService, ICayenneService cayenneService, WebServiceContext webServiceContext,
+			Messages messages) {
+		super();
+		this.collegeService = collegeService;
+		this.cayenneService = cayenneService;
+		this.webServiceContext = webServiceContext;
+		this.messages = messages;
+	}
 
 	/**
 	 * Authenticates user, stores details in HTTP Session.
@@ -62,7 +80,10 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	@WebMethod(operationName = "authenticate", action = "authenticate")
 	public long authenticate(String webServicesSecurityCode, long lastCommKey) throws AuthFailure {
 
-		if (collegeRequestService.getCollegeSession(false) != null) {
+		HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
+		HttpSession session = request.getSession(false);
+		
+		if (session != null) {
 			throw new AuthFailure(messages.get("invalid.session"), ErrorCode.INVALID_SESSION);
 		}
 
@@ -107,7 +128,7 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 		Random randomGen = new Random();
 		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
 
-		Session session = collegeRequestService.getCollegeSession(true);
+		session = request.getSession(true);
 		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(local, newCommunicationKey));
 
 		local.setCommunicationKey(newCommunicationKey);
@@ -135,7 +156,10 @@ public class AuthenticationPortTypeImpl implements AuthenticationPortType {
 	@WebMethod(operationName = "logout", action = "logout")
 	@Oneway
 	public void logout(long newCommKey) {
-		Session session = collegeRequestService.getCollegeSession(false);
+
+		HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
+
+		HttpSession session = request.getSession(false);
 
 		if (session != null) {
 			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 
@@ -20,6 +21,7 @@ public abstract class _PaymentInLine extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String INVOICE_PROPERTY = "invoice";
     public static final String PAYMENT_IN_PROPERTY = "paymentIn";
 
@@ -52,6 +54,15 @@ public abstract class _PaymentInLine extends CayenneDataObject {
     public Date getModified() {
         return (Date)readProperty("modified");
     }
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
+    }
+
 
     public void setInvoice(Invoice invoice) {
         setToOneTarget("invoice", invoice, true);

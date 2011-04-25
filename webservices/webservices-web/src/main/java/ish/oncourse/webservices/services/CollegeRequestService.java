@@ -1,25 +1,21 @@
 package ish.oncourse.webservices.services;
 
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
-
 import ish.oncourse.model.College;
 import ish.oncourse.webservices.util.SoapUtil;
+
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CollegeRequestService implements ICollegeRequestService {
 
 	@Inject
+	@Autowired
 	private Request request;
 
 	@Override
 	public College getRequestingCollege() {
 		College college = (College) request.getAttribute(SoapUtil.REQUESTING_COLLEGE);
 		return college;
-	}
-
-	@Override
-	public Session getCollegeSession(boolean create) {
-		return request.getSession(create);
 	}
 }

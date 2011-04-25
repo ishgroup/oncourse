@@ -4,16 +4,14 @@ import ish.oncourse.model.QueueKey;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.webservices.builders.replication.IWillowStubBuilder;
-import ish.oncourse.webservices.services.replication.DFADedupper;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
-import ish.oncourse.webservices.services.replication.WillowStubBuilderFactory;
-import ish.oncourse.webservices.services.replication.WillowUpdaterFactory;
-import ish.oncourse.webservices.updaters.replication.IWillowUpdater;
+import ish.oncourse.webservices.ITransactionGroupUpdater;
+import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
+import ish.oncourse.webservices.replication.services.DFADedupper;
+import ish.oncourse.webservices.replication.services.IWillowQueueService;
+import ish.oncourse.webservices.replication.services.WillowStubBuilderFactory;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
@@ -50,34 +48,22 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Inject
 	@Autowired
-	private WillowUpdaterFactory updaterFactory;
+	private ITransactionGroupUpdater transactionGroupUpdater;
 
 	@Inject
 	@Autowired
 	private ICayenneService cayenneService;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@WebMethod(operationName = "sendRecords")
 	public ReplicationResult sendRecords(ReplicationRecords req) {
-
-		ReplicationResult result = new ReplicationResult();
-
 		List<ReplicatedRecord> replicatedRecords = new ArrayList<ReplicatedRecord>();
 
 		for (TransactionGroup group : req.getGroups()) {
-			ObjectContext ctx = cayenneService.newNonReplicatingContext();
-
-			IWillowUpdater updater = updaterFactory.newReplicationUpdater(ctx.createChildContext(), group);
-
-			while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-				ReplicationStub stub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
-				updater.updateRecord(stub, replicatedRecords);
-			}
-
-			ctx.commitChanges();
+			replicatedRecords.addAll(transactionGroupUpdater.updateRecords(group));
 		}
-
+		
+		ReplicationResult result = new ReplicationResult();
 		result.getReplicatedRecord().addAll(replicatedRecords);
 
 		return result;

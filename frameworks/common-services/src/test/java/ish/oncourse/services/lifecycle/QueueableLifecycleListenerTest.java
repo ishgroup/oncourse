@@ -13,7 +13,6 @@ import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 
 import java.io.InputStream;

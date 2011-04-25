@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Module;
 
@@ -15,13 +16,21 @@ import ish.oncourse.model.Module;
  */
 public abstract class _CourseModule extends CayenneDataObject {
 
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_PROPERTY = "course";
     public static final String MODULE_PROPERTY = "module";
 
-    public static final String COURSE_ID_PK_COLUMN = "courseId";
-    public static final String MODULE_ID_PK_COLUMN = "moduleId";
+    public static final String ID_PK_COLUMN = "id";
+
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
+    }
 
     public void setCreated(Date created) {
         writeProperty("created", created);
@@ -36,6 +45,15 @@ public abstract class _CourseModule extends CayenneDataObject {
     public Date getModified() {
         return (Date)readProperty("modified");
     }
+
+    public void setCollege(College college) {
+        setToOneTarget("college", college, true);
+    }
+
+    public College getCollege() {
+        return (College)readProperty("college");
+    }
+
 
     public void setCourse(Course course) {
         setToOneTarget("course", course, true);

@@ -282,8 +282,8 @@ INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, cr
 		AND p.contactId IS NULL
 		AND p.studentId IS NOT NULL;
 
-INSERT INTO %DESTINATIONDB%_college.PaymentInLine (amount, angelId, created, id, invoiceId, modified, paymentInId)
-	SELECT (il.priceEachExTax + il.taxEach + il.discountEachexTax), il.angelId, il.created, il.id, il.invoiceId, il.modified, il.invoiceId
+INSERT INTO %DESTINATIONDB%_college.PaymentInLine (amount, collegeId, angelId, created, id, invoiceId, modified, paymentInId)
+	SELECT (il.priceEachExTax + il.taxEach + il.discountEachexTax), @collegeId, il.angelId, il.created, il.id, il.invoiceId, il.modified, il.invoiceId
 	FROM %DESTINATIONDB%_college.InvoiceLine il
 	JOIN %DESTINATIONDB%_college.Invoice i ON i.id = il.invoiceId
 	WHERE i.collegeId = @collegeId;

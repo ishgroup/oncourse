@@ -4,7 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.anyVararg;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import ish.oncourse.model.KeyStatus;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.services.AppModule;
@@ -12,6 +21,13 @@ import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 
 import java.io.InputStream;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
+
+import org.apache.cxf.transport.http.AbstractHTTPDestination;
+import org.apache.tapestry5.ioc.Messages;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -20,6 +36,8 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  * Unit test for all major authentication flows.
@@ -28,17 +46,51 @@ import org.junit.Test;
  * 
  */
 public class AuthenticationPortTypeTest extends ServiceTest {
-	
+
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", "app", AppModule.class, ReplicationTestModule.class);
 		ContextUtils.setupDataSources();
 	}
-	
+
 	public AuthenticationPortType getAuthenticationPort() throws Exception {
-		return getService(AuthenticationPortType.class);
+		WebServiceContext context = mock(WebServiceContext.class);
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpSession session = new MockHttpSession();
+		
+		MessageContext messageContext = mock(MessageContext.class);
+		
+		when(messageContext.get(eq(AbstractHTTPDestination.HTTP_REQUEST))).thenReturn(request);
+		when(request.getSession(anyBoolean())).thenReturn(null, session, session, session, session, session, session);
+		when(context.getMessageContext()).thenReturn(messageContext);
+
+		Messages messages = mock(Messages.class);
+		
+		when(messages.get(anyString())).thenAnswer(new Answer<String>() {
+			@Override
+			public String answer(InvocationOnMock invocation) throws Throwable {
+				Object[] args = invocation.getArguments();
+				return (String) args[0];
+			}
+		});
+		
+		when(messages.format(anyString(), anyVararg())).thenAnswer(new Answer<String>() {
+			@Override
+			public String answer(InvocationOnMock invocation) throws Throwable {
+				Object[] args = invocation.getArguments();
+				return (String) args[0];
+			}
+		});
+		
+		
+
+		AuthenticationPortTypeImpl impl = new AuthenticationPortTypeImpl(getService(ICollegeService.class),
+				getService(ICayenneService.class), context, messages);
+
+		return impl;
 	}
-	
+
 	@After
 	public void cleanUp() throws Exception {
 		cleanDataSource(getDataSource("jdbc/oncourse"));
@@ -155,7 +207,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(dbUnitConnection, dataSet);
 
 		AuthenticationPortType port = getAuthenticationPort();
-
+		
 		long newCommunicationKey = port.authenticate("345ttn44$%9", 7059522699886202880L);
 
 		port.logout(newCommunicationKey);

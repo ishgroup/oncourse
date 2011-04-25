@@ -189,6 +189,7 @@
 	</db-entity>
 	<db-entity name="CourseModule" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -403,6 +404,7 @@
 	<db-entity name="PaymentInLine" catalog="willow_college">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
@@ -1380,6 +1382,9 @@
 	<db-relationship name="courseClasses" source="College" target="CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="courseModules" source="College" target="CourseModule" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="courses" source="College" target="Course" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1423,6 +1428,9 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="outcomes" source="College" target="Outcome" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="paymentInLines" source="College" target="PaymentInLine" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="paymentsIn" source="College" target="PaymentIn" toMany="true">
@@ -1553,6 +1561,9 @@
 	</db-relationship>
 	<db-relationship name="tutorRoles" source="CourseClass" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
+	</db-relationship>
+	<db-relationship name="college" source="CourseModule" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="course" source="CourseModule" target="Course" toMany="false">
 		<db-attribute-pair source="courseId" target="id"/>
@@ -1697,6 +1708,9 @@
 	</db-relationship>
 	<db-relationship name="student" source="PaymentIn" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="PaymentInLine" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="invoice" source="PaymentInLine" target="Invoice" toMany="false">
 		<db-attribute-pair source="invoiceId" target="id"/>
@@ -2085,6 +2099,7 @@
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="room"/>
 	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="tutorRoles" source="CourseClass" target="TutorRole" deleteRule="Deny" db-relationship-path="tutorRoles"/>
+	<obj-relationship name="college" source="CourseModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="CourseModule" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -2133,6 +2148,7 @@
 	<obj-relationship name="paymentInLines" source="PaymentIn" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="paymentTransactions" source="PaymentIn" target="PaymentTransaction" deleteRule="Deny" db-relationship-path="paymentTransactions"/>
 	<obj-relationship name="student" source="PaymentIn" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
+	<obj-relationship name="college" source="PaymentInLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="invoice" source="PaymentInLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="paymentIn" source="PaymentInLine" target="PaymentIn" deleteRule="Nullify" db-relationship-path="paymentIn"/>
 	<obj-relationship name="college" source="PaymentOut" target="College" deleteRule="Nullify" db-relationship-path="college"/>

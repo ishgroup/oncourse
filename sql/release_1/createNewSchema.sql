@@ -1159,6 +1159,7 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentInLine` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `collegeId` BIGINT(20) NOT NULL ,
   `paymentInId` BIGINT(20) NOT NULL ,
   `invoiceId` BIGINT(20) NOT NULL ,
   `angelId` BIGINT(20) NULL DEFAULT NULL ,

@@ -6,12 +6,13 @@ package ish.oncourse.webservices.services;
 
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
-import ish.oncourse.webservices.services.reference.ReferenceService;
-import ish.oncourse.webservices.services.reference.ReferenceStubBuilder;
-import ish.oncourse.webservices.services.replication.IWillowQueueService;
-import ish.oncourse.webservices.services.replication.WillowQueueService;
-import ish.oncourse.webservices.services.replication.WillowStubBuilderFactory;
-import ish.oncourse.webservices.services.replication.WillowUpdaterFactory;
+import ish.oncourse.webservices.ITransactionGroupUpdater;
+import ish.oncourse.webservices.reference.services.ReferenceService;
+import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
+import ish.oncourse.webservices.replication.services.IWillowQueueService;
+import ish.oncourse.webservices.replication.services.TransactionGroupUpdaterImpl;
+import ish.oncourse.webservices.replication.services.WillowQueueService;
+import ish.oncourse.webservices.replication.services.WillowStubBuilderFactory;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
 import ish.oncourse.webservices.soap.v4.ReplicationPortType;
@@ -39,10 +40,10 @@ public class AppModule {
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(WillowStubBuilderFactory.class);
 		binder.bind(IWillowQueueService.class, WillowQueueService.class);
-		binder.bind(WillowUpdaterFactory.class);
+		binder.bind(ITransactionGroupUpdater.class, TransactionGroupUpdaterImpl.class);
 		binder.bind(ReplicationPortType.class, ReplicationPortTypeImpl.class);
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
-		binder.bind(AuthenticationPortType.class, AuthenticationPortTypeImpl.class);
+		binder.bind(AuthenticationPortType.class, AuthenticationPortTypeImpl.class).withId("authDefault");
 		binder.bind(ICollegeRequestService.class, CollegeRequestService.class);
 	}
 	
