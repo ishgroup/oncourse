@@ -45,7 +45,7 @@ public class PaymentExpressGatewayServiceTest {
 	private static final String EXPIRED_DATE_STR = VALID_EXPIRY_DATE.get(Calendar.MONTH) + 1 + "/"
 			+ (VALID_EXPIRY_DATE.get(Calendar.YEAR) - 10);
 
-	private static final String VALID_CARD_NUMBER = "4111111111111111";
+	private static final String VALID_CARD_NUMBER = "5431111111111111";
 
 	private static final String DECLINED_CARD_NUMBER = "9999990000000378";
 
