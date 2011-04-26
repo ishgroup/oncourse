@@ -17,6 +17,7 @@ import ish.oncourse.model.Student;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.Tutor;
+import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
@@ -39,6 +40,7 @@ import ish.oncourse.webservices.replication.updaters.TagUpdater;
 import ish.oncourse.webservices.replication.updaters.TaggableTagUpdater;
 import ish.oncourse.webservices.replication.updaters.TutorRoleUpdater;
 import ish.oncourse.webservices.replication.updaters.TutorUpdater;
+import ish.oncourse.webservices.replication.updaters.WaitingListUpdater;
 import ish.oncourse.webservices.services.ICollegeRequestService;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
@@ -93,6 +95,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		updaterMap.put(getEntityName(TaggableTag.class), new TaggableTagUpdater());
 		updaterMap.put(getEntityName(Tutor.class), new TutorUpdater());
 		updaterMap.put("CourseClassTutor", new TutorRoleUpdater());
+		updaterMap.put(getEntityName(WaitingList.class), new WaitingListUpdater());
 	}
 	
 	@Override
@@ -128,7 +131,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				replRecord.setStatus(Status.WILLOWID_NOT_FOUND);
 				replRecord.setMessage(message);
 			} else {
-				if (objectToUpdate.getAngelId() != stub.getAngelId()) {
+				if (stub.getAngelId() == null || !stub.getAngelId().equals(objectToUpdate.getAngelId())) {
 
 					String message = String.format("AngelId doesn't match. Got %s while expected %s.", stub.getAngelId(),
 							objectToUpdate.getAngelId());
