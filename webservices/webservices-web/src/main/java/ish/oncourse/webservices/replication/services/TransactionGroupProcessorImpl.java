@@ -16,7 +16,7 @@ import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.webservices.ITransactionGroupUpdater;
+import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.replication.updaters.AttendanceUpdater;
 import ish.oncourse.webservices.replication.updaters.BinaryInfoRelationUpdater;
@@ -59,9 +59,9 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 
-public class TransactionGroupUpdaterImpl implements ITransactionGroupUpdater {
+public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
 	
-	private static final Logger logger = Logger.getLogger(TransactionGroupUpdaterImpl.class);
+	private static final Logger logger = Logger.getLogger(TransactionGroupProcessorImpl.class);
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -71,7 +71,7 @@ public class TransactionGroupUpdaterImpl implements ITransactionGroupUpdater {
 
 	private Map<String, IWillowUpdater> updaterMap = new HashMap<String, IWillowUpdater>();
 	
-	public TransactionGroupUpdaterImpl() {
+	public TransactionGroupProcessorImpl() {
 		updaterMap.put(getEntityName(Attendance.class), new AttendanceUpdater());
 		updaterMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
 		updaterMap.put(getEntityName(Contact.class), new ContactUpdater());
@@ -90,7 +90,7 @@ public class TransactionGroupUpdaterImpl implements ITransactionGroupUpdater {
 	}
 	
 	@Override
-	public List<ReplicatedRecord> updateRecords(TransactionGroup group) {
+	public List<ReplicatedRecord> processGroup(TransactionGroup group) {
 		ObjectContext ctx = cayenneService.newNonReplicatingContext();
 
 		List<ReplicatedRecord> result = new ArrayList<ReplicatedRecord>();

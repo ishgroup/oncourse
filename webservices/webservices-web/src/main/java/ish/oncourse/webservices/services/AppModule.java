@@ -6,11 +6,11 @@ package ish.oncourse.webservices.services;
 
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
-import ish.oncourse.webservices.ITransactionGroupUpdater;
+import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.reference.services.ReferenceService;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.services.IWillowQueueService;
-import ish.oncourse.webservices.replication.services.TransactionGroupUpdaterImpl;
+import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
 import ish.oncourse.webservices.replication.services.WillowQueueService;
 import ish.oncourse.webservices.replication.services.WillowStubBuilderFactory;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
@@ -40,7 +40,7 @@ public class AppModule {
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(WillowStubBuilderFactory.class);
 		binder.bind(IWillowQueueService.class, WillowQueueService.class);
-		binder.bind(ITransactionGroupUpdater.class, TransactionGroupUpdaterImpl.class);
+		binder.bind(ITransactionGroupProcessor.class, TransactionGroupProcessorImpl.class);
 		binder.bind(ReplicationPortType.class, ReplicationPortTypeImpl.class);
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 		binder.bind(AuthenticationPortType.class, AuthenticationPortTypeImpl.class).withId("authDefault");

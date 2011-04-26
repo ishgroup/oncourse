@@ -4,7 +4,7 @@ import ish.oncourse.model.QueueKey;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.webservices.ITransactionGroupUpdater;
+import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.services.DFADedupper;
 import ish.oncourse.webservices.replication.services.IWillowQueueService;
@@ -48,7 +48,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Inject
 	@Autowired
-	private ITransactionGroupUpdater transactionGroupUpdater;
+	private ITransactionGroupProcessor transactionGroupUpdater;
 
 	@Inject
 	@Autowired
@@ -60,7 +60,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		List<ReplicatedRecord> replicatedRecords = new ArrayList<ReplicatedRecord>();
 
 		for (TransactionGroup group : req.getGroups()) {
-			replicatedRecords.addAll(transactionGroupUpdater.updateRecords(group));
+			replicatedRecords.addAll(transactionGroupUpdater.processGroup(group));
 		}
 		
 		ReplicationResult result = new ReplicationResult();
