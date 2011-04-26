@@ -18,6 +18,7 @@ public abstract class _QueuedRecord extends CayenneDataObject {
     public static final String ACTION_PROPERTY = "action";
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
     public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
+    public static final String ERROR_MESSAGE_PROPERTY = "errorMessage";
     public static final String LAST_ATTEMPT_TIMESTAMP_PROPERTY = "lastAttemptTimestamp";
     public static final String NUMBER_OF_ATTEMPTS_PROPERTY = "numberOfAttempts";
     public static final String TRANSACTION_KEY_PROPERTY = "transactionKey";
@@ -44,6 +45,13 @@ public abstract class _QueuedRecord extends CayenneDataObject {
     }
     public Long getEntityWillowId() {
         return (Long)readProperty("entityWillowId");
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        writeProperty("errorMessage", errorMessage);
+    }
+    public String getErrorMessage() {
+        return (String)readProperty("errorMessage");
     }
 
     public void setLastAttemptTimestamp(Date lastAttemptTimestamp) {

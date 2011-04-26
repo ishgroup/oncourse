@@ -160,6 +160,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 							: 0;
 					queuedRecord.setNumberOfAttempts(numberAttempts + 1);
 					queuedRecord.setLastAttemptTimestamp(new Date());
+					queuedRecord.setErrorMessage(record.getMessage());
 				}
 			}
 

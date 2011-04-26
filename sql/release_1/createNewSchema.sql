@@ -1294,7 +1294,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`QueuedRecord` (
   `action` ENUM('New', 'Update', 'Delete') CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL ,
   `numberOfAttempts` INT(11) NULL DEFAULT NULL ,
   `lastAttemptTimestamp` DATETIME NULL DEFAULT NULL ,
-  `transactionKey` VARCHAR(255),	
+  `transactionKey` VARCHAR(255),
+  `errorMessage` VARCHAR(1024),
   PRIMARY KEY (`id`) ,
   INDEX `QueuedRecord_ibfk_1` (`collegeId` ASC) ,
   CONSTRAINT `QueuedRecord_ibfk_1`
