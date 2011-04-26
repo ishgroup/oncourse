@@ -13,8 +13,10 @@ import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.Preference;
 import ish.oncourse.model.Queueable;
+import ish.oncourse.model.Student;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.Tutor;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
@@ -32,9 +34,11 @@ import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.PreferenceUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.SessionTutorUpdater;
+import ish.oncourse.webservices.replication.updaters.StudentUpdater;
 import ish.oncourse.webservices.replication.updaters.TagUpdater;
 import ish.oncourse.webservices.replication.updaters.TaggableTagUpdater;
 import ish.oncourse.webservices.replication.updaters.TutorRoleUpdater;
+import ish.oncourse.webservices.replication.updaters.TutorUpdater;
 import ish.oncourse.webservices.services.ICollegeRequestService;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
@@ -84,8 +88,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		updaterMap.put(getEntityName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater());
 		updaterMap.put(getEntityName(Preference.class), new PreferenceUpdater());
 		updaterMap.put("SessionCourseClassTutor", new SessionTutorUpdater());
+		updaterMap.put(getEntityName(Student.class), new StudentUpdater());
 		updaterMap.put(getEntityName(Tag.class), new TagUpdater());
 		updaterMap.put(getEntityName(TaggableTag.class), new TaggableTagUpdater());
+		updaterMap.put(getEntityName(Tutor.class), new TutorUpdater());
 		updaterMap.put("CourseClassTutor", new TutorRoleUpdater());
 	}
 	
@@ -128,7 +134,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 							objectToUpdate.getAngelId());
 
 					logger.error(message);
-
+					
+					objectToUpdate = null;
 					replRecord.setStatus(Status.ANGELID_NOT_MATCH);
 					replRecord.setMessage(message);
 				}
@@ -143,14 +150,13 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 							stub.getEntityIdentifier(), stub.getAngelId());
 
 					logger.error(message);
-
+					
+					objectToUpdate = null;
 					replRecord.setStatus(Status.DANGLING_OBJECT);
 					replRecord.setMessage(message);
-
 				} else {
 					objectToUpdate = objectContext.newObject(getEntityClass(objectContext, stub.getEntityIdentifier()));
 				}
-
 			} else {
 				String message = String.format("Both angelId and willowId are empty for object %s.", stub.getEntityIdentifier());
 
@@ -180,6 +186,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				}
 				
 				objectContext.commitChangesToParent();
+				replRecord.getStub().setWillowId(objectToUpdate.getId());
 			} catch (Exception e) {
 				logger.error("Failed to commit object.", e);
 				objectContext.rollbackChanges();
@@ -254,7 +261,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			if (stub != null) {
 				obj = (M) updateRecord(ctx, stub, group, result);
 			} else {
-				obj = (M) findEntityByWillowId(ctx, entityId, entityIdentifier);
+				obj = (M) findEntityByAngelId(ctx, entityId, entityIdentifier);
 			}
 
 			return obj;
