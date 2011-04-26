@@ -7,7 +7,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
-import ish.oncourse.webservices.replication.services.WillowStubBuilderFactory;
 import ish.oncourse.webservices.services.AppModule;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
@@ -57,12 +56,11 @@ public class WillowStubBuilderTest extends ServiceTest {
 	@Test
 	public void testOnlyFullStubs() {
 		
-		WillowStubBuilderFactory factory = getService(WillowStubBuilderFactory.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		
 		QueuedRecord record = Cayenne.objectForPK(cayenneService.sharedContext(), QueuedRecord.class, 1l);
 		
-		IWillowStubBuilder builder = factory.newReplicationStubBuilder();
+		IWillowStubBuilder builder = getService(IWillowStubBuilder.class);
 		
 		ReplicationStub replStub = builder.convert(record);
 		

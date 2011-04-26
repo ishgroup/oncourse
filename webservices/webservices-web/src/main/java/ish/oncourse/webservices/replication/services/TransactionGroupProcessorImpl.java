@@ -1,46 +1,12 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.BinaryInfoRelation;
-import ish.oncourse.model.Certificate;
-import ish.oncourse.model.CertificateOutcome;
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
 import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.CourseModule;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.Preference;
 import ish.oncourse.model.Queueable;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.TaggableTag;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
-import ish.oncourse.webservices.exception.UpdaterNotFoundException;
-import ish.oncourse.webservices.replication.updaters.AttendanceUpdater;
-import ish.oncourse.webservices.replication.updaters.BinaryInfoRelationUpdater;
-import ish.oncourse.webservices.replication.updaters.CertificateOutcomeUpdater;
-import ish.oncourse.webservices.replication.updaters.CertificateUpdater;
-import ish.oncourse.webservices.replication.updaters.ContactUpdater;
-import ish.oncourse.webservices.replication.updaters.CourseClassUpdater;
-import ish.oncourse.webservices.replication.updaters.CourseModuleUpdater;
-import ish.oncourse.webservices.replication.updaters.CourseUpdater;
-import ish.oncourse.webservices.replication.updaters.DiscountConcessionTypeUpdater;
-import ish.oncourse.webservices.replication.updaters.DiscountUpdater;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
-import ish.oncourse.webservices.replication.updaters.PreferenceUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.updaters.SessionTutorUpdater;
-import ish.oncourse.webservices.replication.updaters.StudentUpdater;
-import ish.oncourse.webservices.replication.updaters.TagUpdater;
-import ish.oncourse.webservices.replication.updaters.TaggableTagUpdater;
-import ish.oncourse.webservices.replication.updaters.TutorRoleUpdater;
-import ish.oncourse.webservices.replication.updaters.TutorUpdater;
-import ish.oncourse.webservices.replication.updaters.WaitingListUpdater;
 import ish.oncourse.webservices.services.ICollegeRequestService;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
@@ -49,13 +15,9 @@ import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -75,28 +37,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	@Inject
 	private ICollegeRequestService collegeRequestService;
 
-	private Map<String, IWillowUpdater> updaterMap = new HashMap<String, IWillowUpdater>();
-	
-	public TransactionGroupProcessorImpl() {
-		updaterMap.put(getEntityName(Attendance.class), new AttendanceUpdater());
-		updaterMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
-		updaterMap.put(getEntityName(Contact.class), new ContactUpdater());
-		updaterMap.put(getEntityName(Course.class), new CourseUpdater());
-		updaterMap.put(getEntityName(CourseClass.class), new CourseClassUpdater());
-		updaterMap.put(getEntityName(CourseModule.class), new CourseModuleUpdater());
-		updaterMap.put(getEntityName(Certificate.class), new CertificateUpdater());
-		updaterMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeUpdater());
-		updaterMap.put(getEntityName(Discount.class), new DiscountUpdater());
-		updaterMap.put(getEntityName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater());
-		updaterMap.put(getEntityName(Preference.class), new PreferenceUpdater());
-		updaterMap.put("SessionCourseClassTutor", new SessionTutorUpdater());
-		updaterMap.put(getEntityName(Student.class), new StudentUpdater());
-		updaterMap.put(getEntityName(Tag.class), new TagUpdater());
-		updaterMap.put(getEntityName(TaggableTag.class), new TaggableTagUpdater());
-		updaterMap.put(getEntityName(Tutor.class), new TutorUpdater());
-		updaterMap.put("CourseClassTutor", new TutorRoleUpdater());
-		updaterMap.put(getEntityName(WaitingList.class), new WaitingListUpdater());
-	}
+	@Inject
+	private IWillowUpdater willowUpdater;
 	
 	@Override
 	public List<ReplicatedRecord> processGroup(TransactionGroup group) {
@@ -175,17 +117,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				if (stub instanceof DeletedStub) {
 					objectContext.deleteObject(objectToUpdate);
 				} else {
-					String key = stub.getEntityIdentifier();
-					IWillowUpdater updater = updaterMap.get(key);
-
-					if (updater == null) {
-						throw new UpdaterNotFoundException(String.format("Updater not found for entity with key:%s", key), key);
-					}
-					
 					College college = (College) objectContext.localObject(collegeRequestService.getRequestingCollege().getObjectId(), null);
 					objectToUpdate.setCollege(college);
-					
-					updater.updateEntityFromStub(stub, objectToUpdate, new RelationShipCallbackImpl(objectContext, group, result));
+					willowUpdater.updateEntityFromStub(stub, objectToUpdate, new RelationShipCallbackImpl(objectContext, group, result));
 				}
 				
 				objectContext.commitChangesToParent();

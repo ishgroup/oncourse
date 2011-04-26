@@ -8,7 +8,6 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.services.DFADedupper;
 import ish.oncourse.webservices.replication.services.IWillowQueueService;
-import ish.oncourse.webservices.replication.services.WillowStubBuilderFactory;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
@@ -44,7 +43,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Inject
 	@Autowired
-	private WillowStubBuilderFactory stubBuilderFactory;
+	private IWillowStubBuilder stubBuilder;
 
 	@Inject
 	@Autowired
@@ -92,8 +91,6 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 			deduper.nextState(r);
 		}
 
-		IWillowStubBuilder builder = stubBuilderFactory.newReplicationStubBuilder();
-
 		Map<String, TransactionGroup> groupMap = new LinkedHashMap<String, TransactionGroup>();
 
 		for (Map.Entry<QueueKey, DFADedupper> entry : dedupMap.entrySet()) {
@@ -124,7 +121,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 				result.getGroups().add(group);
 			}
 
-			group.getAttendanceOrBinaryDataOrBinaryInfo().add(builder.convert(record));
+			group.getAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(record));
 		}
 
 		return result;
