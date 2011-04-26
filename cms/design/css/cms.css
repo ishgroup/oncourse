@@ -1211,7 +1211,7 @@ Media screen. Layout, fonts, colors.
       font-weight: normal;
       padding: 0 5px 5px 5px; }
     #cms .cms-theme-layout .header, #cms .cms-theme-layout .footer {
-      height: 75px; }
+      height: 70px; }
     #cms .cms-theme-layout .left, #cms .cms-theme-layout .right {
       width: 170px;
       height: 200px; }
@@ -1227,11 +1227,8 @@ Media screen. Layout, fonts, colors.
       background: url("/s/cms/img/theme-right.png") no-repeat 10px 10px; }
     #cms .cms-theme-layout .center {
       background: url("/s/cms/img/theme-center.png") no-repeat center 10px; }
-  #cms .cms-theme-layout td > div {
-    display: block;
-    width: auto;
-    margin-top: 5px;
-    height: 60px; }
+  #cms .cms-theme-list-m {
+    list-style: none; }
   #cms .cms-theme-layout .cms-theme-module {
     background: #6f6f6f url("/s/cms/img/theme-module.png") repeat-x;
     /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='"+$start+"', endColorstr='"+$end+"')";
@@ -1240,7 +1237,10 @@ Media screen. Layout, fonts, colors.
     background: -webkit-gradient(linear, left top, left bottom, from(#898989), to(#6f6f6f));
     background: -moz-linear-gradient(top, #898989, #6f6f6f);
     background: linear-gradient(top, #898989, #6f6f6f);
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#898989, endColorstr=#6f6f6f)"; }
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#898989, endColorstr=#6f6f6f)";
+    width: auto;
+    margin-top: 5px;
+    height: 60px; }
   #cms .cms-theme-module {
     background: #9b9898 url("/s/cms/img/theme-module.png") repeat-x;
     /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='"+$start+"', endColorstr='"+$end+"')";
@@ -1257,7 +1257,6 @@ Media screen. Layout, fonts, colors.
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    display: inline-block;
     color: #fff;
     text-shadow: 0 -1px 1px #5c5b5b;
     font-size: 14px;
@@ -1308,12 +1307,12 @@ Media screen. Layout, fonts, colors.
   #cms .cms-theme-modules {
     width: 279px;
     padding-right: 24px;
-    height: 371px;
+    height: 360px;
     list-style: none;
     overflow: hidden;
     position: relative; }
     #cms .cms-theme-modules .cms-theme-module {
-      margin: 0 2px 2px 0;
+      margin-right: 2px;
       width: 90px;
       height: 60px; }
   #cms .cms-theme-modul-u {

@@ -1454,7 +1454,7 @@ a.cms-logout {
     }
 
     .header, .footer {
-        height:75px;
+        height:70px;
     }
     .left, .right {
         width:170px;
@@ -1480,19 +1480,16 @@ a.cms-logout {
     }
 }
 
-
-.cms-theme-layout td > div {
-    display:block;
-    width:auto;
-    margin-top:5px;
-    height:60px;
+.cms-theme-list-m {
+    list-style:none;
 }
-
 
 .cms-theme-layout .cms-theme-module {
     @include gradient-linear(#898989, #6f6f6f, theme-module);
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#898989, endColorstr=#6f6f6f)";
-
+    width:auto;
+    margin-top:5px;
+    height:60px;
 }
 
 
@@ -1504,7 +1501,7 @@ a.cms-logout {
     -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
     box-sizing:border-box;
-    display:inline-block;
+
     color:#fff;
     text-shadow:0 -1px 1px #5c5b5b;
     font-size:14px;
@@ -1540,13 +1537,13 @@ a.cms-logout {
 .cms-theme-modules {
     width:279px;
     padding-right:24px;
-    height:371px;
+    height:360px;
     list-style:none;
     overflow:hidden;
     position:relative;
 
     .cms-theme-module {
-        margin:0 2px 2px 0;
+        margin-right:2px;
         width:90px;
         height:60px;
     }

@@ -129,8 +129,7 @@ function customForms() {
     }
 
     jQuery('#scrollTheme').tinycarousel({
-        axis: 'y',
-        duration: 200
+        axis: 'y'
     });
 
 

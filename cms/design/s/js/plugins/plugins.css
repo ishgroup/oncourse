@@ -771,14 +771,13 @@ Not advised to edit stuff below this line
 /* Tiny slider */
 
 
-#scrollTheme { height: 371px; overflow:hidden; }
-#scrollTheme .viewport { float: left; width: 279px; height: 371px; overflow: hidden; position: relative; }
+#scrollTheme { height: 360px; overflow:hidden; }
+#scrollTheme .viewport { float: left; width: 279px; height: 360px; overflow: hidden; position: relative; }
 #scrollTheme .buttons { display: block; }
 #scrollTheme .next {   }
 #scrollTheme .disable { visibility: hidden; }
 #scrollTheme .overview { list-style: none; position: absolute; padding: 0; margin: 0; left: 0; top: 0; }
-#scrollTheme .overview li{ float: left; height: 62px; width: 100%;}
-
+#scrollTheme .overview li { float: left;}
 
 
 
