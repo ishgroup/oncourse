@@ -26,26 +26,58 @@
    </t:block>
 
     <t:block id="editorBlock">
-		<div id="dialog" title="Basic dialog">
+    
+    	<div id="dialog" class="cms-popup-edit cms-editing hide">
+    		<div class="cms-main-head">
+        		<div class="cms-main-title">
+            		<h1 class="cms-page-title">Edit Block</h1>
+        		</div>
+        		<!-- div class="cms-main-controls alignRight">
+          			<span class="cms-ico-close cms-close-popup"></span>
+        		</div-->
+    		</div>
 			<form t:id="regionForm" zone="prop:currentZoneKey">
-				<textarea t:type="TextArea" value="visibility.webContent.content" rows="18" style="width: 99%"/>
-			</form>
+    		<div class="cms-dialog-line">
+        		<h5 class="cms-block-sub-title">Header <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
+       			<input t:type="TextField" maxlength="500" class="cms-field-wide" value="visibility.webContent.name"/>
+    		</div>
+
+    		<div class="cms-dialog-line">
+        		<h5 class="cms-block-sub-title">Content <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
+        		<textarea class="cms-field-txt" t:type="TextArea" value="visibility.webContent.content" rows="18"/>
+   			</div>
+
+    		</form>
 		</div>
-		<script type="text/javascript">
-					jQuery(function() {
-						jQuery("#dialog").dialog({modal:true, height: 430, width: 530,
-							buttons: {
-								Cancel: function() {
-									jQuery(this).dialog( "close" );
-								},
-								"Save Changes": function() {
-									jQuery(this).dialog( "close" );
-									$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-								}
-							}
+		
+		<script type="text/javascript">		
+			jQuery(function() {
+				jQuery("#dialog")
+					.dialog(
+						{
+							modal : true,
+							height : 530,
+							width : 530,
+							buttons : [
+									{
+										text : "Cancel",
+										click : function() {
+											jQuery(this).dialog("close");
+										},
+										class : "cms-but cms-btn-prev alignCenter"
+									},
+									{
+										text : "Save",
+										click : function() {
+											jQuery(this).dialog("close");
+											$('${regionForm.clientId}')
+													.fire(
+															Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+										},
+										class : "cms-but cms-btn-next alignCenter"
+									} ]
 						});
-					});
-					
+			});
 		</script>
 	</t:block>
 

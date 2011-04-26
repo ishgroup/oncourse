@@ -10,7 +10,7 @@
 		<head t:type="ui/pagehead" title="${title}"/>
 		<t:if t:test="loggedIn">
 			<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
-			<link href="s/js/plugins/plugins.css" rel="stylesheet" type="text/css"/>
+			<link href="/s/cms/js/plugins/plugins.css" rel="stylesheet" type="text/css"/>
 			<script t:type="ui/jsassetgroup" group="literal:core-cms"/>
   		</t:if>
 	</head>
@@ -22,7 +22,7 @@
 		<t:if t:test="loggedIn">
 			<!--[if lt IE 9]> <div class="ie" id="cmsWapper"> <![endif]-->
 			<!--[if IE 9 ]> <div class="ie9" id="cmsWapper"> <![endif]-->
-			<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWapper"> <!--<![endif]-->
+			<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWrapper"> <!--<![endif]-->
 				<div id="cmsInner">
 					<div t:type="CmsNavigation"/>
 				</div>
