@@ -1,5 +1,7 @@
 jQuery.noConflict();
 
+
+
 function wrapHeight() {
     jQuery('body').css('overflow', 'hidden');
     var head = jQuery('#edHeader').outerHeight();
@@ -124,7 +126,14 @@ function customForms() {
 
     if(isChrome() != true) {
         jQuery('#scrollbar1').tinyscrollbar();
-    }    
+    }
+
+    jQuery('#scrollTheme').tinycarousel({
+        axis: 'y',
+        duration: 200
+    });
+
+
 
 }
 
@@ -175,7 +184,15 @@ function tabsContent() {
         jQuery(this).siblings().removeClass("active").children('em').remove();
         jQuery('#edMain').find('.cms-tabs-cont').hide().eq(i).fadeIn(150);
 
-    })
+    });
+
+
+    // Sample functional
+    jQuery('#openTheme1').click(function(){
+        jQuery('#edMain').find('.cms-tabs-cont').hide();
+        jQuery('#edMain').find('#editTheme1').fadeIn(150);        
+        return false;
+    });
 
 }
 
@@ -194,35 +211,35 @@ function editArea() {
     var fThis = jQuery('#welcome').children('p');
 
     var offset = fThis.offset();
-        var left = offset.left;
-        var top = offset.top;
-        var fHeight = fThis.height();
-        var fWidth = fThis.width();
-        var fHeightM = -fHeight + 'px';
-        var backWr, backIn;
+    var left = offset.left;
+    var top = offset.top;
+    var fHeight = fThis.height();
+    var fWidth = fThis.width();
+    var fHeightM = -fHeight + 'px';
+    var editing = jQuery('.cms-editing');
+
 
 
         if (ietrue) {
+            var backWr, backIn;
             backWr = 'url(s/cms/img/edit-area.png) left top';
             backIn = 'url(s/cms/img/edit-label.png) no-repeat center center';
-        } else {
-            backWr = 'rgba(255, 180, 0, 0.8)';
-            backIn = 'rgba(255, 182, 0, 0.1) url(s/cms/img/edit-label.png) no-repeat center center';
         }
 
-
-        var ediBlock = jQuery('<div/>', {
+        var editBlock = jQuery('<div/>', {
             'class': 'cms-edit-area',
             css: {
-                border: '1px solid #ff6c00',
                 background: backWr,
-                padding: '2px',
-                position: 'absolute',
-                zIndex: '15',
-                boxShadow: '0 0 7px rgba(0, 0, 0, 0.4)',
                 marginTop: fHeightM
             },
-            html: '<div class="cms-edit-area-in" style="border: 1px solid #ff6c00;background: ' + backIn + ';width:' + fWidth + 'px;height:' + fHeight + 'px"></div>'
+            click: function(){
+                if(editing.size() > 0) {
+                    if(!editing.is(':visible')) {
+                        editing.show();
+                    }
+                }
+            },
+            html: '<div class="cms-edit-area-in" style="background: ' + backIn + ';width:' + fWidth + 'px;height:' + fHeight + 'px"></div>'
         });
 
 
@@ -230,13 +247,16 @@ function editArea() {
     jQuery(fThis).hover(function() {
         if (document.getElementById('showEdit').checked == false) {
             if (jQuery('.cms-edit-area').size() == 0) {
-                jQuery(fThis).append(ediBlock);
+                editBlock.addClass('hover');
+                jQuery(fThis).append(editBlock);
             } else {
+                jQuery('.cms-edit-area').addClass('hover');
                 jQuery('.cms-edit-area').show();
             }
         }
     }, function() {
         if (document.getElementById('showEdit').checked == false) {
+            jQuery('.cms-edit-area').removeClass('hover');
             jQuery('.cms-edit-area').hide();
         }
     });
@@ -247,18 +267,16 @@ function editArea() {
 
     jQuery('#showEdit').change(function(){
         if(this.checked) {
-            
-
             if (jQuery('.cms-edit-area').size() == 0) {
-                jQuery(fThis).append(ediBlock);
+                editBlock.removeClass('hover');
+                jQuery(fThis).append(editBlock);
             } else {
+                jQuery('.cms-edit-area').removeClass('hover');
                 jQuery('.cms-edit-area').show();
             }
 
         } else {
-           
             jQuery('.cms-edit-area').hide();
-
         }
     });
 
@@ -269,6 +287,42 @@ function editArea() {
 
 }
 
+
+
+function editThemes() {
+    var list = jQuery('#cmsThemeList');
+    var key = jQuery('#cmsThemeKey');
+    var themeId = jQuery('#cmsThemeKeyId');
+
+    themeId.val(list.children('.selected').attr('rel'));
+    list.children('.selected').clone().appendTo(key);
+    key.toggle(function(){
+        list.addClass('show');
+    }, function(){
+        list.removeClass('show');
+    });
+    list.children('span').click(function() {
+        key.html('');
+        jQuery(this).clone().appendTo(key);
+        jQuery(this).siblings().removeClass('selected').end().addClass('selected');
+        key.click();
+        themeId.val(jQuery(this).attr('rel'));
+    });
+
+
+    // Auto resize modules in table cell
+    /*var themeLayout = function() {
+        jQuery('.cms-theme-layout').find('.cms-theme-module').each(function(){
+            var module = jQuery(this);
+            var modH = module.parent('td').innerHeight() / (module.siblings('.cms-theme-module').size() + 1) - 5;
+           
+        module.css({'height':modH});
+        });
+    };
+    themeLayout();*/
+
+
+}
 
 
 // Load all
@@ -301,6 +355,9 @@ jQuery(document).ready(function () {
     jQuery('.cms-close-popup').click(function(){
         jQuery(this).parents('.cms-popup-edit').hide();
     });
+
+
+    editThemes();
 
 
 });

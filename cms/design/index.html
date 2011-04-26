@@ -3343,9 +3343,9 @@
 <link href="s/js/plugins/plugins.css" rel="stylesheet" type="text/css">
 
 
-<!--[if lt IE 9]> <div class="ie" id="cmsWapper"> <![endif]-->
-<!--[if IE 9 ]> <div class="ie9" id="cmsWapper"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWapper"> <!--<![endif]-->
+<!--[if lt IE 9]> <div class="ie" id="cmsWrapper"> <![endif]-->
+<!--[if IE 9 ]> <div class="ie9" id="cmsWrapper"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWrapper"> <!--<![endif]-->
 <div id="cmsInner">
 
 
@@ -3750,69 +3750,6 @@
 
 
 
-<div class="cms-popup-edit">
-    <div class="cms-main-head">
-        <div class="cms-main-title">
-            <h1 class="cms-page-title">Edit Theme</h1>
-        </div>
-        <div class="cms-main-controls alignRight">
-            <span class="cms-ico-close cms-close-popup"></span>
-        </div>
-    </div>
-
-    <div class="cms-dialog-line">
-        <h5 class="cms-block-sub-title">Name <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
-        <input type="text" maxlength="500" class="cms-field-wide" value="">
-    </div>
-
-    <div class="cms-dialog-line">
-        <h5 class="cms-block-sub-title">Layout key <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
-        <select><option>Default</option></select>
-    </div>
-
-    <h2 class="cms-page-sub-title">Contain blocks</h2>
-
-    <table class="cms-table-popup">
-        <tr>
-            <td>
-                <h5 class="cms-block-sub-title">Search <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
-        <select><option>Default</option></select>
-            </td>
-
-            <td>
-                <h5 class="cms-block-sub-title">Banner1 <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
-        <select><option>Default</option></select>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <h5 class="cms-block-sub-title">Search <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
-        <select><option>Default</option></select>
-            </td>
-
-            <td>
-                <h5 class="cms-block-sub-title">Banner1 <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
-        <select><option>Default</option></select>
-            </td>
-        </tr>
-
-    </table>
-
-    <div class="alignCenter">
-        <button type="button" class="cms-but cms-btn-prev">Cancel</button>
-        <button type="button" class="cms-but cms-btn-next">Save</button>
-    </div>
-
-
-</div>
-
-
-
-
-
-
-
 
 
 <div class="cms-main" id="edMain">
@@ -4156,7 +4093,7 @@
                     <tr>
                         <td class="cms-first">Theme 1</td>
                         <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td><span class="cms-ico-edit"></span> <a href="" id="openTheme1">Edit</a></td>
                         <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
                     </tr>
                     <tr>
@@ -4183,6 +4120,247 @@
             </div>
 
         </div>
+
+
+    <div class="cms-tabs-cont" id="editTheme1">
+
+        <div class="cms-content">
+
+
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Edit Theme</h1>
+                </div>
+            </div>
+
+
+            <div class="cms-theme-title">
+
+                <div class="cms-theme-title-n clearfix">
+                    <label for="themeName">Name:</label>
+                    <input id="themeName" type="text" maxlength="500" class="cms-field-wide" value="Blog">
+
+                    <div class="cms-theme-title-del">
+                        <a href="">Delete theme</a>
+                    </div>
+
+                </div>
+
+                <div class="cms-theme-title-k">
+                    <label>Layout key:</label>
+
+                    <div class="cms-theme-key-wr">
+                        <div class="cms-theme-key" id="cmsThemeKey"></div>
+                        <div class="cms-theme-key-list" id="cmsThemeList">
+                            <span rel="1" class="selected"><img src="/s/cms/img/theme1.png">Default</span>
+                            <span rel="2"><img src="/s/cms/img/theme2.png">Sample 1</span>
+                            <span rel="3"><img src="/s/cms/img/theme3.png">Sample 2</span>
+                            <span rel="4"><img src="/s/cms/img/theme4.png">Sample 3</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="cmsThemeKeyId" value="">
+
+                </div>
+
+            </div>
+
+
+            <div class="cms-theme-main">
+                <div class="cms-theme-main-l">
+                    <p><strong>Current layout</strong> Drag &amp; drop blocks from the right column
+                    <br>&nbsp;</p>
+
+
+                    <table class="cms-theme-layout">
+                        <tr>
+                            <td class="header" colspan="3">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">
+
+                            </td>
+                            <td class="center">
+
+                                <div class="cms-theme-module">
+                                    Flash
+                                </div>
+
+                            </td>
+                            <td class="right">
+
+
+                                <div class="cms-theme-module">
+                                    Vote
+                                </div>
+
+                                <div class="cms-theme-module drag">
+                                    Vote
+                                </div>
+                                <div class="cms-theme-module">
+                                    RSS
+                                </div>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="footer">
+
+                                <div class="cms-theme-module">
+                                    Vote
+                                </div>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div>
+                <div class="cms-theme-main-r">
+                    <p><strong>Unassigned</strong> blocks<br>
+                        (drag them to the layout on the left)
+                    </p>
+
+
+                    <div id="scrollTheme" class="cms-theme-modules">
+                        <span class="cms-theme-modul-u buttons prev"></span>
+
+                        <div class="viewport">
+                            <ul class="overview">
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module drag">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Flash
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Banners
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Catalog
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Gif
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Job
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cms-theme-module">
+                                        Vote
+                                    </div><div class="cms-theme-module">
+                                        Rich Text
+                                    </div><div class="cms-theme-module">
+                                        Image
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+
+
+                        <span class="cms-theme-modul-d buttons next"></span>
+                    </div>
+
+
+                    <div class="cms-theme-module drop" style="position:absolute; left:650px; top:300px;">
+                        Image
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+            <div class="cms-btns alignCenter">
+                <button type="button" class="cms-but cms-btn-prev">Cancel</button>
+                <button type="button" class="cms-but cms-btn-next">Save</button>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
 
 
     </div>
@@ -4229,7 +4407,7 @@
 
 </div>
 
-<!--<div class="cms-popup-edit">
+<div class="cms-popup-edit cms-editing hide">
     <div class="cms-main-head">
         <div class="cms-main-title">
             <h1 class="cms-page-title">Edit Block</h1>
@@ -4246,18 +4424,16 @@
 
     <div class="cms-dialog-line">
         <h5 class="cms-block-sub-title">Content <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
-        <textarea class="cms-field-txt">We're one of Australia's leading providers of short courses, professional development courses and corporate training courses, meeting the learning & education needs of the Sydney community at all stages of life and across a diverse range of interests. We're like a community college, but with access to the expertise of the University of Sydney. Gain new insights, learn new skills or discover your untapped creativity - over 700 courses make it all possible at CCE - the Centre for Continuing Education at the University of Sydney.
-        </textarea>
+        <textarea class="cms-field-txt"></textarea>
     </div>
 
     <div class="alignCenter">
-        <button type="button" class="cms-but">Default</button>
         <button type="button" class="cms-but cms-btn-prev">Cancel</button>
         <button type="button" class="cms-but cms-btn-next">Save</button>
     </div>
 
 
-</div>-->
+</div>
 
 
 
