@@ -9,8 +9,6 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 	protected CourseClassStub createFullStub(CourseClass entity) {
 		CourseClassStub c = new CourseClassStub();
 		
-		c.setWillowId(entity.getId());
-		c.setAngelId(entity.getAngelId());
 		c.setCancelled(entity.isCancelled());
 		c.setCode(entity.getCode());
 		c.setCountOfSessions(entity.getCountOfSessions());

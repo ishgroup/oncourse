@@ -7,7 +7,6 @@ public class PreferenceUpdater extends AbstractWillowUpdater<PreferenceStub, Pre
 
 	@Override
 	protected void updateEntity(PreferenceStub stub, Preference entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());

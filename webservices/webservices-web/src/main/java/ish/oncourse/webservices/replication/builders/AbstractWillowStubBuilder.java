@@ -18,11 +18,13 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 			ReplicationStub fullStub = createFullStub(entity);
 			fullStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			fullStub.setWillowId(queuedRecord.getEntityWillowId());
+			fullStub.setAngelId(queuedRecord.getAngelId());
 			return fullStub;
 		case DELETE:
 			DeletedStub deletedStub = new DeletedStub();
 			deletedStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			deletedStub.setWillowId(queuedRecord.getEntityWillowId());
+			deletedStub.setAngelId(queuedRecord.getAngelId());
 			return deletedStub;
 		default:
 			throw new IllegalArgumentException("QueuedRecord with null action is not allowed.");

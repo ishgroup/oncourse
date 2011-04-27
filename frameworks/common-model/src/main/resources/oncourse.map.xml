@@ -457,6 +457,7 @@
 	</db-entity>
 	<db-entity name="QueuedRecord" catalog="willow_college">
 		<db-attribute name="action" type="VARCHAR" isMandatory="true" length="25"/>
+		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" length="64"/>
 		<db-attribute name="entityWillowId" type="BIGINT" length="19"/>
@@ -1093,6 +1094,7 @@
 	</obj-entity>
 	<obj-entity name="QueuedRecord" className="ish.oncourse.model.QueuedRecord" dbEntityName="QueuedRecord">
 		<obj-attribute name="action" type="ish.oncourse.model.QueuedRecordAction" db-attribute-path="action"/>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="entityWillowId" type="java.lang.Long" db-attribute-path="entityWillowId"/>
 		<obj-attribute name="errorMessage" type="java.lang.String" db-attribute-path="errorMessage"/>

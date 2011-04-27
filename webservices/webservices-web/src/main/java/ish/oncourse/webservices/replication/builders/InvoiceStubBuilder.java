@@ -26,7 +26,6 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		stub.setStatus(entity.getStatus().name());
 		stub.setTotalExGst(entity.getTotalExGst());
 		stub.setTotalGst(entity.getTotalGst());
-		stub.setWillowId(entity.getId());
 		return stub;
 	}
 }

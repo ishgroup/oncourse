@@ -11,6 +11,7 @@ public abstract class AbstractWillowUpdater<V extends ReplicationStub, T extends
 	 */
 	@SuppressWarnings("unchecked")
 	public void updateEntityFromStub(ReplicationStub stub, Queueable entity, RelationShipCallback callback) {
+		entity.setAngelId(stub.getAngelId());
 		updateEntity((V) stub, (T) entity, callback);
 	}
 

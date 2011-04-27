@@ -11,7 +11,6 @@ public class CertificateUpdater extends AbstractWillowUpdater<CertificateStub, C
 
 	@Override
 	protected void updateEntity(CertificateStub stub, Certificate entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setCertificateNumber(stub.getCertificateNumber());
 		entity.setCreated(stub.getCreated());
 		entity.setEndDate(stub.getEndDate());

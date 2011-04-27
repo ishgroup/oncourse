@@ -8,8 +8,7 @@ public class ContactStubBuilder extends AbstractWillowStubBuilder<Contact, Conta
 	@Override
 	protected ContactStub createFullStub(Contact entity) {
 		ContactStub stub = new ContactStub();
-		
-		stub.setAngelId(entity.getAngelId());
+
 		stub.setBusinessPhoneNumber(entity.getBusinessPhoneNumber());
 		stub.setCookieHash(entity.getCookieHash());
 		stub.setCountryId(entity.getCountry().getId());
@@ -32,19 +31,19 @@ public class ContactStubBuilder extends AbstractWillowStubBuilder<Contact, Conta
 		stub.setPostcode(entity.getPostcode());
 		stub.setState(entity.getState());
 		stub.setStreet(entity.getStreet());
-		
+
 		stub.setSuburb(entity.getSuburb());
 		stub.setTaxFileNumber(entity.getTaxFileNumber());
 		stub.setUniqueCode(entity.getUniqueCode());
-		stub.setWillowId(entity.getId());
-		
+
 		if (entity.getStudent() != null) {
 			stub.setStudentId(entity.getStudent().getId());
 		}
-		else {
+
+		if (entity.getTutor() != null) {
 			stub.setTutorId(entity.getTutor().getId());
 		}
-		
+
 		return stub;
 	}
 }

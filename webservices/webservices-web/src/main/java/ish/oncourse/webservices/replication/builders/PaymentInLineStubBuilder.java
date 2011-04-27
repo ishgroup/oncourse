@@ -15,7 +15,6 @@ public class PaymentInLineStubBuilder extends AbstractWillowStubBuilder<PaymentI
 		stub.setInvoiceId(entity.getInvoice().getId());
 		stub.setModified(entity.getModified());
 		stub.setPaymentInId(entity.getPaymentIn().getId());
-		stub.setWillowId(entity.getId());
 		
 		return stub;
 	}

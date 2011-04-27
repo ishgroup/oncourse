@@ -12,7 +12,6 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 
 	@Override
 	protected void updateEntity(ContactStub stub, Contact entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setBusinessPhoneNumber(stub.getBusinessPhoneNumber());
 		entity.setCookieHash(stub.getCookieHash());
 		

@@ -18,7 +18,6 @@ public class WaitingListUpdater extends AbstractWillowUpdater<WaitingListStub, W
 	 */
 	@Override
 	protected void updateEntity(WaitingListStub stub, WaitingList entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setCourse(callback.updateRelationShip(stub.getCourseId(), Course.class));
 		entity.setCreated(stub.getCreated());
 		entity.setDetail(stub.getDetail());

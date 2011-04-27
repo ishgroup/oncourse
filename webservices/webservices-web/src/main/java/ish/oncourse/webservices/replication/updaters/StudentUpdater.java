@@ -18,15 +18,8 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 	@Override
 	protected void updateEntity(StudentStub stub, Student entity, RelationShipCallback callback) {	
 		
-		entity.setAngelId(stub.getAngelId());
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
-		
-		Long contactId = stub.getContactId();
-		if (contactId != null) {
-			Contact c = Cayenne.objectForPK(entity.getObjectContext(), Contact.class, contactId);
-			entity.setContact(c);
-		}
 		
 		entity.setConcessionType(stub.getConcessionType());
 		

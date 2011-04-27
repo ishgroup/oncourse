@@ -9,7 +9,6 @@ public class TaggableTagUpdater extends AbstractWillowUpdater<TaggableTagStub, T
 
 	@Override
 	protected void updateEntity(TaggableTagStub stub, TaggableTag entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
 		entity.setTag(callback.updateRelationShip(stub.getTagId(), Tag.class));

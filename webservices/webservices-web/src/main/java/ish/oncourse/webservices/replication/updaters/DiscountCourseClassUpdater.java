@@ -9,7 +9,6 @@ public class DiscountCourseClassUpdater extends AbstractWillowUpdater<DiscountCo
 
 	@Override
 	protected void updateEntity(DiscountCourseClassStub stub, DiscountCourseClass entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setCourseClass(callback.updateRelationShip(stub.getCourseClassId(), CourseClass.class));
 		entity.setCreated(stub.getCreated());
 		entity.setDiscount(callback.updateRelationShip(stub.getDiscountId(), Discount.class));

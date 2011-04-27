@@ -10,8 +10,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 
 	@Override
 	protected void updateEntity(CourseClassStub stub, CourseClass entity, RelationShipCallback callback) {
-				
-		entity.setAngelId(stub.getAngelId());
+			
 		entity.setCancelled(stub.isCancelled());
 		entity.setCode(stub.getCode());
 

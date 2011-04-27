@@ -16,6 +16,7 @@ import ish.oncourse.model.QueuedRecordAction;
 public abstract class _QueuedRecord extends CayenneDataObject {
 
     public static final String ACTION_PROPERTY = "action";
+    public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
     public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
     public static final String ERROR_MESSAGE_PROPERTY = "errorMessage";
@@ -31,6 +32,13 @@ public abstract class _QueuedRecord extends CayenneDataObject {
     }
     public QueuedRecordAction getAction() {
         return (QueuedRecordAction)readProperty("action");
+    }
+
+    public void setAngelId(Long angelId) {
+        writeProperty("angelId", angelId);
+    }
+    public Long getAngelId() {
+        return (Long)readProperty("angelId");
     }
 
     public void setEntityIdentifier(String entityIdentifier) {

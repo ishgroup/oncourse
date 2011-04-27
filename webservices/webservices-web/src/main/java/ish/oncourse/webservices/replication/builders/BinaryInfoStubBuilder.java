@@ -9,7 +9,6 @@ public class BinaryInfoStubBuilder extends AbstractWillowStubBuilder<BinaryInfo,
 	protected BinaryInfoStub createFullStub(BinaryInfo entity) {
 		BinaryInfoStub stub = new BinaryInfoStub();
 		
-		stub.setAngelId(entity.getAngelId());
 		stub.setBinaryDataId(entity.getBinaryData().getId());
 		stub.setByteSize(entity.getByteSize());
 		stub.setCreated(entity.getCreated());
@@ -20,7 +19,6 @@ public class BinaryInfoStubBuilder extends AbstractWillowStubBuilder<BinaryInfo,
 		stub.setPixelWidth(entity.getPixelWidth());
 		stub.setReferenceNumber(entity.getReferenceNumber());
 		stub.setWebVisible(entity.getIsWebVisible());
-		stub.setWillowId(entity.getId());
 		
 		return stub;
 	}

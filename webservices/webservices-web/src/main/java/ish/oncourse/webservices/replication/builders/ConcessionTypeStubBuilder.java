@@ -9,7 +9,6 @@ public class ConcessionTypeStubBuilder extends AbstractWillowStubBuilder<Concess
 	protected ConcessionTypeStub createFullStub(ConcessionType entity) {
 		ConcessionTypeStub stub = new ConcessionTypeStub();
 		
-		stub.setWillowId(entity.getId());
 		stub.setCreated(entity.getCreated());
 		stub.setCredentialExpiryDays(entity.getCredentialExpiryDays());
 		stub.setHasConcessionNumber(entity.getHasConcessionNumber());

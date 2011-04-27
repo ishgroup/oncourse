@@ -13,8 +13,6 @@ public class BinaryDataStubBuilder extends AbstractWillowStubBuilder<BinaryData,
 		stub.setContent(entity.getContent());
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());
-		stub.setWillowId(entity.getId());
-		stub.setAngelId(entity.getAngelId());
 		
 		return stub;
 	}

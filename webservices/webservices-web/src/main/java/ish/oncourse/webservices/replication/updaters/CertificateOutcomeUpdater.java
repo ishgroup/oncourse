@@ -9,7 +9,6 @@ public class CertificateOutcomeUpdater extends AbstractWillowUpdater<Certificate
 
 	@Override
 	protected void updateEntity(CertificateOutcomeStub stub, CertificateOutcome entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setCertificate(callback.updateRelationShip(stub.getCertificateId(), Certificate.class));
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());

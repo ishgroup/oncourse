@@ -8,7 +8,6 @@ public class PreferenceStubBuilder extends AbstractWillowStubBuilder<Preference,
 	@Override
 	protected PreferenceStub createFullStub(Preference entity) {
 		PreferenceStub stub = new PreferenceStub();
-		stub.setAngelId(entity.getAngelId());
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());
 		stub.setExplanation(entity.getExplanation());

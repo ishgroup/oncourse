@@ -8,7 +8,6 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 
 	@Override
 	protected void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
 		entity.setCreated(stub.getCreated());
 		entity.setEntityAngelId(stub.getEntityAngelId());

@@ -1295,6 +1295,7 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`QueuedRecord` (
   `numberOfAttempts` INT(11) NULL DEFAULT NULL ,
   `lastAttemptTimestamp` DATETIME NULL DEFAULT NULL ,
   `transactionKey` VARCHAR(255),
+  `angelId` BIGINT,
   `errorMessage` VARCHAR(1024),
   PRIMARY KEY (`id`) ,
   INDEX `QueuedRecord_ibfk_1` (`collegeId` ASC) ,

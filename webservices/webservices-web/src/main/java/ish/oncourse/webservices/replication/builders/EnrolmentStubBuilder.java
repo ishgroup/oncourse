@@ -9,7 +9,6 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 	protected EnrolmentStub createFullStub(Enrolment entity) {
 		EnrolmentStub stub = new EnrolmentStub();
 		
-		stub.setAngelId(entity.getAngelId());
 		stub.setCourseClassId(entity.getCourseClass().getId());
 		stub.setCreated(entity.getCreated());
 		stub.setInvoiceLineId(entity.getInvoiceLine().getId());
@@ -25,7 +24,6 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 		}
 		
 		stub.setStudentId(entity.getStudent().getId());
-		stub.setWillowId(entity.getId());
 		
 		return stub;
 	}

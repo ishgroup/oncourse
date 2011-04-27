@@ -9,7 +9,6 @@ public class StudentStubBuilder extends AbstractWillowStubBuilder<Student, Stude
 	protected StudentStub createFullStub(Student entity) {
 		StudentStub stub = new StudentStub();
 
-		stub.setWillowId(entity.getId());
 		stub.setConcessionType(entity.getConcessionType());
 		stub.setContactId(entity.getContact().getId());
 		stub.setCountryOfBirthId(entity.getCountryOfBirth().getId());

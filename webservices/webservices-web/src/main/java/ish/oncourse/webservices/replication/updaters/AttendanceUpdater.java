@@ -10,7 +10,6 @@ public class AttendanceUpdater extends AbstractWillowUpdater<AttendanceStub, Att
 
 	@Override
 	protected void updateEntity(AttendanceStub stub, Attendance entity, RelationShipCallback callback) {
-		entity.setAngelId(stub.getAngelId());
 		entity.setAttendanceType(stub.getAttendanceType());
 		entity.setCreated(stub.getCreated());
 		entity.setMarker(callback.updateRelationShip(stub.getMarkerId(), Tutor.class));

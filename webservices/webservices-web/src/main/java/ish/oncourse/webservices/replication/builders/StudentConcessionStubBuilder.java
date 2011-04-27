@@ -8,8 +8,7 @@ public class StudentConcessionStubBuilder extends AbstractWillowStubBuilder<Stud
 	@Override
 	protected StudentConcessionStub createFullStub(StudentConcession entity) {
 		StudentConcessionStub stub = new StudentConcessionStub();
-		
-		stub.setWillowId(entity.getId());
+
 		stub.setAuthorisationExpiresOn(entity.getAuthorisationExpiresOn());
 		stub.setAuthorisedOn(entity.getAuthorisedOn());
 		stub.setConcessionNumber(entity.getConcessionNumber());

@@ -8,8 +8,6 @@ public class InvoiceLineStubBuilder extends AbstractWillowStubBuilder<InvoiceLin
 	@Override
 	protected InvoiceLineStub createFullStub(InvoiceLine entity) {
 		InvoiceLineStub stub = new InvoiceLineStub();
-		stub.setWillowId(entity.getId());
-		stub.setAngelId(entity.getAngelId());
 		stub.setCreated(entity.getCreated());
 		stub.setDescription(entity.getDescription());
 		stub.setDiscountEachExTax(entity.getDiscountEachExTax().toBigDecimal());

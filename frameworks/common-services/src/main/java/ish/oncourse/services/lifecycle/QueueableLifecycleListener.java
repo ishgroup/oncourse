@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.LifecycleListener;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
@@ -25,6 +26,7 @@ import org.apache.cayenne.lifecycle.changeset.PropertyChange;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.map.Relationship;
+import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.log4j.Logger;
 
 /**
@@ -56,6 +58,8 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	public void preRemove(Object entity) {
 		if (entity instanceof Queueable) {
 			Queueable p = (Queueable) entity;
+			ObjectIdQuery query = new ObjectIdQuery(p.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+			Cayenne.objectForQuery(p.getObjectContext(), query);
 			objectContextMap().put(p.getObjectId(), p.getCollege());
 		}
 	}
@@ -132,12 +136,17 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	private void enqueue(Queueable entity, QueuedRecordAction action) {
 		
 		College college = entity.getCollege();
+		ISHObjectContext commitingContext = null;
 		
 		if (college == null) {
 			college = objectContextMap().remove(entity.getObjectId());
+			commitingContext = (ISHObjectContext) college.getObjectContext();
+		} else {
+			commitingContext = (ISHObjectContext) college.getObjectContext();
+			ObjectIdQuery query = new ObjectIdQuery(entity.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+			entity = (Queueable) Cayenne.objectForQuery(commitingContext, query);
 		}
 		
-		ISHObjectContext commitingContext = (ISHObjectContext) college.getObjectContext();
 		
 		if (commitingContext.getIsRecordQueueingEnabled()) {
 		

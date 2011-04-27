@@ -19,7 +19,6 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 		stub.setCreditCardType(entity.getCreditCardType().getDatabaseValue());
 		stub.setModified(entity.getModified());
 		stub.setStudentId(entity.getStudent().getId());
-		stub.setWillowId(entity.getId());
 		
 		return stub;
 	}
