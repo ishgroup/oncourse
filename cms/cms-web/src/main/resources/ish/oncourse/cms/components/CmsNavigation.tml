@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="cms-page-controls" id="edControls">
+	<t:zone t:id="inspectorZone">
     	<div class="cms-page-controls-wr clearFix">
 
         	<div class="cms-btn-control">
@@ -348,7 +349,7 @@
             </div>
         </div>
 
-
+	
         <div class="cms-pages-status" data-pub="published">
             Published
         </div>
@@ -356,7 +357,7 @@
         <div class="cms-pages-updated">
             last update at 18 july 2010 11:57
         </div>
-
+	
         <div class="cms-editable-show">
             Show editable areas
             <div class="cms-editable-control"><input type="checkbox" id="showEdit" class="cms-onoff" /></div>
@@ -364,6 +365,7 @@
 
 
     </div>
+    </t:zone>
 </div>
 	
 	<div id="cms_nav" class="clearfix">
