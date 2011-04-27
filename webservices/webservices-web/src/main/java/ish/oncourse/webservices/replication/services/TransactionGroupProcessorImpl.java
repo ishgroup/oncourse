@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -44,20 +45,87 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		List<ReplicatedRecord> result = new ArrayList<ReplicatedRecord>();
 
+		List<DeletedStub> deletedStubs = new ArrayList<DeletedStub>();
+
 		while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-			ObjectContext ctx = cayenneService.newNonReplicatingContext();
 			ReplicationStub stub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
-			updateRecord(ctx, stub, group, result);
+			if (stub instanceof DeletedStub) {
+				deletedStubs.add((DeletedStub) stub);
+			} else {
+				updateRecord(cayenneService.newNonReplicatingContext(), stub, group, result);
+			}
 		}
+
+		deleteRecords(deletedStubs, result);
 
 		return result;
 	}
 
+	private void deleteRecords(List<DeletedStub> deletedStubs, List<ReplicatedRecord> result) {
+
+		if (!deletedStubs.isEmpty()) {
+			ObjectContext objectContext = cayenneService.newNonReplicatingContext();
+			List<ReplicatedRecord> confirmedRecords = new ArrayList<ReplicatedRecord>();
+
+			try {
+				for (DeletedStub stub : deletedStubs) {
+					ReplicatedRecord replRecord = toReplicatedRecord(stub);
+					confirmedRecords.add(replRecord);
+
+					Queueable objectToUpdate = lookupObject(objectContext, stub, replRecord);
+
+					if (objectToUpdate != null) {
+						objectContext.deleteObject(objectToUpdate);
+					}
+				}
+
+				objectContext.commitChanges();
+			} catch (CayenneRuntimeException e) {
+				logger.error("Failed to commit object.", e);
+				objectContext.rollbackChanges();
+
+				for (ReplicatedRecord r : confirmedRecords) {
+					if (r.getStatus() == Status.SUCCESS) {
+						r.setStatus(Status.FAILED);
+						r.setMessage(e.getMessage());
+					}
+				}
+			}
+
+			result.addAll(confirmedRecords);
+		}
+
+	}
+
 	private Queueable updateRecord(ObjectContext objectContext, ReplicationStub stub, TransactionGroup group, List<ReplicatedRecord> result) {
-		ReplicatedRecord replRecord = new ReplicatedRecord();
-		replRecord.setStatus(Status.SUCCESS);
-		replRecord.setStub(toHollow(stub));
+
+		ReplicatedRecord replRecord = toReplicatedRecord(stub);
 		result.add(replRecord);
+
+		Queueable objectToUpdate = lookupObject(objectContext, stub, replRecord);
+
+		if (objectToUpdate != null) {
+			try {
+
+				College college = (College) objectContext.localObject(collegeRequestService.getRequestingCollege().getObjectId(), null);
+				objectToUpdate.setCollege(college);
+				willowUpdater.updateEntityFromStub(stub, objectToUpdate, new RelationShipCallbackImpl(objectContext, group, result));
+
+				objectContext.commitChanges();
+
+				replRecord.getStub().setWillowId(objectToUpdate.getId());
+			} catch (CayenneRuntimeException e) {
+				logger.error("Failed to commit object.", e);
+				objectContext.rollbackChanges();
+				replRecord.setStatus(Status.FAILED);
+				replRecord.setMessage(e.getMessage());
+			}
+		}
+
+		return objectToUpdate;
+	}
+
+	private Queueable lookupObject(ObjectContext objectContext, final ReplicationStub stub, final ReplicatedRecord replRecord) {
 
 		Queueable objectToUpdate = null;
 
@@ -110,26 +178,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			}
 		}
 
-		if (objectToUpdate != null) {
-			try {
-				if (stub instanceof DeletedStub) {
-					objectContext.deleteObject(objectToUpdate);
-				} else {
-					College college = (College) objectContext.localObject(collegeRequestService.getRequestingCollege().getObjectId(), null);
-					objectToUpdate.setCollege(college);
-					willowUpdater.updateEntityFromStub(stub, objectToUpdate, new RelationShipCallbackImpl(objectContext, group, result));
-				}
-
-				objectContext.commitChangesToParent();
-				replRecord.getStub().setWillowId(objectToUpdate.getId());
-			} catch (Exception e) {
-				logger.error("Failed to commit object.", e);
-				objectContext.rollbackChanges();
-				replRecord.setStatus(Status.FAILED);
-				replRecord.setMessage(e.getMessage());
-			}
-		}
-
 		return objectToUpdate;
 	}
 
@@ -166,6 +214,13 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		hollowStub.setCreated(today);
 
 		return hollowStub;
+	}
+
+	private static ReplicatedRecord toReplicatedRecord(ReplicationStub stub) {
+		ReplicatedRecord replRecord = new ReplicatedRecord();
+		replRecord.setStatus(Status.SUCCESS);
+		replRecord.setStub(toHollow(stub));
+		return replRecord;
 	}
 
 	private class RelationShipCallbackImpl implements RelationShipCallback {
