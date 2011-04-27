@@ -99,7 +99,7 @@ $i: /s/cms/img;
 .cms-menu-wrap {z-index:7;}
 .cms-m-active {z-index:8;}
 .cms-main {z-index:6;}
-.cms-popup-edit {z-index:9;}
+/*.cms-popup-edit {z-index:9;}*/
 .cms-login {z-index:10;}
 
       
@@ -978,26 +978,7 @@ a.cms-logout {
 }
 
 
-/* Popup */
-.cms-popup-edit {
-    border:3px solid #000;
-    @include rounded(3px);
-    background:#fff;
-    padding:19px 21px;
-    position:fixed;
-    left:50%;
-    width:492px;
-    margin:200px 0 0 -242px;
 
-    &.hide {
-        display:none;
-    }
-
-    &.show {
-        display:block;
-    }
-
-}
 
 
 .cms-dialog-line {
@@ -1594,10 +1575,95 @@ a.cms-logout {
     display:block;
 }
 
+/* Popup */
+.cms-popup-edit {
+    overflow:hidden;
+    border:3px solid #000;
+    border-bottom:0;
+    @include rounded(3px 3px 0 0);
+    background:#fff;
+    padding:19px 21px 0 21px;;
+    /*position:fixed;*/
+    /*left:50%;*/
+    /*width:492px;*/
+    /*margin:200px 0 0 -242px;*/
 
+    &.hide {
+        display:none;
+    }
+
+    &.show {
+        display:block;
+    }
+
+    .cms-main-controls {
+        text-align:right;
+    }
+
+    h1 {
+        line-height:1;
+        margin:0;
+        padding:0;
+        color:#242424;
+        font-size:30px;
+        text-transform:none;
+        float:none;
+        letter-spacing:0;
+        position:static;
+    }
+
+    h5 {
+        line-height:1;
+        padding:0;
+        color:#000;
+        margin:0 0 6px 0;
+        font-weight:bold;
+        font-size:13px;
+        text-transform:none;
+        float:none;
+        letter-spacing:0;
+        position:static;
+    }
+
+}
+
+.cms-dialog {
+
+    :focus {outline:none;}
+
+    .ui-dialog-buttonpane {
+        text-align:center;
+        overflow:hidden;
+        padding-bottom:19px;
+        border:3px solid #000;
+        border-top:0;
+        background:#fff;
+        @include rounded(0 0 3px 3px);
+    }
+
+    .ui-dialog-buttonset {
+        display:inline-block;
+    }
+
+    .ui-dialog-titlebar-close {
+        display:none;
+    }
+
+}
+
+.ui-widget-overlay {
+    background:#868686;
+    filter:alpha(opacity=60);
+    background:rgba(#868686, 0.6);
+    position:fixed;
+    top:0;
+    left:0;
+}
 
 
 
 
 }
+
+
 

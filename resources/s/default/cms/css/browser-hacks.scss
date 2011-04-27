@@ -245,7 +245,56 @@ CSS Browser hacks.
 
     }
 }
+
+
+.cms-dialog {
+    .cms-field-wide {
+        background:url(""+$i+"/field-wide.png") no-repeat left top\9;
+        width:473px\9;
+        border:0\9;
+    }
+
+    .cms-field-txt {
+        background:url(""+$i+"/field-txt.png") no-repeat left top\9;
+        height:231px\9;
+        border:0\9;
+    }
+
+    .cms-btn-next:after {
+        display:none\9;
+    }
+
+    .cms-btn-next {
+        padding-right:19px\9;
+        border:0\9;
+        background:url(""+$i+"/btn-next-img.png") no-repeat\9;
+
+
+        &:hover {
+            background:url(""+$i+"/btn-next-img-over.png") no-repeat\9;
+        }
+
+    }
+
+    .cms-btn-prev {
+        padding-left:19px\9;
+        border:0\9;
+        background:url(""+$i+"/btn-prev-img.png") no-repeat\9;
+
+        &:hover {
+            background:url(""+$i+"/btn-prev-img-over.png") no-repeat\9;
+        }
+
+    }
+
+    .cms-btn-prev:after {
+        display:none\9;
+    }
 }
+
+
+}
+
 
 
 

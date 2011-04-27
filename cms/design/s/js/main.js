@@ -1,7 +1,5 @@
 jQuery.noConflict();
 
-
-
 function wrapHeight() {
     jQuery('body').css('overflow', 'hidden');
     var head = jQuery('#edHeader').outerHeight();
@@ -11,8 +9,6 @@ function wrapHeight() {
     jQuery('#edMain').height(sumElems + 1);
 
 }
-
-
 
 function hideEdit() {
     var topScroll = jQuery(window).height() - jQuery('#edMenuWr').height() - 1;

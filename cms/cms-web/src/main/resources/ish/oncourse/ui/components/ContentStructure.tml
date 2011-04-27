@@ -27,14 +27,14 @@
 
     <t:block id="editorBlock">
     
-    	<div id="dialog" class="cms-popup-edit cms-editing hide">
+    	<div id="dialog" class="cms-popup-edit cms-editing">
     		<div class="cms-main-head">
         		<div class="cms-main-title">
             		<h1 class="cms-page-title">Edit Block</h1>
         		</div>
-        		<!-- div class="cms-main-controls alignRight">
-          			<span class="cms-ico-close cms-close-popup"></span>
-        		</div-->
+        		 <div class="cms-main-controls">
+            		<span class="cms-ico-close cms-close-popup"></span>
+       			</div>
     		</div>
 			<form t:id="regionForm" zone="prop:currentZoneKey">
     		<div class="cms-dialog-line">
@@ -52,31 +52,7 @@
 		
 		<script type="text/javascript">		
 			jQuery(function() {
-				jQuery("#dialog")
-					.dialog(
-						{
-							modal : true,
-							height : 530,
-							width : 530,
-							buttons : [
-									{
-										text : "Cancel",
-										click : function() {
-											jQuery(this).dialog("close");
-										},
-										class : "cms-but cms-btn-prev alignCenter"
-									},
-									{
-										text : "Save",
-										click : function() {
-											jQuery(this).dialog("close");
-											$('${regionForm.clientId}')
-													.fire(
-															Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-										},
-										class : "cms-but cms-btn-next alignCenter"
-									} ]
-						});
+				modals('${regionForm.clientId}');
 			});
 		</script>
 	</t:block>

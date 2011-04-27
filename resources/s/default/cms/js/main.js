@@ -149,21 +149,36 @@ function toolTips() {
 	});
 }
 
-/*function modals() {
- jQuery(".cms-popup-edit").dialog({
- width:534,
- open: function(event, ui) {
- //jQuery('<div>').addClass('darkover').prependTo('body');
- jQuery(".ui-dialog-titlebar-close").hide();
- },
- zIndex:2,
- dialogClass: 'alert'
- });
- jQuery('.cms-close-popup').click(function() {
- jQuery(".cms-popup-edit").dialog('close');
- //jQuery('.darkover').remove();
- });
- }*/
+function modals(formId) {
+    jQuery("#dialog").dialog({
+       modal : true,
+       //height : 430,
+       width : 540,
+       dialogClass: 'cms-dialog',
+       buttons : [
+         {
+          text : "Cancel",
+          click : function() {
+           jQuery(this).dialog("close");
+          },
+          'class' : "cms-but cms-btn-prev alignCenter"
+         },
+         {
+          text : "Save",
+          click : function() {
+           jQuery(this).dialog("close");
+           $(formId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+           //$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+          },
+          'class' : "cms-but cms-btn-next alignCenter"
+         } ]
+      });
+    jQuery('.cms-close-popup').click(function(){
+	      jQuery(this).parents('.cms-popup-edit').dialog('close');
+	 });
+    //jQuery("#dialog").dialog('close');
+
+}
 
 function tabsContent() {
 	jQuery('#edMenu').delegate('li', 'click', function() {
@@ -288,10 +303,6 @@ jQuery(document).ready(function() {
 	});
 
 	editArea();
-
-	jQuery('.cms-close-popup').click(function() {
-		jQuery(this).parents('.cms-popup-edit').hide();
-	});
 
 	editThemes();
 

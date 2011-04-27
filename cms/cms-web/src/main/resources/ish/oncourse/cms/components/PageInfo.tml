@@ -18,7 +18,7 @@
 				<p>This information can only be edited using your onCourse client.</p>
 			</div>	
 		</div>
-		<span t:type="pageoptions" node="prop:node" updateZone="inspectorZone"/>
+		
 	</t:zone>
-	
+	<span t:type="pageoptions" node="prop:node" updateZone="inspectorZone"/>
 </t:container>
