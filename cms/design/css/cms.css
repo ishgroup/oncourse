@@ -179,6 +179,7 @@ Media screen. Layout, fonts, colors.
 ---------------------------------*/
 #cms {
   /* z-index */
+  /*.cms-popup-edit {z-index:9;}*/
   /* Login */
   /* Header */
   /* Menu */
@@ -212,8 +213,6 @@ Media screen. Layout, fonts, colors.
     z-index: 8; }
   #cms .cms-main {
     z-index: 6; }
-  #cms .cms-popup-edit {
-    z-index: 9; }
   #cms .cms-login {
     z-index: 10; }
   #cms .cms-login {
@@ -883,21 +882,6 @@ Media screen. Layout, fonts, colors.
     background: #868686;
     filter: alpha(opacity=60);
     background: rgba(134, 134, 134, 0.6); }
-  #cms .cms-popup-edit {
-    border: 3px solid #000;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    background: #fff;
-    padding: 19px 21px;
-    position: fixed;
-    left: 50%;
-    width: 492px;
-    margin: 200px 0 0 -242px; }
-    #cms .cms-popup-edit.hide {
-      display: none; }
-    #cms .cms-popup-edit.show {
-      display: block; }
   #cms .cms-dialog-line {
     margin: 0 0 17px 0; }
   #cms .cms-edit-area {
@@ -1346,6 +1330,69 @@ Media screen. Layout, fonts, colors.
     padding-left: 20px;
     color: #6c6c6c;
     display: block; }
+  #cms .cms-popup-edit {
+    overflow: hidden;
+    border: 3px solid #000;
+    border-bottom: 0;
+    -moz-border-radius: 3px 3px 0 0;
+    -webkit-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
+    background: #fff;
+    padding: 19px 21px 0 21px;
+    /*position:fixed;*/
+    /*left:50%;*/
+    /*width:492px;*/
+    /*margin:200px 0 0 -242px;*/ }
+    #cms .cms-popup-edit.hide {
+      display: none; }
+    #cms .cms-popup-edit.show {
+      display: block; }
+    #cms .cms-popup-edit .cms-main-controls {
+      text-align: right; }
+    #cms .cms-popup-edit h1 {
+      line-height: 1;
+      margin: 0;
+      padding: 0;
+      color: #242424;
+      font-size: 30px;
+      text-transform: none;
+      float: none;
+      letter-spacing: 0;
+      position: static; }
+    #cms .cms-popup-edit h5 {
+      line-height: 1;
+      padding: 0;
+      color: #000;
+      margin: 0 0 6px 0;
+      font-weight: bold;
+      font-size: 13px;
+      text-transform: none;
+      float: none;
+      letter-spacing: 0;
+      position: static; }
+  #cms .cms-dialog :focus {
+    outline: none; }
+  #cms .cms-dialog .ui-dialog-buttonpane {
+    text-align: center;
+    overflow: hidden;
+    padding-bottom: 19px;
+    border: 3px solid #000;
+    border-top: 0;
+    background: #fff;
+    -moz-border-radius: 0 0 3px 3px;
+    -webkit-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px; }
+  #cms .cms-dialog .ui-dialog-buttonset {
+    display: inline-block; }
+  #cms .cms-dialog .ui-dialog-titlebar-close {
+    display: none; }
+  #cms .ui-widget-overlay {
+    background: #868686;
+    filter: alpha(opacity=60);
+    background: rgba(134, 134, 134, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0; }
 
 /*
 Projects css styles.
@@ -1481,6 +1528,30 @@ CSS Browser hacks.
     background: url("/s/cms/img/icons/ico-drag-dis.png") no-repeat left top; }
   #cms .ie .cms-login {
     background: url("/s/cms/img/login-back.png") left top; }
+  #cms .cms-dialog .cms-field-wide, #cms .cms-dialog .cms-field {
+    background: url("/s/cms/img/field-wide.png") no-repeat left top\9;
+    width: 473px\9;
+    border: 0\9; }
+  #cms .cms-dialog .cms-field-txt {
+    background: url("/s/cms/img/field-txt.png") no-repeat left top\9;
+    height: 231px\9;
+    border: 0\9; }
+  #cms .cms-dialog .cms-btn-next:after {
+    display: none\9; }
+  #cms .cms-dialog .cms-btn-next {
+    padding-right: 19px\9;
+    border: 0\9;
+    background: url("/s/cms/img/btn-next-img.png") no-repeat\9; }
+    #cms .cms-dialog .cms-btn-next:hover {
+      background: url("/s/cms/img/btn-next-img-over.png") no-repeat\9; }
+  #cms .cms-dialog .cms-btn-prev {
+    padding-left: 19px\9;
+    border: 0\9;
+    background: url("/s/cms/img/btn-prev-img.png") no-repeat\9; }
+    #cms .cms-dialog .cms-btn-prev:hover {
+      background: url("/s/cms/img/btn-prev-img-over.png") no-repeat\9; }
+  #cms .cms-dialog .cms-btn-prev:after {
+    display: none\9; }
 
 /* Chrome & Safari  Hacks */
 @media screen and (-webkit-min-device-pixel-ratio:0) {

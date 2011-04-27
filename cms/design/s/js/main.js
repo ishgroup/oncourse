@@ -155,21 +155,33 @@ function toolTips() {
     });
 }
 
-/*function modals() {
-    jQuery(".cms-popup-edit").dialog({
-        width:534,
-        open: function(event, ui) {
-            //jQuery('<div>').addClass('darkover').prependTo('body');
-            jQuery(".ui-dialog-titlebar-close").hide();
-        },
-        zIndex:2,
-        dialogClass: 'alert'
-    });
-    jQuery('.cms-close-popup').click(function() {
-        jQuery(".cms-popup-edit").dialog('close');
-        //jQuery('.darkover').remove();
-    });
-}*/
+function modals() {
+    jQuery("#dialog").dialog({
+       modal : true,
+       //height : 430,
+       width : 540,
+       dialogClass: 'cms-dialog',
+       buttons : [
+         {
+          text : "Cancel",
+          click : function() {
+           jQuery(this).dialog("close");
+          },
+          'class' : "cms-but cms-btn-prev alignCenter"
+         },
+         {
+          text : "Save",
+          click : function() {
+           jQuery(this).dialog("close");
+           //$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+          },
+          'class' : "cms-but cms-btn-next alignCenter"
+         } ]
+      });
+
+    jQuery("#dialog").dialog('close');
+
+}
 
 function tabsContent() {
     jQuery('#edMenu').delegate('li', 'click', function() {
@@ -215,7 +227,7 @@ function editArea() {
     var fHeight = fThis.height();
     var fWidth = fThis.width();
     var fHeightM = -fHeight + 'px';
-    var editing = jQuery('.cms-editing');
+
 
 
 
@@ -232,11 +244,7 @@ function editArea() {
                 marginTop: fHeightM
             },
             click: function(){
-                if(editing.size() > 0) {
-                    if(!editing.is(':visible')) {
-                        editing.show();
-                    }
-                }
+                jQuery("#dialog").dialog('open');
             },
             html: '<div class="cms-edit-area-in" style="background: ' + backIn + ';width:' + fWidth + 'px;height:' + fHeight + 'px"></div>'
         });
@@ -352,11 +360,13 @@ jQuery(document).ready(function () {
     editArea();
 
     jQuery('.cms-close-popup').click(function(){
-        jQuery(this).parents('.cms-popup-edit').hide();
+        jQuery(this).parents('.cms-popup-edit').dialog('close');
     });
 
 
     editThemes();
+
+    modals();
 
 
 });
