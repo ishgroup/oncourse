@@ -6,6 +6,7 @@ import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseModule;
@@ -47,6 +48,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		updaterMap.put(getEntityName(Tutor.class), new TutorUpdater());
 		updaterMap.put("CourseClassTutor", new TutorRoleUpdater());
 		updaterMap.put(getEntityName(WaitingList.class), new WaitingListUpdater());
+		updaterMap.put(getEntityName(Site.class), new SiteUpdater());
 	}
 
 	/*
