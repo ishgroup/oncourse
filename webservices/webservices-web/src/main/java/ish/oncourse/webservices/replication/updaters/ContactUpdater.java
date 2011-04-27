@@ -39,6 +39,11 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 		entity.setHomePhoneNumber(stub.getHomePhoneNumber());
 		entity.setIsCompany(stub.isCompany());
 		entity.setIsMale(stub.isMale());
+		
+		entity.setSuburb(stub.getSuburb());
+		entity.setState(stub.getState());
+		entity.setStreet(stub.getStreet());
+		entity.setPostcode(stub.getPostcode());
 
 		entity.setIsMarketingViaEmailAllowed(stub.isMarketingViaEmailAllowed());
 		entity.setIsMarketingViaPostAllowed(stub.isMarketingViaPostAllowed());

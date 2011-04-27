@@ -41,11 +41,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	@Override
 	public List<ReplicatedRecord> processGroup(TransactionGroup group) {
-		ObjectContext ctx = cayenneService.newNonReplicatingContext();
 
 		List<ReplicatedRecord> result = new ArrayList<ReplicatedRecord>();
 
 		while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+			ObjectContext ctx = cayenneService.newNonReplicatingContext();
 			ReplicationStub stub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
 			updateRecord(ctx, stub, group, result);
 		}
