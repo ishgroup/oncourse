@@ -1,6 +1,5 @@
 package ish.oncourse.webservices.replication.updaters;
 
-import org.apache.cayenne.Cayenne;
 
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
@@ -19,10 +18,7 @@ public class RoomUpdater extends AbstractWillowUpdater<RoomStub, Room> {
 		entity.setFacilities(stub.getFacilities());
 		entity.setName(stub.getName());
 		
-		Long siteId = stub.getSiteId();
-		if (siteId != null) {
-			Site s = Cayenne.objectForPK(entity.getObjectContext(), Site.class, siteId);
-			entity.setSite(s);
-		}
+		entity.setSite(callback.updateRelationShip(stub.getSiteId(), Site.class));
+
 	}
 }
