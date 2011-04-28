@@ -11,6 +11,7 @@ import ish.oncourse.webservices.replication.services.IWillowQueueService;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
@@ -121,7 +122,11 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 				result.getGroups().add(group);
 			}
 
-			group.getAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(record));
+			ReplicationStub stub = stubBuilder.convert(record);
+			
+			if (stub != null) {
+				group.getAttendanceOrBinaryDataOrBinaryInfo().add(stub);
+			}
 		}
 
 		return result;

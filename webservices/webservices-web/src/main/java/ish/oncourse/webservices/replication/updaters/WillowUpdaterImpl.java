@@ -5,6 +5,7 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
+import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
@@ -16,6 +17,7 @@ import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.Preference;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.Tutor;
@@ -37,6 +39,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		updaterMap.put(getEntityName(Course.class), new CourseUpdater());
 		updaterMap.put(getEntityName(CourseClass.class), new CourseClassUpdater());
 		updaterMap.put(getEntityName(CourseModule.class), new CourseModuleUpdater());
+		updaterMap.put(getEntityName(ConcessionType.class), new ConcessionTypeUpdater());
 		updaterMap.put(getEntityName(Certificate.class), new CertificateUpdater());
 		updaterMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeUpdater());
 		updaterMap.put(getEntityName(Discount.class), new DiscountUpdater());
@@ -51,6 +54,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		updaterMap.put(getEntityName(WaitingList.class), new WaitingListUpdater());
 		updaterMap.put(getEntityName(Site.class), new SiteUpdater());
 		updaterMap.put(getEntityName(Room.class), new RoomUpdater());
+		updaterMap.put(getEntityName(StudentConcession.class), new StudentConcessionUpdater());
 	}
 
 	/*

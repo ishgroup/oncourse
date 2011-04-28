@@ -33,7 +33,6 @@ public class CayenneService implements ICayenneService {
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}
 		
-		cayenneRuntime.getDataDomain().addFilter(new WillowChangeSetFilter());
 	}
 
 	public ObjectContext newContext() {

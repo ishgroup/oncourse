@@ -73,7 +73,7 @@ public class Courses {
 	@Property
 	private List<Site> mapSites;
 	@Property
-	private Map<Integer, Float> focusesForMapSites;
+	private Map<Long, Float> focusesForMapSites;
 	@InjectComponent
 	private Zone coursesZone;
 	@InjectComponent
@@ -122,7 +122,7 @@ public class Courses {
 	private void setupMapSites() {
 		mapSites = new ArrayList<Site>();
 		if (hasAnyFormValuesForFocus()) {
-			focusesForMapSites = new HashMap<Integer, Float>();
+			focusesForMapSites = new HashMap<Long, Float>();
 		}
 		Double[] locationPoints = { null, null };
 		if (searchParams != null && searchParams.containsKey(SearchParam.near)) {

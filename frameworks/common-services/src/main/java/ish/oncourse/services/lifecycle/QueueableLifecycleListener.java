@@ -11,7 +11,6 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.ISHObjectContext;
-import ish.oncourse.services.persistence.WillowChangeSetFilter;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,11 +20,6 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.LifecycleListener;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.lifecycle.changeset.ChangeSet;
-import org.apache.cayenne.lifecycle.changeset.PropertyChange;
-import org.apache.cayenne.map.ObjAttribute;
-import org.apache.cayenne.map.ObjEntity;
-import org.apache.cayenne.map.Relationship;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.log4j.Logger;
 
@@ -88,8 +82,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 		// Not used
 		if (entity instanceof Queueable) {
 			Queueable queueable = (Queueable) entity;
-			LOGGER.debug("Post Remove event on : Entity: " + queueable.getClass().getSimpleName() + " with ID : "
-					+ queueable.getObjectId());
+			LOGGER.debug("Post Remove event on : Entity: " + queueable.getClass().getSimpleName() + " with ID : " + queueable.getObjectId());
 			enqueue(queueable, QueuedRecordAction.DELETE);
 		}
 	}
@@ -102,11 +95,9 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	public void postUpdate(Object entity) {
 		if ((entity instanceof Queueable)) {
 			Queueable queueable = (Queueable) entity;
-			if (isPropertyChanged(queueable)) {
-				LOGGER.debug("Post Update event on : Entity: " + queueable.getClass().getSimpleName() + " with ID : "
-						+ queueable.getObjectId());
-				enqueue(queueable, QueuedRecordAction.UPDATE);
-			}
+			LOGGER.debug("Post Update event on : Entity: " + queueable.getClass().getSimpleName() + " with ID : " + queueable.getObjectId());
+			enqueue(queueable, QueuedRecordAction.UPDATE);
+
 		}
 	}
 
@@ -134,10 +125,10 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	 *            QueuedRecordAction}
 	 */
 	private void enqueue(Queueable entity, QueuedRecordAction action) {
-		
+
 		College college = entity.getCollege();
 		ISHObjectContext commitingContext = null;
-		
+
 		if (college == null) {
 			college = objectContextMap().remove(entity.getObjectId());
 			commitingContext = (ISHObjectContext) college.getObjectContext();
@@ -146,22 +137,21 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			ObjectIdQuery query = new ObjectIdQuery(entity.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
 			entity = (Queueable) Cayenne.objectForQuery(commitingContext, query);
 		}
-		
-		
+
 		if (commitingContext.getIsRecordQueueingEnabled()) {
-		
+
 			String transactionKey = commitingContext.getTransactionKey();
 
 			String entityName = entity.getObjectId().getEntityName();
 			Long entityId = entity.getId();
 
 			ObjectContext ctx = cayenneService.newNonReplicatingContext();
-			
-			LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName, action, transactionKey));
-			
+
+			LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
+					action, transactionKey));
+
 			QueuedRecord qr = ctx.newObject(QueuedRecord.class);
-			
-			
+
 			qr.setCollege((College) ctx.localObject(college.getObjectId(), null));
 			qr.setEntityIdentifier(entityName);
 			qr.setEntityWillowId(entityId);
@@ -172,34 +162,6 @@ public class QueueableLifecycleListener implements LifecycleListener {
 
 			ctx.commitChanges();
 		}
-	}
-	
-	//Determine if any property was changes, thus skipping updates which cased by add/remove relationship
-	private boolean isPropertyChanged(Queueable entity) {
-		
-		ChangeSet changeSet = WillowChangeSetFilter.preCommitChangeSet(entity.getObjectContext());	
-		
-		if (changeSet == null) {
-			return false;
-		}
-		
-		Map<String, PropertyChange> changes = changeSet.getChanges(entity);
-		
-		ObjEntity objEntity = entity.getObjectContext().getEntityResolver().getObjEntity(entity.getObjectId().getEntityName());
-		
-		for (ObjAttribute attr : objEntity.getAttributes()) {
-			if(changes.containsKey(attr.getName())) {
-				return true;
-			}
-		}
-				
-		for (Relationship r : objEntity.getRelationships()) {
-			if (!r.isToMany() && changes.containsKey(r.getName())) {
-				return true;
-			}
-		}
-		
-		return false;
 	}
 
 	private Map<ObjectId, College> objectContextMap() {
