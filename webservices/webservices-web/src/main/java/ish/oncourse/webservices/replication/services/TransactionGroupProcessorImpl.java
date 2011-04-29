@@ -126,6 +126,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				objectContext.rollbackChanges();
 				replRecord.setStatus(Status.FAILED);
 				replRecord.setMessage(e.getMessage());
+			} catch (Exception e) {
+				logger.error("Failed with generic exception.", e);
+				objectContext.rollbackChanges();
+				replRecord.setStatus(Status.FAILED);
+				replRecord.setMessage(e.getMessage());
 			}
 		}
 
