@@ -9,6 +9,7 @@ import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
+import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
@@ -22,6 +23,7 @@ import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.Tutor;
+import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
@@ -46,17 +48,17 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		updaterMap.put(getEntityName(Discount.class), new DiscountUpdater());
 		updaterMap.put(getEntityName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater());
 		updaterMap.put(getEntityName(Preference.class), new PreferenceUpdater());
-		updaterMap.put("SessionCourseClassTutor", new SessionTutorUpdater());
 		updaterMap.put(getEntityName(Student.class), new StudentUpdater());
 		updaterMap.put(getEntityName(Tag.class), new TagUpdater());
 		updaterMap.put(getEntityName(TaggableTag.class), new TaggableTagUpdater());
 		updaterMap.put(getEntityName(Tutor.class), new TutorUpdater());
-		updaterMap.put("CourseClassTutor", new TutorRoleUpdater());
 		updaterMap.put(getEntityName(WaitingList.class), new WaitingListUpdater());
 		updaterMap.put(getEntityName(Site.class), new SiteUpdater());
 		updaterMap.put(getEntityName(Room.class), new RoomUpdater());
 		updaterMap.put(getEntityName(StudentConcession.class), new StudentConcessionUpdater());
 		updaterMap.put(getEntityName(Session.class), new SessionUpdater());
+		updaterMap.put(getEntityName(TutorRole.class), new TutorRoleUpdater());
+		updaterMap.put(getEntityName(SessionTutor.class), new SessionTutorUpdater());
 	}
 
 	/*

@@ -33,7 +33,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setMinutesPerSession(stub.getMinutesPerSession());
 		entity.setModified(stub.getModified());
 
-		entity.setRoom(callback.updateRelationShip(stub.getRoomId(), Room.class));
+		entity.setRoom((stub.getRoomId() != null) ? callback.updateRelationShip(stub.getRoomId(), Room.class) : null);
 
 		entity.setSessionDetail(stub.getSessionDetail());
 		entity.setSessionDetailTextile(stub.getSessionDetailTextile());
