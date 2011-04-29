@@ -8,6 +8,7 @@ import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
@@ -55,6 +56,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		updaterMap.put(getEntityName(Site.class), new SiteUpdater());
 		updaterMap.put(getEntityName(Room.class), new RoomUpdater());
 		updaterMap.put(getEntityName(StudentConcession.class), new StudentConcessionUpdater());
+		updaterMap.put(getEntityName(Session.class), new SessionUpdater());
 	}
 
 	/*
