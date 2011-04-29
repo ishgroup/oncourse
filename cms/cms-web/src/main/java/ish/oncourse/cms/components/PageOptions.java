@@ -8,15 +8,15 @@ import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.node.IWebNodeTypeService;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
-import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.Field;
+import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -24,6 +24,7 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Hidden;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
@@ -34,24 +35,32 @@ public class PageOptions {
 	@Property
 	private WebNode node;
 
-	@Parameter
-	@Property
-	private Zone updateZone;
-
 	@Property
 	@Persist
 	private WebNode editNode;
 
+	@Parameter
 	@Property
-	@Component(id = "optionsForm")
-	private Form optionsForm;
+	private Map<String, Zone> updateZones;
 
 	@Property
-	@Component(id = "urlForm")
+	@Component
+	private Zone optionsZone;
+
+	@Property
+	@InjectComponent
+	private Form optionsForm;
+
+	@Component
+	@Property
+	private Zone urlZone;
+
+	@Property
+	@InjectComponent
 	private Form urlForm;
 
 	@Component
-	private Zone urlZone;
+	private Zone buttonsZone;
 
 	@Inject
 	private PropertyAccess access;
@@ -64,9 +73,6 @@ public class PageOptions {
 
 	@Inject
 	private IWebUrlAliasService aliasService;
-
-	@Inject
-	private ICayenneService cayenneService;
 
 	@Property
 	@Persist
@@ -82,12 +88,22 @@ public class PageOptions {
 	@Property
 	private String urlPath;
 
+	@Property
+	private boolean cancelEditing;
+
 	@InjectComponent(value = "urlPath")
 	private Field urlAlias;
 
+	@InjectComponent
+	private Field pageName;
+
+	@InjectComponent
+	@Property
+	private Hidden cancelEditingHiddenField;
+
 	@SetupRender
 	public void beforeRender() {
-		ObjectContext ctx = cayenneService.newContext();
+		ObjectContext ctx = node.getObjectContext().createChildContext();
 		this.editNode = (WebNode) ctx.localObject(node.getObjectId(), node);
 
 		List<WebNodeType> webNodeTypes = new ArrayList<WebNodeType>(15);
@@ -99,6 +115,9 @@ public class PageOptions {
 		this.pageTypeModel = new ListSelectModel<WebNodeType>(webNodeTypes,
 				WebNodeType.LAYOUT_KEY_PROPERTY, access);
 		this.pageTypeEncoder = new ListValueEncoder<WebNodeType>(webNodeTypes, "id", access);
+		optionsForm.clearErrors();
+		urlForm.clearErrors();
+		urlPath = null;
 	}
 
 	public boolean isNotDefault() {
@@ -125,7 +144,26 @@ public class PageOptions {
 		return urlZone.getBody();
 	}
 
+	void onValidateFromOptionsForm() {
+		if (cancelEditing) {
+			return;
+		}
+		if (editNode.getName() == null || "".equals(editNode.getName())) {
+			optionsForm.recordError(pageName, "The page name cannot be empty");
+			return;
+		}
+		if (editNode.getName().length() < 3) {
+			optionsForm.recordError(pageName, "There should be at least 3 characters in page name");
+		}
+	}
+
 	void onValidateFromUrlForm() {
+		if (urlPath == null || "".equals(urlPath)) {
+
+			urlForm.recordError(urlAlias, "URL path is required");
+			return;
+
+		}
 		if (!urlPath.startsWith("/")) {
 			urlPath = "/" + urlPath;
 		}
@@ -143,7 +181,7 @@ public class PageOptions {
 	}
 
 	Object onFailureFromUrlForm() {
-		return urlZone.getBody();
+		return urlZone;
 	}
 
 	Object onSuccessFromUrlForm() {
@@ -156,14 +194,31 @@ public class PageOptions {
 
 		editNode.addToWebUrlAliases(alias);
 		urlPath = null;
-		return urlZone.getBody();
+		return urlZone;
+	}
+
+	Object onFailureFromOptionsForm() {
+		return new MultiZoneUpdate("optionsZone", optionsZone.getBody()).add("buttonsZone",
+				buttonsZone);
 	}
 
 	Object onSuccessFromOptionsForm() {
 		urlForm.clearErrors();
+		optionsForm.clearErrors();
 		urlPath = null;
-		editNode.getObjectContext().commitChanges();
-		return updateZone.getBody();
+		ObjectContext editingContext = editNode.getObjectContext();
+		MultiZoneUpdate multiZoneUpdate = new MultiZoneUpdate("optionsZone", optionsZone.getBody());
+		if (cancelEditing) {
+			editingContext.rollbackChangesLocally();
+			cancelEditing = false;
+		} else {
+
+			editingContext.commitChanges();
+			for (String key : updateZones.keySet()) {
+				multiZoneUpdate = multiZoneUpdate.add(key, updateZones.get(key));
+			}
+		}
+		return multiZoneUpdate.add("urlZone", urlZone).add("buttonsZone", buttonsZone);
 	}
 
 	public String getSiteUrl() {

@@ -1242,7 +1242,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<post-add method-name="onPostAdd"/>
-		<post-update method-name="onPostUpdate"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="WebContentVisibility" className="ish.oncourse.model.WebContentVisibility" dbEntityName="WebContentVisibility">
 		<obj-attribute name="regionKey" type="ish.oncourse.model.RegionKey" db-attribute-path="regionKey"/>

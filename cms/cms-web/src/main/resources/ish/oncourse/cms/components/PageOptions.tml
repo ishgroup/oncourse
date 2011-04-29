@@ -1,49 +1,128 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div id="pgOptions" style="display: none;">
-	    <t:form t:id="optionsForm" zone="prop:updateZone.clientId">
-	    	<t:errors/>
-			<t:label for="pageName"></t:label><t:textfield t:id="pageName" t:value="editNode.name" t:validate="required,minlength=3"/><br/>
-			<t:label for="pageType"/><t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="editNode.webNodeType" t:validate="required"/><br/>
-			<t:label for="published"/><t:checkbox t:id="published" value="editNode.published"/>
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+ 
+	<t:zone t:id="optionsZone">
+		<t:form t:id="optionsForm" zone="optionsZone">
+			<t:hidden value="cancelEditing" t:id="cancelEditingHiddenField"/>
+			<div class="cms-main-head">
+				<div class="cms-main-title">
+					<h1 class="cms-page-title">Page options for current page (${editNode.name})</h1>
+				</div>
+				<div class="cms-main-controls alignRight">
+					<span class="cms-ico-close cms-close-pane" 
+						onclick="$('${cancelEditingHiddenField.clientId}').value=true; 
+									$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT); 
+									jQuery('.cms-btn-control.active').click();"/>
+				</div>
+			</div>
+	
+			<t:errors class="literal:cms-error-txt" />
+			<div class="cms-cols-pane">
+
+				<div class="cms-colpane cms-pane-pname">
+
+					<h5 class="cms-block-sub-title">
+						Page Name <span class="cms-ico-help" title="The name of this page"/>
+					</h5>
+					<t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
+							class="cms-field-wide" />
+					
+				</div>
+
+				<div class="cms-colpane cms-pane-ptype">
+					<h5 class="cms-block-sub-title">
+						Page type <span class="cms-ico-help" title="Layout type of this page"/>
+					</h5>
+					<t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="editNode.webNodeType"
+							validate="required" />
+				</div>
+
+				<div class="cms-colpane">
+					<h5 class="cms-block-sub-title">
+						Page visibility <span class="cms-ico-help" title="Publish this page on website or not"/>
+					</h5>
+
+					<span class="cms-page-pub">Published</span> 
+					<span class="cms-slide-control">
+						<t:checkbox t:id="published" value="editNode.published" class="cms-onoff" />
+					</span>
+				</div>
+
+			</div>
+ 		
 		</t:form>
-	    
-	    URLs
-    	<ul>
-    		<t:zone t:id="urlZone">
-    			<t:if t:test="hasDefault">
-    				<li style="line-height: 1.2em">${siteUrl}${editNode.defaultWebURLAlias.urlPath}<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/></li>
-    			</t:if>
-		    	<t:loop source="editNode.webUrlAliases" value="webUrlAlias">
-		    			<t:if t:test="notDefault">
-		    				<li style="line-height: 1.2em">
-		    					${siteUrl}${webUrlAlias.urlPath} 
-		    					<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="urlZone"><img src="/s/img/trash_16.gif" border="0" style="vertical-align: middle;"/></a>
-		    					<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/><a t:id="makeDefault" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="urlZone">&nbsp;default</a>
-		    				</li>
-		    			</t:if>
-		    	</t:loop>
-	    	
-	    		<li>
-		    		<t:form t:id="urlForm" zone="urlZone">
-	    				${siteUrl}/<t:textfield value="urlPath" validate="required" t:id="urlPath"/><a href="#" t:type="linkSubmit" t:id="addUrl"><img src="/s/img/add.png" border="0"/></a> <t:error for="urlPath"/>
-	    			</t:form>
-    			</li>
-    		</t:zone>
-      	</ul>
+	</t:zone>
+
+ 	<script type="text/javascript">
+    	Event.observe('optionsZone', Tapestry.ZONE_UPDATED_EVENT,  customForms);
+    </script>
+	<div class="cms-page-opts">
+
+		<h5 class="cms-block-sub-title">
+			Page Links (URLs) <span class="cms-ico-help" title="This page is accessible via the following URLs"/>
+		</h5>
+		<t:zone t:id="urlZone">
+			<h6 class="cms-block-sub-title">
+				Default: 
+				<b>
+					<t:if t:test="hasDefault">
+						${siteUrl}${editNode.defaultWebURLAlias.urlPath}
+						<p:else>None</p:else>
+					</t:if>
+				</b>
+				<span class="cms-ico-help" title="Default URL for this page"/>
+			</h6>
+
+			<table class="cms-page-opts-links">
+				<t:loop source="editNode.webUrlAliases" value="webUrlAlias">
+					<t:if t:test="notDefault">
+						<tr>
+							<td>${siteUrl}${webUrlAlias.urlPath}</td>
+							<td>
+								<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
+									<span class="cms-ico-field-del"/>
+								</a>
+								<img src="/s/img/arrow_left.png" border="0" style="vertical-align: middle;"/> 
+								<a t:id="makeDefault" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
+									Default
+								</a>
+							</td>
+							<td></td>
+						</tr>
+					</t:if>
+				</t:loop>
+				<tr>
+					<td>${siteUrl}/</td>
+					<td>
+						<t:form t:id="urlForm" zone="prop:urlZone.clientId">
+							<t:textfield value="urlPath" maxlength="100" class="cms-field" validate="required" t:id="urlPath" />
+							<t:error class="literal:cms-error-txt" for="urlPath" />
+						</t:form>
+					</td>
+					<td>
+						<div class="cms-add-wrapper">
+							<a href="#" class="cms-add-link" onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
+								Add link
+							</a>
+						</div>
+					</td>
+				</tr>	
+			</table>
+		</t:zone>
 	</div>
-	
-	<script type="text/javascript">
-	    function openPageOptionsDialog() {
-	    	jQuery("#pgOptions").dialog({modal:true, height: 430, width: 530, 
-				buttons: { 
-					"Done": function() {
-						$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-						jQuery(this).dialog("close");
-					}
-				}	
-			});
-	    }
-	</script>
-	
+
+	<t:zone t:id="buttonsZone">
+		<div class="alignCenter">
+			<button type="button" class="cms-but cms-btn-prev" onclick="$('${cancelEditingHiddenField.clientId}').value=true; 
+																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+																		jQuery('.cms-btn-control.active').click();" >
+				Cancel
+			</button>
+			<button type="button" class="cms-but cms-btn-next" onclick="$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
+				Save
+			</button>
+		</div>
+	</t:zone>
 </t:container>

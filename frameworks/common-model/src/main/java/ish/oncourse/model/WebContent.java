@@ -24,7 +24,7 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 	}
 
 	@Override
-	protected void onPostUpdate() {
+	protected void onPreUpdate() {
 		Date today = new Date();
 		WebNode node = getWebContentVisibility().getWebNode();
 		if (node != null) {

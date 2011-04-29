@@ -1,24 +1,281 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:zone t:id="inspectorZone">
-		<t:if t:test="pageHasChanges">
-			<div id="cms_page_save">
-				This page is not saved. <a href="#" t:type="actionLink" t:id="save" zone="prop:inspectorZone.clientId">Save</a>
+	<div class="cms-page-controls" id="edControls">
+		<div class="cms-page-controls-wr clearFix">
+
+        	<div class="cms-btn-control">
+         	   <div class="cms-btn-control-in">
+         	       <a href="" class="cms-page-opt">Page options</a>
+          	  </div>
+        	</div>
+        	<div class="cms-pane-wide">
+            	<div class="cms-pane-content">
+					<span t:type="pageoptions" node="prop:node" updateZones="zonesForUpdate"/>
+				 </div>
 			</div>
-		</t:if>
-		<div id="cms_pageinfo">
-			<dl class="cms_inspector">
-				<dt class="cms_pagename cms_inspector">${node.name}</dt>
-				<dd class="cms_pagestate cms_inspector">${pageStatus}</dd>
-				<dd class="cms_pagemodified cms_inspector">${lastEdited}</dd>
-			</dl>
-			<a id="pgOptionsLink" class="inspector" href="javascript:openPageOptionsDialog()">Options</a>
-			<div class="noteditable hidden">
-				<h5>onCourse only!</h5>
-				<p>This information can only be edited using your onCourse client.</p>
-			</div>	
-		</div>
+
+	        <div class="cms-btn-control">
+    	        <div class="cms-btn-control-in">
+        	        <a href="" class="cms-add-item">Add new page</a>
+            	</div>
+	        </div>
+    	    <div class="cms-pane-wide">
+        	    <div class="cms-pane-content">
+
+            	    <div class="cms-main-head">
+                	    <div class="cms-main-title">
+                    	    <h1 class="cms-page-title">Add new page</h1>
+	                    </div>
+    	                <div class="cms-main-controls alignRight">
+        	                <span class="cms-ico-close cms-close-pane"></span>
+            	        </div>
+                	</div>
+
+	                <div class="cms-cols-pane">
+
+    	                <div class="cms-colpane cms-pane-pname">
+
+        	                    <h5 class="cms-block-sub-title">Page Name <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
+            	                <input type="text" maxlength="100" class="cms-field-wide" value="Untitled page"/>
+
+                	    </div>
+
+                    	<div class="cms-colpane cms-pane-ptype">
+                        	<h5 class="cms-block-sub-title">Page type <span class="cms-ico-help"></span></h5>
+	                        <select>
+    	                        <option>test</option>
+        	                    <option>test1</option>
+            	                <option>test2</option>
+                	        </select>
+                    	</div>
+
+	                    <div class="cms-colpane">
+    	                    <h5 class="cms-block-sub-title">Page visibility <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
+	
+        	                <span class="cms-page-pub">Published</span>
+    	    	                <span class="cms-slide-control"><input type="checkbox" class="cms-onoff"/></span>
+
+                	    </div>
+
+                	</div>
+
+
+	                <div class="cms-page-opts">
+    	                <h5 class="cms-block-sub-title">Page Links (URLs) <span class="cms-ico-help" title="This page is accessible via the following URLs"></span></h5>
+
+        	            <table class="cms-page-opts-links">
+            	            <tr>
+                	            <td>http://www.cce.usyd.edu.au/</td>
+                    	        <td>
+                        	        <input type="text" maxlength="100" class="cms-field"/>
+                            	    <span class="cms-ico-field-del"></span>
+	                            </td>
+    	                        <td>
+        	                        <input type="checkbox"/>
+            	                    Default
+                	            </td>
+                    	    </tr>
+                        	<tr>
+	                            <td>http://www.cce.usyd.edu.au/</td>
+    	                        <td>
+        	                        <input type="text" maxlength="100" class="cms-field"/>
+            	                    <span class="cms-ico-field-del"></span>
+                	            </td>
+                    	        <td>
+                        	        <input type="checkbox"/>
+                            	    Default
+	                            </td>
+    	                    </tr>
+        	                <tr>
+            	                <td>http://www.cce.usyd.edu.au/</td>
+                	            <td>
+                    	            <input type="text" maxlength="100" data-status="error" class="cms-field"/>
+                        	        <span class="cms-ico-field-del"></span>
+                            	</td>
+	                            <td>
+    	                            <span class="cms-error-txt">Invalid</span>
+        	                    </td>
+            	            </tr>
+                	    </table>
+
+                    	<div class="cms-add-wrapper">
+                        	<a href="" class="cms-add-link">Add link</a>
+	                    </div>
+	
+    	            </div>
+
+        	        <div class="alignCenter">
+            	        <button type="button" class="cms-but cms-btn-prev">Cancel</button>
+                	    <button type="button" class="cms-but cms-btn-next">Save</button>
+	                </div>
+
+	            </div>
+
+    	    </div>
+
+        	<div class="cms-btn-control">
+            	<div class="cms-btn-control-in">
+                	<span>Current page:</span>
+	                <a href="" class="cms-select-item">Home</a>
+    	        </div>
+        	    <div class="cms-pane-small">
+            	    <div class="cms-pane-content">
+
+                	    <div class="cms-pane-small-head clearFix">
+                    	    <div class="cms-pane-small-title">Quick jump</div>
+                        	<span class="cms-ico-close cms-close-pane"></span>
+	                    </div>
+
+    	                <div id="scrollbar1">
+        	                <div class="scrollbar">
+            	                <div class="track">
+                	                <div class="thumb">
+                    	                <div class="end"></div>
+                        	        </div>
+                            	</div>
+	                        </div>
+    	                    <div class="viewport">
+        	                    <div class="overview">
+	
+	                                <ul class="cms-list-pages">
+    	                                <li>
+        	                                <div data-status="active"><a href="">Home</a> &mdash; <span
+            	                                    data-pub="published">published</span></div>
+                	                        <ul>
+                    	                        <li>
+                        	                        <div><a href="">About Us</a> &mdash; <span data-pub="published">published</span>
+                            	                    </div>
+                                	                <ul>
+                                    	                <li>
+                                        	                <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
+                                            	            </div>
+                                                	    </li>
+                                                    	<li>
+                                                        	<div><a href="">Our Vision &mdash;</a> <span
+                                                                data-pub="published">published</span></div>
+	                                                    </li>
+    	                                            </ul>
+        	                                    </li>
+	
+    	                                        <li>
+        	                                        <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
+            	                                    </div>
+                	                            </li>
+
+	                                            <li>
+    	                                            <div><a href="">Company</a> &mdash; <span
+        	                                                data-pub="published">published</span></div>
+            	                                </li>
+
+
+                	                            <li>
+                    	                            <div><a href="">Tutors</a> &mdash; <span
+                        	                                data-pub="published">published</span></div>
+                            	                    <ul>
+                                	                    <li>
+                                    	                    <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
+                                        	                </div>
+                                            	        </li>
+                                                	    <li>
+                                                    	    <div><a href="">Our Vision &mdash;</a> <span
+                                                                data-pub="published">published</span></div>
+	                                                    </li>
+    	                                            </ul>
+        	                                    </li>
+
+            	                                <li>
+                    	                            <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
+                	                                </div>
+                        	                    </li>
+
+                            	                <li>
+                                	                <div><a href="">Company</a> &mdash; <span
+                                                        data-pub="published">published</span></div>
+                                    	        </li>
+
+                                            	<li>
+                                        	        <div><a href="">About Us</a> &mdash; <span data-pub="published">published</span>
+                                                	</div>
+	                                                <ul>
+    	                                                <li>
+                                                        <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div><a href="">Our Vision &mdash;</a> <span
+                                                                data-pub="published">published</span></div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <li>
+                                                <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div><a href="">Company</a> &mdash; <span
+                                                        data-pub="published">published</span></div>
+                                            </li>
+
+
+                                            <li>
+                                                <div><a href="">Tutors</a> &mdash; <span
+                                                        data-pub="published">published</span></div>
+                                                <ul>
+                                                    <li>
+                                                        <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div><a href="">Our Vision &mdash;</a> <span
+                                                                data-pub="published">published</span></div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <li>
+                                                <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
+                                                </div>
+                                            </li>
+
+                                            	<li>
+                                            	    <div><a href="">Company</a> &mdash; <span
+                                                        data-pub="published">published</span></div>
+                                         	   </li>
+
+                                        	</ul>
+                                    	</li>
+                               		</ul>
+
+                            	</div>
+                        	</div>
+                    	</div>
+                	</div>
+            	</div>
+        	</div>
+
+	   		<div class="cms-pages-status" data-pub="published">
+       			<t:zone t:id="publishedZone" update="show" show="show">
+            		${pageStatus}
+            	</t:zone>
+        	</div>
+
 		
-	</t:zone>
-	<span t:type="pageoptions" node="prop:node" updateZone="inspectorZone"/>
+        	<div class="cms-pages-updated">
+	          	<t:zone t:id="updatedZone" update="show" show="show">
+    	       		${lastEdited}
+        	    </t:zone>
+	        </div>
+
+    	    <div class="cms-editable-show">
+        	    Show editable areas
+            	<div class="cms-editable-control"><input type="checkbox" id="showEdit" class="cms-onoff" /></div>
+	        </div>
+
+
+    	</div>
+	
+	</div>
+
 </t:container>

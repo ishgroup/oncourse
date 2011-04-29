@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -26,33 +27,37 @@ import org.apache.tapestry5.services.Request;
 @Protected
 public class CmsNavigation {
 
-    @Property
-    @Inject
-    private IWebNodeService webNodeService;
+	@Property
+	@Inject
+	private IWebNodeService webNodeService;
 
-    @Inject
-    private IWebNodeTypeService webNodeTypeService;
+	@Inject
+	private IWebNodeTypeService webNodeTypeService;
 
-    @Inject
-    private ICayenneService cayenneService;
+	@Inject
+	private ICayenneService cayenneService;
 
-    @Inject
-    private IWebSiteService webSiteService;
+	@Inject
+	private IWebSiteService webSiteService;
 
-    @Inject
-    private IAuthenticationService authenticationService;
+	@Inject
+	private IAuthenticationService authenticationService;
 
-    @Inject
-    private Request request;
+	@Inject
+	private Request request;
 
-    @Property
-    @Persist
-    private WebNode node;
+	@Property
+	@Parameter
+	private WebNode node;
 
-    @SetupRender
-    public void beforeRender() {
-        this.node = webNodeService.getCurrentNode();
-    }
+	@InjectComponent
+	@Property
+	private PageInfo pageInfo;
+
+	@SetupRender
+	public void beforeRender() {
+
+	}
 
 	public URL onActionFromLogout() throws Exception {
 		authenticationService.logout();
@@ -60,29 +65,31 @@ public class CmsNavigation {
 		return new URL("http://" + request.getServerName());
 	}
 
-    public Object onActionFromNewPage() throws IOException {
-        ObjectContext ctx = cayenneService.newContext();
+	public Object onActionFromNewPage() throws IOException {
+		ObjectContext ctx = cayenneService.newContext();
 
-        WebNode newPageNode = ctx.newObject(WebNode.class);
-        newPageNode.setName("New Page");
-        newPageNode.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
-        newPageNode.setNodeNumber(webNodeService.getNextNodeNumber());
+		WebNode newPageNode = ctx.newObject(WebNode.class);
+		newPageNode.setName("New Page");
+		newPageNode.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite()
+				.getObjectId(), null));
+		newPageNode.setNodeNumber(webNodeService.getNextNodeNumber());
 
-        newPageNode.setWebNodeType((WebNodeType) ctx.localObject(
-                webNodeTypeService.getDefaultWebNodeType().getObjectId(), null));
+		newPageNode.setWebNodeType((WebNodeType) ctx.localObject(webNodeTypeService
+				.getDefaultWebNodeType().getObjectId(), null));
 
-        WebContentVisibility contentVisibility = ctx.newObject(WebContentVisibility.class);
-        contentVisibility.setRegionKey(RegionKey.content);
+		WebContentVisibility contentVisibility = ctx.newObject(WebContentVisibility.class);
+		contentVisibility.setRegionKey(RegionKey.content);
 
-        WebContent webContent = ctx.newObject(WebContent.class);
-        webContent.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
-        webContent.setContent("Sample content text.");
-        contentVisibility.setWebContent(webContent);
+		WebContent webContent = ctx.newObject(WebContent.class);
+		webContent.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite()
+				.getObjectId(), null));
+		webContent.setContent("Sample content text.");
+		contentVisibility.setWebContent(webContent);
 
-        newPageNode.addToWebContentVisibility(contentVisibility);
+		newPageNode.addToWebContentVisibility(contentVisibility);
 
-        ctx.commitChanges();
+		ctx.commitChanges();
 
-        return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber());
-    }
+		return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber());
+	}
 }

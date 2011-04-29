@@ -1,7 +1,6 @@
 <html t:type="ui/pagestructure" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"
-	bodyId="literal:cms" bodyClass="${bodyClass}" webNodeType="prop:node.webNodeType">
+	bodyId="literal:cms" bodyClass="${bodyClass}" webNodeType="prop:node.webNodeType" node="node">
 	
-	<div t:type="pageinfo" node="node" t:id="pageInfo"/>
-	<div t:type="ui/contentStructure" node="node" inspectorZone="pageInfo.inspectorZone"></div>
+	<div t:type="ui/contentStructure" node="node" updateZone="pageStructure.cmsNavigation.pageInfo.updatedZone"/>
 	
 </html>
