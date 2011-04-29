@@ -5,7 +5,7 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 
-import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
@@ -41,7 +41,7 @@ public class WebSiteService implements IWebSiteService {
 				String siteKey = serverName.substring(0, serverName.indexOf('.'));
 				SelectQuery query = new SelectQuery(WebSite.class, ExpressionFactory.matchExp(
 						WebSite.SITE_KEY_PROPERTY, siteKey));
-				WebSite site = (WebSite) DataObjectUtils.objectForQuery(
+				WebSite site = (WebSite) Cayenne.objectForQuery(
 						cayenneService.sharedContext(), query);
 				if (site != null) {
 					// use fake WebHostName for the "technical" sites
@@ -59,7 +59,7 @@ public class WebSiteService implements IWebSiteService {
 				query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 				query.setCacheGroups(COLLEGE_DOMAIN_CACHE_GROUP);
 
-				collegeDomain = (WebHostName) DataObjectUtils.objectForQuery(
+				collegeDomain = (WebHostName) Cayenne.objectForQuery(
 						cayenneService.sharedContext(), query);
 			}
 			if (collegeDomain == null) {

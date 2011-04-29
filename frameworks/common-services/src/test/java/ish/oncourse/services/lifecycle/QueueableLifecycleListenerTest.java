@@ -171,7 +171,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		actualData = dbUnitConnection
 				.createQueryTable(
 						"QueuedRecord",
-						String.format("select * from QueuedRecord where (entityIdentifier='Course' and entityWillowId=5) or (entityIdentifier='Tutor' and entityWillowId=1)"));
+						String.format("select * from QueuedRecord where (entityIdentifier='Course' and entityWillowId=5 and action='Delete') or (entityIdentifier='Tutor' and entityWillowId=1 and action='Delete')"));
 		assertEquals("Expecting course and tutor records.", 2, actualData.getRowCount());
 		assertEquals("Expecting identical transactionKeys.", actualData.getValue(0, "transactionKey"),
 				actualData.getValue(1, "transactionKey"));

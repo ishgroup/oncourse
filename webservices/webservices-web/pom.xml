@@ -29,6 +29,12 @@
 		
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
+			<artifactId>common-ui</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-test</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>

@@ -1,0 +1,10 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <head>
+		<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
+        <title>onCourse services status</title>
+    </head>
+    <body>
+        onCourse services operating normally.
+		<!-- nagios_page_check -->
+    </body>
+</html>
