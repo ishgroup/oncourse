@@ -116,10 +116,14 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				} else {
 					College college = (College) objectContext.localObject(collegeRequestService.getRequestingCollege().getObjectId(), null);
 					objectToUpdate.setCollege(college);
+					
 					willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl(objectContext,
 							transactionGroup, result));
+					
 					objectContext.commitChanges();
+					
 					replRecord.getStub().setWillowId(objectToUpdate.getId());
+					replRecord.getStub().setEntityIdentifier(currentStub.getEntityIdentifier());
 				}
 			} catch (CayenneRuntimeException e) {
 				logger.error("Failed to commit object.", e);

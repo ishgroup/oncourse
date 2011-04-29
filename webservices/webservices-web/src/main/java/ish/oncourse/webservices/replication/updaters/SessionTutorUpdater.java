@@ -9,6 +9,7 @@ public class SessionTutorUpdater extends AbstractWillowUpdater<TutorAttendanceSt
 
 	@Override
 	protected void updateEntity(TutorAttendanceStub stub, SessionTutor entity, RelationShipCallback callback) {
+		stub.setEntityIdentifier("TutorAttendance");
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
 		entity.setSession(callback.updateRelationShip(stub.getSessionId(), Session.class));
