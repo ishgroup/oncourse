@@ -16,11 +16,13 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 		entity.setCookieHash(stub.getCookieHash());
 		
 		if (stub.getStudentId() != null) {
-			entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class));
+			Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
+			entity.setStudent(student);
 		}
 		
 		if (stub.getTutorId() != null) {
-			entity.setTutor(callback.updateRelationShip(stub.getTutorId(), Tutor.class));
+			Tutor tutor = callback.updateRelationShip(stub.getTutorId(), Tutor.class);
+			entity.setTutor(tutor);
 		}
 		
 		

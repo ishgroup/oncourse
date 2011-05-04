@@ -289,7 +289,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			if (stub != null) {
 				ObjectContext relationContext = cayenneService.newNonReplicatingContext();
 				M relatedObject = (M) processStub(relationContext, stub, group, result);
-				return (M) ctx.localObject(relatedObject.getObjectId(), null);
+				return (M) Cayenne.objectForPK(ctx, relatedObject.getObjectId());
 			} else {
 				return (M) findEntityByAngelId(ctx, angelId, entityIdentifier);
 			}

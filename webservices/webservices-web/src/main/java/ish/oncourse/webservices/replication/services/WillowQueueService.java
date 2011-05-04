@@ -26,29 +26,47 @@ public class WillowQueueService implements IWillowQueueService {
 	@Autowired
 	private ICayenneService cayenneService;
 
-	public List<QueuedRecord> getReplicationQueue(int limit) {
+	private static final int FETCH_LIMIT = 30;
 
-		int size = 0;
-		int fetchOffset = 0;
+	public List<QueuedRecord> getReplicationQueue(int limit) {
 
 		List<QueuedRecord> queue = new ArrayList<QueuedRecord>();
 		ObjectContext ctx = cayenneService.sharedContext();
 
-		while (size < limit) {
+		boolean hasMoreRecords = true;
+		int fetchOffset = 0;
+
+		while (hasMoreRecords) {
 
 			SelectQuery q = new SelectQuery(QueuedTransaction.class);
-			q.andQualifier(ExpressionFactory.matchExp(QueuedTransaction.COLLEGE_PROPERTY, collegeRequestService.getRequestingCollege()));
+			q.andQualifier(ExpressionFactory.matchExp(
+					QueuedTransaction.COLLEGE_PROPERTY,
+					collegeRequestService.getRequestingCollege()));
 			q.addPrefetch(QueuedTransaction.QUEUED_RECORDS_PROPERTY);
-			q.addOrdering(new Ordering(QueuedTransaction.CREATED_PROPERTY, SortOrder.ASCENDING));
-			q.setFetchLimit(30);
+			q.addOrdering(new Ordering(QueuedTransaction.CREATED_PROPERTY,
+					SortOrder.ASCENDING));
+			q.setFetchLimit(FETCH_LIMIT);
 			q.setFetchOffset(fetchOffset);
 
 			List<QueuedTransaction> transactions = ctx.performQuery(q);
 
-			size += transactions.size();
-			fetchOffset += transactions.size();
+			int fetchedSize = transactions.size();
+
+			if (fetchedSize < FETCH_LIMIT) {
+				hasMoreRecords = false;
+			} else {
+				fetchOffset += fetchedSize;
+			}
 
 			for (QueuedTransaction t : transactions) {
+
+				int numberOfRecords = t.getQueuedRecords().size();
+
+				if (queue.size() + numberOfRecords >= limit) {
+					hasMoreRecords = false;
+					break;
+				}
+
 				queue.addAll(t.getQueuedRecords());
 			}
 		}
