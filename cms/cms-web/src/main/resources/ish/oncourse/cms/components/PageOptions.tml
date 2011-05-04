@@ -2,9 +2,14 @@
 <t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
- 
+
 	<t:zone t:id="optionsZone">
 		<t:form t:id="optionsForm" zone="optionsZone">
+			<script>
+				if(${savedNewPage}){
+					window.location="/page/${editNode.nodeNumber}";
+		 		}
+		 	</script>
 			<t:hidden value="cancelEditing" t:id="cancelEditingHiddenField"/>
 			<div class="cms-main-head">
 				<div class="cms-main-title">
@@ -120,7 +125,8 @@
 																		jQuery('.cms-btn-control.active').click();" >
 				Cancel
 			</button>
-			<button type="button" class="cms-but cms-btn-next" onclick="$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
+			<button type="button" class="cms-but cms-btn-next" onclick="$('${cancelEditingHiddenField.clientId}').value=false; 
+																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
 				Save
 			</button>
 		</div>

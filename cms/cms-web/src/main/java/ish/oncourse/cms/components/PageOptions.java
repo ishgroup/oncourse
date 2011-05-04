@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
@@ -28,6 +29,7 @@ import org.apache.tapestry5.corelib.components.Hidden;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.Request;
 
 public class PageOptions {
 
@@ -91,6 +93,9 @@ public class PageOptions {
 	@Property
 	private boolean cancelEditing;
 
+	@Property
+	private boolean savedNewPage;
+
 	@InjectComponent(value = "urlPath")
 	private Field urlAlias;
 
@@ -103,10 +108,16 @@ public class PageOptions {
 
 	@SetupRender
 	public void beforeRender() {
-		ObjectContext ctx = node.getObjectContext().createChildContext();
-		this.editNode = (WebNode) ctx.localObject(node.getObjectId(), node);
 
-		List<WebNodeType> webNodeTypes = new ArrayList<WebNodeType>(15);
+		ObjectContext ctx = null;
+		if (node.getPersistenceState() == PersistenceState.NEW) {
+			ctx = node.getObjectContext();
+			this.editNode = node;
+		} else {
+			ctx = node.getObjectContext().createChildContext();
+			this.editNode = (WebNode) ctx.localObject(node.getObjectId(), null);
+		}
+		List<WebNodeType> webNodeTypes = new ArrayList<WebNodeType>();
 
 		for (WebNodeType t : webNodeTypeService.getWebNodeTypes()) {
 			webNodeTypes.add((WebNodeType) ctx.localObject(t.getObjectId(), null));
@@ -208,14 +219,24 @@ public class PageOptions {
 		urlPath = null;
 		ObjectContext editingContext = editNode.getObjectContext();
 		MultiZoneUpdate multiZoneUpdate = new MultiZoneUpdate("optionsZone", optionsZone.getBody());
+		boolean isNewPage = editNode.getPersistenceState() == PersistenceState.NEW;
 		if (cancelEditing) {
-			editingContext.rollbackChangesLocally();
+			if (isNewPage) {
+				editingContext.rollbackChanges();
+			} else {
+				editingContext.rollbackChangesLocally();
+			}
 			cancelEditing = false;
 		} else {
-
 			editingContext.commitChanges();
-			for (String key : updateZones.keySet()) {
-				multiZoneUpdate = multiZoneUpdate.add(key, updateZones.get(key));
+			if (isNewPage) {
+				savedNewPage = true;
+			}
+
+			if (updateZones != null) {
+				for (String key : updateZones.keySet()) {
+					multiZoneUpdate = multiZoneUpdate.add(key, updateZones.get(key));
+				}
 			}
 		}
 		return multiZoneUpdate.add("urlZone", urlZone).add("buttonsZone", buttonsZone);
