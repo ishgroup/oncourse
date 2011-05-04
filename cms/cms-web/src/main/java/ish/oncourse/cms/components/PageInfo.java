@@ -44,10 +44,12 @@ public class PageInfo {
 	@Property
 	private WebNode node;
 
-	@Parameter
 	@Property
 	private WebNode newPageNode;
 
+	@Property
+	private WebNode webNode;
+	
 	@Inject
 	private Messages messages;
 
@@ -68,6 +70,13 @@ public class PageInfo {
 		return messages.get(key);
 	}
 
+	public String getStatusForNode(){
+		if(node.getId().equals(webNode.getId())){
+			return "active";
+		}
+		return "";
+	}
+	
 	public String getLastEdited() {
 		return node.accept(new LastEditedVisitor(messages));
 	}

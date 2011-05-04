@@ -29,7 +29,7 @@
         	<div class="cms-btn-control">
             	<div class="cms-btn-control-in">
                 	<span>Current page:</span>
-	                <a href="" class="cms-select-item">Home</a>
+	                <a href="" class="cms-select-item">${node.name}</a>
     	        </div>
         	    <div class="cms-pane-small">
             	    <div class="cms-pane-content">
@@ -49,116 +49,21 @@
 	                        </div>
     	                    <div class="viewport">
         	                    <div class="overview">
-	
 	                                <ul class="cms-list-pages">
-    	                                <li>
-        	                                <div data-status="active"><a href="">Home</a> &mdash; <span
-            	                                    data-pub="published">published</span></div>
-                	                        <ul>
-                    	                        <li>
-                        	                        <div><a href="">About Us</a> &mdash; <span data-pub="published">published</span>
-                            	                    </div>
-                                	                <ul>
-                                    	                <li>
-                                        	                <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
-                                            	            </div>
-                                                	    </li>
-                                                    	<li>
-                                                        	<div><a href="">Our Vision &mdash;</a> <span
-                                                                data-pub="published">published</span></div>
-	                                                    </li>
-    	                                            </ul>
-        	                                    </li>
-	
-    	                                        <li>
-        	                                        <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
-            	                                    </div>
-                	                            </li>
-
-	                                            <li>
-    	                                            <div><a href="">Company</a> &mdash; <span
-        	                                                data-pub="published">published</span></div>
-            	                                </li>
-
-
-                	                            <li>
-                    	                            <div><a href="">Tutors</a> &mdash; <span
-                        	                                data-pub="published">published</span></div>
-                            	                    <ul>
-                                	                    <li>
-                                    	                    <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
-                                        	                </div>
-                                            	        </li>
-                                                	    <li>
-                                                    	    <div><a href="">Our Vision &mdash;</a> <span
-                                                                data-pub="published">published</span></div>
-	                                                    </li>
-    	                                            </ul>
-        	                                    </li>
-
-            	                                <li>
-                    	                            <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
-                	                                </div>
-                        	                    </li>
-
-                            	                <li>
-                                	                <div><a href="">Company</a> &mdash; <span
-                                                        data-pub="published">published</span></div>
-                                    	        </li>
-
-                                            	<li>
-                                        	        <div><a href="">About Us</a> &mdash; <span data-pub="published">published</span>
-                                                	</div>
-	                                                <ul>
-    	                                                <li>
-                                                        <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div><a href="">Our Vision &mdash;</a> <span
-                                                                data-pub="published">published</span></div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-
-                                            <li>
-                                                <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <div><a href="">Company</a> &mdash; <span
-                                                        data-pub="published">published</span></div>
-                                            </li>
-
-
-                                            <li>
-                                                <div><a href="">Tutors</a> &mdash; <span
-                                                        data-pub="published">published</span></div>
-                                                <ul>
-                                                    <li>
-                                                        <div><a href="">News &mdash;</a> <span data-pub="published">published</span>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div><a href="">Our Vision &mdash;</a> <span
-                                                                data-pub="published">published</span></div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-
-                                            <li>
-                                                <div><a href="">Testimonials</a> &mdash; <span data-pub="published">published</span>
-                                                </div>
-                                            </li>
-
-                                            	<li>
-                                            	    <div><a href="">Company</a> &mdash; <span
-                                                        data-pub="published">published</span></div>
-                                         	   </li>
-
-                                        	</ul>
-                                    	</li>
+	                                	<t:loop source="webNodeService.nodes" value="webNode">
+											<li>
+												<div data-status="${statusForNode}">
+											 		<a href="/page/${webNode.path}">${webNode.name}</a> 
+											 		&mdash; 
+											 		<t:if t:test="webNode.published"> 
+											 			<span data-pub="published">published</span>
+												 		<p:else> 
+												 			<span data-pub="unpublished">unpublished</span>
+												 		</p:else>
+												 	</t:if>
+												 </div>	
+											</li>
+										</t:loop>
                                		</ul>
 
                             	</div>
