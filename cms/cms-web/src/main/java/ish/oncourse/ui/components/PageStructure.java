@@ -5,6 +5,7 @@ import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.RequestUtil;
 
 import org.apache.tapestry5.ComponentResources;
@@ -22,6 +23,10 @@ public class PageStructure {
 
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
+	
+	@Property
+	@Inject
+	private IWebSiteService webSiteService;
 
 	@Inject
 	private Request request;

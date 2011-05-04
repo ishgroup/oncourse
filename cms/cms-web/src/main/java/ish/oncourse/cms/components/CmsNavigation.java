@@ -17,6 +17,7 @@ import org.apache.tapestry5.services.Request;
 public class CmsNavigation {
 
 	@Inject
+	@Property
 	private IAuthenticationService authenticationService;
 
 	@Inject

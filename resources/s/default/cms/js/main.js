@@ -282,7 +282,7 @@ function editThemes() {
 jQuery(document).ready(function() {
 	isChrome();
 
-	// jQuery('#edControls').slideUp();
+ jQuery('#edControls').slideUp();
 
 	toolTips();
 

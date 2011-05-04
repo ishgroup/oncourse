@@ -1,18 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 	<div t:type="pageinfo" node="node" t:id="pageInfo"/>
 
-	<div id="cms_nav" class="clearfix">
-		<ul id="cms_actions" class="left">
-			<li class="home"><a href="/">Home</a></li>
-			<li class="pages selected"><a href="#" t:type="actionLink" t:id="newPage">New Page</a></li>
-			<li class="site"><a href="#" t:type="pageLink" page="site">Site</a></li>			
-		</ul>
-		
-		<ul id="cms_links" class="right toolbar">
-			<li><a href="">Help</a></li>
-			<li><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
-		</ul>
+	<div class="cms-menu-wrap" id="edMenuWr">
+    	<div class="cms-menu-block">
+        	<ul class="cms-menu clearFix" id="edMenu">
+            	<li><span><a href="#" id="editSite">Content Editor</a></span></li>
+            	<li class="active"><span><a href="#tabs-1">Site Settings</a></span><em class="cms-m-active"></em></li>
+            	<li><span><a href="#tabs-2">Blocks</a></span></li>
+            	<li><span><a href="#tabs-3">Pages</a></span></li>
+            	<li><span><a href="#tabs-4">Menus</a></span></li>
+            	<li><span><a href="#tabs-5">Themes</a></span></li>
+        	</ul>
+    	</div>
+    	<div class="cms-user-auth">
+        	<span class="cms-ico-user"></span>
+        	${authenticationService.user.firstName} ${authenticationService.user.lastName}
+        	<a href="#" t:type="ActionLink" t:id="logout" class="cms-logout">Logout</a>
+    	</div>
 	</div>
+	<div class="cms-menu-shadow" id="menu-shadow"></div>
+	<div class="cms-main" id="edMain">
+
+    	<div class="cms-main-content">
+
+    		<div class="cms-tabs-cont"></div>
+
+			<div class="cms-tabs-cont cms-visible">
+
+
+            	<div class="cms-main-head">
+                	<div class="cms-main-title">
+                    	<h1 class="cms-page-title">General site settings</h1>
+                	</div>
+                	<div class="cms-main-controls">
+                    <!--<span class="cms-ico-plus"></span>
+                	<a href="" class="cms-main-control">Add new theme</a>-->
+                </div>
+            </div>
+
+
+            <div class="cms-content">
+
+                <div class="cms-cols-wrap cms-settings">
+
+                    <div class="cms-col">
+
+                        <h5 class="cms-block-sub-title">Some Options
+                            <span class="cms-ico-help"></span>
+                        </h5>
+
+                        <ul class="cms-list-items">
+                            <li><input id="set1" name="set1" type="radio"/><label for="set1">Published</label></li>
+                            <li><input id="set2" name="set1" type="radio"/><label for="set2">Published</label></li>
+                            <li><input id="set3" name="set1" type="radio"/><label for="set3">Published</label></li>
+                        </ul>
+
+                    </div>
+
+
+                    <div class="cms-col">
+
+                        <h5 class="cms-block-sub-title">Some Options
+                            <span class="cms-ico-help"></span>
+                        </h5>
+
+                        <ul class="cms-list-items">
+                            <li><input id="set4" name="set1" type="radio"/><label for="set4">Published</label></li>
+                            <li><input id="set5" name="set1" type="radio"/><label for="set5">Published</label></li>
+                            <li><input id="set6" name="set1" type="radio"/><label for="set6">Published</label></li>
+                        </ul>
+
+                    </div>
+
+
+                    <div class="cms-col">
+
+                        <h5 class="cms-block-sub-title">Some Options
+                            <span class="cms-ico-help"></span>
+                        </h5>
+
+                        <ul class="cms-list-items">
+                            <li><input id="set7" name="set1" type="radio"/><label for="set7">Published</label></li>
+                            <li><input id="set8" name="set1" type="radio"/><label for="set8">Published</label></li>
+                            <li><input id="set9" name="set1" type="radio"/><label for="set9">Published</label></li>
+                        </ul>
+
+                    </div>
+
+
+                    <div class="cms-btns">
+                        <button type="button" class="cms-but cms-btn-prev">Cancel</button>
+                        <button type="button" class="cms-but cms-btn-next">Save</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <div class="cms-tabs-cont">
+
+
+
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Blocks</h1>
+                </div>
+                <div class="cms-main-controls">
+
+                    <span class="cms-ico-plus"></span>
+                    <a href="" class="cms-main-control">Add new block</a>
+
+                </div>
+                <div class="cms-search-block">
+                    <input type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
+                    <button class="cms-btn-search" type="button"></button>
+                </div>
+            </div>
+
+            <div class="cms-content cms-page-blocks">
+
+                <table class="cms-cont-table">
+                    <tr>
+                        <td class="cms-first">Banner ad 1</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Banner ad 1</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Banner ad 1</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Banner ad 1</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                </table>
+
+
+            </div>
+
+        </div>
+
+        <div class="cms-tabs-cont">
+
+
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Pages</h1>
+                </div>
+                <div class="cms-main-controls">
+
+                    <span class="cms-ico-plus"></span>
+                    <a href="" class="cms-main-control">Add new page</a>
+
+                </div>
+                <div class="cms-search-block">
+                    <input type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
+                    <button class="cms-btn-search" type="button"></button>
+                </div>
+            </div>
+
+            <div class="cms-content cms-page-blocks">
+
+                <table class="cms-cont-table">
+                    <tr>
+                        <td class="cms-first">Home page</td>
+                        <td class="cms-block-pub">
+                            <span data-pub="publish">
+                                Published
+                            </span></td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Home page</td>
+                        <td class="cms-block-pub">
+                            <span data-pub="publish">
+                                Published
+                            </span></td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">About</td>
+                        <td class="cms-block-pub">
+                            <span data-pub="publish">
+                                Published
+                            </span></td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Contacts</td>
+                        <td class="cms-block-pub">
+                            <span data-pub="publish">
+                                Published
+                            </span></td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                </table>
+
+            </div>
+
+
+
+
+        </div>
+
+
+        <div class="cms-tabs-cont">
+
+
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Menus</h1>
+                </div>
+                <div class="cms-main-controls">
+
+                    <span class="cms-ico-plus"></span>
+                    <a href="" class="cms-main-control">Add new menu</a>
+
+                </div>
+                <div class="cms-search-block">
+                    <input type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
+                    <button class="cms-btn-search" type="button"></button>
+                </div>
+            </div>
+
+            <div class="cms-content cms-page-menu">
+
+
+            <ul class="cms-menu-pages">
+
+                <li> <!-- first level -->
+                    <span class="cms-menu-pages-n cms-first">About <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/aboutus</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+                <li>
+                    <em class="cms-lev-second"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+                <li>
+                    <em class="cms-lev-second cms-sibling"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+                <li>
+                    <em class="cms-lev-second cms-sibling"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+                <li>
+                    <span class="cms-menu-pages-n cms-first">How to enrol <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/aboutus</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+                <li>
+                    <em class="cms-lev-second"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+                <li>
+                    <em class="cms-lev-second cms-sibling"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+                <li class="cms-line-drag">
+                    <em class="cms-lev-second cms-sibling"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact1 <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+
+
+                <li>
+                    <em class="cms-lev-third"><div></div></em>
+                    <em class="cms-lev-second"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first cms-drop-place">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+
+                <li>
+                    <em class="cms-lev-third cms-sibling"><div></div></em>
+                    <em class="cms-lev-second cms-sibling"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+
+
+                <li>
+                    <em class="cms-lev-second cms-sibling"><div></div></em>
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+
+
+<li class="cms-line-drop">
+                    <span class="cms-menu-pages-n cms-first">Contact <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-url">page URLs: <strong>/contacts</strong> - default  (/name, /1213, ) <span class="cms-ico-edit"></span></span><span class="cms-menu-pages-dr"><span class="cms-ico-drag"></span> Drag &amp; Place</span><span class="cms-menu-pages-dl cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></span>
+                </li>
+
+
+            </ul>
+
+
+
+
+
+
+
+
+                </div>
+
+
+
+        </div>
+
+    <div class="cms-tabs-cont">
+
+
+
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Themes</h1>
+                </div>
+                <div class="cms-main-controls">
+
+                    <span class="cms-ico-plus"></span>
+                    <a href="" class="cms-main-control">Add new theme</a>
+
+                </div>
+                <div class="cms-search-block">
+                    <input type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
+                    <button class="cms-btn-search" type="button"></button>
+                </div>
+            </div>
+
+            <div class="cms-content cms-page-blocks">
+
+                <table class="cms-cont-table">
+                    <tr>
+                        <td class="cms-first">Theme 1</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="" id="openTheme1">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Theme 2</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Blog</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cms-first">Page</td>
+                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
+                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+                    </tr>
+                </table>
+
+
+            </div>
+
+        </div>
+
+
+    <div class="cms-tabs-cont" id="editTheme1">
+
+        <div class="cms-content">
+
+
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Edit Theme</h1>
+                </div>
+            </div>
+
+
+            <div class="cms-theme-title">
+
+                <div class="cms-theme-title-n clearfix">
+                    <label for="themeName">Name:</label>
+                    <input id="themeName" type="text" maxlength="500" class="cms-field-wide" value="Blog"/>
+
+                    <div class="cms-theme-title-del">
+                        <a href="">Delete theme</a>
+                    </div>
+
+                </div>
+
+                <div class="cms-theme-title-k">
+                    <label>Layout key:</label>
+
+                    <div class="cms-theme-key-wr">
+                        <div class="cms-theme-key" id="cmsThemeKey"></div>
+                        <div class="cms-theme-key-list" id="cmsThemeList">
+                            <span rel="1" class="selected"><img src="/s/cms/img/theme1.png"/>Default</span>
+                            <span rel="2"><img src="/s/cms/img/theme2.png"/>Sample 1</span>
+                            <span rel="3"><img src="/s/cms/img/theme3.png"/>Sample 2</span>
+                            <span rel="4"><img src="/s/cms/img/theme4.png"/>Sample 3</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="cmsThemeKeyId" value=""/>
+
+                </div>
+
+            </div>
+
+
+            <div class="cms-theme-main">
+                <div class="cms-theme-main-l">
+                    <p><strong>Current layout</strong> Drag &amp; drop blocks from the right column
+                    <br/>&nbsp;</p>
+
+
+                    <table class="cms-theme-layout">
+                        <tr>
+                            <td class="header" colspan="3">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">
+
+                            </td>
+                            <td class="center">
+
+                                <ul class="cms-theme-list-m">
+                                    <li class="cms-theme-module">
+                                        Flash
+                                    </li>
+
+                                </ul>
+
+                            </td>
+                            <td class="right">
+
+                                <ul class="cms-theme-list-m">
+                                    <li class="cms-theme-module">
+                                        Vote
+                                    </li>
+
+                                    <li class="cms-theme-module drag">
+                                        Vote
+                                    </li>
+                                    <li class="cms-theme-module">
+                                        RSS
+                                    </li>
+                                </ul>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="footer">
+
+                                <ul class="cms-theme-list-m">
+                                    <li class="cms-theme-module">
+                                        Vote
+                                    </li>
+
+                                </ul>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div>
+                <div class="cms-theme-main-r">
+                    <p><strong>Unassigned</strong> blocks<br/>
+                        (drag them to the layout on the left)
+                    </p>
+
+
+
+
+
+
+                    <div id="scrollTheme" class="cms-theme-modules">
+                        <span class="cms-theme-modul-u buttons prev"></span>
+
+                        <div class="viewport">
+                            <ul class="overview">
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+
+                            </ul>
+                        </div>
+
+
+                        <span class="cms-theme-modul-d buttons next"></span>
+                    </div>
+
+
+                    <div class="cms-theme-module drop" style="position:absolute; left:650px; top:300px;">
+                        Image
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+            <div class="cms-btns alignCenter">
+                <button type="button" class="cms-but cms-btn-prev">Cancel</button>
+                <button type="button" class="cms-but cms-btn-next">Save</button>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+
+    </div>
+
+</div>
 	
 </t:container>
