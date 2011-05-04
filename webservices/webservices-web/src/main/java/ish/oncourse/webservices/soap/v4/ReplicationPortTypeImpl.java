@@ -38,6 +38,8 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 	private static final Logger logger = Logger.getLogger(ReplicationPortTypeImpl.class);
 
+	private static final int BATCH_SIZE = 500;
+	
 	@Inject
 	@Autowired
 	private IWillowQueueService queueService;
@@ -75,7 +77,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 		ReplicationRecords result = new ReplicationRecords();
 
-		List<QueuedRecord> queue = queueService.getReplicationQueue();
+		List<QueuedRecord> queue = queueService.getReplicationQueue(BATCH_SIZE);
 
 		Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<QueueKey, DFADedupper>();
 

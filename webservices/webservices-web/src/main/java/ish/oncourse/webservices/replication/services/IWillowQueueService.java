@@ -5,5 +5,5 @@ import ish.oncourse.model.QueuedRecord;
 import java.util.List;
 
 public interface IWillowQueueService {
-	List<QueuedRecord> getReplicationQueue();
+	List<QueuedRecord> getReplicationQueue(int limit);
 }

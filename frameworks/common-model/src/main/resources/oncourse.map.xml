@@ -465,7 +465,14 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="lastAttemptTimestamp" type="TIMESTAMP" length="19"/>
 		<db-attribute name="numberOfAttempts" type="INTEGER" length="10"/>
-		<db-attribute name="transactionKey" type="VARCHAR" length="255"/>
+		<db-attribute name="transactionId" type="BIGINT" length="255"/>
+	</db-entity>
+	<db-entity name="QueuedTransaction">
+		<db-attribute name="collegeId" type="BIGINT"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="transactionKey" type="VARCHAR" length="100"/>
 	</db-entity>
 	<db-entity name="Room" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1100,6 +1107,10 @@
 		<obj-attribute name="errorMessage" type="java.lang.String" db-attribute-path="errorMessage"/>
 		<obj-attribute name="lastAttemptTimestamp" type="java.util.Date" db-attribute-path="lastAttemptTimestamp"/>
 		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
+	</obj-entity>
+	<obj-entity name="QueuedTransaction" className="ish.oncourse.model.QueuedTransaction" dbEntityName="QueuedTransaction">
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="transactionKey" type="java.lang.String" db-attribute-path="transactionKey"/>
 	</obj-entity>
 	<obj-entity name="Room" className="ish.oncourse.model.Room" dbEntityName="Room">
@@ -1449,6 +1460,9 @@
 	<db-relationship name="queuedRecords" source="College" target="QueuedRecord" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="queuedTransactions" source="College" target="QueuedTransaction" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="rooms" source="College" target="Room" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1742,6 +1756,15 @@
 	</db-relationship>
 	<db-relationship name="college" source="QueuedRecord" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="queuedTransaction" source="QueuedRecord" target="QueuedTransaction" toMany="false">
+		<db-attribute-pair source="transactionId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="QueuedTransaction" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="queuedRecords" source="QueuedTransaction" target="QueuedRecord" toMany="true">
+		<db-attribute-pair source="id" target="transactionId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Room" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -2162,6 +2185,9 @@
 	<obj-relationship name="payment" source="PaymentTransaction" target="PaymentIn" deleteRule="Nullify" db-relationship-path="payment"/>
 	<obj-relationship name="college" source="Preference" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="QueuedRecord" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="queuedTransaction" source="QueuedRecord" target="QueuedTransaction" deleteRule="Nullify" db-relationship-path="queuedTransaction"/>
+	<obj-relationship name="college" source="QueuedTransaction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="queuedRecords" source="QueuedTransaction" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
 	<obj-relationship name="college" source="Room" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Room" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="sessions" source="Room" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>

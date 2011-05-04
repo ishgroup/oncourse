@@ -1282,6 +1282,21 @@ AUTO_INCREMENT = 2418
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+CREATE  TABLE IF NOT EXISTS `w2_college`.`QueuedTransaction` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+  `collegeId` BIGINT(20) NOT NULL ,
+  `transactionKey` VARCHAR(100) NOT NULL,
+  `created` DATETIME NULL DEFAULT NULL ,
+  `modified` DATETIME NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `QueuedRecord_ibfk_1` (`collegeId` ASC) ,
+  CONSTRAINT `QueuedRecord_ibfk_1`
+    FOREIGN KEY (`collegeId` )
+    REFERENCES `w2_college`.`College` (`id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 804270
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`QueuedRecord`
@@ -1294,14 +1309,17 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`QueuedRecord` (
   `action` ENUM('New', 'Update', 'Delete') CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL ,
   `numberOfAttempts` INT(11) NULL DEFAULT NULL ,
   `lastAttemptTimestamp` DATETIME NULL DEFAULT NULL ,
-  `transactionKey` VARCHAR(255),
+  `transactionId` BIGINT NOT NULL,
   `angelId` BIGINT,
   `errorMessage` VARCHAR(1024),
   PRIMARY KEY (`id`) ,
   INDEX `QueuedRecord_ibfk_1` (`collegeId` ASC) ,
   CONSTRAINT `QueuedRecord_ibfk_1`
     FOREIGN KEY (`collegeId` )
-    REFERENCES `w2_college`.`College` (`id` ))
+    REFERENCES `w2_college`.`College` (`id` ),
+  CONSTRAINT `QueuedTransaction_ibfk_2`
+	    FOREIGN KEY (`transactionId` )
+	    REFERENCES `w2_college`.`QueuedTransaction` (`id` ))
 ENGINE = InnoDB
 AUTO_INCREMENT = 804270
 DEFAULT CHARACTER SET = utf8

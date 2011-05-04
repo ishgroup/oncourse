@@ -27,21 +27,26 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		DataRowStore snapshotCache = (dataDomain.isSharedCacheEnabled()) ? dataDomain.getSharedSnapshotCache()
 				: new DataRowStore(dataDomain.getName(), dataDomain.getProperties(), eventManager);
 
-		DataContext context = new ISHObjectContext(parent, new ObjectStore(snapshotCache));
+		ISHObjectContext context = new ISHObjectContext(parent, new ObjectStore(snapshotCache));
 		
 		context.setValidatingObjectsOnCommit(dataDomain.isValidatingObjectsOnCommit());
 		context.setQueryCache(injector.getInstance(Key.get(QueryCache.class, BaseContext.QUERY_CACHE_INJECTION_KEY)));
+		
+		context.setRecordQueueingEnabled(true);
+		
 		return context;
 	}
 
 	protected ObjectContext createFromDataContext(DataContext parent) {
 		ObjectStore objectStore = new ObjectStore();
 
-		DataContext context = new ISHObjectContext(parent, objectStore);
+		ISHObjectContext context = new ISHObjectContext(parent, objectStore);
 
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
 		context.setUsingSharedSnapshotCache(parent.isUsingSharedSnapshotCache());
 		context.setQueryCache(injector.getInstance(Key.get(QueryCache.class, BaseContext.QUERY_CACHE_INJECTION_KEY)));
+		
+		context.setRecordQueueingEnabled(true);
 
 		return context;
 	}
@@ -50,9 +55,12 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		DataRowStore snapshotCache = (parent.isSharedCacheEnabled()) ? parent.getSharedSnapshotCache() : new DataRowStore(
 				parent.getName(), parent.getProperties(), eventManager);
 
-		DataContext context = new ISHObjectContext(parent, new ObjectStore(snapshotCache));
+		ISHObjectContext context = new ISHObjectContext(parent, new ObjectStore(snapshotCache));
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
 		context.setQueryCache(injector.getInstance(Key.get(QueryCache.class, BaseContext.QUERY_CACHE_INJECTION_KEY)));
+		
+		context.setRecordQueueingEnabled(true);
+		
 		return context;
 	}
 

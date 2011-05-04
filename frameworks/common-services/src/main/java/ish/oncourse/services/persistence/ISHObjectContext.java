@@ -13,9 +13,9 @@ import org.apache.cayenne.graph.GraphDiff;
  */
 public class ISHObjectContext extends DataContext {
 
-	private static final String TRANSACTION_KEY_PROP = "transaction_key";
-
-	private boolean isRecordQueueingEnabled = true;
+	private ThreadLocal<String> TRANSACTION_KEY_STORAGE = new InheritableThreadLocal<String>();
+	
+	private static final String REPLICATING_PROP = "replicating";
 
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
 		super(channel, objectStore);
@@ -25,7 +25,7 @@ public class ISHObjectContext extends DataContext {
 	 * @return true if record queueing is enabled.
 	 */
 	public boolean getIsRecordQueueingEnabled() {
-		return this.isRecordQueueingEnabled;
+		return (Boolean) getUserProperty(REPLICATING_PROP);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class ISHObjectContext extends DataContext {
 	 *            set to true if record queueing is to be enabled (default)
 	 */
 	public void setRecordQueueingEnabled(boolean isRecordQueueingEnbled) {
-		this.isRecordQueueingEnabled = isRecordQueueingEnbled;
+		setUserProperty(REPLICATING_PROP, isRecordQueueingEnbled);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class ISHObjectContext extends DataContext {
 	 * @return transaction key
 	 */
 	public String getTransactionKey() {
-		return (String) getUserProperty(TRANSACTION_KEY_PROP);
+		return TRANSACTION_KEY_STORAGE.get();
 	}
 
 	/**
@@ -55,20 +55,26 @@ public class ISHObjectContext extends DataContext {
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType) {
 		try {
 			String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
-			setUserProperty(TRANSACTION_KEY_PROP, transactionKey);
+			TRANSACTION_KEY_STORAGE.set(transactionKey);
 			return super.onSync(originatingContext, changes, syncType);
 		} finally {
-			setUserProperty(TRANSACTION_KEY_PROP, null);
+			TRANSACTION_KEY_STORAGE.set(null);
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.cayenne.access.DataContext#commitChanges()
 	 */
 	@Override
 	public void commitChanges() throws CayenneRuntimeException {
-		String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
-		setUserProperty(TRANSACTION_KEY_PROP, transactionKey);
-		super.commitChanges();
+		try {
+			String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
+			TRANSACTION_KEY_STORAGE.set(transactionKey);
+			super.commitChanges();
+		} finally {
+			TRANSACTION_KEY_STORAGE.set(null);
+		}
 	}
 }

@@ -1,14 +1,14 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.model.QueueKey;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.services.ICollegeRequestService;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
@@ -26,15 +26,33 @@ public class WillowQueueService implements IWillowQueueService {
 	@Autowired
 	private ICayenneService cayenneService;
 
-	public List<QueuedRecord> getReplicationQueue() {
+	public List<QueuedRecord> getReplicationQueue(int limit) {
 
-		SortedMap<QueueKey, QueuedRecord> m = new TreeMap<QueueKey, QueuedRecord>();
+		int size = 0;
+		int fetchOffset = 0;
 
-		SelectQuery q = new SelectQuery(QueuedRecord.class);
-		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.COLLEGE_PROPERTY, collegeRequestService.getRequestingCollege()));
+		List<QueuedRecord> queue = new ArrayList<QueuedRecord>();
+		ObjectContext ctx = cayenneService.sharedContext();
 
-		q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING));
+		while (size < limit) {
 
-		return cayenneService.sharedContext().performQuery(q);
+			SelectQuery q = new SelectQuery(QueuedTransaction.class);
+			q.andQualifier(ExpressionFactory.matchExp(QueuedTransaction.COLLEGE_PROPERTY, collegeRequestService.getRequestingCollege()));
+			q.addPrefetch(QueuedTransaction.QUEUED_RECORDS_PROPERTY);
+			q.addOrdering(new Ordering(QueuedTransaction.CREATED_PROPERTY, SortOrder.ASCENDING));
+			q.setFetchLimit(30);
+			q.setFetchOffset(fetchOffset);
+
+			List<QueuedTransaction> transactions = ctx.performQuery(q);
+
+			size += transactions.size();
+			fetchOffset += transactions.size();
+
+			for (QueuedTransaction t : transactions) {
+				queue.addAll(t.getQueuedRecords());
+			}
+		}
+
+		return queue;
 	}
 }

@@ -9,6 +9,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
+import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.ISHObjectContext;
 
@@ -20,7 +21,9 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.LifecycleListener;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
 /**
@@ -146,6 +149,19 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			Long entityId = entity.getId();
 
 			ObjectContext ctx = cayenneService.newNonReplicatingContext();
+			
+			SelectQuery q = new SelectQuery(QueuedTransaction.class);
+			q.andQualifier(ExpressionFactory.matchExp(QueuedTransaction.TRANSACTION_KEY_PROPERTY, transactionKey));
+
+			QueuedTransaction t = (QueuedTransaction) Cayenne.objectForQuery(ctx, q);
+
+			if (t == null) {
+				t = ctx.newObject(QueuedTransaction.class);
+				Date today = new Date();
+				t.setCreated(today);
+				t.setModified(today);
+				t.setTransactionKey(transactionKey);
+			}
 
 			LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
 					action, transactionKey));
@@ -155,10 +171,10 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			qr.setCollege((College) ctx.localObject(college.getObjectId(), null));
 			qr.setEntityIdentifier(entityName);
 			qr.setEntityWillowId(entityId);
+			qr.setQueuedTransaction(t);
 			qr.setAction(action);
 			qr.setNumberOfAttempts(0);
 			qr.setLastAttemptTimestamp(new Date());
-			qr.setTransactionKey(transactionKey);
 
 			ctx.commitChanges();
 		}

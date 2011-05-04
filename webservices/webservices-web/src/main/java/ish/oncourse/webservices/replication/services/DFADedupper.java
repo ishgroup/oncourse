@@ -20,7 +20,7 @@ public class DFADedupper {
 	private LinkedList<QueuedRecord> recordSet = new LinkedList<QueuedRecord>();
 
 	public void nextState(QueuedRecord record) throws DedupperException {
-		transactionKeys.add(record.getTransactionKey());
+		transactionKeys.add(record.getQueuedTransaction().getTransactionKey());
 		
 		QueuedRecord currentRecord = (recordSet.isEmpty()) ? null : recordSet.getLast();
 		
