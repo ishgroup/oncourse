@@ -58,7 +58,7 @@
 											 		<t:if t:test="webNode.published"> 
 											 			<span data-pub="published">published</span>
 												 		<p:else> 
-												 			<span data-pub="unpublished">unpublished</span>
+												 			<span data-pub="hidden">unpublished</span>
 												 		</p:else>
 												 	</t:if>
 												 </div>	
@@ -75,7 +75,12 @@
 
 	   		<div class="cms-pages-status" data-pub="published">
        			<t:zone t:id="publishedZone" update="show" show="show">
-            		${pageStatus}
+            		<t:if t:test="webNode.published"> 
+						<span data-pub="published">${pageStatus}</span>
+						<p:else> 
+							<span data-pub="hidden">${pageStatus}</span>
+						</p:else>
+					</t:if>
             	</t:zone>
         	</div>
 

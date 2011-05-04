@@ -1,8 +1,53 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter" lang="en">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en" >
 	
-	<a t:id="newPage" t:type="actionLink" class="button">New Page</a> <input id="pageFilter" type="text" value=""/>
+    <div class="cms-main-head">
+        <div class="cms-main-title">
+        	<h1 class="cms-page-title">Pages</h1>
+        </div>
+        <div class="cms-main-controls">
+
+        	<span class="cms-ico-plus"></span>
+            <a t:id="newPage" t:type="actionLink" class="button">Add new page</a>
+
+       	</div>
+        <div class="cms-search-block">
+            <input id="pageFilter" maxlength="300" class="cms-field-wide cms-field-search" type="text" value=""/>
+            <button type="button" class="cms-btn-select"/>
+            <button class="cms-btn-search" type="button"></button>
+        </div>
+    </div>
+
+    <div class="cms-content cms-page-blocks"  >
+				
+    	<table class="cms-cont-table">
+    		<t:loop source="webNodeService.nodes" value="webNode">
+				<tr>
+					<td class="cms-first">${webNode.name}</td>
+					<td>
+						<t:if t:test="webNode.published">
+							<span data-pub="publish">
+                	           	Published
+                 	       </span>
+                 	       <p:else>
+								<span data-pub="hidden">
+                 	               Unpublished
+                 	           </span>
+							</p:else>
+						</t:if>
+					</td>
+					<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+					<td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
+                	<td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
+				</tr>
+			</t:loop>
+        </table>
+
+    </div>
+
+
+	<!-- a t:id="newPage" t:type="actionLink" class="button">New Page</a> <input id="pageFilter" type="text" value=""/>
 	
 	<h2>Pages</h2>
 	
@@ -56,5 +101,5 @@
 		           });
 			
 		});
-	</script>
-</div>
+	</script-->
+</t:container>

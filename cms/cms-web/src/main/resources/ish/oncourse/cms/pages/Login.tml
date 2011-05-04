@@ -11,7 +11,7 @@
 	
 		<!--[if lt IE 9]> <div class="ie" id="cmsWapper"> <![endif]-->
 		<!--[if IE 9 ]> <div class="ie9" id="cmsWapper"> <![endif]-->
-		<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWapper"> <!--<![endif]-->
+		<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWrapper"> <!--<![endif]-->
 			<div id="cmsInner">
 				<div class="cms-login">
 					<div class="cms-login-wr">
