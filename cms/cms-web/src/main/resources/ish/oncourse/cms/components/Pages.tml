@@ -7,10 +7,8 @@
         	<h1 class="cms-page-title">Pages</h1>
         </div>
         <div class="cms-main-controls">
-
         	<span class="cms-ico-plus"></span>
             <a t:id="newPage" t:type="actionLink" class="button">Add new page</a>
-
        	</div>
         <div class="cms-search-block">
             <input id="pageFilter" maxlength="300" class="cms-field-wide cms-field-search" type="text" value=""/>
@@ -19,54 +17,42 @@
         </div>
     </div>
 
-    <div class="cms-content cms-page-blocks"  >
+	<t:zone t:id="pagesListZone">
+    
+    	<div class="cms-content cms-page-blocks"  >
 				
-    	<table class="cms-cont-table">
-    		<t:loop source="webNodeService.nodes" value="webNode">
-				<tr>
-					<td class="cms-first">${webNode.name}</td>
-					<td>
-						<t:if t:test="webNode.published">
-							<span data-pub="publish">
-                	           	Published
-                 	       </span>
-                 	       <p:else>
-								<span data-pub="hidden">
-                 	               Unpublished
-                 	           </span>
-							</p:else>
-						</t:if>
-					</td>
-					<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
-					<td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                	<td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-				</tr>
-			</t:loop>
-        </table>
+    		<table class="cms-cont-table" id="pages">
+    			<t:loop source="webNodeService.nodes" value="webNode">
+					<tr>
+						<td class="cms-first">${webNode.name}</td>
+						<td>
+							<t:if t:test="webNode.published">
+								<span data-pub="publish">
+                	           		Published
+	                 	       </span>
+    	             	       <p:else>
+									<span data-pub="hidden">
+            	     	               Unpublished
+                	 	           </span>
+								</p:else>
+							</t:if>
+						</td>
+						<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+						<td>
+							<span class="cms-ico-edit"></span> 
+							<a href="${webNode.path}">Edit</a>
+						</td>
+                		<td class="cms-last">
+                			<span class="cms-ico-del"></span> 
+                			<t:actionLink t:id="deletePage" context="${webNode.nodeNumber}" zone="pagesListZone">Delete</t:actionLink>
+                		</td>
+					</tr>
+				</t:loop>
+	        </table>
 
-    </div>
-
-
-	<!-- a t:id="newPage" t:type="actionLink" class="button">New Page</a> <input id="pageFilter" type="text" value=""/>
-	
-	<h2>Pages</h2>
-	
-	<table id="pages">
-		<t:loop source="webNodeService.nodes" value="webNode">
-			<tr id="${webNode.nodeNumber}">
-				<td class="pageName">${webNode.name}</td>
-				<td><t:if t:test="webNode.published">published<p:else>unpublished</p:else></t:if></td>
-				<td><t:outputraw value="lastEdited"/></td>
-			</tr>
-		</t:loop>
-	</table>
-	
-	<style>
-		.selectedRow {
-			background-color: yellow;
-			cursor: pointer;
-		 }
-	</style>
+    	</div>
+    	
+	</t:zone>
 	
 	<script type="text/javascript">
 		jQuery(function() {
@@ -89,17 +75,7 @@
 	            });
 	          });
 			
-			jQuery('#pages tbody tr').mouseover(
-					function() {
-						jQuery(this).addClass('selectedRow');
-					}).mouseout(
-					function() {
-			    		jQuery(this).removeClass('selectedRow');
-			    	}).click(
-			    	function() {
-			    		window.location = '/page/' + jQuery(this).attr('id');
-		           });
-			
 		});
-	</script-->
+	</script>
+	
 </t:container>

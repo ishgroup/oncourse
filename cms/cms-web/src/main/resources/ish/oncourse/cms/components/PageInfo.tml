@@ -75,7 +75,7 @@
 
 	   		<div class="cms-pages-status" data-pub="published">
        			<t:zone t:id="publishedZone" update="show" show="show">
-            		<t:if t:test="webNode.published"> 
+            		<t:if t:test="node.published"> 
 						<span data-pub="published">${pageStatus}</span>
 						<p:else> 
 							<span data-pub="hidden">${pageStatus}</span>
