@@ -1,9 +1,66 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">	
 
-	<button class="awesome blue large cms_add_menuitem">Add a new menu item</button> <br/>
+	<div class="cms-main-head">
+    	<div class="cms-main-title">
+            <h1 class="cms-page-title">Menus</h1>
+        </div>
+        <div class="cms-main-controls">
+            <span class="cms-ico-plus"></span>
+             <a href="" class="cms-main-control cms_add_menuitem">Add new menu</a>
+		</div>
+        <div class="cms-search-block">
+            <input id="menuFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/>
+            <button type="button" class="cms-btn-select"></button>
+            <button class="cms-btn-search" type="button"></button>
+        </div>
+            </div>
+
+            <div class="cms-content cms-page-menu" id="menus">
+
+		
+
+            <ul class="cms-menu-pages cms_navmenu_list cms_draggable cms_sortable" >
+            	<t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
+					<t:delegate to="menuItem"/>
+				</t:loop>
+		
+	    		<t:block>
+	        		<div t:id="menuItem">
+	            		<t:delegate to="menuItem"/>
+	        		</div>
+	    		</t:block>
+            	
+
+              
+
+            </ul>
+
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- button class="awesome blue large cms_add_menuitem">Add a new menu item</button> <br/-->
 	
-	<li class="hidden cms_newmenuitem">
+	<li class="hidden cms_newmenuitem" style="display:none;">
 		<div>
 			<div class="cms_pagename">New menu item</div>
 			<div class="cms_refurl"></div>
@@ -12,7 +69,7 @@
 		</div>
 	</li>
 	
-	<ol class="cms_navmenu_list cms_draggable cms_sortable">
+	<!-- ul class="cms_navmenu_list cms_draggable cms_sortable">
 		
 		<t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
 			<t:delegate to="menuItem"/>
@@ -24,11 +81,36 @@
 	        </div>
 	    </t:block>
 	    
-	</ol>
+	</ul-->
 	
 	<script type="text/javascript">
 		jQuery(function(){
 			jQuery.menubuilder(${suggestResults});
 		});
+		
+		jQuery(function() {
+			jQuery('#menuFilter').search('#menus li', function(on) {
+	            on.all(function(results) {
+	             
+	            });
+
+	            on.reset(function() {
+	              jQuery('#menus li').show();
+	            });
+
+	            on.empty(function() {
+	              jQuery('#menus li').hide();
+	            });
+
+	            on.results(function(results) {
+	              jQuery('#menus li').hide();
+	              results.show();
+	            });
+	          });
+			
+		});
+		
+		
 	</script>
+	
 </t:container>

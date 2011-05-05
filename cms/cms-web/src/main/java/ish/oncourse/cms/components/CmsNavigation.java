@@ -3,6 +3,7 @@ package ish.oncourse.cms.components;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.cms.services.access.Protected;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.services.menu.IWebMenuService;
 
 import java.net.URL;
 
@@ -19,6 +20,10 @@ public class CmsNavigation {
 	@Inject
 	@Property
 	private IAuthenticationService authenticationService;
+	
+	@Property
+	@Inject
+	private IWebMenuService webMenuService;
 
 	@Inject
 	private Request request;

@@ -22,11 +22,12 @@
 			  }
 		});
 		
-		$('ol.cms_sortable').nestedSortable({
+		$('ul.cms_sortable').nestedSortable({
 			disableNesting: 'no-nest',
 			forcePlaceholderSize: true,
 			handle: 'div',
 			items: 'li',
+			listType: 'ul',
 			opacity: .6,
 			placeholder: 'ui-state-highlight',
 			tabSize: 25,
@@ -34,7 +35,7 @@
 			toleranceElement: '> div',
 			update: function (event, ui) {
 				var itemId = $(ui.item).attr('id').substring(2);
-				var s = $('ol.cms_sortable').nestedSortable('toArray');
+				var s = $('ul.cms_sortable').nestedSortable('toArray');
 				var parent = null, index = 0;
 				
 				for (var i=0; i< s.length; i++) {
@@ -87,10 +88,10 @@
 		});
 		
 		$('.cms_expander').live('click', function() {
-			$(this).parent().filter(':first').siblings('ol').toggle();
+			$(this).parent().filter(':first').siblings('ul').toggle();
 		});
 		
-		$(".cms_navmenu_list li:has('ol > li')").addClass('hasChildren').children('ol').hide();
+		$(".cms_navmenu_list li:has('ul > li')").addClass('hasChildren');//.children('ul').hide();
 		$( ".cms_navmenu_list li.hasChildren > div").prepend("<div class='cms_expander'><span class='ui-icon ui-icon-plusthick'></span></div>");
 		
 		function cms_attachEditable(newitem) {
@@ -109,5 +110,6 @@
 				style  : "inherit"
 			});
 		}
+		
 	};
 })(jQuery);
