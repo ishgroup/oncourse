@@ -11,8 +11,10 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 	@Override
 	protected void updateEntity(InvoiceStub stub, Invoice entity,
 			RelationShipCallback callback) {
+		
 		entity.setContact(callback.updateRelationShip(stub.getContactId(),
 				Contact.class));
+		
 		entity.setAmountOwing(stub.getAmountOwing());
 		entity.setBillToAddress(stub.getBillToAddress());
 		entity.setCreated(stub.getCreated());
@@ -29,11 +31,16 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		entity.setTotalExGst(stub.getTotalExGst());
 
 		if (stub.getStatus() != null) {
-			entity.setStatus(InvoiceStatus.valueOf(stub.getStatus()));
+			entity.setStatus(InvoiceStatus.getSourceForValue(stub.getStatus()));
+		}
+		else {
+			if (entity.getStatus() == null) {
+				entity.setStatus(InvoiceStatus.PENDING);
+			}
 		}
 
 		if (stub.getSource() != null) {
-			entity.setSource(PaymentSource.valueOf(stub.getSource()));
+			entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 		}
 
 		entity.setTotalGst(stub.getTotalGst());

@@ -14,16 +14,23 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<bean id="v4_referencePortTypeBean" class="ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl" />
+	
 	<bean id="v4_authenticationPortType"
 		class="ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl" />
+
 	<bean id="v4_securityCodeInterceptor"
 		class="ish.oncourse.webservices.soap.v4.auth.SecurityCodeInterceptor" />
+	
 	<bean id="v4_communicationKeyInterceptor"
 		class="ish.oncourse.webservices.soap.v4.auth.CommunicationKeyInterceptor" />
+	
 	<bean id="v4_replicationPortType"
 		class="ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl" />
+	
 	<bean id="v4_collegeRequestInterceptor"
 		class="ish.oncourse.webservices.soap.v4.auth.CollegeRequestInterceptor" />
+		
+	<bean id="v4_paymentPortType" class="ish.oncourse.webservices.soap.v4.PaymentPortTypeImpl"/>
 
 	<cxf:bus>
 		<cxf:inInterceptors>
@@ -41,6 +48,13 @@
 
 	<jaxws:endpoint id="v4_replication" implementor="#v4_replicationPortType"
 		address="/v4/replication">
+		<jaxws:inInterceptors>
+			<ref bean="v4_communicationKeyInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+	
+	<jaxws:endpoint id="v4_payment" implementor="#v4_paymentPortType"
+		address="/v4/payment">
 		<jaxws:inInterceptors>
 			<ref bean="v4_communicationKeyInterceptor" />
 		</jaxws:inInterceptors>

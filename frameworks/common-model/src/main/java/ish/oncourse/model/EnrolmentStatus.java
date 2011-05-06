@@ -81,5 +81,15 @@ public enum EnrolmentStatus implements Serializable, DisplayableExtendedEnumerat
 	public String getDisplayName() {
 		return displayName;
 	}
+	
+	public static EnrolmentStatus getEnumForDatabaseValue(Object aValue) {
+		if (aValue == null)
+			return null;
 
+		for (EnrolmentStatus ac : values()) {
+			if (ac.getDatabaseValue().equals(aValue))
+				return ac;
+		}
+		return null;
+	}
 }

@@ -254,12 +254,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		return null;
 	}
 
-	/**
-	 * Callback which takes care of updating relationships.
-	 * 
-	 * @author anton
-	 * 
-	 */
+	
 	private class RelationShipCallbackImpl implements RelationShipCallback {
 
 		private ObjectContext ctx;

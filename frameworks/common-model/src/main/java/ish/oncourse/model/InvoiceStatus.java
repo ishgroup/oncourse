@@ -10,7 +10,8 @@ import java.io.Serializable;
  * @author ksenia
  * 
  */
-public enum InvoiceStatus implements Serializable, DisplayableExtendedEnumeration {
+public enum InvoiceStatus implements Serializable,
+		DisplayableExtendedEnumeration {
 	/**
 	 * Default status. Set on invoice creation. Indicates that invoice is ready
 	 * for transaction performing.
@@ -70,5 +71,13 @@ public enum InvoiceStatus implements Serializable, DisplayableExtendedEnumeratio
 	public String getDisplayName() {
 		return displayName;
 	}
-
+	
+	public static InvoiceStatus getSourceForValue(String value) {
+		for (InvoiceStatus source : values()) {
+			if (source.getDatabaseValue().equals(value)) {
+				return source;
+			}
+		}
+		return null;
+	}
 }
