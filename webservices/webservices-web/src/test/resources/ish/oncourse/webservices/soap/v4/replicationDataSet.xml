@@ -3,8 +3,9 @@
 	<College id="1" name="Sydney Community College"  communication_key="7059522699886202880"  webServicesSecurityCode="345ttn44$%9" communication_key_status="VALID"/>
 	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT"/>
 	
-	<QueuedRecord id="1" collegeId="1" action="CREATE" entityIdentifier="Enrolment" entityWillowId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-	<QueuedRecord id="2" collegeId="1" action="UPDATE" entityIdentifier="CourseClass" entityWillowId="1482" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedTransaction id="1" collegeId="1" transactionKey="12345" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<QueuedRecord id="1" transactionId="1" collegeId="1" action="CREATE" entityIdentifier="Enrolment" entityWillowId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="2" transactionId="1" collegeId="1" action="UPDATE" entityIdentifier="CourseClass" entityWillowId="1482" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
 	
 	<Student id="1540" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
 	<Contact id="1" collegeId="1" studentId="1540" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="putin@kremlin.ru" familyName="Putin" givenName="Vladimir"  faxNumber="1234-567" suburb="Moscow"/>

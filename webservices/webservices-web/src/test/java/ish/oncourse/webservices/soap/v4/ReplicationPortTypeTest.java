@@ -70,7 +70,10 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 		assertNotNull("Expecting not null response.", response);
 		
-		List<TransactionGroup> groups = response.getGroups();;
+		List<TransactionGroup> groups = response.getGroups();
+		
+		assertTrue("Expecting not empty groups.", groups.size() > 0);
+		
 		List<ReplicationStub> stubs = groups.get(0).getAttendanceOrBinaryDataOrBinaryInfo();
 
 		assertTrue("Expecting only two stubs.", stubs.size() == 2);
