@@ -5,30 +5,36 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
-public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends ReplicationStub> implements IWillowStubBuilder {
+public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends ReplicationStub>
+		implements IWillowStubBuilder {
 
 	public ReplicationStub convert(QueuedRecord queuedRecord) {
-		
-		@SuppressWarnings("unchecked")
-		T entity = (T) queuedRecord.getLinkedRecord();
-		
+
+		ReplicationStub soapStub = null;
+
 		switch (queuedRecord.getAction()) {
 		case CREATE:
 		case UPDATE:
-			ReplicationStub fullStub = createFullStub(entity);
-			fullStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
-			fullStub.setWillowId(queuedRecord.getEntityWillowId());
-			fullStub.setAngelId(queuedRecord.getAngelId());
-			return fullStub;
+			@SuppressWarnings("unchecked")
+			T entity = (T) queuedRecord.getLinkedRecord();
+			soapStub = createFullStub(entity);
+			break;
 		case DELETE:
-			DeletedStub deletedStub = new DeletedStub();
-			deletedStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
-			deletedStub.setWillowId(queuedRecord.getEntityWillowId());
-			deletedStub.setAngelId(queuedRecord.getAngelId());
-			return deletedStub;
+			soapStub = new DeletedStub();
+			break;
 		default:
-			throw new IllegalArgumentException("QueuedRecord with null action is not allowed.");
+			throw new IllegalArgumentException(
+					"QueuedRecord with null action is not allowed.");
 		}
+
+		soapStub.setWillowId(queuedRecord.getEntityWillowId());
+		soapStub.setAngelId(queuedRecord.getAngelId());
+
+		if (soapStub.getEntityIdentifier() == null) {
+			soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
+		}
+
+		return soapStub;
 	}
 
 	protected abstract V createFullStub(T entity);

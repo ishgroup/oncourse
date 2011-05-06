@@ -11,7 +11,10 @@ public class TutorRoleUpdater extends AbstractWillowUpdater<CourseClassTutorStub
 	protected void updateEntity(CourseClassTutorStub stub, TutorRole entity, RelationShipCallback callback) {
 		stub.setEntityIdentifier("CourseClassTutor");
 		entity.setConfirmedDate(stub.getConfirmedOn());
-		entity.setCourseClass(callback.updateRelationShip(stub.getCourseClassId(), CourseClass.class));
+		
+		CourseClass courseClass = callback.updateRelationShip(stub.getCourseClassId(), CourseClass.class);
+		entity.setCourseClass(courseClass);
+		
 		entity.setCreated(stub.getCreated());
 		entity.setIsConfirmed(stub.isInPublicity());
 		entity.setModified(stub.getModified());

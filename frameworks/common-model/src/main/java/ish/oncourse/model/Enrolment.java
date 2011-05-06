@@ -28,4 +28,8 @@ public class Enrolment extends _Enrolment implements Queueable {
 		return !filter.filterObjects(getCourseClass().getValidEnrolments()).isEmpty();
 	}
 
+	@Override
+	protected void onPostAdd() {
+		setStatus(EnrolmentStatus.PENDING);
+	}
 }

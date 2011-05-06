@@ -37,20 +37,20 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
-		
+
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-		
+
 		st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}
-	
+
 	@After
 	public void cleanUp() throws Exception {
 		cleanDataSource(getDataSource("jdbc/oncourse_reference"));
@@ -83,12 +83,6 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 
 		assertEquals("Expecting 7 queueable records.", 7, actualData.getRowCount());
 
-		String transactionKey = (String) actualData.getValue(0, "transactionKey");
-
-		for (int i = 1; i < actualData.getRowCount(); i++) {
-			assertTrue("Expecting the same transactionKey across records.", actualData.getValue(i, "transactionKey").equals(transactionKey));
-		}
-
 		// Check entity names
 		Set<String> entityNames = new HashSet<String>();
 		for (int i = 0; i < actualData.getRowCount(); i++) {
@@ -103,6 +97,11 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		assertTrue("Expecting Invoice record.", entityNames.contains("Invoice"));
 		assertTrue("Expecting Student record.", entityNames.contains("Student"));
 		assertTrue("Expecting Contact record.", entityNames.contains("Contact"));
+
+		actualData = dbUnitConnection.createQueryTable("QueuedTransaction", String.format("select * from QueuedTransaction"));
+
+		assertTrue("Expecting only one transaction created.", actualData.getRowCount() == 1);
+		assertNotNull("Expecting not null transaction key.", actualData.getValue(0, "transactionKey"));
 	}
 
 	@Test
@@ -139,7 +138,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 				String.format("select * from QueuedRecord where entityIdentifier='Course' and entityWillowId=4"));
 
 		assertEquals("Expecting 1 queueable records.", 1, actualData.getRowCount());
-		assertNotNull("Expecting not null transaction id.", actualData.getValue(0, "transactionKey"));
+		assertNotNull("Expecting not null transaction id.", actualData.getValue(0, "transactionId"));
 
 		TutorRole tutorRole = Cayenne.objectForPK(ctx, TutorRole.class, 1l);
 		CourseClass courseClass = Cayenne.objectForPK(ctx, CourseClass.class, 10l);
@@ -157,8 +156,8 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		assertEquals("Expecting courseClass and TutorRole records.", 2, actualData.getRowCount());
 		assertEquals("Expecting Delete action.", "Delete", actualData.getValue(0, "action"));
 		assertEquals("Expecting Delete action.", "Delete", actualData.getValue(1, "action"));
-		assertEquals("Expecting identical transactionKeys.", actualData.getValue(0, "transactionKey"),
-				actualData.getValue(1, "transactionKey"));
+		assertEquals("Expecting identical transactionIds.", actualData.getValue(0, "transactionId"),
+				actualData.getValue(1, "transactionId"));
 
 		Course course2 = Cayenne.objectForPK(ctx, Course.class, 5l);
 		Tutor tutor = Cayenne.objectForPK(ctx, Tutor.class, 1l);
@@ -172,8 +171,9 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 				.createQueryTable(
 						"QueuedRecord",
 						String.format("select * from QueuedRecord where (entityIdentifier='Course' and entityWillowId=5 and action='Delete') or (entityIdentifier='Tutor' and entityWillowId=1 and action='Delete')"));
+		
 		assertEquals("Expecting course and tutor records.", 2, actualData.getRowCount());
-		assertEquals("Expecting identical transactionKeys.", actualData.getValue(0, "transactionKey"),
-				actualData.getValue(1, "transactionKey"));
+		assertEquals("Expecting identical transactionIds.", actualData.getValue(0, "transactionId"),
+				actualData.getValue(1, "transactionId"));
 	}
 }

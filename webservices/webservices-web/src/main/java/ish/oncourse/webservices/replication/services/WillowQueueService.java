@@ -39,12 +39,15 @@ public class WillowQueueService implements IWillowQueueService {
 		while (hasMoreRecords) {
 
 			SelectQuery q = new SelectQuery(QueuedTransaction.class);
+			
 			q.andQualifier(ExpressionFactory.matchExp(
 					QueuedTransaction.COLLEGE_PROPERTY,
 					collegeRequestService.getRequestingCollege()));
+			
 			q.addPrefetch(QueuedTransaction.QUEUED_RECORDS_PROPERTY);
 			q.addOrdering(new Ordering(QueuedTransaction.CREATED_PROPERTY,
 					SortOrder.ASCENDING));
+			
 			q.setFetchLimit(FETCH_LIMIT);
 			q.setFetchOffset(fetchOffset);
 

@@ -180,14 +180,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 				if (objectToUpdate != null) {
 
-					String message = String.format("Have willowId:null but found existing record for entity:%s and angelId:%s",
+					String message = String.format("Have willowId:null but found existing record for entity:%s and angelId:%s.",
 							stub.getEntityIdentifier(), stub.getAngelId());
 
-					logger.error(message);
-
-					objectToUpdate = null;
-					replRecord.setStatus(Status.DANGLING_OBJECT);
-					replRecord.setMessage(message);
+					logger.warn(message);
+					
 				} else {
 					objectToUpdate = objectContext.newObject(getEntityClass(objectContext, stub.getEntityIdentifier()));
 				}
