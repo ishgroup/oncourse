@@ -196,25 +196,25 @@ Media screen. Layout, fonts, colors.
   #cms #cmsInner {
     position: relative; }
   #cms .cms-edit-area {
-    z-index: 1; }
+    z-index: 101; }
   #cms .cms-darkover {
-    z-index: 2; }
+    z-index: 102; }
   #cms .cms-pane-wide, #cms .cms-pane-small {
-    z-index: 3; }
+    z-index: 103; }
   #cms .cms-page-controls {
-    z-index: 4; }
+    z-index: 104; }
   #cms .cms-btn-control {
-    z-index: 5; }
+    z-index: 105; }
   #cms .cms-header {
-    z-index: 6; }
+    z-index: 106; }
   #cms .cms-menu-wrap {
-    z-index: 7; }
+    z-index: 107; }
   #cms .cms-m-active {
-    z-index: 8; }
+    z-index: 108; }
   #cms .cms-main {
-    z-index: 6; }
+    z-index: 106; }
   #cms .cms-login {
-    z-index: 10; }
+    z-index: 110; }
   #cms .cms-login {
     position: fixed;
     width: 100%;
@@ -419,7 +419,12 @@ Media screen. Layout, fonts, colors.
     width: 100%;
     background: #fff; }
   #cms .cms-main-content {
-    padding: 22px 14px; }
+    padding: 22px 14px;
+    height: 100%;
+    min-height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
   #cms .cms-main-head {
     display: table;
     width: 100%;
@@ -973,6 +978,11 @@ Media screen. Layout, fonts, colors.
     width: 100%;
     font-size: 12px;
     list-style: none; }
+    #cms .cms-menu-pages ul {
+      list-style: none;
+      padding: 0 0 0 15px;
+      margin: 0 0 0 15px;
+      border-left: 1px solid #7f7f7f; }
     #cms .cms-menu-pages .cms-menu-pages-n {
       min-width: 150px; }
     #cms .cms-menu-pages li > em {
@@ -1002,14 +1012,14 @@ Media screen. Layout, fonts, colors.
       background-size: 7px 100%; }
     #cms .cms-menu-pages .cms-menu-pages-dr, #cms .cms-menu-pages .cms-menu-pages-dl {
       visibility: hidden; }
-    #cms .cms-menu-pages li:hover .cms-menu-pages-dr, #cms .cms-menu-pages li:hover .cms-menu-pages-dl {
+    #cms .cms-menu-pages li.over > .cms-menu-pages-dr, #cms .cms-menu-pages li.over > .cms-menu-pages-dl {
       visibility: visible; }
-    #cms .cms-menu-pages li:hover > span {
+    #cms .cms-menu-pages li.over > span {
       background-color: #f5af00; }
-    #cms .cms-menu-pages li:hover .cms-first {
+    #cms .cms-menu-pages li.over > .cms-first {
       background-image: url("/s/cms/img/line-left.png");
       background-position: left top; }
-    #cms .cms-menu-pages li:hover .cms-last {
+    #cms .cms-menu-pages li.over > .cms-last {
       background-image: url("/s/cms/img/line-right.png");
       background-position: right top; }
     #cms .cms-menu-pages .cms-lev-second {
@@ -1102,7 +1112,10 @@ Media screen. Layout, fonts, colors.
     display: inline-block;
     vertical-align: text-bottom; }
   #cms .cms-tabs-cont {
-    display: none; }
+    display: none;
+    height: 100%;
+    min-height: 100%;
+    overflow: auto; }
   #cms .cms-tabs-cont.cms-visible {
     display: block; }
   #cms .cms-table-popup {

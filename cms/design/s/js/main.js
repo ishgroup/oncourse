@@ -1,5 +1,7 @@
 jQuery.noConflict();
 
+
+
 function wrapHeight() {
     jQuery('body').css('overflow', 'hidden');
     var head = jQuery('#edHeader').outerHeight();
@@ -9,6 +11,8 @@ function wrapHeight() {
     jQuery('#edMain').height(sumElems + 1);
 
 }
+
+
 
 function hideEdit() {
     var topScroll = jQuery(window).height() - jQuery('#edMenuWr').height() - 1;
@@ -180,16 +184,39 @@ function modals() {
 }
 
 function tabsContent() {
-    jQuery('#edMenu').delegate('li', 'click', function() {
-        var i = jQuery(this).index();
-        jQuery(this).addClass("active");
-        if(jQuery(this).children('em').size() == 0) {
-            var f = document.createElement('em');
-            f.className='cms-m-active';
-            jQuery(this).append(f);
+    jQuery('#edMenu').delegate('li', 'click', function(event) {
+
+
+        var ev = event.target;
+        if(ev.id != 'editSite') {
+
+            // Slide content area
+            if(jQuery('#editSite').parent().parent().hasClass('active')){
+                var topScroll = jQuery('#edHeader').height();
+
+                jQuery('#edControls').slideUp();
+                jQuery('#edHeader').slideDown(100);
+                jQuery('#edMain').slideDown(700);
+
+                jQuery('#edMenuWr').animate({
+                    top: topScroll
+                }, {
+                    duration: 700
+                });
+            }
+
+            // Open tab
+
+            var i = jQuery(this).index() - 1;
+            jQuery(this).addClass("active");
+            if(jQuery(this).children('em').size() == 0) {
+                var f = document.createElement('em');
+                f.className='cms-m-active';
+                jQuery(this).append(f);
+            }
+            jQuery(this).siblings().removeClass("active").children('em').remove();
+            jQuery('#edMain').find('.cms-tabs-cont').hide().eq(i).fadeIn(150);
         }
-        jQuery(this).siblings().removeClass("active").children('em').remove();
-        jQuery('#edMain').find('.cms-tabs-cont').hide().eq(i).fadeIn(150);
 
     });
 
@@ -363,6 +390,19 @@ jQuery(document).ready(function () {
     editThemes();
 
     modals();
+
+    // Menu list (Menus tab).
+    jQuery(".cms-menu-pages li").mouseover(
+            function(e) {
+                jQuery(this).addClass("over").parents().removeClass("over");
+                e.stopPropagation();
+            }).mouseout(function(e) {
+        jQuery(this).removeClass("over");
+    });
+
+
+
+
 
 
 });
