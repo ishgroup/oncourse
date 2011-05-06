@@ -25,14 +25,14 @@
 		$('ul.cms_sortable').nestedSortable({
 			disableNesting: 'no-nest',
 			forcePlaceholderSize: true,
-			handle: 'div',
+			handle: 'span',
 			items: 'li',
 			listType: 'ul',
 			opacity: .6,
 			placeholder: 'ui-state-highlight',
 			tabSize: 25,
 			tolerance: 'pointer',
-			toleranceElement: '> div',
+			toleranceElement: '> span',
 			update: function (event, ui) {
 				var itemId = $(ui.item).attr('id').substring(2);
 				var s = $('ul.cms_sortable').nestedSortable('toArray');
@@ -51,40 +51,46 @@
 					index++;
 				}
 				
-				$.post('/ma.sort', {id: itemId, pid: parent, w:index}, function(data) {});
+				$.post('/ma.sort', {id: itemId, pid: parent, w:index}, function(data) {alert(data)});
 			}
 			
 		});
 		
-		$(".cms_navmenu_list .cms_delete_icon a").live('click', function() {
+		$(".cms_navmenu_list .cms-ico-del a").live('click', function() {
 			var elemID = this.id;
-			response=$.post('/ma.remove', {id: elemID.substring(2)});
-			if(response.responseText=="{status: 'OK'}"){
-				var id = elemID.replace('r_', 'm_');
-				$(".cms_navmenu_list #" + id).remove();
-			}else{
-				alert("this node cannot be deleted.");
-			}
-			
+			$.post("/ma.remove", { id: elemID.substring(2) },
+					   function(data) {
+							if(data=="{status: 'OK'}"){
+								var id = elemID.replace('r_', 'm_');
+								$(".cms_navmenu_list #" + id).remove();
+							}
+					   });
+
 		});
 		
-		$("button.cms_add_menuitem").click(function() {
+		$("a.cms_add_menuitem").click(function() {
 			$.post('/ma.newpage', function (data) {
 				var newitem = $('.cms_newmenuitem').clone(false);
 				
 				newitem.attr('id', 'm_'+data.id);
-				newitem.find('.cms_pagename').attr('id', 'n_' + data.id);
-				newitem.find('.cms_refurl').attr('id', 'u_' + data.id);
-				newitem.find('.cms_delete_icon a').attr('id', 'r_' + data.id);
+				newitem.find('.cms-menu-pages-n .editable').attr('id', 'n_' + data.id);
+				newitem.find('.cms-menu-pages-url .editable').attr('id', 'u_' + data.id);
+				newitem.find('.cms-menu-pages-dl a').attr('id', 'r_' + data.id);
 				
 				newitem.prependTo('.cms_navmenu_list').removeClass('hidden').removeClass('cms_newmenuitem');
-				cms_attachEditable(newitem.children("div:first"));
-				newitem.children('.cms_refurl').trigger('click');
+				newitem.show();
+				cms_attachEditable(newitem.children("span:first"));
+				newitem.children('.cms-menu-pages-url').trigger('click');
+				
 			}, 'json');
 		});
 		
-		$('.cms_navmenu_list li > div').each(function() {
+		$('.cms_navmenu_list li > span').each(function() {
 			cms_attachEditable($(this));
+		});
+		
+		$('.cms_navmenu_list li > span .cms-ico-edit').click(function() {
+			$(this).prev('.editable').click();
 		});
 		
 		$('.cms_expander').live('click', function() {
@@ -92,19 +98,19 @@
 		});
 		
 		$(".cms_navmenu_list li:has('ul > li')").addClass('hasChildren');//.children('ul').hide();
-		$( ".cms_navmenu_list li.hasChildren > div").prepend("<div class='cms_expander'><span class='ui-icon ui-icon-plusthick'></span></div>");
+		//$( ".cms_navmenu_list li.hasChildren > span").prepend("<div class='cms_expander'><span class='ui-icon ui-icon-plusthick'></span></div>");
 		
 		function cms_attachEditable(newitem) {
-			newitem.children('.cms_refurl').editable("/ma.save", { 
-				indicator : "<img src='img/indicator.gif'>",
+			newitem.children('.cms-menu-pages-url').children('.editable').editable("/ma.save", { 
+				indicator : "<img src='/s/img/indicator.gif'>",
 				tooltip   : "",
 				event     : "click",
 				style  : "inherit",
 				type	  : 'autocomplete'
 			});
 			
-			newitem.children('.cms_pagename').editable("/ma.save", { 
-				indicator : "<img src='img/indicator.gif'>",
+			newitem.children('.cms-menu-pages-n').children('.editable').editable("/ma.save", { 
+				indicator : "<img src='/s/img/indicator.gif'>",
 				tooltip   : "",
 				event     : "click",
 				style  : "inherit"

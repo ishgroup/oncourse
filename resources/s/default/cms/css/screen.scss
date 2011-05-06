@@ -90,17 +90,17 @@ $i: /s/cms/img;
 
 /* z-index */
 
-.cms-edit-area {z-index:1;}
-.cms-darkover {z-index:2;}
-.cms-pane-wide, .cms-pane-small {z-index:3;}
-.cms-page-controls {z-index:4;}
-.cms-btn-control {z-index:5;}
-.cms-header {z-index:6;}
-.cms-menu-wrap {z-index:7;}
-.cms-m-active {z-index:8;}
-.cms-main {z-index:6;}
+.cms-edit-area {z-index:101;}
+.cms-darkover {z-index:102;}
+.cms-pane-wide, .cms-pane-small {z-index:103;}
+.cms-page-controls {z-index:104;}
+.cms-btn-control {z-index:105;}
+.cms-header {z-index:106;}
+.cms-menu-wrap {z-index:107;}
+.cms-m-active {z-index:108;}
+.cms-main {z-index:106;}
 /*.cms-popup-edit {z-index:9;}*/
-.cms-login {z-index:10;}
+.cms-login {z-index:110;}
 
       
 
@@ -366,7 +366,6 @@ a.cms-logout {
 
 .cms-main {
     position:fixed;
-
     bottom:0;
     width:100%;
     background:#fff;
@@ -374,6 +373,11 @@ a.cms-logout {
 
 .cms-main-content {
     padding:22px 14px;
+    height:100%;
+    min-height:100%;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
 }
 
 .cms-main-head {
@@ -1114,6 +1118,13 @@ a.cms-logout {
     font-size:12px;
     list-style:none;
 
+    ul {
+        list-style:none;
+        padding:0 0 0 15px;
+        margin:0 0 0 15px;
+        border-left:1px solid #7f7f7f;
+    }
+
 
     .cms-menu-pages-n {
         min-width:150px;
@@ -1152,20 +1163,20 @@ a.cms-logout {
         visibility:hidden;
     }
 
-    li:hover .cms-menu-pages-dr, li:hover .cms-menu-pages-dl {
+    li.over > .cms-menu-pages-dr, li.over > .cms-menu-pages-dl {
         visibility:visible;
     }
 
-    li:hover > span {
+    li.over > span {
         background-color:#f5af00;
     }
 
-    li:hover .cms-first {
+    li.over > .cms-first {
         background-image:url(""+$i+"/line-left.png");
         background-position:left top;
     }
 
-    li:hover .cms-last {
+    li.over > .cms-last {
         background-image:url(""+$i+"/line-right.png");
         background-position:right top;
     }
@@ -1291,6 +1302,9 @@ a.cms-logout {
 
 .cms-tabs-cont {
     display:none;
+    height:100%;
+    min-height:100%;
+    overflow:auto;
 }
 
 .cms-tabs-cont.cms-visible {

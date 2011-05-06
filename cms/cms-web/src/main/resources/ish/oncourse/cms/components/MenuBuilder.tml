@@ -7,82 +7,55 @@
         </div>
         <div class="cms-main-controls">
             <span class="cms-ico-plus"></span>
-             <a href="" class="cms-main-control cms_add_menuitem">Add new menu</a>
+             <a class="cms-main-control cms_add_menuitem">Add new menu</a>
 		</div>
         <div class="cms-search-block">
             <input id="menuFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/>
             <button type="button" class="cms-btn-select"></button>
             <button class="cms-btn-search" type="button"></button>
         </div>
-            </div>
+   	</div>
 
-            <div class="cms-content cms-page-menu" id="menus">
+     <div class="cms-content cms-page-menu" id="menus">
 
-		
-
-            <ul class="cms-menu-pages cms_navmenu_list cms_draggable cms_sortable" >
-            	<t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
-					<t:delegate to="menuItem"/>
-				</t:loop>
-		
-	    		<t:block>
-	        		<div t:id="menuItem">
-	            		<t:delegate to="menuItem"/>
-	        		</div>
-	    		</t:block>
-            	
-
-              
-
-            </ul>
-
-
-
-
-
-
-
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<!-- button class="awesome blue large cms_add_menuitem">Add a new menu item</button> <br/-->
+     	<li class="hidden cms_newmenuitem" style="display:none;">
+			<span>
+				<span class="cms-menu-pages-n cms-first">
+					<span class="editable">New menu item</span> 
+					<span class="cms-ico-edit"></span>
+				</span>
 	
-	<li class="hidden cms_newmenuitem" style="display:none;">
-		<div>
-			<div class="cms_pagename">New menu item</div>
-			<div class="cms_refurl"></div>
-			<div class="cms_draghandle ui-icon ui-icon-arrowthick-2-n-s"></div>
-			<div class="cms_delete_icon"><a id="" style="text-decoration: none; color: black;"><span class="ui-icon ui-icon-trash left"></span>Delete</a></div>
-		</div>
-	</li>
+				<span class="cms-menu-pages-url">
+					URL: <span class="editable"></span>
+					<span class="cms-ico-edit"></span>
+				</span>
 	
-	<!-- ul class="cms_navmenu_list cms_draggable cms_sortable">
+				<!-- span class="cms-menu-pages-dr"-->
+					<span class="cms-ico-drag"></span> 
+					Drag &amp; Place
+				<!-- /span>
 		
-		<t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
-			<t:delegate to="menuItem"/>
-		</t:loop>
+				<span class="cms-menu-pages-dl cms-last"-->
+					<span class="cms-ico-del"><a>Delete</a></span> 
+					
+				<!-- /span-->
+			</span>
+		</li>
 		
-	    <t:block>
-	        <div t:id="menuItem">
-	            <t:delegate to="menuItem"/>
-	        </div>
-	    </t:block>
-	    
-	</ul-->
-	
+		<ul class="cms-menu-pages cms_navmenu_list cms_draggable cms_sortable">
+ 
+            <t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
+				<t:delegate to="menuItem"/>
+			</t:loop>
+		
+	    	<t:block>
+	        	<div t:id="menuItem">
+	            	<t:delegate to="menuItem"/>
+	        	</div>
+	    	</t:block>
+        </ul>
+	</div>
+
 	<script type="text/javascript">
 		jQuery(function(){
 			jQuery.menubuilder(${suggestResults});
@@ -109,8 +82,6 @@
 	          });
 			
 		});
-		
-		
 	</script>
 	
 </t:container>

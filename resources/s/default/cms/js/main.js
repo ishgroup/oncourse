@@ -34,81 +34,77 @@ function hideEdit() {
 
 function pageBar() {
 
-	var flag = false;
-	var ietrue;
-	if (jQuery('.ie').size() > 0) {
-		ietrue = true;
-	} else {
-		ietrue = false;
-	}
+    var flag = false;
+    var ietrue;
+    if (jQuery('.ie').size() > 0) {
+        ietrue = true;
+    } else {
+        ietrue = false;
+    }
 
-	jQuery('.cms-close-pane').bind('click', function() {
-		jQuery('.cms-btn-control.active').click();
-	});
+    jQuery('.cms-close-pane').bind('click', function() {
+        jQuery('.cms-btn-control.active').click();
+    });
 
-	jQuery('#edControls').find('.cms-btn-control').toggle(
-			function() {
 
-				var actBtn = jQuery('.cms-btn-control.active');
-				if (actBtn.size() > 0) {
-					actBtn.click();
-				}
+    jQuery('#edControls').find('.cms-btn-control').toggle(function() {
 
-				if (jQuery(this).children().is('.cms-pane-small')) {
-					flag = true;
-					if (ietrue) {
-						jQuery(this).find('.cms-pane-small').slideDown('fast');
-					} else {
-						jQuery(this).find('.cms-pane-small').addClass(
-								'cms-pane-small-show');
-					}
+        var actBtn = jQuery('.cms-btn-control.active');
+        if (actBtn.size() > 0) {
+            actBtn.click();
+        }
 
-				} else {
-					flag = false;
-					if (ietrue) {
-						jQuery(this).next('.cms-pane-wide').slideDown('fast');
-					} else {
-						jQuery(this).next('.cms-pane-wide').addClass(
-								'cms-pane-wide-show');
-					}
+        if (jQuery(this).children().is('.cms-pane-small')) {
+            flag = true;
+            if (ietrue) {
+                jQuery(this).find('.cms-pane-small').slideDown('fast');
+            } else {
+                jQuery(this).find('.cms-pane-small').addClass('cms-pane-small-show');
+            }
 
-				}
+        } else {
+            flag = false;
+            if (ietrue) {
+                jQuery(this).next('.cms-pane-wide').slideDown('fast');
+            } else {
+                jQuery(this).next('.cms-pane-wide').addClass('cms-pane-wide-show');
+            }
 
-				jQuery(this).addClass('active');
-				if (jQuery('.cms-darkover').size() == 0) {
-					jQuery('<div>').addClass('cms-darkover').prependTo('body');
-				} else {
-					jQuery('.cms-darkover').show();
-				}
+        }
 
-			},
-			function() {
-				jQuery('.cms-darkover').hide();
-				jQuery(this).removeClass('active');
-				if (flag === true) {
-					if (ietrue) {
-						jQuery(this).find('.cms-pane-small').slideUp('fast');
-					} else {
-						jQuery(this).find('.cms-pane-small').removeClass(
-								'cms-pane-small-show');
-					}
+        jQuery(this).addClass('active');
+        if(jQuery('.cms-darkover').size() == 0) {
+            jQuery('<div>').addClass('cms-darkover').prependTo('body');
+        } else {
+            jQuery('.cms-darkover').show();
+        }
 
-					flag = false;
-				} else {
-					if (ietrue) {
-						jQuery(this).next('.cms-pane-wide').slideUp('fast');
-					} else {
-						jQuery(this).next('.cms-pane-wide').removeClass(
-								'cms-pane-wide-show');
-					}
-					flag = false;
-				}
+    }, function() {
+        jQuery('.cms-darkover').hide();
+        jQuery(this).removeClass('active');
+        if (flag === true) {
+            if (ietrue) {
+                jQuery(this).find('.cms-pane-small').slideUp('fast');
+            } else {
+                jQuery(this).find('.cms-pane-small').removeClass('cms-pane-small-show');
+            }
 
-			});
+            flag = false;
+        } else {
+            if (ietrue) {
+                jQuery(this).next('.cms-pane-wide').slideUp('fast');
+            } else {
+                jQuery(this).next('.cms-pane-wide').removeClass('cms-pane-wide-show');
+            }
+            flag = false;
+        }
 
-	jQuery('.cms-pane-small').click(function(event) {
-		event.stopPropagation();
-	});
+    });
+
+
+    jQuery('.cms-pane-small').click(function(event) {
+        event.stopPropagation();
+    });
 
 }
 
@@ -181,25 +177,49 @@ function modals(formId) {
 }
 
 function tabsContent() {
-	jQuery('#edMenu').delegate('li', 'click', function() {
-		var i = jQuery(this).index();
-		jQuery(this).addClass("active");
-		if (jQuery(this).children('em').size() == 0) {
-			var f = document.createElement('em');
-			f.className = 'cms-m-active';
-			jQuery(this).append(f);
-		}
-		jQuery(this).siblings().removeClass("active").children('em').remove();
-		jQuery('#edMain').find('.cms-tabs-cont').hide().eq(i).fadeIn(150);
+    jQuery('#edMenu').delegate('li', 'click', function(event) {
 
-	});
 
-	// Sample functional
-	jQuery('#openTheme1').click(function() {
-		jQuery('#edMain').find('.cms-tabs-cont').hide();
-		jQuery('#edMain').find('#editTheme1').fadeIn(150);
-		return false;
-	});
+        var ev = event.target;
+        if(ev.id != 'editSite') {
+
+            // Slide content area
+            if(jQuery('#editSite').parent().parent().hasClass('active')){
+                var topScroll = jQuery('#edHeader').height();
+
+                jQuery('#edControls').slideUp();
+                jQuery('#edHeader').slideDown(100);
+                jQuery('#edMain').slideDown(700);
+
+                jQuery('#edMenuWr').animate({
+                    top: topScroll
+                }, {
+                    duration: 700
+                });
+            }
+
+            // Open tab
+
+            var i = jQuery(this).index() - 1;
+            jQuery(this).addClass("active");
+            if(jQuery(this).children('em').size() == 0) {
+                var f = document.createElement('em');
+                f.className='cms-m-active';
+                jQuery(this).append(f);
+            }
+            jQuery(this).siblings().removeClass("active").children('em').remove();
+            jQuery('#edMain').find('.cms-tabs-cont').hide().eq(i).fadeIn(150);
+        }
+
+    });
+
+
+    // Sample functional
+    jQuery('#openTheme1').click(function(){
+        jQuery('#edMain').find('.cms-tabs-cont').hide();
+        jQuery('#edMain').find('#editTheme1').fadeIn(150);        
+        return false;
+    });
 
 }
 
@@ -306,4 +326,12 @@ jQuery(document).ready(function() {
 
 	editThemes();
 
+	 // Menu list (Menus tab).
+    jQuery(".cms-menu-pages li").mouseover(
+            function(e) {
+                jQuery(this).addClass("over").parents().removeClass("over");
+                e.stopPropagation();
+            }).mouseout(function(e) {
+            	jQuery(this).removeClass("over");
+            });
 });
