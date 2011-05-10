@@ -16,8 +16,10 @@
                 <a href="#" t:type="actionLink" t:id="newPageType" zone="pageTypeZone" class="cms-main-control">Add new theme</a>
 			</div>
             <div class="cms-search-block">
-                <input id="themesFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
-            	<!-- button class="cms-btn-search" type="button"></button-->
+			
+			<input id="themesFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/>
+                <!-- button type="button" class="cms-btn-select"></button>
+				<button class="cms-btn-search" type="button"></button-->
             </div>
         </div>
 
