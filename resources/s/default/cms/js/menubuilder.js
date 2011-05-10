@@ -51,20 +51,27 @@
 					index++;
 				}
 				
-				$.post('/ma.sort', {id: itemId, pid: parent, w:index}, function(data) {alert(data)});
+				$.post('/ma.sort', {id: itemId, pid: parent, w:index});
 			}
 			
 		});
 		
-		$(".cms_navmenu_list .cms-ico-del a").live('click', function() {
+		$(".cms-menu-pages-dl a").live('click', function() {
+			
 			var elemID = this.id;
-			$.post("/ma.remove", { id: elemID.substring(2) },
-					   function(data) {
-							if(data=="{status: 'OK'}"){
-								var id = elemID.replace('r_', 'm_');
-								$(".cms_navmenu_list #" + id).remove();
-							}
-					   });
+			
+			var data = $.ajax({
+				type: "POST",
+				data: "id="+elemID.substring(2),
+				  url: '/ma.remove',
+				  async: false
+				 }).responseText;
+			if(data=="{status: 'OK'}"){
+				var id = elemID.replace('r_', 'm_');
+				$(".cms_navmenu_list #" + id).remove();
+			}else{
+				alert("The node with children cannot be removed.");
+			}
 
 		});
 		
