@@ -55,12 +55,13 @@ public class Blocks {
 		ObjectContext ctx = cayenneService.newContext();
 		selectedBlock = ctx.newObject(WebContent.class);
 
-		WebContentVisibility visibility = ctx.newObject(WebContentVisibility.class);
+		WebContentVisibility visibility = ctx
+				.newObject(WebContentVisibility.class);
 		visibility.setRegionKey(RegionKey.unassigned);
 		visibility.setWebContent(selectedBlock);
 
-		selectedBlock.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(),
-				null));
+		selectedBlock.setWebSite((WebSite) ctx.localObject(webSiteService
+				.getCurrentWebSite().getObjectId(), null));
 
 		return editBlock;
 	}
@@ -68,6 +69,18 @@ public class Blocks {
 	private Object onActionFromEditBlock(String id) {
 		selectedBlock = webContentService.findById(Long.parseLong(id));
 		return editBlock;
+	}
+
+	private Object onActionFromDeleteBlock(String id) {
+		ObjectContext ctx = cayenneService.newContext();
+		WebContent blockToDelete = webContentService.findById(Long
+				.parseLong(id));
+		if (blockToDelete != null) {
+			blockToDelete = (WebContent) ctx.localObject(blockToDelete.getObjectId(), null);
+			ctx.deleteObject(blockToDelete);
+			ctx.commitChanges();
+		}
+		return blockZone.getBody();
 	}
 
 	public String getEditBlockUrl() {

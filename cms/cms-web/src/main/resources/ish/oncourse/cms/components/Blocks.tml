@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter" lang="en">
 	
 	<t:block t:id="editBlock">
@@ -7,30 +7,44 @@
 	</t:block>
 	
 	<t:zone t:id="blockZone">
-	
-		<a href="#" t:type="actionLink" t:id="newBlock" zone="blockZone" class="button">New Block</a> 
-		
-		<input id="blockFilter" type="text" value=""/>
-		
-		<h1>Blocks</h1>
-		
-		<table id="blocks">
-			<t:loop source="webContentService.blocks" value="block">
-				<tr id="${block.id}">
-					<td><a href="#" t:type="actionLink" t:id="editBlock" t:zone="blockZone" t:context="block.id">${block.name}</a></td> 
-					<td><t:outputraw value="lastEdited"/></td>
-				</tr>
-			</t:loop>
-		</table>
-		
-		<style>
-			.selectedRow {
-				background-color: yellow;
-				cursor: pointer;
-			 }
-		</style>
-		
-		<script type="text/javascript">
+        <div class="cms-main-head">
+        	<div class="cms-main-title">
+                <h1 class="cms-page-title">Blocks</h1>
+            </div>
+            <div class="cms-main-controls">
+				<span class="cms-ico-plus"></span>
+                <a t:type="actionLink" t:id="newBlock" zone="blockZone" class="cms-main-control">Add new block</a>
+			</div>
+            <div class="cms-search-block">
+                <input id="blockFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
+                <button class="cms-btn-search" type="button"></button>
+            </div>
+        </div>
+
+        <div class="cms-content cms-page-blocks">
+
+            <table class="cms-cont-table" id="blocks">
+					
+				<t:loop source="webContentService.blocks" value="block">
+					<tr id="${block.id}">
+						<td class="cms-first">${block.name}</td>
+                       	<td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+                        <td>
+                        	<span class="cms-ico-edit"></span> 
+                        	<a href="#" t:type="actionLink" t:id="editBlock" t:zone="blockZone" t:context="block.id">Edit</a>
+                        </td>
+                        <td class="cms-last">
+                        	<span class="cms-ico-del"></span> 
+                        	<a href="#" t:type="actionLink" t:id="deleteBlock" t:zone="blockZone" t:context="block.id">Delete</a>
+                        </td>
+					</tr>
+				</t:loop>
+                    
+            </table>
+
+        </div>
+        
+        <script type="text/javascript">
 			jQuery(function() {
 				jQuery('#blockFilter').search('#blocks tr', function(on) {
 		            on.all(function(results) {
@@ -51,16 +65,17 @@
 		            });
 		          });
 				
-				jQuery('#blocks tbody tr').mouseover(function() {
+				/*jQuery('#blocks tbody tr').mouseover(function() {
 					jQuery(this).addClass('selectedRow');
 				}).mouseout(function() {
 				    jQuery(this).removeClass('selectedRow');
 				}).click(function() {
 					var zoneManager = Tapestry.findZoneManagerForZone('blockZone');
 					zoneManager.updateFromURL('${editBlockUrl}' + jQuery(this).attr('id'));
-				});
+				});*/
 			});
 		</script>
 	
 	</t:zone>
-</div>
+        
+</t:container>

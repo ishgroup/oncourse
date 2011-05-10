@@ -103,58 +103,8 @@
 
 
         <div class="cms-tabs-cont">
-
-
-
-            <div class="cms-main-head">
-                <div class="cms-main-title">
-                    <h1 class="cms-page-title">Blocks</h1>
-                </div>
-                <div class="cms-main-controls">
-
-                    <span class="cms-ico-plus"></span>
-                    <a href="" class="cms-main-control">Add new block</a>
-
-                </div>
-                <div class="cms-search-block">
-                    <input type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
-                    <button class="cms-btn-search" type="button"></button>
-                </div>
-            </div>
-
-            <div class="cms-content cms-page-blocks">
-
-                <table class="cms-cont-table">
-                    <tr>
-                        <td class="cms-first">Banner ad 1</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td class="cms-first">Banner ad 1</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td class="cms-first">Banner ad 1</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td class="cms-first">Banner ad 1</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                </table>
-
-
-            </div>
-
-        </div>
+			<span t:type="blocks"/>
+		</div>
 
         <div class="cms-tabs-cont">
 			<span t:type="pages"/>
