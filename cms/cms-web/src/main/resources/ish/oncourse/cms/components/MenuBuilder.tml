@@ -30,15 +30,15 @@
 					<span class="cms-ico-edit"></span>
 				</span>
 	
-				<!-- span class="cms-menu-pages-dr"-->
+				<span class="cms-menu-pages-dr">
 					<span class="cms-ico-drag"></span> 
 					Drag &amp; Place
-				<!-- /span>
+				</span>
 		
-				<span class="cms-menu-pages-dl cms-last"-->
-					<span class="cms-ico-del"><a>Delete</a></span> 
-					
-				<!-- /span-->
+				<span class="cms-menu-pages-dl cms-last">
+					<span class="cms-ico-del"></span> 
+					<a>Delete</a>
+				</span>
 			</span>
 		</li>
 		

@@ -1041,6 +1041,7 @@ Media screen. Layout, fonts, colors.
   height: 16px;
   cursor: pointer;
   position: relative;
+  /*left:-23px;*/
   vertical-align: middle;
 }
 #cms .cms-add-link {
@@ -1178,11 +1179,11 @@ Media screen. Layout, fonts, colors.
 #cms .cms-menu-pages .cms-menu-pages-n {
   min-width: 150px;
 }
-#cms .cms-menu-pages li > em {
+#cms .cms-menu-pages li > span > em {
   vertical-align: middle;
   display: inline-block;
 }
-#cms .cms-menu-pages li > span {
+#cms .cms-menu-pages li > span > span {
   display: inline-block;
   color: #404040;
   padding: 0 14px;
@@ -1190,7 +1191,7 @@ Media screen. Layout, fonts, colors.
   white-space: nowrap;
   vertical-align: middle;
 }
-#cms .cms-menu-pages li > span * {
+#cms .cms-menu-pages li > span > span * {
   color: #000;
 }
 #cms .cms-menu-pages .cms-first {
@@ -1211,17 +1212,17 @@ Media screen. Layout, fonts, colors.
 #cms .cms-menu-pages .cms-menu-pages-dr, #cms .cms-menu-pages .cms-menu-pages-dl {
   visibility: hidden;
 }
-#cms .cms-menu-pages li.over > .cms-menu-pages-dr, #cms .cms-menu-pages li.over > .cms-menu-pages-dl {
+#cms .cms-menu-pages li.over > span > .cms-menu-pages-dr, #cms .cms-menu-pages li.over > span > .cms-menu-pages-dl {
   visibility: visible;
 }
-#cms .cms-menu-pages li.over > span {
+#cms .cms-menu-pages li.over > span > span {
   background-color: #f5af00;
 }
-#cms .cms-menu-pages li.over > .cms-first {
+#cms .cms-menu-pages li.over > span > .cms-first {
   background-image: url("/s/cms/img/line-left.png");
   background-position: left top;
 }
-#cms .cms-menu-pages li.over > .cms-last {
+#cms .cms-menu-pages li.over > span > .cms-last {
   background-image: url("/s/cms/img/line-right.png");
   background-position: right top;
 }
@@ -1260,10 +1261,10 @@ Media screen. Layout, fonts, colors.
 #cms .cms-menu-pages .cms-line-drag * {
   color: #818181;
 }
-#cms .cms-menu-pages .cms-line-drag span span {
+#cms .cms-menu-pages .cms-line-drag span span span {
   opacity: 0.5;
 }
-#cms .cms-menu-pages .cms-line-drag:hover > span, #cms .cms-menu-pages .cms-line-drag > span {
+#cms .cms-menu-pages .cms-line-drag:hover > span > span, #cms .cms-menu-pages .cms-line-drag > span > span {
   background: url("/s/cms/img/line-middle-drag.png") repeat-x left top;
   color: #818181;
 }
@@ -1284,11 +1285,11 @@ Media screen. Layout, fonts, colors.
 #cms .cms-menu-pages .cms-line-drop .cms-menu-pages-dr, #cms .cms-menu-pages .cms-line-drop .cms-menu-pages-dl {
   visibility: visible;
 }
-#cms .cms-menu-pages .cms-line-drop > span {
+#cms .cms-menu-pages .cms-line-drop > span > span {
   background: url("/s/cms/img/line-middle-drop.png") repeat-x left top;
   padding-bottom: 7px;
 }
-#cms .cms-menu-pages .cms-line-drop:hover > span {
+#cms .cms-menu-pages .cms-line-drop:hover > span > span {
   background: url("/s/cms/img/line-middle-drop.png") repeat-x left top;
   padding-bottom: 7px;
 }

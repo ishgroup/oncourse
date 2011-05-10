@@ -958,6 +958,7 @@ a.cms-logout {
     height:16px;
     cursor:pointer;
     position:relative;
+    /*left:-23px;*/
     vertical-align:middle;
 }
 
@@ -1126,16 +1127,18 @@ a.cms-logout {
     }
 
 
+
+
     .cms-menu-pages-n {
         min-width:150px;
     }
 
-    li > em {
+    li > span > em {
         vertical-align:middle;
         display:inline-block;
     }
 
-    li > span {        
+    li > span > span {
         display:inline-block;
         color:#404040;
         padding:0 14px;
@@ -1163,20 +1166,20 @@ a.cms-logout {
         visibility:hidden;
     }
 
-    li.over > .cms-menu-pages-dr, li.over > .cms-menu-pages-dl {
+    li.over > span > .cms-menu-pages-dr, li.over > span > .cms-menu-pages-dl {
         visibility:visible;
     }
 
-    li.over > span {
+    li.over > span > span {
         background-color:#f5af00;
     }
 
-    li.over > .cms-first {
+    li.over > span > .cms-first {
         background-image:url(""+$i+"/line-left.png");
         background-position:left top;
     }
 
-    li.over > .cms-last {
+    li.over > span > .cms-last {
         background-image:url(""+$i+"/line-right.png");
         background-position:right top;
     }
@@ -1226,11 +1229,11 @@ a.cms-logout {
             color:#818181;
         }
 
-        & span span {
+        & span span span {
             opacity:0.5;
         }
 
-        &:hover > span, > span {
+        &:hover  > span> span,  > span > span {
             background:url(""+$i+"/line-middle-drag.png") repeat-x left top;
             color:#818181;
         }
@@ -1249,12 +1252,12 @@ a.cms-logout {
             visibility:visible;
         }
 
-        > span {
+         > span > span {
             background:url(""+$i+"/line-middle-drop.png") repeat-x left top;
             padding-bottom:7px;
         }
 
-        &:hover > span {
+        &:hover > span > span {
             background:url(""+$i+"/line-middle-drop.png") repeat-x left top;
             padding-bottom:7px;
         }
