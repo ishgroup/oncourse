@@ -1,96 +1,69 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter" lang="en">
-	 <!-- div class="cms-main-head">
-                <div class="cms-main-title">
-                    <h1 class="cms-page-title">Themes</h1>
-                </div>
-                <div class="cms-main-controls">
-
-                    <span class="cms-ico-plus"></span>
-                    <a href="" class="cms-main-control">Add new theme</a>
-
-                </div>
-                <div class="cms-search-block">
-                    <input type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
-                    <button class="cms-btn-search" type="button"></button>
-                </div>
-            </div>
-
-            <div class="cms-content cms-page-blocks">
-
-                <table class="cms-cont-table">
-                    <tr>
-                        <td class="cms-first">Theme 1</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="" id="openTheme1">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td class="cms-first">Theme 2</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td class="cms-first">Blog</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td class="cms-first">Page</td>
-                        <td class="cms-block-last-upd">Last update at 18 july 2010 11:57</td>
-                        <td><span class="cms-ico-edit"></span> <a href="">Edit</a></td>
-                        <td class="cms-last"><span class="cms-ico-del"></span> <a href="">Delete</a></td>
-                    </tr>
-                </table>
-
-
-            </div-->
-            
-              
+	
 	<t:block t:id="editPageTypeBlock">
 		<span t:type="pageTypeEdit" pageType="prop:selectedPageType" updateZone="prop:pageTypeZone"/>
 	</t:block>
 	
-	
 	<t:zone t:id="pageTypeZone">
-	
-		<a href="#" t:type="actionLink" t:id="newPageType" zone="pageTypeZone">
-			New Page Type
-		</a>  <br/>
-		
-		<h2>Page Types</h2>
-		
-		<table id="pageTypes">
-			<t:loop source="webNodeTypeService.webNodeTypes" value="webNodeType">
-				<tr id="${webNodeType.id}">
-					<td><a href="#" t:type="actionLink" t:id="editPageType" t:zone="pageTypeZone" t:context="webNodeType.id">${webNodeType.name}</a></td> 
-					<td><t:outputraw value="lastEdited"/></td>
-				</tr>
-			</t:loop>
-		</table>
-		
-		<style>
-			.selectedRow {
-				background-color: yellow;
-				cursor: pointer;
-			}
-		</style>
-		
-		<script type="text/javascript">
+		<div class="cms-main-head">
+        	<div class="cms-main-title">
+            	<h1 class="cms-page-title">Themes</h1>
+            </div>
+            <div class="cms-main-controls">
+	        	<span class="cms-ico-plus"></span>
+                <a href="#" t:type="actionLink" t:id="newPageType" zone="pageTypeZone" class="cms-main-control">Add new theme</a>
+			</div>
+            <div class="cms-search-block">
+                <input id="themesFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
+            	<button class="cms-btn-search" type="button"></button>
+            </div>
+        </div>
+
+		<div class="cms-content cms-page-blocks">
+
+            <table class="cms-cont-table" id="themes">
+            	<t:loop source="webNodeTypeService.webNodeTypes" value="webNodeType">
+					<tr id="${webNodeType.id}">
+						<td class="cms-first">${webNodeType.name}</td>
+                        <td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+                        <td>
+                        	<span class="cms-ico-edit"></span> 
+                        	<a href="#" t:type="actionLink" t:id="editPageType" t:zone="pageTypeZone" t:context="webNodeType.id">Edit</a>
+                        </td>
+                        <td class="cms-last">
+                        	<span class="cms-ico-del"></span> 
+                        	<a href="#" t:type="actionLink" t:id="deletePageType" t:zone="pageTypeZone" t:context="webNodeType.id">Delete</a>
+                        </td>
+					</tr>
+				</t:loop>
+            </table>
+		</div>
+            
+        <script type="text/javascript">
 			jQuery(function() {
-				jQuery('#pageTypes tbody tr').mouseover(function() {
-					jQuery(this).addClass('selectedRow');
-				}).mouseout(function() {
-				    jQuery(this).removeClass('selectedRow');
-				}).click(function() {
-					var zoneManager = Tapestry.findZoneManagerForZone('pageTypeZone');
-					zoneManager.updateFromURL('${editPageTypeUrl}' + jQuery(this).attr('id'));
-				});
-			});
-		</script>
+				jQuery('#themesFilter').search('#themes tr', function(on) {
+		            on.all(function(results) {
+		             
+		            });
 	
+		            on.reset(function() {
+		              jQuery('#themes tr').show();
+		            });
+	
+		            on.empty(function() {
+		              jQuery('#themes tr').hide();
+		            });
+	
+		            on.results(function(results) {
+		              jQuery('#themes tr').hide();
+		              results.show();
+		            });
+		          });
+			 });
+		</script>
+            
 	</t:zone>
+   
 </t:container>

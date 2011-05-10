@@ -51,16 +51,28 @@ public class PageTypes {
 
 	private Object onActionFromNewPageType() {
 		ObjectContext ctx = cayenneService.newContext();
-		this.selectedPageType = ctx.newObject(
-				WebNodeType.class);
-		selectedPageType.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(),
-				null));
+		this.selectedPageType = ctx.newObject(WebNodeType.class);
+		selectedPageType.setWebSite((WebSite) ctx.localObject(webSiteService
+				.getCurrentWebSite().getObjectId(), null));
 		return editPageTypeBlock;
 	}
 
 	private Object onActionFromEditPageType(String id) {
 		this.selectedPageType = webNodeTypeService.findById(Long.parseLong(id));
 		return editPageTypeBlock;
+	}
+
+	private Object onActionFromDeletePageType(String id) {
+		ObjectContext ctx = cayenneService.newContext();
+		WebNodeType themeToDelete = webNodeTypeService.findById(Long
+				.parseLong(id));
+		if (themeToDelete != null) {
+			themeToDelete = (WebNodeType) ctx.localObject(
+					themeToDelete.getObjectId(), null);
+			ctx.deleteObject(themeToDelete);
+			ctx.commitChanges();
+		}
+		return pageTypeZone.getBody();
 	}
 
 	public String getEditPageTypeUrl() {
