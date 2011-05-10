@@ -9,9 +9,10 @@
 		<div id="header">
 			<div t:type="ui/bodyheader"></div>
 			<t:remove><div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header"></div></t:remove>
-		
 
-		<nav>
+        <div t:type="ui/globalnavi"></div>
+
+		<nav id="nav">
 			<div t:type="ui/menu" rootMenu="rootMenu"/>
 		</nav>
 

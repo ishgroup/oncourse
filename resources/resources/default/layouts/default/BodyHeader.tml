@@ -4,7 +4,8 @@
 -->
 
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<h1><a href="${homeLink}">${collegeName}</a></h1>
+    <h2 id="site-logo"><a href="${homeLink}">${collegeName}</a></h2>
+	<h1 id="site-title"><a href="${homeLink}">${collegeName}</a></h1>
 	
 	<!-- This should have some logic to determine if we a viewing any page 
 		other than the main page. HTML served should be:
