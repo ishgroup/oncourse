@@ -1,5 +1,176 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<!--  div class="cms-content">
+
+
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Edit Theme</h1>
+                </div>
+            </div>
+
+
+            <div class="cms-theme-title">
+
+                <div class="cms-theme-title-n clearfix">
+                    <label for="themeName">Name:</label>
+                    <input id="themeName" type="text" maxlength="500" class="cms-field-wide" value="Blog"/>
+
+                    <div class="cms-theme-title-del">
+                        <a href="">Delete theme</a>
+                    </div>
+
+                </div>
+
+                <div class="cms-theme-title-k">
+                    <label>Layout key:</label>
+
+                    <div class="cms-theme-key-wr">
+                        <div class="cms-theme-key" id="cmsThemeKey"></div>
+                        <div class="cms-theme-key-list" id="cmsThemeList">
+                            <span rel="1" class="selected"><img src="/s/cms/img/theme1.png"/>Default</span>
+                            <span rel="2"><img src="/s/cms/img/theme2.png"/>Sample 1</span>
+                            <span rel="3"><img src="/s/cms/img/theme3.png"/>Sample 2</span>
+                            <span rel="4"><img src="/s/cms/img/theme4.png"/>Sample 3</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="cmsThemeKeyId" value=""/>
+
+                </div>
+
+            </div>
+
+
+            <div class="cms-theme-main">
+                <div class="cms-theme-main-l">
+                    <p><strong>Current layout</strong> Drag &amp; drop blocks from the right column
+                    <br/>&nbsp;</p>
+
+
+                    <table class="cms-theme-layout">
+                        <tr>
+                            <td class="header" colspan="3">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">
+
+                            </td>
+                            <td class="center">
+
+                                <ul class="cms-theme-list-m">
+                                    <li class="cms-theme-module">
+                                        Flash
+                                    </li>
+
+                                </ul>
+
+                            </td>
+                            <td class="right">
+
+                                <ul class="cms-theme-list-m">
+                                    <li class="cms-theme-module">
+                                        Vote
+                                    </li>
+
+                                    <li class="cms-theme-module drag">
+                                        Vote
+                                    </li>
+                                    <li class="cms-theme-module">
+                                        RSS
+                                    </li>
+                                </ul>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="footer">
+
+                                <ul class="cms-theme-list-m">
+                                    <li class="cms-theme-module">
+                                        Vote
+                                    </li>
+
+                                </ul>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div>
+                <div class="cms-theme-main-r">
+                    <p><strong>Unassigned</strong> blocks<br/>
+                        (drag them to the layout on the left)
+                    </p>
+
+
+
+
+
+
+                    <div id="scrollTheme" class="cms-theme-modules">
+                        <span class="cms-theme-modul-u buttons prev"></span>
+
+                        <div class="viewport">
+                            <ul class="overview">
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+                                <li class="cms-theme-module">Vote</li>
+
+                            </ul>
+                        </div>
+
+
+                        <span class="cms-theme-modul-d buttons next"></span>
+                    </div>
+
+
+                    <div class="cms-theme-module drop" style="position:absolute; left:650px; top:300px;">
+                        Image
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+            <div class="cms-btns alignCenter">
+                <button type="button" class="cms-but cms-btn-prev">Cancel</button>
+                <button type="button" class="cms-but cms-btn-next">Save</button>
+            </div>
+
+
+
+
+        </div-->
+	
+	
 	<t:form t:id="pageTypeEditForm" zone="pageTypeZone">
 		<t:errors/>	
 		<t:label for="name"></t:label><t:textfield t:id="name" t:value="editPageType.name" t:validate="required,minlength=3"/><br/>
@@ -30,4 +201,4 @@
 				jQuery.pageTypeEditor('${blockIds}');
 			});
 	</script>
-</div>
+</t:container>

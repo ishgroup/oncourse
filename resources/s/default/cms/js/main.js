@@ -214,13 +214,6 @@ function tabsContent() {
     });
 
 
-    // Sample functional
-    jQuery('#openTheme1').click(function(){
-        jQuery('#edMain').find('.cms-tabs-cont').hide();
-        jQuery('#edMain').find('#editTheme1').fadeIn(150);        
-        return false;
-    });
-
 }
 
 function editArea() {
