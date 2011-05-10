@@ -5,7 +5,6 @@
 $red: #CE1126;
 $blue: #12416C;
 $yellow: #F5AF00;
-
 $font-color: #000;
 
 /* Links */
@@ -15,63 +14,308 @@ $link-hover-color: $red;
 $link-active-color: $red;
 $link-visited-color: #0D4064;
 
+/* Images path */
+$i: /s/img;
 
-a {@include hover-link;}
 
-$baseFontSize: 0.8em;
+a {
+    @include hover-link;
+}
 
-@mixin red_outline { outline: 0px solid $blue; }
+$baseFontSize: 12px;
+
+@mixin red_outline {
+    outline: 0px solid $blue;
+}
+
+
+/* ClearFix */
+.clearFix:after {visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+* html .clearFix {zoom: 1;}
+*+html .clearFix {zoom: 1;}
 
 /*---- Content Headings -----*/
 
-h1, h2, h3, h4, h5 { color: $red; }
+/*h1, h2, h3, h4, h5 { color: $red; }
 h1 { font-size: 3em; line-height: 1; }
 h2 { font-size: 2em; }
 h3 { font-size: 1.5em; line-height: 1; }
 h4 { font-size: 1.2em; line-height: 1.25; }
 h5 { font-size: 1em; font-weight: bold; }
-h6 { font-size: 1em; font-weight: bold; }
+h6 { font-size: 1em; font-weight: bold; }*/
 
 /*---- Structural -----*/
 
-body { font-family: Arial, Hevetica; font-size: $baseFontSize; line-height: 1.6em; width: 976px; margin: 7px auto; border: 1px solid #DBD3C2; }
-.layout { }
-#header, nav, #contentContainer, #footer { position: relative; @include red_outline; } 
-
-nav { 
-	@include horizontal_nav;
+body {
+    font-family: Arial, Hevetica;
+    font-size: $baseFontSize;
+    line-height: 1;
+    width: 976px;
+    margin: 7px auto;
+    border: 1px solid #DBD3C2;
 }
 
-#contentContainer { margin-top: 20px; @include clearfix; }
-#content { min-height: 750px; width: 596px; margin: 0 0px; float: left; } 
+.layout { }
 
-#sidebarLeft, #sidebarRight { float: left; width: 180px; @include red_outline; }
-#sidebarLeft { left: 10px; }
-#sidebarRight { right: 0px; top: 0px; }
+#header,
+nav,
+#contentContainer,
+#footer {
+    position: relative;
+    @include red_outline;
+}
+
+
+#contentContainer {
+    margin-top: 20px;
+    @include clearfix;
+}
+#content {
+    min-height: 750px;
+    width: 596px;
+    margin: 0 0px;
+    float: left;
+}
+
+#sidebarLeft,
+#sidebarRight {
+    float: left;
+    width: 180px;
+    @include red_outline;
+}
+
+#sidebarLeft {
+    left: 10px;
+}
+
+#sidebarRight {
+    right: 0px;
+    top: 0px;
+}
 
 /*---- Header -----*/
 
-#header { height: 125px; background: $blue; }
+#header {
+    height: 125px;
+    background: $blue;
+}
 
-#usydlogo { width: 161px; height: 70px; display: block; @include red_outline; @include replace-text("bullet.png", 0, 0); margin-left: -20px; }
+#site-logo {
+    float: left;
+    display: block;
+    height: 80px;
+    width: 200px;
+    line-height: 500px;
+    text-indent: -600px;
+    overflow: hidden;
+    background-image: url(""+$i+"/common/university_sydney_logo.gif");
+    background-repeat:no-repeat;
+    margin-left: -20px;
+    padding: 0;
+    background-color: #CE1126;
+}
 
-#site_toolbar { position: absolute; right: 0; top: 0; bottom: 0; width: 155px; background: $yellow; z-index: 10; }
+#site-title {
+    margin: 0;
+    position: absolute;
+    font-size: 1.7em;
+    right: 185px;
+    top: 25px;
+}
 
-/*---- Search Box -----*/
+#site-title a {
+    display: block;
+    font-weight: 100;
+    color: white;
+    text-transform: uppercase;
+    padding: 0;
+    margin-left: 20px;
+    text-decoration: none;
+}
 
-#search_box { outline: 1px solid red; position: absolute; right: 200px; top: 10px; width: 150px; }
+#site_toolbar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 155px;
+    background: $yellow; 
+    z-index: 10;
+}
 
-/*---- Nav -----*/
+/* Search Box ----------------------------*/
 
-#nav { @include horizontal_nav; }
+#search_box {
+    width: 250px;
+    outline: 0px solid red;
+    height: 50px;
+    position: absolute;
+    top: 90px;
+    right: 135px;
+}
 
-/*--- Subject Nav ---*/
+#search_box input[type="text"] {
+    width: 175px;
+    font-size:11px;
+    font-family:inherit;
+    padding:3px 4px 1px;
+}
 
-.taggroup-2405 ul { @include no-bullets; margin: 0; 
-	ul ul { display: none; }
+#search_box input[type="submit"] {
+    display: inline-block;
+    width: auto;
+    background: #CE1126;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 2px 5px 4px 5px;
+    border: 0;
+}
+
+/* Nav ----------------------------------*/
+
+#nav {
+    /*@include horizontal_nav;*/
+}
+
+
+#nav {
+    clear:both;
+    background-color:#F5AF00;
+    font-size:11px;
+
+    > ul:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+
+    > ul {
+        list-style:none;
+        zoom:1\9;
+        padding:15px 0 0 10px;
+    }
+
+    > ul > li {
+        float:left;
+        margin:0 2px 0 0;
+        line-height:28px;
+        padding:0;
+        position:relative;
+        background-color: #F9CF66;
+
+        &:hover {
+            background-color:#F6BB25;
+        }
+    }
+
+    > ul > li > a {
+        display:block;
+        padding:0 11px;
+        border: 1px solid #FDEBC5;
+        border-bottom-width: 0;
+        color: #232323;
+    }
+
+    > ul > li > a:hover {
+        text-decoration:none;
+    }
+
+    /* Dropdown. Second level */
+    li > ul {
+        display:none;
+        position:absolute;
+        left:0;
+        width:155px;
+        background-color: #FDEEC7;
+        z-index:2;
+    }
+    /* Show dropdown */
+    li:hover ul {
+        display:block;
+    }
+    /* Dropdown items */
+    li ul > li {
+        line-height:1;
+
+        &:hover {
+            background-color:#FBDC90;
+        }
+    }
+
+    li ul > li > a {
+        padding: 9px 12px;
+        color: #232323;
+        text-decoration:none;
+        display:block;
+    }
+
+
+}
+
+
+/* Uni-wide navigation -------------------------*/
+
+#nav-global {
+    clear: both;
+    outline: 0px solid red;
+    margin: 0 8px;
+    list-style: none;
+    height:41px;
+
+    li {
+        display: inline-block;
+        padding: 12px;
+        margin: 0px;
+
+          &.active {
+            background-image: url(""+$i+"/global_menu_active.png");
+            background-repeat:no-repeat;
+            background-position:center bottom;
+            font-weight: bold; 
+
+            a:hover {
+                text-decoration: none;
+            }
+        }
+
+         a {
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 12px;
+            text-decoration: none;
+
+              &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+
+}
+
+
+
+.taggroup-2405 ul {
+    @include no-bullets;
+    margin: 0;
+	ul ul {
+	    display: none;
+	    }
 }
 
 /*---- Page Specific -----*/	 
-.internal-page #content, #DetailsPage #content { margin-right: 0px; width: 786px; }
-.internal-page #sidebarRight, #DetailsPage #sidebarRight { display: none; }
+.internal-page #content,
+#DetailsPage #content {
+    margin-right: 0px;
+    width: 786px;
+}
+.internal-page #sidebarRight,
+#DetailsPage #sidebarRight {
+    display: none;
+}
 
