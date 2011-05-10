@@ -17,7 +17,7 @@
 			</div>
             <div class="cms-search-block">
                 <input id="themesFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/><button type="button" class="cms-btn-select"></button>
-            	<button class="cms-btn-search" type="button"></button>
+            	<!-- button class="cms-btn-search" type="button"></button-->
             </div>
         </div>
 

@@ -12,8 +12,8 @@
        	</div>
         <div class="cms-search-block">
             <input id="pageFilter" maxlength="300" class="cms-field-wide cms-field-search" type="text" value=""/>
-            <button type="button" class="cms-btn-select"/>
-            <button class="cms-btn-search" type="button"></button>
+            <!-- button type="button" class="cms-btn-select"/>
+            <button class="cms-btn-search" type="button"></button-->
         </div>
     </div>
 
