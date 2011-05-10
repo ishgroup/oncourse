@@ -13,32 +13,33 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
+	<bean id="gzipFeature" class="org.apache.cxf.transport.common.gzip.GZIPFeature" />
+	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
+
 	<bean id="v4_referencePortTypeBean" class="ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl" />
-	
+
 	<bean id="v4_authenticationPortType"
 		class="ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl" />
 
 	<bean id="v4_securityCodeInterceptor"
 		class="ish.oncourse.webservices.soap.v4.auth.SecurityCodeInterceptor" />
-	
+
 	<bean id="v4_communicationKeyInterceptor"
 		class="ish.oncourse.webservices.soap.v4.auth.CommunicationKeyInterceptor" />
-	
+
 	<bean id="v4_replicationPortType"
 		class="ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl" />
-	
+
 	<bean id="v4_collegeRequestInterceptor"
 		class="ish.oncourse.webservices.soap.v4.auth.CollegeRequestInterceptor" />
-		
-	<bean id="v4_paymentPortType" class="ish.oncourse.webservices.soap.v4.PaymentPortTypeImpl"/>
+
+	<bean id="v4_paymentPortType" class="ish.oncourse.webservices.soap.v4.PaymentPortTypeImpl" />
 
 	<cxf:bus>
-		<cxf:inInterceptors>
-			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor" />
-		</cxf:inInterceptors>
-		<cxf:outInterceptors>
-			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
-		</cxf:outInterceptors>
+		<cxf:features>
+			<ref bean="gzipFeature" />
+			<ref bean="loggingFeature" />
+		</cxf:features>
 	</cxf:bus>
 
 
@@ -52,7 +53,7 @@
 			<ref bean="v4_communicationKeyInterceptor" />
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
-	
+
 	<jaxws:endpoint id="v4_payment" implementor="#v4_paymentPortType"
 		address="/v4/payment">
 		<jaxws:inInterceptors>
