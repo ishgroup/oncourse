@@ -86,6 +86,7 @@
 				
 				newitem.prependTo('.cms_navmenu_list').removeClass('hidden').removeClass('cms_newmenuitem');
 				newitem.show();
+				highlightMenuItem(newitem);
 				cms_attachEditable(newitem.children("span:first"));
 				newitem.children('.cms-menu-pages-url').trigger('click');
 				

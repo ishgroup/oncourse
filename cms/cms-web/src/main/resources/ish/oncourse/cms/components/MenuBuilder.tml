@@ -18,30 +18,6 @@
 
      <div class="cms-content cms-page-menu" id="menus">
 
-     	<li class="hidden cms_newmenuitem" style="display:none;">
-			<span>
-				<span class="cms-menu-pages-n cms-first">
-					<span class="editable">New menu item</span> 
-					<span class="cms-ico-edit"></span>
-				</span>
-	
-				<span class="cms-menu-pages-url">
-					URL: <span class="editable"></span>
-					<span class="cms-ico-edit"></span>
-				</span>
-	
-				<span class="cms-menu-pages-dr">
-					<span class="cms-ico-drag"></span> 
-					Drag &amp; Place
-				</span>
-		
-				<span class="cms-menu-pages-dl cms-last">
-					<span class="cms-ico-del"></span> 
-					<a>Delete</a>
-				</span>
-			</span>
-		</li>
-		
 		<ul class="cms-menu-pages cms_navmenu_list cms_draggable cms_sortable">
  
             <t:loop source="rootMenu.navigableChildMenus" value="currentMenu">
@@ -56,6 +32,29 @@
         </ul>
 	</div>
 
+	<li class="hidden cms_newmenuitem" style="display:none;">
+		<span>
+			<span class="cms-menu-pages-n cms-first">
+				<span class="editable">New menu item</span> 
+				<span class="cms-ico-edit"></span>
+			</span>
+	
+			<span class="cms-menu-pages-url">
+				URL: <span class="editable"></span>
+				<span class="cms-ico-edit"></span>
+			</span>
+	
+			<span class="cms-menu-pages-dr">
+				<span class="cms-ico-drag"></span> 
+				Drag &amp; Place
+			</span>
+		
+			<span class="cms-menu-pages-dl cms-last">
+				<span class="cms-ico-del"></span> 
+				<a>Delete</a>
+			</span>
+		</span>
+	</li>
 	<script type="text/javascript">
 		jQuery(function(){
 			jQuery.menubuilder(${suggestResults});

@@ -298,6 +298,16 @@ function editThemes() {
 
 }
 
+function highlightMenuItem(menuItem){
+	menuItem.mouseover(
+            function(e) {
+                jQuery(this).addClass("over").parents().removeClass("over");
+                e.stopPropagation();
+            }).mouseout(function(e) {
+            	jQuery(this).removeClass("over");
+            });
+}
+
 // Load all
 jQuery(document).ready(function() {
 	isChrome();
@@ -327,11 +337,5 @@ jQuery(document).ready(function() {
 	editThemes();
 
 	 // Menu list (Menus tab).
-    jQuery(".cms-menu-pages li").mouseover(
-            function(e) {
-                jQuery(this).addClass("over").parents().removeClass("over");
-                e.stopPropagation();
-            }).mouseout(function(e) {
-            	jQuery(this).removeClass("over");
-            });
+	highlightMenuItem(jQuery(".cms-menu-pages li"));
 });
