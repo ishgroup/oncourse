@@ -9,7 +9,7 @@
 			<button type="submit" id="find" class="find">Go!</button>
 		</form>
 		<span t:type="ui/SearchInputs"/>
-		<div class="advanced-search-button clearafter">
+		<div class="advanced-search-button">
 			<a class="show-advanced-search">
 				<span>More options</span>
 			</a>

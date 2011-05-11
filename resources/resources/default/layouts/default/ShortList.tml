@@ -5,13 +5,16 @@
 
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-<div id="shortlist" class="">
+<div id="shortlist" class="short-list">
 	
-	<div class="shortlistInfo"><span>${itemCount}</span> courses selected</div>
+	<div class="shortlistInfo">
+        <span>${itemCount}</span>
+        <p>courses selected</p>
+    </div>
 	
 	<t:if test="hasItems">
 		
-		<h3><span>My Order</span></h3>
+		<h3 class="title-block"><span>My Order</span></h3>
 		<div class="${classForList}">
 			<ul>
 				<t:loop source="items" value="courseClass">

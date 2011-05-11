@@ -1,8 +1,8 @@
 <t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<div id="discounts_box" class="box">
-		<h3><span>My Discounts</span></h3>
+	<div id="discounts_box" class="discount-block box">
+		<h3 class="title-block"><span>My Discounts</span></h3>
 		<t:if t:test="promotions.empty" negate="true">
 			<ul class="menu">
 				<t:loop source="promotions" value="promotion">

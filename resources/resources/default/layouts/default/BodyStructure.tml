@@ -21,7 +21,8 @@
 		</header>
 
 		<section class="content-container" id="contentContainer">
-			<aside class="sidebar-left" id="sidebarLeft">
+
+            <aside class="sidebar-left" id="sidebarLeft">
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left"></div>
 			</aside>
 
@@ -40,6 +41,7 @@
 			<aside class="sidebar-right" id="sidebarRight">
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right"></div>
 			</aside>
+
 		</section>
 
 		<footer class="site-footer" id="footer">

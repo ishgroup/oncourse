@@ -1,13 +1,13 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<div class="taggroup-${rootTag.id}">
-		<ul>
+		<ul class="courses-list">
 			<t:if test="showTopLevel">
 				<li t:test="hideTopLevel" class="${rootTagClass}">
 					<a href="${rootTagLink}">${rootTag.name}</a>
 				</li>
 			</t:if>
-			<ul>
+			<ul class="courses-list-sub">
 				<t:loop source="rootTag.webVisibleTags" value="currentTag">
 					<t:delegate to="childTag"/>
 				</t:loop>
