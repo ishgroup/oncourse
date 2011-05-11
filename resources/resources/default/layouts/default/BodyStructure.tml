@@ -3,27 +3,29 @@
 	Purpose: Defines the base HTML structure of each page.
 -->
 
-<div class="layout" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div id="container">
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<section class="site-container" id="container">
 
-		<div id="header">
+		<header class="site-header" id="header">
 			<div t:type="ui/bodyheader"></div>
 			<t:remove><div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header"></div></t:remove>
 
-        <div t:type="ui/globalnavi"></div>
 
-		<nav id="nav">
-			<div t:type="ui/menu" rootMenu="rootMenu"/>
-		</nav>
+            <div t:type="ui/globalnavi"></div>
 
-		</div>
 
-		<div id="contentContainer">
-			<div id="sidebarLeft">
+            <nav class="site-nav" id="nav">
+                <div t:type="ui/menu" rootMenu="rootMenu"/>
+            </nav>
+
+		</header>
+
+		<section class="content-container" id="contentContainer">
+			<aside class="sidebar-left" id="sidebarLeft">
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left"></div>
-			</div>
+			</aside>
 
-			<div id="content">
+			<article class="content" id="content">
 
 				<div class="confirmOrderDialog dialogContainer">
 					<p>Thanks for adding: <div class="className"></div><div class="classDate"></div></p>
@@ -33,18 +35,18 @@
 				</div>
 
 				<t:body/>
-			</div>
+			</article>
 
-			<div id="sidebarRight">
+			<aside class="sidebar-right" id="sidebarRight">
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right"></div>
-			</div>
-		</div>
+			</aside>
+		</section>
 
-		<div id="footer">
+		<footer class="site-footer" id="footer">
 			<div t:type="ui/bodyfooter"></div>
 			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer"></div>
-		</div>
+		</footer>
 	
-	</div>		
+	</section>
 
-</div>
+</section>

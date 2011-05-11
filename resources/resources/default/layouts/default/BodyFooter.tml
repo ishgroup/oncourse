@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<div id="footer">
+	<div class="footer-container">
 		<p>Copyright © 2007-${year} ${collegeName} and
 			<a href="http://www.ish.com.au/copyright.html" title="ish copyright notice" class="popup">ish</a>, all rights reserved.
 		</p>
