@@ -1,57 +1,56 @@
 @import "base";
 
-/* Colours */
+/* todo: Dmitry. Refactor. Add logic */
 
+/* Images path --------------------*/
+$i: /s/img;
+
+
+
+
+/* Common Colours ------------------------*/
+
+/* Vars */
 $red: #CE1126;
 $blue: #12416C;
 $yellow: #F5AF00;
 $font-color: #000;
-
-/* Links */
-
 $link-color: #0D4064;
-$link-hover-color: $red;
-$link-active-color: $red;
-$link-visited-color: #0D4064;
 
-/* Images path */
-$i: /s/img;
-
-
-a {
-    @include hover-link;
-}
-
-$baseFontSize: 12px;
-
-/*@mixin red_outline {
-    outline: 0px solid $blue;
-}*/
-
-
-/* ClearFix */
-.clearFix:after {visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
-* html .clearFix {zoom: 1;}
-*+html .clearFix {zoom: 1;}
-
-/*---- Content Headings -----*/
-
-/*h1, h2, h3, h4, h5 { color: $red; }
-h1 { font-size: 3em; line-height: 1; }
-h2 { font-size: 2em; }
-h3 { font-size: 1.5em; line-height: 1; }
-h4 { font-size: 1.2em; line-height: 1.25; }
-h5 { font-size: 1em; font-weight: bold; }
-h6 { font-size: 1em; font-weight: bold; }*/
-
-/*---- Structural -----*/
 
 body {
-    font-family: Arial, Hevetica, sans-serif;
-    font-size: $baseFontSize;
-    line-height: 1;
+    color:$font-color;
+}
+
+/* Links */
+a:link, a:visited, a:active {
+    color: $link-color;
+    text-decoration: underline;
+}
+
+a:hover, a:active {
+    color: $link-color;
+    text-decoration: none;
+}
+
+/* Content headers color */
+.content-container {
+    h1, h2, h3, h4, h5, h6 {
+        color: $red;
+        text-transform:uppercase;
+    }
+}
+
+
+
+
+
+
+
+/* Layout ---------------------------- */
+
+body {
     padding:7px 0 15px;
-    margin:0;
 }
 
 .site-wrapper {
@@ -74,32 +73,58 @@ body {
     margin-top: 20px;
     @include clearfix;
 }
-#content {
+
+
+.content {
     min-height: 750px;
-    width: 596px;
-    margin: 0 0px;
+    width: 735px;
+    margin: 0 0 0 41px;
     float: left;
 }
 
-#sidebarLeft,
-#sidebarRight {
+.sidebar-left,
+.sidebar-right {
     float: left;
     width: 180px;
     /*@include red_outline;*/
 }
 
-#sidebarLeft {
-    left: 10px;
+.sidebar-left {
+    padding: 0 0 0 10px;
 }
 
-#sidebarRight {
+.sidebar-right {
+    display:none;
     right: 0px;
     top: 0px;
 }
 
+/* Footer ----------------------*/
+
+.site-footer {
+    border-top: 2px solid #4D483C;
+    margin: 0px 10px;
+    padding: 15px 0;
+}
+
+.footer-container {
+    @include clearfix;
+}
+
+.footer-logo {
+    float:left;
+}
+
+.footer-info {
+    float:right;
+    font-size: 11px;
+    color: #444;
+    text-align: right;
+}
+
 /*---- Header -----*/
 
-#header {
+.site-header {
     background: $blue;
 }
 
@@ -152,7 +177,7 @@ body {
     width: 250px;
     height: 50px;
     position: absolute;
-    top: 90px;
+    top: 80px;
     right: 135px;
 
     input[type="text"] {
@@ -175,32 +200,28 @@ body {
     }
 }
 
+/* Adv search */
 
-/* Nav ----------------------------------*/
+.advanced-search-button {
+    font-size:10px;
+    a {
+        color:#fff;
+        text-decoration:none;
+    }
 
-#nav {
-    /*@include horizontal_nav;*/
 }
 
 
-#nav {
+/* Nav ----------------------------------*/
+
+.site-nav {
     clear:both;
-    background-color:#F5AF00;
+    background-color:$yellow;
     font-size:11px;
 
-    > ul:after {
-        visibility: hidden;
-        display: block;
-        font-size: 0;
-        content: " ";
-        clear: both;
-        height: 0;
-    }
-
     > ul {
-        list-style:none;
-        zoom:1\9;
         padding:15px 0 0 10px;
+        @include clearfix;
     }
 
     > ul > li {
@@ -222,10 +243,11 @@ body {
         border: 1px solid #FDEBC5;
         border-bottom-width: 0;
         color: #232323;
-    }
-
-    > ul > li > a:hover {
         text-decoration:none;
+
+        &:hover {
+            text-decoration:none;
+        }
     }
 
     /* Dropdown. Second level */
@@ -248,13 +270,13 @@ body {
         &:hover {
             background-color:#FBDC90;
         }
-    }
 
-    li ul > li > a {
-        padding: 9px 12px;
-        color: #232323;
-        text-decoration:none;
-        display:block;
+        > a {
+            padding: 9px 12px;
+            color: #232323;
+            text-decoration:none;
+            display:block;
+        }
     }
 
 
@@ -305,8 +327,158 @@ body {
 
 
 
+/* Header toolbox ---------------*/
+
+.short-list {
+    padding:10px;
+}
+
+.shortlistInfo {
+    @include clearfix;
+    line-height:19px;
+    span {
+        font-size: 55px;
+        font-weight: bold;
+        color: #133838;
+        float: left;
+        display: block;
+        margin: 10px 5px 0 0;
+    }
+    p {
+        overflow:hidden;
+        color: #515151;
+        text-transform: uppercase;
+    }
+
+}
+
+.discount-block {
+    padding:10px;
+
+    a {
+        color:#515151;
+        text-decoration:none;
+    }
+
+    .title-block {
+        font-weight:bold;
+    }
+}
+
+/* Left Cources */
+
+.sidebar-left {
+
+    h3 {
+        margin: 0 0 5px;
+        color: #CE1126;
+        font-size: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .courses-list {
+        li {
+            display: block;
+            border-bottom: 1px solid #DBD3C2;
+            position: relative;
+            background-image: url(""+$i+"/list_item.gif");
+            background-repeat:no-repeat;
+            background-position:4px center;
+            padding: 2px 16px 2px 21px;
+            line-height: 19px;
+
+            ul {
+                display:none;
+            }
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+
+            &:hover {
+                color: #125687;
+                text-decoration: underline;
+            }
+        }
+
+    }
+
+}
+
+/* Content courses */
+.content {
+
+    .courses-list {
+        list-style:none;
+        font-size:13px;
+        margin:0;
+
+        > li:first-child {
+            display:none;
+        }
+
+        ul {
+            list-style:none;
+            margin:0;
+        }
+    }
+
+    .courses-list-sub {
+        @include clearfix;
+        > li {
+            float: left;
+            width: 335px;
+            min-width: 30%;
+            max-width: 45%;
+            display: block;
+            width: 47%;
+            /*min-height: 105px;
+            height:  105px;*/
+            margin: 0 10px 30px 0;
+
+            > a {
+                color: $red;
+                font-size: 18px;
+                margin: 0 0 8px 0;
+                display:inline-block;
+            }
+
+            ul {
+                @include clearfix;
+                li {
+                    float:left;
+                    margin:0 5px 5px 0;
+
+                    a {
+                        padding:0 5px 0 0;
+                        border-right:1px solid $red;
+                        display:inline-block;
+                    }
+
+                    &:last-child a {
+                        border-right:0;
+                    }
+
+
+                    ul {
+                        display:none;
+                    }
+                }
+
+
+            }
+        }
+    }
+
+}
+
+
+
+
 .taggroup-2405 ul {
-    @include no-bullets;
+    /*@include no-bullets;*/
     margin: 0;
 	ul ul {
 	    display: none;
