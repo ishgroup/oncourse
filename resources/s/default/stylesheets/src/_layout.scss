@@ -1,0 +1,74 @@
+/**
+ *  _layout.scss
+ *
+ *  Common layout styles.
+ *
+ */
+
+/* ClearFix -------------------------------*/
+.clearFix:after {
+    visibility:hidden;
+    display:block;
+    font-size:0;
+    content:" ";
+    clear:both;
+    height:0;
+}
+*html .clearFix {zoom:1;}
+*+html .clearFix {zoom:1;}
+
+/* Common layout styles --------------------*/
+
+html {
+    height:100%;
+}
+
+body {
+    /* Fit body to window */
+    height:auto !important;
+    height:100%;
+    min-height:100%;
+
+    font-size:12px;
+    font-family:Arial;
+    line-height:1;
+}
+
+
+.content {
+    /* Content Paragraph */
+    p {
+        line-height:1.5;
+        margin-bottom:18px;
+    }
+
+    /* Content header */
+    h1, h2, h3, h4, h5, h6 {
+      margin-bottom: 18px;
+      line-height: 1.5;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 22px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    h4 {
+      font-size: 18px;
+    }
+
+    h5, h6 {
+      font-size: 16px;
+    }
+}
+
+
+

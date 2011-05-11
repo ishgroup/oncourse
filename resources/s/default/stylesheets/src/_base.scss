@@ -1,26 +1,36 @@
+@charset "UTF-8";
 /**
  *  _base.scss
  *
  *  Application-wide SCSS file for all onCourse apps.
- * 
+ *
  */
  
 
-$font-color: #444 !default; 
+/*$font-color: #444 !default;
 $link-color: #607890 !default;
 $link-hover-color: #036 !default;
 $link-active-color: #607890 !default;
 $link-visited-color: #607890 !default;
 $selected-font-color: #fff !default;
 $selected-background-color: #ff5e99 !default;
-$list-left-margin: 1.8em !default;
+$list-left-margin: 1.8em !default;*/
+
+
 
 
 /**
  * File includes 
  */
+
+@import "functions";
+@import "reset";
+@import "layout";
+@import "print";
+@import "search";
+@import "cms";
  
-@import "compass";
+/*@import "compass";
 @import "compass/reset";
 @import "fancy-buttons"; 
 @import "functions";
@@ -30,7 +40,7 @@ $list-left-margin: 1.8em !default;
 @import "nav";
 @import "nyromodal";
 @import "search";
-@import "shortlist";
+@import "shortlist";*/
 
 
 
@@ -38,4 +48,4 @@ $list-left-margin: 1.8em !default;
  * Time to call all the mixins 
  */
  
-@include html5-boilerplate-styles;
+/*@include html5-boilerplate-styles;*/
