@@ -1,10 +1,25 @@
 /**
  *  _functions.scss
  *
- *  Shared styles and functions.
+ *  Shared functions.
  *
  *
  */
+
+@mixin clearfix {
+    zoom:1\9;
+    &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+}
+
+
+
 
 @mixin html5-boilerplate-styles {
   body, select, input, textarea { color: $font-color; }

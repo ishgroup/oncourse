@@ -1,21 +1,10 @@
 /**
  *  _layout.scss
  *
- *  Common layout styles.
+ *  Common styles.
  *
  */
 
-/* ClearFix -------------------------------*/
-.clearFix:after {
-    visibility:hidden;
-    display:block;
-    font-size:0;
-    content:" ";
-    clear:both;
-    height:0;
-}
-*html .clearFix {zoom:1;}
-*+html .clearFix {zoom:1;}
 
 /* Common layout styles --------------------*/
 
@@ -30,7 +19,7 @@ body {
     min-height:100%;
 
     font-size:12px;
-    font-family:Arial;
+    font-family: Arial, Helvetica, sans-serif;
     line-height:1;
 }
 
@@ -46,7 +35,7 @@ body {
     h1, h2, h3, h4, h5, h6 {
       margin-bottom: 18px;
       line-height: 1.5;
-      font-weight: bold;
+      font-weight: normal;
     }
 
     h1 {

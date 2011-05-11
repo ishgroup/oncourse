@@ -23,12 +23,13 @@ $list-left-margin: 1.8em !default;*/
  * File includes 
  */
 
-@import "functions";
+
 @import "reset";
-@import "layout";
-@import "print";
-@import "search";
+@import "common";
+@import "functions";
+@import "widgets";
 @import "cms";
+@import "print";
  
 /*@import "compass";
 @import "compass/reset";

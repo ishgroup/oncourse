@@ -24,13 +24,7 @@
 	&:hover { border-color: #999; }
 }
 
-@mixin dialogBox {
-	background: rgba(255, 255, 255, 0.94);
-	width: 250px; 
-	position: absolute; right: 100px; top: 100px;
-	@include box-shadow(rgba(68, 68, 68, 0.3), 0px, 0px, 20px);
-	@include border-radius(4px);
-}
+
 
  
 #gMapCanvas { outline: 1px solid red; width: 600px; height: 400px; }
@@ -43,14 +37,5 @@
 	a { @include fancy-button(#444444); }
 }
 
-.confirmOrderDialog { 
-	/* TODO Pass options from site stylesheets */
 
-	@include dialogBox; z-index: 100; padding: 20px; display: none; 
-	div { color: #ccc; font-size: 1.4em;
-		span { color: #999; font-size: 0.6em;  }
-	}
-	p + p { font-size: 1em; margin-top: 1em; }
-	button { @include fancy-button(#f7f7f7, 1em); }
-}
  
