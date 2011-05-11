@@ -26,7 +26,6 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
@@ -42,12 +41,9 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.UpdateListenerHub;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
 
-import com.howardlewisship.tapx.core.services.CoreModule;
-
 /**
  * A Tapestry IoC module definition of the common components library.
  */
-@SubModule({ CoreModule.class })
 public class UIModule {
 
 	public static void bind(ServiceBinder binder) {
