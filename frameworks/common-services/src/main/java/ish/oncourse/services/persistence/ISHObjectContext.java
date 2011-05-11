@@ -14,7 +14,7 @@ import org.apache.cayenne.graph.GraphDiff;
 public class ISHObjectContext extends DataContext {
 
 	private ThreadLocal<String> TRANSACTION_KEY_STORAGE = new InheritableThreadLocal<String>();
-	
+
 	private static final String REPLICATING_PROP = "replicating";
 
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
@@ -53,13 +53,9 @@ public class ISHObjectContext extends DataContext {
 	 */
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType) {
-		try {
-			String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
-			TRANSACTION_KEY_STORAGE.set(transactionKey);
-			return super.onSync(originatingContext, changes, syncType);
-		} finally {
-			TRANSACTION_KEY_STORAGE.set(null);
-		}
+		String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
+		TRANSACTION_KEY_STORAGE.set(transactionKey);
+		return super.onSync(originatingContext, changes, syncType);
 	}
 
 	/*
@@ -69,12 +65,8 @@ public class ISHObjectContext extends DataContext {
 	 */
 	@Override
 	public void commitChanges() throws CayenneRuntimeException {
-		try {
-			String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
-			TRANSACTION_KEY_STORAGE.set(transactionKey);
-			super.commitChanges();
-		} finally {
-			TRANSACTION_KEY_STORAGE.set(null);
-		}
+		String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
+		TRANSACTION_KEY_STORAGE.set(transactionKey);
+		super.commitChanges();
 	}
 }
