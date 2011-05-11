@@ -1899,6 +1899,14 @@ ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+INSERT INTO `w2_college`.`WillowUser` (
+  `collegeId`, `angelId`,`email`,
+  `firstName`, `lastName`,   `password`, `passwordHash`,
+  `isActive`,  `isSuperUser`,  `lastLogin`,  `lastFailedLogin`,
+  `failedLoginCount`,  `created`,  `modified`,`flag1`) VALUES (
+  NULL, NULL, "dev@ish.com.au", "Dev", "Jones", "test", "",
+  1, 1, NULL, NULL,
+  0, CURRENT_DATE, CURRENT_DATE, 1);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
