@@ -5,7 +5,8 @@
  *  Application-wide SCSS file for all onCourse apps.
  *
  */
- 
+
+ /* todo: Dmitry. Refactor */
 
 /*$font-color: #444 !default;
 $link-color: #607890 !default;
@@ -30,7 +31,10 @@ $list-left-margin: 1.8em !default;*/
 @import "widgets";
 @import "cms";
 @import "print";
- 
+
+
+/* todo: Dmitry. Refactor */
+
 /*@import "compass";
 @import "compass/reset";
 @import "fancy-buttons"; 

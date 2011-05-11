@@ -57,6 +57,16 @@ body {
     h5, h6 {
       font-size: 16px;
     }
+
+    ul {
+        list-style:outside disc;
+        margin-left:20px;
+    }
+
+    ol {
+        list-style:outside decimal;
+        margin-left:20px;
+    }
 }
 
 
