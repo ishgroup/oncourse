@@ -24,9 +24,9 @@ a {
 
 $baseFontSize: 12px;
 
-@mixin red_outline {
+/*@mixin red_outline {
     outline: 0px solid $blue;
-}
+}*/
 
 
 /* ClearFix */
@@ -47,26 +47,30 @@ h6 { font-size: 1em; font-weight: bold; }*/
 /*---- Structural -----*/
 
 body {
-    font-family: Arial, Hevetica;
+    font-family: Arial, Hevetica, sans-serif;
     font-size: $baseFontSize;
     line-height: 1;
+    padding:7px 0 15px;
+    margin:0;
+}
+
+.site-wrapper {
     width: 976px;
-    margin: 7px auto;
+    margin:0 auto;
     border: 1px solid #DBD3C2;
+    border-top:0;
 }
 
-.layout { }
-
-#header,
-nav,
-#contentContainer,
-#footer {
+.site-header,
+.site-nav,
+.content-container,
+.site-footer {
     position: relative;
-    @include red_outline;
+    /*@include red_outline;*/
 }
 
 
-#contentContainer {
+.content-container {
     margin-top: 20px;
     @include clearfix;
 }
@@ -81,7 +85,7 @@ nav,
 #sidebarRight {
     float: left;
     width: 180px;
-    @include red_outline;
+    /*@include red_outline;*/
 }
 
 #sidebarLeft {
@@ -96,11 +100,10 @@ nav,
 /*---- Header -----*/
 
 #header {
-    height: 125px;
     background: $blue;
 }
 
-#site-logo {
+.site-logo {
     float: left;
     display: block;
     height: 80px;
@@ -110,68 +113,68 @@ nav,
     overflow: hidden;
     background-image: url(""+$i+"/common/university_sydney_logo.gif");
     background-repeat:no-repeat;
-    margin-left: -20px;
     padding: 0;
     background-color: #CE1126;
+    margin:0 0 0 -20px;
 }
 
-#site-title {
+.site-title {
     margin: 0;
     position: absolute;
     font-size: 1.7em;
     right: 185px;
     top: 25px;
+
+    a {
+        display: block;
+        font-weight: normal;
+        color: white;
+        text-transform: uppercase;
+        padding: 0;
+        margin-left: 20px;
+        text-decoration: none;
+    }
 }
 
-#site-title a {
-    display: block;
-    font-weight: 100;
-    color: white;
-    text-transform: uppercase;
-    padding: 0;
-    margin-left: 20px;
-    text-decoration: none;
-}
-
-#site_toolbar {
+.header-toolbar {
     position: absolute;
     right: 0;
     top: 0;
     bottom: 0;
     width: 155px;
-    background: $yellow; 
+    background: $yellow;
     z-index: 10;
 }
 
 /* Search Box ----------------------------*/
 
-#search_box {
+.search-box {
     width: 250px;
-    outline: 0px solid red;
     height: 50px;
     position: absolute;
     top: 90px;
     right: 135px;
+
+    input[type="text"] {
+        width: 175px;
+        font-size:11px;
+        font-family:inherit;
+        padding:3px 4px 1px;
+    }
+
+    button[type="submit"] {
+        display: inline-block;
+        width: auto;
+        background: #CE1126;
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 2px 5px 4px 5px;
+        border: 0;
+    }
 }
 
-#search_box input[type="text"] {
-    width: 175px;
-    font-size:11px;
-    font-family:inherit;
-    padding:3px 4px 1px;
-}
-
-#search_box input[type="submit"] {
-    display: inline-block;
-    width: auto;
-    background: #CE1126;
-    color: white;
-    text-transform: uppercase;
-    font-weight: bold;
-    text-decoration: none;
-    padding: 2px 5px 4px 5px;
-    border: 0;
-}
 
 /* Nav ----------------------------------*/
 
@@ -263,7 +266,7 @@ nav,
 #nav-global {
     clear: both;
     outline: 0px solid red;
-    margin: 0 8px;
+    margin: 0 8px 0;
     list-style: none;
     height:41px;
 
@@ -286,8 +289,10 @@ nav,
          a {
             color: #fff;
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 11px;
             text-decoration: none;
+            display:block;
+            padding:5px 0 4px;
 
               &:hover {
                 text-decoration: underline;
