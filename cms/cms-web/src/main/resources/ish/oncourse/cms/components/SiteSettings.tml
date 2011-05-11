@@ -12,7 +12,7 @@
 
         <div class="cms-cols-wrap cms-settings">
 
-    	    <div class="cms-col">
+    	    <!-- div class="cms-col">
 
             	<h5 class="cms-block-sub-title">Some Options
                 	<span class="cms-ico-help"></span>
@@ -28,7 +28,8 @@
         	<div class="cms-btns">
          		<button type="button" class="cms-but cms-btn-prev">Cancel</button>
             	<button type="button" class="cms-but cms-btn-next">Save</button>
-         	</div>
+         	</div-->
+         	<h5 class="cms-block-sub-title">Welcome to the onCourse CMS.</h5>
 
         </div>
 	
