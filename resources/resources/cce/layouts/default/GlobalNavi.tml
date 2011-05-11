@@ -7,10 +7,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <!-- use the "active" class to define the currently active item (highlighted text and nav indicator) -->
-    <!--<ul id="nav-global">
+    <ul id="nav-global">
         <li class="active"><a href="/">Centre for Continuing Education</a></li>
         <li><a href="http://sydney.edu.au/">University Home</a></li>
-    </ul>-->
+    </ul>
 
 </t:container>
 
