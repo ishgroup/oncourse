@@ -1,11 +1,11 @@
 <li xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" class="${tagItemClass}">
    	<a href="${tagLink}">${tag.name}</a>
    	<t:if test="showDetails">
-		<div class="taggroup_detail">
+		<div class="taggroup_detail courses-list-detail">
 			${tag.detail}
 		</div>
 	</t:if>
-	<ul>
+	<ul class="courses-list-sub2">
    		<t:body/>
    	</ul>
 </li>
