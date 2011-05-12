@@ -11,12 +11,12 @@ import ish.oncourse.services.resource.PrivateResource;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Arrays;
 import java.util.SortedSet;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.SelectModel;
+import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -25,8 +25,13 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
 
 public class PageTypeEdit {
+
+	@Inject
+	private Request request;
 
 	@Parameter(required = true)
 	@Property
@@ -58,35 +63,80 @@ public class PageTypeEdit {
 	private ICayenneService cayenneService;
 
 	@Property
-	@Persist
-	private RegionKey regionKey;
-
-	@Property
 	private WebContent block;
 
 	private Action action;
 
-	public SortedSet<WebContent> getBlocksForRegionKey() {
-		return webContentService.getBlocksForRegionKey(regionKey);
+	public SortedSet<WebContent> getHeaderBlocks() {
+		return webContentService.getBlocksForRegionKey(pageType,
+				RegionKey.header);
 	}
 
-	public RegionKey[] getRegionKeys() {
-		return Arrays.copyOfRange(RegionKey.values(), 1, RegionKey.values().length);
+	public SortedSet<WebContent> getLeftBlocks() {
+		return webContentService
+				.getBlocksForRegionKey(pageType, RegionKey.left);
 	}
 
-	public String getBlockIds() {
-		StringBuilder str = new StringBuilder();
-		RegionKey[] regionKeys = getRegionKeys();
+	public SortedSet<WebContent> getCenterBlocks() {
+		return webContentService.getBlocksForRegionKey(pageType,
+				RegionKey.content);
+	}
 
-		for (int i = 0; i < regionKeys.length; i++) {
-			RegionKey block = regionKeys[i];
-			str.append("#b_").append(block.name());
-			if (i != regionKeys.length - 1) {
-				str.append(",");
-			}
+	public SortedSet<WebContent> getRightBlocks() {
+		return webContentService.getBlocksForRegionKey(pageType,
+				RegionKey.right);
+	}
+
+	public SortedSet<WebContent> getFooterBlocks() {
+		return webContentService.getBlocksForRegionKey(pageType,
+				RegionKey.footer);
+	}
+
+	public SortedSet<WebContent> getUnassignedBlocks() {
+		return webContentService.getBlocksForRegionKey(pageType, null);
+	}
+
+	/**
+	 * Handles ajax call to sort menu items. Done when user sorts items with
+	 * drag&drop.
+	 * 
+	 * @return
+	 */
+	StreamResponse onActionFromSort() {
+
+		String id = request.getParameter("id");
+		String region = request.getParameter("region");
+
+		int weight = Integer.parseInt(request.getParameter("w"));
+
+		ObjectContext ctx = editPageType.getObjectContext();
+
+		WebContent block = webContentService.findById(Long.valueOf(id));
+
+		block = (WebContent) ctx.localObject(block.getObjectId(), null);
+
+		WebNodeType webNodeType = block.getWebContentVisibility()
+				.getWebNodeType();
+
+		if (webNodeType == null) {
+
 		}
 
-		return str.toString();
+		/*
+		 * WebMenu item = (WebMenu)
+		 * ctx.localObject(webMenuService.findById(Long.
+		 * parseLong(id)).getObjectId(), null); WebMenu pItem = (WebMenu)
+		 * ctx.localObject((("root".equalsIgnoreCase(region)) ?
+		 * webMenuService.getRootMenu() :
+		 * webMenuService.findById(Long.parseLong(region))).getObjectId(),
+		 * null);
+		 * 
+		 * item.setParentWebMenu(pItem); item.updateWeight(weight);
+		 * 
+		 * ctx.commitChanges();
+		 */
+
+		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 
 	private String[] readAvailableLayouts() {
@@ -105,8 +155,8 @@ public class PageTypeEdit {
 	@SetupRender
 	public void beforeRender() {
 		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType
-				: (WebNodeType) cayenneService.newContext().localObject(pageType.getObjectId(),
-						pageType);
+				: (WebNodeType) cayenneService.newContext().localObject(
+						pageType.getObjectId(), pageType);
 		layoutSelectModel = new StringSelectModel(readAvailableLayouts());
 	}
 

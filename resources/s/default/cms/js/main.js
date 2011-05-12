@@ -301,6 +301,30 @@ function highlightMenuItem(menuItem){
             });
 }
 
+function sortThemes(){
+	$j( "#b_header, #b_left, #b_content, #b_right, #b_footer, #b_unassigned" ).sortable({
+		connectWith: ".sortableThemes",
+		stop: function(event, ui) { 
+			var itemId = $(ui.item).attr('id').substring(3);
+			var parent=$(ui.item).parent();
+			var s = parent.sortable('toArray');
+			var index = 0;
+			
+			for (var i=0; i< s.length; i++) {
+				
+				if(s[i].substring(3) == itemId) {
+					break;
+				} 
+				
+				index++;
+			}
+			alert("id:"+itemId+" region:"+parent.attr('id').substring(2)+" w:"+index);
+			//$j.post('/pagetypeedit.sort', {id: itemId, region: parent.attr('id').substring(2), w:index});
+		}
+
+	});
+}
+
 // Load all
 jQuery(document).ready(function() {
 	isChrome();
@@ -332,3 +356,4 @@ jQuery(document).ready(function() {
 	 // Menu list (Menus tab).
 	highlightMenuItem(jQuery(".cms-menu-pages li"));
 });
+

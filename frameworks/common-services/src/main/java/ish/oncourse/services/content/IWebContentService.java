@@ -3,6 +3,7 @@ package ish.oncourse.services.content;
 import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
+import ish.oncourse.model.WebNodeType;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -26,12 +27,13 @@ public interface IWebContentService {
 	WebContent findById(Long willowId);
 
 	/**
-	 * Gets blocks for location key, sorted by weight property.
+	 * Gets blocks for location key for given web node type, sorted by weight property.
 	 * 
+	 * @param webNodeType
 	 * @param location key
 	 * @return web blocks.
 	 */
-	SortedSet<WebContent> getBlocksForRegionKey(RegionKey regionKey);
+	SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType, RegionKey regionKey);
 	
 	/**
 	 * Gets web content visibility for region key.

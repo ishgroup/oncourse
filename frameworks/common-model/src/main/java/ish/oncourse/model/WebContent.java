@@ -8,7 +8,8 @@ import java.util.Date;
 public class WebContent extends _WebContent implements Comparable<WebContent> {
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
 
 	public <T> T accept(IVisitor<T> visitor) {
@@ -35,11 +36,30 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 
 	public int compareTo(WebContent content) {
 		WebContentVisibility visibility = content.getWebContentVisibility();
-
+		int result = 0;
 		if (this.getWebContentVisibility() != null && visibility != null) {
-			return visibility.getWeight() - this.getWebContentVisibility().getWeight();
+			result = visibility.getWeight()
+					- this.getWebContentVisibility().getWeight();
 		}
-
-		return 0;
+		if (result != 0) {
+			return result;
+		}
+		if (getName() != null && content.getName() != null) {
+			result = getName().compareTo(content.getName());
+		}
+		if (result != 0) {
+			return result;
+		}
+		if (getContent() != null && content.getContent() != null) {
+			result = getContent().compareTo(content.getContent());
+		}
+		if (result != 0) {
+			return result;
+		}
+		result = getId().compareTo(content.getId());
+		if (result != 0) {
+			return result;
+		}
+		return hashCode() - content.hashCode();
 	}
 }
