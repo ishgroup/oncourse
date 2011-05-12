@@ -4,18 +4,13 @@
 		<span class="cms-menu-pages-n cms-first">
 			<span class="editable" id="n_${menu.id}">${menu.name}</span> 
 			<span class="cms-ico-edit"></span>
-		</span>
-	
-		<span class="cms-menu-pages-url">
+		</span><span class="cms-menu-pages-url">
 			URL: <span class="editable" id="u_${menu.id}">${itemHref}</span>
 			<span class="cms-ico-edit"></span>
-		</span>
-		<span class="cms-menu-pages-dr">
+		</span><span class="cms-menu-pages-dr">
 			<span class="cms-ico-drag"></span> 
 			Drag &amp; Place
-		</span>
-	
-		<span class="cms-menu-pages-dl cms-last">
+		</span><span class="cms-menu-pages-dl cms-last">
 			<span class="cms-ico-del"></span> 
 			<a id="r_${menu.id}">Delete</a>
 		</span>
