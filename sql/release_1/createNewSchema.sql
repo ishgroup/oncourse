@@ -1595,7 +1595,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`WebNodeType` (
   `created` DATETIME NOT NULL ,
   `modified` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `webSiteId_templateKey_uniq_idx` (`webSiteId` ASC, `layoutKey` ASC) ,
   INDEX `name_idx` (`name` ASC) ,
   CONSTRAINT `WebNodeType_website`
     FOREIGN KEY (`webSiteId` )
