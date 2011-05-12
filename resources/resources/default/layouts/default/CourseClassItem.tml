@@ -15,7 +15,7 @@
 
 	
 		<!--hcalendar implementation-->
-		<dl class="">
+		<dl class="class-item-info">
 			<dt class="classItemName">Name</dt>
 			<dd class="summary">${courseClass.course.name}</dd>
 

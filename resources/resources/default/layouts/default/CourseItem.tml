@@ -8,13 +8,12 @@
 		<t:if t:test="isList" negate="true">
 			<h2 class="summary">${course.name}</h2>
 			<p:else>
-				<hr/>
 				<h3>
 					<a href="/course/${course.code}" class="url">${course.name}</a>
 				</h3>
 				<div class="description courseShortDescription">
 					<t:outputraw value="${courseDetail}" />
-					<a href="/course/${course.code}"><strong>More</strong></a>
+					<strong class="more">[<a href="/course/${course.code}">More</a>]</strong>
 				</div>
 			</p:else>
 		</t:if>
