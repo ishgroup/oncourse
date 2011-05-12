@@ -1,8 +1,8 @@
-$j(document).ready(function($) {
+/*$j(document).ready(function($) {
 
 
-	/* Shortlist */
-	/*$j(".shortlistActionShow a").live("click", function() {
+	
+	$j(".shortlistActionShow a").live("click", function() {
 			//alert("!!!");
 			$j("#shortlist .shortlistChoices").fadeToggle("fast");
 			return false;
@@ -24,7 +24,7 @@ $j(document).ready(function($) {
 				$j('.classItem[data-classid=' + itemId + '] .enrolAction').text("Enrol Now");
 			}
 		});	
-	});*/
+	});
 	
 	$j(".closebutton").live("click", function() {
 		$j(this).parents(".dialogContainer").fadeOut("fast");
@@ -32,5 +32,25 @@ $j(document).ready(function($) {
 	
 	$j("#frontpage_slider").cycle('fade');
 	
+	
+	
+});
+*/
+jQuery(document).ready(function(){
+
+//expandable subject heirarchy
+
+	jQuery( "#sidebarLeft .courses-list-sub > li:has(ul)" ).addClass('hasChildren').not('.parent_tag').not('.active_tag').children('ul').hide();
+
+	
+	// Add a toggler span
+	//$j( "#sidebarLeft .courses-list-sub .hasChildren > h2" ).append("<figure class=\"expander\"></figure>");
+	jQuery( "#sidebarLeft .courses-list-sub .hasChildren:has(ul)" ).append("<figure class=\"expander ico-expand\"></figure>");
+	
+	jQuery( "#sidebarLeft .courses-list-sub .hasChildren .expander" ).bind( "click", function expandoList() {	
+		jQuery(this).parent().children('ul').slideToggle("fast");
+		return false; //stop normal href from working
+	});
+
 });    
 
