@@ -38,7 +38,7 @@
 
 				<div class="cms-colpane cms-pane-ptype">
 					<h5 class="cms-block-sub-title">
-						Page type <span class="cms-ico-help" title="Layout type of this page"/>
+						Page theme <span class="cms-ico-help" title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design. "/>
 					</h5>
 					<t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="editNode.webNodeType"
 							validate="required" />
