@@ -82,10 +82,7 @@ a:hover, a:active {
 ----------------------------*/
 
 .ico-expand {
-    display: block;
-    position: absolute;
-    top: 6px;
-    right: 0;
+    display: inline-block;
     height: 11px;
     width: 11px;
     cursor: pointer;
@@ -279,6 +276,12 @@ body {
     }
     padding: 0;
     margin:0 0 0 -20px;
+
+    a {
+        display:block;
+        height: 80px;
+        width: 200px;
+    }
 }
 
 .site-title {
@@ -460,11 +463,6 @@ body {
                 position:4px 7px;
             }
             line-height: 19px;
-
-            /* Next level container */
-            ul {
-                display:none;
-            }
         }
 
         a {
@@ -482,6 +480,7 @@ body {
 
         /* Next level container */
         .courses-list-sub2 {
+            display:none;
             margin:0 0 0 20px;
             li {
                 background: {
@@ -495,6 +494,17 @@ body {
                 }
             }
 
+            ul {
+                display:none;
+            }
+
+        }
+
+        .expander {
+            display:block;
+            position: absolute;
+            top: 6px;
+            right: 0;
         }
 
     }
@@ -512,7 +522,7 @@ body {
         font-size:13px;
         margin:0;
 
-        > li:first-child {
+        > li:first-child a {
             display:none;
         }
 
@@ -587,6 +597,158 @@ body {
 
 
 
+/**
+*
+* Page Specific
+*
+*/
+
+
+
+/* Courses page
+-----------------------------------------*/
+
+/* Search terms */
+
+.search-terms {
+    color: black;
+    padding: 4px 0px 8px 30px;
+    margin:0 0 6px 0;
+    border: 1px solid transparent;
+    min-height: 16px;
+    line-height:1.6;
+    background: {
+        image: url(""+$i+"/search2.png");
+        repeat:no-repeat;
+        position: 7px center;
+    }
+
+    &:hover {
+        border: 1px solid gray;
+        cursor: pointer;
+    }
+    
+    span.search-value {
+        margin: 0;
+    }
+
+    img {
+        margin-bottom: -4px;
+    }
+
+    /* Label */
+    #search_query {
+        width: 85%;
+        float: left;
+        line-height:1.7;
+    }
+
+    /* Show map */
+    #toggle-results-map {
+        float: right;
+        margin:0 7px 0 0;
+
+        a {
+            border: 1px solid transparent;
+            padding: 2px;
+
+            &:hover {
+                border: 1px dotted silver;
+            }
+        }
+
+        .toggle_locations {
+            background: {
+                image: url(""+$i+"/icon/location.png");
+                repeat:no-repeat;
+                position: left 2px;
+            }
+            padding-left: 16px;
+        }
+    }
+}
+
+
+
+/* Course item */
+
+.courseItem {
+    margin:0 0 20px 0;
+
+    p {
+        margin:0;
+    }
+
+    h3 {
+        color: #444;
+        font-weight:normal;
+        font-size:16px;
+        margin:0 0 2px 0;
+
+        a {
+            text-decoration:none;
+            color: #444;
+
+            &:hover {
+                color: #A90E1F;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .description {
+        color: #444;
+        margin:0 0 10px 0;
+    }
+
+    .more {
+        font-weight:normal;
+
+        a {
+            font-weight:bold;
+            color: #444;
+            text-decoration:none;
+
+            &:hover {
+                color: #A90E1F;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .waiting-list-title {
+        a {
+            color: #444;
+            text-decoration:none;
+
+            &:hover {
+                color: #A90E1F;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .classDescription {
+        color: #444;
+        margin:0 0 10px 0;
+    }
+
+    .class-item-info {
+        position:relative;
+        padding:5px;
+        margin:0 0 5px 0;
+        background-color: #fdfdf8;
+        border:1px solid #eee;
+        border-left:6px solid #eee;
+        border-top:1px solid #eee;
+    }
+
+    /*todo: Dmitry. add calendar popup. */
+    .classSessions {
+        display:none;
+    }
+}
+
 
 
 
@@ -596,15 +758,15 @@ body {
 
 
 .taggroup-2405 ul {
-    /*@include no-bullets;*/
+    /*@include no-bullets;
     margin: 0;
 	ul ul {
 	    display: none;
-	    }
+	    }*/
 }
 
 /*---- Page Specific -----*/	 
-.internal-page #content,
+/*.internal-page #content,
 #DetailsPage #content {
     margin-right: 0px;
     width: 786px;
@@ -612,5 +774,5 @@ body {
 .internal-page #sidebarRight,
 #DetailsPage #sidebarRight {
     display: none;
-}
+}*/
 
