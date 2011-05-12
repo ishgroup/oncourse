@@ -1,14 +1,36 @@
-@import "base";
-
+/**
+*
+* site.scss
+*
+* Styles fo CCE site.
+*
+* Layout, colors, fonts.
+*
+*/
 /* todo: Dmitry. Refactor. Add logic */
 
-/* Images path --------------------*/
+
+/**
+*
+* Import default styles
+*
+*/
+@import "base";
+
+
+/**
+*
+* Images path
+*
+*/
 $i: /s/img;
 
 
-
-
-/* Common Colours ------------------------*/
+/**
+*
+* Common Colours
+*
+*/
 
 /* Vars */
 $red: #CE1126;
@@ -42,179 +64,84 @@ a:hover, a:active {
 }
 
 
+/**
+*
+* Fonts
+*
+*/
+
+
+
+/**
+*
+* Icons and buttons
+*
+*/
+
+/* Icons
+----------------------------*/
+
+.ico-expand {
+    display: block;
+    position: absolute;
+    top: 6px;
+    right: 0;
+    height: 11px;
+    width: 11px;
+    cursor: pointer;
+    background:{
+        image: url(""+$i+"/icon_plus.gif");
+        repeat:no-repeat;
+    }
+
+    &:hover {
+        background:{
+            image: url(""+$i+"/icon_plus_hover.gif");
+            repeat:no-repeat;
+        }
+    }
+}
 
 
 
 
 
-/* Layout ---------------------------- */
+
+/**
+*
+* Main Layout
+*
+*/
+
+/* Site wrapper */
 
 body {
-    padding:7px 0 15px;
+    padding: 0 0;
 }
 
 .site-wrapper {
     width: 976px;
     margin:0 auto;
+    padding:7px 0 0 0;
+}
+
+.site-container {
     border: 1px solid #DBD3C2;
     border-top:0;
 }
 
-.site-header,
-.site-nav,
-.content-container,
-.site-footer {
-    position: relative;
-    /*@include red_outline;*/
-}
-
-
-.content-container {
-    margin-top: 20px;
-    @include clearfix;
-}
-
-
-.content {
-    min-height: 750px;
-    width: 735px;
-    margin: 0 0 0 41px;
-    float: left;
-}
-
-.sidebar-left,
-.sidebar-right {
-    float: left;
-    width: 180px;
-    /*@include red_outline;*/
-}
-
-.sidebar-left {
-    padding: 0 0 0 10px;
-}
-
-.sidebar-right {
-    display:none;
-    right: 0px;
-    top: 0px;
-}
-
-/* Footer ----------------------*/
-
-.site-footer {
-    border-top: 2px solid #4D483C;
-    margin: 0px 10px;
-    padding: 15px 0;
-}
-
-.footer-container {
-    @include clearfix;
-}
-
-.footer-logo {
-    float:left;
-}
-
-.footer-info {
-    float:right;
-    font-size: 11px;
-    color: #444;
-    text-align: right;
-}
-
-/*---- Header -----*/
+/* Header */
 
 .site-header {
+    position: relative;
     background: $blue;
 }
 
-.site-logo {
-    float: left;
-    display: block;
-    height: 80px;
-    width: 200px;
-    line-height: 500px;
-    text-indent: -600px;
-    overflow: hidden;
-    background-image: url(""+$i+"/common/university_sydney_logo.gif");
-    background-repeat:no-repeat;
-    padding: 0;
-    background-color: #CE1126;
-    margin:0 0 0 -20px;
-}
+/* Navigation */
 
-.site-title {
-    margin: 0;
-    position: absolute;
-    font-size: 1.7em;
-    right: 185px;
-    top: 25px;
-
-    a {
-        display: block;
-        font-weight: normal;
-        color: white;
-        text-transform: uppercase;
-        padding: 0;
-        margin-left: 20px;
-        text-decoration: none;
-    }
-}
-
-.header-toolbar {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 155px;
-    background: $yellow;
-    z-index: 10;
-}
-
-/* Search Box ----------------------------*/
-
-.search-box {
-    width: 250px;
-    height: 50px;
-    position: absolute;
-    top: 80px;
-    right: 135px;
-
-    input[type="text"] {
-        width: 175px;
-        font-size:11px;
-        font-family:inherit;
-        padding:3px 4px 1px;
-    }
-
-    button[type="submit"] {
-        display: inline-block;
-        width: auto;
-        background: #CE1126;
-        color: white;
-        text-transform: uppercase;
-        font-weight: bold;
-        text-decoration: none;
-        padding: 2px 5px 4px 5px;
-        border: 0;
-    }
-}
-
-/* Adv search */
-
-.advanced-search-button {
-    font-size:10px;
-    a {
-        color:#fff;
-        text-decoration:none;
-    }
-
-}
-
-
-/* Nav ----------------------------------*/
 
 .site-nav {
+    position: relative;
     clear:both;
     background-color:$yellow;
     font-size:11px;
@@ -282,12 +209,153 @@ body {
 
 }
 
+/* Content */
 
-/* Uni-wide navigation -------------------------*/
+.content-container {
+    position: relative;
+    margin: 20px 0;
+    @include clearfix;
+}
+
+
+.content {
+    min-height: 750px;
+    width: 735px;
+    margin: 0 0 0 41px;
+    float: left;
+}
+
+.sidebar-left {
+    float: left;
+    width: 180px;
+    padding: 0 0 0 10px;
+}
+
+.sidebar-right {
+    display:none;
+}
+
+
+/* Footer */
+
+.site-footer {
+    position: relative;
+    border-top: 2px solid #4D483C;
+    margin: 0px 10px;
+    padding: 15px 0;
+}
+
+.footer-container {
+    @include clearfix;
+}
+
+
+
+
+
+/**
+*
+* Blocks Layout
+*
+*/
+
+
+
+/* Header
+------------------------------------*/
+
+.site-logo {
+    float: left;
+    display: block;
+    height: 80px;
+    width: 200px;
+    line-height: 500px;
+    text-indent: -600px;
+    overflow: hidden;
+    background:{
+        image: url(""+$i+"/common/university_sydney_logo.gif");
+        repeat:no-repeat;
+        color: $red;
+    }
+    padding: 0;
+    margin:0 0 0 -20px;
+}
+
+.site-title {
+    margin: 0;
+    position: absolute;
+    font-size: 1.7em;
+    right: 185px;
+    top: 25px;
+
+    a {
+        display: block;
+        font-weight: normal;
+        color: white;
+        text-transform: uppercase;
+        padding: 0;
+        margin-left: 20px;
+        text-decoration: none;
+    }
+}
+
+.header-toolbar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 155px;
+    background: $yellow;
+    z-index: 10;
+}
+
+/* Search Box
+-----------------------------------------------*/
+
+.search-box {
+    width: 250px;
+    height: 50px;
+    position: absolute;
+    top: 80px;
+    right: 135px;
+
+    input[type="text"] {
+        width: 175px;
+        font-size:11px;
+        font-family:inherit;
+        padding:3px 4px 1px;
+    }
+
+    button[type="submit"] {
+        display: inline-block;
+        width: auto;
+        background: $red;
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 2px 5px 4px 5px;
+        border: 0;
+    }
+}
+
+/* Adv search */
+
+.advanced-search-button {
+    font-size:10px;
+    a {
+        color:#fff;
+        text-decoration:none;
+    }
+
+}
+
+
+/* Uni-wide navigation
+----------------------------------------------*/
 
 #nav-global {
     clear: both;
-    outline: 0px solid red;
     margin: 0 8px 0;
     list-style: none;
     height:41px;
@@ -298,14 +366,16 @@ body {
         margin: 0px;
 
           &.active {
-            background-image: url(""+$i+"/global_menu_active.png");
-            background-repeat:no-repeat;
-            background-position:center bottom;
-            font-weight: bold; 
+              font-weight: bold;
+              background: {
+                image: url(""+$i+"/global_menu_active.png");
+                repeat:no-repeat;
+                position:center bottom;
+              }
 
-            a:hover {
-                text-decoration: none;
-            }
+              a:hover {
+                  text-decoration: none;
+              }
         }
 
          a {
@@ -318,16 +388,16 @@ body {
 
               &:hover {
                 text-decoration: underline;
-            }
-        }
+              }
+         }
     }
 
 
 }
 
 
-
-/* Header toolbox ---------------*/
+/* Header toolbox
+-------------------------------------*/
 
 .short-list {
     padding:10px;
@@ -365,13 +435,16 @@ body {
     }
 }
 
-/* Left Cources */
+/* Sidebar Courses
+-------------------------------------*/
 
 .sidebar-left {
 
+    line-height:1.5;
+
     h3 {
         margin: 0 0 5px;
-        color: #CE1126;
+        color: $red;
         font-size: 15px;
         font-weight: bold;
         text-transform: uppercase;
@@ -380,22 +453,26 @@ body {
     .courses-list {
         li {
             display: block;
-            border-bottom: 1px solid #DBD3C2;
             position: relative;
-            background-image: url(""+$i+"/list_item.gif");
-            background-repeat:no-repeat;
-            background-position:4px center;
-            padding: 2px 16px 2px 21px;
+            background: {
+                image: url(""+$i+"/list_item.gif");
+                repeat:no-repeat;
+                position:4px 7px;
+            }
             line-height: 19px;
 
+            /* Next level container */
             ul {
                 display:none;
             }
         }
 
         a {
+            display:block;
+            padding: 2px 16px 2px 21px;
             color: #333;
             text-decoration: none;
+            border-bottom: 1px solid #DBD3C2;
 
             &:hover {
                 color: #125687;
@@ -403,11 +480,31 @@ body {
             }
         }
 
+        /* Next level container */
+        .courses-list-sub2 {
+            margin:0 0 0 20px;
+            li {
+                background: {
+                    image: url(""+$i+"/list_item_small.gif");
+                    repeat:no-repeat;
+                    position:4px 8px;
+                }
+
+                &:hover {
+                    background-color: #FAFAFA;
+                }
+            }
+
+        }
+
     }
 
 }
 
-/* Content courses */
+
+
+/* Content courses
+------------------------------------*/
 .content {
 
     .courses-list {
@@ -429,13 +526,8 @@ body {
         @include clearfix;
         > li {
             float: left;
-            width: 335px;
-            min-width: 30%;
-            max-width: 45%;
             display: block;
-            width: 47%;
-            /*min-height: 105px;
-            height:  105px;*/
+            width: 335px;
             margin: 0 10px 30px 0;
 
             > a {
@@ -473,6 +565,32 @@ body {
     }
 
 }
+
+
+
+
+/* Footer
+----------------------------------------*/
+
+
+.footer-logo {
+    float:left;
+}
+
+.footer-info {
+    float:right;
+    font-size: 11px;
+    color: #444;
+    text-align: right;
+}
+
+
+
+
+
+
+
+
 
 
 
