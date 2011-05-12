@@ -6,22 +6,11 @@
  *
  */
 
- /* todo: Dmitry. Refactor */
-
-/*$font-color: #444 !default;
-$link-color: #607890 !default;
-$link-hover-color: #036 !default;
-$link-active-color: #607890 !default;
-$link-visited-color: #607890 !default;
-$selected-font-color: #fff !default;
-$selected-background-color: #ff5e99 !default;
-$list-left-margin: 1.8em !default;*/
-
-
-
 
 /**
- * File includes 
+ *
+ * Import files\
+ *
  */
 
 
@@ -31,6 +20,8 @@ $list-left-margin: 1.8em !default;*/
 @import "widgets";
 @import "cms";
 @import "print";
+
+
 
 
 /* todo: Dmitry. Refactor */
@@ -54,3 +45,12 @@ $list-left-margin: 1.8em !default;*/
  */
  
 /*@include html5-boilerplate-styles;*/
+
+/*$font-color: #444 !default;
+$link-color: #607890 !default;
+$link-hover-color: #036 !default;
+$link-active-color: #607890 !default;
+$link-visited-color: #607890 !default;
+$selected-font-color: #fff !default;
+$selected-background-color: #ff5e99 !default;
+$list-left-margin: 1.8em !default;*/
