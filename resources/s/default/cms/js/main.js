@@ -1,25 +1,46 @@
 jQuery.noConflict();
 
+
+var cmsOpts = {
+    header: 60, // header height
+    menu: 39 // menu height
+};
+
 function wrapHeight() {
-	jQuery('body').css('overflow', 'hidden');
-	var head = jQuery('#edHeader').outerHeight();
-	var menu = jQuery('#edMenuWr').outerHeight();
-	var sumElems = jQuery(window).height() - (head + menu);
-	var contWr = jQuery(window).height() - menu - 44;
-	jQuery('#edMain').height(sumElems + 1);
+    var mainTop = cmsOpts.header + cmsOpts.menu;
+
+    jQuery('#edHeader, #edMenuWr').width(jQuery(document).width());
+	jQuery('#edMain').css('top', mainTop).height(jQuery(document).height() - mainTop).width(jQuery(document).width());
 
 }
 
 function hideEdit() {
-	var topScroll = jQuery(window).height() - jQuery('#edMenuWr').height() - 1;
+
+    if (jQuery('.ie').size() > 0) {
+        jQuery('.cms-pane-small').hide();
+        jQuery('.cms-pane-wide').hide();
+    }
+
+    jQuery('#edControls').slideUp();
+
+	var topScroll = jQuery(window).height() - cmsOpts.menu; // window - menu height
+
 	jQuery('#editSite').bind('click', function() {
 		jQuery('.cms-menu-shadow').hide();
 		jQuery('#edMenu').children('li').removeClass('active');
 		jQuery(this).parents('li').addClass('active');
 
 		jQuery('#edHeader').slideUp(100);
-		jQuery('#edMain').slideUp(700);
-		jQuery('#edMenuWr').animate({
+
+        jQuery('#edMain').animate({
+            top : topScroll
+        }, {
+            duration : 700,
+            complete : function() {
+                jQuery('#edMain').hide();
+            }
+        });
+		jQuery('#edMenuWr').css('position','fixed').animate({
 			top : topScroll
 		}, {
 			duration : 700,
@@ -183,19 +204,30 @@ function tabsContent() {
         var ev = event.target;
         if(ev.id != 'editSite') {
 
+            jQuery('.cms-btn-control.active').click();
+
             // Slide content area
             if(jQuery('#editSite').parent().parent().hasClass('active')){
-                var topScroll = jQuery('#edHeader').height();
+                var topScroll = cmsOpts.header;
+                var topScrollMain = cmsOpts.header + cmsOpts.menu;
 
                 jQuery('#edControls').slideUp();
                 jQuery('#edHeader').slideDown(100);
-                jQuery('#edMain').slideDown(700);
 
-                jQuery('#edMenuWr').animate({
+
+                jQuery('#edMain').show().animate({
+                    top : topScrollMain
+                }, {
+                    duration : 700
+                });
+
+                jQuery('#edMenuWr').css('position','absolute').animate({
                     top: topScroll
                 }, {
                     duration: 700
                 });
+
+                wrapHeight();
             }
 
             // Open tab
@@ -327,33 +359,31 @@ function sortThemes(){
 
 // Load all
 jQuery(document).ready(function() {
-	isChrome();
+    isChrome();// Check Google Chrome
 
- jQuery('#edControls').slideUp();
+    toolTips(); // Tooltips
 
-	toolTips();
+    customForms(); // Styling form controls
 
-	customForms();
-	if (jQuery('.ie').size() > 0) {
-		jQuery('.cms-pane-small').hide();
-		jQuery('.cms-pane-wide').hide();
-	}
+    hideEdit(); // Show Content Editor
 
-	hideEdit();
-	pageBar();
-	wrapHeight();
-	tabsContent();
+    pageBar(); // Menu with pages options
 
-	jQuery('#signIn').click(function() {
-		jQuery('.cms-login').remove();
-		jQuery('body').css('overflow', 'auto');
-	});
+    wrapHeight(); // Size & Position of all wrappers
 
-	editArea();
+    tabsContent(); // Main menu (Tabs)
 
-	editThemes();
+    editArea(); // Show Edit area
 
-	 // Menu list (Menus tab).
-	highlightMenuItem(jQuery(".cms-menu-pages li"));
+    //editThemes();
+
+    // Menu list (Menus tab).
+    highlightMenuItem(jQuery(".cms-menu-pages li"));
+
+
+});
+
+jQuery(window).resize(function() {
+    wrapHeight();
 });
 
