@@ -1119,6 +1119,7 @@ a.cms-logout {
     font-size:12px;
     list-style:none;
 
+
     ul {
         list-style:none;
         padding:0 0 0 15px;
@@ -1126,20 +1127,18 @@ a.cms-logout {
         border-left:1px solid #7f7f7f;
     }
 
-
-
-
-    .cms-menu-pages-n {
-        min-width:150px;
-    }
-
     li > span > em {
         vertical-align:middle;
         display:inline-block;
     }
 
+    li > span {
+        display:table;
+        width:100%;
+    }
+
     li > span > span {
-        display:inline-block;
+        display:table-cell;
         color:#404040;
         padding:0 14px;
         line-height:41px;
@@ -1149,6 +1148,25 @@ a.cms-logout {
             color:#000;
         }
     }
+
+    .cms-menu-pages-n {
+        min-width:300px;
+    }
+
+    .cms-menu-pages-url {
+        width:260px;
+    }
+
+    .cms-menu-pages-dr {
+        width:120px;
+    }
+
+    .cms-menu-pages-dl {
+        width:120px;
+    }
+
+
+
     .cms-first {
         width:auto;
         white-space:nowrap;
@@ -1186,7 +1204,7 @@ a.cms-logout {
 
 
 
-    .cms-lev-second {
+    /*.cms-lev-second {
         width:23px;
         padding-left:4px;
         div {
@@ -1205,9 +1223,9 @@ a.cms-logout {
             margin-top:-38px;
         }
 
-    }
+    }*/
 
-    .cms-lev-third {
+    /*.cms-lev-third {
         width:23px;
         padding-left:14px;
         div {
@@ -1217,9 +1235,9 @@ a.cms-logout {
             position:relative;
             margin:-38px 0 0 0;
         }
-    }
+    }*/
 
-    .cms-line-drag {
+    /*.cms-line-drag {
 
         .cms-menu-pages-dr, .cms-menu-pages-dl {
             visibility:visible;
@@ -1245,9 +1263,10 @@ a.cms-logout {
             background:url(""+$i+"/line-right-drag.png") no-repeat right top;
             @include backsize(auto, auto);
         }
-    }
+    }*/
 
-    .cms-line-drop {
+    
+    .ui-sortable-helper {
         .cms-menu-pages-dr, .cms-menu-pages-dl {
             visibility:visible;
         }
@@ -1288,8 +1307,9 @@ a.cms-logout {
         }
     }
 
-    .cms-drop-place {
-        color:#ff7200;
+    .ui-state-highlight {
+        border-bottom:1px dashed #ff7200;
+        /*color:#ff7200;*/
     }
 
 }
