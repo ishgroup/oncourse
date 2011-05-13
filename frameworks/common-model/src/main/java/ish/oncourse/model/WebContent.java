@@ -5,7 +5,7 @@ import ish.oncourse.model.visitor.IVisitor;
 
 import java.util.Date;
 
-public class WebContent extends _WebContent implements Comparable<WebContent> {
+public class WebContent extends _WebContent {
 
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
@@ -27,39 +27,31 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 	@Override
 	protected void onPreUpdate() {
 		Date today = new Date();
-		WebNode node = getWebContentVisibility().getWebNode();
-		if (node != null) {
-			node.setModified(today);
+
+		for (WebContentVisibility webContentVisibility : getWebContentVisibilities()) {
+			WebNode node = webContentVisibility.getWebNode();
+			if (node != null) {
+				node.setModified(today);
+			}
 		}
+
 		setModified(today);
 	}
 
-	public int compareTo(WebContent content) {
-		WebContentVisibility visibility = content.getWebContentVisibility();
-		int result = 0;
-		if (this.getWebContentVisibility() != null && visibility != null) {
-			result = visibility.getWeight()
-					- this.getWebContentVisibility().getWeight();
+	public WebContentVisibility getWebContentVisibility(WebNodeType webNodeType) {
+		for (WebContentVisibility webContentVisibility : getWebContentVisibilities()) {
+			WebNodeType nodeType = webContentVisibility.getWebNodeType();
+			if (nodeType != null) {
+				if (nodeType.equals(webNodeType)) {
+					return webContentVisibility;
+				}
+			}
+			// for unassigned blocks: if looking for webContentVisibility
+			// without webNodeType assigned
+			if (webNodeType == null) {
+				return webContentVisibility;
+			}
 		}
-		if (result != 0) {
-			return result;
-		}
-		if (getName() != null && content.getName() != null) {
-			result = getName().compareTo(content.getName());
-		}
-		if (result != 0) {
-			return result;
-		}
-		if (getContent() != null && content.getContent() != null) {
-			result = getContent().compareTo(content.getContent());
-		}
-		if (result != 0) {
-			return result;
-		}
-		result = getId().compareTo(content.getId());
-		if (result != 0) {
-			return result;
-		}
-		return hashCode() - content.hashCode();
+		return null;
 	}
 }

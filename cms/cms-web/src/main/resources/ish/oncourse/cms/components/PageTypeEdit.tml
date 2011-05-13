@@ -118,11 +118,12 @@
             </div>
 
 		</t:form>
-
+		<t:actionlink t:id="sort"/>
+		<script type="text/javascript">
+			customForms();
+			sortThemes();
+		</script>
     </div>
 	
-	<script type="text/javascript">
-		sortThemes();
-	</script>
 
 </t:container>

@@ -10,6 +10,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
@@ -53,7 +54,7 @@ public class WebContentService extends BaseService<WebContent> implements
 				.nextInt(listResult.size())) : null;
 	}
 
-	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
+	public SortedSet<WebContent> getBlocksForRegionKey(final WebNodeType webNodeType,
 			RegionKey regionKey) {
 		
 
@@ -78,20 +79,53 @@ public class WebContentService extends BaseService<WebContent> implements
 			ids.add((Long) webContentVisibility.getObjectId().getIdSnapshot().get(WebContentVisibility.ID_PK_COLUMN));
 		}
 		Expression regionKeyQualifier = ExpressionFactory.inDbExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY+"."+WebContentVisibility.ID_PK_COLUMN,
+				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY+"."+WebContentVisibility.ID_PK_COLUMN,
 				ids);
 		if (regionKey != null) {
 			regionKeyQualifier = regionKeyQualifier.andExp(ExpressionFactory
-					.matchExp(WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+					.matchExp(WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY+ "."
 							+ WebContentVisibility.REGION_KEY_PROPERTY,
 							regionKey));
 		}else{
 			regionKeyQualifier = regionKeyQualifier.notExp();
 		}
 		q.andQualifier(regionKeyQualifier);
+		TreeSet<WebContent> treeSet = new TreeSet<WebContent>(new Comparator<WebContent>() {
 
-		return new TreeSet<WebContent>(webNodeType.getObjectContext()
+			@Override
+			public int compare(WebContent o1, WebContent o2) {
+				WebContentVisibility visibility1 = o1.getWebContentVisibility(webNodeType);
+				WebContentVisibility visibility2 = o2.getWebContentVisibility(webNodeType);
+				int result = 0;
+				if (visibility1 != null && visibility2 != null) {
+					result = visibility2.getWeight()
+							- visibility1.getWeight();
+				}
+				if (result != 0) {
+					return result;
+				}
+				if (o1.getName() != null && o2.getName() != null) {
+					result = o1.getName().compareTo(o2.getName());
+				}
+				if (result != 0) {
+					return result;
+				}
+				if (o1.getContent() != null && o2.getContent() != null) {
+					result = o1.getContent().compareTo(o2.getContent());
+				}
+				if (result != 0) {
+					return result;
+				}
+				result = o1.getId().compareTo(o2.getId());
+				if (result != 0) {
+					return result;
+				}
+				return o1.hashCode() - o2.hashCode();
+			}
+		});
+		treeSet.addAll(webNodeType.getObjectContext()
 				.performQuery(q));
+		return treeSet;
 	}
 
 	public List<WebContent> getBlocks() {
@@ -101,11 +135,11 @@ public class WebContentService extends BaseService<WebContent> implements
 				webSiteService.getCurrentWebSite()));
 
 		Expression expr = ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "+."
+				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "+."
 						+ WebContentVisibility.WEB_NODE_PROPERTY, null);
 
 		expr = expr.orExp(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY, null));
+				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY, null));
 
 		q.andQualifier(expr);
 

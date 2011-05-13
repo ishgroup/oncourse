@@ -1,6 +1,7 @@
 package ish.oncourse.model.auto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
@@ -20,7 +21,7 @@ public abstract class _WebContent extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
-    public static final String WEB_CONTENT_VISIBILITY_PROPERTY = "webContentVisibility";
+    public static final String WEB_CONTENT_VISIBILITIES_PROPERTY = "webContentVisibilities";
     public static final String WEB_SITE_PROPERTY = "webSite";
 
     public static final String ID_PK_COLUMN = "id";
@@ -60,12 +61,15 @@ public abstract class _WebContent extends CayenneDataObject {
         return (String)readProperty("name");
     }
 
-    public void setWebContentVisibility(WebContentVisibility webContentVisibility) {
-        setToOneTarget("webContentVisibility", webContentVisibility, true);
+    public void addToWebContentVisibilities(WebContentVisibility obj) {
+        addToManyTarget("webContentVisibilities", obj, true);
     }
-
-    public WebContentVisibility getWebContentVisibility() {
-        return (WebContentVisibility)readProperty("webContentVisibility");
+    public void removeFromWebContentVisibilities(WebContentVisibility obj) {
+        removeToManyTarget("webContentVisibilities", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WebContentVisibility> getWebContentVisibilities() {
+        return (List<WebContentVisibility>)readProperty("webContentVisibilities");
     }
 
 

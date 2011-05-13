@@ -1950,7 +1950,7 @@
 	<db-relationship name="waitingList" source="WaitingListSite" target="WaitingList" toMany="false">
 		<db-attribute-pair source="waitingListId" target="id"/>
 	</db-relationship>
-	<db-relationship name="webContentVisibility" source="WebContent" target="WebContentVisibility" toMany="false">
+	<db-relationship name="webContentVisibilities" source="WebContent" target="WebContentVisibility" toMany="true">
 		<db-attribute-pair source="id" target="WebContentId"/>
 	</db-relationship>
 	<db-relationship name="webSite" source="WebContent" target="WebSite" toMany="false">
@@ -2250,7 +2250,7 @@
 	<obj-relationship name="college" source="WaitingListSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="site" source="WaitingListSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="waitingList" source="WaitingListSite" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingList"/>
-	<obj-relationship name="webContentVisibility" source="WebContent" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibility"/>
+	<obj-relationship name="webContentVisibilities" source="WebContent" target="WebContentVisibility" deleteRule="Cascade" db-relationship-path="webContentVisibilities"/>
 	<obj-relationship name="webSite" source="WebContent" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="webContent" source="WebContentVisibility" target="WebContent" deleteRule="Cascade" db-relationship-path="webContent"/>
 	<obj-relationship name="webNode" source="WebContentVisibility" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>

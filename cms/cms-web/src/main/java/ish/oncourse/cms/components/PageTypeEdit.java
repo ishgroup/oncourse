@@ -2,6 +2,7 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
+import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.content.IWebContentService;
@@ -11,6 +12,7 @@ import ish.oncourse.services.resource.PrivateResource;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.cayenne.ObjectContext;
@@ -106,7 +108,7 @@ public class PageTypeEdit {
 
 		String id = request.getParameter("id");
 		String region = request.getParameter("region");
-
+		RegionKey regionKey = RegionKey.valueOf(region);
 		int weight = Integer.parseInt(request.getParameter("w"));
 
 		ObjectContext ctx = editPageType.getObjectContext();
@@ -115,26 +117,44 @@ public class PageTypeEdit {
 
 		block = (WebContent) ctx.localObject(block.getObjectId(), null);
 
-		WebNodeType webNodeType = block.getWebContentVisibility()
-				.getWebNodeType();
+		WebContentVisibility webContentVisibility = block
+				.getWebContentVisibility(editPageType);
 
-		if (webNodeType == null) {
+		if (regionKey == RegionKey.unassigned) {
+			if (webContentVisibility != null) {
+				// remove assignment to this type
+				ctx.deleteObject(webContentVisibility);
+			}
+			webContentVisibility = block.getWebContentVisibility(null);
+		} else {
 
+			if (webContentVisibility == null) {
+				webContentVisibility = ctx
+						.newObject(WebContentVisibility.class);
+				webContentVisibility.setWebContent(block);
+				webContentVisibility.setWebNodeType(editPageType);
+			}
+			webContentVisibility.setRegionKey(regionKey);
 		}
 
-		/*
-		 * WebMenu item = (WebMenu)
-		 * ctx.localObject(webMenuService.findById(Long.
-		 * parseLong(id)).getObjectId(), null); WebMenu pItem = (WebMenu)
-		 * ctx.localObject((("root".equalsIgnoreCase(region)) ?
-		 * webMenuService.getRootMenu() :
-		 * webMenuService.findById(Long.parseLong(region))).getObjectId(),
-		 * null);
-		 * 
-		 * item.setParentWebMenu(pItem); item.updateWeight(weight);
-		 * 
-		 * ctx.commitChanges();
-		 */
+		// FIXME method works incorrectly! it should consider webNodeType as
+		// well
+		SortedSet<WebContentVisibility> vSet = webContentService
+				.getBlockVisibilityForRegionKey(regionKey);
+
+		int w = 0;
+		Iterator<WebContentVisibility> it = vSet.iterator();
+
+		while (it.hasNext()) {
+			WebContentVisibility v = it.next();
+			if (w < weight) {
+				v.setWeight(w);
+			} else {
+				v.setWeight(w + 1);
+			}
+			w++;
+		}
+		webContentVisibility.setWeight(weight);
 
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}

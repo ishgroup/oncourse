@@ -3,6 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
@@ -66,7 +67,8 @@ public class ContentStructure {
 		WebContent region = (WebContent) ctx.localObject(
 				webContentService.findById(Long.parseLong(id)).getObjectId(), null);
 
-		this.visibility = region.getWebContentVisibility();
+		WebNodeType webNodeType = node.getWebNodeType();
+		this.visibility = region.getWebContentVisibility(webNodeType);
 
 		return editorBlock;
 	}

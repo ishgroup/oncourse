@@ -45,14 +45,14 @@ public class WebNodeType extends _WebNodeType {
 		SelectQuery q = new SelectQuery(WebContent.class);
 
 		q.andQualifier(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "."
 						+ WebContentVisibility.WEB_NODE_TYPE_PROPERTY, this));
 
 		q.andQualifier(ExpressionFactory.matchExp(
-				WebContent.WEB_CONTENT_VISIBILITY_PROPERTY + "."
+				WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY + "."
 						+ WebContentVisibility.REGION_KEY_PROPERTY, RegionKey.valueOf(regionKey.toLowerCase())));
 
-		q.addOrdering(new Ordering(WebContent.WEB_CONTENT_VISIBILITY_PROPERTY
+		q.addOrdering(new Ordering(WebContent.WEB_CONTENT_VISIBILITIES_PROPERTY
 				+ "." + WebContentVisibility.WEIGHT_PROPERTY,
 				SortOrder.ASCENDING));
 
