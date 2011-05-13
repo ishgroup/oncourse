@@ -80,6 +80,7 @@ $i: /s/cms/img;
         position:absolute;
         top:0;
         left:0;
+        width:100%;
     }
 
     #cmsInner {
@@ -193,7 +194,7 @@ $i: /s/cms/img;
     $text-color:#828282;
 
     background:#000 url(""+$i+"/header-grad.jpg") repeat-x left top;
-    position:fixed;
+    position:absolute;
     top:0;
     left:0;
     color:$text-color;
@@ -234,7 +235,7 @@ $i: /s/cms/img;
 
 /* Menu */
 .cms-menu-wrap {
-    position:fixed;
+    position:absolute;
 
     display:table;
     width:100%;
@@ -365,8 +366,9 @@ a.cms-logout {
 /* Main section */
 
 .cms-main {
-    position:fixed;
-    bottom:0;
+    position:absolute;
+    top:0;
+    left:0;
     width:100%;
     background:#fff;
 }
@@ -1151,10 +1153,14 @@ a.cms-logout {
 
     .cms-menu-pages-n {
         min-width:300px;
+        overflow:hidden;
+        text-overflow:ellipsis;
     }
 
     .cms-menu-pages-url {
         width:260px;
+        overflow:hidden;
+        text-overflow:ellipsis;
     }
 
     .cms-menu-pages-dr {
@@ -1468,6 +1474,10 @@ a.cms-logout {
         border:1px solid #bdbdbd;
         font-weight:normal;
         padding:0 5px 5px 5px;
+
+        ul {
+            height:100%;
+        }
     }
 
     .header, .footer {
