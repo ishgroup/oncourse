@@ -1706,6 +1706,38 @@ a.cms-logout {
     left:0;
 }
 
+.t-error {
+    color:#f00 !important;
+}
+
+div.t-error {
+    @include rounded(10px);
+    @include gradient-linear(#ef2e2e, #910000, btn-prev-over);
+    border:1px solid #000;
+    padding:15px;
+
+    * {
+        background:none;
+        color:#fff !important;
+        font-weight:bold;
+    }
+
+    ul, ol {
+        list-style-position:outside;
+        margin:0 0 0 20px;
+        padding:10px 0 0 0;
+        font-style:italic;
+    }
+
+    li {
+        margin:0 0 5px 0;
+    }
+}
+
+.t-error-icon {
+    position:absolute;
+    z-index:1000;
+}
 
 
 
