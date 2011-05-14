@@ -351,7 +351,7 @@ function sortThemes(){
 				index++;
 			}
 			$j.post('cms/ui/textiletags.pagestructure.cmsnavigation.pagetypes.pagetypeedit.sort?t:cp=ui/page', 
-					s{id: itemId, region: parent.attr('id').substring(2), w:index});
+					{id: itemId, region: parent.attr('id').substring(2), w:index});
 		}
 
 	});

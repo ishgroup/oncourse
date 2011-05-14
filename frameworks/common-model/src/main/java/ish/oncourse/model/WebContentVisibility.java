@@ -2,8 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebContentVisibility;
 
-public class WebContentVisibility extends _WebContentVisibility implements
-		Comparable<WebContentVisibility> {
+public class WebContentVisibility extends _WebContentVisibility implements Comparable<WebContentVisibility> {
 
 	@Override
 	protected void onPostAdd() {
@@ -11,6 +10,18 @@ public class WebContentVisibility extends _WebContentVisibility implements
 	}
 
 	public int compareTo(WebContentVisibility arg) {
-		return arg.getWeight() - this.getWeight();
+		int result = 0;
+		if (arg != null) {
+			result = this.getWeight() - arg.getWeight();
+		}
+		if (result != 0) {
+			return result;
+		}
+
+		// if weights for the same webNodeType are equal, check the content of
+		// block for comparing
+		WebContent o1 = getWebContent();
+		WebContent o2 = arg.getWebContent();
+		return o1.compareTo(o2);
 	}
 }

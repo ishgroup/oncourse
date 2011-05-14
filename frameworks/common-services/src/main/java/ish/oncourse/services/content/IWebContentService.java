@@ -36,11 +36,13 @@ public interface IWebContentService {
 	SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType, RegionKey regionKey);
 	
 	/**
-	 * Gets web content visibility for region key.
+	 * Gets web content visibility for region key and given webNodeType.
+	 * 
+	 * @param webNodeType
 	 * @param regionKey
 	 * @return web content visibility
 	 */
-	SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(RegionKey regionKey);
+	SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(WebNodeType webNodeType, RegionKey regionKey);
 	
 	List<WebContent> getBlocks();
 }

@@ -70,28 +70,23 @@ public class PageTypeEdit {
 	private Action action;
 
 	public SortedSet<WebContent> getHeaderBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType,
-				RegionKey.header);
+		return webContentService.getBlocksForRegionKey(pageType, RegionKey.header);
 	}
 
 	public SortedSet<WebContent> getLeftBlocks() {
-		return webContentService
-				.getBlocksForRegionKey(pageType, RegionKey.left);
+		return webContentService.getBlocksForRegionKey(pageType, RegionKey.left);
 	}
 
 	public SortedSet<WebContent> getCenterBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType,
-				RegionKey.content);
+		return webContentService.getBlocksForRegionKey(pageType, RegionKey.content);
 	}
 
 	public SortedSet<WebContent> getRightBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType,
-				RegionKey.right);
+		return webContentService.getBlocksForRegionKey(pageType, RegionKey.right);
 	}
 
 	public SortedSet<WebContent> getFooterBlocks() {
-		return webContentService.getBlocksForRegionKey(pageType,
-				RegionKey.footer);
+		return webContentService.getBlocksForRegionKey(pageType, RegionKey.footer);
 	}
 
 	public SortedSet<WebContent> getUnassignedBlocks() {
@@ -117,45 +112,39 @@ public class PageTypeEdit {
 
 		block = (WebContent) ctx.localObject(block.getObjectId(), null);
 
-		WebContentVisibility webContentVisibility = block
-				.getWebContentVisibility(editPageType);
+		WebContentVisibility webContentVisibility = block.getWebContentVisibility(editPageType);
 
 		if (regionKey == RegionKey.unassigned) {
 			if (webContentVisibility != null) {
 				// remove assignment to this type
 				ctx.deleteObject(webContentVisibility);
 			}
-			webContentVisibility = block.getWebContentVisibility(null);
 		} else {
 
 			if (webContentVisibility == null) {
-				webContentVisibility = ctx
-						.newObject(WebContentVisibility.class);
+				// create new visibility if it is moved from unassigned blocks
+				webContentVisibility = ctx.newObject(WebContentVisibility.class);
 				webContentVisibility.setWebContent(block);
 				webContentVisibility.setWebNodeType(editPageType);
 			}
 			webContentVisibility.setRegionKey(regionKey);
-		}
 
-		// FIXME method works incorrectly! it should consider webNodeType as
-		// well
-		SortedSet<WebContentVisibility> vSet = webContentService
-				.getBlockVisibilityForRegionKey(regionKey);
+			webContentVisibility.setWeight(weight);
+			SortedSet<WebContentVisibility> vSet = webContentService.getBlockVisibilityForRegionKey(editPageType, regionKey);
 
-		int w = 0;
-		Iterator<WebContentVisibility> it = vSet.iterator();
+			// change weight of the items in region
+			int w = 0;
+			Iterator<WebContentVisibility> it = vSet.iterator();
 
-		while (it.hasNext()) {
-			WebContentVisibility v = it.next();
-			if (w < weight) {
-				v.setWeight(w);
-			} else {
-				v.setWeight(w + 1);
+			while (it.hasNext()) {
+				WebContentVisibility v = it.next();
+				if (w >= weight && v.getWeight() <= w) {
+					v.setWeight(w + 1);
+				}
+				w++;
 			}
-			w++;
-		}
-		webContentVisibility.setWeight(weight);
 
+		}
 		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 
@@ -174,9 +163,8 @@ public class PageTypeEdit {
 
 	@SetupRender
 	public void beforeRender() {
-		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType
-				: (WebNodeType) cayenneService.newContext().localObject(
-						pageType.getObjectId(), pageType);
+		editPageType = pageType.getPersistenceState() == PersistenceState.NEW ? pageType : (WebNodeType) cayenneService.newContext()
+				.localObject(pageType.getObjectId(), pageType);
 		layoutSelectModel = new StringSelectModel(readAvailableLayouts());
 	}
 

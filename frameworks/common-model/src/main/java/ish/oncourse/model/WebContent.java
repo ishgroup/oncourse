@@ -5,11 +5,10 @@ import ish.oncourse.model.visitor.IVisitor;
 
 import java.util.Date;
 
-public class WebContent extends _WebContent {
+public class WebContent extends _WebContent implements Comparable<WebContent> {
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
 
 	public <T> T accept(IVisitor<T> visitor) {
@@ -46,12 +45,40 @@ public class WebContent extends _WebContent {
 					return webContentVisibility;
 				}
 			}
-			// for unassigned blocks: if looking for webContentVisibility
-			// without webNodeType assigned
-			if (webNodeType == null) {
-				return webContentVisibility;
-			}
 		}
 		return null;
+	}
+
+	public int compareTo(WebContent arg) {
+		int result = 0;
+
+		String name1 = getName();
+		String name2 = arg.getName();
+
+		if (name1 != null && name2 != null) {
+			result = name1.compareTo(name2);
+		} else {
+			// first blocks with non-null names go
+			if (name1 == null && name2 != null) {
+				return 1;
+			}
+			if (name1 != null && name2 == null) {
+				return -1;
+			}
+		}
+		if (result != 0) {
+			return result;
+		}
+		if (getContent() != null && arg.getContent() != null) {
+			result = getContent().compareTo(arg.getContent());
+		}
+		if (result != 0) {
+			return result;
+		}
+		result = getId().compareTo(arg.getId());
+		if (result != 0) {
+			return result;
+		}
+		return hashCode() - arg.hashCode();
 	}
 }
