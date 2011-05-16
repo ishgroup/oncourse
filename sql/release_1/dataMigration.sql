@@ -336,7 +336,7 @@ INSERT INTO %DESTINATIONDB%_college.TaggableTag (id, angelId, collegeId, created
 	FROM %SOURCEDB%_college.TaggableTag AS tt
 	JOIN %DESTINATIONDB%_college.Taggable AS t ON tt.taggableid = t.id
 	JOIN %DESTINATIONDB%_college.Tag as tag ON tt.tagId = tag.id
-	WHERE tt.collegeId = @collegeId AND tt.isDeleted <> 1;
+	WHERE tt.collegeId = @collegeId AND (tt.isDeleted <> 1 OR tt.isDeleted is NULL);
 
 INSERT INTO %DESTINATIONDB%_college.TagGroupRequirement (allowsMultipleTags, angelId, collegeId, created, entityIdentifier, id, isRequired, modified, tagId)
 	SELECT tgr.allowsMultipleTags, tgr.angelId, tgr.collegeId, tgr.created, tgr.entityIdentifier, tgr.id, tgr.isRequired, tgr.modified, tgr.tagId
@@ -489,6 +489,11 @@ DROP TABLE %DESTINATIONDB%_college.WebMenuTEMP;
 UPDATE %DESTINATIONDB%_college.WebHostName AS wh
 	JOIN %DESTINATIONDB%_college.WebSite AS ws ON ws.id = wh.webSiteId
 	SET wh.name=CONCAT(ws.siteKey, '.staging1.oncourse.net.au')
+	WHERE wh.name LIKE '%.test.oncourse.net.au' and ws.collegeid = @collegeId;
+	
+UPDATE %DESTINATIONDB%_college.WebHostName AS wh
+	JOIN %DESTINATIONDB%_college.WebSite AS ws ON ws.id = wh.webSiteId
+	SET wh.name=CONCAT(ws.siteKey, '.live1.oncourse.net.au')
 	WHERE wh.name LIKE '%.test.oncourse.net.au' and ws.collegeid = @collegeId;
 
 UPDATE %DESTINATIONDB%_college.WebHostName AS wh
