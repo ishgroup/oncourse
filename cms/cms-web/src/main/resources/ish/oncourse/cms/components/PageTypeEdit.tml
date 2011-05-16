@@ -41,7 +41,7 @@
                     <table class="cms-theme-layout">
                         <tr>
                             <td class="header" colspan="3">
-								<ul id="b_header" class="cms-theme-list-m sortableThemes" style="min-height: 100px;">
+								<ul id="b_header" class="cms-theme-list-m sortableThemes">
 									<t:loop source="headerBlocks" value="block" formState="none">
 										<li id="bl_${block.id}" class="cms-theme-module">${block.name}</li>
 									</t:loop>
@@ -50,21 +50,21 @@
                         </tr>
                         <tr>
                             <td class="left">
-								<ul id="b_left" class="cms-theme-list-m sortableThemes" style="min-height: 100px;">
+								<ul id="b_left" class="cms-theme-list-m sortableThemes">
 									<t:loop source="leftBlocks" value="block" formState="none">
 										<li id="bl_${block.id}" class="cms-theme-module">${block.name}</li>
 									</t:loop>
 								</ul>
                             </td>
                             <td class="center">
-								<ul id="b_content" class="cms-theme-list-m sortableThemes" style="min-height: 100px;">
+								<ul id="b_content" class="cms-theme-list-m sortableThemes">
 									<t:loop source="centerBlocks" value="block" formState="none">
 										<li id="bl_${block.id}" class="cms-theme-module">${block.name}</li>
 									</t:loop>
 								</ul>
 							</td>
                             <td class="right">
-								<ul id="b_right" class="cms-theme-list-m sortableThemes" style="min-height: 100px;">
+								<ul id="b_right" class="cms-theme-list-m sortableThemes">
 									<t:loop source="rightBlocks" value="block" formState="none">
 										<li id="bl_${block.id}" class="cms-theme-module">${block.name}</li>
 									</t:loop>
@@ -74,7 +74,7 @@
                         <tr>
                             <td colspan="3" class="footer">
 
-                                <ul id="b_footer" class="cms-theme-list-m sortableThemes" style="min-height: 100px;">
+                                <ul id="b_footer" class="cms-theme-list-m sortableThemes">
 									<t:loop source="footerBlocks" value="block" formState="none">
 										<li id="bl_${block.id}" class="cms-theme-module">${block.name}</li>
 									</t:loop>
