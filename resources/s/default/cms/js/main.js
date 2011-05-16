@@ -10,19 +10,116 @@ function wrapHeight() {
     var mainTop = cmsOpts.header + cmsOpts.menu;
 
     jQuery('#edHeader, #edMenuWr').width(jQuery('body').width());
-	jQuery('#edMain').css('top', mainTop).height(jQuery(document).height() - mainTop).width(jQuery('body').width());
+    jQuery('#edMain').height(jQuery(document).height() - mainTop).width(jQuery('body').width());
 
 }
 
-function hideEdit() {
+// Open editor: Opt = true; Clode editor: Opt = false.
+function animLayout(opt) {
 
     var winHeig;
-    if(window.innerHeight) {
+    if (window.innerHeight) {
+        // for gecko & webkit
         winHeig = window.innerHeight;
     } else {
         winHeig = jQuery(window).height();
     }
 
+    // hide page bar
+    jQuery('#edControls').addClass('hide');
+
+    // Animation position
+    var topScroll, topScrollMain;
+
+    if (opt) {
+        topScroll = winHeig - cmsOpts.menu; // window height - menu height
+    } else {
+        topScroll = cmsOpts.header;
+        topScrollMain = cmsOpts.header + cmsOpts.menu;
+    }
+
+
+    // Amination
+
+    if (jQuery.support.cssProperty('transition') && jQuery.support.cssProperty('transition') != 'undefined') {
+        // CSS3 Animation
+
+        if (opt) {
+
+            jQuery('#edHeader').addClass('hide');
+            jQuery('#edMenuWr').css('top', topScroll);
+            jQuery('#edMain').css('top', topScroll).addClass('hide');
+            setTimeout("jQuery('#edControls').removeClass('hide');jQuery('#edMenuWr').addClass('hide')", 700);
+
+        } else {
+
+
+
+            // CSS3 Animation
+            jQuery('#edControls').addClass('hide');
+            jQuery('#edHeader').removeClass('hide');
+            jQuery('#edMenuWr').removeClass('hide').css('top', topScroll);
+            jQuery('#edMain').removeClass('hide').css('top', topScrollMain);
+
+
+        }
+
+
+    } else {
+        // Jquery animation
+        if (opt) {
+
+
+            jQuery('#edHeader').slideUp(100);
+
+            jQuery('#edMenuWr').animate({
+                top : topScroll
+            }, {
+                duration : 700,
+                complete : function() {
+                    jQuery('#edMenuWr').addClass('hide');
+                    jQuery('#edControls').removeClass('hide').slideDown(100);
+                }
+            });
+
+            jQuery('#edMain').animate({
+                top : topScroll
+            }, {
+                duration : 700,
+                complete : function() {
+                    jQuery('#edMain').hide();
+                }
+            });
+
+
+        } else {
+
+            jQuery('#edControls').slideUp(100).addClass('hide');
+
+            jQuery('#edHeader').slideDown(100);
+
+
+            jQuery('#edMain').show().animate({
+                top : topScrollMain
+            }, {
+                duration : 700
+            });
+
+            jQuery('#edMenuWr').removeClass('hide').animate({
+                top: topScroll
+            }, {
+                duration: 700
+            });
+
+        }
+
+
+    }
+
+}
+
+
+function hideEdit() {
 
 
     if (jQuery('.ie').size() > 0) {
@@ -30,37 +127,21 @@ function hideEdit() {
         jQuery('.cms-pane-wide').hide();
     }
 
-    jQuery('#edControls').slideUp();
+
+    // Open Content Editor
+    jQuery('#editSite').bind('click', function() {
+
+        // Menu (Tabs) manipulation.
+        jQuery('.cms-menu-shadow').hide();
+        jQuery('#edMenu').children('li').removeClass('active');
+        jQuery(this).parents('li').addClass('active');
 
 
-	var topScroll = winHeig - cmsOpts.menu; // window - menu height
+        animLayout(true);
 
-	jQuery('#editSite').bind('click', function() {
-		jQuery('.cms-menu-shadow').hide();
-		jQuery('#edMenu').children('li').removeClass('active');
-		jQuery(this).parents('li').addClass('active');
 
-		jQuery('#edHeader').slideUp(100);
-
-        jQuery('#edMain').animate({
-            top : topScroll
-        }, {
-            duration : 700,
-            complete : function() {
-                jQuery('#edMain').hide();
-            }
-        });
-		jQuery('#edMenuWr').css('position','fixed').animate({
-			top : topScroll
-		}, {
-			duration : 700,
-			complete : function() {
-				jQuery('#edControls').slideDown();
-			}
-		});
-
-		return false;
-	});
+        return false;
+    });
 }
 
 function pageBar() {
@@ -104,7 +185,7 @@ function pageBar() {
         }
 
         jQuery(this).addClass('active');
-        if(jQuery('.cms-darkover').size() == 0) {
+        if (jQuery('.cms-darkover').size() == 0) {
             jQuery('<div>').addClass('cms-darkover').prependTo('body');
         } else {
             jQuery('.cms-darkover').show();
@@ -140,69 +221,70 @@ function pageBar() {
 }
 
 function isChrome() {
-	return Boolean(window.chrome);
+    return Boolean(window.chrome);
 }
 
 function customForms() {
-	jQuery('.cms-onoff').iphoneStyle();
-	jQuery("select, input:checkbox, input:radio, input:file").uniform();
+    jQuery('.cms-onoff').iphoneStyle();
+    jQuery("select, input:checkbox, input:radio, input:file").uniform();
 
-	if (isChrome() != true) {
-		jQuery('#scrollbar1').tinyscrollbar();
-	}
+    if (isChrome() != true) {
+        jQuery('#scrollbar1').tinyscrollbar();
+    }
 
-	jQuery('#scrollTheme').tinycarousel({
-		axis : 'y'
-	});
+    jQuery('#scrollTheme').tinycarousel({
+        axis : 'y'
+    });
 
 }
 
 function toolTips() {
-	jQuery('span[title]').qtip({
-		style : {
-			background : '#ffda8b',
-			color : '#613c00',
-			border : {
-				width : 1,
-				color : '#ffda8b'
-			},
-			tip : true
-		},
-		position : {
-			corner : {
-				tooltip : 'leftMiddle'
-			}
-		}
-	});
+    jQuery('span[title]').qtip({
+        style : {
+            background : '#ffda8b',
+            color : '#613c00',
+            border : {
+                width : 1,
+                color : '#ffda8b'
+            },
+            tip : true
+        },
+        position : {
+            corner : {
+                tooltip : 'leftMiddle'
+            }
+        }
+    });
 }
 
 function modals(formId) {
     jQuery("#dialog").dialog({
-       modal : true,
-       //height : 430,
-       width : 540,
-       dialogClass: 'cms-dialog',
-       buttons : [
-         {
-          text : "Cancel",
-          click : function() {
-           jQuery(this).dialog("close");
-          },
-          'class' : "cms-but cms-btn-prev alignCenter"
-         },
-         {
-          text : "Save",
-          click : function() {
-           jQuery(this).dialog("close");
-           $(formId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-           //$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-          },
-          'class' : "cms-but cms-btn-next alignCenter"
-         } ]
-      });
-    jQuery('.cms-close-popup').click(function(){
-	      jQuery(this).parents('.cms-popup-edit').dialog('close');
-	 });
+        modal : true,
+        //height : 430,
+        width : 540,
+        dialogClass: 'cms-dialog',
+        buttons : [
+            {
+                text : "Cancel",
+                click : function() {
+                    jQuery(this).dialog("close");
+                },
+                'class' : "cms-but cms-btn-prev alignCenter"
+            },
+            {
+                text : "Save",
+                click : function() {
+                    jQuery(this).dialog("close");
+                    $(formId).fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+                    //$('${regionForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
+                },
+                'class' : "cms-but cms-btn-next alignCenter"
+            }
+        ]
+    });
+    jQuery('.cms-close-popup').click(function() {
+        jQuery(this).parents('.cms-popup-edit').dialog('close');
+    });
     //jQuery("#dialog").dialog('close');
 
 }
@@ -212,30 +294,18 @@ function tabsContent() {
 
 
         var ev = event.target;
-        if(ev.id != 'editSite') {
+        if (ev.id != 'editSite') {
 
             jQuery('.cms-btn-control.active').click();
 
             // Slide content area
-            if(jQuery('#editSite').parent().parent().hasClass('active')){
-                var topScroll = cmsOpts.header;
-                var topScrollMain = cmsOpts.header + cmsOpts.menu;
-
-                jQuery('#edControls').slideUp();
-                jQuery('#edHeader').slideDown(100);
+            if (jQuery('#editSite').parent().parent().hasClass('active')) {
 
 
-                jQuery('#edMain').show().animate({
-                    top : topScrollMain
-                }, {
-                    duration : 700
-                });
 
-                jQuery('#edMenuWr').css('position','absolute').animate({
-                    top: topScroll
-                }, {
-                    duration: 700
-                });
+                // Amination
+
+                animLayout(false);
 
                 wrapHeight();
             }
@@ -244,9 +314,9 @@ function tabsContent() {
 
             var i = jQuery(this).index() - 1;
             jQuery(this).addClass("active");
-            if(jQuery(this).children('em').size() == 0) {
+            if (jQuery(this).children('em').size() == 0) {
                 var f = document.createElement('em');
-                f.className='cms-m-active';
+                f.className = 'cms-m-active';
                 jQuery(this).append(f);
             }
             jQuery(this).siblings().removeClass("active").children('em').remove();
@@ -259,118 +329,118 @@ function tabsContent() {
 }
 
 function editArea() {
-	wrapEditAreas();
+    wrapEditAreas();
 
-	jQuery('#showEdit').change(function() {
-		if (this.checked) {
-				jQuery('.cms-edit-area').removeClass('hover');
-				jQuery('.cms-edit-area').show();
-		} else {
-			jQuery('.cms-edit-area').hide();
-		}
-	});
+    jQuery('#showEdit').change(function() {
+        if (this.checked) {
+            jQuery('.cms-edit-area').removeClass('hover');
+            jQuery('.cms-edit-area').show();
+        } else {
+            jQuery('.cms-edit-area').hide();
+        }
+    });
 
 }
 
 function wrapEditAreas() {
-	$j(".cms-edit-area-in").each(
-			function() {
-				editBlockArea = $j(this);
-				editBlock = editBlockArea.parent().parent().parent();
-				editBlock.hover(function() {
-					if (document.getElementById('showEdit').checked == false) {
-							jQuery('.cms-edit-area').addClass('hover');
-							jQuery('.cms-edit-area').show();
-					}
-				}, function() {
-					if (document.getElementById('showEdit').checked == false) {
-						jQuery('.cms-edit-area').removeClass('hover');
-						jQuery('.cms-edit-area').hide();
-					}
-				});
-				
-				editBlockArea.css('width', editBlock.width() + "px").css(
-						'height', editBlock.height() + "px");
-			});
-	if (document.getElementById('showEdit').checked == false) {
-		jQuery('.cms-edit-area').hide();
-	}
-	
+    $j(".cms-edit-area-in").each(
+            function() {
+                editBlockArea = $j(this);
+                editBlock = editBlockArea.parent().parent().parent();
+                editBlock.hover(function() {
+                    if (document.getElementById('showEdit').checked == false) {
+                        jQuery('.cms-edit-area').addClass('hover');
+                        jQuery('.cms-edit-area').show();
+                    }
+                }, function() {
+                    if (document.getElementById('showEdit').checked == false) {
+                        jQuery('.cms-edit-area').removeClass('hover');
+                        jQuery('.cms-edit-area').hide();
+                    }
+                });
+
+                editBlockArea.css('width', editBlock.width() + "px").css(
+                        'height', editBlock.height() + "px");
+            });
+    if (document.getElementById('showEdit').checked == false) {
+        jQuery('.cms-edit-area').hide();
+    }
+
 }
 
 function editThemes() {
-	var list = jQuery('#cmsThemeList');
-	var key = jQuery('#cmsThemeKey');
-	var themeId = jQuery('#cmsThemeKeyId');
+    var list = jQuery('#cmsThemeList');
+    var key = jQuery('#cmsThemeKey');
+    var themeId = jQuery('#cmsThemeKeyId');
 
-	themeId.val(list.children('.selected').attr('rel'));
-	list.children('.selected').clone().appendTo(key);
-	key.toggle(function() {
-		list.addClass('show');
-	}, function() {
-		list.removeClass('show');
-	});
-	list.children('span').click(
-			function() {
-				key.html('');
-				jQuery(this).clone().appendTo(key);
-				jQuery(this).siblings().removeClass('selected').end().addClass(
-						'selected');
-				key.click();
-				themeId.val(jQuery(this).attr('rel'));
-			});
+    themeId.val(list.children('.selected').attr('rel'));
+    list.children('.selected').clone().appendTo(key);
+    key.toggle(function() {
+        list.addClass('show');
+    }, function() {
+        list.removeClass('show');
+    });
+    list.children('span').click(
+            function() {
+                key.html('');
+                jQuery(this).clone().appendTo(key);
+                jQuery(this).siblings().removeClass('selected').end().addClass(
+                        'selected');
+                key.click();
+                themeId.val(jQuery(this).attr('rel'));
+            });
 
-	// Auto resize modules in table cell
-	/*var themeLayout = function() {
-	    jQuery('.cms-theme-layout').find('.cms-theme-module').each(function(){
-	        var module = jQuery(this);
-	        var modH = module.parent('td').innerHeight() / (module.siblings('.cms-theme-module').size() + 1) - 5;
-	       
-	    module.css({'height':modH});
-	    });
-	};
-	themeLayout();*/
+    // Auto resize modules in table cell
+    /*var themeLayout = function() {
+     jQuery('.cms-theme-layout').find('.cms-theme-module').each(function(){
+     var module = jQuery(this);
+     var modH = module.parent('td').innerHeight() / (module.siblings('.cms-theme-module').size() + 1) - 5;
+
+     module.css({'height':modH});
+     });
+     };
+     themeLayout();*/
 
 }
 
-function highlightMenuItem(menuItem){
-	menuItem.mouseover(
+function highlightMenuItem(menuItem) {
+    menuItem.mouseover(
             function(e) {
                 jQuery(this).addClass("over").parents().removeClass("over");
                 e.stopPropagation();
             }).mouseout(function(e) {
-            	jQuery(this).removeClass("over");
-            });
+        jQuery(this).removeClass("over");
+    });
 }
 
-function sortThemes(){
-	$j( "#b_header, #b_left, #b_content, #b_right, #b_footer, #b_unassigned" ).sortable({
-		connectWith: ".sortableThemes",
-		stop: function(event, ui) { 
-			var itemId = $(ui.item).attr('id').substring(3);
-			var parent=$(ui.item).parent();
-			var s = parent.sortable('toArray');
-			var index = 0;
+function sortThemes() {
+    $j("#b_header, #b_left, #b_content, #b_right, #b_footer, #b_unassigned").sortable({
+        connectWith: ".sortableThemes",
+        stop: function(event, ui) {
+            var itemId = $(ui.item).attr('id').substring(3);
+            var parent = $(ui.item).parent();
+            var s = parent.sortable('toArray');
+            var index = 0;
             var parSubstr = parent.attr('id').substring(2);
-			
-			for (var i=0; i< s.length; i++) {
-				
-				if(s[i].substring(3) == itemId) {
-					break;
-				} 
-				
-				index++;
-			}
 
-			$j.post('cms/ui/textiletags.pagestructure.cmsnavigation.pagetypes.pagetypeedit.sort?t:cp=ui/page', 
-					{
-                        id: itemId,
-                        region: parSubstr,
-                        w: index
-                    });
-		}
+            for (var i = 0; i < s.length; i++) {
 
-	});
+                if (s[i].substring(3) == itemId) {
+                    break;
+                }
+
+                index++;
+            }
+
+            $j.post('cms/ui/textiletags.pagestructure.cmsnavigation.pagetypes.pagetypeedit.sort?t:cp=ui/page',
+            {
+                id: itemId,
+                region: parSubstr,
+                w: index
+            });
+        }
+
+    });
 }
 
 // Load all

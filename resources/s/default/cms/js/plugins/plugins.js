@@ -300,3 +300,49 @@ function setButtons(){if(options.controls){oBtnPrev.toggleClass('disable',!(iCur
 function setPager(oEvent){if($(this).hasClass('pagenum')){iCurrent=parseInt(this.rel)-1;move(1);}return false;}
 function setTimer(){if(options.interval&&!bPause){clearTimeout(oTimer);oTimer=setTimeout(function(){iCurrent=!options.rewind&&(iCurrent+1==iSteps)?-1:iCurrent;bForward=iCurrent+1==iSteps?false:iCurrent==0?true:bForward;move((options.rewind?(bForward?1:-1):1));},options.intervaltime);}}
 function move(iDirection){if(iCurrent+iDirection>-1&&iCurrent+iDirection<iSteps){iCurrent+=iDirection;var oPosition={};oPosition[bAxis?'left':'top']=-(iCurrent*(iPageSize*options.display));oContent.animate(oPosition,{queue:false,duration:options.animation?options.duration:0,complete:function(){if(typeof options.callback=='function')options.callback.call(this,oPages[iCurrent],iCurrent);}});setButtons();setTimer();}}};})(jQuery);
+
+
+/**
+ * jQuery.support.cssProperty
+ * To verify that a CSS property is supported (or any of its browser-specific implementations)
+ *
+ * @param string p - css property name
+ * [@param] bool rp - optional, if set to true, the css property name will be returned, instead of a boolean support indicator
+ *
+ * @Author: Axel Jack Fuchs (Cologne, Germany)
+ * @Date: 08-29-2010 18:43
+ *
+ * Example: $.support.cssProperty('boxShadow');
+ * Returns: true
+ *
+ * Example: $.support.cssProperty('boxShadow', true);
+ * Returns: 'MozBoxShadow' (On Firefox4 beta4)
+ * Returns: 'WebkitBoxShadow' (On Safari 5)
+ */
+jQuery.support.cssProperty = (function() {
+    function cssProperty(p, rp) {
+        var b = document.body || document.documentElement,
+                s = b.style;
+
+        // No css support detected
+        if (typeof s == 'undefined') {
+            return false;
+        }
+
+        // Tests for standard prop
+        if (typeof s[p] == 'string') {
+            return rp ? p : true;
+        }
+
+        // Tests for vendor specific prop
+        v = ['Moz', 'Webkit', 'Khtml', 'O', 'Ms'],
+                p = p.charAt(0).toUpperCase() + p.substr(1);
+        for (var i = 0; i < v.length; i++) {
+            if (typeof s[v[i] + p] == 'string') {
+                return rp ? (v[i] + p) : true;
+            }
+        }
+    }
+
+    return cssProperty;
+})();
