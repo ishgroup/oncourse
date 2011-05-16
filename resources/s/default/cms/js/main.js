@@ -9,12 +9,21 @@ var cmsOpts = {
 function wrapHeight() {
     var mainTop = cmsOpts.header + cmsOpts.menu;
 
-    jQuery('#edHeader, #edMenuWr').width(jQuery(document).width());
-	jQuery('#edMain').css('top', mainTop).height(jQuery(document).height() - mainTop).width(jQuery(document).width());
+    jQuery('#edHeader, #edMenuWr').width(jQuery('body').width());
+	jQuery('#edMain').css('top', mainTop).height(jQuery(document).height() - mainTop).width(jQuery('body').width());
 
 }
 
 function hideEdit() {
+
+    var winHeig;
+    if(window.innerHeight) {
+        winHeig = window.innerHeight;
+    } else {
+        winHeig = jQuery(window).height();
+    }
+
+
 
     if (jQuery('.ie').size() > 0) {
         jQuery('.cms-pane-small').hide();
@@ -23,7 +32,8 @@ function hideEdit() {
 
     jQuery('#edControls').slideUp();
 
-	var topScroll = jQuery(window).height() - cmsOpts.menu; // window - menu height
+
+	var topScroll = winHeig - cmsOpts.menu; // window - menu height
 
 	jQuery('#editSite').bind('click', function() {
 		jQuery('.cms-menu-shadow').hide();
@@ -341,6 +351,7 @@ function sortThemes(){
 			var parent=$(ui.item).parent();
 			var s = parent.sortable('toArray');
 			var index = 0;
+            var parSubstr = parent.attr('id').substring(2);
 			
 			for (var i=0; i< s.length; i++) {
 				
@@ -350,8 +361,13 @@ function sortThemes(){
 				
 				index++;
 			}
+
 			$j.post('cms/ui/textiletags.pagestructure.cmsnavigation.pagetypes.pagetypeedit.sort?t:cp=ui/page', 
-					{id: itemId, region: parent.attr('id').substring(2), w:index});
+					{
+                        id: itemId,
+                        region: parSubstr,
+                        w: index
+                    });
 		}
 
 	});

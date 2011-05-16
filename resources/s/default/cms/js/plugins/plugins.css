@@ -559,6 +559,10 @@ http://pixelmatrixdesign.com/uniform/themer.html
   text-shadow: 0 1px 0 #fff;
 }
 
+#cmsWrapper .cms-theme-key-wr div.selector span {
+    color:#000;
+}
+
 #cmsWrapper div.selector.disabled span {
   color: #bbb;
 }

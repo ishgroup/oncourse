@@ -236,7 +236,6 @@ $i: /s/cms/img;
 /* Menu */
 .cms-menu-wrap {
     position:absolute;
-
     display:table;
     width:100%;
     left:0;
@@ -616,7 +615,7 @@ a.cms-logout {
     position:relative;
 
 
-    border-top:3px solid rgba(#000000, 0.8);
+    border-top:3px solid transparent;
 
     a {
         text-decoration:underline;
@@ -789,6 +788,7 @@ a.cms-logout {
     color:#484848;
     font-size:13px;
     overflow:hidden;
+    margin-bottom:3px;
 
     /*margin-left:-11px;*/
 
@@ -1462,7 +1462,7 @@ a.cms-logout {
     display:table-cell;
     vertical-align:top;
     padding-left:36px;
-    background:url(""+$i+"/theme-switch.png") no-repeat 5px center;
+    background:url(""+$i+"/theme-switch.png") no-repeat 5px 180px;
 }
 
 
@@ -1480,16 +1480,22 @@ a.cms-logout {
         }
     }
 
-    .header, .footer {
-        height:70px;
-    }
     .left, .right {
         width:170px;
-        height:200px;
     }
-    .center {
-        height:200px;
+
+    .header ul, .footer ul {
+        min-height:70px;
     }
+    .left ul, .right ul {
+        width:170px;
+        min-height:200px;
+    }
+    .center ul {
+        min-height:200px;
+    }
+
+
     .header {
         background:url(""+$i+"/theme-head.png") no-repeat center center;
     }
