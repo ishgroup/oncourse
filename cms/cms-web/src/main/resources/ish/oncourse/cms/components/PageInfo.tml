@@ -54,7 +54,6 @@
 											<li>
 												<div data-status="${statusForNode}">
 											 		<a href="${webNode.path}">${webNode.name}</a> 
-											 		&mdash; 
 											 		<t:if t:test="webNode.published"> 
 											 			<span data-pub="published">published</span>
 												 		<p:else> 
