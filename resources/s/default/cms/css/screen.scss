@@ -763,6 +763,10 @@ a.cms-logout {
     margin-right:12px;
     margin-left:3px;
     display:inline-block;
+
+    span[data-pub] {
+        color:#666 !important;
+    }
 }
 
 *[data-pub="published"] {
@@ -877,10 +881,14 @@ a.cms-logout {
     }
 
     div {
-        padding:3px 0 3px 4px;
+        padding:4px 0 4px 4px;
 
         &[data-status="active"] {
             background:#f5af00;
+
+            span {
+                color:#000 !important;
+            }
         }
     }
 

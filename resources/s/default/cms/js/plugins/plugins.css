@@ -761,8 +761,8 @@ Not advised to edit stuff below this line
 
 
 /* Tiny Scrollbar */
-#cmsWrapper #scrollbar1 { width: 240px; margin: 0; }
-#cmsWrapper #scrollbar1 .viewport { width: 220px; height: 260px; overflow: hidden; position: relative; }
+#cmsWrapper #scrollbar1 { width: 360px; margin: 0; }
+#cmsWrapper #scrollbar1 .viewport { width: 340px; height: 400px; overflow: hidden; position: relative; }
 #cmsWrapper #scrollbar1 .overview { list-style: none; position: absolute; left: 0; top: 0; padding: 0; margin: 0; }
 #cmsWrapper #scrollbar1 .scrollbar{ background: transparent url(images/tinyscroll/scrollbar-line.png)  repeat-y 0 0; position: relative; background-position: 0 0; float: right; width: 15px; }
 #cmsWrapper #scrollbar1 .track { background: transparent url(images/tinyscroll/scrollbar-line.png) no-repeat 0 100%; height: 100%; width:15px; position: relative; padding: 0; }
