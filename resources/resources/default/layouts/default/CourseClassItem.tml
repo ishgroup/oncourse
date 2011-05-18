@@ -4,98 +4,154 @@
 -->
 
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
-	<div class="classItem vevent"  data-classid="${courseClass.id}">
-		
-		<t:if test="courseClass.detail">
-			<div class="classDescription">
-				<t:outputraw value="courseClass.detail" />
-			</div>
-		</t:if>
+             xmlns:p="tapestry:parameter">
+    <div class="classItem vevent" data-classid="${courseClass.id}">
 
-	
-		<!--hcalendar implementation-->
-		<dl class="class-item-info">
-			<dt class="classItemName">Name</dt>
-			<dd class="summary">${courseClass.course.name}</dd>
+        <t:if test="courseClass.detail">
+            <div class="classDescription">
+                <t:outputraw value="courseClass.detail"/>
+            </div>
+        </t:if>
 
-			<dt class="classItemDate">Date</dt>
-			<dd class="">
-				<t:if t:test="courseClass.firstSession">
-					<a href="/class/${courseClass.course.code}-${courseClass.code}" class="url">
-						<abbr class="dtstart" title=""><t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/></abbr>
-						<t:if t:test="courseClass.endDate">
-							- <abbr class="dtend" title=""><t:output format="literal:d MMM yyyy" value="courseClass.endDate"/></abbr>
-						</t:if>
-					</a>
-					<p:else><b>no session</b></p:else>
-				</t:if>
-			</dd>
-			
-			<dt class="classItemLocation">Location</dt>
-			<dd class="location">
-				<t:if test="hasLinkToLocation">
-					<t:if test="hasSite">
-						<t:if test="existsOnMap">
+
+        <!--hcalendar implementation-->
+        <div class="class-item-info">
+            <div class="class-item-info-l">
+                <!--<dt class="classItemDate">Date</dt>-->
+                <div class="date">
+                    <t:if t:test="courseClass.firstSession">
+                        <a href="/class/${courseClass.course.code}-${courseClass.code}" class="url">
+                            <abbr class="dtstart" title="">
+                                <t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/>
+                            </abbr>
+                            <t:if t:test="courseClass.endDate">
+                                - <abbr class="dtend" title="">
+                                <t:output format="literal:d MMM yyyy" value="courseClass.endDate"/>
+                            </abbr>
+                            </t:if>
+                        </a>
+                        <p:else><b>no session</b></p:else>
+                    </t:if>
+                </div>
+
+                <!--<dt class="classItemName">Name</dt>-->
+                <div class="summary">${courseClass.course.name}</div>
+            </div>
+
+            <div class="class-item-info-r">
+                <!--<dt class="classItemLocation">Location</dt>-->
+                <div class="location">
+                    <t:if test="hasLinkToLocation">
+                        <t:if test="hasSite">
+                            <t:if test="existsOnMap">
 							<span t:type="ui/roomLocation" room="courseClass.room"
-								withRoomName="false" disabledLink="false" />
-							<p:else>
+                                  withRoomName="false" disabledLink="false"/>
+                                <p:else>
 								<span t:type="ui/roomLocation" room="courseClass.room"
-									withRoomName="false" disabledLink="true" />
-							</p:else>
-						</t:if>
-						<p:else>TBA</p:else>
-					</t:if>
-				</t:if>	
-			</dd>
-			
-			<dt class="classItemTutor">Tutor</dt>
-			<dd class="">
-			<t:if test="hasTutorRoles">
-					<t:loop source="courseClass.tutorRoles" value="tutorRole"
-						index="index">
-						<a class="nyromodal"
-							href="/tutor/${tutorRole.tutor.angelId}"
-							title="View tutor profile">${tutorRole.tutor.fullName}</a>
-					</t:loop>
-			</t:if>
-			</dd>
-			<t:if test="excludePrice" negate="true">
-				<dt class="classItemPrice">Price</dt>
-				<dd class=""><span t:type="ui/CourseClassPrice" courseClass="courseClass" /></dd>
-			</t:if>
+                                      withRoomName="false" disabledLink="true"/>
+                                </p:else>
+                            </t:if>
+                            <p:else>TBA</p:else>
+                        </t:if>
+                    </t:if>
+                </div>
 
-		</dl>
+                <!--<dt class="classItemTutor">Tutor</dt>-->
+                <div class="tutor">
+                    <t:if test="hasTutorRoles">
+                        <t:loop source="courseClass.tutorRoles" value="tutorRole"
+                                index="index">
+                            <a class="nyromodal"
+                               href="/tutor/${tutorRole.tutor.angelId}"
+                               title="View tutor profile">${tutorRole.tutor.fullName}</a>
+                        </t:loop>
+                    </t:if>
+                </div>
+                <t:if test="excludePrice" negate="true">
+                    <!--<dt class="classItemPrice">Price</dt>-->
+                    <div class="price"><span t:type="ui/CourseClassPrice" courseClass="courseClass"/></div>
+                </t:if>
+            </div>
 
-		<div class="classAction">
-			<t:if t:test="courseClass.cancelled" negate="true">
-				<t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
-					<t:if t:test="courseClass.college.paymentGatewayEnabled">
-						<a class="enrolAction" href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}">Enrol Now</a>
-					</t:if>
-				</t:if>
-			</t:if>		
-			<div class="classStatus">
-				<t:if test="courseClass.availableEnrolmentPlaces">
-					<span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass" />
-				</t:if>
-			</div>
-		</div>	
 
-	<t:if test="${courseClass.cancelled}" negate="true">
-			<!--
-				sessions for all classes, displayed for tutor portal, hidden
-				otherwise
-			-->
-			<t:if test="courseClass.hasAnyTimelineableSessions">
-				<div class="classSessions">
+        </div>
+
+        <div class="classAction">
+            <t:if t:test="courseClass.cancelled" negate="true">
+                <t:if t:test="courseClass.hasAvailableEnrolmentPlaces">
+                    <t:if t:test="courseClass.college.paymentGatewayEnabled">
+                        <a class="enrolAction" href="/addToCookies?key=shortlist&amp;addItemId=${courseClass.id}">Enrol
+                            Now</a>
+                    </t:if>
+                </t:if>
+            </t:if>
+            <div class="classStatus">
+                <t:if test="courseClass.availableEnrolmentPlaces">
+                    <span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass"/>
+                </t:if>
+            </div>
+        </div>
+
+
+        <div class="bubbleInfo">
+            <div class="tooltip_popup enrol_tooltip">
+                <div class="bubble_top bubble_content clearfix">
+
+                    <span class="timing-display">
+                        <span class="timing-weekday timing-Monday match-8 match-1 timing-no">Mo</span>
+                        <span class="timing-weekday timing-Tuesday match-8 match-1 timing-no">Tu</span>
+                        <span class="timing-weekday timing-Wednesday match-8 match-1 timing-no">We</span>
+                        <span class="timing-weekday timing-Thursday match-8 match-1 timing-no">Th</span>
+                        <span class="timing-weekday timing-Friday match-8 match-1 timing-no">Fr</span>
+                        <span class="timing-weekend timing-Saturday match-9 match-6 timing-yes">Sa</span>
+                        <span class="timing-weekend timing-Sunday match-9 match-6 timing-no">Su</span>
+                    </span>
+
+                        <span class="timing-display">
+                            <span class="timing-daytime match-10 timing-daytime-yes">
+                                <img src="/s/img/blank.png"></img>
+                            </span>
+                            <span class="timing-evening match-10 timing-evening-no">
+                                <img src="/s/img/blank.png"></img>
+                            </span>
+                        </span>
+                </div>
+
+                <div class="bubble_middle bubble_content clearfix">
+                    <div class="class-link">
+                        <a href="/class/abgc-2">
+                            View this class...
+                        </a>
+                    </div>
+                    <div class="course-link">
+                        <a href="/course/abgc">
+                            More about
+                            <em>A Beginner's Guide to Classical Music</em>...
+                        </a>
+                    </div>
+
+                </div>
+                <div class="bubble_bottom clearfix"></div>
+                <br style="clear:both;"></br>
+
+            </div>
+        </div>
+
+
+        <t:if test="${courseClass.cancelled}" negate="true">
+            <!--
+                   sessions for all classes, displayed for tutor portal, hidden
+                   otherwise
+               -->
+            <t:if test="courseClass.hasAnyTimelineableSessions">
+                <div class="classSessions">
 					<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
-						headerLabels="timetableLabels" cssTableClass="cssTableClass"
-						cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"
-						dateFormat="dateFormat" timeFormat="timeFormat" />
-				</div>
-			</t:if>
-		</t:if>
-	</div>	
-	
+                          headerLabels="timetableLabels" cssTableClass="cssTableClass"
+                          cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"
+                          dateFormat="dateFormat" timeFormat="timeFormat"/>
+                </div>
+            </t:if>
+        </t:if>
+    </div>
+
 </t:container>
