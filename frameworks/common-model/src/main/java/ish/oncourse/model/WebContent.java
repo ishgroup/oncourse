@@ -37,11 +37,16 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 		setModified(today);
 	}
 
-	public WebContentVisibility getWebContentVisibility(WebNodeType webNodeType) {
+	public WebContentVisibility getWebContentVisibility(WebNode webNode, WebNodeType webNodeType) {
 		for (WebContentVisibility webContentVisibility : getWebContentVisibilities()) {
+			WebNode node = webContentVisibility.getWebNode();
 			WebNodeType nodeType = webContentVisibility.getWebNodeType();
-			if (nodeType != null) {
-				if (nodeType.equals(webNodeType)) {
+			if (node != null && webNode != null) {
+				if (node.getId().equals(webNode.getId())) {
+					return webContentVisibility;
+				}
+			} else if (nodeType != null && webNodeType != null) {
+				if (nodeType.getId().equals(webNodeType.getId())) {
 					return webContentVisibility;
 				}
 			}

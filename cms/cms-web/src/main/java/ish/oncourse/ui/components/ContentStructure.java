@@ -64,19 +64,17 @@ public class ContentStructure {
 		}
 
 		ObjectContext ctx = node.getObjectContext().createChildContext();
-		WebContent region = (WebContent) ctx.localObject(
-				webContentService.findById(Long.parseLong(id)).getObjectId(), null);
+		WebContent region = (WebContent) ctx.localObject(webContentService.findById(Long.parseLong(id)).getObjectId(), null);
 
-		WebNodeType webNodeType = node.getWebNodeType();
-		this.visibility = region.getWebContentVisibility(webNodeType);
+		this.visibility = region.getWebContentVisibility(node, null);
 
 		return editorBlock;
 	}
 
 	Object onSuccessFromRegionForm() {
 		this.visibility.getObjectContext().commitChanges();
-		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(getCurrentZoneKey(),
-				regionContentBlock).add("updatedZone", updateZone);
+		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(getCurrentZoneKey(), regionContentBlock).add("updatedZone",
+				updateZone);
 	}
 
 	public String getCurrentZoneKey() {
