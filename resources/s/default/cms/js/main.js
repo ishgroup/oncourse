@@ -32,13 +32,14 @@ function animLayout(toggle) {
     var speed = 700;
 
     // Animation position
-    var topScroll, topScrollMain;
+    var topScroll, topScrollMain, topScrollBot;
 
     if (toggle) {
         topScroll = winHeig - cmsOpts.menu; // window height - menu height
     } else {
         topScroll = cmsOpts.header;
         topScrollMain = cmsOpts.header + cmsOpts.menu;
+        topScrollBot = winHeig - topScrollMain;
     }
 
 
@@ -52,15 +53,16 @@ function animLayout(toggle) {
             jQuery('#edHeader').addClass('hide');
             jQuery('#edMenuWr').css('top', topScroll).removeClass('pos');
             jQuery('#edMain').css('top', topScroll).addClass('hide');
-            setTimeout("jQuery('#edControls').removeClass('hide');jQuery('#edMenuWr').addClass('hidecss3').css('top','')", speed);
+            setTimeout("jQuery('#edControls').removeClass('hide');jQuery('#edMenuWr').removeClass('pos').addClass('no-anim hidecss3').css('top','')", speed);
 
         } else {
 
             // CSS3 Animation
             jQuery('#edControls').addClass('hide');
             jQuery('#edHeader').removeClass('hide');
-            jQuery('#edMenuWr').removeClass('hidecss3').css('top', '').addClass('pos');
+            jQuery('#edMenuWr').removeClass('no-anim').css('bottom', topScrollBot);
             jQuery('#edMain').removeClass('hide').css('top', '');
+            setTimeout("jQuery('#edMenuWr').addClass('pos').removeClass('hidecss3').css('bottom','')", speed);
 
 
         }

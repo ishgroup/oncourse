@@ -100,7 +100,7 @@
                     <span class="timing-display">
                         <span class="timing-weekday timing-Monday match-8 match-1 timing-no">Mo</span>
                         <span class="timing-weekday timing-Tuesday match-8 match-1 timing-no">Tu</span>
-                        <span class="timing-weekday timing-Wednesday match-8 match-1 timing-no">We</span>
+                        <span class="timing-weekday timing-Wednesday match-8 match-1 timing-yes">We</span>
                         <span class="timing-weekday timing-Thursday match-8 match-1 timing-no">Th</span>
                         <span class="timing-weekday timing-Friday match-8 match-1 timing-no">Fr</span>
                         <span class="timing-weekend timing-Saturday match-9 match-6 timing-yes">Sa</span>

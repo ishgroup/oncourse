@@ -267,15 +267,21 @@ $i: /s/cms/img;
     border-top: 1px solid #606060;
     @include gradient-linear(#4d4d4d, #2c2c2c, menu-grad);
     @include shadow(0px 0 15px, #000000, 0.8);
-    @include trans(top, 700ms, linear);
+    $trans:top 700ms linear, bottom 700ms linear;
+    @include trans-multi($trans);
+
+    &.no-anim {
+        $trans:none;
+        @include trans-multi($trans);
+    }
 
     &.pos {
+        $trans:none;
+        @include trans-multi($trans);
         top:$head-height !important;
     }
 
     &.hidecss3 {
-        $trans:none;
-        @include trans-multi($trans);
         position:fixed;
         bottom:0;
     }
