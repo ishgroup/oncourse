@@ -14,8 +14,8 @@ function wrapHeight() {
 
 }
 
-// Open editor: Opt = true; Clode editor: Opt = false.
-function animLayout(opt) {
+// Open editor: toggle = true; Close editor: toggle = false.
+function animLayout(toggle) {
 
     var winHeig;
     if (window.innerHeight) {
@@ -28,10 +28,13 @@ function animLayout(opt) {
     // hide page bar
     jQuery('#edControls').addClass('hide');
 
+    // Animation speed
+    var speed = 700;
+
     // Animation position
     var topScroll, topScrollMain;
 
-    if (opt) {
+    if (toggle) {
         topScroll = winHeig - cmsOpts.menu; // window height - menu height
     } else {
         topScroll = cmsOpts.header;
@@ -39,27 +42,25 @@ function animLayout(opt) {
     }
 
 
-    // Amination
+    // Animation
 
     if (jQuery.support.cssProperty('transition') && jQuery.support.cssProperty('transition') != 'undefined') {
         // CSS3 Animation
 
-        if (opt) {
+        if (toggle) {
 
             jQuery('#edHeader').addClass('hide');
-            jQuery('#edMenuWr').css('top', topScroll);
+            jQuery('#edMenuWr').css('top', topScroll).removeClass('pos');
             jQuery('#edMain').css('top', topScroll).addClass('hide');
-            setTimeout("jQuery('#edControls').removeClass('hide');jQuery('#edMenuWr').addClass('hide')", 700);
+            setTimeout("jQuery('#edControls').removeClass('hide');jQuery('#edMenuWr').addClass('hidecss3').css('top','')", speed);
 
         } else {
-
-
 
             // CSS3 Animation
             jQuery('#edControls').addClass('hide');
             jQuery('#edHeader').removeClass('hide');
-            jQuery('#edMenuWr').removeClass('hide').css('top', topScroll);
-            jQuery('#edMain').removeClass('hide').css('top', topScrollMain);
+            jQuery('#edMenuWr').removeClass('hidecss3').css('top', '').addClass('pos');
+            jQuery('#edMain').removeClass('hide').css('top', '');
 
 
         }
@@ -67,7 +68,7 @@ function animLayout(opt) {
 
     } else {
         // Jquery animation
-        if (opt) {
+        if (toggle) {
 
 
             jQuery('#edHeader').slideUp(100);
@@ -75,7 +76,7 @@ function animLayout(opt) {
             jQuery('#edMenuWr').animate({
                 top : topScroll
             }, {
-                duration : 700,
+                duration : speed,
                 complete : function() {
                     jQuery('#edMenuWr').addClass('hide');
                     jQuery('#edControls').removeClass('hide').slideDown(100);
@@ -85,7 +86,7 @@ function animLayout(opt) {
             jQuery('#edMain').animate({
                 top : topScroll
             }, {
-                duration : 700,
+                duration : speed,
                 complete : function() {
                     jQuery('#edMain').hide();
                 }
@@ -102,13 +103,13 @@ function animLayout(opt) {
             jQuery('#edMain').show().animate({
                 top : topScrollMain
             }, {
-                duration : 700
+                duration : speed
             });
 
             jQuery('#edMenuWr').removeClass('hide').animate({
                 top: topScroll
             }, {
-                duration: 700
+                duration: speed
             });
 
         }
@@ -303,7 +304,7 @@ function tabsContent() {
 
 
 
-                // Amination
+                // Animation
 
                 animLayout(false);
 
@@ -311,6 +312,8 @@ function tabsContent() {
             }
 
             // Open tab
+
+            window.scrollTo(0,0);
 
             var i = jQuery(this).index() - 1;
             jQuery(this).addClass("active");
@@ -465,6 +468,9 @@ jQuery(document).ready(function() {
 
     // Menu list (Menus tab).
     highlightMenuItem(jQuery(".cms-menu-pages li"));
+
+
+    jQuery('#editSite').click();
 
 
 });

@@ -61,6 +61,14 @@ $i: /s/cms/img;
     transition:$item $time $type;
 }
 
+/* Effects multiple. Sample: trans-multi(top 300ms linear, height 300ms ease-in-out); */
+@mixin trans-multi($item) {
+    -webkit-transition:$item;
+    -moz-transition:$item;
+    -o-transition:$item;
+    transition:$item;
+}
+
 
 /* Background image size. Sample: backsize(100%, 100%); backsize(100%, auto); */
 @mixin backsize($hor, $ver) {
@@ -207,10 +215,8 @@ $i: /s/cms/img;
     opacity:1;
 
     /* Animation */
-    $trans: opacity 150ms linear, height 150ms linear, visibility 150ms linear;
-    -webkit-transition:$trans;
-    -moz-transition:$trans;
-    transition:$trans;
+    $trans:opacity 150ms linear, height 150ms linear, visibility 150ms linear;
+    @include trans-multi($trans);
 
     &.hide {
         opacity:0;
@@ -257,21 +263,31 @@ $i: /s/cms/img;
     width:100%;
     left:0;
     height:39px;
-    top:$head-height;
+    /*top:$head-height;*/
     border-top: 1px solid #606060;
     @include gradient-linear(#4d4d4d, #2c2c2c, menu-grad);
     @include shadow(0px 0 15px, #000000, 0.8);
     @include trans(top, 700ms, linear);
 
+    &.pos {
+        top:$head-height !important;
+    }
+
+    &.hidecss3 {
+        $trans:none;
+        @include trans-multi($trans);
+        position:fixed;
+        bottom:0;
+    }
+
     &.hide {
-        -webkit-transition:none;
-        -moz-transition:none;
-        transition:none;
         top:auto !important;
         bottom:0 !important;
         position:fixed;
     }
+
 }
+
 
 .cms-menu-shadow {
     display:none;
@@ -401,14 +417,13 @@ a.cms-logout {
     overflow:visible;
 
     /* Animation */
-    $trans: top 700ms linear, visibility 700ms linear;
-    -webkit-transition:$trans;
-    -moz-transition:$trans;
-    transition:$trans;
+    $trans: top 700ms linear, visibility 700ms linear, height 700ms linear;
+    @include trans-multi($trans);
 
     &.hide {
         visibility:hidden;
         overflow:hidden;
+        height:0 !important;
     }
 }
 

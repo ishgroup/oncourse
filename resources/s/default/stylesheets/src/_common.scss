@@ -38,24 +38,11 @@ body {
       font-weight: normal;
     }
 
-    h1 {
-      font-size: 24px;
-    }
 
-    h2 {
-      font-size: 22px;
-    }
-
-    h3 {
-      font-size: 20px;
-    }
-
-    h4 {
-      font-size: 18px;
-    }
-
-    h5, h6 {
-      font-size: 16px;
+    @for $i from 1 through 6 {
+      h#{$i} {
+        font-size: 24px - (2px * ($i - 1));
+      }
     }
 
     ul {
