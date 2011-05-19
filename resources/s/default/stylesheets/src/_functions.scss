@@ -25,6 +25,12 @@
     border-radius: $radius;
 }
 
+@mixin box-shadow($shadow) {
+    -moz-box-shadow: $shadow;
+    -webkit-box-shadow: $shadow;
+    border-radius: $shadow;
+}
+
 
 
 @mixin html5-boilerplate-styles {

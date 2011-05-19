@@ -1,0 +1,275 @@
+/**
+ *  _layout.scss
+ *
+ *  Layout styles.
+ *
+ */
+
+
+
+/* Courses list
+----------------------------------------*/
+
+
+
+/* Search terms -------------------------*/
+
+.search-terms {
+    color: black;
+    padding: 4px 0px 8px 30px;
+    margin:0 0 6px 0;
+    border: 1px solid transparent;
+    min-height: 16px;
+    line-height:1.6;
+    background: {
+        image: url(""+$i+"/search2.png");
+        repeat:no-repeat;
+        position: 7px center;
+    }
+
+    &:hover {
+        border: 1px solid gray;
+        cursor: pointer;
+    }
+
+    span.search-value {
+        margin: 0;
+    }
+
+    img {
+        margin-bottom: -4px;
+    }
+
+    /* Label */
+    #search_query {
+        width: 85%;
+        float: left;
+        line-height:1.7;
+    }
+
+    /* Show map */
+    #toggle-results-map {
+        float: right;
+        margin:0 7px 0 0;
+
+        a {
+            border: 1px solid transparent;
+            padding: 2px;
+
+            &:hover {
+                border: 1px dotted silver;
+            }
+        }
+
+        .toggle_locations {
+            background: {
+                image: url(""+$i+"/icon/location.png");
+                repeat:no-repeat;
+                position: left 2px;
+            }
+            padding-left: 16px;
+        }
+    }
+}
+
+
+
+
+
+
+
+/* Course item ------------------------*/
+
+.courseItem {
+    margin:0 0 20px 0;
+
+    p {
+        margin:0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #444;
+        font-weight:normal;
+        font-size:16px;
+        margin:0 0 2px 0;
+
+        a {
+            text-decoration:none;
+            color: #444;
+
+            &:hover {
+                color: #A90E1F;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .description {
+        color: #444;
+        margin:0 0 10px 0;
+    }
+
+    .more {
+        font-weight:normal;
+
+        a {
+            font-weight:bold;
+            color: #444;
+            text-decoration:none;
+
+            &:hover {
+                color: #A90E1F;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .waiting-list-title {
+        a {
+            color: #444;
+            text-decoration:none;
+
+            &:hover {
+                color: #A90E1F;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .classDescription {
+        color: #444;
+        margin:0 0 10px 0;
+    }
+
+    /* Date, tutor, location */
+    .classItem {
+        @include clearfix;
+        position:relative;
+        padding:5px;
+        margin:0 0 5px 0;
+        background-color: #fdfdf8;
+        border:1px solid #eee;
+        border-left:6px solid #eee;
+        border-top:1px solid #eee;
+
+        &:hover {
+            border-color:gray;
+
+            .bubbleInfo {
+                display:block;
+            }
+        }
+
+    }
+
+    .class-item-info {
+        @include clearfix;
+        width:70%;
+        float:left;
+
+
+        div {
+            line-height:1.5;
+            padding:2px 0 2px 19px;
+        }
+
+        .class-item-info-l {
+            float:left;
+            width:49%;
+            line-height:1;
+            padding:0;
+        }
+
+        .class-item-info-r {
+            @extend .class-item-info-l;
+            float:right;
+        }
+
+
+        .date {
+            background: {
+                image: url(""+$i+"/icon/calendar.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .tutor {
+            background: {
+                image: url(""+$i+"/icon/person.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .location {
+            background: {
+                image: url(""+$i+"/icon/location.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+            min-height:23px;
+        }
+
+    }
+
+    .classAction {
+        float:right;
+        width:29%;
+        text-align:right;
+
+    }
+
+    /* Enrol button*/
+    .enrolAction {
+        display:inline-block;
+        border: 0;
+        margin:0 0 3px 0;
+    }
+
+    .classStatus {
+        font-size:11px;
+        line-height:1.5;
+    }
+
+
+
+
+    /*todo: Dmitry. add calendar popup. */
+    .classSessions {
+        display:none;
+    }
+}
+
+
+/* Show more courses -------------------------*/
+
+
+.showMoreAction {
+    background: {
+        image: url(""+$i+"/icon/go-down.png");
+        position: 5px center;
+        repeat: no-repeat;
+    }
+    padding: 10px;
+    padding-left: 50px;
+    color: brown;
+    font-weight: bold;
+    font-size: 14px;
+    line-height:1.5;
+    margin:18px 0 28px 0;
+    border: 1px solid silver;
+    text-decoration:none;
+    cursor:pointer;
+    @include border-radius(10px);
+
+    &:hover {
+        background-color:#f0f0f0;
+    }
+}
+
+#showMoreCourses {
+    text-decoration:none;
+}
+
+

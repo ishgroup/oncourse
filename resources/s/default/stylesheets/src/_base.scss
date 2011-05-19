@@ -7,6 +7,16 @@
  */
 
 
+
+/**
+*
+* Images path
+*
+*/
+$i: /s/img; 
+
+
+
 /**
  *
  * Import files\
@@ -17,6 +27,7 @@
 @import "reset";
 @import "common";
 @import "functions";
+@import "layout";
 @import "widgets";
 @import "cms";
 @import "print";

@@ -95,6 +95,9 @@
 
         <div class="bubbleInfo">
             <div class="tooltip_popup enrol_tooltip">
+
+                <div class="arrow"><span></span></div>
+
                 <div class="bubble_top bubble_content clearfix">
 
                     <span class="timing-display">

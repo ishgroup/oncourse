@@ -6,10 +6,250 @@
  */
 
 
+
+/* Popup */
+
+    .bubbleInfo {
+        display:none;
+        position: absolute;
+        z-index: 10;
+        border-collapse: collapse;
+        left:-245px;
+        top: -20px;
+        width:224px;
+        background-color:#fff;
+        border:1px solid #a2a2a2;
+        @include border-radius(15px);
+        @include box-shadow(-2px 3px 8px #666);
+
+            .arrow {
+                position:absolute;
+                right:-23px;
+                top:16px;
+                width:23px;
+                height:27px;
+                background: {
+                    image: url(""+$i+"/popup-arrow.png");
+                    position: right top;
+                    repeat: no-repeat;
+                }
+            }
+
+
+            .tooltip_popup {
+                position:relative;
+                padding:25px 15px;
+            }
+
+
+        /*.tooltip_popup .bubble_top {
+            background: {
+                image: url(""+$i+"/bubble2_top_left.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+            padding-top:27px;
+            padding-bottom:0;
+            margin:0;
+            height:34px;
+            overflow:hidden;
+            border-collapse:collapse;
+        }
+
+        .tooltip_popup .bubble_middle {
+            background: {
+                image: url(""+$i+"/bubble2_middle_left.png");
+                repeat: repeat-y;
+            }
+        }
+
+        .tooltip_popup .bubble_bottom {
+            background: {
+                image: url(""+$i+"/bubble2_bottom_left.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+            height:24px;
+        }
+
+        .tooltip_popup .bubble_content {
+            padding-left:25px;
+            padding-right:50px;
+        }
+*/
+        .class-link, .course-link {
+            background-repeat: no-repeat;
+            padding-left:19px;
+            background-position:0 4px;
+            padding-top:3px;
+        }
+
+        .class-link {
+            background: {
+                image: url(""+$i+"/printer.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+            margin:0 0 2px 0;
+        }
+
+        .course-link {
+            background: {
+                image: url(""+$i+"/icon/documentinfo.png");
+                position: left 5px;
+                repeat: no-repeat;
+            }
+            line-height:1.4;
+        }
+
+        .waiting-list .waiting-list-title a {
+            line-height: 1;
+        }
+
+        .waitinglist-block {
+            width:100%;
+            overflow:auto;
+        }
+
+        /* Timing display */
+        .timing-display {
+            font-weight:bold;
+            border: 1px solid silver;
+            padding:2px;
+            margin-right: 0.3em;
+            background-color:white;
+        }
+
+        .timing-yes {
+            color:rgb(68,68,68);
+        }
+
+        .timing-no {
+            color:silver;
+        }
+
+        .timing-display img {
+            display:inline;
+            width:16px;
+            margin:0;
+            margin-bottom:-5px;
+        }
+
+        .timing-daytime {
+            background: {
+                image: url(""+$i+"/sun6-faded.png");
+                position: -1px top;
+                repeat: no-repeat;
+            }
+            padding:0;
+        }
+
+        .timing-evening {
+            background: {
+                image: url(""+$i+"/moon6-faded.png");
+                position: -1px top;
+                repeat: no-repeat;
+            }
+            padding:0;
+        }
+
+        .timing-daytime-yes {
+            background: {
+                image: url(""+$i+"/sun6.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .timing-daytime-match {
+            background: {
+                image: url(""+$i+"/sun-6green.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .timing-daytime-fail {
+            background: {
+                image: url(""+$i+"/sun6-red.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .timing-evening-yes {
+            background: {
+                image: url(""+$i+"/moon6.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .timing-evening-match {
+            background: {
+                image: url(""+$i+"/moon6-green.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .timing-evening-fail {
+            background: {
+                image: url(""+$i+"/moon6-red.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .time-evening, .time-daytime {
+            background-repeat:no-repeat;
+            padding-left: 16px;
+            margin-left:-6px;
+        }
+
+        .time-evening {
+            background: {
+                image: url(""+$i+"/moon6-faded.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .time-daytime {
+            background: {
+                image: url(""+$i+"/sun6-faded.png");
+                position: left top;
+                repeat: no-repeat;
+            }
+        }
+
+        .timing-match {
+            color: #0f6e00;
+        }
+
+        .timing-fail {
+            color: #c53628;
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 @mixin dialogBox {
 	background: rgba(255, 255, 255, 0.94);
 	width: 250px;
-	position: absolute; right: 100px; top: 100px;
+	position: absolute;
+	right: 100px;
+	top: 100px;
 	/*@include box-shadow(rgba(68, 68, 68, 0.3), 0px, 0px, 20px);*/
 	/*@include border-radius(4px);*/
 }
