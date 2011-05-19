@@ -31,6 +31,17 @@
     border-radius: $shadow;
 }
 
+/* Effects multiple. Sample: transition(top 300ms linear, height 300ms ease-in-out); */
+@mixin transition($item) {
+    -webkit-transition:$item;
+    -moz-transition:$item;
+    -o-transition:$item;
+    transition:$item;
+}
+
+
+
+
 
 
 @mixin html5-boilerplate-styles {

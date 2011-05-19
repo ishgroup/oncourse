@@ -7,7 +7,11 @@
 
 
 
-/* Popup */
+/* Courses Popup */
+
+.classItem:hover .bubbleInfo {
+    display:block;
+}
 
     .bubbleInfo {
         display:none;
@@ -17,10 +21,8 @@
         left:-245px;
         top: -20px;
         width:224px;
-        background-color:#fff;
-        border:1px solid #a2a2a2;
-        @include border-radius(15px);
-        @include box-shadow(-2px 3px 8px #666);
+        padding:0 23px 0 0;
+
 
             .arrow {
                 position:absolute;
@@ -38,7 +40,15 @@
 
             .tooltip_popup {
                 position:relative;
-                padding:25px 15px;
+                padding:20px 15px;
+                background-color:#fff;
+                border:1px solid #a2a2a2;
+                @include border-radius(15px);
+                @include box-shadow(-2px 3px 8px #666);
+            }
+
+            .bubble_top {
+                margin-bottom:15px;
             }
 
 
@@ -113,10 +123,11 @@
 
         /* Timing display */
         .timing-display {
+            display:inline-block;
             font-weight:bold;
             border: 1px solid silver;
             padding:2px;
-            margin-right: 0.3em;
+            margin-right: 3px;
             background-color:white;
         }
 

@@ -90,6 +90,13 @@
                     <span t:type="ui/CourseClassPlacesAvailable" courseClass="courseClass"/>
                 </t:if>
             </div>
+
+            <div class="courseAddOrder">
+                <a href="">Add to order</a>
+            </div>
+            <div class="courseEmail">
+                <a href="">Email to a friend</a>
+            </div>
         </div>
 
 
@@ -98,7 +105,7 @@
 
                 <div class="arrow"><span></span></div>
 
-                <div class="bubble_top bubble_content clearfix">
+                <div class="bubble_top bubble_content">
 
                     <span class="timing-display">
                         <span class="timing-weekday timing-Monday match-8 match-1 timing-no">Mo</span>
@@ -120,7 +127,7 @@
                         </span>
                 </div>
 
-                <div class="bubble_middle bubble_content clearfix">
+                <div class="bubble_middle bubble_content">
                     <div class="class-link">
                         <a href="/class/abgc-2">
                             View this class...
@@ -134,8 +141,7 @@
                     </div>
 
                 </div>
-                <div class="bubble_bottom clearfix"></div>
-                <br style="clear:both;"></br>
+                <div class="bubble_bottom"></div>
 
             </div>
         </div>

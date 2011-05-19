@@ -20,6 +20,17 @@
 					if ($j('#gmapCanvas').length){
 						mapLoad('gmapCanvas', gMapSites, gMapOptions);
 					}
+
+                    $j('#toggle-results-map').click(function() {
+                        $j('#focus-map').slideToggle(400);
+                        $j(this).toggleClass('clicked');
+                        loaded = $j(this).attr('loaded');
+                        if (!loaded) {
+                            $j(this).attr({loaded:true});
+                            mapLoadForID('mapDelayed');
+                        }
+                        return false;
+                    });
 				</script>
 			</t:zone>
 			<t:if t:test="hasAnyItems" negate="true">

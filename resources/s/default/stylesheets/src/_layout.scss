@@ -92,6 +92,7 @@
         font-weight:normal;
         font-size:16px;
         margin:0 0 2px 0;
+        text-transform:none;
 
         a {
             text-decoration:none;
@@ -104,9 +105,43 @@
         }
     }
 
+    h1 {
+        font-size:20px;
+        text-transform:uppercase;
+    }
+
+
     .description {
         color: #444;
         margin:0 0 10px 0;
+    }
+
+    .courseDescription {
+
+        padding:18px 0 0 0;
+
+        p {
+            margin-bottom:18px;
+        }
+
+        ul, ol {
+            list-style-position:outside;
+            margin:0 0 18px 18px;
+
+            li {
+                line-height:1.5;
+                margin-left:10px;
+            }
+        }
+
+        h3 {
+            margin-bottom:18px;
+        }
+        h4 {
+            color:#444;
+            font-weight:bold;
+            margin-bottom:18px;
+        }
     }
 
     .more {
@@ -154,10 +189,6 @@
 
         &:hover {
             border-color:gray;
-
-            .bubbleInfo {
-                display:block;
-            }
         }
 
     }
@@ -217,7 +248,12 @@
         float:right;
         width:29%;
         text-align:right;
+        font-size:11px;
+        line-height:1.5;
 
+        > div {
+            margin-bottom:3px;
+        }
     }
 
     /* Enrol button*/
@@ -227,9 +263,23 @@
         margin:0 0 3px 0;
     }
 
-    .classStatus {
-        font-size:11px;
-        line-height:1.5;
+
+    .courseAddOrder {
+        padding-right:15px;
+        background: {
+            image: url(""+$i+"/icon/add.png");
+            position: right 4px;
+            repeat: no-repeat;
+        }
+    }
+
+    .courseEmail {
+        padding-right:15px;
+        background: {
+            image: url(""+$i+"/icon/email.png");
+            position: right 5px;
+            repeat: no-repeat;
+        }
     }
 
 

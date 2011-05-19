@@ -6,15 +6,18 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="vevent courseItem">
 		<t:if t:test="isList" negate="true">
-			<h2 class="summary">${course.name}</h2>
+			<h1 class="summary">${course.name}</h1>
 			<p:else>
-				<h3>
+
+				<h2>
 					<a href="/course/${course.code}" class="url">${course.name}</a>
-				</h3>
+				</h2>
+
 				<div class="description courseShortDescription">
 					<t:outputraw value="${courseDetail}" />
 					<strong class="more">[<a href="/course/${course.code}">More</a>]</strong>
 				</div>
+
 			</p:else>
 		</t:if>
 	
