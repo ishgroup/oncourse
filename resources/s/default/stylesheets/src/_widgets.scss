@@ -362,6 +362,10 @@
     padding: 54px;
 }
 
+
+
+/* Notes & Messages ----------------------------*/
+
 .note {
     margin-top:18px;
     color: #777;
@@ -376,7 +380,54 @@
     }
 }
 
+.message, .error, .validation {
+    background-color: pink;
+    padding:4pz 8px;
+    margin-bottom:1.6em;
+    border:1px solid #ddd;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    border-radius:8px;
+}
 
+.message {
+    background-color: #EEF6FF;
+    border-color: #A3E0F0;
+    color: #0066AA;
+}
+.error, .validation {
+    background-color: #FEF0F0;
+    border-color: #FCC5C5;
+    color: #990000;
+}
+
+div.message p {
+    margin-bottom: 0px;
+    color: #0066AA;
+}
+.error p, .validation p {
+    margin: 0px;
+    color: #990000;
+}
+
+
+.reason-pointer,
+.hint-pointer {
+    background-image:url(""+$i+"/message-pointers.gif");
+    background-position:right top;
+    background-repeat:no-repeat;
+    display:block;
+    height:15px;
+    left:0;
+    position:absolute;
+    top:2px;
+    width:12px;
+}
+
+div.form-controls {
+    margin:12px 0 12px 100px;
+    padding:0 20px;
+}
 
 
 @mixin dialogBox {
