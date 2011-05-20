@@ -48,11 +48,33 @@ a:hover, a:active {
 }
 
 /* Content headers color */
-.content-container {
-    h1, h2, h3, h4, h5, h6 {
-        color: $red;
+.content-container, .dialogBox {
+    h1 {
         text-transform:uppercase;
     }
+    h1, h2, h3 {
+        color: $red;
+    }
+
+    h4, h5, h6 {
+        color: #444;
+    }
+
+    blockquote {
+        padding:0 12px;
+        line-height:1.5;
+        margin:18px 0;
+        border-top: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
+        color: #666;
+    }
+}
+
+hr {
+    background:#ddd;
+    color:#ddd;
+    height:1px;
+    border:0;
 }
 
 

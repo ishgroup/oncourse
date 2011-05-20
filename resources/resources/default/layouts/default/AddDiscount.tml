@@ -2,12 +2,15 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	
-	<p>${message:message.enter.discount}</p>
+	<!--<p>${message:message.enter.discount}</p>-->
+    <p>Sometimes we are able to offer discounts on a selection of our classes. If you have a discount code, then please enter it into the box below</p>
 	<t:zone t:id="addDiscountZone">
 	<t:form t:id="addDiscountForm" zone="addDiscountZone">
-		<label for="promo">${message:label.discount.code}</label>
+		<!--<label for="promo">${message:label.discount.code}</label>-->
+        <label for="promo">Discount code:</label>
 		<t:textField name="promo" value="promoCode" />
-		<t:submit value="message:submit.add" />
+        <t:submit value="add"/>
+		<!--<t:submit value="message:submit.add" />-->
 		${errorMessage}
 	</t:form>
 	<t:if test="promotionsList.empty" negate="true">
@@ -18,7 +21,7 @@
 		</p>
 
 		<t:loop source="promotionsList" value="addedPromotion">
-			<div class="popup-name">${addedPromotion.code}</div>
+			<h5 class="popup-name">${addedPromotion.code}</h5>
 			<div class="clear"></div>
 			<p><t:outputRaw value="addedPromotion.detail"/></p>
 			<div class="divideline"></div>
@@ -27,8 +30,11 @@
 	</t:if>
 	</t:zone>
 
-	<p class="note">
-		<strong class="alert">${message:message.note}</strong>${message:message.discount.expiery}
-	</p>
+    <p class="note"><strong class="alert">Please note:</strong> Our discounts are usually only available until a certain
+        date, so you may not be able to use an old discount code.</p>
+
+    <!--<p class="note">
+         <strong class="alert">${message:message.note}</strong>${message:message.discount.expiery}
+	</p>-->
 
 </html>

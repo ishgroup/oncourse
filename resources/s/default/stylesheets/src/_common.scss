@@ -24,7 +24,7 @@ body {
 }
 
 
-.content {
+.content, .dialogBox {
     /* Content Paragraph */
     p {
         line-height:1.5;
@@ -41,7 +41,7 @@ body {
 
     @for $i from 1 through 6 {
       h#{$i} {
-        font-size: 24px - (2px * ($i - 1));
+        font-size: 22px - (2px * ($i - 1));
       }
     }
 
@@ -53,6 +53,14 @@ body {
     ol {
         list-style:outside decimal;
         margin-left:20px;
+    }
+
+    li {
+        line-height:1.5;
+    }
+
+    strong, b {
+        font-weight:bold;
     }
 }
 

@@ -15,6 +15,7 @@
 /* Search terms -------------------------*/
 
 .search-terms {
+    @include clearfix;
     color: black;
     padding: 4px 0px 8px 30px;
     margin:0 0 6px 0;
@@ -45,7 +46,71 @@
         width: 85%;
         float: left;
         line-height:1.7;
+
+        > div, > span {
+            display:inline-block;
+        }
+
+        .highlighter {
+            background-color: transparent;
+            border: 1px solid transparent;
+        }
+
+        .search-highlight {
+            background-color: rgb(252,244,178); /*border:1px solid rgb(228,185,46);*/
+        }
+
+        .no-highlight {
+            border: 1px solid transparent;
+    
+            &:hover {
+                border: 1px solid rgb(228,185,46);
+            }
+        }
+
     }
+
+    .search-value {
+        border: 1px solid transparent;
+        padding: 2px 3px 2px 2px;
+
+        img {
+            display: inline;
+            padding: 2px;
+            border: 1px solid transparent;
+            background-repeat: no-repeat;
+            background-position: 2px 2px;
+            margin-top: -6px;
+        }
+
+        .search-remove {
+            margin-left: -8px;
+            padding: 0;
+            margin-right: -6px;
+        }
+
+        &:hover .search-remove {
+
+            img {
+                background: {
+                    image: url(""+$i+"/x.png");
+                    repeat:no-repeat;
+                    position: left top;
+                }
+            }
+
+           &:hover img {
+                border: 1px solid red;
+                background-color: white;
+                border-radius: 3px;
+                -moz-border-radius: 3px;
+                -webkit-border-radius: 3px;
+            }
+
+        }
+    }
+
+
 
     /* Show map */
     #toggle-results-map {
@@ -83,31 +148,53 @@
 .courseItem {
     margin:0 0 20px 0;
 
-    p {
-        margin:0;
+    h1 {
+        font-size:20px;
     }
 
-    h1, h2, h3, h4, h5, h6 {
-        color: #444;
+
+    h2 {
+        color: #444 !important;
         font-weight:normal;
         font-size:16px;
         margin:0 0 2px 0;
-        text-transform:none;
+        text-transform:none !important;
+    }
 
-        a {
+    h3 {
+        font-size:18px;
+        font-weight:bold;
+    }
+
+    h4 {
+        font-weight:bold;
+        font-size:14px;       
+    }
+
+     h1, h2, h3, h4, h5 {
+         a {
             text-decoration:none;
             color: #444;
+            color: inherit;
 
             &:hover {
                 color: #A90E1F;
                 text-decoration: underline;
             }
         }
-    }
+     }
 
-    h1 {
-        font-size:20px;
-        text-transform:uppercase;
+     p {
+        margin-bottom:18px;
+     }
+
+    ul, ol {
+        list-style-position:outside;
+        margin:0 0 18px 18px;
+
+        li {
+            margin-left:10px;
+        }
     }
 
 
@@ -117,32 +204,7 @@
     }
 
     .courseDescription {
-
         padding:18px 0 0 0;
-
-        p {
-            margin-bottom:18px;
-        }
-
-        ul, ol {
-            list-style-position:outside;
-            margin:0 0 18px 18px;
-
-            li {
-                line-height:1.5;
-                margin-left:10px;
-            }
-        }
-
-        h3 {
-            margin-bottom:18px;
-            font-weight:bold;
-        }
-        h4 {
-            color:#444;
-            font-weight:bold;
-            margin-bottom:18px;
-        }
     }
 
     .more {
@@ -190,6 +252,10 @@
 
         &:hover {
             border-color:gray;
+        }
+
+        p {
+            margin-bottom:3px;
         }
 
     }
@@ -310,17 +376,13 @@
     line-height:1.5;
     margin:18px 0 28px 0;
     border: 1px solid silver;
-    text-decoration:none;
+    text-decoration:none !important;
     cursor:pointer;
     @include border-radius(10px);
 
     &:hover {
         background-color:#f0f0f0;
     }
-}
-
-#showMoreCourses {
-    text-decoration:none;
 }
 
 
