@@ -1590,6 +1590,10 @@ a.cms-logout {
 
 .cms-theme-list-m {
     list-style:none;
+
+    .ui-sortable-placeholder {
+        border-bottom:1px dashed #ff7200;
+    }
 }
 
 .cms-theme-layout .cms-theme-module {
@@ -1609,6 +1613,7 @@ a.cms-logout {
     -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
     box-sizing:border-box;
+    word-wrap:break-word;
 
     color:#fff;
     text-shadow:0 -1px 1px #5c5b5b;
@@ -1709,11 +1714,7 @@ a.cms-logout {
     border-bottom:0;
     @include rounded(3px 3px 0 0);
     background:#fff;
-    padding:19px 21px 0 21px;;
-    /*position:fixed;*/
-    /*left:50%;*/
-    /*width:492px;*/
-    /*margin:200px 0 0 -242px;*/
+    padding:19px 21px 0 21px;
 
     &.hide {
         display:none;
