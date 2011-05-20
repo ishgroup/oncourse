@@ -21,6 +21,8 @@
 			</a>
 			
 		</div>
+		
+		<h1>${node.name}</h1>
         <t:outputraw value="regionContent" />
           
    </t:block>
