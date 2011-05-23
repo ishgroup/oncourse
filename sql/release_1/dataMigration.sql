@@ -332,7 +332,7 @@ INSERT INTO %DESTINATIONDB%_college.Taggable (angelId, collegeId, created, id, m
 	FROM %SOURCEDB%_college.Taggable WHERE collegeId = @collegeId AND isDeleted <> 1;
 
 INSERT INTO %DESTINATIONDB%_college.TaggableTag (id, angelId, collegeId, created, modified, taggableId, tagId)
-	SELECT (tt.tagId + (tt.taggableId << 32)), (tag.angelId + (t.angelId << 32)), tt.collegeId, tt.created, tt.modified, tt.taggableId, tt.tagId
+	SELECT (tt.tagId + (tt.taggableId << 32)), tt.angelid, tt.collegeId, tt.created, tt.modified, tt.taggableId, tt.tagId
 	FROM %SOURCEDB%_college.TaggableTag AS tt
 	JOIN %DESTINATIONDB%_college.Taggable AS t ON tt.taggableid = t.id
 	JOIN %DESTINATIONDB%_college.Tag as tag ON tt.tagId = tag.id
