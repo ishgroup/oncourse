@@ -315,7 +315,7 @@ public class Courses {
 		if (browseTag == null && !paramsInError.keySet().contains(SearchParam.subject)) {
 			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
 			if (browseTag != null) {
-				searchParams.put(SearchParam.subject, browseTag.getName());
+				searchParams.put(SearchParam.subject, String.valueOf(browseTag.getId()));
 			}
 		}
 		request.setAttribute("browseTag", browseTag);
