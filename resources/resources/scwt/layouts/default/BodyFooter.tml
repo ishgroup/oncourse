@@ -1,0 +1,18 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div id="footer" class="clearfix">
+  	<div class="vcard left">
+		<a class="fn org url" href="/">${collegeName}</a>
+		<div class="adr">
+			<div class="street-address">
+				2-8a Perry Street</div>,
+			<span class="locality">Lilyfield</span> NSW <span class="postal-code">2040,</span>
+			<div class="country-name">
+				Australia</div>
+		</div>
+		<div class="email">
+			Email: <span class="email"><a href="mailto:customer.service@scc.nsw.edu.au">customer.service@scc.nsw.edu.au</a></span>
+		</div>
+	</div>
+	<p class="right">Copyright © 2007-${year}</p>
+	<a href="http://www.ish.com.au/oncourse" class="popup"><img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse" /></a> 
+</div></t:container>
