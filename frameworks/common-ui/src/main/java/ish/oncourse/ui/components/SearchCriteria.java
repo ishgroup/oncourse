@@ -49,7 +49,9 @@ public class SearchCriteria {
 	@SetupRender
 	void beforeRender() {
 		browseTagPath = new ArrayList<Tag>();
-		Tag browseTag = (Tag) request.getAttribute("browseTag");
+		
+		Tag browseTag = (Tag) request.getAttribute(Tag.BROWSE_TAG_PARAM);
+		
 		while (browseTag != null && browseTag.hasParentTag()) {
 			browseTagPath.add(browseTag);
 			browseTag = browseTag.getParent();

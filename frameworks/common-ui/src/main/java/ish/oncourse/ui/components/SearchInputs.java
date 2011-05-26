@@ -65,7 +65,9 @@ public class SearchInputs {
 		for(Tag tag:subjectTagChildTags){
 			tagNames.add(tag.getName());
 		}
-		Tag browseTag = (Tag) request.getAttribute("browseTag");
+		
+		Tag browseTag = (Tag) request.getAttribute(Tag.BROWSE_TAG_PARAM);
+		
 		if (browseTag != null) {
 			if(tagNames.contains(browseTag.getName())){
 				tagName = browseTag.getName();

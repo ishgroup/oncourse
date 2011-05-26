@@ -1,10 +1,12 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.ITagService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +36,9 @@ public class SearchService implements ISearchService {
 
 	@Inject
 	private ILookupService lookupService;
+	
+	@Inject
+	private ITagService tagService;
 
 	private Map<SolrCore, SolrServer> solrServers = new HashMap<SolrCore, SolrServer>();
 
@@ -116,7 +121,16 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.subject)) {
 					String subject = params.get(SearchParam.subject);
-					qString.append("tagId:" + subject).append(" ");
+					Tag browseTag = tagService.getTagByFullPath(subject);
+					
+					StringBuilder tagQuery = new StringBuilder();
+					tagQuery.append("tagId:").append(browseTag.getId());
+					
+					for (Tag t : browseTag.getAllWebVisibleChildren()) {
+						tagQuery.append(" || tagId:").append(t.getId());
+					}
+					
+					qString.append(tagQuery.toString()).append(" ");
 				}
 
 				if (params.containsKey(SearchParam.near)) {
@@ -142,7 +156,12 @@ public class SearchService implements ISearchService {
 						qString.append(distanceQuery);
 					}
 				}
-
+				
+				if (logger.isDebugEnabled()) {
+					logger.debug(String.format("Solr query:%s", qString.toString()));
+				}
+				
+				
 				q.setQuery(qString.toString());
 			}
 

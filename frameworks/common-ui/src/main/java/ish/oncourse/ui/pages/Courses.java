@@ -67,9 +67,11 @@ public class Courses {
 	private Integer itemIndex;
 	@Persist("client")
 	private Map<SearchParam, String> searchParams;
+	
 	@Persist("client")
 	@Property
 	private Map<SearchParam, String> paramsInError;
+	
 	@Property
 	private List<Site> mapSites;
 	@Property
@@ -273,8 +275,10 @@ public class Courses {
 
 	public Map<SearchParam, String> getCourseSearchParams() {
 		Map<SearchParam, String> searchParams = new HashMap<SearchParam, String>();
+		
 		paramsInError = new HashMap<SearchParam, String>();
-		Tag browseTag = null;
+		
+		
 		for (SearchParam name : SearchParam.values()) {
 			String parameter = request.getParameter(name.name());
 			if (parameter != null && !"".equals(parameter)) {
@@ -297,10 +301,14 @@ public class Courses {
 					}
 					break;
 				case subject:
-					browseTag = tagService.getTagByFullPath(parameter);
+					Tag browseTag = tagService.getTagByFullPath(parameter);
 					if (browseTag == null) {
 						paramsInError.put(name, parameter);
 					}
+					else {
+						request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag);
+					}
+					
 					break;
 				case time:
 					if (!parameter.equalsIgnoreCase("daytime")
@@ -312,15 +320,6 @@ public class Courses {
 			}
 		}
 
-		if (browseTag == null && !paramsInError.keySet().contains(SearchParam.subject)) {
-			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
-			if (browseTag != null) {
-				searchParams.put(SearchParam.subject, String.valueOf(browseTag.getId()));
-			}
-		}
-		request.setAttribute("browseTag", browseTag);
-
 		return searchParams;
 	}
-
 }

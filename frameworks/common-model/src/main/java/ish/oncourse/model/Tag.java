@@ -5,6 +5,7 @@ import ish.oncourse.utils.TagsTextileEntityTypes;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -12,10 +13,10 @@ import org.apache.cayenne.exp.ExpressionFactory;
 public class Tag extends _Tag implements Queueable {
 
 	public static final String SUBJECTS_TAG_NAME = "Subjects";
+	public static final String BROWSE_TAG_PARAM = "browseTag";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
 
 	public List<Tag> getWebVisibleTags() {
@@ -71,9 +72,7 @@ public class Tag extends _Tag implements Queueable {
 				// FIXME setup web container and httpd correctly to prevent them
 				// from decoding URI in a way of changing "%2B" to "+", not to
 				// " "
-				path = "/"
-						+ URLEncoder.encode(name.replaceAll(" ", "_+").replaceAll("/", "|"),
-								"UTF-8") + path;
+				path = "/" + URLEncoder.encode(name.replaceAll(" ", "_+").replaceAll("/", "|"), "UTF-8") + path;
 			} catch (UnsupportedEncodingException e) {
 				path = "/";
 			}
@@ -118,5 +117,18 @@ public class Tag extends _Tag implements Queueable {
 			result = result.getParent();
 		}
 		return result;
+	}
+
+	public List<Tag> getAllWebVisibleChildren() {
+		List<Tag> children = new ArrayList<Tag>();
+		addAllWebVisibleChildren(children, this);
+		return children;
+	}
+
+	private void addAllWebVisibleChildren(List<Tag> children, Tag tag) {
+		for (Tag t : tag.getWebVisibleTags()) {
+			children.add(t);
+			addAllWebVisibleChildren(children, t);
+		}
 	}
 }
