@@ -36,6 +36,12 @@
 	
 });
 */
+//var $j = jQuery.noConflict();
+
+
+
+
+
 jQuery(document).ready(function(){
 
 //expandable subject heirarchy
@@ -51,6 +57,13 @@ jQuery(document).ready(function(){
 		jQuery(this).parent().children('ul').slideToggle("fast");
 		return false; //stop normal href from working
 	});
+
+
+
+
+
+
+
 
 });    
 

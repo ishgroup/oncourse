@@ -15,6 +15,7 @@
 				</t:loop>
 			</ul>
 		</t:if> 
-		<a class="nyromodalreload actionLink" target="_blank" href="/addDiscount">Enter discount code</a>
+		<a class="nyromodalreload actionLink" target="_blank" href="/addDiscount">Add a discount code</a>
+        <a class="nyromodalreload actionLink" target="_blank" href="">Manage your classes</a>
 	</div>
 </t:container>

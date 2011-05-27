@@ -217,7 +217,7 @@ $j(document).ready(function() {
         
 	// Advanced search
 		
-	$j('.search-terms,.show-advanced-search,div#advanced-search-background').click(function() {
+	$j('.show-advanced-search,div#advanced-search-background').click(function() {
 		toggleAdvancedSearch();
 	}); 
 	
@@ -301,6 +301,19 @@ $j(document).ready(function() {
 			mapLoadForID('map');
 			return false;
 		});
+
+// Show map in search results
+        $j('#toggle-results-map').click(function() {
+            $j('#sitesMap').toggle();
+            $j(this).toggleClass('clicked');
+            loaded = $j(this).attr('loaded');
+            if (!loaded) {
+                $j(this).attr({loaded:true});
+                mapLoadForID('map');
+            }
+            google.maps.event.trigger(map, 'resize');
+            return false;
+        });
 		
 		$j('body').css('border-bottom', '5px solid #f7f7f7');
 });

@@ -440,7 +440,7 @@ body {
 }
 
 .discount-block {
-    padding:10px;
+    padding:0 10px 10px;
 
     a {
         color:#515151;
@@ -448,9 +448,314 @@ body {
     }
 
     .title-block {
-        font-weight:bold;
+        display: none;
     }
 }
+
+
+
+/**/
+
+
+.short-list {
+    h3 {
+        display: none;
+    }
+    .closeButton {
+        display: none;
+    }
+
+
+}
+
+.short-list ul {
+	overflow: hidden;
+	clear: both;
+}
+
+.shortListOrder {
+    display: none;
+    position: absolute;
+    background-color: #000;
+    padding: 10px;
+    top:76px;
+    right:54px;
+    width:175px;
+
+
+    li {
+        color: #fff;
+        position: relative;
+        padding: 0 15px 0 0;
+        margin:0 0 10px 0;
+
+        > div {
+            display: none;
+        }
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+    }
+
+    .deleteItem {
+        font-size: 10px;
+        color: #fff;
+        text-indent: -9999px;
+        width: 16px;
+        height: 16px;
+        background: transparent url(""+$i+"/b-cut.png") no-repeat scroll 3px 50%;
+        position: absolute;
+        right: 0;
+        top:0;
+        display:inline-block;
+
+        &:hover {
+            background-color: #990000;
+            opacity: 0.9;
+        }
+
+        &.loading {
+            background: transparent url(""+$i+"/icon/ajax-loader.gif") no-repeat left top;
+        }
+
+        a { /* Preload image */
+            background: url(""+$i+"/icon/ajax-loader.gif") no-repeat -9999px -999px;
+        }
+    }
+
+    a.shortlistLinkEnrol {
+        margin: 10px 0 0 0;
+        display: inline-block;
+        background: #CE1126;
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 4px 5px 4px 5px;
+
+        &:hover {
+            background-color: #A90E1F;
+        }
+    }
+    
+    .shortListOrderEnrol {
+        text-align: right;
+    }
+}
+
+.shortlistControls {
+    display: block;
+    @include clearfix;
+    border-bottom:1px solid #000;
+    margin:10px 3px 0 0;
+
+    li {
+        float: left;
+        padding: 0 6px;
+        line-height: 1.5;
+
+        &:first-child:hover, &.active {
+            background-color: #000;
+            color: #fff;
+            a {
+                color: #fff;
+            }
+        }
+
+        a {
+            color: #515151;
+            text-decoration: none;
+        }
+    }
+
+    .shortlistActionShow,
+    .shortlistActionHide {
+         width: 79px;
+    }
+
+    .shortlistActionHide {
+        display: none;
+    }
+}
+
+/*
+
+div#shortlist div#shortlist_classes {
+	border: 0px solid red;
+	width: 100%;
+	background: rgb(0,0,0);
+	background: rgba(0, 0, 0, 0.8);
+	clear: both;
+	position: absolute;
+	top: 77px;
+	right: 44px;
+	width: 175px;
+	z-index: 4000;
+}
+
+div#shortlist div#shortlist_classes, div#shortlist div#shortlist_classes ul, div#shortlist div#shortlist_classes li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+div#shortlist div#shortlist_classes li {
+	margin: 0 0px;
+	padding: 5px;
+	list-style: none;
+	background-image: none;
+}
+
+div#shortlist div#shortlist_classes li span.cut_item {
+	float: right;
+	color: #701919;
+}
+
+div#shortlist div#shortlist_classes li span.cut_item:hover {
+	color: #AA1F1F;
+	cursor: pointer;
+}
+
+div#shortlist div#info {
+	width: auto;
+}
+
+div#shortlist div#actions {
+	margin-top: 00px;
+	width: auto;
+}
+
+div#shortlist div#actions a {
+	width: auto;
+	display: inline-block;
+	padding: 0;
+	color: #515151;
+	text-decoration: none;
+}
+
+div#shortlist div#actions a.toggle_shortlist {
+	background: url(/s/img/shortlist_button_down.png) 2px center no-repeat;
+	padding-left: 16px;
+	width: 85px;
+}
+
+div#shortlist div#actions a.toggle_shortlist:hover, div#shortlist div#actions a.toggle_shortlist#toggle_shortlist_hide:hover {
+	background-color: rgb(0,0,0);
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #eee;
+}
+
+div#shortlist div#actions a.toggle_shortlist#toggle_shortlist_hide {
+	background-color: rgb(0,0,0);
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #fff
+}
+
+div#shortlist div#actions a:hover {
+	color: #000;
+}
+
+div#shortlist div#info {
+	padding-bottom: 0;
+}
+
+div#shortlist div#info span {
+	font-size: 460%;
+	font-weight: bold;
+	color: #133838;
+	float: left;
+	display: block;
+	height: auto;
+	width: auto;
+	border: 0px solid red;
+	margin: 10px 5px 0 0;
+}
+
+div#shortlist div#info p {
+	margin: 0;
+	width: auto;
+	color: #515151;
+	text-transform: uppercase;
+}
+
+div#shortlist a.toggle_shortlist {
+	cursor: pointer;
+	color: #46A2A2;
+}
+
+div#shortlist a.toggle_shortlist:hover {
+	text-decoration: none;
+	color: #000;
+}
+
+ul.menu li.onshortlist a, ul.menu li.onshortlist-x a {
+	text-decoration: none;
+	color: #fff;
+}
+
+ul.menu li.onshortlist a.viewitem {
+	display: block;
+	margin-left: 10px;
+	z-index: 100;
+}
+
+ul.menu li.onshortlist a.cutitem {
+	z-index: 500;
+	margin-right: 5px;
+}
+
+ul.menu li.onshortlist:hover, ul.menu li.onshortlist-x:hover {
+	background-color: #050E0E;
+}
+
+ul.menu li.onshortlist a.viewitem:hover {
+	color: #fff;
+}
+
+div#shortlist div#shortlist_classes ul.menu li a.cutitem:hover {
+	background-position-x: 3px;
+	background-color: #990000;
+	opacity: 0.9;
+	color: #fff;
+}
+
+div#shortlist div#shortlist_classes ul.menu li a.cutitem:hover span {
+	color: #fff;
+}
+
+div#shortlist div#shortlist_classes ul.menu li.enrolnow {
+	text-align: right;
+	padding-right: 5px;
+}
+
+#shortlist_classes .menu #enrolNowLink {
+	display: inline-block;
+	width: auto;
+	background: #CE1126;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 2px 5px 0 5px;
+}
+
+#shortlist_classes .menu #enrolNowLink:hover {
+	background-color: #A90E1F;
+}
+
+div#shortlist div#shortListWrapper, div#shortlist div#shortlist, div#shortlist div#shortListInner, div#shortlist div#myShortList {
+	padding:0;
+	margin:0;
+}
+
+div#myShortList h3 {
+	display:none;
+}*/
+
+
 
 /* Sidebar Courses
 -------------------------------------*/

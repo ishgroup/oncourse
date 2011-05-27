@@ -16,11 +16,14 @@
 		
 		<h3 class="title-block"><span>My Order</span></h3>
 		<div class="${classForList}">
-			<ul>
+			<ul class="shortListOrder">
 				<t:loop source="items" value="courseClass">
-					<li data-classid="${courseClass.id}"><a href="/class/${courseClass.uniqueIdentifier}">${courseClass.course.name}</a>
+					<li data-classid="${courseClass.id}">
+                        <a href="/class/${courseClass.uniqueIdentifier}">${courseClass.course.name}</a>
+                        <span class="deleteItem" title="Remove item"><a
+                                href="/removeFromCookies?key=shortlist&amp;removeItemId=${courseClass.id}">X</a></span>
 					
-					<div>
+					<div class="shortListOrderClasses">
 					<t:if t:test="courseClass.firstSession">
 					<abbr class="dtstart" title=""><t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/></abbr>
 					</t:if>
@@ -29,9 +32,13 @@
 						- <abbr class="dtend" title=""><t:output format="literal:d MMM yyyy" value="courseClass.endDate"/></abbr>
 					</t:if>
 					</div>
+
+
 					
-					<span class="deleteItem" title="Remove item"><a href="/removeFromCookies?key=shortlist&amp;removeItemId=${courseClass.id}">[remove]</a></span></li>
+
+                    </li>
 				</t:loop>
+                <li class="shortListOrderEnrol"><a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Enrol</a></li>
 			</ul>
 			<t:if test="expandComponent" negate="true">
 				<div class="closeButton">X</div>
@@ -39,9 +46,10 @@
 		</div>
 		
 		<div class="shortlistAction">
-			<ul>
+			<ul class="shortlistControls">
 				<t:if test="expandComponent" negate="true">
 					<li class="shortlistActionShow"><a href="#">Show Shortlist</a></li>
+                    <li class="shortlistActionHide"><a href="#">Hide Shortlist</a></li>
 				</t:if>
 				<li class="shortlistActionEnrol"><a href="/enrol/enrolCourses">Enrol</a></li>
 			</ul>
