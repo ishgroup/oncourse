@@ -4,14 +4,11 @@
 -->
 
 <section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <div id="login_area" class="login-area">
-        <div>
-            Already a student or tutor? <a href="/login">Sign in to MySCC</a>
-        </div>
-    </div>
 	<section class="site-container" id="container">
 
+        <div class="header-wrapper">
 		<header class="site-header" id="header">
+
 			<div t:type="ui/bodyheader"></div>
 			<t:remove><div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header"></div></t:remove>
 
@@ -24,7 +21,9 @@
             </nav>
 
 		</header>
+        </div>
 
+        <div class="content-wrapper">
 		<section class="content-container" id="contentContainer">
 
             <aside class="sidebar-left" id="sidebarLeft">
@@ -48,6 +47,7 @@
 			</aside>
 
 		</section>
+        </div>
 
 		<footer class="site-footer" id="footer">
 			<div t:type="ui/bodyfooter"></div>

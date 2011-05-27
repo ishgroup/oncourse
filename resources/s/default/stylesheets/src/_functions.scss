@@ -40,6 +40,17 @@
 }
 
 
+@mixin gradient($start, $stop, $size, $img) {
+    background: $stop url(""+$i+"/"+$img+".png") repeat-x;
+    background: -moz-linear-gradient(top, $start 0%, $stop $size);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start), color-stop($size,$stop));
+    background: -webkit-linear-gradient(top, $start 0%,$stop $size);
+    background: -o-linear-gradient(top, $start 0%,$stop $size);
+    background: -ms-linear-gradient(top, $start 0%,$stop $size);
+    background: linear-gradient(top, $start 0%,$stop $size);
+}
+
+
 
 
 

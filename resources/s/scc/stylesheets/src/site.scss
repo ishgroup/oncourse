@@ -114,17 +114,9 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-.site-wrapper {
-    background:{
-        image: url(""+$i+"/body_bg.png");
-        repeat:repeat-x;
-        position: left 10px;
-    }
-}
-
-.site-container {
-    width: 950px;
-    margin:0 auto;
+.content-wrapper {
+    @include gradient(#736564, #ededec, 477px, content-back);
+    @include box-shadow(inset 0 1px 5px #5a4f4d);
 }
 
 /* Header */
@@ -132,12 +124,11 @@ body {
 .site-header {
     width: 920px;
     margin: 0 auto;
-    position: relative;
-    background:{
-        image: url(""+$i+"/header_bg.png");
-        repeat:no-repeat;
-        position: left top;
-    }
+    position: relative;    
+}
+
+.header-wrapper {
+    background: #ce1e44;
 }
 
 
@@ -145,27 +136,24 @@ body {
 
 .site-nav {
     @include clearfix;
-    margin: 47px 0 0 0;
+    margin: 20px 0 0 0;
 
 
     > ul > li {
         position: relative;
         z-index: 4;
         float: left;
-        @include box-shadow(1px 3px 5px rgba(68, 68, 68, 0.2));
-        @include border-radius(0 0 6px 6px);
-        background-color: #D66A59;
-        margin-right: 20px;
+        @include border-radius(7px 7px 0 0);
+        margin-right: 5px;
 
         &:hover {
             z-index:2;
             background: {
-                color: #fff;
+                color: #6f5f5e;
             }
 
             > a {
                 z-index: 4;
-                color: #000;                
             }
 
             > ul {
@@ -179,10 +167,11 @@ body {
             display: block;
             position: relative;
             font-size: 17px;
-            color: #F7F7F7;
-            padding: 0 17px 8px;
-            line-height: 1;
-            font-family: 'MisoBold', Calibri, Trebuchet MS, Helvetica, Arial, sans-serif;
+            line-height: 32px;
+            height: 32px;
+            color: #fff;
+            padding: 0 25px;
+
             text: {
                 decoration: none;
                 transform: uppercase;
@@ -267,9 +256,10 @@ body {
 /* Footer */
 
 .site-footer {
+    width: 920px;
     position: relative;
     border-top: 2px solid #4D483C;
-    margin: 0px 10px;
+    margin: 0px auto;
     padding: 15px 0;
 }
 
@@ -297,162 +287,29 @@ body {
 
 /* Logo */
 .site-title {
-    background-color: rgba(144, 26, 16, 0.6);
-    width: 293px;
-    height: 71px;
+    width: 220px;
+    height: 105px;
     overflow: hidden;
     text-indent: -999px;
-    @include border-radius(0 0 6px 6px);
-    @include transition(background-color 300ms ease-out);
-
-    &:hover {
-        background-color: rgba(144, 26, 16, 0.95);
-    }
+    padding:9px 0 0 0;
 
     a {
         display: block;
-        width: 293px;
-        height: 71px;
+        width: 211px;
+        height: 105px;
         background:{
-            image: url(""+$i+"/scc_logo.png");
+            image: url(""+$i+"/logo-scwt.png");
             repeat:no-repeat;
-            position: 50% 70%;
+            position: left top;
         }
 
     }
 
 }
 
-.login-area {
-    height: 25px;
-    line-height: 25px;
-    color: #46100B;
-    text-shadow: #E97F77 1px 1px 0px;
-    background: {
-        color: #B0271C;
-    }
-    a {
-        color: #F8D6D3;
-        text-shadow: 1px 1px 0px #001D29;
-        text-decoration: none;
-    }
-    > div {
-        width: 920px;
-        margin: 0 auto;
-        text-align: right;
-    }
-}
 
 .header-toolbar {
-    width: 240px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index:inherit;
-    height: 111px;
-    overflow: visible;
-}
-
-/* Search */
-.search-box {
-    background: rgba(68, 68, 68, 0.30);
-    width: 220px;
-    @include border-radius(0 0 6px 6px);
-    padding: 4px 10px 0;
-
-    .quicksearch {
-        opacity: 0.5;
-        width: 100px;
-        border: 0;
-        padding: 4px 82px 4px 8px;
-        @include border-radius(6px 0 0 6px);
-        height: 17px;
-        line-height: 17px;
-        color: #222;
-        font-size: 13px;
-        vertical-align: middle;
-
-        &:focus {
-            outline: none;
-            background-color: #f7f7f7;
-            opacity: 1;
-        }
-    }
-
-    .find {
-        opacity: 0.8;
-        background: #737AB0;
-        width: 28px;
-        height: 25px;
-        border: 0;
-        padding: 0;
-        margin: 0;
-        color: white;
-        font-size: 11px;
-        @include border-radius(0 6px 6px 0);
-        vertical-align: middle;
-    }
-
-    .advanced-search-button {
-        text-align: right;
-
-        .show-advanced-search {
-            display: inline-block;
-            padding: 4px 6px;
-            @include border-radius(6px);
-            cursor: pointer;
-            color: #333;
-            font-weight:bold;
-
-            &:hover {
-                color: #fff;
-                background: rgba(53,52,52,0.8);
-            }
-        }
-    }
-
-}
-
-.discount-block {
     display: none;
-}
-
-.short-list {
-    height: 54px;
-    z-index: inherit;
-    clear: both;
-    width: 240px;
-    margin: 8px 0 0 0;
-    @include border-radius(6px 6px 0 0);
-    @include clearfix;
-    background: {
-        color: rgba(248,223,226,0.75);
-        image: url(""+$i+"/shortlist_bg.png");
-        position: left bottom;
-        repeat: repeat-x;
-    }
-
-    #info {
-        span {
-            font-size: 61px;
-            line-height: 21px;
-            font-weight: bold;
-            color: #B0271C;
-            float: left;
-            display: block;
-            margin: 14px 5px 0 9px;
-            font-family: 'MisoBold', Calibri, Trebuchet MS, Helvetica, Arial, sans-serif;
-        }
-
-        p {
-            float: left;
-            margin: 3px 0 0 0;
-            width: 50px;
-            color: #fff;
-            line-height: 1.9;
-        }
-    }
-
 }
 
 
@@ -577,7 +434,6 @@ body {
             color: #fff;
             text-shadow: 0 0 1px rgba(203,20,42,0.1);
             display: block;
-            font-family: 'MisoBold', Calibri, Trebuchet MS, Helvetica, Arial, sans-serif;
             font-size: 24px;
             line-height: 1;
             padding-left: 30px;
