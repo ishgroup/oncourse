@@ -1,6 +1,8 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
 
 import java.util.List;
@@ -15,8 +17,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class TagItem {
+
 	@Parameter(required = true, cache = false)
 	private Tag tag;
+
+	@Inject
+	private ITagService tagService;
 
 	@Parameter
 	private int childPosition;
@@ -36,8 +42,7 @@ public class TagItem {
 
 	@SetupRender
 	boolean beginRender() {
-		showDetails = Boolean.TRUE.equals(request
-				.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM));
+		showDetails = Boolean.TRUE.equals(request.getAttribute(TextileUtil.TEXTILE_TAGS_PAGE_DETAILS_PARAM));
 		// prevents rending with the menu parameter is null or it can't be
 		// rendered
 		final boolean render = tag != null && (maxLevels == null || maxLevels > 0);
@@ -50,8 +55,7 @@ public class TagItem {
 		// if the tag has children, render the body to render a child
 		currentDepth++;
 
-		final boolean render = webVisibleTags.size() > 0
-				&& (maxLevels == null || maxLevels > currentDepth);
+		final boolean render = webVisibleTags.size() > 0 && (maxLevels == null || maxLevels > currentDepth);
 		if (render) {
 			// sets the container's currentTag to the tag's child at the given
 			// index.
@@ -92,21 +96,41 @@ public class TagItem {
 
 	public String getTagItemClass() {
 		StringBuffer result = new StringBuffer();
-		if ((!tag.getWebVisibleTags().isEmpty())
-				&& (maxLevels == null || maxLevels > currentDepth + 1)) {
+
+		if ((!tag.getWebVisibleTags().isEmpty()) && (maxLevels == null || maxLevels > currentDepth + 1)) {
 			result.append(messages.get("li.class.hasChildren"));
 		}
-		String tagLink = getTagLink().toLowerCase();
-		String requestPath = request.getPath().toLowerCase();
-		String searchTagParameter = request.getParameter("subject") == null ? "" : request
-				.getParameter("subject").toLowerCase();
-		String defaultPath = tag.getDefaultPath().toLowerCase();
-		if (requestPath.endsWith(tagLink) || defaultPath.equals(searchTagParameter)) {
-			result.append(" ").append(messages.get("li.class.selected"));
-		} else if (requestPath.contains(tagLink) || searchTagParameter.contains(defaultPath)) {
-			result.append(" ").append(messages.get("li.class.childSelected"));
+
+		Tag activeTag = getActiveTag();
+
+		if (activeTag != null) {
+			if (activeTag.getId().equals(tag.getId())) {
+				result.append(" ").append(messages.get("li.class.childSelected"));
+			} else {
+				if (tag.isParentOf(activeTag)) {
+					result.append(" ").append(messages.get("li.class.selected"));
+				}
+			}
 		}
-		return result.toString();
+
+		return result.toString().trim();
+	}
+
+	private Tag getActiveTag() {
+
+		Tag courseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
+
+		if (courseTag != null) {
+			return courseTag;
+		} else {
+			String subject = request.getParameter("subject");
+
+			if (subject != null) {
+				return tagService.getTagByFullPath(subject);
+			}
+		}
+
+		return null;
 	}
 
 	public String getTagLink() {

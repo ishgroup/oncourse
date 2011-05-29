@@ -1,4 +1,4 @@
-<li xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" class="${tagItemClass}">
+<li class="${tagItemClass}">
    	<a href="${tagLink}">${tag.name}</a>
    	<t:if test="showDetails">
 		<div class="taggroup_detail courses-list-detail">

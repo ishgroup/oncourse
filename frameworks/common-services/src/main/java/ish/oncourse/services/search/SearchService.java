@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
@@ -21,6 +22,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class SearchService implements ISearchService {
 
@@ -36,9 +38,12 @@ public class SearchService implements ISearchService {
 
 	@Inject
 	private ILookupService lookupService;
-	
+
 	@Inject
 	private ITagService tagService;
+
+	@Inject
+	private Request request;
 
 	private Map<SolrCore, SolrServer> solrServers = new HashMap<SolrCore, SolrServer>();
 
@@ -55,15 +60,13 @@ public class SearchService implements ISearchService {
 
 				solrURL = (solrURL == null) ? propertyService.string(Property.SolrServer) : solrURL;
 
-				solrURL = (solrURL == null) ? System.getProperty(Property.SolrServer.value())
-						: solrURL;
+				solrURL = (solrURL == null) ? System.getProperty(Property.SolrServer.value()) : solrURL;
 
 				if (solrURL == null) {
 					throw new IllegalStateException("Undefined property: " + Property.SolrServer);
 				}
 
-				CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(solrURL + "/"
-						+ core.toString());
+				CommonsHttpSolrServer httpSolrServer = new CommonsHttpSolrServer(solrURL + "/" + core.toString());
 
 				solrServer = httpSolrServer;
 				solrServers.put(core, solrServer);
@@ -87,10 +90,9 @@ public class SearchService implements ISearchService {
 			q.setStart(start);
 			q.setRows(rows);
 			q.setIncludeScore(true);
-			q.addFilterQuery(String.format("+collegeId:%s +doctype:course +end:[NOW TO *]",
-					collegeId));
+			q.addFilterQuery(String.format("+collegeId:%s +doctype:course +end:[NOW TO *]", collegeId));
 
-			if (params.size() == 1 && params.get(SearchParam.s) != null) {
+			if (params.size() == 1 && params.get(SearchParam.s) != null && request.getAttribute(Tag.BROWSE_TAG_PARAM) == null) {
 				q.setQueryType("dismax");
 				q.setQuery(params.get(SearchParam.s).toLowerCase());
 			} else {
@@ -99,9 +101,7 @@ public class SearchService implements ISearchService {
 				if (params.containsKey(SearchParam.s)) {
 					String s = params.get(SearchParam.s);
 					qString.append(s).append(" ");
-					qString.append(
-							String.format("detail: %s || tutor:%s || course_code:%s", s, s, s))
-							.append(" ");
+					qString.append(String.format("detail: %s || tutor:%s || course_code:%s", s, s, s)).append(" ");
 				}
 
 				if (params.containsKey(SearchParam.price)) {
@@ -119,17 +119,25 @@ public class SearchService implements ISearchService {
 					qString.append("when:" + time).append(" ");
 				}
 
+				Tag browseTag = null;
+
 				if (params.containsKey(SearchParam.subject)) {
 					String subject = params.get(SearchParam.subject);
-					Tag browseTag = tagService.getTagByFullPath(subject);
-					
+					browseTag = tagService.getTagByFullPath(subject);
+				} else {
+					if (request.getAttribute(Tag.BROWSE_TAG_PARAM) != null) {
+						browseTag = (Tag) request.getAttribute(Tag.BROWSE_TAG_PARAM);
+					}
+				}
+
+				if (browseTag != null) {
 					StringBuilder tagQuery = new StringBuilder();
 					tagQuery.append("tagId:").append(browseTag.getId());
-					
+
 					for (Tag t : browseTag.getAllWebVisibleChildren()) {
 						tagQuery.append(" || tagId:").append(t.getId());
 					}
-					
+
 					qString.append(tagQuery.toString()).append(" ");
 				}
 
@@ -142,26 +150,22 @@ public class SearchService implements ISearchService {
 					for (SolrDocument doc : responseResults) {
 						String location = (String) doc.get("loc");
 						if (!addedLocs.contains(location)) {
-							distanceQueryBuff.append(String.format(
-									"{!geofilt pt=%s sfield=course_loc d=%s}", location,
-									MAX_DISTANCE));
+							distanceQueryBuff.append(String.format("{!geofilt pt=%s sfield=course_loc d=%s}", location, MAX_DISTANCE));
 							addedLocs.add(location);
 						}
 					}
-					String distanceQuery = distanceQueryBuff.toString().replaceAll("[}][{]",
-							"} OR {");
+					String distanceQuery = distanceQueryBuff.toString().replaceAll("[}][{]", "} OR {");
 					if (params.size() > 1) {
 						q.addFilterQuery(distanceQuery);
 					} else {
 						qString.append(distanceQuery);
 					}
 				}
-				
+
 				if (logger.isDebugEnabled()) {
 					logger.debug(String.format("Solr query:%s", qString.toString()));
 				}
-				
-				
+
 				q.setQuery(qString.toString());
 			}
 
@@ -181,21 +185,18 @@ public class SearchService implements ISearchService {
 			StringBuilder coursesQuery = new StringBuilder();
 			StringBuilder suburbsQuery = new StringBuilder();
 			StringBuilder tagsQuery = new StringBuilder();
-			
+
 			String[] terms = term.split("[\\s]+");
 			for (int i = 0; i < terms.length; i++) {
 				String t = terms[i].toLowerCase().trim() + "*";
-				coursesQuery.append(String.format("(name:%s && collegeId:%s)", t, collegeId))
-						.append("||");
+				coursesQuery.append(String.format("(name:%s && collegeId:%s)", t, collegeId)).append("||");
 
 				coursesQuery.append(String.format("(course_code:%s && collegeId:%s)",
 						t.indexOf("-") < 0 ? t : t.substring(0, t.indexOf("-")), collegeId));
 
-				suburbsQuery.append(
-						String.format("(doctype:suburb && (suburb:%s || postcode:%s)) ", t, t));
+				suburbsQuery.append(String.format("(doctype:suburb && (suburb:%s || postcode:%s)) ", t, t));
 
-				tagsQuery.append(String.format("(doctype:tag && collegeId:%s && name:%s)",
-						collegeId, t));
+				tagsQuery.append(String.format("(doctype:tag && collegeId:%s && name:%s)", collegeId, t));
 
 				if (i + 1 != terms.length) {
 					coursesQuery.append(" || ");
@@ -205,13 +206,10 @@ public class SearchService implements ISearchService {
 			}
 
 			SolrDocumentList results = new SolrDocumentList();
-			
-			results.addAll(getSolrServer(SolrCore.courses).query(
-					new SolrQuery(coursesQuery.toString())).getResults());
-			results.addAll(getSolrServer(SolrCore.suburbs).query(
-					new SolrQuery(suburbsQuery.toString())).getResults());
-			results.addAll(getSolrServer(SolrCore.tags).query(
-					new SolrQuery(tagsQuery.toString())).getResults());
+
+			results.addAll(getSolrServer(SolrCore.courses).query(new SolrQuery(coursesQuery.toString())).getResults());
+			results.addAll(getSolrServer(SolrCore.suburbs).query(new SolrQuery(suburbsQuery.toString())).getResults());
+			results.addAll(getSolrServer(SolrCore.tags).query(new SolrQuery(tagsQuery.toString())).getResults());
 			return results;
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
@@ -250,8 +248,7 @@ public class SearchService implements ISearchService {
 		try {
 			int separator = location.lastIndexOf(" ");
 
-			String[] suburbParams = separator > 0 ? new String[] {
-					location.substring(0, separator), location.substring(separator + 1) }
+			String[] suburbParams = separator > 0 ? new String[] { location.substring(0, separator), location.substring(separator + 1) }
 					: new String[] { location, null };
 			if (suburbParams[1] != null && !suburbParams[1].matches("(\\d)+")) {
 				suburbParams[0] = location;

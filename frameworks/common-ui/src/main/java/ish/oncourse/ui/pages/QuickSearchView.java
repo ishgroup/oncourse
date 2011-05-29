@@ -7,17 +7,17 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuickSearchView {
 

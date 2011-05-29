@@ -36,17 +36,13 @@
 	
 });
 */
+
 //var $j = jQuery.noConflict();
-
-
-
-
 
 jQuery(document).ready(function(){
 
-//expandable subject heirarchy
-
-	jQuery( "#sidebarLeft .courses-list-sub > li:has(ul)" ).addClass('hasChildren').not('.parent_tag').not('.active_tag').children('ul').hide();
+	//expandable subject heirarchy
+	jQuery( "#sidebarLeft .courses-list-sub li.parent_tag, #sidebarLeft .courses-list-sub li.active_tag" ).children('ul').show();
 
 	
 	// Add a toggler span
@@ -57,13 +53,6 @@ jQuery(document).ready(function(){
 		jQuery(this).parent().children('ul').slideToggle("fast");
 		return false; //stop normal href from working
 	});
-
-
-
-
-
-
-
 
 });    
 

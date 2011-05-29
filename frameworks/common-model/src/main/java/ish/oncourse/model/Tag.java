@@ -131,4 +131,27 @@ public class Tag extends _Tag implements Queueable {
 			addAllWebVisibleChildren(children, t);
 		}
 	}
+
+	public boolean isParentOf(Tag tag) {
+		return isParentOf(this, tag);
+	}
+
+	private static boolean isParentOf(Tag parent, Tag tag) {
+		
+		boolean isParent = false;
+
+		for (Tag child : parent.getTags()) {
+			if (child.getId().equals(tag.getId())) {
+				isParent = true;
+			} else {
+				isParent = isParentOf(child, tag);
+			}
+
+			if (isParent) {
+				break;
+			}
+		}
+
+		return isParent;
+	}
 }

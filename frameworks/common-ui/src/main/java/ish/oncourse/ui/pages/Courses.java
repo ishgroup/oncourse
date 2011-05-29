@@ -67,11 +67,11 @@ public class Courses {
 	private Integer itemIndex;
 	@Persist("client")
 	private Map<SearchParam, String> searchParams;
-	
+
 	@Persist("client")
 	@Property
 	private Map<SearchParam, String> paramsInError;
-	
+
 	@Property
 	private List<Site> mapSites;
 	@Property
@@ -84,8 +84,7 @@ public class Courses {
 	@SetupRender
 	public void beforeRender() {
 		this.itemIndex = 0;
-		if (request.getParameterNames().isEmpty()
-				&& request.getAttribute(Course.COURSE_TAG) == null) {
+		if (request.getParameterNames().isEmpty() && request.getAttribute(Course.COURSE_TAG) == null) {
 			this.courses = courseService.getCourses(START_DEFAULT, ROWS_DEFAULT);
 			this.coursesCount = courseService.getCoursesCount();
 			searchParams = null;
@@ -145,14 +144,12 @@ public class Courses {
 				Room room = courseClass.getRoom();
 				if (room != null) {
 					Site site = room.getSite();
-					if (site != null && site.getSuburb() != null && !"".equals(site.getSuburb())
-							&& site.isHasCoordinates()) {
+					if (site != null && site.getSuburb() != null && !"".equals(site.getSuburb()) && site.isHasCoordinates()) {
 						if (!mapSites.contains(site)) {
 							mapSites.add(site);
 						}
 						if (hasAnyFormValuesForFocus()) {
-							float focusMatchForClass = focusMatchForClass(courseClass,
-									locationPoints[0], locationPoints[1]);
+							float focusMatchForClass = focusMatchForClass(courseClass, locationPoints[0], locationPoints[1]);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
 								focusesForMapSites.put(site.getId(), focusMatchForClass);
@@ -169,10 +166,8 @@ public class Courses {
 		if (searchParams == null) {
 			return false;
 		}
-		return searchParams.containsKey(SearchParam.day)
-				|| searchParams.containsKey(SearchParam.near)
-				|| searchParams.containsKey(SearchParam.price)
-				|| searchParams.containsKey(SearchParam.time);
+		return searchParams.containsKey(SearchParam.day) || searchParams.containsKey(SearchParam.near)
+				|| searchParams.containsKey(SearchParam.price) || searchParams.containsKey(SearchParam.time);
 	}
 
 	private float focusMatchForClass(CourseClass courseClass, Double locatonLat, Double locationLong) {
@@ -221,11 +216,9 @@ public class Courses {
 	private List<Course> searchCourses() {
 		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
-
+		
 		searchParams = getCourseSearchParams();
-		if (searchParams.isEmpty()) {
-			searchParams.put(SearchParam.s, "");
-		}
+		
 		return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
 	}
 
@@ -275,18 +268,18 @@ public class Courses {
 
 	public Map<SearchParam, String> getCourseSearchParams() {
 		Map<SearchParam, String> searchParams = new HashMap<SearchParam, String>();
-		
+
 		paramsInError = new HashMap<SearchParam, String>();
-		
-		
+
+		Tag browseTag = null;
+
 		for (SearchParam name : SearchParam.values()) {
 			String parameter = request.getParameter(name.name());
 			if (parameter != null && !"".equals(parameter)) {
 				searchParams.put(name, parameter);
 				switch (name) {
 				case day:
-					if (!parameter.equalsIgnoreCase("weekday")
-							&& !parameter.equalsIgnoreCase("weekend")) {
+					if (!parameter.equalsIgnoreCase("weekday") && !parameter.equalsIgnoreCase("weekend")) {
 						paramsInError.put(name, parameter);
 					}
 					break;
@@ -301,24 +294,25 @@ public class Courses {
 					}
 					break;
 				case subject:
-					Tag browseTag = tagService.getTagByFullPath(parameter);
+					browseTag = tagService.getTagByFullPath(parameter);
 					if (browseTag == null) {
 						paramsInError.put(name, parameter);
 					}
-					else {
-						request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag);
-					}
-					
 					break;
 				case time:
-					if (!parameter.equalsIgnoreCase("daytime")
-							&& !parameter.equalsIgnoreCase("evening")) {
+					if (!parameter.equalsIgnoreCase("daytime") && !parameter.equalsIgnoreCase("evening")) {
 						paramsInError.put(name, parameter);
 					}
 					break;
 				}
 			}
 		}
+
+		if (browseTag == null && !paramsInError.keySet().contains(SearchParam.subject)) {
+			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
+		}
+
+		request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag);
 
 		return searchParams;
 	}
