@@ -1,23 +1,25 @@
 package ish.oncourse.ui.components;
 
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.TutorRole;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class CourseClassItem {
+	
 	@Parameter
 	@Property
 	private CourseClass courseClass;
@@ -36,8 +38,6 @@ public class CourseClassItem {
 	@Property
 	private int index;
 
-	private Format hoursFormat;
-
 	private List<String> timetableLabels;
 
 	@Parameter
@@ -47,10 +47,12 @@ public class CourseClassItem {
 	@Parameter
 	@Property
 	private boolean linkToLocationsMap;
+	
+	@Inject
+	private Messages messages;
 
 	@SetupRender
 	public void beforeRender() {
-		this.hoursFormat = new DecimalFormat("0.#");
 		timetableLabels = new ArrayList<String>();
 		timetableLabels.add("When");
 		timetableLabels.add("Time");
@@ -96,10 +98,6 @@ public class CourseClassItem {
 		return "sessions_for_class" + (isTutorPortal() ? "" : " hidden");
 	}
 
-	public Format getHoursFormat() {
-		return this.hoursFormat;
-	}
-
 	public boolean isHasSiteName() {
 		return isHasSite() && courseClass.getRoom().getSite().getName() != null
 				&& !"online".equals(courseClass.getRoom().getSite().getName());
@@ -127,6 +125,13 @@ public class CourseClassItem {
 			}
 		});
 		return sessions;
+	}
+	
+	public String getClassSessions() {
+		DecimalFormat hoursFormat = new DecimalFormat("0.#");
+		int numberOfSession = courseClass.getSessions().size();
+		String key = (numberOfSession > 1) ? "session.number" : "one.session";
+		return messages.format(key, numberOfSession, hoursFormat.format(courseClass.getTotalDurationHours().doubleValue()));
 	}
 
 	public String getCssTableClass() {

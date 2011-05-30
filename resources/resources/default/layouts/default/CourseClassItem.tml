@@ -13,33 +13,37 @@
             </div>
         </t:if>
 
-
         <!--hcalendar implementation-->
         <div class="class-item-info">
             <div class="class-item-info-l">
-                <!--<dt class="classItemDate">Date</dt>-->
-                <div class="date">
-                    <t:if t:test="courseClass.firstSession">
-                        <a href="/class/${courseClass.course.code}-${courseClass.code}" class="url">
-                            <abbr class="dtstart" title="">
-                                <t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/>
-                            </abbr>
-                            <t:if t:test="courseClass.endDate">
-                                - <abbr class="dtend" title="">
-                                <t:output format="literal:d MMM yyyy" value="courseClass.endDate"/>
-                            </abbr>
-                            </t:if>
-                        </a>
-                        <p:else><b>no session</b></p:else>
-                    </t:if>
-                </div>
-
-                <!--<dt class="classItemName">Name</dt>-->
+                <t:if t:test="courseClass.firstSession">
+	               	<div class="date">
+	                   <a href="/class/${courseClass.course.code}-${courseClass.code}" class="url">
+	                       <abbr class="dtstart" title="">
+	                           <t:output format="literal:d MMM yyyy" value="courseClass.firstSession.startDate"/>
+	                       </abbr>
+	                       <t:if t:test="courseClass.endDate">
+	                           - <abbr class="dtend" title="">
+	                          		 <t:output format="literal:d MMM yyyy" value="courseClass.endDate"/>
+	                       		</abbr>
+	                       </t:if>
+	                   </a><br/>
+	                   <a href="/class/${courseClass.course.code}-${courseClass.code}" class="url">
+	                   		<abbr class="dtstart" title="">
+	                       		<t:output format="timeFormat" value="courseClass.firstSession.startDate"/>
+	                    	</abbr>
+		                    - <abbr class="dtend" title="">
+		                       <t:output format="timeFormat" value="courseClass.firstSession.endDate"/>
+		                    </abbr>${message:firstSession}
+	                   </a><br/>
+	                   <a href="/class/${courseClass.course.code}-${courseClass.code}" class="url">${classSessions}</a>
+	                </div>
+	                <p:else><b>no session</b></p:else>
+                </t:if>
                 <div class="summary">${courseClass.course.name}</div>
             </div>
 
             <div class="class-item-info-r">
-                <!--<dt class="classItemLocation">Location</dt>-->
                 <div class="location">
                     <t:if test="hasLinkToLocation">
                         <t:if test="hasSite">
@@ -56,7 +60,6 @@
                     </t:if>
                 </div>
 
-                <!--<dt class="classItemTutor">Tutor</dt>-->
                 <div class="tutor">
                     <t:if test="hasTutorRoles">
                         <t:loop source="courseClass.tutorRoles" value="tutorRole"
@@ -68,7 +71,6 @@
                     </t:if>
                 </div>
                 <t:if test="excludePrice" negate="true">
-                    <!--<dt class="classItemPrice">Price</dt>-->
                     <div class="price"><span t:type="ui/CourseClassPrice" courseClass="courseClass"/></div>
                 </t:if>
             </div>
