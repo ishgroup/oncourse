@@ -1,7 +1,6 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;

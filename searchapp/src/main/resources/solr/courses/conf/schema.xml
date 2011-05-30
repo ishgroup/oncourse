@@ -133,11 +133,8 @@
 
 		<field name="price" type="sfloat" indexed="true" stored="true"
 			multiValued="true" omitNorms="false" boost="5.0" />
-
-		<field name="tagName" type="textgen" indexed="true" stored="true"
-			multiValued="true" omitNorms="false" boost="5.0" />
 			
-		<field name="tag" type="long" indexed="true" stored="true" multiValued="true" omitNorms="false" boost="5.0" /> 
+		<field name="tagId" type="long" indexed="true" stored="true" multiValued="true" omitNorms="false" boost="5.0" /> 
 
 		<!-- Type used to index the lat and lon components for the "location" FieldType -->
 		<dynamicField name="*_coordinate" type="tdouble" indexed="true" 
