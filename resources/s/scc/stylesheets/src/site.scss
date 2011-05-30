@@ -114,9 +114,8 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-.content-wrapper {
-    @include gradient(#736564, #ededec, 477px, content-back);
-    @include box-shadow(inset 0 1px 5px #5a4f4d);
+.site-wrapper {
+    @include gradient(#736564, #ededec, 550px, content-back);
 }
 
 /* Header */
@@ -137,36 +136,33 @@ body {
 .site-nav {
     @include clearfix;
     margin: 20px 0 0 0;
+    position:relative;
+    z-index: 3;
+
+    ul {
+        list-style: none;
+    }
 
 
     > ul > li {
-        position: relative;
-        z-index: 4;
         float: left;
         @include border-radius(7px 7px 0 0);
         margin-right: 5px;
+        z-index: 4;
 
         &:hover {
-            z-index:2;
             background: {
-                color: #6f5f5e;
-            }
-
-            > a {
-                z-index: 4;
+                color: #ef4056;
             }
 
             > ul {
-                z-index: 3;
                 display: block;
-                opacity: 1;
             }
         }
         
         > a {
             display: block;
-            position: relative;
-            font-size: 17px;
+            font-size: 14px;
             line-height: 32px;
             height: 32px;
             color: #fff;
@@ -182,43 +178,36 @@ body {
             display: none;
             position: absolute;
             left: 0;
-            top: 0px;
-            list-style: none;            
-            @include border-radius(0 0 6px 6px);
-            @include box-shadow(1px 3px 5px rgba(68, 68, 68, 0.2));
-            @include transition(opacity 0.3s ease-in-out);
-            width: 300px;
-            padding: 30px 10px 10px 10px;
-            opacity: 0;
+            top: 32px;
+            list-style: none;
+            width: 900px;
+            padding: 0 2px 0 2px;
+            z-index:4;
             background: {
-                image: url(""+$i+"/shortlist_bg_top.png");
-                repeat: repeat-x;
-                position: left top;
-                color: #fff;
+                color: #ef4056;
+            }
+
+            li {
+                display: inline-block;
+                font-size: 11px;
+                line-height: 1;
+                margin: 0 7px 0 0;
             }
 
             a {
                 display: block;
-                padding: 4px 8px;
-                color: #333;
+                padding: 7px 8px;
+                line-height: 1;
+                color: #754c24;
                 text-decoration:none;
+                text-transform: uppercase;
 
                 &:hover {
-                    color: #eee;
+                    color: #000;
                 }
             }
 
-            li {
-                font-size: 13px;
-                float: left;
-                width: 50%;
-                margin: 0 0 5px 0;
-                @include border-radius(6px);
 
-                &:hover {
-                    background: #323232;
-                }
-            }
         }
 
 
@@ -229,10 +218,19 @@ body {
 
 /* Content */
 
+.content-wrapper {
+    background:{
+        image: url(""+$i+"/content-shadow.png");
+        repeat:repeat-x;
+        position: left top;
+    }
+}
+
 .content-container {
     position: relative;
     margin: 0 auto;
     width: 920px;
+    padding: 40px 0 25px 0;
     @include clearfix;
 }
 
@@ -240,7 +238,7 @@ body {
 .content {
     position: relative;
     z-index: 0;
-    padding: 40px 0 0 0;
+    padding: 0;
     .clear {
         clear: both;
     }
@@ -250,7 +248,9 @@ body {
     display: none;
 }
 
-.sidebar-right {}
+.sidebar-right {
+    clear: both;
+}
 
 
 /* Footer */
@@ -309,8 +309,189 @@ body {
 
 
 .header-toolbar {
-    display: none;
+    display: block;
+    position: absolute;
+    right:0;
+    bottom:13px;
+    width:214px;
+    z-index:5;
+
+
+    .short-list {
+        display: none;
+    }
+
+    .discount-block {
+        display: none;
+    }
+
+    .header-account {
+        margin: 0 0 12px 0;
+        font-size:14px;
+        font-size:bold;
+        text-align:right;
+
+        a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    }
+
+    .search-box {
+        @include clearfix;
+        text-align:right;
+
+        [type="text"] {
+            width: 170px;
+            vertical-align: top;
+            padding: 3px 5px;
+            font-size:11px;
+            color:#c1c1c1;
+            text-transform:uppercase;
+            border: 0;
+            margin: 0;
+            @include border-radius(3px 0 0 3px);
+            background: {
+                color: #fff;
+                vertical-align: middle;
+            }
+        }
+
+        [type="submit"] {
+            @include border-radius(0 3px 3px 0);
+            vertical-align: top;
+            height: 20px;
+            padding: 0 2px;
+            color:#fff;
+            border:0;
+            margin:0;
+            background: {
+                color: #00a3ef;
+                vertical-align: middle;
+            }
+        }
+
+    }
 }
+
+
+/* Newsfeed
+-----------------------------------*/
+
+
+#newsfeed_container {
+	height: 340px;
+	position: relative;
+
+	h2 {
+	    font-family: 'MisoBold', Calibri, Trebuchet MS, Helvetica, Arial, sans-serif;
+        margin: 0;
+        font-size: 21px;
+        line-height: 1;
+        color: #fff;
+        background-color: #00b0dc;
+        @include border-radius(0 0 8px 8px);
+        display: inline-block;
+        padding: 4px 32px 4px 14px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    #social {
+        position: absolute;
+        bottom: 0px;
+        right: 0;
+        border-top: 1px solid #f7f7f7;
+        color: #ccc;
+        padding: 4px 0 4px 14px;
+        width: 226px;
+        color: #999;
+        text-transform: uppercase;
+        text-align: left;
+
+        a:hover {
+            color: #444;
+            opacity: 1;
+        }
+
+        a[href*="facebook.com"] {
+            display: block;
+            padding: 0px;
+            min-width: 33px;
+            height: 34px;
+            display: inline-block;
+            color: #999;
+            opacity: 0.9;
+            text-indent: -9999px;
+            text-transform: capitalize;
+            background:{
+                color: transparent;
+                image: url(""+$i+"/social/facebook_32.png");
+                repeat:no-repeat;
+                position: left 3px;
+            }
+        }
+
+        a[href*="twitter.com"] {
+            display: block;
+            padding: 0px;
+            height: 34px;
+            min-width: 33px;
+            display: inline-block;
+            text-indent: -9999px;
+            color: #999;
+            opacity: 0.9;
+            text-transform: capitalize;
+            background:{
+                color: transparent;
+                image: url(""+$i+"/social/twitter_32.png");
+                repeat:no-repeat;
+                position: left 3px;
+            }
+        }
+
+
+    }
+
+
+}
+
+#newsfeed {
+    height: 266px;
+    overflow: hidden;
+    padding: 4px 10px 0px 14px;
+    width: 220px;
+    clear: both;
+    font-size: 11px;
+
+    ul,  li {
+        margin: 0;
+    }
+
+    > ul > li {
+        color: #444;
+        margin-bottom: 5px;
+    }
+
+    > ul > li > a:first-child:hover {
+        color: #940F1F;
+    }
+
+    > ul > li > a span.time {
+        display: block;
+        font-size: 11px;
+        color: #ccc;
+    }
+
+    > ul > li > a span.time:hover:after {
+        content: "\BB \ ";
+        margin-left: 4px;
+    }
+}
+
+
+
+
 
 
 /* Content Slides
@@ -330,6 +511,12 @@ body {
     @include border-radius(0 40px 0 0);
 }
 
+
+
+
+
+
+
 /* Categories
 ------------------------------------------*/
 
@@ -338,122 +525,52 @@ body {
 
     ul {
         margin: 0;
+        list-style: none;
     }
 
     ul li {
         display: inline-block;
-        background-color: #B0271C;
+        background-color: #6d6060;
         width: 132px;
-        height: 31px;
+        height: 45px;
         list-style: none;
         margin-right: 3px;
         text-align: left;
-        @include border-radius(4px 4px 12px 4px);
+        @include border-radius(4px 4px 4px 12px);
         @include transition(background-color 300ms ease-out);
 
-        + li {
-            a {
-                background: {
-                    image: url(""+$i+"/course_nav_business.png");
-                    repeat: no-repeat;
-                    position: 2px 2px;
-                }
-            }
-
-            &:hover {
-                background-color: #a6acc4;
-            }
-
-            + li {
-                a {
-                    background: {
-                        image: url(""+$i+"/course_nav_languages.png");
-                        repeat: no-repeat;
-                        position: 2px 2px;
-                    }
-                }
-
-                &:hover {
-                    background-color: #ade5fa;
-                }
-
-                + li {
-                    a {
-                        background: {
-                            image: url(""+$i+"/course_nav_lifestyle.png");
-                            repeat: no-repeat;
-                            position: 2px 2px;
-                        }
-                    }
-
-                    &:hover {
-                        background-color: #dde5a6;
-                    }
-
-                    + li {
-                        a {
-                            background: {
-                                image: url(""+$i+"/course_nav_sport.png");
-                                repeat: no-repeat;
-                                position: 2px 2px;
-                            }
-                        }
-
-                        &:hover {
-                            background-color: #b9bddb;
-                        }
-
-                        + li {
-                            width: 240px;
-                            height: 31px;
-                            margin: 0 0 0 7px;
-                            text-align: center;
-                            @include border-radius(4px);
-                            padding: 0;
-                            margin:0;
-
-                            &:hover {
-                                background-color: #ffcd92;
-                            }
-
-                            a {
-                                padding-left: 0 !important;
-                                background: none;
-                            }
-
-                        }
-                    }
-                }
-
-            }
-        }
-
-        & a {
-            text-transform: uppercase;
-            text-decoration: none;
-            color: #fff;
-            text-shadow: 0 0 1px rgba(203,20,42,0.1);
-            display: block;
-            font-size: 24px;
-            line-height: 1;
-            padding-left: 30px;
-            padding-top: 4px;
-            height: 100%;
-
-            background: {
-                    image: url(""+$i+"/course_nav_arts.png");
-                    repeat: no-repeat;
-                    position: 2px 2px;
-                }
-
-            &:hover {
-                color: rgba(68,68,68,0.5);
-            }
-        }
-
         &:hover {
-            background-color: #ffcd92;
+            background-color: #a99f9d;
         }
+
+        + li + li+ li + li+ li {
+            width: 240px;
+            height: 45px;
+            margin: 0 0 0 7px;
+            text-align: center;
+            @include border-radius(4px);
+            padding: 0;
+            margin:0;
+        }
+
+        a {
+            color: #fff;
+            display: block;
+            line-height: 1;
+            padding-left: 13px;
+            padding-top: 7px;
+            height: 100%;
+            text: {
+                transform: uppercase;
+                decoration: none;
+            }
+            font: {
+                size: 12px;
+                weight: bold;
+            }
+        }
+
+
     }
 }
 
@@ -471,8 +588,10 @@ body {
         font-family: 'MisoBold', Calibri, Trebuchet MS, Helvetica, Arial, sans-serif;
 
         .panel_heading {
+            padding: 18px 0 0 0;
             @include border-radius(16px 16px 16px 53px);
-            min-height: 110px;
+            min-height: 95px;
+            background-color: #cd1543;
         }
 
         &:nth-child(3) {
@@ -486,28 +605,24 @@ body {
         }
 
         h4 {
-            font-size: 26px;
+            font-size: 22px;
             line-height: 21px;
             text-transform: uppercase;
 
             a {
                 color: white;
                 display: block;
-                min-height: 90px;
-                padding: 25px 10px 0px 110px;
+                padding: 0px 10px 0px 110px;
                 text-decoration: none;
             }
         }
 
         .panel_title {
-            font-size: 18px;
-            line-height: 21px;
+            font-size: 12px;
             text-transform: lowercase;
             margin-bottom: 4px;
-            text-shadow: rgba(203, 20, 42, 0.09) 0px 0px 1px;
-            position: absolute;
-            left: 110px;
-            top: 5px;
+            padding-left: 110px;
+
         }
 
         > h5, > p {
@@ -515,52 +630,6 @@ body {
             padding: 0 5px;
         }
 
-        .panel_heading.arts {
-            background-color: #ff9c25;
-            &:hover {
-                background-color: #ffcd92;
-            }
-        }
-
-
-        .panel_heading.business {
-            background-color: #4d5989;
-            &:hover {
-                background-color: #a6acc4;
-            }
-        }
-
-
-        .panel_heading.languages {
-            background-color: #5bcbf5;
-            &:hover {
-                background-color: #ade5fa;
-            }
-        }
-
-
-        .panel_heading.lifestyle {
-            background-color: #bccc4e;
-            &:hover {
-                background-color: #dde5a6;
-            }
-        }
-
-
-        .panel_heading.sport {
-            background-color: #737bb7;
-            &:hover {
-                background-color: #b9bddb;
-            }
-        }
-
-
-        .panel_heading.general {
-            background-color: #a97b82;
-            &:hover {
-                background-color: #ddcacd;
-            }
-        }
 
     }
 
@@ -576,7 +645,6 @@ body {
     }
 
     .right_panel {
-
         float: right;
         width: 239px;
         margin-right: 0px;
@@ -584,49 +652,39 @@ body {
 
         .panel_heading {
             @include border-radius(16px 16px 53px 16px);
-            padding: 0px;
-            min-height: 115px;
+            background-color: #cd1543;
+            padding: 18px 0 0 0;
+            min-height: 95px;
         }
 
         h4 {
             color: #fff;
-            font-family: MisoBold, Calibri, Trebuchet MS, Helvetica, Arial, sans-serif;
-            font-size: 26px;
+            font-family: 'MisoBold', Calibri, Trebuchet MS, Helvetica, Arial, sans-serif;
+            font-size: 22px;
             line-height: 21px;
             text-transform: uppercase;
 
             a {
                 color: #fff;
                 display: block;
-                min-height: 90px;
-                padding: 25px 110px 0px 10px;
+                padding: 0px 110px 0px 10px;
                 text-decoration: none;
             }
         }
 
         .panel_title {
-            font-size: 18px;
-            line-height: 21px;
+            font-size: 12px;
             text-transform: lowercase;
             margin-bottom: 4px;
-            text-shadow: rgba(203, 20, 42, 0.09) 0px 0px 1px;
-            position: absolute;
-            top: 5px;
-            left: 10px;
             color: #fff;
+            padding-left: 10px;
+           
         }
 
         img {
             position: absolute;
             right: 4px;
             top: 4px;
-        }
-
-        .panel_heading.general {
-            background-color: #a97b82;
-            &:hover {
-                background-color: #ddcacd;
-            }
         }
 
 
@@ -639,6 +697,66 @@ body {
 
 }
 
+
+.content .courses-list {
+  display: none;
+}
+
+
+
+
+
+/* Footer Courses
+------------------------------------------*/
+
+.sidebar-right {
+
+    .courses-list {
+        list-style: none;
+        
+        > li:first-child {
+            display: none;
+        }
+    }
+
+    .courses-list-sub {
+        list-style:none;
+        @include clearfix;
+
+        > li {
+            float: left;
+            width: 185px;
+            margin-right:40px;
+            min-height: 300px;
+
+            > a {
+                display: block;
+                border-bottom: 1px solid #6f5f5e;
+                margin: 0 0 12px 0;
+                padding: 0 0 14px 0;
+                color: #00b0db;
+                text-decoration:none;
+                text-transform: uppercase;
+                line-height: 1.2;
+                font: {
+                    size:12px;
+                    weight:bold;
+                }
+
+            }
+
+            ul li {
+                margin: 0 0 7px 0;
+            }
+
+            ul a {
+                text-decoration: none;
+                color: #333333;
+                line-height: 1.2;
+            }
+        }
+    }
+}
 
 
 
@@ -656,3 +774,81 @@ body {
     color: #444;
     text-align: right;
 }
+
+
+
+/**
+*
+* Page Specific
+*
+*/
+
+
+/* Sub-pages layout
+--------------------------------------*/
+
+.internal-page {
+    .content {
+        width: 559px;
+        float: left;
+        background-color: #fff;
+        padding: 23px 60px 23px 65px;
+        @include border-radius(50px 0 0 0);
+    }
+
+    .sidebar-right {
+        float: right;
+        width: 236px;
+        min-height: 500px;
+        background-color: #ef4056;
+        clear: none;
+        @include border-radius(0 50px 0 0);
+
+        .courses-list-sub {
+            > li {
+                float: none;
+                margin: 0;
+                min-height: 0;
+                width: auto;
+
+                padding:0 0 6px 0;
+
+                &:first-child a {
+                    @include border-radius(0 50px 0 0); 
+                }
+
+                > a {
+                    display: block;
+                    background-color: #b9b3b2;
+                    padding: 15px 19px;
+                    margin: 0;
+                    border: 0;
+                    color: #ffffff;
+                }
+
+                ul {
+                    display: none;
+                    padding: 14px 24px;
+
+                    a {
+                        &:hover {
+                            color: #fff;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+
+
+
+        }
+
+    }
+}
+
+
+/* Courses page
+-----------------------------------------*/
+
+
+
