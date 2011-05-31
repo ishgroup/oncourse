@@ -4,19 +4,24 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>website</artifactId>
-		<groupId>ish.oncourse.willow.website</groupId>
+		<artifactId>parent</artifactId>
+		<groupId>ish.oncourse.willow</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>website-web</artifactId>
+	<artifactId>website</artifactId>
+	<groupId>ish.oncourse.willow</groupId>
 	<packaging>war</packaging>
-	<name>Willow - Web Site Web App</name>
+	<name>Willow - Web Sitep</name>
 
 	<properties>
-		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+		<tomcat.cluster>A</tomcat.cluster>
+		<tomcat-dev.port>7001</tomcat-dev.port>
+		<tomcat-test.port>10001</tomcat-test.port>
+		<tomcat-staging.port>10001</tomcat-staging.port>
+		<tomcat.path>/web</tomcat.path>
 	</properties>
-
+	
 	<dependencies>
 
 		<dependency>
