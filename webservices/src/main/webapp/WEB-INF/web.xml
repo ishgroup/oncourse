@@ -68,6 +68,11 @@
 		<res-auth>Container</res-auth>
 	</resource-ref>
 	
+	<error-page>
+		<exception-type>ish.oncourse.webservices.exception.PaymentNotFoundException</exception-type>
+		<location>/paymentNotFound</location>
+	</error-page>
+	
 	<session-config>
 		<session-timeout>20</session-timeout>
 	</session-config>

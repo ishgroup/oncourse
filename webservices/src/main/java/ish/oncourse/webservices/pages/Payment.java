@@ -10,6 +10,7 @@ import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.webservices.exception.PaymentNotFoundException;
 
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -142,6 +143,11 @@ public class Payment {
 
 		if (referenceId != null) {
 			this.paymentTransaction = paymentService.paymentTransactionByReferenceId(referenceId);
+			
+			if (paymentTransaction == null) {
+				throw new PaymentNotFoundException(messages.format("payment.not.found", referenceId));
+			}
+			
 			this.payment = paymentTransaction.getPayment();
 			this.totalIncGst = new Money(payment.getAmount());
 			this.payer = paymentTransaction.getPayment().getContact();

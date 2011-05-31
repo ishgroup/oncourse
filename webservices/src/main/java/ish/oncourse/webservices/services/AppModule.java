@@ -7,11 +7,11 @@ package ish.oncourse.webservices.services;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
+import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.reference.services.ReferenceService;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -29,12 +29,18 @@ import ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortType;
 import ish.oncourse.webservices.soap.v4.auth.AuthenticationPortTypeImpl;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.services.ComponentSource;
+import org.apache.tapestry5.services.ExceptionReporter;
+import org.apache.tapestry5.services.RequestExceptionHandler;
+import org.apache.tapestry5.services.ResponseRenderer;
 
 /**
  * 
@@ -62,5 +68,22 @@ public class AppModule {
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
+	}
+
+	public RequestExceptionHandler buildAppRequestExceptionHandler(final Logger logger, final ResponseRenderer renderer,
+			final ComponentSource componentSource) {
+		return new RequestExceptionHandler() {
+			public void handleRequestException(Throwable exception) throws IOException {
+				logger.error("Unexpected runtime exception: " + exception.getMessage(), exception);
+				String exceptionPageName = (exception instanceof PaymentNotFoundException) ? "PaymentNotFound" : "ErrorPage";
+				ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(exceptionPageName);
+				exceptionReporter.reportException(exception);
+				renderer.renderPageMarkupResponse(exceptionPageName);
+			}
+		};
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
+		configuration.add(RequestExceptionHandler.class, handler);
 	}
 }
