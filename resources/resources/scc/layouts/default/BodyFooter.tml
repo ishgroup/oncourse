@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <div class="footer-container">
+		<p class="footer-info">
+
+            Sydney Centre for Workplace Training<br />
+            A Division of Sydney Community College<br/>
+            2-8a Perry Street, Lilyfield NSW 2040, Australia<br/>
+            Email: <a href="mailto:customer.service@scc.nsw.edu.au">customer.service@scc.nsw.edu.au</a>
+
+		</p>
+		<p class="footer-logo">
+            <p>Copyright @ 2011</p>
+			<a href="http://www.ish.com.au/oncourse" class="popup"><img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse" /></a>
+		</p>
+	</div>
+</t:container>

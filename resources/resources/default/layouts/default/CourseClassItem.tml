@@ -59,16 +59,19 @@
                     </t:if>
                 </div>
 
+                <t:if test="hasTutorRoles">
                 <div class="tutor">
-                    <t:if test="hasTutorRoles">
+
                         <t:loop source="courseClass.tutorRoles" value="tutorRole"
                                 index="index">
                             <a class="nyromodal"
                                href="/tutor/${tutorRole.tutor.angelId}"
                                title="View tutor profile">${tutorRole.tutor.fullName}</a>
                         </t:loop>
-                    </t:if>
+
                 </div>
+                </t:if>
+                
                 <t:if test="excludePrice" negate="true">
                     <div class="price"><span t:type="ui/CourseClassPrice" courseClass="courseClass"/></div>
                 </t:if>

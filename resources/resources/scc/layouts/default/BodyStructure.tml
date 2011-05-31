@@ -49,6 +49,10 @@
 		</section>
         </div>
 
+        <div class="partners-footer">
+            <strong>PARTNERS:</strong> ErgoFit I SMR Learning Services I V Training
+        </div>
+
 		<footer class="site-footer" id="footer">
 			<div t:type="ui/bodyfooter"></div>
 			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer"></div>
