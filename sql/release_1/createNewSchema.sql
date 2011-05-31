@@ -31,6 +31,36 @@ COLLATE = utf8_unicode_ci;
 
 USE `w2_college` ;
 
+CREATE  TABLE IF NOT EXISTS `w2_college`.`Instruction` (
+	`id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+	`collegeId` BIGINT(20) NOT NULL,
+	`type` VARCHAR(20) NOT NULL,
+	`created` DATETIME NULL DEFAULT NULL ,
+	`modified` DATETIME NULL DEFAULT NULL ,
+	PRIMARY KEY (`id`) , 
+	CONSTRAINT `Instruction_ibfk_1`
+	    FOREIGN KEY (`collegeId` )
+	    REFERENCES `w2_college`.`College` (`id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 300
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+CREATE  TABLE IF NOT EXISTS `w2_college`.`InstructionParameter` (
+	`id` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+	`instruction_id` BIGINT(20) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`value` VARCHAR(1024),
+	PRIMARY KEY (`id`) , 
+	CONSTRAINT `InstructionParameter_ibfk_1`
+	    FOREIGN KEY (`instruction_id` )
+	    REFERENCES `w2_college`.`Instruction` (`id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 300
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
 -- -----------------------------------------------------
 -- Table `w2_college`.`College`
 -- -----------------------------------------------------

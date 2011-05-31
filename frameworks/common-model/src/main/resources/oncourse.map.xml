@@ -257,6 +257,19 @@
 		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
+	<db-entity name="Instruction">
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="type" type="VARCHAR" isMandatory="true" length="20"/>
+	</db-entity>
+	<db-entity name="InstructionParameter">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="instruction_id" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" length="255"/>
+		<db-attribute name="value" type="VARCHAR" length="1024"/>
+	</db-entity>
 	<db-entity name="Invoice" catalog="willow_college">
 		<db-attribute name="amountOwing" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -956,6 +969,15 @@
 		<obj-attribute name="status" type="ish.oncourse.model.EnrolmentStatus" db-attribute-path="status"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
+	<obj-entity name="Instruction" className="ish.oncourse.model.Instruction" dbEntityName="Instruction">
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="type" type="ish.oncourse.model.InstructionType" db-attribute-path="type"/>
+	</obj-entity>
+	<obj-entity name="InstructionParameter" className="ish.oncourse.model.InstructionParameter" dbEntityName="InstructionParameter">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
+	</obj-entity>
 	<obj-entity name="Invoice" className="ish.oncourse.model.Invoice" dbEntityName="Invoice">
 		<obj-attribute name="amountOwing" type="java.math.BigDecimal" db-attribute-path="amountOwing"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1434,6 +1456,9 @@
 	<db-relationship name="enrolments" source="College" target="Enrolment" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="instructions" source="College" target="Instruction" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1655,6 +1680,15 @@
 	</db-relationship>
 	<db-relationship name="student" source="Enrolment" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="Instruction" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="parameters" source="Instruction" target="InstructionParameter" toMany="true">
+		<db-attribute-pair source="id" target="instruction_id"/>
+	</db-relationship>
+	<db-relationship name="instruction" source="InstructionParameter" target="Instruction" toMany="false">
+		<db-attribute-pair source="instruction_id" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="Invoice" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -2177,6 +2211,9 @@
 	<obj-relationship name="invoiceLine" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
+	<obj-relationship name="college" source="Instruction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="parameters" source="Instruction" target="InstructionParameter" deleteRule="Cascade" db-relationship-path="parameters"/>
+	<obj-relationship name="instruction" source="InstructionParameter" target="Instruction" deleteRule="Nullify" db-relationship-path="instruction"/>
 	<obj-relationship name="college" source="Invoice" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
