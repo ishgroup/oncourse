@@ -17,6 +17,7 @@ import java.util.SortedSet;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Component;
@@ -31,6 +32,8 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 public class PageTypeEdit {
+
+	private static final Logger logger = Logger.getLogger(PageTypeEdit.class);
 
 	@Inject
 	private Request request;
@@ -152,6 +155,8 @@ public class PageTypeEdit {
 		PrivateResource res = resourceService.getTemplateResource("", "");
 
 		File dir = res.getFile();
+		
+		logger.info(String.format("Reading layouts from: %s", dir.getAbsolutePath()));
 
 		return dir.list(new FilenameFilter() {
 			public boolean accept(File arg, String arg1) {
