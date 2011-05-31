@@ -6,6 +6,8 @@ import ish.oncourse.utils.TagsTextileEntityTypes;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -20,7 +22,21 @@ public class Tag extends _Tag implements Queueable {
 	}
 
 	public List<Tag> getWebVisibleTags() {
-		return ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
+		
+		List<Tag> visibleTags = ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
+		
+		Collections.sort(visibleTags, new Comparator<Tag> () {
+			public int compare(Tag tag1, Tag tag2) {
+				int result = tag1.getWeighting() - tag2.getWeighting();
+				if (result != 0) {
+					return result;
+				}
+				return tag1.getName().compareToIgnoreCase(tag2.getName());
+			}
+		});
+		
+		
+		return visibleTags;
 	}
 
 	public boolean hasChildWithName(String name) {
