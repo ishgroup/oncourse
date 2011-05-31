@@ -73,11 +73,11 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 			if (college != null) {
 				collegeName = college.getName();
 			} else {
-				LOGGER.error("College could not be found or created");
+				LOGGER.warn("College could not be found or created");
 				// TODO: Should the request be interrupted at this point?
 			}
 		} else {
-			LOGGER.error("No security code sent by remote!");
+			LOGGER.warn("No security code sent by remote!");
 			// TODO: This is probably an error condition that should result in an
 			// exception being thrown to the client.
 		}

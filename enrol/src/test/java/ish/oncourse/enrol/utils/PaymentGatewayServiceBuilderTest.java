@@ -3,11 +3,12 @@ package ish.oncourse.enrol.utils;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import ish.oncourse.enrol.services.payment.DisabledPaymentGatewayService;
-import ish.oncourse.enrol.services.payment.PaymentExpressGatewayService;
-import ish.oncourse.enrol.services.payment.TestPaymentGatewayService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentGatewayType;
+import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import ish.oncourse.services.site.IWebSiteService;
 
 import org.apache.tapestry5.ioc.ServiceResources;

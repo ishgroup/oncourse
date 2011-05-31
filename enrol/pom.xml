@@ -43,11 +43,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ish.oncourse.angel</groupId>
-			<artifactId>waCommon</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
@@ -62,11 +57,6 @@
 			<artifactId>mockito-core</artifactId>
 		</dependency>
 		
-		<dependency>
-				<groupId>axis</groupId>
-				<artifactId>axis</artifactId>
-				<version>1.4</version>
-		</dependency>
 	</dependencies>
 
 	<build>

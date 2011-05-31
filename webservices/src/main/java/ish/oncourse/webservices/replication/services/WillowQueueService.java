@@ -3,13 +3,14 @@ package ish.oncourse.webservices.replication.services;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.webservices.services.ICollegeRequestService;
+import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
@@ -20,7 +21,7 @@ public class WillowQueueService implements IWillowQueueService {
 
 	@Inject
 	@Autowired
-	private ICollegeRequestService collegeRequestService;
+	private IWebSiteService webSiteService;
 
 	@Inject
 	@Autowired
@@ -39,15 +40,12 @@ public class WillowQueueService implements IWillowQueueService {
 		while (hasMoreRecords) {
 
 			SelectQuery q = new SelectQuery(QueuedTransaction.class);
-			
-			q.andQualifier(ExpressionFactory.matchExp(
-					QueuedTransaction.COLLEGE_PROPERTY,
-					collegeRequestService.getRequestingCollege()));
-			
+
+			q.andQualifier(ExpressionFactory.matchExp(QueuedTransaction.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
+
 			q.addPrefetch(QueuedTransaction.QUEUED_RECORDS_PROPERTY);
-			q.addOrdering(new Ordering(QueuedTransaction.CREATED_PROPERTY,
-					SortOrder.ASCENDING));
-			
+			q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING));
+
 			q.setFetchLimit(FETCH_LIMIT);
 			q.setFetchOffset(fetchOffset);
 
@@ -75,5 +73,20 @@ public class WillowQueueService implements IWillowQueueService {
 		}
 
 		return queue;
+	}
+
+	@Override
+	public void cleanEmptyTransactions() {
+		
+		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
+
+		EJBQLQuery q = new EJBQLQuery("select qt from QueuedTransaction qt left join qt.queuedRecords qr where qr.entityWillowId is null");
+
+		List<QueuedTransaction> emptyTransactions = objectContext.performQuery(q);
+
+		if (!emptyTransactions.isEmpty()) {
+			objectContext.deleteObjects(emptyTransactions);
+			objectContext.commitChanges();
+		}
 	}
 }

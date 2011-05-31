@@ -2,32 +2,40 @@ package ish.oncourse.webservices.replication.updaters;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
 import ish.oncourse.model.Attendance;
+import ish.oncourse.model.BinaryData;
+import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.SessionTutor;
-import ish.oncourse.model.Site;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.DiscountCourseClass;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Preference;
 import ish.oncourse.model.Queueable;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
+import ish.oncourse.model.SessionTutor;
+import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.Tag;
-import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.TagGroupRequirement;
+import ish.oncourse.model.Taggable;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
+import ish.oncourse.model.WaitingListSite;
+import ish.oncourse.webservices.EntityMapping;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
@@ -40,6 +48,8 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 
 	public WillowUpdaterImpl() {
 		updaterMap.put(getEntityName(Attendance.class), new AttendanceUpdater());
+		updaterMap.put(getEntityName(BinaryData.class), new BinaryDataUpdater());
+		updaterMap.put(getEntityName(BinaryInfo.class), new BinaryInfoUpdater());
 		updaterMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
 		updaterMap.put(getEntityName(Contact.class), new ContactUpdater());
 		updaterMap.put(getEntityName(Course.class), new CourseUpdater());
@@ -50,15 +60,20 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		updaterMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeUpdater());
 		updaterMap.put(getEntityName(Discount.class), new DiscountUpdater());
 		updaterMap.put(getEntityName(DiscountConcessionType.class), new DiscountConcessionTypeUpdater());
+		updaterMap.put(getEntityName(DiscountCourseClass.class), new DiscountCourseClassUpdater());
 		updaterMap.put(getEntityName(Enrolment.class), new EnrolmentUpdater());
 		updaterMap.put(getEntityName(Invoice.class), new InvoiceUpdater());
 		updaterMap.put(getEntityName(InvoiceLine.class), new InvoiceLineUpdater());
+		updaterMap.put(getEntityName(PaymentIn.class), new PaymentInUpdater());
+		updaterMap.put(getEntityName(PaymentInLine.class), new PaymentInLineUpdater());
 		updaterMap.put(getEntityName(Preference.class), new PreferenceUpdater());
 		updaterMap.put(getEntityName(Student.class), new StudentUpdater());
 		updaterMap.put(getEntityName(Tag.class), new TagUpdater());
-		updaterMap.put(getEntityName(TaggableTag.class), new TaggableTagUpdater());
+		updaterMap.put(getEntityName(Taggable.class), new TagRelationUpdater());
+		updaterMap.put(getEntityName(TagGroupRequirement.class), new TagGroupRequirementUpdater());
 		updaterMap.put(getEntityName(Tutor.class), new TutorUpdater());
 		updaterMap.put(getEntityName(WaitingList.class), new WaitingListUpdater());
+		updaterMap.put(getEntityName(WaitingListSite.class), new WaitingListSiteUpdater());
 		updaterMap.put(getEntityName(Site.class), new SiteUpdater());
 		updaterMap.put(getEntityName(Room.class), new RoomUpdater());
 		updaterMap.put(getEntityName(StudentConcession.class), new StudentConcessionUpdater());
@@ -78,7 +93,8 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	 */
 	@Override
 	public void updateEntityFromStub(ReplicationStub stub, Queueable entity, RelationShipCallback callback) {
-		String key = stub.getEntityIdentifier();
+		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
+		
 		IWillowUpdater updater = updaterMap.get(key);
 
 		if (updater == null) {

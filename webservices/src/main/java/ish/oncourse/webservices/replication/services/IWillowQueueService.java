@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IWillowQueueService {
 	List<QueuedRecord> getReplicationQueue(int limit);
+	void cleanEmptyTransactions();
 }

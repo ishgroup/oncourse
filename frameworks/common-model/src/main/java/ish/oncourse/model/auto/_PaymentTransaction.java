@@ -18,6 +18,7 @@ public abstract class _PaymentTransaction extends CayenneDataObject {
     public static final String IS_FINALISED_PROPERTY = "isFinalised";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String RESPONSE_PROPERTY = "response";
+    public static final String SESSION_ID_PROPERTY = "sessionId";
     public static final String TXN_REFERENCE_PROPERTY = "txnReference";
     public static final String PAYMENT_PROPERTY = "payment";
 
@@ -51,6 +52,13 @@ public abstract class _PaymentTransaction extends CayenneDataObject {
         return (String)readProperty("response");
     }
 
+    public void setSessionId(String sessionId) {
+        writeProperty("sessionId", sessionId);
+    }
+    public String getSessionId() {
+        return (String)readProperty("sessionId");
+    }
+
     public void setTxnReference(String txnReference) {
         writeProperty("txnReference", txnReference);
     }
@@ -66,5 +74,7 @@ public abstract class _PaymentTransaction extends CayenneDataObject {
         return (PaymentIn)readProperty("payment");
     }
 
+
+    protected abstract void onPrePersist();
 
 }

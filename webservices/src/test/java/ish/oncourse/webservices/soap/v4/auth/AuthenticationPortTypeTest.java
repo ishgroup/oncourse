@@ -112,7 +112,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 
 		AuthenticationPortType port = getAuthenticationPort();
 
-		long newCommunicationKey = port.authenticate("345ttn44$%9", 7059522699886202880L);
+		long newCommunicationKey = port.authenticateReplication("345ttn44$%9", 7059522699886202880L);
 
 		assertTrue("Check communication key.", String.valueOf(newCommunicationKey).length() > 5);
 	}
@@ -133,7 +133,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		AuthenticationPortType port = getAuthenticationPort();
 
 		try {
-			long newCommKey = port.authenticate("123456", 7059522699886202880L);
+			long newCommKey = port.authenticateReplication("123456", 7059522699886202880L);
 			fail("Passed wrong Security code. Failure is expected.");
 		} catch (AuthFailure e) {
 			assertNotNull("Expecting not null message", e.getMessage());
@@ -159,7 +159,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		AuthenticationPortType port = getAuthenticationPort();
 
 		try {
-			long newCommKey = port.authenticate("345ttn44$%9", 12345L);
+			long newCommKey = port.authenticateReplication("345ttn44$%9", 12345L);
 			fail("Passed wrong communication key. Failure is expected.");
 		} catch (AuthFailure e) {
 			assertNotNull(e.getMessage());
@@ -167,7 +167,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		}
 
 		// Check if college in a HALT state.
-		ITable actualData = dbUnitConnection.createQueryTable("College", "select * from College where id = 1");
+		ITable actualData = dbUnitConnection.createQueryTable("CommunicationKey", "select * from CommunicationKey where college_id = 1");
 		String keyStatus = (String) actualData.getValue(0, "communication_key_status");
 		assertEquals("Check if college in a HALT state.", KeyStatus.HALT.name(), keyStatus);
 	}
@@ -188,12 +188,12 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 
 		AuthenticationPortType port = getAuthenticationPort();
 
-		long newCommKey = port.authenticate("147ttn44$%9", 705952269988620267L);
+		long newCommKey = port.authenticateReplication("147ttn44$%9", 705952269988620267L);
 
 		assertTrue("Check communication key.", String.valueOf(newCommKey).length() > 5);
 
 		// Check if college in a HALT state.
-		ITable actualData = dbUnitConnection.createQueryTable("College", "select * from College where id = 2");
+		ITable actualData = dbUnitConnection.createQueryTable("CommunicationKey", "select * from CommunicationKey where college_id = 2");
 		String keyStatus = (String) actualData.getValue(0, "communication_key_status");
 		assertEquals("Check if college in a VALID state.", KeyStatus.VALID.name(), keyStatus);
 	}
@@ -208,7 +208,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 
 		AuthenticationPortType port = getAuthenticationPort();
 		
-		long newCommunicationKey = port.authenticate("345ttn44$%9", 7059522699886202880L);
+		long newCommunicationKey = port.authenticateReplication("345ttn44$%9", 7059522699886202880L);
 
 		port.logout(newCommunicationKey);
 	}

@@ -86,4 +86,8 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
     }
 
 
+    protected abstract void onPreUpdate();
+
+    protected abstract void onPrePersist();
+
 }

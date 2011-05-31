@@ -2,7 +2,7 @@ package ish.oncourse.webservices.soap.v4.auth;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.exception.AuthFault;
+import ish.oncourse.webservices.exception.AuthSoapFault;
 import ish.oncourse.webservices.util.SoapUtil;
 
 import org.apache.cxf.binding.soap.SoapMessage;
@@ -28,13 +28,13 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 		String securityCode = SoapUtil.getSecurityCode(message);
 		
 		if (securityCode == null) {
-			throw new AuthFault("empty.securityCode");
+			throw new AuthSoapFault("empty.securityCode");
 		}
 		
 		College college = collegeService.findBySecurityCode(securityCode);
 		
 		if (college == null) {
-			throw new AuthFault("invalid.securityCode", securityCode);
+			throw new AuthSoapFault("invalid.securityCode", securityCode);
 		}
 	}
 }

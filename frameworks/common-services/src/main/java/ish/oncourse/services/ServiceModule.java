@@ -32,6 +32,10 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
+import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.payment.PaymentService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.IPreferenceService;
@@ -72,6 +76,7 @@ import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
 
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 
 /**
@@ -118,6 +123,7 @@ public class ServiceModule {
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
 		binder.bind(ILookupService.class, LookupService.class);
+		binder.bind(IPaymentService.class, PaymentService.class);
 
 		// Reference Data services
 		binder.bind(ICountryService.class, CountryService.class).withId("CountryService");

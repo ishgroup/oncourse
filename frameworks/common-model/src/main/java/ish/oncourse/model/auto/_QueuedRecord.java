@@ -95,4 +95,6 @@ public abstract class _QueuedRecord extends CayenneDataObject {
     }
 
 
+    protected abstract void onPreRemove();
+
 }

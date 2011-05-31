@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.utils;
+package ish.oncourse.services.paymentexpress;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -8,6 +8,7 @@ import java.util.Locale;
 public class PaymentExpressUtil {
 
 	public static final String PAYMENT_EXPRESS_TXN_TYPE = "Purchase";
+	public static final String PAYMENT_EXPRESS_TXN_TYPE_REFUND = "Refund";
 	
 	public static final DecimalFormat DECIMAL_AMOUNT_FORMATTER;
 	public static final DecimalFormat IN_CENTS_AMOUNT_FORMATTER;

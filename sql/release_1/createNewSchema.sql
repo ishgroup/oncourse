@@ -20,7 +20,7 @@ CREATE  TABLE IF NOT EXISTS `w2_binary`.`BinaryData` (
   `collegeId` BIGINT(20) NOT NULL ,
   `content` LONGBLOB NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
-  `id` BIGINT(20) NOT NULL ,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `modified` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `angelId_collegeId_uniq_idx` (`angelId` ASC, `collegeId` ASC) ,
@@ -40,8 +40,6 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`College` (
   `isWebSitePaymentsEnabled` TINYINT(1) NULL DEFAULT NULL ,
   `isTestingWebServicePayments` TINYINT(1) NULL DEFAULT NULL ,
   `isTestingWebSitePayments` TINYINT(1) NULL DEFAULT NULL ,
-  `communication_key` BIGINT(20) NULL DEFAULT NULL ,
-  `communication_key_status` VARCHAR(20) NOT NULL DEFAULT 'VALID' ,
   `requiresAvetmiss` TINYINT(1) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
@@ -67,6 +65,25 @@ AUTO_INCREMENT = 300
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+-- -----------------------------------------------------
+-- Table `w2_college`.`CommunicationKey`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `w2_college`.`CommunicationKey` (
+	`id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+	`collegeId` BIGINT(20) NOT NULL,
+	`communication_key` BIGINT(20) NULL DEFAULT NULL ,
+	`communication_key_status` VARCHAR(20) NOT NULL DEFAULT 'VALID',
+	`communication_key_type` VARCHAR(20) NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `CommunicationKey_ibfk_1`
+	    FOREIGN KEY (`collegeId` )
+	    REFERENCES `w2_college`.`College` (`id` ))
+ENGINE = InnoDB
+AUTO_INCREMENT = 300
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
 
 -- -----------------------------------------------------
 -- Table `w2_college`.`Student`
@@ -90,7 +107,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`Student` (
   `yearSchoolCompleted` INT(11) NULL DEFAULT NULL ,
   `labourForceType` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `Student_ibfk_1` (`collegeId` ASC) )
+  INDEX `Student_ibfk_1` (`collegeId` ASC),
+  UNIQUE INDEX `angelId_collegeId_uniq_idx` (`angelId` ASC, `collegeId` ASC))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1189147
 DEFAULT CHARACTER SET = utf8
@@ -119,7 +137,7 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`Course` (
   `fieldOfEducation` VARCHAR(128) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `searchText` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `isWebVisible_idx` (`isWebVisible` ASC) ,
   INDEX `code_idx` (`code` ASC) ,
   CONSTRAINT `Course_ibfk_1`
@@ -157,7 +175,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`Site` (
   `suburb` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `timeZone` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `Site_ibfk_1` (`collegeId` ASC) ,
+  INDEX `Site_ibfk_1` (`collegeId` ASC),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   CONSTRAINT `Site_ibfk_1`
     FOREIGN KEY (`collegeId` )
     REFERENCES `w2_college`.`College` (`id` ))
@@ -184,8 +203,9 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`Room` (
   `facilities_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `name` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `Room_ibfk_1` (`collegeId` ASC) ,
-  INDEX `Room_ibfk_2` (`siteId` ASC) ,
+  INDEX `Room_ibfk_1` (`collegeId` ASC),
+  INDEX `Room_ibfk_2` (`siteId` ASC),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   CONSTRAINT `Room_ibfk_1`
     FOREIGN KEY (`collegeId` )
     REFERENCES `w2_college`.`College` (`id` ),
@@ -229,7 +249,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`CourseClass` (
   `sessionDetail` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `sessionDetail_textile` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `timeZone` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `CourseClass_ibfk_1` (`collegeId` ASC) ,
   INDEX `CourseClass_ibfk_2` (`courseId` ASC) ,
   INDEX `CourseClass_ibfk_3` (`roomId` ASC) ,
@@ -264,7 +285,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`Tutor` (
   `finishDate` DATETIME NULL DEFAULT NULL ,
   `resume` LONGTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `resume_textile` LONGTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `Tutor_ibfk_1` (`collegeId` ASC) )
 ENGINE = InnoDB
 AUTO_INCREMENT = 1185782
@@ -287,7 +309,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`Session` (
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
   `timeZone` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `Session_ibfk_1` (`collegeId` ASC) ,
   INDEX `Session_ibfk_2` (`courseClassId` ASC) ,
   INDEX `Session_ibfk_3` (`roomId` ASC) ,
@@ -361,7 +384,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`BinaryInfo` (
   `mimeType` VARCHAR(512) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `pixelHeight` INT(11) NULL DEFAULT NULL ,
   `pixelWidth` INT(11) NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `BinaryInfo_ibfk_1` (`collegeId` ASC) ,
   INDEX `name_idx` (`name`(255) ASC) ,
   INDEX `referenceNumber_idx` (`referenceNumber` ASC) ,
@@ -389,7 +413,7 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`BinaryInfoRelation` (
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `BinaryInfoRelation_ibfk_2` (`binaryInfoId` ASC) ,
   INDEX `entityIdentifier_idx` (`entityIdentifier` ASC) ,
   INDEX `entityWillowId_idx` (`entityWillowId` ASC) ,
@@ -720,7 +744,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`Contact` (
   `isMarketingViaPostAllowed` TINYINT(1) NULL DEFAULT NULL ,
   `isMarketingViaSMSAllowed` TINYINT(1) NULL DEFAULT NULL ,
   `taxFileNumber` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `Contact_ibfk_1` (`collegeId` ASC) ,
   INDEX `Contact_ibfk_2` (`studentId` ASC) ,
   INDEX `Contact_ibfk_3` (`tutorId` ASC) ,
@@ -755,6 +780,7 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`CourseModule` (
    `angelId` BIGINT,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   CONSTRAINT `CourseModule_ibfk_1`
     FOREIGN KEY (`courseId` )
     REFERENCES `w2_college`.`Course` (`id` ))
@@ -875,7 +901,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine` (
   `title` VARCHAR(200) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
   `description` MEDIUMTEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `unit` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `InvoiceLine_ibfk_1` (`collegeId` ASC) ,
   INDEX `InvoiceLine_ibfk_2` (`enrolmentId` ASC) ,
   INDEX `InvoiceLine_ibfk_3` (`invoiceId` ASC) ,
@@ -907,7 +934,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`InvoiceLine_Discount` (
    `angelId` BIGINT,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
-  INDEX `InvoiceLine_Discount_ibfk_1` (`discountId` ASC) ,
+  INDEX `InvoiceLine_Discount_ibfk_1` (`discountId` ASC),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   CONSTRAINT `InvoiceLine_Discount_ibfk_1`
     FOREIGN KEY (`discountId` )
     REFERENCES `w2_college`.`Discount` (`id` ),
@@ -1135,7 +1163,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentIn` (
   `creditCardName` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `creditCardNumber` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `creditCardType` VARCHAR(8) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `PaymentIn_ibfk_1` (`collegeId` ASC) ,
   INDEX `PaymentIn_ibfk_2` (`contactId` ASC) ,
   INDEX `PaymentIn_ibfk_3` (`studentId` ASC) ,
@@ -1166,7 +1195,8 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentInLine` (
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
   `amount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC),
   INDEX `PaymentInLine_ibfk_1` (`invoiceId` ASC) ,
   INDEX `PaymentInLine_ibfk_2` (`paymentInId` ASC) ,
   INDEX `PaymentInLine_angelId` (`angelId` ASC) ,
@@ -1199,6 +1229,7 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentOut` (
   `creditCardCVV` VARCHAR(4) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `creditCardType` VARCHAR(8) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   INDEX `PaymentOut_ibfk_1` (`collegeId` ASC) ,
   INDEX `PaymentOut_ibfk_2` (`contactId` ASC) ,
   CONSTRAINT `PaymentOut_ibfk_1`
@@ -1246,8 +1277,10 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`PaymentTransaction` (
   `modified` DATETIME NULL DEFAULT NULL ,
   `txnReference` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
   `response` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+  `sessionId` VARCHAR(100),
   PRIMARY KEY (`id`) ,
   INDEX `PaymentTransaction_ibfk_1` (`paymentId` ASC) ,
+  UNIQUE INDEX `referenceId_uniq_idx` (`sessionId` ASC),
   CONSTRAINT `PaymentTransaction_ibfk_1`
     FOREIGN KEY (`paymentId` )
     REFERENCES `w2_college`.`PaymentIn` (`id` ))
@@ -1574,6 +1607,7 @@ CREATE  TABLE IF NOT EXISTS `w2_college`.`WaitingListSite` (
    `angelId` BIGINT,
    `collegeId` BIGINT not null,
   INDEX `WaitingListSite_ibfk_2` (`waitingListId` ASC) ,
+  UNIQUE INDEX `collegeId_angelId_uniq_idx` (`collegeId` ASC, `angelId` ASC) ,
   CONSTRAINT `WaitingListSite_ibfk_1`
     FOREIGN KEY (`siteId` )
     REFERENCES `w2_college`.`Site` (`id` ),

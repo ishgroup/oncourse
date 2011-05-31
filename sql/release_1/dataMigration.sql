@@ -304,8 +304,10 @@ INSERT INTO %DESTINATIONDB%_college.Preference (angelId, collegeId, created, exp
 	SELECT angelId, collegeId, created, explanation, id, modified, name, sqlType, value
 	FROM %SOURCEDB%_college.Preference WHERE collegeId = @collegeId AND isDeleted <> 1;
 	
-INSERT INTO %DESTINATIONDB%_college.QueuedRecord (collegeId, id, lastAttemptTimestamp, numberOfAttempts, entityIdentifier, entityWillowId, transactionId)
-	SELECT collegeId, id, lastAttemptTimestamp, numberOfAttempts, recordEntity, recordId, 1
+insert into %DESTINATIONDB%_college.QueuedTransaction(id, transactionKey, createdOn, modifiedOn) values(1, '123456789000', CURDATE(), CURDATE());
+	
+INSERT INTO %DESTINATIONDB%_college.QueuedRecord (collegeId, id, lastAttemptTimestamp, numberOfAttempts, entityIdentifier, entityWillowId, transactionId, action)
+	SELECT collegeId, id, lastAttemptTimestamp, numberOfAttempts, recordEntity, recordId, 1, 'Update'
 	FROM %SOURCEDB%_college.QueuedRecord WHERE collegeId = @collegeId;
 
 INSERT INTO %DESTINATIONDB%_college.SessionTutor (id, angelId, collegeId, created, modified, sessionId, tutorId, type)

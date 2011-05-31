@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.EnrolCourses;
-import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
@@ -11,6 +10,7 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 
 import java.util.List;
 

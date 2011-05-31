@@ -16,7 +16,6 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		stub.setCustomerReference(entity.getCustomerReference());
 		stub.setDateDue(entity.getDateDue());
 		stub.setDescription(entity.getDescription());
-		stub.setEntityIdentifier(entity.getObjectId().getEntityName());
 		stub.setInvoiceDate(entity.getInvoiceDate());
 		stub.setInvoiceNumber(entity.getInvoiceNumber());
 		stub.setModified(entity.getModified());

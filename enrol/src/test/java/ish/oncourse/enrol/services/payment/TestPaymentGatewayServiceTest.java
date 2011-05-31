@@ -2,6 +2,7 @@ package ish.oncourse.enrol.services.payment;
 
 import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

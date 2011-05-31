@@ -2,6 +2,7 @@ package ish.oncourse.enrol.services.payment;
 
 import static org.mockito.Mockito.*;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

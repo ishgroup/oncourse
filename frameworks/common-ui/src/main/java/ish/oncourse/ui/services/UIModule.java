@@ -7,7 +7,6 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.filter.LogFilter;
-import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.ui.template.T5FileResource;
 
 import org.apache.tapestry5.SymbolConstants;
@@ -22,14 +21,12 @@ import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.Resource;
-import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Autobuild;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
-import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.ComponentClasses;
 import org.apache.tapestry5.services.ComponentMessages;
 import org.apache.tapestry5.services.ComponentTemplates;
@@ -46,17 +43,8 @@ import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
  */
 public class UIModule {
 
-	public static void bind(ServiceBinder binder) {
-
-		binder.bind(ThreadLocale.class, PerSiteVariantThreadLocale.class)
-				.withId("Override");
-	}
-
-	public PageLoader buildPageLoaderOverride(
-			@Autobuild PageLoaderOverride service,
-			@ComponentTemplates InvalidationEventHub templatesHub,
-			@ComponentMessages InvalidationEventHub messagesHub,
-			@ComponentClasses InvalidationEventHub classesInvalidationEventHub,
+	public PageLoader buildPageLoaderOverride(@Autobuild PageLoaderOverride service, @ComponentTemplates InvalidationEventHub templatesHub,
+			@ComponentMessages InvalidationEventHub messagesHub, @ComponentClasses InvalidationEventHub classesInvalidationEventHub,
 			Request request) {
 
 		service.setRequest(request);
@@ -67,10 +55,8 @@ public class UIModule {
 		return service;
 	}
 
-	public PageSource buildPageSourceOverride(PageLoader pageLoader,
-			@ComponentTemplates InvalidationEventHub templatesHub,
-			@ComponentMessages InvalidationEventHub messagesHub,
-			@ComponentClasses InvalidationEventHub classesInvalidationEventHub,
+	public PageSource buildPageSourceOverride(PageLoader pageLoader, @ComponentTemplates InvalidationEventHub templatesHub,
+			@ComponentMessages InvalidationEventHub messagesHub, @ComponentClasses InvalidationEventHub classesInvalidationEventHub,
 			Request request) {
 
 		PageSourceOverride service = new PageSourceOverride(pageLoader, request);
@@ -82,17 +68,12 @@ public class UIModule {
 		return service;
 	}
 
-	public ComponentTemplateSource buildComponentTemplateSourceOverride(
-			TemplateParser parser, ComponentTemplateLocator locator,
-			ClasspathURLConverter classpathURLConverter,
-			UpdateListenerHub updateListenerHub, Request request,
-			IResourceService resourceService,
-            IWebNodeService webNodeService,
-            IWebNodeTypeService webNodeTypeService,
-            IWebSiteService webSiteService) {
+	public ComponentTemplateSource buildComponentTemplateSourceOverride(TemplateParser parser, ComponentTemplateLocator locator,
+			ClasspathURLConverter classpathURLConverter, UpdateListenerHub updateListenerHub, Request request,
+			IResourceService resourceService, IWebNodeService webNodeService, IWebNodeTypeService webNodeTypeService,
+			IWebSiteService webSiteService) {
 
-		ComponentTemplateSourceOverride service = new ComponentTemplateSourceOverride(
-				parser, locator, classpathURLConverter, request,
+		ComponentTemplateSourceOverride service = new ComponentTemplateSourceOverride(parser, locator, classpathURLConverter, request,
 				resourceService, webNodeService, webNodeTypeService, webSiteService);
 
 		updateListenerHub.addUpdateListener(service);
@@ -100,39 +81,24 @@ public class UIModule {
 		return service;
 	}
 
-	public void contributeServiceOverride(
-			MappedConfiguration<Class<?>, Object> configuration,
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local ComponentTemplateSource componentTemplateSourceOverride) {
-		configuration.add(ComponentTemplateSource.class,
-				componentTemplateSourceOverride);
+		configuration.add(ComponentTemplateSource.class, componentTemplateSourceOverride);
 	}
 
-	public void contributeServiceOverride(
-			MappedConfiguration<Class<?>, Object> configuration,
-			@Local PageLoader override) {
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local PageLoader override) {
 		configuration.add(PageLoader.class, override);
 	}
 
-	public void contributeServiceOverride(
-			MappedConfiguration<Class<?>, Object> configuration,
-			@Local PageSource override) {
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local PageSource override) {
 		configuration.add(PageSource.class, override);
 	}
 
-	public void contributeServiceOverride(
-			MappedConfiguration<Class<?>, Object> configuration,
-			@Local ThreadLocale override) {
-		configuration.add(ThreadLocale.class, override);
-	}
-
-	public void contributeComponentClassResolver(
-			Configuration<LibraryMapping> configuration) {
+	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
 		configuration.add(new LibraryMapping("ui", "ish.oncourse.ui"));
 	}
 
-	public void contributeApplicationDefaults(
-			MappedConfiguration<String, String> configuration,
-			ICayenneService cayenneService) {
+	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration, ICayenneService cayenneService) {
 
 		// ensure Tapestry does not advertise itself on our pages...
 		configuration.add(SymbolConstants.OMIT_GENERATOR_META, "true");
@@ -142,21 +108,17 @@ public class UIModule {
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
 	}
 
-	public void contributeRequestHandler(
-			OrderedConfiguration<RequestFilter> configuration,
+	public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration,
 			@InjectService("LogFilter") RequestFilter logFilter) {
 		configuration.add("LogFilter", logFilter);
 	}
 
-	public RequestFilter buildLogFilter(org.slf4j.Logger log,
-			RequestGlobals requestGlobals) {
+	public RequestFilter buildLogFilter(org.slf4j.Logger log, RequestGlobals requestGlobals) {
 		return new LogFilter(log, requestGlobals);
 	}
 
-	public static void contributeTypeCoercer(
-			Configuration<CoercionTuple<PrivateResource, Resource>> configuration) {
-		configuration.add(new CoercionTuple<PrivateResource, Resource>(
-				PrivateResource.class, Resource.class,
+	public static void contributeTypeCoercer(Configuration<CoercionTuple<PrivateResource, Resource>> configuration) {
+		configuration.add(new CoercionTuple<PrivateResource, Resource>(PrivateResource.class, Resource.class,
 				new Coercion<PrivateResource, Resource>() {
 					public Resource coerce(PrivateResource input) {
 						return new T5FileResource(input.getFile());

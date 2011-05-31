@@ -7,7 +7,7 @@ import ish.oncourse.webservices.v4.stubs.replication.BinaryInfoRelationStub;
 public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoRelationStub, BinaryInfoRelation> {
 
 	@Override
-	protected void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {
+	protected void updateEntity(BinaryInfoRelationStub stub, BinaryInfoRelation entity, RelationShipCallback callback) {		
 		entity.setBinaryInfo(callback.updateRelationShip(stub.getBinaryInfoId(), BinaryInfo.class));
 		entity.setCreated(stub.getCreated());
 		entity.setEntityAngelId(stub.getEntityAngelId());

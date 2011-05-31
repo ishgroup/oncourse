@@ -71,8 +71,6 @@
 	<db-entity name="College" catalog="willow_college">
 		<db-attribute name="angelVersion" type="VARCHAR" length="40"/>
 		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
-		<db-attribute name="communication_key" type="BIGINT" length="19"/>
-		<db-attribute name="communication_key_status" type="VARCHAR" length="20"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -92,6 +90,13 @@
 		<db-attribute name="webServicesLogin" type="VARCHAR" length="16"/>
 		<db-attribute name="webServicesPass" type="VARCHAR" length="16"/>
 		<db-attribute name="webServicesSecurityCode" type="VARCHAR" length="16"/>
+	</db-entity>
+	<db-entity name="CommunicationKey">
+		<db-attribute name="collegeId" type="BIGINT"/>
+		<db-attribute name="communication_key" type="BIGINT"/>
+		<db-attribute name="communication_key_status" type="VARCHAR" length="20"/>
+		<db-attribute name="communication_key_type" type="VARCHAR" isMandatory="true" length="20"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="ConcessionType" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -441,6 +446,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="paymentId" type="BIGINT" length="19"/>
 		<db-attribute name="response" type="LONGVARCHAR" length="65535"/>
+		<db-attribute name="sessionId" type="VARCHAR" length="100"/>
 		<db-attribute name="txnReference" type="VARCHAR" length="64"/>
 	</db-entity>
 	<db-entity name="Preference" catalog="willow_college">
@@ -470,7 +476,7 @@
 	<db-entity name="QueuedTransaction">
 		<db-attribute name="collegeId" type="BIGINT"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="transactionKey" type="VARCHAR" length="100"/>
 	</db-entity>
@@ -772,6 +778,8 @@
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="entityWillowId" type="java.lang.Long" db-attribute-path="entityWillowId"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<pre-persist method-name="onPrePersist"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="Certificate" className="ish.oncourse.model.Certificate" dbEntityName="Certificate">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -796,8 +804,6 @@
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College">
 		<obj-attribute name="angelVersion" type="java.lang.String" db-attribute-path="angelVersion"/>
 		<obj-attribute name="billingCode" type="java.lang.String" db-attribute-path="billingCode"/>
-		<obj-attribute name="communicationKey" type="java.lang.Long" db-attribute-path="communication_key"/>
-		<obj-attribute name="communicationKeyStatus" type="ish.oncourse.model.KeyStatus" db-attribute-path="communication_key_status"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
 		<obj-attribute name="ipAddress" type="java.lang.String" db-attribute-path="ipAddress"/>
@@ -816,6 +822,11 @@
 		<obj-attribute name="webServicesLogin" type="java.lang.String" db-attribute-path="webServicesLogin"/>
 		<obj-attribute name="webServicesPass" type="java.lang.String" db-attribute-path="webServicesPass"/>
 		<obj-attribute name="webServicesSecurityCode" type="java.lang.String" db-attribute-path="webServicesSecurityCode"/>
+	</obj-entity>
+	<obj-entity name="CommunicationKey" className="ish.oncourse.model.CommunicationKey" dbEntityName="CommunicationKey">
+		<obj-attribute name="key" type="java.lang.Long" db-attribute-path="communication_key"/>
+		<obj-attribute name="keyStatus" type="ish.oncourse.model.KeyStatus" db-attribute-path="communication_key_status"/>
+		<obj-attribute name="type" type="ish.oncourse.model.CommunicationKeyType" db-attribute-path="communication_key_type"/>
 	</obj-entity>
 	<obj-entity name="ConcessionType" className="ish.oncourse.model.ConcessionType" dbEntityName="ConcessionType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1058,6 +1069,7 @@
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.oncourse.model.PaymentStatus" db-attribute-path="status"/>
 		<obj-attribute name="statusNotes" type="java.lang.String" db-attribute-path="statusNotes"/>
+		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="PaymentInLine" className="ish.oncourse.model.PaymentInLine" dbEntityName="PaymentInLine">
 		<obj-attribute name="amount" type="java.math.BigDecimal" db-attribute-path="amount"/>
@@ -1088,7 +1100,9 @@
 		<obj-attribute name="isFinalised" type="java.lang.Boolean" db-attribute-path="isFinalised"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
+		<obj-attribute name="sessionId" type="java.lang.String" db-attribute-path="sessionId"/>
 		<obj-attribute name="txnReference" type="java.lang.String" db-attribute-path="txnReference"/>
+		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="Preference" className="ish.oncourse.model.Preference" dbEntityName="Preference">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1108,6 +1122,7 @@
 		<obj-attribute name="errorMessage" type="java.lang.String" db-attribute-path="errorMessage"/>
 		<obj-attribute name="lastAttemptTimestamp" type="java.util.Date" db-attribute-path="lastAttemptTimestamp"/>
 		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
+		<pre-remove method-name="onPreRemove"/>
 	</obj-entity>
 	<obj-entity name="QueuedTransaction" className="ish.oncourse.model.QueuedTransaction" dbEntityName="QueuedTransaction">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1389,6 +1404,9 @@
 	<db-relationship name="collegeDomains" source="College" target="WebHostName" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="communicationKeys" source="College" target="CommunicationKey" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="concessionTypes" source="College" target="ConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1511,6 +1529,9 @@
 	</db-relationship>
 	<db-relationship name="willowUsers" source="College" target="WillowUser" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="college" source="CommunicationKey" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="ConcessionType" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -2066,18 +2087,23 @@
 	<obj-relationship name="college" source="CertificateOutcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
 	<obj-relationship name="attendances" source="College" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
+	<obj-relationship name="binaryData" source="College" target="BinaryData" deleteRule="Deny" db-relationship-path="binaryData"/>
 	<obj-relationship name="binaryInfoRelations" source="College" target="BinaryInfoRelation" deleteRule="Deny" db-relationship-path="binaryInfoRelations"/>
 	<obj-relationship name="binaryInfos" source="College" target="BinaryInfo" deleteRule="Deny" db-relationship-path="binaryInfos"/>
 	<obj-relationship name="certificateOutcomes" source="College" target="CertificateOutcome" deleteRule="Deny" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="certificates" source="College" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="collegeDomains" source="College" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
+	<obj-relationship name="communicationKeys" source="College" target="CommunicationKey" deleteRule="Deny" db-relationship-path="communicationKeys"/>
 	<obj-relationship name="concessionTypes" source="College" target="ConcessionType" deleteRule="Deny" db-relationship-path="concessionTypes"/>
 	<obj-relationship name="contacts" source="College" target="Contact" deleteRule="Deny" db-relationship-path="contacts"/>
 	<obj-relationship name="courseClasses" source="College" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
+	<obj-relationship name="courseModules" source="College" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
 	<obj-relationship name="courses" source="College" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="discountConcessionTypes" source="College" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
+	<obj-relationship name="discountCourseClasses" source="College" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
 	<obj-relationship name="discounts" source="College" target="Discount" deleteRule="Deny" db-relationship-path="discounts"/>
 	<obj-relationship name="enrolments" source="College" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
+	<obj-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="invoiceLines" source="College" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="invoices" source="College" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="licenseFees" source="College" target="LicenseFee" deleteRule="Deny" db-relationship-path="licenseFees"/>
@@ -2087,12 +2113,15 @@
 	<obj-relationship name="messages" source="College" target="Message" deleteRule="Deny" db-relationship-path="messages"/>
 	<obj-relationship name="notificationTemplates" source="College" target="NotificationTemplate" deleteRule="Deny" db-relationship-path="notificationTemplates"/>
 	<obj-relationship name="outcomes" source="College" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
+	<obj-relationship name="paymentInLines" source="College" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="paymentsIn" source="College" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="College" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="preferences" source="College" target="Preference" deleteRule="Deny" db-relationship-path="preferences"/>
 	<obj-relationship name="queuedRecords" source="College" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
+	<obj-relationship name="queuedTransactions" source="College" target="QueuedTransaction" deleteRule="Deny" db-relationship-path="queuedTransactions"/>
 	<obj-relationship name="rooms" source="College" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
 	<obj-relationship name="sessionTutors" source="College" target="SessionTutor" deleteRule="Deny" db-relationship-path="sessionTutors"/>
+	<obj-relationship name="sessions" source="College" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="sites" source="College" target="Site" deleteRule="Deny" db-relationship-path="sites"/>
 	<obj-relationship name="studentConcessions" source="College" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="students" source="College" target="Student" deleteRule="Deny" db-relationship-path="students"/>
@@ -2101,9 +2130,12 @@
 	<obj-relationship name="taggables" source="College" target="Taggable" deleteRule="Deny" db-relationship-path="taggables"/>
 	<obj-relationship name="tags" source="College" target="Tag" deleteRule="Deny" db-relationship-path="tags"/>
 	<obj-relationship name="tutorRoles" source="College" target="TutorRole" deleteRule="Deny" db-relationship-path="tutorRoles"/>
+	<obj-relationship name="tutors" source="College" target="Tutor" deleteRule="Deny" db-relationship-path="tutors"/>
+	<obj-relationship name="waitingListSites" source="College" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="waitingLists" source="College" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="webSites" source="College" target="WebSite" deleteRule="Deny" db-relationship-path="webSites"/>
 	<obj-relationship name="willowUsers" source="College" target="WillowUser" deleteRule="Deny" db-relationship-path="willowUsers"/>
+	<obj-relationship name="college" source="CommunicationKey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="ConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>

@@ -10,10 +10,8 @@ public class PreferenceStubBuilder extends AbstractWillowStubBuilder<Preference,
 		PreferenceStub stub = new PreferenceStub();
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());
-		stub.setExplanation(entity.getExplanation());
 		stub.setName(entity.getName());
 		stub.setValue(entity.getValue());
-		stub.setSqlType(entity.getSqlType());
 		stub.setValueString(entity.getValueString());
 		return stub;
 	}

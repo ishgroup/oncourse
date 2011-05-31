@@ -23,7 +23,7 @@
 			<artifactId>common-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-test</artifactId>
@@ -35,7 +35,7 @@
 			<groupId>org.apache.cayenne</groupId>
 			<artifactId>cayenne-server</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.cayenne</groupId>
 			<artifactId>cayenne-lifecycle</artifactId>
@@ -70,6 +70,11 @@
 			<groupId>velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>ish.oncourse.angel</groupId>
+			<artifactId>waCommon</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
@@ -80,7 +85,12 @@
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry5-annotations</artifactId>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
 			<artifactId>tapestry-test</artifactId>
@@ -106,7 +116,7 @@
 			<groupId>net.java.dev.textile-j</groupId>
 			<artifactId>textile-j</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
@@ -124,13 +134,13 @@
 			<artifactId>commons-pool</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>dbunit</groupId>
 			<artifactId>dbunit</artifactId>

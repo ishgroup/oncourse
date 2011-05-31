@@ -97,7 +97,7 @@
 								"Generate Classes" -->
 							<!-- excluding these entities depending on the onCourse datamap till 
 								the CAY-1494 will be done -->
-							<excludeEntitiesPattern>BinaryInfo,Course,CourseModule,Certificate,Site,Student,Contact</excludeEntitiesPattern>
+							<excludeEntitiesPattern>BinaryInfo,Course,CourseModule,Certificate,Site,Student,Contact,College</excludeEntitiesPattern>
 						</configuration>
 						<goals>
 							<goal>cgen</goal>

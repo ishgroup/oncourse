@@ -1,9 +1,5 @@
-package ish.oncourse.enrol.utils;
+package ish.oncourse.services.paymentexpress;
 
-import ish.oncourse.enrol.services.payment.DisabledPaymentGatewayService;
-import ish.oncourse.enrol.services.payment.IPaymentGatewayService;
-import ish.oncourse.enrol.services.payment.PaymentExpressGatewayService;
-import ish.oncourse.enrol.services.payment.TestPaymentGatewayService;
 import ish.oncourse.model.College;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -20,6 +16,7 @@ public class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGate
 	public IPaymentGatewayService buildService(ServiceResources resources) {
 		IWebSiteService service = resources.getService(IWebSiteService.class);
 		College currentCollege = service.getCurrentCollege();
+
 		if (!currentCollege.isPaymentGatewayEnabled()) {
 			return new DisabledPaymentGatewayService();
 		}

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -73,5 +74,18 @@ public class CourseClassService implements ICourseClassService {
 		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(
 				CourseClass.ID_PK_COLUMN, ids).andExp(getSiteQualifier()));
 		return cayenneService.sharedContext().performQuery(q);
+	}
+
+	/* (non-Javadoc)
+	 * @see ish.oncourse.services.courseclass.ICourseClassService#loadByAngelId(java.lang.Long)
+	 */
+	@Override
+	public CourseClass loadByAngelId(Long angelId) {
+		
+		SelectQuery q = new SelectQuery(CourseClass.class);
+		q.andQualifier(ExpressionFactory.matchExp(CourseClass.ANGEL_ID_PROPERTY, angelId));
+		q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
+		
+		return (CourseClass) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 }

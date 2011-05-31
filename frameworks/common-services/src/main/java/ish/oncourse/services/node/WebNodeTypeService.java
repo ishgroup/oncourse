@@ -20,8 +20,10 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 		expr = expr.andExp(ExpressionFactory
 				.matchExp(WebNodeType.LAYOUT_KEY_PROPERTY,
 						WebNodeType.DEFAULT_LAYOUT_KEY));
+		
+		List<WebNodeType> webNodeTypes = findByQualifier(expr);
 
-		return (WebNodeType) findByQualifier(expr).get(0);
+		return (!webNodeTypes.isEmpty()) ? webNodeTypes.get(0) : null;
 	}
 
 	public List<WebNodeType> getWebNodeTypes() {

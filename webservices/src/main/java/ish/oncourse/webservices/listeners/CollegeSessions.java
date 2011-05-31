@@ -28,8 +28,9 @@ public class CollegeSessions implements HttpSessionListener, HttpSessionAttribut
 	public void sessionDestroyed(HttpSessionEvent se) {
 		SessionToken token = (SessionToken) se.getSession().getAttribute(SessionToken.SESSION_TOKEN_KEY);
 		if (token != null) {
-			logger.info(String.format("Terminating session for college:%s, with collegeId:%s.", token.getCollege().getName(), token.getCollege().getId()));
-			SESSION_MAP.remove(token.getCollege().getId());
+			logger.info(String.format("Terminating session for college:%s, with communicationKey:%s.", token.getCollege().getName(),
+					token.getCommunicationKey()));
+			SESSION_MAP.remove(token.getCommunicationKey());
 		}
 	}
 
@@ -39,14 +40,15 @@ public class CollegeSessions implements HttpSessionListener, HttpSessionAttribut
 
 		if (attr instanceof SessionToken) {
 			SessionToken token = (SessionToken) attr;
-			logger.info(String.format("Creating session for college: %s, with id:%s.", token.getCollege().getName(), token.getCollege().getId()));
-			SESSION_MAP.put(token.getCollege().getId(), se.getSession());
+			logger.info(String.format("Creating session for college: %s, with communicationKey:%s.", token.getCollege().getName(),
+					token.getCommunicationKey()));
+			SESSION_MAP.put(token.getCommunicationKey(), se.getSession());
 		}
 
 	}
 
-	public static HttpSession getCollegeSession(Long collegeId) {
-		return SESSION_MAP.get(collegeId);
+	public static HttpSession getCollegeSession(Long communicationKey) {
+		return SESSION_MAP.get(communicationKey);
 	}
 
 	@Override

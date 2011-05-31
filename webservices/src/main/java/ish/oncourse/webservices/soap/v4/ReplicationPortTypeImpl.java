@@ -3,6 +3,7 @@ package ish.oncourse.webservices.soap.v4;
 import ish.oncourse.model.QueueKey;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.QueuedRecordAction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -36,8 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v4.soap.webservices.oncourse.ish/")
 public class ReplicationPortTypeImpl implements ReplicationPortType {
 
-	private static final Logger logger = Logger
-			.getLogger(ReplicationPortTypeImpl.class);
+	private static final Logger logger = Logger.getLogger(ReplicationPortTypeImpl.class);
 
 	private static final int BATCH_SIZE = 500;
 
@@ -63,8 +63,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		List<ReplicatedRecord> replicatedRecords = new ArrayList<ReplicatedRecord>();
 
 		for (TransactionGroup group : req.getGroups()) {
-			replicatedRecords.addAll(transactionGroupUpdater
-					.processGroup(group));
+			replicatedRecords.addAll(transactionGroupUpdater.processGroup(group));
 		}
 
 		ReplicationResult result = new ReplicationResult();
@@ -85,8 +84,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 			Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<QueueKey, DFADedupper>();
 
 			for (QueuedRecord r : queue) {
-				QueueKey key = new QueueKey(r.getEntityWillowId(),
-						r.getEntityIdentifier());
+				QueueKey key = new QueueKey(r.getEntityWillowId(), r.getEntityIdentifier());
 
 				DFADedupper deduper = dedupMap.get(key);
 
@@ -150,33 +148,25 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 				SelectQuery q = new SelectQuery(QueuedRecord.class);
 
-				q.andQualifier(ExpressionFactory.matchExp(
-						QueuedRecord.ENTITY_WILLOW_ID_PROPERTY, record
-								.getStub().getWillowId()));
-				q.andQualifier(ExpressionFactory.matchExp(
-						QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, record
-								.getStub().getEntityIdentifier()));
+				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_WILLOW_ID_PROPERTY, record.getStub().getWillowId()));
+				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, record.getStub().getEntityIdentifier()));
 
-				QueuedRecord queuedRecord = (QueuedRecord) Cayenne
-						.objectForQuery(ctx, q);
+				QueuedRecord queuedRecord = (QueuedRecord) Cayenne.objectForQuery(ctx, q);
 
-				if (record.getStatus() == Status.SUCCESS
-						&& record.getStub().getAngelId() != null) {
+				if (record.getStatus() == Status.SUCCESS && record.getStub().getAngelId() != null) {
 
 					@SuppressWarnings("unchecked")
-					Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx
-							.getEntityResolver()
-							.getObjEntity(
-									record.getStub().getEntityIdentifier())
-							.getJavaClass();
-					Queueable object = (Queueable) Cayenne.objectForPK(ctx,
-							entityClass, record.getStub().getWillowId());
-					object.setAngelId(record.getStub().getAngelId());
+					Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
+							.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
+					
+					if (queuedRecord.getAction() != QueuedRecordAction.DELETE) {
+						Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
+						object.setAngelId(record.getStub().getAngelId());
+					}
+					
 					ctx.deleteObject(queuedRecord);
 				} else {
-					Integer numberAttempts = (queuedRecord
-							.getNumberOfAttempts() != null) ? queuedRecord
-							.getNumberOfAttempts() : 0;
+					Integer numberAttempts = (queuedRecord.getNumberOfAttempts() != null) ? queuedRecord.getNumberOfAttempts() : 0;
 					queuedRecord.setNumberOfAttempts(numberAttempts + 1);
 					queuedRecord.setLastAttemptTimestamp(new Date());
 					queuedRecord.setErrorMessage(record.getMessage());
@@ -187,5 +177,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		} catch (Exception e) {
 			logger.error("Unable to confirm replication results.", e);
 		}
+		
+		queueService.cleanEmptyTransactions();
 	}
 }

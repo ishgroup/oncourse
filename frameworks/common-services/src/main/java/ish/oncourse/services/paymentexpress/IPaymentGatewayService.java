@@ -1,6 +1,7 @@
-package ish.oncourse.enrol.services.payment;
+package ish.oncourse.services.paymentexpress;
 
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentOut;
 
 /**
  * Service for payment gateway processing.
@@ -14,4 +15,6 @@ public interface IPaymentGatewayService {
 	 * @param payment the given payment for processing.
 	 */
 	void performGatewayOperation(PaymentIn payment);
+	
+	void performGatewayOperation(PaymentOut paymentOut);
 }

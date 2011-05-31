@@ -1,7 +1,8 @@
-package ish.oncourse.enrol.services.payment;
+package ish.oncourse.services.paymentexpress;
 
 import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentOut;
 
 /**
  * Test payment gateway processing.
@@ -16,7 +17,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 	 * Success if the credit card type is {@link CreditCardType#MASTERCARD},
 	 * fail otherwise.
 	 * 
-	 * @see ish.oncourse.enrol.services.payment.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
+	 * @see ish.oncourse.services.paymentexpress.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
 	 */
 	public void performGatewayOperation(PaymentIn payment) {
 		if (payment.getCreditCardType().equals(CreditCardType.MASTERCARD)) {
@@ -26,4 +27,12 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 		}
 	}
 
+	@Override
+	public void performGatewayOperation(PaymentOut paymentOut) {
+		if (paymentOut.getTotalAmount().longValue() < 1000) {
+			paymentOut.succeed();
+		} else {
+			paymentOut.failed();
+		}
+	}
 }

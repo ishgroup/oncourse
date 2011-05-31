@@ -2,6 +2,7 @@ package ish.oncourse.services.system;
 
 import ish.oncourse.model.College;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A number of services used primarily by WebServices.
@@ -41,4 +42,10 @@ public interface ICollegeService {
 	 * property)
 	 */
 	void recordWSAccess(College college, String ipAddress, String angelVersion, Date accessTime);
+	
+	/**
+	 * Returns all colleges available in the system.
+	 * @return colleges
+	 */
+	List<College> allColleges();
 }

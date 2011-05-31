@@ -178,4 +178,6 @@ public abstract class _PaymentIn extends CayenneDataObject {
     }
 
 
+    protected abstract void onPostAdd();
+
 }

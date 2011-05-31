@@ -1,15 +1,14 @@
 package ish.oncourse.model;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-
-import org.apache.log4j.Logger;
-
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.util.ExternalValidation;
 import ish.oncourse.model.auto._PaymentIn;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+
+import org.apache.log4j.Logger;
 
 public class PaymentIn extends _PaymentIn implements Queueable {
 
@@ -25,6 +24,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
+	
+	
 
 	/**
 	 * Validates the payment details: amount, credit card type, name credit card
@@ -81,6 +82,20 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		if (!isValid) {
 			LOG.warn("The credit card name " + creditCardName + " is invalid");
 		}
+		return isValid;
+	}
+	
+	/**
+	 * Validates credit card cvv, expecting maximum 4 digits.
+	 * @return true if valid
+	 */
+	public boolean validateCVV() {
+		boolean isValid = true;
+		
+		if(getCreditCardCVV() != null) {
+			isValid = getCreditCardCVV().matches("\\d{1, 4}");
+		}
+		
 		return isValid;
 	}
 
@@ -204,4 +219,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		return PaymentSource.SOURCE_WEB.getDatabaseValue() + getId();
 	}
 
+
+
+	@Override
+	protected void onPostAdd() {
+		setStatus(PaymentStatus.PENDING);
+	}
 }

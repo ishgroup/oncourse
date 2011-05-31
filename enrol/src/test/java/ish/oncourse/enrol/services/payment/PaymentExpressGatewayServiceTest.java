@@ -3,9 +3,10 @@ package ish.oncourse.enrol.services.payment;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import ish.common.types.CreditCardType;
-import ish.oncourse.enrol.utils.PaymentExpressUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentExpressUtil;
 
 import java.math.BigDecimal;
 import java.util.Calendar;

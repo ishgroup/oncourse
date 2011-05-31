@@ -6,20 +6,24 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.Attendance;
+import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
+import ish.oncourse.model.CommunicationKey;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.KeyStatus;
+import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.LicenseFee;
 import ish.oncourse.model.Log;
 import ish.oncourse.model.Message;
@@ -29,10 +33,13 @@ import ish.oncourse.model.NotificationTemplate;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Preference;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
@@ -41,8 +48,10 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.model.TagGroupRequirement;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
+import ish.oncourse.model.WaitingListSite;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WillowUser;
@@ -57,8 +66,6 @@ public abstract class _College extends CayenneDataObject {
 
     public static final String ANGEL_VERSION_PROPERTY = "angelVersion";
     public static final String BILLING_CODE_PROPERTY = "billingCode";
-    public static final String COMMUNICATION_KEY_PROPERTY = "communicationKey";
-    public static final String COMMUNICATION_KEY_STATUS_PROPERTY = "communicationKeyStatus";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
     public static final String IP_ADDRESS_PROPERTY = "ipAddress";
@@ -78,18 +85,23 @@ public abstract class _College extends CayenneDataObject {
     public static final String WEB_SERVICES_PASS_PROPERTY = "webServicesPass";
     public static final String WEB_SERVICES_SECURITY_CODE_PROPERTY = "webServicesSecurityCode";
     public static final String ATTENDANCES_PROPERTY = "attendances";
+    public static final String BINARY_DATA_PROPERTY = "binaryData";
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
     public static final String BINARY_INFOS_PROPERTY = "binaryInfos";
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
     public static final String CERTIFICATES_PROPERTY = "certificates";
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
+    public static final String COMMUNICATION_KEYS_PROPERTY = "communicationKeys";
     public static final String CONCESSION_TYPES_PROPERTY = "concessionTypes";
     public static final String CONTACTS_PROPERTY = "contacts";
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
+    public static final String COURSE_MODULES_PROPERTY = "courseModules";
     public static final String COURSES_PROPERTY = "courses";
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
+    public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
     public static final String DISCOUNTS_PROPERTY = "discounts";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
+    public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
     public static final String INVOICES_PROPERTY = "invoices";
     public static final String LICENSE_FEES_PROPERTY = "licenseFees";
@@ -99,12 +111,15 @@ public abstract class _College extends CayenneDataObject {
     public static final String MESSAGES_PROPERTY = "messages";
     public static final String NOTIFICATION_TEMPLATES_PROPERTY = "notificationTemplates";
     public static final String OUTCOMES_PROPERTY = "outcomes";
+    public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
     public static final String PAYMENTS_OUT_PROPERTY = "paymentsOut";
     public static final String PREFERENCES_PROPERTY = "preferences";
     public static final String QUEUED_RECORDS_PROPERTY = "queuedRecords";
+    public static final String QUEUED_TRANSACTIONS_PROPERTY = "queuedTransactions";
     public static final String ROOMS_PROPERTY = "rooms";
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
+    public static final String SESSIONS_PROPERTY = "sessions";
     public static final String SITES_PROPERTY = "sites";
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
     public static final String STUDENTS_PROPERTY = "students";
@@ -113,6 +128,8 @@ public abstract class _College extends CayenneDataObject {
     public static final String TAGGABLES_PROPERTY = "taggables";
     public static final String TAGS_PROPERTY = "tags";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
+    public static final String TUTORS_PROPERTY = "tutors";
+    public static final String WAITING_LIST_SITES_PROPERTY = "waitingListSites";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
     public static final String WEB_SITES_PROPERTY = "webSites";
     public static final String WILLOW_USERS_PROPERTY = "willowUsers";
@@ -131,20 +148,6 @@ public abstract class _College extends CayenneDataObject {
     }
     public String getBillingCode() {
         return (String)readProperty("billingCode");
-    }
-
-    public void setCommunicationKey(Long communicationKey) {
-        writeProperty("communicationKey", communicationKey);
-    }
-    public Long getCommunicationKey() {
-        return (Long)readProperty("communicationKey");
-    }
-
-    public void setCommunicationKeyStatus(KeyStatus communicationKeyStatus) {
-        writeProperty("communicationKeyStatus", communicationKeyStatus);
-    }
-    public KeyStatus getCommunicationKeyStatus() {
-        return (KeyStatus)readProperty("communicationKeyStatus");
     }
 
     public void setCreated(Date created) {
@@ -285,6 +288,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToBinaryData(BinaryData obj) {
+        addToManyTarget("binaryData", obj, true);
+    }
+    public void removeFromBinaryData(BinaryData obj) {
+        removeToManyTarget("binaryData", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<BinaryData> getBinaryData() {
+        return (List<BinaryData>)readProperty("binaryData");
+    }
+
+
     public void addToBinaryInfoRelations(BinaryInfoRelation obj) {
         addToManyTarget("binaryInfoRelations", obj, true);
     }
@@ -345,6 +360,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToCommunicationKeys(CommunicationKey obj) {
+        addToManyTarget("communicationKeys", obj, true);
+    }
+    public void removeFromCommunicationKeys(CommunicationKey obj) {
+        removeToManyTarget("communicationKeys", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CommunicationKey> getCommunicationKeys() {
+        return (List<CommunicationKey>)readProperty("communicationKeys");
+    }
+
+
     public void addToConcessionTypes(ConcessionType obj) {
         addToManyTarget("concessionTypes", obj, true);
     }
@@ -381,6 +408,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToCourseModules(CourseModule obj) {
+        addToManyTarget("courseModules", obj, true);
+    }
+    public void removeFromCourseModules(CourseModule obj) {
+        removeToManyTarget("courseModules", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CourseModule> getCourseModules() {
+        return (List<CourseModule>)readProperty("courseModules");
+    }
+
+
     public void addToCourses(Course obj) {
         addToManyTarget("courses", obj, true);
     }
@@ -405,6 +444,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToDiscountCourseClasses(DiscountCourseClass obj) {
+        addToManyTarget("discountCourseClasses", obj, true);
+    }
+    public void removeFromDiscountCourseClasses(DiscountCourseClass obj) {
+        removeToManyTarget("discountCourseClasses", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiscountCourseClass> getDiscountCourseClasses() {
+        return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
+    }
+
+
     public void addToDiscounts(Discount obj) {
         addToManyTarget("discounts", obj, true);
     }
@@ -426,6 +477,18 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Enrolment> getEnrolments() {
         return (List<Enrolment>)readProperty("enrolments");
+    }
+
+
+    public void addToInvoiceLineDiscounts(InvoiceLineDiscount obj) {
+        addToManyTarget("invoiceLineDiscounts", obj, true);
+    }
+    public void removeFromInvoiceLineDiscounts(InvoiceLineDiscount obj) {
+        removeToManyTarget("invoiceLineDiscounts", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<InvoiceLineDiscount> getInvoiceLineDiscounts() {
+        return (List<InvoiceLineDiscount>)readProperty("invoiceLineDiscounts");
     }
 
 
@@ -537,6 +600,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToPaymentInLines(PaymentInLine obj) {
+        addToManyTarget("paymentInLines", obj, true);
+    }
+    public void removeFromPaymentInLines(PaymentInLine obj) {
+        removeToManyTarget("paymentInLines", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<PaymentInLine> getPaymentInLines() {
+        return (List<PaymentInLine>)readProperty("paymentInLines");
+    }
+
+
     public void addToPaymentsIn(PaymentIn obj) {
         addToManyTarget("paymentsIn", obj, true);
     }
@@ -585,6 +660,18 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToQueuedTransactions(QueuedTransaction obj) {
+        addToManyTarget("queuedTransactions", obj, true);
+    }
+    public void removeFromQueuedTransactions(QueuedTransaction obj) {
+        removeToManyTarget("queuedTransactions", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<QueuedTransaction> getQueuedTransactions() {
+        return (List<QueuedTransaction>)readProperty("queuedTransactions");
+    }
+
+
     public void addToRooms(Room obj) {
         addToManyTarget("rooms", obj, true);
     }
@@ -606,6 +693,18 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<SessionTutor> getSessionTutors() {
         return (List<SessionTutor>)readProperty("sessionTutors");
+    }
+
+
+    public void addToSessions(Session obj) {
+        addToManyTarget("sessions", obj, true);
+    }
+    public void removeFromSessions(Session obj) {
+        removeToManyTarget("sessions", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Session> getSessions() {
+        return (List<Session>)readProperty("sessions");
     }
 
 
@@ -702,6 +801,30 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<TutorRole> getTutorRoles() {
         return (List<TutorRole>)readProperty("tutorRoles");
+    }
+
+
+    public void addToTutors(Tutor obj) {
+        addToManyTarget("tutors", obj, true);
+    }
+    public void removeFromTutors(Tutor obj) {
+        removeToManyTarget("tutors", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Tutor> getTutors() {
+        return (List<Tutor>)readProperty("tutors");
+    }
+
+
+    public void addToWaitingListSites(WaitingListSite obj) {
+        addToManyTarget("waitingListSites", obj, true);
+    }
+    public void removeFromWaitingListSites(WaitingListSite obj) {
+        removeToManyTarget("waitingListSites", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WaitingListSite> getWaitingListSites() {
+        return (List<WaitingListSite>)readProperty("waitingListSites");
     }
 
 

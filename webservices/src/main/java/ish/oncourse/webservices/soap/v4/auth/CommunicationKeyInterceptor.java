@@ -1,8 +1,10 @@
 package ish.oncourse.webservices.soap.v4.auth;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.CommunicationKey;
+import ish.oncourse.model.KeyStatus;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.exception.AuthFault;
+import ish.oncourse.webservices.exception.AuthSoapFault;
 import ish.oncourse.webservices.listeners.CollegeSessions;
 import ish.oncourse.webservices.util.SoapUtil;
 
@@ -14,10 +16,13 @@ import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
+
+	private static final Logger logger = Logger.getLogger(CommunicationKeyInterceptor.class);
 
 	@Inject
 	@Autowired
@@ -31,27 +36,49 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 		String securityCode = SoapUtil.getSecurityCode(message);
 
 		if (securityCode == null) {
-			throw new AuthFault("empty.securityCode");
+			throw new AuthSoapFault("empty.securityCode");
 		}
 
 		College college = collegeService.findBySecurityCode(securityCode);
 
 		if (college == null) {
-			throw new AuthFault("invalid.securityCode", securityCode);
+			throw new AuthSoapFault("invalid.securityCode", securityCode);
 		}
 
-		String communicationKey = SoapUtil.getCommunicationKey(message);
+		Long communicationKey = null;
 
-		if (communicationKey == null || !String.valueOf(college.getCommunicationKey()).equals(communicationKey)) {
-			throw new AuthFault("communicationKey.invalid", communicationKey);
+		try {
+			communicationKey = Long.parseLong(SoapUtil.getCommunicationKey(message));
+		} catch (NumberFormatException ne) {
+			logger.error("Failed to parse communication key.", ne);
+			throw new AuthSoapFault("communicationKey.invalid", communicationKey);
 		}
-		
-		HttpSession session = CollegeSessions.getCollegeSession(college.getId());
-		
+
+		boolean isValid = false;
+
+		for (CommunicationKey key : college.getCommunicationKeys()) {
+			if (communicationKey.equals(key.getKey()) && key.getKeyStatus() == KeyStatus.VALID) {
+				isValid = true;
+				break;
+			}
+		}
+
+		if (!isValid) {
+			throw new AuthSoapFault("communicationKey.invalid", communicationKey);
+		}
+
+		HttpSession session = CollegeSessions.getCollegeSession(communicationKey);
+
 		if (session == null) {
-			throw new AuthFault("session.expired.for.key", communicationKey);
+			throw new AuthSoapFault("session.expired.for.key", communicationKey);
 		}
 		
+		SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
+		
+		if (!communicationKey.equals(token.getCommunicationKey())) {
+			throw new AuthSoapFault("communicationKey.invalid", communicationKey);
+		}
+
 		HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
 		req.setAttribute(SoapUtil.REQUESTING_COLLEGE, college);
 	}

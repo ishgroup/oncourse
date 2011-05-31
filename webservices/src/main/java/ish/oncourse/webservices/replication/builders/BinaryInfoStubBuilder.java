@@ -9,7 +9,6 @@ public class BinaryInfoStubBuilder extends AbstractWillowStubBuilder<BinaryInfo,
 	protected BinaryInfoStub createFullStub(BinaryInfo entity) {
 		BinaryInfoStub stub = new BinaryInfoStub();
 		
-		stub.setBinaryDataId(entity.getBinaryData().getId());
 		stub.setByteSize(entity.getByteSize());
 		stub.setCreated(entity.getCreated());
 		stub.setMimeType(entity.getMimeType());

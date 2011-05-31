@@ -1,13 +1,12 @@
 package ish.oncourse.ui.services.locale;
 
+import ish.oncourse.services.site.IWebSiteService;
+
 import java.util.Locale;
 
 import org.apache.tapestry5.ioc.ScopeConstants;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
-
-import ish.oncourse.services.site.IWebSiteService;
 
 /**
  * A {@link ThreadLocale} implementation that enforces locale variant that is
@@ -19,8 +18,12 @@ public class PerSiteVariantThreadLocale implements ThreadLocale {
 
 	private Locale locale = Locale.getDefault();
 
-	@Inject
 	private IWebSiteService webSiteService;
+	
+	public PerSiteVariantThreadLocale(IWebSiteService webSiteService) {
+		super();
+		this.webSiteService = webSiteService;
+	}
 
 	public Locale getLocale() {
 		return locale;

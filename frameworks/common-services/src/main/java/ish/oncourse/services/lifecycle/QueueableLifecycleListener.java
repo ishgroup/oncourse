@@ -147,6 +147,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 
 			String entityName = entity.getObjectId().getEntityName();
 			Long entityId = entity.getId();
+			Long angelId = entity.getAngelId();
 
 			ObjectContext ctx = cayenneService.newNonReplicatingContext();
 			
@@ -161,6 +162,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 				t.setCreated(today);
 				t.setModified(today);
 				t.setTransactionKey(transactionKey);
+				t.setCollege((College) ctx.localObject(college.getObjectId(), null));
 			}
 
 			LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
@@ -171,6 +173,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			qr.setCollege((College) ctx.localObject(college.getObjectId(), null));
 			qr.setEntityIdentifier(entityName);
 			qr.setEntityWillowId(entityId);
+			qr.setAngelId(angelId);
 			qr.setQueuedTransaction(t);
 			qr.setAction(action);
 			qr.setNumberOfAttempts(0);

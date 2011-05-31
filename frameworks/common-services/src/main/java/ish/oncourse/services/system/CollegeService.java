@@ -5,62 +5,68 @@
 
 package ish.oncourse.services.system;
 
+import ish.oncourse.model.College;
+import ish.oncourse.model.CommunicationKey;
+import ish.oncourse.model.CommunicationKeyType;
+import ish.oncourse.model.KeyStatus;
+import ish.oncourse.services.persistence.ICayenneService;
+
 import java.util.Date;
+import java.util.List;
+
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-
-import ish.oncourse.model.College;
-import ish.oncourse.model.KeyStatus;
-import ish.oncourse.model.PaymentGatewayType;
-import ish.oncourse.services.BaseService;
-import java.util.List;
-import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
-
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 /**
- *
+ * 
  * @author Marek Wawrzyczny
  */
-public class CollegeService extends BaseService<College> implements ICollegeService {
+public class CollegeService implements ICollegeService {
 
 	private static final Logger LOGGER = Logger.getLogger(CollegeService.class);
 
+	@Inject
+	private ICayenneService cayenneService;
 
 	@Override
 	public College findBySecurityCode(String securityCode) {
 
 		College college = null;
-		Expression qualifier = ExpressionFactory.matchExp(
-				College.WEB_SERVICES_SECURITY_CODE_PROPERTY, securityCode);
-		List<College> records = findByQualifier(qualifier);
+
+		ObjectContext objectContext = cayenneService.newContext();
+
+		Expression qualifier = ExpressionFactory.matchExp(College.WEB_SERVICES_SECURITY_CODE_PROPERTY, securityCode);
+		SelectQuery q = new SelectQuery(College.class, qualifier);
+		q.addPrefetch(College.COMMUNICATION_KEYS_PROPERTY);
+
+		List<College> records = objectContext.performQuery(q);
 
 		if ((records == null) || records.isEmpty()) {
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("No College found for 'security code': '"
-						+ securityCode + "'");
+				LOGGER.debug("No College found for 'security code': '" + securityCode + "'");
 			}
 		} else if (records.size() == 1) {
 			college = records.get(0);
-
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("College with ID: '" + college.getId()
-						+ "' found for 'security code': '" + securityCode + "'");
+				LOGGER.debug("College with ID: '" + college.getId() + "' found for 'security code': '" + securityCode + "'");
 			}
 		} else {
-			LOGGER.error("Multiple Colleges found for 'security code': '"
-					+ securityCode + "'");
+			LOGGER.error("Multiple Colleges found for 'security code': '" + securityCode + "'");
 		}
 
 		return college;
 	}
 
 	@Override
-	public College recordNewCollege(
-			String securityCode, String ipAddress, String angelVersion, Date accessTime) {
+	public College recordNewCollege(String securityCode, String ipAddress, String angelVersion, Date accessTime) {
 
-		ObjectContext context = getCayenneService().newContext();
-		College college = context.newObject(College.class);
+		ObjectContext objectContext = cayenneService.newContext();
+
+		College college = objectContext.newObject(College.class);
 
 		// TODO: An entity factory would be handy here... perhaps another time
 		college.setWebServicesSecurityCode(securityCode);
@@ -72,8 +78,24 @@ public class CollegeService extends BaseService<College> implements ICollegeServ
 		college.setFirstRemoteAuthentication(accessTime);
 		college.setLastRemoteAuthentication(accessTime);
 
-		college.setCommunicationKey(null);
-		college.setCommunicationKeyStatus(KeyStatus.HALT);
+		CommunicationKey replicationKey = new CommunicationKey();
+		replicationKey.setKeyStatus(KeyStatus.HALT);
+		replicationKey.setType(CommunicationKeyType.REPLICATION);
+		replicationKey.setKey(-1l);
+
+		CommunicationKey paymentInKey = new CommunicationKey();
+		paymentInKey.setKeyStatus(KeyStatus.HALT);
+		paymentInKey.setType(CommunicationKeyType.PAYMENT);
+		paymentInKey.setKey(-1l);
+
+		CommunicationKey paymentOutKey = new CommunicationKey();
+		paymentOutKey.setType(CommunicationKeyType.REFUND);
+		paymentOutKey.setKeyStatus(KeyStatus.HALT);
+		paymentOutKey.setKey(-1l);
+
+		college.addToCommunicationKeys(replicationKey);
+		college.addToCommunicationKeys(paymentInKey);
+		college.addToCommunicationKeys(paymentOutKey);
 
 		college.setBillingCode(null);
 
@@ -89,21 +111,15 @@ public class CollegeService extends BaseService<College> implements ICollegeServ
 		college.setWebServicesLogin(null);
 		college.setWebServicesPass(null);
 
-		try {
-			context.commitChanges();
-		} catch (Exception e) {
-			LOGGER.error("Error while saving/recording a new College", e);
-			college = null;
-		}
+		objectContext.commitChanges();
 
 		return college;
 	}
 
 	@Override
-	public void recordWSAccess(
-			College college, String ipAddress, String angelVersion, Date accessTime) {
+	public void recordWSAccess(College college, String ipAddress, String angelVersion, Date accessTime) {
 
-		ObjectContext context = getCayenneService().newContext();
+		ObjectContext context = cayenneService.newContext();
 
 		if (college.getFirstRemoteAuthentication() == null) {
 			college.setFirstRemoteAuthentication(accessTime);
@@ -117,5 +133,9 @@ public class CollegeService extends BaseService<College> implements ICollegeServ
 		context.commitChanges();
 	}
 
-
+	@Override
+	public List<College> allColleges() {
+		SelectQuery q = new SelectQuery(College.class);
+		return cayenneService.sharedContext().performQuery(q);
+	}
 }

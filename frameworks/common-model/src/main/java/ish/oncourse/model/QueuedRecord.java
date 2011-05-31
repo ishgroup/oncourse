@@ -1,5 +1,7 @@
 package ish.oncourse.model;
 
+import java.util.Date;
+
 import ish.oncourse.model.auto._QueuedRecord;
 
 import org.apache.cayenne.Cayenne;
@@ -28,5 +30,10 @@ public class QueuedRecord extends _QueuedRecord {
 		q.andQualifier(ExpressionFactory.matchExp("college", getCollege()));
 
 		return (Queueable) Cayenne.objectForQuery(getObjectContext(), q);
+	}
+
+	@Override
+	protected void onPreRemove() {
+		getQueuedTransaction().setModified(new Date());
 	}
 }

@@ -15,7 +15,11 @@ public class TagUpdater extends AbstractWillowUpdater<TagStub, Tag>{
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 		entity.setNodeType(stub.getNodeType());
-		entity.setParent(callback.updateRelationShip(stub.getParentId(), Tag.class));
+		
+		if (stub.getParentId() != null) {
+			entity.setParent(callback.updateRelationShip(stub.getParentId(), Tag.class));
+		}
+		
 		entity.setShortName(stub.getShortName());
 		entity.setWeighting(stub.getWeighting());
 	}
