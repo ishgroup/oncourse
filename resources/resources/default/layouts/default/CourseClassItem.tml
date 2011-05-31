@@ -40,7 +40,6 @@
 	                </div>
 	                <p:else><b>no session</b></p:else>
                 </t:if>
-                <div class="summary">${courseClass.course.name}</div>
             </div>
 
             <div class="class-item-info-r">
