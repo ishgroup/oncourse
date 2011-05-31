@@ -93,7 +93,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		boolean isValid = true;
 		
 		if(getCreditCardCVV() != null) {
-			isValid = getCreditCardCVV().matches("\\d{1, 4}");
+			isValid = getCreditCardCVV().matches("\\d{1,4}");
 		}
 		
 		return isValid;
