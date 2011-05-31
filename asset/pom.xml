@@ -17,7 +17,6 @@
 	<name>Willow - Asset Web App</name>
 
 	<properties>
-		<config.dir>dev</config.dir>
 		<tomcat.cluster>D</tomcat.cluster>
 		<tomcat-dev.port>7301</tomcat-dev.port>
 		<tomcat-test.port>10301</tomcat-test.port>
@@ -63,20 +62,6 @@
 
 	<profiles>
 		<profile>
-			<id>test</id>
-			<properties>
-				<config.dir>test</config.dir>
-			</properties>
-		</profile>
-		
-		<profile>
-			<id>prod</id>
-			<properties>
-				<config.dir>prod</config.dir>
-			</properties>
-		</profile>
-
-		<profile>
 			<!-- Activate explicitly in Eclipse -->
 			<id>eclipse</id>
 			<dependencies>
@@ -105,10 +90,6 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/config/${config.dir}</directory>
             </resource>
         </resources>
 

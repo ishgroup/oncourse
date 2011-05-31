@@ -16,7 +16,6 @@
 	<name>Willow - Enrol Web App</name>
 
 	<properties>
-		<config.dir>dev</config.dir>
 		<tomcat.cluster>B</tomcat.cluster>
 		<tomcat-dev.port>7101</tomcat-dev.port>
 		<tomcat-test.port>10101</tomcat-test.port>
@@ -70,22 +69,6 @@
 		</dependency>
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<id>test</id>
-			<properties>
-				<config.dir>test</config.dir>
-			</properties>
-		</profile>
-		
-		<profile>
-			<id>prod</id>
-			<properties>
-				<config.dir>prod</config.dir>
-			</properties>
-		</profile>
-	</profiles>
-
 	<build>
 		<finalName>enrol</finalName>
 
@@ -100,10 +83,6 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/config/${config.dir}</directory>
             </resource>
         </resources>
 

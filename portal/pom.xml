@@ -19,29 +19,12 @@
 	<description>onCourse Willow Student and Tutor Portal.</description>
 
 	<properties>
-		<config.dir>dev</config.dir>
 		<tomcat.cluster>B</tomcat.cluster>
 		<tomcat-dev.port>7101</tomcat-dev.port>
 		<tomcat-test.port>10101</tomcat-test.port>
 		<tomcat-staging.port>10101</tomcat-staging.port>
 		<tomcat.path>/portal</tomcat.path>
 	</properties>
-
-	<profiles>
-		<profile>
-			<id>test</id>
-			<properties>
-				<config.dir>test</config.dir>
-			</properties>
-		</profile>
-		
-		<profile>
-			<id>prod</id>
-			<properties>
-				<config.dir>prod</config.dir>
-			</properties>
-		</profile>
-	</profiles>
 
 	<build>
 		<finalName>portal</finalName>
@@ -67,10 +50,6 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/config/${config.dir}</directory>
             </resource>
         </resources>
 

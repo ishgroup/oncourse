@@ -16,7 +16,6 @@
 	<description>onCourse Willow Content Management System for managing college specific online content.</description>
 
 	<properties>
-		<config.dir>dev</config.dir>
 		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
 	</properties>
 
@@ -73,20 +72,6 @@
 
 	<profiles>
 		<profile>
-			<id>test</id>
-			<properties>
-				<config.dir>test</config.dir>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>prod</id>
-			<properties>
-				<config.dir>prod</config.dir>
-			</properties>
-		</profile>
-
-		<profile>
 			<!-- Activate explicitly in Eclipse -->
 			<id>eclipse</id>
 			<dependencies>
@@ -114,10 +99,6 @@
 			<resource>
 				<filtering>false</filtering>
 				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<filtering>false</filtering>
-				<directory>src/main/config/${config.dir}</directory>
 			</resource>
 		</resources>
 

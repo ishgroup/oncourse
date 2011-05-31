@@ -15,7 +15,6 @@
 
 	<properties>
 		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-		<config.dir>dev</config.dir>
 	</properties>
 
 	<dependencies>
@@ -64,20 +63,6 @@
 
 	<profiles>
 		<profile>
-			<id>test</id>
-			<properties>
-				<config.dir>test</config.dir>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>prod</id>
-			<properties>
-				<config.dir>prod</config.dir>
-			</properties>
-		</profile>
-
-		<profile>
 			<!-- Activate explicitly in Eclipse -->
 			<id>eclipse</id>
 			<dependencies>
@@ -105,10 +90,6 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/config/${config.dir}</directory>
             </resource>
         </resources>
 

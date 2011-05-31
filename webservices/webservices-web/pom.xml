@@ -15,7 +15,6 @@
 
 	<properties>
 		<spring.version>3.0.5.RELEASE</spring.version>
-		<config.dir>dev</config.dir>
 		<netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
 	</properties>
 
@@ -187,10 +186,6 @@
 				<filtering>false</filtering>
 				<directory>src/main/resources</directory>
 			</resource>
-			<resource>
-				<filtering>false</filtering>
-				<directory>src/main/config/${config.dir}</directory>
-			</resource>
 		</resources>
 
 		<plugins>
@@ -213,16 +208,5 @@
 
 		</plugins>
 	</build>
-
-	<profiles>
-
-		<profile>
-			<id>prod</id>
-			<properties>
-				<config.dir>prod</config.dir>
-			</properties>
-		</profile>
-
-	</profiles>
 
 </project>
