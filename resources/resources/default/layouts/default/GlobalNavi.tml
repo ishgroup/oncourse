@@ -1,9 +1,0 @@
-<!--
-	Template: GlobalNavi.tml
-	Purpose: Site specific header content. Used in BodyHeader.tml.
--->
-
-
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"></t:container>
-
-

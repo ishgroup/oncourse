@@ -1,4 +1,0 @@
-<html t:type="ui/pagestructure" title="${room.name} | ${room.site.name}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<span t:type="ui/SiteDetailsComponent" room="room" collapseLocationMap="false"/>
-</html>	
