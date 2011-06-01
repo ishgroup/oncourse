@@ -1,6 +1,0 @@
-div#nav.dropdown,div.sessions_for_class,div#sidebar{display:none;}
-div.bubbleInfo{visibility:hidden;}
-div#header{text-align:right;background:#f7f7f7 url(/s/img/common/university_sydney_logo.gif) right no-repeat;height:70px;line-height:500px;overflow:hidden;padding:0;text-indent:-600px;margin-bottom:20px;}
-div.class_detail a{text-decoration:none;}
-body#DetailPage div.waiting-list,a.go-to-top,p.showLocationMap,div#directions{display:none;}
-div#frontpage_slider_pager,div#search,div#quicklinks{display:none;}
