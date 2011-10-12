@@ -90,6 +90,13 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>https://svn.ish.com.au/ish/willow/tags</tagBase>
+				</configuration>
+			</plugin>
 		</plugins>
 		
 	</build>
