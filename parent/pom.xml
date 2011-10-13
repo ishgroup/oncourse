@@ -90,7 +90,6 @@
 					<releaseProfiles>deploy-staging</releaseProfiles>
 					<tagNameFormat>@{releaseVersion}</tagNameFormat>
 					<tagBase>https://svn.ish.com.au/ish/willow/tags/@{project.artifactId}</tagBase>
-					</plugin>
 				</configuration>
 			</plugin>
 			
