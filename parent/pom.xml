@@ -88,7 +88,7 @@
 				<configuration>
 					<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
 					<releaseProfiles>deploy-staging</releaseProfiles>
-					<tagNameFormat>${releaseVersion}</tagNameFormat>
+					<tagNameFormat>@{project.version}</tagNameFormat>
 					<tagBase>https://svn.ish.com.au/ish/willow/tags/${project.artifactId}</tagBase>
 				</configuration>
 			</plugin>
