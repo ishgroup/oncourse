@@ -9,7 +9,7 @@
 
 	<artifactId>parent</artifactId>
 	<groupId>ish.oncourse.willow</groupId>
-	<version>1.24</version>
+	<version>1.25-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Willow project</name>
 	<description>Parent POM of the onCourse Willow applications.</description>
@@ -560,9 +560,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://svn.ish.com.au/ish/willow/tags/parent/parent-1.24</connection>
-		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/tags/parent/parent-1.24</developerConnection>
-		<url>http://websvn.ish.com.au/ish/willow/tags/parent/parent-1.24</url>
+		<connection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/parent</connection>
+		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/parent</developerConnection>
+		<url>http://websvn.ish.com.au/ish/willow/trunk/parent</url>
 	</scm>
 
 	<ciManagement>
