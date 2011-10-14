@@ -22,7 +22,7 @@ done
 	rm -f edit1.sed
 
 #### add smarts here to restart apps to do the db migration before import.
-ssh jurgen@freebsd.vm.ish.com.au "cd /var/onCourseTest/app/A1; sudo ./app.sh restart"
+ssh freebsd.vm.ish.com.au "cd /var/onCourseTest/app/A1; sudo ./app.sh restart"
 
 echo "wait for the db migrations"
 sleep 30
