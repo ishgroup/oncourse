@@ -1,5 +1,14 @@
 package ish.oncourse.portal.components;
 
-public class BodyFooter {
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
+public class BodyFooter {
+	
+	@Inject
+	private Request request;
+	
+	public String getContextPath() {
+		return request.getContextPath();
+	}
 }
