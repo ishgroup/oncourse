@@ -1,0 +1,14 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<div class="footer">
+		<div class="copy">&#169; ish group 2011</div>
+		
+
+		<div class="cl"></div>
+		<div><a href="http://www.ish.com.au/oncourse">
+			<img alt="powered by ish onCourse" height="9" width="102" src="/img/poweredby.png" />
+		</a>
+		</div>
+	</div>
+
+</t:container>

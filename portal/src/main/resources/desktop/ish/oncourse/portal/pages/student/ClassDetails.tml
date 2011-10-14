@@ -1,0 +1,12 @@
+<html t:type="pagestructure" title="literal:Class"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
+	
+	<h1>${courseClass.course.name}</h1>
+	
+	<span t:type="classTabs" courseClass="courseClass" selected="literal:classDetails"/>
+	
+	<div class="class-details">
+		<t:outputraw value="details"/>
+	</div>
+
+</html>

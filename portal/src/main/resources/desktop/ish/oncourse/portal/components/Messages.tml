@@ -1,0 +1,16 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+
+	<div class="messages">
+
+		<!-- t:loop source="messages" value="messages">
+			<div>
+				<a href="#">Field of education (FoE) codes</a>
+				<span class="new">3 new</span><br/>
+				Latest: natalie 05:30pm Jun 7
+			</div>
+		</t:loop-->
+
+	</div>
+
+</t:container>

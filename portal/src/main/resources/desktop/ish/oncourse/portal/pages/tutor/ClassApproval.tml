@@ -1,0 +1,36 @@
+<html t:type="pagestructure" title="literal:Class Approval"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<h1>${courseClass.course.name}</h1>
+	
+	<span t:type="classTabs" courseClass="courseClass" selected="literal:classApproval"/>
+    
+	<t:form t:id="approvalForm">
+		<t:if test="isClassApproved" negate="true">
+			<t:checkbox t:id="approved"/>
+			<label for="approved"><span class="fl" style="width:729px;">I hereby agree that the date, time, venue and description of the class are all correct and that I am able to teach the class material at the times stated.</span></label>
+			<div class="cl mb15"></div>
+			<t:linksubmit t:id="accept" class="btn1 mb20">Accept</t:linksubmit>
+			<div class="bord mb20"></div>
+			<p:else>
+				<span class="fl" style="width:729px;">The class has already been approved.</span>
+				<div class="cl mb15"></div>
+				<div class="bord mb20"></div>
+			</p:else>
+	 	</t:if>
+
+		<!-- textarea -->
+		<div class="textarea-text">There are problems with the class details as follows:</div>
+
+		<div class="textarea mb10">
+			<div class="textarea-l"></div>
+			<span><t:textarea t:id="whyDeclined" t:value="whyDeclined" style="width:592px;"></t:textarea></span>
+			<div class="textarea-r"></div>
+			<div class="cl"></div>
+		</div>
+	
+		<t:linksubmit t:id="decline" class="btn1">${declineLabel}</t:linksubmit>
+	
+	</t:form>
+	
+</html>

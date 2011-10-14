@@ -1,0 +1,16 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<div class="menu-bg">
+		<div class="menu-b">
+			<div class="menu">
+				<t:pagelink id="m_timetable" page="prop:timetablePageName">Timetable</t:pagelink><div></div>
+				<!--  <t:pagelink id="m_messages" page="prop:discussionsPageName">Messages <t:if test="hasNewMessages"><span class="new">${numberOfNewMessages} new</span></t:if></t:pagelink><div></div> -->
+				<t:pagelink id="m_classes" page="prop:classesPageName">Classes</t:pagelink><div></div>
+				<!--  <t:pagelink id="m_surveys" page="prop:surveysPageName">Surveys</t:pagelink><div></div> -->
+				<t:pagelink id="m_profile" page="prop:profilePageName">My Profile</t:pagelink>
+			</div>
+		</div>
+	</div>
+
+</t:container>

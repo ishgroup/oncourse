@@ -1,0 +1,282 @@
+<html t:type="pagestructure" title="literal:Classes"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_messages">
+	
+	<h1>New discussion</h1>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="class">
+              <tr>
+                <td>
+                	<div class="class-name"><a href="#">Photo for beginers</a></div>
+
+                    <div class="class-info">Apr. 7 Ð  Apr. 28 <span>8 sessions, 20.0 hours total</span></div>
+                    <a href="#" class="class-place">Building F.</a>
+                    <span class="class-man">7 enrolments | 4 places available</span>
+                </td>
+                <td width="415">
+                	<div class="class-week">
+                    	<span>Sun</span>
+
+                        <span class="active light">mon</span>
+                        <div class="lightbox-pos">
+                            <div class="lightbox">
+                                <img src="img/lightbox-cor.png" alt="" class="lightbox-cor" />
+                                <table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 7</td>
+                                    <td>10:00am -11:00am</td>
+
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 14</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 21</td>
+
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 28</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                        <span>tuE</span>
+                        <span>wed</span>
+                        <span class="active light">thu</span>
+                        <div class="lightbox-pos">
+                            <div class="lightbox">
+
+                                <img src="img/lightbox-cor.png" alt="" class="lightbox-cor" />
+                                <table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 7</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 14</td>
+
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 21</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+
+                                    <td class="class-week-light-date">Apr. 28</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <span>Fri</span>
+
+                        <span>Sat</span>
+                    </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                	<div class="class-name"><a href="#">Photo for beginers</a></div>
+                    <div class="class-info">Apr. 7 Ð  Apr. 28 <span>8 sessions, 20.0 hours total</span></div>
+
+                    <a href="#" class="class-place">Building F.</a>
+                    <span class="class-man">7 enrolments | 4 places available</span>
+                </td>
+                <td width="415">
+                	<div class="class-week">
+                    	<span class="active light">Sun</span>
+                        <div class="lightbox-pos">
+
+                            <div class="lightbox">
+                                <img src="img/lightbox-cor.png" alt="" class="lightbox-cor" />
+                                <table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 7</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+
+                                    <td class="class-week-light-date">Apr. 14</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 21</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 28</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <span>mon</span>
+
+                        <span>tuE</span>
+                        <span>wed</span>
+                        <span>thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                    </div>
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                	<div class="class-name"><a href="#">Photo for beginers</a></div>
+                    <div class="class-info">Apr. 7 Ð  Apr. 28 <span>8 sessions, 20.0 hours total</span></div>
+                    <a href="#" class="class-place">Building F.</a>
+
+                    <span class="class-man">7 enrolments | 4 places available</span>
+                </td>
+                <td width="415">
+                	<div class="class-week">
+                    	<span>Sun</span>
+                        <span class="active light">mon</span>
+                        <div class="lightbox-pos">
+
+                            <div class="lightbox">
+                                <img src="img/lightbox-cor.png" alt="" class="lightbox-cor" />
+                                <table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 7</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+
+                                    <td class="class-week-light-date">Apr. 14</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 21</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 28</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <span>tuE</span>
+
+                        <span>wed</span>
+                        <span class="active light">thu</span>
+                        <div class="lightbox-pos">
+                            <div class="lightbox">
+                                <img src="img/lightbox-cor.png" alt="" class="lightbox-cor" />
+                                <table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 7</td>
+
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 14</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+
+                                    <td class="class-week-light-date">Apr. 21</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 28</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                    </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                	<div class="class-name"><a href="#">Photo for beginers</a></div>
+                    <div class="class-info">Apr. 7 Ð  Apr. 28 <span>8 sessions, 20.0 hours total</span></div>
+                    <a href="#" class="class-place">Building F.</a>
+                    <span class="class-man">7 enrolments | 4 places available</span>
+
+                </td>
+                <td width="415">
+                	<div class="class-week">
+                    	<span class="active light">Sun</span>
+                        <div class="lightbox-pos">
+                            <div class="lightbox">
+                                <img src="img/lightbox-cor.png" alt="" class="lightbox-cor" />
+                                <table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 7</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 14</td>
+                                    <td>10:00am -11:00am</td>
+
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 21</td>
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="class-week-light-date">Apr. 28</td>
+
+                                    <td>10:00am -11:00am</td>
+                                  </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <span>mon</span>
+                        <span>tuE</span>
+
+                        <span>wed</span>
+                        <span>thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                    </div>
+                </td>
+              </tr>
+
+            </table>
+
+
+            <div class="bord mtb15"></div>
+
+
+
+
+
+
+            <div class="field-name">Class</div>
+            <select name="" class="cSelect" style="width:604px;">
+
+              <option>Photo for beginers. April, 7.</option>
+            </select>
+            <div class="cl mb13"></div>
+            <div class="field-name">Subject</div>
+            <div class="field mb13">
+            	<div class="field-l"></div>
+                <input name="" type="text" style="width:592px;" />
+                <div class="field-r"></div>
+
+                <div class="cl"></div>
+            </div>
+            <div class="field-name">Message</div>
+            <div class="textarea">
+            	<div class="textarea-l"></div>
+                <span><textarea name="" cols="" rows="" style="width:592px;"></textarea></span>
+                <div class="textarea-r"></div>
+                <div class="cl"></div>
+
+            </div>
+</html>

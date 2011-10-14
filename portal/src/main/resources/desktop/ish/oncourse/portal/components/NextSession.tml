@@ -1,0 +1,26 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<div class="class-info-sessions">
+
+		<h2>Next session</h2>
+
+		<t:if test="nextSession">
+			<div class="date">
+				<div class="date-day">
+					<span>${day}</span> ${month}
+					<t:if test="today">
+						<i>today</i>
+					</t:if>
+				</div>
+				${weekDay} ${time}.
+				<t:if test="room"><div>${room.name}, ${room.site.name}</div></t:if>
+			</div>
+		
+			<p:else>There's no next sessions for this class.</p:else>
+		</t:if>
+		<br/>	
+		<div class="mb20"><a href="http://tara.local.oncourse.net.au/${role}/timetable" class="btn">Show more</a></div>
+	
+	</div>
+
+</t:container>

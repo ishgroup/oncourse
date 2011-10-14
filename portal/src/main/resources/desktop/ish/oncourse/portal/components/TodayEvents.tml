@@ -1,0 +1,28 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+
+	<t:loop source="todayEvent" value="todayEvent">
+
+
+		<!-- Today date -->
+		<div class="date-day2">
+			<span>7</span>
+			JUN
+		</div>
+
+			<t:loop source="DateEvents" value="DateEvents">
+
+				<div class="class2 bord-r">
+					<div>6:00pm - 8:00pm</div>
+					<a href="#">Photo for beginers</a> <span class="class-man-qty">7/15</span><br/>
+					Building F, Tutor: Mike Miers
+				</div>
+
+			</t:loop>
+
+	</t:loop>
+
+	<div class="cl mb20"></div>
+
+
+</t:container>

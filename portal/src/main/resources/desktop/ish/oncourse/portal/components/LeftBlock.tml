@@ -1,0 +1,30 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	
+	<div class="btn-subscribe">
+		<img alt="Subscribe to calendar" height="25" src="/img/calendar.png" width="23" />
+		<a href="http://tara.local.oncourse.net.au/contact/${userCalendarFilename}">Subscribe to Calendar</a>
+	</div>
+	
+	<!--  
+	<div class="info-bg">
+		<div class="info-b">
+			<div class="info">
+				<div class="info-text">
+
+					<h1>Photo for beginers</h1>
+
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+						labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+
+				</div>
+
+				<a href="#" class="btn-info">More</a>
+				<a href="#" class="btn-info">Dissmis</a>
+
+			</div>
+		</div>
+	</div>
+
+	 -->
+
+</t:container>

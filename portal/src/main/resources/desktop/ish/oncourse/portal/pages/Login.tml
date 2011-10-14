@@ -1,0 +1,49 @@
+<html t:type="pagestructure" title="literal:Login page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<t:form t:id="loginForm" class="login-form">
+	
+	<div class="login-wrapper">
+	
+		<div class="login-left">
+			<h1>Log In</h1>
+	
+			<div class="login-container">
+					<t:errors />
+					<table class="login-table">
+						<tr>
+							<td><t:label for="firstName">First Name</t:label></td>
+							<td><t:TextField t:id="firstName" size="30" maxlength="100" />
+							</td>
+						</tr>
+						<tr>
+							<td><t:label for="lastName">Last Name</t:label></td>
+							<td><t:TextField t:id="lastName" size="30" maxlength="100" />
+							</td>
+						</tr>
+						<tr>
+							<td><t:label for="email">E-mail</t:label></td>
+							<td><t:TextField t:id="email" size="30" maxlength="100" />
+							</td>
+						</tr>
+						<tr>
+							<td><t:label for="password">Password</t:label></td>
+							<td><input t:type="PasswordField" t:id="password" size="30" maxlength="100" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input id="signIn" class="btn-login" type="submit" value=""/> <a t:id="forgotPassword" t:type="linksubmit" href="#" class="login-forgot">Forgot
+									Password?</a></td>
+						</tr>
+					</table>
+			</div>
+		</div>
+	
+		<div class="login-right">Don't have a login to SkillsOnCourse"? This portal is for enrolled students only, so please visit one of the onCourse powered colleges and enrol in a course.</div>
+	
+	</div>
+	
+	</t:form>
+	
+	<div class="cl"></div>
+</html>

@@ -1,0 +1,23 @@
+<div id="footer" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="footer-container">
+		<ul>
+			<li class="m-1">
+				<a href="#">Timetable</a>
+			</li>
+			<li class="m-2">
+				<a href="#"><span class="mes-count">18</span>Messages</a>
+			</li>
+			<li class="m-3 active">
+				<t:pagelink id="m_classes" page="prop:classesPageName">Classes</t:pagelink>
+			</li>
+			<li class="m-4">
+				<!--<a href="#">Surveys</a> -->
+			</li>
+			<li class="m-5">
+				<a href="#">Profile</a>
+			</li>
+			
+		</ul>
+	</div>
+	
+</div>

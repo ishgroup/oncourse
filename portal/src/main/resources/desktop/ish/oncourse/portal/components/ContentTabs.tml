@@ -1,0 +1,14 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<div class="tabs">
+
+		<t:loop source="tabs" value="tabs">
+			<a href="" class="${activeitem}"><img src="/img/tabs-arrow.gif" alt=""/>
+				<span>${tabs.name}</span>
+			</a>
+		</t:loop>
+
+
+	</div>
+
+</t:container>

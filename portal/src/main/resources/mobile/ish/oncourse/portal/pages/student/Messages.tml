@@ -1,0 +1,6 @@
+<html t:type="pagestructure" title="literal:Messages page" bodyClass="literal:login-wrapper"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	
+	<h1>Messages page of mobile tara.</h1>
+	
+</html>

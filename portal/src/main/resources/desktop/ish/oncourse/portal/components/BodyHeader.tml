@@ -1,0 +1,16 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<div class="head">
+	
+		<div class="logo"><img src="/img/logo.gif" alt="Logo"/></div>
+		
+		<div class="header-title"></div>
+		
+		<t:if t:test="userInSession">
+			<div t:type="loginuser"/>
+		</t:if>
+
+		<div class="cl"></div>
+	</div>
+
+</t:container>

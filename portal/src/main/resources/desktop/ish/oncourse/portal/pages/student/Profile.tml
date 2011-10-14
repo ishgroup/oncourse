@@ -1,0 +1,189 @@
+<html t:type="pagestructure" title="literal:Profile"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_profile">
+	<h1> ${contact.givenName} ${contact.familyName}'s Profile  </h1>
+	
+	<t:form t:id="profileForm">
+		<t:errors banner="message:errors" class="literal:validation"/>
+		
+		<fieldset>	
+		
+			<p>
+					<label for="email">Email<em title="${message:required}">*</em></label> <br/>
+					<span class="${emailInputClass}">
+								<t:textfield value="contact.emailAddress" class ="input-fixed" 
+									clientId="emailaddress" t:id="email" />
+					</span>
+			</p>
+			<p>
+				<label for="street">Address</label><br/>
+				<span class="valid">
+					<t:textfield value="contact.street" class ="input-fixed" 
+									clientId="street" t:id="street"/>
+				</span>
+			</p>
+			
+			<p>
+				<label for="suburb">Suburb</label> <br/>
+				<span class="${suburbInputClass}">
+					<script type="text/javascript">
+						initSuburbAutoComplete();
+					</script>
+					<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
+						clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
+				</span>
+			</p>
+			<p>
+				<label for="postcode">Postcode</label> <br/>
+				<span class="${postcodeInputClass}">
+					<t:textfield value="contact.postcode" class ="input-fixed" 
+							clientId="postcode" t:id="postcode" />
+				</span>
+			</p>
+			<p>
+				<label for="state">State</label> <br/>
+				<span class="${stateInputClass}">
+					<t:textfield value="contact.state" class ="input-fixed" 
+							clientId="state" t:id="state" />
+				</span>
+			</p>
+			
+			<p>
+				<label for="homephone">Home Phone</label><br/>
+				<span class="${homePhoneInputClass}">
+					<t:textfield value="contact.homePhoneNumber" class ="input-fixed" 
+							clientId="homephone" t:id="homePhone" />
+					
+				</span>
+			</p>
+			<p>
+				<label for="mobilephone">Mobile Phone</label><br/>
+				<span class="${mobilePhoneInputClass}">
+					<t:textfield value="contact.mobilePhoneNumber" class ="input-fixed" 
+							clientId="mobilephone" t:id="mobilePhone" />
+					
+				</span>
+			</p>
+			
+			<p>
+				<label for="businessphone">Work Phone</label> <br/>
+				<span class="${businessPhoneInputClass}">
+					<t:textfield value="contact.businessPhoneNumber" class ="input-fixed" 
+							clientId="businessphone" t:id="businessPhone" />
+				</span>
+			</p>
+			<p>
+				<label for="facsimile">Fax</label> <br/>
+				<span class="${faxInputClass}">
+					<t:textfield value="contact.faxNumber" class ="input-fixed" 
+							clientId="facsimile" t:id="fax" />
+				</span>
+			</p>
+			
+		<br/>
+		
+			<p>
+					<label for="password">Password <em title="${message:required}">*</em></label> <br/>
+					<input t:type="PasswordField" t:id="password" />
+			</p>
+			<p>
+					<label for="confirmPassword">Confirm password <em title="${message:required}">*</em></label> <br/>
+					<input t:type="PasswordField" t:id="confirmpassword" />
+			</p>
+			
+		<br/>
+			<p>
+				<label for="birthdate">Date of birth<em title="${message:required}">*</em></label> <br/>
+				<span class="${birthDateInputClass}">
+					<t:textField value="birthDateProperty" class ="input-fixed" 
+							clientId="birthdate" t:id="birthDate"/>
+					
+				</span>
+			</p>
+			<p>
+				<label>Gender</label>
+				<div class="radio-list">
+					<t:radiogroup t:value="contact.isMale"> 
+						<input type="radio" t:type="radio" t:value="true"/><label for="male"> Male </label>
+						<input type="radio" t:type="radio" t:value="false"/><label for="female"> Female </label>
+					</t:radiogroup>
+				</div>
+			</p>
+		<br/>
+			<p>
+				<label>I would like to receive marketing material via: </label> <br/>
+			</p>
+			<p>	
+				<t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> <label for="allowEmail">E-Mail</label>
+				<t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> <label for="allowSms">SMS</label>
+				<t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> <label for="allowPost">Post</label> 
+			</p>
+			<br/>
+		</fieldset>	
+		
+		<t:if test = "isStudent">
+			<t:if test = "contact.college.requiresAvetmiss">
+			
+				<div>
+					<fieldset id="questionnaire-block">
+						<br/>
+						<p>
+							<label for="countrybirth">Country of Birth</label> <br/>
+							<span class="${countryOfBirthInputClass}">
+								<t:textfield value="countryOfBirthName" class ="input-fixed" 
+									clientId="countrybirth" t:id="countryOfBirth" />
+								
+							</span>	
+						</p>
+						<p>
+							<label for="indigenous">Indigenous Status</label> <br/>
+							<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
+						</p>
+						<p>
+							<label for="englishproficiency">Proficiency spoken English</label> <br/>
+							<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
+						</p>
+						<p>
+							<label for="languagehome">Language spoken at home?</label> <br/>
+							<span class="${languageHomeInputClass}">
+								<t:textfield value="languageHomeName" class ="input-fixed" 
+									clientId="languagehome" t:id="languageHome" />
+								
+							</span>	
+						</p>
+					
+						<p>
+							<label for="prioreducation">Prior Education Achievement</label> <br/>
+							<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
+						</p>
+						<p>
+							<label for="schoollevel">Highest school level</label> <br/>
+							<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
+						
+							<span class="${schoolYearInputClass}">
+								<t:textfield value="schoolYearStr" class ="input-fixed" 
+									clientId="schoolyear" t:id="schoolYear" />
+							</span>	
+						</p>
+						
+						<p>
+							<label>
+								Disability type
+							 </label> <br/>
+							<div class="radio-list">
+								<t:radiogroup t:value="hasDisability"> 
+									<input type="radio" t:type="radio" t:value="true"/> Yes 
+									<input type="radio" t:type="radio" t:value="false"/> No 
+								</t:radiogroup>
+							</div>
+						</p>
+						
+					</fieldset>
+				</div>
+			</t:if>
+		</t:if>
+		
+		<div class="form-controls" xml:space="preserve">
+			<t:submit  t:id="saveProfileAction" value="Save" class="btn" clientId="save-student-profile"/> 
+		</div>	
+	</t:form>
+</html>

@@ -1,0 +1,41 @@
+<html t:type="pagestructure" title="literal:Profile"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_surveys">
+
+	<h1>${courseClass.course.name}</h1>
+	
+	<span t:type="classTabs" courseClass="courseClass" selected="literal:classDetails"/>
+	
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="class">
+
+
+			<tr>
+
+				<td width="64">
+					<div class="book">
+						<!-- for new <img src="/img/ico-new.png" alt="" class="ico-new"/>-->
+						<img src="/img/book.png" alt=""/>
+					</div>
+				</td>
+
+				<td>
+					<div class="class-name"><a href="#">Photo for beginers</a></div>
+					<div class="class-info">Apr. 7 – Apr. 28 <span>8 sessions, 20.0 hours total</span></div>
+					<div class="class-place light">Building F.</div>
+
+					<div class="class-man">Bear Grills</div>
+				</td>
+
+				<td width="220">
+					<div class="surveys-ico">
+						<span><img src="/img/ico-tutor.gif" alt=""/>3</span>
+						<span><img src="/img/ico-course.gif" alt=""/>5</span>
+						<span><img src="/img/ico-venue.gif" alt=""/>5</span>
+					</div>
+				</td>
+			</tr>
+
+
+	</table>
+
+
+</html>

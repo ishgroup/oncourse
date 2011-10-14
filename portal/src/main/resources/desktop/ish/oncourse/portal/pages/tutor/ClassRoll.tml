@@ -1,0 +1,68 @@
+<html t:type="pagestructure" title="literal:Student Timetable"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes" xmlns:p="tapestry:parameter">
+
+	<h1>${courseClass.course.name}</h1>
+	
+	<span t:type="classTabs" courseClass="courseClass" selected="literal:classroll"/>
+
+	<div class="classes-classroll">
+		<div class="day-head">
+				<div id="prevSession"> 
+					<a href="#" id="prevButton" class="prev-session">Previous session</a>
+				</div>
+				 <div id='classes_inner'>  
+		            <ul id='classes_ul'>  
+		            	<t:loop source="sessions" value="currentSession">
+		              	  <li id="effect_date" class="date1">
+							<div class="date-day">
+								<span>${day}</span> ${month}
+								<t:if test="today">
+									<i>today</i>
+								</t:if>
+							</div>
+							${sessionIntervalInfo}
+							<span>${currentSession.room.name}</span>
+		               	 </li>  
+		                </t:loop>
+		            </ul>  
+      			</div>  
+				
+				<div id="nextSession"> 
+					<a href="#" id="nextButton" class="next-session">Next session</a>
+				</div> 
+		</div>	
+
+		<div id="effect_attendance" class="mark">
+			<h3>Mark attendance for this session</h3>
+ 				<div id='classes_for_attendance'>  
+		            <ul id='classes_ul_for_attendance'>  
+		            	<t:loop source="sessions" value="currentSession">
+		              	  <li id="effect_date" class="date1">
+							<t:loop source="currentSession.attendances" value="attendance" >
+								<div class="mark-item">
+									<div class="mark-yn">
+										<a href="#" value="${attended}" class="mark-y attended" id="attended_${attendance.angelId}"></a>
+										<a href="#" value="${absent}" class="mark-n absent" id="absent_${attendance.angelId}"></a> 
+										
+										<t:actionLink href="#" t:id="attendance" style="display: none;"/>
+									</div>
+									<div>${attendance.student.contact.givenName} ${attendance.student.contact.familyName}</div>
+									<span>Phone: ${attendance.student.contact.homePhoneNumber}</span>
+									<span>E-mail: <a href="#">${attendance.student.contact.emailAddress}</a></span>
+								</div>
+							</t:loop>
+		               	 </li>  
+		                </t:loop>
+		            </ul>  
+      			</div>  
+			 
+		</div>
+
+		<div class="bord mb15"></div>
+
+		<div class="enrolment">
+			<strong>${enrolmentsCount}</strong> enrolments | <strong>${availableEnrolmentPlaces}</strong> places available
+		</div>
+	</div>
+
+</html>
