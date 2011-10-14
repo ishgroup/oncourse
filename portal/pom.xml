@@ -22,7 +22,7 @@
 		<tomcat-dev.port>7101</tomcat-dev.port>
 		<tomcat-test.port>10101</tomcat-test.port>
 		<tomcat-staging.port>10101</tomcat-staging.port>
-		<tomcat.path>/</tomcat.path>
+		<tomcat.path>/portal</tomcat.path>
 	</properties>
 
 	<dependencies>
