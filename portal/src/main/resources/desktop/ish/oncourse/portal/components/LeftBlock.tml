@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	
 	<div class="btn-subscribe">
-		<img alt="Subscribe to calendar" height="25" src="/img/calendar.png" width="23" />
+		<img alt="Subscribe to calendar" height="25" src="${contextPath}/img/calendar.png" width="23" />
 		<a href=" webcal:${userCalendarFilename}">Subscribe to Calendar</a>
 	</div>
 	

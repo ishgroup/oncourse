@@ -15,8 +15,12 @@ public class LeftBlock {
 	
 	public String getUserCalendarFilename(){
 		
-		String fileName = request.getServerName() + request.getContextPath() + "/calendar/" + authService.getUser().getUniqueCode() + ".ics";
+		String fileName = request.getServerName() + getContextPath() + "/calendar/" + authService.getUser().getUniqueCode() + ".ics";
 		
 		return fileName;
+	}
+	
+	public String getContextPath() {
+			return request.getContextPath();
 	}
 }
