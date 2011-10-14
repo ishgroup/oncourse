@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+
+	<dataSource name="onCourseRef" type="JdbcDataSource"
+		jndiName="java:comp/env/jdbc/oncourse_reference" />
+
+	<document>
+		<entity name="suburb" dataSource="onCourseRef" pk="id"
+			query="select suburb, 'suburb' as type, state, postcode, CONCAT(CAST(postcode AS CHAR), suburb) as id, CONCAT(CAST(lat AS CHAR), ',', CAST(lon AS CHAR)) as loc from postcode_db">
+			<field name="id" column="id" />
+			<field name="doctype" column="type" />
+			<field name="suburb" column="suburb" />
+			<field name="state" column="state" />
+			<field name="postcode" column="postcode" />
+			<field name="loc" column="loc" />
+		</entity>	
+	</document>
+	
+</dataConfig>
