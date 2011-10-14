@@ -4,22 +4,22 @@
 
 	<title>${title}</title>
 	
-	<link rel="stylesheet" type="text/css" href="/css/stl.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/jquery.selectbox.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/jquery.prettyCheckboxes.css"/>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/css/stl.css"/>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/css/jquery.selectbox.css"/>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/css/jquery.prettyCheckboxes.css"/>
 	
 	
-	<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
-	<script type="text/javascript" src="/js/jquery.prettyCheckboxes.js"></script>
-	<script type="text/javascript" src="/js/jquery.tara.tabs.js"></script>
-	<script type="text/javascript" src="/js/jquery.ui.datepicker.js"></script>
-	<script type="text/javascript" src="/js/jquery.ui.core.min.js"></script>
-	<script type="text/javascript" src="/js/jquery.effects.core.min.js"></script>
-	<script type="text/javascript" src="/js/jquery.effects.fade.min.js"></script>
-	<script type="text/javascript" src="/js/jquery.effects.slide.min.js"></script>
-	<script type="text/javascript" src="/js/slider.js"></script>
-	<script type="text/javascript" src="/js/calendar.js"></script>
-	<script type="text/javascript" src="/js/script.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.prettyCheckboxes.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.tara.tabs.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.ui.datepicker.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.ui.core.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.effects.core.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.effects.fade.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.effects.slide.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/slider.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/calendar.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/script.js"></script>
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true" />
  

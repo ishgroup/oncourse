@@ -2,7 +2,7 @@
 
 	<div class="head">
 	
-		<div class="logo"><img src="/img/logo.gif" alt="Logo"/></div>
+		<div class="logo"><img src="${contextPath}/img/logo.gif" alt="Logo"/></div>
 		
 		<div class="header-title"></div>
 		
