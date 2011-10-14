@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="pay-form">
+	<t:if t:test="paymentFailed">
+		<div class="pay-fail">
+			<t:if t:test="paymentStatusNodeNullTransactionResponse">
+				<h2 class="page-title">This payment failed because the banking system is offline. Please try again later.</h2>
+				<p:else>
+					<h2 class="page-title">This payment failed because the card was expired, invalid or does not have sufficient funds.</h2>
+				</p:else>
+			</t:if>	
+			<div class="pay-message">
+					<div class="submit-wrapper">
+						<t:form t:id="paymentResultForm" zone="paymentZone">
+							<p>
+								<span class="btn-next-wr"><t:submit t:id="tryOtherCard" type="button" value="Try another card" class="btn btn-next"/></span>
+								<strong>Try a different credit card.</strong>					
+							</p>
+							
+							<p>
+								<t:submit t:id="abandonReverse" type="button" value="Abandon, Reverse Invoice" class="btn"/>
+								<strong>The payment and enrolments will be marked as failed and a credit note created to reverse the invoice.</strong>					
+							</p>
+							
+							<p>
+								<t:submit type="button" t:id="abandonAndKeep" value="Abandon, Keep Invoice" class="btn"/>
+								<strong>The payment will be marked as failed, but the invoice and enrolments kept. The debtor will be kept, owing you money for later payment.</strong>
+							</p>
+						</t:form>
+					</div>
+			</div>
+		</div>
+		<p:else>
+			<div class="pay-success">
+				<h2 class="page-title">Payment was successful.</h2>
+			</div>
+			<script type="text/javascript">showWarning = false;</script>
+		</p:else>
+	</t:if>
+	
+	</div>
+</t:container>

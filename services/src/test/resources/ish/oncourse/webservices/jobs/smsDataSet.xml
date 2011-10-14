@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+	
+	<Preference id="10002" name="license.sms" value_string="true" angelId="1" collegeId="1" explanation="sms license" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<Preference id="10003" name="sms.from" value_string="123-378" angelId="1" collegeId="1" explanation="sms license" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Student id="1540" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+	<Student id="1541" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+	
+	<Contact id="1500" collegeId="1" studentId="1540" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="putin@kremlin.ru" familyName="Putin" givenName="Vladimir"  faxNumber="1234-567" suburb="Moscow"/>
+	<Contact id="1501" collegeId="1" studentId="1541" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="luka@kolhoz.by" familyName="Alexander" givenName="Lukashenko"  faxNumber="1234-567" suburb="Minsk"/>
+	
+	<Message id="10001" collegeId="1" angelId="1" created="2010-02-03 09:18:09" emailBody="test email body" emailSubject="test email subject" modified="2010-02-03 09:18:09" smsText="test sms text"/>
+	<Message id="10002" collegeId="1" angelId="2" created="2010-02-03 09:18:09" emailBody="test email body" emailSubject="test email subject" modified="2010-02-03 09:18:09" smsText="test sms text"/>
+	<Message id="10003" collegeId="1" angelId="3" created="2010-02-03 09:18:09" emailBody="test email body" emailSubject="test email subject" modified="2010-02-03 09:18:09" smsText="test sms text"/>
+	<Message id="10004" collegeId="1" angelId="4" created="2010-02-03 09:18:09" emailBody="test email body" emailSubject="test email subject" modified="2010-02-03 09:18:09" smsText="test sms text"/>
+	
+	<MessagePerson id="10001" angelId="1" collegeId="1" contactId="1500" created="2010-02-03 09:18:09" destinationAddress="1234-111" messageId="10001" modified="2010-02-03 09:18:09" numberOfAttempts="0"  status="1" response="" studentId="1540" type="2"/>
+	<MessagePerson id="10002" angelId="2" collegeId="1" contactId="1501" created="2010-02-03 09:18:09" destinationAddress="34567-111" messageId="10001" modified="2010-02-03 09:18:09" numberOfAttempts="0" status="3" response="remote exception" studentId="1540" type="3"/>
+	<MessagePerson id="10003" angelId="1" collegeId="1" contactId="1501" created="2010-02-03 09:18:09" destinationAddress="1234-111" messageId="10002" modified="2010-02-03 09:18:09" numberOfAttempts="0"  status="1" response="" studentId="1540" type="2"/>
+	<MessagePerson id="10004" angelId="2" collegeId="1" contactId="1500" created="2010-02-03 09:18:09" destinationAddress="34567-111" messageId="10003" modified="2010-02-03 09:18:09" numberOfAttempts="0" status="1" response="" studentId="1540" type="2"/>
+	<MessagePerson id="10005" angelId="1" collegeId="1" contactId="1501" created="2010-02-03 09:18:09" destinationAddress="1234-111" messageId="10004" modified="2010-02-03 09:18:09" numberOfAttempts="0"  status="3" response="remote exception" studentId="1540" type="3"/>
+	<MessagePerson id="10006" angelId="2" collegeId="1" contactId="1500" created="2010-02-03 09:18:09" destinationAddress="34567-111" messageId="10004" modified="2010-02-03 09:18:09" numberOfAttempts="0" status="1" response="" studentId="1540" type="2"/>
+</dataset>

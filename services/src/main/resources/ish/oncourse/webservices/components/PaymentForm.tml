@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	 <div class="pay-form">
+        <t:form t:id="paymentDetailsForm" zone="paymentZone">
+        
+            <div class="${cardTypeClass}">
+                <label>Card Type<sup>*</sup></label>
+                   <span class="pay-form-cardtype">
+                   	<t:radiogroup t:id="cardTypeField" value="payment.creditCardType">
+                   	    <t:radio t:id="masterCard" class="radio"/><t:label for="masterCard"/>
+                   	    <t:radio t:id="visa" class="radio"/><t:label for="visa"/>
+                   	    <t:if test="preferenceService.servicesAmexEnabled">
+                   	    	<t:radio t:id="amex" class="radio"/><t:label for="amex"/>
+                   	    </t:if>	
+                   	</t:radiogroup>
+                   </span>
+                   <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardTypeField"/>
+            </div>
+
+
+            <div class="${cardNameInputClass}">
+                <label>${message:nameOnCard}<sup>*</sup></label>
+                   <span class="pay-form-control">
+                       <t:textfield t:id="cardName" type="text" maxlength="500" class="field" value="payment.creditCardName"/>
+                   </span>
+                   <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardName"/>
+            </div>
+
+            <div class="${cardNumberInputClass}">
+                <label>${message:cardNumber}<sup>*</sup></label>
+                   <span class="pay-form-control">
+                   	<t:textfield value="payment.creditCardNumber" class ="field" clientId="cardnumber" t:id="cardNumber" maxlength="20" />
+                   </span>
+                   <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardNumber"/>
+            </div>
+
+            <div class="${cardExpireClass}">
+                <label>${message:expDate}<sup>*</sup></label>
+                   <span class="pay-form-control">
+                       <t:select t:id="expiryMonth" class="field small" value="ccExpiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"/>/<t:select t:id="expiryYear" class="field small" value="ccExpiryYear" model="years" blankLabel="yyyy"/>
+                   </span>
+                   <span t:type="ErrorDisplay" form="paymentDetailsForm" field="expiryMonth"/>
+            </div>
+
+            <div class="${cardcvvInputClass}">
+                <label>${message:cvv}<sup>*</sup></label>
+                   <span class="pay-form-control">
+                   	<t:textfield value="payment.creditCardCVV" class ="field small" 
+									clientId="cardcvv" t:id="cardcvv" maxlength="4" />
+                   </span>
+                   <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardcvv"/>
+            </div>
+			<div class="pay-form-submit-wrapper">
+            	<div class="submit-wrapper">
+            		 <div class="submit-left">
+            			<t:linkSubmit t:id="cancel" mode="CANCEL">Cancel</t:linkSubmit>
+            		</div>
+            	 	<div class="submit-right">
+            	 		<span class="btn-next-wr">
+                			<t:submit t:id="paymentSubmit" value="Submit" class="btn btn-next" clientId="makepayment"/> 
+                		</span>
+		    		</div>
+            	</div>
+            </div>
+
+        </t:form>
+	</div>
+</t:container>

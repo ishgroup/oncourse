@@ -1,0 +1,66 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<context:annotation-config />
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<bean id="gzipFeature" class="org.apache.cxf.transport.common.gzip.GZIPFeature" />
+	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
+
+	<bean id="v4_referencePortTypeBean" class="ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl" />
+
+	<bean id="v4_securityCodeInterceptor"
+		class="ish.oncourse.webservices.soap.v4.interceptors.SecurityCodeInterceptor" />
+
+	<bean id="v4_communicationKeyInterceptor"
+		class="ish.oncourse.webservices.soap.v4.interceptors.CommunicationKeyInterceptor" />
+	
+	<bean id="v4_angelVersionInterceptor"
+		class="ish.oncourse.webservices.soap.v4.interceptors.AngelVersionInterceptor"/>
+	
+	<bean id="v4_collegeRequestInterceptor"
+		class="ish.oncourse.webservices.soap.v4.interceptors.CollegeRequestInterceptor" />
+
+	<bean id="v4_replicationPortType"
+		class="ish.oncourse.webservices.soap.v4.ReplicationPortTypeImpl" />
+
+	<bean id="v4_paymentPortType" class="ish.oncourse.webservices.soap.v4.PaymentPortTypeImpl" />
+
+	<cxf:bus>
+		<cxf:features>
+			<ref bean="gzipFeature" />
+			<ref bean="loggingFeature" />
+		</cxf:features>
+	</cxf:bus>
+
+	<jaxws:endpoint id="v4_replication" implementor="#v4_replicationPortType"
+		address="/v4/replication">
+		<jaxws:inInterceptors>
+			<ref bean="v4_communicationKeyInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v4_payment" implementor="#v4_paymentPortType"
+		address="/v4/payment">
+		<jaxws:inInterceptors>
+			<ref bean="v4_securityCodeInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
+		address="/v4/reference">
+		<jaxws:inInterceptors>
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+</beans>

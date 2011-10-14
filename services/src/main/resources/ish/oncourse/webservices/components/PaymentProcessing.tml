@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:progressivedisplay t:id="processHolder" initial="block:process" />
+	<t:block t:id="process">
+		<div class="pay-form">
+			<div class="pay-process">
+				<h2 class="page-title">Payment being processed. Please wait...</h2>
+			</div>
+		</div>
+	</t:block>
+	<t:block id="paymentResultBlock">
+		<span t:type="PaymentResult" payment="payment" />
+	</t:block>
+</t:container>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+<head>
+    <meta charset="utf-8"/>
+    <title>${message:headerTitle}</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge; chrome=1"/>
+</head>
+<body>
+
+	<div class="page">
+	
+	    <div class="header">
+	        <h1 class="header-title">${message:headerTitle}</h1>
+	        <a href="#" class="logo"></a>
+	    </div>
+	
+	    <div class="process">
+	
+	        <h2 class="page-title">${paymentTitle}</h2>
+	
+	        <ul class="process-list">
+	        	<t:loop source="invoices" value="invoice">
+	        		<li><span>${invoiceDescription}</span> ${message:currency}<t:output value="invoice.totalGst" format="moneyFormat"/></li>
+	        	</t:loop>
+	        </ul>
+	        <div class="process-total">
+	            <span>${message:totalOfPayment}</span>${message:currency}<t:output value="totalIncGst" format="moneyFormat"/>
+	        </div>
+	        
+	    </div>
+	
+		<t:zone t:id="paymentZone">
+		   <t:if test="showPaymentResult">
+		   		<t:delegate to="paymentResultBlock"/>
+		   		<p:else>
+		   			<t:if test="paymentBeingProcessed">
+		   				<t:delegate to="progressDisplayBlock" />
+		   				<p:else>
+		   					<span t:id="paymentForm" t:type="PaymentForm" payment="payment"/>
+		   				</p:else>
+		   			</t:if>			
+		   		</p:else>
+		   </t:if>
+		</t:zone>
+		
+		<t:block id="progressDisplayBlock">
+			<span t:type="PaymentProcessing" payment="payment" />
+		</t:block>
+		
+		<t:block id="cancelledMessageBlock">
+			<div class="pay-form">
+				<div class="pay-fail">
+					<h2 class="page-title">This payment was cancelled.</h2>
+				</div>
+			</div>
+			<script type="text/javascript">showWarning = false;</script>
+		</t:block>
+		
+		<t:block id="paymentResultBlock">
+			<span t:type="PaymentResult" payment="payment"/>
+		</t:block>
+		
+	</div>
+	<script type="text/javascript">
+		var showWarning = true;
+		window.onbeforeunload = function() {
+			if (showWarning) {
+				var e = e || window.event;
+				var message = "If you close this window, you will not be able to complete this payment. Instead choose 'save' or 'cancel' in the window.";
+				if (e) { e.returnValue = message;}
+				return message; 
+			}
+		};
+	</script>
+</body>
+</html>
