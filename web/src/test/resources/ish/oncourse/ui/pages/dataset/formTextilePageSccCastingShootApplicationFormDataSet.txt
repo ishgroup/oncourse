@@ -1,0 +1,28 @@
+{form name:"Casting Shoot Application Form" email:"cherril.amphlett@scc.nsw.edu.au"}
+
+{text name:"FirstName" required:"yes" label:"First Name" maxlength:"10"}
+{text name:"LastName" required:"yes" label:"Last Name" maxlength:"15"}
+{text name:"PostalAddress" required:"yes" label:"Postal Address" lines:"5"}
+{text name:"DOB" required:"yes" label:"Date of Birth" maxlength:"15"}
+{text name:"PhoneNumber" required:"yes" label:"Phone Number" maxlength:"10"}
+{text name:"MobilePhoneNumber" required:"yes" label:"Mobile Phone Number" maxlength:"10"}
+{text name:"EmailAddress" required:"yes" label:"E-mail Address" maxlength:"40"}
+{text name:"CoursesAttended" required:"yes" label:"Course(s) Attended" lines:"5"}
+When?
+{radiolist name:"When?" default:"Term 1" options:"Term 1, Term 2, Term 3, Term 4,"}
+
+Please confirm your availability for the following dates:
+
+Casting Shoot: Saturday, 30 October 2010
+{radiolist name:"Availability1" options:"Available,Not Available"}
+
+If you are chosen to be one of our cover personalities, you will be invited to attend the photo shoot.
+
+Photo Shoot: Saturday, 13 November 2010
+{radiolist name:"Availability2" options:"Available,Not Available"}
+
+If you have any questions, please call Cherril on 8752 7520 or Karin on 8752 7522.
+
+Thank you and good luck!
+
+{form}

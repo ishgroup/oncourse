@@ -1,0 +1,7 @@
+{form name:"e-mail us" email:"con.openacademy@sydney.edu.au"}
+{text name:"Email address" label:"Email address" required:"yes"}
+{text name:"First name" label:" First Name" required:"yes"}
+{text name:"Last name" label:"Last name" required:"yes"}
+{text name:"Phone number" label:"Phone number" required:"no"}
+{text name:"Message:" label:"Message" required:"yes" lines:"yes"}
+{form}

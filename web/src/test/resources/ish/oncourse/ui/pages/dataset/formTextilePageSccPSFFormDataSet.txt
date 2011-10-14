@@ -1,0 +1,86 @@
+{form name:"PSF Form" email:"csteam.leader@scc.nsw.edu.au"}
+
+h4. About You.
+{text name:"Firstname" required:"yes" label:"First Name" maxlength:"10"}
+
+{text name:"Lastname" required:"yes" label:"Last Name" maxlength:"15"}
+
+{text name:"EmailAddress" required:"yes" label:"Email Address" maxlength:"40"}
+
+h5. What is the name of the course you are currently enrolled in?
+{text name:"Course-Name" required:"yes" label:"Course Name" maxlength:"15"}
+
+h5. What is your residential suburb?
+{text name:"Residential-Suburb" required:"yes" l maxlength:"15"}
+
+h5. What is your work suburb?
+{text name:"Work-Suburb" required:"yes" l maxlength:"15"}
+
+h5. Have you completed other photography courses?
+{radiolist name:"other-course-completed"  default:"Yes" options:"No,Yes," description:"Please check one."}
+
+h5. If yes, was it at this college?
+{radiolist name:"Course-at-SCC"  default:"Yes" options:"No,Yes,N/A" description:"Please check one."}
+
+h5. Are you undertaking the course for:
+{radiolist name:"Course-Reasons"   options:"For Reasons of Pleasure,For Creative Reasons,For Technical Reasons" description:"Please check one."}
+
+h5. Briefly describe your reasons.
+{text name:"Course-Reasons-Text" required:"yes" lines:"10"}
+
+h5. Do you own a camera?
+{radiolist name:"Own-Camera"  default:"Yes" options:"No,Yes," description:"Please check one."}
+
+h5. What type of camera is it?
+{radiolist name:"Camera-Type"  options:"Digital,Film,N/A" description:"Please check one."}
+
+h5. Is your camera an:
+{radiolist name:"Camera-Type-2"  options:"SRL,Automatic,N/A" description:"Please check one."}
+
+h5. What kind of photography courses should the college offer?
+More creative courses?
+{radiolist name:"More-Creative-Course"  options:"Yes,No" description:"Please check one."}
+More technical courses?
+{radiolist name:"More-Technical-Courses"  options:"Yes,No" description:"Please check one."}
+More theoretical courses?
+{radiolist name:"More-Technical-Courses"  options:"Yes,No" description:"Please check one."}
+
+h5. Are you interested in:
+Fashion Photography?
+{radiolist name:"Fashion-Photography"  options:"Yes,No" description:"Please check one."}
+Landscape Photography?
+{radiolist name:"Landscape-Photography"  options:"Yes,No" description:"Please check one."}
+Portrait Photography?
+{radiolist name:"Portrait-Photography"  options:"Yes,No" description:"Please check one."}
+Street Photography?
+{radiolist name:"Street-Photography"  options:"Yes,No" description:"Please check one."}
+Studio Photography?
+{radiolist name:"Studio-Photography"  options:"Yes,No" description:"Please check one."}
+Photography Discussion Series
+{radiolist name:"Discussion Series"  options:"Yes,No" description:"Please check one."}
+
+h5. Should the college courses lead to a recognised qualification such as a Certificate or Diploma?
+{radiolist name:"Accredited"  options:"Yes,No" description:"Please check one."}
+
+h5. Where should the college best locate it courses?
+a. The CBD
+{radiolist name:"Location-CBD"  options:"Yes,No" description:"Please check one."}
+b. Surry Hills
+{radiolist name:"Location-Surry Hills"  options:"Yes,No" description:"Please check one."}
+c. Rozelle
+{radiolist name:"Location-Rozelle"  options:"Yes,No" description:"Please check one."}
+d. Other (Please nominate)
+{text name:"Other-Location-Text" required:"no"  maxlength:"15"}
+
+Please feel free to make any other comments
+
+{text name:"Other-Comments" label:"Other Comments" required:"yes" description:"Your comments here." lines:"20"}
+
+
+
+
+
+
+h4. Thank you.
+Your survey will be passed to the college faculty and will greatly assist us.
+{form}

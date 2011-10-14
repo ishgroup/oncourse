@@ -1,0 +1,28 @@
+{form name:"Alan Duncan" email:"rachel.wells@scc.nsw.edu.au"}
+
+{radiolist name:"Who" label:"Who is placing the nomination?" default:"Student" options:"Student,Tutor"}
+{text name:"First Name" required:"yes" label:"First Name" maxlength:"10"}
+{text name:"Last Name" required:"yes" label:"Last Name" maxlength:"15"}
+{text name:"E-Mail" required:"yes" label:"E-mail Address" maxlength:"40"}
+{text name:"Course" required:"no" label:"What course did you attend?" maxlength:"40"}
+{radiolist name:"Attendance" label:"When did you attend this course?" default:"Term 1 2009" options:"Term 3 2008,Term 4 2008,Term 1 2009,Term 2 2009"}
+
+If you are a tutor nominating a student, please complete the following details.
+
+{text name:"Student First Name" required:"no" label:"Student First Name" maxlength:"10"}
+{text name:"Student Last Name" required:"no" label:"Student Last Name" maxlength:"15"}
+{text name:"Student E-mail Address" required:"no" label:"Student E-mail Address" maxlength:"40"}
+{text name:"Tutor Course" required:"no" label:"Which course did you teach?" maxlength:"40"}
+{radiolist name:"Student Attendance" label:"In which term did the student attend your course?" default:"Term 1 2009" options:"Term 3 2008,Term 4 2008,Term 1 2009,Term 2 2009"}
+
+Please write in 300-600 words how you/your student have made a demonstrable improvement in you/your student's own life and/or lives of others as a result of participation in adult education at Sydney Community College.
+
+{text name:"Description" required:"yes" lines:"yes"}
+
+Award winners will receive a framed certificate and a prize of a free single course at Sydney Community College, up to the value of $200 (this must be used in Term 3, 2009).
+
+Closing date for nominations is Saturday 13th June.
+
+Thank you for submitting your nomination.
+
+{form}

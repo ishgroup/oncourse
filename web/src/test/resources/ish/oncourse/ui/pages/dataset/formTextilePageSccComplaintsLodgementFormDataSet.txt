@@ -1,0 +1,27 @@
+{form name:"Complaints Lodgement Form" email:"terry.moore@scc.nsw.edu.au"}
+
+h4. About You.
+{text name:"Firstname" required:"yes" label:"First Name" maxlength:"10"}
+
+{text name:"Lastname" required:"yes" label:"Last Name" maxlength:"15"}
+
+{text name:"EmailAddress" required:"yes" label:"Email Address" maxlength:"40"}
+
+h4. About Your Course
+{text name:"Coursename" required:"yes"  label:"Course Name" maxlength:"30"}
+{text name:"TutorsName" required:"no"  label:"Tutors Name" maxlength:"25"}
+{text name:"VenueName" required:"no"  label:"Venue Name" maxlength:"20"}
+
+{radiolist name:"Completed" label:"Did you complete the course? " default:"Yes" options:"No,Yes," description:"Please check one."}
+{radiolist name:"Objectives-made-clear" label:"Where the course objectives made clear to you? " default:"Yes" options:"No,Yes," description:"Please check one."}
+{radiolist name:"Objectives-achieved" label:"Did the course achieve its objectives? " default:"Yes" options:"No,Yes,Partly" description:"Please check one."}
+{radiolist name:"Tutor-Informed-of-Concerns" label:"Did you inform your tutor about your concerns? " default:"Yes" options:"No,Yes," description:"Please check one."}
+
+
+h4. About Your Complaint.
+{text name:"complaint-description" label:"Nature of complaint" required:"yes" description:"Please describe the complaint course in detail." lines:"20"}
+
+
+h4. Thank you.
+Your compliant will be passed to a Customer Service Officer and acted on promptly.
+{form}

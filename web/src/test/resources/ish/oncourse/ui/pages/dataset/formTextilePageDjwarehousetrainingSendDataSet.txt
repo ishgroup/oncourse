@@ -1,0 +1,14 @@
+{form name:"Send an Enquiry Form" email:"info@djwarehousetraining.com.au"}
+
+
+{text name:"Name" label:"Name" required:"yes" maxlength:"41" }
+{text name:"Phone" label:"Phone" required:"yes" maxlength:"41" }
+{text name:"Email" label:"Email" required:"yes" maxlength:"41" }
+
+
+
+{popuplist name:"Interested Location?" label:"Interested Location?" required:"yes" options:"Sydney,Melbourne,Brisbane,Adelaide,Perth"}
+
+{text name:"Your Enquiry?" label:"Your Enquiry?" required:"yes" lines:"6"}
+
+{form}

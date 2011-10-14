@@ -1,0 +1,51 @@
+{form name:"Course Proposal Form" email:"christine.lerch@scc.nsw.edu.au"}
+
+h4. About You.
+{text name:"Firstname" required:"yes" label:"1. First Name" maxlength:"10"}
+{text name:"Lastname" required:"yes" label:"2. Last Name" maxlength:"15"}
+{text name:"EmailAddress" required:"yes" label:"3. Email Address" maxlength:"40"}
+{text name:"ContactNumber" required:"yes" label:"4. Contact Number" maxlength:"12"}
+{text name:"Date-of-Birth" required:"yes" label:"5. Date of Birth" maxlength:"10"}
+
+h4. Generally About Your Course
+What is the name of your course?
+{text name:"Course-name" required:"yes" label:"1. Course Name" maxlength:"40"}
+2. Have you successfully offered a similar course before?
+{radiolist name:"Similar-Course-Undertaken"  default:"No" options:"No,Yes," description:"Please check one."}
+3. Are you currently offering this course elsewhere?
+{radiolist name:"Similar-Course-Elsewhere"  default:"No" options:"No,Yes," description:"Please check one."}
+If yes, where?
+{text name:"Course-offered-at" required:"no" label:"4. Venue Name" maxlength:"30"}
+
+h4. More Specifically About Your Course?
+1. How many sessions do you propose for your course?
+{radiolist name:"Number-of-Sessions"  default:"1" options:"1,2,3,4,5,6,7,8," description:"Please check one."}
+2. Is your course proposed for the Day, Evening or Weekend?
+{radiolist name:"Course-Proposed"  required:"yes" default:"Day" options:"Day,Evening,Weekend" description:"Please check one."}
+3. Please describe your course as you would like it advertised.
+{text name:"Course-Description" label:required:"yes" description:"Please describe your course." lines:"20"}
+
+h4. Agenda
+Please describe the agenda in a session by session outline.
+{text name:"Agenda-Description" label:required:"yes" description:"Please describe your course." lines:"20"}
+
+h4. Learning Outcomes
+All courses have learning outcomes. The learning outcomes must  be planned by you. For help with learning outcomes please see the "course proposal help":/page/475. Please outline up to four major outcomes below.
+{text name:"Outcome-one" required:"yes" label:"a. First Outcome" lines:"5"}
+{text name:"Outcome-two" required:"no" label:"b. Second Outcome" lines:"5"}
+{text name:"Outcome-three" required:"no" label:"c. Third Outcome" lines:"5"}
+{text name:"Outcome-four" required:"no" label:"d. Fourth Outcome" lines:"5"}
+
+h4. About Facilities and Equipment
+1. Please describe what special facilities and any particular equipment that will be required for this course that will need to be supplied by the college.
+{text name:"Facilities-Equipment-Required" label:required:"yes" description:"Please describe what equipment or facilities required." lines:"20"}
+2. Please describe what special equipment or consumables required for this course that will need to be supplied by the student.
+{text name:"Student-Equipment-Required" label:required:"no" description:"Please describe what equipment or materials required by the student." lines:"20"}
+
+h4. Risk Assessment.
+All courses and activities pose some level of risk. Have you considered what risks there might be? If you use machinery, equipment, tools or chemicals in your course, please indicate these as potential hazards. If your course requires the student to participate in a level of activity above normal exertion, please indicate this.  Please note that we will assist you to prepare a "Safe Working Methods Statement":/page/1111 should we agree to include your course in our programme.
+{text name:"Risk-Outline" label:required:"yes" description:"Please outline any risks." lines:"20"}
+
+
+h4. Thank you for your submission. It will be passed to a Faculty Manager for consideration.
+{form}

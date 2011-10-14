@@ -1,0 +1,12 @@
+{form name:"Mandurah Contact" email:"juan.rando@jrda.com.au”}
+
+{text name:"First name" label:"First name" required:"yes" maxlength:"50"}
+
+{text name:"Last name" label:"Last Name" required:"yes" maxlength:"50"}
+
+{text name:"Email" label:"Email Address" Email Address" required:"yes"}
+
+{text name:"Enquiry" label:"Enquiry" required:"no" lines:"5"}
+{checklist name:"Dance Styles" label:"Dance Styles that Interest You" required:"no" default:"Other" options:"Other,Argentine Tango,Salsa,Zouk,West Coast Swing" description:"Please note : All communications are by email only.  By filling out this form you agree to receive emails and promotional material by Juan Rando Dance Academy only.  We do not send third party promotional material."}
+
+{form}

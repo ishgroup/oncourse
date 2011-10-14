@@ -1,0 +1,43 @@
+{form name:"Application Form - More Than 15 Minutes of Fame" email:"karin.waldmann@scc.nsw.edu.au}
+
+1. {text name:"FirstName" required:"yes" label:"First Name" maxlength:"10"}
+2. {text name:"LastName" required:"yes" label:"Last Name" maxlength:"15"}
+3. {text name:"PostalAddress" required:"no" label:"Postal Address" lines:"4"}
+4. Age Range
+{radiolist:"AgeRange" default:"20-25" options:"20-25,26-30,31-35,36-40,41-45,46-50,50+,"}
+
+{form}
+	Edit	Inline Edit	Copy	Delete	h4. To become a cover personality in 2010
+
+We want your face!
+
+If you would like to be on the cover of 120,000 copies of one of the Sydney Community College Course Guides in 2010 and have attended one of our courses in 2009, please complete this application form. *Deadline for applications is Monday, 12 October 2009.*
+
+{form name:"Casting Shoot Application Form" email:"rachel.wells@scc.nsw.edu.au"}
+
+{text name:"FirstName" required:"yes" label:"First Name" maxlength:"10"}
+{text name:"LastName" required:"yes" label:"Last Name" maxlength:"15"}
+{text name:"PostalAddress" required:"yes" label:"Postal Address" lines:"5"}
+{text name:"DOB" required:"yes" label:"Date of Birth" maxlength:"15"}
+{text name:"PhoneNumber" required:"yes" label:"Phone Number" maxlength:"10"}
+{text name:"MobilePhoneNumber" required:"yes" label:"Mobile Phone Number" maxlength:"10"}
+{text name:"EmailAddress" required:"yes" label:"E-mail Address" maxlength:"40"}
+{text name:"CoursesAttended" required:"yes" label:"Course(s) Attended" lines:"5"}
+When?
+{radiolist name:"When?" default:"Term 1" options:"Term 1, Term 2, Term 3, Term 4,"}
+
+Please confirm your availability for the following dates:
+
+Casting Shoot: Sunday, 25 October 2009
+{radiolist name:"Availability1" options:"Available,Not Available"}
+
+If you are chosen to be one of our cover personalities, you will be invited to attend the photo shoot.
+
+Photo Shoot: Saturday, 7 November 2009
+{radiolist name:"Availability2" options:"Available,Not Available"}
+
+If you have any questions, please call Rachel on 8752 7520 or Karin on 8752 7522.
+
+Thank you and good luck!
+
+{form}

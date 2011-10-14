@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	metadata-complete="true" version="2.5">
+
+	<display-name>onCourse-website</display-name>
+
+	<context-param>
+		<param-name>tapestry.app-package</param-name>
+		<param-value>ish.oncourse.website</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>tapestry.production-mode</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+    	<param-name>liquibase.changelog</param-name>
+    	<param-value>liquibase.db.changelog.xml</param-value>	
+	</context-param>
+ 
+	<context-param>
+    	<param-name>liquibase.datasource</param-name>
+    	<param-value>java:comp/env/jdbc/oncourse</param-value>
+	</context-param>
+  
+	<context-param>
+    	<param-name>liquibase.onerror.fail</param-name>
+    	<param-value>true</param-value>
+	</context-param>
+ 
+	<context-param>
+    	<param-name>liquibase.contexts</param-name>
+    	<param-value>production</param-value>
+	</context-param>
+	
+	<listener>
+    	<listener-class>ish.oncourse.website.listener.SessionListener</listener-class>
+  	</listener>
+  	
+  	<listener>
+  		<listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
+  	</listener>
+  	
+  	<listener>
+  		<listener-class>ish.oncourse.listeners.TheLeakPreventionListener</listener-class>
+  	</listener>
+
+	<filter>
+		<filter-name>app</filter-name>
+		<filter-class>org.apache.tapestry5.TapestryFilter</filter-class>
+	</filter>   
+	
+	<filter-mapping>
+		<filter-name>app</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<resource-ref>
+		<res-ref-name>jdbc/oncourse</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	
+	<resource-ref>
+		<res-ref-name>jdbc/oncourse_reference</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	
+	<resource-ref>
+		<res-ref-name>jdbc/oncourse_binary</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<welcome-file-list>
+		<welcome-file>/</welcome-file>
+	</welcome-file-list>
+	
+	<error-page>
+    	<error-code>500</error-code> 
+   		<location>/error500</location>
+  	</error-page>
+	
+</web-app>

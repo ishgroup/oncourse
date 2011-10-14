@@ -1,0 +1,7 @@
+{form name:"Online Enquiry" email:"promotions@actt.edu.au”}
+{text name:"Email" label:"Email" required:"yes"}
+{text name:"First Name" label:"First Name" required:"yes"}
+{text name:"Last Name"  label:"Last Name" required:"yes"}
+{text name:"Mobile Phone"  label:"Mobile Phone" required:"yes"}
+{text name:"Enquiry Details" label:"Your message to us:" required:"no" lines:"yes"}
+{form}

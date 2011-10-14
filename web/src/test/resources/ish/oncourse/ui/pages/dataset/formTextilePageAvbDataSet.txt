@@ -1,0 +1,13 @@
+{form name:"contact" email:"odile@avb.com.au"}
+
+{text name:"Name" label:"Name" required:"yes" maxlength:"50"}
+
+{text name:"Email address" label:"Email Address" required:"yes" maxlength:"50"}
+
+{text name:"Contact number" label:"Contact number" required:"yes" maxlength:"50"}
+
+{text name:"Subject" label:"Subject" required:"yes" maxlength:"50"}
+
+{text name:"Message" label:"Message" required:"no" lines:"5"}
+
+{form}

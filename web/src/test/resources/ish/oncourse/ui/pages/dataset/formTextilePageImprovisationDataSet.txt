@@ -1,0 +1,10 @@
+{form name:"Enquiry" email:"lyn@improvisation.com.au"}
+
+h4. About You.
+
+1. {text name:"Firstname" required:"yes" label:"First Name" maxlength:"10"}
+2. {text name:"Lastname" required:"yes" label:"Last Name" maxlength:"15"}
+3. {text name:"EmailAddress" required:"yes" label:"Email Address" maxlength:"40"}
+4. {text name:"ContactNumber'' required:"yes" label:"Contact Number" maxlength:"40"}
+5. {text name:"Class'' required:"yes'' label:"Topic/Class" maxlength:"40"}
+{form}

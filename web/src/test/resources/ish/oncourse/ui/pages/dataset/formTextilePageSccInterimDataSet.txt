@@ -1,0 +1,36 @@
+{form name:"Interim Claim for Payment" email:"garry.traynor@scc.nsw.edu.au,gt@scc.nsw.edu.au" url:"/page/1020"}
+
+h4. About You.
+{text name:"Firstname" required:"yes" label:"First Name" maxlength:"10"}
+
+{text name:"Lastname" required:"yes" label:"Last Name" maxlength:"15"}
+
+{text name:"EmailAddress" required:"yes" label:"Email Address" maxlength:"40"}
+{text name:"Mobile" required:"yes" label:"Mobile Number" maxlength:"40"}
+
+
+h4. About Your Course(s)
+1. {text name:"Coursename_1" required:"yes"  label:"Course Name" maxlength:"30" description:"Please enter your course name"}
+{popuplist name:"Venuename_1" label:"Venue Name" required:"false" options:"College Office,Design and Technology,Leichhardt High,Cleveland Street,GEOS,Other"}
+{text name:"DatesWorked_1" required:"yes"  label:"Dates You Worked" maxlength:"40" description:"Please the dates you worked in dd/mm/yy format"}
+{popuplist name:"HoursWorked_2" required:"no"  
+<br>label:"Hours You Worked" options:"2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0"}</br>
+
+2. {text name:"Coursename_2" required:"no"  label:"Course Name" maxlength:"30" description:"Please enter your course name"}
+{popuplist name:"Venuename_2" label:"Venue Name" required:"false" options:"College Office,Design and Technology,Leichhardt High,Cleveland Street,GEOS,Other"}
+{text name:"DatesWorked_2" required:"no"  label:"Dates You Worked" maxlength:"40" description:"Please the dates you worked in dd/mm/yy format"}
+{popuplist name:"HoursWorked_2" required:"no"
+<br>label:"Hours You Worked" options:"2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0"}</br>
+
+3. {text name:"Coursename_3" required:"no"  label:"Course Name" maxlength:"30" description:"Please enter your course name"}
+{popuplist name:"Venuename_3" label:"Venue Name" required:"false" options:"College Office,Design and Technology,Leichhardt High,Cleveland Street,GEOS,Other"}
+{text name:"DatesWorked_3" required:"no"  label:"Dates You Worked" maxlength:"40" description:"Please the dates you worked in dd/mm/yy format"}
+{popuplist name:"HoursWorked_3" required:"no"
+<br>label:"Hours You Worked" options:"2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0"}</br>
+
+
+
+
+h4. Thank you.
+Your claim will be passed to Payroll Officer who may contact you if necessary.
+{form}

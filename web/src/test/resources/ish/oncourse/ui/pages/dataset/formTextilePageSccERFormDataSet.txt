@@ -1,0 +1,46 @@
+{form name:"ER Form" email:"terry.moore@scc.nsw.edu.au"}
+
+h4. About You.
+{text name:"Firstname" required:"yes" label:"First Name" maxlength:"10"}
+
+{text name:"Lastname" required:"yes" label:"Last Name" maxlength:"15"}
+
+{text name:"EmailAddress" required:"yes" label:"Email Address" maxlength:"40"}
+
+h4. Will the equipment improve a particular course?
+{radiolist name:"Improve-Course"  default:"Yes" options:"No,Yes," description:"Please check one."}
+If yes, what is the name of the course?
+{text name:"Coursename" required:"no"  label:"Course Name" maxlength:"30"}
+Briefly, How will it  improve the course?
+{text name:"Course-Suggestion-Text" label:"Detail of your suggestion" required:"yes" description:"Please outline your suggestion." lines:"10"}
+
+h4. Will the equipment improve a particular Venue?
+{radiolist name:"Improve-Venue"  default:"Yes" options:"No,Yes," description:"Please check one."}
+If yes, what is the name of the Venue?
+{text name:"Venue-Name" required:"no"  label:"Venue Name" maxlength:"30"}
+Briefly, how can we improve the venue?
+{text name:"Venue-Suggestion-Text" label:"Detail of your suggestion" required:"yes" description:"Please outline your suggestion." lines:"10"}
+
+h4. Will the equipment  improve a particular Service?
+{radiolist name:"Improve-Service"  default:"Yes" options:"No,Yes," description:"Please check one."}
+If yes, what is the name of the Service? ie. (telephone system)
+{text name:"Venue-Name" required:"no"  label:"Venue Name" maxlength:"30"}
+Briefly, how will it do that improve the system?
+{text name:"Service-Suggestion-Text" label:"Detail of your suggestion" required:"yes" description:"Please outline your suggestion." lines:"10"}
+
+h4. Is the equipment to replace existing equipment?
+{radiolist name:"Replace_Existing"  default:"Yes" options:"No,Yes," description:"Please check one."}
+
+h4. If yes, has the existing equipment failed?
+{radiolist name:"Equipment-Failed"  default:"Yes" options:"No,Yes," description:"Please check one."}
+
+h4. Is this matter urgent?
+{radiolist name:"Equipment-Urgent"  default:"Yes" options:"No,Yes," description:"Please check one."}
+
+
+
+
+
+h4. Thank you.
+Your request will be passed to a Customer Service Officer and acted on promptly.
+{form}

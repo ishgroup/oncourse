@@ -1,0 +1,42 @@
+{form name:"Additional enrolment information" email:"con.openacademy@sydney.edu.au"}
+
+h3. To help us complete your enrolment please answer the additional questions below:
+{text name:"Student name" label:"Student name:" required:"yes"}
+{text name:"Email address" label:"Email address:" required:"yes"}
+
+*How did you hear about this course?*
+{popuplist name:"Source" label:"Source" required:"yes" options:"Please select one, Open Academy brochure, Internet search, Sydney Morning Herald, Drum Media, mX, Limelight Newsletter, 2MBS Newsletter, FBI Radio Newsletter, Sydney Uni Staff News, SIMA Newsletter, My school, My Music Teacher, Other"}
+{text name:"Other source" label:"If you have selected OTHER:" required:"no"}
+
+*Please nominate the instrument or voice type for which you are enrolling (If you are unsure of your voice type please select Voice (Unspecified) - Optional for non instrumental/vocal courses*
+{popuplist name:"Instrument" label:"Instrument or voice type:" required:"no" options:"Bass Guitar, Bassoon ,Cello,Clarinet,Double Bass,Drum Kit,Electric Guitar,Flute/Piccolo,French Horn,Guitar,Harp,Harpsichord,Keyboard,Oboe,Piano,Pipe Organ,Recorder,Saxophone,Saxophone (Alto),Saxophone (Baritone),Saxophone (Soprano),Saxophone (Tenor),Timpani,Trombone,Trumpet,Tuba,Tuned Percussion,Viola,Violin,Voice (Alto),Voice (Baritone),Voice (Bass),Voice (Soprano),Voice (Tenor),Voice (Unspecified)"}
+
+h3. For Rising Stars Auditions and The Con For Kids only
+
+{text name:"Parents name" label:"Parents/Guardians Name:" required:"no"}
+{text name:"Parents phone" label:"Parents/Guardians Phone:" required:"no"}
+{text name:"Parents email" label:"Parents/Guardians Email Address:" required:"no"}
+
+Phone number and email address only required if different to what was entered in the enrolment
+
+h3. *For Rising Stars Auditions only*
+
+h4. Schooling
+{text name:"School name 2012" label:"School Name in 2012:" required:"no"}
+{text name:"School Year 2012" label:"School Year in 2012:" required:"no"}
+
+h4. Previous Instrumental Training
+{text name:"Years playing" label:"Number of years playing:" required:"no"}
+{text name:"Level achieved" label:"Level achieved/completed (AMEB/Trinity/ABRSM):" required:"no"}
+{text name:"Teachers name" label:"Current teachers name:" required:"no"}
+
+{form}
+	Edit	Inline Edit	Copy	Delete	<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher:'77beba83-c73e-4397-a8b3-0651e26c9ab0'});</script>
+For answers to any of your questions, or if the office is closed and you would like to enquire about starting a course, please complete the form below and we will get back to you as soon as possible.
+{form name:"Online Enquiry" email:"info@actt.edu.au”}
+{text name:"Email" label:"Email" required:"yes"}
+{text name:"First Name" label:"First Name" required:"yes"}
+{text name:"Last Name"  label:"Last Name" required:"yes"}
+{text name:"Mobile Phone"  label:"Mobile Phone" required:"yes"}
+{text name:"Enquiry Details" label:"Please state your enquiry here." required:"no" lines:"yes"}
+{form}

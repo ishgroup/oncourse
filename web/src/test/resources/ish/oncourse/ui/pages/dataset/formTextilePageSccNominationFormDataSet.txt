@@ -1,0 +1,30 @@
+{form name:"Nomination Form" email:"gt@scc.nsw.edu.au"}
+
+
+h2. Nomination Form.
+I declare that I am a  financial member of Sydney Community College Limited and do hereby submit my nomination for the position of Board Member, Sydney Community College Limited. In doing so I understand that if elected:
+# I shall be bound by the rules and objects of Constitution of Sydney Community College Limited;
+# I will disclose all conflicts of interest when and if they might arise;
+# I will not benefit financially from my Board Membership.
+
+
+
+{text name:"Firstname" required:"yes" label:"1. First Name" maxlength:"15"}
+{text name:"Lastname" required:"yes" label:"2. Last Name" maxlength:"15"}
+{text name:"address-1" required:"yes" label:"3. Address 1" maxlength:"25"}
+{text name:"address-2" required:"yes" label:"4. Address 2" maxlength:"25"}
+{text name:"postcode" required:"yes" label:"5. Postcode" maxlength:"4"}
+{text name:"EmailAddress" required:"yes" label:"6. Email Address" maxlength:"40"}
+{text name:"ContactNumber" required:"yes" label:"7. Contact Number" maxlength:"12"}
+{text name:"Date" required:"yes" label:"8. Date" maxlength:"12"}
+Following is a brief outline of my suitability as a Board Member.
+{text name:"AboutYou" required:"yes" label:"9. About You " Lines:"40"}
+Notes.
+# A copy of the Constitution is available from the college office. Please call the Principal, Garry Traynor 8752 7577;
+# Your nomination must reach the College Office, 2 (A) Perry Street Lilyfield 2040, no later than Friday August 20th. Nominations received after that date may be deemed invalid;
+# Emailed and faxed nomination will be received up to 5pm Friday 20th. Fax 8752 7500; email, garry.traynor@scc.nsw.edu.au;
+# If only 3 valid nominations are received by the time set for the close of nominations, then the AGM will proceed to confirm those so nominated as elected;
+# If more than 3 valid nominations are received, then the AGM will vote to elect, from those so nominated, the three members to fill the vacant positions;
+# If less than three valid nominations are received, then the AGM may chose to receive nominations from the financial members of the assembled meeting, and if necessary conduct a ballot to fill any remaining vacant positions.
+               
+{form}

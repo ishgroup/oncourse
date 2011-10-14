@@ -1,0 +1,10 @@
+{form name: "Disability and/or Needs Assistance" email:"courseinfo@education.tas.gov.au"}
+Please complete this form if you have a disability or medical condition that may affect your ability to safely or comfortably take part in a class. You will need to describe your disability and/or medical condition along with any special arrangements required and/or information that the person in charge or your class should be aware of.
+
+{text name:"First name" label:"First name:" required:"yes"}
+{text name:"Last name" label:"Family name:" required:"yes"}
+{text name:"Email address" label:"Email address:" required:"yes"}
+{text name:"Diasability" label:"Details of disability or medical condition:" required:"yes" lines:"yes"}
+{text name:"Assistance" label:"Details of assistance required:" required:"yes" lines:"yes"}
+Personal information will be managed in accordance with the Personal Information Protection Act 2004 and may be accessed by the individual to whom it relates on request to Adult Education Tasmania. You can obtain a copy of the department’s Personal Information Protection Policy by contacting your local Adult Education Centre or by visiting "http://www.education.tas.gov.au/dept/about/legislation/pip/policy":http://www.education.tas.gov.au/dept/about/legislation/pip/policy .
+{form}

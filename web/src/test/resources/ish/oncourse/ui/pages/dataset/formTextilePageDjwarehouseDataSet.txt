@@ -1,0 +1,30 @@
+{form name:"Class feedback" email:"info@djwarehouse.com"}
+
+{text name:"Your First Name" label:"Your First Name" required:"yes"}
+{text name:"Your Last Name" label:"Your Last Name" required:"yes"}
+{text name:"Instructor" label:"Instructors Name" required:"yes"}
+
+{popuplist name:"Which course did you attend?" label:"Which course did you attend?" required:"yes" options:"1 Day DJ Crash Course,8 Week DJ Course,4 Week Scratching Course,Producing Pro DJ Mix,4 Week Ableton Music Production,4 Week Advanced Ableton Music Production,Live Performance and DJ With Ableton"}
+
+{popuplist name:"organisedRating" label:"Was the course well organized and classes well structured?" options:"5-Excellent,4-Very Good,3-Satisfactory,2-Could be better,1-Poor"}
+{popuplist name:"instructionsRating" label:"Were the instructions clear and well explained?" options:"5-Excellent,4-Very Good,3-Satisfactory,2-Could be better,1-Poor"}
+{radiolist name:"courseMaterial" label:"Did the course cover enough material?" options:"Yes,No"}
+{popuplist name:"instructionsRating" label:"How did you find the pace of classes?" options:"Good,Fast,Slow"}
+{radiolist name:"practiceRating" label:"Did you receive enough practice time during the class?" options:"Yes,No"}
+{radiolist name:"indivFeedback" label:"Did you receive enough individual one on one instruction and feedback?" options:"Yes,No"}
+{radiolist name:"talkingFeedback" label:"Did we spend too much time talking and giving instructions?" options:"Yes,No"}
+{radiolist name:"facilitiesRating" label:"Were the facilities adequate for the course?" options:"Yes,No"}
+{popuplist name:"instructionsRating" label:"Are you happy with the amount of new information and skills you learnt?" options:"5-Excellent,4-Very Good,3-Satisfactory,2-Could be better,1-Poor"}
+
+{text name:"Instructor1" label:"Did the instructor communicate the info well?"}
+{text name:"Instructor2" label:"Did the instructor assist you during the one on one time?"}
+{text name:"Instructor3" label:"Was the instructor able to assist you and answer all your questions?"}
+{text name:"Instructor4" label:"Where could the instructor improve?"}
+{popuplist name:"InstructorRating" label:"Overall how would you rate the instructor?" options:"5-Excellent,4-Very Good,3-Satisfactory,2-Could be better,1-Poor"}
+
+{text name:"Course1" label:"What were some negative aspects of the course?"}
+{text name:"Course2" label:"How could the facilities be improved?"}
+{text name:"Course3" label:"How do you think the course could be improved?"}
+{popuplist name:"CourseRating" label:"Overall how would you rate the course?" options:"5-Excellent,4-Very Good,3-Satisfactory,2-Could be better,1-Poor"}
+{radiolist name:"facilitiesRating" label:"Would you be interested in continuing later on to do a more advanced course?" options:"Yes,No"}
+{form}

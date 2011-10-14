@@ -1,0 +1,64 @@
+{form name:"Course Proposal Form" email:"membership-eoi@scc.nsw.edu.au"}
+
+h4. About You.
+1. {text name:"Firstname" required:"yes" label:"Your First Name" maxlength:"10"}
+2. {text name:"Lastname" required:"yes" label:"Your Last Name" maxlength:"15"}
+3. {text name:"EmailAddress" required:"yes" label:"Your Email Address" maxlength:"40"}
+4. {text name:"Date-of-Birth" required:"yes" label:"Your Date of Birth" maxlength:"10"}
+5. {text name:"address-1" required:"yes" label:"Your Residential Address" maxlength:"25"}
+6. {text name:"address-2" required:"yes" label:"Suburb" maxlength:"15"}
+7. {text name:"postcode" required:"yes" label:"Postcode" maxlength:"4"}
+8. {text name:"mobile-number" required:"no" label:"Your Mobile Phone Number" maxlength:"10"}
+9. {text name:"home-phone-number" required:"no" label:"Home Phone" maxlength:"10"}
+10. {text name:"work-phone-number" required:"no" label:"Work Phone Number" maxlength:"10"}
+11. {text name:"Language-at-home" required:"no" label:"What is your preferred language at home" maxlength:"15"}
+12.Are you an indigenous Australian?  {radiolist name:"Indigenous-Australian"  default:"No" options:"No,Yes,"}
+13. Please list any qualifications you hold. {text name:"Qualifications-list" label:required:"no" description: lines:"10"}
+14. Please select the your area of expertise.{radiolist name:"expertise-area"  default:"Business" options:"Business,Marketing,Education/Training,Fund Raising,Community Development,Other" : Please check one."}
+15. General Statement: Please briefly describe why you would be a valuable member of the college.{text name:"General-statement" label:required:"no" description: lines:"10"}
+Thank you for your application
+
+{form}
+	Edit	Inline Edit	Copy	Delete	As part of our 10th Sydney Community College Awards night, we are looking for students to submit their works which were completed in a Sydney Community College class, in the following subject areas:
+
+* Photography
+* Visual Arts
+* Jewellery
+* Textiles & Fashion
+
+Nominations for these awards can be made by any college student who has produced outstanding work or has overcome barriers to learning. Tutors may also nominate students to submit their work.
+
+h3. Conditions of Entry
+
+* Students must be a current or past student (from Term 3, 2008 to Term 2, 2009) of Sydney Community College.
+* Any work submitted must be original.
+* All work must be in a digital format.
+
+Please fill out the form below. On submitting your nomination form, you will receive an e-mail asking you to submit your work digitally.
+
+h3. Nomination Form
+
+{form name:"Student Awards" email:"rachel.wells@scc.nsw.edu.au"}
+
+{radiolist name:"Who" label:"Who is placing the nomination?" default:"Student" options:"Student,Tutor"}
+{text name:"First Name" required:"yes" label:"First Name" maxlength:"10"}
+{text name:"Last Name" required:"yes" label:"Last Name" maxlength:"15"}
+{text name:"E-Mail" required:"yes" label:"E-mail Address" maxlength:"40"}
+{text name:"Course" required:"no" label:"What course did you attend?" maxlength:"40"}
+{radiolist name:"Attendance" label:"When did you attend this course?" default:"Term 1 2009" options:"Term 3 2008,Term 4 2008,Term 1 2009,Term 2 2009"}
+
+If you are a tutor nominating a student, please complete the following details.
+
+{text name:"Student First Name" required:"no" label:"Student First Name" maxlength:"10"}
+{text name:"Student Last Name" required:"no" label:"Student Last Name" maxlength:"15"}
+{text name:"Student E-mail Address" required:"no" label:"Student E-mail Address" maxlength:"40"}
+{text name:"Tutor Course" required:"no" label:"Which course did you teach?" maxlength:"40"}
+{radiolist name:"Student Attendance" label:"In which term did the student attend your course?" default:"Term 1 2009" options:"Term 3 2008,Term 4 2008,Term 1 2009,Term 2 2009"}
+
+Award winners will receive a framed certificate and a prize of a free single course at Sydney Community College, up to the value of $200 (this must be used in Term 3, 2009).
+
+Closing date for nominations is Saturday 13th June.
+
+Thank you for submitting your nomination. You will be contacted shortly to submit your work digitally.
+
+{form}
