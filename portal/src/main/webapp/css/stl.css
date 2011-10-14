@@ -808,7 +808,6 @@ ol li{
 .center .ui-datepicker-calendar .lesson{
 	position:absolute;
 	left:0;
-	top:-15px;
 	width:100%;
 	text-align:center;
 }
