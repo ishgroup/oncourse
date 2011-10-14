@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+    <t:loop source="node.webContentVisibility" value="visibility">
+       <t:zone id="prop:currentZoneKey" class="region">
+           <t:delegate to="regionContentBlock"/>
+          
+       </t:zone>
+       <script type="text/javascript">
+       		Event.observe('${currentZoneKey}', Tapestry.ZONE_UPDATED_EVENT,  wrapEditAreas);
+       </script>
+    </t:loop>
+
+    <t:zone t:id="editorZone" visible="false"></t:zone>
+
+    <t:block id="regionContentBlock">
+		<div class="cms-edit-area">
+			
+			<a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">
+				<div class="cms-edit-area-in"/>
+			</a>
+			
+		</div>
+		
+		<h1>${node.name}</h1>
+		<t:outputraw value="regionContent" />
+		<t:if test="syntaxError.empty" negate="true">
+			<div style="display:none;">There are syntax errors at content:<br/><t:outputraw value="syntaxError"/></div>
+		</t:if>
+   </t:block>
+
+    <t:block id="editorBlock">
+    
+    	<div id="dialog" class="cms-popup-edit cms-editing">
+    		<div class="cms-main-head">
+        		<div class="cms-main-title">
+            		<h1 class="cms-page-title">Edit Page</h1>
+        		</div>
+        		 <div class="cms-main-controls">
+            		<span class="cms-ico-close cms-close-popup"></span>
+       			</div>
+    		</div>
+			<form t:id="regionForm" zone="prop:currentZoneKey">
+    		
+    		<div class="cms-dialog-line">
+        		<h5 class="cms-block-sub-title">Content <span class="cms-ico-help" title="The content of this block"></span></h5>
+        		<textarea class="cms-field-txt" t:type="TextArea" value="visibility.webContent.contentTextile" rows="18"/>
+   			</div>
+
+    		</form>
+		</div>
+		
+		<script type="text/javascript">		
+			jQuery(function() {
+				modals('${regionForm.clientId}');
+			});
+		</script>
+	</t:block>
+
+
+</t:container>

@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>cms</artifactId>
+		<groupId>ish.oncourse.willow.cms</groupId>
+		<version>2.11-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>cms-services</artifactId>
+	<packaging>jar</packaging>
+	<name>Willow - CMS Services</name>
+	<description>onCourse Willow CMS-specific services.</description>
+
+	<dependencies>
+
+		<dependency>
+			<artifactId>commons-collections</artifactId>
+			<groupId>commons-collections</groupId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>oscache</artifactId>
+		</dependency>
+
+	</dependencies>
+
+</project>

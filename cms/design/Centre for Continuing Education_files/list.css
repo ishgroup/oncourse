@@ -1,0 +1,389 @@
+/*****************
+
+Filename: list.css (Default)
+Purpose: Used for course/class and site list pages. 
+Notes:
+
+- Table of Contents -
+* Course info
+* Class panel
+* Tooltips
+
+****************/
+
+h2 span {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	font-size: 70%;
+	font-weight: bold;
+}
+
+table.session-table {
+	margin-bottom: 0px;
+	width: 450px;
+}
+
+table.session-table, table.session-table * { border: none; }
+
+table.session-table th { padding: 0; }
+table.session-table tr td { padding:5px 0; }
+
+div#content #coursedetail p.timeliner {
+	height: 24px;
+	background: url(/s/img/timeline.png) 0% 10% no-repeat;
+	margin-bottom: 30px;
+	clear: both;
+	padding:4px 0 4px 14px;
+}
+
+
+
+/* ----------------------- Courses and Classes ----------------- */
+div.enrolment-item {
+	padding: 1em;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+table.course-outcomes {
+	margin-left: 2em;
+	width: 90%;
+}
+td.module-title {
+	color: rgb(68, 136, 0);
+}
+td.outcome-code {
+	color: gray;
+}
+
+div#course_detail > h2 > img, div.post-collapse div.new_course_item > h4 > img { float: right; position: relative; top: 5px; }
+div#course_detail > h2, div.post-collapse div.new_course_item > h4 { zoom: 1; }
+div#course_detail > h2 > span, div.post-collapse div.new_course_item > h4 span { width: 75%; display: inline-block; padding: 0; float: left; color:#334455; padding: 0; margin:0; font-size: 100%; font-weight:normal; }
+div#course_detail > h2 > a, div.post-collapse div.new_course_item > h4 a { padding: 0; margin: 0; }
+
+div.new_course_item p.course-title-qualification {width:80%; margin-top:0; color:#999999; font-size:90%;}
+div#course_detail p.course-title-qualification span { font-weight: bold; }
+div#course_detail p.course-title-qualification { color: #999; cursor: pointer; background:transparent url(/s/img/b-expand.png) no-repeat scroll 100% 50%; padding-right: 15px; width: auto; display:inline-block; width:auto; }
+div#course_detail div.course-qualifications ul { margin-bottom: 0; }
+div#course_detail p.course-title-qualification:hover { color: #333; } 
+
+.more-classes {display:none;}
+
+p.focus-list-line, .loading_more, p.more-results, p.print-page {
+	color: brown;
+	font-weight: bold;
+	font-size: 120%;
+	margin-top:2em;
+	padding-top: 20px;
+	background-repeat: no-repeat;
+	border: 1px solid silver;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+p.focus-list-line span.focus-had-matches {
+}
+
+.loading_more {padding-left:250px; padding-top:9px; padding-bottom:9px;
+	background-image:url(/s/img/loadingAnimation.gif); 
+	background-position:10px 12px;
+}
+
+p.more-results {
+	background-image: url(/s/img/icon/go-down.png);
+	padding: 10px;
+	padding-left:50px;
+	background-position: 5px 5px;
+}
+
+p.print-page {
+	background-image: url(/s/img/icon/printer1.png);
+	padding-top: 10px;
+	padding-right: 20px;
+	background-position: 4px 4px;
+	height:30px;
+	text-align:right;
+}
+
+p.more-results:hover, p.print-page:hover {
+	cursor: pointer;
+	background-color:#f0f0f0;
+}
+
+p.focus-list-line {
+	padding-top: 20px;
+	padding-left:75px;
+	padding-right:80px;
+	height:60px;
+	background-image: url(/s/img/icon/search.png);
+	background-position:5px 10px;
+}
+
+p.focus-list-line span.focus-had-matches {
+}
+
+
+
+
+
+
+/* Class lists */
+	
+	// only show the first three tutors in the compact list
+	span.tutorlist {display:none;}
+	span.tutorlist0, span.tutorlist1, span.tutorlist2 {display:inherit;}
+	
+/* Sites */
+div.site_map_links {width:15em; float:left; margin-left:1em;}
+div.site_address {width:70%; float:right;}
+div.site_address span {float:right; clear:right; margin-bottom:0.3em;}
+div.site_map_links span {float:left; clear:left; margin-bottom:0.3em;}
+ul.site_list {list-style: none; margin:0;}
+ul.site_list li {padding:0; margin:0; margin-top:1em; border:1px solid #e0e0e0; padding:0.4em;
+ border-radius:0.5em; -moz-border-radius:0.5em; -webkit-border-radius:0.5em;
+}
+ul.site_list li h3 {padding:0; margin:0; margin-bottom:0.5em; font-size:120%; color:black;}
+ul.site_list li a.class_location, ul.site_list li a.site_directions {
+   background-repeat:no-repeat; padding-left:18px; background-position-y:3px; }
+ul.site_list li a.class_location {background-image:url(../../images/location.png);}
+ul.site_list li a.site_directions {background-image:url(../../images/question_grey.png);}
+
+/* Course/class listing - New version*/
+
+/* Container div styling */
+
+div.new_course_item { margin: 0 0 20px 0; }
+div#content div.new_course_item div.class_details:hover { border: 1px solid #CDCDCD; }
+div.new_course_item img { vertical-align: top; }
+
+div#content div.new_course_item a { color: #444; }
+div#content div.new_course_item a:hover { color: #021057; text-decoration: none; border: 0; }
+
+div#content div.new_course_item > h4 { color: orange; font-variant: normal; font-family: Trebuchet MS; font-weight: 100; font-size: 160%; }
+div#content div.new_course_item > h5 { font-weight: 100; margin-top: 12px; display: none; }
+div#content div.new_course_item p.description { margin-bottom: 0; font-size: 110%; color: #444; } 
+
+div.new_course_item div.class_details { background-color: #F8F7F2; border: 0px solid #444; margin: 10px 0px 5px 0px; padding: 5px; border: 1px solid #F6F4E8; position: relative; }
+
+/* List styling for all three lists */
+div.new_course_item div.class_details ul, div.new_course_item div.class_details ul li { list-style: none; margin: 0; padding: 0; }
+
+div#content div#class_detail .detail_for_class {display:none;}
+div#content div#course_detail {padding-top:1.5em;}
+div#content div#course_detail h2 { margin-bottom:0;}
+
+div#content div#courselist div.new_course_item div.class_details > ul, div.new_course_item div.class_details ul { width: 38%; float: left; margin-bottom: 0px; }
+div.new_course_item div.class_details ul.class_locationtutor { width: 45%; }
+ 
+div.new_course_item div.class_details ul li { margin-bottom: 1px;}
+div.new_course_item div.class_details ul li:last-child { margin: 0px; }
+
+div.new_course_item  div.class_details ul li.class_time { font-weight: normal; }
+
+/* List items with icons */
+div.new_course_item div.class_details ul li.class_tutor, div.new_course_item div.class_details ul li.class_location { width: auto; display: block; position: relative; padding: 0 19px; }
+a.tutorlink {padding-right:1em;}
+
+/* Time/date section - first section */
+div.new_course_item div.class_details ul.class_timedate { background: transparent url(/s/img/icon/calendar.png) left 2px no-repeat; text-align: left;  }
+div.new_course_item div.class_details ul.class_timedate li { padding-left:19px;  }
+div.new_course_item div.class_details ul.class_timedate li.tooltip:hover {cursor:pointer;}
+
+/* Location/tutor section - second section */
+div.new_course_item div.class_details ul li.class_location { background: transparent url(/s/img/icon/location.png) 0 0px no-repeat;  height: 23px; overflow: hidden; }
+	div.new_course_item div.class_details ul li.class_location a { margin-left:-19px; padding-left:19px; }
+div.new_course_item li.class_tutor { padding-right: 14px; background: transparent url(/s/img/icon/person.png) left 2px no-repeat; }
+div.new_course_item li.class_tutor img { position: relative; top: 2px; left: 5px; }
+div.new_course_item li.class_session span, div.new_course_item li.class_tutor span {  font-size: 85%; color: #999; visibility: hidden; position:relative;
+top:-5px;}
+
+div.new_course_item li.class_session:hover, div.new_course_item li.class_tutor:hover { background-color: transparent; }
+div.new_course_item li.class_session:hover span, div.new_course_item li.class_tutor:hover span { visibility: visible; }
+div#content  div#courselist div.new_course_item div.class_details ul.class_options, div.new_course_item div.class_details ul.class_options { text-align: right; width: 140px; float: right; }
+
+div.new_course_item acronym { font-size: 100%; font-style: normal; text-decoration: none; border: 0; letter-spacing:0; }
+div.new_course_item li span.gst { display: none; }
+
+/* Class options section - third section */
+div.new_course_item div.class_details ul.class_options li { margin: 0; height: 23px; }
+div.new_course_item div.class_details ul.class_options li span { display: block; font-size: 90%; }
+
+div.new_course_item div.class_details ul.class_options ul.menu { float: right; width: 100%; }
+ul.class_options li.class-info-link a { padding-right: 20px; background: url(/s/img/icon/documentinfo.png) right no-repeat; }
+ul.class_options li.class_roll_link a { padding-right: 20px; background: url(/s/img/icon/group.png) right no-repeat; }
+
+div.new_course_item span.waitlist_link { color: #666; font-size: 90%; margin: 0 0 0 0px; }
+
+div.new_course_item li.class_addorder, 
+div.new_course_item li.class_emailfriend, 
+div.new_course_item li.shortlisted { font-size: 90%; }
+
+div.new_course_item div.class_details ul li.class_enrol,
+div.enrol_options ul li.class_enrol {  width: auto; height: 23px; text-align: right; position: relative;  margin-bottom: 5px;}
+div.new_course_item div.class_details ul li.class_enrol a,
+div.enrol_options ul li.class_enrol a { color: green; background: transparent url(/s/img/button_enrol.png) top right no-repeat; text-indent: -999px; width: 78px; height: 20px;  display: block; padding: 0; float: right; overflow: hidden; line-height: 150px; }
+div.new_course_item div.class_details ul li.class_enrol a:hover,
+div.enrol_options ul li.class_enrol a:hover { text-decoration: none; border: 0; }
+div.new_course_item li.class_enrol span,
+div.enrol_options li.class_enrol span { position: absolute; bottom: 2px; display: block; height: 15px; width: 143px; }
+div.new_course_item li.class_full, div.new_course_item li.class_cancelled { width: 78px; height: 20px; overflow: hidden; text-indent: -999px; line-height: 100px; float: right; }
+div.new_course_item li.class_cancelled { background: transparent url(/s/img/button_class_cancelled.png) top left no-repeat; }
+div.new_course_item li.class_full { background: transparent url(/s/img/button_class_full.png) top left no-repeat; }
+div.new_course_item li.class_addorder,
+div.enrol_options li.class_addorder { background: transparent url(/s/img/icon/add.png) no-repeat; background-position: 100% 5px; }
+div.new_course_item li.shortlisted,
+div.enrol_options li.shortlisted { background: transparent url(/s/img/icon/remove.png) no-repeat; background-position: 100% 5px; }
+div.new_course_item li.class_addorder a, div.new_course_item li.class_emailfriend a, div.new_course_item li.shortlisted a,
+div.enrol_options li.class_addorder a, div.enrol_options li.class_emailfriend a, div.enrol_options li.shortlisted a { padding-right: 15px; }
+div.new_course_item li.class_emailfriend,
+div.enrol_options li.class_emailfriend { background: transparent url(/s/img/icon/email.png) no-repeat; background-position: 100% 6px; }
+div.enrol_options ul {list-style:none;}
+div.enrol_options ul li {text-align:right;}
+
+/* Waiting list link */
+/*
+div.new_course_item div.waitinglist-block p.waiting-list-title a { display: inline-block; background: transparent url(/s/img/button_join.png) right 7px no-repeat; padding-right: 50px; }
+*/
+div.waitinglist-block {width:63%; float:left;}
+p.waiting-list-title a img {display:inline; vertical-align:baseline; margin-bottom:-2px;}
+
+div.new_course_item div.waitinglist-block p.waiting-list-title a:hover { text-decoration: none; border: 0; } 
+
+div.new_course_item div.enrol_tooltip { position: absolute; border: 0px solid red; width: 200px; height: 75px; display: none; right: -230px; -moz-border-radius: 10px; background-color: #f7f7f7; padding: 5px; z-index: 7000; }
+div.new_course_item:hover div.enrol_tooltip { display: block; }
+
+div#courseDetailLink h4 { display: block; width: 125px; float: right; margin: 0 0 0 15px; padding: 5px; text-align: center; font-weight: 100; background-color: #FCFDF7; border: 1px solid #FCFDF7; }
+div#courseDetailLink h4:hover { border: 1px solid #CDCDCD; }
+
+/* cancelled or full classes link */
+div.other-classes {clear:both; padding-top:1em;}
+p.other-classes-control, p.no-other-classes {text-align:right; float:right; width:30%; padding:0; margin:0; margin-top:0.2em; margin-bottom:0.5em;}
+p.other-classes-control a { font-size:0.9em; padding:6px; padding-right:20px;
+	background-image:url(/s/img/icon/go-down-18.png); background-repeat:no-repeat;  background-position:right 4px;}
+}
+
+/* Class specific info/link */
+div#content div.new_course_item div.detail_for_class { margin-top: 0px; position: relative; bottom: 0; border-top: 0px solid #999; padding-top: 0px; }
+div#content div.new_course_item div.detail_for_class h2 { font-size: 10pt; color: #666; margin: 0;  }
+div#content div.new_course_item div.detail_for_class p { margin: 0; color: #666; }
+div#content div.new_course_item div.show_more_class_info a {background-color:transparent; display:block;  padding-left:10px; color:#444; padding-top:2px; padding-bottom:4px;}
+div#content div.new_course_item div.show_more_class_info a:hover {color:inherit;}
+div#content div.new_course_item div.show_more_class_info {
+	height: 16px; padding:0;
+	background-image:url(/s/WebServerResources/library/images/arrow_right.png);
+	background-repeat:no-repeat; background-position:-4px 4px;
+}
+
+.new_course_item .detail_for_class { display:none;}
+
+/* Tooltip Styling */
+
+tr#release-notes th {
+        text-align: left;
+        text-indent: -9999px;
+        background: url(http://jqueryfordesigners.com/demo/images/coda/starburst.gif) no-repeat top right;
+        height: 17px;
+        }
+
+tr#release-notes td a {
+        color: #333;
+}
+
+table.enrol_tooltip h4, table.enrol_tooltip p { margin: 0; }
+
+
+
+/* mods for alternative class stylng 
+----------------- */
+
+div.new_course_item li.class_date span, div.new_course_item li.class_tutor span {  font-size: 85%; color: #999; visibility: hidden; position:relative;
+top:-5px;}
+div.new_course_item li.class_session:hover, div.new_course_item li.class_tutor:hover { background-color: transparent; }
+div.new_course_item ul.class_timedate:hover li span, div.new_course_item li.class_tutor:hover span { visibility: visible; }
+
+div.new_course_item div.class_details { background-color: #fdfdf8; border:1px solid #eee; border-left:6px solid #eee; border-top:1px solid #eee;}
+div#content div.new_course_item div.class_details:hover { border:1px solid gray; border-left:6px solid gray;}
+/*div.class_code {color:silver; width:3em;float:left; padding-top:1.2em;}*/
+div#content div#courselist div.new_course_item div.class_details > ul, div.new_course_item div.class_details ul { width: 33%; }
+/*div.show_more_class_info, div.detail_for_class {margin-left:5em;}*/
+div.new_course_item  div.show_sessions:hover {color:#000044; cursor: pointer;}
+div.class_details div.sessions_for_class {font-size:smaller;}
+div#content div.new_course_item p.description {font-size:100%; margin-top:0.2em; clear: both;}
+div#content div.new_course_item h4 {margin-top:0; margin-bottom:0;}
+div.new_course_item p.waiting-list-title {margin-bottom:0; margin-top:0.2em;}
+div.collapse {display:none;}
+div#course_detail div.course-link {display:none;}
+div#class_detail div.class-link {display:none;}
+div#popup-content {padding:2em;}
+div.new_course_item div.class_details a.timeline {font-size: inherit;} /* because some turkey has defined .timeline as 11px */
+
+/* Tooltip Styling */
+
+div.bubbleInfo {display:none;}
+
+div.bubbleInfo div.tooltip_popup {
+        position: absolute;
+        display: block;
+        z-index: 750;
+        border-collapse: collapse;
+        right:-268px;
+        top: -20px;
+        border: 0px solid red;
+        width:274px;
+        background-color: transparent;
+}
+
+div.bubbleInfo .tooltip_popup .bubble_top {background-image: url(/s/img/bubble2_top.png); background-repeat: no-repeat; 
+padding-top:27px; padding-bottom:0; margin:0; height:34px; overflow:hidden; border-collapse:collapse;}
+div.bubbleInfo .tooltip_popup .bubble_middle {background-image: url(/s/img/bubble2_middle.png); background-repeat: repeat-y;  }
+div.bubbleInfo .tooltip_popup .bubble_bottom {background-image: url(/s/img/bubble2_bottom.png); background-repeat: no-repeat; height:24px;}
+div.bubbleInfo .tooltip_popup div.bubble_content {padding-left:50px; padding-right:25px;}
+div.bubbleInfo div.class-link, div.bubbleInfo div.course-link { background-repeat: no-repeat; padding-left:19px; background-position:0 0.4em; padding-top:0.3em; }
+div.bubbleInfo div.class-link {background-image: url(/s/img/printer.png);  }
+div.bubbleInfo div.course-link {background-image: url(/s/img/icon/documentinfo.png);   background-position: 0 5px; line-height:1.4em;}
+div.bubbleInfo div.waiting-list p.waiting-list-title a {font-size:1em; line-height: normal;}
+div.bubbleInfo div.waitinglist-block {width:100%;overflow:auto;}
+
+/* disabled because this causes z-index problems in MSIE 7. Now done with jQuery
+div.class_details:hover div.bubbleInfo {display:block;}
+*/
+
+div#tooltip {color:gray;}
+
+/* Timing display */
+span.timing-display {font-weight:bold; border: 1px solid silver; padding:2px; margin-right: 0.3em; background-color:white;}
+.timing-yes {color:rgb(68,68,68); }
+.timing-no {color:silver;}
+span.timing-display img {display:inline; width:16px; margin:0; margin-bottom:-5px;}
+span.timing-daytime {
+	background-image: url(/s/img/sun6-faded.png); background-repeat: no-repeat; background-position-y:-1px; padding:0;}
+span.timing-evening {
+	background-image: url(/s/img/moon6-faded.png); background-repeat: no-repeat; background-position-y:-1px; padding:0;}
+span.timing-daytime-yes {background-image: url(/s/img/sun6.png);}
+span.timing-daytime-match {background-image: url(/s/img/sun-6green.png);}
+span.timing-daytime-fail {background-image: url(/s/img/sun6-red.png);}
+span.timing-evening-yes {background-image: url(/s/img/moon6.png);}
+span.timing-evening-match {background-image: url(/s/img/moon6-green.png);}
+span.timing-evening-fail {background-image: url(/s/img/moon6-red.png);}
+
+span.time-evening, span.time-daytime {background-repeat:no-repeat; padding-left: 16px; margin-left:-6px;}
+span.time-evening {background-image: url(/s/img/moon6-faded.png);}
+span.time-daytime {background-image: url(/s/img/sun6-faded.png);}
+
+span.timing-match {color: #0f6e00; }
+span.timing-fail {color: #c53628; }
+
+
+/* Tutor's Course class panel */
+
+div#tutor-classes-current div.sessions_for_class, div#tutor-classes-previous div.sessions_for_class { display: none; }
+div#tutor-classes-current div.bubbleInfo, div#tutor-classes-previous div.bubbleInfo { visibility: hidden; }
+
+div#tutor-classes-current dl.tutor_class_info, div#tutor-classes-previous dl.tutor_class_info { width: 100%;  clear: both; border-top: 1px solid #ccc; padding-top: 4px; margin: 4px 0 0 0; text-align: right; font-size: 80%;}
+div#tutor-classes-current dl.tutor_class_info dt, div#tutor-classes-current dl.tutor_class_info dd, div#tutor-classes-previous dl.tutor_class_info dt, div#tutor-classes-previous dl.tutor_class_info dd { display: inline-block; margin: 0; padding: 0;}
+
+div#tutor-classes-current dl.tutor_class_info dt, div#tutor-classes-previous dl.tutor_class_info dt { margin: 0 2px 0 20px; }
+div#tutor-classes-current dl.tutor_class_info dt:after, div#tutor-classes-previous dl.tutor_class_info dt:after { content: ":"; }
+div#tutor-classes-current dl.tutor_class_info dt:first-child, div#tutor-classes-previous dl.tutor_class_info dt:first-child  { margin-left: 0px; } 
+

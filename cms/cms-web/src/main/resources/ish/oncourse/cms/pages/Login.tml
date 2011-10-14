@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html 
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" id="cms">
+	<head>
+		<!-- CSS -->
+		<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
+		<title>CMS Login Page</title>
+	</head>
+	<body class="main-page" id="Main">
+	
+		<!--[if lt IE 9]> <div class="ie" id="cmsWrapper"> <![endif]-->
+		<!--[if IE 9 ]> <div class="ie9" id="cmsWrapper"> <![endif]-->
+		<!--[if (gt IE 9)|!(IE)]><!--> <div id="cmsWrapper"> <!--<![endif]-->
+			<div id="cmsInner">
+				<div class="cms-login">
+					<div class="cms-login-wr">
+						<form t:id="loginForm" class="cms-login-form">
+							<t:errors/>
+							<table>
+								<tr>
+									<td>
+										<t:label for="logEmail">
+											E-mail:
+										</t:label>
+									</td>
+									<td>
+										<t:TextField t:id="logEmail" t:validate="required,minlength=3" 
+													size="30" maxlength="200" class="cms-field" /> 
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<t:label for="password">
+											Password:
+										</t:label>
+									</td>
+									<td>
+										<input t:type="PasswordField" t:id="password" t:validate="required,minlength=3" 
+													size="30" maxlength="200" class="cms-field" /> 
+									</td>
+								</tr>
+								<tr class="cms-log-btn">
+									<td></td>
+									<td>
+										<input type="submit" value="Sign In" class="cms-but" id="signIn" />
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

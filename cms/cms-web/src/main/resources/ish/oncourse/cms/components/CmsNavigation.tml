@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if test="node">
+	<div t:type="pageinfo" node="node" t:id="pageInfo"/>
+	</t:if>
+	<div id="cmsTabs">
+	<div class="cms-menu-wrap" id="edMenuWr">
+    	<div class="cms-menu-block">
+        	<ul class="cms-menu clearFix" id="edMenu">
+            	<li class="ui-state-active ui-tabs-selected"><span><a id="editSite" href="#cms-tabs-cont-0">Content</a></span></li>
+            	<li><span><a href="#cms-tabs-cont-1">Site Settings</a></span></li>
+            	<li><span><a href="#cms-tabs-cont-2">Blocks</a></span></li>
+            	<li><span><a href="#cms-tabs-cont-3">Pages</a><t:actionLink t:id="pages" zone="pagesListZone" class="hiddenLink"/></span></li>
+            	<li><span><a href="#cms-tabs-cont-4">Menus</a></span></li>
+            	<li><span><a href="#cms-tabs-cont-5">Themes</a></span></li>
+        	</ul>
+    	</div>
+    	<div class="cms-user-auth">
+        	<span class="cms-ico-user"></span>
+        	${authenticationService.user.firstName} ${authenticationService.user.lastName}
+        	<a href="#" t:type="ActionLink" t:id="logout" class="cms-logout">Logout</a>
+    	</div>
+	</div>
+	
+	<div class="cms-main" id="edMain">
+
+    	<div class="cms-main-content">
+			
+			<div class="cms-tabs-cont">
+				<span t:type="sitesettings"/>
+			</div>
+		
+			<div class="cms-tabs-cont">
+				<span t:type="blocks"/>
+			</div>
+
+        	<div class="cms-tabs-cont">
+				<span t:type="pages" t:id="pagesComponent"/>
+        	</div>
+
+        	<div class="cms-tabs-cont">
+				<ul t:type="menubuilder" rootMenu="webMenuService.rootMenu"></ul>
+			</div>
+
+    		<div class="cms-tabs-cont">
+				<span t:type="pagetypes"/>
+			</div>
+
+    	</div>
+
+	</div>
+	</div>
+	
+</t:container>

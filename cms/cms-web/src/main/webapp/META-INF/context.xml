@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="${tomcat.path}" sessionCookiePath="/" sessionCookieName="oncourse_session">
+	<ResourceLink global="jdbc/oncourse" name="jdbc/oncourse" type="javax.sql.DataSource"/>
+	<ResourceLink global="jdbc/oncourse_binary" name="jdbc/oncourse_binary" type="javax.sql.DataSource"/>
+	<ResourceLink global="jdbc/oncourse_reference" name="jdbc/oncourse_reference" type="javax.sql.DataSource"/>
+	<Environment name="CustomComponentsPath" value="/var/onCourse/resources" type="java.lang.String" override="false"/>
+</Context>

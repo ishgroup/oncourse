@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="cms-page-controls" id="edControls">
+		<div class="cms-page-controls-wr clearFix">
+	
+        	<div class="cms-btn-control">
+         	   	<div class="cms-btn-control-in">
+         	   		<t:actionLink t:id="options" zone="optionsZone"/>
+         	       	<a href="" class="cms-page-opt">Page options</a>
+         	  </div>
+        	</div>
+        	<div class="cms-pane-wide">
+            	<div class="cms-pane-content">
+					<span t:type="pageoptions" node="prop:node" updateZones="zonesForUpdate" t:id="pageOptionsArea"/>
+				 </div>
+			</div>
+
+	        <div class="cms-btn-control">
+    	        <div class="cms-btn-control-in">
+    	        	<t:actionLink t:id="newOptions" zone="optionsZone_0"/>
+        	       	<a href="#" class="cms-add-item">Add new page</a>
+            	</div>
+	        </div>
+    	    <div class="cms-pane-wide">
+        	    <div class="cms-pane-content">
+            	     <span t:type="pageoptions" node="newPageNode" t:id="newPageOptionsArea"/>
+	            </div>
+
+    	    </div>
+
+        	<div class="cms-btn-control">
+            	<div class="cms-btn-control-in">
+            		<t:actionLink t:id="quickJump" zone="pagesList"/>
+                	<span>Current page:</span>
+	                <t:zone t:id="currentPageZone" update="show" show="show" elementName="a" class="cms-select-item">${node.name}</t:zone>
+	            </div>
+        	    <div class="cms-pane-small">
+            	    <div class="cms-pane-content">
+
+                	    <div class="cms-pane-small-head clearFix">
+                    	    <div class="cms-pane-small-title">Quick jump</div>
+                        	<span class="cms-ico-close cms-close-pane"></span>
+	                    </div>
+
+    	                <div id="scrollbar1">
+        	                <div class="scrollbar">
+            	                <div class="track">
+                	                <div class="thumb">
+                    	                <div class="end"></div>
+                        	        </div>
+                            	</div>
+	                        </div>
+    	                    <div class="viewport">
+        	                   	<t:zone t:id="pagesList" class="overview" t:update="show">
+	                                <ul class="cms-list-pages">
+	                                	<t:loop source="nodes" value="webNode">
+											<li>
+												<div data-status="${statusForNode}">
+											 		<a href="${webNode.path}">${webNode.name}</a> 
+											 		<t:if t:test="webNode.published"> 
+											 			<span data-pub="published">published</span>
+												 		<p:else> 
+												 			<span data-pub="hidden">unpublished</span>
+												 		</p:else>
+												 	</t:if>
+												 </div>	
+											</li>
+										</t:loop>
+                               		</ul>
+								</t:zone>
+                        	</div>
+                    	</div>
+                	</div>
+            	</div>
+        	</div>
+
+	   		<div class="cms-pages-status" data-pub="published">
+       			<t:zone t:id="publishedZone" update="show" show="show">
+            		<t:if t:test="node.published"> 
+						<span data-pub="published">published</span>
+						<p:else> 
+							<span data-pub="hidden">unpublished</span>
+						</p:else>
+					</t:if>
+            	</t:zone>
+        	</div>
+
+		
+        	<div class="cms-pages-updated">
+	          	<t:zone t:id="updatedZone" update="show" show="show">
+    	       		${lastEdited}
+        	    </t:zone>
+	        </div>
+
+    	    <div class="cms-editable-show">
+        	    Show editable areas
+            	<div class="cms-editable-control"><input type="checkbox" id="showEdit" class="cms-onoff" /></div>
+	        </div>
+
+
+    	</div>
+	
+	</div>
+
+</t:container>

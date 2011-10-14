@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	
+	<t:block t:id="editPageTypeBlock">
+		<span t:type="pageTypeEdit" pageType="prop:selectedPageType" updateZone="prop:pageTypeZone"/>
+	</t:block>
+	
+	<t:zone t:id="pageTypeZone">
+		<div class="cms-main-head">
+        	<div class="cms-main-title">
+            	<h1 class="cms-page-title">Themes</h1>
+            </div>
+            <div class="cms-main-controls">
+	        	<span class="cms-ico-plus"></span>
+                <a href="#" t:type="actionLink" t:id="newPageType" zone="pageTypeZone" class="cms-main-control">Add new theme</a>
+			</div>
+            <div class="cms-search-block">
+			
+			<input id="themesFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/>
+                <!-- button type="button" class="cms-btn-select"></button>
+				<button class="cms-btn-search" type="button"></button-->
+            </div>
+        </div>
+
+		<div>
+			<td class="cms-first">${problemMessage}</td>
+		</div>
+		<div class="cms-content cms-page-blocks">
+
+            <table class="cms-cont-table" id="themes">
+            	<t:loop source="webNodeTypeService.webNodeTypes" value="webNodeType">
+					<tr id="${webNodeType.id}">
+						<td class="cms-first">${webNodeType.name}</td>
+                        <td class="cms-block-last-upd"><t:outputraw value="lastEdited"/></td>
+                        <td>
+                        	<span class="cms-ico-edit"></span> 
+                        	<a href="#" t:type="actionLink" t:id="editPageType" t:zone="pageTypeZone" t:context="webNodeType.id">Edit</a>
+                        </td>
+                        <td class="cms-last">
+                        	<span class="cms-ico-del"></span> 
+                        	<a href="#" t:type="actionLink" t:id="deletePageType" t:zone="pageTypeZone" t:context="webNodeType.id">Delete</a>
+                        </td>
+					</tr>
+				</t:loop>
+            </table>
+		</div>
+            
+        <script type="text/javascript">
+			jQuery(function() {
+				jQuery('#themesFilter').search('#themes tr', function(on) {
+		            on.all(function(results) {
+		             
+		            });
+	
+		            on.reset(function() {
+		              jQuery('#themes tr').show();
+		            });
+	
+		            on.empty(function() {
+		              jQuery('#themes tr').hide();
+		            });
+	
+		            on.results(function(results) {
+		              jQuery('#themes tr').hide();
+		              results.show();
+		            });
+		          });
+			 });
+		</script>
+            
+	</t:zone>
+   
+</t:container>
