@@ -15,8 +15,8 @@ import javax.xml.namespace.QName;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.Phase;
+import org.apache.cxf.service.model.BindingOperationInfo;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -37,8 +37,10 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 	public void handleMessage(SoapMessage message) throws Fault {
 
 		try {
-
-			QName op = (QName) message.get(Message.WSDL_OPERATION);
+			
+			BindingOperationInfo bindingInfo = message.getExchange().get(BindingOperationInfo.class);
+			
+			QName op = (QName) bindingInfo.getName();
 
 			if (op != null && "authenticate".equalsIgnoreCase(op.getLocalPart())) {
 				return;

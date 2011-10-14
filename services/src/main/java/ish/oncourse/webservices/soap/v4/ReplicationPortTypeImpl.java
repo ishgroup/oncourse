@@ -178,7 +178,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 			LOGGER.info(String.format("Got college request with securityCode:%s, lastCommKey:%s.", webServicesSecurityCode, lastCommKey));
 
-			if (session != null) {
+			if (session != null && session.getAttribute(SessionToken.SESSION_TOKEN_KEY) != null) {
 				String message = String.format(
 						"Authentication failure, existing session:%s must be terminated before next authentication attempt.",
 						session.getId());
