@@ -1,0 +1,3 @@
+<html t:type="ui/internal/pagestructure" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" bodyId="${bodyId}" bodyClass="${bodyClass}" webNodeType="node.webNodeType">
+	<div t:type="ui/internal/contentStructure" node="node"></div>
+</html>

@@ -1,0 +1,25 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if t:test="hasMapItemList">
+		<t:remove><!--
+			TODO <t:if t:test="$hasTag"><t:output object="$tag"
+			displayKey="detail" escapeHTML="$false" /></t:if>
+		-->
+		</t:remove>
+
+		<div id="focus-map" class="${focusMapClass}">
+			<span t:type="ui/GoogleDirections" sites="sites" focuses="focuses" showLocationMap="showLocationMap" />
+		</div>
+
+		<div id="gmapCanvas"></div>
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				if ($j('#gmapCanvas').length) {
+					mapLoad('gmapCanvas', gMapSites, gMapOptions);
+				}
+			});
+
+
+		</script>
+
+	</t:if>
+</t:container>

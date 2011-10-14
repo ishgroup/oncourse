@@ -1,0 +1,38 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<t:if test="hasFee">
+		<t:if test="hasDiscountValue">
+			<span class="fee-disabled">
+				<t:output value="fee" format="feeFormat" />
+			</span>
+			<span class="fee-discounted">
+				<acronym title="${appliedDiscountsTitle}">
+					<t:output value="discountedFee" format="feeFormat" />
+				</acronym>
+			</span>
+			<p:else><t:output value="fee" format="feeFormat" /></p:else>
+		</t:if>
+
+		<t:if test="showTax">
+			<span class="gst">
+				<t:if test="taxExempt" negate="true"> inc </t:if><acronym title="Goods and Services Tax">GST</acronym><t:if test="taxExempt"> exempt</t:if>
+			</span>
+		</t:if>
+		<t:if test="hasDiscountValue">
+			<t:if test="discountExpiryDate">(until <t:output format="dateFormat" value="discountExpiryDate"/><t:if test="discountEligibility">, ${discountEligibility}</t:if>)</t:if>
+		</t:if> 
+		<t:if t:test="courseClass.college.paymentGatewayEnabled">
+			<t:loop source="discountsWithConcessions" value="discountItem">
+				<span class="discount-price">/</span>
+				<acronym class="discount-price" title="${discountItem.name}">
+					<t:output value="discountItemFeeIncTax" format="feeFormat" />
+				</acronym>
+			</t:loop>
+		</t:if>	
+
+		<p:else>
+			<acronym title="To Be Advised">TBA</acronym>
+		</p:else>
+	
+	</t:if>	
+</t:container>

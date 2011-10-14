@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<!-- if once executed changeSet is updated, checksum will failed, so, create 
+		the new changeSet item for the new update see http://www.liquibase.org/manual/changeset -->
+	<changeSet id="1" author="ksenia" context="production"
+		runOnChange="true">
+		<!-- if precondition fail, the further changes are not performed -->
+		<preConditions onFail="MARK_RAN">
+			<indexExists indexName="collegeId_invoiceNumber_uniq_idx" />
+		</preConditions>
+		<dropNotNullConstraint tableName="Invoice"
+			columnName="invoiceNumber" columnDataType="BIGINT" />
+		<dropForeignKeyConstraint constraintName="Invoice_ibfk_1"
+			baseTableName="Invoice" />
+		<dropIndex tableName="Invoice" indexName="collegeId_invoiceNumber_uniq_idx" />
+		<addForeignKeyConstraint constraintName="Invoice_ibfk_1"
+			baseTableName="Invoice" baseColumnNames="collegeId"
+			referencedTableName="College" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="2" author="anton" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="College" columnName="communication_key" />
+			</not>
+		</preConditions>
+		<addColumn tableName="College">
+			<column name="communication_key" type="bigint" />
+		</addColumn>
+		<addColumn tableName="College">
+			<column name="communication_key_status" type="varchar(20)" />
+		</addColumn>
+		<sql>update College set communication_key=(select c.communication_key
+			from CommunicationKey c where c.collegeId=id and
+			communication_key_type='REPLICATION')</sql>
+		<sql>update College set communication_key_status=(select
+			c.communication_key_status from CommunicationKey c where
+			c.collegeId=id and communication_key_type='REPLICATION')</sql>
+		<dropTable tableName="CommunicationKey" />
+	</changeSet>
+
+	<changeSet id="3" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="There are path duplicates in WebURLAlias">
+			<sqlCheck expectedResult="0">
+				SELECT count(*) FROM (SELECT
+				webSiteId, urlPath, count(*) FROM WebURLAlias GROUP BY webSiteId,
+				urlPath HAVING count(*) > 1) duplicates
+			</sqlCheck>
+		</preConditions>
+		<comment>If the precondition fails, then there are the duplicates: WebURLAlias  with the same webSiteId and urlPath or the index has been already created</comment>
+		<modifyDataType tableName="WebURLAlias" columnName="urlPath"
+			newDataType="varchar(100)" />
+		<addUniqueConstraint tableName="WebURLAlias"
+			columnNames="webSiteId,urlPath" constraintName="urlalias_unique" />
+	</changeSet>
+
+	<changeSet id="4" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Instruction" columnName="type" />
+		</preConditions>
+		<dropColumn tableName="Instruction" columnName="type" />
+		<addColumn tableName="Instruction">
+			<column name="message" type="varchar(100)" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="5" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Instruction" columnName="response" />
+				<columnExists tableName="Instruction" columnName="executed" />
+			</not>
+		</preConditions>
+		<addColumn tableName="Instruction">
+			<column name="response" type="varchar(1024)" />
+		</addColumn>
+		<addColumn tableName="Instruction">
+			<column name="executed" type="DATETIME" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="6" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Discount" columnName="detail_textile" />
+		</preConditions>
+		<dropColumn tableName="Discount" columnName="detail_textile" />
+	</changeSet>
+
+	<changeSet id="7" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="TutorRole" columnName="detail" />
+				<columnExists tableName="TutorRole" columnName="detail_textile" />
+			</and>
+		</preConditions>
+		<dropColumn tableName="TutorRole" columnName="detail" />
+		<dropColumn tableName="TutorRole" columnName="detail_textile" />
+	</changeSet>
+
+	<changeSet id="8" author="anton" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="PaymentTransaction"
+					columnName="sessionId" />
+			</and>
+		</preConditions>
+		<dropColumn tableName="PaymentTransaction" columnName="sessionId" />
+		<addColumn tableName="PaymentIn">
+			<column name="sessionId" type="varchar(100)" />
+		</addColumn>
+		<addColumn tableName="PaymentIn">
+			<column name="gatewayReference" type="varchar(64)" />
+		</addColumn>
+		<addColumn tableName="PaymentIn">
+			<column name="gatewayResponse" type="MEDIUMTEXT" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="9" author="ksenia" context="production"
+		runOnChange="true">
+		<modifyDataType tableName="Enrolment" columnName="status"
+			newDataType="enum('Pending','In Transaction','Success','Failed','Cancelled', 'Refunded')" />
+	</changeSet>
+
+	<changeSet id="9" author="olga" context="production"
+		runOnChange="true">
+		<addColumn tableName="Discount">
+			<column name="discountType" type="enum('Percent','Dollar','Fee override')" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="11" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Discount" columnName="discountType" />
+		</preConditions>
+		<modifyDataType tableName="Discount" columnName="discountType"
+			newDataType="smallint" />
+	</changeSet>
+
+	<changeSet id="12" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="PaymentIn" columnName="type" />
+			</not>
+		</preConditions>
+		<addColumn tableName="PaymentIn">
+			<column name="type" type="smallint" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="13" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<sqlCheck expectedResult="0">
+					select count(*) from PaymentIn
+					where type is null
+				</sqlCheck>
+			</not>
+		</preConditions>
+		<!-- All payments with credit cards are set to 2=Credit Card -->
+		<sql>update PaymentIn set type=2 where type is null and
+			creditCardNumber is not null;</sql>
+		<!-- All payments without credit cards are set to 0=Cash -->
+		<sql>update PaymentIn set type=0 where type is null and
+			creditCardNumber is null;</sql>
+	</changeSet>
+
+	<changeSet id="14" author="ksenia" context="production"
+		runOnChange="true">
+		<sql>alter table PaymentIn change type type smallint(6) NOT NULL
+			DEFAULT 2</sql>
+	</changeSet>
+
+	<changeSet id="15" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<indexExists indexName="WebNode_defaultWebURLalias"
+				tableName="WebNode" />
+		</preConditions>
+		<dropForeignKeyConstraint constraintName="WebNode_defaultWebURLalias"
+			baseTableName="WebNode" />
+		<dropIndex tableName="WebNode" indexName="WebNode_defaultWebURLalias" />
+	</changeSet>
+
+	<changeSet id="16" author="anton" context="production"
+		runOnChange="true">
+		<addColumn tableName="Contact">
+			<column name="passwordRecoveryKey" type="varchar(16)" />
+			<column name="passwordRecoverExpire" type="DATETIME" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="17" author="ksenia" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists
+					foreignKeyName="WebNode_defaultWebURLalias" foreignKeyTableName="WebNode" />
+			</not>
+		</preConditions>
+		<addForeignKeyConstraint constraintName="WebNode_defaultWebURLalias"
+			baseTableName="WebNode" baseColumnNames="defaultURLalias"
+			referencedTableName="WebURLAlias" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="18" author="anton" context="production"
+		runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Contact" columnName="passwordRecoveryKey" />
+		</preConditions>
+		<addUniqueConstraint tableName="Contact"
+			columnNames="passwordRecoveryKey" constraintName="recoverKey_unique" />
+	</changeSet>
+
+	<changeSet id="19" author="ksenia" context="production"
+		runOnChange="true">
+		<update tableName="BinaryInfo">
+			<column name="isWebVisible" value="1" />
+			<where>isWebVisible IS NULL</where>
+		</update>
+		<modifyDataType tableName="BinaryInfo" columnName="isWebVisible"
+			newDataType="tinyint(1) NOT NULL" />
+	</changeSet>
+
+	<changeSet id="20" author="anton" context="production"
+		runOnChange="true">
+		<addColumn tableName="PaymentIn">
+			<column name="dateBanked" type="DATETIME" />
+		</addColumn>
+		<addColumn tableName="PaymentOut">
+			<column name="dateBanked" type="DATETIME" />
+			<column name="datePaid" type="DATETIME" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="21" author="anton" context="production"
+		runOnChange="true">
+		
+		<createTable tableName="Discussion">
+			<column name="id" type="BIGINT(20)">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="courseClassId" type="BIGINT(20)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addAutoIncrement tableName="Discussion" columnName="id" columnDataType="BIGINT"/>
+		<addForeignKeyConstraint constraintName="courseClassFK" baseTableName="Discussion" baseColumnNames="courseClassId" referencedTableName="CourseClass" referencedColumnNames="id"/>
+
+		<createTable tableName="DiscussionThread">
+			<column name="id" type="BIGINT(20)">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="discussionId" type="BIGINT(20)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addAutoIncrement tableName="DiscussionThread" columnName="id" columnDataType="BIGINT"/>
+		<addForeignKeyConstraint constraintName="discussionFK" baseTableName="DiscussionThread" baseColumnNames="discussionId" referencedTableName="Discussion" referencedColumnNames="id"/>
+		
+		<createTable tableName="DiscussionComment">
+			<column name="id" type="BIGINT(20)">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="discussionThreadId" type="BIGINT(20)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="body" type="MEDIUMTEXT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="isDeleted" type="BOOLEAN">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addDefaultValue tableName="DiscussionComment" columnName="isDeleted" defaultValue="0"/>
+		<addAutoIncrement tableName="DiscussionComment" columnName="id" columnDataType="BIGINT"/>
+		<addForeignKeyConstraint constraintName="discussionThreadFK" baseTableName="DiscussionComment" baseColumnNames="discussionThreadId" referencedTableName="DiscussionThread" referencedColumnNames="id"/>
+		
+		<createTable tableName="DiscussionCommentContact">
+			<column name="id" type="BIGINT(20)">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="discussionCommentId" type="BIGINT(20)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="contactId" type="BIGINT(20)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="isNew" type="BOOLEAN">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		
+		<addDefaultValue tableName="DiscussionCommentContact" columnName="isNew" defaultValue="1"/>
+		<addAutoIncrement tableName="DiscussionCommentContact" columnName="id" columnDataType="BIGINT"/>
+		<addForeignKeyConstraint constraintName="commentFK" baseTableName="DiscussionCommentContact" baseColumnNames="discussionCommentId" referencedTableName="DiscussionComment" referencedColumnNames="id"/>
+		<addForeignKeyConstraint constraintName="contactFK" baseTableName="DiscussionCommentContact" baseColumnNames="contactId" referencedTableName="Contact" referencedColumnNames="id"/>
+		
+	</changeSet>
+	
+	<changeSet id="22" author="anton" context="production" runOnChange="true">
+		<addNotNullConstraint tableName="ConcessionType" columnName="isConcession" columnDataType="TINYINT(1)" defaultNullValue="1" />
+		<addNotNullConstraint tableName="ConcessionType" columnName="isEnabled" columnDataType="TINYINT(1)" defaultNullValue="1" />
+	</changeSet>
+	
+	<changeSet id="23" author="anton" context="production" runOnChange="true">
+		<sqlFile path="tables_mysql_innodb.sql"/>
+	</changeSet>
+
+	<changeSet id="24" author="xenia" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="College" columnName="timeZone"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="College">
+			<column name="timeZone" type="varchar(64)"/>
+		</addColumn>
+		<addNotNullConstraint tableName="College" columnDataType="varchar(64)" columnName="timeZone" defaultNullValue="Australia/Sydney" />
+		<sql>update College set timeZone='Australia/Perth' where id=3219</sql>
+	</changeSet>
+	
+	<changeSet id="25" author="olga" context="production" runOnChange="true">
+		<update tableName="PaymentIn">
+			<column name="source" value="W"/>
+			<where>source IS NULL</where>
+		</update>
+		<modifyDataType tableName="PaymentIn" columnName="source" newDataType="VARCHAR(1) NOT NULL"/>
+	</changeSet>
+	
+</databaseChangeLog>

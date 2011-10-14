@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<hgroup class="header-hgroup">
+		<h2 class="site-logo" id="siteLogo">
+			<a href="${homeLink}">${collegeName}</a>
+		</h2>
+		<h1 class="site-title" id="siteTitle">
+			<a href="${homeLink}">${collegeName}</a>
+		</h1>
+	</hgroup>
+	<aside class="header-toolbar" id="headerToolbar">
+		<span t:type="ui/CourseSearchForm" />
+		<t:if t:test="college.paymentGatewayEnabled">
+			<span t:type="ui/ShortList" />
+		</t:if>
+		<span t:type="ui/PromoCodesView" />
+	</aside>
+</t:container>

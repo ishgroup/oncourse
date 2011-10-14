@@ -1,0 +1,12 @@
+package ish.oncourse.model;
+
+import ish.oncourse.model.auto._TaggableTag;
+
+public class TaggableTag extends _TaggableTag implements Queueable {
+
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+	}
+	
+}

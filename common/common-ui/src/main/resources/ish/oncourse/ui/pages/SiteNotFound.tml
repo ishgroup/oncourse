@@ -1,0 +1,16 @@
+<html bodyId="literal:SiteNotFound" bodyClass="literal:internal-page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<head>
+		<link href="/s/stylesheets/css/site.css" media="screen, print" rel="stylesheet" />
+		<link href="/s/stylesheets/css/defaultError.css" media="screen" rel="stylesheet" />
+	</head>
+	<body>
+		<div id="container" class="clearfix">
+			<div id="form_error" style="opacity: 0;"></div>
+		
+			<h2>Site Not Found</h2>
+			<p>The site you are looking for was not found. You may have used an outdated link or may have typed the address (URL) incorrectly.</p>
+		</div>
+	</body>
+
+</html>

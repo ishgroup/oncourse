@@ -1,0 +1,10 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:remove><!-- this empty div is needed as tapestry page root component--></t:remove>
+	<t:if t:test="strings" negate="true">
+		<li>No results found</li>
+		<p:else>
+			<div />
+		</p:else>
+	</t:if>
+	<t:loop source="strings" value="str"> ${str} </t:loop>
+</t:container>

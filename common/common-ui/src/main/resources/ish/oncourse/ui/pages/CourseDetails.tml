@@ -1,0 +1,8 @@
+<html t:type="ui/internal/pagestructure" title="${courseDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if t:test="course">
+		<span t:type="ui/courseitem" course="course" linkToLocationsMap="true" isList="false"></span>
+		<p:else> The requested course is not found. </p:else>
+	</t:if>
+	<span t:type="ui/Attachments" entityIdentifier="literal:Course" entityIdNum="${course.id}"/>
+</html>

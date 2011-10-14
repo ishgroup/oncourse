@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+	
+	<Course id="3" collegeId="1" code="BNN-453" angelId="1" detail="Course Basic New Test" name="Course Basic New Test"/>
+	<Course id="4" collegeId="1" code="CNN-876" angelId="1" detail="Basic Art Work" name="Basic Art Work"/>
+	<Course id="5" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills"/>
+	<Room id="1" collegeId="1"/>
+	<CourseClass id="10" code="200701RW" collegeId="1" countOfSessions="3" courseId="5" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"/>
+	<Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
+	<TutorRole id="1" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="10" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1"/> 
+</dataset>

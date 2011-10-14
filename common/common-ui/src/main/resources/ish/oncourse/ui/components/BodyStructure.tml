@@ -1,0 +1,48 @@
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<section class="site-container" id="container">
+		<header class="site-header" id="header">
+			<div t:type="ui/bodyheader" />
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:header" />
+			<div t:type="ui/globalnavi" />
+			<nav class="site-nav" id="nav">
+				<div t:type="ui/menu" rootMenu="rootMenu" />
+			</nav>
+		</header>
+		<section class="content-container" id="contentContainer">
+			<aside class="sidebar-left" id="sidebarLeft">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
+			</aside>
+			<article class="content" id="content">
+				<t:if t:test="college.paymentGatewayEnabled">
+					<div class="confirmOrderDialog dialogContainer">
+						<p class="confirm-message">
+							<strong class="confirm-txt">Thanks for adding:</strong>
+							<div class="className" />
+							<div class="classDate" />
+						</p>
+						<p class="confirm-proseed">
+							<a href="/enrol/EnrolCourses" class="button">Proceed to Checkout</a>
+						</p>
+						<p class="confirm-close-wrapper">
+							<a href="#" class="button closeButton">Continue browsing</a>
+						</p>
+						<div class="closeButton">X</div>
+					</div>
+				</t:if>
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />	
+				<t:body />
+			</article>
+			<aside class="sidebar-right" id="sidebarRight">
+				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
+			</aside>
+		</section>
+		<footer class="site-footer" id="footer">
+			<div t:type="ui/bodyfooter" />
+			<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
+		</footer>
+	</section>
+	<div id="overlay" style="display: none; height: 500px" />
+	<div id="timeline-wrap" style="visibility: hidden;">
+		<div id="timeline" />
+	</div>
+</section>

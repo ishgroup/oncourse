@@ -1,0 +1,5 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:if t:test="college.paymentGatewayEnabled">
+		<span t:type="ui/ShortList" />
+	</t:if>
+</t:container>

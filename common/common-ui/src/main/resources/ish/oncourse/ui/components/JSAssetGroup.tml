@@ -1,0 +1,5 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:loop source="urls" value="url">
+		<script t:type="any" src="prop:url" type="text/javascript" />
+	</t:loop>
+</t:container>

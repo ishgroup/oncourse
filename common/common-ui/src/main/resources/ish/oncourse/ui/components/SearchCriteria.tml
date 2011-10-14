@@ -1,0 +1,60 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="search-terms">
+		<div id="search_query"> Results for <t:if t:test="browseTagPath">
+			<t:loop source="browseTagPath" value="tag" index="tagIndex">
+				<div class="tag-crumb-title search-value no-highlight">
+					<t:if t:test="showTagRaquo"><a href="${tag.link}">${tag.name}</a>
+						<p:else>${tag.name}</p:else>
+					</t:if>
+				</div>
+				<t:if t:test="showTagRaquo">
+					<span>»</span>
+				</t:if>
+			</t:loop>
+		</t:if>
+			<t:if t:test="searchString">
+				<span class="search-value no-highlight">${searchString}</span>
+			</t:if>
+			<t:if t:test="hasSearchDays"> on </t:if>
+			<t:if t:test="searchingWeekday">
+				<span class="match-8 search-value">Week day</span>
+				<t:remove>	<!-- TODO seems to be unreachable code, sort out
+					<p:else>
+					<t:if t:test="$hasSearchDaysDuringWeek">
+					<t:loop source="$searchDaysDuringWeek" value="$listItem">
+					<span class="~dayCssClass + ' search-value'">
+					<wo:string value="$listItem" />
+					</span>
+					</t:loop>
+					</t:if>
+					</p:else>
+				-->
+				</t:remove>
+			</t:if>
+			<t:if t:test="searchingWeekend">
+				<span class="match-9 search-value">Weekend</span>
+				<t:remove>
+					<!-- TODO seems to be unreachable code, sort out
+						<p:else>
+						<t:if t:test="$hasSearchDaysDuringWeekend">
+						<t:loop source="$searchDaysDuringWeekend" value="$listItem">
+						<span class="~dayCssClass + ' search-value'">
+						<wo:string value="$listItem" />
+						</span>
+						</t:loop>
+						</t:if>
+						</p:else>
+					-->
+				</t:remove>
+			</t:if>
+			<t:if t:test="searchTime">in the <span class="match-10 search-value">${searchTime}</span></t:if>
+			<t:if t:test="searchPrice">up to <span class="match-12 search-value">${searchPrice}</span></t:if>
+			<t:if t:test="searchNear"><span class="match-11 search-value"> near ${searchNear}</span></t:if>
+		</div>
+		<t:if t:test="hasMapItemList">
+			<div id="toggle-results-map">
+				<a href="#" class="toggle_locations">locations</a>
+			</div>
+		</t:if>
+	</div>
+</t:container>

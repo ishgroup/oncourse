@@ -1,0 +1,52 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="vcard locationInfo">
+		<h1>Location</h1>
+		<div class="adr" id="">
+			<t:if t:test="hasAddress">
+				<h4 class="classSiteAddress">Address</h4>
+				<p>
+					<div class="adr-site-name">${site.name}</div>
+					<div class="street-address">${site.street}</div>
+					<span class="locality">${site.suburb}</span>
+					<t:if t:test="hasPostCode">
+						<span class="postal-code">${site.postcode}</span>
+					</t:if>
+				</p>
+			</t:if>
+			<t:if t:test="hasDrivingDirections">
+				<h4 class="locationInfo_driving">Directions</h4>
+				<p>
+					<t:outputRaw value="drivingDirections" />
+				</p>
+			</t:if>
+			<t:if t:test="hasPublicTransportDirections">
+				<h4 class="locationInfo_publicTransport">Public Transport</h4>
+				<p>
+					<t:outputRaw value="publicTransportDirections" />
+				</p>
+			</t:if>
+			<t:if t:test="hasSpecialInstructions">
+				<h4 class="locationInfo_instructions">Other Information</h4>
+				<p>
+					<t:outputRaw value="specialInstructions" />
+				</p>
+			</t:if>
+		</div>
+	</div>
+	<t:if t:test="site.hasCoordinates">
+
+		<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap"
+			showLocationMap="true" />
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				if ($j('#gmapCanvas').length) {
+					mapLoad('gmapCanvas', gMapSites, gMapOptions);
+				}
+			});
+
+
+		</script>
+	</t:if>
+
+	<div id="gmapCanvas" />
+</t:container>

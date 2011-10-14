@@ -1,0 +1,5 @@
+<html t:type="ui/internal/pagestructure" title="${room.name} | ${room.site.name}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<span t:type="ui/SiteDetailsComponent" room="room" collapseLocationMap="false"/>
+	<span t:type="ui/Attachments" entityIdentifier="literal:Room" entityIdNum="${room.id}"/>
+</html>

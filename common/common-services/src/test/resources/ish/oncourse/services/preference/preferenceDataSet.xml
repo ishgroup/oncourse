@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+	<Preference id="100001" name="license.sms" angelId="1" collegeId="1" created="2010-02-03 09:18:09" explanation="License sms enabled" modified="2010-02-03 09:18:09" value_string="true"/>
+	<Preference id="100002" name="email.smtphost" angelId="2" collegeId="1" created="2010-02-03 09:18:09" explanation="Smtp host" modified="2010-02-03 09:18:09" value_string="smtp.text.ish.com"/>
+</dataset>
