@@ -5,6 +5,7 @@ import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +15,7 @@ import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Dur;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
@@ -63,14 +65,15 @@ public class Contact {
 
 					List<Session> sessions = courseClassService.getContactSessions(contact);
 
+					List<VEvent> events = new ArrayList<VEvent>();
+					
 					for (Session s : sessions) {
 						
-						StringBuilder sessionInformation = new StringBuilder(s.getCourseClass().getCourse().getName());
-						sessionInformation.append("\n");
+						StringBuilder sessionInformation = new StringBuilder();
 						sessionInformation.append(s.getCollege().getName());
 						sessionInformation.append("\n");
 						sessionInformation.append(s.getRoom().getName());
-						sessionInformation.append("\n");
+						sessionInformation.append(", ");
 						sessionInformation.append(s.getRoom().getSite().getName());
 						sessionInformation.append("\n");
 						sessionInformation.append(s.getRoom().getSite().getStreet());
@@ -81,16 +84,28 @@ public class Contact {
 						sessionInformation.append(" ");
 						sessionInformation.append(s.getRoom().getSite().getPostcode());
 						
+						StringBuilder courseInformation = new StringBuilder();
+						courseInformation.append(s.getCourseClass().getCourse().getName());
+						courseInformation.append(" (");
+						courseInformation.append(s.getCourseClass().getCourse().getCode());
+						courseInformation.append("-");
+						courseInformation.append(s.getCourseClass().getCode());	
+						courseInformation.append(")");
+						
 						Dur dur = new Dur(s.getStartDate(), s.getEndDate());
 						
-						VEvent event = new VEvent(new net.fortuna.ical4j.model.Date(s.getStartDate()), dur, sessionInformation.toString());
-
+						VEvent event = new VEvent(new net.fortuna.ical4j.model.DateTime(s.getStartDate()), dur, courseInformation.toString());
+						event.getProperties().add(new Description(sessionInformation.toString()));
+						
 						UidGenerator ug = new UidGenerator("uidGen");
 						Uid uid = ug.generateUid();
 						event.getProperties().add(uid);
 
-						icsCalendar.getComponents().add(event);
+						events.add(event);
+
 					}
+					
+					icsCalendar.getComponents().addAll(events);
 
 					CalendarOutputter iCalOutputter = new CalendarOutputter();
 					iCalOutputter.output(icsCalendar, iCalWriter);
