@@ -1,0 +1,82 @@
+<html t:type="pagestructure" title="literal:Billing"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:form t:id="billingForm">
+		<t:select t:id="month" model="monthModel" value="month" onChange="javascript:this.form.submit();"/>
+		<t:submit t:id="export" value="Export to Moneyworks" />
+		<table>
+			<thead>
+				<tr>
+					<td>Description</td>
+					<td>Quantity</td>
+					<td>Free transactions</td>
+					<td>Unit cost</td>
+					<td>Billable for ${month}</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t:loop source="colleges" value="college" volatile="true">
+						<tr>
+							<td colspan="5"><h3><a t:type="pagelink" t:page="college/edit" t:context="college.id">${college.name}<small>${college.billingCode}:${college.id}</small></a></h3></td>
+						</tr>
+						<tr>
+							<td>Support (renew every ${supportRenew})</td>
+							<td></td>
+							<td>${supportFree}</td>
+							<td>support ${support}<small>ex GST</small></td>
+							<td>
+								<t:if test="supportRenewMonth">
+									${support} <small>ex GST</small>
+									<p:else>$0</p:else>
+								</t:if>
+							</td>
+						</tr>
+						<tr>
+							<td>Web hosting (renew every ${webHostingRenew})</td>
+							<td></td>
+							<td>${webHostingFree}</td>
+							<td>${hosting}<small>ex GST</small></td>
+							<td>
+								<t:if test="webHostingRenewMonth">
+									${hosting} <small>ex GST</small>
+									<p:else>$0</p:else>
+								</t:if>
+							</td>
+						</tr>
+						<tr>
+							<td>SMS</td>
+							<td>${sms}</td>
+							<td>${smsFree}</td>
+							<td>${smsCollege} <small>ex GST</small></td>
+							<td>${smsTotal} <small>ex GST</small></td>
+						</tr>
+						<tr>
+							<td>Credit card office</td>
+							<td>${ccOffice}</td>
+							<td>${ccOfficeFree}</td>
+							<td>${ccOfficeCollege} <small>ex GST</small></td>
+							<td>${ccOfficeTotal} <small>ex GST</small></td>
+						</tr>
+						<tr>
+							<td>Credit card web</td>
+							<td>${ccWeb}</td>
+							<td>${ccWebFree}</td>
+							<td>${ccWebCollege} <small>ex GST</small></td>
+							<td>${ccWebTotal} <small>ex GST</small></td>
+						</tr>
+						<t:if test="tasmaniaEcommerce" negate="true">
+							<tr>
+								<td>eCommerce</td>
+								<td>${ccWebValue} <small>inc GST</small></td>
+								<td>${ecommerceFree}</td>
+								<td>${ecommerce}%</td>
+								<td>${ecommerceTotal} <small>ex GST</small></td>
+							</tr>
+							<p:else>
+							
+							</p:else>
+						</t:if>
+				</t:loop>
+			</tbody>
+		</table>
+	</t:form>
+</html>

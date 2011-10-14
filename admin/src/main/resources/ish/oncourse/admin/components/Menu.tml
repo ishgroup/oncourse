@@ -1,0 +1,13 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<div class="menu-bg">
+		<div class="menu-b">
+			<div class="menu">
+				<t:pagelink href="#" page="Index">College list</t:pagelink><div></div>
+				<t:pagelink href="#" page="Billing">Billing</t:pagelink>
+			</div>
+		</div>
+	</div>
+
+</t:container>

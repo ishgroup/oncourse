@@ -1,0 +1,9 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>${title}</title>
+
+	<link rel="stylesheet" type="text/css" href="/willowAdmin/css/admin.css"/>
+	 
+</t:container>
