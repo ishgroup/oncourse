@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.fortuna.ical4j.data.CalendarOutputter;
-import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Dur;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
@@ -29,9 +28,9 @@ import org.apache.tapestry5.util.TextStreamResponse;
 /*
  URL:/contact/6giVOgEbBEBhAWjZ.ics, where 6giVOgEbBEBhAWjZ is uniqueCode of contact
  */
-public class Contact {
+public class Calendar {
 
-	private static final Logger logger = Logger.getLogger(Contact.class);
+	private static final Logger logger = Logger.getLogger(Calendar.class);
 
 	private static final Pattern NAME_PATTERN = Pattern.compile("(.*)\\.ics");
 
@@ -57,7 +56,7 @@ public class Contact {
 
 				if (contact != null) {
 
-					Calendar icsCalendar = new Calendar();
+					net.fortuna.ical4j.model.Calendar icsCalendar = new net.fortuna.ical4j.model.Calendar();
 
 					icsCalendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
 					icsCalendar.getProperties().add(Version.VERSION_2_0);

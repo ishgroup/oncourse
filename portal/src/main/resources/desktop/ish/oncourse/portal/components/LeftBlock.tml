@@ -2,7 +2,7 @@
 	
 	<div class="btn-subscribe">
 		<img alt="Subscribe to calendar" height="25" src="/img/calendar.png" width="23" />
-		<a href="http://tara.local.oncourse.net.au/contact/${userCalendarFilename}">Subscribe to Calendar</a>
+		<a href=" webcal:${userCalendarFilename}">Subscribe to Calendar</a>
 	</div>
 	
 	<!--  
