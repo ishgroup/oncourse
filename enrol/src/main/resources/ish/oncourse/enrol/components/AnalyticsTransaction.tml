@@ -1,0 +1,33 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:if test="hasOrderNumber">
+		<script type="text/javascript">
+			var pageTracker = _gat._getTracker("${transactionAccount}");
+			//pageTracker._setDomainName("${transactionDomain}");
+			pageTracker._initData();
+			pageTracker._addTrans(
+				"${transaction.orderNumber}",
+				"${affiliation}",
+				"<t:output value='transaction.total' format='moneyFormat'/>",
+				"<t:output value='transaction.tax' format='moneyFormat'/>",
+				"<t:output value='transaction.shippingAmount' format='moneyFormat'/>",
+				"${transaction.city}",
+				"${transaction.state}",
+				"${transaction.country}"
+			);
+			<t:loop source="transaction.items" value="transactionItem">
+				pageTracker._addItem(
+					"${transaction.orderNumber}",
+					"${transactionItem.skuCode}",
+					"${transactionItem.productName}",
+					"${transactionItem.categoryName}",
+					"<t:output value='transactionItem.unitPrice' format='moneyFormat'/>",
+					"${transactionItem.quantity}"
+				);
+			</t:loop>
+	
+			pageTracker._trackTrans();
+		</script>
+	</t:if>
+</t:container>	

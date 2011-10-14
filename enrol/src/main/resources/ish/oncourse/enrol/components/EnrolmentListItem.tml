@@ -1,0 +1,53 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	
+	<tr> 
+		<td>
+			<form>
+				<label id="i_${studentIndex}_${courseClassIndex}">
+					<input type="checkbox" id="enrolmentCheckbox_${studentIndex}_${courseClassIndex}" class="enrolmentCheckbox"/>				
+					
+						<script type="text/javascript">
+							<t:if test="enrolmentSelected">
+								document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').checked=true;
+							</t:if>
+							<t:if test="disabled">
+								document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').disabled=true;
+							</t:if>
+						</script>
+					
+					${courseClass.course.name}
+	  			</label>
+	  		</form>
+	  			
+	  		<t:if test="disabled">
+	  			<span class="disabled">(${disabledMessage})</span>
+	  		</t:if>
+	  		<t:if test="commenced">
+	  			<span>(Note: This class has already commenced)</span>
+	  		</t:if>
+			<br/>
+	  		<em>
+	  			<t:if test="courseClass.hasRoom">
+	  				<span t:type="ui/RoomLocation" room="courseClass.room" withRoomName="false" disabledLink="true" />
+				</t:if>&#187; 
+		  		<t:if test="courseClass.running">
+		  			<span class="started">
+	  					<t:output value="courseClass.startDate" format="dateFormat"/>
+	  				</span>
+					<p:else>
+						<span class="ended">
+	  						<t:output value="courseClass.startDate" format="dateFormat"/>
+		  				</span>
+		  			</p:else>
+	  			</t:if>
+	 	  	</em>
+		</td>
+		<td></td>
+		<td class="alignright">
+			<span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="courseClass" index="${studentIndex}_${courseClassIndex}"/>
+		</td>
+	</tr>
+ 
+</t:container>	

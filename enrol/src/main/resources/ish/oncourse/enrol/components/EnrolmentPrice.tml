@@ -1,0 +1,13 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<span class="${feeClass} fullPrice" id="fullPrice_${index}">
+		<t:output value="fee" format="moneyFormat"/>
+	</span>
+	<span class="${feeDiscountedClass} discountedPrice" id="discountedPrice_${index}">
+		<t:output value="discountedPriceIncTax" format="moneyFormat"/>
+	</span>
+	<span class="discount" id="discount_${index}" style="display:none;">
+		<t:output value="discountIncTax" format="numberFormat"/>
+	</span>
+</t:container>	
