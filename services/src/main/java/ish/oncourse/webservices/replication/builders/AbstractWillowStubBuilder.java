@@ -33,6 +33,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 				return null;
 			}
 			soapStub = convert(entity);
+			soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			break;
 		case DELETE:
 			soapStub = new DeletedStub();

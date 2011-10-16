@@ -12,6 +12,7 @@ public class TagGroupRequirementUpdater extends AbstractWillowUpdater<TagRequire
 		entity.setCreated(stub.getCreated());
 		entity.setIsRequired(stub.isRequired());
 		entity.setModified(stub.getModified());
+		entity.setEntityIdentifier(stub.getEntityName());
 		entity.setTag(callback.updateRelationShip(stub.getTagId(), Tag.class));
 	}
 }
