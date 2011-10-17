@@ -65,17 +65,17 @@ public class JerichoPlainTextExtractor implements IPlainTextExtractor {
 				// closed already
 				// detect the tag name, there could be variants: <tag>, or <tag attr="smth">
 				String tagName = tag.substring(1).split(" |>")[0];
-				Matcher matcher = Pattern.compile("<" + tagName + ">.+</" + tagName + ">", Pattern.DOTALL).matcher(
+				Matcher matcher = Pattern.compile("<" + tagName + ".+</" + tagName + ">", Pattern.DOTALL).matcher(
 						content);
 				if (matcher.find()) {
 					// we found the full html tag
 					tag = matcher.group();
 				}
 			}
-
+			
 			resultBuffer.append(compact(tag));
-			currentIndex = currentIndex + tag.length();
-
+			currentIndex += tag.length();
+			
 		} else {
 			resultBuffer.append(content.substring(currentIndex, content.length()));
 			currentIndex = content.length();
