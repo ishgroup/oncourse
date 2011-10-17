@@ -16,6 +16,7 @@ import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
 
+import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -64,4 +65,9 @@ public class AppModule {
 			@InjectService("AccessController") Dispatcher accessController) {
 		configuration.add("AccessController", accessController, "before:PageRender");
 	}
+	
+	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
+		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
+	}
+
 }
