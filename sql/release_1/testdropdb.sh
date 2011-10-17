@@ -7,8 +7,8 @@ databases="w2test_college w2test_binary"
 #databases="w2test_college w2test_reference w2test_binary"
 
 for database in ${databases}; do
-	mysqladmin5 -f -h db.office -uwillow -pT7t,RMJRPGjFSq9m drop ${database}
-	mysqladmin5 -f -h db.office -uwillow -pT7t,RMJRPGjFSq9m create ${database}
+	mysqladmin -f -h db.office -uwillow -pT7t,RMJRPGjFSq9m drop ${database}
+	mysqladmin -f -h db.office -uwillow -pT7t,RMJRPGjFSq9m create ${database}
 done
 
 	echo "s/w2_binary/w2test_binary/g" > edit1.sed
