@@ -72,7 +72,7 @@ jQuery(document).ready(function(){
 			if(jQuery(attendedList[t]).attr('id')===id){
 				
 				
-				jQuery.post("/portal/tutor/classroll.attendance", { attendanceId: id.split('_')[1], action: id.split('_')[0] }).complete(function(data) { 
+				jQuery.post("/portal/tutor/classroll.attendance", { attendanceId: jQuery(attendedList[t]).attr('date-attendanceId'), action: "attended" }).complete(function(data) { 
 					var response = data.responseText;
 					if(response === "SUCCESS"){
 						checkAttendanceButtons(absentList[t], attendedList[t]);
@@ -92,7 +92,7 @@ jQuery(document).ready(function(){
 		{
 			if(jQuery(absentList[t]).attr('id')===id){
 				
-				jQuery.post("/portal/tutor/classroll.attendance", { attendanceId: id.split('_')[1], action: id.split('_')[0] }, function(data) {},
+				jQuery.post("/portal/tutor/classroll.attendance", { attendanceId: jQuery(absentList[t]).attr('date-attendanceId'), action: "absent" }, function(data) {},
 						"text/json").complete(function(data) { 
 					var response = data.responseText;
 					if(response === "SUCCESS"){
