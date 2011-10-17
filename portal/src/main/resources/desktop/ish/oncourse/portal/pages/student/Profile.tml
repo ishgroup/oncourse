@@ -3,7 +3,7 @@
 	<h1> ${contact.givenName} ${contact.familyName}'s Profile  </h1>
 	
 	<t:form t:id="profileForm">
-		<t:errors banner="message:errors" class="literal:validation"/>
+		<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
 		
 		<fieldset>	
 		
