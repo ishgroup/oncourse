@@ -318,22 +318,26 @@ UPDATE %DESTINATIONDB%_college.Tag AS t
 	SET t.parentId = tOld.parentId
 	WHERE t.collegeId = @collegeId;
 
-INSERT INTO %DESTINATIONDB%_college.Taggable (angelId, collegeId, created, id, modified, entityIdentifier, entityWillowId)
-	SELECT angelId, collegeId, created, id, modified, entityType, id
-	FROM %SOURCEDB%_college.Taggable WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
+-- INSERT INTO %DESTINATIONDB%_college.Taggable (angelId, collegeId, created, id, modified, entityIdentifier, entityWillowId)
+-- 	SELECT angelId, collegeId, created, id, modified, entityType, id
+-- 	FROM %SOURCEDB%_college.Taggable WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
 
-INSERT INTO %DESTINATIONDB%_college.TaggableTag (id, angelId, collegeId, created, modified, taggableId, tagId)
-	SELECT (tt.tagId + (tt.taggableId << 32)), tt.angelid, tt.collegeId, tt.created, tt.modified, tt.taggableId, tt.tagId
-	FROM %SOURCEDB%_college.TaggableTag AS tt
-	JOIN %DESTINATIONDB%_college.Taggable AS t ON tt.taggableid = t.id
-	JOIN %DESTINATIONDB%_college.Tag as tag ON tt.tagId = tag.id
-	WHERE tt.collegeId = @collegeId AND (tt.isDeleted=0 OR tt.isDeleted is NULL);
+-- INSERT INTO %DESTINATIONDB%_college.TaggableTag (id, angelId, collegeId, created, modified, taggableId, tagId)
+-- 	SELECT (tt.tagId + (tt.taggableId << 32)), tt.angelid, tt.collegeId, tt.created, tt.modified, tt.taggableId, tt.tagId
+-- 	FROM %SOURCEDB%_college.TaggableTag AS tt
+-- 	JOIN %DESTINATIONDB%_college.Taggable AS t ON tt.taggableid = t.id
+-- 	JOIN %DESTINATIONDB%_college.Tag as tag ON tt.tagId = tag.id
+-- 	WHERE tt.collegeId = @collegeId AND (tt.isDeleted=0 OR tt.isDeleted is NULL);
 
-INSERT INTO %DESTINATIONDB%_college.TagGroupRequirement (allowsMultipleTags, angelId, collegeId, created, entityIdentifier, id, isRequired, modified, tagId)
-	SELECT tgr.allowsMultipleTags, tgr.angelId, tgr.collegeId, tgr.created, tgr.entityIdentifier, tgr.id, tgr.isRequired, tgr.modified, tgr.tagId
-	FROM %SOURCEDB%_college.TagGroupRequirement as tgr
-	JOIN %DESTINATIONDB%_college.Tag as t ON tgr.tagId = t.id
-	 WHERE tgr.collegeId = @collegeId AND (tgr.isDeleted=0 OR tgr.isDeleted IS NULL);
+-- INSERT INTO %DESTINATIONDB%_college.TagGroupRequirement (allowsMultipleTags, angelId, collegeId, created, entityIdentifier, id, isRequired, modified, tagId)
+-- 	SELECT tgr.allowsMultipleTags, tgr.angelId, tgr.collegeId, tgr.created, tgr.entityIdentifier, tgr.id, tgr.isRequired, tgr.modified, tgr.tagId
+-- 	FROM %SOURCEDB%_college.TagGroupRequirement as tgr
+-- 	JOIN %DESTINATIONDB%_college.Tag as t ON tgr.tagId = t.id
+-- 	 WHERE tgr.collegeId = @collegeId AND (tgr.isDeleted=0 OR tgr.isDeleted IS NULL);
+
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:TagRequirement');
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:TagRelation');
+
 
 INSERT INTO %DESTINATIONDB%_college.TutorRole (id, angelId, collegeId, courseClassId, created, confirmedDate, isConfirmed, modified, tutorId)
 	SELECT (tr.courseClassId + (tr.tutorId << 32)), (cc.angelId + (t.angelId << 32)), tr.collegeId, tr.courseClassId, tr.created, tr.dateConfirmed, tr.isConfirmed, tr.modified, tr.tutorId
