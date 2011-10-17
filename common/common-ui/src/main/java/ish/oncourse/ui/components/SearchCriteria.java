@@ -1,6 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.utils.TimestampUtilities;
 
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ import org.apache.tapestry5.services.Request;
 public class SearchCriteria {
 	@Inject
 	private Request request;
+	
+	@Inject
+	private ITagService tagService;
 
 	@Property
 	@Parameter
@@ -50,7 +54,7 @@ public class SearchCriteria {
 	void beforeRender() {
 		browseTagPath = new ArrayList<Tag>();
 		
-		Tag browseTag = (Tag) request.getAttribute(Tag.BROWSE_TAG_PARAM);
+		Tag browseTag = tagService.getBrowseTag();
 		
 		while (browseTag != null && browseTag.hasParentTag()) {
 			browseTagPath.add(browseTag);

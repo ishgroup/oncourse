@@ -118,7 +118,7 @@ public class Courses {
 	@OnEvent(component = "showMoreCourses")
 	Object onActionFromShowMoreCourses() {
 		courses = courseService.loadByIds(coursesIds.toArray());
-		
+
 		if (searchParams == null) {
 			courses.addAll(courseService.getCourses(itemIndex, ROWS_DEFAULT));
 		} else {
@@ -162,12 +162,14 @@ public class Courses {
 				Room room = courseClass.getRoom();
 				if (room != null) {
 					Site site = room.getSite();
-					if (site != null && site.getSuburb() != null && !"".equals(site.getSuburb()) && site.isHasCoordinates()) {
+					if (site != null && site.getSuburb() != null && !"".equals(site.getSuburb())
+							&& site.isHasCoordinates()) {
 						if (!mapSites.contains(site)) {
 							mapSites.add(site);
 						}
 						if (hasAnyFormValuesForFocus()) {
-							float focusMatchForClass = focusMatchForClass(courseClass, locationPoints[0], locationPoints[1]);
+							float focusMatchForClass = focusMatchForClass(courseClass, locationPoints[0],
+									locationPoints[1]);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
 								focusesForMapSites.put(site.getId(), focusMatchForClass);
@@ -234,9 +236,9 @@ public class Courses {
 	private List<Course> searchCourses() {
 		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
-		
+
 		searchParams = getCourseSearchParams();
-		
+
 		return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
 	}
 
@@ -246,8 +248,7 @@ public class Courses {
 	 * @return
 	 */
 	private List<Course> searchCourses(int start, int rows) {
-		
-		
+
 		QueryResponse resp = searchService.searchCourses(searchParams, start, rows);
 
 		LOGGER.info(String.format("The number of courses found: %s", resp.getResults().size()));
@@ -335,17 +336,16 @@ public class Courses {
 			}
 		}
 
-		request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag);
-		
+		request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag.getId());
 
 		return searchParams;
 	}
-	
-	public Tag getBrowseTag(){
-		return (Tag) request.getAttribute(Tag.BROWSE_TAG_PARAM);
+
+	public Tag getBrowseTag() {
+		return tagService.getBrowseTag();
 	}
-	
-	public String getBrowseTagDetail(){
+
+	public String getBrowseTagDetail() {
 		return textileConverter.convertCustomTextile(getBrowseTag().getDetail(), new ValidationErrors());
 	}
 }

@@ -16,13 +16,18 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class TagService extends BaseService<Tag> implements ITagService {
+
+	@Inject
+	private Request request;
 
 	public TagService(ICayenneService cayenneService, IWebSiteService webSiteService) {
 		super(cayenneService, webSiteService);
 	}
-	
+
 	/**
 	 * 
 	 * {@inheritDoc}
@@ -44,9 +49,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 */
 	@Override
 	public Tag getTagGroupByName(String name) {
-		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
-				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)).andExp(
-				ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
+		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name))
+				.andExp(ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
@@ -78,10 +82,9 @@ public class TagService extends BaseService<Tag> implements ITagService {
 
 		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
 
-		Expression qualifier = ExpressionFactory.matchExp(
-				pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY, entityName).andExp(
-				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY,
-						entityId));
+		Expression qualifier = ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY,
+				entityName).andExp(
+				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY, entityId));
 
 		return findByQualifier(getSiteQualifier().andExp(qualifier));
 	}
@@ -107,18 +110,16 @@ public class TagService extends BaseService<Tag> implements ITagService {
 			return null;
 		}
 		String tagNames[] = path.split("/");
-		/*if (path.contains("+") || path.contains("|")) {
-			for (int j = 0; j < tagNames.length; j++) {
-				// rewrite url
-				// FIXME setup web container and httpd correctly to prevent them
-				// from decoding URI in a way of changing "%2B" to "+", not to
-				// " "
-				tagNames[j] = tagNames[j].replaceAll("[_][+]", " ").replaceAll("[|]", "/");
-			}
-		}*/
+		/*
+		 * if (path.contains("+") || path.contains("|")) { for (int j = 0; j <
+		 * tagNames.length; j++) { // rewrite url // FIXME setup web container
+		 * and httpd correctly to prevent them // from decoding URI in a way of
+		 * changing "%2B" to "+", not to // " " tagNames[j] =
+		 * tagNames[j].replaceAll("[_][+]", " ").replaceAll("[|]", "/"); } }
+		 */
 		for (int j = 0; j < tagNames.length; j++) {
 			try {
-				tagNames[j]=URLDecoder.decode(tagNames[j], "UTF-8");
+				tagNames[j] = URLDecoder.decode(tagNames[j], "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -189,9 +190,15 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 */
 	private Expression getSiteQualifier() {
 		College currentCollege = getWebSiteService().getCurrentCollege();
-		Expression qualifier = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, currentCollege)
-				.andExp(ExpressionFactory.matchExp(Tag.IS_WEB_VISIBLE_PROPERTY, true));
+		Expression qualifier = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, currentCollege).andExp(
+				ExpressionFactory.matchExp(Tag.IS_WEB_VISIBLE_PROPERTY, true));
 		return qualifier;
+	}
+
+	@Override
+	public Tag getBrowseTag() {
+		Long browseTagId = (Long) request.getAttribute(Tag.BROWSE_TAG_PARAM);
+		return browseTagId == null ? null : findById(browseTagId);
 	}
 
 }

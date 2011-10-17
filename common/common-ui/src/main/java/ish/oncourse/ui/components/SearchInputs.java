@@ -66,7 +66,7 @@ public class SearchInputs {
 			tagNames.add(tag.getName());
 		}
 		
-		Tag browseTag = (Tag) request.getAttribute(Tag.BROWSE_TAG_PARAM);
+		Tag browseTag = tagService.getBrowseTag();
 		
 		if (browseTag != null) {
 			if(tagNames.contains(browseTag.getName())){

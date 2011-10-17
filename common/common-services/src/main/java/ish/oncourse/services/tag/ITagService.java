@@ -71,4 +71,10 @@ public interface ITagService {
 	 * @return
 	 */
 	List<Long> getEntityIdsByTagPath(String tagPath, String entityName);
+	
+	/**
+	 * Gets the browsing tag, ie the tag selected for searching of courses.
+	 * @return
+	 */
+	Tag getBrowseTag();
 }
