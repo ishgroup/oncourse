@@ -25,9 +25,6 @@
 			<p>
 				<label for="suburb">Suburb</label> <br/>
 				<span class="${suburbInputClass}">
-					<script type="text/javascript">
-						initSuburbAutoComplete();
-					</script>
 					<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
 						clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
 				</span>
