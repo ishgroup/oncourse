@@ -1,7 +1,7 @@
 <html t:type="pagestructure" title="literal:Login page"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<t:form t:id="loginForm" class="login-form">
+	<t:form t:id="loginForm" class="login-form" method="post">
 	
 	<div class="login-wrapper">
 	
@@ -9,7 +9,7 @@
 			<h1>Log In</h1>
 	
 			<div class="login-container">
-					<t:errors />
+					<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
 					<table class="login-table">
 						<tr>
 							<td><t:label for="firstName">First Name</t:label></td>

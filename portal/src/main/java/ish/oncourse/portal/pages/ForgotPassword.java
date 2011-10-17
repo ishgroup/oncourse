@@ -11,7 +11,6 @@ import java.util.Calendar;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -35,9 +34,6 @@ public class ForgotPassword {
 
 	@Inject
 	private ICayenneService cayenneService;
-
-	@Inject
-	private Messages messages;
 
 	@Inject
 	private Request request;
@@ -72,7 +68,7 @@ public class ForgotPassword {
 			
 			email.setFromEmail(FROM_EMAIL);
 			email.setSubject("Password recovery.");
-			email.setBody(messages.format("password.recover.email.body", recoveryLink, recoveryLink));
+			email.setBody(String.format("To recover password please visit <a href=\"%s\">%s</a>.", recoveryLink, recoveryLink));
 			email.setToEmails(c.getEmailAddress());
 
 			mailService.sendEmail(email, true);

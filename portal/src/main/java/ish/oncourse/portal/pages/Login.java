@@ -63,11 +63,8 @@ public class Login {
 	@Inject
 	private ICookiesService cookieService;
 
-	@InjectPage("student/timetable")
-    private Object timetableStudent;
-    
-    @InjectPage("tutor/timetable")
-    private Object timetableTutor;
+	@InjectPage
+    private Index index;
 
 	@InjectPage
 	private ForgotPassword forgotPassword;
@@ -91,7 +88,7 @@ public class Login {
 	Object onSuccess() throws IOException {
 
 		if (StringUtils.isBlank(email)) {
-			loginForm.recordError(emailField, "Please enter your login name");
+			loginForm.recordError(emailField, "Please enter your email");
 		}
 
 		if (!isForgotPassword) {
@@ -123,15 +120,11 @@ public class Login {
 		} else if (users.size() == 1) {
 			authenticationService.storeCurrentUser(users.get(0));
 			URL prevPage = cookieService.popPreviousPageURL();
-			return (prevPage != null) ? prevPage : getTimetablePage();
+			return (prevPage != null) ? prevPage : index;
 		} else {
 			selectCollege.setTheUsers(users);
 			return selectCollege;
 		}
-	}
-
-	private Object getTimetablePage() {
-		return authenticationService.isTutor() ? timetableTutor : timetableStudent;
 	}
 	
 	private Object forgotPassword() {

@@ -223,7 +223,8 @@ public class CookiesService implements ICookiesService {
 			removeCookieValue("prevpage");
 			try {
 				String path = new String(Base64.decodeBase64(prevPage.getBytes()));
-				String url = "http://" + request.getServerName() + request.getContextPath() + path;
+				String schema = request.isSecure() ? "https://" : "http://";
+				String url = schema + request.getServerName() + request.getContextPath() + path;
 				return new URL(url);
 			} catch (MalformedURLException e) {
 				LOGGER.warn(e);
