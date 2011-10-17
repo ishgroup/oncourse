@@ -19,7 +19,11 @@
 			<p:else>There's no next sessions for this class.</p:else>
 		</t:if>
 		<br/>	
-		<div class="mb20"><a href="http://tara.local.oncourse.net.au/${role}/timetable" class="btn">Show more</a></div>
+		<div class="mb20">
+		
+			<a href="http://${path}" class="btn">Show more</a>
+		
+		</div>
 	
 	</div>
 

@@ -405,19 +405,22 @@ public class Profile {
 			contact.setIsMarketingViaEmailAllowed(true);
 			contact.setIsMarketingViaPostAllowed(true);
 			contact.setIsMarketingViaSMSAllowed(true);
-			contact.getStudent().setCountryOfBirth(null);
-			contact.getStudent().setLanguageHome(null);
-			contact.getStudent().setEnglishProficiency(
-					AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
-			contact.getStudent().setIndigenousStatus(
-					AvetmissStudentIndigenousStatus.DEFAULT_POPUP_OPTION);
-			contact.getStudent().setHighestSchoolLevel(
-					AvetmissStudentSchoolLevel.DEFAULT_POPUP_OPTION);
-			contact.getStudent().setYearSchoolCompleted(null);
-			contact.getStudent().setPriorEducationCode(
-					AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
-			contact.getStudent().setDisabilityType(
-					AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION);
+			
+			if(getIsStudent()){
+				contact.getStudent().setCountryOfBirth(null);
+				contact.getStudent().setLanguageHome(null);
+				contact.getStudent().setEnglishProficiency(
+						AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
+				contact.getStudent().setIndigenousStatus(
+						AvetmissStudentIndigenousStatus.DEFAULT_POPUP_OPTION);
+				contact.getStudent().setHighestSchoolLevel(
+						AvetmissStudentSchoolLevel.DEFAULT_POPUP_OPTION);
+				contact.getStudent().setYearSchoolCompleted(null);
+				contact.getStudent().setPriorEducationCode(
+						AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
+				contact.getStudent().setDisabilityType(
+						AvetmissStudentDisabilityType.DEFAULT_POPUP_OPTION);
+			}
 			return this;
 		} else {
 			if (password != null) {

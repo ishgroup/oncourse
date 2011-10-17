@@ -13,6 +13,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class NextSession {
 	private static final String DATE_FORMAT = "dd/MMM/E";
@@ -22,6 +23,9 @@ public class NextSession {
 	 */
 	private static final String TIME_FORMAT = "h:mm a";
 
+	@Inject
+	private Request request;
+	
 	@Parameter
 	@Property
 	private CourseClass courseClass;
@@ -86,14 +90,18 @@ public class NextSession {
 				timeFormatter.format(nextSession.getEndDate())).toLowerCase();
 	}
 
-	public String getRole() {
-		if (authenticationService.isStudent()) {
-			return "student";
+	private String getRole() {
+		if (authenticationService.isTutor()) {
+			return "tutor";
 		}
-		return "tutor";
+		return "student";
 	}
 	
 	public Room getRoom(){
 		return nextSession.getRoom();
+	}
+	
+	public String getPath(){
+		return request.getServerName() + request.getContextPath() + "/" + getRole() + "/timetable";
 	}
 }
