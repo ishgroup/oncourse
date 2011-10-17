@@ -15,9 +15,12 @@ import net.fortuna.ical4j.model.Dur;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Description;
+import net.fortuna.ical4j.model.property.Name;
 import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Summary;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
+import net.fortuna.ical4j.model.property.XProperty;
 import net.fortuna.ical4j.util.UidGenerator;
 
 import org.apache.log4j.Logger;
@@ -61,6 +64,8 @@ public class Calendar {
 					icsCalendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
 					icsCalendar.getProperties().add(Version.VERSION_2_0);
 					icsCalendar.getProperties().add(CalScale.GREGORIAN);
+					icsCalendar.getProperties().add(new XProperty("X-WR-CALNAME", contact.getCollege().getName()));
+					//icsCalendar.getProperties().add(new XProperty("X-WR-CALDESC",description));					
 
 					List<Session> sessions = courseClassService.getContactSessions(contact);
 
