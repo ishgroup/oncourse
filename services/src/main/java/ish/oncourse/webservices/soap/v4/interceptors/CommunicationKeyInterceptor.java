@@ -42,7 +42,7 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			
 			QName op = (QName) bindingInfo.getName();
 
-			if (op != null && "authenticate".equalsIgnoreCase(op.getLocalPart())) {
+			if (op != null && ("authenticate".equalsIgnoreCase(op.getLocalPart()) || "logout".equalsIgnoreCase(op.getLocalPart()))) {
 				return;
 			}
 

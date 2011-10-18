@@ -8,6 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -53,12 +54,23 @@ public class PaymentInExpireJob implements Job {
 			ObjectContext newContext = cayenneService.newContext();
 
 			List<PaymentIn> expiredPayments = newContext.performQuery(q);
+			
+			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
 
 			for (PaymentIn p : expiredPayments) {
-				p.abandonPayment();
+				try {
+					
+					logger.info(String.format("Canceling paymentIn with id:%s, created:%s and status:%s.", p.getId(), p.getCreated(), p.getStatus()));
+					
+					p.abandonPayment();
+					
+					newContext.commitChanges();
+				}
+				catch (CayenneRuntimeException ce) {
+					logger.debug(String.format("Unable to cancel payment with id:%s and status:%s.", p.getId(), p.getStatus()), ce);
+					newContext.rollbackChanges();
+				}
 			}
-
-			newContext.commitChanges();
 
 			logger.debug("PaymentInExpireJob finished.");
 
