@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.builders;
 
+import ish.common.types.PaymentSource;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentOutStub;
@@ -16,7 +17,14 @@ public class PaymentOutStubBuilder extends AbstractWillowStubBuilder<PaymentOut,
 		stub.setCreated(entity.getCreated());
 		stub.setModified(entity.getModified());
 		stub.setPaymentInTxnReference(entity.getPaymentInTxnReference());
-		stub.setSource(entity.getSource());
+		
+		if (entity.getSource() != null) {
+			stub.setSource(entity.getSource().getDatabaseValue());
+		}
+		else {
+			stub.setSource(PaymentSource.SOURCE_WEB.getDatabaseValue());
+		}
+		
 		stub.setStatus(entity.getStatus().getDatabaseValue());
 		stub.setType(PaymentType.CREDIT_CARD.getDatabaseValue());
 		

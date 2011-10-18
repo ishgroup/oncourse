@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -93,11 +94,11 @@ public abstract class _PaymentOut extends CayenneDataObject {
         return (String)readProperty("paymentInTxnReference");
     }
 
-    public void setSource(String source) {
+    public void setSource(PaymentSource source) {
         writeProperty("source", source);
     }
-    public String getSource() {
-        return (String)readProperty("source");
+    public PaymentSource getSource() {
+        return (PaymentSource)readProperty("source");
     }
 
     public void setStatus(PaymentStatus status) {

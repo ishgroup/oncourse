@@ -1154,7 +1154,7 @@
 		<obj-attribute name="datePaid" type="java.util.Date" db-attribute-path="datePaid"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="paymentInTxnReference" type="java.lang.String" db-attribute-path="paymentInTxnReference"/>
-		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
+		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.common.types.PaymentStatus" db-attribute-path="status"/>
 		<obj-attribute name="totalAmount" type="java.math.BigDecimal" db-attribute-path="totalAmount"/>
 	</obj-entity>
