@@ -74,17 +74,19 @@ public class Calendar {
 						StringBuilder sessionInformation = new StringBuilder();
 						sessionInformation.append(s.getCollege().getName());
 						sessionInformation.append("\n");
-						sessionInformation.append(s.getRoom().getName());
-						sessionInformation.append(", ");
-						sessionInformation.append(s.getRoom().getSite().getName());
-						sessionInformation.append("\n");
-						sessionInformation.append(s.getRoom().getSite().getStreet());
-						sessionInformation.append(" ");
-						sessionInformation.append(s.getRoom().getSite().getSuburb());
-						sessionInformation.append(" ");
-						sessionInformation.append(s.getRoom().getSite().getState());
-						sessionInformation.append(" ");
-						sessionInformation.append(s.getRoom().getSite().getPostcode());
+						if(s.getRoom() != null) { 
+							sessionInformation.append(s.getRoom().getName());
+							sessionInformation.append(", ");
+							sessionInformation.append(s.getRoom().getSite().getName());
+							sessionInformation.append("\n");
+							sessionInformation.append(s.getRoom().getSite().getStreet());
+							sessionInformation.append(" ");
+							sessionInformation.append(s.getRoom().getSite().getSuburb());
+							sessionInformation.append(" ");
+							sessionInformation.append(s.getRoom().getSite().getState());
+							sessionInformation.append(" ");
+							sessionInformation.append(s.getRoom().getSite().getPostcode());
+						}
 						
 						StringBuilder courseInformation = new StringBuilder();
 						courseInformation.append(s.getCourseClass().getCourse().getName());
