@@ -22,7 +22,7 @@
 		<t:if test="isList">
 			<t:if test="course.fullClasses.empty" negate="true">
 			<p class="other-classes-control clearfix">
-				<a href="javascript:return false;" >Also show full classes</a>
+				<a href="javascript:return false;" >Show full classes</a>
 			</p>
 			<div class="other-classes" style="display:none;">
 				<t:loop source="course.fullClasses" value="courseClass">
