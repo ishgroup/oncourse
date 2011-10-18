@@ -336,8 +336,10 @@ public class Courses {
 			}
 		}
 
-		request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag.getId());
-
+		if (browseTag != null) {
+			request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag.getId());
+		}
+		
 		return searchParams;
 	}
 
