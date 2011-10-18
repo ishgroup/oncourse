@@ -14,11 +14,23 @@
 				</div>
 			</p:else>
 		</t:if>
-		<t:loop source="course.enrollableClasses" value="courseClass">
+		<t:loop source="classes" value="courseClass">
 			<t:if test="shouldHideClass" negate="true">
 				<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" />
 			</t:if>
 		</t:loop>
+		<t:if test="isList">
+			<t:if test="course.fullClasses.empty" negate="true">
+			<p class="other-classes-control clearfix">
+				<a href="javascript:return false;" >Also show full classes</a>
+			</p>
+			<div class="other-classes" style="display:none;">
+				<t:loop source="course.fullClasses" value="courseClass">
+					<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList" />
+				</t:loop>
+			</div>
+			</t:if>
+		</t:if>
 		<t:if t:test="course.allowWaitingList">
 			<p class="waiting-list-title" id="wl${course.id}">
 				<a class="nyromodalreload actionLink" href="/enrol/waitinglistform?courseId=${course.id}" target="_blank">

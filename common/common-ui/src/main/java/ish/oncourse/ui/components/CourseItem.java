@@ -6,6 +6,7 @@ import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 
+import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -163,5 +164,12 @@ public class CourseItem {
 			places += courseClass.getAvailableEnrolmentPlaces();
 		}
 		return places > 0;
+	}
+
+	public List<CourseClass> getClasses() {
+		if (isList) {
+			return course.getEnrollableClasses();
+		}
+		return course.getCurrentClasses();
 	}
 }

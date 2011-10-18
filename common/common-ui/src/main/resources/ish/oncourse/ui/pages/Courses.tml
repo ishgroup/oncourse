@@ -36,6 +36,12 @@
 							</t:actionLink>
 						</t:if>
 					</t:zone>
+					<script type="text/javascript">
+						Event.observe('coursesZone', Tapestry.ZONE_UPDATED_EVENT, function(){
+							initOtherClassesControl();
+							initNyromodal();
+						});
+					</script>
 				</p:else>
 			</t:if>
 		</p:else>

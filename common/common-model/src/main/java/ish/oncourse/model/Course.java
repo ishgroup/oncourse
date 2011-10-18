@@ -45,4 +45,17 @@ public class Course extends _Course implements Queueable {
 
 		return list;
 	}
+	
+	public List<CourseClass> getFullClasses() {
+		List<CourseClass> currentClasses = getCurrentClasses();
+		List<CourseClass> list = new ArrayList<CourseClass>(currentClasses.size());
+
+		for (CourseClass courseClass : currentClasses) {
+			if (!courseClass.isHasAvailableEnrolmentPlaces()) {
+				list.add(courseClass);
+			}
+		}
+
+		return list;
+	}
 }
