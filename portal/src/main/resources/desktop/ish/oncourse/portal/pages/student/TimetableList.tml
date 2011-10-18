@@ -7,40 +7,46 @@
 	</div>
 	
 	<div class="timetableList" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" >
+		<t:if test="hassessions">
 			<t:loop source="sessionsByDate" value="currentBucket">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="70">
-							<div class="${dayClass}">
-								<div class="date-day">
-									<span>${day}</span> ${month}
-									<t:if test="today">
-										<i>today</i>
-									</t:if>
-								</div>
-							</div></td>
-						<td>
-							<div class="timetable">
-								<t:loop source="currentBucket.value" value="session">
-									<div class="timetable-item">
-										<div class="timetable-name">
-											${time}. <t:pagelink page="student/class" context="session.courseClass.id">${name}.</t:pagelink>
-										</div>
-										<t:if test="hasRoomAndSite">
-											<div class="class-place">${session.room.site.name}</div>
-										</t:if>
-										<t:if test="tutors.empty" negate="true">
-											<t:loop source="tutors" value="tutor">
-												<div class="class-man">${tutor.fullName}</div>
-											</t:loop>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="70">
+								<div class="${dayClass}">
+									<div class="date-day">
+										<span>${day}</span> ${month}
+										<t:if test="today">
+											<i>today</i>
 										</t:if>
 									</div>
-								</t:loop>
-							</div></td>
-					</tr>
-				</table>
-				<div class="bord mb10"></div>
-			</t:loop>
+								</div></td>
+							<td>
+								<div class="timetable">
+									<t:loop source="currentBucket.value" value="session">
+										<div class="timetable-item">
+											<div class="timetable-name">
+												${time}. <t:pagelink page="student/class" context="session.courseClass.id">${name}.</t:pagelink>
+											</div>
+											<t:if test="hasRoomAndSite">
+												<div class="class-place">${session.room.site.name}</div>
+											</t:if>
+											<t:if test="tutors.empty" negate="true">
+												<t:loop source="tutors" value="tutor">
+													<div class="class-man">${tutor.fullName}</div>
+												</t:loop>
+											</t:if>
+										</div>
+									</t:loop>
+								</div></td>
+						</tr>
+					</table>
+					<div class="bord mb10"></div>
+				</t:loop>
+			<p:else>
+				You have no currently scheduled classes.
+			</p:else>
+		</t:if>
+			
 	</div>
 	
 </html>

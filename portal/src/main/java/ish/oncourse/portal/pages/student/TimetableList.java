@@ -96,6 +96,10 @@ public class TimetableList {
 	public String getDayClass() {
 		return isToday() ? "date" : "date3";
 	}
+	
+	public boolean getHasSessions() {
+		return getSessionsByDate().size() > 0 ? true: false;
+	}
 
 	public String getDay() {
 		return dateFormatter.format(currentBucket.getKey()).split("/")[0];
