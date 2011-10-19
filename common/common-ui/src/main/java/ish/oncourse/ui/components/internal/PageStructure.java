@@ -7,7 +7,6 @@ import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.annotations.SupportsInformalParameters;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -48,6 +47,11 @@ public class PageStructure {
 	}
 
 	public String getAgentAwareBodyClass() {
-        return bodyClass + RequestUtil.getAgentAwareClass(request.getHeader("User-Agent"));
+		return bodyClass + RequestUtil.getAgentAwareClass(request.getHeader("User-Agent"));
+	}
+
+	public boolean isWrapped() {
+		String wrap = request.getParameter("wrap");
+		return wrap == null || Boolean.parseBoolean(wrap);
 	}
 }

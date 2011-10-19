@@ -5,13 +5,16 @@
 		every single full page which is rendered by onCourse.
 		Override: No. This component should not normally be overridden
 	</t:remove>
-	<head>
+	<t:if test="wrapped">
 		<head t:type="ui/pagehead" title="${title}"/>
-	</head>
-	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-		<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
+		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
+			<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
+				<t:body/>
+			</div>
+			<span t:type="ui/googleAnalytics"></span>
+		</body>
+		<p:else>
 			<t:body/>
-		</div>
-		<span t:type="ui/googleAnalytics"></span>
-	</body>
+		</p:else>
+	</t:if>
 </html>
