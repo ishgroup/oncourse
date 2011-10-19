@@ -9,6 +9,11 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 
 public class QueuedRecord extends _QueuedRecord {
+	
+	/**
+	 * Maximum retry number.
+	 */
+	public static final Integer MAX_NUMBER_OF_RETRY = 5;
 
 	public QueuedRecord() {
 		super();

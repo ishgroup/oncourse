@@ -26,55 +26,35 @@ public class WillowQueueService implements IWillowQueueService {
 	@Inject
 	@Autowired
 	private ICayenneService cayenneService;
+	
+	/**
+	 * @see ish.oncourse.webservices.replication.services.IWillowQueueService#getReplicationQueue(int, int)
+	 */
+	public List<QueuedTransaction> getReplicationQueue(int fromTransaction, int numberOfTransactions) {
 
-	private static final int FETCH_LIMIT = 30;
+		SelectQuery q = new SelectQuery(QueuedTransaction.class);
+		q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING));
+		q.addPrefetch(QueuedTransaction.QUEUED_RECORDS_PROPERTY);
+		q.andQualifier(ExpressionFactory.matchExp(QueuedTransaction.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
+		q.setPageSize(numberOfTransactions);
+		q.setFetchOffset(fromTransaction);
+		
+		List<QueuedTransaction> list = cayenneService.sharedContext().performQuery(q);
+		List<QueuedTransaction> result = new ArrayList<QueuedTransaction>(numberOfTransactions);
 
-	public List<QueuedRecord> getReplicationQueue(int limit) {
+		int maxNumber = (list.size() < numberOfTransactions) ? list.size() : numberOfTransactions;
+		int index = 0;
 
-		List<QueuedRecord> queue = new ArrayList<QueuedRecord>();
-		ObjectContext ctx = cayenneService.sharedContext();
-
-		boolean hasMoreRecords = true;
-		int fetchOffset = 0;
-
-		while (hasMoreRecords) {
-
-			SelectQuery q = new SelectQuery(QueuedTransaction.class);
-
-			q.andQualifier(ExpressionFactory.matchExp(QueuedTransaction.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-
-			q.addPrefetch(QueuedTransaction.QUEUED_RECORDS_PROPERTY);
-			q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING));
-
-			q.setFetchLimit(FETCH_LIMIT);
-			q.setFetchOffset(fetchOffset);
-
-			List<QueuedTransaction> transactions = ctx.performQuery(q);
-
-			int fetchedSize = transactions.size();
-
-			if (fetchedSize < FETCH_LIMIT) {
-				hasMoreRecords = false;
-			} else {
-				fetchOffset += fetchedSize;
-			}
-
-			for (QueuedTransaction t : transactions) {
-
-				int numberOfRecords = t.getQueuedRecords().size();
-
-				if (queue.size() + numberOfRecords >= limit) {
-					hasMoreRecords = false;
-					break;
-				}
-
-				queue.addAll(t.getQueuedRecords());
-			}
+		while (index < maxNumber) {
+			result.add(list.get(index++));
 		}
-
-		return queue;
+		
+		return result;
 	}
 
+	/**
+	 * @see ish.oncourse.webservices.replication.services.IWillowQueueService#cleanEmptyTransactions()
+	 */
 	@Override
 	public void cleanEmptyTransactions() {
 		

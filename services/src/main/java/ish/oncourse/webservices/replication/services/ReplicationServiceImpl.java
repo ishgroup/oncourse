@@ -10,6 +10,7 @@ import ish.oncourse.model.QueueKey;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
+import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
@@ -30,6 +31,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +55,10 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 	private static final Logger logger = Logger.getLogger(ReplicationServiceImpl.class);
 
-	private static final int BATCH_SIZE = 500;
+	/**
+	 * Maximum transaction number allowed to be sent to angel.
+	 */
+	private static final int TRANSACTION_BATCH_SIZE = 50;
 
 	@Inject
 	private IWillowQueueService queueService;
@@ -108,10 +113,30 @@ public class ReplicationServiceImpl implements IReplicationService {
 	public ReplicationRecords getRecords() throws ReplicationFault {
 
 		try {
-
+			
+			int number = 0;
+			int from = 0;
+			
+			List<QueuedTransaction> transactions;
+			List<QueuedRecord> queue = new LinkedList<QueuedRecord>();
+			
+			do {
+				transactions = queueService.getReplicationQueue(from, TRANSACTION_BATCH_SIZE);
+				
+				for (QueuedTransaction t : transactions) {
+					if (!shouldSkipTransaction(t)) {
+						queue.addAll(t.getQueuedRecords());
+						number++;
+					}
+				}
+				
+				from += transactions.size() + 1;
+			}
+			while (number < TRANSACTION_BATCH_SIZE && transactions.size() == TRANSACTION_BATCH_SIZE);
+			
+			//now we have records to process
+			
 			ReplicationRecords result = new ReplicationRecords();
-
-			List<QueuedRecord> queue = queueService.getReplicationQueue(BATCH_SIZE);
 
 			if (!queue.isEmpty()) {
 				Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<QueueKey, DFADedupper>();
@@ -195,6 +220,22 @@ public class ReplicationServiceImpl implements IReplicationService {
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
 			throw new ReplicationFault("Unable to get records for replication.", faultReason);
 		}
+	}
+	
+	/**
+	 * Check if any record within transaction has reached max retry level.
+	 * 
+	 * @return true/false
+	 */
+	private boolean shouldSkipTransaction(QueuedTransaction t) {
+
+		for (QueuedRecord r : t.getQueuedRecords()) {
+			if (r.getNumberOfAttempts() >= QueuedRecord.MAX_NUMBER_OF_RETRY) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -312,6 +353,12 @@ public class ReplicationServiceImpl implements IReplicationService {
 						} else {
 							queuedRecord.setLastAttemptTimestamp(new Date());
 							queuedRecord.setErrorMessage(record.getMessage());
+							
+							if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(queuedRecord.getNumberOfAttempts())) {
+								logger.error(String.format(
+										"Max number of retries has been reached for QueuedRecord entityIdentifier:%s angelId:%s willowId:%s", record
+												.getStub().getEntityIdentifier(), record.getStub().getAngelId(), record.getStub().getWillowId()));
+							}
 						}
 
 						ctx.commitChanges();
