@@ -4,6 +4,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.TutorRole;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.utils.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -29,6 +30,9 @@ public class CourseClassItem {
 
 	@Inject
 	private ITextileConverter textileConverter;
+
+	@Inject
+	private ICookiesService cookiesService;
 
 	@Parameter
 	@Property
@@ -169,7 +173,12 @@ public class CourseClassItem {
 	}
 
 	public boolean isCurrentClass() {
-		return !courseClass.hasEnded();
+		return !courseClass.isCancelled() && !courseClass.hasEnded();
+	}
+	
+	public boolean isAddedClass() {
+		List<Long> classIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
+		return classIds.contains(courseClass.getId());
 	}
 
 	public String getEnrolHoverTitle() {
