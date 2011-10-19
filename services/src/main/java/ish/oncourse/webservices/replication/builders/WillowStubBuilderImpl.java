@@ -5,6 +5,7 @@ import static ish.oncourse.webservices.replication.services.ReplicationUtils.get
 import java.util.HashMap;
 import java.util.Map;
 
+import ish.oncourse.model.Attendance;
 import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.ConcessionType;
@@ -37,6 +38,7 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 	private Map<String, IWillowStubBuilder> builderMap = new HashMap<String, IWillowStubBuilder>();
 
 	public WillowStubBuilderImpl() {
+		builderMap.put(getEntityName(Attendance.class), new AttendanceStubBuilder());
 		builderMap.put(getEntityName(BinaryData.class), new BinaryDataStubBuilder());
 		builderMap.put(getEntityName(BinaryInfo.class), new BinaryInfoStubBuilder());
 		builderMap.put(getEntityName(ConcessionType.class), new ConcessionTypeStubBuilder());
