@@ -35,7 +35,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class TextileConverter implements ITextileConverter {
 
 	private final static Logger LOGGER = Logger.getLogger(TextileConverter.class);
-	
+
 	@Inject
 	private IBinaryDataService binaryDataService;
 
@@ -58,14 +58,14 @@ public class TextileConverter implements ITextileConverter {
 
 	@Inject
 	private IPlainTextExtractor extractor;
-	
+
 	public TextileConverter() {
 	}
 
 	public TextileConverter(IPlainTextExtractor extractor) {
 		this.extractor = extractor;
 	}
-	
+
 	public TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
 			ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
 			ITagService tagService) {
@@ -81,9 +81,9 @@ public class TextileConverter implements ITextileConverter {
 		if (content == null) {
 			return null;
 		}
-		
-		content=extractor.compactHtmlTags(content);
-		
+
+		content = extractor.compactHtmlTags(content);
+
 		StringWriter writer = new StringWriter();
 
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
@@ -117,8 +117,9 @@ public class TextileConverter implements ITextileConverter {
 			IRenderer renderer = getRendererForTag(tag);
 			if (renderer != null) {
 				String replacement = renderer.render(tag, tempErrors);
-				//TODO remove the check for renderer when the validation of {form} is needed, now we just pass all the text
-				if(!(renderer instanceof FormTextileRenderer)){
+				// TODO remove the check for renderer when the validation of
+				// {form} is needed, now we just pass all the text
+				if (!(renderer instanceof FormTextileRenderer)) {
 					if (tempErrors.hasSyntaxFailures()) {
 						replacement = TextileUtil.getReplacementForSyntaxErrorTag(tag);
 					} else if (tempErrors.hasContentNotFoundFailures() || replacement == null) {
@@ -132,16 +133,18 @@ public class TextileConverter implements ITextileConverter {
 		}
 		result += content;
 		result = clearGenerated(result);
-		if(errors.hasFailures()){
+		if (errors.hasFailures()) {
 			LOGGER.error(errors.toString());
 		}
 		return result;
 	}
 
 	private String clearGenerated(String result) {
-		if (result.startsWith("<p>") && result.endsWith("</p>")&& !result.substring(3).contains("<p>")) {
-			result = result.substring(3);
-			result = result.substring(0, result.lastIndexOf("</p>"));
+		if (result.startsWith("<p>") && result.endsWith("</p>")) {
+			String cutted = result.substring(3);
+			if (cutted.contains("<p>") && cutted.indexOf("</p>") > cutted.indexOf("<p>")) {
+				result = cutted.substring(0, cutted.lastIndexOf("</p>"));
+			}
 		}
 		return StringEscapeUtils.unescapeHtml(result).replaceAll("(&amp;nbsp;)", " ");
 	}
