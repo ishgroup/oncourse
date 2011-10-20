@@ -142,7 +142,7 @@ public class TextileConverter implements ITextileConverter {
 	private String clearGenerated(String result) {
 		if (result.startsWith("<p>") && result.endsWith("</p>")) {
 			String cutted = result.substring(3);
-			if (cutted.contains("<p>") && cutted.indexOf("</p>") > cutted.indexOf("<p>")) {
+			if (!cutted.contains("<p>") || cutted.contains("<p>") && cutted.indexOf("</p>") > cutted.indexOf("<p>")) {
 				result = cutted.substring(0, cutted.lastIndexOf("</p>"));
 			}
 		}
