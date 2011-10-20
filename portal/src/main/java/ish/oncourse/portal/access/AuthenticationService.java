@@ -117,14 +117,6 @@ public class AuthenticationService implements IAuthenticationService {
 	}
 
 	/**
-	 * @see IAuthenticationService#isStudent()
-	 */
-	@Override
-	public boolean isStudent() {
-		return getUser() != null && getUser().getStudent() != null;
-	}
-
-	/**
 	 * @see IAuthenticationService#isTutor()
 	 */
 	@Override

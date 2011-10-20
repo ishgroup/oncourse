@@ -20,7 +20,6 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
-import org.apache.tapestry5.corelib.components.Checkbox;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -70,9 +69,6 @@ public class Login {
 	@InjectComponent("companyName")
 	private TextField companyNameField;
 	
-//	@InjectComponent("isCompany")
-//	private Checkbox isCompanyCheckbox;
-
 	@Inject
 	private IAuthenticationService authenticationService;
 

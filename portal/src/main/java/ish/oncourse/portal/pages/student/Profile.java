@@ -527,7 +527,7 @@ public class Profile {
 	}
 	
 	public boolean getIsStudent(){
-		return authService.isStudent();
+		return authService.getUser().getStudent() != null;
 	}
 	
 	protected Object getTimetablePage() {

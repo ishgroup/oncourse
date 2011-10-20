@@ -59,12 +59,6 @@ public interface IAuthenticationService {
 	void logout();
 	
 	/**
-	 * If current user is a student.
-	 * @return
-	 */
-	boolean isStudent();
-	
-	/**
 	 * Whether current user is a tutor.
 	 * @return
 	 */
