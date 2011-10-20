@@ -7,6 +7,7 @@
 				<input t:type="radio" value="user"/>${collegeName}<br/>
 			</t:loop>
 		</t:radiogroup>
+		<br/>
 		<t:submit value="Select"/>
 	</t:form>
 </html>
