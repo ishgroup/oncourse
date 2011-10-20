@@ -47,6 +47,28 @@ public class AuthenticationService implements IAuthenticationService {
 		List<Contact> users = cayenneService.newContext().performQuery(query);
 		return users;
 	}
+	
+	/**
+	 * @see IAuthenticationService#authenticate(String, String, String, String)
+	 */
+	public List<Contact> authenticateCompany(String companyName, String email, String password) {
+
+		if (companyName == null || companyName.isEmpty() || email == null || email.isEmpty()
+				|| password == null || password.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		SelectQuery query = new SelectQuery(Contact.class);
+
+		query.andQualifier(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
+		query.andQualifier(ExpressionFactory.matchExp(Contact.PASSWORD_PROPERTY, password));
+		query.andQualifier(ExpressionFactory.matchExp(Contact.IS_COMPANY_PROPERTY, Boolean.TRUE));
+		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, companyName));
+
+		@SuppressWarnings("unchecked")
+		List<Contact> users = cayenneService.newContext().performQuery(query);
+		return users;
+	}
 
 	/**
 	 * @see IAuthenticationService#findForPasswordRecovery(String, String, String)

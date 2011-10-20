@@ -23,6 +23,15 @@ public interface IAuthenticationService {
 	List<Contact> authenticate(String firstName, String lastName, String email, String password);
 	
 	/**
+	 * Look for user as a company by company name, email and password across all colleges.
+	 * @param companyName company name
+	 * @param email user's email
+	 * @param password user's password
+	 * @return list of users
+	 */
+	List<Contact> authenticateCompany(String companyName, String email, String password);
+	
+	/**
 	 * Finds user by password recovery key.
 	 * @param recoveryKey passwd recovery key
 	 * @return user

@@ -1597,17 +1597,32 @@ a.btn2{
 	width:100%;
 }
 
-.login-table td:first-child {
-	padding-right: 27px;
+.login-table label {
+	padding-right: 0px;
 	text-align: right;
 }
 
-.login-table td {
+.login-table p {
 	padding-bottom: 15px;
 }
 
-.login-table td input[type="text"],
-.login-table td input[type="password"] {
+.login-table p .ascompany {
+	padding-bottom: 25px;
+}
+
+.login-table .textField {
+	float: right;
+	position: relative;
+}
+
+
+.login-table label.prettyCheckbox span.holderWrap {
+	float: right;
+	margin-left: 40px;
+}
+
+.login-table input[type="text"],
+.login-table input[type="password"] {
 	background:#fff url(../img/filed-back.png) repeat-x left top;
 	border: 1px solid #cccccc;
 	border-radius:3px;

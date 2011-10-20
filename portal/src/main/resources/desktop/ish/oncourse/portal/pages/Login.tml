@@ -10,32 +10,37 @@
 	
 			<div class="login-container">
 					<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
-					<table class="login-table">
-						<tr>
-							<td><t:label for="firstName">First Name</t:label></td>
-							<td><t:TextField t:id="firstName" size="30" maxlength="100" />
-							</td>
-						</tr>
-						<tr>
-							<td><t:label for="lastName">Last Name</t:label></td>
-							<td><t:TextField t:id="lastName" size="30" maxlength="100" />
-							</td>
-						</tr>
-						<tr>
-							<td><t:label for="email">E-mail</t:label></td>
-							<td><t:TextField t:id="email" size="30" maxlength="100" />
-							</td>
-						</tr>
-						<tr>
-							<td><t:label for="password">Password</t:label></td>
-							<td><input t:type="PasswordField" t:id="password" size="30" maxlength="100" /></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><input id="signIn" class="btn-login" type="submit" value=""/> <a t:id="forgotPassword" t:type="linksubmit" href="#" class="login-forgot">Forgot
-									Password?</a></td>
-						</tr>
-					</table>
+					<div class="login-table">
+						<div style="width:100%;">
+							<p class="ascompany"><t:label for="iscompany">As company</t:label>
+								<t:checkbox onclick="set_is_company(this.checked)" t:id="iscompany" value="iscompany"  style="float: right;" />
+							</p>
+						</div>	
+						<div style="display: none;" class="company-details collapse">
+							<p><t:label for="companyName">Company Name</t:label>
+							<span class="textField"><t:TextField t:id="companyName" size="30" maxlength="100" /></span></p>
+						</div>
+						
+						<div style="display: block;" class="user-details ">	
+							<p><t:label for="firstName">First Name</t:label>
+							<span class="textField"><t:TextField class="textField" t:id="firstName" size="30" maxlength="100" /></span></p>
+							
+							<p><t:label for="lastName">Last Name</t:label>
+							<span class="textField"><t:TextField t:id="lastName" size="30" maxlength="100" /></span> </p>
+							
+						</div> 
+						
+						<p><t:label for="email">E-mail</t:label>
+						<span class="textField"><t:TextField t:id="email" size="30" maxlength="100" /></span></p>
+					
+						<p><t:label for="password">Password</t:label>
+						<span class="textField"><input t:type="PasswordField" t:id="password" size="30" maxlength="100" /></span></p>
+						
+						<p><span class="textField"><input id="signIn" class="btn-login" type="submit" value=""/> <a t:id="forgotPassword" t:type="linksubmit" href="#" class="login-forgot">Forgot
+									Password?</a></span>
+						</p>
+						
+					</div>
 			</div>
 		</div>
 	

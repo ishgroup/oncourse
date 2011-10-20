@@ -8,19 +8,21 @@
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/jquery.selectbox.css"/>
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/jquery.prettyCheckboxes.css"/>
 	
-	
-	<script type="text/javascript" src="${contextPath}/js/jquery-1.6.2.min.js"></script>
-	<script type="text/javascript" src="${contextPath}/js/jquery.prettyCheckboxes.js"></script>
+
+ 	<script type="text/javascript" src="${contextPath}/js/jquery-1.6.2.min.js"></script>  
+ 	<script type="text/javascript" src="${contextPath}/js/jquery.prettyCheckboxes.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.tara.tabs.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.ui.datepicker.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.ui.core.min.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.effects.core.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/jquery.effects.blind.min.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.effects.fade.min.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.effects.slide.min.js"></script>
-	<script type="text/javascript" src="${contextPath}/js/slider.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/slider.js"></script>  
+	<script type="text/javascript" src="${contextPath}/js/initialise.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/calendar.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/script.js"></script>
 	
 	<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true" />
- 
+  
 </t:container>

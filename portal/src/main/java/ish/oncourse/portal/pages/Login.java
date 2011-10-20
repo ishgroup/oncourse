@@ -6,6 +6,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.corelib.components.Checkbox;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -31,7 +33,15 @@ public class Login {
 	@Persist
 	@Property
 	private String lastName;
+	
+	@Persist
+	@Property
+	private String companyName;
 
+	@Persist
+	@Property
+	private Boolean iscompany;
+	
 	@Persist
 	@Property
 	private String firstName;
@@ -56,6 +66,12 @@ public class Login {
 
 	@InjectComponent("password")
 	private PasswordField passwordField;
+	
+	@InjectComponent("companyName")
+	private TextField companyNameField;
+	
+//	@InjectComponent("isCompany")
+//	private Checkbox isCompanyCheckbox;
 
 	@Inject
 	private IAuthenticationService authenticationService;
@@ -97,11 +113,17 @@ public class Login {
 			}
 		}
 
-		if (StringUtils.isBlank(lastName)) {
-			loginForm.recordError(lastNameField, "Please enter your last name");
-		}
-		if (StringUtils.isBlank(firstName)) {
-			loginForm.recordError(firstNameField, "Please enter your first name");
+		if (iscompany) {
+			if (StringUtils.isBlank(companyName)) {
+				loginForm.recordError(companyNameField, "Please enter your company name");
+			}
+		} else {
+			if (StringUtils.isBlank(lastName)) {
+				loginForm.recordError(lastNameField, "Please enter your last name");
+			}
+			if (StringUtils.isBlank(firstName)) {
+				loginForm.recordError(firstNameField, "Please enter your first name");
+			}
 		}
 
 		if (!loginForm.getHasErrors()) {
@@ -112,8 +134,13 @@ public class Login {
 	}
 
 	private Object doLogin() {
-
-		List<Contact> users = authenticationService.authenticate(firstName, lastName, email, password);
+		List<Contact> users = new ArrayList<Contact>();
+		if(iscompany) {
+			users= authenticationService.authenticateCompany(companyName, email, password);
+		} else {
+			users = authenticationService.authenticate(firstName, lastName, email, password);
+		}
+		
 		if (users.isEmpty()) {
 			loginForm.recordError("Login unsucessful! Invalid login name or password");
 			return this;
@@ -129,7 +156,12 @@ public class Login {
 	
 	private Object forgotPassword() {
 
-		List<Contact> users = authenticationService.findForPasswordRecovery(firstName, lastName, email);
+		List<Contact> users = new ArrayList<Contact>();
+		if(iscompany) {
+			users= authenticationService.authenticateCompany(companyName, email, password);
+		} else {
+			users = authenticationService.findForPasswordRecovery(firstName, lastName, email);
+		}
 
 		if (users.isEmpty()) {
 			loginForm.recordError("User doesn't exist in ");
