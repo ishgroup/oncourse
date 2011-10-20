@@ -29,6 +29,7 @@ import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.Tutor;
+import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
@@ -57,6 +58,7 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		builderMap.put(getEntityName(StudentConcession.class), new StudentConcessionStubBuilder());
 		builderMap.put(getEntityName(Student.class), new StudentStubBuilder());
 		builderMap.put(getEntityName(Tutor.class), new TutorStubBuilder());
+		builderMap.put(getEntityName(TutorRole.class), new TutorRoleStubBuilder());
 		builderMap.put(getEntityName(Site.class), new SiteStubBuilder());
 		builderMap.put(getEntityName(Course.class), new CourseStubBuilder());
 		builderMap.put(getEntityName(Room.class), new RoomStubBuilder());
