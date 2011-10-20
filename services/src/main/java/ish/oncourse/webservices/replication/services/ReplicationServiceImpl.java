@@ -114,6 +114,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 		try {
 			
+			queueService.cleanEmptyTransactions();
+			
 			int number = 0;
 			int from = 0;
 			
@@ -130,7 +132,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 					}
 				}
 				
-				from += transactions.size() + 1;
+				from += TRANSACTION_BATCH_SIZE;
 			}
 			while (number < TRANSACTION_BATCH_SIZE && transactions.size() == TRANSACTION_BATCH_SIZE);
 			
