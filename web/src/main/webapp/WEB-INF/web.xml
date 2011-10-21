@@ -84,4 +84,9 @@
    		<location>/error500</location>
   	</error-page>
 	
+	<error-page>
+    	<error-code>404</error-code> 
+   		<location>/PageNotFound</location>
+  	</error-page>
+  	
 </web-app>

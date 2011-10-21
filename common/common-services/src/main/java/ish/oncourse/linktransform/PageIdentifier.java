@@ -13,36 +13,36 @@ public enum PageIdentifier {
 	/**
 	 * course/ABC Show course detail for the cource with code ABC
 	 */
-	Course("/course/((\\w|\\s)+)", "ui/CourseDetails"),
+	Course("/course/((\\w|\\s)+)(/)?", "ui/CourseDetails"),
 	/**
 	 * class/ABC-123 Show the class detail for the CourseClass with code ABC-123
 	 */
-	CourseClass("/class/((\\w|\\s)+)-((\\w|\\s)+)", "ui/CourseClassDetails"),
+	CourseClass("/class/((\\w|\\s)+)-((\\w|\\s)+)(/)?", "ui/CourseClassDetails"),
 	/**
 	 * page/123 This is always available for every webpage, even if it doesn't
 	 * have a URL alias
 	 */
-	Page("/page/(\\d+)", "ui/internal/Page"),
+	Page("/page/(\\d+)(/)?", "ui/internal/Page"),
 	/**
 	 * sites Show the site list for all sites
 	 */
-	Sites("/sites", "ui/Sites"),
+	Sites("/sites(/)?", "ui/Sites"),
 	/**
 	 * site/200 Show the site detail for the site with angel id of 200
 	 */
-	Site("/site/(.+)", "ui/SiteDetails"),
+	Site("/site/(.+)(/)?", "ui/SiteDetails"),
 	/**
 	 * room/200 Show the room detail for the room with angel id of 200
 	 */
-	Room("/room/(\\d+)", "ui/RoomDetails"),
+	Room("/room/(\\d+)(/)?", "ui/RoomDetails"),
 	/**
 	 * tutor/123 Show the tutor detail for the tutor with angel id of 123
 	 */
-	Tutor("/tutor/(\\d+)", "ui/TutorDetails"),
+	Tutor("/tutor/(\\d+)(/)?", "ui/TutorDetails"),
 	/**
 	 * /sitemap.xml Google specific sitemap file.
 	 */
-	Sitemap("/sitemap\\.xml", "ui/SitemapXML"),
+	Sitemap("/sitemap\\.xml(/)?", "ui/SitemapXML"),
 	/**
 	 * Path of the search autocomplete
 	 */
