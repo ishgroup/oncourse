@@ -82,13 +82,11 @@ public class ClassRoll {
 	}
 
 	public String getClassInfoPageName() {
-		return authenticationService.isTutor() ? "tutor/class"
-				: "student/class";
+		return "class";
 	}
 
 	public String getClassDetailsPageName() {
-		return authenticationService.isTutor() ? "tutor/classdetails"
-				: "student/classdetails";
+		return"classdetails";
 	}
 
 	public String getSessionIntervalInfo() {

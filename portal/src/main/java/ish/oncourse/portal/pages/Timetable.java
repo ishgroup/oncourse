@@ -1,15 +1,13 @@
-package ish.oncourse.portal.pages.student;
+package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.annotations.UserRole;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-@UserRole("student")
 public class Timetable {
 
 	@Inject
@@ -31,10 +29,10 @@ public class Timetable {
 	}
 	
 	public String getMonthPageName() {
-		return authService.isTutor() ? "tutor/timetable" : "student/timetable";
+		return "timetable";
 	}
 	
 	public String getListPageName() {
-		return authService.isTutor() ? "tutor/timetableList" : "student/timetableList";
+		return "timetableList";
 	}
 }

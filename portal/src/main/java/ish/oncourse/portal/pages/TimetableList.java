@@ -1,10 +1,9 @@
-package ish.oncourse.portal.pages.student;
+package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
 import java.text.SimpleDateFormat;
@@ -20,7 +19,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-@UserRole("student")
 public class TimetableList {
 
 	private static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
@@ -126,11 +124,11 @@ public class TimetableList {
 	}
 	
 	public String getMonthPageName() {
-		return authService.isTutor() ? "tutor/timetable" : "student/timetable";
+		return "timetable";
 	}
 	
 	public String getListPageName() {
-		return authService.isTutor() ? "tutor/timetableList" : "student/timetableList";
+		return "timetableList";
 	}
 	
 	public List<Tutor> getTutors() {

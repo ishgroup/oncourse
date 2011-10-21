@@ -1,4 +1,4 @@
-package ish.oncourse.portal.pages.student;
+package ish.oncourse.portal.pages;
 
 import ish.common.types.AvetmissStudentDisabilityType;
 import ish.common.types.AvetmissStudentEnglishProficiency;
@@ -9,7 +9,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ICountryService;
@@ -24,7 +23,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -36,7 +34,6 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-@UserRole("student")
 public class Profile {
 
 	private static final DateFormat FORMAT = new SimpleDateFormat("d/M/y");
@@ -57,8 +54,7 @@ public class Profile {
 	@Persist
 	private Contact contact;
 	
-	@InjectPage("student/timetable")
-    private Object timetable;
+    private Timetable timetable;
     
 	/**
 	 * tapestry services
@@ -381,7 +377,7 @@ public class Profile {
 
 	@OnEvent(component = "profileForm", value = "failure")
 	Object submitFailed() {
-		return authService.isTutor() ? "tutor/profile" : "student/profile";
+		return "profile";
 	}
 
 	@OnEvent(component = "saveProfileAction", value = "selected")
@@ -428,7 +424,7 @@ public class Profile {
 			}
 			contact.getObjectContext().commitChanges();
 			requireAdditionalInfo = true;
-			return getTimetablePage();
+			return timetable;
 		}
 	}
 
@@ -528,9 +524,5 @@ public class Profile {
 	
 	public boolean getIsStudent(){
 		return authService.getUser().getStudent() != null;
-	}
-	
-	protected Object getTimetablePage() {
-		return timetable;
 	}
 }

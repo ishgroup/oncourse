@@ -1,4 +1,0 @@
-<div id="timetableResp">
-	<div id="timetable"></div>
-	<script type="text/javascript">jQuery.calendar('${timetableMonthUrl}');</script>
-</div>

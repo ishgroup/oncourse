@@ -45,12 +45,9 @@ public class PasswordRecovery {
 	@Persist
 	private Contact contact;
 	
-	@InjectPage("student/timetable")
-    private Object timetableStudent;
-    
-    @InjectPage("tutor/timetable")
-    private Object timetableTutor;
-
+	@InjectPage
+    private Index index;
+	
 	void onActivate(String recoveryKey) {
 		Contact user = authService.findByPasswordRecoveryKey(recoveryKey);
 
@@ -96,7 +93,7 @@ public class PasswordRecovery {
 	}
 	
 	private Object getTimetablePage() {
-		return authService.isTutor() ? timetableTutor : timetableStudent;
+		return index;
 	}
 
 	public boolean getIsExpired() {

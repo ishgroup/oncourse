@@ -2,7 +2,7 @@ package ish.oncourse.portal.components;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
-import ish.oncourse.portal.pages.student.Classes;
+import ish.oncourse.portal.pages.Classes;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

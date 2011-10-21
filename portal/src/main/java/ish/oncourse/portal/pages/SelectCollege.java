@@ -32,12 +32,9 @@ public class SelectCollege {
 	@Inject
 	private ICookiesService cookieService;
 
-	@InjectPage("student/timetable")
-    private Object timetableStudent;
-    
-    @InjectPage("tutor/timetable")
-    private Object timetableTutor;
-
+	@InjectPage
+    private Index index;
+	
 	@Inject
 	private ICayenneService cayenneService;
 
@@ -86,6 +83,6 @@ public class SelectCollege {
 	}
 	
 	private Object getTimetablePage() {
-		return authService.isTutor() ? timetableTutor : timetableStudent;
+		return index;
 	}
 }

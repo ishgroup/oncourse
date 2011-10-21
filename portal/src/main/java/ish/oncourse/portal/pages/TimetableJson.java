@@ -83,8 +83,7 @@ public class TimetableJson {
 			JSONObject jsonSession = new JSONObject();
 			jsonSession.put("name", s.getCourseClass().getCourse().getName());
 			
-			String prefix = (authenticationService.isTutor()) ? "tutor" : "student";
-			String href = String.format("http://%s/%s/class/%s", request.getServerName(), prefix, s.getCourseClass().getId());
+			String href = String.format("http://%s/%s/class/%s", request.getServerName(), request.getContextPath() , s.getCourseClass().getId());
 			jsonSession.put("href", href);
 			
 			String time = String.format("%s - %s", timeFormatter.format(s.getStartDate()), timeFormatter.format(s.getEndDate()));

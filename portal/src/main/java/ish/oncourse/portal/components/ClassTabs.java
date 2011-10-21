@@ -1,7 +1,5 @@
 package ish.oncourse.portal.components;
 
-import java.util.ArrayList;
-
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
@@ -37,11 +35,11 @@ public class ClassTabs {
 	}
 
 	public String getClassInfoPageName() {
-		return authService.isTutor() ? "tutor/class" : "student/class";
+		return "class";
 	}
 
 	public String getClassDetailsPageName() {
-		return authService.isTutor() ? "tutor/classdetails" : "student/classdetails";
+		return "classdetails";
 	}
 	
 	public boolean isShowTutorTabs() {

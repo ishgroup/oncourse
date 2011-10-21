@@ -102,6 +102,6 @@ public class NextSession {
 	}
 	
 	public String getPath(){
-		return request.getServerName() + request.getContextPath() + "/" + getRole() + "/timetable";
+		return request.getServerName() + request.getContextPath() + "/timetable";
 	}
 }

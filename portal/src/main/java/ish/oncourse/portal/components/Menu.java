@@ -26,7 +26,7 @@ public class Menu {
 	}
 
 	public String getTimetablePageName() {
-		return isTutor() ? "tutor/timetable" : "student/timetable";
+		return "timetable";
 	}
 
 	public String getDiscussionsPageName() {
@@ -34,11 +34,11 @@ public class Menu {
 	}
 
 	public String getClassesPageName() {
-		return isTutor() ? "tutor/classes" : "student/classes";
+		return "classes";
 	}
 
 	public String getProfilePageName() {
-		return isTutor() ? "tutor/profile" : "student/profile";
+		return "profile";
 	}
 
 	public String getSurveysPageName() {

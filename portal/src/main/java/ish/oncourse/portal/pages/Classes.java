@@ -1,10 +1,9 @@
-package ish.oncourse.portal.pages.student;
+package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
 import java.text.DateFormat;
@@ -20,7 +19,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-@UserRole("student")
 public class Classes {
 
 	private final static Logger LOGGER = Logger.getLogger(Classes.class);
@@ -104,8 +102,7 @@ public class Classes {
 	}
 
 	public String getClassPageName() {
-		return authenticationService.isTutor() ? "tutor/class"
-				: "student/class";
+		return "class";
 	}
 
 }

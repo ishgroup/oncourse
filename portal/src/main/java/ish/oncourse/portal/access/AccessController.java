@@ -75,8 +75,11 @@ public class AccessController implements Dispatcher {
 
                     if (pageWithUserRole != null && pageWithUserRole.value() != null) {
                         Set<String> pageRoles = new HashSet<String>(Arrays.asList(pageWithUserRole.value()));
-                        canAccess = (pageRoles.contains("tutor") && user.getTutor() != null) || (pageRoles.contains("student") && 
-                        		(user.getStudent() != null || (user.getTutor() == null && user.getStudent() == null && user.getIsCompany())));
+                        if(pageRoles.size() > 0) {
+	                        canAccess = (pageRoles.contains("tutor") && user.getTutor() != null) || (pageRoles.contains("student") && user.getStudent() != null);
+                        } else {
+                        	 canAccess = user.getStudent() != null;
+                        }
                     }
 
                     if (!canAccess) {
