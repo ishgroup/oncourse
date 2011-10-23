@@ -299,14 +299,14 @@ INSERT INTO %DESTINATIONDB%_college.Preference (angelId, collegeId, created, exp
 	SELECT angelId, collegeId, created, explanation, id, modified, name, sqlType, value
 	FROM %SOURCEDB%_college.Preference WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
 
-INSERT INTO %DESTINATIONDB%_college.SessionTutor (id, angelId, collegeId, created, modified, sessionId, tutorId, type)
-	SELECT (st.sessionId + (st.tutorId << 32)), (s.angelId + (t.angelId << 32)), st.collegeId, st.created, st.modified, st.sessionId, st.tutorId, st.type
-	FROM %SOURCEDB%_college.SessionTutor as st
-	JOIN %DESTINATIONDB%_college.Session as s ON s.id = st.sessionId
-	JOIN %DESTINATIONDB%_college.Tutor as t ON t.id = st.tutorId
-	WHERE st.collegeId = @collegeId
-		AND st.sessionId IN (SELECT id FROM %DESTINATIONDB%_college.Session WHERE collegeId = @collegeId)
-		AND st.tutorId IN (SELECT id FROM %DESTINATIONDB%_college.Tutor WHERE collegeId = @collegeId);
+-- INSERT INTO %DESTINATIONDB%_college.SessionTutor (id, angelId, collegeId, created, modified, sessionId, tutorId, type)
+-- 	SELECT (st.sessionId + (st.tutorId << 32)), (s.angelId + (t.angelId << 32)), st.collegeId, st.created, st.modified, st.sessionId, st.tutorId, st.type
+-- 	FROM %SOURCEDB%_college.SessionTutor as st
+-- 	JOIN %DESTINATIONDB%_college.Session as s ON s.id = st.sessionId
+-- 	JOIN %DESTINATIONDB%_college.Tutor as t ON t.id = st.tutorId
+-- 	WHERE st.collegeId = @collegeId
+-- 		AND st.sessionId IN (SELECT id FROM %DESTINATIONDB%_college.Session WHERE collegeId = @collegeId)
+-- 		AND st.tutorId IN (SELECT id FROM %DESTINATIONDB%_college.Tutor WHERE collegeId = @collegeId);
 
 INSERT INTO %DESTINATIONDB%_college.Tag (angelId, collegeId, created, detail, detail_textile, id, isTagGroup, isWebVisible, modified, name, nodeType, parentId, shortName, weighting)
 	SELECT angelId, collegeId, created, detail, detail_textile, id, isTagGroup, isWebVisible, modified, name, nodeType, NULL, shortName, weighting
@@ -339,12 +339,15 @@ Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, me
 Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:TagRelation');
 
 
-INSERT INTO %DESTINATIONDB%_college.TutorRole (id, angelId, collegeId, courseClassId, created, confirmedDate, isConfirmed, modified, tutorId)
-	SELECT (tr.courseClassId + (tr.tutorId << 32)), (cc.angelId + (t.angelId << 32)), tr.collegeId, tr.courseClassId, tr.created, tr.dateConfirmed, tr.isConfirmed, tr.modified, tr.tutorId
-	FROM %SOURCEDB%_college.TutorRole AS tr
-	JOIN %DESTINATIONDB%_college.Tutor AS t ON tr.tutorid = t.id
-	JOIN %DESTINATIONDB%_college.CourseClass AS cc ON tr.courseclassid=cc.id
-	WHERE tr.collegeId = @collegeId;
+-- INSERT INTO %DESTINATIONDB%_college.TutorRole (id, angelId, collegeId, courseClassId, created, confirmedDate, isConfirmed, modified, tutorId)
+-- 	SELECT (tr.courseClassId + (tr.tutorId << 32)), (cc.angelId + (t.angelId << 32)), tr.collegeId, tr.courseClassId, tr.created, tr.dateConfirmed, tr.isConfirmed, tr.modified, tr.tutorId
+-- 	FROM %SOURCEDB%_college.TutorRole AS tr
+-- 	JOIN %DESTINATIONDB%_college.Tutor AS t ON tr.tutorid = t.id
+-- 	JOIN %DESTINATIONDB%_college.CourseClass AS cc ON tr.courseclassid=cc.id
+-- 	WHERE tr.collegeId = @collegeId;
+
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:CourseClassTutor');
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:TutorAttendance');
 
 INSERT INTO %DESTINATIONDB%_college.WaitingList (angelId, collegeId, courseId, created, detail, id, modified, potentialStudents, studentId)
 	SELECT wl.angelId, wl.collegeId, wl.courseId, wl.created, wl.detail, wl.id, wl.modified, wl.potentialStudents, wl.studentId
