@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>ish.oncourse.willow</groupId>
-		<version>1.24</version>
+		<version>1.25</version>
 	</parent>
 
 	<groupId>ish.oncourse.willow</groupId>
@@ -89,7 +89,7 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
-			<scope>provided</scope>
+			<!-- scope>provided</scope-->
 		</dependency>
 
 		<dependency>
