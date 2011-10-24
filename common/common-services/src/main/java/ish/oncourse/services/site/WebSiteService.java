@@ -20,7 +20,8 @@ public class WebSiteService implements IWebSiteService {
 
 	private final static Logger LOGGER = Logger.getLogger(WebSiteService.class);
 
-	private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern.compile("([a-z]+)([.].+[.]oncourse[.]net[.]au)");
+	private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
+			.compile("([a-z]+)([.].+[.]oncourse[.]net[.]au)");
 
 	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
 
@@ -50,43 +51,41 @@ public class WebSiteService implements IWebSiteService {
 		this.cayenneService = cayenneService;
 	}
 
+	private String getSiteKey() {
+		String serverName = request.getServerName().toLowerCase();
+		Matcher matcher = TECHNICAL_SITES_DOMAIN_PATTERN.matcher(serverName);
+		boolean siteKeyFound = matcher.matches();
+		String siteKey = null;
+		if (siteKeyFound) {
+			siteKey = matcher.group(1);
+		}
+		return siteKey;
+	}
+
 	public WebHostName getCurrentDomain() {
 
 		WebHostName collegeDomain = null;
 
 		String serverName = request.getServerName().toLowerCase();
-		Matcher matcher = TECHNICAL_SITES_DOMAIN_PATTERN.matcher(serverName);
-		boolean siteKeyFound = matcher.matches();
+		String siteKey = getSiteKey();
 
-		if (siteKeyFound) {
-			String siteKey = matcher.group(1);
-
-			SelectQuery query = new SelectQuery(WebSite.class, ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, siteKey));
-
-			WebSite site = (WebSite) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
-
-			if (site != null) {
-				// use fake WebHostName for the "technical" sites
-				collegeDomain = new WebHostName();
-				collegeDomain.setName(serverName);
-				collegeDomain.setWebSite(site);
-				collegeDomain.setCollege(site.getCollege());
-			}
-
+		if (siteKey != null) {
+			// there's not domain for technical site
+			return null;
 		} else {
 			SelectQuery query = new SelectQuery(WebHostName.class);
 			query.andQualifier(ExpressionFactory.matchExp(WebHostName.NAME_PROPERTY, serverName));
-
 			query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			query.setCacheGroups(COLLEGE_DOMAIN_CACHE_GROUP);
 
 			collegeDomain = (WebHostName) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
 		}
 
-		if (collegeDomain == null) {
-			collegeDomain = new WebHostName();
-			collegeDomain.setName(serverName);
-		}
+		// commented as seems to be useless - uncomment if it will cause troubles
+		// if (collegeDomain == null) {
+		// collegeDomain = new WebHostName();
+		// collegeDomain.setName(serverName);
+		// }
 
 		if (collegeDomain != null) {
 			if (LOGGER.isDebugEnabled()) {
@@ -99,10 +98,27 @@ public class WebSiteService implements IWebSiteService {
 	}
 
 	public WebSite getCurrentWebSite() {
-		return getCurrentDomain().getWebSite();
+		WebHostName currentDomain = getCurrentDomain();
+		WebSite site = null;
+		SelectQuery query = new SelectQuery(WebSite.class);
+		if (currentDomain == null) {
+			query.andQualifier(ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, getSiteKey()));
+		} else {
+			query.andQualifier(ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, currentDomain.getWebSite().getId()));
+		}
+		site = (WebSite) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
+
+		return site;
 	}
 
 	public College getCurrentCollege() {
-		return getCurrentDomain().getCollege();
+		WebSite site = getCurrentWebSite();
+		College college = null;
+		SelectQuery query = new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, site
+				.getCollege().getId()));
+
+		college = (College) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
+
+		return college;
 	}
 }

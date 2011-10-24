@@ -97,7 +97,7 @@ public class PageTypes {
 	}
 
 	public String getEditPageTypeUrl() {
-		return "http://" + webSiteService.getCurrentDomain().getName()
+		return "http://" + request.getServerName()
 				+ "/cms/site.pagetypes.editpagetype/";
 	}
 	

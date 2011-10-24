@@ -272,7 +272,7 @@ public class PageOptions {
 	}
 
 	public String getSiteUrl() {
-		return "http://" + webSiteService.getCurrentDomain().getName();
+		return "http://" + request.getServerName();
 	}
 
 	public Zone getOptionsZone() {

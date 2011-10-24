@@ -95,6 +95,6 @@ public class Blocks {
 	}
 
 	public String getEditBlockUrl() {
-		return "http://" + webSiteService.getCurrentDomain().getName() + "/cms/site.blocks.editblock/";
+		return "http://" + request.getServerName() + "/cms/site.blocks.editblock/";
 	}
 }

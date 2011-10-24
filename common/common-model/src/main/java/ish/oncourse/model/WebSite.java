@@ -42,4 +42,10 @@ public class WebSite extends _WebSite {
 		String siteKey = getSiteKey();
 		return ((siteKey != null) && !("".equals(siteKey))) ? siteKey : DEFAULT_FOLDER_NAME;
 	}
+
+
+	public Long getId() {
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
+				.getIdSnapshot().get(ID_PK_COLUMN)).longValue() : null;
+	}
 }
