@@ -580,7 +580,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tapestry5version>5.2.5</tapestry5version>
+		<tapestry5version>5.2.6</tapestry5version>
 		<servlet-api.version>3.0</servlet-api.version>
 		<cxf.version>2.4.1</cxf.version>
 		<jetty.version>7.0.1.v20091125</jetty.version>
