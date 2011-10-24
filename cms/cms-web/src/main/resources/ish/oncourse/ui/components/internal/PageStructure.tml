@@ -18,7 +18,7 @@
 		<div  t:type="ui/BodyStructure" webNodeType="webNodeType">
             <t:body/>
         </div>
-		<span t:type="ui/googleAnalytics"></span>
+		<!-- span t:type="ui/googleAnalytics"></span-->
 		<t:if t:test="loggedIn">
 			<!--[if lt IE 9]> <div class="ie" id="cmsWrapper"> <![endif]-->
 			<!--[if IE 9 ]> <div class="ie9" id="cmsWrapper"> <![endif]-->

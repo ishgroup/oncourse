@@ -85,6 +85,9 @@ public class ContentStructure {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
 		}
+		if(!request.isXHR()){
+			return null;
+		}
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(String.format("Edit region with id: %s", id));
 		}
