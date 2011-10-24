@@ -18,6 +18,10 @@ import org.apache.tapestry5.services.Request;
 
 public class WebSiteService implements IWebSiteService {
 
+	private static final String CURRENT_COLLEGE = "currentCollege";
+
+	private static final String CURRENT_WEB_SITE = "currentWebSite";
+
 	private final static Logger LOGGER = Logger.getLogger(WebSiteService.class);
 
 	private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
@@ -81,7 +85,8 @@ public class WebSiteService implements IWebSiteService {
 			collegeDomain = (WebHostName) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
 		}
 
-		// commented as seems to be useless - uncomment if it will cause troubles
+		// commented as seems to be useless - uncomment if it will cause
+		// troubles
 		// if (collegeDomain == null) {
 		// collegeDomain = new WebHostName();
 		// collegeDomain.setName(serverName);
@@ -98,6 +103,10 @@ public class WebSiteService implements IWebSiteService {
 	}
 
 	public WebSite getCurrentWebSite() {
+		WebSite currentWebSite = (WebSite) request.getAttribute(CURRENT_WEB_SITE);
+		if (currentWebSite != null) {
+			return currentWebSite;
+		}
 		WebHostName currentDomain = getCurrentDomain();
 		WebSite site = null;
 		SelectQuery query = new SelectQuery(WebSite.class);
@@ -107,18 +116,22 @@ public class WebSiteService implements IWebSiteService {
 			query.andQualifier(ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, currentDomain.getWebSite().getId()));
 		}
 		site = (WebSite) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
-
+		request.setAttribute(CURRENT_WEB_SITE, site);
 		return site;
 	}
 
 	public College getCurrentCollege() {
+		College currentCollege = (College) request.getAttribute(CURRENT_COLLEGE);
+		if (currentCollege != null) {
+			return currentCollege;
+		}
 		WebSite site = getCurrentWebSite();
 		College college = null;
 		SelectQuery query = new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, site
 				.getCollege().getId()));
 
 		college = (College) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
-
+		request.setAttribute(CURRENT_COLLEGE, college);
 		return college;
 	}
 }
