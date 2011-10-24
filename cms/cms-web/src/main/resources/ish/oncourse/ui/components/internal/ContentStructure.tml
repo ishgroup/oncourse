@@ -16,9 +16,9 @@
     <t:block id="regionContentBlock">
 		<div class="cms-edit-area">
 			
-			<a t:type="actionLink" t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">
+			<t:actionLink t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">
 				<div class="cms-edit-area-in"/>
-			</a>
+			</t:actionLink>
 			
 		</div>
 		

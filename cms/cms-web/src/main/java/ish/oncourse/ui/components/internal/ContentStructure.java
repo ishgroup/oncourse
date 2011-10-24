@@ -1,5 +1,8 @@
 package ish.oncourse.ui.components.internal;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
@@ -81,12 +84,12 @@ public class ContentStructure {
 	}
 
 	@OnEvent(component = "editRegion", value = "action")
-	public Object onActionFromEditRegion(String id) {
+	public Object onActionFromEditRegion(String id) throws Exception {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
 		}
 		if(!request.isXHR()){
-			return null;
+			return new URL(request.getServerName());
 		}
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(String.format("Edit region with id: %s", id));
