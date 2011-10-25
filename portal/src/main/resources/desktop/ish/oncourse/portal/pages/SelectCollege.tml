@@ -1,21 +1,14 @@
 <html t:type="pagestructure" title="literal:Select College"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:if test = "isDuplicateInCollege">
-	 	
-	 	<h1>You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.</h1>
 	
-		<p:else>
-			<h1>Select College</h1>
-			<t:form t:id="collegeForm">
-				<t:radiogroup t:value="selectedUser">
-					<t:loop source="users" value="user">
-						<input t:type="radio" value="user"/>${collegeName}<br/>
-					</t:loop>
-				</t:radiogroup>
-				<br/>
-				<t:submit value="Select"/>
-			</t:form>
-		</p:else>
-	</t:if>
-	
+		<h1>Select College</h1>
+		<t:form t:id="collegeForm">
+			<t:radiogroup t:value="selectedUser">
+				<t:loop source="users" value="user">
+					<input t:type="radio" value="user"/>${collegeName}<br/>
+				</t:loop>
+			</t:radiogroup>
+			<br/>
+			<t:submit value="Select"/>
+		</t:form>
 </html>

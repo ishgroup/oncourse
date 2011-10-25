@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -145,6 +146,21 @@ public class Login {
 			URL prevPage = cookieService.popPreviousPageURL();
 			return (prevPage != null) ? prevPage : index;
 		} else {
+			
+			// if in one college we have two or more contacts with identical login details
+			// (we show the error on the login screen)
+			for (Contact user : users) {
+				for (Contact userForCheck : users) {
+					if(!user.equals(userForCheck)){
+						// check if 2 users with identical login details have identical college
+						if(user.getCollege().equals(userForCheck.getCollege())){
+							loginForm.recordError("You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.");
+							return this;
+						}
+					}
+				}
+			}
+			
 			selectCollege.setTheUsers(users);
 			return selectCollege;
 		}
