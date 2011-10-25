@@ -205,7 +205,7 @@ public class Contact extends _Contact implements Queueable {
 			return "The " + getEntityName() + "'s date of birth is required.";
 		}
 		int yearsBetweenDates = TimestampUtilities.yearsBetweenDates(birthDate, new Date());
-		if (yearsBetweenDates < 17 || yearsBetweenDates > 100) {
+		if (yearsBetweenDates < 0) {
 
 			return "Please enter a valid date of birth";
 		}
