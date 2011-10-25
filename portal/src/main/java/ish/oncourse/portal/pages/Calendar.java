@@ -12,7 +12,10 @@ import java.util.regex.Pattern;
 
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Dur;
+import net.fortuna.ical4j.model.TimeZoneRegistry;
+import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.ProdId;
@@ -102,14 +105,23 @@ public class Calendar {
 						event.getProperties().add(new Description(sessionInformation.toString()));
 						
 						UidGenerator ug = new UidGenerator("uidGen");
-						Uid uid = ug.generateUid();
+						Uid uid = ug.generateUid();          
 						event.getProperties().add(uid);
 
 						events.add(event);
 
 					}
 					
-					icsCalendar.getComponents().addAll(events);
+					if (events.size() > 0) {
+						icsCalendar.getComponents().addAll(events);
+						TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+						VTimeZone tz = registry.getTimeZone(sessions.get(0).getCollege().getTimeZone()).getVTimeZone();
+						icsCalendar.getComponents().add(tz);
+					} else {
+						TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+						VTimeZone tz = registry.getTimeZone(contact.getCollege().getTimeZone()).getVTimeZone();
+						icsCalendar.getComponents().add(tz);
+					}
 
 					CalendarOutputter iCalOutputter = new CalendarOutputter();
 					iCalOutputter.output(icsCalendar, iCalWriter);
