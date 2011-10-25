@@ -82,7 +82,6 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 			for (ReplicatedRecord r : replicatedRecords) {
 				if (ReplicationUtils.getEntityName(Enrolment.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
-					SelectQuery q = new SelectQuery(Enrolment.class);
 					Enrolment enrolment = (Enrolment) newContext.localObject(
 							enrolService.loadById(r.getStub().getWillowId()).getObjectId(), null);
 					enrolments.add(enrolment);
@@ -142,6 +141,10 @@ public class PaymentServiceImpl implements PaymentPortType {
 			List<ReplicatedRecord> replicatedRecords = groupProcessor.processGroup(refundGroup);
 			ReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
 			PaymentOut paymentOut = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
+			if (paymentOut == null) {
+				throw new Exception("The paymentOut record with angelId \"" + paymentOutRecord.getStub().getAngelId()
+						+ "\" wasn't saved during the refund group prcessing.");
+			}
 			paymentGatewayService.performGatewayOperation(paymentOut);
 
 			TransactionGroup group = new TransactionGroup();
