@@ -1,5 +1,6 @@
 package ish.oncourse.portal.pages;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -7,9 +8,10 @@ import ish.oncourse.services.cookies.ICookiesService;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.cayenne.Cayenne;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -147,21 +149,27 @@ public class Login {
 			return (prevPage != null) ? prevPage : index;
 		} else {
 			
+			Set<College> colleges = new HashSet<College>();
+			Set<College> collegesWithDuplicates = new HashSet<College>();;
+			
 			// if in one college we have two or more contacts with identical login details
 			// (we show the error on the login screen)
 			for (Contact user : users) {
-				for (Contact userForCheck : users) {
-					if(!user.equals(userForCheck)){
-						// check if 2 users with identical login details have identical college
-						if(user.getCollege().equals(userForCheck.getCollege())){
-							loginForm.recordError("You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.");
-							return this;
-						}
-					}
+				if ( !colleges.add(user.getCollege()) ) {
+				    // this college has already been added to the list, therefore there must be two or more duplicate contacts
+				    // we cannot determine which one is correct, so don't let either of them in
+					collegesWithDuplicates.add(user.getCollege());
 				}
 			}
 			
-			selectCollege.setTheUsers(users);
+			colleges.removeAll(collegesWithDuplicates);
+			
+			if (colleges.size() < 1 ) {
+				loginForm.recordError("You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.");
+				return this;
+			} 
+		
+			selectCollege.setTheUsers(users, collegesWithDuplicates);
 			return selectCollege;
 		}
 	}
@@ -183,7 +191,27 @@ public class Login {
 			return forgotPassword;
 		} else {
 			selectCollege.setPasswordRecover(true);
-			selectCollege.setTheUsers(users);
+			
+			Set<College> colleges = new HashSet<College>();
+			Set<College> collegesWithDuplicates = new HashSet<College>();;
+			
+			// if in one college we have two or more contacts with identical login details
+			// (we show the error on the login screen)
+			for (Contact user : users) {
+				if ( !colleges.add(user.getCollege()) ) {
+				    // this college has already been added to the list, therefore there must be two or more duplicate contacts
+				    // we cannot determine which one is correct, so don't let either of them in
+					collegesWithDuplicates.add(user.getCollege());
+				} 
+			}
+			
+			colleges.removeAll(collegesWithDuplicates);
+			
+			if (colleges.size() < 1 ) {
+				loginForm.recordError("You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.");
+				return this;
+			} 
+			selectCollege.setTheUsers(users, collegesWithDuplicates);
 			return selectCollege;
 		}
 	}
