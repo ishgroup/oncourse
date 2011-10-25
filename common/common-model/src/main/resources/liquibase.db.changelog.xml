@@ -350,4 +350,10 @@
 		<sql>update College set timeZone='Australia/Perth' where id=3219</sql>
 	</changeSet>
 	
+	<changeSet id="27" author="anton" context="production" runOnChange="true">
+		<!-- setting default value to IN_TRANSACTION -->
+		<addNotNullConstraint tableName="PaymentOut" columnDataType="INT(11)" columnName="status" defaultNullValue="2" />
+		<addNotNullConstraint tableName="PaymentOut" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />
+	</changeSet>
+	
 </databaseChangeLog>
