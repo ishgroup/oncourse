@@ -335,8 +335,6 @@
 		<addColumn tableName="College">
 			<column name="timeZone" type="varchar(64)"/>
 		</addColumn>
-		<addNotNullConstraint tableName="College" columnDataType="varchar(64)" columnName="timeZone" defaultNullValue="Australia/Sydney" />
-		<sql>update College set timeZone='Australia/Perth' where id=3219</sql>
 	</changeSet>
 	
 	<changeSet id="25" author="olga" context="production" runOnChange="true">
@@ -345,6 +343,11 @@
 			<where>source IS NULL</where>
 		</update>
 		<modifyDataType tableName="PaymentIn" columnName="source" newDataType="VARCHAR(1) NOT NULL"/>
+	</changeSet>
+	
+	<changeSet id="26" author="xenia" context="production" runOnChange="true">
+		<addNotNullConstraint tableName="College" columnDataType="varchar(64)" columnName="timeZone" defaultNullValue="Australia/Sydney" />
+		<sql>update College set timeZone='Australia/Perth' where id=3219</sql>
 	</changeSet>
 	
 </databaseChangeLog>
