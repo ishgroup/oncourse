@@ -4,6 +4,7 @@ import ish.math.MoneyType;
 import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.lifecycle.BinaryInfoRelationListener;
 import ish.oncourse.services.lifecycle.QueueableLifecycleListener;
+import ish.oncourse.services.lifecycle.QueuedTransactionListener;
 import ish.oncourse.services.lifecycle.TaggableListener;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -39,6 +40,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addDefaultListener(new QueueableLifecycleListener(this));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new BinaryInfoRelationListener(webSiteService));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(webSiteService));
+		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new QueuedTransactionListener(this));
 		
 		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());

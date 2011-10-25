@@ -20,18 +20,15 @@ public class PaymentOutUpdater extends AbstractWillowUpdater<PaymentOutStub, Pay
 		entity.setDateBanked(stub.getDateBanked());
 		entity.setDatePaid(stub.getDatePaid());
 		
+		if (stub.getSource() != null) {
+			PaymentSource source = PaymentSource.getSourceForValue(stub.getSource());
+			if (source != null) {
+				entity.setSource(source);
+			}
+		}
+		
 		if (entity.getSource() == null) {
-			
-			if (stub.getSource() != null) {
-				PaymentSource source = PaymentSource.getSourceForValue(stub.getSource());
-				if (source != null) {
-					entity.setSource(source);
-				}
-			}
-			
-			if (entity.getSource() == null) {
-				entity.setSource(PaymentSource.SOURCE_ONCOURSE);
-			}
+			entity.setSource(PaymentSource.SOURCE_ONCOURSE);
 		}
 	}
 }

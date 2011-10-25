@@ -114,8 +114,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 		try {
 			
-			queueService.cleanEmptyTransactions();
-			
 			int number = 0;
 			int from = 0;
 			

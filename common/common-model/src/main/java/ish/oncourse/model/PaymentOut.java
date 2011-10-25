@@ -18,6 +18,18 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
 
+	@Override
+	protected void onPrePersist() {
+		
+		if (getStatus() == null) {
+			setStatus(PaymentStatus.IN_TRANSACTION);
+		}
+		
+		if (getSource() == null) {
+			setSource(PaymentSource.SOURCE_ONCOURSE);
+		}
+	}
+
 	public boolean validateBeforeSend() {
 		// TotalAmount - mandatory field
 		if (this.getTotalAmount() == null) {

@@ -1,0 +1,47 @@
+package ish.oncourse.services.lifecycle;
+
+import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.QueuedTransaction;
+import ish.oncourse.services.persistence.ICayenneService;
+
+import java.util.List;
+
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.annotation.PostUpdate;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+
+/**
+ * Checks if current transaction is empty and removes if needed.
+ * 
+ * @author anton
+ * 
+ */
+public class QueuedTransactionListener {
+
+	/**
+	 * Cayenne service.
+	 */
+	private ICayenneService cayenneService;
+
+	public QueuedTransactionListener(ICayenneService cayenneService) {
+		super();
+		this.cayenneService = cayenneService;
+	}
+
+	@PostUpdate(value = QueuedTransaction.class)
+	public void postUpdate(QueuedTransaction t) {
+		
+		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
+
+		SelectQuery q = new SelectQuery(QueuedRecord.class);
+		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.QUEUED_TRANSACTION_PROPERTY, t));
+
+		List<QueuedRecord> list = objectContext.performQuery(q);
+
+		if (list.isEmpty()) {
+			t.getObjectContext().deleteObject(t);
+			t.getObjectContext().commitChanges();
+		}
+	}
+}

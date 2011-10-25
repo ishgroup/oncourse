@@ -145,4 +145,6 @@ public abstract class _PaymentOut extends CayenneDataObject {
     }
 
 
+    protected abstract void onPrePersist();
+
 }
