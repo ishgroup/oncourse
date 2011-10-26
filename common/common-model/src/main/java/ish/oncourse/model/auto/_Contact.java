@@ -335,4 +335,6 @@ public abstract class _Contact extends CayenneDataObject {
 
     protected abstract void onPostAdd();
 
+    protected abstract void onPrePersist();
+
 }

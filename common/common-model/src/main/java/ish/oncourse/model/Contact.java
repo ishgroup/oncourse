@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._Contact;
 import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.TimestampUtilities;
+import ish.util.SecurityUtil;
 
 import java.util.Date;
 
@@ -244,6 +245,18 @@ public class Contact extends _Contact implements Queueable {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see ish.oncourse.model.auto._Contact#onPrePersist()
+	 */
+	@Override
+	protected void onPrePersist() {
+		onPostAdd();
+		
+		if (getUniqueCode() == null) {
+			setUniqueCode(SecurityUtil.generateRandomPassword(16));
+		}
+	}
+
 	public void setNewPassword(String newPassword) {
 		setPassword(newPassword);
 		setPasswordRecoverExpire(null);

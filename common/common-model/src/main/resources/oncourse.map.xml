@@ -900,6 +900,7 @@
 		<obj-attribute name="taxFileNumber" type="java.lang.String" db-attribute-path="taxFileNumber"/>
 		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="uniqueCode"/>
 		<post-add method-name="onPostAdd"/>
+		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="Course" className="ish.oncourse.model.Course" dbEntityName="Course">
 		<obj-attribute name="allowWaitingList" type="java.lang.Boolean" db-attribute-path="allowWaitingList"/>
