@@ -223,6 +223,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * enrolment ( {@link EnrolmentStatus#FAILED} ). Creates the refund invoice.
 	 */
 	public PaymentIn abandonPayment() {
+		
 		switch (getStatus()) {
 		case FAILED:
 		case FAILED_CARD_DECLINED:
@@ -232,30 +233,55 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			setStatus(PaymentStatus.FAILED);
 		}
 
-		PaymentIn internalPayment = makeCopy(true);
-		internalPayment.setType(PaymentType.INTERNAL);
-
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
-			invoice.setStatus(InvoiceStatus.FAILED);
-
-			Invoice refundInvoice = invoice.createRefundInvoice();
-
-			LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(), invoice.getId()));
-
-			PaymentInLine refundPL = getObjectContext().newObject(PaymentInLine.class);
-			refundPL.setAmount(BigDecimal.ZERO.subtract(pl.getAmount()));
-			refundPL.setCollege(getCollege());
-			refundPL.setInvoice(refundInvoice);
-			refundPL.setPaymentIn(internalPayment);
-
-			for (InvoiceLine il : invoice.getInvoiceLines()) {
-				Enrolment enrol = il.getEnrolment();
-				if (enrol != null) {
-					enrol.setStatus(EnrolmentStatus.FAILED);
+			
+			if (invoice.getStatus() != InvoiceStatus.FAILED) {
+				invoice.setStatus(InvoiceStatus.FAILED);
+				
+				for (InvoiceLine il : invoice.getInvoiceLines()) {
+					Enrolment enrol = il.getEnrolment();
+					if (enrol != null) {
+						enrol.setStatus(EnrolmentStatus.FAILED);
+					}
 				}
 			}
 		}
+		
+		PaymentIn internalPayment = makeCopy(true);
+		internalPayment.setType(PaymentType.INTERNAL);
+		
+		Invoice refundInvoice = getObjectContext().newObject(Invoice.class);
+		refundInvoice.setCollege(getCollege());
+		refundInvoice.setDescription(String.format("Refund for paymentIn:%s", getId()));
+		refundInvoice.setInvoiceDate(new Date());
+		refundInvoice.setDateDue(new Date());
+		refundInvoice.setContact(getContact());
+		refundInvoice.setTotalExGst(BigDecimal.ZERO.subtract(getAmount()));
+		refundInvoice.setTotalGst(BigDecimal.ZERO.subtract(getAmount()));
+		refundInvoice.setStatus(InvoiceStatus.SUCCESS);
+		refundInvoice.setAmountOwing(BigDecimal.ZERO.subtract(getAmount()));
+		refundInvoice.setSource(PaymentSource.SOURCE_WEB);
+		
+		InvoiceLine refundInvoiceLine = getObjectContext().newObject(InvoiceLine.class);
+		refundInvoiceLine.setInvoice(refundInvoice);
+		refundInvoiceLine.setCollege(getCollege());
+		refundInvoiceLine.setDescription(String.format("Refund for paymentIn:%s", getId())); 
+		refundInvoiceLine.setInvoice(refundInvoice);
+		refundInvoiceLine.setSortOrder(1);
+		refundInvoiceLine.setTitle(String.format("Refund for paymentIn:%s", getId()));
+		refundInvoiceLine.setQuantity(new BigDecimal("1.00"));
+		
+		Money amount = new Money(getAmount());
+		refundInvoiceLine.setTaxEach(Money.ZERO.subtract(amount));
+		refundInvoiceLine.setPriceEachExTax(Money.ZERO.subtract(amount));
+		refundInvoiceLine.setDiscountEachExTax(Money.ZERO.subtract(amount));
+		
+		PaymentInLine refundPL = getObjectContext().newObject(PaymentInLine.class);
+		refundPL.setAmount(BigDecimal.ZERO.subtract(getAmount()));
+		refundPL.setCollege(getCollege());
+		refundPL.setInvoice(refundInvoice);
+		refundPL.setPaymentIn(internalPayment);
 
 		return internalPayment;
 	}
