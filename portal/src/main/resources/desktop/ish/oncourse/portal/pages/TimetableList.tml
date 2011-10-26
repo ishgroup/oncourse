@@ -2,8 +2,8 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_timetable">
 	
 	<div class="tabs">
-		<t:pagelink id="timetableMonth" page="prop:monthPageName"><img src="img/tabs-arrow.gif" alt="" /><span>Month</span></t:pagelink>
-		<t:pagelink id="timetableList" page="prop:listPageName" class="act"><img src="img/tabs-arrow.gif" alt="" /><span>List</span></t:pagelink>
+		<t:pagelink id="timetableMonth" page="prop:monthPageName"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Month</span></t:pagelink>
+		<t:pagelink id="timetableList" page="prop:listPageName" class="act"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>List</span></t:pagelink>
 	</div>
 	
 	<div class="timetableList" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" >

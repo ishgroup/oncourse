@@ -3,7 +3,7 @@
 	<div class="tabs">
 
 		<t:loop source="tabs" value="tabs">
-			<a href="" class="${activeitem}"><img src="/img/tabs-arrow.gif" alt=""/>
+			<a href="" class="${activeitem}"><img src="${contextPath}/img/tabs-arrow.gif" alt=""/>
 				<span>${tabs.name}</span>
 			</a>
 		</t:loop>

@@ -10,6 +10,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class Materials {
 
@@ -25,6 +26,9 @@ public class Materials {
 
 	@Property
 	private BinaryInfo material;
+	
+	@Inject
+	private Request request;
 
 	@SetupRender
 	boolean setupRender() {
@@ -36,4 +40,7 @@ public class Materials {
 		return true;
 	}
 
+	public String getContextPath() {
+		return request.getContextPath();
+	}
 }

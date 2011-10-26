@@ -4,8 +4,8 @@
 <h1>Timetable</h1>
 
 <div class="tabs">
-	<t:pagelink id="timetableMonth" page="prop:monthPageName" class="act"><img src="../img/tabs-arrow.gif" alt="" /><span>Month</span></t:pagelink>
-	<t:pagelink id="timetableList" page="prop:listPageName"><img src="../img/tabs-arrow.gif" alt="" /><span>List</span></t:pagelink>
+	<t:pagelink id="timetableMonth" page="prop:monthPageName" class="act"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Month</span></t:pagelink>
+	<t:pagelink id="timetableList" page="prop:listPageName"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>List</span></t:pagelink>
 </div>
 
 <div id="timetable"></div>

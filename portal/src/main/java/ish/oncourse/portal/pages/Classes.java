@@ -18,6 +18,7 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class Classes {
 
@@ -41,6 +42,13 @@ public class Classes {
 
 	@Inject
 	private IAuthenticationService authenticationService;
+	
+	@Inject
+	private Request request;
+	
+	public String getContextPath() {
+		return request.getContextPath();
+	}
 
 	@SetupRender
 	void beforeRender() {

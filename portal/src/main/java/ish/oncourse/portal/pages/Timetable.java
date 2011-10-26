@@ -25,11 +25,15 @@ public class Timetable {
 	@SetupRender
 	void setupRender() {
 		this.currentUser = authService.getUser();
-		this.timetableMonthUrl = request.getContextPath() + "/timetableJson";
+		this.timetableMonthUrl = getContextPath() + "/timetableJson";
 	}
 	
 	public String getMonthPageName() {
 		return "timetable";
+	}
+	
+	public String getContextPath() {
+		return request.getContextPath();
 	}
 	
 	public String getListPageName() {

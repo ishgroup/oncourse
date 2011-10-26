@@ -18,6 +18,8 @@ import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class ClassWeek {
 
@@ -32,6 +34,13 @@ public class ClassWeek {
 	private String day;
 
 	private List<String> daysOfWeek;
+	
+	@Inject
+	private Request request;
+	
+	public String getContextPath() {
+		return request.getContextPath();
+	}
 	
 	public List<String> getDaysOfWeek() {
 		return daysOfWeek;

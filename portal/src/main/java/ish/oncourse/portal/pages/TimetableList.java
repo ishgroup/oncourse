@@ -18,6 +18,7 @@ import java.util.Set;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class TimetableList {
 
@@ -50,6 +51,13 @@ public class TimetableList {
 	private SimpleDateFormat dateFormatter;
 	
 	private SimpleDateFormat timeFormatter;
+	
+	@Inject
+	private Request request;
+	
+	public String getContextPath() {
+		return request.getContextPath();
+	}
 
 	@SetupRender
 	void setupRender() {

@@ -11,6 +11,7 @@ import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 public class ClassTabs {
@@ -29,6 +30,13 @@ public class ClassTabs {
 	@Property
 	private IAuthenticationService authService;
 
+	@Inject
+	private Request request;
+	
+	public String getContextPath() {
+		return request.getContextPath();
+	}
+	
 	@AfterRender
 	void afterRender() {
 		javaScriptSupport.addScript("jQuery('#%s').addClass('act');", selected);

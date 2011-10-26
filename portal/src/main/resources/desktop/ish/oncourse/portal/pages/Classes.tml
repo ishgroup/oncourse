@@ -7,7 +7,7 @@
 		<t:loop  source="classes" value="courseClass">
 	          	<tr>
 
-	              <td width="64"><div class="book"><img src="img/book.png" alt="" /></div></td>
+	              <td width="64"><div class="book"><img src="${contextPath}/img/book.png" alt="" /></div></td>
 	
 	              <td>
 	            	
