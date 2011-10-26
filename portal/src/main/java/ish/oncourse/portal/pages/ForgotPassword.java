@@ -62,7 +62,7 @@ public class ForgotPassword {
 
 			ctx.commitChanges();
 
-			String recoveryLink = String.format("http://%s/passwordrecovery/%s", request.getServerName(), passwordRecoverKey);
+			String recoveryLink = String.format("https://%s/passwordrecovery/%s", request.getServerName() + request.getContextPath(), passwordRecoverKey);
 
 			EmailBuilder email = new EmailBuilder();
 			
