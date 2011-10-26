@@ -39,7 +39,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 */
 	@Override
 	protected void validateForSave(ValidationResult result) {
-		
+
 		super.validateForSave(result);
 
 		// Amount - mandatory field
@@ -49,7 +49,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		}
 
 		Money amount = new Money(getAmount());
-		
+
 		if (amount.compareTo(Money.ZERO) < 0) {
 			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY,
 					"The payment-in must have non negative amount."));
@@ -237,28 +237,22 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
-			
-			//we do not need to refund, for invoices where total less than ZERO 
-			if (invoice.getStatus() != InvoiceStatus.FAILED && BigDecimal.ZERO.compareTo(invoice.getTotalExGst()) < 0) {
+			invoice.setStatus(InvoiceStatus.FAILED);
 
-				Invoice refundInvoice = invoice.createRefundInvoice();
+			Invoice refundInvoice = invoice.createRefundInvoice();
 
-				LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
-						invoice.getId()));
+			LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(), invoice.getId()));
 
-				PaymentInLine refundPL = getObjectContext().newObject(PaymentInLine.class);
-				refundPL.setAmount(BigDecimal.ZERO.subtract(pl.getAmount()));
-				refundPL.setCollege(getCollege());
-				refundPL.setInvoice(refundInvoice);
-				refundPL.setPaymentIn(internalPayment);
+			PaymentInLine refundPL = getObjectContext().newObject(PaymentInLine.class);
+			refundPL.setAmount(BigDecimal.ZERO.subtract(pl.getAmount()));
+			refundPL.setCollege(getCollege());
+			refundPL.setInvoice(refundInvoice);
+			refundPL.setPaymentIn(internalPayment);
 
-				invoice.setStatus(InvoiceStatus.FAILED);
-
-				for (InvoiceLine il : invoice.getInvoiceLines()) {
-					Enrolment enrol = il.getEnrolment();
-					if (enrol != null) {
-						enrol.setStatus(EnrolmentStatus.FAILED);
-					}
+			for (InvoiceLine il : invoice.getInvoiceLines()) {
+				Enrolment enrol = il.getEnrolment();
+				if (enrol != null) {
+					enrol.setStatus(EnrolmentStatus.FAILED);
 				}
 			}
 		}
