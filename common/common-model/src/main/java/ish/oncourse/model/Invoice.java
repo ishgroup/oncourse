@@ -102,6 +102,10 @@ public class Invoice extends _Invoice implements Queueable {
 	@Override
 	protected void onPrePersist() {
 		updateAmountOwing();
+		
+		if (getStatus() == null) {
+			setStatus(InvoiceStatus.PENDING);
+		}
 	}
 
 	@Override

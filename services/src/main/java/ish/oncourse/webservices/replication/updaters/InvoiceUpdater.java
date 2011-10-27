@@ -3,7 +3,6 @@ package ish.oncourse.webservices.replication.updaters;
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
 
 public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> {
@@ -29,15 +28,6 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		entity.setShippingAddress(stub.getShippingAddress());
 
 		entity.setTotalExGst(stub.getTotalExGst());
-
-		if (stub.getStatus() != null) {
-			entity.setStatus(InvoiceStatus.getSourceForValue(stub.getStatus()));
-		}
-		else {
-			if (entity.getStatus() == null) {
-				entity.setStatus(InvoiceStatus.PENDING);
-			}
-		}
 
 		if (stub.getSource() != null) {
 			entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));

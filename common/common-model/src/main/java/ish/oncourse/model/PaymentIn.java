@@ -223,7 +223,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * enrolment ( {@link EnrolmentStatus#FAILED} ). Creates the refund invoice.
 	 */
 	public PaymentIn abandonPayment() {
-		
+
 		switch (getStatus()) {
 		case FAILED:
 		case FAILED_CARD_DECLINED:
@@ -233,57 +233,80 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			setStatus(PaymentStatus.FAILED);
 		}
 
-		for (PaymentInLine pl : getPaymentInLines()) {
-			Invoice invoice = pl.getInvoice();
-			
-			if (invoice.getStatus() != InvoiceStatus.FAILED) {
-				invoice.setStatus(InvoiceStatus.FAILED);
+		if (!getPaymentInLines().isEmpty()) {
+
+			// Pick up the newest invoice for refund.
+			PaymentInLine paymentInLineToRefund = null;
+			Invoice invoiceToRefund = null;
+
+			for (PaymentInLine line : getPaymentInLines()) {
+				Invoice invoice = line.getInvoice();
+
+				if (invoice.getStatus() != InvoiceStatus.FAILED && invoice.getStatus() != InvoiceStatus.SUCCESS) {
+					invoice.setStatus(InvoiceStatus.FAILED);
+
+					if (invoiceToRefund == null) {
+						paymentInLineToRefund = line;
+						invoiceToRefund = invoice;
+					} else {
+						//For angel payments use invoiceNumber to determine the last invoice,
+						//since createdDate is very often the same accross several invoices
+						if (getSource() == PaymentSource.SOURCE_ONCOURSE && invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber()) {
+							paymentInLineToRefund = line;
+							invoiceToRefund = invoice;
+						} else {
+							//User id to determine last invoice for willow payments.
+							if (invoice.getId() > invoiceToRefund.getId()) {
+								paymentInLineToRefund = line;
+								invoiceToRefund = invoice;
+							}
+						}
+					}
+				}
+			}
+
+			if (invoiceToRefund != null) {
+				// Creating internal payment, with zero amount which will be
+				// linked to invoiceToRefund, and refundInvoice.
+				PaymentIn internalPayment = makeShallowCopy();
+				internalPayment.setAmount(BigDecimal.ZERO);
+				internalPayment.setType(PaymentType.INTERNAL);
+				internalPayment.setStatus(PaymentStatus.SUCCESS);
+
+				invoiceToRefund.setStatus(InvoiceStatus.FAILED);
+
+				// Creating refund invoice
+				Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
+				LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
+						invoiceToRefund.getId()));
+
+				PaymentInLine refundPL = getObjectContext().newObject(PaymentInLine.class);
+				refundPL.setAmount(BigDecimal.ZERO.subtract(paymentInLineToRefund.getAmount()));
+				refundPL.setCollege(getCollege());
+				refundPL.setInvoice(refundInvoice);
+				refundPL.setPaymentIn(internalPayment);
 				
-				for (InvoiceLine il : invoice.getInvoiceLines()) {
+				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
+				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
+				
+				// Fail enrolments on invoiceToRefund
+				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
 						enrol.setStatus(EnrolmentStatus.FAILED);
 					}
 				}
+				
+				return internalPayment;
 			}
+			else {
+				LOG.error(String.format("Can not find invoice to refund on paymentIn:%s.", getId()));
+			}
+		} else {
+			LOG.error(String.format("Can not abandon paymentIn:%s, since it doesn't have paymentInLines.", getId()));
 		}
-		
-		PaymentIn internalPayment = makeCopy(true);
-		internalPayment.setType(PaymentType.INTERNAL);
-		
-		Invoice refundInvoice = getObjectContext().newObject(Invoice.class);
-		refundInvoice.setCollege(getCollege());
-		refundInvoice.setDescription(String.format("Refund for paymentIn:%s", getId()));
-		refundInvoice.setInvoiceDate(new Date());
-		refundInvoice.setDateDue(new Date());
-		refundInvoice.setContact(getContact());
-		refundInvoice.setTotalExGst(BigDecimal.ZERO.subtract(getAmount()));
-		refundInvoice.setTotalGst(BigDecimal.ZERO.subtract(getAmount()));
-		refundInvoice.setStatus(InvoiceStatus.SUCCESS);
-		refundInvoice.setAmountOwing(BigDecimal.ZERO.subtract(getAmount()));
-		refundInvoice.setSource(PaymentSource.SOURCE_WEB);
-		
-		InvoiceLine refundInvoiceLine = getObjectContext().newObject(InvoiceLine.class);
-		refundInvoiceLine.setInvoice(refundInvoice);
-		refundInvoiceLine.setCollege(getCollege());
-		refundInvoiceLine.setDescription(String.format("Refund for paymentIn:%s", getId())); 
-		refundInvoiceLine.setInvoice(refundInvoice);
-		refundInvoiceLine.setSortOrder(1);
-		refundInvoiceLine.setTitle(String.format("Refund for paymentIn:%s", getId()));
-		refundInvoiceLine.setQuantity(new BigDecimal("1.00"));
-		
-		Money amount = new Money(getAmount());
-		refundInvoiceLine.setTaxEach(Money.ZERO.subtract(amount));
-		refundInvoiceLine.setPriceEachExTax(Money.ZERO.subtract(amount));
-		refundInvoiceLine.setDiscountEachExTax(Money.ZERO.subtract(amount));
-		
-		PaymentInLine refundPL = getObjectContext().newObject(PaymentInLine.class);
-		refundPL.setAmount(BigDecimal.ZERO.subtract(getAmount()));
-		refundPL.setCollege(getCollege());
-		refundPL.setInvoice(refundInvoice);
-		refundPL.setPaymentIn(internalPayment);
 
-		return internalPayment;
+		return null;
 	}
 
 	/**
@@ -343,46 +366,42 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	}
 
 	/**
-	 * Makes a copy of current paymentIn object.
+	 * Makes shallow copy of current paymentIn object.
 	 * 
-	 * @return payment in.
+	 * @return
 	 */
-	public PaymentIn makeCopy(boolean isInternal) {
+	public PaymentIn makeShallowCopy() {
 
 		PaymentIn paymentIn = getObjectContext().newObject(PaymentIn.class);
-
-		if (isInternal) {
-			paymentIn.setAmount(BigDecimal.ZERO);
-		} else {
-			paymentIn.setAmount(getAmount());
-		}
+		paymentIn.setAmount(getAmount());
 
 		paymentIn.setCollege(getCollege());
 		paymentIn.setContact(getContact());
-		paymentIn.setSessionId(getSessionId());
 
 		Date today = new Date();
 		paymentIn.setCreated(today);
 		paymentIn.setModified(today);
 
-		if (!isInternal) {
-			paymentIn.setSessionId(getSessionId());
-		}
 		paymentIn.setSource(getSource());
 		paymentIn.setStudent(getStudent());
 
-		for (PaymentInLine line : getPaymentInLines()) {
-			PaymentInLine pl = getObjectContext().newObject(PaymentInLine.class);
-			pl.setAmount(line.getAmount());
-			pl.setCollege(line.getCollege());
-			pl.setCreated(today);
-			pl.setInvoice(line.getInvoice());
-			pl.setModified(today);
-			pl.setPaymentIn(paymentIn);
-		}
+		return paymentIn;
+	}
 
-		if (isInternal) {
-			paymentIn.setStatus(PaymentStatus.SUCCESS);
+	/**
+	 * Makes a copy of current paymentIn object.
+	 * 
+	 * @return payment in.
+	 */
+	public PaymentIn makeCopy() {
+
+		PaymentIn paymentIn = makeShallowCopy();
+		paymentIn.setSessionId(getSessionId());
+
+		for (PaymentInLine line : getPaymentInLines()) {
+			PaymentInLine pl = line.makeCopy();
+			pl.setPaymentIn(paymentIn);
+			pl.setInvoice(line.getInvoice());
 		}
 
 		return paymentIn;
