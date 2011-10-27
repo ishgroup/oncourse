@@ -16,13 +16,13 @@
 			<tbody>
 				<t:loop source="colleges" value="college" volatile="true">
 						<tr>
-							<td colspan="5"><h3><a t:type="pagelink" t:page="college/edit" t:context="college.id">${college.name}<small>${college.billingCode}:${college.id}</small></a></h3></td>
+							<td colspan="5"><h3><a t:type="pagelink" t:page="college/edit" t:context="college.id">${college.name} <small>${college.billingCode}:${college.id}</small></a></h3></td>
 						</tr>
 						<tr>
 							<td>Support (renew every ${supportRenew})</td>
 							<td></td>
 							<td>${supportFree}</td>
-							<td>support ${support}<small>ex GST</small></td>
+							<td>${support} <small>ex GST</small></td>
 							<td>
 								<t:if test="supportRenewMonth">
 									${support} <small>ex GST</small>
@@ -34,7 +34,7 @@
 							<td>Web hosting (renew every ${webHostingRenew})</td>
 							<td></td>
 							<td>${webHostingFree}</td>
-							<td>${hosting}<small>ex GST</small></td>
+							<td>${hosting} <small>ex GST</small></td>
 							<td>
 								<t:if test="webHostingRenewMonth">
 									${hosting} <small>ex GST</small>
@@ -72,7 +72,15 @@
 								<td>${ecommerceTotal} <small>ex GST</small></td>
 							</tr>
 							<p:else>
-							
+								<t:loop source="tasmaniaFees.keySet()" value="currentKey">
+									<tr>
+										<td>eCommerce ${currentKey}%</td>
+										<td>${tasmaniaFee} <small>inc GST</small></td>
+										<td>${ecommerceFree}</td>
+										<td>${currentKey}%</td>
+										<td>${tasmaniaTotal}</td>
+									</tr>
+								</t:loop>
 							</p:else>
 						</t:if>
 				</t:loop>

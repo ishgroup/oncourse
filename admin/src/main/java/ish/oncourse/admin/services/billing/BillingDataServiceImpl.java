@@ -7,7 +7,12 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -130,12 +135,58 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			data.get(collegeId).put("ccWebValue", ((BigDecimal) r.get("value")).add((BigDecimal) r.get("valueGST")));
 		}
 
+		// tasmania ecommerce
+		Long tasmaniaId = new Long(15);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(to);
+
+		if (cal.get(Calendar.MONTH) == 1) {
+			data.get(tasmaniaId).put("tasmaniaYearToDate", new BigDecimal(0.0));
+		}
+		else {
+			Map<String, Object> tasmaniaParams = new HashMap<String, Object>();
+		
+			cal.setTime(from);
+			cal.set(Calendar.DAY_OF_YEAR, 1);
+			tasmaniaParams.put("from", cal.getTime());
+			cal.setTime(to);
+			cal.add(Calendar.MONTH, -1);
+			tasmaniaParams.put("to", cal.getTime());
+		
+			sql = "SELECT SUM(i.totalExGst) as value, SUM(i.totalGst) as valueGST FROM PaymentIn As p inner join PaymentInLine pl on pl.paymentInId = p.id inner join Invoice i on pl.invoiceId=i.id WHERE p.created >= #bind($from) AND p.created <= #bind($to) AND p.collegeId = 15 AND p.source = 'W' AND p.status = 3";
+			query = new SQLTemplate(PaymentIn.class, sql);
+			query.setParameters(tasmaniaParams);
+			query.setFetchingDataRows(true);
+		
+			result = cayenneService.sharedContext().performQuery(query);
+		
+			BigDecimal value = (BigDecimal) result.get(0).get("value");
+			BigDecimal valueGST = (BigDecimal) result.get(0).get("valueGST");
+		
+			if (value != null && valueGST != null) {
+				data.get(tasmaniaId).put("tasmaniaYearToDate", value.add(valueGST));
+			}
+		}
+		
 		return data;
 	}
 
 	@Override
-	public void createInvoices() {
-		// TODO Auto-generated method stub
-
+	public void createInvoices(String exportData) throws IOException {
+		String filename = "/tmp/onCourseBilling.txt";
+		File exportFile = new File(filename);
+		exportFile.createNewFile();
+		
+		FileWriter fileWriter = new FileWriter(exportFile);
+		BufferedWriter out = new BufferedWriter(fileWriter);
+		out.write(
+				"Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.Qty\tDetail.UnitPrice\tDescription\n" +
+				exportData);
+		out.close();
+		
+		Runtime runtime = Runtime.getRuntime();
+		runtime.exec("scp " + filename + " accounts@203.29.62.219:" + filename);
+		runtime.exec("ssh accounts@203.29.62.219 '/MoneyWorks Documents/MoneyworksCLI.sh " + filename + " ish onCourseBilling'");
 	}
 }
