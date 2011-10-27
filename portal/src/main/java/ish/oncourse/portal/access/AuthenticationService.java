@@ -90,6 +90,24 @@ public class AuthenticationService implements IAuthenticationService {
 		List<Contact> users = cayenneService.newContext().performQuery(query);
 		return users;
 	}
+	
+	@Override
+	public List<Contact> findCompanyForPasswordRecovery(String companyName, String email) {
+		
+		if (companyName == null || companyName.isEmpty() || email == null || email.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		SelectQuery query = new SelectQuery(Contact.class);
+
+		query.andQualifier(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
+		query.andQualifier(ExpressionFactory.matchExp(Contact.IS_COMPANY_PROPERTY, Boolean.TRUE));
+		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, companyName));
+
+		@SuppressWarnings("unchecked")
+		List<Contact> users = cayenneService.newContext().performQuery(query);
+		return users;
+	}
 
 	/**
 	 * @see IAuthenticationService#findByPasswordRecoveryKey(String)
@@ -143,4 +161,6 @@ public class AuthenticationService implements IAuthenticationService {
 			session.invalidate();
 		}
 	}
+
+	
 }

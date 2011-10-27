@@ -47,6 +47,15 @@ public interface IAuthenticationService {
 	 */
 	List<Contact> findForPasswordRecovery(String firstName, String lastName, String email);
 	
+	
+	/**
+	 * Finds users for password recovery.
+	 * @param companyName
+	 * @param email
+	 * @return
+	 */
+	List<Contact> findCompanyForPasswordRecovery(String companyName, String email);
+	
 	/**
 	 * Gets currently logged in user.
 	 * @return

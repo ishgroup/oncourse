@@ -178,7 +178,7 @@ public class Login {
 
 		List<Contact> users = new ArrayList<Contact>();
 		if(iscompany) {
-			users= authenticationService.authenticateCompany(companyName, email, password);
+			users= authenticationService.findCompanyForPasswordRecovery(companyName, email);
 		} else {
 			users = authenticationService.findForPasswordRecovery(firstName, lastName, email);
 		}
@@ -211,6 +211,7 @@ public class Login {
 				loginForm.recordError("You are unable to log into this site with this set of credentials. Please contact the college and let them know that there are two contacts with identical login details. If they merge those contacts, the problem will be resolved.");
 				return this;
 			} 
+			
 			selectCollege.setTheUsers(users, collegesWithDuplicates);
 			return selectCollege;
 		}

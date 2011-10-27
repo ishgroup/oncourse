@@ -54,6 +54,7 @@ public class SelectCollege {
 	@Persist
 	private ArrayList<String> collegesWithDuplicates;
 
+	@Persist
 	private boolean passwordRecover;
 
 	public void setPasswordRecover(boolean passwordRecover) {
