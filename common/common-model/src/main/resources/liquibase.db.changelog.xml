@@ -359,7 +359,8 @@
 	<changeSet id="28" author="anton" context="production" runOnChange="true">
 		<!-- Fix source for refunds, which should be 'O' not 'W' -->
 		<sql>update Invoice set source='O' where description='Refund for enrolments' and source='W'</sql>
-		<addNotNullConstraint tableName="Invoice" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />	
+		<addNotNullConstraint tableName="Invoice" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />
+		<addNotNullConstraint tableName="Enrolment" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />	
 	</changeSet>
 	
 </databaseChangeLog>

@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.PaymentSource;
 import ish.oncourse.model.auto._Enrolment;
 
 import org.apache.cayenne.exp.Expression;
@@ -30,6 +31,20 @@ public class Enrolment extends _Enrolment implements Queueable {
 
 	@Override
 	protected void onPostAdd() {
-		setStatus(EnrolmentStatus.PENDING);
+		if (getStatus() == null) {
+			setStatus(EnrolmentStatus.PENDING);
+		}
+		
+		if (getSource() == null) {
+			setSource(PaymentSource.SOURCE_WEB);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see ish.oncourse.model.auto._Enrolment#onPrePersist()
+	 */
+	@Override
+	protected void onPrePersist() {
+		onPostAdd();
 	}
 }

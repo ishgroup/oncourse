@@ -94,6 +94,20 @@ public class Invoice extends _Invoice implements Queueable {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see ish.oncourse.model.auto._Invoice#onPostAdd()
+	 */
+	@Override
+	protected void onPostAdd() {
+		if (getStatus() == null) {
+			setStatus(InvoiceStatus.PENDING);
+		}
+		
+		if (getSource() == null) {
+			setSource(PaymentSource.SOURCE_WEB);
+		}
+	}
+
 	@Override
 	protected void onPreUpdate() {
 		updateAmountOwing();
@@ -102,14 +116,7 @@ public class Invoice extends _Invoice implements Queueable {
 	@Override
 	protected void onPrePersist() {
 		updateAmountOwing();
-		
-		if (getStatus() == null) {
-			setStatus(InvoiceStatus.PENDING);
-		}
-		
-		if (getSource() == null) {
-			setSource(PaymentSource.SOURCE_WEB);
-		}
+		onPostAdd();
 	}
 
 	@Override

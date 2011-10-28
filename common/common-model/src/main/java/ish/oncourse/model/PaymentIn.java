@@ -435,8 +435,13 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	@Override
 	protected void onPostAdd() {
-		setStatus(PaymentStatus.NEW);
-		setType(PaymentType.CREDIT_CARD);
+		if (getStatus() == null) {
+			setStatus(PaymentStatus.NEW);
+		}
+		
+		if (getType() == null) {
+			setType(PaymentType.CREDIT_CARD);
+		}
 	}
 
 	@Override
@@ -453,6 +458,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	@Override
 	protected void onPrePersist() {
+		onPostAdd();
 		Date today = new Date();
 		setCreated(today);
 		setModified(today);

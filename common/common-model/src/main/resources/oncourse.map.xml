@@ -272,7 +272,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
-		<db-attribute name="source" type="VARCHAR" length="1"/>
+		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
@@ -1003,6 +1003,7 @@
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.oncourse.model.EnrolmentStatus" db-attribute-path="status"/>
 		<post-add method-name="onPostAdd"/>
+		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="Instruction" className="ish.oncourse.model.Instruction" dbEntityName="Instruction">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1033,6 +1034,7 @@
 		<obj-attribute name="status" type="ish.oncourse.model.InvoiceStatus" db-attribute-path="status"/>
 		<obj-attribute name="totalExGst" type="java.math.BigDecimal" db-attribute-path="totalExGst"/>
 		<obj-attribute name="totalGst" type="java.math.BigDecimal" db-attribute-path="totalGst"/>
+		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
