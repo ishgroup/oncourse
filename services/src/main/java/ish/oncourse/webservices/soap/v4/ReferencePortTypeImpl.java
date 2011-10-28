@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.soap.v4;
 
+import ish.oncourse.services.reference.ReferenceService;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
-import ish.oncourse.webservices.reference.services.ReferenceService;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;

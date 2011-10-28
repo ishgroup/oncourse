@@ -1,11 +1,4 @@
-package ish.oncourse.webservices.reference.services;
-
-import ish.oncourse.services.reference.ICountryService;
-import ish.oncourse.services.reference.ILanguageService;
-import ish.oncourse.services.reference.IModuleService;
-import ish.oncourse.services.reference.IQualificationService;
-import ish.oncourse.services.reference.IReferenceService;
-import ish.oncourse.services.reference.ITrainingPackageService;
+package ish.oncourse.services.reference;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +7,6 @@ import java.util.TreeSet;
 
 import org.apache.cayenne.Persistent;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
@@ -23,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 public class ReferenceService {
-
+	
+	/**
+	 * The list with all reference services.
+	 */
 	private List<IReferenceService<? extends Persistent>> allServices;
 
 	/**
@@ -31,9 +26,9 @@ public class ReferenceService {
 	 * 
 	 * @return
 	 */
-	@Autowired
-	public ReferenceService(@Inject ICountryService countryService, @Inject ILanguageService languageService,
-			@Inject IQualificationService qualificationService, @Inject IModuleService moduleService, @Inject ITrainingPackageService trainingPackageService) {
+	@Inject
+	public ReferenceService(ICountryService countryService, ILanguageService languageService, IQualificationService qualificationService,
+			IModuleService moduleService, ITrainingPackageService trainingPackageService) {
 		allServices = new LinkedList<IReferenceService<? extends Persistent>>();
 		allServices.add(countryService);
 		allServices.add(languageService);
@@ -63,11 +58,11 @@ public class ReferenceService {
 
 		for (IReferenceService<?> service : allServices) {
 			Long maxVersion = service.findMaxIshVersion();
-			
+
 			if (maxVersion != null) {
 				versions.add(maxVersion);
 			}
-			
+
 		}
 
 		return (versions.size() > 0) ? versions.last() : 0;

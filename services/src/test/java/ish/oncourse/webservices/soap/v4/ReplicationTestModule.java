@@ -10,7 +10,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
-import ish.oncourse.webservices.reference.services.ReferenceService;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -37,7 +36,6 @@ public class ReplicationTestModule {
 
 	public static void bind(ServiceBinder binder) {
 
-		binder.bind(ReferenceService.class);
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(IWillowStubBuilder.class, WillowStubBuilderImpl.class);
 		binder.bind(IWillowUpdater.class, WillowUpdaterImpl.class);

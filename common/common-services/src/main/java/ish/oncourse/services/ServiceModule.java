@@ -62,6 +62,7 @@ import ish.oncourse.services.reference.ITrainingPackageService;
 import ish.oncourse.services.reference.LanguageService;
 import ish.oncourse.services.reference.ModuleService;
 import ish.oncourse.services.reference.QualificationService;
+import ish.oncourse.services.reference.ReferenceService;
 import ish.oncourse.services.reference.TrainingPackageService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
@@ -118,6 +119,7 @@ public class ServiceModule {
 		LOGGER.info("Registering Willow Common Services");
 
 		// Tapestry and environment specific services
+		binder.bind(ReferenceService.class);
 		binder.bind(ICacheService.class, OSCacheService.class);
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
