@@ -32,6 +32,12 @@
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-services</artifactId>
 			<version>2.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>axis</groupId>
+					<artifactId>axis-wsdl4</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

@@ -1,5 +1,7 @@
 <html t:type="pagestructure" title="literal:NTIS"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
-	<t:outputRaw value="serverdate"/>
+	<t:form t:id="updateForm">
+		<t:submit t:id="update" value="Update" />
+	</t:form>
 </html>	
