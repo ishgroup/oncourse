@@ -249,13 +249,14 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 						paymentInLineToRefund = line;
 						invoiceToRefund = invoice;
 					} else {
-						//For angel payments use invoiceNumber to determine the last invoice,
-						//since createdDate is very often the same accross several invoices
-						if (getSource() == PaymentSource.SOURCE_ONCOURSE && invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber()) {
-							paymentInLineToRefund = line;
-							invoiceToRefund = invoice;
+						// For angel payments use angelId to determine the last invoice, since createdDate is very often the same accross several invoices
+						if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
+							if (invoice.getAngelId() > invoiceToRefund.getAngelId()) {
+								paymentInLineToRefund = line;
+								invoiceToRefund = invoice;
+							}
 						} else {
-							//User id to determine last invoice for willow payments.
+							//For willow payments, use willowId to determine the newest invoice.
 							if (invoice.getId() > invoiceToRefund.getId()) {
 								paymentInLineToRefund = line;
 								invoiceToRefund = invoice;
@@ -285,10 +286,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				refundPL.setCollege(getCollege());
 				refundPL.setInvoice(refundInvoice);
 				refundPL.setPaymentIn(internalPayment);
-				
+
 				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
 				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
-				
+
 				// Fail enrolments on invoiceToRefund
 				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
 					Enrolment enrol = il.getEnrolment();
@@ -296,10 +297,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 						enrol.setStatus(EnrolmentStatus.FAILED);
 					}
 				}
-				
+
 				return internalPayment;
-			}
-			else {
+			} else {
 				LOG.error(String.format("Can not find invoice to refund on paymentIn:%s.", getId()));
 			}
 		} else {

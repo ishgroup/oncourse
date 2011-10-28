@@ -106,6 +106,10 @@ public class Invoice extends _Invoice implements Queueable {
 		if (getStatus() == null) {
 			setStatus(InvoiceStatus.PENDING);
 		}
+		
+		if (getSource() == null) {
+			setSource(PaymentSource.SOURCE_WEB);
+		}
 	}
 
 	@Override

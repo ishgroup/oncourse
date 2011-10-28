@@ -308,7 +308,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="publicNotes" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="shippingAddress" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="source" type="CHAR" length="1"/>
+		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="totalExGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="totalGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
