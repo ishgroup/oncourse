@@ -8,12 +8,10 @@ import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
 public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> {
 
 	@Override
-	protected void updateEntity(InvoiceStub stub, Invoice entity,
-			RelationShipCallback callback) {
-		
-		entity.setContact(callback.updateRelationShip(stub.getContactId(),
-				Contact.class));
-		
+	protected void updateEntity(InvoiceStub stub, Invoice entity, RelationShipCallback callback) {
+
+		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class));
+
 		entity.setAmountOwing(stub.getAmountOwing());
 		entity.setBillToAddress(stub.getBillToAddress());
 		entity.setCreated(stub.getCreated());
@@ -28,10 +26,7 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		entity.setShippingAddress(stub.getShippingAddress());
 
 		entity.setTotalExGst(stub.getTotalExGst());
-
-		if (stub.getSource() != null) {
-			entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
-		}
+		entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 
 		entity.setTotalGst(stub.getTotalGst());
 	}

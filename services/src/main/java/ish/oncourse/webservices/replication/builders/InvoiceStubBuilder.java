@@ -1,6 +1,5 @@
 package ish.oncourse.webservices.replication.builders;
 
-import ish.common.types.PaymentSource;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
 
@@ -24,11 +23,7 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		stub.setPublicNotes(entity.getPublicNotes());
 		stub.setShippingAddress(entity.getShippingAddress());
 
-		if (entity.getSource() != null) {
-			stub.setSource(entity.getSource().getDatabaseValue());
-		} else {
-			stub.setSource(PaymentSource.SOURCE_WEB.getDatabaseValue());
-		}
+		stub.setSource(entity.getSource().getDatabaseValue());
 
 		stub.setStatus(entity.getStatus().name());
 		stub.setTotalExGst(entity.getTotalExGst());
