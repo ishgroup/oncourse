@@ -26,7 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.InjectService;
@@ -81,16 +80,28 @@ public class PaymentServiceImpl implements PaymentPortType {
 			PaymentIn paymentIn = null;
 
 			for (ReplicatedRecord r : replicatedRecords) {
+				
 				if (ReplicationUtils.getEntityName(Enrolment.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
+					
 					Enrolment enrolment = (Enrolment) newContext.localObject(
 							enrolService.loadById(r.getStub().getWillowId()).getObjectId(), null);
+					
 					enrolments.add(enrolment);
+					
 				} else if (ReplicationUtils.getEntityName(PaymentIn.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
-					paymentIn = (PaymentIn) newContext.localObject(paymentInService.paymentInByWillowId(r.getStub().getWillowId())
-							.getObjectId(), null);
+					
+					PaymentIn p = paymentInService.paymentInByWillowId(r.getStub().getWillowId());
+					
+					if (p == null) {
+						throw new Exception(String.format("The paymentIn record with angelId:%s wasn't saved during the payment group processing."));
+					}
+					
+					paymentIn = (PaymentIn) newContext.localObject(p.getObjectId(), null);
 				}
+				
 			}
-
+			
+			
 			boolean isPlacesAvailable = true;
 
 			for (Enrolment enrolment : enrolments) {
@@ -143,7 +154,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 			PaymentOut paymentOut = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
 			if (paymentOut == null) {
 				throw new Exception("The paymentOut record with angelId \"" + paymentOutRecord.getStub().getAngelId()
-						+ "\" wasn't saved during the refund group prcessing.");
+						+ "\" wasn't saved during the refund group processing.");
 			}
 			paymentGatewayService.performGatewayOperation(paymentOut);
 

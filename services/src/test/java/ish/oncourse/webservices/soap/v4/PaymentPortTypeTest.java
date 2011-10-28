@@ -393,6 +393,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		invoiceStub.setModified(today);
 		invoiceStub.setTotalExGst(new BigDecimal(100));
 		invoiceStub.setTotalGst(new BigDecimal(110));
+		invoiceStub.setSource("W");
+		invoiceStub.setStatus("Pending");
 		return invoiceStub;
 	}
 

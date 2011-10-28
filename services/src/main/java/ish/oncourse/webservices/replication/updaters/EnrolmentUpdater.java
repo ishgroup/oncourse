@@ -18,9 +18,7 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		entity.setModified(stub.getModified());
 		entity.setReasonForStudy(stub.getReasonForStudy());
 
-		if (stub.getSource() != null) {
-			entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
-		}
+		entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 
 		if (stub.getStatus() != null) {
 			ish.common.types.EnrolmentStatus stubStatus = ish.common.types.EnrolmentStatus.valueOf(stub.getStatus());

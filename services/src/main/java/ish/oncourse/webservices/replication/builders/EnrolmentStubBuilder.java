@@ -21,9 +21,7 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 			stub.setReasonForStudy(-1);
 		}
 		
-		if (entity.getSource() != null) {
-			stub.setSource(entity.getSource().name());
-		}
+		stub.setSource(entity.getSource().getDatabaseValue());
 		
 		if (entity.getStatus() != null) {
 			stub.setStatus(entity.getStatus().name());
