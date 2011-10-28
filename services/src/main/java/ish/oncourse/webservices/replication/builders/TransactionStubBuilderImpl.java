@@ -12,7 +12,7 @@ import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Room;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +39,7 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 	 */
 	public Set<ReplicationStub> createPaymentInTransaction(List<PaymentIn> payments) {
 
-		Set<ReplicationStub> paymentRelated = new HashSet<ReplicationStub>(20);
+		Set<ReplicationStub> paymentRelated = new LinkedHashSet<ReplicationStub>(20);
 
 		for (PaymentIn paymentIn : payments) {
 			
@@ -100,7 +100,7 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 
 	public Set<ReplicationStub> createRefundTransaction(PaymentOut paymentOut) {
 
-		Set<ReplicationStub> paymentOutRelated = new HashSet<ReplicationStub>(20);
+		Set<ReplicationStub> paymentOutRelated = new LinkedHashSet<ReplicationStub>(20);
 		addRelatedStub(paymentOutRelated, paymentOut);
 		addRelatedStub(paymentOutRelated, paymentOut.getContact());
 		addRelatedStub(paymentOutRelated, paymentOut.getContact().getStudent());
