@@ -14,7 +14,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	 * @see ish.oncourse.admin.services.ntis.INTISUpdateService#doUpdate()
 	 */
 	@Override
-	public NTISResult doUpdate() {
+	public NTISResult doUpdate(Class<?> type) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -23,7 +23,7 @@ public class NTISJob implements Job {
 	 */
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		NTISResult result = ntisUpdater.doUpdate();
+		NTISResult result = ntisUpdater.doUpdate(null);
 		//print result of update into log
 	}
 }
