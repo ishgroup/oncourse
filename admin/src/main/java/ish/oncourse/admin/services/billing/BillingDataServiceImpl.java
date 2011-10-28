@@ -123,7 +123,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 
 		// web transaction value
-		sql = "SELECT c.id as collegeId, SUM(i.totalExGst) as value, SUM(i.totalGst) as valueGST FROM PaymentIn As p inner join PaymentInLine pl on pl.paymentInId = p.id inner join Invoice i on pl.invoiceId=i.id inner JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND p.source = 'W' AND p.status = 3 GROUP BY collegeid";
+		sql = "SELECT c.id as collegeId, SUM(i.totalExGst) + SUM(i.totalGst) as value FROM Invoice i JOIN College AS c on c.Id = i.collegeId WHERE c.billingCode IS NOT NULL and i.created >= #bind($from) AND i.created <= #bind($to) AND i.source = 'W' AND i.status = 3 GROUP BY collegeid";
 		query = new SQLTemplate(PaymentIn.class, sql);
 		query.setParameters(params);
 		query.setFetchingDataRows(true);
@@ -132,7 +132,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
 		for (DataRow r : result) {
 			Long collegeId = (Long) r.get("collegeId");
-			data.get(collegeId).put("ccWebValue", ((BigDecimal) r.get("value")).add((BigDecimal) r.get("valueGST")));
+			data.get(collegeId).put("ccWebValue", r.get("value"));
 		}
 
 		// tasmania ecommerce
@@ -154,7 +154,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			cal.add(Calendar.MONTH, -1);
 			tasmaniaParams.put("to", cal.getTime());
 		
-			sql = "SELECT SUM(i.totalExGst) as value, SUM(i.totalGst) as valueGST FROM PaymentIn As p inner join PaymentInLine pl on pl.paymentInId = p.id inner join Invoice i on pl.invoiceId=i.id WHERE p.created >= #bind($from) AND p.created <= #bind($to) AND p.collegeId = 15 AND p.source = 'W' AND p.status = 3";
+			sql = "SELECT SUM(i.totalExGst) + SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W' AND i.status = 3";
 			query = new SQLTemplate(PaymentIn.class, sql);
 			query.setParameters(tasmaniaParams);
 			query.setFetchingDataRows(true);
@@ -162,10 +162,9 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			result = cayenneService.sharedContext().performQuery(query);
 		
 			BigDecimal value = (BigDecimal) result.get(0).get("value");
-			BigDecimal valueGST = (BigDecimal) result.get(0).get("valueGST");
 		
-			if (value != null && valueGST != null) {
-				data.get(tasmaniaId).put("tasmaniaYearToDate", value.add(valueGST));
+			if (value != null) {
+				data.get(tasmaniaId).put("tasmaniaYearToDate", value);
 			}
 		}
 		
