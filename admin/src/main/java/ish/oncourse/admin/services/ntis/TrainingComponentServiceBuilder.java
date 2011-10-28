@@ -1,4 +1,4 @@
-package com.oncourse.admin.services.ntis;
+package ish.oncourse.admin.services.ntis;
 
 import java.util.Map;
 

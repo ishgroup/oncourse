@@ -24,7 +24,7 @@
         </training.ws.tc.service.url>
         
 		<cxf.version>2.4.0</cxf.version>
-
+		<quartz.version>2.1.0</quartz.version>
 	</properties>
 
 	<dependencies>
@@ -49,6 +49,13 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-bundle</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
