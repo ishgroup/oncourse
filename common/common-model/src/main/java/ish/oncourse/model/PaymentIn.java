@@ -62,9 +62,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			for (PaymentInLine pinl : list)
 				sum = sum.add(pinl.getAmount());
 
-		if (!amount.equals(sum))
-			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY,
-					"The payment amount does not match the sum of amounts allocated for invoices/credit notes."));
+		if (!amount.equals(sum)) {
+			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY, String.format(
+					"The payment willowId:%s angelId:%s amount does not match the sum of amounts allocated for invoices/credit notes.",
+					getId(), getAngelId())));
+		}
+
 	}
 
 	/**
@@ -204,13 +207,13 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 */
 	public void succeed() {
 		setStatus(PaymentStatus.SUCCESS);
-		
+
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
-			//success only on Pending invoices.
+			// success only on Pending invoices.
 			if (invoice.getStatus() != InvoiceStatus.FAILED && invoice.getStatus() != InvoiceStatus.SUCCESS) {
 				invoice.setStatus(InvoiceStatus.SUCCESS);
-				
+
 				for (InvoiceLine il : invoice.getInvoiceLines()) {
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
@@ -254,14 +257,17 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 						paymentInLineToRefund = line;
 						invoiceToRefund = invoice;
 					} else {
-						// For angel payments use angelId to determine the last invoice, since createdDate is very often the same accross several invoices
+						// For angel payments use angelId to determine the last
+						// invoice, since createdDate is very often the same
+						// accross several invoices
 						if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
 							if (invoice.getAngelId() > invoiceToRefund.getAngelId()) {
 								paymentInLineToRefund = line;
 								invoiceToRefund = invoice;
 							}
 						} else {
-							//For willow payments, use willowId to determine the newest invoice.
+							// For willow payments, use willowId to determine
+							// the newest invoice.
 							if (invoice.getId() > invoiceToRefund.getId()) {
 								paymentInLineToRefund = line;
 								invoiceToRefund = invoice;
@@ -443,7 +449,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		if (getStatus() == null) {
 			setStatus(PaymentStatus.NEW);
 		}
-		
+
 		if (getType() == null) {
 			setType(PaymentType.CREDIT_CARD);
 		}
