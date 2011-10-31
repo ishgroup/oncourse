@@ -134,7 +134,7 @@ public class TextileConverter implements ITextileConverter {
 		result += content;
 		result = clearGenerated(result);
 		if (errors.hasFailures()) {
-			LOGGER.error(errors.toString());
+			LOGGER.debug(errors.toString());
 		}
 		return result;
 	}
