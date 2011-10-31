@@ -42,14 +42,14 @@ public class WebNodeService implements IWebNodeService {
 
 	@Override
 	public WebNode findById(Long willowId) {
-		
+
 		Expression qualifier = ExpressionFactory.matchDbExp(WebNode.ID_PK_COLUMN, willowId);
 
 		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier().andExp(qualifier));
-		
+
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
-		
+
 		appyCacheSettings(q);
 
 		return (WebNode) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
@@ -57,13 +57,13 @@ public class WebNodeService implements IWebNodeService {
 
 	@SuppressWarnings("unchecked")
 	public List<WebNode> getNodes() {
-		
+
 		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier());
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
-		
+
 		appyCacheSettings(q);
-		
+
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
@@ -78,7 +78,7 @@ public class WebNodeService implements IWebNodeService {
 		SelectQuery q = new SelectQuery(WebNode.class, expr);
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
-		
+
 		appyCacheSettings(q);
 
 		@SuppressWarnings("unchecked")
@@ -96,30 +96,44 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getNodeForNodePath(String nodePath) {
-		
-		Expression expr = siteQualifier(); 
+
+		Expression expr = siteQualifier();
 		expr = expr.andExp(ExpressionFactory.matchExp(WebNode.WEB_URL_ALIASES_PROPERTY + "." + WebUrlAlias.URL_PATH_PROPERTY, nodePath));
-		
+
 		SelectQuery q = new SelectQuery(WebNode.class, expr);
-		
+
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
-		
+
 		appyCacheSettings(q);
-		
+
 		return (WebNode) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 
 	public WebNode getCurrentNode() {
+
 		WebNode node = null;
 
 		if (request.getAttribute(IWebNodeService.NODE) != null) {
+			
 			node = (WebNode) request.getAttribute(IWebNodeService.NODE);
+			
 		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
-			node = getNodeForNodeNumber(Integer.parseInt(request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER)));
-		} else if (request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
-			node = getNodeForNodeNumber(Integer.parseInt((String) request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER)));
+
+			Integer nodeNumber = null;
+
+			try {
+				nodeNumber = Integer.parseInt(request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER));
+			} catch (NumberFormatException e) {
+				LOGGER.debug("Can not parse nodeNumber.", e);
+			}
+
+			if (nodeNumber != null) {
+				node = getNodeForNodeNumber(nodeNumber);
+			}
+
 		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
+			
 			String pagePath = (String) request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER);
 			node = getNodeForNodePath(pagePath);
 		}
@@ -145,14 +159,14 @@ public class WebNodeService implements IWebNodeService {
 
 		while (randomResult == null && attempt++ < 5) {
 			int random = new Random().nextInt(count.intValue());
-			
+
 			SelectQuery query = new SelectQuery(WebNode.class, qualifier);
 			query.setFetchOffset(random);
 			query.setFetchLimit(1);
 
 			query.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
 			query.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
-			
+
 			appyCacheSettings(query);
 
 			randomResult = (WebNode) Cayenne.objectForQuery(sharedContext, query);
@@ -197,13 +211,14 @@ public class WebNodeService implements IWebNodeService {
 
 		return newPageNode;
 	}
-	
+
 	private void appyCacheSettings(SelectQuery query) {
-		//TODO: uncomment after we've properly configure JGroups or JMS, and fix https://issues.apache.org/jira/browse/CAY-1585
-		
+		// TODO: uncomment after we've properly configure JGroups or JMS, and
+		// fix https://issues.apache.org/jira/browse/CAY-1585
+
 		/*
-		query.setCacheGroups(CacheGroup.PAGES.name());
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		*/
+		 * query.setCacheGroups(CacheGroup.PAGES.name());
+		 * query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		 */
 	}
 }
