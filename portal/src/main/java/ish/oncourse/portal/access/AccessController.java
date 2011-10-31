@@ -19,77 +19,80 @@ import org.apache.tapestry5.services.Response;
 
 public class AccessController implements Dispatcher {
 
-    private final static String LOGIN_PAGE = "/login";
+	private final static String LOGIN_PAGE = "/login";
 
-    @Inject
-    private IAuthenticationService authenticationService;
+	@Inject
+	private IAuthenticationService authenticationService;
 
-    @Inject
-    private ComponentClassResolver resolver;
+	@Inject
+	private ComponentClassResolver resolver;
 
-    @Inject
-    private ComponentSource componentSource;
-    
-    @Inject
-    private ICookiesService cookieService;
- 
+	@Inject
+	private ComponentSource componentSource;
 
-    public boolean dispatch(Request request, Response response) throws IOException {
+	@Inject
+	private ICookiesService cookieService;
 
-        String path = request.getPath();
+	public boolean dispatch(Request request, Response response)
+			throws IOException {
 
-        int nextslashx = path.length();
+		String path = request.getPath();
 
-        String pageName = null;
+		int nextslashx = path.length();
 
-        while (true) {
-            pageName = path.substring(1, nextslashx);
+		String pageName = null;
 
-            if (!pageName.endsWith("/") && resolver.isPageName(pageName)) {
-                break;
-            }
+		while (true) {
+			pageName = path.substring(1, nextslashx);
 
-            nextslashx = path.lastIndexOf('/', nextslashx - 1);
+			if (!pageName.endsWith("/") && resolver.isPageName(pageName)) {
+				break;
+			}
 
-            if (nextslashx <= 1) {
-                return false;
-            }
-        }
+			nextslashx = path.lastIndexOf('/', nextslashx - 1);
 
-        Component page = componentSource.getPage(pageName);
+			if (nextslashx <= 1) {
+				return false;
+			}
+		}
 
-        if (page != null) {
-            String loginPath = request.getContextPath() + LOGIN_PAGE;
+		Component page = componentSource.getPage(pageName);
 
-            UserRole pageWithUserRole = page.getClass().getAnnotation(UserRole.class);
+		if (page != null) {
+			String loginPath = request.getContextPath() + LOGIN_PAGE;
 
-            if (pageWithUserRole != null) {
-                if (authenticationService.getUser() == null) {
-                	cookieService.pushPreviousPagePath(path);
-                    response.sendRedirect(loginPath);
-                    return true;
-                } else {
-                    Contact user = authenticationService.getUser();
+			if (authenticationService.getUser() == null) {
+				if (!path.equals(LOGIN_PAGE)) {
+					cookieService.pushPreviousPagePath(path);
+					response.sendRedirect(loginPath);
+					return true;
+				}
+				return false;
+			} else {
+				UserRole pageWithUserRole = page.getClass().getAnnotation(UserRole.class);
 
-                    boolean canAccess = true;
+				if (pageWithUserRole != null) {
+					Contact user = authenticationService.getUser();
 
-                    if (pageWithUserRole != null && pageWithUserRole.value() != null) {
-                        Set<String> pageRoles = new HashSet<String>(Arrays.asList(pageWithUserRole.value()));
-                        if(pageRoles.size() > 0) {
-	                        canAccess = (pageRoles.contains("tutor") && user.getTutor() != null) || (pageRoles.contains("student") && user.getStudent() != null);
-                        } else {
-                        	 canAccess = user.getStudent() != null;
-                        }
-                    }
+					boolean canAccess = true;
 
-                    if (!canAccess) {
-                        response.sendRedirect(loginPath);
-                        return true;
-                    }
-                }
-            }
-        }
+					if (pageWithUserRole != null && pageWithUserRole.value() != null) {
+						Set<String> pageRoles = new HashSet<String>(Arrays.asList(pageWithUserRole.value()));
+						if (pageRoles.size() > 0) {
+							canAccess = (pageRoles.contains("tutor") && user.getTutor() != null) || (pageRoles.contains("student") && user.getStudent() != null);
+						} else {
+							canAccess = user.getStudent() != null;
+						}
+					}
 
-        return false;
-    }
+					if (!canAccess) {
+						response.sendRedirect(loginPath);
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
 }
