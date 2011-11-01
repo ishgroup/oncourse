@@ -110,7 +110,9 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 
 		ObjectContext objectContext = cayenneService.newContext();
 
+		@SuppressWarnings("unchecked")
 		List<Instruction> list = objectContext.performQuery(q);
+		
 		if (!list.isEmpty()) {
 			Instruction instruction = list.get(0);
 			instruction.setExecuted(new Date());
@@ -130,8 +132,9 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		SelectQuery q = new SelectQuery(Instruction.class, expr);
 		q.addPrefetch(Instruction.PARAMETERS_PROPERTY);
 
-		ObjectContext objectContext = cayenneService.sharedContext();
+		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
 
+		@SuppressWarnings("unchecked")
 		List<Instruction> list = objectContext.performQuery(q);
 
 		for (Instruction inst : list) {
@@ -154,7 +157,13 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 			}
 
 			result.add(stub);
+			
+			//set executed to prevent execution during next replication run, 
+			//even if session timed out.
+			inst.setExecuted(new Date());
 		}
+		
+		objectContext.commitChanges();
 
 		return result;
 	}
