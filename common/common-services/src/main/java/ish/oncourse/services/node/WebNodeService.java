@@ -115,15 +115,20 @@ public class WebNodeService implements IWebNodeService {
 		WebNode node = null;
 
 		if (request.getAttribute(IWebNodeService.NODE) != null) {
-			
+
 			node = (WebNode) request.getAttribute(IWebNodeService.NODE);
-			
-		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
+
+		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null
+				|| request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
+
+			String nodeNumberString = request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null ? request
+					.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) : (String) request
+					.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER);
 
 			Integer nodeNumber = null;
 
 			try {
-				nodeNumber = Integer.parseInt(request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER));
+				nodeNumber = Integer.parseInt(nodeNumberString);
 			} catch (NumberFormatException e) {
 				LOGGER.debug("Can not parse nodeNumber.", e);
 			}
@@ -133,7 +138,7 @@ public class WebNodeService implements IWebNodeService {
 			}
 
 		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
-			
+
 			String pagePath = (String) request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER);
 			node = getNodeForNodePath(pagePath);
 		}
