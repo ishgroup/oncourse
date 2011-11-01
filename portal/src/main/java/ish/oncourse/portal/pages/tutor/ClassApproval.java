@@ -6,6 +6,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
+import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.mail.EmailBuilder;
 import ish.oncourse.portal.services.mail.IMailService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -58,9 +60,17 @@ public class ClassApproval {
 	@Property
 	private String whyDeclined;
 
-	void onActivate(long id) {
-		List<CourseClass> list = courseClassService.loadByIds(id);
-		this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
+	@InjectPage
+	private PageNotFound pageNotFound;
+	
+	Object onActivate(Object id) {
+		try {
+			List<CourseClass> list = courseClassService.loadByIds(Long.parseLong((String) id));
+			this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
+		} catch (Exception e) {
+			return pageNotFound;
+		}
+		return null;
 	}
 
 	@OnEvent(component = "approvalForm", value = "selected")

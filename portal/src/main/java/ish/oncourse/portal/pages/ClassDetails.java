@@ -7,6 +7,7 @@ import ish.oncourse.util.ValidationErrors;
 
 import java.util.List;
 
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -24,9 +25,16 @@ public class ClassDetails {
 	@Inject
 	private ITextileConverter textileConverter;
 	
-	void onActivate(long id) {
-		List<CourseClass> list = courseClassService.loadByIds(id);
-		this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
+	@InjectPage
+	private PageNotFound pageNotFound;
+	
+	Object onActivate(Object id) {
+		try {
+			List<CourseClass> list = courseClassService.loadByIds(Long.parseLong((String) id));
+			this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
+		} catch (Exception e) {
+			return pageNotFound;
+		}
 		
 		if (courseClass != null) {
 			String textileDetails = courseClass.getDetail();
@@ -37,5 +45,6 @@ public class ClassDetails {
 			
 			details = textileConverter.convertCustomTextile(textileDetails, new ValidationErrors());
 		}
+		return null;
 	}
 }

@@ -102,7 +102,7 @@ public class SelectCollege {
 		} else {
 			authService.storeCurrentUser(c);
 			URL prevPage = cookieService.popPreviousPageURL();
-			return (prevPage != null) ? prevPage : getTimetablePage();
+			return (prevPage != null) ? prevPage : index;
 		}
 	}
 
@@ -110,9 +110,4 @@ public class SelectCollege {
 		Contact c = Cayenne.objectForPK(cayenneService.sharedContext(), Contact.class, user);
 		return c.getCollege().getName();
 	}
-
-	private Object getTimetablePage() {
-		return index;
-	}
-
 }
