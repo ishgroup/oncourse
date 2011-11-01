@@ -2,6 +2,8 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 	<t:form t:id="updateForm">
+		<t:textfield t:id="dateFrom" size="10"/>
+		<t:textfield t:id="dateTo" size = "10"/>
 		<t:submit t:id="update" value="Update" />
 	</t:form>
 </html>	

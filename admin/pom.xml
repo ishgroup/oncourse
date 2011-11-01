@@ -36,7 +36,7 @@
 			<exclusions>
 				<exclusion>
 					<groupId>axis</groupId>
-					<artifactId>axis-wsdl4</artifactId>
+					<artifactId>axis-wsdl4j</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
