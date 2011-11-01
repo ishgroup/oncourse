@@ -93,7 +93,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 					PaymentIn p = paymentInService.paymentInByWillowId(r.getStub().getWillowId());
 					
 					if (p == null) {
-						throw new Exception(String.format("The paymentIn record with angelId:%s wasn't saved during the payment group processing."));
+						throw new Exception(String.format("The paymentIn record with angelId:%s wasn't saved during the payment group processing.", r.getStub().getAngelId()));
 					}
 					
 					paymentIn = (PaymentIn) newContext.localObject(p.getObjectId(), null);
