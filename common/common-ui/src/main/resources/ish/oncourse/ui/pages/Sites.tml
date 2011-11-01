@@ -15,6 +15,8 @@
 							<a href="#" onclick="zoomMapForSite(${site.angelId})" title="click to show on the map above" class="class_location">Show on map</a>
 							<br />
 							<a href="/site/${site.angelId}">Details and directions</a>
+                            <br />
+                            <a href="/courses?near=${site.suburb}">Show classes</a>
 						</div>
 						<div class="siteAddress adr">
 							<span class="street-address">${site.street}</span>
