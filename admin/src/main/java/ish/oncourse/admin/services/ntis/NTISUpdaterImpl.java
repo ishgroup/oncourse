@@ -38,6 +38,17 @@ import au.gov.training.services.trainingcomponent.TrainingComponentTypeFilter;
 
 public class NTISUpdaterImpl implements INTISUpdater {
 
+	private static final String QUALIFICATION = "Qualification";
+	private static final String TRAINING_PACKAGE = "TrainingPackage";
+	private static final String ACCREDITED_COURSE = "AccreditedCourse";
+	private static final String MODULE = "AccreditedCourseModule";
+	private static final String UNIT = "Unit";
+	
+	private static final String ANZSCO_ID = "01";
+	private static final String ASCO_ID = "02";
+	private static final String FIELD_OF_EDUCATION_ID = "04";
+	private static final String LEVEL_OF_EDUCATION_ID = "05";
+	
 	@Inject
 	private ITrainingComponentService trainingService;
 	
@@ -121,78 +132,92 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
+			int entriesToCommit = 0;
+			int created = 0;
+			int modified = 0;
+			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
 				
-				SelectQuery query = new SelectQuery(Qualification.class);
-				Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
-				query.setQualifier(exp);
+				String type = summary.getComponentType().get(0);
 				
-				Qualification q;
-				List<Qualification> r = context.performQuery(query);
-				if (r.isEmpty()) {
-					q = context.newObject(Qualification.class);
-				}
-				else {
-					q = r.get(0);
-				}
+				if (QUALIFICATION.equals(type) || ACCREDITED_COURSE.equals(type)) {
 				
-				q.setNationalCode(summary.getCode().getValue());
-				q.setTitle(summary.getTitle().getValue());
-				q.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
-				q.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
+					SelectQuery query = new SelectQuery(Qualification.class);
+					Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
+					query.setQualifier(exp);
 				
-				detailsRequest.setCode(summary.getCode().getValue());
-				TrainingComponent component = trainingService.getDetails(detailsRequest);
-				List<Classification> classifications = component.getClassifications().getValue().getClassification();
-				for (Classification c : classifications) {
-					if ("01".equals(c.getSchemeCode())) {
-						q.setAnzsco(c.getValueCode());
+					Qualification q;
+					List<Qualification> r = context.performQuery(query);
+					if (r.isEmpty()) {
+						q = context.newObject(Qualification.class);
 					}
-					else if ("02".equals(c.getSchemeCode())) {
-						q.setAsco(c.getValueCode());
+					else {
+						q = r.get(0);
 					}
-					else if ("04".equals(c.getSchemeCode())) {
-						q.setFieldOfEducation(c.getValueCode());
+					
+					entriesToCommit += 1;
+				
+					q.setNationalCode(summary.getCode().getValue());
+					q.setTitle(summary.getTitle().getValue());
+					q.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
+					q.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
+					q.setIshVersion(ishVersion);
+				
+					detailsRequest.setCode(summary.getCode().getValue());
+					TrainingComponent component = trainingService.getDetails(detailsRequest);
+					List<Classification> classifications = component.getClassifications().getValue().getClassification();
+					for (Classification c : classifications) {
+						if (ANZSCO_ID.equals(c.getSchemeCode())) {
+							q.setAnzsco(c.getValueCode());
+						}
+						else if (ASCO_ID.equals(c.getSchemeCode())) {
+							q.setAsco(c.getValueCode());
+						}
+						else if (FIELD_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
+							q.setFieldOfEducation(c.getValueCode());
+						}
+						else if (LEVEL_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
+							q.setLevel(c.getValueCode());
+						}
 					}
-					else if ("05".equals(c.getSchemeCode())) {
-						q.setLevel(c.getValueCode());
+					
+					// committing to db every 100 entries
+					if (entriesToCommit > 100) {
+						created += context.newObjects().size();
+						modified += context.modifiedObjects().size();
+						
+						context.commitChanges();
+						entriesToCommit = 0;
 					}
 				}
-			}
 			
-			// remove deleted training packages from db
-			List<DeletedTrainingComponent> deletedComponents = 
-					trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
+				// remove deleted training packages from db
+				List<DeletedTrainingComponent> deletedComponents = 
+						trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
 		
-			for (DeletedTrainingComponent c : deletedComponents) {
-				SelectQuery query = new SelectQuery(Qualification.class);
-				Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
-				query.setQualifier(exp);
+				for (DeletedTrainingComponent c : deletedComponents) {
+					SelectQuery query = new SelectQuery(Qualification.class);
+					Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
+					query.setQualifier(exp);
 				
-				List<Qualification> r = context.performQuery(query);
-				if (!r.isEmpty()) {
-					context.deleteObject(r.get(0));
+					List<Qualification> r = context.performQuery(query);
+					if (!r.isEmpty()) {
+						context.deleteObject(r.get(0));
+					}
 				}
+			
+				created += context.newObjects().size();
+				modified += context.modifiedObjects().size();
+				context.commitChanges();
+			
+				result.setNumberOfNew(created);
+				result.setNumberOfUpdated(modified);
 			}
-			
-			List<Qualification> created = (List<Qualification>) context.newObjects();
-			for (Qualification q : created) {
-				q.setIshVersion(ishVersion);
-			}
-			
-			List<Qualification> updated = (List<Qualification>) context.modifiedObjects();
-			for (Qualification q : updated) {
-				q.setIshVersion(ishVersion);
-			}
-			
-			context.commitChanges();
-			
-			result.setNumberOfNew(created.size());
-			result.setNumberOfUpdated(updated.size());
 		}
 		catch (Exception e) {
 			throw new NTISException();
 		}
+		
 		
 		return result;
 	}
@@ -231,90 +256,102 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
+			int entriesToCommit = 0;
+			int created = 0;
+			int modified = 0;
+			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
 				
-				SelectQuery query = new SelectQuery(TrainingPackage.class);
-				Expression exp = ExpressionFactory.matchExp("nationalISC", summary.getCode().getValue());
-				query.setQualifier(exp);
+				String type = summary.getComponentType().get(0);
 				
-				TrainingPackage tp;
-				List<TrainingPackage> r = context.performQuery(query);
-				if (r.isEmpty()) {
-					tp = context.newObject(TrainingPackage.class);
-				}
-				else {
-					tp = r.get(0);
-				}
-				tp.setNationalISC(summary.getCode().getValue());
-				tp.setTitle(summary.getTitle().getValue());
-				tp.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
-				tp.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
-				tp.setType(summary.getComponentType().get(0));
+				if (TRAINING_PACKAGE.equals(type)) {
+					SelectQuery query = new SelectQuery(TrainingPackage.class);
+					Expression exp = ExpressionFactory.matchExp("nationalISC", summary.getCode().getValue());
+					query.setQualifier(exp);
 				
-				detailsRequest.setCode(summary.getCode().getValue());
-				TrainingComponent component = trainingService.getDetails(detailsRequest);
-				if (component.getReleases() != null) {
-					List<Release> releases = component.getReleases().getValue().getRelease();
-					if (releases.get(0).getComponents() != null) {
-						List<ReleaseComponent> components = releases.get(0).getComponents().getValue().getReleaseComponent();
-						for (ReleaseComponent c : components) {
-							String code = c.getCode().getValue();
-							String type = c.getType().get(0);
-							if ("Qualification".equals(type)) {
+					TrainingPackage tp;
+					List<TrainingPackage> r = context.performQuery(query);
+					if (r.isEmpty()) {
+						tp = context.newObject(TrainingPackage.class);
+					}
+					else {
+						tp = r.get(0);
+					}
+					tp.setNationalISC(summary.getCode().getValue());
+					tp.setTitle(summary.getTitle().getValue());
+					tp.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
+					tp.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
+					tp.setType(summary.getComponentType().get(0));
+					tp.setIshVersion(ishVersion);
+					
+					entriesToCommit += 1;
+				
+					detailsRequest.setCode(summary.getCode().getValue());
+					TrainingComponent component = trainingService.getDetails(detailsRequest);
+					if (component.getReleases() != null) {
+						List<Release> releases = component.getReleases().getValue().getRelease();
+						if (releases.get(0).getComponents() != null) {
+							List<ReleaseComponent> components = releases.get(0).getComponents().getValue().getReleaseComponent();
+							for (ReleaseComponent c : components) {
+								String code = c.getCode().getValue();
+								String cType = c.getType().get(0);
+								if (QUALIFICATION.equals(cType)) {
 						
-								SelectQuery q = new SelectQuery(Qualification.class);
-								Expression e = ExpressionFactory.matchExp("nationalCode", code);
-								q.setQualifier(e);
+									SelectQuery q = new SelectQuery(Qualification.class);
+									Expression e = ExpressionFactory.matchExp("nationalCode", code);
+									q.setQualifier(e);
 						
-								List<Qualification> qual = context.performQuery(q);
-								if (!qual.isEmpty()) {
-									qual.get(0).setTrainingPackageId(tp.getId());
+									List<Qualification> qual = context.performQuery(q);
+									if (!qual.isEmpty()) {
+										qual.get(0).setTrainingPackageId(tp.getId());
+									}
 								}
-							}
-							else if ("Unit".equals(type)) {
-								SelectQuery q = new SelectQuery(Module.class);
-								Expression e = ExpressionFactory.matchExp("nationalCode", code);
-								q.setQualifier(e);
+								else if (UNIT.equals(cType)) {
+									SelectQuery q = new SelectQuery(Module.class);
+									Expression e = ExpressionFactory.matchExp("nationalCode", code);
+									q.setQualifier(e);
 						
-								List<Module> module = context.performQuery(q);
-								if (!module.isEmpty()) {
-									module.get(0).setTrainingPackageId(tp.getId());
+									List<Module> module = context.performQuery(q);
+									if (!module.isEmpty()) {
+										module.get(0).setTrainingPackageId(tp.getId());
+									}
 								}
 							}
 						}
 					}
+					
+					// committing to db every 100 entries
+					if (entriesToCommit > 100) {
+						created += context.newObjects().size();
+						modified += context.modifiedObjects().size();
+						
+						context.commitChanges();
+						entriesToCommit = 0;
+					}
 				}
-			}
 			
-			// remove deleted training packages from db
-			List<DeletedTrainingComponent> deletedComponents = 
-					trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
+				// remove deleted training packages from db
+				List<DeletedTrainingComponent> deletedComponents = 
+						trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
 		
-			for (DeletedTrainingComponent c : deletedComponents) {
-				SelectQuery query = new SelectQuery(TrainingPackage.class);
-				Expression exp = ExpressionFactory.matchExp("nationalISC", c.getNationalCode().getValue());
-				query.setQualifier(exp);
+				for (DeletedTrainingComponent c : deletedComponents) {
+					SelectQuery query = new SelectQuery(TrainingPackage.class);
+					Expression exp = ExpressionFactory.matchExp("nationalISC", c.getNationalCode().getValue());
+					query.setQualifier(exp);
 				
-				List<TrainingPackage> r = context.performQuery(query);
-				if (!r.isEmpty()) {
-					context.deleteObject(r.get(0));
+					List<TrainingPackage> r = context.performQuery(query);
+					if (!r.isEmpty()) {
+						context.deleteObject(r.get(0));
+					}
 				}
-			}
-
-			List<TrainingPackage> created = (List<TrainingPackage>) context.newObjects();
-			for (TrainingPackage p : created) {
-				p.setIshVersion(ishVersion);
-			}
+				
+				created += context.newObjects().size();
+				modified += context.modifiedObjects().size();
+				context.commitChanges();
 			
-			List<TrainingPackage> updated = (List<TrainingPackage>) context.modifiedObjects();
-			for (TrainingPackage p : updated) {
-				p.setIshVersion(ishVersion);
+				result.setNumberOfNew(created);
+				result.setNumberOfUpdated(modified);
 			}
-			
-			context.commitChanges();
-			
-			result.setNumberOfNew(created.size());
-			result.setNumberOfUpdated(updated.size());
 		}
 		catch (Exception e) {
 			throw new NTISException();
@@ -358,72 +395,86 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
+			int entriesToCommit = 0;
+			int created = 0;
+			int modified = 0;
+			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
 				
-				SelectQuery query = new SelectQuery(Module.class);
-				Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
-				query.setQualifier(exp);
+				String type = summary.getComponentType().get(0);
 				
-				Module m;
-				List<Module> r = context.performQuery(query);
-				if (r.isEmpty()) {
-					m = context.newObject(Module.class);
-				}
-				else {
-					m = r.get(0);
-				}
+				if (MODULE.equals(type) || UNIT.equals(type)) {
+				
+					SelectQuery query = new SelectQuery(Module.class);
+					Expression exp = ExpressionFactory.matchExp("nationalCode", summary.getCode().getValue());
+					query.setQualifier(exp);
+				
+					Module m;
+					List<Module> r = context.performQuery(query);
+					if (r.isEmpty()) {
+						m = context.newObject(Module.class);
+					}
+					else {
+						m = r.get(0);
+					}
 
-				m.setNationalCode(summary.getCode().getValue());
-				m.setTitle(summary.getTitle().getValue());
-				m.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
-				m.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
+					m.setNationalCode(summary.getCode().getValue());
+					m.setTitle(summary.getTitle().getValue());
+					m.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
+					m.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
 				
-				if ("AccreditedCourseModule".equals(summary.getComponentType().get(0))) {
-					m.setIsModule((byte) 1);
-				}
-				else {
-					m.setIsModule((byte) 0);
-				}
+					if (MODULE.equals(summary.getComponentType().get(0))) {
+						m.setIsModule((byte) 1);
+					}
+					else {
+						m.setIsModule((byte) 0);
+					}
+					
+					m.setIshVersion(ishVersion);
+					
+					entriesToCommit += 1;
 				
-				detailsRequest.setCode(summary.getCode().getValue());
-				TrainingComponent component = trainingService.getDetails(detailsRequest);
-				List<Classification> classifications = component.getClassifications().getValue().getClassification();
-				for (Classification c : classifications) {
-					if ("04".equals(c.getSchemeCode())) {
-						m.setFieldOfEducation(c.getValueCode());
+					detailsRequest.setCode(summary.getCode().getValue());
+					TrainingComponent component = trainingService.getDetails(detailsRequest);
+					List<Classification> classifications = component.getClassifications().getValue().getClassification();
+					for (Classification c : classifications) {
+						if ("04".equals(c.getSchemeCode())) {
+							m.setFieldOfEducation(c.getValueCode());
+						}
+					}
+					
+					// committing to db every 100 entries
+					if (entriesToCommit > 100) {
+						created += context.newObjects().size();
+						modified += context.modifiedObjects().size();
+						
+						context.commitChanges();
+						entriesToCommit = 0;
 					}
 				}
-			}
 			
-			// remove deleted training packages from db
-			List<DeletedTrainingComponent> deletedComponents = 
-					trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
+				// remove deleted training packages from db
+				List<DeletedTrainingComponent> deletedComponents = 
+						trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
 		
-			for (DeletedTrainingComponent c : deletedComponents) {
-				SelectQuery query = new SelectQuery(Module.class);
-				Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
-				query.setQualifier(exp);
+				for (DeletedTrainingComponent c : deletedComponents) {
+					SelectQuery query = new SelectQuery(Module.class);
+					Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
+					query.setQualifier(exp);
 				
-				List<Module> r = context.performQuery(query);
-				if (!r.isEmpty()) {
-					context.deleteObject(r.get(0));
+					List<Module> r = context.performQuery(query);
+					if (!r.isEmpty()) {
+						context.deleteObject(r.get(0));
+					}
 				}
-			}
-
-			List<Module> created = (List<Module>) context.newObjects();
-			for (Module m : created) {
-				m.setIshVersion(ishVersion);
-			}
+				
+				created += context.newObjects().size();
+				modified += context.modifiedObjects().size();
+				context.commitChanges();
 			
-			List<Module> updated = (List<Module>) context.modifiedObjects();
-			for (Module m : updated) {
-				m.setIshVersion(ishVersion);
+				result.setNumberOfNew(created);
+				result.setNumberOfUpdated(modified);
 			}
-			
-			context.commitChanges();
-			
-			result.setNumberOfNew(created.size());
-			result.setNumberOfUpdated(updated.size());
 		}
 		catch (Exception e) {
 			throw new NTISException();
