@@ -13,6 +13,8 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +118,12 @@ public class Courses {
 	}
 
 	@OnEvent(component = "showMoreCourses")
-	Object onActionFromShowMoreCourses() {
+	Object onActionFromShowMoreCourses() throws MalformedURLException {
+		if(!request.isXHR()){
+			//just reload the page if there is non-ajax request
+			LOGGER.error("'Show more courses' button performed non-ajax request at "+request.getHeader("User-Agent"));
+			return new URL("http://"+request.getServerName()+"/courses");
+		}
 		courses = courseService.loadByIds(coursesIds.toArray());
 
 		if (searchParams == null) {
