@@ -18,6 +18,8 @@
 	<properties>
 		<tomcat.cluster>B</tomcat.cluster>
 		<tomcat-dev.port>7101</tomcat-dev.port>
+		<tomcat-test.port>10101</tomcat-test.port>
+		<tomcat-staging.port>10101</tomcat-staging.port>
 		<tomcat.path>/onCourseBilling</tomcat.path>
 		<training.ws.base.url>https://ws.staging.training.gov.au/</training.ws.base.url>
 		<training.ws.tc.service.url>
