@@ -45,7 +45,7 @@ public class ParsedContentVisitor extends BaseVisitor<String> {
 				text = textileConverter.convertCustomTextile(text, errors);
 
 				if (errors.hasFailures()) {
-					LOGGER.error("Validation errors on Textile cnversion", new ValidationException(errors));
+					LOGGER.debug("Validation errors on Textile cnversion", new ValidationException(errors));
 				} else {
 					//for the existing content
 					text = StringEscapeUtils.unescapeHtml(text).replaceAll("(&amp;nbsp;)", " ");
