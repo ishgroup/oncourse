@@ -20,8 +20,8 @@ import org.apache.tapestry5.services.Response;
 public class AccessController implements Dispatcher {
 
 	private final static String LOGIN_PAGE = "/login";
-	
 	private final static String FORGOT_PASSWORD_PAGE = "/forgotpassword";
+	private final static String PASSWORD_RECOVERY_PAGE = "/passwordrecovery"; 
 
 	@Inject
 	private IAuthenticationService authenticationService;
@@ -64,7 +64,7 @@ public class AccessController implements Dispatcher {
 			String loginPath = request.getContextPath() + LOGIN_PAGE;
 
 			if (authenticationService.getUser() == null) {
-				if (!path.equals(LOGIN_PAGE) && !path.equals(FORGOT_PASSWORD_PAGE)) {
+				if (!path.equals(LOGIN_PAGE) && !path.equals(FORGOT_PASSWORD_PAGE) && !path.equals(PASSWORD_RECOVERY_PAGE)) {
 					cookieService.pushPreviousPagePath(path);
 					response.sendRedirect(loginPath);
 					return true;
