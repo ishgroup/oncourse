@@ -22,6 +22,8 @@ public class AccessController implements Dispatcher {
 	private final static String LOGIN_PAGE = "/login";
 	private final static String FORGOT_PASSWORD_PAGE = "/forgotpassword";
 	private final static String PASSWORD_RECOVERY_PAGE = "/passwordrecovery"; 
+	private final static String SELECT_COLLEGE_PAGE = "/selectcollege"; 
+	
 
 	@Inject
 	private IAuthenticationService authenticationService;
@@ -64,7 +66,7 @@ public class AccessController implements Dispatcher {
 			String loginPath = request.getContextPath() + LOGIN_PAGE;
 
 			if (authenticationService.getUser() == null) {
-				if (!path.equals(LOGIN_PAGE) && !path.equals(FORGOT_PASSWORD_PAGE) && !path.equals(PASSWORD_RECOVERY_PAGE)) {
+				if (!path.equals(LOGIN_PAGE) && !path.equals(FORGOT_PASSWORD_PAGE) && !path.startsWith(PASSWORD_RECOVERY_PAGE) && !path.equals(SELECT_COLLEGE_PAGE)) {
 					cookieService.pushPreviousPagePath(path);
 					response.sendRedirect(loginPath);
 					return true;

@@ -50,6 +50,9 @@ public class SelectCollege {
 
 	@InjectPage
 	private ForgotPassword forgotPassword;
+	
+	@InjectPage
+	private PageNotFound pageNotFound;
 
 	@Persist
 	private ArrayList<String> collegesWithDuplicates;
@@ -79,10 +82,14 @@ public class SelectCollege {
 			}
 		}
 	}
-
+	
 	@SetupRender
-	void setupRender() {
+	Object setupRender() {
+		if(users == null) {
+			return pageNotFound;
+		}
 		this.selectedUser = users.get(0);
+		return null;
 	}
 
 	@OnEvent(component = "collegeForm", value = "success")
