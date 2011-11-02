@@ -3,7 +3,7 @@
 	xmlns:p="tapestry:parameter">
 
 	<div id="addstudent-block" class="${addStudentBlockClass}">
-		<t:zone t:id="addStudentBlock">
+		<t:zone t:id="addStudentBlock" t:update="show">
 			<t:if test="hasContact" negate="true">
 				<t:form zone="addStudentBlock" t:id="shortDetailsForm">
 				
