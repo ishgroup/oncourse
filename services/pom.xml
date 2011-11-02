@@ -11,7 +11,7 @@
 
 	<artifactId>services</artifactId>
 	<groupId>ish.oncourse.willow</groupId>
-	<version>2.14</version>
+	<version>2.15-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Willow - WebServices</name>
 
@@ -204,9 +204,9 @@
 	</build>
 
 	<scm>
-		<connection>scm:svn:https://svn.ish.com.au/ish/willow/tags/services/services-2.14</connection>
-		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/tags/services/services-2.14</developerConnection>
-		<url>http://websvn.ish.com.au/ish/willow/tags/services/services-2.14</url>
+		<connection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/services</connection>
+		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/services</developerConnection>
+		<url>http://websvn.ish.com.au/ish/willow/trunk/services</url>
 	</scm>
 
 	<repositories>
