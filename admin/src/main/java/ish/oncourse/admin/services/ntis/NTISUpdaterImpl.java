@@ -190,34 +190,34 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						entriesToCommit = 0;
 					}
 				}
-			
-				// remove deleted training packages from db
-				List<DeletedTrainingComponent> deletedComponents = 
-						trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
-		
-				for (DeletedTrainingComponent c : deletedComponents) {
-					SelectQuery query = new SelectQuery(Qualification.class);
-					Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
-					query.setQualifier(exp);
-				
-					List<Qualification> r = context.performQuery(query);
-					if (!r.isEmpty()) {
-						context.deleteObject(r.get(0));
-					}
-				}
-			
-				created += context.newObjects().size();
-				modified += context.modifiedObjects().size();
-				context.commitChanges();
-			
-				result.setNumberOfNew(created);
-				result.setNumberOfUpdated(modified);
 			}
+			
+			// remove deleted training packages from db
+			List<DeletedTrainingComponent> deletedComponents = 
+					trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
+		
+			for (DeletedTrainingComponent c : deletedComponents) {
+				SelectQuery query = new SelectQuery(Qualification.class);
+				Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
+				query.setQualifier(exp);
+			
+				List<Qualification> r = context.performQuery(query);
+				if (!r.isEmpty()) {
+					context.deleteObject(r.get(0));
+				}
+			}
+			
+			created += context.newObjects().size();
+			modified += context.modifiedObjects().size();
+			context.commitChanges();
+			
+			result.setNumberOfNew(created);
+			result.setNumberOfUpdated(modified);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			throw new NTISException();
 		}
-		
 		
 		return result;
 	}
@@ -329,31 +329,32 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						entriesToCommit = 0;
 					}
 				}
-			
-				// remove deleted training packages from db
-				List<DeletedTrainingComponent> deletedComponents = 
-						trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
-		
-				for (DeletedTrainingComponent c : deletedComponents) {
-					SelectQuery query = new SelectQuery(TrainingPackage.class);
-					Expression exp = ExpressionFactory.matchExp("nationalISC", c.getNationalCode().getValue());
-					query.setQualifier(exp);
-				
-					List<TrainingPackage> r = context.performQuery(query);
-					if (!r.isEmpty()) {
-						context.deleteObject(r.get(0));
-					}
-				}
-				
-				created += context.newObjects().size();
-				modified += context.modifiedObjects().size();
-				context.commitChanges();
-			
-				result.setNumberOfNew(created);
-				result.setNumberOfUpdated(modified);
 			}
+			
+			// remove deleted training packages from db
+			List<DeletedTrainingComponent> deletedComponents = 
+					trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
+		
+			for (DeletedTrainingComponent c : deletedComponents) {
+				SelectQuery query = new SelectQuery(TrainingPackage.class);
+				Expression exp = ExpressionFactory.matchExp("nationalISC", c.getNationalCode().getValue());
+				query.setQualifier(exp);
+			
+				List<TrainingPackage> r = context.performQuery(query);
+				if (!r.isEmpty()) {
+					context.deleteObject(r.get(0));
+				}
+			}
+				
+			created += context.newObjects().size();
+			modified += context.modifiedObjects().size();
+			context.commitChanges();
+			
+			result.setNumberOfNew(created);
+			result.setNumberOfUpdated(modified);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			throw new NTISException();
 		}
 		
@@ -452,31 +453,31 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						entriesToCommit = 0;
 					}
 				}
-			
-				// remove deleted training packages from db
-				List<DeletedTrainingComponent> deletedComponents = 
-						trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
-		
-				for (DeletedTrainingComponent c : deletedComponents) {
-					SelectQuery query = new SelectQuery(Module.class);
-					Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
-					query.setQualifier(exp);
-				
-					List<Module> r = context.performQuery(query);
-					if (!r.isEmpty()) {
-						context.deleteObject(r.get(0));
-					}
-				}
-				
-				created += context.newObjects().size();
-				modified += context.modifiedObjects().size();
-				context.commitChanges();
-			
-				result.setNumberOfNew(created);
-				result.setNumberOfUpdated(modified);
 			}
+			// remove deleted training packages from db
+			List<DeletedTrainingComponent> deletedComponents = 
+					trainingService.searchDeletedByDeletedDate(deletedRequest).getDeletedTrainingComponent();
+		
+			for (DeletedTrainingComponent c : deletedComponents) {
+				SelectQuery query = new SelectQuery(Module.class);
+				Expression exp = ExpressionFactory.matchExp("nationalCode", c.getNationalCode().getValue());
+				query.setQualifier(exp);
+				
+				List<Module> r = context.performQuery(query);
+				if (!r.isEmpty()) {
+					context.deleteObject(r.get(0));
+				}
+			}
+				
+			created += context.newObjects().size();
+			modified += context.modifiedObjects().size();
+			context.commitChanges();
+			
+			result.setNumberOfNew(created);
+			result.setNumberOfUpdated(modified);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			throw new NTISException();
 		}
 		
