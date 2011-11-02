@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import ish.oncourse.admin.services.ntis.INTISUpdater;
@@ -38,12 +39,25 @@ public class NTIS {
 	
 	@OnEvent(component = "updateForm", value = "success")
 	void submitted() throws Exception {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Date from = dateFormat.parse(dateFrom);
 		Date to = dateFormat.parse(dateTo);
 		
-		ntisUpdater.doUpdate(from, to, Qualification.class);
-		ntisUpdater.doUpdate(from, to, Module.class);
-		ntisUpdater.doUpdate(from, to, TrainingPackage.class);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(from);
+		
+		while (cal.getTime().before(to)) {
+			
+			Date fromDate = cal.getTime();
+			cal.add(Calendar.MONTH, 1);
+			Date toDate = cal.getTime();
+			if (toDate.after(to)) {
+				toDate = to;
+			}
+			
+			ntisUpdater.doUpdate(fromDate, toDate, Module.class);
+			ntisUpdater.doUpdate(fromDate, toDate, Qualification.class);
+			ntisUpdater.doUpdate(fromDate, toDate, TrainingPackage.class);
+		}
 	}
 }

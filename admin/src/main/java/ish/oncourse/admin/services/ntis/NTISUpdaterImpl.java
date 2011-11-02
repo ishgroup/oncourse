@@ -56,7 +56,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	public NTISResult doUpdate(Date from, Date to, Class<?> type) throws NTISException {
 		
 		try {
-		
+			
 			ishVersion = referenceService.findMaxIshVersion() + 1;
 		
 			GregorianCalendar cal = new GregorianCalendar();
@@ -118,7 +118,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		detailsRequest.setInformationRequest(objectFactory.createTrainingComponentInformationRequested(info));
 		
 		try {	
-						
+			
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
@@ -135,6 +135,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				else {
 					q = r.get(0);
 				}
+				
 				q.setNationalCode(summary.getCode().getValue());
 				q.setTitle(summary.getTitle().getValue());
 				q.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
@@ -250,31 +251,36 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				tp.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
 				tp.setType(summary.getComponentType().get(0));
 				
+				detailsRequest.setCode(summary.getCode().getValue());
 				TrainingComponent component = trainingService.getDetails(detailsRequest);
-				List<Release> releases = component.getReleases().getValue().getRelease();
-				List<ReleaseComponent> components = releases.get(0).getComponents().getValue().getReleaseComponent();
-				for (ReleaseComponent c : components) {
-					String code = c.getCode().getValue();
-					String type = c.getType().get(0);
-					if ("Qualification".equals(type)) {
+				if (component.getReleases() != null) {
+					List<Release> releases = component.getReleases().getValue().getRelease();
+					if (releases.get(0).getComponents() != null) {
+						List<ReleaseComponent> components = releases.get(0).getComponents().getValue().getReleaseComponent();
+						for (ReleaseComponent c : components) {
+							String code = c.getCode().getValue();
+							String type = c.getType().get(0);
+							if ("Qualification".equals(type)) {
 						
-						SelectQuery q = new SelectQuery(Qualification.class);
-						Expression e = ExpressionFactory.matchExp("nationalCode", code);
-						q.setQualifier(e);
+								SelectQuery q = new SelectQuery(Qualification.class);
+								Expression e = ExpressionFactory.matchExp("nationalCode", code);
+								q.setQualifier(e);
 						
-						List<Qualification> qual = context.performQuery(q);
-						if (!qual.isEmpty()) {
-							qual.get(0).setTrainingPackageId(tp.getId());
-						}
-					}
-					else if ("Unit".equals(type)) {
-						SelectQuery q = new SelectQuery(Module.class);
-						Expression e = ExpressionFactory.matchExp("nationalCode", code);
-						q.setQualifier(e);
+								List<Qualification> qual = context.performQuery(q);
+								if (!qual.isEmpty()) {
+									qual.get(0).setTrainingPackageId(tp.getId());
+								}
+							}
+							else if ("Unit".equals(type)) {
+								SelectQuery q = new SelectQuery(Module.class);
+								Expression e = ExpressionFactory.matchExp("nationalCode", code);
+								q.setQualifier(e);
 						
-						List<Module> module = context.performQuery(q);
-						if (!module.isEmpty()) {
-							module.get(0).setTrainingPackageId(tp.getId());
+								List<Module> module = context.performQuery(q);
+								if (!module.isEmpty()) {
+									module.get(0).setTrainingPackageId(tp.getId());
+								}
+							}
 						}
 					}
 				}
@@ -371,6 +377,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				m.setTitle(summary.getTitle().getValue());
 				m.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
 				m.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
+				
+				if ("AccreditedCourseModule".equals(summary.getComponentType().get(0))) {
+					m.setIsModule((byte) 1);
+				}
+				else {
+					m.setIsModule((byte) 0);
+				}
 				
 				detailsRequest.setCode(summary.getCode().getValue());
 				TrainingComponent component = trainingService.getDetails(detailsRequest);
