@@ -35,12 +35,8 @@ public class TutorDetails {
 	@SetupRender
 	public void beforeRender() {
 		String id = (String) request.getAttribute("tutorId");
-		if (id.length() > 0) {
-			try {
-				tutor = tutorService.findByAngelId(Long.valueOf(id));
-			} catch (Exception e) {
-				logger.warn(String.format("Tutor with id %s not found", id));
-			}
+		if (id != null && id.length() > 0 && id.matches("\\d+")) {
+			tutor = tutorService.findByAngelId(Long.valueOf(id));
 		}
 	}
 
