@@ -98,8 +98,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 		} catch (Exception e) {
 			logger.error("Unable to process replication records.", e);
 			FaultReason faultReason = new FaultReason();
-			faultReason.setDetailMessage(String.format("Unable to process replication records. Willow exception: %s",
-					StackTraceUtils.stackTraceAsString(e)));
+			faultReason.setDetailMessage(String.format("Unable to process replication records. Willow exception: %s", e.getMessage()));
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
 			throw new ReplicationFault("Unable to process replication records.", faultReason);
 		}
@@ -113,29 +112,28 @@ public class ReplicationServiceImpl implements IReplicationService {
 	public ReplicationRecords getRecords() throws ReplicationFault {
 
 		try {
-			
+
 			int number = 0;
 			int from = 0;
-			
+
 			List<QueuedTransaction> transactions;
 			List<QueuedRecord> queue = new LinkedList<QueuedRecord>();
-			
+
 			do {
 				transactions = queueService.getReplicationQueue(from, TRANSACTION_BATCH_SIZE);
-				
+
 				for (QueuedTransaction t : transactions) {
 					if (!shouldSkipTransaction(t)) {
 						queue.addAll(t.getQueuedRecords());
 						number++;
 					}
 				}
-				
+
 				from += TRANSACTION_BATCH_SIZE;
-			}
-			while (number < TRANSACTION_BATCH_SIZE && transactions.size() == TRANSACTION_BATCH_SIZE);
-			
-			//now we have records to process
-			
+			} while (number < TRANSACTION_BATCH_SIZE && transactions.size() == TRANSACTION_BATCH_SIZE);
+
+			// now we have records to process
+
 			ReplicationRecords result = new ReplicationRecords();
 
 			if (!queue.isEmpty()) {
@@ -183,9 +181,15 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 					ctx.commitChanges();
 
-					String transactionKey = deduper.getTransactionKeys().first();
-					TransactionGroup group = groupMap.get(transactionKey);
-
+					TransactionGroup group = null;
+					
+					for (String transactionKey : deduper.getTransactionKeys()) {
+						group = groupMap.get(transactionKey);
+						if (group != null) {
+							break;
+						}
+					}
+					
 					if (group == null) {
 						group = new TransactionGroup();
 
@@ -215,13 +219,12 @@ public class ReplicationServiceImpl implements IReplicationService {
 		} catch (Exception e) {
 			logger.error("Unable to get records for replication.", e);
 			FaultReason faultReason = new FaultReason();
-			String stackTrace = StackTraceUtils.stackTraceAsString(e);
-			faultReason.setDetailMessage(String.format("Unable to get records for replication. Willow exception: %s", stackTrace));
+			faultReason.setDetailMessage(String.format("Unable to get records for replication. Willow exception: %s", e.getMessage()));
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
 			throw new ReplicationFault("Unable to get records for replication.", faultReason);
 		}
 	}
-	
+
 	/**
 	 * Check if any record within transaction has reached max retry level.
 	 * 
@@ -239,63 +242,63 @@ public class ReplicationServiceImpl implements IReplicationService {
 	}
 
 	/**
-	 * Peforms additional check of transaction groups. Just in case of incomplete data appeared in queue. 
-	 * Incomplete data may be entered by hands or appear right after college migration.
-	 * @param result replication result
+	 * Peforms additional check of transaction groups. Just in case of
+	 * incomplete data appeared in queue. Incomplete data may be entered by
+	 * hands or appear right after college migration.
+	 * 
+	 * @param result
+	 *            replication result
 	 */
 	private void checkTransactionGroups(ReplicationRecords result) {
-		
+
 		for (TransactionGroup g : new ArrayList<TransactionGroup>(result.getGroups())) {
 			if (g.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 				// clean remove group if it's empty
 				result.getGroups().remove(g);
 			}
 		}
-		
+
 		for (TransactionGroup g : new ArrayList<TransactionGroup>(result.getGroups())) {
-			
+
 			Set<ReplicationStub> groupStubs = new HashSet<ReplicationStub>();
 			groupStubs.addAll(g.getAttendanceOrBinaryDataOrBinaryInfo());
-			
+
 			for (ReplicationStub stub : new ArrayList<ReplicationStub>(g.getAttendanceOrBinaryDataOrBinaryInfo())) {
-				
+
 				Invoice invoice = null;
-				
+
 				if ("PaymentIn".equalsIgnoreCase(stub.getEntityIdentifier())) {
 					PaymentIn p = Cayenne.objectForPK(cayenneService.sharedContext(), PaymentIn.class, stub.getWillowId());
 					groupStubs.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(p)));
-				}
-				else if ("PaymentInLine".equalsIgnoreCase(stub.getEntityIdentifier())) {
+				} else if ("PaymentInLine".equalsIgnoreCase(stub.getEntityIdentifier())) {
 					PaymentInLine pLine = Cayenne.objectForPK(cayenneService.sharedContext(), PaymentInLine.class, stub.getWillowId());
 					groupStubs.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(pLine.getPaymentIn())));
-				}
-				else if ("Enrolment".equalsIgnoreCase(stub.getEntityIdentifier())) {
+				} else if ("Enrolment".equalsIgnoreCase(stub.getEntityIdentifier())) {
 					Enrolment enrol = Cayenne.objectForPK(cayenneService.sharedContext(), Enrolment.class, stub.getWillowId());
 					if (enrol.getInvoiceLine() != null && !enrol.getInvoiceLine().getInvoice().getPaymentInLines().isEmpty()) {
 						for (PaymentInLine line : enrol.getInvoiceLine().getInvoice().getPaymentInLines()) {
-							groupStubs.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(line.getPaymentIn())));
+							groupStubs
+									.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(line.getPaymentIn())));
 						}
 					}
-				}
-				else if ("Invoice".equalsIgnoreCase(stub.getEntityIdentifier())) {
+				} else if ("Invoice".equalsIgnoreCase(stub.getEntityIdentifier())) {
 					invoice = Cayenne.objectForPK(cayenneService.sharedContext(), Invoice.class, stub.getWillowId());
-				}
-				else if ("InvoiceLine".equalsIgnoreCase(stub.getEntityIdentifier())) {
+				} else if ("InvoiceLine".equalsIgnoreCase(stub.getEntityIdentifier())) {
 					InvoiceLine line = Cayenne.objectForPK(cayenneService.sharedContext(), InvoiceLine.class, stub.getWillowId());
 					invoice = line.getInvoice();
-				}
-				else if ("InvoiceLineDiscount".equalsIgnoreCase(stub.getEntityIdentifier())) {
-					InvoiceLineDiscount lineDiscount = Cayenne.objectForPK(cayenneService.sharedContext(), InvoiceLineDiscount.class, stub.getWillowId());
+				} else if ("InvoiceLineDiscount".equalsIgnoreCase(stub.getEntityIdentifier())) {
+					InvoiceLineDiscount lineDiscount = Cayenne.objectForPK(cayenneService.sharedContext(), InvoiceLineDiscount.class,
+							stub.getWillowId());
 					invoice = lineDiscount.getInvoiceLine().getInvoice();
 				}
-				
+
 				if (invoice != null && !invoice.getPaymentInLines().isEmpty()) {
 					for (PaymentInLine line : invoice.getPaymentInLines()) {
 						groupStubs.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(line.getPaymentIn())));
 					}
 				}
 			}
-			
+
 			g.getAttendanceOrBinaryDataOrBinaryInfo().clear();
 			g.getAttendanceOrBinaryDataOrBinaryInfo().addAll(groupStubs);
 		}
@@ -353,11 +356,12 @@ public class ReplicationServiceImpl implements IReplicationService {
 						} else {
 							queuedRecord.setLastAttemptTimestamp(new Date());
 							queuedRecord.setErrorMessage(record.getMessage());
-							
+
 							if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(queuedRecord.getNumberOfAttempts())) {
-								logger.error(String.format(
-										"Max number of retries has been reached for QueuedRecord entityIdentifier:%s angelId:%s willowId:%s", record
-												.getStub().getEntityIdentifier(), record.getStub().getAngelId(), record.getStub().getWillowId()));
+								logger.error(String
+										.format("Max number of retries has been reached for QueuedRecord entityIdentifier:%s angelId:%s willowId:%s",
+												record.getStub().getEntityIdentifier(), record.getStub().getAngelId(), record.getStub()
+														.getWillowId()));
 							}
 						}
 
@@ -383,8 +387,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 			logger.error("Unable to confirm replication results.", e);
 
 			FaultReason faultReason = new FaultReason();
-			faultReason.setDetailMessage(String.format("Unable to confirm replication results. Willow exception: %s",
-					StackTraceUtils.stackTraceAsString(e)));
+			faultReason.setDetailMessage(String.format("Unable to confirm replication results. Willow exception: %s", e.getMessage()));
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
 
 			throw new ReplicationFault("Unable to confirm replication results.", faultReason);
