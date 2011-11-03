@@ -6,6 +6,7 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.util.ValidationErrors;
 
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -28,11 +29,19 @@ public class TutorDetails {
 
 	@Property
 	private TutorRole role;
-
+	
+	private static final Logger logger = Logger.getLogger(TutorDetails.class);
+	
 	@SetupRender
 	public void beforeRender() {
 		String id = (String) request.getAttribute("tutorId");
-		tutor = tutorService.findByAngelId(Long.valueOf(id));
+		if (id.length() > 0) {
+			try {
+				tutor = tutorService.findByAngelId(Long.valueOf(id));
+			} catch (Exception e) {
+				logger.warn(String.format("Tutor with id %s not found", id));
+			}
+		}
 	}
 
 	public boolean getTutorFound() {
