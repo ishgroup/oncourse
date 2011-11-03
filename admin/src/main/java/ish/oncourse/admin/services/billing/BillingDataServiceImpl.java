@@ -7,10 +7,6 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -169,23 +165,5 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 		
 		return data;
-	}
-
-	@Override
-	public void createInvoices(String exportData) throws IOException {
-		String filename = "/tmp/onCourseBilling.txt";
-		File exportFile = new File(filename);
-		exportFile.createNewFile();
-		
-		FileWriter fileWriter = new FileWriter(exportFile);
-		BufferedWriter out = new BufferedWriter(fileWriter);
-		out.write(
-				"Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.Qty\tDetail.UnitPrice\tDescription\n" +
-				exportData);
-		out.close();
-		
-		Runtime runtime = Runtime.getRuntime();
-		runtime.exec("scp " + filename + " accounts@203.29.62.219:" + filename);
-		runtime.exec("ssh accounts@203.29.62.219 '/MoneyWorks Documents/MoneyworksCLI.sh " + filename + " ish onCourseBilling'");
 	}
 }
