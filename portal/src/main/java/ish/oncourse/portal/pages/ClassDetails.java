@@ -28,11 +28,11 @@ public class ClassDetails {
 	@InjectPage
 	private PageNotFound pageNotFound;
 	
-	Object onActivate(Object id) {
-		try {
+	Object onActivate(String id) {
+		if (id != null && id.length() > 0 && id.matches("\\d+")) {
 			List<CourseClass> list = courseClassService.loadByIds(Long.parseLong((String) id));
 			this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
-		} catch (Exception e) {
+		} else {
 			return pageNotFound;
 		}
 		

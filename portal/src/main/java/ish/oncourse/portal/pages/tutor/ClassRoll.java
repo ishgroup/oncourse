@@ -68,11 +68,11 @@ public class ClassRoll {
 	@InjectPage
 	private PageNotFound pageNotFound;
 	
-	Object onActivate(Object id) {
-		try {
-			List<CourseClass> list = courseClassService.loadByIds(Long.parseLong((String) id));
+	Object onActivate(String id) {
+		if (id != null && id.length() > 0 && id.matches("\\d+")) {
+			List<CourseClass> list = courseClassService.loadByIds(Long.parseLong(id));
 			this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
-		} catch (Exception e) {
+		} else {
 			return pageNotFound;
 		}
 		return null;
