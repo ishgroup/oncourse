@@ -215,6 +215,9 @@ public class CourseClassService implements ICourseClassService {
 			q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
 			courses.addAll(cayenneService.sharedContext().performQuery(q));
 		}
+		
+		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
+		ordering.orderList(courses);
 
 		return courses;
 	}
