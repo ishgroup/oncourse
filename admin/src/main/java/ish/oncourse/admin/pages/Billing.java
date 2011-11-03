@@ -23,6 +23,8 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.util.TextStreamResponse;
 
 public class Billing {
 
@@ -105,16 +107,20 @@ public class Billing {
 	Object submitted() throws Exception {
 
 		if (isExport) {
-			String exportData = "";
+			String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.Qty\tDetail.UnitPrice\tDescription\n";
 			for (College college : colleges) {
 				exportData += buildMWExport(college);
 			}
 			
-			billingService.createInvoices(exportData);
-		} else {
-
-		}
-
+			return new TextStreamResponse("text/plain", exportData) {
+				
+				@Override
+				public void prepareResponse(Response response) {
+					response.setHeader("Content-Disposition", "attachment; filename=onCourseBilling.txt");
+				}
+			};
+		} 
+		
 		return this;
 	}
 	
