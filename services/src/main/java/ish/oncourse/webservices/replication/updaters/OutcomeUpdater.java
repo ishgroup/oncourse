@@ -15,7 +15,10 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		entity.setDeliveryMode(stub.getDeliveryMode());
 		entity.setStartDate(stub.getStartDate());
 		entity.setEndDate(stub.getEndDate());
-		entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class));
+		
+		Enrolment enrolment = callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class);
+		entity.setEnrolment(enrolment);
+		
 		entity.setFundingSource(stub.getFundingSource());
 		entity.setModuleId(stub.getModuleId());
 		BigDecimal reportableHours = stub.getReportableHours();
