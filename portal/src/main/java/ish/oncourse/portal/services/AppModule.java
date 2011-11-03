@@ -1,5 +1,7 @@
 package ish.oncourse.portal.services;
 
+import java.io.IOException;
+
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.access.AccessController;
 import ish.oncourse.portal.access.AuthenticationService;
@@ -26,7 +28,13 @@ import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
+import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.Dispatcher;
+import org.apache.tapestry5.services.ExceptionReporter;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.RequestExceptionHandler;
+import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.ResponseRenderer;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 
@@ -69,5 +77,26 @@ public class AppModule {
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
 		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
-
+	
+	public RequestExceptionHandler buildAppRequestExceptionHandler(final org.slf4j.Logger logger, final ResponseRenderer renderer, final Response response, 
+			final ComponentSource componentSource) {
+		return new RequestExceptionHandler() {
+			public void handleRequestException(Throwable exception) throws IOException {
+				logger.debug("Unexpected runtime exception: " + exception.getMessage(), exception);
+				
+				if (exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
+					response.sendRedirect("login"); 
+				} else { 
+					String exceptionPageName = "errorPage";
+					ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(exceptionPageName);
+					exceptionReporter.reportException(exception);
+					renderer.renderPageMarkupResponse(exceptionPageName);
+				}
+			}
+		};
+	}
+	
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
+		configuration.add(RequestExceptionHandler.class, handler);
+	}
 }
