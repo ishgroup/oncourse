@@ -24,7 +24,7 @@ jQuery(document).ready(function(){
 		} else {
 			jQuery("#prevButton").show();
 		}
-		if(j === (ils.length - 1))
+		if(j === (ils.length - 1) || ils.length === 0)
 		{
 			jQuery("#nextButton").hide();
 		}
