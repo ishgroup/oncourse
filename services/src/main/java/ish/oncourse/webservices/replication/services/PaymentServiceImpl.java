@@ -11,13 +11,13 @@ import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
-import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.soap.v4.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationFault;
 import ish.oncourse.webservices.v4.stubs.replication.FaultReason;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
+import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import java.math.BigDecimal;
@@ -69,10 +69,23 @@ public class PaymentServiceImpl implements PaymentPortType {
 	public TransactionGroup processPayment(TransactionGroup transaction) throws ReplicationFault {
 
 		try {
+			// check if group from angel is empty
+			if (transaction.getAttendanceOrBinaryDataOrBinaryInfo() == null
+					|| transaction.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+				throw new Exception("Got an empty paymentIn transaction group from angel.");
+			}
+			
 			boolean isCreditCardPayment = ReplicationUtils.isCreditCardPayment(transaction);
 
 			List<ReplicatedRecord> replicatedRecords = groupProcessor.processGroup(transaction);
 
+			// check if records were saved successfully
+			if (replicatedRecords.get(0).getStatus() != Status.SUCCESS) {
+				// records wasn't saved, immediately return to angel.
+				throw new Exception("Willow was unable to save paymentIn transaction group.");
+			}
+
+			
 			ObjectContext newContext = cayenneService.newContext();
 
 			// check places
@@ -80,28 +93,29 @@ public class PaymentServiceImpl implements PaymentPortType {
 			PaymentIn paymentIn = null;
 
 			for (ReplicatedRecord r : replicatedRecords) {
-				
+
 				if (ReplicationUtils.getEntityName(Enrolment.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
-					
+
 					Enrolment enrolment = (Enrolment) newContext.localObject(
 							enrolService.loadById(r.getStub().getWillowId()).getObjectId(), null);
-					
+
 					enrolments.add(enrolment);
-					
+
 				} else if (ReplicationUtils.getEntityName(PaymentIn.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
-					
+
 					PaymentIn p = paymentInService.paymentInByWillowId(r.getStub().getWillowId());
-					
+
 					if (p == null) {
-						throw new Exception(String.format("The paymentIn record with angelId:%s wasn't saved during the payment group processing.", r.getStub().getAngelId()));
+						throw new Exception(String.format(
+								"The paymentIn record with angelId:%s wasn't saved during the payment group processing.", r.getStub()
+										.getAngelId()));
 					}
-					
+
 					paymentIn = (PaymentIn) newContext.localObject(p.getObjectId(), null);
 				}
-				
+
 			}
-			
-			
+
 			boolean isPlacesAvailable = true;
 
 			for (Enrolment enrolment : enrolments) {
@@ -120,7 +134,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 				paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
 				updatedPayments.add(paymentIn.abandonPayment());
 			} else {
-				//if credit card and not-zero payment, generate sessionId.
+				// if credit card and not-zero payment, generate sessionId.
 				if (isCreditCardPayment && paymentIn.getAmount().compareTo(BigDecimal.ZERO) != 0) {
 					paymentIn.setSessionId(idGenerator.generateSessionId());
 				} else {
@@ -140,7 +154,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 			logger.error("Unable to process payment in.", e);
 			FaultReason faultReason = new FaultReason();
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			faultReason.setDetailMessage(String.format("Unable to process payment in. Willow exception: %s", StackTraceUtils.stackTraceAsString(e)));
+			faultReason.setDetailMessage(String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
 			throw new ReplicationFault("Unable to process payment in.", faultReason);
 		}
 	}
@@ -148,24 +162,38 @@ public class PaymentServiceImpl implements PaymentPortType {
 	@Override
 	public TransactionGroup processRefund(TransactionGroup refundGroup) throws ReplicationFault {
 		try {
+			// check if paymentOut group is empty
+			if (refundGroup.getAttendanceOrBinaryDataOrBinaryInfo() == null
+					|| refundGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+				throw new Exception("Got an empty paymentOut transaction group from angel.");
+			}
+
 			// save payment out to database
 			List<ReplicatedRecord> replicatedRecords = groupProcessor.processGroup(refundGroup);
+
+			if (replicatedRecords.get(0).getStatus() != Status.SUCCESS) {
+				throw new Exception("Willow was unable to save paymentOut transaction group.");
+			}
+
 			ReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
 			PaymentOut paymentOut = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
+
 			if (paymentOut == null) {
 				throw new Exception("The paymentOut record with angelId \"" + paymentOutRecord.getStub().getAngelId()
 						+ "\" wasn't saved during the refund group processing.");
 			}
+
 			paymentGatewayService.performGatewayOperation(paymentOut);
 
 			TransactionGroup group = new TransactionGroup();
 			group.getAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createRefundTransaction(paymentOut));
+
 			return group;
 		} catch (Exception e) {
 			logger.error("Unable to process refund.", e);
 			FaultReason faultReason = new FaultReason();
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			faultReason.setDetailMessage(String.format("Unable to process refund. Willow exception: %s", StackTraceUtils.stackTraceAsString(e)));
+			faultReason.setDetailMessage(String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
 			throw new ReplicationFault("Unable to process refund.", faultReason);
 		}
 	}
@@ -195,7 +223,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 			logger.error("Unable to get payment status.", e);
 			FaultReason faultReason = new FaultReason();
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			faultReason.setDetailMessage(String.format("Unable to process refund. Willow exception: %s", StackTraceUtils.stackTraceAsString(e)));
+			faultReason.setDetailMessage(String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
 			throw new ReplicationFault("Unable to process refund.", faultReason);
 		}
 	}
