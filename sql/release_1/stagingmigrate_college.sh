@@ -42,5 +42,3 @@ fi
 /bin/rm -f tmp.sql
 /bin/rm -f edit.sed
 
-#run a full solr index
-cd /var/tomonCourseStaging; ./runsolrindex.sh -a full
