@@ -3,7 +3,6 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.course.CourseService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.search.ISearchService;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Property;
@@ -22,6 +22,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class QuickSearchView {
+
+	private static final Logger LOGGER = Logger.getLogger(QuickSearchView.class);
 
 	@Inject
 	private Request request;
@@ -70,24 +72,34 @@ public class QuickSearchView {
 	@SetupRender
 	void beforeRender() {
 		searchString = request.getParameter("text");
-		searchTerms = searchString.split("[\\s]+");
-		try {
-			SolrDocumentList suggestions = searchService
-					.autoSuggest(searchString);
+		if (searchString != null) {
+			searchTerms = searchString.split("[\\s]+");
+			try {
+				SolrDocumentList suggestions = searchService.autoSuggest(searchString);
 
-			setupLists(suggestions);
+				setupLists(suggestions);
 
-			setupSearchingLocationsSearchString();
-			setupMatchingCourseList();
-			setupCourseList();
-		} catch (SearchException e) {
-			searchString = "";
-			searchTerms = null;
-			
-			setupLists(new SolrDocumentList());
-			matchingCourseList = new ArrayList<Course>();
-			setupCourseList();
+				setupSearchingLocationsSearchString();
+				setupMatchingCourseList();
+				setupCourseList();
+			} catch (SearchException e) {
+				LOGGER.error("search exception ocurred at " + request.getServerName() + ": " + e.getMessage());
+				nullifySearch();
+			}
+		} else {
+			LOGGER.error("quick search plugin invoked in application.js works incorrectly for "
+					+ request.getServerName() + " (request brings empty text parameter)");
+			nullifySearch();
 		}
+	}
+
+	private void nullifySearch() {
+		searchString = "";
+		searchTerms = null;
+
+		setupLists(new SolrDocumentList());
+		matchingCourseList = new ArrayList<Course>();
+		setupCourseList();
 	}
 
 	/**
@@ -119,8 +131,8 @@ public class QuickSearchView {
 	}
 
 	public boolean isHasResults() {
-		return isHasLocationDetailList() || isHasMatchingCourseList()
-				|| isHasCourseList() || isHasTagGroupResultsList();
+		return isHasLocationDetailList() || isHasMatchingCourseList() || isHasCourseList()
+				|| isHasTagGroupResultsList();
 	}
 
 	public boolean isHasLocationDetailList() {
@@ -188,8 +200,7 @@ public class QuickSearchView {
 			for (String term : searchTerms) {
 				if (StringUtils.isNotBlank(term)) {
 					String tempTerm = term.trim();
-					tempTerm = term.indexOf("-") < 0 ? term : term.substring(0,
-							term.indexOf("-"));
+					tempTerm = term.indexOf("-") < 0 ? term : term.substring(0, term.indexOf("-"));
 					if (course.getCode().equalsIgnoreCase(tempTerm)) {
 						matchingCourseList.add(course);
 						break;
