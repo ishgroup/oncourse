@@ -49,7 +49,7 @@ public class CookiesService implements ICookiesService {
 	 * Splits the cookie value by '
 	 * {@value CookiesService#COOKIES_COLLECTION_SEPARATOR}.'
 	 * 
-	 * 
+	 *  
 	 * @see ish.oncourse.services.cookies.ICookiesService#getCookieCollectionValue(java.lang.String)
 	 */
 	public <T> List<T> getCookieCollectionValue(String cookieKey, Class<T> clazz) {
@@ -168,15 +168,17 @@ public class CookiesService implements ICookiesService {
 			return;
 		}
 		String existingValue = getCookieValue(cookieKey);
-		String result;
-		if (existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) == -1) {
+		String result = null;
+		if (existingValue != null && existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) == -1) {
 			result = existingValue.replaceAll(cookieValue, "");
-		} else if (existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) > existingValue.indexOf(cookieValue)) {
+		} else if (existingValue != null && existingValue.lastIndexOf(COOKIES_COLLECTION_SEPARATOR) > existingValue.indexOf(cookieValue)) {
 			result = existingValue.replaceAll(cookieValue + COOKIES_COLLECTION_SEPARATOR_REGEXP, "");
-		} else {
+		} else if (existingValue != null) {
 			result = existingValue.replaceAll(COOKIES_COLLECTION_SEPARATOR_REGEXP + cookieValue, "");
 		}
-		writeCookieValue(cookieKey, result);
+		if(result != null) {
+			writeCookieValue(cookieKey, result);
+		}
 	}
 
 	private boolean checkParameters(String cookieKey, String cookieValue) {
