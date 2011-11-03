@@ -177,7 +177,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		case Room:
 			Room room = null;
 			String roomId = path.substring(path.lastIndexOf("/") + 1);
-			if (roomId != null) {
+			if (roomId != null && roomId.matches("\\d+")) {
 				room = roomService.getRoom(Room.ANGEL_ID_PROPERTY, Long.valueOf(roomId));
 			}
 			if (room != null) {
