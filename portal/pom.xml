@@ -12,7 +12,7 @@
 
 	<groupId>ish.oncourse.willow</groupId>
 	<artifactId>portal</artifactId>
-	<version>2.17</version>
+	<version>2.18-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Willow - Student and Tutor Web App</name>
 	<description>onCourse Willow Student and Tutor Portal.</description>
@@ -142,9 +142,9 @@
 	</build>
 
 	<scm>
-		<connection>scm:svn:https://svn.ish.com.au/ish/willow/tags/portal/portal-2.17</connection>
-		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/tags/portal/portal-2.17</developerConnection>
-		<url>http://websvn.ish.com.au/ish/willow/tags/portal/portal-2.17</url>
+		<connection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/portal</connection>
+		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/portal</developerConnection>
+		<url>http://websvn.ish.com.au/ish/willow/trunk/portal</url>
 	</scm>
 
 	<repositories>
