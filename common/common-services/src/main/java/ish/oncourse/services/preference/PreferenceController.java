@@ -18,6 +18,8 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final Logger LOGGER = Logger.getLogger(PreferenceController.class);
 	
+	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
+	
 	@Inject
 	private ICayenneService cayenneService;
 	
@@ -188,5 +190,13 @@ public class PreferenceController extends CommonPreferenceController {
 
 	public synchronized void setSupportPlanExpiry(String value) {
 		setValue(LICENSE_SUPPORT_PLAN_EXPIRY, false, value);
+	}
+	
+	public synchronized String getNTISLastUpdate() {
+		return getValue(NTIS_LAST_UPDATE, false);
+	}
+	
+	public synchronized void setNTISLastUpdate(String value) {
+		setValue(NTIS_LAST_UPDATE, false, value);
 	}
 }
