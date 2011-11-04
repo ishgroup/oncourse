@@ -71,7 +71,7 @@ public enum PageIdentifier {
 	Timeline("/timeline/sessions", "ui/internal/TimelineData"),
 
 	PageNotFound(".", "ui/PageNotFound"),
-	
+
 	SiteNotFound(".", "ui/SiteNotFound");
 
 	private Pattern pattern;
@@ -99,6 +99,9 @@ public enum PageIdentifier {
 	}
 
 	public static PageIdentifier getPageIdentifierByPath(String path) {
+		if (path.startsWith("/cms")) {
+			path = path.replace("/cms", "");
+		}
 		for (PageIdentifier pageIdentifier : values()) {
 			if (pageIdentifier.getPattern().matcher(path).matches()) {
 				return pageIdentifier;
