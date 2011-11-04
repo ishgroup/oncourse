@@ -18,6 +18,7 @@ import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -90,26 +91,26 @@ public class SearchService implements ISearchService {
 			q.setIncludeScore(true);
 			q.addFilterQuery(String.format("+collegeId:%s +doctype:course end:[NOW TO *]", collegeId));
 
-			if (params.size() == 1 && params.get(SearchParam.s) != null
+			String searchStr = ClientUtils.escapeQueryChars(params.get(SearchParam.s));
+			if (params.size() == 1 && searchStr != null
 					&& request.getAttribute(Tag.BROWSE_TAG_PARAM) == null) {
-				q.setQuery(params.get(SearchParam.s).toLowerCase());
+				q.setQuery(searchStr.toLowerCase());
 				q.setQueryType("dismax");
 			} else {
 				StringBuilder qString = new StringBuilder();
 
 				if (params.containsKey(SearchParam.s)) {
-					String s = params.get(SearchParam.s);
-					qString.append(s).append(" ");
-					qString.append(String.format("(detail: %s || tutor:%s || course_code:%s)", s, s, s)).append(" ");
+					qString.append(searchStr).append(" ");
+					qString.append(String.format("(detail: %s || tutor:%s || course_code:%s)", searchStr, searchStr, searchStr)).append(" ");
 				}
-				
+
 				if (params.containsKey(SearchParam.price)) {
 					String price = params.get(SearchParam.price);
 					if (price != null && price.length() > 0 && !StringUtils.isNumeric(price)) {
 						// remove the possible currency sign
 						price = price.replaceAll("[$]", "");
 					}
-					if(qString.length()!=0){
+					if (qString.length() != 0) {
 						qString.append(" AND ");
 					}
 					qString.append(String.format("price:[* TO %s]", price)).append(" ");
@@ -117,7 +118,7 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.day)) {
 					String day = params.get(SearchParam.day);
-					if(qString.length()!=0){
+					if (qString.length() != 0) {
 						qString.append(" AND ");
 					}
 					qString.append("when:" + day).append(" ");
@@ -125,7 +126,7 @@ public class SearchService implements ISearchService {
 
 				if (params.containsKey(SearchParam.time)) {
 					String time = params.get(SearchParam.time);
-					if(qString.length()!=0){
+					if (qString.length() != 0) {
 						qString.append(" AND ");
 					}
 					qString.append("when:" + time).append(" ");
@@ -144,7 +145,7 @@ public class SearchService implements ISearchService {
 					for (Tag t : browseTag.getAllWebVisibleChildren()) {
 						tagQuery.append(" || tagId:").append(t.getId());
 					}
-					if(qString.length()!=0){
+					if (qString.length() != 0) {
 						qString.append(" AND ");
 					}
 					qString.append(tagQuery.toString()).append(") ");
@@ -184,7 +185,7 @@ public class SearchService implements ISearchService {
 
 	public SolrDocumentList autoSuggest(String term) {
 		try {
-
+			term = ClientUtils.escapeQueryChars(term);
 			College college = webSiteService.getCurrentCollege();
 			String collegeId = String.valueOf(college.getId());
 
@@ -194,20 +195,22 @@ public class SearchService implements ISearchService {
 
 			String[] terms = term.split("[\\s]+");
 			for (int i = 0; i < terms.length; i++) {
-				String t = terms[i].toLowerCase().trim() + "*";
-				coursesQuery.append(String.format("(name:%s && collegeId:%s)", t, collegeId)).append("||");
+				if (!terms[i].equals("")) {
+					String t = terms[i].toLowerCase().trim() + "*";
+					coursesQuery.append(String.format("(name:%s AND collegeId:%s)", t, collegeId)).append("||");
 
-				coursesQuery.append(String.format("(course_code:%s && collegeId:%s)",
-						t.indexOf("-") < 0 ? t : t.substring(0, t.indexOf("-")), collegeId));
+					coursesQuery.append(String.format("(course_code:%s AND collegeId:%s)",
+							t.indexOf("\\-") < 0 ? t : t.substring(0, t.indexOf("\\-")), collegeId));
 
-				suburbsQuery.append(String.format("(doctype:suburb && (suburb:%s || postcode:%s)) ", t, t));
+					suburbsQuery.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s)) ", t, t));
 
-				tagsQuery.append(String.format("(doctype:tag && collegeId:%s && name:%s)", collegeId, t));
+					tagsQuery.append(String.format("(doctype:tag AND collegeId:%s AND name:%s)", collegeId, t));
 
-				if (i + 1 != terms.length) {
-					coursesQuery.append(" || ");
-					suburbsQuery.append(" || ");
-					tagsQuery.append(" || ");
+					if (i + 1 != terms.length) {
+						coursesQuery.append(" || ");
+						suburbsQuery.append(" || ");
+						tagsQuery.append(" || ");
+					}
 				}
 			}
 
@@ -232,19 +235,21 @@ public class SearchService implements ISearchService {
 
 	public QueryResponse searchSuburbs(String term) {
 		try {
-
+			term = ClientUtils.escapeQueryChars(term);
 			SolrQuery q = new SolrQuery();
 
 			StringBuilder query = new StringBuilder();
 
 			String[] terms = term.split("[\\s]+");
 			for (int i = 0; i < terms.length; i++) {
-				String t = terms[i].toLowerCase().trim() + "*";
+				if (!terms[i].equals("")) {
+					String t = terms[i].toLowerCase().trim() + "*";
 
-				query.append(String.format("(doctype:suburb && (suburb:%s || postcode:%s)) ", t, t));
+					query.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s)) ", t, t));
 
-				if (i + 1 != terms.length) {
-					query.append(" || ");
+					if (i + 1 != terms.length) {
+						query.append(" || ");
+					}
 				}
 			}
 
@@ -274,11 +279,11 @@ public class SearchService implements ISearchService {
 			StringBuilder query = new StringBuilder();
 			query.append("(doctype:suburb");
 			if (suburbParams[0] != null) {
-				query.append(" && suburb:").append(suburbParams[0].replaceAll("[\\s]+", "+"));
+				query.append(" AND suburb:").append(suburbParams[0].replaceAll("[\\s]+", "+"));
 			}
 
 			if (suburbParams[1] != null) {
-				query.append(" && postcode:").append(suburbParams[1]);
+				query.append(" AND postcode:").append(suburbParams[1]);
 			}
 
 			query.append(") ");
