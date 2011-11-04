@@ -11,6 +11,8 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -167,9 +169,9 @@ public class CourseItem {
 	}
 
 	public List<CourseClass> getClasses() {
-		if (isList) {
-			return course.getEnrollableClasses();
-		}
-		return course.getCurrentClasses();
+		List<CourseClass> classes = (isList) ? course.getEnrollableClasses() :  course.getCurrentClasses();
+		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
+		ordering.orderList(classes);
+		return classes;
 	}
 }
