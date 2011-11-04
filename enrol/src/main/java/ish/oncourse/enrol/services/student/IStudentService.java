@@ -9,7 +9,7 @@ public interface IStudentService {
 
 	String SHORTLIST_STUDENTS_KEY = "shortlistStudents";
 
-	Student getStudent(String firstName, String lastName, String email);
+	Contact getStudentContact(String firstName, String lastName, String email);
 
 	void addStudentToShortlist(Contact student);
 
@@ -23,5 +23,5 @@ public interface IStudentService {
 	List<Long> getContactsIdsFromShortList();
 
 	List<Contact> getContactsByIds(List<Long> ids);
-
+	
 }

@@ -1,9 +1,5 @@
 package ish.oncourse.enrol.components;
 
-import ish.common.types.AvetmissStudentEnglishProficiency;
-import ish.common.types.AvetmissStudentIndigenousStatus;
-import ish.common.types.AvetmissStudentPriorEducation;
-import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
@@ -45,12 +41,11 @@ public class EnrolmentContactEntry {
 	@Inject
 	private ICayenneService cayenneService;
 
-    @Inject
+	@Inject
 	private IConcessionsService concessionsService;
 
 	@Inject
 	private CommonPreferenceController preferenceService;
-
 
 	/**
 	 * tapestry services
@@ -119,18 +114,11 @@ public class EnrolmentContactEntry {
 		contact = context.newObject(Contact.class);
 
 		College currentCollege = webSiteService.getCurrentCollege();
-		College college = (College) context.localObject(currentCollege.getObjectId(),
-				currentCollege);
+		College college = (College) context.localObject(currentCollege.getObjectId(), currentCollege);
 		contact.setCollege(college);
 
-		Student student = context.newObject(Student.class);
-		student.setCollege(college);
-		student.setEnglishProficiency(AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
-		student.setIndigenousStatus(AvetmissStudentIndigenousStatus.DEFAULT_POPUP_OPTION);
-		student.setHighestSchoolLevel(AvetmissStudentSchoolLevel.DEFAULT_POPUP_OPTION);
-		student.setPriorEducationCode(AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
-		contact.setStudent(student);
-
+		contact.createNewStudent();
+		
 		contact.setIsMarketingViaEmailAllowed(true);
 		contact.setIsMarketingViaPostAllowed(true);
 		contact.setIsMarketingViaSMSAllowed(true);
@@ -141,8 +129,7 @@ public class EnrolmentContactEntry {
 
 	public String getAddStudentBlockClass() {
 		List<Long> shortlistStudents = studentService.getContactsIdsFromShortList();
-		return (shortlistStudents == null || shortlistStudents.isEmpty() || needMoreInfo) ? "show"
-				: "collapse";
+		return (shortlistStudents == null || shortlistStudents.isEmpty() || needMoreInfo) ? "show" : "collapse";
 	}
 
 	public boolean isNewStudent() {
@@ -176,6 +163,7 @@ public class EnrolmentContactEntry {
 			if (emailErrorMessage != null) {
 				shortDetailsForm.recordError(email, emailErrorMessage);
 			}
+
 		}
 	}
 
@@ -190,13 +178,20 @@ public class EnrolmentContactEntry {
 			contact.setGivenName(null);
 			contact.setFamilyName(null);
 			contact.setEmailAddress(null);
-
 		} else {
-			Student student = studentService.getStudent(contact.getGivenName(),
-					contact.getFamilyName(), contact.getEmailAddress());
-			if (student != null) {
-				contact = student.getContact();
+			Contact studentContact = studentService.getStudentContact(contact.getGivenName(), contact.getFamilyName(),
+					contact.getEmailAddress());
+			if (studentContact != null) {
+				Student newStudent=contact.getStudent();
+				contact.setStudent(null);
+				context.deleteObject(contact);
+				contact = (Contact) context.localObject(studentContact.getObjectId(), null);
+				if (contact.getStudent() == null) {
+					contact.setStudent(newStudent);
+					context.commitChanges();
+				}
 				studentService.addStudentToShortlist(contact);
+				
 				return "EnrolCourses";
 			}
 			hasContact = true;
@@ -218,11 +213,11 @@ public class EnrolmentContactEntry {
 
 	private String getInputSectionClass(TextField field) {
 		ValidationTracker defaultTracker = shortDetailsForm.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? messages
-				.get("validInput") : messages.get("validateInput");
+		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages
+				.get("validateInput");
 	}
 
-    public boolean isShowConcessionsArea() {
+	public boolean isShowConcessionsArea() {
 		return concessionsService.hasActiveConcessionTypes();
 	}
 

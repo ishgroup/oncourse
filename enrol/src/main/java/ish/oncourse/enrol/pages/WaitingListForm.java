@@ -4,7 +4,6 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
-import ish.oncourse.model.Student;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -111,24 +110,25 @@ public class WaitingListForm {
 		if (!waitingListForm.getHasErrors()) {
 
 			ObjectContext context = cayenneService.newContext();
-			College college = (College) context.localObject(webSiteService.getCurrentCollege()
-					.getObjectId(), null);
+			College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
 
-			Student student = studentService.getStudent(contact.getGivenName(),
-					contact.getFamilyName(), contact.getEmailAddress());
-			if (student != null) {
-				student = (Student) context.localObject(student.getObjectId(), null);
+			Contact studentContact = studentService.getStudentContact(contact.getGivenName(), contact.getFamilyName(),
+					contact.getEmailAddress());
+			if (studentContact != null) {
+				studentContact = (Contact) context.localObject(studentContact.getObjectId(), null);
+				if (studentContact.getStudent() == null) {
+					studentContact.createNewStudent();
+				}
 			} else {
-				student = context.newObject(Student.class);
 				context.registerNewObject(contact);
 				contact.setCollege(college);
-				student.setContact(contact);
-				student.setCollege(college);
+				studentContact = contact;
+				studentContact.createNewStudent();
 			}
 
 			context.registerNewObject(waitingList);
 			waitingList.setCollege(college);
-			waitingList.setStudent(student);
+			waitingList.setStudent(studentContact.getStudent());
 			waitingList.setCourse((Course) context.localObject(course.getObjectId(), null));
 			context.commitChanges();
 			submittedSuccessfully = true;

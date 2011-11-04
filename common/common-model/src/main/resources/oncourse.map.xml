@@ -2243,8 +2243,8 @@
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
-	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
-	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
+	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Cascade" db-relationship-path="student"/>
+	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
@@ -2347,7 +2347,7 @@
 	<obj-relationship name="attendances" source="Student" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="certificates" source="Student" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="college" source="Student" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
+	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="countryOfBirth" source="Student" target="Country" deleteRule="Nullify" db-relationship-path="countryOfBirth"/>
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="language" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="language"/>
@@ -2373,7 +2373,7 @@
 	<obj-relationship name="taggable" source="TaggableTag" target="Taggable" deleteRule="Nullify" db-relationship-path="taggable"/>
 	<obj-relationship name="attendances" source="Tutor" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Tutor" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="contact" source="Tutor" target="Contact" deleteRule="Deny" db-relationship-path="contact"/>
+	<obj-relationship name="contact" source="Tutor" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="messagePeople" source="Tutor" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="sessionTutors" source="Tutor" target="SessionTutor" deleteRule="Deny" db-relationship-path="sessionTutors"/>
 	<obj-relationship name="sessions" source="Tutor" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>

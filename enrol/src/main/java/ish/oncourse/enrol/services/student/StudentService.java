@@ -33,18 +33,14 @@ public class StudentService implements IStudentService {
 	@Inject
 	private Request request;
 
-	public Student getStudent(String firstName, String lastName, String email) {
+	public Contact getStudentContact(String firstName, String lastName, String email) {
 		College currentCollege = webSiteService.getCurrentCollege();
-		Expression qualifier = ExpressionFactory
-				.matchExp(Student.COLLEGE_PROPERTY, currentCollege)
-				.andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY + "."
-						+ Contact.GIVEN_NAME_PROPERTY, firstName))
-				.andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY + "."
-						+ Contact.FAMILY_NAME_PROPERTY, lastName))
-				.andExp(ExpressionFactory.matchExp(Student.CONTACT_PROPERTY + "."
-						+ Contact.EMAIL_ADDRESS_PROPERTY, email));
-		SelectQuery query = new SelectQuery(Student.class, qualifier);
-		List<Student> results = cayenneService.sharedContext().performQuery(query);
+		Expression qualifier = ExpressionFactory.matchExp(Student.COLLEGE_PROPERTY, currentCollege)
+				.andExp(ExpressionFactory.matchExp(Contact.GIVEN_NAME_PROPERTY, firstName))
+				.andExp(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName))
+				.andExp(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
+		SelectQuery query = new SelectQuery(Contact.class, qualifier);
+		List<Contact> results = cayenneService.sharedContext().performQuery(query);
 		return results.isEmpty() ? null : results.get(0);
 	}
 
@@ -77,8 +73,7 @@ public class StudentService implements IStudentService {
 			return Collections.emptyList();
 		}
 
-		SelectQuery q = new SelectQuery(Contact.class, ExpressionFactory.inDbExp(
-				Contact.ID_PK_COLUMN, ids));
+		SelectQuery q = new SelectQuery(Contact.class, ExpressionFactory.inDbExp(Contact.ID_PK_COLUMN, ids));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}

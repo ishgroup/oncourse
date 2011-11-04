@@ -1,5 +1,9 @@
 package ish.oncourse.model;
 
+import ish.common.types.AvetmissStudentEnglishProficiency;
+import ish.common.types.AvetmissStudentIndigenousStatus;
+import ish.common.types.AvetmissStudentPriorEducation;
+import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.auto._Contact;
 import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.TimestampUtilities;
@@ -261,5 +265,16 @@ public class Contact extends _Contact implements Queueable {
 		setPassword(newPassword);
 		setPasswordRecoverExpire(null);
 		setPasswordRecoveryKey(null);
+	}
+	
+	public Student createNewStudent() {
+		Student student = getObjectContext().newObject(Student.class);
+		student.setCollege(getCollege());
+		student.setEnglishProficiency(AvetmissStudentEnglishProficiency.DEFAULT_POPUP_OPTION);
+		student.setIndigenousStatus(AvetmissStudentIndigenousStatus.DEFAULT_POPUP_OPTION);
+		student.setHighestSchoolLevel(AvetmissStudentSchoolLevel.DEFAULT_POPUP_OPTION);
+		student.setPriorEducationCode(AvetmissStudentPriorEducation.DEFAULT_POPUP_OPTION);
+		setStudent(student);
+		return student;
 	}
 }
