@@ -84,4 +84,14 @@ public class VideoTextileValidatorTest extends CommonValidatorTest {
 				.getIncorrectTypeMessage(INCORRECT_VIDEO_TYPE)));
 	}
 
+	/**
+	 * Emulates the situation when there is a new line in {video}, shouldn't be
+	 * any errors.
+	 */
+	@Test
+	public void videoWithNewLineTest() {
+		String tag = "{video id:\"youtubeId\" \n type:\"youtube\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+	}
 }

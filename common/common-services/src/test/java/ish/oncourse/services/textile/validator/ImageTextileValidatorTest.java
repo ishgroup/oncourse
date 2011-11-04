@@ -156,4 +156,14 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 		assertTrue(errors.hasFailures());
 		assertTrue(errors.contains(((ImageTextileValidator) validator).getNotFoundContentMessage()));
 	}
+	
+	/**
+	 * Emulates the situation when there is a new line in {image}, shouldn't be any errors.
+	 */
+	@Test
+	public void imageWithNewLineTest() {
+		String tag = "{image \n name:\"" + TEST_BINARYINFO_NAME + "\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+	}
 }

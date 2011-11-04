@@ -51,6 +51,17 @@ public class BlockTextileValidatorTest extends CommonValidatorTest {
 		assertTrue(errors.toString().contains(
 				((BlockTextileValidator) validator).getBlockNotFoundErrorMessage(TEST_NAME_NOT_EXIST)));
 	}
+	
+	/**
+	 * Emulates the situation when there is a new line in {block}, shouldn't be any errors.
+	 */
+	@Test
+	public void blockWithNewLineTest() {
+		String tag = "{block \n  name:\"" + TEST_BLOCK_NAME + "\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+	}
+	
 
 	/**
 	 * Emulates the situation when the textile contains error in format, two

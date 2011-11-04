@@ -73,4 +73,13 @@ public class PageTextileValidatorTest extends CommonValidatorTest {
 		assertTrue(errors.toString().contains(((PageTextileValidator) validator).getPageNotFoundByCode(NOT_EXISTING_PAGE_CODE)));
 	}
 
+	/**
+	 * Emulates the situation when there is a new line in {page}, shouldn't be any errors.
+	 */
+	@Test
+	public void pageWithNewLineTest() {
+		String tag = "{page \n code:\"" + TEST_PAGE_CODE + "\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+	}
 }

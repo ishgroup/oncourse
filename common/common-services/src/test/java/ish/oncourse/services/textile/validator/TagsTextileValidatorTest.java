@@ -87,4 +87,14 @@ public class TagsTextileValidatorTest extends CommonValidatorTest {
 				((TagsTextileValidator) validator).getTagNotFoundByName(NOT_EXISTING_TAG_NAME)));
 	}
 
+	/**
+	 * Emulates the situation when there is a new line in {tags}, shouldn't be
+	 * any errors.
+	 */
+	@Test
+	public void tagsWithNewLineTest() {
+		String tag = "{tags \n name:\"" + EXISTING_TAG_NAME + "\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+	}
 }

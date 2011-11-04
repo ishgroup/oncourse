@@ -110,4 +110,14 @@ public class CourseTextileValidatorTest extends CommonValidatorTest {
 		assertTrue(errors.toString().contains(
 				((CourseTextileValidator) validator).getTagNotFoundByName(NOT_EXISTING_COURSE_TAG)));
 	}
+	
+	/**
+	 * Emulates the situation when there is a new line in {course}, shouldn't be any errors.
+	 */
+	@Test
+	public void courseWithNewLineTest() {
+		String tag = "{course \n tag:\"" + EXISTING_COURSE_TAG + "\"}";
+		validator.validate(tag, errors);
+		assertFalse(errors.hasFailures());
+	}
 }
