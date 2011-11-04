@@ -305,7 +305,11 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
-						enrol.setStatus(EnrolmentStatus.FAILED);
+						boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.PENDING
+								|| enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
+						if (shouldFailEnrolment) {
+							enrol.setStatus(EnrolmentStatus.FAILED);
+						}
 					}
 				}
 
@@ -336,11 +340,18 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
-			invoice.setStatus(InvoiceStatus.PENDING);
-			for (InvoiceLine il : invoice.getInvoiceLines()) {
-				Enrolment enrol = il.getEnrolment();
-				if (enrol != null) {
-					enrol.setStatus(EnrolmentStatus.PENDING);
+
+			if (invoice.getStatus() != InvoiceStatus.FAILED && invoice.getStatus() != InvoiceStatus.SUCCESS) {
+				invoice.setStatus(InvoiceStatus.PENDING);
+				for (InvoiceLine il : invoice.getInvoiceLines()) {
+					Enrolment enrol = il.getEnrolment();
+					if (enrol != null) {
+						boolean shouldPendEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.PENDING
+								|| enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
+						if (shouldPendEnrolment) {
+							enrol.setStatus(EnrolmentStatus.PENDING);
+						}
+					}
 				}
 			}
 		}
