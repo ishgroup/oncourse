@@ -1703,6 +1703,17 @@ a.btn2{
    width:150px;  
 }
 
+#prevSession .disabled {
+  color: grey; 
+  cursor: default;
+}
+
+
+#nextSession .disabled {
+  color: grey; 
+  cursor: default;
+}
+
 #effect_attendance h3 {
 	position:relative;  
 	left: 0px; 
@@ -1785,7 +1796,6 @@ img.t-error-icon {
 .validation > ul {
     margin-left: 35px;
 }
-
 
 
 

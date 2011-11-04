@@ -7,60 +7,66 @@ jQuery(document).ready(function(){
     // Next click
 	jQuery("#nextButton").click(function(){
 		
-		for(i=0; i<=ils.length; i++)
-		{
-			if(jQuery(ils[i]).is(":visible"))
+		 if (jQuery(this).hasClass('disabled'))
+			    return false; 
+		 else {
+			for(i=0; i<=ils.length; i++)
 			{
-				j = i+1;
-				break;
-			}	
-		}
-		if(j === 0) 
-		{
-			jQuery("#prevButton").hide();
-			jQuery(ils[j]).show();
-			jQuery(ils_attendance[j]).show();
-			initAttendanceButtons(j);
-		} else {
-			jQuery("#prevButton").show();
-		}
-		if(j === (ils.length - 1) || ils.length === 0)
-		{
-			jQuery("#nextButton").hide();
-		}
-		
-		jQuery(ils[i]).hide("slide",{direction: 'right'},500,function(){  
-			jQuery(ils[j]).show("slide",{},500);});
+				if(jQuery(ils[i]).is(":visible"))
+				{
+					j = i+1;
+					break;
+				}	
+			}
+			if(j === 0) 
+			{
+				jQuery("#prevButton").addClass('disabled');
+				jQuery(ils[j]).show();
+				jQuery(ils_attendance[j]).show();
+				initAttendanceButtons(j);
+			} else {
+				jQuery("#prevButton").removeClass('disabled');
+			}
+			if(j === (ils.length - 1) || ils.length === 0)
+			{
+				jQuery("#nextButton").addClass('disabled');
+			}
 			
-		jQuery(ils_attendance[i]).hide("slide",{direction: 'right'},500,function(){
-			jQuery(ils_attendance[j]).show("slide",{},500);
-		});
-		
-		
+			jQuery(ils[i]).hide("slide",{direction: 'right'},500,function(){  
+				jQuery(ils[j]).show("slide",{},500);});
+				
+			jQuery(ils_attendance[i]).hide("slide",{direction: 'right'},500,function(){
+				jQuery(ils_attendance[j]).show("slide",{},500);
+			});
+		 }
 	});
 	
 	// Previous click
 	jQuery("#prevButton").click(function(){
-		jQuery("#nextButton").show();
-		for(i=0; i<=ils.length; i++)
-		{
-			if(jQuery(ils[i]).is(":visible"))
+		 if (jQuery(this).hasClass('disabled'))
+			    return false; 
+		 else {
+			jQuery("#nextButton").addClass('disabled');
+			for(i=0; i<=ils.length; i++)
 			{
-				j = i-1;
-				break;
-			}	
-		}
-		if(j === 0) 
-		{
-			jQuery("#prevButton").hide();
-		}
-		
-		jQuery(ils[i]).hide("slide",{},500,function(){  
-			jQuery(ils[j]).show("slide",{direction: 'right'},500);});
+				if(jQuery(ils[i]).is(":visible"))
+				{
+					j = i-1;
+					break;
+				}	
+			}
+			if(j === 0) 
+			{
+				jQuery("#prevButton").removeClass('disabled')
+			}
 			
-		jQuery(ils_attendance[i]).hide("slide",{},500,function(){
-			jQuery(ils_attendance[j]).show("slide",{direction: 'right'},500);
-		});
+			jQuery(ils[i]).hide("slide",{},500,function(){  
+				jQuery(ils[j]).show("slide",{direction: 'right'},500);});
+				
+			jQuery(ils_attendance[i]).hide("slide",{},500,function(){
+				jQuery(ils_attendance[j]).show("slide",{direction: 'right'},500);
+			});
+		 }
 	});
 	
 	jQuery(".attended").click(function(){
