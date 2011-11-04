@@ -33,13 +33,13 @@ public class NTISJob implements Job {
 			
 			// TODO: date should be picked from preference controller
 			
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-			Date from = dateFormat.parse("2011/04/01");
-			Date to = dateFormat.parse("2011/05/01");
+			//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			//Date from = dateFormat.parse("2011/04/01");
+			//Date to = dateFormat.parse("2011/05/01");
 			
-			NTISResult qualificationResult = ntisUpdater.doUpdate(from, to, Module.class);
-			NTISResult moduleResult = ntisUpdater.doUpdate(from, to, Qualification.class);
-			NTISResult trainingPackageResult = ntisUpdater.doUpdate(from, to, TrainingPackage.class);
+			//NTISResult qualificationResult = ntisUpdater.doUpdate(from, to, Module.class);
+			//NTISResult moduleResult = ntisUpdater.doUpdate(from, to, Qualification.class);
+			//NTISResult trainingPackageResult = ntisUpdater.doUpdate(from, to, TrainingPackage.class);
 			
 			//print result of update into log
 		} catch (Exception e) {
