@@ -346,8 +346,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				for (InvoiceLine il : invoice.getInvoiceLines()) {
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
-						boolean shouldPendEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.PENDING
-								|| enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
+						boolean shouldPendEnrolment = (enrol.getStatus() != EnrolmentStatus.PENDING || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION);
 						if (shouldPendEnrolment) {
 							enrol.setStatus(EnrolmentStatus.PENDING);
 						}
