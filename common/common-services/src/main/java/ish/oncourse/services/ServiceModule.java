@@ -83,6 +83,8 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tag.TagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileConverter;
+import ish.oncourse.services.threading.ThreadSource;
+import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
@@ -144,6 +146,8 @@ public class ServiceModule {
 		binder.bind(PreferenceControllerFactory.class);
 		binder.bind(EncryptionService.class);
 		binder.bind(MailService.class);
+		
+		binder.bind(ThreadSource.class, ThreadSourceImpl.class);
 		
 		binder.bind(IContactService.class, ContactServiceImpl.class);
 		binder.bind(IRoomService.class, RoomService.class);

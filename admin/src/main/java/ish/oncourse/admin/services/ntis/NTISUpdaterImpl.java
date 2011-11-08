@@ -58,6 +58,11 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	@Inject
 	private ICayenneService cayenneService;
 	
+	/**
+	 * Max number of reference records which causes cayenne commit.
+	 */
+	private static final int MAX_ENTRIES_TO_COMMIT = 500;
+	
 	private Long ishVersion;
 	
 	/* (non-Javadoc)
@@ -181,12 +186,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						}
 					}
 					
-					// committing to db every 100 entries
-					if (entriesToCommit > 100) {
+					// committing to db every MAX_ENTRIES_TO_COMMIT entries
+					if (entriesToCommit >= MAX_ENTRIES_TO_COMMIT) {
 						created += context.newObjects().size();
 						modified += context.modifiedObjects().size();
-						
+					
 						context.commitChanges();
+						this.ishVersion++;
 						entriesToCommit = 0;
 					}
 				}
@@ -320,12 +326,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						}
 					}
 					
-					// committing to db every 100 entries
-					if (entriesToCommit > 100) {
+					// committing to db every MAX_ENTRIES_TO_COMMIT entries
+					if (entriesToCommit >= MAX_ENTRIES_TO_COMMIT) {
 						created += context.newObjects().size();
 						modified += context.modifiedObjects().size();
 						
 						context.commitChanges();
+						this.ishVersion++;
 						entriesToCommit = 0;
 					}
 				}
@@ -444,12 +451,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						}
 					}
 					
-					// committing to db every 100 entries
-					if (entriesToCommit > 100) {
+					// committing to db every MAX_ENTRIES_TO_COMMIT entries
+					if (entriesToCommit > MAX_ENTRIES_TO_COMMIT) {
 						created += context.newObjects().size();
 						modified += context.modifiedObjects().size();
 						
 						context.commitChanges();
+						this.ishVersion++;
 						entriesToCommit = 0;
 					}
 				}
