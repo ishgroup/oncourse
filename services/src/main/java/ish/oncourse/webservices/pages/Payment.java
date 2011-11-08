@@ -16,6 +16,8 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -106,9 +108,13 @@ public class Payment {
 
 	private void initInvoices() {
 		this.invoices = new ArrayList<Invoice>();
+		
 		for (PaymentInLine paymentLine : this.payment.getPaymentInLines()) {
 			this.invoices.add(paymentLine.getInvoice());
 		}
+		
+		Ordering ordering = new Ordering(Invoice.INVOICE_NUMBER_PROPERTY, SortOrder.ASCENDING);
+		ordering.orderList(this.invoices);
 	}
 
 	public boolean isPaymentBeingProcessed() {

@@ -11,8 +11,11 @@ import ish.util.CreditCardUtil;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -227,31 +230,18 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 */
 	private Invoice findActiveInvoice() {
 		
-		Invoice activeInvoice = null;
-
+		SortedSet<Invoice> invoices = new TreeSet<Invoice>(new Comparator<Invoice>() {
+			public int compare(Invoice o1, Invoice o2) {
+				return (getSource() == PaymentSource.SOURCE_ONCOURSE) ? o2.getInvoiceNumber().compareTo(o1.getInvoiceNumber()) : o2.getId().compareTo(o1.getId()) ;
+			}
+		});
+		
 		for (PaymentInLine line : getPaymentInLines()) {
 			Invoice invoice = line.getInvoice();
-
-			if (activeInvoice == null) {
-				activeInvoice = invoice;
-			} else {
-				// For angel payments use angelId to determine the last
-				// invoice, since createdDate is very often the same
-				// accross several invoices
-				if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
-					if (invoice.getAngelId() > activeInvoice.getAngelId()) {
-						activeInvoice = invoice;
-					}
-				} else {
-					// For willow payments, use willowId to determine
-					// the newest invoice.
-					if (invoice.getId() > activeInvoice.getId()) {
-						activeInvoice = invoice;
-					}
-				}
-			}
+			invoices.add(invoice);
 		}
 		
+		Invoice activeInvoice = invoices.first();
 		return activeInvoice;
 	}
 
@@ -289,7 +279,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					// invoice, since createdDate is very often the same
 					// accross several invoices
 					if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
-						if (invoice.getAngelId() > invoiceToRefund.getAngelId()) {
+						if (invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber()) {
 							paymentInLineToRefund = line;
 							invoiceToRefund = invoice;
 						}
@@ -398,16 +388,15 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
-
-		for (PaymentInLine pl : getPaymentInLines()) {
-			Invoice invoice = pl.getInvoice();
-			if (invoice.getStatus() == InvoiceStatus.PENDING || invoice.getStatus() == InvoiceStatus.IN_TRANSACTION) {
-				invoice.setStatus(InvoiceStatus.PENDING);
-				for (InvoiceLine il : invoice.getInvoiceLines()) {
-					Enrolment enrol = il.getEnrolment();
-					if (enrol != null) {
-						enrol.setStatus(EnrolmentStatus.PENDING);
-					}
+		
+		Invoice activeInvoice = findActiveInvoice();
+		
+		if (activeInvoice != null) {
+			activeInvoice.setStatus(InvoiceStatus.PENDING);
+			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
+				Enrolment enrol = il.getEnrolment();
+				if (enrol != null) {
+					enrol.setStatus(EnrolmentStatus.PENDING);
 				}
 			}
 		}
