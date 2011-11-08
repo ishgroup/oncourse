@@ -19,7 +19,7 @@
 	<db-entity name="Language" catalog="willow_reference">
 		<db-attribute name="absCode" type="VARCHAR" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isActive" type="TINYINT" isMandatory="true" length="3"/>
 		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
