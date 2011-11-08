@@ -22,12 +22,12 @@
 	
 	<context-param>
     	<param-name>liquibase.changelog</param-name>
-    	<param-value>liquibase.db.changelog.xml</param-value>	
+    	<param-value>liquibase.db.changelog.xml,liquibaseReference.db.changelog.xml</param-value>	
 	</context-param>
  
 	<context-param>
     	<param-name>liquibase.datasource</param-name>
-    	<param-value>java:comp/env/jdbc/oncourse</param-value>
+    	<param-value>java:comp/env/jdbc/oncourse,java:comp/env/jdbc/oncourse_reference</param-value>
 	</context-param>
   
 	<context-param>
@@ -41,10 +41,13 @@
 	</context-param>
  
 	<listener>
-    	<listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
+    	<listener-class>ish.oncourse.listeners.TheLiquibaseServletListener</listener-class>
 	</listener>
 	
-	
+	<listener>
+  		<listener-class>ish.oncourse.listeners.TheLeakPreventionListener</listener-class>
+  	</listener>
+  	
 	<welcome-file-list>
 		<welcome-file>/</welcome-file>
 	</welcome-file-list>
@@ -53,4 +56,5 @@
     	<error-code>404</error-code> 
    		<location>/PageNotFound</location>
   	</error-page>
+  	
 </web-app>
