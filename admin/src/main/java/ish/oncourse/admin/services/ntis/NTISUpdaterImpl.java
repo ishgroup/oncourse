@@ -1,6 +1,12 @@
 package ish.oncourse.admin.services.ntis;
 
 
+import ish.oncourse.model.Module;
+import ish.oncourse.model.Qualification;
+import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.reference.ReferenceService;
+
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -8,16 +14,11 @@ import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import ish.oncourse.model.Module;
-import ish.oncourse.model.Qualification;
-import ish.oncourse.model.TrainingPackage;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.reference.ReferenceService;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
@@ -48,6 +49,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	private static final String ASCO_ID = "02";
 	private static final String FIELD_OF_EDUCATION_ID = "04";
 	private static final String LEVEL_OF_EDUCATION_ID = "05";
+	
+	private static final Logger LOGGER = Logger.getLogger(NTISUpdaterImpl.class);
 	
 	@Inject
 	private ITrainingComponentService trainingService;
@@ -221,8 +224,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			result.setNumberOfUpdated(modified);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			throw new NTISException();
+			LOGGER.info("NTIS Qualifications update failed with exception.", e);
+			throw new NTISException(e);
 		}
 		
 		return result;
@@ -361,8 +364,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			result.setNumberOfUpdated(modified);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			throw new NTISException();
+			LOGGER.info("NTIS TrainingPackages update failed with exception.", e);
+			throw new NTISException(e);
 		}
 		
 		return result;
@@ -485,8 +488,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			result.setNumberOfUpdated(modified);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			throw new NTISException();
+			LOGGER.info("NTIS Modules update failed with exception.", e);
+			throw new NTISException(e);
 		}
 		
 		return result;
