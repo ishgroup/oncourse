@@ -208,20 +208,51 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	public void succeed() {
 		setStatus(PaymentStatus.SUCCESS);
 
-		for (PaymentInLine pl : getPaymentInLines()) {
-			Invoice invoice = pl.getInvoice();
-			// success only on Pending invoices.
-			if (invoice.getStatus() != InvoiceStatus.FAILED && invoice.getStatus() != InvoiceStatus.SUCCESS) {
-				invoice.setStatus(InvoiceStatus.SUCCESS);
+		Invoice activeInvoice = findActiveInvoice();
 
-				for (InvoiceLine il : invoice.getInvoiceLines()) {
-					Enrolment enrol = il.getEnrolment();
-					if (enrol != null) {
-						enrol.setStatus(EnrolmentStatus.SUCCESS);
+		if (activeInvoice != null) {
+			activeInvoice.setStatus(InvoiceStatus.SUCCESS);
+			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
+				Enrolment enrol = il.getEnrolment();
+				if (enrol != null) {
+					enrol.setStatus(EnrolmentStatus.SUCCESS);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Finds invoice which is current and is performed operation on.
+	 * @return active invoice
+	 */
+	private Invoice findActiveInvoice() {
+		
+		Invoice activeInvoice = null;
+
+		for (PaymentInLine line : getPaymentInLines()) {
+			Invoice invoice = line.getInvoice();
+
+			if (activeInvoice == null) {
+				activeInvoice = invoice;
+			} else {
+				// For angel payments use angelId to determine the last
+				// invoice, since createdDate is very often the same
+				// accross several invoices
+				if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
+					if (invoice.getAngelId() > activeInvoice.getAngelId()) {
+						activeInvoice = invoice;
+					}
+				} else {
+					// For willow payments, use willowId to determine
+					// the newest invoice.
+					if (invoice.getId() > activeInvoice.getId()) {
+						activeInvoice = invoice;
 					}
 				}
 			}
 		}
+		
+		return activeInvoice;
 	}
 
 	/**
@@ -250,34 +281,31 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			for (PaymentInLine line : getPaymentInLines()) {
 				Invoice invoice = line.getInvoice();
 
-				if (invoice.getStatus() != InvoiceStatus.FAILED && invoice.getStatus() != InvoiceStatus.SUCCESS) {
-					invoice.setStatus(InvoiceStatus.FAILED);
-
-					if (invoiceToRefund == null) {
-						paymentInLineToRefund = line;
-						invoiceToRefund = invoice;
+				if (invoiceToRefund == null) {
+					paymentInLineToRefund = line;
+					invoiceToRefund = invoice;
+				} else {
+					// For angel payments use angelId to determine the last
+					// invoice, since createdDate is very often the same
+					// accross several invoices
+					if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
+						if (invoice.getAngelId() > invoiceToRefund.getAngelId()) {
+							paymentInLineToRefund = line;
+							invoiceToRefund = invoice;
+						}
 					} else {
-						// For angel payments use angelId to determine the last
-						// invoice, since createdDate is very often the same
-						// accross several invoices
-						if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
-							if (invoice.getAngelId() > invoiceToRefund.getAngelId()) {
-								paymentInLineToRefund = line;
-								invoiceToRefund = invoice;
-							}
-						} else {
-							// For willow payments, use willowId to determine
-							// the newest invoice.
-							if (invoice.getId() > invoiceToRefund.getId()) {
-								paymentInLineToRefund = line;
-								invoiceToRefund = invoice;
-							}
+						// For willow payments, use willowId to determine
+						// the newest invoice.
+						if (invoice.getId() > invoiceToRefund.getId()) {
+							paymentInLineToRefund = line;
+							invoiceToRefund = invoice;
 						}
 					}
 				}
 			}
 
 			if (invoiceToRefund != null) {
+				invoiceToRefund.setStatus(InvoiceStatus.FAILED);
 				// Creating internal payment, with zero amount which will be
 				// linked to invoiceToRefund, and refundInvoice.
 				PaymentIn internalPayment = makeShallowCopy();
@@ -323,15 +351,16 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		return null;
 	}
-	
+
 	/**
 	 * Fails payment but makes invoice and enrolment sucess.
+	 * 
 	 * @return
 	 */
 	public void abandonPaymentKeepInvoice() {
-		
+
 		switch (getStatus()) {
-		
+
 		case FAILED:
 		case FAILED_CARD_DECLINED:
 		case FAILED_NO_PLACES:
@@ -339,17 +368,16 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
-
-		for (PaymentInLine pl : getPaymentInLines()) {
-			Invoice invoice = pl.getInvoice();
-			if (invoice.getStatus() == InvoiceStatus.PENDING || invoice.getStatus() == InvoiceStatus.IN_TRANSACTION) {
-				invoice.setStatus(InvoiceStatus.SUCCESS);
-				for (InvoiceLine il : invoice.getInvoiceLines()) {
-					Enrolment enrol = il.getEnrolment();
-					if (enrol != null) {
-						if (enrol.getStatus() == EnrolmentStatus.PENDING || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
-							enrol.setStatus(EnrolmentStatus.SUCCESS);
-						}
+		
+		Invoice activeInvoice = findActiveInvoice();
+		
+		if (activeInvoice != null) {
+			activeInvoice.setStatus(InvoiceStatus.SUCCESS);
+			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
+				Enrolment enrol = il.getEnrolment();
+				if (enrol != null) {
+					if (enrol.getStatus() == EnrolmentStatus.PENDING || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
+						enrol.setStatus(EnrolmentStatus.SUCCESS);
 					}
 				}
 			}
@@ -361,7 +389,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * all the statuses of dependent entities to allow user to reuse them.
 	 */
 	public void failPayment() {
-		
+
 		switch (getStatus()) {
 		case FAILED:
 		case FAILED_CARD_DECLINED:
@@ -370,7 +398,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
-		
+
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
 			if (invoice.getStatus() == InvoiceStatus.PENDING || invoice.getStatus() == InvoiceStatus.IN_TRANSACTION) {
