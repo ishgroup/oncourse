@@ -1,13 +1,13 @@
 package ish.oncourse.services.html;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.SourceCompactor;
 import net.htmlparser.jericho.TextExtractor;
 
 public class JerichoPlainTextExtractor implements IPlainTextExtractor {
+	private final static Logger LOGGER = Logger.getLogger(JerichoPlainTextExtractor.class);
 
 	@Override
 	public String extractFromHtml(String html) {
@@ -39,43 +39,73 @@ public class JerichoPlainTextExtractor implements IPlainTextExtractor {
 			return "";
 		}
 		StringBuffer resultBuffer = new StringBuffer();
-		int currentIndex = 0;
-		while (currentIndex != content.length()) {
+		Integer currentIndex = 0;
+		while (currentIndex != null && currentIndex != content.length()) {
 			currentIndex = compactHtmlTag(content, resultBuffer, currentIndex);
 		}
 		return resultBuffer.toString();
 	}
 
-	private int compactHtmlTag(String content, StringBuffer resultBuffer, int currentIndex) {
+	/**
+	 * Compacts the closest html tag, appending the result to resultBuffer.
+	 * 
+	 * @param content
+	 *            content for processing
+	 * @param resultBuffer
+	 * @param currentIndex
+	 * @return index of symbol which follows the processed tag.
+	 */
+	protected Integer compactHtmlTag(String content, StringBuffer resultBuffer, int currentIndex) {
+		if (content == null || resultBuffer == null) {
+			return null;
+		}
+		if (content.length() < currentIndex) {
+			LOGGER.error("Something unexpected during the compacting html from the rich text. Content \"" + content
+					+ "\" with length \"" + content.length() + "\" has current index \"" + currentIndex
+					+ "\". Result in buffer: \"" + resultBuffer.toString() + "\"");
+			return null;
+		}
 		int startOfTag = content.indexOf("<", currentIndex);
+
 		if (startOfTag != -1) {
+			boolean shouldCompact = true;
 			// append the text between the current index and the start of html
 			// tag
 			resultBuffer.append(content.substring(currentIndex, startOfTag));
 			// now current index is a start of the selected tag
 			currentIndex = startOfTag;
 
+			String restOfTag = content.substring(currentIndex);
 			// the closing symbol of the tag
-			int closing = content.indexOf(">", currentIndex);
-
+			int closing = restOfTag.indexOf(">");
+			if (closing == -1) {
+				shouldCompact = false;
+			}
 			// detect the first part of tag: <tag> or <tag/>
-			String tag = content.substring(startOfTag, closing + 1);
-			if (!tag.endsWith("/>")) {
+			String tag = shouldCompact ? restOfTag.substring(0, closing + 1) : restOfTag;
+
+			if (!tag.endsWith("/>") && shouldCompact) {
 				// we should find the whole tag with it content, if it is not
 				// closed already
-				// detect the tag name, there could be variants: <tag>, or <tag attr="smth">
-				String tagName = tag.substring(1).split(" |>")[0];
-				Matcher matcher = Pattern.compile("<" + tagName + ".+</" + tagName + ">", Pattern.DOTALL).matcher(
-						content);
-				if (matcher.find()) {
-					// we found the full html tag
-					tag = matcher.group();
+				// detect the tag name, there could be variants: <tag>, or <tag
+				// attr="smth">
+				String[] splitted = tag.substring(1).split(" |\\s|>");
+				if (splitted.length != 0) {
+					String tagName = splitted[0];
+
+					String closingTag = "</" + tagName + ">";
+
+					int closingTagIndex = restOfTag.indexOf(closingTag);
+					if (closingTagIndex != -1) {
+						tag = restOfTag.substring(0, closingTagIndex + closingTag.length());
+					}
+				} else {
+					shouldCompact = false;
 				}
 			}
-			
-			resultBuffer.append(compact(tag));
 			currentIndex += tag.length();
-			
+			resultBuffer.append(shouldCompact ? compact(tag) : tag);
+
 		} else {
 			resultBuffer.append(content.substring(currentIndex, content.length()));
 			currentIndex = content.length();
