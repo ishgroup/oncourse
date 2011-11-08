@@ -122,6 +122,8 @@
 		<obj-attribute name="nationalCode" type="java.lang.String" db-attribute-path="nationalCode"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="trainingPackageId" type="java.lang.Long" db-attribute-path="trainingPackageId"/>
+		<pre-persist method-name="onPrePersist"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="Postcode" className="ish.oncourse.model.Postcode" dbEntityName="postcode">
 		<obj-attribute name="bSPname" type="java.lang.String" db-attribute-path="BSPname"/>
@@ -162,6 +164,8 @@
 		<obj-attribute name="reviewDate" type="java.util.Date" db-attribute-path="reviewDate"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="trainingPackageId" type="java.lang.Long" db-attribute-path="trainingPackageId"/>
+		<pre-persist method-name="onPrePersist"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="TrainingPackage" className="ish.oncourse.model.TrainingPackage" dbEntityName="TrainingPackage">
 		<obj-attribute name="copyrightCategory" type="java.lang.String" db-attribute-path="copyrightCategory"/>
@@ -176,6 +180,8 @@
 		<obj-attribute name="purchaseFrom" type="java.lang.String" db-attribute-path="purchaseFrom"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="type" type="java.lang.String" db-attribute-path="type"/>
+		<pre-persist method-name="onPrePersist"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<db-relationship name="contacts" source="Country" target="Contact" toMany="true">
 		<db-attribute-pair source="id" target="countryId"/>

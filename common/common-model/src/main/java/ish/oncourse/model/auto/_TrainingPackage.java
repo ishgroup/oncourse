@@ -111,4 +111,8 @@ public abstract class _TrainingPackage extends CayenneDataObject {
         return (String)readProperty("type");
     }
 
+    protected abstract void onPreUpdate();
+
+    protected abstract void onPrePersist();
+
 }

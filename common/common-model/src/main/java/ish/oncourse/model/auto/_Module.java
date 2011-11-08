@@ -87,4 +87,8 @@ public abstract class _Module extends CayenneDataObject {
         return (Long)readProperty("trainingPackageId");
     }
 
+    protected abstract void onPreUpdate();
+
+    protected abstract void onPrePersist();
+
 }

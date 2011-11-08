@@ -143,4 +143,8 @@ public abstract class _Qualification extends CayenneDataObject {
         return (Long)readProperty("trainingPackageId");
     }
 
+    protected abstract void onPreUpdate();
+
+    protected abstract void onPrePersist();
+
 }
