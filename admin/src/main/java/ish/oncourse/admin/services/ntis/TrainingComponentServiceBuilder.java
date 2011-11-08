@@ -6,6 +6,8 @@ import javax.xml.ws.BindingProvider;
 
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.apache.cxf.ws.security.SecurityConstants;
@@ -33,6 +35,10 @@ public class TrainingComponentServiceBuilder implements ServiceBuilder<ITraining
 		ctx.put(SecurityConstants.TIMESTAMP_FUTURE_TTL, "30");
 		
 		Client client = ClientProxy.getClient(port);
+		
+		client.getInInterceptors().add(new LoggingInInterceptor());
+        client.getOutInterceptors().add(new LoggingOutInterceptor());
+        client.getOutFaultInterceptors().add(new LoggingOutInterceptor());
 		
 		HTTPConduit conduit = (HTTPConduit) client.getConduit();
 		

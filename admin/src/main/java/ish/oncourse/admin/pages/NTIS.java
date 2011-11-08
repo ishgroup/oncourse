@@ -101,9 +101,12 @@ public class NTIS {
 				if (toDate.after(to)) {
 					toDate = to;
 				}
-
-				LOGGER.debug("Updating records from " + fromDate + " to " + toDate);
-				ntisData.add("Updating records from " + fromDate + " to " + toDate);
+				
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				
+				String message = String.format("Updating records from %s to %s", dateFormat.format(fromDate), dateFormat.format(toDate));
+				LOGGER.debug(message);
+				ntisData.add(message);
 
 				try {
 
