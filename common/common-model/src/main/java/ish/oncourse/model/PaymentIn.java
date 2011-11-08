@@ -395,7 +395,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			activeInvoice.setStatus(InvoiceStatus.PENDING);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				Enrolment enrol = il.getEnrolment();
-				if (enrol != null) {
+				if (enrol != null && enrol.getStatus() != EnrolmentStatus.SUCCESS) {
 					enrol.setStatus(EnrolmentStatus.PENDING);
 				}
 			}
