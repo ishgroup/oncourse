@@ -91,7 +91,11 @@ public class SearchService implements ISearchService {
 			q.setIncludeScore(true);
 			q.addFilterQuery(String.format("+collegeId:%s +doctype:course end:[NOW TO *]", collegeId));
 
-			String searchStr = ClientUtils.escapeQueryChars(params.get(SearchParam.s));
+			String searchStr = null;
+			if(params.containsKey(SearchParam.s)) {
+				searchStr = ClientUtils.escapeQueryChars(params.get(SearchParam.s));
+			}
+			
 			if (params.size() == 1 && searchStr != null
 					&& request.getAttribute(Tag.BROWSE_TAG_PARAM) == null) {
 				q.setQuery(searchStr.toLowerCase());
