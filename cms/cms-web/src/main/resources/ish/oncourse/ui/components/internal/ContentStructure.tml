@@ -2,13 +2,15 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <t:loop source="node.webContentVisibility" value="visibility">
-       <t:zone id="prop:currentZoneKey" class="region">
-           <t:delegate to="regionContentBlock"/>
-          
-       </t:zone>
-       <script type="text/javascript">
-       		Event.observe('${currentZoneKey}', Tapestry.ZONE_UPDATED_EVENT,  wrapEditAreas);
-       </script>
+    	<t:if test="${visibility}!=null">
+	       <t:zone id="prop:currentZoneKey" class="region">
+	           <t:delegate to="regionContentBlock"/>
+	       </t:zone>
+	    
+	       <script type="text/javascript">
+	       		Event.observe('${currentZoneKey}', Tapestry.ZONE_UPDATED_EVENT,  wrapEditAreas);
+	       </script>
+	    </t:if>
     </t:loop>
 
     <t:zone t:id="editorZone" visible="false"></t:zone>

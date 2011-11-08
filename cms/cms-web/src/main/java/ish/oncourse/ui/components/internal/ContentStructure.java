@@ -1,12 +1,10 @@
 package ish.oncourse.ui.components.internal;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
@@ -20,11 +18,11 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -70,6 +68,15 @@ public class ContentStructure {
 
 	@Inject
 	private Request request;
+	
+	@SetupRender
+	public void beforeRender() {
+		for(WebContentVisibility visibility: node.getWebContentVisibility()){
+			if(visibility == null){
+				LOGGER.error(String.format("The visibility is null in node %s in site %s in college %s", node.getName(), node.getWebSite().getName(), node.getWebSite().getCollege().getName()));
+			}
+		}
+	}
 
 	public String getRegionContent() {
 		ParsedContentVisitor visitor = new ParsedContentVisitor(textileConverter);
