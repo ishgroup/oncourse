@@ -56,6 +56,12 @@
 			<groupId>velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
