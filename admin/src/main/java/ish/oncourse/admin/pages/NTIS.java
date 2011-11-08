@@ -103,5 +103,9 @@ public class NTIS {
 					trainingPackageResult.getNumberOfUpdated() + " updated.");
 			request.getSession(false).setAttribute(NTIS_DATA_ATTR, ntisData);
 		}
+		
+		ntisData = (LinkedList<String>) session.getAttribute(NTIS_DATA_ATTR);
+		ntisData.add("Update finished.");
+		request.getSession(false).setAttribute(NTIS_DATA_ATTR, ntisData);
 	}
 }

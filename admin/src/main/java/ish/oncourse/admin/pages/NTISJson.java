@@ -31,7 +31,6 @@ public class NTISJson {
 			jsonSession.put(s);
 		}
 		
-		ntisData.clear();
 		session.setAttribute(NTIS_DATA_ATTR, ntisData);
 
 		return new TextStreamResponse("text/json", jsonSession.toString());

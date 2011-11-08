@@ -29,6 +29,20 @@
 
 	<script type="text/javascript">
 		jQuery(function() {
+			jQuery.getJSON('${ntisResultUrl}', function(data) {
+		  		var items = [];
+
+		  		jQuery.each(data, function(key, val) {
+		    	items.push('<li>' + val + '</li>');
+		  	});
+
+		  	jQuery('<ul/>', {
+		    	'class': 'my-new-list',
+		    	html: items.join('')
+		  	}).appendTo('#results');
+			});
+		});
+		jQuery(function() {
 		setInterval(function() {
 			jQuery.getJSON('${ntisResultUrl}', function(data) {
 		  		var items = [];
@@ -37,6 +51,7 @@
 		    	items.push('<li>' + val + '</li>');
 		  	});
 
+		  	jQuery('#results').empty();
 		  	jQuery('<ul/>', {
 		    	'class': 'my-new-list',
 		    	html: items.join('')
