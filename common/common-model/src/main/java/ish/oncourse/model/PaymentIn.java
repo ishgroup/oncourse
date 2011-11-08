@@ -323,13 +323,15 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		return null;
 	}
-
+	
 	/**
-	 * Fails payment, but does not override state if already FAILED. Refreshes
-	 * all the statuses of dependent entities to allow user to reuse them.
+	 * Fails payment but makes invoice and enrolment sucess.
+	 * @return
 	 */
-	public void failPayment() {
+	public void abandonPaymentKeepInvoice() {
+		
 		switch (getStatus()) {
+		
 		case FAILED:
 		case FAILED_CARD_DECLINED:
 		case FAILED_NO_PLACES:
@@ -353,6 +355,21 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Fails payment, but does not override state if already FAILED. Refreshes
+	 * all the statuses of dependent entities to allow user to reuse them.
+	 */
+	public void failPayment() {
+		switch (getStatus()) {
+		case FAILED:
+		case FAILED_CARD_DECLINED:
+		case FAILED_NO_PLACES:
+			break;
+		default:
+			setStatus(PaymentStatus.FAILED);
 		}
 	}
 

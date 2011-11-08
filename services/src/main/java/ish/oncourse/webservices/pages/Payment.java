@@ -175,7 +175,7 @@ public class Payment {
 	 * @return abandon payment message block
 	 */
 	public Object abandonPaymentKeepInvoice() {
-		payment.failPayment();
+		payment.abandonPaymentKeepInvoice();
 		payment.getObjectContext().commitChanges();
 		return cancelledMessageBlock;
 	}
