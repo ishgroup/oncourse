@@ -342,14 +342,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
-
-			if (invoice.getStatus() != InvoiceStatus.FAILED && invoice.getStatus() != InvoiceStatus.SUCCESS) {
+			if (invoice.getStatus() == InvoiceStatus.PENDING || invoice.getStatus() == InvoiceStatus.IN_TRANSACTION) {
 				invoice.setStatus(InvoiceStatus.SUCCESS);
 				for (InvoiceLine il : invoice.getInvoiceLines()) {
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
-						boolean shouldPendEnrolment = (enrol.getStatus() != EnrolmentStatus.PENDING || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION);
-						if (shouldPendEnrolment) {
+						if (enrol.getStatus() == EnrolmentStatus.PENDING || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
 							enrol.setStatus(EnrolmentStatus.SUCCESS);
 						}
 					}
@@ -363,6 +361,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * all the statuses of dependent entities to allow user to reuse them.
 	 */
 	public void failPayment() {
+		
 		switch (getStatus()) {
 		case FAILED:
 		case FAILED_CARD_DECLINED:
@@ -370,6 +369,19 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			break;
 		default:
 			setStatus(PaymentStatus.FAILED);
+		}
+		
+		for (PaymentInLine pl : getPaymentInLines()) {
+			Invoice invoice = pl.getInvoice();
+			if (invoice.getStatus() == InvoiceStatus.PENDING || invoice.getStatus() == InvoiceStatus.IN_TRANSACTION) {
+				invoice.setStatus(InvoiceStatus.PENDING);
+				for (InvoiceLine il : invoice.getInvoiceLines()) {
+					Enrolment enrol = il.getEnrolment();
+					if (enrol != null) {
+						enrol.setStatus(EnrolmentStatus.PENDING);
+					}
+				}
+			}
 		}
 	}
 
