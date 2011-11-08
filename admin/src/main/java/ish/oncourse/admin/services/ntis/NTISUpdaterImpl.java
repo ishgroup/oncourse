@@ -262,7 +262,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		detailsRequest.setInformationRequest(objectFactory.createTrainingComponentInformationRequested(info));
 			
 		try {
-		
+			
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
 			int entriesToCommit = 0;
@@ -270,7 +270,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			int modified = 0;
 			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
-				
+
 				String type = summary.getComponentType().get(0);
 				
 				if (TRAINING_PACKAGE.equals(type)) {
@@ -299,7 +299,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					TrainingComponent component = trainingService.getDetails(detailsRequest);
 					if (component.getReleases() != null) {
 						List<Release> releases = component.getReleases().getValue().getRelease();
-						if (releases.get(0).getComponents() != null) {
+						if (!releases.isEmpty() && releases.get(0).getComponents() != null) {
 							List<ReleaseComponent> components = releases.get(0).getComponents().getValue().getReleaseComponent();
 							for (ReleaseComponent c : components) {
 								String code = c.getCode().getValue();
