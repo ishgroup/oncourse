@@ -113,6 +113,10 @@ public class ClassRoll {
 				formatter.format(end));
 	}
 	
+	public String getRoomName() {
+		return (currentSession.getRoom() != null) ? currentSession.getRoom().getName() : "room not set";
+	}
+	
 	public String getDay() {
 		return dateFormatter.format(currentSession.getStartDate()).split("/")[0];
 	}
