@@ -19,6 +19,7 @@
 			</p:else>
 	 	</t:if>
 
+		<t:errors />
 		<!-- textarea -->
 		<div class="textarea-text">There are problems with the class details as follows:</div>
 

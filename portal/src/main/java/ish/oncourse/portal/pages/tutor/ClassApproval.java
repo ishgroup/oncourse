@@ -18,10 +18,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.TextArea;
+import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 @UserRole("tutor")
@@ -59,6 +64,12 @@ public class ClassApproval {
 
 	@Property
 	private String whyDeclined;
+	
+	@Component
+	private Form approvalForm;
+	
+	@InjectComponent("whyDeclined")
+	private TextArea whyDeclinedField;
 
 	@InjectPage
 	private PageNotFound pageNotFound;
@@ -95,21 +106,26 @@ public class ClassApproval {
 				}
 			}
 		} else {
-			String subject = String.format("Class feedback from tutor %s %s", c.getGivenName(), c.getFamilyName());
-			String body = String.format("Tutor %s %s has indicated there is a problem with Class %s '%s'.\n%s", c.getGivenName(),
-					c.getFamilyName(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
-
-			College college = courseClass.getCollege();
-
-			CommonPreferenceController prefController = prefFactory.getPreferenceController(college);
-
-			EmailBuilder email = new EmailBuilder();
-			email.setFromEmail(FROM_EMAIL);
-			email.setSubject(subject);
-			email.setBody(body);
-			email.setToEmails(prefController.getEmailAdminAddress());
-
-			mailService.sendEmail(email, true);
+			if (whyDeclined == null || whyDeclined.length() == 0) {
+				approvalForm.recordError(whyDeclinedField, "Please enter your problems with the class details");
+			} else {
+			
+				String subject = String.format("Class feedback from tutor %s %s", c.getGivenName(), c.getFamilyName());
+				String body = String.format("Tutor %s %s has indicated there is a problem with Class %s '%s'.\n%s", c.getGivenName(),
+						c.getFamilyName(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
+	
+				College college = courseClass.getCollege();
+	
+				CommonPreferenceController prefController = prefFactory.getPreferenceController(college);
+	
+				EmailBuilder email = new EmailBuilder();
+				email.setFromEmail(FROM_EMAIL);
+				email.setSubject(subject);
+				email.setBody(body);
+				email.setToEmails(prefController.getEmailAdminAddress());
+	
+				mailService.sendEmail(email, true);
+			}
 		}
 
 		return this;
