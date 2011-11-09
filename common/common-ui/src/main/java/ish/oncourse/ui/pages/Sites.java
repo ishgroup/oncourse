@@ -21,6 +21,6 @@ public class Sites {
 	
 	@SetupRender
 	void beginRender(){
-		sites = webSiteService.getCurrentCollege().getSites();
+		this.sites = webSiteService.getCurrentCollege().getWebVisibleSites();
 	}
 }

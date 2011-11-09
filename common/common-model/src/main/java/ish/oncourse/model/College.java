@@ -7,13 +7,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+
 public class College extends _College {
-	
+
 	public static final String REQUESTING_COLLEGE_ATTRIBUTE = "RequestingCollege";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN)).longValue() : null;
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId().getIdSnapshot().get(ID_PK_COLUMN))
+				.longValue() : null;
 	}
 
 	public Set<String> getCollegeSiteStates() {
@@ -44,7 +47,16 @@ public class College extends _College {
 	 * @return
 	 */
 	public boolean isPaymentGatewayEnabled() {
-		return getPaymentGatewayType() != null
-				&& !PaymentGatewayType.DISABLED.equals(getPaymentGatewayType());
+		return getPaymentGatewayType() != null && !PaymentGatewayType.DISABLED.equals(getPaymentGatewayType());
+	}
+
+	/**
+	 * Returns college sites which marked as web visible.
+	 * @return list of sites
+	 */
+	public List<Site> getWebVisibleSites() {
+		List<Site> sites = getSites();
+		Expression expr = ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true);
+		return expr.filterObjects(sites);
 	}
 }
