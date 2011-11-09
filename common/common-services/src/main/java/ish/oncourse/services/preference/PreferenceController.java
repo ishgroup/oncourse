@@ -74,8 +74,14 @@ public class PreferenceController extends CommonPreferenceController {
 
 		if (pref == null) {
 			pref = context.newObject(Preference.class);
-			College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
-			pref.setCollege(college);
+			
+			College currentCollege = webSiteService.getCurrentCollege();
+			
+			if (currentCollege != null) {
+				College college = (College) context.localObject(currentCollege.getObjectId(), null);
+				pref.setCollege(college);
+			}
+			
 			pref.setName(key);
 		} else {
 			pref = (Preference) context.localObject(pref.getObjectId(), null);
