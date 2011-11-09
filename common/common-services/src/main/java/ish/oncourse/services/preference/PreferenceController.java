@@ -120,7 +120,7 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private Preference getPreferenceByKey(String key) {
 
-		SelectQuery query = new SelectQuery(Preference.class, ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, webSiteService.getCurrentCollege().getObjectId()).andExp(
+		SelectQuery query = new SelectQuery(Preference.class, ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
 				ExpressionFactory.matchExp(Preference.NAME_PROPERTY, key)));
 
 		List<Preference> results = cayenneService.newContext().performQuery(query);
