@@ -12,7 +12,10 @@ public class UserAgentDetectorImpl implements IUserAgentDetector {
 
 		String userAgent = request.getHeader("User-Agent");
 
-		if (userAgent != null) {
+		/*
+		 * TODO: uncomment this code when we finish implement mobile schema 
+		 */
+/*		if (userAgent != null) {
 			userAgent = userAgent.toLowerCase();
 			if (userAgent.contains("iphone")) {
 				return UserAgent.IPHONE;
@@ -26,6 +29,7 @@ public class UserAgentDetectorImpl implements IUserAgentDetector {
 				return UserAgent.BLACKBERRY;
 			}
 		}
+*/
 
 		return UserAgent.DESKTOP;
 	}
