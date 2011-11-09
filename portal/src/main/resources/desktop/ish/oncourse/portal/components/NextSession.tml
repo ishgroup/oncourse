@@ -20,9 +20,7 @@
 		</t:if>
 		<br/>	
 		<div class="mb20">
-		
-			<a href="http://${path}" class="btn">Show more</a>
-		
+			<t:pagelink class="btn" id="m_timetable" page="prop:timetablePageName">Show more</t:pagelink>
 		</div>
 	
 	</div>

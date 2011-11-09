@@ -7,31 +7,22 @@ import java.util.Date;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
-import ish.oncourse.portal.access.IAuthenticationService;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class NextSession {
+	
 	private static final String DATE_FORMAT = "dd/MMM/E";
 
 	/**
 	 * Format for printing classes time.
 	 */
 	private static final String TIME_FORMAT = "h:mm a";
-
-	@Inject
-	private Request request;
 	
 	@Parameter
 	@Property
 	private CourseClass courseClass;
-
-	@Inject
-	private IAuthenticationService authenticationService;
 
 	private SimpleDateFormat dateFormatter;
 
@@ -89,19 +80,13 @@ public class NextSession {
 		return String.format("%s - %s", timeFormatter.format(nextSession.getStartDate()),
 				timeFormatter.format(nextSession.getEndDate())).toLowerCase();
 	}
-
-	private String getRole() {
-		if (authenticationService.isTutor()) {
-			return "tutor";
-		}
-		return "student";
-	}
 	
 	public Room getRoom(){
 		return nextSession.getRoom();
 	}
 	
-	public String getPath(){
-		return request.getServerName() + request.getContextPath() + "/timetable";
+	public String getTimetablePageName() {
+		return "timetable";
 	}
+	
 }
