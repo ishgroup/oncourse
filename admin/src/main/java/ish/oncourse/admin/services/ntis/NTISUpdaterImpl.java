@@ -7,6 +7,7 @@ import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -167,9 +168,6 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				
 					q.setNationalCode(summary.getCode().getValue());
 					q.setTitle(summary.getTitle().getValue());
-					q.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
-					q.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
-					q.setIshVersion(ishVersion);
 				
 					detailsRequest.setCode(summary.getCode().getValue());
 					TrainingComponent component = trainingService.getDetails(detailsRequest);
@@ -191,8 +189,19 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					// committing to db every MAX_ENTRIES_TO_COMMIT entries
 					if (entriesToCommit >= MAX_ENTRIES_TO_COMMIT) {
-						created += context.newObjects().size();
-						modified += context.modifiedObjects().size();
+						Collection<Qualification> newObjects = (Collection<Qualification>) context.newObjects();
+						Collection<Qualification> modifiedObjects = (Collection<Qualification>) context.modifiedObjects();
+						
+						for (Qualification qual : newObjects) {
+							qual.setIshVersion(ishVersion);
+						}
+						
+						for (Qualification qual : modifiedObjects) {
+							qual.setIshVersion(ishVersion);
+						}
+						
+						created += newObjects.size();
+						modified += modifiedObjects.size();
 					
 						context.commitChanges();
 						this.ishVersion++;
@@ -216,9 +225,22 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				}
 			}
 			
-			created += context.newObjects().size();
-			modified += context.modifiedObjects().size();
+			Collection<Qualification> newObjects = (Collection<Qualification>) context.newObjects();
+			Collection<Qualification> modifiedObjects = (Collection<Qualification>) context.modifiedObjects();
+			
+			for (Qualification qual : newObjects) {
+				qual.setIshVersion(ishVersion);
+			}
+			
+			for (Qualification qual : modifiedObjects) {
+				qual.setIshVersion(ishVersion);
+			}
+			
+			created += newObjects.size();
+			modified += modifiedObjects.size();
+		
 			context.commitChanges();
+			this.ishVersion++;
 			
 			result.setNumberOfNew(created);
 			result.setNumberOfUpdated(modified);
@@ -288,10 +310,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					}
 					tp.setNationalISC(summary.getCode().getValue());
 					tp.setTitle(summary.getTitle().getValue());
-					tp.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
-					tp.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
 					tp.setType(summary.getComponentType().get(0));
-					tp.setIshVersion(ishVersion);
 					
 					entriesToCommit += 1;
 				
@@ -331,8 +350,27 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					// committing to db every MAX_ENTRIES_TO_COMMIT entries
 					if (entriesToCommit >= MAX_ENTRIES_TO_COMMIT) {
-						created += context.newObjects().size();
-						modified += context.modifiedObjects().size();
+						
+						Collection<TrainingPackage> newObjects = (Collection<TrainingPackage>) context.newObjects();
+						
+						for (TrainingPackage p : newObjects) {
+							p.setIshVersion(ishVersion);
+						}
+						
+						for (Object obj : context.modifiedObjects()) {
+							if (obj instanceof TrainingPackage) {
+								((TrainingPackage) obj).setIshVersion(ishVersion);
+								modified++;
+							}
+							else if (obj instanceof Module) {
+								((Module) obj).setIshVersion(ishVersion);
+							}
+							else if (obj instanceof Qualification) {
+								((Qualification) obj).setIshVersion(ishVersion);
+							}
+						}
+						
+						created += newObjects.size();
 						
 						context.commitChanges();
 						this.ishVersion++;
@@ -356,9 +394,29 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				}
 			}
 				
-			created += context.newObjects().size();
-			modified += context.modifiedObjects().size();
+			Collection<TrainingPackage> newObjects = (Collection<TrainingPackage>) context.newObjects();
+			
+			for (TrainingPackage p : newObjects) {
+				p.setIshVersion(ishVersion);
+			}
+			
+			for (Object obj : context.modifiedObjects()) {
+				if (obj instanceof TrainingPackage) {
+					((TrainingPackage) obj).setIshVersion(ishVersion);
+					modified++;
+				}
+				else if (obj instanceof Module) {
+					((Module) obj).setIshVersion(ishVersion);
+				}
+				else if (obj instanceof Qualification) {
+					((Qualification) obj).setIshVersion(ishVersion);
+				}
+			}
+			
+			created += newObjects.size();
+			
 			context.commitChanges();
+			this.ishVersion++;
 			
 			result.setNumberOfNew(created);
 			result.setNumberOfUpdated(modified);
@@ -431,8 +489,6 @@ public class NTISUpdaterImpl implements INTISUpdater {
 
 					m.setNationalCode(summary.getCode().getValue());
 					m.setTitle(summary.getTitle().getValue());
-					m.setCreated(summary.getCreatedDate().getDateTime().toGregorianCalendar().getTime());
-					m.setModified(summary.getUpdatedDate().getDateTime().toGregorianCalendar().getTime());
 				
 					if (MODULE.equals(summary.getComponentType().get(0))) {
 						m.setIsModule((byte) 1);
@@ -440,9 +496,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					else {
 						m.setIsModule((byte) 0);
 					}
-					
-					m.setIshVersion(ishVersion);
-					
+										
 					entriesToCommit += 1;
 				
 					detailsRequest.setCode(summary.getCode().getValue());
@@ -456,8 +510,19 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					// committing to db every MAX_ENTRIES_TO_COMMIT entries
 					if (entriesToCommit > MAX_ENTRIES_TO_COMMIT) {
-						created += context.newObjects().size();
-						modified += context.modifiedObjects().size();
+						Collection<Module> newObjects = (Collection<Module>) context.newObjects();
+						Collection<Module> modifiedObjects = (Collection<Module>) context.modifiedObjects();
+						
+						for (Module module : newObjects) {
+							module.setIshVersion(ishVersion);
+						}
+						
+						for (Module module : modifiedObjects) {
+							module.setIshVersion(ishVersion);
+						}
+						
+						created += newObjects.size();
+						modified += modifiedObjects.size();
 						
 						context.commitChanges();
 						this.ishVersion++;
@@ -480,9 +545,22 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				}
 			}
 				
-			created += context.newObjects().size();
-			modified += context.modifiedObjects().size();
+			Collection<Module> newObjects = (Collection<Module>) context.newObjects();
+			Collection<Module> modifiedObjects = (Collection<Module>) context.modifiedObjects();
+			
+			for (Module module : newObjects) {
+				module.setIshVersion(ishVersion);
+			}
+			
+			for (Module module : modifiedObjects) {
+				module.setIshVersion(ishVersion);
+			}
+			
+			created += newObjects.size();
+			modified += modifiedObjects.size();
+			
 			context.commitChanges();
+			this.ishVersion++;
 			
 			result.setNumberOfNew(created);
 			result.setNumberOfUpdated(modified);
