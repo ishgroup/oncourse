@@ -5,7 +5,7 @@
 	<head>
 		<!-- CSS -->
 		<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
-		<title>CMS Login Page</title>
+		<head t:type="ui/pagehead" title="literal:CMS Login Page"/>
 	</head>
 	<body class="main-page" id="Main">
 	
