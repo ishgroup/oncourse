@@ -1,17 +1,19 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:unless test="disabledLink">
-		<t:if test="redirect">
-			<a href="${mapLink}">
-				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
-			</a>
-			<p:else>
-				<a title="Show venue details" class="tooltip" onclick="zoomMapForSite(${room.site.angelId});" href="#">
+	<t:if test="room.site.isWebVisible">
+		<t:unless test="disabledLink"> 
+			<t:if test="redirect">
+				<a href="${mapLink}">
 					<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 				</a>
+				<p:else>
+					<a title="Show venue details" class="tooltip" onclick="zoomMapForSite(${room.site.angelId});" href="#">
+						<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+					</a>
+				</p:else>
+			</t:if>
+			<p:else>
+				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 			</p:else>
-		</t:if>
-		<p:else>
-			<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
-		</p:else>
-	</t:unless>
+		</t:unless>
+	</t:if>
 </t:container>

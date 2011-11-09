@@ -86,10 +86,6 @@ public class CourseClassItem {
 		return detail == null ? "" : detail;
 	}
 
-	public boolean isHasSite() {
-		return courseClass.getRoom() != null && courseClass.getRoom().getSite() != null;
-	}
-
 	public boolean isHasTutorRoles() {
 		return courseClass.getTutorRoles().size() > 0;
 	}
@@ -117,7 +113,7 @@ public class CourseClassItem {
 	}
 
 	public boolean isHasSiteName() {
-		return isHasSite() && courseClass.getRoom().getSite().getName() != null
+		return courseClass.isHasRoom() && courseClass.getRoom().getSite().getName() != null
 				&& !"online".equals(courseClass.getRoom().getSite().getName());
 	}
 
@@ -175,7 +171,7 @@ public class CourseClassItem {
 	public boolean isCurrentClass() {
 		return !courseClass.isCancelled() && !courseClass.hasEnded();
 	}
-	
+
 	public boolean isAddedClass() {
 		List<Long> classIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
 		return classIds.contains(courseClass.getId());

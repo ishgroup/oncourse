@@ -162,7 +162,9 @@ public class TestModule {
 
 		ObjectContext context = ContextUtils.createObjectContext();
 		Site site = context.newObject(Site.class);
+		site.setIsWebVisible(true);
 		Site site1 = context.newObject(Site.class);
+		site1.setIsWebVisible(true);
 		Course course = context.newObject(Course.class);
 		course.setCode("course");
 		CourseClass courseClass = context.newObject(CourseClass.class);

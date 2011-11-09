@@ -36,7 +36,7 @@
 			<div class="class-item-info-r">
 				<t:if test="hasLinkToLocation">
 					<div class="location">
-						<t:if test="hasSite">
+						<t:if test="courseClass.hasRoom">
 							<span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false" disabledLink="notExistsOnMap" isList="isList"/>
 							<p:else>Venue TBA</p:else>
 						</t:if>

@@ -30,7 +30,7 @@ public class RoomLocation {
 	@SetupRender
 	boolean beforeRender() {
 		// prevent displaying null room
-		return room != null;
+		return room != null && room.getSite() != null && room.getSite().getIsWebVisible();
 	}
 
 	public boolean isRedirect() {

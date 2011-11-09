@@ -8,6 +8,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import ish.oncourse.model.Room;
+import ish.oncourse.model.Site;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
@@ -34,8 +35,8 @@ public class RoomService implements IRoomService {
 	 * @return
 	 */
 	private Expression getSiteQualifier() {
-		return ExpressionFactory.matchExp(Room.COLLEGE_PROPERTY, webSiteService
-				.getCurrentCollege());
+		return ExpressionFactory.matchExp(Room.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
+				ExpressionFactory.matchExp(Room.SITE_PROPERTY + "." + Site.IS_WEB_VISIBLE_PROPERTY, true));
 	}
 
 }

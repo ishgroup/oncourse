@@ -119,10 +119,10 @@ public class Courses {
 
 	@OnEvent(component = "showMoreCourses")
 	Object onActionFromShowMoreCourses() throws MalformedURLException {
-		if(!request.isXHR()){
-			//just reload the page if there is non-ajax request
-			LOGGER.error("'Show more courses' button performed non-ajax request at "+request.getHeader("User-Agent"));
-			return new URL("http://"+request.getServerName()+"/courses");
+		if (!request.isXHR()) {
+			// just reload the page if there is non-ajax request
+			LOGGER.error("'Show more courses' button performed non-ajax request at " + request.getHeader("User-Agent"));
+			return new URL("http://" + request.getServerName() + "/courses");
 		}
 		courses = courseService.loadByIds(coursesIds.toArray());
 
@@ -169,8 +169,8 @@ public class Courses {
 				Room room = courseClass.getRoom();
 				if (room != null) {
 					Site site = room.getSite();
-					if (site != null && site.getSuburb() != null && !"".equals(site.getSuburb())
-							&& site.isHasCoordinates()) {
+					if (site != null && site.getIsWebVisible() && site.getSuburb() != null
+							&& !"".equals(site.getSuburb()) && site.isHasCoordinates()) {
 						if (!mapSites.contains(site)) {
 							mapSites.add(site);
 						}
@@ -346,7 +346,7 @@ public class Courses {
 		if (browseTag != null) {
 			request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag.getId());
 		}
-		
+
 		return searchParams;
 	}
 

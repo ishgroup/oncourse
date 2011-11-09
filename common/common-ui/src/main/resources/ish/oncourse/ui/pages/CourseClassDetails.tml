@@ -28,16 +28,14 @@
 
 
 	<t:if t:test="${showInlineTimetable}">
-		<!-- TODO enable the timetable -->
-		 <div class="blockdetail">
+		<div class="blockdetail">
 			<t:if t:test="courseClass.hasAnyTimelineableSessions">
 			<h2>Sessions</h2>
 			<span t:type="ui/TimetableEvents" displayedObjects="sortedTimelineableSessions"
 			headerLabels="timetableLabels" cssTableClass="cssTableClass"
 			cssEvenRowClass="cssEvenRowClass" cssOddRowClass="cssOddRowClass"/>
 			</t:if>
-		 </div>
-
+		</div>
 	</t:if>
 	
 	<span t:type="ui/Attachments" entityIdentifier="literal:CourseClass" entityIdNum="${courseClass.id}"/>

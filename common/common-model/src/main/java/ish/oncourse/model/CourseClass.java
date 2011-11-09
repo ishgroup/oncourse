@@ -379,7 +379,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	}
 
 	public boolean isHasRoom() {
-		return getRoom() != null;
+		return getRoom() != null && getRoom().getSite() != null && getRoom().getSite().getIsWebVisible();
 	}
 
 	public float focusMatchForDays(String searchDay) {
@@ -456,7 +456,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 		float result = 0.0f;
 
 		if (nearLatitude != null && nearLongitude != null && getRoom() != null && getRoom().getSite() != null
-				&& getRoom().getSite().isHasCoordinates()) {
+				&& getRoom().getSite().getIsWebVisible() && getRoom().getSite().isHasCoordinates()) {
 			Site site = getRoom().getSite();
 
 			double earthRadius = 6371; // km
