@@ -18,8 +18,8 @@
 				<div class="bord mb20"></div>
 			</p:else>
 	 	</t:if>
+		<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
 
-		<t:errors />
 		<!-- textarea -->
 		<div class="textarea-text">There are problems with the class details as follows:</div>
 
