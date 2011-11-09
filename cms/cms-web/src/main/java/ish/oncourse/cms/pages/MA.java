@@ -1,5 +1,7 @@
 package ish.oncourse.cms.pages;
 
+import java.util.List;
+
 import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebSite;
@@ -63,6 +65,8 @@ public class MA {
 		WebMenu menu = ctx.newObject(WebMenu.class);
 		menu.setWebSite((WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null));
 		menu.setParentWebMenu((WebMenu) ctx.localObject(webMenuService.getRootMenu().getObjectId(), null));
+		menu.updateWeight(0, null);
+
 		ctx.commitChanges();
 
 		obj.put("id", menu.getId());
@@ -146,6 +150,13 @@ public class MA {
 		if (!menu.getChildrenMenus().isEmpty()) {
 			return new TextStreamResponse("text/json", "{status: 'FAILED'}");
 		}
+		WebMenu parentWebMenu = menu.getParentWebMenu();
+		parentWebMenu.removeFromChildrenMenus(menu);
+		List<WebMenu> webMenus = parentWebMenu.getWebMenus();
+		//update weights for the rest of menus
+		if (!webMenus.isEmpty()) {
+			webMenus.get(0).updateWeight(0, parentWebMenu);
+		}
 		ctx.deleteObject(menu);
 
 		ctx.commitChanges();
@@ -175,9 +186,9 @@ public class MA {
 		WebMenu item = (WebMenu) ctx.localObject(webMenuService.findById(Long.parseLong(id)).getObjectId(), null);
 		WebMenu pItem = (WebMenu) ctx.localObject((("root".equalsIgnoreCase(pid)) ? webMenuService.getRootMenu()
 				: webMenuService.findById(Long.parseLong(pid))).getObjectId(), null);
-
+		WebMenu oldParent = item.getParentWebMenu();
 		item.setParentWebMenu(pItem);
-		item.updateWeight(weight);
+		item.updateWeight(weight, oldParent);
 
 		ctx.commitChanges();
 
