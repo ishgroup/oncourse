@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -18,6 +19,9 @@ import javax.xml.datatype.DatatypeFactory;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.lifecycle.changeset.ChangeSet;
+import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
+import org.apache.cayenne.lifecycle.changeset.PropertyChange;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -196,8 +200,22 @@ public class NTISUpdaterImpl implements INTISUpdater {
 							qual.setIshVersion(ishVersion);
 						}
 						
+						ChangeSet changeSet = ChangeSetFilter.preCommitChangeSet();
+						
 						for (Qualification qual : modifiedObjects) {
-							qual.setIshVersion(ishVersion);
+							Map<String, PropertyChange> changes = changeSet.getChanges(qual);
+							boolean shouldSetIshVersion = false;
+							for (Map.Entry<String, PropertyChange> change: changes.entrySet()) {
+								PropertyChange propChange = change.getValue();
+								if (!propChange.getNewValue().equals(propChange.getOldValue())) {
+									shouldSetIshVersion = true;
+									break;
+								}
+							}
+							
+							if (shouldSetIshVersion) {
+								qual.setIshVersion(ishVersion);
+							}
 						}
 						
 						created += newObjects.size();

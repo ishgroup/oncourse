@@ -12,6 +12,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
+import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
 
@@ -29,6 +30,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		
 		try {
 			this.cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new ISHModule());
+			this.cayenneRuntime.getDataDomain().addFilter(new ChangeSetFilter());
 		} catch (Exception e) {
 			throw new RuntimeException("Error loading Cayenne stack", e);
 		}
