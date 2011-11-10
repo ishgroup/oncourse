@@ -69,24 +69,28 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 
 		Preference pref = getPreferenceByKey(key);
+		
+		ObjectContext context = null;
+		College college = null;
+		
+		if (webSiteService.getCurrentCollege() != null) {
+			context = cayenneService.newContext();
 
-		ObjectContext context = cayenneService.newContext();
+			college = webSiteService.getCurrentCollege();
+			college = (College) context.localObject(college.getObjectId(), null);
+		}
+		else {
+			context = cayenneService.newNonReplicatingContext();
+		}
 
 		if (pref == null) {
 			pref = context.newObject(Preference.class);
-			
-			College currentCollege = webSiteService.getCurrentCollege();
-			
-			if (currentCollege != null) {
-				College college = (College) context.localObject(currentCollege.getObjectId(), null);
-				pref.setCollege(college);
-			}
-			
 			pref.setName(key);
 		} else {
 			pref = (Preference) context.localObject(pref.getObjectId(), null);
 		}
 
+		pref.setCollege(college);
 		pref.setValueString(value);
 
 		if (LOGGER.isDebugEnabled()) {
