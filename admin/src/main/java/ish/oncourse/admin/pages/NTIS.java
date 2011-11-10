@@ -27,6 +27,7 @@ public class NTIS {
 	private static final Logger LOGGER = Logger.getLogger(NTIS.class);
 
 	private static final String NTIS_DATA_ATTR = "NTISData";
+	private static final String NTIS_UPDATE_STARTED_ATTR = "isNTISStarted";
 
 	@Inject
 	private INTISUpdater ntisUpdater;
@@ -76,7 +77,10 @@ public class NTIS {
 		final INTISUpdater updater = ntisUpdater;
 		final PreferenceController preferenceController = this.preferenceController;
 		
-		threadSource.runInThread(new NTISTask(from, to, session, updater, preferenceController));
+		if (session.getAttribute(NTIS_UPDATE_STARTED_ATTR) == null) {
+			threadSource.runInThread(new NTISTask(from, to, session, updater, preferenceController));
+			session.setAttribute(NTIS_UPDATE_STARTED_ATTR, true);
+		}
 	}
 	
 	private static class NTISTask implements Runnable {
@@ -161,6 +165,7 @@ public class NTIS {
 			}
 
 			ntisData.add("Update finished.");
+			session.setAttribute(NTIS_UPDATE_STARTED_ATTR, null);
 		}
 	}
 }
