@@ -82,7 +82,10 @@ public class TextileConverter implements ITextileConverter {
 			return null;
 		}
 
-		content = extractor.compactHtmlTags(content);
+		// commented as seems to be useless(brake the textile enclosed by html
+		// tag) - uncomment when this willl be solved and the extra <br> will
+		// spoil the life
+		// content = extractor.compactHtmlTags(content);
 
 		StringWriter writer = new StringWriter();
 
