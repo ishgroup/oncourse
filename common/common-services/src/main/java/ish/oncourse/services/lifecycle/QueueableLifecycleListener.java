@@ -156,7 +156,13 @@ public class QueueableLifecycleListener implements LifecycleListener {
 
 		if (college == null) {
 			college = contextMap.remove(entity.getObjectId());
-			commitingContext = (ISHObjectContext) college.getObjectContext();
+			if (college == null) {
+				//we don't need to add QueuedRecords on entities where collegeId=null, such as global preferences.
+				return;
+			}
+			else {
+				commitingContext = (ISHObjectContext) college.getObjectContext();
+			}
 		} else {
 			commitingContext = (ISHObjectContext) college.getObjectContext();
 			ObjectIdQuery query = new ObjectIdQuery(entity.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);

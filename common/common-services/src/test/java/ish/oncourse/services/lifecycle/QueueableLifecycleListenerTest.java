@@ -8,6 +8,7 @@ import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.Preference;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
@@ -164,9 +165,50 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 				.createQueryTable(
 						"QueuedRecord",
 						String.format("select * from QueuedRecord where (entityIdentifier='Course' and entityWillowId=5 and action='Delete') or (entityIdentifier='Tutor' and entityWillowId=1 and action='Delete')"));
-		
+
 		assertEquals("Expecting course and tutor records.", 2, actualData.getRowCount());
 		assertEquals("Expecting identical transactionIds.", actualData.getValue(0, "transactionId"),
 				actualData.getValue(1, "transactionId"));
+	}
+
+	/**
+	 * Tests saving global preferences, such as collegeId is null.
+	 * @throws Exception
+	 */
+	@Test
+	public void testSaveGlobalPreference() throws Exception {
+		
+		ICayenneService cayenneService = getService(ICayenneService.class);
+
+		ObjectContext replicatingContext = cayenneService.newContext();
+		Preference pref = replicatingContext.newObject(Preference.class);
+		pref.setName("ish.test.pref");
+		pref.setValueString("pref value 123");
+		replicatingContext.commitChanges();
+		
+		assertNotNull("Expecting preference saved with not null id", pref.getId());
+
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='Preference'"));
+
+		assertEquals("Expecting no queued records created.", 0, actualData.getRowCount());
+
+		ObjectContext notReplicatingContext = cayenneService.newNonReplicatingContext();
+		
+		pref = replicatingContext.newObject(Preference.class);
+		pref.setName("ish.test.pref.2");
+		pref.setValueString("pref value 2");
+		replicatingContext.commitChanges();
+		notReplicatingContext.commitChanges();
+		
+		assertNotNull("Expecting preference saved with not null id", pref.getId());
+		
+
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='Preference'"));
+
+		assertEquals("Expecting no queued records created.", 0, actualData.getRowCount());
 	}
 }
