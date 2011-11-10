@@ -50,28 +50,24 @@ public class ForgotPassword {
 
 		Calendar calendar = Calendar.getInstance();
 
-		if ((c.getPasswordRecoverExpire() == null && c.getPasswordRecoveryKey() == null)
-				|| (calendar.getTime().compareTo(c.getPasswordRecoverExpire()) > 0)) {
+		calendar.add(Calendar.HOUR, RECOVER_LINK_TTL);
+		c.setPasswordRecoverExpire(calendar.getTime());
 
-			calendar.add(Calendar.HOUR, RECOVER_LINK_TTL);
-			c.setPasswordRecoverExpire(calendar.getTime());
+		SessionIdGenerator idGenerator = new SessionIdGenerator();
+		String passwordRecoverKey = idGenerator.generateSessionId().substring(0, 16);
+		c.setPasswordRecoveryKey(passwordRecoverKey);
 
-			SessionIdGenerator idGenerator = new SessionIdGenerator();
-			String passwordRecoverKey = idGenerator.generateSessionId().substring(0, 16);
-			c.setPasswordRecoveryKey(passwordRecoverKey);
+		ctx.commitChanges();
 
-			ctx.commitChanges();
+		String recoveryLink = String.format("https://%s/passwordrecovery/%s", request.getServerName() + request.getContextPath(), passwordRecoverKey);
 
-			String recoveryLink = String.format("https://%s/passwordrecovery/%s", request.getServerName() + request.getContextPath(), passwordRecoverKey);
+		EmailBuilder email = new EmailBuilder();
+		
+		email.setFromEmail(FROM_EMAIL);
+		email.setSubject("Password recovery.");
+		email.setBody(String.format("To recover password please visit <a href=\"%s\">%s</a>.", recoveryLink, recoveryLink));
+		email.setToEmails(c.getEmailAddress());
 
-			EmailBuilder email = new EmailBuilder();
-			
-			email.setFromEmail(FROM_EMAIL);
-			email.setSubject("Password recovery.");
-			email.setBody(String.format("To recover password please visit <a href=\"%s\">%s</a>.", recoveryLink, recoveryLink));
-			email.setToEmails(c.getEmailAddress());
-
-			mailService.sendEmail(email, true);
-		}
+		mailService.sendEmail(email, true);
 	}
 }
