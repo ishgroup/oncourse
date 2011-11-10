@@ -11,6 +11,7 @@ import ish.oncourse.admin.services.ntis.NTISResult;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.threading.ThreadSource;
 
 import org.apache.log4j.Logger;
@@ -29,6 +30,9 @@ public class NTIS {
 
 	@Inject
 	private INTISUpdater ntisUpdater;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
 	@Inject
 	private Request request;
@@ -44,10 +48,21 @@ public class NTIS {
 
 	@Property
 	private String ntisResultUrl;
+	
+	@Property
+	private String lastUpdateDate;
 
 	@SetupRender
 	void setupRender() {
 		this.ntisResultUrl = request.getContextPath() + "/NTISJson";
+		
+		String lastUpdate = preferenceController.getNTISLastUpdate();
+		if  (lastUpdate != null) {
+			this.lastUpdateDate = preferenceController.getNTISLastUpdate();
+		}
+		else {
+			this.lastUpdateDate = "NEVER";
+		}
 	}
 
 	@OnEvent(component = "updateForm", value = "success")
@@ -59,8 +74,9 @@ public class NTIS {
 		final Date to = dateFormat.parse(dateTo);
 		final Session session = request.getSession(false);
 		final INTISUpdater updater = ntisUpdater;
+		final PreferenceController preferenceController = this.preferenceController;
 		
-		threadSource.runInThread(new NTISTask(from, to, session, updater));
+		threadSource.runInThread(new NTISTask(from, to, session, updater, preferenceController));
 	}
 	
 	private static class NTISTask implements Runnable {
@@ -69,13 +85,16 @@ public class NTIS {
 		private Date to;
 		private Session session;
 		private INTISUpdater ntisUpdater;
+		private PreferenceController preferenceController;
 		
-		public NTISTask(Date from, Date to, Session session, INTISUpdater ntisUpdater) {
+		public NTISTask(Date from, Date to, Session session, INTISUpdater ntisUpdater, 
+				PreferenceController preferenceController) {
 			super();
 			this.from = from;
 			this.to = to;
 			this.session = session;
 			this.ntisUpdater = ntisUpdater;
+			this.preferenceController = preferenceController;
 		}
 
 		/*
@@ -132,6 +151,8 @@ public class NTIS {
 
 					ntisData.add("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
 							+ trainingPackageResult.getNumberOfUpdated() + " updated.");
+					
+					preferenceController.setNTISLastUpdate(dateFormat.format(toDate));
 
 				} catch (Exception e) {
 					LOGGER.error("NTIS update failed with exception.", e);

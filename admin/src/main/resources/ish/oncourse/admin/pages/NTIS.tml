@@ -1,6 +1,8 @@
 <html t:type="pagestructure" title="literal:NTIS"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
+	<h4>Reference data last updated on ${lastUpdateDate}</h4>
+	
 	<t:form t:id="updateForm">
 	
  		<script type="text/javascript">
