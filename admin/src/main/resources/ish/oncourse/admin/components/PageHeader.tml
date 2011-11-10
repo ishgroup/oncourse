@@ -4,7 +4,8 @@
 
 	<title>${title}</title>
 
-	<link rel="stylesheet" type="text/css" href="${contextPath}/css/admin.css"/>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/css/master.css"/>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/css/index.css"/>
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/jquery-ui-1.8.16.custom.css"/>
 	
 	<script type="text/javascript" src="${contextPath}/js/jquery-1.6.2.js"></script>
