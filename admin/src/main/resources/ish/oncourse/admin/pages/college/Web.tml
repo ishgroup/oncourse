@@ -1,0 +1,8 @@
+<html t:type="pagestructure" title="literal:College Web"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<h1>${college.name}</h1>
+	
+	<span t:type="editTabs" college="college" selected="literal:web"/>
+	
+
+</html>

@@ -1,0 +1,40 @@
+<html t:type="pagestructure" title="literal:College Billing"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+
+<span t:type="editTabs" college="college" selected="literal:billing" />
+
+<h1>${college.name}</h1>
+
+<t:form t:id="billingForm">
+	<table>
+		<tr>
+			<td>PaymentExpress user</td>
+			<td><t:textfield t:id="paymentUser" value="paymentExpUser" />
+			</td>
+		</tr>
+		<tr>
+			<td>PaymentExpress password</td>
+			<td><t:textfield t:id="paymentPass" value="paymentExpPass" />
+			</td>
+		</tr>
+	</table>
+
+	<h2>License Fees</h2>
+
+	<table>
+		<t:loop source="licenseFees" value="currentLicenseFee">
+			<tr>
+				<td>${keyCode}</td>
+				<td><t:textfield t:id="planName" value="planName"/></td>
+				<td><t:textfield t:id="billingMonth" value="billingMonth"/></td>
+				<td><t:textfield t:id="validUntil" value="validUntil"/></td>
+				<td><t:textfield t:id="fee" value="fee"/></td>
+			</tr>
+		</t:loop>
+	</table>
+	
+	<t:submit t:id="save" value="Save"/>
+</t:form>
+
+</html>

@@ -6,6 +6,7 @@ import ish.oncourse.services.system.ICollegeService;
 import java.util.List;
 
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -30,6 +31,7 @@ public class Index {
 	private ComponentResources componentResources;
 	
 	@Property
+	@Persist
 	private College college;
 	
 	@SetupRender

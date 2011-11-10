@@ -1,0 +1,26 @@
+<html t:type="pagestructure" title="literal:College Overview"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<span t:type="editTabs" college="college" selected="literal:overview"/>
+	
+	<h1>${college.name}</h1>
+	
+	<table>
+		<tr>
+			<td>Last IP:</td>
+			<td>${lastIP}</td>
+		</tr>
+		<tr>
+			<td>onCourse version:</td>
+			<td>${onCourseVersion}</td>
+		</tr>
+		<tr>
+			<td>Replication state:</td>
+			<td>${replicationState}</td>
+		</tr>
+		<tr>
+			<td>Last replication:</td>
+			<td>${lastReplication}</td>
+		</tr>
+	</table>
+</html>

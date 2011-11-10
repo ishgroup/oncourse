@@ -1,0 +1,28 @@
+<html t:type="pagestructure" title="literal:College Preferences"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<span t:type="editTabs" college="college" selected="literal:preferences"/>
+	
+	<h1>${college.name}</h1>
+	
+	<t:form t:id="prefForm">
+		<table>
+			<thead>
+				<tr>
+					<td>Key</td>
+					<td>Value</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t:loop source="preferences.keySet()" value="currentKey">
+					<tr>
+						<td>${currentKey}</td>
+						<td><t:textfield t:id="curentKey" value="currentValue"/></td>
+					</tr>
+				</t:loop>
+			</tbody>
+		</table>
+		<t:submit t:id="save" value="Save"/>
+	</t:form>
+
+</html>
