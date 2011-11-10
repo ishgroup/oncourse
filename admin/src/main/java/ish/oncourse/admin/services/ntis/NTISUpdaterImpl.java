@@ -17,6 +17,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.lifecycle.changeset.ChangeSet;
@@ -146,8 +147,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
 			int entriesToCommit = 0;
-			int created = 0;
-			int modified = 0;
+			Integer created = 0;
+			Integer modified = 0;
 			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
 				
@@ -193,36 +194,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					// committing to db every MAX_ENTRIES_TO_COMMIT entries
 					if (entriesToCommit >= MAX_ENTRIES_TO_COMMIT) {
-						Collection<Qualification> newObjects = (Collection<Qualification>) context.newObjects();
-						Collection<Qualification> modifiedObjects = (Collection<Qualification>) context.modifiedObjects();
-						
-						for (Qualification qual : newObjects) {
-							qual.setIshVersion(ishVersion);
-						}
-						
-						ChangeSet changeSet = ChangeSetFilter.preCommitChangeSet();
-						
-						for (Qualification qual : modifiedObjects) {
-							Map<String, PropertyChange> changes = changeSet.getChanges(qual);
-							boolean shouldSetIshVersion = false;
-							for (Map.Entry<String, PropertyChange> change: changes.entrySet()) {
-								PropertyChange propChange = change.getValue();
-								if (!propChange.getNewValue().equals(propChange.getOldValue())) {
-									shouldSetIshVersion = true;
-									break;
-								}
-							}
-							
-							if (shouldSetIshVersion) {
-								qual.setIshVersion(ishVersion);
-							}
-						}
-						
-						created += newObjects.size();
-						modified += modifiedObjects.size();
-					
-						context.commitChanges();
-						this.ishVersion++;
+						commitQualficationsToDatabase(context, created, modified);
 						entriesToCommit = 0;
 					}
 				}
@@ -243,22 +215,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				}
 			}
 			
-			Collection<Qualification> newObjects = (Collection<Qualification>) context.newObjects();
-			Collection<Qualification> modifiedObjects = (Collection<Qualification>) context.modifiedObjects();
-			
-			for (Qualification qual : newObjects) {
-				qual.setIshVersion(ishVersion);
-			}
-			
-			for (Qualification qual : modifiedObjects) {
-				qual.setIshVersion(ishVersion);
-			}
-			
-			created += newObjects.size();
-			modified += modifiedObjects.size();
-		
-			context.commitChanges();
-			this.ishVersion++;
+			commitQualficationsToDatabase(context, created, modified);
 			
 			result.setNumberOfNew(created);
 			result.setNumberOfUpdated(modified);
@@ -269,6 +226,39 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		}
 		
 		return result;
+	}
+	
+	private void commitQualficationsToDatabase(ObjectContext context, Integer created, Integer modified) {
+		Collection<Qualification> newObjects = (Collection<Qualification>) context.newObjects();
+		Collection<Qualification> modifiedObjects = (Collection<Qualification>) context.modifiedObjects();
+		
+		for (Qualification qual : newObjects) {
+			qual.setIshVersion(ishVersion);
+		}
+		
+		ChangeSet changeSet = ChangeSetFilter.preCommitChangeSet();
+		
+		for (Qualification qual : modifiedObjects) {
+			Map<String, PropertyChange> changes = changeSet.getChanges(qual);
+			boolean shouldSetIshVersion = false;
+			for (Map.Entry<String, PropertyChange> change: changes.entrySet()) {
+				PropertyChange propChange = change.getValue();
+				if (!propChange.getNewValue().equals(propChange.getOldValue())) {
+					shouldSetIshVersion = true;
+					break;
+				}
+			}
+			
+			if (shouldSetIshVersion) {
+				qual.setIshVersion(ishVersion);
+			}
+		}
+		
+		created += newObjects.size();
+		modified += modifiedObjects.size();
+	
+		context.commitChanges();
+		this.ishVersion++;
 	}
 	
 	private NTISResult updateTrainingPackages(DateTimeOffset from, DateTimeOffset to) throws NTISException {
@@ -306,8 +296,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
 			int entriesToCommit = 0;
-			int created = 0;
-			int modified = 0;
+			Integer created = 0;
+			Integer modified = 0;
 			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
 
@@ -368,30 +358,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					// committing to db every MAX_ENTRIES_TO_COMMIT entries
 					if (entriesToCommit >= MAX_ENTRIES_TO_COMMIT) {
-						
-						Collection<TrainingPackage> newObjects = (Collection<TrainingPackage>) context.newObjects();
-						
-						for (TrainingPackage p : newObjects) {
-							p.setIshVersion(ishVersion);
-						}
-						
-						for (Object obj : context.modifiedObjects()) {
-							if (obj instanceof TrainingPackage) {
-								((TrainingPackage) obj).setIshVersion(ishVersion);
-								modified++;
-							}
-							else if (obj instanceof Module) {
-								((Module) obj).setIshVersion(ishVersion);
-							}
-							else if (obj instanceof Qualification) {
-								((Qualification) obj).setIshVersion(ishVersion);
-							}
-						}
-						
-						created += newObjects.size();
-						
-						context.commitChanges();
-						this.ishVersion++;
+						commitTrainingPackagesToDatabase(context, created, modified);
 						entriesToCommit = 0;
 					}
 				}
@@ -412,13 +379,41 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				}
 			}
 				
-			Collection<TrainingPackage> newObjects = (Collection<TrainingPackage>) context.newObjects();
+			commitTrainingPackagesToDatabase(context, created, modified);
 			
-			for (TrainingPackage p : newObjects) {
-				p.setIshVersion(ishVersion);
+			result.setNumberOfNew(created);
+			result.setNumberOfUpdated(modified);
+		}
+		catch (Exception e) {
+			LOGGER.info("NTIS TrainingPackages update failed with exception.", e);
+			throw new NTISException(e);
+		}
+		
+		return result;
+	}
+	
+	private void commitTrainingPackagesToDatabase(ObjectContext context, Integer created, Integer modified) {
+		Collection<TrainingPackage> newObjects = (Collection<TrainingPackage>) context.newObjects();
+		
+		for (TrainingPackage p : newObjects) {
+			p.setIshVersion(ishVersion);
+		}
+		
+		ChangeSet changeSet = ChangeSetFilter.preCommitChangeSet();
+		
+		for (Object obj : context.modifiedObjects()) {
+			
+			Map<String, PropertyChange> changes = changeSet.getChanges((Persistent) obj);
+			boolean shouldSetIshVersion = false;
+			for (Map.Entry<String, PropertyChange> change: changes.entrySet()) {
+				PropertyChange propChange = change.getValue();
+				if (!propChange.getNewValue().equals(propChange.getOldValue())) {
+					shouldSetIshVersion = true;
+					break;
+				}
 			}
 			
-			for (Object obj : context.modifiedObjects()) {
+			if (shouldSetIshVersion) {
 				if (obj instanceof TrainingPackage) {
 					((TrainingPackage) obj).setIshVersion(ishVersion);
 					modified++;
@@ -430,21 +425,12 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					((Qualification) obj).setIshVersion(ishVersion);
 				}
 			}
-			
-			created += newObjects.size();
-			
-			context.commitChanges();
-			this.ishVersion++;
-			
-			result.setNumberOfNew(created);
-			result.setNumberOfUpdated(modified);
-		}
-		catch (Exception e) {
-			LOGGER.info("NTIS TrainingPackages update failed with exception.", e);
-			throw new NTISException(e);
 		}
 		
-		return result;
+		created += newObjects.size();
+		
+		context.commitChanges();
+		this.ishVersion++;
 	}
 	
 	private NTISResult updateModules(DateTimeOffset from, DateTimeOffset to) throws NTISException {
@@ -483,8 +469,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
 			int entriesToCommit = 0;
-			int created = 0;
-			int modified = 0;
+			Integer created = 0;
+			Integer modified = 0;
 			
 			for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
 				
@@ -528,22 +514,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 					
 					// committing to db every MAX_ENTRIES_TO_COMMIT entries
 					if (entriesToCommit > MAX_ENTRIES_TO_COMMIT) {
-						Collection<Module> newObjects = (Collection<Module>) context.newObjects();
-						Collection<Module> modifiedObjects = (Collection<Module>) context.modifiedObjects();
-						
-						for (Module module : newObjects) {
-							module.setIshVersion(ishVersion);
-						}
-						
-						for (Module module : modifiedObjects) {
-							module.setIshVersion(ishVersion);
-						}
-						
-						created += newObjects.size();
-						modified += modifiedObjects.size();
-						
-						context.commitChanges();
-						this.ishVersion++;
+						commitModulesToDatabase(context, created, modified);
 						entriesToCommit = 0;
 					}
 				}
@@ -563,22 +534,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				}
 			}
 				
-			Collection<Module> newObjects = (Collection<Module>) context.newObjects();
-			Collection<Module> modifiedObjects = (Collection<Module>) context.modifiedObjects();
-			
-			for (Module module : newObjects) {
-				module.setIshVersion(ishVersion);
-			}
-			
-			for (Module module : modifiedObjects) {
-				module.setIshVersion(ishVersion);
-			}
-			
-			created += newObjects.size();
-			modified += modifiedObjects.size();
-			
-			context.commitChanges();
-			this.ishVersion++;
+			commitModulesToDatabase(context, created, modified);
 			
 			result.setNumberOfNew(created);
 			result.setNumberOfUpdated(modified);
@@ -589,6 +545,39 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		}
 		
 		return result;
+	}
+	
+	private void commitModulesToDatabase(ObjectContext context, Integer created, Integer modified) {
+		Collection<Module> newObjects = (Collection<Module>) context.newObjects();
+		Collection<Module> modifiedObjects = (Collection<Module>) context.modifiedObjects();
+		
+		for (Module module : newObjects) {
+			module.setIshVersion(ishVersion);
+		}
+		
+		ChangeSet changeSet = ChangeSetFilter.preCommitChangeSet();
+		
+		for (Module module : modifiedObjects) {
+			Map<String, PropertyChange> changes = changeSet.getChanges(module);
+			boolean shouldSetIshVersion = false;
+			for (Map.Entry<String, PropertyChange> change: changes.entrySet()) {
+				PropertyChange propChange = change.getValue();
+				if (!propChange.getNewValue().equals(propChange.getOldValue())) {
+					shouldSetIshVersion = true;
+					break;
+				}
+			}
+			
+			if (shouldSetIshVersion) {
+				module.setIshVersion(ishVersion);
+			}
+		}
+		
+		created += newObjects.size();
+		modified += modifiedObjects.size();
+		
+		context.commitChanges();
+		this.ishVersion++;
 	}
 	
 }
