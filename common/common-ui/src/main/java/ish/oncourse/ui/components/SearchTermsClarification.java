@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.services.search.SearchParam;
+import ish.oncourse.model.SearchParam;
 
 import java.util.Map;
 

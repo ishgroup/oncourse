@@ -35,8 +35,7 @@ public class SitesService implements ISitesService {
 	 * @return
 	 */
 	private Expression getSiteQualifier() {
-		return ExpressionFactory.matchExp(Site.COLLEGE_PROPERTY, webSiteService
-				.getCurrentCollege());
+		return ExpressionFactory.matchExp(Site.COLLEGE_PROPERTY, webSiteService.getCurrentCollege());
 	}
 
 	/**
@@ -45,10 +44,19 @@ public class SitesService implements ISitesService {
 	private Expression getAvailabilityQualifier() {
 		return ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true);
 	}
-	
+
 	public Date getLatestModifiedDate() {
-		return (Date) cayenneService.sharedContext().performQuery(
-				new EJBQLQuery("select max(s.modified) from Site s where "
-						+ getSiteQualifier().andExp(getAvailabilityQualifier()).toEJBQL("s"))).get(0);
+		return (Date) cayenneService
+				.sharedContext()
+				.performQuery(
+						new EJBQLQuery("select max(s.modified) from Site s where "
+								+ getSiteQualifier().andExp(getAvailabilityQualifier()).toEJBQL("s"))).get(0);
+	}
+
+	@Override
+	public List<Site> loadByIds(List<Long> ids) {
+		SelectQuery q = new SelectQuery(Site.class, ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, ids));
+		q.andQualifier(getSiteQualifier().andExp(getAvailabilityQualifier()));
+		return cayenneService.sharedContext().performQuery(q);
 	}
 }

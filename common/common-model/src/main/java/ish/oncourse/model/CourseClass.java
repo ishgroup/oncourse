@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -380,6 +381,45 @@ public class CourseClass extends _CourseClass implements Queueable {
 
 	public boolean isHasRoom() {
 		return getRoom() != null && getRoom().getSite() != null && getRoom().getSite().getIsWebVisible();
+	}
+
+	public float focusMatchForClass(Double locatonLat, Double locationLong, Map<SearchParam, String> searchParams) {
+		float bestFocusMatch = -1.0f;
+
+		if (!searchParams.isEmpty()) {
+
+			float daysMatch = 1.0f;
+			if (searchParams.containsKey(SearchParam.day)) {
+				daysMatch = focusMatchForDays(searchParams.get(SearchParam.day));
+			}
+
+			float timeMatch = 1.0f;
+			if (searchParams.containsKey(SearchParam.time)) {
+				timeMatch = focusMatchForTime(searchParams.get(SearchParam.time));
+			}
+
+			float priceMatch = 1.0f;
+			if (searchParams.containsKey(SearchParam.price)) {
+				try {
+					Float price = Float.parseFloat(searchParams.get(SearchParam.price));
+					priceMatch = focusMatchForPrice(price);
+				} catch (NumberFormatException e) {
+				}
+			}
+
+			float nearMatch = 1.0f;
+			if (locatonLat != null && locationLong != null) {
+				nearMatch = focusMatchForNear(locatonLat, locationLong);
+
+			}
+
+			float result = daysMatch * timeMatch * priceMatch * nearMatch;
+
+			return result;
+		}
+
+		return bestFocusMatch;
+
 	}
 
 	public float focusMatchForDays(String searchDay) {

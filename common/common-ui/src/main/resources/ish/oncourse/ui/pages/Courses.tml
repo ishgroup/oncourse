@@ -1,51 +1,46 @@
-<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage" bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:if t:test="hasInvalidSearchTerms">
-		<span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<t:if test="request.XHR">
+		<span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount"
+			itemIndex="itemIndex" sitesParameter="sitesParameter"/>
 		<p:else>
-			<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"></span>
+			<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
+				bodyClass="literal:internal-page">
+				<t:if t:test="hasInvalidSearchTerms">
+					<span t:type="ui/SearchTermsClarification" paramsInError="paramsInError"></span>
+					<p:else>
+						<span t:type="ui/SearchCriteria" hasMapItemList="hasMapItemList"></span>
 
-			<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-			
-			
-			<t:zone t:id="sitesMap">
+						<!-- script type="text/javascript"
+							src="http://maps.google.com/maps/api/js?sensor=true"></script-->
 
-				<span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites" collapsed="true" showLocationMap="false"></span>
 
-			</t:zone>
+						<div id="sitesMap">
+							<span t:type="ui/GoogleMapSites" sites="mapSites" focuses="focusesForMapSites"
+								collapsed="true" showLocationMap="false"></span>
+						</div>
 
-            <t:if test="browseTag">
-				<t:if test="browseTag.hasDetails">
-					<t:outputraw value="${browseTagDetail}" />
-				</t:if>
-			</t:if>
-			
-			
-			
-			<t:if t:test="isException">
-				<h2>Because of an error in the search engine, all courses are being displayed. Our technical team is working to resolve this problem now.</h2>
-			 </t:if>
-			<t:if t:test="hasAnyItems" negate="true">
-				<h2>No results</h2>
-				<p:else>
-					<t:zone t:id="coursesZone" id="coursesZone">
-						<t:loop source="courses" value="course">
-							<span t:type="ui/courseitem" linkToLocationsMap="true" course="course" isList="true"></span>
-						</t:loop>
-						<t:if t:test="hasMoreItems">
-							<t:actionLink t:id="showMoreCourses" zone="coursesZone">
-								<div class="showMoreAction">Show more courses</div>
-							</t:actionLink>
+						<t:if test="browseTag">
+							<t:if test="browseTag.hasDetails">
+								<t:outputraw value="${browseTagDetail}" />
+							</t:if>
 						</t:if>
-					</t:zone>
-					<script type="text/javascript">
-						Event.observe('coursesZone', Tapestry.ZONE_UPDATED_EVENT, function(){
-							initOtherClassesControl();
-							initNyromodal();
-						});
-					</script>
-				</p:else>
-			</t:if>
+
+						<t:if t:test="isException">
+							<h2>Because of an error in the search engine, all courses are
+								being displayed. Our technical team is working to resolve this
+								problem now.</h2>
+						</t:if>
+						<t:if t:test="hasAnyItems" negate="true">
+							<h2>No results</h2>
+							<p:else>
+								<span t:type="ui/CoursesList" courses="courses"
+									coursesCount="coursesCount" itemIndex="itemIndex" sitesParameter="sitesParameter" />
+							</p:else>
+						</t:if>
+					</p:else>
+				</t:if>
+			</html>
 		</p:else>
 	</t:if>
-</html>
+</t:container>

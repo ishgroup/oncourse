@@ -1,5 +1,7 @@
 package ish.oncourse.services.search;
 
+import ish.oncourse.model.SearchParam;
+
 import java.util.Map;
 
 import org.apache.solr.client.solrj.response.QueryResponse;

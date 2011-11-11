@@ -1,0 +1,13 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:loop source="courses" value="course">
+		<span t:type="ui/courseitem" linkToLocationsMap="true" course="course" isList="true"></span>
+	</t:loop>
+	<t:if t:test="hasMoreItems">
+		<div id="showMore">
+			<div id="sitesParameter" style="display:none;">${sitesParameter}</div>
+			<a id="showMoreCourses" href="${request.path}?${searchParamsStr}">
+				<div class="showMoreAction">Show more courses</div>
+			</a>
+		</div>	
+	</t:if>
+</div>

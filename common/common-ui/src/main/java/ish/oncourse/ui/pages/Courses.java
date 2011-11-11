@@ -3,18 +3,16 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
+import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
-import ish.oncourse.services.search.SearchParam;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,13 +22,9 @@ import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.tapestry5.ajax.MultiZoneUpdate;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -47,9 +41,14 @@ import org.apache.tapestry5.services.Request;
 
 public class Courses {
 
+	@Inject
+	@Property
+	private Request request;
+
 	private static final Logger LOGGER = Logger.getLogger(Courses.class);
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
+
 	@Inject
 	private ICourseService courseService;
 	@Inject
@@ -57,46 +56,67 @@ public class Courses {
 	@Inject
 	private ITagService tagService;
 	@Inject
-	private Request request;
-	@Inject
 	private ITextileConverter textileConverter;
+
 	@Property
 	private List<Course> courses;
+
 	@Persist("client")
 	private List<Long> coursesIds;
-	@Property
-	private Course course;
+
 	@Property
 	private Boolean isException;
 
 	@Property
-	@Persist("client")
 	private Integer coursesCount;
+
 	@Property
-	@Persist("client")
 	private Integer itemIndex;
-	@Persist("client")
+
 	private Map<SearchParam, String> searchParams;
 
-	@Persist("client")
 	@Property
 	private Map<SearchParam, String> paramsInError;
 
 	@Property
 	private List<Site> mapSites;
+
 	@Property
 	private Map<Long, Float> focusesForMapSites;
-	@InjectComponent
-	private Zone coursesZone;
-	@InjectComponent
-	private Zone sitesMap;
+	/**
+	 * needed for partial update of map, contains the sites which has been
+	 * already loaded.has the structure:
+	 * sites=siteId1(focus1),siteId2,siteId3(focus3),...
+	 */
+	@Property
+	private String sitesParameter;
+
+	private List<Long> sitesIds;
 
 	@SetupRender
 	public void beforeRender() {
-		this.itemIndex = 0;
+		int start = getIntParam(request.getParameter("start"), START_DEFAULT);
+		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
+		sitesParameter = request.getParameter("sites");
+		sitesIds = new ArrayList<Long>();
+		if (sitesParameter == null) {
+			sitesParameter = "";
+		} else {
+			String[] splittedSites = sitesParameter.split(",");
+			for (String siteParam : splittedSites) {
+				if (siteParam.indexOf("(") != -1) {
+					siteParam = siteParam.substring(0, siteParam.indexOf("("));
+				}
+				if (siteParam.matches("\\d+")) {
+					sitesIds.add(Long.valueOf(siteParam));
+				}
+			}
+		}
+
+		this.itemIndex = start;
 		this.isException = false;
-		if (request.getParameterNames().isEmpty() && request.getAttribute(Course.COURSE_TAG) == null) {
-			this.courses = courseService.getCourses(START_DEFAULT, ROWS_DEFAULT);
+		if (getCourseSearchParams().isEmpty()) {
+			this.courses = courseService.getCourses(start, rows);
 			this.coursesCount = courseService.getCoursesCount();
 			searchParams = null;
 			focusesForMapSites = null;
@@ -106,7 +126,7 @@ public class Courses {
 			} catch (SearchException e) {
 				LOGGER.error("Unexpected search exception: " + e.getMessage(), e);
 				this.isException = true;
-				this.courses = courseService.getCourses(START_DEFAULT, ROWS_DEFAULT);
+				this.courses = courseService.getCourses(start, rows);
 				this.coursesCount = courseService.getCoursesCount();
 				searchParams = null;
 				focusesForMapSites = null;
@@ -117,27 +137,8 @@ public class Courses {
 		updateIdsAndIndexes();
 	}
 
-	@OnEvent(component = "showMoreCourses")
-	Object onActionFromShowMoreCourses() throws MalformedURLException {
-		if (!request.isXHR()) {
-			// just reload the page if there is non-ajax request
-			LOGGER.error("'Show more courses' button performed non-ajax request at " + request.getHeader("User-Agent"));
-			return new URL("http://" + request.getServerName() + "/courses");
-		}
-		courses = courseService.loadByIds(coursesIds.toArray());
-
-		if (searchParams == null) {
-			courses.addAll(courseService.getCourses(itemIndex, ROWS_DEFAULT));
-		} else {
-			courses.addAll(searchCourses(itemIndex, ROWS_DEFAULT));
-		}
-
-		updateIdsAndIndexes();
-		return new MultiZoneUpdate("coursesZone", coursesZone).add("sitesMap", sitesMap);
-	}
-
 	private void updateIdsAndIndexes() {
-		itemIndex = courses.size();
+		itemIndex = itemIndex + courses.size();
 		for (Course course : courses) {
 			if (!coursesIds.contains(course.getId()))
 				coursesIds.add(course.getId());
@@ -171,15 +172,27 @@ public class Courses {
 					Site site = room.getSite();
 					if (site != null && site.getIsWebVisible() && site.getSuburb() != null
 							&& !"".equals(site.getSuburb()) && site.isHasCoordinates()) {
+						boolean wasSitePreviouslyAdded = false;
 						if (!mapSites.contains(site)) {
 							mapSites.add(site);
+							if (!sitesIds.contains(site.getId())) {
+								if (!sitesParameter.equals("")) {
+									sitesParameter += ",";
+								}
+								sitesParameter += site.getId();
+							} else {
+								wasSitePreviouslyAdded = true;
+							}
 						}
 						if (hasAnyFormValuesForFocus()) {
-							float focusMatchForClass = focusMatchForClass(courseClass, locationPoints[0],
-									locationPoints[1]);
+							float focusMatchForClass = courseClass.focusMatchForClass(locationPoints[0],
+									locationPoints[1], searchParams);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
 								focusesForMapSites.put(site.getId(), focusMatchForClass);
+								if (!wasSitePreviouslyAdded) {
+									sitesParameter += "(" + focusMatchForClass + ")";
+								}
 							}
 						}
 					}
@@ -195,45 +208,6 @@ public class Courses {
 		}
 		return searchParams.containsKey(SearchParam.day) || searchParams.containsKey(SearchParam.near)
 				|| searchParams.containsKey(SearchParam.price) || searchParams.containsKey(SearchParam.time);
-	}
-
-	private float focusMatchForClass(CourseClass courseClass, Double locatonLat, Double locationLong) {
-		float bestFocusMatch = -1.0f;
-
-		if (!searchParams.isEmpty()) {
-
-			float daysMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.day)) {
-				daysMatch = courseClass.focusMatchForDays(searchParams.get(SearchParam.day));
-			}
-
-			float timeMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.time)) {
-				timeMatch = courseClass.focusMatchForTime(searchParams.get(SearchParam.time));
-			}
-
-			float priceMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.price)) {
-				try {
-					Float price = Float.parseFloat(searchParams.get(SearchParam.price));
-					priceMatch = courseClass.focusMatchForPrice(price);
-				} catch (NumberFormatException e) {
-				}
-			}
-
-			float nearMatch = 1.0f;
-			if (locatonLat != null && locationLong != null) {
-				nearMatch = courseClass.focusMatchForNear(locatonLat, locationLong);
-
-			}
-
-			float result = daysMatch * timeMatch * priceMatch * nearMatch;
-
-			return result;
-		}
-
-		return bestFocusMatch;
-
 	}
 
 	public boolean isHasMapItemList() {
@@ -276,18 +250,9 @@ public class Courses {
 		return !courses.isEmpty();
 	}
 
-	public boolean isHasMoreItems() {
-		return itemIndex < coursesCount;
-	}
-
 	private static int getIntParam(String s, int def) {
-		int start = def;
-		try {
-			start = (s != null) ? Integer.parseInt(s) : start;
-		} catch (Exception e) {
-		}
 
-		return start;
+		return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
 	}
 
 	public boolean isHasInvalidSearchTerms() {

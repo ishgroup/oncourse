@@ -204,6 +204,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case Timeline:
 			break;
+		case CoursesSitesMap:
+			break;	
 		}
 
 		if (pageIdentifier != PageIdentifier.PageNotFound) {
@@ -211,6 +213,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 
 		if (ADD_TO_COOKIES_PATH.equalsIgnoreCase(path) || REMOVE_FROM_COOKIES_PATH.equalsIgnoreCase(path)) {
+			System.out.println(request.isXHR());
 			boolean isAddAction = ADD_TO_COOKIES_PATH.equalsIgnoreCase(path);
 			String key = request.getParameter("key");
 			String value = isAddAction ? request.getParameter("addItemId") : request.getParameter("removeItemId");

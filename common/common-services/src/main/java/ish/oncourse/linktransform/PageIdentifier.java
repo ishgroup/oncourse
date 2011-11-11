@@ -69,6 +69,8 @@ public enum PageIdentifier {
 	 * courseClasses with ids of 123 and 456
 	 */
 	Timeline("/timeline/sessions", "ui/internal/TimelineData"),
+	
+	CoursesSitesMap("/coursessitesmap", "ui/CoursesSitesMap"),
 
 	PageNotFound(".", "ui/PageNotFound"),
 
