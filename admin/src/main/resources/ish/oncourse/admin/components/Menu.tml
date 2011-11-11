@@ -5,6 +5,7 @@
 		<div class="menu-b">
 			<div class="menu">
 				<t:pagelink href="#" page="Index">College list</t:pagelink><div></div>
+				<t:pagelink href="#" page="NTIS">Reference Data</t:pagelink><div></div>
 				<t:pagelink href="#" page="Billing">Billing</t:pagelink>
 			</div>
 		</div>
