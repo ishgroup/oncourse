@@ -46,6 +46,7 @@
 		address="/v4/replication">
 		<jaxws:inInterceptors>
 			<ref bean="v4_communicationKeyInterceptor" />
+			<ref bean="v4_angelVersionInterceptor" />
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 
@@ -53,6 +54,7 @@
 		address="/v4/payment">
 		<jaxws:inInterceptors>
 			<ref bean="v4_securityCodeInterceptor" />
+			<ref bean="v4_angelVersionInterceptor" />
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 

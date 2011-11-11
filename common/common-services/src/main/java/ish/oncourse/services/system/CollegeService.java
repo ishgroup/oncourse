@@ -52,7 +52,8 @@ public class CollegeService implements ICollegeService {
 	 */
 	@Override
 	public College findBySiteKey(String siteKey) {
-		SelectQuery query = new SelectQuery(WebSite.class, ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, siteKey));
+		SelectQuery query = new SelectQuery(WebSite.class, ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY,
+				siteKey));
 		WebSite site = (WebSite) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
 		return (site != null) ? site.getCollege() : null;
 	}
@@ -79,7 +80,8 @@ public class CollegeService implements ICollegeService {
 		} else if (records.size() == 1) {
 			college = records.get(0);
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("College with ID: '" + college.getId() + "' found for 'security code': '" + securityCode + "'");
+				LOGGER.debug("College with ID: '" + college.getId() + "' found for 'security code': '" + securityCode
+						+ "'");
 			}
 		} else {
 			LOGGER.error("Multiple Colleges found for 'security code': '" + securityCode + "'");
@@ -87,7 +89,7 @@ public class CollegeService implements ICollegeService {
 
 		return college;
 	}
-	
+
 	/**
 	 * @see ICollegeService#recordNewCollege(String, String, String, Date)
 	 */
@@ -137,7 +139,7 @@ public class CollegeService implements ICollegeService {
 	public void recordWSAccess(College college, String ipAddress, String angelVersion, Date accessTime) {
 
 		ObjectContext context = cayenneService.newContext();
-
+		college = (College) context.localObject(college.getObjectId(), null);
 		if (college.getFirstRemoteAuthentication() == null) {
 			college.setFirstRemoteAuthentication(accessTime);
 		} else {
@@ -146,7 +148,6 @@ public class CollegeService implements ICollegeService {
 		college.setAngelVersion(angelVersion);
 		college.setIpAddress(ipAddress);
 
-		context.localObject(college.getObjectId(), college);
 		context.commitChanges();
 	}
 
