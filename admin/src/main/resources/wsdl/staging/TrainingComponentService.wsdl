@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="TrainingComponentService" targetNamespace="http://training.gov.au/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://training.gov.au/services/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+  <wsp:Policy wsu:Id="TrainingComponentServiceBasicHttpEndpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Lax/>
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp/>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10/>
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy/>
+        </sp:Wss10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="TrainingComponentServiceWsHttpEndpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp/>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10/>
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy/>
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens/>
+            <sp:RequireClientEntropy/>
+            <sp:RequireServerEntropy/>
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing/>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://training.gov.au/services/Imports">
+      <xsd:import schemaLocation="TrainingComponentService.xsd" namespace="http://training.gov.au/services/"/>
+      <xsd:import schemaLocation="TrainingComponentServiceSerialization.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+      <xsd:import schemaLocation="TrainingComponentServiceSystem.xsd" namespace="http://schemas.datacontract.org/2004/07/System"/>
+      <xsd:import schemaLocation="TrainingComponentServiceSerializationArrays.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <xsd:import schemaLocation="TrainingComponentServiceModel.xsd" namespace="http://schemas.datacontract.org/2004/07/Deewr.Tga.Model"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ITrainingComponentService_GetDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetails"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetailsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetDetails_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetServerTime_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerTime"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetServerTime_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerTimeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetServerTime_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetValidationCodes_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetValidationCodes"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetValidationCodes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetValidationCodesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetValidationCodes_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Search_InputMessage">
+    <wsdl:part name="parameters" element="tns:Search"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Search_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Search_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_SearchByModifiedDate_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchByModifiedDate"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_SearchByModifiedDate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchByModifiedDateResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_SearchByModifiedDate_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_SearchDeletedByDeletedDate_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchDeletedByDeletedDate"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_SearchDeletedByDeletedDate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchDeletedByDeletedDateResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_SearchDeletedByDeletedDate_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Add_InputMessage">
+    <wsdl:part name="parameters" element="tns:Add"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Add_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Add_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Update_InputMessage">
+    <wsdl:part name="parameters" element="tns:Update"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Update_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Update_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Delete_InputMessage">
+    <wsdl:part name="parameters" element="tns:Delete"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Delete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_Delete_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_TransferDataManager_InputMessage">
+    <wsdl:part name="parameters" element="tns:TransferDataManager"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_TransferDataManager_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TransferDataManagerResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_TransferDataManager_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetLookup_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLookup"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetLookup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLookupResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetLookup_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetAddressStates_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressStates"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetAddressStates_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressStatesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetAddressStates_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetContactRoles_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetContactRoles"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetContactRoles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetContactRolesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetContactRoles_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetDataManagers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataManagers"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetDataManagers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataManagersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetDataManagers_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetRecognitionManagers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRecognitionManagers"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetRecognitionManagers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRecognitionManagersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetRecognitionManagers_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetClassificationSchemes_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassificationSchemes"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetClassificationSchemes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassificationSchemesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetClassificationSchemes_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetClassificationPurposes_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassificationPurposes"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetClassificationPurposes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassificationPurposesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITrainingComponentService_GetClassificationPurposes_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:portType name="ITrainingComponentService">
+    <wsdl:operation name="GetDetails">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetDetails" message="tns:ITrainingComponentService_GetDetails_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetDetailsResponse" message="tns:ITrainingComponentService_GetDetails_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetDetailsValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetDetails_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTime">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetServerTime" message="tns:ITrainingComponentService_GetServerTime_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetServerTimeResponse" message="tns:ITrainingComponentService_GetServerTime_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetServerTimeValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetServerTime_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetValidationCodes">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetValidationCodes" message="tns:ITrainingComponentService_GetValidationCodes_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetValidationCodesResponse" message="tns:ITrainingComponentService_GetValidationCodes_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetValidationCodesValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetValidationCodes_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/Search" message="tns:ITrainingComponentService_Search_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchResponse" message="tns:ITrainingComponentService_Search_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_Search_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchByModifiedDate">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchByModifiedDate" message="tns:ITrainingComponentService_SearchByModifiedDate_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchByModifiedDateResponse" message="tns:ITrainingComponentService_SearchByModifiedDate_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchByModifiedDateValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_SearchByModifiedDate_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchDeletedByDeletedDate">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchDeletedByDeletedDate" message="tns:ITrainingComponentService_SearchDeletedByDeletedDate_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchDeletedByDeletedDateResponse" message="tns:ITrainingComponentService_SearchDeletedByDeletedDate_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/SearchDeletedByDeletedDateValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_SearchDeletedByDeletedDate_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="Add">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/Add" message="tns:ITrainingComponentService_Add_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/AddResponse" message="tns:ITrainingComponentService_Add_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/AddValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_Add_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="Update">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/Update" message="tns:ITrainingComponentService_Update_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/UpdateResponse" message="tns:ITrainingComponentService_Update_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/UpdateValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_Update_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/Delete" message="tns:ITrainingComponentService_Delete_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/DeleteResponse" message="tns:ITrainingComponentService_Delete_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/DeleteValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_Delete_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="TransferDataManager">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/TransferDataManager" message="tns:ITrainingComponentService_TransferDataManager_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/TransferDataManagerResponse" message="tns:ITrainingComponentService_TransferDataManager_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/TransferDataManagerValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_TransferDataManager_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetLookup">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetLookup" message="tns:ITrainingComponentService_GetLookup_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetLookupResponse" message="tns:ITrainingComponentService_GetLookup_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetLookupValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetLookup_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressStates">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetAddressStates" message="tns:ITrainingComponentService_GetAddressStates_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetAddressStatesResponse" message="tns:ITrainingComponentService_GetAddressStates_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetAddressStatesValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetAddressStates_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactRoles">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetContactRoles" message="tns:ITrainingComponentService_GetContactRoles_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetContactRolesResponse" message="tns:ITrainingComponentService_GetContactRoles_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetContactRolesValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetContactRoles_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataManagers">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetDataManagers" message="tns:ITrainingComponentService_GetDataManagers_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetDataManagersResponse" message="tns:ITrainingComponentService_GetDataManagers_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetDataManagersValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetDataManagers_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecognitionManagers">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetRecognitionManagers" message="tns:ITrainingComponentService_GetRecognitionManagers_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetRecognitionManagersResponse" message="tns:ITrainingComponentService_GetRecognitionManagers_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetRecognitionManagersValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetRecognitionManagers_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationSchemes">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetClassificationSchemes" message="tns:ITrainingComponentService_GetClassificationSchemes_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetClassificationSchemesResponse" message="tns:ITrainingComponentService_GetClassificationSchemes_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetClassificationSchemesValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetClassificationSchemes_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationPurposes">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetClassificationPurposes" message="tns:ITrainingComponentService_GetClassificationPurposes_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetClassificationPurposesResponse" message="tns:ITrainingComponentService_GetClassificationPurposes_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/ITrainingComponentService/GetClassificationPurposesValidationFaultFault" name="ValidationFaultFault" message="tns:ITrainingComponentService_GetClassificationPurposes_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TrainingComponentServiceBasicHttpEndpoint" type="tns:ITrainingComponentService">
+    <wsp:PolicyReference URI="#TrainingComponentServiceBasicHttpEndpoint_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetDetails">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetDetails" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTime">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetServerTime" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetValidationCodes">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetValidationCodes" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Search" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchByModifiedDate">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/SearchByModifiedDate" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchDeletedByDeletedDate">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/SearchDeletedByDeletedDate" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Add">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Add" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Update">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Update" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Delete" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="TransferDataManager">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/TransferDataManager" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetLookup">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetLookup" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressStates">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetAddressStates" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactRoles">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetContactRoles" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataManagers">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetDataManagers" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecognitionManagers">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetRecognitionManagers" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationSchemes">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetClassificationSchemes" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationPurposes">
+      <soap:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetClassificationPurposes" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TrainingComponentServiceWsHttpEndpoint" type="tns:ITrainingComponentService">
+    <wsp:PolicyReference URI="#TrainingComponentServiceWsHttpEndpoint_policy"/>
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetDetails">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetDetails" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTime">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetServerTime" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetValidationCodes">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetValidationCodes" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Search" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchByModifiedDate">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/SearchByModifiedDate" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchDeletedByDeletedDate">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/SearchDeletedByDeletedDate" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Add">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Add" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Update">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Update" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/Delete" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="TransferDataManager">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/TransferDataManager" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetLookup">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetLookup" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressStates">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetAddressStates" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactRoles">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetContactRoles" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataManagers">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetDataManagers" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecognitionManagers">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetRecognitionManagers" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationSchemes">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetClassificationSchemes" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationPurposes">
+      <soap12:operation soapAction="http://training.gov.au/services/ITrainingComponentService/GetClassificationPurposes" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TrainingComponentService">
+    <wsdl:port name="TrainingComponentServiceBasicHttpEndpoint" binding="tns:TrainingComponentServiceBasicHttpEndpoint">
+      <soap:address location="https://ws.staging.training.gov.au/Deewr.Tga.WebServices/TrainingComponentService.svc/Training"/>
+    </wsdl:port>
+    <wsdl:port name="TrainingComponentServiceWsHttpEndpoint" binding="tns:TrainingComponentServiceWsHttpEndpoint">
+      <soap12:address location="https://ws.staging.training.gov.au/Deewr.Tga.WebServices/TrainingComponentService.svc/Training12"/>
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://ws.staging.training.gov.au/Deewr.Tga.WebServices/TrainingComponentService.svc/Training12</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Dns>localhost</Dns>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

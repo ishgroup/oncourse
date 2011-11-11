@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://training.gov.au/services/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://training.gov.au/services/" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
+  <xs:import schemaLocation="ClassificationServiceSerialization.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+  <xs:import schemaLocation="ClassificationServiceSystem.xsd" namespace="http://schemas.datacontract.org/2004/07/System"/>
+  <xs:simpleType name="ActionOnEntity">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Update"/>
+      <xs:enumeration value="Delete"/>
+      <xs:enumeration value="Add"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ActionOnEntity" nillable="true" type="tns:ActionOnEntity"/>
+  <xs:element name="GetServerTime">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetServerTimeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetServerTimeResult" type="xs:dateTime"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ValidationFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfValidationError"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValidationFault" nillable="true" type="tns:ValidationFault"/>
+  <xs:complexType name="ArrayOfValidationError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ValidationError" nillable="true" type="tns:ValidationError"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfValidationError" nillable="true" type="tns:ArrayOfValidationError"/>
+  <xs:complexType name="ValidationError">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Severity" type="tns:ValidationErrorSeverity"/>
+      <xs:element minOccurs="0" name="SubCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ValidationTarget" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Context" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValidationError" nillable="true" type="tns:ValidationError"/>
+  <xs:simpleType name="ValidationErrorSeverity">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Warning"/>
+      <xs:enumeration value="Error"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ValidationErrorSeverity" nillable="true" type="tns:ValidationErrorSeverity"/>
+  <xs:element name="SearchRtoClassificationsByScheme">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SchemeCode" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchRtoClassificationsBySchemeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SearchRtoClassificationsBySchemeResult" nillable="true" type="tns:RtoClassificationSchemeResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RtoClassificationSchemeResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AllowMultipleValues" type="xs:boolean"/>
+      <xs:element name="ClassificationValues" nillable="true" type="tns:ArrayOfClassificationValue"/>
+      <xs:element name="Description" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="IsProtected" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="IsRequired" type="xs:boolean"/>
+      <xs:element name="Name" nillable="true" type="xs:string"/>
+      <xs:element name="SchemeCode" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RtoClassificationSchemeResult" nillable="true" type="tns:RtoClassificationSchemeResult"/>
+  <xs:complexType name="ArrayOfClassificationValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassificationValue" nillable="true" type="tns:ClassificationValue"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClassificationValue" nillable="true" type="tns:ArrayOfClassificationValue"/>
+  <xs:complexType name="ClassificationValue">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:AbstractDto">
+        <xs:sequence>
+          <xs:element name="Description" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="DisplayOrder" type="xs:int"/>
+          <xs:element name="Name" nillable="true" type="xs:string"/>
+          <xs:element name="Value" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClassificationValue" nillable="true" type="tns:ClassificationValue"/>
+  <xs:complexType name="AbstractDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActionOnEntity" type="tns:ActionOnEntity">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EndDate" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StartDate" nillable="true" type="xs:date">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AbstractDto" nillable="true" type="tns:AbstractDto"/>
+  <xs:element name="SearchNrtClassificationsByScheme">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SchemeCode" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchNrtClassificationsBySchemeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SearchNrtClassificationsBySchemeResult" nillable="true" type="tns:NrtClassificationSchemeResult"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="NrtClassificationSchemeResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AllowMultipleValues" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="AppliesToComponentTypes" type="tns:TrainingComponentTypes"/>
+      <xs:element name="ClassificationValues" nillable="true" type="tns:ArrayOfClassificationValue"/>
+      <xs:element name="Description" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="IsProtected" type="xs:boolean"/>
+      <xs:element name="Name" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RequiredForComponentTypes" type="tns:TrainingComponentTypes"/>
+      <xs:element name="SchemeCode" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NrtClassificationSchemeResult" nillable="true" type="tns:NrtClassificationSchemeResult"/>
+  <xs:simpleType name="TrainingComponentTypes">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AccreditedCourse">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Qualification">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Unit">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SkillSet">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="UnitContextualisation">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="TrainingPackage">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">32</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AccreditedCourseModule">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">64</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="All">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">127</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="TrainingComponentTypes" nillable="true" type="tns:TrainingComponentTypes"/>
+  <xs:element name="AddClassificationValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:ClassificationValueUpdateRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ClassificationValueUpdateRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:AbstractDto">
+        <xs:sequence>
+          <xs:element name="ClassificationValues" nillable="true" type="tns:ArrayOfClassificationValue"/>
+          <xs:element name="SchemeCode" nillable="true" type="xs:string"/>
+          <xs:element name="Target" type="tns:ClassificationTarget"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClassificationValueUpdateRequest" nillable="true" type="tns:ClassificationValueUpdateRequest"/>
+  <xs:simpleType name="ClassificationTarget">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Rto"/>
+      <xs:enumeration value="Nrt"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ClassificationTarget" nillable="true" type="tns:ClassificationTarget"/>
+  <xs:element name="AddClassificationValueResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddRtoClassificationsScheme">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:RtoClassificationScheme"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RtoClassificationScheme">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ClassificationScheme">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsRequired" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RtoClassificationScheme" nillable="true" type="tns:RtoClassificationScheme"/>
+  <xs:complexType name="ClassificationScheme">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:AbstractDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AllowMultipleValues" type="xs:boolean"/>
+          <xs:element name="ClassificationValues" nillable="true" type="tns:ArrayOfClassificationValue"/>
+          <xs:element name="Description" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="IsProtected" type="xs:boolean"/>
+          <xs:element name="Name" nillable="true" type="xs:string"/>
+          <xs:element name="SchemeCode" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClassificationScheme" nillable="true" type="tns:ClassificationScheme"/>
+  <xs:element name="AddRtoClassificationsSchemeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddNrtClassificationsScheme">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:NrtClassificationScheme"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="NrtClassificationScheme">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ClassificationScheme">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AppliesToComponentTypes" type="tns:TrainingComponentTypes"/>
+          <xs:element minOccurs="0" name="RequiredForComponentTypes" type="tns:TrainingComponentTypes"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NrtClassificationScheme" nillable="true" type="tns:NrtClassificationScheme"/>
+  <xs:element name="AddNrtClassificationsSchemeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRtoClassificationScheme">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:RtoClassificationScheme"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRtoClassificationSchemeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateNrtClassificationScheme">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:NrtClassificationScheme"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateNrtClassificationSchemeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IsClassificationSchemeInUse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:ClassificationGetClassificationRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ClassificationGetClassificationRequest">
+    <xs:sequence>
+      <xs:element name="ClassificationScheme" nillable="true" type="xs:string"/>
+      <xs:element name="ClassificationTarget" type="tns:ClassificationTarget"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClassificationGetClassificationRequest" nillable="true" type="tns:ClassificationGetClassificationRequest"/>
+  <xs:element name="IsClassificationSchemeInUseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="IsClassificationSchemeInUseResult" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteClassificationScheme">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:ClassificationGetClassificationRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteClassificationSchemeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClassificationPurpose">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClassificationPurposeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetClassificationPurposeResult" nillable="true" type="tns:ArrayOfClassificationPurpose"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfClassificationPurpose">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassificationPurpose" nillable="true" type="tns:ClassificationPurpose"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClassificationPurpose" nillable="true" type="tns:ArrayOfClassificationPurpose"/>
+  <xs:complexType name="ClassificationPurpose">
+    <xs:sequence>
+      <xs:element name="Description" nillable="true" type="xs:string"/>
+      <xs:element name="PurposeCode" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClassificationPurpose" nillable="true" type="tns:ClassificationPurpose"/>
+  <xs:element name="IsClassificationPurposeExists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="code" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IsClassificationPurposeExistsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="IsClassificationPurposeExistsResult" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddClassificationPurpose">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:ClassificationPurpose"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddClassificationPurposeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassificationPurpose">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:ClassificationPurpose"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassificationPurposeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IsClassificationPurposeInUse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="code" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IsClassificationPurposeInUseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="IsClassificationPurposeInUseResult" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteClassificationPurpose">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="code" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteClassificationPurposeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubmitUpdateNrtClassificationRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:BulkUpdateNrtClassificationRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BulkUpdateNrtClassificationRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EffectiveDate" type="xs:dateTime"/>
+      <xs:element name="Updates" nillable="true" type="tns:ArrayOfBulkUpdateNrtClassificationItem"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BulkUpdateNrtClassificationRequest" nillable="true" type="tns:BulkUpdateNrtClassificationRequest"/>
+  <xs:complexType name="ArrayOfBulkUpdateNrtClassificationItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BulkUpdateNrtClassificationItem" nillable="true" type="tns:BulkUpdateNrtClassificationItem"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBulkUpdateNrtClassificationItem" nillable="true" type="tns:ArrayOfBulkUpdateNrtClassificationItem"/>
+  <xs:complexType name="BulkUpdateNrtClassificationItem">
+    <xs:sequence>
+      <xs:element name="ClassificationPurpose" nillable="true" type="xs:string"/>
+      <xs:element name="ClassificationScheme" nillable="true" type="xs:string"/>
+      <xs:element name="ClassificationValue" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="EffectiveDate" type="xs:dateTime"/>
+      <xs:element name="NrtCode" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BulkUpdateNrtClassificationItem" nillable="true" type="tns:BulkUpdateNrtClassificationItem"/>
+  <xs:element name="SubmitUpdateNrtClassificationRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SubmitUpdateNrtClassificationRequestResult" nillable="true" type="tns:BulkOperationTicket"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BulkOperationTicket">
+    <xs:sequence>
+      <xs:element name="OperationId" type="ser:guid"/>
+      <xs:element name="RequestReceived" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BulkOperationTicket" nillable="true" type="tns:BulkOperationTicket"/>
+  <xs:element name="GetBulkOperationStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:BulkOperationStatusQueryRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BulkOperationStatusQueryRequest">
+    <xs:sequence>
+      <xs:element name="OperationId" type="ser:guid"/>
+      <xs:element name="StatusQueryOption" type="tns:BulkOperationStatusQueryOption"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BulkOperationStatusQueryRequest" nillable="true" type="tns:BulkOperationStatusQueryRequest"/>
+  <xs:simpleType name="BulkOperationStatusQueryOption">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ReturnOperationStatus"/>
+          <xs:enumeration value="ReturnOperationItemCount"/>
+          <xs:enumeration value="ReturnOperationItemErrorCount"/>
+          <xs:enumeration value="ReturnOperationItemDetails"/>
+          <xs:enumeration value="ReturnAll">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">15</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ReturnDefault">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="BulkOperationStatusQueryOption" nillable="true" type="tns:BulkOperationStatusQueryOption"/>
+  <xs:element name="GetBulkOperationStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetBulkOperationStatusResult" nillable="true" type="tns:BulkOperationStatus"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BulkOperationStatus">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BulkOperationTicket">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ItemCount" type="xs:int"/>
+          <xs:element minOccurs="0" name="ItemErrorCount" type="xs:int"/>
+          <xs:element minOccurs="0" name="Items" nillable="true" type="tns:ArrayOfBulkOperationItemStatus"/>
+          <xs:element name="OperationType" nillable="true" type="xs:string"/>
+          <xs:element name="RequestCompleted" type="xs:dateTime"/>
+          <xs:element name="StatusCode" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BulkOperationStatus" nillable="true" type="tns:BulkOperationStatus"/>
+  <xs:complexType name="ArrayOfBulkOperationItemStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BulkOperationItemStatus" nillable="true" type="tns:BulkOperationItemStatus"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBulkOperationItemStatus" nillable="true" type="tns:ArrayOfBulkOperationItemStatus"/>
+  <xs:complexType name="BulkOperationItemStatus">
+    <xs:sequence>
+      <xs:element name="BulkOperationItemCreated" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="BulkOperationItemStatus" nillable="true" type="xs:string"/>
+      <xs:element name="BulkOperationItemUpdated" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BulkOperationItemStatus" nillable="true" type="tns:BulkOperationItemStatus"/>
+  <xs:element name="GetBulkOperations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:BulkOperationStatusRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BulkOperationStatusRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EndDate" nillable="true" type="q1:DateTimeOffset" xmlns:q1="http://schemas.datacontract.org/2004/07/System"/>
+      <xs:element minOccurs="0" name="Issuer" nillable="true" type="xs:string"/>
+      <xs:element name="StartDate" type="q2:DateTimeOffset" xmlns:q2="http://schemas.datacontract.org/2004/07/System"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BulkOperationStatusRequest" nillable="true" type="tns:BulkOperationStatusRequest"/>
+  <xs:element name="GetBulkOperationsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetBulkOperationsResult" nillable="true" type="tns:ArrayOfBulkOperationStatus"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfBulkOperationStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BulkOperationStatus" nillable="true" type="tns:BulkOperationStatus"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBulkOperationStatus" nillable="true" type="tns:ArrayOfBulkOperationStatus"/>
+</xs:schema>

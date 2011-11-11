@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ClassificationService" targetNamespace="http://training.gov.au/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://training.gov.au/services/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+  <wsp:Policy wsu:Id="ClassificationServiceBasicHttpEndpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Lax/>
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp/>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10/>
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy/>
+        </sp:Wss10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="ClassificationServiceWsHttpEndpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp/>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10/>
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy/>
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens/>
+            <sp:RequireClientEntropy/>
+            <sp:RequireServerEntropy/>
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing/>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://training.gov.au/services/Imports">
+      <xsd:import schemaLocation="ClassificationService.xsd" namespace="http://training.gov.au/services/"/>
+      <xsd:import schemaLocation="ClassificationServiceSerialization.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+      <xsd:import schemaLocation="ClassificationServiceDate.xsd" namespace="http://schemas.datacontract.org/2004/07/Deewr.Tga.Model"/>
+      <xsd:import schemaLocation="ClassificationServiceSystem.xsd" namespace="http://schemas.datacontract.org/2004/07/System"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IClassificationService_GetServerTime_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerTime"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetServerTime_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerTimeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetServerTime_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SearchRtoClassificationsByScheme_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchRtoClassificationsByScheme"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SearchRtoClassificationsByScheme_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchRtoClassificationsBySchemeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SearchRtoClassificationsByScheme_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SearchNrtClassificationsByScheme_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchNrtClassificationsByScheme"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SearchNrtClassificationsByScheme_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchNrtClassificationsBySchemeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SearchNrtClassificationsByScheme_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddClassificationValue_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddClassificationValue"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddClassificationValue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddClassificationValueResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddClassificationValue_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddRtoClassificationsScheme_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddRtoClassificationsScheme"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddRtoClassificationsScheme_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddRtoClassificationsSchemeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddRtoClassificationsScheme_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddNrtClassificationsScheme_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNrtClassificationsScheme"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddNrtClassificationsScheme_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNrtClassificationsSchemeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddNrtClassificationsScheme_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateRtoClassificationScheme_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRtoClassificationScheme"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateRtoClassificationScheme_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRtoClassificationSchemeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateRtoClassificationScheme_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateNrtClassificationScheme_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateNrtClassificationScheme"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateNrtClassificationScheme_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateNrtClassificationSchemeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateNrtClassificationScheme_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationSchemeInUse_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsClassificationSchemeInUse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationSchemeInUse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsClassificationSchemeInUseResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationSchemeInUse_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_DeleteClassificationScheme_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassificationScheme"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_DeleteClassificationScheme_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassificationSchemeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_DeleteClassificationScheme_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetClassificationPurpose_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassificationPurpose"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetClassificationPurpose_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassificationPurposeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetClassificationPurpose_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationPurposeExists_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsClassificationPurposeExists"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationPurposeExists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsClassificationPurposeExistsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationPurposeExists_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddClassificationPurpose_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddClassificationPurpose"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddClassificationPurpose_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddClassificationPurposeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_AddClassificationPurpose_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateClassificationPurpose_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassificationPurpose"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateClassificationPurpose_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassificationPurposeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_UpdateClassificationPurpose_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationPurposeInUse_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsClassificationPurposeInUse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationPurposeInUse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsClassificationPurposeInUseResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_IsClassificationPurposeInUse_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_DeleteClassificationPurpose_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassificationPurpose"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_DeleteClassificationPurpose_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassificationPurposeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_DeleteClassificationPurpose_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SubmitUpdateNrtClassificationRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitUpdateNrtClassificationRequest"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SubmitUpdateNrtClassificationRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitUpdateNrtClassificationRequestResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_SubmitUpdateNrtClassificationRequest_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetBulkOperationStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBulkOperationStatus"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetBulkOperationStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBulkOperationStatusResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetBulkOperationStatus_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetBulkOperations_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBulkOperations"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetBulkOperations_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBulkOperationsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IClassificationService_GetBulkOperations_ValidationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFault"/>
+  </wsdl:message>
+  <wsdl:portType name="IClassificationService">
+    <wsdl:operation name="GetServerTime">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/GetServerTime" message="tns:IClassificationService_GetServerTime_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/GetServerTimeResponse" message="tns:IClassificationService_GetServerTime_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/GetServerTimeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_GetServerTime_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRtoClassificationsByScheme">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/SearchRtoClassificationsByScheme" message="tns:IClassificationService_SearchRtoClassificationsByScheme_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/SearchRtoClassificationsBySchemeResponse" message="tns:IClassificationService_SearchRtoClassificationsByScheme_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/SearchRtoClassificationsBySchemeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_SearchRtoClassificationsByScheme_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchNrtClassificationsByScheme">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/SearchNrtClassificationsByScheme" message="tns:IClassificationService_SearchNrtClassificationsByScheme_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/SearchNrtClassificationsBySchemeResponse" message="tns:IClassificationService_SearchNrtClassificationsByScheme_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/SearchNrtClassificationsBySchemeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_SearchNrtClassificationsByScheme_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddClassificationValue">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/AddClassificationValue" message="tns:IClassificationService_AddClassificationValue_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/AddClassificationValueResponse" message="tns:IClassificationService_AddClassificationValue_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/AddClassificationValueValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_AddClassificationValue_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddRtoClassificationsScheme">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/AddRtoClassificationsScheme" message="tns:IClassificationService_AddRtoClassificationsScheme_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/AddRtoClassificationsSchemeResponse" message="tns:IClassificationService_AddRtoClassificationsScheme_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/AddRtoClassificationsSchemeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_AddRtoClassificationsScheme_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddNrtClassificationsScheme">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/AddNrtClassificationsScheme" message="tns:IClassificationService_AddNrtClassificationsScheme_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/AddNrtClassificationsSchemeResponse" message="tns:IClassificationService_AddNrtClassificationsScheme_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/AddNrtClassificationsSchemeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_AddNrtClassificationsScheme_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRtoClassificationScheme">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateRtoClassificationScheme" message="tns:IClassificationService_UpdateRtoClassificationScheme_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateRtoClassificationSchemeResponse" message="tns:IClassificationService_UpdateRtoClassificationScheme_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateRtoClassificationSchemeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_UpdateRtoClassificationScheme_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNrtClassificationScheme">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateNrtClassificationScheme" message="tns:IClassificationService_UpdateNrtClassificationScheme_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateNrtClassificationSchemeResponse" message="tns:IClassificationService_UpdateNrtClassificationScheme_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateNrtClassificationSchemeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_UpdateNrtClassificationScheme_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationSchemeInUse">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationSchemeInUse" message="tns:IClassificationService_IsClassificationSchemeInUse_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationSchemeInUseResponse" message="tns:IClassificationService_IsClassificationSchemeInUse_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationSchemeInUseValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_IsClassificationSchemeInUse_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassificationScheme">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/DeleteClassificationScheme" message="tns:IClassificationService_DeleteClassificationScheme_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/DeleteClassificationSchemeResponse" message="tns:IClassificationService_DeleteClassificationScheme_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/DeleteClassificationSchemeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_DeleteClassificationScheme_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationPurpose">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/GetClassificationPurpose" message="tns:IClassificationService_GetClassificationPurpose_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/GetClassificationPurposeResponse" message="tns:IClassificationService_GetClassificationPurpose_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/GetClassificationPurposeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_GetClassificationPurpose_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationPurposeExists">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationPurposeExists" message="tns:IClassificationService_IsClassificationPurposeExists_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationPurposeExistsResponse" message="tns:IClassificationService_IsClassificationPurposeExists_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationPurposeExistsValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_IsClassificationPurposeExists_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddClassificationPurpose">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/AddClassificationPurpose" message="tns:IClassificationService_AddClassificationPurpose_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/AddClassificationPurposeResponse" message="tns:IClassificationService_AddClassificationPurpose_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/AddClassificationPurposeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_AddClassificationPurpose_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassificationPurpose">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateClassificationPurpose" message="tns:IClassificationService_UpdateClassificationPurpose_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateClassificationPurposeResponse" message="tns:IClassificationService_UpdateClassificationPurpose_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/UpdateClassificationPurposeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_UpdateClassificationPurpose_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationPurposeInUse">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationPurposeInUse" message="tns:IClassificationService_IsClassificationPurposeInUse_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationPurposeInUseResponse" message="tns:IClassificationService_IsClassificationPurposeInUse_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/IsClassificationPurposeInUseValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_IsClassificationPurposeInUse_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassificationPurpose">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/DeleteClassificationPurpose" message="tns:IClassificationService_DeleteClassificationPurpose_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/DeleteClassificationPurposeResponse" message="tns:IClassificationService_DeleteClassificationPurpose_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/DeleteClassificationPurposeValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_DeleteClassificationPurpose_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitUpdateNrtClassificationRequest">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/SubmitUpdateNrtClassificationRequest" message="tns:IClassificationService_SubmitUpdateNrtClassificationRequest_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/SubmitUpdateNrtClassificationRequestResponse" message="tns:IClassificationService_SubmitUpdateNrtClassificationRequest_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/SubmitUpdateNrtClassificationRequestValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_SubmitUpdateNrtClassificationRequest_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBulkOperationStatus">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/GetBulkOperationStatus" message="tns:IClassificationService_GetBulkOperationStatus_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/GetBulkOperationStatusResponse" message="tns:IClassificationService_GetBulkOperationStatus_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/GetBulkOperationStatusValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_GetBulkOperationStatus_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBulkOperations">
+      <wsdl:input wsaw:Action="http://training.gov.au/services/IClassificationService/GetBulkOperations" message="tns:IClassificationService_GetBulkOperations_InputMessage"/>
+      <wsdl:output wsaw:Action="http://training.gov.au/services/IClassificationService/GetBulkOperationsResponse" message="tns:IClassificationService_GetBulkOperations_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://training.gov.au/services/IClassificationService/GetBulkOperationsValidationFaultFault" name="ValidationFaultFault" message="tns:IClassificationService_GetBulkOperations_ValidationFaultFault_FaultMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ClassificationServiceBasicHttpEndpoint" type="tns:IClassificationService">
+    <wsp:PolicyReference URI="#ClassificationServiceBasicHttpEndpoint_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetServerTime">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/GetServerTime" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRtoClassificationsByScheme">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/SearchRtoClassificationsByScheme" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchNrtClassificationsByScheme">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/SearchNrtClassificationsByScheme" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddClassificationValue">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/AddClassificationValue" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddRtoClassificationsScheme">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/AddRtoClassificationsScheme" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddNrtClassificationsScheme">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/AddNrtClassificationsScheme" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRtoClassificationScheme">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/UpdateRtoClassificationScheme" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNrtClassificationScheme">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/UpdateNrtClassificationScheme" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationSchemeInUse">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/IsClassificationSchemeInUse" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassificationScheme">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/DeleteClassificationScheme" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationPurpose">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/GetClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationPurposeExists">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/IsClassificationPurposeExists" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddClassificationPurpose">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/AddClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassificationPurpose">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/UpdateClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationPurposeInUse">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/IsClassificationPurposeInUse" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassificationPurpose">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/DeleteClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitUpdateNrtClassificationRequest">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/SubmitUpdateNrtClassificationRequest" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetBulkOperationStatus">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/GetBulkOperationStatus" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetBulkOperations">
+      <soap:operation soapAction="http://training.gov.au/services/IClassificationService/GetBulkOperations" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ClassificationServiceWsHttpEndpoint" type="tns:IClassificationService">
+    <wsp:PolicyReference URI="#ClassificationServiceWsHttpEndpoint_policy"/>
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetServerTime">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/GetServerTime" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRtoClassificationsByScheme">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/SearchRtoClassificationsByScheme" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchNrtClassificationsByScheme">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/SearchNrtClassificationsByScheme" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddClassificationValue">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/AddClassificationValue" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddRtoClassificationsScheme">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/AddRtoClassificationsScheme" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddNrtClassificationsScheme">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/AddNrtClassificationsScheme" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRtoClassificationScheme">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/UpdateRtoClassificationScheme" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNrtClassificationScheme">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/UpdateNrtClassificationScheme" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationSchemeInUse">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/IsClassificationSchemeInUse" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassificationScheme">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/DeleteClassificationScheme" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassificationPurpose">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/GetClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationPurposeExists">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/IsClassificationPurposeExists" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddClassificationPurpose">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/AddClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassificationPurpose">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/UpdateClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsClassificationPurposeInUse">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/IsClassificationPurposeInUse" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassificationPurpose">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/DeleteClassificationPurpose" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitUpdateNrtClassificationRequest">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/SubmitUpdateNrtClassificationRequest" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetBulkOperationStatus">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/GetBulkOperationStatus" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetBulkOperations">
+      <soap12:operation soapAction="http://training.gov.au/services/IClassificationService/GetBulkOperations" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault name="ValidationFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ClassificationService">
+    <wsdl:port name="ClassificationServiceBasicHttpEndpoint" binding="tns:ClassificationServiceBasicHttpEndpoint">
+      <soap:address location="https://ws.training.gov.au/Deewr.Tga.WebServices/ClassificationService.svc/Classification"/>
+    </wsdl:port>
+    <wsdl:port name="ClassificationServiceWsHttpEndpoint" binding="tns:ClassificationServiceWsHttpEndpoint">
+      <soap12:address location="https://ws.training.gov.au/Deewr.Tga.WebServices/ClassificationService.svc/Classification12"/>
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://ws.training.gov.au/Deewr.Tga.WebServices/ClassificationService.svc/Classification12</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Dns>localhost</Dns>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

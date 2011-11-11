@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Deewr.Tga.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/Deewr.Tga.Model">
+  <xs:import schemaLocation="ClassificationService.xsd" namespace="http://training.gov.au/services/"/>
+  <xs:complexType name="NrtClassificationScheme">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ClassificationScheme">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AppliesToComponentTypes" type="q1:TrainingComponentTypes" xmlns:q1="http://training.gov.au/services/"/>
+          <xs:element minOccurs="0" name="RequiredForComponentTypes" type="q2:TrainingComponentTypes" xmlns:q2="http://training.gov.au/services/"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NrtClassificationScheme" nillable="true" type="tns:NrtClassificationScheme"/>
+  <xs:complexType name="ClassificationScheme">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:AuditableEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AllowMultipleValues" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="IsProtected" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClassificationScheme" nillable="true" type="tns:ClassificationScheme"/>
+  <xs:complexType name="AuditableEntity">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="AuditableEntity" nillable="true" type="tns:AuditableEntity"/>
+  <xs:complexType name="RtoClassificationScheme">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ClassificationScheme">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsRequired" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RtoClassificationScheme" nillable="true" type="tns:RtoClassificationScheme"/>
+</xs:schema>
