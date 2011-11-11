@@ -1,6 +1,7 @@
 package ish.oncourse.services.persistence;
 
 import ish.math.MoneyType;
+import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.lifecycle.BinaryInfoRelationListener;
 import ish.oncourse.services.lifecycle.QueueableLifecycleListener;
@@ -40,6 +41,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		this.sharedContext = context;
 		
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addDefaultListener(new QueueableLifecycleListener(this));
+		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new IshVersionListener());
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new BinaryInfoRelationListener(webSiteService));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new TaggableListener(webSiteService));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new QueuedTransactionListener(this));

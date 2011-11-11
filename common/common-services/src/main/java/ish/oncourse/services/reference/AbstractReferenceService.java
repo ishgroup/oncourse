@@ -27,10 +27,18 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 
 	private static final Logger LOGGER = Logger.getLogger(AbstractReferenceService.class);
 
+	/**
+	 * Ish version property name.
+	 */
+	private static final String ISH_VERSION_PROPERTY = "ishVersion";
+
 	public AbstractReferenceService() {
 		super();
 	}
 
+	/**
+	 * @see IReferenceService#getForReplication(Long)
+	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<T> getForReplication(Long ishVersion) {
 
@@ -57,6 +65,9 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		return records;
 	}
 
+	/**
+	 * @see IReferenceService#findMaxIshVersion()
+	 */
 	@SuppressWarnings("rawtypes")
 	public Long findMaxIshVersion() {
 
@@ -65,7 +76,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		String sql = "select max(ishVersion) as MAXV from " + getEntityClass().getSimpleName();
 		SQLTemplate query = new SQLTemplate(getEntityClass(), sql);
 		query.setFetchingDataRows(true);
-		
+
 		@SuppressWarnings("unchecked")
 		List<Map> results = getCayenneService().sharedContext().performQuery(query);
 
@@ -79,5 +90,31 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		}
 
 		return max;
+	}
+
+	/**
+	 * @see IReferenceService#getNumberOfRecordsForIshVersion(Long)
+	 */
+	@Override
+	public Long getNumberOfRecordsForIshVersion(Long ishVersion) {
+		
+		String sql = String.format("select count(*) as number from %s where ishVersion=%s", getEntityClass().getSimpleName(), ishVersion);
+		SQLTemplate query = new SQLTemplate(getEntityClass(), sql);
+		query.setFetchingDataRows(true);
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		List<Map> results = getCayenneService().sharedContext().performQuery(query);
+		long number = 0;
+
+		if (!results.isEmpty()) {
+			try {
+				number = (Long) results.get(0).get("number");
+			} catch (Exception e) {
+				LOGGER.error(String.format("Unable to read the number of records for entity %s and ishVersion %s", getEntityClass()
+						.getSimpleName(), ishVersion), e);
+			}
+		}
+
+		return number;
 	}
 }

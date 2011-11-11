@@ -1,6 +1,5 @@
 package ish.oncourse.admin.pages;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.tapestry5.StreamResponse;
@@ -20,18 +19,18 @@ public class NTISJson {
 	public StreamResponse onActivate() {
 		
 		Session session = request.getSession(false);
-		List<String> ntisData = (LinkedList<String>) session.getAttribute(NTIS_DATA_ATTR);
+		
+		List<?> ntisData = (List<?>) session.getAttribute(NTIS_DATA_ATTR);
 		
 		if (ntisData == null) {
 			return new TextStreamResponse("text/json", "");
 		}
 		
 		JSONArray jsonSession = new JSONArray();
-		for (String s : ntisData) {
+		
+		for (Object s : ntisData) {
 			jsonSession.put(s);
 		}
-		
-		session.setAttribute(NTIS_DATA_ATTR, ntisData);
 
 		return new TextStreamResponse("text/json", jsonSession.toString());
 	}

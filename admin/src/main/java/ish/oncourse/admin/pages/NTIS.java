@@ -31,7 +31,7 @@ public class NTIS {
 
 	@Inject
 	private INTISUpdater ntisUpdater;
-	
+
 	@Inject
 	private PreferenceController preferenceController;
 
@@ -49,40 +49,55 @@ public class NTIS {
 
 	@Property
 	private String ntisResultUrl;
-	
+
 	@Property
 	private String lastUpdateDate;
 
 	@SetupRender
 	void setupRender() {
-		this.ntisResultUrl = request.getContextPath() + "/NTISJson";
 		
+		this.ntisResultUrl = request.getContextPath() + "/NTISJson";
+
 		String lastUpdate = preferenceController.getNTISLastUpdate();
-		if  (lastUpdate != null) {
+		
+		if (lastUpdate != null) {
 			this.lastUpdateDate = preferenceController.getNTISLastUpdate();
-		}
-		else {
+			this.dateFrom = lastUpdate;
+		} else {
 			this.lastUpdateDate = "NEVER";
 		}
+	}
+	
+	/**
+	 * Checks if already running update.
+	 * @return true/false
+	 */
+	public boolean isUpdateInProgress() {
+		Session session = request.getSession(false);
+		Boolean started = (Boolean) session.getAttribute(NTIS_UPDATE_STARTED_ATTR);
+		return Boolean.TRUE.equals(started);
 	}
 
 	@OnEvent(component = "updateForm", value = "success")
 	void submitted() throws Exception {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		
+
 		final Date from = dateFormat.parse(dateFrom);
 		final Date to = dateFormat.parse(dateTo);
 		final Session session = request.getSession(false);
 		final INTISUpdater updater = ntisUpdater;
 		final PreferenceController preferenceController = this.preferenceController;
-		
-		if (session.getAttribute(NTIS_UPDATE_STARTED_ATTR) == null) {
-			threadSource.runInThread(new NTISTask(from, to, session, updater, preferenceController));
-			session.setAttribute(NTIS_UPDATE_STARTED_ATTR, true);
+
+		synchronized (session) {
+			Boolean started = (Boolean) session.getAttribute(NTIS_UPDATE_STARTED_ATTR);
+			if (started == null) {
+				session.setAttribute(NTIS_UPDATE_STARTED_ATTR, true);
+				threadSource.runInThread(new NTISTask(from, to, session, updater, preferenceController));
+			}
 		}
 	}
-	
+
 	private static class NTISTask implements Runnable {
 
 		private Date from;
@@ -90,9 +105,8 @@ public class NTIS {
 		private Session session;
 		private INTISUpdater ntisUpdater;
 		private PreferenceController preferenceController;
-		
-		public NTISTask(Date from, Date to, Session session, INTISUpdater ntisUpdater, 
-				PreferenceController preferenceController) {
+
+		public NTISTask(Date from, Date to, Session session, INTISUpdater ntisUpdater, PreferenceController preferenceController) {
 			super();
 			this.from = from;
 			this.to = to;
@@ -106,66 +120,73 @@ public class NTIS {
 		 */
 		@Override
 		public void run() {
-			
-			List<String> ntisData = new LinkedList<String>();
-			
-			synchronized (session) {
-				session.setAttribute(NTIS_DATA_ATTR, ntisData);
-			}
+			try {
 
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(from);
+				List<String> ntisData = new LinkedList<String>();
 
-			while (cal.getTime().before(to)) {
-
-				Date fromDate = cal.getTime();
-				cal.add(Calendar.MONTH, 1);
-				Date toDate = cal.getTime();
-				if (toDate.after(to)) {
-					toDate = to;
+				synchronized (session) {
+					session.setAttribute(NTIS_DATA_ATTR, ntisData);
 				}
-				
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				
-				String message = String.format("Updating records from %s to %s", dateFormat.format(fromDate), dateFormat.format(toDate));
-				LOGGER.debug(message);
-				ntisData.add(message);
 
-				try {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(from);
 
-					NTISResult moduleResult = ntisUpdater.doUpdate(fromDate, toDate, Module.class);
+				while (cal.getTime().before(to)) {
 
-					LOGGER.debug("Modules: " + moduleResult.getNumberOfNew() + " new, " + moduleResult.getNumberOfUpdated()
-							+ " updated.");
-					ntisData.add("Modules: " + moduleResult.getNumberOfNew() + " new, " + moduleResult.getNumberOfUpdated()
-							+ " updated.");
+					Date fromDate = cal.getTime();
+					cal.add(Calendar.MONTH, 1);
+					Date toDate = cal.getTime();
+					if (toDate.after(to)) {
+						toDate = to;
+					}
 
-					NTISResult qualificationResult = ntisUpdater.doUpdate(fromDate, toDate, Qualification.class);
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-					LOGGER.debug("Qualifications: " + qualificationResult.getNumberOfNew() + " new, "
-							+ qualificationResult.getNumberOfUpdated() + " updated.");
+					String message = String
+							.format("Updating records from %s to %s", dateFormat.format(fromDate), dateFormat.format(toDate));
+					LOGGER.debug(message);
+					ntisData.add(message);
 
-					ntisData.add("Qualifications: " + qualificationResult.getNumberOfNew() + " new, "
-							+ qualificationResult.getNumberOfUpdated() + " updated.");
+					try {
 
-					NTISResult trainingPackageResult = ntisUpdater.doUpdate(fromDate, toDate, TrainingPackage.class);
+						NTISResult moduleResult = ntisUpdater.doUpdate(fromDate, toDate, Module.class);
 
-					LOGGER.debug("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
-							+ trainingPackageResult.getNumberOfUpdated() + " updated.");
+						LOGGER.debug("Modules: " + moduleResult.getNumberOfNew() + " new, " + moduleResult.getNumberOfUpdated()
+								+ " updated.");
+						ntisData.add("Modules: " + moduleResult.getNumberOfNew() + " new, " + moduleResult.getNumberOfUpdated()
+								+ " updated.");
 
-					ntisData.add("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
-							+ trainingPackageResult.getNumberOfUpdated() + " updated.");
-					
-					preferenceController.setNTISLastUpdate(dateFormat.format(toDate));
+						NTISResult qualificationResult = ntisUpdater.doUpdate(fromDate, toDate, Qualification.class);
 
-				} catch (Exception e) {
-					LOGGER.error("NTIS update failed with exception.", e);
-					ntisData.add(String.format("NTIS update failed with exception:%s", e.getMessage()));
+						LOGGER.debug("Qualifications: " + qualificationResult.getNumberOfNew() + " new, "
+								+ qualificationResult.getNumberOfUpdated() + " updated.");
+
+						ntisData.add("Qualifications: " + qualificationResult.getNumberOfNew() + " new, "
+								+ qualificationResult.getNumberOfUpdated() + " updated.");
+
+						NTISResult trainingPackageResult = ntisUpdater.doUpdate(fromDate, toDate, TrainingPackage.class);
+
+						LOGGER.debug("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
+								+ trainingPackageResult.getNumberOfUpdated() + " updated.");
+
+						ntisData.add("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
+								+ trainingPackageResult.getNumberOfUpdated() + " updated.");
+
+						preferenceController.setNTISLastUpdate(dateFormat.format(toDate));
+
+					} catch (Exception e) {
+						LOGGER.error("NTIS update failed with exception.", e);
+						ntisData.add(String.format("NTIS update failed with exception:%s", e.getMessage()));
+					}
+				}
+
+				ntisData.add("Update finished.");
+
+			} finally {
+				synchronized (session) {
+					session.setAttribute(NTIS_UPDATE_STARTED_ATTR, null);
 				}
 			}
-
-			ntisData.add("Update finished.");
-			session.setAttribute(NTIS_UPDATE_STARTED_ATTR, null);
 		}
 	}
 }

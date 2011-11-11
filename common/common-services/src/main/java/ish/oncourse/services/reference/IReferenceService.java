@@ -13,10 +13,6 @@ import java.util.List;
  * @author Marek Wawrzyczny
  */
 public interface IReferenceService<T> {
-
-	public static final String ISH_VERSION_PROPERTY = "ishVersion";
-
-
 	/**
 	 * Find updated records since a version.
 	 *
@@ -35,5 +31,10 @@ public interface IReferenceService<T> {
 	 * present
 	 */
 	Long findMaxIshVersion();
-
+	
+	/**
+	 * Returns the number of objects for passed ishVersion.
+	 * @return number of objects
+	 */
+	Long getNumberOfRecordsForIshVersion(Long ishVersion);
 }

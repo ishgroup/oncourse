@@ -9,7 +9,7 @@ import org.apache.cayenne.Persistent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 /**
- * 
+ * The services which combines the results across all individual reference service.
  * @author anton
  * 
  */
@@ -38,7 +38,7 @@ public class ReferenceService {
 	}
 
 	/**
-	 * 
+	 * Combines the results accross all reference services for ishVersion.
 	 */
 	public List<Persistent> getForReplication(Long ishVersion) {
 		List<Persistent> list = new LinkedList<Persistent>();
@@ -66,5 +66,18 @@ public class ReferenceService {
 		}
 
 		return (versions.size() > 0) ? versions.last() : 0;
+	}
+	
+	/**
+	 * The total number of records with ishVersion across all reference services.
+	 * @param ishVersion ishVersion
+	 * @return number of records.
+	 */
+	public Long getNumberOfRecordsForIshVersion(Long ishVersion) {
+		long sum = 0;
+		for (IReferenceService<?> service : allServices) {
+			sum += service.getNumberOfRecordsForIshVersion(ishVersion);
+		}
+		return sum;
 	}
 }

@@ -1,31 +1,32 @@
 package ish.oncourse.admin.services.ntis;
 
 public class NTISResult {
+
 	private Class<?> type;
-	private int numberOfUpdated;
-	private int numberOfNew;
-	
+	private long numberOfUpdated;
+	private long numberOfNew;
+
 	public Class<?> getType() {
 		return type;
 	}
-	
+
 	public void setType(Class<?> type) {
 		this.type = type;
 	}
-	
-	public int getNumberOfNew() {
+
+	public long getNumberOfNew() {
 		return numberOfNew;
 	}
-	
-	public void setNumberOfNew(int numberOfNew) {
+
+	public void setNumberOfNew(long numberOfNew) {
 		this.numberOfNew = numberOfNew;
 	}
-	
-	public int getNumberOfUpdated() {
+
+	public long getNumberOfUpdated() {
 		return numberOfUpdated;
 	}
-	
-	public void setNumberOfUpdated(int numberOfUpdated) {
+
+	public void setNumberOfUpdated(long numberOfUpdated) {
 		this.numberOfUpdated = numberOfUpdated;
 	}
 }
