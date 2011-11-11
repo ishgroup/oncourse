@@ -348,7 +348,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * @return replication stub, null if not found.
 	 */
 	public static ReplicationStub takeStubFromGroupByAngelId(TransactionGroup transactionGroup, Long angelId, String entityName) {
-
+		if(angelId == null){
+			return null;
+		}
+			
 		String angelIdentifier = EntityMapping.getAngelEntityIdentifer(entityName);
 
 		for (ReplicationStub s : new ArrayList<ReplicationStub>(transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo())) {
