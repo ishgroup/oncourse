@@ -222,6 +222,13 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 					for (Queueable r : relatedObjects) {
 						String entityIdentifier = r.getObjectId().getEntityName();
+						if (r.getAngelId() == null) {
+							// log the record details to have the ability to
+							// erase it from the existing dump if we shouldn't
+							// delete it.
+							logger.error("The record with willowId:" + r.getId() + " and identifier:"
+									+ entityIdentifier + " has null angelId!");
+						}
 						ReplicationStub relStub = takeStubFromGroupByAngelId(transactionGroup, r.getAngelId(), entityIdentifier);
 						if (relStub != null && relStub instanceof DeletedStub) {
 							processStub(getGroupContext(), relStub, transactionGroup, result);
