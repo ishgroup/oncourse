@@ -18,7 +18,9 @@ public class IshVersionListener {
 	@PrePersist(value = Qualification.class)
 	public void prePersistQualification(Qualification q) {
 		Long ishVersion = IshVersionHolder.getIshVersion();
-		q.setIshVersion(ishVersion);
+		if (ishVersion != null) {
+			q.setIshVersion(ishVersion);
+		}
 	}
 
 	@PreUpdate(value = Qualification.class)
@@ -32,7 +34,9 @@ public class IshVersionListener {
 	@PrePersist(value = TrainingPackage.class)
 	public void prePersistTrainingPackage(TrainingPackage tp) {
 		Long ishVersion = IshVersionHolder.getIshVersion();
-		tp.setIshVersion(ishVersion);
+		if (ishVersion != null) {
+			tp.setIshVersion(ishVersion);
+		}
 	}
 
 	@PreUpdate(value = TrainingPackage.class)
@@ -46,7 +50,9 @@ public class IshVersionListener {
 	@PrePersist(value = Module.class)
 	public void prePersistTrainingPackage(Module m) {
 		Long ishVersion = IshVersionHolder.getIshVersion();
-		m.setIshVersion(ishVersion);
+		if (ishVersion != null) {
+			m.setIshVersion(ishVersion);
+		}
 	}
 
 	@PreUpdate(value = Module.class)
@@ -58,9 +64,13 @@ public class IshVersionListener {
 	}
 
 	/**
-	 * Iterates and compares object properties from changeset with actual values;
-	 * @param q persistent object
-	 * @return true - if object was modified and we need to increase ishVersion, false - otherwise.
+	 * Iterates and compares object properties from changeset with actual
+	 * values;
+	 * 
+	 * @param q
+	 *            persistent object
+	 * @return true - if object was modified and we need to increase ishVersion,
+	 *         false - otherwise.
 	 */
 	private boolean shouldUpdateIshVersion(Persistent q) {
 
@@ -71,7 +81,7 @@ public class IshVersionListener {
 
 		for (Map.Entry<String, PropertyChange> change : changes.entrySet()) {
 			PropertyChange propChange = change.getValue();
-			if (!propChange.getNewValue().equals(propChange.getOldValue())) {
+			if (propChange.getOldValue() != null && !propChange.getOldValue().equals(propChange.getNewValue())) {
 				shouldSetIshVersion = true;
 				break;
 			}
