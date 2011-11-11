@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 
 public class College extends _College {
 
@@ -57,6 +59,8 @@ public class College extends _College {
 	public List<Site> getWebVisibleSites() {
 		List<Site> sites = getSites();
 		Expression expr = ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true);
+		Ordering order=new Ordering(Site.NAME_PROPERTY, SortOrder.ASCENDING);
+		order.orderList(sites);
 		return expr.filterObjects(sites);
 	}
 }
