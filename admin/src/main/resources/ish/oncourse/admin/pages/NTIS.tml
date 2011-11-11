@@ -1,9 +1,9 @@
 <html t:type="pagestructure" title="literal:NTIS"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
-	<h4>Reference data last updated on ${lastUpdateDate}</h4>
+	<h4>Reference data last updated on <span id="lastUpdate">${lastUpdateDate}</span></h4>
 	
-	<t:if test="updateInProgress" negate="true">
+	<div id="updateInput">
 		<t:form t:id="updateForm">
 			<table>
 				<tr>
@@ -17,26 +17,44 @@
 				</tr>
 			</table>
 		</t:form>
-	</t:if>
+	</div>
 	
 	<div id="results"></div>
-
+	
+	<t:if test="updateInProgress">
+		<script type="text/javascript">jQuery(function() {jQuery("#updateInput").hide();});</script>
+	</t:if>
+	
 	<script type="text/javascript">
 		jQuery(function() {		
 			jQuery( "#dateFrom" ).datepicker({ dateFormat: 'yy/mm/dd' });
 			jQuery( "#dateTo" ).datepicker({ dateFormat: 'yy/mm/dd' });
+			
 			var statusUpdate = function() {
+				
 				jQuery.getJSON('${ntisResultUrl}', function(data) {
-			  		var items = [];
+			  		
+					var items = [];
+			  		
 			  		jQuery.each(data, function(key, val) {
-			    		items.push('<li>' + val + '</li>');
-			    		jQuery('#results').empty();
-				  		jQuery('<ul/>', {'class': 'my-new-list', html: items.join('')}).appendTo('#results');
+			  			if (val.match(/^END_.*$/)) {
+			  				jQuery("#dateFrom").val(val.split('_')[1]);
+			  				jQuery("#lastUpdate").text(val.split('_')[1]);
+			  				jQuery("#updateInput").show();
+			  			}
+			  			else {
+			  				items.push('<li>' + val + '</li>');	
+			  			}
 				  	});
+			  		
+			  		jQuery('#results').empty();
+			  		jQuery('<ul/>', {'class': 'my-new-list', html: items.join('')}).appendTo('#results');
 			  	});
 			};
-			setTimeout(statusUpdate, 1);
+			
+			setTimeout(statusUpdate, 1000);
 			setInterval(statusUpdate, 5000);
 		});
-	</script>	
+	</script>
+	
 </html>	

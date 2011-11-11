@@ -20,6 +20,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.Session;
 
 public class NTIS {
@@ -37,6 +38,9 @@ public class NTIS {
 
 	@Inject
 	private Request request;
+	
+	@Inject
+	private Response response;
 
 	@Inject
 	private ThreadSource threadSource;
@@ -55,9 +59,7 @@ public class NTIS {
 
 	@SetupRender
 	void setupRender() {
-		
-		this.ntisResultUrl = request.getContextPath() + "/NTISJson";
-
+		this.ntisResultUrl = response.encodeURL(request.getContextPath() + "/NTISJson");
 		String lastUpdate = preferenceController.getNTISLastUpdate();
 		
 		if (lastUpdate != null) {
@@ -181,7 +183,8 @@ public class NTIS {
 				}
 
 				ntisData.add("Update finished.");
-
+				ntisData.add(String.format("END_%s", preferenceController.getNTISLastUpdate()));
+				
 			} finally {
 				synchronized (session) {
 					session.setAttribute(NTIS_UPDATE_STARTED_ATTR, null);
