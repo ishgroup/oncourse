@@ -23,15 +23,25 @@
 	<h2>License Fees</h2>
 
 	<table>
-		<t:loop source="licenseFees" value="currentLicenseFee">
+		<thead>
 			<tr>
-				<td>${keyCode}</td>
-				<td><t:textfield t:id="planName" value="planName"/></td>
-				<td><t:textfield t:id="billingMonth" value="billingMonth"/></td>
-				<td><t:textfield t:id="validUntil" value="validUntil"/></td>
-				<td><t:textfield t:id="fee" value="fee"/></td>
+				<td>Key Code</td>
+				<td>Plan Name</td>
+				<td>Billing Month</td>
+				<td>Valid Until</td>
+				<td>Fee</td>
 			</tr>
-		</t:loop>
+		</thead>
+		<tbody>
+			<t:loop source="licenseInfo.keySet()" value="currentLicenseInfoKey">
+				<tr>
+					<td>${currentLicenseInfoKey}</td>
+					<t:loop source="currentLicenseInfo.keySet()" value="infoKey">
+						<td><t:textfield t:id="infoKey" value="infoValue"/></td>
+					</t:loop>
+				</tr>
+			</t:loop>
+		</tbody>
 	</table>
 	
 	<t:submit t:id="save" value="Save"/>
