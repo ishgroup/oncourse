@@ -2,24 +2,22 @@
 	xmlns:p="tapestry:parameter">
 	<t:if t:test="hasLocation">
 		<script type="text/javascript">
-			$j(document).ready(function() {
 			vLat = "${mapPositionLatitude}";
 			vLong = "${mapPositionLongitude}";
 			gMapOptions = {
 				zoom: 14,
 				center: new google.maps.LatLng(vLat, vLong),
 				mapTypeId: google.maps.MapTypeId.ROADMAP
-			}
-			var near = "${searchingNear}";
-			var vSiteAddress = "${address}";
-			var vFrom = "${directionsFrom}";
-			var showNearMarker = "${hasGlobalPosition}";
-			var showMapItems = "${showMapItems}";
-			var zoom = null;
-			var map;
-			var siteMarkers = new Array();
+			};
+			near = "${searchingNear}";
+			vSiteAddress = "${address}";
+			vFrom = "${directionsFrom}";
+			showNearMarker = "${hasGlobalPosition}";
+			showMapItems = "${showMapItems}";
+			zoom = null;
+			siteMarkers = new Array();
 			gMapSites = ${sitesArray};
-			});
+			mapLoaded=false;
 		</script>
 
 		<div id="directions" class="directions-wrapper">

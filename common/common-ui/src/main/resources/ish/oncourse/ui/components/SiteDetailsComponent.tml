@@ -43,10 +43,8 @@
 					mapLoad('gmapCanvas', gMapSites, gMapOptions);
 				}
 			});
-
-
 		</script>
 	</t:if>
 
-	<div id="gmapCanvas" />
+	<div id="gmapCanvas"></div>
 </t:container>
