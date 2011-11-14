@@ -1,8 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if t:test="hasLocation">
-		<script type="text/javascript"
-			src="http://maps.google.com/maps/api/js?sensor=true" />
 		<script type="text/javascript">
 			$j(document).ready(function() {
 			vLat = "${mapPositionLatitude}";
@@ -23,11 +21,6 @@
 			gMapSites = ${sitesArray};
 			});
 		</script>
-		<!-- Static map for print version -->
-		<div id="mapStatic">
-			<img width="600" height="300" border="0" src="http://maps.google.com/staticmap?center=${mapPositionLatitude},${mapPositionLongitude}&amp;zoom=14&amp;size=600x300&amp;markers=${mapPositionLatitude},${mapPositionLongitude}" alt="Static google map" />
-
-		</div>
 
 		<div id="directions" class="directions-wrapper">
 			<t:if t:test="hideDirections" negate="true">
