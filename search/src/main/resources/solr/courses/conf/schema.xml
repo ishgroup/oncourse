@@ -118,6 +118,8 @@
 
 		<field name="when" type="textgen" indexed="true" stored="true"
 			omitNorms="false" multiValued="true" boost="5.0" />
+			
+		<field name="startDate" type="date" indexed="true" stored="true" omitNorms="false"/>
 
 		<field name="end" type="date" indexed="true" stored="true"  multiValued="true"
 			omitNorms="false" boost="5.0"/>

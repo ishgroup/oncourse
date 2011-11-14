@@ -6,9 +6,9 @@
 		
 	<document>
 		<entity name="course" dataSource="onCourseDS"
-			query="select id, 'course' as type, name, detail, code, collegeId from Course where isWebVisible=1"
-			deltaImportQuery="select id, 'course' as type, name, detail, code, collegeId from Course where id='${dataimporter.delta.id}'"
-			deltaQuery="select id from Course where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'"
+			query="select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate  from Course c where c.isWebVisible=1"
+			deltaImportQuery="select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate from Course c where c.id='${dataimporter.delta.id}'"
+			deltaQuery="select c.id from Course c where c.isWebVisible=1 and c.modified &gt; '${dataimporter.last_index_time}'"
 			pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
@@ -17,6 +17,7 @@
 			<field name="detail" column="detail" stripHTML="true" />
 			<field name="course_code" column="code" />
 			<field name="collegeId" column="collegeId" />
+			<field name="startDate" column="startDate" />
 
 			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
 				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end from CourseClass cc 
