@@ -8,7 +8,8 @@
 				<!--  <t:pagelink id="m_messages" page="prop:discussionsPageName">Messages <t:if test="hasNewMessages"><span class="new">${numberOfNewMessages} new</span></t:if></t:pagelink><div></div> -->
 				<t:pagelink id="m_classes" page="prop:classesPageName">Classes</t:pagelink><div></div>
 				<!--  <t:pagelink id="m_surveys" page="prop:surveysPageName">Surveys</t:pagelink><div></div> -->
-				<t:pagelink id="m_profile" page="prop:profilePageName">My Profile</t:pagelink>
+				<t:pagelink id="m_profile" page="prop:profilePageName">My Profile</t:pagelink><div></div>
+				<!--  <t:pagelink id="m_mailinglists" page="prop:mailinglistsPageName">Mailing Lists</t:pagelink> -->
 			</div>
 		</div>
 	</div>

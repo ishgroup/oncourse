@@ -41,6 +41,10 @@ public class Menu {
 		return "profile";
 	}
 
+	public String getMailinglistsPageName() {
+		return "mailinglists";
+	}
+	
 	public String getSurveysPageName() {
 		return isTutor() ? "tutor/surveys" : "student/surveys";
 	}

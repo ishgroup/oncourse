@@ -1,0 +1,37 @@
+<html t:type="pagestructure" title="literal:Mailing Lists"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_mailinglists">
+	
+	<t:if test="haveMailingLists">
+
+		<h3> The following mailing lists are available at ${collegeName}: </h3>
+		<br/>
+	  
+		<!--  <form t:type="form" t:id="mailingListsForm"> 
+			<t:loop  source="mailingListsForSubscribe" value="currentMailingList"> 
+				<t:checkbox t:mixins="lombok/ControlledCheckbox" 
+                                 controller="currentMailingController"  
+                                 value="selected"/> 
+			   	 ${currentMailingList.name} 
+			</t:loop>
+		</form>
+		-->
+		
+		<form t:type="form">
+		    <t:loop t:source="mailingMapForSubscribe.keySet()" t:value="currentMailingList"> 
+		        <input type="checkbox" t:type="checkbox" t:id="mailingListCheckbox" t:value="currentValue" onclick="this.form.submit();"/>
+		        <label t:type="Label" for="mailingListCheckbox">${mapValue}</label> 
+		    </t:loop>
+		</form>
+		
+		<br/>
+		<br/>
+		<h5>Please select any mailing lists above which you wish to subscribe to. If you are subscribed you will receive email from time to time from this list.
+		 You can unsubscribe at any time.</h5>
+		 
+		 
+		<p:else>
+			<h3>${collegeName} has no available mailing lists.</h3>
+		</p:else>
+	</t:if>
+	
+</html>
