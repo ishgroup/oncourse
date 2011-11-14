@@ -38,7 +38,7 @@ public class Index {
 	void setupRender() {
 		if (collegeModel == null) {
 			collegeModel = beanModelSource.createDisplayModel(College.class, componentResources.getMessages());
-			collegeModel.include("id", "name", "ipAddress", "angelVersion");
+			collegeModel.include("id", "name", "lastRemoteAuthentication", "angelVersion");
 			collegeModel.add("action", null);
 		}
 		this.colleges = collegeService.allColleges();
