@@ -10,7 +10,7 @@
 	<groupId>ish.oncourse.willow</groupId>
 	<artifactId>admin</artifactId>
 	<packaging>war</packaging>
-	<version>2.16</version>
+	<version>2.17-SNAPSHOT</version>
 
 	<name>Willow Admin</name>
 
@@ -137,9 +137,9 @@
 	</build>
 
 	<scm>
-		<connection>scm:svn:https://svn.ish.com.au/ish/willow/tags/admin/admin-2.16</connection>
-		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/tags/admin/admin-2.16</developerConnection>
-		<url>http://websvn.ish.com.au/ish/willow/tags/admin/admin-2.16</url>
+		<connection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/admin</connection>
+		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/admin</developerConnection>
+		<url>http://websvn.ish.com.au/ish/willow/trunk/admin</url>
 	</scm>
 
 	<repositories>
