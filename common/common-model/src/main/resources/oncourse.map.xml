@@ -628,6 +628,7 @@
 		<db-attribute name="nodeType" type="INTEGER" length="10"/>
 		<db-attribute name="parentId" type="BIGINT" length="19"/>
 		<db-attribute name="shortName" type="VARCHAR" length="128"/>
+		<db-attribute name="specialType" type="SMALLINT"/>
 		<db-attribute name="weighting" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="TagGroupRequirement" catalog="willow_college">
@@ -1286,6 +1287,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="nodeType" type="java.lang.Integer" db-attribute-path="nodeType"/>
 		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
+		<obj-attribute name="specialType" type="java.lang.Short" db-attribute-path="specialType"/>
 		<obj-attribute name="weighting" type="java.lang.Integer" db-attribute-path="weighting"/>
 	</obj-entity>
 	<obj-entity name="TagGroupRequirement" className="ish.oncourse.model.TagGroupRequirement" dbEntityName="TagGroupRequirement">

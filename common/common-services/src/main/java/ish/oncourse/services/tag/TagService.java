@@ -1,6 +1,7 @@
 package ish.oncourse.services.tag;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -200,5 +202,22 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		Long browseTagId = (Long) request.getAttribute(Tag.BROWSE_TAG_PARAM);
 		return browseTagId == null ? null : findById(browseTagId);
 	}
+	
+	public List<Tag> getMailingLists() {
+	
+		// MAILING_LISTS(3, "Mailing lists") - see  NodeSpecialType
+		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3)));
+		return tags;
+	}
+	
+	public List<Tag> getMailingListsContactSubscribed(Contact contact) {
+		
+		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
 
+		Expression qualifier = ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY,
+				Contact.class.getSimpleName()).andExp(
+				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()));
+
+		return findByQualifier(getSiteQualifier().andExp(qualifier).andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3)));
+	}
 }

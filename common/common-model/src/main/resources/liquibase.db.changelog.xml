@@ -363,4 +363,15 @@
 		<addNotNullConstraint tableName="Enrolment" columnDataType="varchar(1)" columnName="source" defaultNullValue="O" />	
 	</changeSet>
 	
+	<changeSet id="29" author="olga" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Tag" columnName="specialType"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Tag">
+			<column name="specialType" type="SMALLINT"/>
+		</addColumn>
+	</changeSet>
+	
 </databaseChangeLog>

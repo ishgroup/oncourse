@@ -2,6 +2,7 @@ package ish.oncourse.services.tag;
 
 import java.util.List;
 
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 
 /**
@@ -77,4 +78,9 @@ public interface ITagService {
 	 * @return
 	 */
 	Tag getBrowseTag();
+
+	List<Tag> getMailingLists();
+
+	List<Tag> getMailingListsContactSubscribed(Contact currentUser);
+	
 }

@@ -1,6 +1,5 @@
 package ish.oncourse.portal.pages;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,7 +10,6 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.tag.ITagService;
 
-import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -36,61 +34,57 @@ public class MailingLists {
 	
 	@Persist
 	private  Map<String,String> mailingMapForSubscribe;
-
-	public Map<String,String> getMailingMapForSubscribe() {
-	   return mailingMapForSubscribe;
-	}
-
+	
 	public boolean getCurrentValue() {
-	     return this.selectedMailingLists.contains(this.currentMailingList);
+	     return getSelectedMailingLists().contains(this.currentMailingList);
 	}
 
-	public void setCurrentValue(final boolean currentValue) {
-	    final String mapValue = this.getMapValue();
-
-	    if (currentValue) {
-	        this.selectedMailingLists.add(mapValue);
+	public void setCurrentValue(boolean currentValue) {
+	    if (!getCurrentValue()) {
+	    	getSelectedMailingLists().add((String) this.currentMailingList);
 	    } else {
-	        this.selectedMailingLists.remove(mapValue);
+	    	getSelectedMailingLists().remove((String)this.currentMailingList);
 	    }
 	}
 
-
 	public String getMapValue() {
-	    return this.getMailingMapForSubscribe().get(this.currentMailingList);
+	    return getMailingMapForSubscribe().get(this.currentMailingList);
 	}
 	
 	@SetupRender
 	void beforeRender() {
 		this.currentUser = authService.getUser();
-		
-		selectedMailingLists = new HashSet<String>();
-		mailingMapForSubscribe = new HashMap<String, String>();
-
-//		// temporary show only tags for this user in future will use 
-//		// tagService.getMailingLists();
-		for (Tag tag : tagService.getTagsForEntity(Contact.class.getSimpleName(), currentUser.getId())) {
-			mailingMapForSubscribe.put(tag.getId().toString(), tag.getName());
-		}
-		
 	}
 
+	public Map<String,String> getMailingMapForSubscribe() {
+		if (mailingMapForSubscribe == null) {
+			mailingMapForSubscribe = new HashMap<String, String>();
+			
+			// get all mailing lists for this College
+			for (Tag tag : tagService.getMailingLists()) {
+				mailingMapForSubscribe.put(tag.getId().toString(), tag.getName());
+			}
+		}
+		return mailingMapForSubscribe;
+	}
+
+	public Set<String> getSelectedMailingLists() {
+		if (selectedMailingLists == null) {
+			selectedMailingLists = new HashSet<String>();
+			
+			// get all mailing lists for this College
+			for (Tag tag : tagService.getMailingListsContactSubscribed(currentUser)) {
+				selectedMailingLists.add(tag.getId().toString());
+			}
+		}
+		return selectedMailingLists;
+	}
 
 	public String getCollegeName() {
 		return  authService.getUser().getCollege().getName();
 	}
 	
 	public boolean getHaveMailingLists() {
-		return mailingMapForSubscribe.size() > 0;
-	}
-	
-	@OnEvent(component = "mailingListCheckbox")
-	void onCheckedMailingListCheckbox() {
-		System.out.println(getMapValue());
-	}
-
-	Object onSuccess() throws IOException {
-		System.out.println(getMapValue());
-		return this;
+		return getMailingMapForSubscribe().size() > 0;
 	}
 }

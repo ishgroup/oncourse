@@ -28,6 +28,7 @@ public abstract class _Tag extends CayenneDataObject {
     public static final String NAME_PROPERTY = "name";
     public static final String NODE_TYPE_PROPERTY = "nodeType";
     public static final String SHORT_NAME_PROPERTY = "shortName";
+    public static final String SPECIAL_TYPE_PROPERTY = "specialType";
     public static final String WEIGHTING_PROPERTY = "weighting";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String PARENT_PROPERTY = "parent";
@@ -105,6 +106,13 @@ public abstract class _Tag extends CayenneDataObject {
     }
     public String getShortName() {
         return (String)readProperty("shortName");
+    }
+
+    public void setSpecialType(Short specialType) {
+        writeProperty("specialType", specialType);
+    }
+    public Short getSpecialType() {
+        return (Short)readProperty("specialType");
     }
 
     public void setWeighting(Integer weighting) {
