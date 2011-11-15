@@ -188,7 +188,7 @@ public class CourseClassService implements ICourseClassService {
 
 		/*
 		 * get classes for classes item
-		 * for classes item we should show ALL classes 
+		 * for classes item we should show ALL ACTIVE classes  (not canceled)
 		 */
 		if (contact.getStudent() == null && contact.getTutor() == null) {
 			logger.warn(String.format("Contact with ID:%s is neither Student nor Tutor.", contact.getId()));
@@ -201,7 +201,11 @@ public class CourseClassService implements ICourseClassService {
 			Tutor tutor = contact.getTutor();
 			Expression expr = ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.TUTOR_PROPERTY, tutor);
 			
-			SelectQuery q = new SelectQuery(CourseClass.class, expr);
+			// expression: get only ACTIVE classes (not canceled)
+			Expression activeClassesExp = ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);  
+			
+			SelectQuery q = new SelectQuery(CourseClass.class, expr.andExp(activeClassesExp));
+
 			q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
 			courses.addAll(cayenneService.sharedContext().performQuery(q));
 		}
@@ -210,8 +214,11 @@ public class CourseClassService implements ICourseClassService {
 			Student student = contact.getStudent();
 			Expression expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, student);
 			
+			// expression: get only ACTIVE classes (not canceled)
+			Expression activeClassesExp = ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);  
 			
-			SelectQuery q = new SelectQuery(CourseClass.class, expr);
+			SelectQuery q = new SelectQuery(CourseClass.class, expr.andExp(activeClassesExp));
+
 			q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
 			courses.addAll(cayenneService.sharedContext().performQuery(q));
 		}
