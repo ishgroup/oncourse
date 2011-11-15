@@ -1,8 +1,95 @@
 <html t:type="pagestructure" title="literal:College Web"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<h1>${college.name}</h1>
 	
 	<span t:type="editTabs" college="college" selected="literal:web"/>
 	
+	<h1>${college.name}</h1>
+	
+	<h3>Domains</h3>
+		<table>
+			<thead>
+				<tr>
+					<td>Name</td>
+					<td>Site</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t:form t:id="domainSelectForm">
+					<t:loop source="domains" value="currentDomain">
+						<tr>
+							<td>${currentDomain.name}</td>
+							<td><t:select t:id="siteSelect" model="siteSelectModel" blankOption="never" value="selectedSite"/></td>
+							<td><t:actionlink t:id="deleteDomain" context="currentDomain.name">[x]</t:actionlink></td>
+						</tr>
+					</t:loop>
+				</t:form>
+				<t:form t:id="domainsForm">
+					<tr>
+						<td><t:textfield t:id="newDomain" value="newDomainValue"/></td>
+						<td><t:submit t:id="addNewDomain" value="Add"/></td>
+					</tr>
+				</t:form>
+			</tbody>
+		</table>
+	
+	<h3>Sites</h3>
+		<table>
+			<thead>
+				<tr>
+					<td>Site Name</td>
+					<td>Site Key</td>
+					<td>Action</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t:loop source="sites" value="currentSite">
+					<tr>
+						<td>${currentSite.name}</td>
+						<td>${currentSite.siteKey}</td>
+						<td><t:actionlink t:id="deleteSite" context="currentSite.siteKey">[x]</t:actionlink></td>
+					</tr>
+				</t:loop>
+				<t:form t:id="sitesForm">
+				<tr>
+					<td><t:textfield t:id="newSiteName" value="newSiteNameValue"/></td>
+					<td><t:textfield t:id="newSiteKey" value="newSiteKeyValue"/></td>
+					<td><t:submit t:id="addNewSite" value="Add"/></td>
+				</tr>
+				</t:form>
+			</tbody>
+		</table>
+	
+	<h3>CMS Users</h3>
+		<table>
+			<thead>
+				<tr>
+					<td>email</td>
+					<td>Password</td>
+					<td>First Name</td>
+					<td>Last Name</td>
+					<td>Action</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t:loop source="cmsUsers" value="currentUser">
+					<tr>
+						<td>${currentUser.email}</td>
+						<td>${currentUser.password}</td>
+						<td>${currentUser.firstName}</td>
+						<td>${currentUser.lastName}</td>
+						<td><t:actionlink t:id="deleteUser" context="currentUser.email">[x]</t:actionlink></td>
+					</tr>
+				</t:loop>
+				<t:form t:id="cmsUsersForm">
+				<tr>
+					<td><t:textfield t:id="newUserEmail" value="newUserEmailValue"/></td>
+					<td><t:textfield t:id="newUserPassword" value="newUserPasswordValue"/></td>
+					<td><t:textfield t:id="newUserFirstName" value="newUserFirstNameValue"/></td>
+					<td><t:textfield t:id="newUserLastName" value="newUserLastNameValue"/></td>
+					<td><t:submit t:id="addNewUser" value="Add"/></td>
+				</tr>
+				</t:form>
+			</tbody>
+		</table>
 
 </html>
