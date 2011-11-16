@@ -83,7 +83,8 @@ public class AppModule {
 			public void handleRequestException(Throwable exception) throws IOException {
 				logger.debug("Unexpected runtime exception: " + exception.getMessage(), exception);
 				
-				if (response != null && exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
+				if (response != null && exception != null && exception.getMessage() != null &&
+						exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
 					response.sendRedirect("login"); 
 				} else { 
 					String exceptionPageName = "errorPage";
