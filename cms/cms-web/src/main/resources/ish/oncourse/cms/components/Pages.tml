@@ -21,7 +21,7 @@
     
     	<div class="cms-content cms-page-blocks"  >
 				
-    		<table class="cms-cont-table" id="pages">
+    		<table class="cms-cont-table" id="pagestable">
     			<t:loop source="nodes" value="webNode">
 					<tr>
 						<td class="cms-first">${webNode.name}</td>
@@ -57,21 +57,21 @@
 	
 	<script type="text/javascript">
 		jQuery(function() {
-			jQuery('#pageFilter').search('#pages tr', function(on) {
+			jQuery('#pageFilter').search('#pagestable tr', function(on) {
 	            on.all(function(results) {
 	             
 	            });
 
 	            on.reset(function() {
-	              jQuery('#pages tr').show();
+	              jQuery('#pagestable tr').show();
 	            });
 
 	            on.empty(function() {
-	              jQuery('#pages tr').hide();
+	              jQuery('#pagestable tr').hide();
 	            });
 
 	            on.results(function(results) {
-	              jQuery('#pages tr').hide();
+	              jQuery('#pagestable tr').hide();
 	              results.show();
 	            });
 	          });
