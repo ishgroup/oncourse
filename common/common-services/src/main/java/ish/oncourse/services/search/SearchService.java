@@ -9,6 +9,7 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,13 +23,16 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class SearchService implements ISearchService {
 
 	private static final Logger logger = Logger.getLogger(SearchService.class);
 
 	private static final int MAX_DISTANCE = 100;
+
+	private static final String DATE_BOOST_STM = "{!boost b=$dateboost v=$qq}";
+
+	private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate, NOW), 0),86400000,1,1)";
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -41,9 +45,6 @@ public class SearchService implements ISearchService {
 
 	@Inject
 	private ITagService tagService;
-
-	@Inject
-	private Request request;
 
 	private Map<SolrCore, SolrServer> solrServers = new HashMap<SolrCore, SolrServer>();
 
@@ -93,95 +94,95 @@ public class SearchService implements ISearchService {
 			q.addFilterQuery(String.format("+collegeId:%s +doctype:course end:[NOW TO *]", collegeId));
 
 			String searchStr = null;
-			if(params.containsKey(SearchParam.s)) {
+			
+			if (params.containsKey(SearchParam.s)) {
 				searchStr = ClientUtils.escapeQueryChars(params.get(SearchParam.s));
 			}
-			
-			if (params.size() == 1 && searchStr != null
-					&& request.getAttribute(Tag.BROWSE_TAG_PARAM) == null) {
-				q.setQuery(searchStr.toLowerCase());
-				q.setQueryType("dismax");
-			} else {
-				StringBuilder qString = new StringBuilder();
 
-				if (params.containsKey(SearchParam.s)) {
-					qString.append(searchStr).append(" ");
-					qString.append(String.format("(detail: %s || tutor:%s || course_code:%s)", searchStr, searchStr, searchStr)).append(" ");
-				}
+			StringBuilder qString = new StringBuilder();
 
-				if (params.containsKey(SearchParam.price)) {
-					String price = params.get(SearchParam.price);
-					if (price != null && price.length() > 0 && !StringUtils.isNumeric(price)) {
-						// remove the possible currency sign
-						price = price.replaceAll("[$]", "");
-					}
-					if (qString.length() != 0) {
-						qString.append(" AND ");
-					}
-					qString.append(String.format("price:[* TO %s]", price)).append(" ");
-				}
-
-				if (params.containsKey(SearchParam.day)) {
-					String day = params.get(SearchParam.day);
-					if (qString.length() != 0) {
-						qString.append(" AND ");
-					}
-					qString.append("when:" + day).append(" ");
-				}
-
-				if (params.containsKey(SearchParam.time)) {
-					String time = params.get(SearchParam.time);
-					if (qString.length() != 0) {
-						qString.append(" AND ");
-					}
-					qString.append("when:" + time).append(" ");
-				}
-
-				Tag browseTag = null;
-				if (params.containsKey(SearchParam.subject)) {
-					String subject = params.get(SearchParam.subject);
-					browseTag = tagService.getTagByFullPath(subject);
-				}
-
-				if (browseTag != null) {
-					StringBuilder tagQuery = new StringBuilder();
-					tagQuery.append("(tagId:").append(browseTag.getId());
-
-					for (Tag t : browseTag.getAllWebVisibleChildren()) {
-						tagQuery.append(" || tagId:").append(t.getId());
-					}
-					if (qString.length() != 0) {
-						qString.append(" AND ");
-					}
-					qString.append(tagQuery.toString()).append(") ");
-				}
-
-				if (params.containsKey(SearchParam.near)) {
-					String near = params.get(SearchParam.near);
-					SolrDocumentList responseResults = searchSuburb(near).getResults();
-
-					String location = (String) responseResults.get(0).get("loc");
-
-					q.addFilterQuery("{!geofilt}");
-					q.add("sfield", "course_loc");
-					q.add("pt", location);
-					q.add("d", "" + MAX_DISTANCE);
-
-					q.addSortField("geodist()", ORDER.asc);
-
-				}
-
-				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("Solr query:%s", qString.toString()));
-				}
-
-				q.setQuery(qString.toString());
+			if (params.containsKey(SearchParam.s)) {
+				qString.append(searchStr).append(" ");
+				qString.append(String.format("(detail: %s || tutor:%s || course_code:%s)", searchStr, searchStr, searchStr)).append(" ");
 			}
+
+			if (params.containsKey(SearchParam.price)) {
+				String price = params.get(SearchParam.price);
+				if (price != null && price.length() > 0 && !StringUtils.isNumeric(price)) {
+					// remove the possible currency sign
+					price = price.replaceAll("[$]", "");
+				}
+				if (qString.length() != 0) {
+					qString.append(" AND ");
+				}
+				qString.append(String.format("price:[* TO %s]", price)).append(" ");
+			}
+
+			if (params.containsKey(SearchParam.day)) {
+				String day = params.get(SearchParam.day);
+				if (qString.length() != 0) {
+					qString.append(" AND ");
+				}
+				qString.append("when:" + day).append(" ");
+			}
+
+			if (params.containsKey(SearchParam.time)) {
+				String time = params.get(SearchParam.time);
+				if (qString.length() != 0) {
+					qString.append(" AND ");
+				}
+				qString.append("when:" + time).append(" ");
+			}
+
+			Tag browseTag = null;
+			if (params.containsKey(SearchParam.subject)) {
+				String subject = params.get(SearchParam.subject);
+				browseTag = tagService.getTagByFullPath(subject);
+			}
+
+			if (browseTag != null) {
+				StringBuilder tagQuery = new StringBuilder();
+				tagQuery.append("(tagId:").append(browseTag.getId());
+
+				for (Tag t : browseTag.getAllWebVisibleChildren()) {
+					tagQuery.append(" || tagId:").append(t.getId());
+				}
+				if (qString.length() != 0) {
+					qString.append(" AND ");
+				}
+				qString.append(tagQuery.toString()).append(") ");
+			}
+
+			if (params.containsKey(SearchParam.near)) {
+				String near = params.get(SearchParam.near);
+				SolrDocumentList responseResults = searchSuburb(near).getResults();
+
+				String location = (String) responseResults.get(0).get("loc");
+
+				q.addFilterQuery("{!geofilt}");
+				q.add("sfield", "course_loc");
+				q.add("pt", location);
+				q.add("d", "" + MAX_DISTANCE);
+
+				q.addSortField("geodist()", ORDER.asc);
+				q.setQuery(qString.toString());
+			} else {
+				q.setQuery(DATE_BOOST_STM);
+				q.setParam("dateboost", DATE_BOOST_FUNCTION);
+				q.setParam("qq", "(" + qString.toString() + ")");
+			}
+
 			if ("".equals(q.getQuery())) {
 				q.setQuery("*:*");
 				q.setQueryType("standard");
 			}
+
+			if (logger.isDebugEnabled()) {
+				logger.debug(String.format("Solr query:%s", URLDecoder.decode(q.toString(), "UTF-8")));
+			}
+
 			return getSolrServer(SolrCore.courses).query(q);
+
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
 			throw new SearchException("Unable to find courses.", e);
@@ -221,12 +222,10 @@ public class SearchService implements ISearchService {
 
 			SolrDocumentList results = new SolrDocumentList();
 			if (coursesQuery.length() != 0) {
-				results.addAll(getSolrServer(SolrCore.courses).query(new SolrQuery(coursesQuery.toString()))
-						.getResults());
+				results.addAll(getSolrServer(SolrCore.courses).query(new SolrQuery(coursesQuery.toString())).getResults());
 			}
 			if (suburbsQuery.length() != 0) {
-				results.addAll(getSolrServer(SolrCore.suburbs).query(new SolrQuery(suburbsQuery.toString()))
-						.getResults());
+				results.addAll(getSolrServer(SolrCore.suburbs).query(new SolrQuery(suburbsQuery.toString())).getResults());
 			}
 			if (tagsQuery.length() != 0) {
 				results.addAll(getSolrServer(SolrCore.tags).query(new SolrQuery(tagsQuery.toString())).getResults());
@@ -263,6 +262,7 @@ public class SearchService implements ISearchService {
 				q.setQuery("*:*");
 			}
 			return getSolrServer(SolrCore.suburbs).query(q);
+
 		} catch (Exception e) {
 			logger.error("Failed to search suburbs.", e);
 			throw new SearchException("Unable to find suburbs.", e);
@@ -273,8 +273,8 @@ public class SearchService implements ISearchService {
 		try {
 			int separator = location.lastIndexOf(" ");
 
-			String[] suburbParams = separator > 0 ? new String[] { location.substring(0, separator),
-					location.substring(separator + 1) } : new String[] { location, null };
+			String[] suburbParams = separator > 0 ? new String[] { location.substring(0, separator), location.substring(separator + 1) }
+					: new String[] { location, null };
 			if (suburbParams[1] != null && !suburbParams[1].matches("(\\d)+")) {
 				suburbParams[0] = location;
 				suburbParams[1] = null;
