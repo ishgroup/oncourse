@@ -20,7 +20,7 @@ import java.util.List;
 @Meta("tapestry.response-content-type=text/xml")
 public class SitemapXML {
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Inject
 	private Request request;
