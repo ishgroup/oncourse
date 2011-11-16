@@ -65,7 +65,7 @@ public class ForgotPassword {
 		
 		email.setFromEmail(FROM_EMAIL);
 		email.setSubject("Password recovery.");
-		email.setBody(String.format("To recover password please visit <a href=\"%s\">%s</a>. %s", recoveryLink, recoveryLink, recoveryLink));
+		email.setBody(String.format("To recover password please visit <a href=\"%s\">%s</a>. ", recoveryLink, recoveryLink));
 		email.setToEmails(c.getEmailAddress());
 
 		mailService.sendEmail(email, true);
