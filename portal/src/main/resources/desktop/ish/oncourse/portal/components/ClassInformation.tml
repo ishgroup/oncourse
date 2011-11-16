@@ -4,19 +4,21 @@
 
 		<h2>Information</h2>
 
-		<div class="class-info1">
-
-			<div>
-				<span>Enrolments:</span> 
-				${enrolmentsCount} <t:if test="hasEnrolments">(${maleEnrolmentsCount}, ${femaleEnrolmentsCount})</t:if>
+		<t:if test="isTutor">
+			<div class="class-info1">
+	
+				<div>
+					<span>Enrolments:</span> 
+					${enrolmentsCount} <t:if test="hasEnrolments">(${maleEnrolmentsCount}, ${femaleEnrolmentsCount})</t:if>
+				</div>
+				<div><span>Maximum:</span> ${courseClass.maximumPlaces}</div>
+				<div><span>Minimum:</span> ${courseClass.minimumPlaces}</div>
+				<t:if test="lastEnrolled">
+					<div><span>Most recent enrolment:</span> ${lastEnrolled}</div>
+				</t:if>
+				
 			</div>
-			<div><span>Maximum:</span> ${courseClass.maximumPlaces}</div>
-			<div><span>Minimum:</span> ${courseClass.minimumPlaces}</div>
-			<t:if test="lastEnrolled">
-				<div><span>Most recent enrolment:</span> ${lastEnrolled}</div>
-			</t:if>
-			
-		</div>
+		</t:if>
 		<t:if test="tutors.empty" negate="true">
 			<div>
 				<span>Tutor: </span>

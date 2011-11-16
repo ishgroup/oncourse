@@ -6,6 +6,7 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
+import ish.oncourse.portal.access.IAuthenticationService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import com.ocpsoft.pretty.time.PrettyTime;
 
@@ -47,6 +49,10 @@ public class ClassInformation {
 
 	@Property
 	private Site site;
+	
+	@Inject
+	@Property
+	private IAuthenticationService authService;
 
 	@SetupRender
 	boolean setupRender() {
@@ -89,6 +95,10 @@ public class ClassInformation {
 
 	public boolean isHasEnrolments() {
 		return enrolmentsCount > 0;
+	}
+	
+	public boolean getIsTutor() {
+		return authService.isTutor();
 	}
 
 	public String getMarkerTitle() {
