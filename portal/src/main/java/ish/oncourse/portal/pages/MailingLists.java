@@ -1,5 +1,6 @@
 package ish.oncourse.portal.pages;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Set;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
+import ish.oncourse.model.Taggable;
+import ish.oncourse.model.TaggableTag;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.tag.ITagService;
 
@@ -24,6 +27,7 @@ public class MailingLists {
 	private ITagService tagService;
 	
 	@Property
+	@Persist
 	private Contact currentUser;
 	
 	@Property
@@ -41,8 +45,46 @@ public class MailingLists {
 
 	public void setCurrentValue(boolean currentValue) {
 	    if (!getCurrentValue()) {
-	    	getSelectedMailingLists().add((String) this.currentMailingList);
+	    	
+	    	Tag tag = tagService.loadByIds(new Long((String) this.currentMailingList)).get(0);
+	    	
+	    	Taggable taggable = tag.getObjectContext().newObject(Taggable.class);
+	    	taggable.setCollege(tag.getCollege());
+	    	Date date = new Date();
+	    	taggable.setCreated(date);
+	    	taggable.setModified(date);
+	    	taggable.setEntityIdentifier(Contact.class.getSimpleName());
+	    	taggable.setEntityWillowId(currentUser.getId());
+	    	
+			TaggableTag taggableTag = tag.getObjectContext().newObject(TaggableTag.class);
+			taggableTag.setTag(tag);
+			taggableTag.setCollege(tag.getCollege());
+			taggable.addToTaggableTags(taggableTag);
+			
+			tag.getObjectContext().commitChanges();
+
+			getSelectedMailingLists().add((String) this.currentMailingList);
+			
 	    } else {
+	    	
+	    	Taggable taggableForRemove = null;
+	    	TaggableTag taggableTagForRemove = null;
+	    	Tag tag = tagService.loadByIds(new Long((String) this.currentMailingList)).get(0);
+	    	for (TaggableTag tt: tag.getTaggableTags()) {
+	    		if(tt != null && tt.getTaggable() != null && tag.getCollege().equals(tt.getTaggable().getCollege()) 
+	    				&& Contact.class.getSimpleName().equals(tt.getTaggable().getEntityIdentifier()) 
+	    				&& currentUser.getId().equals(tt.getTaggable().getEntityWillowId())){
+	    			taggableTagForRemove = tt;
+	    			taggableForRemove = tt.getTaggable();
+	    			break;
+	    		}
+	    	}
+	    	
+	    	tag.getObjectContext().deleteObject(taggableTagForRemove);
+	    	tag.getObjectContext().deleteObject(taggableForRemove);
+	    	
+	    	tag.getObjectContext().commitChanges();
+	    	
 	    	getSelectedMailingLists().remove((String)this.currentMailingList);
 	    }
 	}
@@ -81,7 +123,7 @@ public class MailingLists {
 	}
 
 	public String getCollegeName() {
-		return  authService.getUser().getCollege().getName();
+		return  currentUser.getCollege().getName();
 	}
 	
 	public boolean getHaveMailingLists() {
