@@ -65,9 +65,18 @@ public class ForgotPassword {
 		
 		email.setFromEmail(FROM_EMAIL);
 		email.setSubject("Password recovery.");
-		email.setBody(String.format("To recover password please visit <a href=\"%s\">%s</a>. ", recoveryLink, recoveryLink));
+		
+		StringBuilder textBody = new StringBuilder();
+		textBody.append(String.format("Dear %s %s, <br/><br/>", user.getGivenName(), user.getFamilyName()));
+		textBody.append("To reset your SkillsOnCourse password, simply click the link below. That will take you to a web page where you can create a new password.<br/>");
+		textBody.append("Please note that the link will expire 24 hours after this email was sent.<br/><br/>");
+		textBody.append(String.format("<a href=\"%s\">%s</a>.<br/><br/>", recoveryLink, recoveryLink));
+		textBody.append("If you weren't trying to reset your password, don't worry Ñ your account is still secure and no one has been given access to it. " +
+				"Most likely, someone just mistyped their email address while trying to reset their own password.");
+		
+		email.setBody(textBody.toString());
 		email.setToEmails(c.getEmailAddress());
-
+		
 		mailService.sendEmail(email, true);
 	}
 }
