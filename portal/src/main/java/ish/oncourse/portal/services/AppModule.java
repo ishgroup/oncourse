@@ -31,7 +31,6 @@ import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.Dispatcher;
 import org.apache.tapestry5.services.ExceptionReporter;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestExceptionHandler;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.ResponseRenderer;
@@ -84,7 +83,7 @@ public class AppModule {
 			public void handleRequestException(Throwable exception) throws IOException {
 				logger.debug("Unexpected runtime exception: " + exception.getMessage(), exception);
 				
-				if (exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
+				if (response != null && exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
 					response.sendRedirect("login"); 
 				} else { 
 					String exceptionPageName = "errorPage";
