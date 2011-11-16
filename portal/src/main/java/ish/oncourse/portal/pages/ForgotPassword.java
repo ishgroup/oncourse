@@ -71,8 +71,8 @@ public class ForgotPassword {
 		textBody.append("To reset your SkillsOnCourse password, simply click the link below. That will take you to a web page where you can create a new password.<br/>");
 		textBody.append("Please note that the link will expire 24 hours after this email was sent.<br/><br/>");
 		textBody.append(String.format("<a href=\"%s\">%s</a>.<br/><br/>", recoveryLink, recoveryLink));
-		textBody.append("If you weren't trying to reset your password, don't worry Ñ your account is still secure and no one has been given access to it. " +
-				"Most likely, someone just mistyped their email address while trying to reset their own password.");
+		textBody.append("If you weren't trying to reset your password, don't worry - your account is still secure and no one has been given access to it. " +
+			"Most likely, someone just mistyped their email address while trying to reset their own password.");
 		
 		email.setBody(textBody.toString());
 		email.setToEmails(c.getEmailAddress());
