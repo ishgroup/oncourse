@@ -108,11 +108,11 @@ public abstract class _Tag extends CayenneDataObject {
         return (String)readProperty("shortName");
     }
 
-    public void setSpecialType(Short specialType) {
+    public void setSpecialType(Integer specialType) {
         writeProperty("specialType", specialType);
     }
-    public Short getSpecialType() {
-        return (Short)readProperty("specialType");
+    public Integer getSpecialType() {
+        return (Integer)readProperty("specialType");
     }
 
     public void setWeighting(Integer weighting) {
