@@ -1,8 +1,10 @@
 package ish.oncourse.portal.components;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
@@ -30,6 +32,12 @@ public class NextSession {
 
 	@Property
 	private Session nextSession;
+	
+	@Property
+	private List<Session> nextSessions;
+	
+	@Property
+	private Session session;
 
 	@SetupRender
 	boolean setupRender() {
@@ -38,6 +46,7 @@ public class NextSession {
 		}
 		Date now = new Date();
 		Date closest = null;
+		nextSessions = new ArrayList<Session>();
 
 		for (Session session : courseClass.getSessions()) {
 			Date startDate = session.getStartDate();
@@ -46,8 +55,16 @@ public class NextSession {
 					closest = startDate;
 					nextSession = session;
 				}
+				nextSessions.add(session);
 			}
 		}
+		
+		if(nextSession != null){
+			if(nextSessions.contains(nextSession)){
+				nextSessions.remove(nextSession);
+			}
+		}
+		
 		this.dateFormatter = new SimpleDateFormat(DATE_FORMAT);
 		this.timeFormatter = new SimpleDateFormat(TIME_FORMAT);
 
@@ -89,4 +106,34 @@ public class NextSession {
 		return "timetable";
 	}
 	
+	public boolean isMoreThenOneSessions() {
+		return nextSessions != null && nextSessions.size() > 0;
+	}
+	
+	public String getSessionDay() {
+		return dateFormatter.format(session.getStartDate()).split("/")[0];
+	}
+
+	public String getSessionMonth() {
+		return dateFormatter.format(session.getStartDate()).split("/")[1];
+	}
+
+	public String getSessionWeekDay() {
+		return dateFormatter.format(session.getStartDate()).split("/")[2];
+	}
+
+	public boolean isSessionToday() {
+		Calendar date = Calendar.getInstance();
+		int year = date.get(Calendar.YEAR);
+		int month = date.get(Calendar.MONTH);
+		int day = date.get(Calendar.DATE);
+		date.setTime(session.getStartDate());
+		return (year - date.get(Calendar.YEAR) == 0) && (month - date.get(Calendar.MONTH) == 0)
+				&& (day - date.get(Calendar.DATE) == 0);
+	}
+
+	public String getSessionTime() {
+		return String.format("%s - %s", timeFormatter.format(session.getStartDate()),
+				timeFormatter.format(session.getEndDate())).toLowerCase();
+	}
 }

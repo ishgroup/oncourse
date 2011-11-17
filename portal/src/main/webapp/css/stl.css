@@ -1671,6 +1671,10 @@ a.btn2{
     overflow: hidden;  /* important (hide the items outside the div) */  
 }  
       
+#sessions_ul {  
+    list-style-type: none; 
+}
+      
 #classes_ul {  
     position:relative;  
     left:0px; 

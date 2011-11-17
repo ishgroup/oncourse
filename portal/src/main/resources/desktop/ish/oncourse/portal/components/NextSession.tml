@@ -19,9 +19,27 @@
 			<p:else>There's no next sessions for this class.</p:else>
 		</t:if>
 		<br/>	
-		<div class="mb20">
-			<t:pagelink class="btn" id="m_timetable" page="prop:timetablePageName">Show more</t:pagelink>
-		</div>
+		<t:if test="moreThenOneSessions"> 
+			<div class="mb20">
+				<a href="#" id="showMore" class="btn">Show more</a>
+			</div>
+			<div id="showMoreSessions">
+				<ul id='sessions_ul'>  
+					<t:loop source="nextSessions" value="session">
+		              	  <li id="effect_date" class="date1">
+							<div class="date-day">
+								<span>${sessionDay}</span> ${sessionMonth}
+								<t:if test="sessionToday">
+									<i>today</i>
+								</t:if>
+							</div>
+							${sessionWeekDay} ${sessionTime}.
+							<t:if test="room"><div>${session.room.name}, ${session.room.site.name}</div></t:if>
+		               	 </li>  
+			       </t:loop>
+		       </ul>
+			</div>
+		</t:if>
 	
 	</div>
 

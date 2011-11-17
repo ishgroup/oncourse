@@ -4,6 +4,20 @@ jQuery(document).ready(function(){
 	var i   = 0;
 	var j   = 0;
 	
+	 // showMore click
+	jQuery("#showMore").click(function(){
+		 if (jQuery("#showMore").hasClass('active')) {
+			 jQuery("#showMoreSessions").hide("blind",{},500);
+			 jQuery("#showMore").removeClass('active');
+			 jQuery("#showMore").text("Show more");
+		 } else {
+			 jQuery("#showMoreSessions").show("blind",{},500);
+			 jQuery("#showMore").addClass('active');
+			 jQuery("#showMore").text("Hide");
+		 }
+			
+	});
+	
     // Next click
 	jQuery("#nextButton").click(function(){
 		
@@ -166,6 +180,7 @@ jQuery(document).ready(function(){
 		}
 	}
 	
+	jQuery("#showMoreSessions").hide();
 	jQuery(ils).hide();
 	jQuery(ils_attendance).hide();
 	jQuery("#nextButton").trigger('click');
