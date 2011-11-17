@@ -21,7 +21,7 @@ public class TrainingComponentServiceTest {
     @Test
     public void testGetServerTime() throws Exception {
     	
-    	TrainingComponentService ss = new TrainingComponentService(TrainingComponentService.class.getClassLoader().getResource("wsdl/staging/TrainingComponentService.wsdl"));
+    	TrainingComponentService ss = new TrainingComponentService(TrainingComponentService.class.getClassLoader().getResource("wsdl/production/TrainingComponentService.wsdl"));
         
     	ITrainingComponentService port = ss.getTrainingComponentServiceWsHttpEndpoint();
         

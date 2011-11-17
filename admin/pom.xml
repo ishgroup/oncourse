@@ -108,7 +108,7 @@
 							<sourceRoot>${basedir}/src/main/java</sourceRoot>
 							<wsdlOptions>
 								<wsdlOption>
-									<wsdl>${basedir}/src/main/resources/wsdl/staging/TrainingComponentService.wsdl</wsdl>
+									<wsdl>${basedir}/src/main/resources/wsdl/production/TrainingComponentService.wsdl</wsdl>
 									<serviceName>TrainingComponentService</serviceName>
 									<extraargs>
 										<extraarg>-client</extraarg>

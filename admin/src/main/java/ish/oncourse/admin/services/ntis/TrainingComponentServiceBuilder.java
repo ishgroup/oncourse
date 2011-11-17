@@ -29,7 +29,7 @@ public class TrainingComponentServiceBuilder implements ServiceBuilder<ITraining
 
 		if (port == null) {
 
-			TrainingComponentService ss = new TrainingComponentService(TrainingComponentService.class.getClassLoader().getResource("wsdl/staging/TrainingComponentService.wsdl"));
+			TrainingComponentService ss = new TrainingComponentService(TrainingComponentService.class.getClassLoader().getResource("wsdl/production/TrainingComponentService.wsdl"));
 			port = ss.getTrainingComponentServiceWsHttpEndpoint();
 			
 			Map<String, Object> ctx = ((BindingProvider) port).getRequestContext();
