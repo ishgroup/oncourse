@@ -174,6 +174,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						q.setNationalCode(summary.getCode().getValue());
 						q.setTitle(summary.getTitle().getValue());
 						
+						if (ACCREDITED_COURSE.equals(type)) {
+							q.setIsAccreditedCourse((byte) 1);
+						}
+						else {
+							q.setIsAccreditedCourse((byte) 0);
+						}
+						
 						detailsRequest.setCode(summary.getCode().getValue());
 						TrainingComponent component = trainingService.getDetails(detailsRequest);
 						List<Classification> classifications = component.getClassifications().getValue().getClassification();
