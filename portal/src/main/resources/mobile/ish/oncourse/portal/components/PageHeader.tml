@@ -13,14 +13,14 @@
 	<meta name="MobileOptimized" content="320"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 		  
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon.png"/>
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon.png"/>
-	<link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-precomposed.png"/>
-	<link rel="shortcut icon" href="img/apple-touch-icon.png"/>
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="${contextPath}/img/apple-touch-icon.png"/>
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="${contextPath}/img/apple-touch-icon.png"/>
+	<link rel="apple-touch-icon-precomposed" href="${contextPath}/img/apple-touch-icon-precomposed.png"/>
+	<link rel="shortcut icon" href="${contextPath}/img/apple-touch-icon.png"/>
 	<meta http-equiv="cleartype" content="on/"/>
 
-	<link rel="stylesheet" media="all" href="css/screen.css"/>
-	<script type="text/javascript" src="js/scroller.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
+	<link rel="stylesheet" media="all" href="${contextPath}/css/screen.css"/>
+	<script type="text/javascript" src="${contextPath}/js/scroller.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/main.js"></script>
 	
 </t:container>

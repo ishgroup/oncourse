@@ -9,12 +9,12 @@
 				<t:label for="iscompany">As company</t:label>
 				<t:checkbox onclick="set_is_company(this.checked)" t:id="iscompany" value="iscompany"  style="float: right;" />
 			</div>
-			<div style="display: none;" class="company-details collapse">
+			<div style="display: none;" class="company-details collapse"> 
 				<div class="form-row">
-					<t:TextField t:id="companyName" t:validate="required,minlength=3" type="text" maxlength="300" class="input" placeholder="Company Name"/>
+					<t:TextField t:id="companyName" type="text" maxlength="300" class="input" placeholder="Company Name"/> <!--  t:validate="required,minlength=3"--> 
 				</div>
 			</div>
-			<div style="display: block;" class="user-details ">
+			<div style="display: block;"  class="user-details ">  
 				<div class="form-row">
 					<t:TextField t:id="firstName" t:validate="required,minlength=3" type="text" maxlength="300" class="input" placeholder="First name"/>
 				</div>

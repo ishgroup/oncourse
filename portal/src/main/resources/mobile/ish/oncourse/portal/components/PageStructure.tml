@@ -13,8 +13,11 @@
 <!-- Class for specific pages -->
 <body class="${bodyClass}">
 
+	<div t:type="bodystructure">
+			<t:body/>
+	</div>
 
-<div id="wrapper">
+<!--  <div id="wrapper">
 	<div id="scroller">
 
 		<div class="content-container">
@@ -22,9 +25,7 @@
 		</div>
 
 	</div>
-</div>
-
-
+</div> -->
 
 </body>
 </html>

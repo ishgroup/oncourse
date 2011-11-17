@@ -1,106 +1,86 @@
 <html t:type="pagestructure" title="literal:Classes"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_classes">
 
-
-<div id="wrapper">
-	<div id="scroller">
-
-		<div class="content-container">
-			<div class="content">
+		<div class="content">
 			<h1>Classes</h1>
 			<table class="class">
-		
 			<t:loop  source="classes" value="courseClass">
-				<t:if test="${courseClass.cancelled}" negate="true">
-					<tr>
-		
-		
-	              <td width="64"><div class="book"><img src="img/book.png" alt="" /></div></td>
+				<tr>
+            		<td width="64">
+						<div class="book"><img src="${contextPath}/img/book.png" alt=""/></div>
+					</td>
 	
-	            		<td width="64">
-							<div class="book"><img src="img/book.png" alt=""/></div>
-						</td>
-		
-						<td>
-							<div class="class-name"><t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink></div>
-							<div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
-	               			<div class="class-place light">${room}</div>
-							
-							<span class="class-man">7 enrolments | 4 places available</span>
-						</td>
-		
-		<!--				<td width="350">
-							<div class="class-week">
-								<span>Sun</span>
-								<span class="active light">mon</span>
-		
-								<div class="lightbox-pos">
-									<div class="lightbox">
-										<img src="img/lightbox-cor.png" alt="" class="lightbox-cor"/>
-										<table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
-											<tr>
-												<td class="class-week-light-date">Apr. 7</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-											<tr>
-												<td class="class-week-light-date">Apr. 14</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-											<tr>
-												<td class="class-week-light-date">Apr. 21</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-											<tr>
-												<td class="class-week-light-date">Apr. 28</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-										</table>
-									</div>
+					<td>
+						<div class="class-name"><t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink></div>
+						<div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
+               			<div class="class-place light">${room}</div>
+						
+						<span class="class-man">7 enrolments | 4 places available</span>
+					</td>
+	
+	<!--				<td width="350">
+						<div class="class-week">
+							<span>Sun</span>
+							<span class="active light">mon</span>
+	
+							<div class="lightbox-pos">
+								<div class="lightbox">
+									<img src="img/lightbox-cor.png" alt="" class="lightbox-cor"/>
+									<table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+										<tr>
+											<td class="class-week-light-date">Apr. 7</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+										<tr>
+											<td class="class-week-light-date">Apr. 14</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+										<tr>
+											<td class="class-week-light-date">Apr. 21</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+										<tr>
+											<td class="class-week-light-date">Apr. 28</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+									</table>
 								</div>
-								<span>tuE</span>
-								<span>wed</span>
-								<span class="active light">thu</span>
-		
-								<div class="lightbox-pos">
-									<div class="lightbox">
-										<img src="img/lightbox-cor.png" alt="" class="lightbox-cor"/>
-										<table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
-											<tr>
-												<td class="class-week-light-date">Apr. 7</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-											<tr>
-												<td class="class-week-light-date">Apr. 14</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-											<tr>
-												<td class="class-week-light-date">Apr. 21</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-											<tr>
-												<td class="class-week-light-date">Apr. 28</td>
-												<td>10:00am -11:00am</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<span>Fri</span>
-								<span>Sat</span>
 							</div>
+							<span>tuE</span>
+							<span>wed</span>
+							<span class="active light">thu</span>
+	
+							<div class="lightbox-pos">
+								<div class="lightbox">
+									<img src="img/lightbox-cor.png" alt="" class="lightbox-cor"/>
+									<table border="0" cellspacing="0" cellpadding="0" class="class-week-light">
+										<tr>
+											<td class="class-week-light-date">Apr. 7</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+										<tr>
+											<td class="class-week-light-date">Apr. 14</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+										<tr>
+											<td class="class-week-light-date">Apr. 21</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+										<tr>
+											<td class="class-week-light-date">Apr. 28</td>
+											<td>10:00am -11:00am</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<span>Fri</span>
+							<span>Sat</span>
+						</div>
 						</td>
 						-->
-					</tr>
-				</t:if>
+				</tr>
 			</t:loop> 
 			</table>
-		</div>
 	</div>
-
-	</div>
-</div>
-
-<div id="footer">
-	<div t:type="menu"/>
-</div>
 
 </html>

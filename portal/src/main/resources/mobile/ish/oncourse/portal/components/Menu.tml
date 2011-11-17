@@ -14,7 +14,7 @@
 				<!--<a href="#">Surveys</a> -->
 			</li>
 			<li class="m-5">
-				<a href="#">Profile</a>
+				<t:pagelink id="m_profile" page="prop:profilePageName">Profile</t:pagelink>
 			</li>
 			
 		</ul>
