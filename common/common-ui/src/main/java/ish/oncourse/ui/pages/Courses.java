@@ -115,25 +115,19 @@ public class Courses {
 
 		this.itemIndex = start;
 		this.isException = false;
-		if (getCourseSearchParams().isEmpty()) {
+
+		try {
+			this.courses = searchCourses();
+		} catch (SearchException e) {
+			LOGGER.error("Unexpected search exception: " + e.getMessage(), e);
+			this.isException = true;
 			this.courses = courseService.getCourses(start, rows);
 			this.coursesCount = courseService.getCoursesCount();
 			searchParams = null;
 			focusesForMapSites = null;
-		} else {
-			try {
-				this.courses = searchCourses();
-			} catch (SearchException e) {
-				LOGGER.error("Unexpected search exception: " + e.getMessage(), e);
-				this.isException = true;
-				this.courses = courseService.getCourses(start, rows);
-				this.coursesCount = courseService.getCoursesCount();
-				searchParams = null;
-				focusesForMapSites = null;
-			}
 		}
-		coursesIds = new ArrayList<Long>();
 
+		coursesIds = new ArrayList<Long>();
 		updateIdsAndIndexes();
 	}
 
@@ -170,8 +164,8 @@ public class Courses {
 				Room room = courseClass.getRoom();
 				if (room != null) {
 					Site site = room.getSite();
-					if (site != null && site.getIsWebVisible() && site.getSuburb() != null
-							&& !"".equals(site.getSuburb()) && site.isHasCoordinates()) {
+					if (site != null && site.getIsWebVisible() && site.getSuburb() != null && !"".equals(site.getSuburb())
+							&& site.isHasCoordinates()) {
 						boolean wasSitePreviouslyAdded = false;
 						if (!mapSites.contains(site)) {
 							mapSites.add(site);
@@ -185,8 +179,7 @@ public class Courses {
 							}
 						}
 						if (hasAnyFormValuesForFocus()) {
-							float focusMatchForClass = courseClass.focusMatchForClass(locationPoints[0],
-									locationPoints[1], searchParams);
+							float focusMatchForClass = courseClass.focusMatchForClass(locationPoints[0], locationPoints[1], searchParams);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
 								focusesForMapSites.put(site.getId(), focusMatchForClass);

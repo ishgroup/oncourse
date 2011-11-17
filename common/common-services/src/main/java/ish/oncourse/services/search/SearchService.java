@@ -81,12 +81,14 @@ public class SearchService implements ISearchService {
 	}
 
 	public QueryResponse searchCourses(Map<SearchParam, String> params, int start, int rows) {
+
 		try {
 
 			String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
 
 			SolrQuery q = new SolrQuery();
-
+			
+			q.setQueryType("standard");
 			q.setParam("fl", "id, name, course_loc");
 			q.setStart(start);
 			q.setRows(rows);
@@ -152,6 +154,11 @@ public class SearchService implements ISearchService {
 				}
 				qString.append(tagQuery.toString()).append(") ");
 			}
+			
+			//check if no params passed, search on all.
+			if (qString.length() == 0) {
+				qString.append("(*:*)");
+			}
 
 			if (params.containsKey(SearchParam.near)) {
 				String near = params.get(SearchParam.near);
@@ -170,11 +177,6 @@ public class SearchService implements ISearchService {
 				q.setQuery(DATE_BOOST_STM);
 				q.setParam("dateboost", DATE_BOOST_FUNCTION);
 				q.setParam("qq", "(" + qString.toString() + ")");
-			}
-
-			if ("".equals(q.getQuery())) {
-				q.setQuery("*:*");
-				q.setQueryType("standard");
 			}
 
 			if (logger.isDebugEnabled()) {
