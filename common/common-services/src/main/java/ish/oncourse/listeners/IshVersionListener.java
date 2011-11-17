@@ -7,6 +7,7 @@ import ish.oncourse.model.TrainingPackage;
 import java.util.Map;
 
 import org.apache.cayenne.Persistent;
+import org.apache.cayenne.annotation.PostAdd;
 import org.apache.cayenne.annotation.PrePersist;
 import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.lifecycle.changeset.ChangeSet;
@@ -14,6 +15,11 @@ import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.cayenne.lifecycle.changeset.PropertyChange;
 
 public class IshVersionListener {
+
+	@PostAdd(value = Qualification.class)
+	public void postAddQualification(Qualification q) {
+		q.setIshVersion(-1l);
+	}
 
 	@PrePersist(value = Qualification.class)
 	public void prePersistQualification(Qualification q) {
@@ -29,6 +35,11 @@ public class IshVersionListener {
 		if (shouldUpdateIshVersion(q)) {
 			q.setIshVersion(ishVersion);
 		}
+	}
+
+	@PostAdd(value = TrainingPackage.class)
+	public void postAddTrainingPackage(TrainingPackage tp) {
+		tp.setIshVersion(-1l);
 	}
 
 	@PrePersist(value = TrainingPackage.class)
@@ -47,8 +58,13 @@ public class IshVersionListener {
 		}
 	}
 
+	@PostAdd(value = Module.class)
+	public void postAddModule(Module m) {
+		m.setIshVersion(-1l);
+	}
+
 	@PrePersist(value = Module.class)
-	public void prePersistTrainingPackage(Module m) {
+	public void prePersistModule(Module m) {
 		Long ishVersion = IshVersionHolder.getIshVersion();
 		if (ishVersion != null) {
 			m.setIshVersion(ishVersion);
