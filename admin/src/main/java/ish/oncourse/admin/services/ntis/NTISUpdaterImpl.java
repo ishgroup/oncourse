@@ -126,7 +126,6 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		request.setEndDate(objectFactory.createTrainingComponentModifiedSearchRequestEndDate(to));
 		request.setTrainingComponentTypes(objectFactory.createTrainingComponentTypeFilter(typeFilter));
 		request.setPageSize(RESULTS_PAGE_SIZE);
-		request.setPageNumber(1);
 
 		// deleted search request
 		DeletedSearchRequest deletedRequest = new DeletedSearchRequest();
@@ -145,10 +144,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			int totalNew = 0;
 			int totalModified = 0;
 			int pageNumber = 1;
+			int pageCount = 0;
 
-			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
+			do {
+				request.setPageNumber(pageNumber);
+				TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
-			while (searchResult.getResults().getValue().getTrainingComponentSummary().size() > 0) {
+				pageCount = (int) Math.ceil((double) searchResult.getCount() / RESULTS_PAGE_SIZE);
 				
 				int numberOfNew = 0;
 				
@@ -192,9 +194,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				totalModified += saveChanges(numberOfNew, context);
 				totalNew += numberOfNew;
 				pageNumber++;
-				request.setPageNumber(pageNumber);
-				searchResult = trainingService.searchByModifiedDate(request);
-			}
+			} while (pageNumber <= pageCount);
 
 			// remove deleted training packages from db
 			List<DeletedTrainingComponent> deletedComponents = trainingService.searchDeletedByDeletedDate(deletedRequest)
@@ -336,7 +336,6 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		request.setEndDate(objectFactory.createTrainingComponentModifiedSearchRequestEndDate(to));
 		request.setTrainingComponentTypes(objectFactory.createTrainingComponentTypeFilter(typeFilter));
 		request.setPageSize(RESULTS_PAGE_SIZE);
-		request.setPageNumber(1);
 
 		// deleted search request
 		DeletedSearchRequest deletedRequest = new DeletedSearchRequest();
@@ -356,10 +355,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			int totalNew = 0;
 			int totalModified = 0;
 			int pageNumber = 1;
+			int pageCount = 0;
 			
-			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
+			do {
+				request.setPageNumber(pageNumber);
+				TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 			
-			while (searchResult.getResults().getValue().getTrainingComponentSummary().size() > 0) {
+				pageCount = (int) Math.ceil((double) searchResult.getCount() / RESULTS_PAGE_SIZE);
 				
 				int numberOfNew = 0;
 				
@@ -424,9 +426,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				totalModified += saveChanges(numberOfNew, context);
 				totalNew += numberOfNew;
 				pageNumber++;
-				request.setPageNumber(pageNumber);
-				searchResult = trainingService.searchByModifiedDate(request);
-			}
+			} while (pageNumber <= pageCount);
 
 			// remove deleted training packages from db
 			List<DeletedTrainingComponent> deletedComponents = trainingService.searchDeletedByDeletedDate(deletedRequest)
@@ -484,7 +484,6 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		request.setEndDate(objectFactory.createTrainingComponentModifiedSearchRequestEndDate(to));
 		request.setTrainingComponentTypes(objectFactory.createTrainingComponentTypeFilter(typeFilter));
 		request.setPageSize(RESULTS_PAGE_SIZE);
-		request.setPageNumber(1);
 
 		// deleted search request
 		DeletedSearchRequest deletedRequest = new DeletedSearchRequest();
@@ -503,11 +502,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			int totalNew = 0;
 			int totalModified = 0;
 			int pageNumber = 1;
+			int pageCount = 0;
 			
-			TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
-			
-			while (searchResult.getResults().getValue().getTrainingComponentSummary().size() > 0) {
+			do {
+				request.setPageNumber(pageNumber);
+				TrainingComponentSearchResult searchResult = trainingService.searchByModifiedDate(request);
 				
+				pageCount = (int) Math.ceil((double) searchResult.getCount() / RESULTS_PAGE_SIZE);
 				int numberOfNew = 0;
 
 				for (TrainingComponentSummary summary : searchResult.getResults().getValue().getTrainingComponentSummary()) {
@@ -550,9 +551,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 				totalModified += saveChanges(numberOfNew, context);
 				totalNew += numberOfNew;
 				pageNumber++;
-				request.setPageNumber(pageNumber);
-				searchResult = trainingService.searchByModifiedDate(request);
-			}
+			} while (pageNumber <= pageCount);
 			
 			// remove deleted training packages from db
 			List<DeletedTrainingComponent> deletedComponents = trainingService.searchDeletedByDeletedDate(deletedRequest)
