@@ -32,7 +32,7 @@ public class SearchService implements ISearchService {
 
 	private static final String DATE_BOOST_STM = "{!boost b=$dateboost v=$qq}";
 
-	private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate, NOW), 0),86400000,1,1)";
+	private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)";
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -176,7 +176,7 @@ public class SearchService implements ISearchService {
 			} else {
 				q.setQuery(DATE_BOOST_STM);
 				q.setParam("dateboost", DATE_BOOST_FUNCTION);
-				q.setParam("qq", "(" + qString.toString() + ")");
+				q.setParam("qq", "(" + qString.toString().trim() + ")");
 			}
 
 			if (logger.isDebugEnabled()) {
