@@ -37,13 +37,19 @@ public class ClassDetails {
 		}
 		
 		if (courseClass != null) {
-			String textileDetails = courseClass.getDetail();
-			
-			if (textileDetails == null || "".equals(textileDetails)) {
-				textileDetails = courseClass.getCourse().getDetail();
+			StringBuffer textileDetails = new StringBuffer();
+			if(courseClass.getDetail() != null && courseClass.getDetail().length() > 0) {
+				textileDetails.append(courseClass.getDetail());
 			}
 			
-			details = textileConverter.convertCustomTextile(textileDetails, new ValidationErrors());
+			if (courseClass.getCourse().getDetail() != null &&  courseClass.getCourse().getDetail().length() > 0) {
+				if(textileDetails.toString().length() < 0) {
+					textileDetails.append("\n");
+				}
+				textileDetails.append(courseClass.getCourse().getDetail());
+			}
+			
+			details = textileConverter.convertCustomTextile(textileDetails.toString(), new ValidationErrors());
 		}
 		return null;
 	}
