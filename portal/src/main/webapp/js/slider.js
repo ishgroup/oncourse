@@ -60,7 +60,12 @@ jQuery(document).ready(function(){
 		 if (jQuery(this).hasClass('disabled'))
 			    return false; 
 		 else {
-			jQuery("#nextButton").addClass('disabled');
+			if(j === ils.length || ils.length === 0)
+			{ 
+				jQuery("#nextButton").addClass('disabled');
+			} else {
+				jQuery("#nextButton").removeClass('disabled');
+			}
 			for(i=0; i<=ils.length; i++)
 			{
 				if(jQuery(ils[i]).is(":visible"))
@@ -71,7 +76,7 @@ jQuery(document).ready(function(){
 			}
 			if(j === 0) 
 			{
-				jQuery("#prevButton").removeClass('disabled')
+				jQuery("#prevButton").addClass('disabled')
 			}
 			
 			jQuery(ils[i]).hide("slide",{},500,function(){  

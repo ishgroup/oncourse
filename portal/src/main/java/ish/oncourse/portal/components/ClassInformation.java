@@ -59,7 +59,7 @@ public class ClassInformation {
 		if (courseClass == null) {
 			return false;
 		}
-		List<Enrolment> enrolments = courseClass.getEnrolments();
+		List<Enrolment> enrolments = courseClass.getValidEnrolments();
 
 		enrolmentsCount = enrolments.size();
 		Date latestEnrol = null;
