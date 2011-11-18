@@ -1,0 +1,34 @@
+<html t:type="pagestructure" title="literal:Add College"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+		<table>
+			<tr>
+				<td>Services Key</td>
+				<td><input id="serviceKey" type="text"/></td>
+			</tr>
+			<tr>
+				<td><button id="find">Find</button></td>
+			</tr>
+		</table>
+	
+	<div id="results">
+	</div>
+	
+	<script type="text/javascript">
+		jQuery("#find").click(function() {
+			var key = jQuery("#serviceKey").attr("value");
+			
+			var success = function(data) {
+				jQuery("#results").empty();
+				jQuery("#results").append(data);
+			}
+			
+			jQuery.ajax({
+				url: "${findCollegeUrl}",
+				data: "key=" + key,
+				success: success,
+				dataType: "html"
+			});
+		});
+	</script>
+</html>
