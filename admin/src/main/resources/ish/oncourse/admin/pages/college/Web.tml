@@ -14,23 +14,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				<t:form t:id="domainSelectForm">
+				<t:form t:id="domainsForm">
 					<t:loop source="domains" value="currentDomain">
-						<tr>
+						<tr id="${currentDomain.name}">
 							<td>${currentDomain.name}</td>
-							<td><t:select t:id="siteSelect" model="siteSelectModel" blankOption="never" value="selectedSite"/></td>
-							<td><t:actionlink t:id="deleteDomain" context="currentDomain.name">[x]</t:actionlink></td>
+							<td><t:select t:id="siteSelect" class="siteSelect" model="siteSelectModel" blankOption="never" context="currentDomain.name" value="selectedSite"/></td>
+							<td><t:actionlink t:id="deleteDomain" context="currentDomain.getName()">[x]</t:actionlink></td>
 						</tr>
 					</t:loop>
 				</t:form>
-				<t:form t:id="domainsForm">
+				<t:form t:id="newDomainForm">
 					<tr>
 						<td><t:textfield t:id="newDomain" value="newDomainValue"/></td>
+						<td><t:select t:id="newDomainSiteSelect" model="siteSelectModel" blankOption="never" value="newDomainSite"/></td>
 						<td><t:submit t:id="addNewDomain" value="Add"/></td>
 					</tr>
 				</t:form>
 			</tbody>
 		</table>
+		
 	
 	<h3>Sites</h3>
 		<table>
@@ -38,7 +40,6 @@
 				<tr>
 					<td>Site Name</td>
 					<td>Site Key</td>
-					<td>Action</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -67,7 +68,6 @@
 					<td>Password</td>
 					<td>First Name</td>
 					<td>Last Name</td>
-					<td>Action</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -92,4 +92,17 @@
 			</tbody>
 		</table>
 
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery(".siteSelect").change(function() {
+				var domain = jQuery(this).closest("tr").attr("id");
+				var site = jQuery(this).attr("value");
+				jQuery.ajax({
+					type: "GET",
+					url: "${changeSiteUrl}",
+					data: "domain=" + domain + "\u0026site=" + site
+				});
+			});
+		});
+	</script>
 </html>

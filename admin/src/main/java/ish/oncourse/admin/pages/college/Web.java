@@ -12,6 +12,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -21,6 +22,8 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Response;
 
 public class Web {
 	
@@ -56,6 +59,9 @@ public class Web {
 	private String newDomainValue;
 	
 	@Property
+	private String newDomainSite;
+	
+	@Property
 	private String newUserEmailValue;
 	
 	@Property
@@ -66,6 +72,9 @@ public class Web {
 	
 	@Property
 	private String newUserLastNameValue;
+	
+	@Property
+	private String changeSiteUrl;
 	
 	@Property
 	@Persist
@@ -79,6 +88,12 @@ public class Web {
 	@Inject
 	private ICayenneService cayenneService;
 	
+	@Inject
+	private Request request;
+	
+	@Inject
+	private Response response;
+	
 	Object onActivate(Long id) {
 		this.college = collegeService.findById(id);
 		return null;
@@ -86,6 +101,8 @@ public class Web {
 
 	@SetupRender
 	void setupRender() {
+		this.changeSiteUrl = response.encodeURL(request.getContextPath() + "/college/changeDomainSite");
+		
 		this.sites = college.getWebSites();
 		this.domains = college.getCollegeDomains();
 		this.cmsUsers = college.getWillowUsers();
@@ -99,12 +116,18 @@ public class Web {
 		siteSelectModel = new StringSelectModel(siteKeys);
 	}
 	
-	@OnEvent(component="domainsForm", value="success")
+	@OnEvent(component="newDomainForm", value="success")
 	void addDomain() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
 		WebHostName domain = context.newObject(WebHostName.class);
 		domain.setCollege((College) context.localObject(college.getObjectId(), null));
+		
+		Expression exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, newDomainSite);
+		SelectQuery query = new SelectQuery(WebSite.class, exp);
+		WebSite site = (WebSite) Cayenne.objectForQuery(context, query);
+		
+		domain.setWebSite(site);
 		domain.setName(newDomainValue);
 		domain.setCreated(new Date());
 		domain.setModified(new Date());
@@ -158,7 +181,11 @@ public class Web {
 		Expression exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, siteKey);
 		SelectQuery query = new SelectQuery(WebSite.class, exp);
 		WebSite site = (WebSite) Cayenne.objectForQuery(context, query);
-		context.deleteObject(site);
+		try {
+			context.deleteObject(site);
+		} catch (DeleteDenyException e) {
+			return null;
+		}
 		context.commitChanges();
 		
 		return null;
@@ -178,10 +205,6 @@ public class Web {
 	
 	public String getSelectedSite() {
 		return currentDomain.getWebSite().getSiteKey();
-	}
-	
-	public void setSelectedSite(String value) {
-		
 	}
 	
 }
