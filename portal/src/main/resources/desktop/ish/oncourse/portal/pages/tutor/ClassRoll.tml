@@ -48,7 +48,7 @@
 									</div>
 									<div>${attendance.student.contact.givenName} ${attendance.student.contact.familyName}</div>
 									<span>Phone: ${attendance.student.contact.homePhoneNumber}</span>
-									<span>E-mail: <a href="#">${attendance.student.contact.emailAddress}</a></span>
+									<span>E-mail: <a href="mailto:${attendance.student.contact.emailAddress}">${attendance.student.contact.emailAddress}</a></span>
 								</div>
 							</t:loop>
 		               	 </li>  
