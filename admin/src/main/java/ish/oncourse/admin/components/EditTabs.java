@@ -48,4 +48,8 @@ public class EditTabs {
 	public String getBillingPageName() {
 		return "college/billing";
 	}
+	
+	public String getInstructionsPageName() {
+		return "college/instructions";
+	}
 }

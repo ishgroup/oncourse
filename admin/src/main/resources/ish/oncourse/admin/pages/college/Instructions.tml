@@ -1,0 +1,30 @@
+<html t:type="pagestructure" title="literal:College Billing"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	
+	<span t:type="editTabs" college="college" selected="literal:overview"/>
+	
+	<h1>${college.name}</h1>
+	
+	<div>
+		<t:form t:id="resetAngelQueueForm">
+			<t:submit t:id="resetAngelQueue" value="Reset Angel Queue"/>
+		</t:form>
+	</div>
+	
+	<h2>Queue Entity</h2>
+	<div>
+		<t:form t:id="queueEntityForm">
+			<span><t:select t:id="entitySelect" model="entitySelectModel" blankOption="never" value="selectedEntity"/></span>
+			<span><t:submit t:id="queueEntity" value="Queue"/></span>
+		</t:form>
+	</div>
+	
+	<h2>Add Instruction</h2>
+	<div>
+		<t:form t:id="addInstructionForm">
+			<span><t:textfield t:id="instructionMessage" value="instructionMessage"/></span>
+			<span><t:submit t:id="addInstruction" value="Add"/></span>
+		</t:form>
+	</div>
+</html>

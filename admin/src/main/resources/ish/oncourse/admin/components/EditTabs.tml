@@ -4,5 +4,6 @@
        	<t:pagelink id="web" page="prop:webPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Web</span></t:pagelink>
        	<t:pagelink id="preferences" page="prop:preferencesPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Preferences</span></t:pagelink>
        	<t:pagelink id="billing" page="prop:billingPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Billing</span></t:pagelink>
+       	<t:pagelink id="instructions" page="prop:instructionsPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Instructions</span></t:pagelink>
     </div>
 </t:container>
