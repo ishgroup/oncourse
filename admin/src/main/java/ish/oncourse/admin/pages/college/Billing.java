@@ -163,7 +163,7 @@ public class Billing {
 		return getCurrentLicenseInfo().get(LicenseFee.FREE_TRANSACTIONS_PROPERTY);
 	}
 	
-	public void setFreeTransaction(String freeTransactions) {
+	public void setFreeTransactions(String freeTransactions) {
 		getCurrentLicenseInfo().put(LicenseFee.FREE_TRANSACTIONS_PROPERTY, freeTransactions);
 	}
 	
