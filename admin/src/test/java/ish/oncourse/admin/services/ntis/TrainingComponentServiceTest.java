@@ -1,35 +1,31 @@
 package ish.oncourse.admin.services.ntis;
 
-import java.util.Map;
+import ish.oncourse.admin.services.AdminTestModule;
+import ish.oncourse.test.ServiceTest;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.BindingProvider;
 
 import junit.framework.Assert;
 
-import org.apache.cxf.ws.security.SecurityConstants;
+import org.junit.Before;
 import org.junit.Test;
 
 import au.gov.training.services.trainingcomponent.ITrainingComponentService;
-import au.gov.training.services.trainingcomponent.TrainingComponentService;
 
-public class TrainingComponentServiceTest {
+public class TrainingComponentServiceTest extends ServiceTest {
+	
+	@Before
+	public void setup() throws Exception {
+		initTest("ish.oncourse.admin.services", "", AdminTestModule.class);
+	}
 	
 	/**
      * This method performs ten calls to the GetServerTime operation.
      */
     @Test
     public void testGetServerTime() throws Exception {
-    	
-    	TrainingComponentService ss = new TrainingComponentService(TrainingComponentService.class.getClassLoader().getResource("wsdl/production/TrainingComponentService.wsdl"));
-        
-    	ITrainingComponentService port = ss.getTrainingComponentServiceWsHttpEndpoint();
-        
-        Map<String, Object> ctx = ((BindingProvider) port).getRequestContext();
-		
-		ctx.put(SecurityConstants.USERNAME, "ws.ish");
-		ctx.put(SecurityConstants.PASSWORD, "Asdf098");
-		ctx.put(SecurityConstants.TIMESTAMP_FUTURE_TTL, "30");
+    	        
+    	ITrainingComponentService port = getService(ITrainingComponentService.class);
         
         for (int i = 0; i < 10; i++) {
         	
