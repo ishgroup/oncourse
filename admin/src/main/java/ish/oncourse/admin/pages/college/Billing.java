@@ -64,7 +64,8 @@ public class Billing {
 			else {
 				info.put(LicenseFee.VALID_UNTIL_PROPERTY, "");
 			}
-
+			
+			info.put(LicenseFee.FREE_TRANSACTIONS_PROPERTY, String.valueOf(fee.getFreeTransactions()));
 			info.put(LicenseFee.FEE_PROPERTY, String.valueOf(fee.getFee()));
 			
 			this.licenseInfo.put(fee.getKeyCode(), info);
@@ -96,6 +97,9 @@ public class Billing {
 				}
 				if (info.get(LicenseFee.VALID_UNTIL_PROPERTY) != null) {
 					lf.setValidUntil(dateFormat.parse(info.get(LicenseFee.VALID_UNTIL_PROPERTY)));
+				}
+				if (info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY) != null) {
+					lf.setFreeTransactions(Integer.parseInt(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
 				}
 				if (info.get(LicenseFee.FEE_PROPERTY) != null) {
 					lf.setFee(new BigDecimal(info.get(LicenseFee.FEE_PROPERTY)));

@@ -29,6 +29,7 @@
 				<td>Plan Name</td>
 				<td>Billing Month</td>
 				<td>Valid Until</td>
+				<td>Free Transactions</td>
 				<td>Fee</td>
 			</tr>
 		</thead>
