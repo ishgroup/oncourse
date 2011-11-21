@@ -34,8 +34,8 @@ public class TrainingComponentServiceBuilder implements ServiceBuilder<ITraining
 			
 			Map<String, Object> ctx = ((BindingProvider) port).getRequestContext();
 			
-			ctx.put(SecurityConstants.USERNAME, "WebService.Read");
-			ctx.put(SecurityConstants.PASSWORD, "Asdf098");
+			ctx.put(SecurityConstants.USERNAME, "ws.ish");
+			ctx.put(SecurityConstants.PASSWORD, "LyejRogul");
 			ctx.put(SecurityConstants.TIMESTAMP_FUTURE_TTL, "30");
 
 			Client client = ClientProxy.getClient(port);

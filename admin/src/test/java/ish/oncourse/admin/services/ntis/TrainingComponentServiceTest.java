@@ -27,7 +27,7 @@ public class TrainingComponentServiceTest {
         
         Map<String, Object> ctx = ((BindingProvider) port).getRequestContext();
 		
-		ctx.put(SecurityConstants.USERNAME, "WebService.Read");
+		ctx.put(SecurityConstants.USERNAME, "ws.ish");
 		ctx.put(SecurityConstants.PASSWORD, "Asdf098");
 		ctx.put(SecurityConstants.TIMESTAMP_FUTURE_TTL, "30");
         
