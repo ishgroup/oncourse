@@ -39,6 +39,7 @@ public class Index {
 		if (collegeModel == null) {
 			collegeModel = beanModelSource.createDisplayModel(College.class, componentResources.getMessages());
 			collegeModel.include("id", "name", "lastRemoteAuthentication", "angelVersion");
+			collegeModel.get("lastRemoteAuthentication").dataType("DateTime");
 			collegeModel.add("action", null);
 		}
 		this.colleges = collegeService.allColleges();
