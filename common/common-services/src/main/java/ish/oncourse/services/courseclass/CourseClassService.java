@@ -220,7 +220,20 @@ public class CourseClassService implements ICourseClassService {
 			SelectQuery q = new SelectQuery(CourseClass.class, expr.andExp(activeClassesExp));
 
 			q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
-			courses.addAll(cayenneService.sharedContext().performQuery(q));
+			
+			if (contact.getTutor() != null && courses.size() > 0) {
+				List<CourseClass> list = cayenneService.sharedContext().performQuery(q);
+				for (CourseClass cc: list) {
+					/*
+					 * don't show duplicated classes 
+					 */
+					if (!courses.contains(cc)){
+						courses.add(cc);
+					}
+				}
+			} else {
+				courses.addAll(cayenneService.sharedContext().performQuery(q));
+			}
 		}
 		
 		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.DESCENDING);
