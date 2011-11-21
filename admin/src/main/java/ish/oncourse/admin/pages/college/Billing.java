@@ -135,11 +135,43 @@ public class Billing {
 		return licenseInfo.get(currentLicenseInfoKey);
 	}
 	
-	public String getInfoValue() {
-		return getCurrentLicenseInfo().get(infoKey);
+	public String getPlanName() {
+		return getCurrentLicenseInfo().get(LicenseFee.PLAN_NAME_PROPERTY);
 	}
 	
-	public void setInfoValue(String value) {
-		getCurrentLicenseInfo().put(infoKey, value);
+	public void setPlanName(String planName) {
+		getCurrentLicenseInfo().put(LicenseFee.PLAN_NAME_PROPERTY, planName);
+	}
+	
+	public String getBillingMonth() {
+		return getCurrentLicenseInfo().get(LicenseFee.BILLING_MONTH_PROPERTY);
+	}
+	
+	public void setBillingMonth(String billingMonth) {
+		getCurrentLicenseInfo().put(LicenseFee.BILLING_MONTH_PROPERTY, billingMonth);
+	}
+	
+	public String getValidUntil() {
+		return getCurrentLicenseInfo().get(LicenseFee.VALID_UNTIL_PROPERTY);
+	}
+	
+	public void setValidUntil(String validUntil) {
+		getCurrentLicenseInfo().put(LicenseFee.VALID_UNTIL_PROPERTY, validUntil);
+	}
+	
+	public String getFreeTransactions() {
+		return getCurrentLicenseInfo().get(LicenseFee.FREE_TRANSACTIONS_PROPERTY);
+	}
+	
+	public void setFreeTransaction(String freeTransactions) {
+		getCurrentLicenseInfo().put(LicenseFee.FREE_TRANSACTIONS_PROPERTY, freeTransactions);
+	}
+	
+	public String getFee() {
+		return getCurrentLicenseInfo().get(LicenseFee.FEE_PROPERTY);
+	}
+	
+	public void setFee(String fee) {
+		getCurrentLicenseInfo().put(LicenseFee.FEE_PROPERTY, fee);
 	}
 }

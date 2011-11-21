@@ -25,7 +25,7 @@
 				</t:form>
 				<t:form t:id="newDomainForm">
 					<tr>
-						<td><t:textfield t:id="newDomain" value="newDomainValue"/></td>
+						<td><t:textfield t:id="newDomain" t:validate="required" value="newDomainValue"/></td>
 						<td><t:select t:id="newDomainSiteSelect" model="siteSelectModel" blankOption="never" value="newDomainSite"/></td>
 						<td><t:submit t:id="addNewDomain" value="Add"/></td>
 					</tr>
@@ -52,8 +52,8 @@
 				</t:loop>
 				<t:form t:id="sitesForm">
 				<tr>
-					<td><t:textfield t:id="newSiteName" value="newSiteNameValue"/></td>
-					<td><t:textfield t:id="newSiteKey" value="newSiteKeyValue"/></td>
+					<td><t:textfield t:id="newSiteName" t:validate="required" value="newSiteNameValue"/></td>
+					<td><t:textfield t:id="newSiteKey" t:validate="required" value="newSiteKeyValue"/></td>
 					<td><t:submit t:id="addNewSite" value="Add"/></td>
 				</tr>
 				</t:form>
@@ -82,10 +82,10 @@
 				</t:loop>
 				<t:form t:id="cmsUsersForm">
 				<tr>
-					<td><t:textfield t:id="newUserEmail" value="newUserEmailValue"/></td>
-					<td><t:textfield t:id="newUserPassword" value="newUserPasswordValue"/></td>
-					<td><t:textfield t:id="newUserFirstName" value="newUserFirstNameValue"/></td>
-					<td><t:textfield t:id="newUserLastName" value="newUserLastNameValue"/></td>
+					<td><t:textfield t:id="newUserEmail" t:validate="required" value="newUserEmailValue"/></td>
+					<td><t:textfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
+					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
+					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
 					<td><t:submit t:id="addNewUser" value="Add"/></td>
 				</tr>
 				</t:form>

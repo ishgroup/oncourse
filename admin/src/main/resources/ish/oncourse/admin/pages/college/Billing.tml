@@ -10,12 +10,12 @@
 	<table>
 		<tr>
 			<td>PaymentExpress user</td>
-			<td><t:textfield t:id="paymentUser" value="paymentExpUser" />
+			<td><t:textfield t:id="paymentUser" t:validate="required" value="paymentExpUser" />
 			</td>
 		</tr>
 		<tr>
 			<td>PaymentExpress password</td>
-			<td><t:textfield t:id="paymentPass" value="paymentExpPass" />
+			<td><t:textfield t:id="paymentPass" t:validate="required" value="paymentExpPass" />
 			</td>
 		</tr>
 	</table>
@@ -37,9 +37,11 @@
 			<t:loop source="licenseInfo.keySet()" value="currentLicenseInfoKey">
 				<tr>
 					<td>${currentLicenseInfoKey}</td>
-					<t:loop source="currentLicenseInfo.keySet()" value="infoKey">
-						<td><t:textfield t:id="infoKey" value="infoValue"/></td>
-					</t:loop>
+					<td><t:textfield t:id="planName" value="planName"/></td>
+					<td><t:textfield t:id="billingMonth" t:validate="regexp=^([1-9]|1[0-2])$" value="billingMonth"/></td>
+					<td><t:textfield t:id="validUntil" value="validUntil"/></td>
+					<td><t:textfield t:id="freeTransactions" t:validate="required" value="freeTransactions"/></td>
+					<td><t:textfield t:id="fee" t:validate="required" value="fee"/></td>
 				</tr>
 			</t:loop>
 		</tbody>
