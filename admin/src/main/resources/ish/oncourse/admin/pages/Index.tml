@@ -2,7 +2,7 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<table t:type="grid" t:source="colleges" t:row="college" t:model="collegeModel">
 		<p:actionCell>
-			<a t:type="pagelink" t:page="college/edit" t:context="college.id" href="#">Edit</a>
+			<a t:type="pagelink" t:page="college/overview" t:context="college.id" href="#">Edit</a>
 		</p:actionCell>
  	</table>
 </html>
