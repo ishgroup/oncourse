@@ -374,4 +374,9 @@
 		</addColumn>
 	</changeSet>
 	
+	<changeSet id="30" author="olga" context="production" runOnChange="true">
+		<sql>update TutorRole set isConfirmed=true where confirmedDate is not null;</sql>
+		<sql>update TutorRole set isConfirmed=false where confirmedDate is null;</sql>
+	</changeSet>
+	
 </databaseChangeLog>

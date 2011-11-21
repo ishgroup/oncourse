@@ -26,7 +26,6 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
-import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 @UserRole("tutor")
@@ -136,7 +135,7 @@ public class ClassApproval {
 
 		for (TutorRole t : courseClass.getTutorRoles()) {
 			if (t.getTutor().getContact().getId().equals(c.getId())) {
-				return t.getIsConfirmed();
+				return t.getConfirmedDate() != null;
 			}
 		}
 
