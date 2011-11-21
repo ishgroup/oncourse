@@ -1,8 +1,8 @@
-<html t:type="pagestructure" title="literal:College Billing"
+<html t:type="pagestructure" title="literal:Instructions"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	
-	<span t:type="editTabs" college="college" selected="literal:overview"/>
+	<span t:type="editTabs" college="college" selected="literal:instructions"/>
 	
 	<h1>${college.name}</h1>
 	
@@ -23,7 +23,7 @@
 	<h2>Add Instruction</h2>
 	<div>
 		<t:form t:id="addInstructionForm">
-			<span><t:textfield t:id="instructionMessage" value="instructionMessage"/></span>
+			<span><t:textfield t:id="instructionMessage" t:validate="required" value="instructionMessage"/></span>
 			<span><t:submit t:id="addInstruction" value="Add"/></span>
 		</t:form>
 	</div>
