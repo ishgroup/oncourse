@@ -14,20 +14,48 @@
 	<div id="results">
 	</div>
 	
+	<div id="newCollege">
+		<t:form t:id="newCollegeForm">
+			<input id="collegeId" t:type="hidden" property="collegeId" value="collegeId"/>
+			<table>
+				<tr>
+					<td>Billing Code</td>
+					<td><t:textfield t:id="billingCode" value="billingCode"/></td>
+				</tr>
+				<tr>
+					<td>Web Services Password</td>
+					<td><t:textfield t:id="servicesPass" value="servicesPassword"/></td>
+				</tr>
+			</table>
+			<t:submit t:id="addNewCollege" value="Next"/>
+		</t:form>
+	</div>
+	
 	<script type="text/javascript">
-		jQuery("#find").click(function() {
-			var key = jQuery("#serviceKey").attr("value");
+		jQuery(function() {
+			jQuery("#newCollege").hide();
 			
-			var success = function(data) {
-				jQuery("#results").empty();
-				jQuery("#results").append(data);
-			}
-			
-			jQuery.ajax({
-				url: "${findCollegeUrl}",
-				data: "key=" + key,
-				success: success,
-				dataType: "html"
+			jQuery("#find").click(function() {
+				jQuery("#newCollege").hide();
+				
+				var key = jQuery("#serviceKey").attr("value");
+				
+				var success = function(data) {
+					jQuery("#results").empty();
+					jQuery("#results").append(data["message"]);
+					
+					if (data["status"] == "SETUP") {
+						jQuery("#collegeId").val(data["id"]);
+						jQuery("#newCollege").show();
+					}
+				}
+				
+				jQuery.ajax({
+					url: "${findCollegeUrl}",
+					data: "key=" + key,
+					success: success,
+					dataType: "json"
+				});
 			});
 		});
 	</script>
