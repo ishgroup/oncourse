@@ -44,7 +44,6 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.InjectService;
 
 /**
  * Main version 4 synchronous replication implementation.
@@ -66,10 +65,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 	@Inject
 	private IWillowStubBuilder stubBuilder;
 
-	@InjectService("NotAtomic")
-	private ITransactionGroupProcessor transactionGroupUpdater;
-
-	@InjectService("Atomic")
+	@Inject
 	private ITransactionGroupProcessor transactionGroupAtomicUpdater;
 
 	@Inject
@@ -87,7 +83,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 			List<ReplicatedRecord> replicatedRecords = new ArrayList<ReplicatedRecord>();
 
 			for (TransactionGroup group : req.getGroups()) {
-				replicatedRecords.addAll(getUpdaterForGroup(group).processGroup(group));
+				replicatedRecords.addAll(transactionGroupAtomicUpdater.processGroup(group));
 			}
 
 			ReplicationResult result = new ReplicationResult();
@@ -392,26 +388,5 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 			throw new ReplicationFault("Unable to confirm replication results.", faultReason);
 		}
-	}
-
-	/**
-	 * @param group
-	 * @return
-	 */
-	private ITransactionGroupProcessor getUpdaterForGroup(TransactionGroup group) {
-
-		for (ReplicationStub stub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
-			String entityIdentifier = stub.getEntityIdentifier();
-			if (entityIdentifier.equalsIgnoreCase(Enrolment.class.getSimpleName())
-					|| entityIdentifier.equalsIgnoreCase(PaymentIn.class.getSimpleName())
-					|| entityIdentifier.equalsIgnoreCase(PaymentInLine.class.getSimpleName())
-					|| entityIdentifier.equalsIgnoreCase(Invoice.class.getSimpleName())
-					|| entityIdentifier.equalsIgnoreCase(InvoiceLine.class.getSimpleName())
-					|| entityIdentifier.equalsIgnoreCase(InvoiceLineDiscount.class.getSimpleName())) {
-				return transactionGroupAtomicUpdater;
-			}
-		}
-
-		return transactionGroupUpdater;
 	}
 }

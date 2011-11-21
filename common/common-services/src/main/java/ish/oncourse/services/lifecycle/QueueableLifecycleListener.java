@@ -45,14 +45,28 @@ public class QueueableLifecycleListener implements LifecycleListener {
 
 	private static final Logger LOGGER = Logger.getLogger(QueueableLifecycleListener.class);
 
+	/**
+	 * Cayenne service.
+	 */
 	private ICayenneService cayenneService;
 
+	/**
+	 * Storage to hold college between invocations of preRemove and postRemove
+	 * methods.
+	 */
 	private Map<ObjectId, College> contextMap = new WeakHashMap<ObjectId, College>();
 
+	/**
+	 * Constructor
+	 * @param cayenneService
+	 */
 	public QueueableLifecycleListener(ICayenneService cayenneService) {
 		this.cayenneService = cayenneService;
 	}
 
+	/**
+	 * Updates modified date on the object.
+	 */
 	public void preUpdate(Object entity) {
 		if (entity instanceof Queueable) {
 			Queueable p = (Queueable) entity;
@@ -60,20 +74,37 @@ public class QueueableLifecycleListener implements LifecycleListener {
 		}
 	}
 
+	/**
+	 * Initially sets created and modified dates on the object.
+	 */
 	public void prePersist(Object entity) {
 		if (entity instanceof Queueable) {
 			Queueable p = (Queueable) entity;
-			p.setCreated(new Date());
+			Date today = new Date();
+			p.setCreated(today);
+			p.setModified(today);
 		}
 	}
 
+	/**
+	 * Adds object context to the weak hash map, so we can pick it up in the
+	 * next event method postRemove. In postRemove the object context is always
+	 * null.
+	 */
 	public void preRemove(Object entity) {
 		if (entity instanceof Queueable) {
-			Queueable p = (Queueable) entity;
-			if (isAsyncReplicationAllowed(p)) {
-				ObjectIdQuery query = new ObjectIdQuery(p.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-				Cayenne.objectForQuery(p.getObjectContext(), query);
-				contextMap.put(p.getObjectId(), p.getCollege());
+			Queueable q = (Queueable) entity;
+
+			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
+
+				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
+				if (!recordContext.getIsRecordQueueingEnabled()) {
+					return;
+				}
+
+				if (isAsyncReplicationAllowed(q)) {
+					contextMap.put(q.getObjectId(), q.getCollege());
+				}
 			}
 		}
 	}
@@ -86,11 +117,19 @@ public class QueueableLifecycleListener implements LifecycleListener {
 
 	public void postPersist(Object entity) {
 		if (entity instanceof Queueable) {
-			Queueable queueable = (Queueable) entity;
-			if (isAsyncReplicationAllowed(queueable)) {
-				LOGGER.debug("Post Persist event on : Entity: " + queueable.getClass().getSimpleName() + " with ID : "
-						+ queueable.getObjectId());
-				enqueue(queueable, QueuedRecordAction.CREATE);
+			Queueable q = (Queueable) entity;
+
+			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
+
+				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
+				if (!recordContext.getIsRecordQueueingEnabled()) {
+					return;
+				}
+
+				if (isAsyncReplicationAllowed(q)) {
+					LOGGER.debug("Post Persist event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
+					enqueue(q, QueuedRecordAction.CREATE);
+				}
 			}
 		}
 	}
@@ -101,13 +140,21 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	 * @param entity
 	 */
 	public void postRemove(Object entity) {
+
 		if (entity instanceof Queueable) {
-			Queueable p = (Queueable) entity;
-			if (isAsyncReplicationAllowed(p)) {
-				LOGGER.debug("Pre Remove event on : Entity: " + p.getClass().getSimpleName() + " with ID : " + p.getObjectId());
-				enqueue(p, QueuedRecordAction.DELETE);
+			Queueable q = (Queueable) entity;
+
+			if (isAsyncReplicationAllowed(q)) {
+				LOGGER.debug("Post Remove event on : Entity: " + q.getClass().getSimpleName() + " with ID : "
+						+ q.getObjectId());
+				College college = contextMap.remove(q.getObjectId());
+				if (college != null) {
+					q.setCollege(college);
+					enqueue(q, QueuedRecordAction.DELETE);
+				}
 			}
 		}
+
 	}
 
 	/**
@@ -117,11 +164,20 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	 */
 	public void postUpdate(Object entity) {
 		if ((entity instanceof Queueable)) {
-			Queueable queueable = (Queueable) entity;
-			if (isAsyncReplicationAllowed(queueable)) {
-				LOGGER.debug("Post Update event on : Entity: " + queueable.getClass().getSimpleName() + " with ID : "
-						+ queueable.getObjectId());
-				enqueue(queueable, QueuedRecordAction.UPDATE);
+			Queueable q = (Queueable) entity;
+
+			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
+				
+				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
+				if (!recordContext.getIsRecordQueueingEnabled()) {
+					return;
+				}
+				
+				if (isAsyncReplicationAllowed(q)) {
+					LOGGER.debug("Post Update event on : Entity: " + q.getClass().getSimpleName() + " with ID : "
+							+ q.getObjectId());
+					enqueue(q, QueuedRecordAction.UPDATE);
+				}
 			}
 		}
 	}
@@ -152,63 +208,53 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	private void enqueue(Queueable entity, QueuedRecordAction action) {
 
 		College college = entity.getCollege();
-		ISHObjectContext commitingContext = null;
 
 		if (college == null) {
-			college = contextMap.remove(entity.getObjectId());
-			if (college == null) {
-				//we don't need to add QueuedRecords on entities where collegeId=null, such as global preferences.
-				return;
-			}
-			else {
-				commitingContext = (ISHObjectContext) college.getObjectContext();
-			}
-		} else {
-			commitingContext = (ISHObjectContext) college.getObjectContext();
+			// we don't need to add QueuedRecords on entities where
+			// collegeId=null, such as global preferences.
+			return;
+		}
+
+		ISHObjectContext commitingContext = (ISHObjectContext) college.getObjectContext();
+
+		if (action != QueuedRecordAction.DELETE) {
 			ObjectIdQuery query = new ObjectIdQuery(entity.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
 			entity = (Queueable) Cayenne.objectForQuery(commitingContext, query);
 		}
 
-		if (commitingContext.getIsRecordQueueingEnabled()) {
+		ObjectContext ctx = cayenneService.newNonReplicatingContext();
+		String transactionKey = commitingContext.getTransactionKey();
+		SelectQuery q = new SelectQuery(QueuedTransaction.class, ExpressionFactory.matchExp(QueuedTransaction.TRANSACTION_KEY_PROPERTY,
+				transactionKey));
+		QueuedTransaction t = (QueuedTransaction) Cayenne.objectForQuery(ctx, q);
 
-			String transactionKey = commitingContext.getTransactionKey();
-
-			String entityName = entity.getObjectId().getEntityName();
-			Long entityId = entity.getId();
-			Long angelId = entity.getAngelId();
-
-			ObjectContext ctx = cayenneService.newNonReplicatingContext();
-
-			SelectQuery q = new SelectQuery(QueuedTransaction.class);
-			q.andQualifier(ExpressionFactory.matchExp(QueuedTransaction.TRANSACTION_KEY_PROPERTY, transactionKey));
-
-			QueuedTransaction t = (QueuedTransaction) Cayenne.objectForQuery(ctx, q);
-
-			if (t == null) {
-				t = ctx.newObject(QueuedTransaction.class);
-				Date today = new Date();
-				t.setCreated(today);
-				t.setModified(today);
-				t.setTransactionKey(transactionKey);
-				t.setCollege((College) ctx.localObject(college.getObjectId(), null));
-			}
-
-			LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
-					action, transactionKey));
-
-			QueuedRecord qr = ctx.newObject(QueuedRecord.class);
-
-			qr.setCollege((College) ctx.localObject(college.getObjectId(), null));
-			qr.setEntityIdentifier(entityName);
-			qr.setEntityWillowId(entityId);
-			qr.setAngelId(angelId);
-			qr.setQueuedTransaction(t);
-			qr.setAction(action);
-			qr.setNumberOfAttempts(0);
-			qr.setLastAttemptTimestamp(new Date());
-
-			ctx.commitChanges();
+		if (t == null) {
+			t = ctx.newObject(QueuedTransaction.class);
+			Date today = new Date();
+			t.setCreated(today);
+			t.setModified(today);
+			t.setTransactionKey(transactionKey);
+			t.setCollege((College) ctx.localObject(college.getObjectId(), null));
 		}
+
+		String entityName = entity.getObjectId().getEntityName();
+		Long entityId = entity.getId();
+		Long angelId = entity.getAngelId();
+
+		LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
+				action, transactionKey));
+
+		QueuedRecord qr = ctx.newObject(QueuedRecord.class);
+		qr.setCollege((College) ctx.localObject(college.getObjectId(), null));
+		qr.setEntityIdentifier(entityName);
+		qr.setEntityWillowId(entityId);
+		qr.setAngelId(angelId);
+		qr.setQueuedTransaction(t);
+		qr.setAction(action);
+		qr.setNumberOfAttempts(0);
+		qr.setLastAttemptTimestamp(new Date());
+
+		ctx.commitChanges();
 	}
 
 	/**

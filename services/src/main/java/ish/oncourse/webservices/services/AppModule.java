@@ -34,6 +34,7 @@ import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
 import java.io.IOException;
 
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
@@ -49,7 +50,7 @@ import org.apache.tapestry5.services.ResponseRenderer;
  * @author marek
  */
 @SuppressWarnings("all")
-@SubModule({ ModelModule.class, ServiceModule.class})
+@SubModule({ ModelModule.class, ServiceModule.class })
 public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
@@ -64,17 +65,9 @@ public class AppModule {
 			@Override
 			public ITransactionGroupProcessor buildService(ServiceResources res) {
 				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService("WebSiteServiceOverride",
-						IWebSiteService.class), res.getService(IWillowUpdater.class), false);
+						IWebSiteService.class), res.getService(IWillowUpdater.class));
 			}
-		}).withId("NotAtomic");
-
-		binder.bind(ITransactionGroupProcessor.class, new ServiceBuilder<ITransactionGroupProcessor>() {
-			@Override
-			public ITransactionGroupProcessor buildService(ServiceResources res) {
-				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService("WebSiteServiceOverride",
-						IWebSiteService.class), res.getService(IWillowUpdater.class), true);
-			}
-		}).withId("Atomic");
+		}).scope(ScopeConstants.PERTHREAD);
 
 		binder.bind(QuartzInitializer.class, new ServiceBuilder<QuartzInitializer>() {
 			@Override

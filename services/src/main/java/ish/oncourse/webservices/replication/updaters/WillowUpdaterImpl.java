@@ -7,6 +7,7 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
+import ish.oncourse.model.College;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
@@ -41,6 +42,7 @@ import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.model.WaitingListSite;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.webservices.EntityMapping;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
@@ -53,7 +55,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WillowUpdaterImpl implements IWillowUpdater {
 	
+	@Inject
+	private IWebSiteService webSiteService;
 	
+	/**
+	 * Willow updaters mapping
+	 */
 	private Map<String, IWillowUpdater> updaterMap = new HashMap<String, IWillowUpdater>();
 
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
@@ -109,8 +116,8 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	 */
 	@Override
 	public void updateEntityFromStub(ReplicationStub stub, Queueable entity, RelationShipCallback callback) {
-		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
 		
+		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
 		IWillowUpdater updater = updaterMap.get(key);
 
 		if (updater == null) {
@@ -118,5 +125,12 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		}
 
 		updater.updateEntityFromStub(stub, entity, callback);
+		
+		if (entity.getCollege() == null) {
+			College currentCollege = webSiteService.getCurrentCollege();
+			if (currentCollege != null) {
+				entity.setCollege((College) entity.getObjectContext().localObject(currentCollege.getObjectId(), null));
+			}	
+		}
 	}
 }

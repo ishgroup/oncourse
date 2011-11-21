@@ -28,13 +28,12 @@ import java.util.List;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.InjectService;
 
 public class PaymentServiceImpl implements PaymentPortType {
 
 	private static final Logger logger = Logger.getLogger(PaymentServiceImpl.class);
 
-	@InjectService("Atomic")
+	@Inject
 	private ITransactionGroupProcessor groupProcessor;
 
 	@Inject
@@ -74,7 +73,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 					|| transaction.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 				throw new Exception("Got an empty paymentIn transaction group from angel.");
 			}
-			
+
 			boolean isCreditCardPayment = ReplicationUtils.isCreditCardPayment(transaction);
 
 			List<ReplicatedRecord> replicatedRecords = groupProcessor.processGroup(transaction);
@@ -85,7 +84,6 @@ public class PaymentServiceImpl implements PaymentPortType {
 				throw new Exception("Willow was unable to save paymentIn transaction group.");
 			}
 
-			
 			ObjectContext newContext = cayenneService.newContext();
 
 			// check places

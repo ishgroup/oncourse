@@ -10,6 +10,7 @@ import ish.oncourse.model.auto._PaymentIn;
 import ish.util.CreditCardUtil;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -61,16 +62,76 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		Money sum = Money.ZERO;
 		List<PaymentInLine> list = getPaymentInLines();
-		if (list != null)
-			for (PaymentInLine pinl : list)
-				sum = sum.add(pinl.getAmount());
 
-		if (!amount.equals(sum)) {
-			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY, String.format(
-					"The payment willowId:%s angelId:%s amount does not match the sum of amounts allocated for invoices/credit notes.",
-					getId(), getAngelId())));
+		if (list != null) {
+			for (PaymentInLine pinl : list) {
+				sum = sum.add(pinl.getAmount());
+			}
 		}
 
+		if (!amount.equals(sum)) {
+			// some data after migration doesn't have angelId properly set on
+			// paymentInLines
+			// that is why we need this check too.
+			if (isCommittedSumValid()) {
+				// unregister not committed lines
+				unregisterNotCommittedLines();
+			} else {
+				result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY, String.format(
+						"The payment willowId:%s angelId:%s amount does not match the sum of amounts allocated for invoices/credit notes.",
+						getId(), getAngelId())));
+			}
+		}
+
+	}
+
+	/**
+	 * Unregisters not committed paymentInLines from object context
+	 * 
+	 * @param lines
+	 *            paymentInLines
+	 */
+	private void unregisterNotCommittedLines() {
+
+		for (PaymentInLine pinl : new ArrayList<PaymentInLine>(getPaymentInLines())) {
+			if (pinl.getObjectId().isTemporary()) {
+				getPaymentInLines().remove(pinl);
+				getObjectContext().getGraphManager().unregisterNode(pinl);
+
+				Long angelId = pinl.getAngelId();
+				Long invoiceNumber = pinl.getInvoice().getInvoiceNumber();
+				Long invoiceAngelId = pinl.getInvoice().getAngelId();
+
+				Expression expr = ExpressionFactory.matchExp(PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_NUMBER_PROPERTY,
+						invoiceNumber);
+				
+				expr = expr.orExp(ExpressionFactory.matchExp(PaymentInLine.INVOICE_PROPERTY + "." + Invoice.ANGEL_ID_PROPERTY,
+						invoiceAngelId));
+				
+				List<PaymentInLine> matchedLines = expr.filterObjects(getPaymentInLines());
+				if (!matchedLines.isEmpty()) {
+					matchedLines.get(0).setAngelId(angelId);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check the paymentIn amount against committed payment in lines.
+	 * 
+	 * @return true - if amount matches the sum of committed paymentInLines.
+	 */
+	private boolean isCommittedSumValid() {
+		Money amount = new Money(getAmount());
+		Money sum = Money.ZERO;
+
+		for (PaymentInLine pinl : getPaymentInLines()) {
+			if (!pinl.getObjectId().isTemporary()) {
+				sum = sum.add(pinl.getAmount());
+			}
+		}
+
+		return amount.equals(sum);
 	}
 
 	/**
@@ -223,24 +284,26 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Finds invoice which is current and is performed operation on.
+	 * 
 	 * @return active invoice
 	 */
 	private Invoice findActiveInvoice() {
-		
+
 		SortedSet<Invoice> invoices = new TreeSet<Invoice>(new Comparator<Invoice>() {
 			public int compare(Invoice o1, Invoice o2) {
-				return (getSource() == PaymentSource.SOURCE_ONCOURSE) ? o2.getInvoiceNumber().compareTo(o1.getInvoiceNumber()) : o2.getId().compareTo(o1.getId()) ;
+				return (getSource() == PaymentSource.SOURCE_ONCOURSE) ? o2.getInvoiceNumber().compareTo(o1.getInvoiceNumber()) : o2.getId()
+						.compareTo(o1.getId());
 			}
 		});
-		
+
 		for (PaymentInLine line : getPaymentInLines()) {
 			Invoice invoice = line.getInvoice();
 			invoices.add(invoice);
 		}
-		
+
 		Invoice activeInvoice = invoices.first();
 		return activeInvoice;
 	}
@@ -358,9 +421,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
-		
+
 		Invoice activeInvoice = findActiveInvoice();
-		
+
 		if (activeInvoice != null) {
 			activeInvoice.setStatus(InvoiceStatus.SUCCESS);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
@@ -388,9 +451,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
-		
+
 		Invoice activeInvoice = findActiveInvoice();
-		
+
 		if (activeInvoice != null) {
 			activeInvoice.setStatus(InvoiceStatus.PENDING);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {

@@ -449,7 +449,7 @@
 	<db-entity name="PaymentInLine" catalog="willow_college">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="collegeId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
