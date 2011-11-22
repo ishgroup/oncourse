@@ -1,9 +1,9 @@
 package ish.oncourse.admin.pages.college;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
+import ish.common.types.EntityMapping;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Instruction;
 import ish.oncourse.selectutils.StringSelectModel;
@@ -19,17 +19,6 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Instructions {
-	
-	private static Map<String, String> WILLOW_TO_ANGEL = new HashMap<String, String>();
-	
-	static {
-		WILLOW_TO_ANGEL.put("BinaryData", "AttachmentData");
-		WILLOW_TO_ANGEL.put("BinaryInfo", "AttachmentInfo");
-		WILLOW_TO_ANGEL.put("BinaryInfoRelation", "AttachmentRelation");
-		WILLOW_TO_ANGEL.put("TutorRole", "CourseClassTutor");
-		WILLOW_TO_ANGEL.put("SessionTutor", "TutorAttendance");
-		WILLOW_TO_ANGEL.put("TagGroupRequirement", "TagRequirement");
-	}
 	
 	@Property
 	@Persist
@@ -87,13 +76,8 @@ public class Instructions {
 	
 	@OnEvent(component="queueEntityForm", value="success")
 	void queueEntity() {
-		System.out.println(selectedEntity);
-		if (WILLOW_TO_ANGEL.containsKey(selectedEntity)) {
-			createInstruction("queue:" + WILLOW_TO_ANGEL.get(selectedEntity));
-		}
-		else {
-			createInstruction("queue:" + selectedEntity);
-		}
+		createInstruction("queue:" + 
+				EntityMapping.getAngelEntityIdentifer(selectedEntity));
 	}
 	
 	private void createInstruction(String message) {
