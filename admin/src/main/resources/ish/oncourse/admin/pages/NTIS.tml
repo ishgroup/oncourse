@@ -27,8 +27,8 @@
 	
 	<script type="text/javascript">
 		jQuery(function() {		
-			jQuery( "#dateFrom" ).datepicker({ dateFormat: 'yy/mm/dd' });
-			jQuery( "#dateTo" ).datepicker({ dateFormat: 'yy/mm/dd' });
+			jQuery( "#dateFrom" ).datepicker({ dateFormat: 'dd/mm/yy' });
+			jQuery( "#dateTo" ).datepicker({ dateFormat: 'dd/mm/yy' });
 			
 			var statusUpdate = function() {
 				

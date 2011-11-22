@@ -7,6 +7,7 @@ import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -81,6 +82,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			cal.setTime(from);
 			fromDate.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
 			cal.setTime(to);
+			cal.add(Calendar.HOUR_OF_DAY, 23);
+			cal.add(Calendar.MINUTE, 59);
 			toDate.setDateTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
 
 			if (type == Qualification.class) {

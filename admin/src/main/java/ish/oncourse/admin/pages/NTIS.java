@@ -83,7 +83,7 @@ public class NTIS {
 	@OnEvent(component = "updateForm", value = "success")
 	void submitted() throws Exception {
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 		final Date from = dateFormat.parse(dateFrom);
 		final Date to = dateFormat.parse(dateTo);
