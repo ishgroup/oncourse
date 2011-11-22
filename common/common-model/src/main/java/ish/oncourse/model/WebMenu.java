@@ -75,29 +75,47 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 	}
 
 	public synchronized void updateWeight(int weight, WebMenu oldParent) {
+
+		Integer oldWeight = getWeight();
 		setWeight(weight);
-		
-		//if we drag menu from another parent, we should update the weights in old tree
+		List<WebMenu> siblings = getParentWebMenu().getWebMenus();
+		if (oldWeight == null) {
+			oldWeight = siblings.size();
+		}
+		// if we drag menu from another parent, we should update the weights in
+		// old tree
 		if (oldParent != null && !oldParent.getId().equals(getParentWebMenu().getId())) {
 			List<WebMenu> oldSiblings = oldParent.getWebMenus();
 			for (int i = 0; i < oldSiblings.size(); i++) {
 				oldSiblings.get(i).setWeight(i);
 			}
+			oldWeight = siblings.size();
 		}
-		//all the menus in the right order
-		List<WebMenu> siblings = getParentWebMenu().getWebMenus();
-		//flag which points if we already passed the dragged item or not: important for the setting weight to the item which has the same weight.
-		boolean passedDropped = false;
+		
 		for (int i = 0; i < siblings.size(); i++) {
 			WebMenu m = siblings.get(i);
 			if (m.getPersistenceState() != PersistenceState.NEW && !m.getId().equals(getId())) {
-				if (m.getWeight() == weight && !passedDropped) {
-					m.setWeight(i + 1);
+				if (m.getWeight() == weight) {
+					if (i < weight) {
+						if (oldWeight > weight) {
+							m.setWeight(i + 1);
+						} else {
+							m.setWeight(i);
+						}
+					} else {
+						if (i == weight) {
+							if (oldWeight > weight) {
+								m.setWeight(i + 1);
+							} else {
+								m.setWeight(i - 1);
+							}
+						} else {
+							m.setWeight(i);
+						}
+					}
 				} else {
 					m.setWeight(i);
 				}
-			} else {
-				passedDropped = true;
 			}
 		}
 	}
