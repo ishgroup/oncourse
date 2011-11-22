@@ -1,5 +1,8 @@
 package ish.oncourse.admin.pages.college;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
 
@@ -31,10 +34,12 @@ public class Overview {
 	
 	@SetupRender
 	void setupRender() {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		
 		lastIP = college.getIpAddress();
 		onCourseVersion = college.getAngelVersion();
 		replicationState = college.getCommunicationKeyStatus().toString();
-		lastReplication = "";
+		lastReplication = dateFormat.format(college.getLastRemoteAuthentication());
 	}
 	
 	Object onActivate(Long id) {
