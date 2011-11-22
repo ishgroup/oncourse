@@ -136,4 +136,17 @@ public class NextSession {
 		return String.format("%s - %s", timeFormatter.format(session.getStartDate()),
 				timeFormatter.format(session.getEndDate())).toLowerCase();
 	}
+	
+	public String getRoomInformation() {
+		StringBuilder result = new StringBuilder();
+		if (session.getRoom() != null) {
+			result.append(session.getRoom().getName());
+			if (session.getRoom().getSite() != null) {
+				result.append(", ");
+				result.append(session.getRoom().getSite().getName());
+			}
+		}
+			
+		return result.toString();	
+	}
 }

@@ -83,7 +83,7 @@ public class ClassRoll {
 		if (courseClass == null) {
 			return false;
 		}
-		List<Enrolment> enrolments = courseClass.getEnrolments();
+		List<Enrolment> enrolments = courseClass.getValidEnrolments();
 		enrolmentsCount = enrolments.size();
 		sessions = courseClass.getSessions();
 		availableEnrolmentPlaces = courseClass.getAvailableEnrolmentPlaces();

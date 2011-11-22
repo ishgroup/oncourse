@@ -51,6 +51,9 @@ public class CourseClassService implements ICourseClassService {
 		SelectQuery query = new SelectQuery(CourseClass.class, getSiteQualifier().andExp(
 				getSearchStringPropertyQualifier(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, courseCode)).andExp(
 				getSearchStringPropertyQualifier(CourseClass.CODE_PROPERTY, courseClassCode)));
+		
+		appyCourseClassCacheSettings(query);
+		
 		List<CourseClass> result = cayenneService.sharedContext().performQuery(query);
 		return !result.isEmpty() ? result.get(0) : null;
 	}
@@ -77,6 +80,8 @@ public class CourseClassService implements ICourseClassService {
 
 		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, params));
 
+		appyCourseClassCacheSettings(q);
+		
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
@@ -87,6 +92,8 @@ public class CourseClassService implements ICourseClassService {
 		}
 		SelectQuery q = new SelectQuery(CourseClass.class, ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids).andExp(
 				getSiteQualifier()));
+		
+		appyCourseClassCacheSettings(q);
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
@@ -104,6 +111,7 @@ public class CourseClassService implements ICourseClassService {
 		q.andQualifier(ExpressionFactory.matchExp(CourseClass.ANGEL_ID_PROPERTY, angelId));
 		q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 
+		appyCourseClassCacheSettings(q);
 		return (CourseClass) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 
@@ -161,7 +169,7 @@ public class CourseClassService implements ICourseClassService {
 				expr = addingExpresion.andExp(expr);
 			}
 			SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
-			q.addPrefetch(Session.COURSE_CLASS_PROPERTY);
+			
 			sessions.addAll(cayenneService.sharedContext().performQuery(q));
 		} 
 		
@@ -173,7 +181,7 @@ public class CourseClassService implements ICourseClassService {
 				expr = addingExpresion.andExp(expr);
 			}
 			SelectQuery q = new SelectQuery(Session.class, expr.andExp(startingExp).andExp(activeClassesExp));
-			q.addPrefetch(Session.COURSE_CLASS_PROPERTY);
+			
 			sessions.addAll(cayenneService.sharedContext().performQuery(q));
 		} 
 		
@@ -206,7 +214,7 @@ public class CourseClassService implements ICourseClassService {
 			
 			SelectQuery q = new SelectQuery(CourseClass.class, expr.andExp(activeClassesExp));
 
-			q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
+			appyCourseClassCacheSettings(q);
 			courses.addAll(cayenneService.sharedContext().performQuery(q));
 		}
 
@@ -219,7 +227,7 @@ public class CourseClassService implements ICourseClassService {
 			
 			SelectQuery q = new SelectQuery(CourseClass.class, expr.andExp(activeClassesExp));
 
-			q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
+			appyCourseClassCacheSettings(q);
 			
 			if (contact.getTutor() != null && courses.size() > 0) {
 				List<CourseClass> list = cayenneService.sharedContext().performQuery(q);
@@ -250,5 +258,28 @@ public class CourseClassService implements ICourseClassService {
 		q.andQualifier(ExpressionFactory.matchExp(CourseClass.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 
 		return (Attendance) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
+	}
+	
+	/**
+	 * Add necessary prefetches and assign cache group for course query;
+	 * 
+	 * @param q
+	 *            course query
+	 */
+	private static void appyCourseClassCacheSettings(SelectQuery q) {
+
+		// TODO: uncomment when after upgrading to newer cayenne where
+		// https://issues.apache.org/jira/browse/CAY-1585 is fixed.
+
+		/**
+		 * q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		 * q.setCacheGroups(CacheGroup.COURSES.name());
+		 **/
+
+		q.addPrefetch(CourseClass.ROOM_PROPERTY);
+		q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
+		q.addPrefetch(CourseClass.TUTOR_ROLES_PROPERTY);
+		q.addPrefetch(CourseClass.DISCOUNT_COURSE_CLASSES_PROPERTY);
+		q.addPrefetch(CourseClass.DISCUSSIONS_PROPERTY);
 	}
 }

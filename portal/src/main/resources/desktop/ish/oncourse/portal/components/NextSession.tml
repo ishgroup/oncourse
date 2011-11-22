@@ -34,7 +34,7 @@
 								</t:if>
 							</div>
 							${sessionWeekDay} ${sessionTime}.
-							<t:if test="room"><div>${session.room.name}, ${session.room.site.name}</div></t:if>
+							<t:if test="room"><div>${roomInformation}</div></t:if>
 		               	 </li>  
 			       </t:loop>
 		       </ul>
