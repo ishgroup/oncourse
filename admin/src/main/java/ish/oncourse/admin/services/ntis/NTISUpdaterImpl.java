@@ -407,7 +407,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 										Expression e = ExpressionFactory.matchExp("nationalCode", code);
 										q.setQualifier(e);
 										
-										Qualification qual = (Qualification) Cayenne.objectForQuery(context, query);
+										Qualification qual = (Qualification) Cayenne.objectForQuery(context, q);
 										
 										if (qual != null) {
 											qual.setTrainingPackageId(tp.getId());
