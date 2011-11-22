@@ -20,6 +20,13 @@
 						<td><t:textfield t:id="curentKey" value="currentValue"/></td>
 					</tr>
 				</t:loop>
+				<tr>
+					<td><t:textfield t:id="newPrefKey" value="newPreferenceKey"/></td>
+					<td>
+						<t:textfield t:id="newPrefValue" value="newPreferenceValue"/>
+						<t:submit t:id="add" value="Add"/>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<t:submit t:id="save" value="Save"/>

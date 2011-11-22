@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages.college;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,12 @@ public class Preferences {
 	private String currentKey;
 	
 	@Property
+	private String newPreferenceKey;
+	
+	@Property
+	private String newPreferenceValue;
+	
+	@Property
 	@Persist
 	private Map<String, String> preferences;
 	
@@ -33,6 +40,8 @@ public class Preferences {
 	
 	@Inject
 	private ICollegeService collegeService;
+	
+	private boolean isNew;
 	
 	@SetupRender
 	void setupRender() {
@@ -44,15 +53,40 @@ public class Preferences {
 		return null;
 	}
 	
+	@OnEvent(component="save", value="selected")
+	void submitSave() {
+		this.isNew = false;
+	}
+	
+	@OnEvent(component="add", value="selected")
+	void submitNew() {
+		this.isNew = true;
+	}
+	
 	@OnEvent(component = "prefForm", value="success")
 	void submitted() {
+		
+		Date now = new Date();
 		ObjectContext context = cayenneService.newContext();
 			
-		for (Preference pref : college.getPreferences()) {
-			Preference p = (Preference) context.localObject(pref.getObjectId(), null);
-			
-			if (p != null) {
-				p.setValueString(preferences.get(p.getName()));
+		if (isNew) {
+			College college = (College) context.localObject(this.college.getObjectId(), null);
+			if (college != null) {
+				Preference p = context.newObject(Preference.class);
+				p.setCollege(college);
+				p.setName(newPreferenceKey);
+				p.setValueString(newPreferenceValue);
+				p.setCreated(now);
+				p.setModified(now);
+			}
+		}
+		else {
+			for (Preference pref : college.getPreferences()) {
+				Preference p = (Preference) context.localObject(pref.getObjectId(), null);
+				
+				if (p != null) {
+					p.setValueString(preferences.get(p.getName()));
+				}
 			}
 		}
 		
