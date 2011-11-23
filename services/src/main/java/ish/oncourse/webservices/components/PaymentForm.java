@@ -25,6 +25,11 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class PaymentForm {
+	
+	/**
+	 * Credit card expire date interval
+	 */
+	private static final int EXPIRE_YEAR_INTERVAL = 15;
 
 	@Parameter
 	@Property
@@ -94,7 +99,7 @@ public class PaymentForm {
 		years = new ArrayList<Integer>();
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < EXPIRE_YEAR_INTERVAL; i++) {
 			years.add(currentYear + i);
 		}
 	}
