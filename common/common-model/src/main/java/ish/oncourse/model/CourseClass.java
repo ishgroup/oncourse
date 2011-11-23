@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
@@ -369,7 +370,9 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @see Session#hasStartAndEndTimestamps()
 	 */
 	public List<Session> getTimelineableSessions() {
-		List<Session> classSessions = getSessions();
+		Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY, this);
+		SelectQuery q = new SelectQuery(Session.class, expr);
+		List<Session> classSessions = getObjectContext().performQuery(q);
 		List<Session> validSessions = new ArrayList<Session>();
 		for (Session session : classSessions) {
 			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
