@@ -175,7 +175,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						}
 						
 						q.setNationalCode(summary.getCode().getValue());
-						q.setTitle(summary.getTitle().getValue());
+						q.setTitle(parseQualificationTitle(summary.getTitle().getValue()));
 						
 						if (ACCREDITED_COURSE.equals(type)) {
 							q.setIsAccreditedCourse((byte) 1);
@@ -233,6 +233,10 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			LOGGER.info("NTIS Qualifications update failed with exception.", e);
 			throw new NTISException(e);
 		}
+	}
+	
+	private String parseQualificationTitle(String title) {
+		return title.replaceFirst("Certificate \\w+ (in )", "");
 	}
 	
 	private String getEducationLevelName(String levelCode) {
