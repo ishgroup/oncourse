@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
 public class College extends _College {
@@ -57,10 +58,11 @@ public class College extends _College {
 	 * @return list of sites
 	 */
 	public List<Site> getWebVisibleSites() {
-		List<Site> sites = getSites();
-		Expression expr = ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true);
+		Expression expr = ExpressionFactory.matchExp(Site.COLLEGE_PROPERTY, this);
+		expr = expr.andExp(ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true));
+		SelectQuery q = new SelectQuery(Site.class, expr);
 		Ordering order=new Ordering(Site.NAME_PROPERTY, SortOrder.ASCENDING);
-		order.orderList(sites);
-		return expr.filterObjects(sites);
+		q.addOrdering(order);
+		return getObjectContext().performQuery(q);
 	}
 }
