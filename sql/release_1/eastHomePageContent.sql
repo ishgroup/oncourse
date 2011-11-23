@@ -20,8 +20,8 @@ class="field-line"><input default="postcode or suburb"
 class="suburb-autocomplete" autocomplete="off" size="18" name="near" 
 type="text" placeholder="Location" /><input type="submit" value="" 
 class="field-submit" /></div></form></div><div 
-class="front-block-wr">{block name:"front_panel_2"}{block 
-name:"front_panel_2"}{block name:"front_panel_1"}</div></div><div 
+class="front-block-wr">{block name:"front_panel_1"}{block 
+name:"front_panel_2"}{block name:"front_panel_3"}</div></div><div 
 class="front-layout1"><div class="front-layout1-col1"><h2>City East 
 for...</h2>{block name:"front_for"}</div><div 
 class="front-layout1-col2"><h2>Testimonials</h2>{block 
