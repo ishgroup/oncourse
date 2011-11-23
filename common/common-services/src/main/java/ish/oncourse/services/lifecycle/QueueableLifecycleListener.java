@@ -23,16 +23,22 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.ISHObjectContext;
 
 import java.util.Date;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.DataChannel;
+import org.apache.cayenne.DataChannelFilter;
+import org.apache.cayenne.DataChannelFilterChain;
 import org.apache.cayenne.LifecycleListener;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.QueryResponse;
+import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.query.ObjectIdQuery;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.Query;
 import org.apache.log4j.Logger;
 
 /**
@@ -41,20 +47,27 @@ import org.apache.log4j.Logger;
  * 
  * @author marek
  */
-public class QueueableLifecycleListener implements LifecycleListener {
+public class QueueableLifecycleListener implements LifecycleListener, DataChannelFilter {
 
+	/**
+	 * Logger
+	 */
 	private static final Logger LOGGER = Logger.getLogger(QueueableLifecycleListener.class);
 
 	/**
 	 * Cayenne service.
 	 */
 	private ICayenneService cayenneService;
-
+	
 	/**
-	 * Storage to hold college between invocations of preRemove and postRemove
-	 * methods.
+	 * DataContext threadlocal storage
 	 */
-	private Map<ObjectId, College> contextMap = new WeakHashMap<ObjectId, College>();
+	private static final ThreadLocal<Deque<QueuedTransactionContext>> TRANSACTION_CONTEXT_STORAGE = new InheritableThreadLocal<Deque<QueuedTransactionContext>>();
+	
+	/**
+	 * Storage to hold college between invocations of preRemove and postRemove methods.
+	 */
+	private Map<ObjectId, College> objectIdCollegeMap = new WeakHashMap<ObjectId, College>();
 
 	/**
 	 * Constructor
@@ -62,6 +75,68 @@ public class QueueableLifecycleListener implements LifecycleListener {
 	 */
 	public QueueableLifecycleListener(ICayenneService cayenneService) {
 		this.cayenneService = cayenneService;
+	}
+	
+	/**
+	 * @see DataChannelFilter#init(DataChannel)
+	 */
+	@Override
+	public void init(DataChannel dataChannel) {
+
+	}
+
+	/**
+	 * @see DataChannelFilter#onQuery(ObjectContext, Query, DataChannelFilterChain)
+	 */
+	@Override
+	public QueryResponse onQuery(ObjectContext originatingContext, Query query, DataChannelFilterChain filterChain) {
+		return filterChain.onQuery(originatingContext, query);
+	}
+
+	/**
+	 * @see DataChannelFilter#onSync(ObjectContext, GraphDiff, int, DataChannelFilterChain)
+	 */
+	@Override
+	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
+		Deque<QueuedTransactionContext> deque = null;
+
+		try {
+			QueuedTransactionContext tContext;
+			deque = TRANSACTION_CONTEXT_STORAGE.get();
+
+			if (deque != null && !deque.isEmpty()) {
+				tContext = deque.peek().shallowCopy();
+			} else {
+				deque = new LinkedList<QueuedTransactionContext>();
+				TRANSACTION_CONTEXT_STORAGE.set(deque);
+				tContext = new QueuedTransactionContext(cayenneService.newNonReplicatingContext());
+			}
+
+			deque.push(tContext);
+			GraphDiff diff = filterChain.onSync(originatingContext, changes, syncType);
+			tContext = deque.pop();
+
+			if (deque.isEmpty()) {
+				ObjectContext currentContext = tContext.getCurrentObjectContext();
+				if (currentContext.hasChanges()) {
+					currentContext.commitChanges();
+				}
+			}
+
+			return diff;
+
+		} finally {
+			if (deque == null || deque.isEmpty()) {
+				TRANSACTION_CONTEXT_STORAGE.set(null);
+			}
+		}
+	}
+	
+	/**
+	 * Gets current transaction context
+	 */
+	private QueuedTransactionContext getTransactionContext() {
+		return TRANSACTION_CONTEXT_STORAGE.get().peek();
 	}
 
 	/**
@@ -98,12 +173,13 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
 
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
+				
 				if (!recordContext.getIsRecordQueueingEnabled()) {
 					return;
 				}
 
 				if (isAsyncReplicationAllowed(q)) {
-					contextMap.put(q.getObjectId(), q.getCollege());
+					objectIdCollegeMap.put(q.getObjectId(), q.getCollege());
 				}
 			}
 		}
@@ -147,7 +223,7 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			if (isAsyncReplicationAllowed(q)) {
 				LOGGER.debug("Post Remove event on : Entity: " + q.getClass().getSimpleName() + " with ID : "
 						+ q.getObjectId());
-				College college = contextMap.remove(q.getObjectId());
+				College college = objectIdCollegeMap.remove(q.getObjectId());
 				if (college != null) {
 					q.setCollege(college);
 					enqueue(q, QueuedRecordAction.DELETE);
@@ -221,20 +297,20 @@ public class QueueableLifecycleListener implements LifecycleListener {
 			ObjectIdQuery query = new ObjectIdQuery(entity.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
 			entity = (Queueable) Cayenne.objectForQuery(commitingContext, query);
 		}
-
-		ObjectContext ctx = cayenneService.newNonReplicatingContext();
+		
+		QueuedTransactionContext transactionContext = getTransactionContext();
+		ObjectContext currentContext = transactionContext.getCurrentObjectContext();
 		String transactionKey = commitingContext.getTransactionKey();
-		SelectQuery q = new SelectQuery(QueuedTransaction.class, ExpressionFactory.matchExp(QueuedTransaction.TRANSACTION_KEY_PROPERTY,
-				transactionKey));
-		QueuedTransaction t = (QueuedTransaction) Cayenne.objectForQuery(ctx, q);
-
+		
+		QueuedTransaction t = transactionContext.getTransactionForKey(transactionKey);
 		if (t == null) {
-			t = ctx.newObject(QueuedTransaction.class);
+			t = currentContext.newObject(QueuedTransaction.class);
 			Date today = new Date();
 			t.setCreated(today);
 			t.setModified(today);
 			t.setTransactionKey(transactionKey);
-			t.setCollege((College) ctx.localObject(college.getObjectId(), null));
+			t.setCollege((College) currentContext.localObject(college.getObjectId(), null));
+			transactionContext.assignTransactionToKey(transactionKey, t);
 		}
 
 		String entityName = entity.getObjectId().getEntityName();
@@ -244,8 +320,8 @@ public class QueueableLifecycleListener implements LifecycleListener {
 		LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
 				action, transactionKey));
 
-		QueuedRecord qr = ctx.newObject(QueuedRecord.class);
-		qr.setCollege((College) ctx.localObject(college.getObjectId(), null));
+		QueuedRecord qr = currentContext.newObject(QueuedRecord.class);
+		qr.setCollege((College) currentContext.localObject(college.getObjectId(), null));
 		qr.setEntityIdentifier(entityName);
 		qr.setEntityWillowId(entityId);
 		qr.setAngelId(angelId);
@@ -253,8 +329,6 @@ public class QueueableLifecycleListener implements LifecycleListener {
 		qr.setAction(action);
 		qr.setNumberOfAttempts(0);
 		qr.setLastAttemptTimestamp(new Date());
-
-		ctx.commitChanges();
 	}
 
 	/**

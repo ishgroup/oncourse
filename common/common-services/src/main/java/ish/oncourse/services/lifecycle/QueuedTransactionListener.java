@@ -15,7 +15,6 @@ import org.apache.cayenne.query.SelectQuery;
  * Checks if current transaction is empty and removes if needed.
  * 
  * @author anton
- * 
  */
 public class QueuedTransactionListener {
 
@@ -32,16 +31,14 @@ public class QueuedTransactionListener {
 	@PostUpdate(value = QueuedTransaction.class)
 	public void postUpdate(QueuedTransaction t) {
 		
-		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
-
 		SelectQuery q = new SelectQuery(QueuedRecord.class);
 		q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.QUEUED_TRANSACTION_PROPERTY, t));
-
-		List<QueuedRecord> list = objectContext.performQuery(q);
+		List<QueuedRecord> list = t.getObjectContext().performQuery(q);
 
 		if (list.isEmpty()) {
-			t.getObjectContext().deleteObject(t);
-			t.getObjectContext().commitChanges();
+			ObjectContext objectContext = cayenneService.newNonReplicatingContext();
+			objectContext.deleteObject(t);
+			objectContext.commitChanges();
 		}
 	}
 }
