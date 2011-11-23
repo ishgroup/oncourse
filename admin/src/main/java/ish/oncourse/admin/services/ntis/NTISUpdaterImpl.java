@@ -235,7 +235,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		}
 	}
 	
-	private String parseQualificationTitle(String title) {
+	public String parseQualificationTitle(String title) {
 		return title.replaceFirst("Certificate \\w+ (in )*", "");
 	}
 	
