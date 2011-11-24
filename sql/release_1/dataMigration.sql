@@ -514,6 +514,9 @@ INSERT INTO %DESTINATIONDB%_college.Attendance (id, collegeId, angelId, studentI
 	JOIN %DESTINATIONDB%_college.Student AS st ON st.id = a.studentId
 	WHERE a.collegeId = @collegeId;
 
+-- This is to replicate the uniqueCode field from Angel.
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:Contact');
+
 -- Set the services key
 
 UPDATE %DESTINATIONDB%_college.College SET webServicesSecurityCode = NULL
