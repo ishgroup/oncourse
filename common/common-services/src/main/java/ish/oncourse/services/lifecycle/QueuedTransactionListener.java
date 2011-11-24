@@ -37,7 +37,7 @@ public class QueuedTransactionListener {
 
 		if (list.isEmpty()) {
 			ObjectContext objectContext = cayenneService.newNonReplicatingContext();
-			objectContext.deleteObject(t);
+			objectContext.deleteObject(objectContext.localObject(t.getObjectId(), t));
 			objectContext.commitChanges();
 		}
 	}
