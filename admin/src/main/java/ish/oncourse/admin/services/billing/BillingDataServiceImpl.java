@@ -134,33 +134,35 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		// tasmania ecommerce
 		Long tasmaniaId = new Long(15);
 		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(to);
-
-		if (cal.get(Calendar.MONTH) == 1) {
-			data.get(tasmaniaId).put("tasmaniaYearToDate", new BigDecimal(0.0));
-		}
-		else {
-			Map<String, Object> tasmaniaParams = new HashMap<String, Object>();
-		
-			cal.setTime(from);
-			cal.set(Calendar.DAY_OF_YEAR, 1);
-			tasmaniaParams.put("from", cal.getTime());
+		if (data.get(tasmaniaId) != null) {
+			Calendar cal = Calendar.getInstance();
 			cal.setTime(to);
-			cal.add(Calendar.MONTH, -1);
-			tasmaniaParams.put("to", cal.getTime());
-		
-			sql = "SELECT SUM(i.totalExGst) + SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W' AND i.status = 3";
-			query = new SQLTemplate(PaymentIn.class, sql);
-			query.setParameters(tasmaniaParams);
-			query.setFetchingDataRows(true);
-		
-			result = cayenneService.sharedContext().performQuery(query);
-		
-			BigDecimal value = (BigDecimal) result.get(0).get("value");
-		
-			if (value != null) {
-				data.get(tasmaniaId).put("tasmaniaYearToDate", value);
+			
+			if (cal.get(Calendar.MONTH) == 1) {
+				data.get(tasmaniaId).put("tasmaniaYearToDate", new BigDecimal(0.0));
+			}
+			else {
+				Map<String, Object> tasmaniaParams = new HashMap<String, Object>();
+				
+				cal.setTime(from);
+				cal.set(Calendar.DAY_OF_YEAR, 1);
+				tasmaniaParams.put("from", cal.getTime());
+				cal.setTime(to);
+				cal.add(Calendar.MONTH, -1);
+				tasmaniaParams.put("to", cal.getTime());
+				
+				sql = "SELECT SUM(i.totalExGst) + SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W' AND i.status = 3";
+				query = new SQLTemplate(PaymentIn.class, sql);
+				query.setParameters(tasmaniaParams);
+				query.setFetchingDataRows(true);
+				
+				result = cayenneService.sharedContext().performQuery(query);
+				
+				BigDecimal value = (BigDecimal) result.get(0).get("value");
+				
+				if (value != null) {
+					data.get(tasmaniaId).put("tasmaniaYearToDate", value);
+				}
 			}
 		}
 		
