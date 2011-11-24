@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -204,19 +205,37 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	
 	public List<Tag> getMailingLists() {
 	
+		List<Tag> tags = null;
 		// MAILING_LISTS(3, "Mailing lists") - see  NodeSpecialType
-		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3)));
+		Expression qualifier = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3));
+		SelectQuery q = new SelectQuery(Tag.class, qualifier);
+		q.addPrefetch(Tag.TAGGABLE_TAGS_PROPERTY);
+		tags = (List<Tag>) getCayenneService().sharedContext().performQuery(q);
+		if(tags == null) {
+			return new ArrayList<Tag>();
+		}
+		
 		return tags;
 	}
 	
 	public List<Tag> getMailingListsContactSubscribed(Contact contact) {
 		
+		List<Tag> tags = null;
+		
 		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
 
 		Expression qualifier = ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY,
 				Contact.class.getSimpleName()).andExp(
-				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()));
-
-		return findByQualifier(getSiteQualifier().andExp(qualifier).andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3)));
+				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
+				.andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3)));
+		
+		SelectQuery q = new SelectQuery(Tag.class, getSiteQualifier().andExp(qualifier));
+		q.addPrefetch(Tag.TAGGABLE_TAGS_PROPERTY);
+		tags = (List<Tag>) getCayenneService().sharedContext().performQuery(q);
+		
+		if(tags == null) {
+			return new ArrayList<Tag>();
+		}
+		return tags;
 	}
 }

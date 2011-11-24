@@ -11,6 +11,8 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 
 import org.apache.tapestry5.annotations.Persist;
@@ -39,6 +41,11 @@ public class MailingLists {
 	@Persist
 	private  Map<String,String> mailingMapForSubscribe;
 	
+	@Inject
+	private ICayenneService cayenneService;
+	@Inject
+	private IWebSiteService webSiteService;
+	
 	public boolean getCurrentValue() {
 	     return getSelectedMailingLists().contains(this.currentMailingList);
 	}
@@ -55,6 +62,7 @@ public class MailingLists {
 	    	taggable.setModified(date);
 	    	taggable.setEntityIdentifier(Contact.class.getSimpleName());
 	    	taggable.setEntityWillowId(currentUser.getId());
+	    	taggable.setAngelId(currentUser.getAngelId());
 	    	
 			TaggableTag taggableTag = tag.getObjectContext().newObject(TaggableTag.class);
 			taggableTag.setTag(tag);
@@ -96,29 +104,25 @@ public class MailingLists {
 	@SetupRender
 	void beforeRender() {
 		this.currentUser = authService.getUser();
+		this.mailingMapForSubscribe = new HashMap<String, String>();
+		
+		// get all mailing lists for this College
+		for (Tag tag : tagService.getMailingLists()) {
+			mailingMapForSubscribe.put(tag.getId().toString(), tag.getName());
+		}
+		
+		this.selectedMailingLists =  new HashSet<String>();
+		// get all mailing lists for this College
+		for (Tag tag : tagService.getMailingListsContactSubscribed(currentUser)) {
+			selectedMailingLists.add(tag.getId().toString());
+		}
 	}
 
 	public Map<String,String> getMailingMapForSubscribe() {
-		if (mailingMapForSubscribe == null) {
-			mailingMapForSubscribe = new HashMap<String, String>();
-			
-			// get all mailing lists for this College
-			for (Tag tag : tagService.getMailingLists()) {
-				mailingMapForSubscribe.put(tag.getId().toString(), tag.getName());
-			}
-		}
 		return mailingMapForSubscribe;
 	}
 
 	public Set<String> getSelectedMailingLists() {
-		if (selectedMailingLists == null) {
-			selectedMailingLists = new HashSet<String>();
-			
-			// get all mailing lists for this College
-			for (Tag tag : tagService.getMailingListsContactSubscribed(currentUser)) {
-				selectedMailingLists.add(tag.getId().toString());
-			}
-		}
 		return selectedMailingLists;
 	}
 
