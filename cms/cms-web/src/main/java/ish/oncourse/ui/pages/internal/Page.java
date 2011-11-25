@@ -47,6 +47,10 @@ public class Page {
 	
 	@Inject
 	private Block reloadPageBlock;
+	
+	public String getBodyId() {
+		return (isHomePage() || this.node == null) ? "Main" : ("page" + this.node.getNodeNumber());
+	}
 
 	public boolean setupRender() {
 		WebNode currentNode = webNodeService.getCurrentNode();
