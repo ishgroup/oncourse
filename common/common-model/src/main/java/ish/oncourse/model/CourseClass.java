@@ -370,9 +370,19 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @see Session#hasStartAndEndTimestamps()
 	 */
 	public List<Session> getTimelineableSessions() {
-		Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY, this);
-		SelectQuery q = new SelectQuery(Session.class, expr);
-		List<Session> classSessions = getObjectContext().performQuery(q);
+		List<Session> classSessions;
+		
+		if (getObjectId().isTemporary()) {
+			classSessions = getSessions();
+		}
+		else {
+			Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY, this);
+			SelectQuery q = new SelectQuery(Session.class, expr);
+			q.addPrefetch(Session.ROOM_PROPERTY);
+			q.addPrefetch(Session.ROOM_PROPERTY + "." + Room.SITE_PROPERTY);
+			classSessions = getObjectContext().performQuery(q);
+		}
+		
 		List<Session> validSessions = new ArrayList<Session>();
 		for (Session session : classSessions) {
 			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
