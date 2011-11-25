@@ -62,7 +62,6 @@ public class MailingLists {
 	    	taggable.setModified(date);
 	    	taggable.setEntityIdentifier(Contact.class.getSimpleName());
 	    	taggable.setEntityWillowId(currentUser.getId());
-	    	taggable.setAngelId(currentUser.getAngelId());
 	    	
 			TaggableTag taggableTag = tag.getObjectContext().newObject(TaggableTag.class);
 			taggableTag.setTag(tag);
