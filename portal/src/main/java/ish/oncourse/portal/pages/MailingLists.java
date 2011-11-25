@@ -47,11 +47,13 @@ public class MailingLists {
 	private IWebSiteService webSiteService;
 	
 	public boolean getCurrentValue() {
-	     return getSelectedMailingLists().contains(this.currentMailingList);
+	    return getSelectedMailingLists().contains(this.currentMailingList);
 	}
 
 	public void setCurrentValue(boolean currentValue) {
-	    if (!getCurrentValue()) {
+
+		// set to true and it was changed
+		if (currentValue && !getCurrentValue()) {
 	    	
 	    	Tag tag = tagService.loadByIds(new Long((String) this.currentMailingList)).get(0);
 	    	
@@ -69,10 +71,7 @@ public class MailingLists {
 			taggable.addToTaggableTags(taggableTag);
 			
 			tag.getObjectContext().commitChanges();
-
-			getSelectedMailingLists().add((String) this.currentMailingList);
-			
-	    } else {
+	    } else if (!currentValue && getCurrentValue()) { // set to false and it was changed
 	    	
 	    	Taggable taggableForRemove = null;
 	    	TaggableTag taggableTagForRemove = null;
@@ -91,8 +90,6 @@ public class MailingLists {
 	    	tag.getObjectContext().deleteObject(taggableForRemove);
 	    	
 	    	tag.getObjectContext().commitChanges();
-	    	
-	    	getSelectedMailingLists().remove((String)this.currentMailingList);
 	    }
 	}
 

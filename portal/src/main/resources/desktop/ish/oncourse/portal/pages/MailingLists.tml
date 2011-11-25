@@ -7,14 +7,19 @@
 		<br/>
 		
 		<form t:type="form">
-		    <t:loop t:source="mailingMapForSubscribe.keySet()" t:value="currentMailingList"> 
-		        <input type="checkbox" t:type="checkbox" t:id="mailingListCheckbox" t:value="currentValue" onclick="this.form.submit();"/>
-		        <label t:type="Label" for="mailingListCheckbox">${mapValue}</label> 
-		    </t:loop>
+			<div>
+			    <t:loop t:source="mailingMapForSubscribe.keySet()" t:value="currentMailingList"> 
+			        <input type="checkbox" t:type="checkbox" t:id="mailingListCheckbox" t:value="currentValue" />
+			        <label t:type="Label" for="mailingListCheckbox">${mapValue}</label>  <br/>  <br/>
+			    </t:loop>
+		    </div>
+		   
+		    <div class="form-controls" xml:space="preserve">
+				<t:submit  t:id="saveAction" value="Save" class="btn" clientId="save-mailing-list"/> 
+			</div>	
+		    
 		</form>
 		
-		<br/>
-		<br/>
 		<br/>
 		<br/>
 		<h5>Please select any mailing lists above which you wish to subscribe to. If you are subscribed you will receive email from time to time from this list.
