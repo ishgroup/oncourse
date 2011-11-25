@@ -379,4 +379,13 @@
 		<sql>update TutorRole set isConfirmed=false where confirmedDate is null;</sql>
 	</changeSet>
 	
+	<changeSet id="31" author="viacheslav" context="production" runOnChange="true">
+		<sql>update Contact set uniqueCode=MD5(RAND()) where uniqueCode is null;</sql>
+		<addNotNullConstraint tableName="Contact" columnDataType="varchar(16)" columnName="uniqueCode" defaultNullValue="MD5(RAND())"/>
+		<!--<update tableName="Contact">
+			<column name="uniqueCode" value="MD5(RAND())" />
+			<where>uniqueCode IS NULL</where>
+		</update> -->
+	</changeSet>
+	
 </databaseChangeLog>
