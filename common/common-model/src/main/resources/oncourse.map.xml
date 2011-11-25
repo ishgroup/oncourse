@@ -2369,7 +2369,7 @@
 	<obj-relationship name="college" source="TagGroupRequirement" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="tag" source="TagGroupRequirement" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="college" source="Taggable" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="taggableTags" source="Taggable" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggableTags"/>
+	<obj-relationship name="taggableTags" source="Taggable" target="TaggableTag" deleteRule="Cascade" db-relationship-path="taggableTags"/>
 	<obj-relationship name="college" source="TaggableTag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="tag" source="TaggableTag" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="taggable" source="TaggableTag" target="Taggable" deleteRule="Nullify" db-relationship-path="taggable"/>
