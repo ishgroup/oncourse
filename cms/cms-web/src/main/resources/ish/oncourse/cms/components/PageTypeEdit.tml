@@ -13,16 +13,14 @@
 				
 				<t:errors/>	
                 <div class="cms-theme-title-n clearfix">
-                	<label for="themeName">Name:</label>
-                	<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required,minlength=3" maxlength="500" class="cms-field-wide"/>
+                	<label for="themeName">Name</label>
+                	<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required,minlength=3" maxlength="500" class="cms-field"/>
                     
-                	<div class="cms-theme-title-del">
-                		<t:linkSubmit t:id="delete" mode="CANCEL">Delete</t:linkSubmit>
-                    </div>
+
                 </div>
 
                 <div class="cms-theme-title-k">
-                    <label>Layout key:</label>
+                    <label>Layout key</label>
 
                     <div class="cms-theme-key-wr">
                         <!--  div class="cms-theme-key" id="cmsThemeKey"></div-->
@@ -36,7 +34,7 @@
             <div class="cms-theme-main">
                 <div class="cms-theme-main-l">
                     <p><strong>Current layout</strong> Drag &amp; drop blocks from the right column
-                    <br/>&nbsp;</p>
+                    </p><br/>
 
                     <table class="cms-theme-layout">
                         <tr>
