@@ -29,9 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  *	the IP, Angel version and access times are recorded.</li>
  * </ul>
  *
- * <p>This interceptor should only be used for unsecured, Willow to Angel  data 
- * transfers.</p>
- *
  *
  * @author Anton
  */
