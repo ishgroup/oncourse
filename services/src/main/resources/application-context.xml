@@ -24,9 +24,6 @@
 	<bean id="v4_communicationKeyInterceptor"
 		class="ish.oncourse.webservices.soap.v4.interceptors.CommunicationKeyInterceptor" />
 	
-	<bean id="v4_angelVersionInterceptor"
-		class="ish.oncourse.webservices.soap.v4.interceptors.AngelVersionInterceptor"/>
-	
 	<bean id="v4_collegeRequestInterceptor"
 		class="ish.oncourse.webservices.soap.v4.interceptors.CollegeRequestInterceptor" />
 
