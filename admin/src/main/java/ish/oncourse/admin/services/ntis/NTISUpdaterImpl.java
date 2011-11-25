@@ -241,16 +241,16 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	
 	private String getEducationLevelName(String levelCode) {
 		if ("211".equals(levelCode)) {
-			return "Graduate Diploma";
+			return "Graduate Diploma of";
 		}
 		else if ("213".equals(levelCode)) {
-			return "Graduate Diploma (professional specialist)";
+			return "Graduate Diploma (professional specialist) of";
 		}
 		else if ("221".equals(levelCode)) {
-			return "Graduate Certificate";
+			return "Graduate Certificate in";
 		}
 		else if ("222".equals(levelCode)) {
-			return "Graduate Certificate (professional specialist)";
+			return "Graduate Certificate (professional specialist) in";
 		}
 		else if ("311".equals(levelCode)) {
 			return "Bachelor degree (honours)";
@@ -259,25 +259,25 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			return "Bachelor degree";
 		}
 		else if ("411".equals(levelCode)) {
-			return "Advanced Diploma";
+			return "Advanced Diploma of";
 		}
 		else if ("413".equals(levelCode)) {
 			return "Associate Degree";
 		}
 		else if ("421".equals(levelCode)) {
-			return "Diploma";
+			return "Diploma of";
 		}
 		else if ("511".equals(levelCode)) {
-			return "Certificate IV";
+			return "Certificate IV in";
 		}
 		else if ("514".equals(levelCode)) {
-			return "Certificate III";
+			return "Certificate III in";
 		}
 		else if ("521".equals(levelCode)) {
-			return "Certificate II";
+			return "Certificate II in";
 		}
 		else if ("524".equals(levelCode)) {
-			return "Certificate I";
+			return "Certificate I in";
 		}
 		else if ("611".equals(levelCode)) {
 			return "Year 12";
