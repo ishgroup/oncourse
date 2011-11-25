@@ -9,20 +9,28 @@
 		<div class="cms-cols-pane">
 
 			<div class="cms-colpane">
+
 				<h5 class="cms-block-sub-title">
 					Name <span class="cms-ico-help" title="The name of this block"/>
 				</h5>
 				<t:textfield t:id="name" value="editBlock.name" t:validate="required,minlength=3" class="cms-field-wide"/>
+
 			</div>
+			
 				
+		</div>
+
+		<div class="cms-cols-pane">
 			<div class="cms-colpane">
+
 				<h5 class="cms-block-sub-title">
 					Content <span class="cms-ico-help" title="The content of this block"/>
 				</h5>
-				<textarea t:type="TextArea" t:id="content" value="editBlock.contentTextile" rows="18" class="cms-field-wide"/>
+				<textarea t:type="TextArea" t:id="content" value="editBlock.contentTextile" rows="18"
+				          class="cms-field-wide"/>
+
 			</div>
-				
-		</div>	
+		</div>
 		
 		<div class="alignCenter cms-btns">
 			<t:submit t:id="cancel" value="Cancel" mode="CANCEL" class="cms-but cms-btn-prev"/>
