@@ -1,5 +1,5 @@
 <html t:type="ui/internal/pagestructure" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter"
-	bodyId="literal:cms" bodyClass="${bodyClass}" webNodeType="prop:node.webNodeType" node="node">
+	bodyId="${bodyId}" bodyClass="${bodyClass}" webNodeType="prop:node.webNodeType" node="node">
 	
 	<div t:type="ui/internal/contentStructure" node="node" updateZone="pageStructure.cmsNavigation.pageInfo.updatedZone"/>
 	<t:block id="reloadPageBlock"><script type="text/javascript">window.location.reload();</script></t:block>
