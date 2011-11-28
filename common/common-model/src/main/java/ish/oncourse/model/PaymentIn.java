@@ -555,12 +555,16 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	}
 
 	/**
-	 * Retrieves the "client" identificator, ie with the "W" addon.
+	 * Retrieves the "client" identificator, ie with the "W" if no value passed.
 	 * 
 	 * @return client identificator string.
 	 */
 	public String getClientReference() {
-		return PaymentSource.SOURCE_WEB.getDatabaseValue() + getId();
+		PaymentSource source = getSource();
+		if (source == null) {
+			source = PaymentSource.SOURCE_WEB;//If no source set we pass Web
+		}
+		return source.getDatabaseValue() + getId();
 	}
 
 	@Override
