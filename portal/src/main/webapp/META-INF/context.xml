@@ -5,5 +5,5 @@
 	<ResourceLink global="jdbc/oncourse_binary" name="jdbc/oncourse_binary" type="javax.sql.DataSource"/>
 	<ResourceLink global="jdbc/oncourse_reference" name="jdbc/oncourse_reference" type="javax.sql.DataSource"/>
 	<Environment name="CustomComponentsPath" value="/Users/Shared/willow/active/custom" type="java.lang.String" override="false"/>
-	<Resource name="mail/Session" auth="Container" type="javax.mail.Session" mail.smtp.host="mail.ish.com.au"/>
+	<ResourceLink global="mail/Session" name="mail/Session" type="javax.mail.Session"/>
 </Context>

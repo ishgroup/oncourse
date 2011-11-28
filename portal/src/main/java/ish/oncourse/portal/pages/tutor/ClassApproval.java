@@ -39,6 +39,7 @@ public class ClassApproval {
 	@Property
 	private boolean approved;
 
+	@SuppressWarnings("all")
 	@Property
 	private boolean declined;
 
@@ -122,7 +123,6 @@ public class ClassApproval {
 				email.setSubject(subject);
 				email.setBody(body);
 				email.setToEmails(prefController.getEmailAdminAddress());
-	
 				mailService.sendEmail(email, true);
 			}
 		}
