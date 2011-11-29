@@ -6,11 +6,11 @@ import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.auto._Contact;
 import ish.oncourse.utils.PhoneValidator;
-import ish.oncourse.utils.TimestampUtilities;
 import ish.util.SecurityUtil;
 
 import java.util.Date;
 
+import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.validator.EmailValidator;
 
 public class Contact extends _Contact implements Queueable {
@@ -20,6 +20,15 @@ public class Contact extends _Contact implements Queueable {
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
 				ID_PK_COLUMN) : null;
+	}
+	
+	@Override
+	protected void validateForSave(ValidationResult result) {
+		super.validateForSave(result);
+		String error = validateBirthDate();
+		if (error != null) {
+			result.addFailure(ValidationFailure.validationFailure(this, _Contact.DATE_OF_BIRTH_PROPERTY, error));
+		}
 	}
 
 	public String getFullName() {
@@ -206,14 +215,15 @@ public class Contact extends _Contact implements Queueable {
 
 	public String validateBirthDate() {
 		Date birthDate = getDateOfBirth();
+		
 		if (birthDate == null) {
 			return "The " + getEntityName() + "'s date of birth is required.";
 		}
-		int yearsBetweenDates = TimestampUtilities.yearsBetweenDates(birthDate, new Date());
-		if (yearsBetweenDates < 0) {
-
-			return "Please enter a valid date of birth";
+		
+		if (birthDate.after(new Date())) {
+			return "The birth date cannot be in the future.";
 		}
+	
 		return null;
 	}
 
