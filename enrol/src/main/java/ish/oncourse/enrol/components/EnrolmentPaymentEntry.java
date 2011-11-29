@@ -50,6 +50,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 public class EnrolmentPaymentEntry {
+	
+	/**
+	 * Credit card expire date interval
+	 */
+	private static final int EXPIRE_YEAR_INTERVAL = 15;
+	
 	/**
 	 * tapestry services
 	 */
@@ -179,7 +185,7 @@ public class EnrolmentPaymentEntry {
 		years = new ArrayList<Integer>();
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < EXPIRE_YEAR_INTERVAL; i++) {
 			years.add(currentYear + i);
 		}
 	}
