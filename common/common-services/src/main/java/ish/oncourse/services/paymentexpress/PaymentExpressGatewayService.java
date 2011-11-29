@@ -1,6 +1,7 @@
 package ish.oncourse.services.paymentexpress;
 
 import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentOutTransaction;
@@ -99,13 +100,21 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 			}
 			LOG.debug(resultDetails.toString());
 		} catch (RemoteException e) {
-			LOG.error("RemoteException submitting to paymentexpress", e);
-			payment.setStatusNotes("Null transaction response");
-			payment.failPayment();
+			if (PaymentStatus.SUCCESS.equals(payment.getStatus()) && PaymentType.CREDIT_CARD.equals(payment.getType())) {
+				payment.succeed();
+			} else {
+				payment.failPayment();
+				payment.setStatusNotes("Failed to obtain a status for transaction");
+				LOG.error("RemoteException submitting to paymentexpress", e);
+			}
 		} catch (Exception e) {
-			payment.failPayment();
-			payment.setStatusNotes("Failed to obtain a status for transaction");
-			LOG.error("Failed to obtain a status for transaction", e);
+			if (PaymentStatus.SUCCESS.equals(payment.getStatus()) && PaymentType.CREDIT_CARD.equals(payment.getType())) {
+				payment.succeed();
+			} else {
+				payment.failPayment();
+				payment.setStatusNotes("Failed to obtain a status for transaction");
+				LOG.error("Failed to obtain a status for transaction", e);
+			}
 		}
 	}
 

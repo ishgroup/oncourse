@@ -451,6 +451,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
+		
 
 		Invoice activeInvoice = findActiveInvoice();
 
@@ -581,7 +582,21 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	@Override
 	protected void onPreUpdate() {
 		setModified(new Date());
-
+		
+		if (PaymentType.CREDIT_CARD.equals(getType())) {
+			boolean approved = false;
+			for (final PaymentTransaction transaction : getPaymentTransactions()) {
+				if ("APPROVED".equalsIgnoreCase(transaction.getResponse())) {
+					approved = true;
+					break;
+				}
+			}
+			//correct status if we found any  approved transaction but angel side set fail status
+			if (approved && !PaymentStatus.SUCCESS.equals(getStatus())) {
+				succeed();
+			}
+		}
+		
 		if (getStatus() != PaymentStatus.IN_TRANSACTION && getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
 			String cardNumber = CreditCardUtil.obfuscateCCNumber(getCreditCardNumber());
 			String cvv = CreditCardUtil.obfuscateCVVNumber(getCreditCardCVV());
