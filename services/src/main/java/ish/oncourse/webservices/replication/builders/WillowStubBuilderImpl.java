@@ -28,6 +28,7 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
+import ish.oncourse.model.TaggableTag;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
@@ -63,6 +64,7 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		builderMap.put(getEntityName(Course.class), new CourseStubBuilder());
 		builderMap.put(getEntityName(Room.class), new RoomStubBuilder());
 		builderMap.put(getEntityName(WaitingList.class), new WaitingListStubBuilder());
+		builderMap.put(getEntityName(TaggableTag.class), new TaggableTagStubBuilder());
 
 	}
 
