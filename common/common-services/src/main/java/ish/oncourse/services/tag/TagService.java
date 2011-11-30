@@ -13,8 +13,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -31,33 +34,29 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 
 	/**
-	 * 
 	 * {@inheritDoc}
 	 * 
 	 * @see ish.oncourse.services.tag.ITagService#getSubjectsTag()
 	 */
 	@Override
 	public Tag getSubjectsTag() {
-		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(
-				ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME)));
+		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
 	/**
-	 * 
 	 * {@inheritDoc}
 	 * 
 	 * @see ish.oncourse.services.tag.ITagService#getTagGroupByName(java.lang.String)
 	 */
 	@Override
 	public Tag getTagGroupByName(String name) {
-		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name))
-				.andExp(ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
+		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)).andExp(
+				ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
 	/**
-	 * 
 	 * {@inheritDoc}
 	 * 
 	 * @see ish.oncourse.services.tag.ITagService#loadByIds(java.lang.Object[])
@@ -73,26 +72,22 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 
 	/**
-	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.services.tag.ITagService#getTagsForEntity(java.lang.String,
-	 *      java.lang.Long)
+	 * @see ish.oncourse.services.tag.ITagService#getTagsForEntity(java.lang.String, java.lang.Long)
 	 */
 	@Override
 	public List<Tag> getTagsForEntity(String entityName, Long entityId) {
 
 		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
 
-		Expression qualifier = ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY,
-				entityName).andExp(
+		Expression qualifier = ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY, entityName).andExp(
 				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY, entityId));
 
 		return findByQualifier(getSiteQualifier().andExp(qualifier));
 	}
 
 	/**
-	 * 
 	 * {@inheritDoc}
 	 * 
 	 * @see ish.oncourse.services.tag.ITagService#getTagByFullPath(java.lang.String)
@@ -113,10 +108,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		}
 		String tagNames[] = path.split("/");
 		/*
-		 * if (path.contains("+") || path.contains("|")) { for (int j = 0; j <
-		 * tagNames.length; j++) { // rewrite url // FIXME setup web container
-		 * and httpd correctly to prevent them // from decoding URI in a way of
-		 * changing "%2B" to "+", not to // " " tagNames[j] =
+		 * if (path.contains("+") || path.contains("|")) { for (int j = 0; j < tagNames.length; j++) { // rewrite url // FIXME setup web
+		 * container and httpd correctly to prevent them // from decoding URI in a way of changing "%2B" to "+", not to // " " tagNames[j] =
 		 * tagNames[j].replaceAll("[_][+]", " ").replaceAll("[|]", "/"); } }
 		 */
 		for (int j = 0; j < tagNames.length; j++) {
@@ -161,11 +154,9 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 
 	/**
-	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see ish.oncourse.services.tag.ITagService#getEntityIdsByTagPath(java.lang.String,
-	 *      java.lang.String)
+	 * @see ish.oncourse.services.tag.ITagService#getEntityIdsByTagPath(java.lang.String, java.lang.String)
 	 */
 	public List<Long> getEntityIdsByTagPath(String tagPath, String entityName) {
 		List<Long> ids = new ArrayList<Long>();
@@ -185,8 +176,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 
 	/**
-	 * Qualifier which restricts the tags to belong the current site and be web
-	 * visible.
+	 * Qualifier which restricts the tags to belong the current site and be web visible.
 	 * 
 	 * @return
 	 */
@@ -202,40 +192,50 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		Long browseTagId = (Long) request.getAttribute(Tag.BROWSE_TAG_PARAM);
 		return browseTagId == null ? null : findById(browseTagId);
 	}
-	
+
 	public List<Tag> getMailingLists() {
-	
-		List<Tag> tags = null;
-		// MAILING_LISTS(3, "Mailing lists") - see  NodeSpecialType
-		Expression qualifier = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3));
-		SelectQuery q = new SelectQuery(Tag.class, qualifier);
-		q.addPrefetch(Tag.TAGGABLE_TAGS_PROPERTY);
-		tags = (List<Tag>) getCayenneService().sharedContext().performQuery(q);
-		if(tags == null) {
-			return new ArrayList<Tag>();
+
+		List<Tag> tags = Collections.emptyList();
+
+		// MAILING_LISTS(3, "Mailing lists") - see NodeSpecialType
+		Expression qual = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3));
+		qual = qual.andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, null));
+		SelectQuery q = new SelectQuery(Tag.class, qual);
+
+		Tag parent = (Tag) Cayenne.objectForQuery(getCayenneService().sharedContext(), q);
+		if (parent != null) {
+			Expression childQual = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, parent));
+			q = new SelectQuery(Tag.class, childQual);
+			tags = getCayenneService().sharedContext().performQuery(q);
 		}
-		
+
 		return tags;
 	}
-	
-	public List<Tag> getMailingListsContactSubscribed(Contact contact) {
-		
-		List<Tag> tags = null;
-		
-		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
 
-		Expression qualifier = ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY,
-				Contact.class.getSimpleName()).andExp(
-				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId())
-				.andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3)));
-		
-		SelectQuery q = new SelectQuery(Tag.class, getSiteQualifier().andExp(qualifier));
-		q.addPrefetch(Tag.TAGGABLE_TAGS_PROPERTY);
-		tags = (List<Tag>) getCayenneService().sharedContext().performQuery(q);
-		
-		if(tags == null) {
-			return new ArrayList<Tag>();
+	public List<Tag> getMailingListsContactSubscribed(Contact contact) {
+
+		College currentCollege = getWebSiteService().getCurrentCollege();
+
+		Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
+				.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
+				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, currentCollege));
+
+		SelectQuery q = new SelectQuery(Taggable.class, qual);
+		q.addPrefetch(Taggable.TAGGABLE_TAGS_PROPERTY);
+		List<Taggable> taggableList = getCayenneService().sharedContext().performQuery(q);
+
+		Set<Tag> allMailingLists = new HashSet<Tag>(getMailingLists());
+		List<Tag> tags = new ArrayList<Tag>();
+
+		for (final Taggable t : taggableList) {
+			for (final TaggableTag tg : t.getTaggableTags()) {
+				Tag tag = tg.getTag();
+				if (allMailingLists.contains(tag)) {
+					tags.add(tag);
+				}
+			}
 		}
+
 		return tags;
 	}
 }

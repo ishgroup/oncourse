@@ -78,9 +78,17 @@ public interface ITagService {
 	 * @return
 	 */
 	Tag getBrowseTag();
-
+	
+	/**
+	 * All mailing lists
+	 * @return
+	 */
 	List<Tag> getMailingLists();
 
+	/**
+	 * Mailing lists for user
+	 * @param currentUser
+	 * @return
+	 */
 	List<Tag> getMailingListsContactSubscribed(Contact currentUser);
-	
 }

@@ -19,6 +19,8 @@ import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
 import ish.oncourse.model.QueuedTransaction;
+import ish.oncourse.model.Tag;
+import ish.oncourse.model.Taggable;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.ISHObjectContext;
 
@@ -342,8 +344,11 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	private boolean isAsyncReplicationAllowed(Queueable entity) {
 
 		boolean isAsyncAllowed = true;
-
-		if (entity instanceof PaymentIn) {
+		
+		if (entity instanceof Tag || entity instanceof Taggable) {
+			//currently we do not allow Tags to be replicated willow-angel
+			isAsyncAllowed = false;
+		} else if (entity instanceof PaymentIn) {
 
 			PaymentIn payment = (PaymentIn) entity;
 
