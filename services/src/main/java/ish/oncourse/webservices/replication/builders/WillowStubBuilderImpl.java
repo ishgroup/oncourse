@@ -1,10 +1,6 @@
 package ish.oncourse.webservices.replication.builders;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
@@ -28,12 +24,15 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.Taggable;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
@@ -64,7 +63,7 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		builderMap.put(getEntityName(Course.class), new CourseStubBuilder());
 		builderMap.put(getEntityName(Room.class), new RoomStubBuilder());
 		builderMap.put(getEntityName(WaitingList.class), new WaitingListStubBuilder());
-		builderMap.put(getEntityName(TaggableTag.class), new TaggableTagStubBuilder());
+		builderMap.put(getEntityName(Taggable.class), new TaggableStubBuilder());
 
 	}
 

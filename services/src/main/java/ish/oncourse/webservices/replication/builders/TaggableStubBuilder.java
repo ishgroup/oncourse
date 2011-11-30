@@ -1,25 +1,31 @@
 package ish.oncourse.webservices.replication.builders;
 
+import java.util.List;
+
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.Taggable;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.webservices.v4.stubs.replication.TagRelationStub;
 
-public class TaggableTagStubBuilder extends AbstractWillowStubBuilder<TaggableTag, TagRelationStub> {
+public class TaggableStubBuilder extends AbstractWillowStubBuilder<Taggable, TagRelationStub> {
 	
 	@Override
-	protected TagRelationStub createFullStub(TaggableTag entity) {
+	protected TagRelationStub createFullStub(Taggable taggable) {
 		TagRelationStub stub = new TagRelationStub();
 		
-		Tag tag = entity.getTag();
-		stub.setTagId(tag.getId());
-		
-		Taggable taggable = entity.getTaggable();
 		stub.setEntityAngelId(taggable.getEntityAngelId());
 		stub.setEntityWillowId(taggable.getEntityWillowId());
 		stub.setEntityName(taggable.getEntityIdentifier());
-		stub.setCreated(entity.getCreated());
-		stub.setModified(entity.getModified());
+		stub.setCreated(taggable.getCreated());
+		stub.setModified(taggable.getModified());
+		
+		List<TaggableTag> list = taggable.getTaggableTags();
+		
+		if (!list.isEmpty()) {
+			TaggableTag tg = list.get(0);
+			Tag tag = tg.getTag();
+			stub.setTagId(tag.getId());
+		}
 
 		return stub;
 	}
