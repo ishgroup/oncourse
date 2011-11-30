@@ -18,16 +18,19 @@ public class Contact extends _Contact implements Queueable {
 	protected static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
 	}
-	
+
 	@Override
 	protected void validateForSave(ValidationResult result) {
 		super.validateForSave(result);
-		String error = validateBirthDate();
-		if (error != null) {
-			result.addFailure(ValidationFailure.validationFailure(this, _Contact.DATE_OF_BIRTH_PROPERTY, error));
+
+		if (getDateOfBirth() != null) {
+			if (getDateOfBirth().after(new Date())) {
+				result.addFailure(ValidationFailure.validationFailure(this, _Contact.DATE_OF_BIRTH_PROPERTY,
+						"The birth date cannot be in the future."));
+				return;
+			}
 		}
 	}
 
@@ -68,9 +71,7 @@ public class Contact extends _Contact implements Queueable {
 	}
 
 	/**
-	 * Validate methods; will return the string representation of error or null,
-	 * if the field is valid
-	 * 
+	 * Validate methods; will return the string representation of error or null, if the field is valid
 	 */
 	public String validateGivenName() {
 		String givenName = getGivenName();
@@ -215,15 +216,15 @@ public class Contact extends _Contact implements Queueable {
 
 	public String validateBirthDate() {
 		Date birthDate = getDateOfBirth();
-		
+
 		if (birthDate == null) {
 			return "The " + getEntityName() + "'s date of birth is required.";
 		}
-		
+
 		if (birthDate.after(new Date())) {
 			return "The birth date cannot be in the future.";
 		}
-	
+
 		return null;
 	}
 
@@ -258,14 +259,16 @@ public class Contact extends _Contact implements Queueable {
 			setIsMarketingViaPostAllowed(true);
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ish.oncourse.model.auto._Contact#onPrePersist()
 	 */
 	@Override
 	protected void onPrePersist() {
 		onPostAdd();
-		
+
 		if (getUniqueCode() == null) {
 			setUniqueCode(SecurityUtil.generateRandomPassword(16));
 		}
@@ -276,7 +279,7 @@ public class Contact extends _Contact implements Queueable {
 		setPasswordRecoverExpire(null);
 		setPasswordRecoveryKey(null);
 	}
-	
+
 	public Student createNewStudent() {
 		Student student = getObjectContext().newObject(Student.class);
 		student.setCollege(getCollege());
