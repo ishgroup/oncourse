@@ -61,6 +61,10 @@ public class Classes {
 			}
 		}
 	}
+	
+	public boolean isHasClasses() {
+		return !(this.classes == null || this.classes.isEmpty());
+	}
 
 	public boolean isCurrentContactStudent() {
 		return !authenticationService.isTutor();

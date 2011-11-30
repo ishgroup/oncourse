@@ -36,7 +36,7 @@
 						<p><t:label for="password">Password</t:label>
 						<span class="textField"><input t:type="PasswordField" t:id="password" size="30" maxlength="100" /></span></p>
 						
-						<p><span class="textField"><input id="signIn" class="btn-login" type="submit" value=""/> <a t:id="forgotPassword" t:type="linksubmit" href="#" class="login-forgot">Forgot
+						<p><span class="textField"><t:submit t:id="signIn" class="btn-login" value="Login"/> <a t:id="forgotPassword" t:type="linksubmit" href="#" class="login-forgot">Forgot
 									Password?</a></span>
 						</p>
 						

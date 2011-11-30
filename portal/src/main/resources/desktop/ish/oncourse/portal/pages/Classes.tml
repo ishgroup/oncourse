@@ -3,33 +3,36 @@
 	
  	<h1>Classes</h1>
  	
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="class">
-		<t:loop  source="classes" value="courseClass">
-	          	<tr>
-
-	              <td width="64"><div class="book"><img src="${contextPath}/img/book.png" alt="" /></div></td>
+ 	<t:if test="hasClasses">
+ 		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="class">
+			<t:loop  source="classes" value="courseClass">
+		          	<tr>
 	
-	              <td>
-	            	
-	            	<div class="class-name">
-	            		<t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink>
-	            	</div>
-	            	
-	                <div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
-	               	
-	               	<div class="class-place light">${room}</div>
-	               
-	                <t:if test="${currentContactStudent}">
-	                	<t:loop  source="tutorRoles" value="tutorRole">
-	                		<div class="class-man">${tutorRoleName} </div>
-	                	</t:loop>
-	                </t:if>
-	            </td>
-	            
-	            <div t:type="classweek" courseClass="courseClass"/>
-	            
-	          </tr>
-      </t:loop>
-   </table>	 	
-	 	
+		              <td width="64"><div class="book"><img src="${contextPath}/img/book.png" alt="" /></div></td>
+		
+		              <td>
+		            	
+		            	<div class="class-name">
+		            		<t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink>
+		            	</div>
+		            	
+		                <div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
+		               	
+		               	<div class="class-place light">${room}</div>
+		               
+		                <t:if test="${currentContactStudent}">
+		                	<t:loop  source="tutorRoles" value="tutorRole">
+		                		<div class="class-man">${tutorRoleName} </div>
+		                	</t:loop>
+		                </t:if>
+		            </td>
+		            
+		            <div t:type="classweek" courseClass="courseClass"/>
+		            
+		          </tr>
+	      	</t:loop>
+   		</table>
+   		<p:else>You have no currently scheduled classes.</p:else>	 	
+ 	</t:if>
+	
 </html>

@@ -1,0 +1,5 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+	<t:loop source="availableOptions" value="var:currentOption">
+		<t:delegate to="var:currentOption"/>
+	</t:loop>
+</t:container>

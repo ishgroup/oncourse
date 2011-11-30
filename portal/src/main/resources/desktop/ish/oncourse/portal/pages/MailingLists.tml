@@ -1,27 +1,34 @@
 <html t:type="pagestructure" title="literal:Mailing Lists"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_mailinglists">
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_mailinglists">
 	
 	<t:if test="haveMailingLists">
 
 		<h3> The following mailing lists are available at ${collegeName}: </h3>
 		<br/>
 		
-		<form t:type="form">
-			<div>
-			    <t:loop t:source="mailingMapForSubscribe.keySet()" t:value="currentMailingList"> 
-			        <input type="checkbox" t:type="checkbox" t:id="mailingListCheckbox" t:value="currentValue" />
-			        <label t:type="Label" for="mailingListCheckbox">${mapValue}</label>  <br/>  <br/>
-			    </t:loop>
-		    </div>
-		   
-		    <div class="form-controls" xml:space="preserve">
-				<t:submit  t:id="saveAction" value="Save" class="btn" clientId="save-mailing-list"/> 
-			</div>	
-		    
+		<t:if test="isSaved">
+			<h4>Mailing lists subscription was updated</h4>
+		</t:if>
+		
+		<form t:type="form" t:id="mailingListForm"> 
+	    	<fieldset>
+		    	<p>
+		    		<span t:type="checkBoxList" t:id="selectedMailingLists" label="mailingLists" encoder="mailingListEncoder" model="mailingListModel"/>
+		    	</p>
+	    	</fieldset>
+	   
+	    	<br/>
+	    	<br/>
+	    		
+			<div class="form-controls" xml:space="preserve">
+		 		<t:submit  t:id="saveMailingLists" value="Save" class="btn" />
+		 	</div>
+		 	
 		</form>
 		
 		<br/>
 		<br/>
+		
 		<h5>Please select any mailing lists above which you wish to subscribe to. If you are subscribed you will receive email from time to time from this list.
 		 You can unsubscribe at any time.</h5>
 			

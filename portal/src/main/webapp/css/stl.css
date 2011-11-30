@@ -1641,6 +1641,7 @@ a.btn2{
 	border: 0;
 	cursor: pointer;
 	vertical-align: middle;
+	font-size: 0;
 }
 
 .login-forgot {
@@ -1799,6 +1800,10 @@ img.t-error-icon {
 
 .validation > ul {
     margin-left: 35px;
+}
+
+#mailingListForm label.list {
+	margin: 6px 0 0;
 }
 
 
