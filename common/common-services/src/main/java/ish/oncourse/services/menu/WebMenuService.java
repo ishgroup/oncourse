@@ -43,6 +43,7 @@ public class WebMenuService extends BaseService<WebMenu> implements IWebMenuServ
 		query.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
 		query.addPrefetch(WebMenu.CHILDREN_MENUS_PROPERTY);
 
+		@SuppressWarnings("unchecked")
 		List<WebMenu> results = cayenneService.sharedContext().performQuery(
 				query);
 

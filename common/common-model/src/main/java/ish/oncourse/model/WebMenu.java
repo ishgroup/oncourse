@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 
 public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 
@@ -33,6 +34,21 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 		List<WebMenu> children = getChildrenMenus();
 		Collections.sort(children);
 		return children;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<WebMenu> getChildrenMenus() {
+		
+		if (!getObjectId().isTemporary()) {
+			Expression expr = ExpressionFactory.matchExp(WebMenu.PARENT_WEB_MENU_PROPERTY, this);
+			SelectQuery q = new SelectQuery(WebMenu.class, expr);
+			q.addPrefetch(WebMenu.PARENT_WEB_MENU_PROPERTY);
+			q.addPrefetch(WebMenu.CHILDREN_MENUS_PROPERTY);
+			return getObjectContext().performQuery(q);
+		}
+		
+		return super.getChildrenMenus();
 	}
 
 	/**
