@@ -4,7 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebHostName;
+import ish.oncourse.model.WebMenu;
+import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WillowUser;
 import ish.oncourse.selectutils.StringSelectModel;
@@ -138,13 +142,46 @@ public class Web {
 	@OnEvent(component="sitesForm", value="success")
 	void addSite() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
+		Date now = new Date();
 		
 		WebSite site = context.newObject(WebSite.class);
 		site.setCollege((College) context.localObject(college.getObjectId(), null));
 		site.setName(newSiteNameValue);
 		site.setSiteKey(newSiteKeyValue);
-		site.setCreated(new Date());
-		site.setModified(new Date());
+		site.setCreated(now);
+		site.setModified(now);
+		
+		WebNodeType page = context.newObject(WebNodeType.class);
+		page.setName("page");
+		page.setCreated(now);
+		page.setModified(now);
+		page.setLayoutKey("default");
+		page.setWebSite(site);
+		
+		WebNode node = context.newObject(WebNode.class);
+		node.setName("Home page");
+		node.setCreated(now);
+		node.setModified(now);
+		node.setWebNodeType(page);
+		node.setWebSite(site);
+		node.setNodeNumber(1);
+		node.setPublished(true);
+		
+		WebMenu menu = context.newObject(WebMenu.class);
+		menu.setName("Home");
+		menu.setCreated(now);
+		menu.setModified(now);
+		menu.setWebSite(site);
+		menu.setWeight(1);
+		menu.setWebNode(node);
+		
+		Tag tag = context.newObject(Tag.class);
+		tag.setCollege((College) context.localObject(college.getObjectId(), null));
+		tag.setName("Subjects");
+		tag.setIsWebVisible(true);
+		tag.setIsTagGroup(true);
+		tag.setCreated(now);
+		tag.setModified(now);
 		
 		context.commitChanges();
 	}
@@ -184,6 +221,7 @@ public class Web {
 		try {
 			context.deleteObject(site);
 		} catch (DeleteDenyException e) {
+			e.printStackTrace();
 			return null;
 		}
 		context.commitChanges();
