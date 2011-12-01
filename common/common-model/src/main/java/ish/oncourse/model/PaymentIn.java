@@ -390,6 +390,18 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 								|| enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
 						if (shouldFailEnrolment) {
 							enrol.setStatus(EnrolmentStatus.FAILED);
+							
+							// removing attendances
+							for (Session session : enrol.getCourseClass().getSessions()) {
+								Attendance a = enrol.getAttendanceForSessionAndStudent(session, enrol.getStudent());
+								getObjectContext().deleteObject(a);
+							}
+							
+							// removing outcomes
+							List<Outcome> outcomes = new ArrayList<Outcome>(enrol.getOutcomes());
+							for (Outcome o : outcomes) {
+								getObjectContext().deleteObject(o);
+							}
 						}
 					}
 				}

@@ -378,11 +378,11 @@
 		<sql>update TutorRole set isConfirmed=true where confirmedDate is not null;</sql>
 		<sql>update TutorRole set isConfirmed=false where confirmedDate is null;</sql>
 	</changeSet>
-	
+<!-- 
 	<changeSet id="31" author="viacheslav" context="production" runOnChange="true">
 		<sql>update Contact set uniqueCode=SUBSTR(MD5(RAND()), 1, 16) where uniqueCode is null;</sql>
 		<addNotNullConstraint tableName="Contact" columnDataType="varchar(16)" columnName="uniqueCode" defaultNullValue="SUBSTR(MD5(RAND()), 1, 16)"/>
 		<addUniqueConstraint tableName="Contact" columnNames="uniqueCode" constraintName="uniqueCode_unique" />
 	</changeSet>
-	
+	-->
 </databaseChangeLog>

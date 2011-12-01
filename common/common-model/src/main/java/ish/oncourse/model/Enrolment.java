@@ -48,39 +48,8 @@ public class Enrolment extends _Enrolment implements Queueable {
 	@Override
 	protected void onPrePersist() {
 		onPostAdd();
-		updateAttendanceAndOutcomes();
-	}
-	
-	@Override
-	protected void onPreUpdate() {
-		updateAttendanceAndOutcomes();
-	}
-	
-	/**
-	 * Removes Outcomes and Attendances them in case of changing the enrolment to one of the failed statuses etc.
-	 * 
-	 */
-	private void updateAttendanceAndOutcomes() {
-		if (EnrolmentStatus.CANCELLED.equals(getStatus()) || EnrolmentStatus.FAILED.equals(getStatus()) ||
-				EnrolmentStatus.REFUNDED.equals(getStatus())) {
-			for (Session session : getCourseClass().getSessions()) {
-				Attendance a = getAttendanceForSessionAndStudent(session, getStudent());
-				if (a != null)
-					getObjectContext().deleteObject(a);
-			}
-			// there should be no outcomes yet (during pre-persist), but just to be sure
-			deleteOutcomes();
-
-		}
 	}
 
-	private void deleteOutcomes() {
-		List<Outcome> outcomes = getOutcomes();
-		for (Outcome o : outcomes) {
-			getObjectContext().deleteObject(o);
-		}
-	}
-	
 	/**
 	 * Convenience method getting an attendance for a given session and student
 	 * 
@@ -88,7 +57,7 @@ public class Enrolment extends _Enrolment implements Queueable {
 	 * @param student - student linked to the attendance, cannot be null
 	 * @return Attendance
 	 */
-	private Attendance getAttendanceForSessionAndStudent(Session session, Student student) {
+	public Attendance getAttendanceForSessionAndStudent(Session session, Student student) {
 		if (student == null || session == null) {
 			return null;
 		}

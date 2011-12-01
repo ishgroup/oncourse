@@ -127,8 +127,6 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     protected abstract void onPostAdd();
 
-    protected abstract void onPreUpdate();
-
     protected abstract void onPrePersist();
 
 }

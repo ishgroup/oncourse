@@ -19,6 +19,7 @@ import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
 import ish.oncourse.model.QueuedTransaction;
+import ish.oncourse.model.Session;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -38,6 +39,7 @@ import org.apache.cayenne.LifecycleListener;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.QueryResponse;
+import org.apache.cayenne.annotation.PostRemove;
 import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.Query;
@@ -217,6 +219,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	 * 
 	 * @param entity
 	 */
+	@PostRemove
 	public void postRemove(Object entity) {
 
 		if (entity instanceof Queueable) {
@@ -345,7 +348,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 
 		boolean isAsyncAllowed = true;
 		
-		if (entity instanceof Tag || entity instanceof TaggableTag) {
+		if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session) {
 			//currently we do not allow Tags to be replicated willow-angel
 			isAsyncAllowed = false;
 		} else if (entity instanceof PaymentIn) {
