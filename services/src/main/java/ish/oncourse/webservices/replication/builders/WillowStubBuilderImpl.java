@@ -14,6 +14,7 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.MessagePerson;
+import ish.oncourse.model.Outcome;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentOut;
@@ -21,6 +22,7 @@ import ish.oncourse.model.Preference;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
@@ -64,6 +66,7 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		builderMap.put(getEntityName(Room.class), new RoomStubBuilder());
 		builderMap.put(getEntityName(WaitingList.class), new WaitingListStubBuilder());
 		builderMap.put(getEntityName(Taggable.class), new TaggableStubBuilder());
+		builderMap.put(getEntityName(Outcome.class), new OutcomeStubBuilder());
 
 	}
 

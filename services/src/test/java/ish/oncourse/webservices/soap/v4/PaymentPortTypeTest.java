@@ -4,6 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.Session;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.v4.stubs.replication.ContactStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
@@ -25,6 +30,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -356,6 +364,50 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check paymentOut presents in response.", pResp);
 		assertEquals("Check paymentOut status. Expecting FAILED.", Integer.valueOf(4), pResp.getStatus());
 
+	}
+	
+	@Test
+	public void testAbandonPayment() throws Exception {
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		ObjectContext context = cayenneService.newContext();
+
+		PaymentIn payment = Cayenne.objectForPK(context, PaymentIn.class, 2000);
+		assertNotNull(payment);
+		
+		Enrolment enrolment = Cayenne.objectForPK(context, Enrolment.class, 2000);
+		assertNotNull(enrolment);
+		
+		assertTrue(enrolment.getOutcomes().size() != 0);
+		
+		int attendanceCount = 0;
+		for (Session session : enrolment.getCourseClass().getSessions()) {
+			attendanceCount += session.getAttendances().size();
+		}
+		
+		assertTrue(attendanceCount != 0);
+		
+		payment.abandonPayment();
+		context.commitChanges();
+		
+		assertEquals("Expecting all attendances to be deleted.", 0, dbUnitConnection.getRowCount("Attendance"));
+		assertEquals("Expecting all outcomes to be deleted.", 0, dbUnitConnection.getRowCount("Outcome"));
+		
+		List<QueuedRecord> records = context.performQuery(new SelectQuery(QueuedRecord.class));
+		
+		int queuedAttendances = 0;
+		int queuedOutcomes = 0;
+		for (QueuedRecord record : records) {
+			if ("Attendance".equals(record.getEntityIdentifier())) {
+				queuedAttendances++;
+			}
+			if ("Outcome".equals(record.getEntityIdentifier())) {
+				queuedOutcomes++;
+			}
+		}
+		
+		assertEquals("Expecting 3 deleted attendances added to replication queue.", 3, queuedAttendances);
+		assertEquals("Expecting 1 deleted outcome added to replication queue", 1, queuedOutcomes);
 	}
 
 	private InvoiceLineStub invoiceLine() {

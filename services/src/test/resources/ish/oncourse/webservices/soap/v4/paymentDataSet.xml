@@ -26,7 +26,7 @@
   <CourseClass id="1186959" collegeId="1" code="1" courseId="1186953" roomId="1181746" angelId="201" startDate="2011-09-13 00:58:59.0" endDate="2011-10-07 01:58:59.0" isWebVisible="1" isCancelled="0" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0" maximumPlaces="1" minimumPlaces="1" countOfSessions="5" deliveryMode="1" feeExGst="300.00" feeGst="30.00"/>
   <CourseClass id="1186960" collegeId="1" code="1" courseId="1186954" roomId="1181746" angelId="202" startDate="2011-11-03 01:01:59.0" endDate="2011-11-03 02:01:59.0" isWebVisible="0" isCancelled="0" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" maximumPlaces="2" minimumPlaces="2" countOfSessions="1" deliveryMode="1" feeExGst="0.00" feeGst="0.00"/>
   
-  <Enrolment id="2000" source="O" collegeId="1" courseClassId="1186958" studentId="1189150" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="In transaction"/>
+  <Enrolment id="2000" source="O" collegeId="1" courseClassId="1186958" studentId="1189150" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="In Transaction"/>
   <Enrolment id="2001" source="O" collegeId="1" courseClassId="1186960" studentId="1189150" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="SUCCESS"/>
   
   <Invoice id="2000" source="O" amountOwing="100.00" contactId="1189160" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91" status="Pending"/>
@@ -80,5 +80,11 @@
   <TutorRole id="1" courseClassId="1186958" tutorId="1185782" collegeId="1" angelId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:55:40.0"/>
   <TutorRole id="2" courseClassId="1186959" tutorId="1185782" collegeId="1" angelId="2" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:58:51.0"/>
   <TutorRole id="3" courseClassId="1186960" tutorId="1185782" collegeId="1" angelId="3" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:01:38.0"/>
- 	
+  
+  <Attendance id="1" collegeId="1" sessionId="1186969" studentId="1189150" created="2011-09-12 00:56:00.0"/>
+  <Attendance id="2" collegeId="1" sessionId="1186970" studentId="1189150" created="2011-09-12 00:56:00.0"/>
+  <Attendance id="3" collegeId="1" sessionId="1186971" studentId="1189150" created="2011-09-12 00:56:00.0"/>
+  
+  <Outcome id="1" collegeId="1" enrolmentId="2000" created="2011-09-12 01:02:00.0"/>
+  
 </dataset>
