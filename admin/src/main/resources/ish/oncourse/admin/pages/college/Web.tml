@@ -35,6 +35,9 @@
 		
 	
 	<h3>Sites</h3>
+		<t:if test="siteDeleteFailed">
+			<span>Failed to delete site. Please delete all site data from CMS first, then try again.</span>
+		</t:if>
 		<table>
 			<thead>
 				<tr>

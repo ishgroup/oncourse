@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages.college;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -84,6 +86,10 @@ public class Web {
 	@Persist
 	private StringSelectModel siteSelectModel;
 	
+	@Property
+	@Persist
+	private boolean siteDeleteFailed;
+	
 	private String selectedSite;
 	
 	@Inject
@@ -118,6 +124,11 @@ public class Web {
 			i++;
 		}
 		siteSelectModel = new StringSelectModel(siteKeys);
+	}
+	
+	@AfterRender
+	void afterRender() {
+		this.siteDeleteFailed = false;
 	}
 	
 	@OnEvent(component="newDomainForm", value="success")
@@ -175,13 +186,22 @@ public class Web {
 		menu.setWeight(1);
 		menu.setWebNode(node);
 		
-		Tag tag = context.newObject(Tag.class);
-		tag.setCollege((College) context.localObject(college.getObjectId(), null));
-		tag.setName("Subjects");
-		tag.setIsWebVisible(true);
-		tag.setIsTagGroup(true);
-		tag.setCreated(now);
-		tag.setModified(now);
+		College college = (College) context.localObject(this.college.getObjectId(), null);
+		if (college != null) {
+			Expression exp = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, college).andExp(
+					ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME));
+			Tag subjectsTag = (Tag) Cayenne.objectForQuery(context, new SelectQuery(Tag.class, exp));
+			
+			if (subjectsTag != null) {
+				Tag tag = context.newObject(Tag.class);
+				tag.setCollege((College) context.localObject(college.getObjectId(), null));
+				tag.setName(Tag.SUBJECTS_TAG_NAME);
+				tag.setIsWebVisible(true);
+				tag.setIsTagGroup(true);
+				tag.setCreated(now);
+				tag.setModified(now);
+			}
+		}
 		
 		context.commitChanges();
 	}
@@ -218,13 +238,45 @@ public class Web {
 		Expression exp = ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, siteKey);
 		SelectQuery query = new SelectQuery(WebSite.class, exp);
 		WebSite site = (WebSite) Cayenne.objectForQuery(context, query);
-		try {
-			context.deleteObject(site);
-		} catch (DeleteDenyException e) {
-			e.printStackTrace();
+			
+		List<WebNode> nodes = new ArrayList<WebNode>(site.getWebNodes());
+		List<WebNodeType> nodeTypes = new ArrayList<WebNodeType>(site.getWebNodeTypes());
+		List<WebMenu> menus = new ArrayList<WebMenu>(site.getWebMenus());
+		
+		if (nodes.size() > 1 && menus.size() > 1) {
+			siteDeleteFailed = true;
 			return null;
 		}
-		context.commitChanges();
+		
+		if (nodes.size() == 1 && !"Home page".equals(nodes.get(0).getName())) {
+			siteDeleteFailed = true;
+			return null;
+		}
+		
+		if (menus.size() == 1 && !"Home".equals(menus.get(0).getName())) {
+			siteDeleteFailed = true;
+			return null;
+		}
+		
+		try {
+			for (WebNode node : nodes) {
+				context.deleteObject(node);
+			}
+			
+			for (WebNodeType nodeType : nodeTypes) {
+				context.deleteObject(nodeType);
+			}
+				
+			for (WebMenu menu : menus) {
+				context.deleteObject(menu);
+			}
+			context.deleteObject(site);
+				
+			context.commitChanges();
+		} catch (DeleteDenyException e) {
+			this.siteDeleteFailed = true;
+			return null;
+		}
 		
 		return null;
 	}
