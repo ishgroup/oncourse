@@ -88,7 +88,20 @@ public class FormTextileValidator extends AbstractTextileValidator {
 		Map<String, String> formParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String email = formParams.get(FormTextileAttributes.EMAIL.getValue());
 
-		if (email != null && !EmailValidator.getInstance().isValid(email)) {
+		boolean isValid = false;
+		if (email != null) {
+			isValid = true;
+			EmailValidator validator = EmailValidator.getInstance();
+			
+			for (String emailValue : email.split(",")) {
+				if (!validator.isValid(emailValue)) {
+					isValid = false;
+					break;
+				}
+			}
+		}
+		
+		if (email != null && !isValid) {
 			errors.addFailure("The email:" + email + " seems to be not valid.", ValidationFailureType.SYNTAX);
 		}
 	}
