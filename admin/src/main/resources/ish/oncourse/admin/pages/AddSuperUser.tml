@@ -1,0 +1,37 @@
+<html t:type="pagestructure" title="literal:Add Super User"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<h3>CMS Super Users</h3>
+	
+	<table>
+		<thead>
+			<tr>
+				<td>email</td>
+				<td>Password</td>
+				<td>First Name</td>
+				<td>Last Name</td>
+			</tr>
+		</thead>
+		<tbody>
+			<t:loop source="cmsSuperUsers" value="currentUser">
+				<tr>
+					<td>${currentUser.email}</td>
+					<td>********</td>
+					<td>${currentUser.firstName}</td>
+					<td>${currentUser.lastName}</td>
+					<td><t:actionlink t:id="deleteUser" context="currentUser.email">[x]</t:actionlink></td>
+				</tr>
+			</t:loop>
+			<t:form t:id="cmsUsersForm">
+				<tr>
+					<td><t:textfield t:id="newUserEmail" t:validate="required" value="newUserEmailValue"/></td>
+					<td><t:passwordfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
+					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
+					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
+					<td><t:submit t:id="addNewUser" value="Add"/></td>
+				</tr>
+			</t:form>
+		</tbody>
+	</table>
+	
+</html>

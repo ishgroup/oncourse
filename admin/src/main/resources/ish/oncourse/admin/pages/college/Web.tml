@@ -77,7 +77,7 @@
 				<t:loop source="cmsUsers" value="currentUser">
 					<tr>
 						<td>${currentUser.email}</td>
-						<td>${currentUser.password}</td>
+						<td>********</td>
 						<td>${currentUser.firstName}</td>
 						<td>${currentUser.lastName}</td>
 						<td><t:actionlink t:id="deleteUser" context="currentUser.email">[x]</t:actionlink></td>
@@ -86,7 +86,7 @@
 				<t:form t:id="cmsUsersForm">
 				<tr>
 					<td><t:textfield t:id="newUserEmail" t:validate="required" value="newUserEmailValue"/></td>
-					<td><t:textfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
+					<td><t:passwordfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
 					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
 					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
 					<td><t:submit t:id="addNewUser" value="Add"/></td>
