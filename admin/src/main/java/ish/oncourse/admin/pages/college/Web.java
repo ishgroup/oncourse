@@ -190,9 +190,9 @@ public class Web {
 		if (college != null) {
 			Expression exp = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, college).andExp(
 					ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME));
-			Tag subjectsTag = (Tag) Cayenne.objectForQuery(context, new SelectQuery(Tag.class, exp));
+			List<Tag> subjectsTags = context.performQuery(new SelectQuery(Tag.class, exp));
 			
-			if (subjectsTag != null) {
+			if (subjectsTags.size() == 0) {
 				Tag tag = context.newObject(Tag.class);
 				tag.setCollege((College) context.localObject(college.getObjectId(), null));
 				tag.setName(Tag.SUBJECTS_TAG_NAME);
