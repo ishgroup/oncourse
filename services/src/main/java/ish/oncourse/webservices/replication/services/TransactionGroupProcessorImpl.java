@@ -338,7 +338,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		 */
 		@SuppressWarnings("unchecked")
 		public <M extends Queueable> M updateRelationShip(Long angelId, Class<M> clazz) {
-
+			
+			if (angelId == null) {
+				return null;
+			}
+			
 			String entityIdentifier = getEntityName(clazz);
 			List<Queueable> list = objectsByAngelId(angelId, entityIdentifier);
 
