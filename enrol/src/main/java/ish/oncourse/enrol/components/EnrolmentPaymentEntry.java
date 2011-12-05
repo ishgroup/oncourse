@@ -50,12 +50,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 public class EnrolmentPaymentEntry {
-	
+
 	/**
 	 * Credit card expire date interval
 	 */
 	private static final int EXPIRE_YEAR_INTERVAL = 15;
-	
+
 	/**
 	 * tapestry services
 	 */
@@ -210,17 +210,15 @@ public class EnrolmentPaymentEntry {
 	}
 
 	/**
-	 * Iterates through all the enrolments selected(ie which has the related
-	 * invoiceLine) and checks if the related class has any available places for
-	 * enrolling.
+	 * Iterates through all the enrolments selected(ie which has the related invoiceLine) and checks if the related class has any available
+	 * places for enrolling.
 	 * 
 	 * @return true if all the selected classes are available for enrolling.
 	 */
 	public boolean isAllEnrolmentsAvailable() {
 		for (Enrolment enrolment : enrolments) {
 			if (enrolment.getInvoiceLine() != null
-					&& (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces() || enrolment.getCourseClass()
-							.hasEnded())) {
+					&& (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces() || enrolment.getCourseClass().hasEnded())) {
 				return false;
 			}
 		}
@@ -275,31 +273,26 @@ public class EnrolmentPaymentEntry {
 
 	private String getInputSectionClass(Field field) {
 		ValidationTracker defaultTracker = paymentDetailsForm.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages
-				.get("validateInput");
+		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages.get("validateInput");
 	}
 
 	/**
-	 * Invoked when the paymentDetailsForm is submitted and validated
-	 * successfully. Fills in the rest of the needed properties, sets the
-	 * transaction status to entities to be committed and commits the
-	 * appropriate set of entities to context:
+	 * Invoked when the paymentDetailsForm is submitted and validated successfully. Fills in the rest of the needed properties, sets the
+	 * transaction status to entities to be committed and commits the appropriate set of entities to context:
 	 * <ul>
-	 * <li>if payment amount is not zero, commits the payment with lines,
-	 * invoice with lines, enrolments</li>
-	 * <li>if payment amount is zero, commits only the enrolments with related
-	 * invoice and invoice lines(the others are deleted)</li>
+	 * <li>if payment amount is not zero, commits the payment with lines, invoice with lines, enrolments</li>
+	 * <li>if payment amount is zero, commits only the enrolments with related invoice and invoice lines(the others are deleted)</li>
 	 * </ul>
 	 * 
-	 * @return the block that displays the processing of payment {@see
-	 *         EnrolmentPaymentProcessing}.
+	 * @return the block that displays the processing of payment {@see EnrolmentPaymentProcessing}.
 	 */
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
+
 		if (!isSubmitted) {
 			return paymentZone.getBody();
 		}
-		ObjectContext context = payment.getObjectContext();
+		
 		// enrolments to be persisted
 		List<Enrolment> validEnrolments = getEnrolmentsToPersist();
 		// invoiceLines to be persisted
@@ -313,39 +306,40 @@ public class EnrolmentPaymentEntry {
 		// selected(the first in list by default)
 		invoice.setContact(payment.getContact());
 
-		if (!isZeroPayment()) {
-			payment.setAmount(totalIncGst.toBigDecimal());
-			BigDecimal totalGst = BigDecimal.ZERO;
-			BigDecimal totalExGst = BigDecimal.ZERO;
-
-			for (InvoiceLine il : validInvoiceLines) {
-				totalExGst = totalGst.add(il.getPriceTotalExTax().toBigDecimal());
-				totalGst = totalGst.add(il.getPriceTotalIncTax().subtract(il.getPriceTotalExTax()).toBigDecimal());
-			}
-			invoice.setTotalExGst(totalExGst);
-			invoice.setTotalGst(totalGst);
-
-			PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
-			paymentInLine.setInvoice(invoice);
-			paymentInLine.setPaymentIn(payment);
-			paymentInLine.setAmount(payment.getAmount());
-			paymentInLine.setCollege(payment.getCollege());
-
-			enrolmentPaymentProcessing.setPayment(payment);
-			payment.setStatus(PaymentStatus.IN_TRANSACTION);
-
-		} else {
-			context.deleteObject(payment);
-			enrolmentPaymentProcessing.setPayment(null);
-			invoice.setTotalExGst(BigDecimal.ZERO);
-			invoice.setTotalGst(BigDecimal.ZERO);
-		}
-
-		invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
-
-		lock.lock();
 		// block until checking and the change of state holds
-		try {
+		synchronized (payment) {
+			ObjectContext context = payment.getObjectContext();
+
+			if (!isZeroPayment()) {
+				payment.setAmount(totalIncGst.toBigDecimal());
+				BigDecimal totalGst = BigDecimal.ZERO;
+				BigDecimal totalExGst = BigDecimal.ZERO;
+
+				for (InvoiceLine il : validInvoiceLines) {
+					totalExGst = totalGst.add(il.getPriceTotalExTax().toBigDecimal());
+					totalGst = totalGst.add(il.getPriceTotalIncTax().subtract(il.getPriceTotalExTax()).toBigDecimal());
+				}
+				invoice.setTotalExGst(totalExGst);
+				invoice.setTotalGst(totalGst);
+
+				PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
+				paymentInLine.setInvoice(invoice);
+				paymentInLine.setPaymentIn(payment);
+				paymentInLine.setAmount(payment.getAmount());
+				paymentInLine.setCollege(payment.getCollege());
+
+				enrolmentPaymentProcessing.setPayment(payment);
+				payment.setStatus(PaymentStatus.IN_TRANSACTION);
+
+			} else {
+				context.deleteObject(payment);
+				enrolmentPaymentProcessing.setPayment(null);
+				invoice.setTotalExGst(BigDecimal.ZERO);
+				invoice.setTotalGst(BigDecimal.ZERO);
+			}
+
+			invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
+
 			if (isAllEnrolmentsAvailable()) {
 				for (Enrolment e : validEnrolments) {
 					e.setStatus(EnrolmentStatus.IN_TRANSACTION);
@@ -356,17 +350,16 @@ public class EnrolmentPaymentEntry {
 				enrolmentPaymentProcessing.setEnrolments(null);
 				context.rollbackChanges();
 			}
-		} finally {
-			lock.unlock();
+
+			enrolCourses.setCheckoutResult(true);
 		}
 
-		enrolCourses.setCheckoutResult(true);
 		return enrolCourses;
 	}
 
 	/**
-	 * Defines which enrolments are "checked" and should be included into the
-	 * processing and deletes the non-checked. Invoked on submit the checkout.
+	 * Defines which enrolments are "checked" and should be included into the processing and deletes the non-checked. Invoked on submit the
+	 * checkout.
 	 * 
 	 * @return
 	 */
@@ -388,9 +381,8 @@ public class EnrolmentPaymentEntry {
 	}
 
 	/**
-	 * Defines which invoiceLines have the not-null reference to enrolment and
-	 * should be included into the processing and deletes the others. Invoked on
-	 * submit the checkout.
+	 * Defines which invoiceLines have the not-null reference to enrolment and should be included into the processing and deletes the
+	 * others. Invoked on submit the checkout.
 	 * 
 	 * @return
 	 */
@@ -414,8 +406,7 @@ public class EnrolmentPaymentEntry {
 				// iterate through the list of discounts and create the
 				// appropriate InvoiceLineDiscount objects
 				for (Discount discount : discountsToApply) {
-					Expression discountQualifier = ExpressionFactory.matchExp(InvoiceLineDiscount.DISCOUNT_PROPERTY,
-							discount);
+					Expression discountQualifier = ExpressionFactory.matchExp(InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
 					if (discountQualifier.filterObjects(invLine.getInvoiceLineDiscounts()).isEmpty()) {
 						InvoiceLineDiscount invoiceLineDiscount = context.newObject(InvoiceLineDiscount.class);
 						invoiceLineDiscount.setInvoiceLine(invLine);
@@ -496,9 +487,8 @@ public class EnrolmentPaymentEntry {
 	/**
 	 * Checks if it is need to show or hide the submit button.
 	 * 
-	 * @return true if there is at least one enrolment selected(show submit
-	 *         button), false id there no any enrolments selected(hide submit
-	 *         button).
+	 * @return true if there is at least one enrolment selected(show submit button), false id there no any enrolments selected(hide submit
+	 * button).
 	 */
 	public boolean isHasAnyEnrolmentsSelected() {
 		for (Enrolment enrolment : enrolments) {
