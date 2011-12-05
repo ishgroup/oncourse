@@ -147,6 +147,14 @@ public class PageOptions {
 	public boolean isHasDefault() {
 		return editNode.getDefaultWebURLAlias() != null;
 	}
+	
+	Object onActionFromRemoveDefault() {
+		if (request.getSession(false) == null) {
+			return page.getReloadPageBlock();
+		}
+		editNode.setDefaultWebURLAlias(null);
+		return urlZone;
+	}
 
 	Object onActionFromRemoveUrl(String urlPath) {
 		if (request.getSession(false) == null) {

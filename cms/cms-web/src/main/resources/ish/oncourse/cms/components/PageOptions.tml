@@ -86,6 +86,55 @@
 		<t:zone t:id="urlZone" t:update="show">
 
 
+			<h6 class="cms-block-sub-title">
+				<b>
+					<t:if t:test="hasDefault">
+						${siteUrl}${editNode.defaultWebURLAlias.urlPath}
+						<p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
+					</t:if>
+				</b>
+				&lt;----- DEFAULT
+				<span class="cms-ico-help" title="Default URL for this page"/>
+			</h6>
+
+			<table class="cms-page-opts-links">
+				<t:if t:test="hasDefault">
+					<tr>
+						<td>${siteUrl}/page/${editNode.nodeNumber}</td>
+						<td class="cms-page-opts-action">
+							<img src="/s/img/arrow_left.png" border="0"
+								     style="vertical-align: middle;"/>
+							<a t:id="removeDefault" t:type="actionLink"
+							   zone="prop:urlZone.clientId">make default</a>
+						</td>
+						<td></td>
+					</tr>
+				</t:if>
+				
+				<t:loop source="editNode.webUrlAliases" value="webUrlAlias">
+					<t:if t:test="notDefault">
+						<tr>
+							<td>${siteUrl}${webUrlAlias.urlPath}</td>
+							<td class="cms-page-opts-action">
+								<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
+								   zone="prop:urlZone.clientId">
+									<span class="cms-ico-field-del"/>
+								</a>
+								<img src="/s/img/arrow_left.png" border="0"
+								     style="vertical-align: middle;"/>
+								<a t:id="makeDefault" t:type="actionLink"
+								   t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
+									make default
+								</a>
+							</td>
+							<td></td>
+						</tr>
+					</t:if>
+				</t:loop>
+
+
+			</table>
+			
 			<table class="cms-page-opts-addurl">
 				<tr>
 
@@ -107,43 +156,8 @@
 					</td>
 				</tr>
 			</table>
-
-
-			<h6 class="cms-block-sub-title">
-				Default:
-				<b>
-					<t:if t:test="hasDefault">
-						${siteUrl}${editNode.defaultWebURLAlias.urlPath}
-						<p:else>None</p:else>
-					</t:if>
-				</b>
-				<span class="cms-ico-help" title="Default URL for this page"/>
-			</h6>
-
-			<table class="cms-page-opts-links">
-				<t:loop source="editNode.webUrlAliases" value="webUrlAlias">
-					<t:if t:test="notDefault">
-						<tr>
-							<td>${siteUrl}${webUrlAlias.urlPath}</td>
-							<td class="cms-page-opts-action">
-								<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
-								   zone="prop:urlZone.clientId">
-									<span class="cms-ico-field-del"/>
-								</a>
-								<img src="/s/img/arrow_left.png" border="0"
-								     style="vertical-align: middle;"/>
-								<a t:id="makeDefault" t:type="actionLink"
-								   t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
-									Default
-								</a>
-							</td>
-							<td></td>
-						</tr>
-					</t:if>
-				</t:loop>
-
-
-			</table>
+			
+			
 		</t:zone>
 	</div>
 
