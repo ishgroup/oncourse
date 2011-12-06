@@ -28,4 +28,33 @@
 			columnNames="nationalISC" constraintName="nationalISC_unique" />
 	</changeSet>
 
+	<changeSet id="3" author="anton" context="production"
+		runOnChange="true">
+		<update tableName="Country">
+			<column name="ishVersion" value="338" />
+		</update>
+		<update tableName="Language">
+			<column name="ishVersion" value="338" />
+		</update>
+		<update tableName="Module">
+			<column name="ishVersion" value="338" />
+		</update>
+		<update tableName="Qualification">
+			<column name="ishVersion" value="338" />
+		</update>
+		<update tableName="TrainingPackage">
+			<column name="ishVersion" value="338" />
+		</update>
+		<addNotNullConstraint tableName="Country"
+			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Language"
+			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Module"
+			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Qualification"
+			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="TrainingPackage"
+			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+	</changeSet>
+
 </databaseChangeLog>

@@ -8,7 +8,7 @@
 		<db-attribute name="asccssCode" type="VARCHAR" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="isoCodeAlpha2" type="CHAR" length="3"/>
 		<db-attribute name="isoCodeAlpha3" type="CHAR" length="3"/>
 		<db-attribute name="isoCodeNumeric" type="INTEGER" length="10"/>
@@ -21,7 +21,7 @@
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isActive" type="TINYINT" isMandatory="true" length="3"/>
-		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 	</db-entity>
@@ -46,7 +46,7 @@
 		<db-attribute name="fieldOfStudy" type="VARCHAR" length="4"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isAccreditedCourse" type="TINYINT" length="3"/>
-		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="level" type="VARCHAR" length="256"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="nationalCode" type="VARCHAR" length="16"/>
@@ -64,7 +64,7 @@
 		<db-attribute name="endorsementFrom" type="TIMESTAMP" length="19"/>
 		<db-attribute name="endorsementTo" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="ishVersion" type="BIGINT" length="19"/>
+		<db-attribute name="ishVersion" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="nationalISC" type="VARCHAR" length="64"/>
 		<db-attribute name="purchaseFrom" type="VARCHAR" length="128"/>
