@@ -43,5 +43,5 @@ rm -f tmp.sql
 rm -f edit.sed
 
 #run a full solr index
-cd /var/tomonCourse; ./runsolrindex.sh -a full
+#cd /var/tomonCourse; ./runsolrindex.sh -a full
 
