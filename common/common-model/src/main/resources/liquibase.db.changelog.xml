@@ -524,7 +524,7 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
-		<!--addUniqueConstraint tableName="Product" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProduct_unique"/-->
+		<addUniqueConstraint tableName="Product" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProduct_unique"/>
 	</changeSet>
 	
 	<changeSet id="37" author="viacheslav" context="production" runOnChange="true">	
@@ -555,7 +555,7 @@
 			<column name="redeemedInvoiceLineId" type="BIGINT"></column>
 			<column name="type" type="INT"></column>
 		</createTable>
-		<!--addUniqueConstraint tableName="ProductItem" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProductItem_unique"/-->
+		<addUniqueConstraint tableName="ProductItem" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProductItem_unique"/>
 	</changeSet>
 
 </databaseChangeLog>
