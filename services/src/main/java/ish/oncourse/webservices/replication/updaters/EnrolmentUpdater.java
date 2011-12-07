@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.updaters;
 
 import ish.common.types.PaymentSource;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.EnrolmentStatus;
@@ -18,7 +19,8 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		entity.setModified(stub.getModified());
 		entity.setReasonForStudy(stub.getReasonForStudy());
 
-		entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
+		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
+		//entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 
 		if (stub.getStatus() != null) {
 			ish.common.types.EnrolmentStatus stubStatus = ish.common.types.EnrolmentStatus.valueOf(stub.getStatus());

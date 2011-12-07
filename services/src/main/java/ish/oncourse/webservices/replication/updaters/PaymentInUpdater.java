@@ -4,6 +4,7 @@ import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
@@ -18,11 +19,13 @@ public class PaymentInUpdater extends AbstractWillowUpdater<PaymentInStub, Payme
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
 		
-		PaymentSource source = PaymentSource.getSourceForValue(stub.getSource());
+		PaymentSource source = TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class);
+		//PaymentSource source = PaymentSource.getSourceForValue(stub.getSource());
 		entity.setSource(source);
 
 		if (stub.getStatus() != null) {
-			PaymentStatus st = PaymentStatus.getEnumForDatabaseValue(stub.getStatus());
+			PaymentStatus st = TypesUtil.getEnumForDatabaseValue(stub.getStatus(), PaymentStatus.class);
+			//PaymentStatus st = PaymentStatus.getEnumForDatabaseValue(stub.getStatus());
 			entity.setStatus(st);
 		}
 		
@@ -35,10 +38,12 @@ public class PaymentInUpdater extends AbstractWillowUpdater<PaymentInStub, Payme
 		entity.setCreditCardNumber(stub.getCreditCardNumber());
 		
 		if (stub.getCreditCardType() != null) {
-			entity.setCreditCardType(CreditCardType.getTypeForDatabaseValue(stub.getCreditCardType()));
+			entity.setCreditCardType(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), CreditCardType.class));
+			//entity.setCreditCardType(CreditCardType.getTypeForDatabaseValue(stub.getCreditCardType()));
 		}
 		
-		entity.setType(PaymentType.getEnumForDatabaseValue(stub.getType()));
+		entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), PaymentType.class));
+		//entity.setType(PaymentType.getEnumForDatabaseValue(stub.getType()));
 		
 		entity.setDateBanked(stub.getDateBanked());
 	}

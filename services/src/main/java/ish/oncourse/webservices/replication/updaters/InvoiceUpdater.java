@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.updaters;
 
 import ish.common.types.PaymentSource;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
@@ -26,7 +27,8 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		entity.setShippingAddress(stub.getShippingAddress());
 
 		entity.setTotalExGst(stub.getTotalExGst());
-		entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
+		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
+		//entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 
 		entity.setTotalGst(stub.getTotalGst());
 	}

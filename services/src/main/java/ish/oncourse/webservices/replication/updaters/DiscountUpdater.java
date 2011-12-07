@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.updaters;
 
 import ish.common.types.DiscountType;
+import ish.common.types.TypesUtil;
 import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.Discount;
@@ -21,7 +22,8 @@ public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discoun
 		entity.setMinimumDiscount(Money.valueOf(stub.getMinimumDiscount()));
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
-		entity.setRoundingMode(MoneyRounding.getEnumForDatabaseValue(stub.getRoundingMode()));
+		entity.setRoundingMode(TypesUtil.getEnumForDatabaseValue(stub.getRoundingMode(), MoneyRounding.class));
+		//entity.setRoundingMode(MoneyRounding.getEnumForDatabaseValue(stub.getRoundingMode()));
 		entity.setStudentAge(stub.getStudentAge());
 		entity.setStudentAgeOperator(stub.getStudentAgeOperator());
 		entity.setStudentEnrolledWithinDays(stub.getStudentEnrolledWithinDays());
@@ -30,7 +32,8 @@ public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discoun
 		entity.setValidTo(stub.getValidTo());
 		Integer discountType = stub.getDiscountType();
 		if(discountType!=null){
-			entity.setDiscountType(DiscountType.getEnumForDatabaseValue(discountType));
+			entity.setDiscountType(TypesUtil.getEnumForDatabaseValue(discountType, DiscountType.class));
+			//entity.setDiscountType(DiscountType.getEnumForDatabaseValue(discountType));
 		}
 	}
 }

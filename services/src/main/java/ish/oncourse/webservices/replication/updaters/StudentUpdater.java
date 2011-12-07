@@ -7,6 +7,7 @@ import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.Student;
 import ish.oncourse.webservices.v4.stubs.replication.StudentStub;
 
@@ -28,10 +29,15 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 			entity.setCountryOfBirth(c);
 		}
 
-		entity.setDisabilityType(AvetmissStudentDisabilityType.getEnumForDatabaseValue(stub.getDisabilityType()));
-		entity.setEnglishProficiency(AvetmissStudentEnglishProficiency.getEnumForDatabaseValue(stub.getEnglishProficiency()));
-		entity.setHighestSchoolLevel(AvetmissStudentSchoolLevel.getEnumForDatabaseValue(stub.getHighestSchoolLevel()));
-		entity.setIndigenousStatus(AvetmissStudentIndigenousStatus.getEnumForDatabaseValue(stub.getIndigenousStatus()));
+		entity.setDisabilityType(TypesUtil.getEnumForDatabaseValue(stub.getDisabilityType(), AvetmissStudentDisabilityType.class));
+		entity.setEnglishProficiency(TypesUtil.getEnumForDatabaseValue(stub.getEnglishProficiency(), AvetmissStudentEnglishProficiency.class));
+		entity.setHighestSchoolLevel(TypesUtil.getEnumForDatabaseValue(stub.getHighestSchoolLevel(), AvetmissStudentSchoolLevel.class));
+		entity.setIndigenousStatus(TypesUtil.getEnumForDatabaseValue(stub.getIndigenousStatus(), AvetmissStudentIndigenousStatus.class));
+		
+		//entity.setDisabilityType(AvetmissStudentDisabilityType.getEnumForDatabaseValue(stub.getDisabilityType()));
+		//entity.setEnglishProficiency(AvetmissStudentEnglishProficiency.getEnumForDatabaseValue(stub.getEnglishProficiency()));
+		//entity.setHighestSchoolLevel(AvetmissStudentSchoolLevel.getEnumForDatabaseValue(stub.getHighestSchoolLevel()));
+		//entity.setIndigenousStatus(AvetmissStudentIndigenousStatus.getEnumForDatabaseValue(stub.getIndigenousStatus()));
 		entity.setIsOverseasClient(stub.isOverseasClient());
 		entity.setIsStillAtSchool(stub.isStillAtSchool());
 		entity.setLabourForceType(stub.getLabourForceType());
@@ -48,7 +54,8 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 			entity.setLanguageHome(l);
 		}
 		
-		entity.setPriorEducationCode(AvetmissStudentPriorEducation.getEnumForDatabaseValue(stub.getPriorEducationCode()));
+		entity.setPriorEducationCode(TypesUtil.getEnumForDatabaseValue(stub.getPriorEducationCode(), AvetmissStudentPriorEducation.class));
+		//entity.setPriorEducationCode(AvetmissStudentPriorEducation.getEnumForDatabaseValue(stub.getPriorEducationCode()));
 		entity.setYearSchoolCompleted(stub.getYearSchoolCompleted());
 	}
 

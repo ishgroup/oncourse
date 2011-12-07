@@ -4,11 +4,11 @@ import static ish.oncourse.webservices.replication.services.ReplicationUtils.get
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.toCollection;
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.toReplicatedRecord;
+import ish.common.types.EntityMapping;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.webservices.EntityMapping;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;

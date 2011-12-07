@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.updaters;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
+import ish.common.types.EntityMapping;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
@@ -44,7 +45,6 @@ import ish.oncourse.model.WaitingList;
 import ish.oncourse.model.WaitingListSite;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.EntityMapping;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 

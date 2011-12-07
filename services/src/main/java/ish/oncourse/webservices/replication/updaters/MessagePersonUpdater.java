@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.updaters;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Message;
+import ish.common.types.TypesUtil;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tutor;
@@ -25,7 +26,8 @@ public class MessagePersonUpdater extends AbstractWillowUpdater<MessagePersonStu
 		entity.setNumberOfAttempts(stub.getNumberOfAttempts());
 		entity.setResponse(stub.getResponse());
 		
-		entity.setStatus(MessageStatus.getEnumForDatabaseValue(stub.getStatus()));
+		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), MessageStatus.class));
+		//entity.setStatus(MessageStatus.getEnumForDatabaseValue(stub.getStatus()));
 		
 		if (stub.getStudentId() != null) {
 			entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class));
@@ -36,7 +38,8 @@ public class MessagePersonUpdater extends AbstractWillowUpdater<MessagePersonStu
 		
 		
 		entity.setTimeOfDelivery(stub.getTimeOfDelivery());
-		entity.setType(MessageType.getEnumForDatabaseValue(stub.getType()));
+		entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), MessageType.class));
+		//entity.setType(MessageType.getEnumForDatabaseValue(stub.getType()));
 	}
 }
 

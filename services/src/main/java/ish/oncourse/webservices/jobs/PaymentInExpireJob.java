@@ -24,7 +24,7 @@ public class PaymentInExpireJob implements Job {
 
 	private static final Logger logger = Logger.getLogger(PaymentInExpireJob.class);
 
-	private static final int EXPIRE_INTERVAL = 20;
+	private static final int EXPIRE_INTERVAL = 2;//TODO: revert to 20
 
 	private final ICayenneService cayenneService;
 
@@ -53,6 +53,7 @@ public class PaymentInExpireJob implements Job {
 
 			ObjectContext newContext = cayenneService.newContext();
 
+			@SuppressWarnings("unchecked")
 			List<PaymentIn> expiredPayments = newContext.performQuery(q);
 			
 			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
