@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.NodeSpecialType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TagGroupRequirement;
@@ -108,11 +109,11 @@ public abstract class _Tag extends CayenneDataObject {
         return (String)readProperty("shortName");
     }
 
-    public void setSpecialType(Integer specialType) {
+    public void setSpecialType(NodeSpecialType specialType) {
         writeProperty("specialType", specialType);
     }
-    public Integer getSpecialType() {
-        return (Integer)readProperty("specialType");
+    public NodeSpecialType getSpecialType() {
+        return (NodeSpecialType)readProperty("specialType");
     }
 
     public void setWeighting(Integer weighting) {

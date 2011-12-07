@@ -1408,7 +1408,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="nodeType" type="java.lang.Integer" db-attribute-path="nodeType"/>
 		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
-		<obj-attribute name="specialType" type="java.lang.Integer" db-attribute-path="specialType"/>
+		<obj-attribute name="specialType" type="ish.common.types.NodeSpecialType" db-attribute-path="specialType"/>
 		<obj-attribute name="weighting" type="java.lang.Integer" db-attribute-path="weighting"/>
 	</obj-entity>
 	<obj-entity name="TagGroupRequirement" className="ish.oncourse.model.TagGroupRequirement" dbEntityName="TagGroupRequirement">

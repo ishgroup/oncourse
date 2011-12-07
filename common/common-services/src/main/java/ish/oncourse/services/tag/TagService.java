@@ -1,5 +1,6 @@
 package ish.oncourse.services.tag;
 
+import ish.common.types.NodeSpecialType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
@@ -198,7 +199,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		List<Tag> tags = Collections.emptyList();
 
 		// MAILING_LISTS(3, "Mailing lists") - see NodeSpecialType
-		Expression qual = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, 3));
+		Expression qual = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, NodeSpecialType.MAILING_LISTS));
 		qual = qual.andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, null));
 		SelectQuery q = new SelectQuery(Tag.class, qual);
 
