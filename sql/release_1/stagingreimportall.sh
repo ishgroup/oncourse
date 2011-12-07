@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 
-ids="299 12 111 2871 2006 1323 334 3014 2703 3093 338 2291 6 1222 272 3184 50 1234 3768 2074 3438 25 1296"
-#10,3699, 19, 3219, 2396, 2956, 3861 have been completed
+ids="12 111 2006 1323 3014 2703 2291 6 272 3184 50 1234 3768 2074 25 1296"
+#1222, 10,3699, 19, 3219, 2396, 2956, 3861, 299, 334, 2871, 338, 3093 have been completed, 3438 tas test, removed
 
 for id in ${ids}; do
 	echo "importing collegeid = ${id}"
@@ -10,7 +10,7 @@ done
 
 #### Do some miscellaneous SQL
 #Update the HomePage of CityEast with new content 
-/usr/local/bin/mysql -h 10.100.33.2 -ustagingrestore -pneiDu9Oi w2staging_college < eastHomePageContent.sql
+#/usr/local/bin/mysql -h 10.100.33.2 -ustagingrestore -pneiDu9Oi w2staging_college < eastHomePageContent.sql
 
 #### start a full solr index
 cd /var/tomonCourseStaging/scripts; ./runsolrindex.sh -a full
