@@ -27,6 +27,7 @@ public abstract class DiscountPolicy {
 	 * @param promotions
 	 *            the list to init the {@link #promotions}.
 	 */
+	@SuppressWarnings("unchecked")
 	public DiscountPolicy(List<Discount> promotions) {
 		if (promotions != null) {
 			this.promotions = promotions;

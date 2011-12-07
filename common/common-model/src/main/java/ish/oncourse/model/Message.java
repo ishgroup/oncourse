@@ -1,16 +1,12 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Message;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 public class Message extends _Message implements Queueable {
+	private static final long serialVersionUID = -874881400684150129L;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ish.oncourse.model.Queueable#getId()
-	 */
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 }

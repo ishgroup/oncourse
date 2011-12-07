@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebMenu;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Collections;
 import java.util.Date;
@@ -12,10 +13,10 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 
 public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
+	private static final long serialVersionUID = -6977235713134006203L;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	@Override

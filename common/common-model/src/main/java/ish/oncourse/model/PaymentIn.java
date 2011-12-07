@@ -7,6 +7,7 @@ import ish.common.types.PaymentType;
 import ish.common.util.ExternalValidation;
 import ish.math.Money;
 import ish.oncourse.model.auto._PaymentIn;
+import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.CreditCardUtil;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.log4j.Logger;
 
 public class PaymentIn extends _PaymentIn implements Queueable {
+	private static final long serialVersionUID = -2372029086420124878L;
 
 	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
 
@@ -35,7 +37,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * @return
 	 */
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	/**

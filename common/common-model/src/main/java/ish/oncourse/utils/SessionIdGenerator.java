@@ -161,6 +161,7 @@ public class SessionIdGenerator {
 
 		SecureRandom result = null;
 
+		@SuppressWarnings("unused")
 		long t1 = System.currentTimeMillis();
 		if (secureRandomClass != null) {
 			try {

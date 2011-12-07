@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Tag;
+import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TagsTextileEntityTypes;
 
 import java.io.UnsupportedEncodingException;
@@ -13,13 +14,12 @@ import java.util.List;
 import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Tag extends _Tag implements Queueable {
-
+	private static final long serialVersionUID = -1118193158649089145L;
 	public static final String SUBJECTS_TAG_NAME = "Subjects";
 	public static final String BROWSE_TAG_PARAM = "browseTag";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public List<Tag> getWebVisibleTags() {

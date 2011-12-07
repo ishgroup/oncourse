@@ -2,13 +2,15 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebContent;
 import ish.oncourse.model.visitor.IVisitor;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Date;
 
 public class WebContent extends _WebContent implements Comparable<WebContent> {
+	private static final long serialVersionUID = -900137336888575297L;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public <T> T accept(IVisitor<T> visitor) {

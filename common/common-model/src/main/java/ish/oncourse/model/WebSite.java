@@ -10,7 +10,7 @@ import ish.oncourse.model.auto._WebSite;
  * @author Various
  */
 public class WebSite extends _WebSite {
-
+	private static final long serialVersionUID = 3320962509024756174L;
 	private static final String DEFAULT_FOLDER_NAME = "default";
 
 	/**

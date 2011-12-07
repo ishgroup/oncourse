@@ -4,15 +4,16 @@ import java.util.List;
 
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.auto._Enrolment;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
 public class Enrolment extends _Enrolment implements Queueable {
+	private static final long serialVersionUID = 8361159336001022666L;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ?
-				(Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 	
 	/**

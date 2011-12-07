@@ -1,15 +1,16 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Session;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 public class Session extends _Session implements Queueable {
+	private static final long serialVersionUID = 5495296857845632418L;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	/**

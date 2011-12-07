@@ -9,7 +9,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 
 public class QueuedRecord extends _QueuedRecord {
-	
+	private static final long serialVersionUID = 5511189858346011489L;
 	/**
 	 * Maximum retry number.
 	 */

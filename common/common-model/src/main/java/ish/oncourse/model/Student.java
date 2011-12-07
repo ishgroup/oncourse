@@ -6,6 +6,7 @@ import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.auto._Student;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -16,10 +17,10 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 public class Student extends _Student implements Queueable {
+	private static final long serialVersionUID = 8299657371084046806L;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? 
-				(Long) getObjectId() .getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._PaymentOut;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.List;
 
@@ -11,11 +12,11 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 
 public class PaymentOut extends _PaymentOut implements Queueable {
-
+	private static final long serialVersionUID = -8918491908161700718L;
 	private static final Logger LOG = Logger.getLogger(PaymentOut.class);
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	@Override

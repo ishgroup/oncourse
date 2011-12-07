@@ -487,6 +487,7 @@ public class TimestampUtilities {
 	 *             if date string is null
 	 * @throws ParseException
 	 */
+	@SuppressWarnings("unused")
 	public static Date timestampForDateString(String dateString, TimeZone zone)
 			throws NullPointerException, ParseException {
 

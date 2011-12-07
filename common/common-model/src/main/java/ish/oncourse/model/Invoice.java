@@ -4,6 +4,7 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Invoice;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +16,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
 
 public class Invoice extends _Invoice implements Queueable {
+	private static final long serialVersionUID = 2985348837041766278L;
 
 	/**
 	 * Returns the primary key property - id of {@link Invoice}.
@@ -22,8 +24,7 @@ public class Invoice extends _Invoice implements Queueable {
 	 * @return
 	 */
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public Invoice createRefundInvoice() {
@@ -53,6 +54,7 @@ public class Invoice extends _Invoice implements Queueable {
 		return refundInvoice;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Invoice> getRefundedInvoices() {
 		Expression expr = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
 		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.COLLEGE_PROPERTY, getCollege()));

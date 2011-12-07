@@ -5,8 +5,10 @@ import java.math.BigDecimal;
 import ish.common.payable.TaxInterface;
 import ish.math.Money;
 import ish.oncourse.model.auto._InvoiceLine;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 public class InvoiceLine extends _InvoiceLine implements Queueable {
+	private static final long serialVersionUID = 8005646295584671217L;
 
 	/**
 	 * @see ish.common.payable.IInvoiceLineInterface#getInvoiceTax()
@@ -17,8 +19,7 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	}
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
-				.getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 	
 	public void refund(final org.apache.cayenne.validation.ValidationResult result, final Invoice invoiceToRefund, final Invoice refundInvoice) {

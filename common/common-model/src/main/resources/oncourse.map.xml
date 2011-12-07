@@ -142,6 +142,25 @@
 		<db-attribute name="tutorId" type="BIGINT" length="19"/>
 		<db-attribute name="uniqueCode" type="VARCHAR" length="16"/>
 	</db-entity>
+	<db-entity name="ContactRelation">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="fromContactId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="toContactId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="typeId" type="BIGINT" isMandatory="true" length="19"/>
+	</db-entity>
+	<db-entity name="ContactRelationType">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="fromContactName" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="toContactName" type="VARCHAR" isMandatory="true" length="100"/>
+	</db-entity>
 	<db-entity name="Course" catalog="willow_college">
 		<db-attribute name="allowWaitingList" type="BIT"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -242,6 +261,25 @@
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
+	</db-entity>
+	<db-entity name="DiscountMembership">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="applyToMemberOnly" type="BOOLEAN" isMandatory="true"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="membershipProductId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="DiscountMembershipRelationType">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="contactRelationTypeId" type="BIGINT" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="membershipDiscountId" type="BIGINT" length="19"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="Discussion">
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
@@ -501,6 +539,36 @@
 		<db-attribute name="sqlType" type="INTEGER" length="10"/>
 		<db-attribute name="value" type="LONGVARBINARY" length="65535"/>
 		<db-attribute name="value_string" type="VARCHAR" length="255"/>
+	</db-entity>
+	<db-entity name="Product">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="description" type="VARCHAR" length="8000"/>
+		<db-attribute name="expiryDays" type="INTEGER"/>
+		<db-attribute name="expiryType" type="INTEGER"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="isOnSale" type="BOOLEAN" isMandatory="true"/>
+		<db-attribute name="isWebVisible" type="BOOLEAN" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" length="500"/>
+		<db-attribute name="notes" type="VARCHAR" length="8000"/>
+		<db-attribute name="sku" type="VARCHAR" length="100"/>
+		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="ProductItem">
+		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="contactId" type="BIGINT" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="expiryDate" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="19"/>
+		<db-attribute name="idKey" type="VARCHAR" length="50"/>
+		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="productId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="redeemedInvoiceLineId" type="BIGINT" length="19"/>
+		<db-attribute name="type" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="QueuedRecord" catalog="willow_college">
 		<db-attribute name="action" type="VARCHAR" isMandatory="true" length="25"/>
@@ -903,6 +971,18 @@
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
+	<obj-entity name="ContactRelation" className="ish.oncourse.model.ContactRelation" dbEntityName="ContactRelation">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
+	</obj-entity>
+	<obj-entity name="ContactRelationType" className="ish.oncourse.model.ContactRelationType" dbEntityName="ContactRelationType">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="fromContactName" type="java.lang.String" db-attribute-path="fromContactName"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="toContactName" type="java.lang.String" db-attribute-path="toContactName"/>
+	</obj-entity>
 	<obj-entity name="Course" className="ish.oncourse.model.Course" dbEntityName="Course">
 		<obj-attribute name="allowWaitingList" type="java.lang.Boolean" db-attribute-path="allowWaitingList"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -982,6 +1062,17 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
+	<obj-entity name="DiscountMembership" className="ish.oncourse.model.DiscountMembership" dbEntityName="DiscountMembership">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="applyToMemberOnly" type="java.lang.Boolean" db-attribute-path="applyToMemberOnly"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
+	</obj-entity>
+	<obj-entity name="DiscountMembershipRelationType" className="ish.oncourse.model.DiscountMembershipRelationType" dbEntityName="DiscountMembershipRelationType">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
 	</obj-entity>
 	<obj-entity name="Discussion" className="ish.oncourse.model.Discussion" dbEntityName="Discussion">
 	</obj-entity>
@@ -1070,6 +1161,16 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="page" type="java.lang.String" db-attribute-path="page"/>
+	</obj-entity>
+	<obj-entity name="Membership" superEntityName="ProductItem" className="ish.oncourse.model.Membership" dbEntityName="ProductItem">
+		<qualifier><![CDATA[type = 2]]></qualifier>
+		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
+		<obj-attribute name="idKey" type="java.lang.String" db-attribute-path="idKey"/>
+	</obj-entity>
+	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.model.MembershipProduct" dbEntityName="Product">
+		<qualifier><![CDATA[type = 2]]></qualifier>
+		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
+		<obj-attribute name="expiryType" type="ish.common.types.ExpiryType" db-attribute-path="expiryType"/>
 	</obj-entity>
 	<obj-entity name="Message" className="ish.oncourse.model.Message" dbEntityName="Message">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1188,6 +1289,26 @@
 		<obj-attribute name="sqlType" type="java.lang.Integer" db-attribute-path="sqlType"/>
 		<obj-attribute name="value" type="byte[]" db-attribute-path="value"/>
 		<obj-attribute name="valueString" type="java.lang.String" db-attribute-path="value_string"/>
+	</obj-entity>
+	<obj-entity name="Product" className="ish.oncourse.model.Product" dbEntityName="Product">
+		<qualifier><![CDATA[type = 1]]></qualifier>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="isOnSale" type="java.lang.Boolean" db-attribute-path="isOnSale"/>
+		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="notes" type="java.lang.String" db-attribute-path="notes"/>
+		<obj-attribute name="sku" type="java.lang.String" db-attribute-path="sku"/>
+		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
+	</obj-entity>
+	<obj-entity name="ProductItem" className="ish.oncourse.model.ProductItem" dbEntityName="ProductItem">
+		<qualifier><![CDATA[type = 1]]></qualifier>
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 	</obj-entity>
 	<obj-entity name="QueuedRecord" className="ish.oncourse.model.QueuedRecord" dbEntityName="QueuedRecord">
 		<obj-attribute name="action" type="ish.oncourse.model.QueuedRecordAction" db-attribute-path="action"/>
@@ -1326,6 +1447,16 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="isConfirmed" type="java.lang.Boolean" db-attribute-path="isConfirmed"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
+	<obj-entity name="Voucher" superEntityName="ProductItem" className="ish.oncourse.model.Voucher" dbEntityName="ProductItem">
+		<qualifier><![CDATA[type = 3]]></qualifier>
+		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
+		<obj-attribute name="idKey" type="java.lang.String" db-attribute-path="idKey"/>
+	</obj-entity>
+	<obj-entity name="VoucherProduct" superEntityName="Product" className="ish.oncourse.model.VoucherProduct" dbEntityName="Product">
+		<qualifier><![CDATA[type = 3]]></qualifier>
+		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
+		<obj-attribute name="expiryType" type="ish.common.types.ExpiryType" db-attribute-path="expiryType"/>
 	</obj-entity>
 	<obj-entity name="WaitingList" className="ish.oncourse.model.WaitingList" dbEntityName="WaitingList">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1478,6 +1609,12 @@
 	<db-relationship name="concessionTypes" source="College" target="ConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="contactRelationTypes" source="College" target="ContactRelationType" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="contactRelations" source="College" target="ContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="contacts" source="College" target="Contact" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -1494,6 +1631,12 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="discountCourseClasses" source="College" target="DiscountCourseClass" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="discountMembershipRelationTypes" source="College" target="DiscountMembershipRelationType" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="discountMemberships" source="College" target="DiscountMembership" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="discounts" source="College" target="Discount" toMany="true">
@@ -1545,6 +1688,12 @@
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="preferences" source="College" target="Preference" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="productItems" source="College" target="ProductItem" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="products" source="College" target="Product" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="queuedRecords" source="College" target="QueuedRecord" toMany="true">
@@ -1619,6 +1768,9 @@
 	<db-relationship name="country" source="Contact" target="Country" toMany="false">
 		<db-attribute-pair source="countryId" target="id"/>
 	</db-relationship>
+	<db-relationship name="fromContacts" source="Contact" target="ContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="toContactId"/>
+	</db-relationship>
 	<db-relationship name="invoices" source="Contact" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
@@ -1631,11 +1783,38 @@
 	<db-relationship name="paymentsOut" source="Contact" target="PaymentOut" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
+	<db-relationship name="products" source="Contact" target="ProductItem" toMany="true">
+		<db-attribute-pair source="id" target="contactId"/>
+	</db-relationship>
 	<db-relationship name="student" source="Contact" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
+	<db-relationship name="toContacts" source="Contact" target="ContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="fromContactId"/>
+	</db-relationship>
 	<db-relationship name="tutor" source="Contact" target="Tutor" toMany="false">
 		<db-attribute-pair source="tutorId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="ContactRelation" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="fromContact" source="ContactRelation" target="Contact" toMany="false">
+		<db-attribute-pair source="fromContactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relationType" source="ContactRelation" target="ContactRelationType" toMany="false">
+		<db-attribute-pair source="typeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="toContact" source="ContactRelation" target="Contact" toMany="false">
+		<db-attribute-pair source="toContactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="ContactRelationType" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="contactRelations" source="ContactRelationType" target="ContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="typeId"/>
+	</db-relationship>
+	<db-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" toMany="true">
+		<db-attribute-pair source="id" target="contactRelationTypeId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Course" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -1694,6 +1873,9 @@
 	<db-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
+	<db-relationship name="discount_membershipProducts" source="Discount" target="DiscountMembership" toMany="true">
+		<db-attribute-pair source="id" target="discountId"/>
+	</db-relationship>
 	<db-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
@@ -1714,6 +1896,27 @@
 	</db-relationship>
 	<db-relationship name="discount" source="DiscountCourseClass" target="Discount" toMany="false">
 		<db-attribute-pair source="discountId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="DiscountMembership" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="discount" source="DiscountMembership" target="Discount" toMany="false">
+		<db-attribute-pair source="discountId" target="id"/>
+	</db-relationship>
+	<db-relationship name="discountMembershipRelationTypes" source="DiscountMembership" target="DiscountMembershipRelationType" toMany="true">
+		<db-attribute-pair source="id" target="membershipDiscountId"/>
+	</db-relationship>
+	<db-relationship name="membershipProduct" source="DiscountMembership" target="Product" toMany="false">
+		<db-attribute-pair source="membershipProductId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="DiscountMembershipRelationType" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="contactRelationType" source="DiscountMembershipRelationType" target="ContactRelationType" toMany="false">
+		<db-attribute-pair source="contactRelationTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="discountMembership" source="DiscountMembershipRelationType" target="DiscountMembership" toMany="false">
+		<db-attribute-pair source="membershipDiscountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courseClass" source="Discussion" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
@@ -1780,6 +1983,12 @@
 	</db-relationship>
 	<db-relationship name="invoicelineDiscounts" source="InvoiceLine" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="invoiceLineId"/>
+	</db-relationship>
+	<db-relationship name="productItem" source="InvoiceLine" target="ProductItem" toMany="true">
+		<db-attribute-pair source="id" target="invoiceLineId"/>
+	</db-relationship>
+	<db-relationship name="vouchers" source="InvoiceLine" target="ProductItem" toMany="true">
+		<db-attribute-pair source="id" target="redeemedInvoiceLineId"/>
 	</db-relationship>
 	<db-relationship name="college" source="InvoiceLine_Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -1876,6 +2085,30 @@
 	</db-relationship>
 	<db-relationship name="college" source="Preference" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="Product" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="discountMembershipProducts" source="Product" target="DiscountMembership" toMany="true">
+		<db-attribute-pair source="id" target="membershipProductId"/>
+	</db-relationship>
+	<db-relationship name="productItems" source="Product" target="ProductItem" toMany="true">
+		<db-attribute-pair source="id" target="productId"/>
+	</db-relationship>
+	<db-relationship name="college" source="ProductItem" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="contact" source="ProductItem" target="Contact" toMany="false">
+		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" toMany="false">
+		<db-attribute-pair source="invoiceLineId" target="id"/>
+	</db-relationship>
+	<db-relationship name="product" source="ProductItem" target="Product" toMany="false">
+		<db-attribute-pair source="productId" target="id"/>
+	</db-relationship>
+	<db-relationship name="redeemedInvoiceLine" source="ProductItem" target="InvoiceLine" toMany="false">
+		<db-attribute-pair source="redeemedInvoiceLineId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="QueuedRecord" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -2195,12 +2428,16 @@
 	<obj-relationship name="certificates" source="College" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="collegeDomains" source="College" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="concessionTypes" source="College" target="ConcessionType" deleteRule="Deny" db-relationship-path="concessionTypes"/>
+	<obj-relationship name="contactRelationTypes" source="College" target="ContactRelationType" deleteRule="Deny" db-relationship-path="contactRelationTypes"/>
+	<obj-relationship name="contactRelations" source="College" target="ContactRelation" deleteRule="Deny" db-relationship-path="contactRelations"/>
 	<obj-relationship name="contacts" source="College" target="Contact" deleteRule="Deny" db-relationship-path="contacts"/>
 	<obj-relationship name="courseClasses" source="College" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="College" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
 	<obj-relationship name="courses" source="College" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="discountConcessionTypes" source="College" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="College" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
+	<obj-relationship name="discountMembershipRelationTypes" source="College" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="discountMembershipRelationTypes"/>
+	<obj-relationship name="discountMemberships" source="College" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMemberships"/>
 	<obj-relationship name="discounts" source="College" target="Discount" deleteRule="Deny" db-relationship-path="discounts"/>
 	<obj-relationship name="enrolments" source="College" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="instructions" source="College" target="Instruction" deleteRule="Deny" db-relationship-path="instructions"/>
@@ -2218,6 +2455,8 @@
 	<obj-relationship name="paymentsIn" source="College" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="College" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="preferences" source="College" target="Preference" deleteRule="Deny" db-relationship-path="preferences"/>
+	<obj-relationship name="productItems" source="College" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
+	<obj-relationship name="products" source="College" target="Product" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="queuedRecords" source="College" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
 	<obj-relationship name="queuedTransactions" source="College" target="QueuedTransaction" deleteRule="Deny" db-relationship-path="queuedTransactions"/>
 	<obj-relationship name="rooms" source="College" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
@@ -2240,13 +2479,23 @@
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="college" source="Contact" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" deleteRule="Deny" db-relationship-path="contactComments"/>
 	<obj-relationship name="country" source="Contact" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
+	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Cascade" db-relationship-path="student"/>
+	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
+	<obj-relationship name="college" source="ContactRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
+	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
+	<obj-relationship name="toContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="toContact"/>
+	<obj-relationship name="college" source="ContactRelationType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="contactRelations" source="ContactRelationType" target="ContactRelation" deleteRule="Deny" db-relationship-path="contactRelations"/>
+	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
@@ -2273,6 +2522,13 @@
 	<obj-relationship name="college" source="DiscountCourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="DiscountCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="discount" source="DiscountCourseClass" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
+	<obj-relationship name="college" source="DiscountMembership" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="discount" source="DiscountMembership" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
+	<obj-relationship name="discountMembershipRelationTypes" source="DiscountMembership" target="DiscountMembershipRelationType" deleteRule="Cascade" db-relationship-path="discountMembershipRelationTypes"/>
+	<obj-relationship name="membershipProduct" source="DiscountMembership" target="Product" deleteRule="Nullify" db-relationship-path="membershipProduct"/>
+	<obj-relationship name="college" source="DiscountMembershipRelationType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="contactRelationType" source="DiscountMembershipRelationType" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="contactRelationType"/>
+	<obj-relationship name="discountMembership" source="DiscountMembershipRelationType" target="DiscountMembership" deleteRule="Nullify" db-relationship-path="discountMembership"/>
 	<obj-relationship name="courseClass" source="Discussion" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="discussionThread" source="Discussion" target="DiscussionThread" deleteRule="Deny" db-relationship-path="discussionThread"/>
 	<obj-relationship name="comment" source="DiscussionCommentContact" target="DiscussionComment" deleteRule="Nullify" db-relationship-path="comment"/>
@@ -2293,12 +2549,15 @@
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoicelineDiscounts"/>
+	<obj-relationship name="productItem" source="InvoiceLine" target="ProductItem" deleteRule="Deny" db-relationship-path="productItem"/>
 	<obj-relationship name="college" source="InvoiceLineDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="college" source="LicenseFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="Log" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="user" source="Log" target="WillowUser" deleteRule="Nullify" db-relationship-path="user"/>
+	<obj-relationship name="contact" source="Membership" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="discountsAvailable" source="MembershipProduct" target="Discount" deleteRule="Deny" db-relationship-path="discountMembershipProducts.discount"/>
 	<obj-relationship name="college" source="Message" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="messagePeople" source="Message" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="college" source="MessagePerson" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -2325,6 +2584,12 @@
 	<obj-relationship name="paymentOut" source="PaymentOutTransaction" target="PaymentOut" deleteRule="Nullify" db-relationship-path="paymentOut"/>
 	<obj-relationship name="payment" source="PaymentTransaction" target="PaymentIn" deleteRule="Nullify" db-relationship-path="payment"/>
 	<obj-relationship name="college" source="Preference" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="college" source="Product" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="discountMemberships" source="Product" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
+	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
+	<obj-relationship name="college" source="ProductItem" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
+	<obj-relationship name="product" source="ProductItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
 	<obj-relationship name="college" source="QueuedRecord" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="queuedTransaction" source="QueuedRecord" target="QueuedTransaction" deleteRule="Nullify" db-relationship-path="queuedTransaction"/>
 	<obj-relationship name="college" source="QueuedTransaction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -2383,6 +2648,8 @@
 	<obj-relationship name="college" source="TutorRole" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="TutorRole" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="tutor" source="TutorRole" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
+	<obj-relationship name="contact" source="Voucher" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="redeemedInvoiceLine" source="Voucher" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="redeemedInvoiceLine"/>
 	<obj-relationship name="college" source="WaitingList" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="WaitingList" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="student" source="WaitingList" target="Student" deleteRule="Nullify" db-relationship-path="student"/>

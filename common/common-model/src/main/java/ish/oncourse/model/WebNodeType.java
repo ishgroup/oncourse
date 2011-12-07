@@ -13,8 +13,9 @@ import org.apache.cayenne.query.SortOrder;
 import ish.oncourse.model.auto._WebNodeType;
 import ish.oncourse.model.visitor.IVisitor;
 
+@SuppressWarnings("deprecation")
 public class WebNodeType extends _WebNodeType {
-
+	private static final long serialVersionUID = -1945260610761430515L;
 	public static final String PAGE = "Page";
 	public static final String DEFAULT_LAYOUT_KEY = "default";
 
@@ -41,6 +42,7 @@ public class WebNodeType extends _WebNodeType {
 		return (WebNodeType) DataObjectUtils.objectForQuery(ctx, q);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<WebContent> getContentForRegionKey(String regionKey) {
 		SelectQuery q = new SelectQuery(WebContent.class);
 

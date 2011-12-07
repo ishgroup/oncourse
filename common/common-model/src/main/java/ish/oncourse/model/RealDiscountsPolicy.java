@@ -134,6 +134,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 			boolean notEligibile = true;
 			SelectQuery studentConcessionQuery = new SelectQuery(StudentConcession.class, ExpressionFactory.matchExp(
 					StudentConcession.STUDENT_PROPERTY, student));
+			@SuppressWarnings("unchecked")
 			List<StudentConcession> studentConcessions = (List<StudentConcession>) student.getObjectContext()
 					.performQuery(studentConcessionQuery);
 			for (DiscountConcessionType dct : discount.getDiscountConcessionTypes()) {

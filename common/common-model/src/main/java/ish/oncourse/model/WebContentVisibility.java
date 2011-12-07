@@ -1,12 +1,13 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebContentVisibility;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 public class WebContentVisibility extends _WebContentVisibility implements Comparable<WebContentVisibility> {
+	private static final long serialVersionUID = -4500220486387451772L;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	@Override

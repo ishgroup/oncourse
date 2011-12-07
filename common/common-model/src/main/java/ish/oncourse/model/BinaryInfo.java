@@ -4,14 +4,14 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
 import ish.oncourse.model.auto._BinaryInfo;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 public class BinaryInfo extends _BinaryInfo implements Queueable {
-
+	private static final long serialVersionUID = 7381721704078503112L;
 	public static final String DISPLAYED_IMAGES_IDS = "displayedImagesIds";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public Long getSize() {

@@ -7,14 +7,22 @@ package ish.oncourse.services.lifecycle;
 
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.College;
+import ish.oncourse.model.ContactRelation;
+import ish.oncourse.model.ContactRelationType;
+import ish.oncourse.model.DiscountMembership;
+import ish.oncourse.model.DiscountMembershipRelationType;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.InvoiceStatus;
+import ish.oncourse.model.Membership;
+import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.Product;
+import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedRecordAction;
@@ -22,6 +30,8 @@ import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.Voucher;
+import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.ISHObjectContext;
 
@@ -348,7 +358,10 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 
 		boolean isAsyncAllowed = true;
 		
-		if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session) {
+		if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session || entity instanceof DiscountMembership || 
+				entity instanceof DiscountMembershipRelationType || entity instanceof ContactRelation || entity instanceof ContactRelationType || 
+				entity instanceof Membership || entity instanceof MembershipProduct || entity instanceof Product || entity instanceof ProductItem || 
+				entity instanceof Voucher || entity instanceof VoucherProduct) {
 			//currently we do not allow Tags to be replicated willow-angel
 			isAsyncAllowed = false;
 		} else if (entity instanceof PaymentIn) {

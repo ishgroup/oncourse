@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.DiscountUtils;
+import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TimestampUtilities;
 
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
 public class CourseClass extends _CourseClass implements Queueable {
+	private static final long serialVersionUID = 3351739058505297154L;
 
 	/**
 	 * parameter for add/remove cookies actions
@@ -43,8 +45,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	private Set<String> daysOfWeek;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	/**
@@ -187,6 +188,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * 
 	 * @return list of valid enrolments.
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Enrolment> getValidEnrolments() {
 		SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
 				Enrolment.COURSE_CLASS_PROPERTY, this).andExp(
@@ -369,6 +371,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @return all sessions that satisfy hasStartAndEndTimestamps
 	 * @see Session#hasStartAndEndTimestamps()
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Session> getTimelineableSessions() {
 		List<Session> classSessions;
 		
@@ -560,6 +563,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * 
 	 * @return the discounts for this class
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Discount> getDiscounts() {
 		SelectQuery query = new SelectQuery(Discount.class, ExpressionFactory.matchExp(
 				Discount.DISCOUNT_COURSE_CLASSES_PROPERTY + "." + DiscountCourseClass.COURSE_CLASS_PROPERTY, this)

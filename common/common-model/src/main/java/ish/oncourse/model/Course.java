@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Course;
+import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TimestampUtilities;
 
 import java.util.ArrayList;
@@ -8,12 +9,11 @@ import java.util.Date;
 import java.util.List;
 
 public class Course extends _Course implements Queueable {
-
+	private static final long serialVersionUID = 254942637990278217L;
 	public static final String COURSE_TAG = "courseTag";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public List<CourseClass> getEnrollableClasses() {

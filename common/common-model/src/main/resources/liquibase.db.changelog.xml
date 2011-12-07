@@ -384,5 +384,178 @@
 		<addNotNullConstraint tableName="Contact" columnDataType="varchar(16)" columnName="uniqueCode" defaultNullValue="SUBSTR(MD5(RAND()), 1, 16)"/>
 		<addUniqueConstraint tableName="Contact" columnNames="uniqueCode" constraintName="uniqueCode_unique" />
 	</changeSet>
+	
+	<changeSet id="32" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="ContactRelation"/>
+			</not>
+		</preConditions>
+		<createTable tableName="ContactRelation">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="angelId" type="BIGINT"></column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="createdOn" type="DATETIME"></column>
+			<column name="fromContactId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modifiedOn" type="DATETIME"></column>
+			<column name="toContactId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="typeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addUniqueConstraint tableName="ContactRelation" columnNames="angelId,collegeId" constraintName="angelAndCollegeForContactRelation_unique"/>
+	</changeSet>
+	
+	<changeSet id="33" author="viacheslav" context="production" runOnChange="true">	
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="ContactRelationType"/>
+			</not>
+		</preConditions>
+		<createTable tableName="ContactRelationType">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"></column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="createdOn" type="DATETIME"></column>
+			<column name="fromContactName" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="toContactName" type="VARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modifiedOn" type="DATETIME"></column>
+		</createTable>
+		<addUniqueConstraint tableName="ContactRelationType" columnNames="angelId,collegeId" constraintName="angelAndCollegeForContactRelationType_unique"/>
+	</changeSet>
+	
+	<changeSet id="34" author="viacheslav" context="production" runOnChange="true">	
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="DiscountMembership"/>
+			</not>
+		</preConditions>
+		<createTable tableName="DiscountMembership">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"></column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="createdOn" type="DATETIME"></column>
+			<column name="applyToMemberOnly" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="discountId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="membershipProductId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modifiedOn" type="DATETIME"></column>
+		</createTable>
+		<addUniqueConstraint tableName="DiscountMembership" columnNames="angelId,collegeId" constraintName="angelAndCollegeForDiscountMembership_unique"/>
+	</changeSet>
+	
+	<changeSet id="35" author="viacheslav" context="production" runOnChange="true">	
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="DiscountMembershipRelationType"/>
+			</not>
+		</preConditions>
+		<createTable tableName="DiscountMembershipRelationType">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"></column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="createdOn" type="DATETIME"></column>
+			<column name="contactRelationTypeId" type="BIGINT"></column>
+			<column name="membershipDiscountId" type="BIGINT"></column>
+			<column name="modifiedOn" type="DATETIME"></column>
+		</createTable>
+		<addUniqueConstraint tableName="DiscountMembershipRelationType" columnNames="angelId,collegeId" 
+			constraintName="angelAndCollegeForDiscountMembershipRelationType_unique"/>
+	</changeSet>
+	
+	<changeSet id="36" author="viacheslav" context="production" runOnChange="true">	
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="Product"/>
+			</not>
+		</preConditions>	
+		<createTable tableName="Product">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"></column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="createdOn" type="DATETIME"></column>
+			<column name="description" type="VARCHAR(8000)"></column>
+			<column name="expiryDays" type="INT"></column>
+			<column name="expiryType" type="INT"></column>
+			<column name="isOnSale" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="isWebVisible" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modifiedOn" type="DATETIME"></column>
+			<column name="name" type="VARCHAR(500)"></column>
+			<column name="notes" type="VARCHAR(8000)"></column>
+			<column name="sku" type="VARCHAR(100)"></column>
+			<column name="type" type="INT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<!--addUniqueConstraint tableName="Product" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProduct_unique"/-->
+	</changeSet>
+	
+	<changeSet id="37" author="viacheslav" context="production" runOnChange="true">	
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="ProductItem"/>
+			</not>
+		</preConditions>
+		<createTable tableName="ProductItem">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"></column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="createdOn" type="DATETIME"></column>
+			<column name="contactId" type="BIGINT"></column>
+			<column name="expiryDate" type="DATETIME"></column>
+			<column name="idKey" type="VARCHAR(50)"></column>
+			<column name="invoiceLineId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modifiedOn" type="DATETIME"></column>
+			<column name="productId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="redeemedInvoiceLineId" type="BIGINT"></column>
+			<column name="type" type="INT"></column>
+		</createTable>
+		<!--addUniqueConstraint tableName="ProductItem" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProductItem_unique"/-->
+	</changeSet>
 
 </databaseChangeLog>

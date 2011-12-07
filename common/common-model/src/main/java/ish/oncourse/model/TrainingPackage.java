@@ -3,11 +3,13 @@ package ish.oncourse.model;
 import java.util.Date;
 
 import ish.oncourse.model.auto._TrainingPackage;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 public class TrainingPackage extends _TrainingPackage {
+	private static final long serialVersionUID = -9132949626628478915L;
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	/*

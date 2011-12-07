@@ -10,14 +10,14 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 
 import ish.oncourse.model.auto._Tutor;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 public class Tutor extends _Tutor implements Queueable {
-
+	private static final long serialVersionUID = 6926881335601111383L;
 	private static final Logger logger = Logger.getLogger(Tutor.class);
 			
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ?
-				(Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public String getFullName() {

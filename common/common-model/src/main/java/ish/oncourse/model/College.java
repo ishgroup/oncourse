@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._College;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,12 +15,11 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
 public class College extends _College {
-
+	private static final long serialVersionUID = 8618498696778850266L;
 	public static final String REQUESTING_COLLEGE_ATTRIBUTE = "RequestingCollege";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? ((Number) getObjectId().getIdSnapshot().get(ID_PK_COLUMN))
-				.longValue() : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public Set<String> getCollegeSiteStates() {
@@ -57,6 +57,7 @@ public class College extends _College {
 	 * Returns college sites which marked as web visible.
 	 * @return list of sites
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Site> getWebVisibleSites() {
 		Expression expr = ExpressionFactory.matchExp(Site.COLLEGE_PROPERTY, this);
 		expr = expr.andExp(ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true));

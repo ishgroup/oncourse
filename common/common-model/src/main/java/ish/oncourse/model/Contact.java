@@ -5,6 +5,7 @@ import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.auto._Contact;
+import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.PhoneValidator;
 import ish.util.SecurityUtil;
 
@@ -14,11 +15,11 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.validator.EmailValidator;
 
 public class Contact extends _Contact implements Queueable {
-
+	private static final long serialVersionUID = -7158531319889954101L;
 	protected static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	@Override

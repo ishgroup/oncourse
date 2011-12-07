@@ -19,7 +19,7 @@ import ish.math.Money;
  * @author ksenia
  */
 public class InvoicePayableLine extends CayenneDataObject implements IInvoiceLineInterface {
-
+	private static final long serialVersionUID = 7857794479347463855L;
 	private InvoicePayableLineWrapper waPayableLine;
 
 	public InvoicePayableLine() {

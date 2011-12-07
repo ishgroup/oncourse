@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Discount;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Date;
 
@@ -9,13 +10,13 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 
 public class Discount extends _Discount implements Queueable {
-
+	private static final long serialVersionUID = 2398560052340467949L;
+	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(Discount.class);
 	public static final String PROMOTIONS_KEY = "promotions";
 
 	public Long getId() {
-		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId().getIdSnapshot().get(
-				ID_PK_COLUMN) : null;
+		return QueueableObjectUtils.getId(this);
 	}
 
 	/**
