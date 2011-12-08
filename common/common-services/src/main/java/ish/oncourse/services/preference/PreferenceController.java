@@ -20,6 +20,40 @@ public class PreferenceController extends CommonPreferenceController {
 	
 	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
 	
+	private static final String REQUIRE_CONTACT_ADDRESS_ENROLMENT = "enrolment.contact.address.required";
+	private static final String REQUIRE_CONTACT_SUBURB_ENROLMENT = "enrolment.contact.suburb.required";
+	private static final String REQUIRE_CONTACT_STATE_ENROLMENT = "enrolment.contact.state.required";
+	private static final String REQUIRE_CONTACT_POSTCODE_ENROLMENT = "enrolment.contact.postcode.required";
+	private static final String REQUIRE_CONTACT_PHONE_ENROLMENT = "enrolment.contact.phone.required";
+	private static final String REQUIRE_CONTACT_MOBILE_ENROLMENT = "enrolment.contact.mobile.required";
+	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT = "enrolment.contact.birth.required";
+	
+	private static final String REQUIRE_CONTACT_ADDRESS_WAITING_LIST = "waitinglist.contact.address.required";
+	private static final String REQUIRE_CONTACT_SUBURB_WAITING_LIST = "waitinglist.contact.suburb.required";
+	private static final String REQUIRE_CONTACT_STATE_WAITING_LIST = "waitinglist.contact.state.required";
+	private static final String REQUIRE_CONTACT_POSTCODE_WAITING_LIST = "waitinglist.contact.postcode.required";
+	private static final String REQUIRE_CONTACT_PHONE_WAITING_LIST = "waitinglist.contact.phone.required";
+	private static final String REQUIRE_CONTACT_MOBILE_WAITING_LIST = "waitinglist.contact.mobile.required";
+	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST = "waitinglist.contact.birthdate.required";
+	
+	private static final String REQUIRE_CONTACT_ADDRESS_MAILING_LIST = "mailinglist.contact.address.required";
+	private static final String REQUIRE_CONTACT_SUBURB_MAILING_LIST = "mailinglist.contact.suburb.required";
+	private static final String REQUIRE_CONTACT_STATE_MAILING_LIST = "mailinglist.contact.state.required";
+	private static final String REQUIRE_CONTACT_POSTCODE_MAILING_LIST = "mailinglist.contact.postcode.required";
+	private static final String REQUIRE_CONTACT_PHONE_MAILING_LIST = "mailinglist.contact.phone.required";
+	private static final String REQUIRE_CONTACT_MOBILE_MAILING_LIST = "mailinglist.contact.mobile.required";
+	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST = "mailinglist.contact.birth.required";
+	
+	private static final String AVETMISS_OPTIONAL_QUESTIONS_ENABLED = "avetmiss.optionalquestions.enabled";
+	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
+	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
+	private static final String REDIRECT_ON_PAYMENT_SUCCESSFUL = "payment.successful.redirect";
+	private static final String PAYMENT_SUCCESSFUL_REDIRECT_URL = "payment.successful.redirecturl";
+	private static final String ENABLE_SOCIAL_MEDIA_LINKS = "website.medialinks.enabled";
+	private static final String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
+	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
+	private static final String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
+	
 	@Inject
 	private ICayenneService cayenneService;
 	
@@ -208,5 +242,269 @@ public class PreferenceController extends CommonPreferenceController {
 	
 	public synchronized void setNTISLastUpdate(String value) {
 		setValue(NTIS_LAST_UPDATE, false, value);
+	}
+	
+	public synchronized String getRequireContactAddressWaitingList() {
+		return getValue(REQUIRE_CONTACT_ADDRESS_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactAddressWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_ADDRESS_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactSuburbWaitingList() {
+		return getValue(REQUIRE_CONTACT_SUBURB_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactSuburbWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_SUBURB_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactStateWaitingList() {
+		return getValue(REQUIRE_CONTACT_STATE_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactStateWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_STATE_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactPostcodeWaitingList() {
+		return getValue(REQUIRE_CONTACT_POSTCODE_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactPostcodeWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_POSTCODE_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactPhoneWaitingList() {
+		return getValue(REQUIRE_CONTACT_PHONE_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactPhoneWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_PHONE_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactMobileWaitingList() {
+		return getValue(REQUIRE_CONTACT_MOBILE_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactMobileWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_MOBILE_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactDateOfBirthWaitingList() {
+		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactDateOfBirthWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactAddressMailingList() {
+		return getValue(REQUIRE_CONTACT_ADDRESS_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactAddressMailingList(String value) {
+		setValue(REQUIRE_CONTACT_ADDRESS_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactSuburbMailingList() {
+		return getValue(REQUIRE_CONTACT_SUBURB_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactSuburbMailingList(String value) {
+		setValue(REQUIRE_CONTACT_SUBURB_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactStateMailingList() {
+		return getValue(REQUIRE_CONTACT_STATE_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactStateMailingList(String value) {
+		setValue(REQUIRE_CONTACT_STATE_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactPostcodeMailingList() {
+		return getValue(REQUIRE_CONTACT_POSTCODE_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactPostcodeMailingList(String value) {
+		setValue(REQUIRE_CONTACT_POSTCODE_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactPhoneMailingList() {
+		return getValue(REQUIRE_CONTACT_PHONE_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactPhoneMailingList(String value) {
+		setValue(REQUIRE_CONTACT_PHONE_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactMobileMailingList() {
+		return getValue(REQUIRE_CONTACT_MOBILE_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactMobileMailingList(String value) {
+		setValue(REQUIRE_CONTACT_MOBILE_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactDateOfBirthMailingList() {
+		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactDateOfBirthMailingList(String value) {
+		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactAddressEnrolment() {
+		return getValue(REQUIRE_CONTACT_ADDRESS_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactAddressEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_ADDRESS_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactSuburbEnrolment() {
+		return getValue(REQUIRE_CONTACT_SUBURB_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactSuburbEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_SUBURB_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactStateEnrolment() {
+		return getValue(REQUIRE_CONTACT_STATE_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactStateEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_STATE_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactPostcodeEnrolment() {
+		return getValue(REQUIRE_CONTACT_POSTCODE_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactPostcodeEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_POSTCODE_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactPhoneEnrolment() {
+		return getValue(REQUIRE_CONTACT_PHONE_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactPhoneEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_PHONE_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactMobileEnrolment() {
+		return getValue(REQUIRE_CONTACT_MOBILE_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactMobileEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_MOBILE_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactDateOfBirthEnrolment() {
+		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactDateOfBirthEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, false, value);
+	}
+	
+	public synchronized boolean getAvetmissOptionalQuestionsEnabled() {
+		try {
+			return Boolean.parseBoolean(getValue(AVETMISS_OPTIONAL_QUESTIONS_ENABLED, false));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public synchronized void setAvetmissOptionalQuestionsEnabled(boolean value) {
+		setValue(AVETMISS_OPTIONAL_QUESTIONS_ENABLED, false, Boolean.toString(value));
+	}
+	
+	public synchronized boolean getHideStudentDetailsFromTutor() {
+		try {
+			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public synchronized void setHideStudentDetailsFromTutor(boolean value) {
+		setValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false, Boolean.toString(value));
+	}
+	
+	public synchronized String getTutorFeedbackEmail() {
+		return getValue(TUTOR_FEEDBACK_EMAIL, false);
+	}
+	
+	public synchronized void setTutorFeedbackEmail(String value) {
+		setValue(TUTOR_FEEDBACK_EMAIL, false, value);
+	}
+	
+	public synchronized boolean getRedirectOnPaymentSuccessful() {
+		try {
+			return Boolean.parseBoolean(getValue(REDIRECT_ON_PAYMENT_SUCCESSFUL, false));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public synchronized void setRedirectOnPaymentSuccessful(boolean value) {
+		setValue(REDIRECT_ON_PAYMENT_SUCCESSFUL, false, Boolean.toString(value));
+	}
+	
+	public synchronized String getPaymentSuccessfulRedirectUrl() {
+		return getValue(PAYMENT_SUCCESSFUL_REDIRECT_URL, false);
+	}
+	
+	public synchronized void setPaymentSuccessfulRedirectUrl(String value) {
+		setValue(PAYMENT_SUCCESSFUL_REDIRECT_URL, false, value);
+	}
+	
+	public synchronized boolean getEnableSocialMediaLinks() {
+		try {
+			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS, false));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public synchronized void setEnableSocialMediaLinks(boolean value) {
+		setValue(ENABLE_SOCIAL_MEDIA_LINKS, false, Boolean.toString(value));
+	}
+	
+	public synchronized boolean getEnableSocialMediaLinksCourse() {
+		try {
+			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public synchronized void setEnableSocialMediaLinksCourse(boolean value) {
+		setValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false, Boolean.toString(value));
+	}
+	
+	public synchronized boolean getEnableSocialMediaLinksWebPage() {
+		try {
+			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public synchronized void setEnableSocialMediaLinksWebPage(boolean value) {
+		setValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false, Boolean.toString(value));
+	}
+	
+	public synchronized String getAddThisProfileId() {
+		return getValue(ADDTHIS_PROFILE_ID, false);
+	}
+	
+	public synchronized void setAddThisProfileId(String value) {
+		setValue(ADDTHIS_PROFILE_ID, false, value);
 	}
 }
