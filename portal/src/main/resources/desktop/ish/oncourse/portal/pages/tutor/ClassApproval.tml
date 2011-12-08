@@ -21,7 +21,7 @@
 		<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
 
 		<!-- textarea -->
-		<div class="textarea-text">There are problems with the class details as follows:</div>
+		<div class="textarea-text">I have feedback for this class details as follows:</div>
 
 		<div class="textarea mb10">
 			<div class="textarea-l"></div>

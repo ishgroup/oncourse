@@ -107,11 +107,11 @@ public class ClassApproval {
 			}
 		} else {
 			if (whyDeclined == null || whyDeclined.length() == 0) {
-				approvalForm.recordError(whyDeclinedField, "Please enter your problems with the class details");
+				approvalForm.recordError(whyDeclinedField, "Please enter your feedback for the class.");
 			} else {
 			
 				String subject = String.format("Class feedback from tutor %s %s", c.getGivenName(), c.getFamilyName());
-				String body = String.format("Tutor %s %s has indicated there is a problem with Class %s '%s'.\n%s", c.getGivenName(),
+				String body = String.format("Tutor %s %s has submitted the following feedback for the class %s '%s'.\n%s", c.getGivenName(),
 						c.getFamilyName(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
 	
 				College college = courseClass.getCollege();
