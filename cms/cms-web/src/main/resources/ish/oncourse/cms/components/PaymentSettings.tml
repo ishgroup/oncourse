@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	
+	<t:zone t:id="paymentSettingsZone" t:update="show">
+		<t:form t:id="paymentSettingsForm" t:zone="paymentSettingsZone">
+		
+			<t:if test="saved">
+				<script>
+					setTimeout(function() {
+						jQuery("#payment-settings-saved").hide();
+					}, 5000);
+				</script>
+				<div id="payment-settings-saved">
+					<h3>Saved.</h3>
+				</div>
+			</t:if>
+		
+			<div class="cms-set-ops">
+				<t:checkbox t:id="redirectCheckbox" value="redirect"/>
+				<label for="redirectCheckbox">After payment successful redirect user to URL </label><t:textfield t:id="urlField" class="cms-field" value="redirectToUrl"/>
+			</div>
+			
+			<div class="cms-btns">
+				<t:submit id="save" class="cms-but cms-btn-next cms-settings-button" value="Save"/>
+			</div>
+		</t:form>
+	</t:zone>
+	
+	<script type="text/javascript">
+		Event.observe('${paymentSettingsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
+	</script>
+	
+</t:container>

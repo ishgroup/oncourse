@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+
+	<t:zone t:id="settingsZone" t:update="show">
+
+		<t:form t:id="settingsForm" t:zone="settingsZone">
+		
+			<t:if test="saved">
+				<script>
+					setTimeout(function() {
+						jQuery("#contact-settings-saved").hide();
+					}, 5000);
+				</script>
+				<div id="contact-settings-saved">
+					<h3>Saved.</h3>
+				</div>
+			</t:if>
+		
+			<div class="cms-set-container">
+				<div class="cms-set-name"></div>
+
+				<div class="cms-set-col">
+					<h5 class="cms-block-sub-title">Enrolment</h5>
+				</div>
+				<div class="cms-set-col">
+					<h5 class="cms-block-sub-title">Waiting list</h5>
+				</div>
+				<div class="cms-set-col">
+					<h5 class="cms-block-sub-title">Mailing list</h5>
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">First name</div>
+
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Last name</div>
+
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Email</div>
+
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+				<div class="cms-set-col">
+					<span data-pub="hidden">Required</span>
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Address</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentAddressState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListAddressState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListAddressState" />
+				</div>
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Suburb</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentSuburbState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListSuburbState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListSuburbState" />
+				</div>
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">State</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentStateState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListStateState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListStateState" />
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Postcode</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentPostcodeState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListAddressState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListAddressState" />
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Phone</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentPhoneState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListPhoneState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListPhoneState" />
+				</div>
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Mobile</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentMobileState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListMobileState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListMobileState" />
+				</div>
+
+			</div>
+
+			<div class="cms-set-container">
+				<div class="cms-set-name">Date of birth</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentDateOfBirthState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListDateOfBirthState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListDateOfBirthState" />
+				</div>
+			</div>
+
+
+
+			<div class="cms-set-opts">
+				<t:checkbox t:id="avetmissCheckbox" value="avetmissQuestionsEnabled" />
+				<label for="avetmissCheckbox">Enable AVETMISS optional questions</label>
+			</div>
+
+			<div class="cms-btns">
+				<t:submit t:id="save" value="Save" class="cms-but cms-btn-next cms-settings-button"/>
+			</div>
+			
+		</t:form>
+
+	</t:zone>
+	
+	<script type="text/javascript">
+		Event.observe('${settingsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
+	</script>
+	
+</t:container>

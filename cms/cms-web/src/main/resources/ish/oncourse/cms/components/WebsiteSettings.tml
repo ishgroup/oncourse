@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter" lang="en">
+	
+	<t:zone t:id="websiteSettingsZone" t:update="show">
+		
+		<t:form t:id="websiteSettingsForm" t:zone="websiteSettingsZone">
+		
+			<t:if test="saved">
+				<script>
+					setTimeout(function() {
+						jQuery("#website-settings-saved").hide();
+					}, 5000);
+				</script>
+				<div id="website-settings-saved">
+					<h3>Saved.</h3>
+				</div>
+			</t:if>
+		
+			<div class="cms-set-ops">
+				
+				<script type="text/javascript">
+					jQuery(function() {
+						checkState();
+						jQuery(".enable-sm-checkbox").click(checkState());
+					});
+					
+					function checkState() {
+						if (jQuery(".enable-sm-checkbox").attr("checked")) {
+							jQuery(".sm-checkbox").removeAttr("disabled");
+						}
+						else {
+							jQuery(".sm-checkbox").attr("disabled", true);
+						}
+					}
+				</script>
+				
+				<t:checkbox t:id="socialMediaCheckbox" class="enable-sm-checkbox" onChange="checkState()" value="enableSocialMedia"/>
+				<label for="socialMediaCheckbox">Enable social media links.</label>
+				AddThis profile id <t:textfield t:id="addthisProfileField" class="cms-field" value="addthisProfileId"/>
+				
+				<a href="http://www.addthis.com/">Click here</a> to create one.
+				<div class="cms-set-ops">
+					Enable for this pages:<br/>
+					<ul class="cms-sub-options">
+						<li><t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/><label for="enableForCourseCheckbox">Course</label></li>
+						<li><t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/><label for="enableForWebPageCheckbox">Web page</label></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="cms-btns">
+				<t:submit id="save" class="cms-but cms-btn-next cms-settings-button" value="Save"/>
+			</div>
+		</t:form>
+	</t:zone>
+	
+	<script type="text/javascript">
+		Event.observe('${websiteSettingsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
+	</script>
+	
+</t:container>

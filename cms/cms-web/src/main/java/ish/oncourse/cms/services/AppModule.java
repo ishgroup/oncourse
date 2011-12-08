@@ -7,6 +7,8 @@ import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.linktransform.URLRewriteRequestFilter;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
@@ -20,6 +22,9 @@ import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.ServiceBuilder;
+import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -38,6 +43,10 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 		UIModule.class })
 		
 public class AppModule {
+	
+	public static void bind(ServiceBinder binder) {
+		binder.bind(PreferenceController.class, PreferenceController.class);
+	}
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
