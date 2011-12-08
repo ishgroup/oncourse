@@ -12,6 +12,7 @@ import ish.math.MoneyRounding;
 import ish.oncourse.model.College;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
+import ish.oncourse.model.DiscountMembership;
 import ish.oncourse.model.InvoiceLineDiscount;
 
 /**
@@ -47,6 +48,7 @@ public abstract class _Discount extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
+    public static final String DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY = "discountMembershipProducts";
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
 
     public static final String ID_PK_COLUMN = "id";
@@ -235,6 +237,18 @@ public abstract class _Discount extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
         return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
+    }
+
+
+    public void addToDiscountMembershipProducts(DiscountMembership obj) {
+        addToManyTarget("discountMembershipProducts", obj, true);
+    }
+    public void removeFromDiscountMembershipProducts(DiscountMembership obj) {
+        removeToManyTarget("discountMembershipProducts", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiscountMembership> getDiscountMembershipProducts() {
+        return (List<DiscountMembership>)readProperty("discountMembershipProducts");
     }
 
 

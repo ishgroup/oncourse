@@ -13,12 +13,16 @@ import ish.oncourse.model.Certificate;
 import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.ContactRelation;
+import ish.oncourse.model.ContactRelationType;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
+import ish.oncourse.model.DiscountMembership;
+import ish.oncourse.model.DiscountMembershipRelationType;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Instruction;
 import ish.oncourse.model.Invoice;
@@ -37,6 +41,8 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Preference;
+import ish.oncourse.model.Product;
+import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.model.Room;
@@ -96,12 +102,16 @@ public abstract class _College extends CayenneDataObject {
     public static final String CERTIFICATES_PROPERTY = "certificates";
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
     public static final String CONCESSION_TYPES_PROPERTY = "concessionTypes";
+    public static final String CONTACT_RELATION_TYPES_PROPERTY = "contactRelationTypes";
+    public static final String CONTACT_RELATIONS_PROPERTY = "contactRelations";
     public static final String CONTACTS_PROPERTY = "contacts";
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
     public static final String COURSES_PROPERTY = "courses";
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
+    public static final String DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY = "discountMembershipRelationTypes";
+    public static final String DISCOUNT_MEMBERSHIPS_PROPERTY = "discountMemberships";
     public static final String DISCOUNTS_PROPERTY = "discounts";
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String INSTRUCTIONS_PROPERTY = "instructions";
@@ -119,6 +129,8 @@ public abstract class _College extends CayenneDataObject {
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
     public static final String PAYMENTS_OUT_PROPERTY = "paymentsOut";
     public static final String PREFERENCES_PROPERTY = "preferences";
+    public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
+    public static final String PRODUCTS_PROPERTY = "products";
     public static final String QUEUED_RECORDS_PROPERTY = "queuedRecords";
     public static final String QUEUED_TRANSACTIONS_PROPERTY = "queuedTransactions";
     public static final String ROOMS_PROPERTY = "rooms";
@@ -397,6 +409,30 @@ public abstract class _College extends CayenneDataObject {
     }
 
 
+    public void addToContactRelationTypes(ContactRelationType obj) {
+        addToManyTarget("contactRelationTypes", obj, true);
+    }
+    public void removeFromContactRelationTypes(ContactRelationType obj) {
+        removeToManyTarget("contactRelationTypes", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<ContactRelationType> getContactRelationTypes() {
+        return (List<ContactRelationType>)readProperty("contactRelationTypes");
+    }
+
+
+    public void addToContactRelations(ContactRelation obj) {
+        addToManyTarget("contactRelations", obj, true);
+    }
+    public void removeFromContactRelations(ContactRelation obj) {
+        removeToManyTarget("contactRelations", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<ContactRelation> getContactRelations() {
+        return (List<ContactRelation>)readProperty("contactRelations");
+    }
+
+
     public void addToContacts(Contact obj) {
         addToManyTarget("contacts", obj, true);
     }
@@ -466,6 +502,30 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<DiscountCourseClass> getDiscountCourseClasses() {
         return (List<DiscountCourseClass>)readProperty("discountCourseClasses");
+    }
+
+
+    public void addToDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
+        addToManyTarget("discountMembershipRelationTypes", obj, true);
+    }
+    public void removeFromDiscountMembershipRelationTypes(DiscountMembershipRelationType obj) {
+        removeToManyTarget("discountMembershipRelationTypes", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiscountMembershipRelationType> getDiscountMembershipRelationTypes() {
+        return (List<DiscountMembershipRelationType>)readProperty("discountMembershipRelationTypes");
+    }
+
+
+    public void addToDiscountMemberships(DiscountMembership obj) {
+        addToManyTarget("discountMemberships", obj, true);
+    }
+    public void removeFromDiscountMemberships(DiscountMembership obj) {
+        removeToManyTarget("discountMemberships", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiscountMembership> getDiscountMemberships() {
+        return (List<DiscountMembership>)readProperty("discountMemberships");
     }
 
 
@@ -670,6 +730,30 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Preference> getPreferences() {
         return (List<Preference>)readProperty("preferences");
+    }
+
+
+    public void addToProductItems(ProductItem obj) {
+        addToManyTarget("productItems", obj, true);
+    }
+    public void removeFromProductItems(ProductItem obj) {
+        removeToManyTarget("productItems", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<ProductItem> getProductItems() {
+        return (List<ProductItem>)readProperty("productItems");
+    }
+
+
+    public void addToProducts(Product obj) {
+        addToManyTarget("products", obj, true);
+    }
+    public void removeFromProducts(Product obj) {
+        removeToManyTarget("products", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Product> getProducts() {
+        return (List<Product>)readProperty("products");
     }
 
 

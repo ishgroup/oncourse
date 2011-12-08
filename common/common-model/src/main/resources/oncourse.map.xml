@@ -2483,12 +2483,15 @@
 	<obj-relationship name="country" source="Contact" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
+	<obj-relationship name="memberships" source="Contact" target="Membership" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
+	<obj-relationship name="products" source="Contact" target="ProductItem" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Cascade" db-relationship-path="student"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
+	<obj-relationship name="vouchers" source="Contact" target="Voucher" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="college" source="ContactRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
 	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
@@ -2515,6 +2518,7 @@
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
+	<obj-relationship name="discountMembershipProducts" source="Discount" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discount_membershipProducts"/>
 	<obj-relationship name="invoiceLineDiscounts" source="Discount" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="college" source="DiscountConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="concessionType" source="DiscountConcessionType" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
