@@ -4,6 +4,7 @@ import java.util.List;
 
 import ish.common.types.ExpiryType;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountMembership;
 import ish.oncourse.model.Product;
 
 /**
@@ -16,6 +17,7 @@ public abstract class _MembershipProduct extends Product {
 
     public static final String EXPIRY_DAYS_PROPERTY = "expiryDays";
     public static final String EXPIRY_TYPE_PROPERTY = "expiryType";
+    public static final String DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY = "discountMembershipProducts";
     public static final String DISCOUNTS_AVAILABLE_PROPERTY = "discountsAvailable";
 
     public static final String ID_PK_COLUMN = "id";
@@ -33,6 +35,18 @@ public abstract class _MembershipProduct extends Product {
     public ExpiryType getExpiryType() {
         return (ExpiryType)readProperty("expiryType");
     }
+
+    public void addToDiscountMembershipProducts(DiscountMembership obj) {
+        addToManyTarget("discountMembershipProducts", obj, true);
+    }
+    public void removeFromDiscountMembershipProducts(DiscountMembership obj) {
+        removeToManyTarget("discountMembershipProducts", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiscountMembership> getDiscountMembershipProducts() {
+        return (List<DiscountMembership>)readProperty("discountMembershipProducts");
+    }
+
 
     public void addToDiscountsAvailable(Discount obj) {
         addToManyTarget("discountsAvailable", obj, true);

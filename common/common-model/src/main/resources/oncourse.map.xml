@@ -2529,7 +2529,7 @@
 	<obj-relationship name="college" source="DiscountMembership" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discount" source="DiscountMembership" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="discountMembershipRelationTypes" source="DiscountMembership" target="DiscountMembershipRelationType" deleteRule="Cascade" db-relationship-path="discountMembershipRelationTypes"/>
-	<obj-relationship name="membershipProduct" source="DiscountMembership" target="Product" deleteRule="Nullify" db-relationship-path="membershipProduct"/>
+	<obj-relationship name="membershipProduct" source="DiscountMembership" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="membershipProduct"/>
 	<obj-relationship name="college" source="DiscountMembershipRelationType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contactRelationType" source="DiscountMembershipRelationType" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="contactRelationType"/>
 	<obj-relationship name="discountMembership" source="DiscountMembershipRelationType" target="DiscountMembership" deleteRule="Nullify" db-relationship-path="discountMembership"/>
@@ -2561,6 +2561,7 @@
 	<obj-relationship name="college" source="Log" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="user" source="Log" target="WillowUser" deleteRule="Nullify" db-relationship-path="user"/>
 	<obj-relationship name="contact" source="Membership" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="discountMembershipProducts" source="MembershipProduct" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
 	<obj-relationship name="discountsAvailable" source="MembershipProduct" target="Discount" deleteRule="Deny" db-relationship-path="discountMembershipProducts.discount"/>
 	<obj-relationship name="college" source="Message" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="messagePeople" source="Message" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
@@ -2589,7 +2590,6 @@
 	<obj-relationship name="payment" source="PaymentTransaction" target="PaymentIn" deleteRule="Nullify" db-relationship-path="payment"/>
 	<obj-relationship name="college" source="Preference" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="Product" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="discountMemberships" source="Product" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="college" source="ProductItem" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>

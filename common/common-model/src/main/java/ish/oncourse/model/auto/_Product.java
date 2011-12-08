@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.DiscountMembership;
 import ish.oncourse.model.ProductItem;
 
 /**
@@ -28,7 +27,6 @@ public abstract class _Product extends CayenneDataObject {
     public static final String SKU_PROPERTY = "sku";
     public static final String TYPE_PROPERTY = "type";
     public static final String COLLEGE_PROPERTY = "college";
-    public static final String DISCOUNT_MEMBERSHIPS_PROPERTY = "discountMemberships";
     public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
 
     public static final String ID_PK_COLUMN = "id";
@@ -109,18 +107,6 @@ public abstract class _Product extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty("college");
-    }
-
-
-    public void addToDiscountMemberships(DiscountMembership obj) {
-        addToManyTarget("discountMemberships", obj, true);
-    }
-    public void removeFromDiscountMemberships(DiscountMembership obj) {
-        removeToManyTarget("discountMemberships", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<DiscountMembership> getDiscountMemberships() {
-        return (List<DiscountMembership>)readProperty("discountMemberships");
     }
 
 
