@@ -32,8 +32,10 @@ public class IshVersionListener {
 	@PreUpdate(value = Qualification.class)
 	public void preUpdateQualification(Qualification q) {
 		Long ishVersion = IshVersionHolder.getIshVersion();
-		if (shouldUpdateIshVersion(q)) {
-			q.setIshVersion(ishVersion);
+		if (ishVersion != null) {
+			if (shouldUpdateIshVersion(q)) {
+				q.setIshVersion(ishVersion);
+			}
 		}
 	}
 
@@ -53,8 +55,10 @@ public class IshVersionListener {
 	@PreUpdate(value = TrainingPackage.class)
 	public void preUpdateTrainingPackage(TrainingPackage tp) {
 		Long ishVersion = IshVersionHolder.getIshVersion();
-		if (shouldUpdateIshVersion(tp)) {
-			tp.setIshVersion(ishVersion);
+		if (ishVersion != null) {
+			if (shouldUpdateIshVersion(tp)) {
+				tp.setIshVersion(ishVersion);
+			}
 		}
 	}
 
@@ -74,8 +78,10 @@ public class IshVersionListener {
 	@PreUpdate(value = Module.class)
 	public void preUpdateModule(Module m) {
 		Long ishVersion = IshVersionHolder.getIshVersion();
-		if (shouldUpdateIshVersion(m)) {
-			m.setIshVersion(ishVersion);
+		if (ishVersion != null) {
+			if (shouldUpdateIshVersion(m)) {
+				m.setIshVersion(ishVersion);
+			}
 		}
 	}
 
