@@ -10,11 +10,9 @@
 		</div>
 	</div>
 
-	
 	<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false"></span>
-	<div class="description">
-		<t:outputraw value="${courseClassDetail}"></t:outputraw>
-	</div>
+	
+	
 	<div class="courseDescription expandable">
 		<t:outputraw value="${courseDetail}"></t:outputraw>
 	</div>
