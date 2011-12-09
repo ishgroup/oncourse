@@ -557,5 +557,23 @@
 		</createTable>
 		<addUniqueConstraint tableName="ProductItem" columnNames="angelId,collegeId" constraintName="angelAndCollegeForProductItem_unique"/>
 	</changeSet>
+	
+	<changeSet id="38" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Discount" columnName="isCodeRequired"/>
+			</not>
+		</preConditions>
+		<dropColumn tableName="Discount" columnName="isCodeRequired"/>
+	</changeSet>
+	
+	<changeSet id="39" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Discount" columnName="isConcession"/>
+			</not>
+		</preConditions>
+		<dropColumn tableName="Discount" columnName="isConcession"/>
+	</changeSet>
 
 </databaseChangeLog>

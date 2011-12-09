@@ -229,7 +229,6 @@
 		<db-attribute name="discountRate" type="DECIMAL" length="4" scale="2"/>
 		<db-attribute name="discountType" type="SMALLINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="isCodeRequired" type="BIT"/>
 		<db-attribute name="maximumDiscount" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="minimumDiscount" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
@@ -1038,7 +1037,6 @@
 		<obj-attribute name="discountAmount" type="ish.math.Money" db-attribute-path="discountAmount"/>
 		<obj-attribute name="discountRate" type="java.math.BigDecimal" db-attribute-path="discountRate"/>
 		<obj-attribute name="discountType" type="ish.common.types.DiscountType" db-attribute-path="discountType"/>
-		<obj-attribute name="isCodeRequired" type="java.lang.Boolean" db-attribute-path="isCodeRequired"/>
 		<obj-attribute name="maximumDiscount" type="ish.math.Money" db-attribute-path="maximumDiscount"/>
 		<obj-attribute name="minimumDiscount" type="ish.math.Money" db-attribute-path="minimumDiscount"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>

@@ -31,7 +31,6 @@ public abstract class _Discount extends CayenneDataObject {
     public static final String DISCOUNT_AMOUNT_PROPERTY = "discountAmount";
     public static final String DISCOUNT_RATE_PROPERTY = "discountRate";
     public static final String DISCOUNT_TYPE_PROPERTY = "discountType";
-    public static final String IS_CODE_REQUIRED_PROPERTY = "isCodeRequired";
     public static final String MAXIMUM_DISCOUNT_PROPERTY = "maximumDiscount";
     public static final String MINIMUM_DISCOUNT_PROPERTY = "minimumDiscount";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -107,13 +106,6 @@ public abstract class _Discount extends CayenneDataObject {
     }
     public DiscountType getDiscountType() {
         return (DiscountType)readProperty("discountType");
-    }
-
-    public void setIsCodeRequired(Boolean isCodeRequired) {
-        writeProperty("isCodeRequired", isCodeRequired);
-    }
-    public Boolean getIsCodeRequired() {
-        return (Boolean)readProperty("isCodeRequired");
     }
 
     public void setMaximumDiscount(Money maximumDiscount) {
