@@ -16,9 +16,9 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import ish.persistence.CommonPreferenceController;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -62,7 +62,7 @@ public class EnrolmentPaymentResult {
 	private IPaymentService paymentService;
 	
 	@Inject
-	private CommonPreferenceController preferenceController;
+	private PreferenceController preferenceController;
 
 	@InjectPage
 	private EnrolCourses enrolCourses;

@@ -8,8 +8,8 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.ui.utils.FormatUtils;
-import ish.persistence.CommonPreferenceController;
 
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -25,7 +25,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class EnrolmentPrice {
 
 	@Inject
-	private CommonPreferenceController preferenceService;
+	private PreferenceController preferenceService;
 
 	@Inject
 	private IDiscountService discountService;

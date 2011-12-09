@@ -9,6 +9,7 @@ import ish.oncourse.enrol.services.student.StudentService;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
@@ -33,6 +34,7 @@ public class AppModule {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
 		binder.bind(IStudentService.class, StudentService.class);
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
+		binder.bind(PreferenceController.class, PreferenceController.class);
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {

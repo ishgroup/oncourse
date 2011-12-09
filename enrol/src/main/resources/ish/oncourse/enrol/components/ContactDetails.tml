@@ -21,80 +21,96 @@
 					</span>
 				</p>
 			</t:if>
-			<p>
-				<label for="street">Address</label>
-				<span class="valid">
-					<t:textfield value="contact.street" class ="input-fixed" 
-									clientId="street" t:id="street"/>
-				</span>
-			</p>
-			<p>
-				<label for="suburb">Suburb</label>
-				<span class="${suburbInputClass}">
-					<script type="text/javascript">
-						initSuburbAutoComplete();
-					</script>
-					<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
-						clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
-					<span t:type="ui/HintComponent" validationMessage="suburbErrorMessage"/>
-				</span>
-			</p>
-			<p>
-				<label for="postcode">Postcode</label>
-				<span class="${postcodeInputClass}">
-					<t:textfield value="contact.postcode" class ="input-fixed" 
-							clientId="postcode" t:id="postcode" />
-					<span t:type="ui/HintComponent" validationMessage="postcodeErrorMessage" hint="message:postcode-hint"/>
-				</span>
-			</p>
-			<p>
-				<label for="state">State</label>
-				<span class="${stateInputClass}">
-					<t:textfield value="contact.state" class ="input-fixed" 
-							clientId="state" t:id="state" />
-					<span t:type="ui/HintComponent" validationMessage="stateErrorMessage" hint="message:state-hint"/>
-				</span>
-			</p>
-			<p>
-				<label for="homephone">Home Phone</label>
-				<span class="${homePhoneInputClass}">
-					<t:textfield value="contact.homePhoneNumber" class ="input-fixed" 
-							clientId="homephone" t:id="homePhone" />
-					<span t:type="ui/HintComponent" validationMessage="homePhoneErrorMessage" hint="message:home-phone-hint"/>
-				</span>
-			</p>
-			<p>
-				<label for="mobilephone">Mobile Phone</label>
-				<span class="${mobilePhoneInputClass}">
-					<t:textfield value="contact.mobilePhoneNumber" class ="input-fixed" 
-							clientId="mobilephone" t:id="mobilePhone" />
-					<span t:type="ui/HintComponent" validationMessage="mobilePhoneErrorMessage" hint="message:mobile-phone-hint"/>
-				</span>
-			</p>
-			<p>
-				<label for="businessphone">Work Phone</label>
-				<span class="${businessPhoneInputClass}">
-					<t:textfield value="contact.businessPhoneNumber" class ="input-fixed" 
-							clientId="businessphone" t:id="businessPhone" />
-					<span t:type="ui/HintComponent" validationMessage="businessPhoneErrorMessage" hint="message:business-phone-hint"/>
-				</span>
-			</p>
-			<p>
-				<label for="facsimile">Fax</label>
-				<span class="${faxInputClass}">
-					<t:textfield value="contact.faxNumber" class ="input-fixed" 
-							clientId="facsimile" t:id="fax" />
-					<span t:type="ui/HintComponent" validationMessage="faxErrorMessage" hint="message:fax-hint"/>
-				</span>
-			</p>
-			<p>
-				<label for="birthdate">Date of birth<em title="${message:required}">*</em></label>
-				<span class="${birthDateInputClass}">
-					<t:textField value="birthDateProperty" class ="input-fixed" 
-							clientId="birthdate" t:id="birthDate"/>
-					<span t:type="ui/HintComponent" validationMessage="birthDateErrorMessage" hint="message:birthdate-hint"/>
-				</span>
-			</p>
+			<t:if test="showAddress">
+				<p>
+					<label for="street">Address<t:if test="requireAddress"><em title="${message:required}">*</em></t:if></label>
+					<span class="valid">
+						<t:textfield value="contact.street" class ="input-fixed" 
+										clientId="street" t:id="street"/>
+					</span>
+				</p>
+			</t:if>
+			<t:if test="showSuburb">
+				<p>
+					<label for="suburb">Suburb<t:if test="requireSuburb"><em title="${message:required}">*</em></t:if></label>
+					<span class="${suburbInputClass}">
+						<script type="text/javascript">
+							initSuburbAutoComplete();
+						</script>
+						<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
+							clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
+						<span t:type="ui/HintComponent" validationMessage="suburbErrorMessage"/>
+					</span>
+				</p>
+			</t:if>
+			<t:if test="showPostcode">
+				<p>
+					<label for="postcode">Postcode<t:if test="requirePostcode"><em title="${message:required}">*</em></t:if></label>
+					<span class="${postcodeInputClass}">
+						<t:textfield value="contact.postcode" class ="input-fixed" 
+								clientId="postcode" t:id="postcode" />
+						<span t:type="ui/HintComponent" validationMessage="postcodeErrorMessage" hint="message:postcode-hint"/>
+					</span>
+				</p>
+			</t:if>
+			<t:if test="showState">
+				<p>
+					<label for="state">State<t:if test="requireState"><em title="${message:required}">*</em></t:if></label>
+					<span class="${stateInputClass}">
+						<t:textfield value="contact.state" class ="input-fixed" 
+								clientId="state" t:id="state" />
+						<span t:type="ui/HintComponent" validationMessage="stateErrorMessage" hint="message:state-hint"/>
+					</span>
+				</p>
+			</t:if>
+			<t:if test="showPhone">
+				<p>
+					<label for="homephone">Home Phone<t:if test="requirePhone"><em title="${message:required}">*</em></t:if></label>
+					<span class="${homePhoneInputClass}">
+						<t:textfield value="contact.homePhoneNumber" class ="input-fixed" 
+								clientId="homephone" t:id="homePhone" />
+						<span t:type="ui/HintComponent" validationMessage="homePhoneErrorMessage" hint="message:home-phone-hint"/>
+					</span>
+				</p>
+			</t:if>
+			<t:if test="showMobile">
+				<p>
+					<label for="mobilephone">Mobile Phone<t:if test="requireMobile"><em title="${message:required}">*</em></t:if></label>
+					<span class="${mobilePhoneInputClass}">
+						<t:textfield value="contact.mobilePhoneNumber" class ="input-fixed" 
+								clientId="mobilephone" t:id="mobilePhone" />
+						<span t:type="ui/HintComponent" validationMessage="mobilePhoneErrorMessage" hint="message:mobile-phone-hint"/>
+					</span>
+				</p>
+			</t:if>
+			<t:if test="showPhone">
+				<p>
+					<label for="businessphone">Work Phone<t:if test="requirePhone"><em title="${message:required}">*</em></t:if></label>
+					<span class="${businessPhoneInputClass}">
+						<t:textfield value="contact.businessPhoneNumber" class ="input-fixed" 
+								clientId="businessphone" t:id="businessPhone" />
+						<span t:type="ui/HintComponent" validationMessage="businessPhoneErrorMessage" hint="message:business-phone-hint"/>
+					</span>
+				</p>
+				<p>
+					<label for="facsimile">Fax<t:if test="requirePhone"><em title="${message:required}">*</em></t:if></label>
+					<span class="${faxInputClass}">
+						<t:textfield value="contact.faxNumber" class ="input-fixed" 
+								clientId="facsimile" t:id="fax" />
+						<span t:type="ui/HintComponent" validationMessage="faxErrorMessage" hint="message:fax-hint"/>
+					</span>
+				</p>
+			</t:if>
+			<t:if test="showDateOfBirth">
+				<p>
+					<label for="birthdate">Date of birth<t:if test="requireDateOfBirth"><em title="${message:required}">*</em></t:if></label>
+					<span class="${birthDateInputClass}">
+						<t:textField value="birthDateProperty" class ="input-fixed" 
+								clientId="birthdate" t:id="birthDate"/>
+						<span t:type="ui/HintComponent" validationMessage="birthDateErrorMessage" hint="message:birthdate-hint"/>
+					</span>
+				</p>
+			</t:if>
 			<p>
 				<label>Gender</label>
 				<div class="radio-list">

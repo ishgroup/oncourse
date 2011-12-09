@@ -44,9 +44,6 @@ public class EnrolmentContactEntry {
 	@Inject
 	private IConcessionsService concessionsService;
 
-	@Inject
-	private CommonPreferenceController preferenceService;
-
 	/**
 	 * tapestry services
 	 */

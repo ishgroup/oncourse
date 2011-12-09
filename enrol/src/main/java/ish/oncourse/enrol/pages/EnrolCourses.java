@@ -2,7 +2,6 @@ package ish.oncourse.enrol.pages;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
-import ish.math.Country;
 import ish.math.Money;
 import ish.oncourse.enrol.components.EnrolmentPaymentEntry;
 import ish.oncourse.enrol.components.EnrolmentPaymentProcessing;
@@ -26,19 +25,17 @@ import ish.oncourse.model.StudentConcession;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.utils.FormatUtils;
-import ish.persistence.CommonPreferenceController;
 
 import java.math.BigDecimal;
 import java.text.Format;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -58,6 +55,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
@@ -79,9 +77,6 @@ public class EnrolCourses {
 
 	@Inject
 	private IConcessionsService concessionsService;
-
-	@Inject
-	private CommonPreferenceController preferenceService;
 
 	@Inject
 	private IWebSiteService webSiteService;

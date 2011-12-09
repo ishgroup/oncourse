@@ -19,6 +19,7 @@ import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.ui.utils.FormatUtils;
 import ish.persistence.CommonPreferenceController;
 
@@ -69,7 +70,7 @@ public class EnrolmentPaymentEntry {
 	 * ish services
 	 */
 	@Inject
-	private CommonPreferenceController preferenceService;
+	private PreferenceController preferenceService;
 
 	@Inject
 	private IDiscountService discountService;
