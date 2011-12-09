@@ -41,14 +41,16 @@
 				AddThis profile id <t:textfield t:id="addthisProfileField" class="cms-field" value="addthisProfileId"/>
 				
 				<a href="http://www.addthis.com/">Click here</a> to create one.
-				<div class="cms-set-ops">
-					Enable for this pages:<br/>
-					<ul class="cms-sub-options">
-						<li><t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/><label for="enableForCourseCheckbox">Course</label></li>
-						<li><t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/><label for="enableForWebPageCheckbox">Web page</label></li>
-					</ul>
-				</div>
+
 			</div>
+            <br>
+            <div class="cms-set-ops">
+            					<h5 class="cms-block-sub-title">Enable for this pages:</h5>
+            					<ul class="cms-sub-options">
+            						<li><t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/><label for="enableForCourseCheckbox">Course</label></li>
+            						<li><t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/><label for="enableForWebPageCheckbox">Web page</label></li>
+            					</ul>
+            				</div>
 			
 			<div class="cms-btns">
 				<t:submit id="save" class="cms-but cms-btn-next cms-settings-button" value="Save"/>

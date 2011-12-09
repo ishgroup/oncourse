@@ -15,7 +15,7 @@
 				<div class="cms-set-left">
 
 					<ul class="cms-set-nav">
-						<li class="cms-hidden-li"><a href="#welcome"/></li>
+						<li class="cms-hidden-li"><a href="#welcome"></a></li>
 						<li><a href="#contact-settings">Contact Entry</a></li>
 						<li><a href="#portal-settings">skillsOnCourse</a></li>
 						<li><a href="#website-settings">Website</a></li>
