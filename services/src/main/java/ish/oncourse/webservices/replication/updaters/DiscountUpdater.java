@@ -17,13 +17,11 @@ public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discoun
 		entity.setDetail(stub.getDetail());
 		entity.setDiscountAmount(Money.valueOf(stub.getDiscountAmount()));
 		entity.setDiscountRate(stub.getDiscountRate());
-		entity.setIsCodeRequired(stub.isCodeRequired());
 		entity.setMaximumDiscount(Money.valueOf(stub.getMaximumDiscount()));
 		entity.setMinimumDiscount(Money.valueOf(stub.getMinimumDiscount()));
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
 		entity.setRoundingMode(TypesUtil.getEnumForDatabaseValue(stub.getRoundingMode(), MoneyRounding.class));
-		//entity.setRoundingMode(MoneyRounding.getEnumForDatabaseValue(stub.getRoundingMode()));
 		entity.setStudentAge(stub.getStudentAge());
 		entity.setStudentAgeOperator(stub.getStudentAgeOperator());
 		entity.setStudentEnrolledWithinDays(stub.getStudentEnrolledWithinDays());
@@ -31,9 +29,8 @@ public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discoun
 		entity.setValidFrom(stub.getValidFrom());
 		entity.setValidTo(stub.getValidTo());
 		Integer discountType = stub.getDiscountType();
-		if(discountType!=null){
+		if(discountType!=null) {
 			entity.setDiscountType(TypesUtil.getEnumForDatabaseValue(discountType, DiscountType.class));
-			//entity.setDiscountType(DiscountType.getEnumForDatabaseValue(discountType));
 		}
 	}
 }
