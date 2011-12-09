@@ -100,7 +100,11 @@ INSERT INTO %DESTINATIONDB%_college.Contact (angelId, collegeId, created, id, mo
 	c.businessPhoneNumber,c.cookieHash,c.countryID,c.dateOfBirth,c.emailAddress,c.familyName,
 	c.faxNumber,c.givenName,c.homePhoneNumber,c.isCompany,c.isMale,c.isMarketingViaEmailAllowed,
 	c.isMarketingViaPostAllowed,c.isMarketingViaSMSAllowed,c.mobilePhoneNumber,c.password,
-	c.postcode,c.state,c.street,c.studentID,c.suburb,c.taxFileNumber,c.tutorID,c.uniqueCode
+	c.postcode,c.state,c.street,c.studentID,c.suburb,c.taxFileNumber,c.tutorID,
+		CASE
+			WHEN (c.uniqueCode IS NULL) THEN MD5(c.id)
+			ELSE c.uniqueCode
+		END
 	FROM %SOURCEDB%_college.Contact AS c
 	JOIN %SOURCEDB%_college.Taggable AS t ON c.id = t.id AND t.entityType = 'Contact'
 	WHERE t.collegeId = @collegeId AND (t.isDeleted=0 OR t.isDeleted IS NULL);
