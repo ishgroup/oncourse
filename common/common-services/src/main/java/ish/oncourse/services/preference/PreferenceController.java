@@ -44,7 +44,6 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String REQUIRE_CONTACT_MOBILE_MAILING_LIST = "mailinglist.contact.mobile.required";
 	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST = "mailinglist.contact.birth.required";
 	
-	private static final String AVETMISS_OPTIONAL_QUESTIONS_ENABLED = "avetmiss.optionalquestions.enabled";
 	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
 	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
 	private static final String REDIRECT_ON_PAYMENT_SUCCESSFUL = "payment.successful.redirect";
@@ -411,19 +410,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setRequireContactDateOfBirthEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, false, value);
 	}
-	
-	public synchronized boolean getAvetmissOptionalQuestionsEnabled() {
-		try {
-			return Boolean.parseBoolean(getValue(AVETMISS_OPTIONAL_QUESTIONS_ENABLED, false));
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
-	public synchronized void setAvetmissOptionalQuestionsEnabled(boolean value) {
-		setValue(AVETMISS_OPTIONAL_QUESTIONS_ENABLED, false, Boolean.toString(value));
-	}
-	
+
 	public synchronized boolean getHideStudentDetailsFromTutor() {
 		try {
 			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));

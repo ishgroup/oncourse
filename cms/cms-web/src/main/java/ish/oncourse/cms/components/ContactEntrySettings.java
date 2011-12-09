@@ -1,9 +1,13 @@
 package ish.oncourse.cms.components;
 
+import ish.oncourse.model.College;
 import ish.oncourse.selectutils.StringSelectModel;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Component;
@@ -110,11 +114,17 @@ public class ContactEntrySettings {
 	@Inject
 	private PreferenceController preferenceController;
 	
+	@Inject
+	private IWebSiteService webSiteService;
+	
+	@Inject
+	private ICayenneService cayenneService;
+	
 	@SetupRender
 	void beforeRender() {
 		this.stateSelectModel = new StringSelectModel(new String[] {"Hide", "Show", "Required"});
 		
-		this.avetmissQuestionsEnabled = preferenceController.getAvetmissOptionalQuestionsEnabled();
+		this.avetmissQuestionsEnabled = webSiteService.getCurrentCollege().getRequiresAvetmiss();
 		
 		this.enrolmentAddressState = preferenceController.getRequireContactAddressEnrolment();
 		this.enrolmentSuburbState = preferenceController.getRequireContactSuburbEnrolment();
@@ -161,7 +171,15 @@ public class ContactEntrySettings {
 	
 	private void savePreferences() {
 		
-		preferenceController.setAvetmissOptionalQuestionsEnabled(avetmissQuestionsEnabled);
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		
+		College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
+		
+		if (college != null) {
+			college.setRequiresAvetmiss(this.avetmissQuestionsEnabled);
+		}
+		
+		context.commitChanges();
 		
 		preferenceController.setRequireContactAddressEnrolment(this.enrolmentAddressState);
 		preferenceController.setRequireContactSuburbEnrolment(this.enrolmentSuburbState);
