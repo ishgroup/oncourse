@@ -2,6 +2,7 @@ package ish.oncourse.ui.components.internal;
 
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 
@@ -20,9 +21,20 @@ public class ContentStructure {
 
     @Inject
     private ITextileConverter textileConverter;
+    
+    @Inject
+    private PreferenceController preferenceController;
 
     public String getRegionContent() {
         return visibility.getWebContent().accept(new ParsedContentVisitor(textileConverter));
+    }
+    
+    public boolean getAddThisEnabled() {
+    	return preferenceController.getEnableSocialMediaLinks() && preferenceController.getEnableSocialMediaLinksWebPage();
+    }
+    
+    public String getAddThisProfileId() {
+    	return preferenceController.getAddThisProfileId();
     }
 
 }

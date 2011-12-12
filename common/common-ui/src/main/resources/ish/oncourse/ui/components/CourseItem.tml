@@ -2,6 +2,11 @@
 	<div class="vevent courseItem">
 		<t:if t:test="isList" negate="true">
 			<h1 class="summary">${course.name}</h1>
+			<t:if t:test="addThisEnabled">
+				<div class="addthis">
+					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
+				</div>
+			</t:if>
 			<p:else>
 				<h2>
 					<a href="/course/${course.code}" class="url">${course.name}</a>

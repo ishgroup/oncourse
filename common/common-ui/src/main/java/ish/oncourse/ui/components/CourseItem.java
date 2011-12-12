@@ -3,6 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.html.IPlainTextExtractor;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 
@@ -42,6 +43,9 @@ public class CourseItem {
 
 	@Inject
 	private ITextileConverter textileConverter;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
 	public String getAvailMsg() {
 		int numberOfClasses = course.getEnrollableClasses().size();
@@ -173,5 +177,13 @@ public class CourseItem {
 		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(classes);
 		return classes;
+	}
+	
+	public boolean getAddThisEnabled() {
+		return preferenceController.getEnableSocialMediaLinks() && preferenceController.getEnableSocialMediaLinksCourse();
+	}
+	
+	public String getAddThisProfileId() {
+		return preferenceController.getAddThisProfileId();
 	}
 }
