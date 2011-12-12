@@ -6,9 +6,27 @@
 		
 	<document>
 		<entity name="course" dataSource="onCourseDS"
-			query="select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate  from Course c where c.isWebVisible=1"
-			deltaImportQuery="select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate from Course c where c.id='${dataimporter.delta.id}'"
-			deltaQuery="select c.id from Course c where c.isWebVisible=1 and c.modified &gt; '${dataimporter.last_index_time}'"
+			query="select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, s.suburb as sb, s.postcode as pc  from Course c 
+				   left join CourseClass cc on c.id=cc.courseId
+				   left join Room r on cc.roomId=r.id 
+				   inner join Site s on r.siteId=s.id where c.isWebVisible=1 union
+				   select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, s.suburb as sb, s.postcode as pc from Course c 
+				   left join CourseClass cc on c.id=cc.courseId
+				   left join Session ss on ss.courseClassId=cc.id
+				   left join Room r on ss.roomId=r.id
+				   inner join Site s on r.siteId=s.id where c.isWebVisible=1"
+			deltaImportQuery="select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, s.suburb as sb, s.postcode as pc  from Course c 
+				   left join CourseClass cc on c.id=cc.courseId
+				   left join Room r on cc.roomId=r.id 
+				   inner join Site s on r.siteId=s.id where c.id='${dataimporter.delta.id}' union
+				   select c.id, 'course' as type, c.name, c.detail, c.code, c.collegeId, (select IFNULL(min(s.startDate), DATE('2625-12-31')) from CourseClass cc inner join Session s on s.courseClassId=cc.id where cc.courseId=c.id and cc.isWebVisible=1 and s.startDate &gt; CURDATE()) as startDate, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc, s.suburb as sb, s.postcode as pc from Course c 
+				   left join CourseClass cc on c.id=cc.courseId
+				   left join Session ss on ss.courseClassId=cc.id
+				   left join Room r on ss.roomId=r.id
+				   inner join Site s on r.siteId=s.id where c.id='${dataimporter.delta.id}'"
+			deltaQuery="select c.id from Site s inner join Room r on r.siteId=s.id inner join CourseClass cc on cc.roomId=s.id inner join Course c on c.id=cc.courseId where c.isWebVisible=1 and s.modified &gt; '${dataimporter.last_index_time}' union 
+						select c.id from Site s inner join Room r on r.siteId=s.id inner join Session ss on ss.roomId=r.id inner join CourseClass cc on ss.courseClassId=cc.id inner join Course c on c.id=cc.courseId where c.isWebVisible=1 and s.modified &gt; '${dataimporter.last_index_time}'  union
+						select c.id from Course c where c.isWebVisible=1 and c.modified &gt; '${dataimporter.last_index_time}'"
 			pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
@@ -18,6 +36,9 @@
 			<field name="course_code" column="code" />
 			<field name="collegeId" column="collegeId" />
 			<field name="startDate" column="startDate" />
+			<field name="course_loc" column="loc" />
+			<field name="course_postcode" column="pc" />
+			<field name="course_suburb" column="sb" />
 
 			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
 				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end from CourseClass cc 
@@ -28,6 +49,7 @@
 				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}' or endDate &lt; CURDATE()"
 				parentDeltaQuery="select id from Course where id='{courseClass.courseId}'"
 				deletedPkQuery="select id from CourseClass where endDate &lt; CURDATE()">
+				
 				<field name="id" column="id" />
 				<field name="price" column="pr" />
 				<field name="class_code" column="code" template="${course.code}\-${courseClass.code}"/>
@@ -67,38 +89,7 @@
 					<field name="time" column="time" />
 					<field name="when" column="when" template="${course_session.dayName} ${course_session.dayType} ${course_session.time}"/>
 				</entity>
-				
-				<entity name="site" dataSource="onCourseDS" pk="id"
-					query="select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
-            	        inner join Room r on r.siteId=s.id
-                	    inner join CourseClass cc on cc.roomId=r.id
-                    	where s.isWebVisible=1 and cc.id='${courseClass.id}'
-                  		group by s.suburb, s.postcode
-            		  union
-            			select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
-		            	inner join Room r on r.siteId=s.id
-			            inner join Session ss on ss.roomId=r.id
-			            inner join CourseClass cc on cc.id=ss.courseClassId
-			            where s.isWebVisible=1 and cc.id='${courseClass.id}'
-		    	        group by s.suburb, s.postcode"
-					deltaImportQuery="select s.id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s where s.id='${dataimporter.delta.id}'"
-					deltaQuery="select id from Site where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'" 
-					parentDeltaQuery="select cc.id from Site s 
-						inner join Room r on r.siteId=s.id 
-						inner join CourseClass cc on cc.roomId=r.id 
-						where s.id='${site.id}' 
-					  union 
-					  	select cc.id from Site s 
-					  	inner join Room r on r.siteId=s.id 
-				  	inner join Session ss on ss.roomId=r.id
-				  	inner join CourseClass cc on cc.id=ss.courseClassId
-				  	where s.id='${site.id}'" processor="CachedSqlEntityProcessor">
-				  	
-					<field name="id" column="id"/>
-					<field name="course_loc" column="loc" />
-					<field name="course_postcode" column="pc" />
-					<field name="course_suburb" column="sb" />
-				</entity>
+		
 			</entity>
 
 			<entity name="coursetag" dataSource="onCourseDS" pk="id"
@@ -109,6 +100,7 @@
 				<field name="id" column="id"/>
 				<field name="tagId" column="tagId"/>
 			</entity>
+			
 		</entity>
 		
 	</document>
