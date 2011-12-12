@@ -5,9 +5,9 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.PotentialDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.ui.utils.FormatUtils;
 import ish.oncourse.utils.DiscountUtils;
-import ish.persistence.CommonPreferenceController;
 
 import java.text.Format;
 import java.text.NumberFormat;
@@ -28,7 +28,7 @@ public class CourseClassPrice {
 	private IDiscountService discountService;
 
 	@Inject
-	private CommonPreferenceController preferenceService;
+	private PreferenceController preferenceService;
 
 	@Parameter
 	@Property

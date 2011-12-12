@@ -3,9 +3,9 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.TextileFormField;
 import ish.oncourse.services.encrypt.EncryptionService;
 import ish.oncourse.services.mail.MailService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.TextileUtil;
-import ish.persistence.CommonPreferenceController;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class TextileForm {
 	private Request request;
 
 	@Inject
-	private CommonPreferenceController preferenceController;
+	private PreferenceController preferenceController;
 
 	@Inject
 	private IWebSiteService webSiteService;

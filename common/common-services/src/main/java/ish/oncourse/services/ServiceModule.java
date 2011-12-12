@@ -91,7 +91,6 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
-import ish.persistence.CommonPreferenceController;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
@@ -142,7 +141,7 @@ public class ServiceModule {
 		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(IPostCodeDbService.class, PostCodeDbService.class);
 
-		binder.bind(CommonPreferenceController.class, PreferenceController.class);
+		binder.bind(PreferenceController.class);
 		binder.bind(PreferenceControllerFactory.class);
 		binder.bind(EncryptionService.class);
 		binder.bind(MailService.class);

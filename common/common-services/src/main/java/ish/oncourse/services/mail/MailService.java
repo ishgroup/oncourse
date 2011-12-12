@@ -1,7 +1,7 @@
 package ish.oncourse.services.mail;
 
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.persistence.CommonPreferenceController;
 
 import java.util.Date;
 import java.util.Properties;
@@ -20,7 +20,7 @@ public class MailService {
 
 	private final static Logger LOGGER = Logger.getLogger(MailService.class);
 	@Inject
-	private CommonPreferenceController preferenceController;
+	private PreferenceController preferenceController;
 
 	@Inject
 	private IWebSiteService webSiteService;

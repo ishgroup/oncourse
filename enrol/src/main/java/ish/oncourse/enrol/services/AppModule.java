@@ -34,7 +34,6 @@ public class AppModule {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
 		binder.bind(IStudentService.class, StudentService.class);
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
-		binder.bind(PreferenceController.class, PreferenceController.class);
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
