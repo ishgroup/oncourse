@@ -45,7 +45,7 @@
 			</div>
             <br />
             <div class="cms-set-ops">
-            					<h5 class="cms-block-sub-title">Enable for this pages:</h5>
+            					<h5 class="cms-block-sub-title">Enable for these pages:</h5>
             					<ul class="cms-sub-options">
             						<li><t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/><label for="enableForCourseCheckbox">Course</label></li>
             						<li><t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/><label for="enableForWebPageCheckbox">Web page</label></li>
