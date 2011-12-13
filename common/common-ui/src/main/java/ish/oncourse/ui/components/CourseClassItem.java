@@ -38,6 +38,7 @@ public class CourseClassItem {
 	@Property
 	private CourseClass courseClass;
 
+	@SuppressWarnings("all")
 	@Property
 	private TutorRole tutorRole;
 
@@ -46,6 +47,7 @@ public class CourseClassItem {
 
 	private List<String> timetableLabels;
 
+	@SuppressWarnings("all")
 	@Parameter
 	@Property
 	private boolean isList;
@@ -54,12 +56,15 @@ public class CourseClassItem {
 	@Property
 	private boolean linkToLocationsMap;
 
+	@SuppressWarnings("all")
 	@Property
 	private Format dateFormat;
 
+	@SuppressWarnings("all")
 	@Property
 	private Format timeFormat;
 
+	@SuppressWarnings("all")
 	@Property
 	private List<String> weekdays = TimestampUtilities.DaysOfWeekNames;
 
@@ -170,6 +175,14 @@ public class CourseClassItem {
 
 	public boolean isCurrentClass() {
 		return !courseClass.isCancelled() && !courseClass.hasEnded();
+	}
+	
+	public boolean isHasAvailableEnrolmentPlaces() {
+		return courseClass != null && courseClass.isHasAvailableEnrolmentPlaces();
+	}
+	
+	public boolean isPaymentGatewayEnabled() {
+		return courseClass != null && courseClass.getCollege() != null && courseClass.getCollege().isPaymentGatewayEnabled();
 	}
 
 	public boolean isAddedClass() {
