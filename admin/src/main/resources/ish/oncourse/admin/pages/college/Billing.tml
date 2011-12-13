@@ -19,6 +19,15 @@
 			</td>
 		</tr>
 	</table>
+	
+	<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>
+	<label for="webPaymentCheckbox">web payment gateway enabled</label>
+	<br/>
+	<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>
+	<label for="qePaymentCheckbox">onCourse QuickEnrol payments enabled</label>
+	<br/>
+	<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>
+	<label for="amexCheckbox">Amex card type enabled</label>
 
 	<h2>License Fees</h2>
 

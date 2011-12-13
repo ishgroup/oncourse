@@ -2,13 +2,16 @@ package ish.oncourse.admin.pages.college;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.LicenseFee;
+import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
+import ish.persistence.CommonPreferenceController;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -33,6 +36,15 @@ public class Billing {
 	@Property
 	private String infoKey;
 	
+	@Property
+	private boolean webPaymentEnabled;
+	
+	@Property
+	private boolean qePaymentEnabled;
+	
+	@Property
+	private boolean amexEnabled;
+	
 	@Inject
 	private ICayenneService cayenneService;
 	
@@ -44,6 +56,9 @@ public class Billing {
 	@SetupRender
 	void setupRender() {
 		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		this.webPaymentEnabled = college.getIsWebSitePaymentsEnabled();
+		this.qePaymentEnabled = college.getIsWebServicePaymentsEnabled();
 		
 		this.licenseInfo = new LinkedHashMap<String, Map<String,String>>();
 		for (LicenseFee fee : college.getLicenseFees()) {
@@ -70,18 +85,44 @@ public class Billing {
 			
 			this.licenseInfo.put(fee.getKeyCode(), info);
 		}
+		
+		for (Preference p : college.getPreferences()) {
+			if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
+				this.amexEnabled = Boolean.parseBoolean(p.getValueString());
+				break;
+			}
+		}
 	}
 	
 	@OnEvent(component="billingForm", value="success")
 	void submitted() throws Exception {
 		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = cayenneService.newContext();
 		
 		College col = (College) context.localObject(college.getObjectId(), null);
 		if (col != null) {
 			col.setPaymentGatewayAccount(college.getPaymentGatewayAccount());
 			col.setPaymentGatewayPass(college.getPaymentGatewayPass());
+			col.setIsWebSitePaymentsEnabled(this.webPaymentEnabled);
+			col.setIsWebServicePaymentsEnabled(this.qePaymentEnabled);
+			
+			boolean found = false;
+			for (Preference p : col.getPreferences()) {
+				if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
+					p.setValueString(Boolean.toString(this.amexEnabled));
+					found = true;
+				}
+			}
+			if (!found) {
+				Date now = new Date();
+				Preference p = context.newObject(Preference.class);
+				p.setCollege(col);
+				p.setName(CommonPreferenceController.SERVICES_CC_AMEX_ENABLED);
+				p.setValueString(Boolean.toString(this.amexEnabled));
+				p.setCreated(now);
+				p.setModified(now);
+			}
 		}
 		
 		for (LicenseFee fee : college.getLicenseFees()) {
