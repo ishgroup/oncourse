@@ -159,22 +159,20 @@ public class CourseService implements ICourseService {
 			}
 			orderingMap.put(id, i);
 		}
-		
-		Expression expr = ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, ids).andExp(getSiteQualifier())
+		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids).andExp(getSiteQualifier())
 				.andExp(ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true));
 
 		SelectQuery q = new SelectQuery(Course.class, expr);
+
 		appyCourseCacheSettings(q);
-		
 		List<Course> courses = cayenneService.sharedContext().performQuery(q);
-		
 		Collections.sort(courses, new Comparator<Course>() {
+
 			@Override
 			public int compare(Course o1, Course o2) {
 				return orderingMap.get(o1.getId()).compareTo(orderingMap.get(o2.getId()));
 			}
 		});
-		
 		return courses;
 	}
 

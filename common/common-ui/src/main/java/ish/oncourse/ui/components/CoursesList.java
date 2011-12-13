@@ -32,7 +32,7 @@ public class CoursesList {
 	private Course course;
 
 	public boolean isHasMoreItems() {
-		return getIndex() < getNumberOfCourses();
+		return itemIndex < coursesCount;
 	}
 
 	public String getSearchParamsStr() {
@@ -48,13 +48,5 @@ public class CoursesList {
 		}
 
 		return result.toString();
-	}
-
-	public Integer getIndex() {
-		return itemIndex;
-	}
-
-	public Integer getNumberOfCourses() {
-		return coursesCount;
 	}
 }

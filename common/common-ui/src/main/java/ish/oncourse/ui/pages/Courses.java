@@ -15,10 +15,8 @@ import ish.oncourse.util.ValidationErrors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -53,13 +51,10 @@ public class Courses {
 
 	@Inject
 	private ICourseService courseService;
-	
 	@Inject
 	private ISearchService searchService;
-	
 	@Inject
 	private ITagService tagService;
-	
 	@Inject
 	private ITextileConverter textileConverter;
 
@@ -118,6 +113,7 @@ public class Courses {
 			}
 		}
 
+		this.itemIndex = start;
 		this.isException = false;
 
 		try {
@@ -136,6 +132,7 @@ public class Courses {
 	}
 
 	private void updateIdsAndIndexes() {
+		itemIndex = itemIndex + courses.size();
 		for (Course course : courses) {
 			if (!coursesIds.contains(course.getId()))
 				coursesIds.add(course.getId());
@@ -211,9 +208,9 @@ public class Courses {
 	}
 
 	private List<Course> searchCourses() {
-		int start = getIntParam(request.getParameter("start"), 0);
+		int start = getIntParam(request.getParameter("start"), itemIndex);
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
-		this.itemIndex = start;
+
 		searchParams = getCourseSearchParams();
 
 		return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
@@ -225,35 +222,21 @@ public class Courses {
 	 * @return
 	 */
 	private List<Course> searchCourses(int start, int rows) {
-	
-		int numberFound = 0;
-		boolean hasMoreDocs = true;
-		Set<String> ids = new LinkedHashSet<String>();
-		
-		while (numberFound < rows && hasMoreDocs) {
-			QueryResponse resp = searchService.searchCourses(searchParams, start, rows);
-			
-			if (this.coursesCount == null) {
-				int docCount = ((Number) resp.getResults().getNumFound()).intValue();
-				this.coursesCount = docCount;
-			}
-			
-			for (SolrDocument doc : resp.getResults()) {
-				String id = (String) doc.getFieldValue("id");
-				if (!ids.contains(id)) {
-					ids.add(id);
-					numberFound++;
-				}
-				itemIndex++;
-			}	
-			
-			start += rows;
-			hasMoreDocs = (rows == resp.getResults().size());
+
+		QueryResponse resp = searchService.searchCourses(searchParams, start, rows);
+
+		LOGGER.info(String.format("The number of courses found: %s", resp.getResults().size()));
+		if (coursesCount == null) {
+			coursesCount = ((Number) resp.getResults().getNumFound()).intValue();
 		}
-		
-		List<Course> list = courseService.loadByIds(ids.toArray(new Object[ids.size()]));
-		LOGGER.info(String.format("The number of courses found: %s", coursesCount));
-		return list;
+
+		List<String> ids = new ArrayList<String>(resp.getResults().size());
+
+		for (SolrDocument doc : resp.getResults()) {
+			ids.add((String) doc.getFieldValue("id"));
+		}
+
+		return courseService.loadByIds(ids.toArray());
 	}
 
 	public boolean isHasAnyItems() {
