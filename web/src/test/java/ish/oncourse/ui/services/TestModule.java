@@ -19,12 +19,12 @@ import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.ui.pages.TimelineDataTest;
-import ish.persistence.CommonPreferenceController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -217,15 +217,15 @@ public class TestModule {
 		configuration.add(ICayenneService.class, cayenneServiceOverride);
 	}
 
-	public CommonPreferenceController buildCommonPreferenceControllerOverride() {
-		CommonPreferenceController mock = mock(CommonPreferenceController.class);
+	public PreferenceController buildPreferenceControllerOverride() {
+		PreferenceController mock = mock(PreferenceController.class);
 		when(mock.getEmailFromAddress()).thenReturn("somevalidmail@gmail.com");
 		return mock;
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-			@Local CommonPreferenceController preferenceController) {
-		configuration.add(CommonPreferenceController.class, preferenceController);
+			@Local PreferenceController preferenceController) {
+		configuration.add(PreferenceController.class, preferenceController);
 	}
 
 }
