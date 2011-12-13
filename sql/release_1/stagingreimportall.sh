@@ -1,7 +1,8 @@
 #!/usr/local/bin/bash
 
-ids="12 111 2006 1323 3014 2703 2291 6 272 3184 50 1234 3768 2074 25 1296"
-#1222, 10,3699, 19, 3219, 2396, 2956, 3861, 299, 334, 2871, 338, 3093 have been completed, 3438 tas test, removed
+ids="3014 111 2006 1323 2703 2291 6 3184 50 1234 3768 2074 25 1296"
+#1222, 10,3699, 19, 3219, 2396, 2956, 3861, 299, 334, 2871, 338, 3093, 12, 272 have been completed, 3438 tas test, 
+removed
 
 for id in ${ids}; do
 	echo "importing collegeid = ${id}"
