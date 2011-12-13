@@ -184,6 +184,10 @@ public class CourseClassItem {
 	public boolean isPaymentGatewayEnabled() {
 		return courseClass != null && courseClass.getCollege() != null && courseClass.getCollege().isPaymentGatewayEnabled();
 	}
+	
+	public boolean isHasManySessions() {
+		return courseClass != null && courseClass.isHasManySessions() && courseClass.isSessionsHaveDifferentTimes();
+	}
 
 	public boolean isAddedClass() {
 		List<Long> classIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);

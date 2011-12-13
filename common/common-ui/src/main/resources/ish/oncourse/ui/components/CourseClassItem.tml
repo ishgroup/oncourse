@@ -22,7 +22,7 @@
 							</abbr> - <abbr class="dtend" title="">
 								<t:output format="timeFormat" value="courseClass.firstSession.endDate" />
 							</abbr>
-							<t:if t:test="courseClass.hasManySessions"> (first session)</t:if> 
+							<t:if t:test="hasManySessions"> (first session)</t:if> 
 						</a>
 						<br />
 						<a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
