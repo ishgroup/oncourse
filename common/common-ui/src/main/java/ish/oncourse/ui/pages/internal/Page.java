@@ -1,22 +1,16 @@
 package ish.oncourse.ui.pages.internal;
 
+import ish.oncourse.model.WebNode;
+import ish.oncourse.services.node.IWebNodeService;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
-
-import ish.oncourse.linktransform.PageIdentifier;
-import ish.oncourse.model.WebNode;
-import ish.oncourse.services.courseclass.CourseClassService;
-import ish.oncourse.services.node.IWebNodeService;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.internal.EmptyEventContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.PageRenderRequestParameters;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
 
