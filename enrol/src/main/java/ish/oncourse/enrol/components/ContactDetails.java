@@ -557,7 +557,7 @@ public class ContactDetails {
    
    public boolean getShowAddress() {
 	   String require = preferenceController.getRequireContactAddressEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require)) {
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
@@ -573,7 +573,7 @@ public class ContactDetails {
    
    public boolean getShowSuburb() {
 	   String require = preferenceController.getRequireContactSuburbEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require)) {
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
@@ -589,7 +589,7 @@ public class ContactDetails {
    
    public boolean getShowState() {
 	   String require = preferenceController.getRequireContactStateEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require)) {
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
@@ -605,7 +605,7 @@ public class ContactDetails {
    
    public boolean getShowPostcode() {
 	   String require = preferenceController.getRequireContactPostcodeEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require)) {
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
@@ -621,7 +621,7 @@ public class ContactDetails {
    
    public boolean getShowPhone() {
 	   String require = preferenceController.getRequireContactPhoneEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require)) {
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
@@ -637,7 +637,7 @@ public class ContactDetails {
    
    public boolean getShowMobile() {
 	   String require = preferenceController.getRequireContactMobileEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require)) {
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
@@ -653,7 +653,7 @@ public class ContactDetails {
    
    public boolean getShowDateOfBirth() {
 	   String require = preferenceController.getRequireContactDateOfBirthEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require)) {
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
