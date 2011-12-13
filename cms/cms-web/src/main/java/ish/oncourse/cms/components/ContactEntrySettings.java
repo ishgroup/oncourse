@@ -122,7 +122,7 @@ public class ContactEntrySettings {
 	
 	@SetupRender
 	void beforeRender() {
-		this.stateSelectModel = new StringSelectModel(new String[] {"Hide", "Show", "Required"});
+		this.stateSelectModel = new StringSelectModel(new String[] {"Show", "Hide", "Required"});
 		
 		this.avetmissQuestionsEnabled = webSiteService.getCurrentCollege().getRequiresAvetmiss();
 		
