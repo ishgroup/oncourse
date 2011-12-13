@@ -1,8 +1,8 @@
 package ish.oncourse.admin.pages.college;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
@@ -94,7 +94,7 @@ public class Preferences {
 	}
 	
 	private Map<String, String> initPreferences() {
-		Map<String, String> prefs = new HashMap<String, String>();
+		Map<String, String> prefs = new TreeMap<String, String>();
 		
 		for (Preference pref : college.getPreferences()) {
 			prefs.put(pref.getName(), pref.getValueString());
