@@ -301,10 +301,20 @@ public class Billing {
 	}
 
 	public String getCcOfficeTotal() {
-		Object ccOffice = billingData.get(college.getId()).get("ccOffice");
-		Object ccOfficeCost = licenseData.get(college.getId()).get("cc-office");
+		Long ccOffice = (Long) billingData.get(college.getId()).get("ccOffice");
+		BigDecimal ccOfficeCost = (BigDecimal) licenseData.get(college.getId()).get("cc-office");
+		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get("cc-office-free");
 		if (ccOffice != null && ccOfficeCost != null) {
-			return moneyFormat.format((Long) ccOffice * ((BigDecimal) ccOfficeCost).doubleValue());
+			if (ccOfficeFree == null) {
+				ccOfficeFree = new Integer(0);
+			}
+			
+			if (ccOfficeFree < ccOffice) {
+				return moneyFormat.format((ccOffice - ccOfficeFree) * ccOfficeCost.doubleValue());
+			}
+			else {
+				return moneyFormat.format(0.0);
+			}
 		}
 		else {
 			return moneyFormat.format(0.0);
