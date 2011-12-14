@@ -30,6 +30,8 @@
 			jQuery( "#dateFrom" ).datepicker({ dateFormat: 'dd/mm/yy' });
 			jQuery( "#dateTo" ).datepicker({ dateFormat: 'dd/mm/yy' });
 			
+			jQuery("#dateFrom").val(jQuery("#lastUpdate").text());
+			
 			var statusUpdate = function() {
 				
 				jQuery.getJSON('${ntisResultUrl}', function(data) {
@@ -38,7 +40,6 @@
 			  		
 			  		jQuery.each(data, function(key, val) {
 			  			if (val.match(/^END_.*$/)) {
-			  				jQuery("#dateFrom").val(val.split('_')[1]);
 			  				jQuery("#lastUpdate").text(val.split('_')[1]);
 			  				jQuery("#updateInput").show();
 			  			}
