@@ -1,14 +1,16 @@
 package ish.oncourse.model;
 
-import java.util.Date;
-
 import ish.oncourse.model.auto._QueuedRecord;
+
+import java.util.Date;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.validation.ValidationResult;
 
 public class QueuedRecord extends _QueuedRecord {
+
 	private static final long serialVersionUID = 5511189858346011489L;
 	/**
 	 * Maximum retry number.
@@ -40,5 +42,20 @@ public class QueuedRecord extends _QueuedRecord {
 	@Override
 	protected void onPreRemove() {
 		getQueuedTransaction().setModified(new Date());
+	}
+
+	/**
+	 * Just in case check that college is the same for current record and its
+	 * transaction.
+	 */
+	@Override
+	protected void validateForSave(ValidationResult result) {
+		super.validateForSave(result);
+		QueuedTransaction transaction = getQueuedTransaction();
+		if (!getCollege().getId().equals(transaction.getCollege().getId())) {
+			result.addFailure(ValidationFailure.validationFailure(this, QueuedRecord.COLLEGE_PROPERTY, String.format(
+					"QueuedRecord college:%s doesn't match QueuedTransaction college:%s.", getCollege().getId(), transaction.getCollege()
+							.getId())));
+		}
 	}
 }

@@ -2,8 +2,8 @@ package ish.oncourse.services.lifecycle;
 
 import ish.oncourse.model.QueuedTransaction;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.cayenne.ObjectContext;
 
@@ -17,7 +17,7 @@ class QueuedTransactionContext {
 	/**
 	 * Transaction map.
 	 */
-	private Map<String, QueuedTransaction> transactionMap = new HashMap<String, QueuedTransaction>();
+	private Map<String, QueuedTransaction> transactionMap = new ConcurrentHashMap<String, QueuedTransaction>();
 
 	/**
 	 * Constructor

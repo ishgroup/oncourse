@@ -317,7 +317,8 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 		ObjectContext currentContext = transactionContext.getCurrentObjectContext();
 		String transactionKey = commitingContext.getTransactionKey();
 		
-		QueuedTransaction t = transactionContext.getTransactionForKey(transactionKey);
+		QueuedTransaction t = transactionContext.getTransactionForKey(String.format("%s:%s", college.getId(), transactionKey));
+		
 		if (t == null) {
 			t = currentContext.newObject(QueuedTransaction.class);
 			Date today = new Date();
@@ -325,7 +326,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			t.setModified(today);
 			t.setTransactionKey(transactionKey);
 			t.setCollege((College) currentContext.localObject(college.getObjectId(), null));
-			transactionContext.assignTransactionToKey(transactionKey, t);
+			transactionContext.assignTransactionToKey(String.format("%s:%s", college.getId(), transactionKey), t);
 		}
 
 		String entityName = entity.getObjectId().getEntityName();

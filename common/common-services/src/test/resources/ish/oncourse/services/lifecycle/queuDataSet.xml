@@ -6,6 +6,10 @@
 	<Course id="3" collegeId="1" code="BNN-453" angelId="1" detail="Course Basic New Test" name="Course Basic New Test"/>
 	<Course id="4" collegeId="1" code="CNN-876" angelId="1" detail="Basic Art Work" name="Basic Art Work"/>
 	<Course id="5" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills"/>
+	
+	<Course id="6" collegeId="2" code="BNN-453" angelId="34" detail="Course two New Test" name="Course two New Test"/>
+	<Course id="7" collegeId="2" code="BNN-453" angelId="45" detail="Course three New Test" name="Course three New Test"/>
+	
 	<Room id="1" collegeId="1"/>
 	<CourseClass id="10" code="200701RW" collegeId="1" countOfSessions="3" courseId="5" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"/>
 	<Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />

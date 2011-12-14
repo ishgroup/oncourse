@@ -2,6 +2,7 @@ package ish.oncourse.services.lifecycle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
@@ -17,6 +18,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -210,5 +212,53 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 				String.format("select * from QueuedRecord where entityIdentifier='Preference'"));
 
 		assertEquals("Expecting no queued records created.", 0, actualData.getRowCount());
+	}
+	
+	@Test
+	public void testMultyCollegesAndOneCommit() throws Exception {
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		ObjectContext context = cayenneService.newContext();
+		
+		Course course1 = Cayenne.objectForPK(context, Course.class, 5l);
+		Course course2 = Cayenne.objectForPK(context, Course.class, 6l);
+		course1.setModified(new Date());
+		course2.setModified(new Date());
+		
+		context.commitChanges();
+		
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='Course'"));
+		
+		assertEquals("Expecting two queued records.", 2, actualData.getRowCount());
+		assertNotSame("Expecting two different queued transactions.", actualData.getValue(0, "transactionId"), actualData.getValue(1, "transactionId"));
+		
+		actualData = dbUnitConnection.createQueryTable("QueuedTransaction", String.format("select * from QueuedTransaction"));
+		assertEquals("Expecting two queued transactions.", 2, actualData.getRowCount());
+	}
+	
+	@Test
+	public void testTheSameCollegeOneCommit() throws Exception {
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		ObjectContext context = cayenneService.newContext();
+		
+		Course course1 = Cayenne.objectForPK(context, Course.class, 4l);
+		Course course2 = Cayenne.objectForPK(context, Course.class, 5l);
+		course1.setModified(new Date());
+		course2.setModified(new Date());
+		
+		context.commitChanges();
+		
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		
+		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='Course'"));
+		
+		assertEquals("Expecting two queued records.", 2, actualData.getRowCount());
+		assertEquals("Expecting record assigned to the same transaction.", actualData.getValue(0, "transactionId"), actualData.getValue(1, "transactionId"));
+		
+		actualData = dbUnitConnection.createQueryTable("QueuedTransaction", String.format("select * from QueuedTransaction"));
+		assertEquals("Expecting only one transactions.", 1, actualData.getRowCount());
 	}
 }

@@ -120,7 +120,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 				for (QueuedTransaction t : transactions) {
 					if (!shouldSkipTransaction(t)) {
-						queue.addAll(t.getQueuedRecords());
+						List<QueuedRecord> queuedRecords = t.getQueuedRecords();
+						queue.addAll(queuedRecords);
 						number++;
 					}
 				}
