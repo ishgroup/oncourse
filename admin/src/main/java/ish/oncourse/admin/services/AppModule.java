@@ -33,7 +33,7 @@ public class AppModule {
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
-		configuration.add(MetaDataConstants.SECURE_PAGE, Boolean.FALSE.toString());
+		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
 	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
