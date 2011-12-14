@@ -64,6 +64,7 @@ public class Courses {
 	@Persist("client")
 	private List<Long> coursesIds;
 
+	@SuppressWarnings("all")
 	@Property
 	private Boolean isException;
 
@@ -73,7 +74,7 @@ public class Courses {
 	@Property
 	private Integer itemIndex;
 
-	private Map<SearchParam, String> searchParams;
+	private Map<SearchParam, Object> searchParams;
 
 	@Property
 	private Map<SearchParam, String> paramsInError;
@@ -148,7 +149,7 @@ public class Courses {
 		Double[] locationPoints = { null, null };
 		if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
 			try {
-				String place = searchParams.get(SearchParam.near);
+				String place = (String) searchParams.get(SearchParam.near);
 				SolrDocumentList responseResults = searchService.searchSuburb(place).getResults();
 				if (!responseResults.isEmpty()) {
 					SolrDocument doc = responseResults.get(0);
@@ -252,8 +253,8 @@ public class Courses {
 		return paramsInError != null && !paramsInError.isEmpty();
 	}
 
-	public Map<SearchParam, String> getCourseSearchParams() {
-		Map<SearchParam, String> searchParams = new HashMap<SearchParam, String>();
+	public Map<SearchParam, Object> getCourseSearchParams() {
+		Map<SearchParam, Object> searchParams = new HashMap<SearchParam, Object>();
 
 		paramsInError = new HashMap<SearchParam, String>();
 
@@ -296,8 +297,9 @@ public class Courses {
 
 		if (browseTag == null && !paramsInError.keySet().contains(SearchParam.subject)) {
 			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
-			if (browseTag != null) {
-				searchParams.put(SearchParam.subject, browseTag.getDefaultPath());
+			if (browseTag != null) {//this code updated because getDefaultPath() return incorrect value for tag group which have aliases
+				searchParams.put(SearchParam.subject, browseTag);
+				//searchParams.put(SearchParam.subject, browseTag.getDefaultPath());
 			}
 		}
 

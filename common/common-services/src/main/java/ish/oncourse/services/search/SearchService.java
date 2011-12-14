@@ -43,6 +43,7 @@ public class SearchService implements ISearchService {
 	@Inject
 	private ILookupService lookupService;
 
+	@SuppressWarnings("all")
 	@Inject
 	private ITagService tagService;
 
@@ -80,7 +81,7 @@ public class SearchService implements ISearchService {
 		return solrServer;
 	}
 
-	public QueryResponse searchCourses(Map<SearchParam, String> params, int start, int rows) {
+	public QueryResponse searchCourses(Map<SearchParam, Object> params, int start, int rows) {
 
 		try {
 
@@ -98,7 +99,7 @@ public class SearchService implements ISearchService {
 			String searchStr = null;
 			
 			if (params.containsKey(SearchParam.s)) {
-				searchStr = ClientUtils.escapeQueryChars(params.get(SearchParam.s));
+				searchStr = ClientUtils.escapeQueryChars((String) params.get(SearchParam.s));
 			}
 
 			StringBuilder qString = new StringBuilder();
@@ -109,7 +110,7 @@ public class SearchService implements ISearchService {
 			}
 
 			if (params.containsKey(SearchParam.price)) {
-				String price = params.get(SearchParam.price);
+				String price = (String) params.get(SearchParam.price);
 				if (price != null && price.length() > 0 && !StringUtils.isNumeric(price)) {
 					// remove the possible currency sign
 					price = price.replaceAll("[$]", "");
@@ -121,7 +122,7 @@ public class SearchService implements ISearchService {
 			}
 
 			if (params.containsKey(SearchParam.day)) {
-				String day = params.get(SearchParam.day);
+				String day = (String) params.get(SearchParam.day);
 				if (qString.length() != 0) {
 					qString.append(" AND ");
 				}
@@ -129,7 +130,7 @@ public class SearchService implements ISearchService {
 			}
 
 			if (params.containsKey(SearchParam.time)) {
-				String time = params.get(SearchParam.time);
+				String time = (String) params.get(SearchParam.time);
 				if (qString.length() != 0) {
 					qString.append(" AND ");
 				}
@@ -138,8 +139,10 @@ public class SearchService implements ISearchService {
 
 			Tag browseTag = null;
 			if (params.containsKey(SearchParam.subject)) {
-				String subject = params.get(SearchParam.subject);
-				browseTag = tagService.getTagByFullPath(subject);
+				browseTag = (Tag) params.get(SearchParam.subject);
+				//this code comment to avoid duplicated database calls
+				//String subject = params.get(SearchParam.subject);
+				//browseTag = tagService.getTagByFullPath(subject);
 			}
 
 			if (browseTag != null) {
@@ -161,7 +164,7 @@ public class SearchService implements ISearchService {
 			}
 
 			if (params.containsKey(SearchParam.near)) {
-				String near = params.get(SearchParam.near);
+				String near = (String) params.get(SearchParam.near);
 				SolrDocumentList responseResults = searchSuburb(near).getResults();
 
 				String location = (String) responseResults.get(0).get("loc");

@@ -10,7 +10,7 @@ import org.apache.solr.common.SolrDocumentList;
 public interface ISearchService {
 	SolrDocumentList autoSuggest(String term);
 	
-	QueryResponse searchCourses(Map<SearchParam, String> params, int start, int rows);
+	QueryResponse searchCourses(Map<SearchParam, Object> params, int start, int rows);
 	
 	QueryResponse searchSuburbs(String term);
 	

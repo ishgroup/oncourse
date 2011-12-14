@@ -52,8 +52,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 */
 	@Override
 	public Tag getTagGroupByName(String name) {
-		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)).andExp(
-				ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
+		final List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)).andExp(
+			ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
@@ -117,7 +117,6 @@ public class TagService extends BaseService<Tag> implements ITagService {
 			try {
 				tagNames[j] = URLDecoder.decode(tagNames[j], "UTF-8");
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -134,13 +133,14 @@ public class TagService extends BaseService<Tag> implements ITagService {
 				rootTag = subjectsTag;
 			} else {
 				rootTag = getTagGroupByName(tagNames[0]);
+				//don't need to process tag group if we have it
+				i = 1;
 			}
 		}
 
 		if (rootTag == null) {
 			return null;
 		}
-
 		for (; i < tagNames.length; i++) {
 			Tag tag = rootTag.getChildWithName(tagNames[i]);
 			if (tag == null) {
@@ -194,6 +194,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		return browseTagId == null ? null : findById(browseTagId);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Tag> getMailingLists() {
 
 		List<Tag> tags = Collections.emptyList();
@@ -223,6 +224,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 
 		SelectQuery q = new SelectQuery(Taggable.class, qual);
 		q.addPrefetch(Taggable.TAGGABLE_TAGS_PROPERTY);
+		@SuppressWarnings("unchecked")
 		List<Taggable> taggableList = getCayenneService().sharedContext().performQuery(q);
 
 		Set<Tag> allMailingLists = new HashSet<Tag>(getMailingLists());

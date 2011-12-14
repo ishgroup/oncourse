@@ -399,25 +399,25 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return getRoom() != null && getRoom().getSite() != null && getRoom().getSite().getIsWebVisible();
 	}
 
-	public float focusMatchForClass(Double locatonLat, Double locationLong, Map<SearchParam, String> searchParams) {
+	public float focusMatchForClass(Double locatonLat, Double locationLong, Map<SearchParam, Object> searchParams) {
 		float bestFocusMatch = -1.0f;
 
 		if (!searchParams.isEmpty()) {
 
 			float daysMatch = 1.0f;
 			if (searchParams.containsKey(SearchParam.day)) {
-				daysMatch = focusMatchForDays(searchParams.get(SearchParam.day));
+				daysMatch = focusMatchForDays((String) searchParams.get(SearchParam.day));
 			}
 
 			float timeMatch = 1.0f;
 			if (searchParams.containsKey(SearchParam.time)) {
-				timeMatch = focusMatchForTime(searchParams.get(SearchParam.time));
+				timeMatch = focusMatchForTime((String) searchParams.get(SearchParam.time));
 			}
 
 			float priceMatch = 1.0f;
 			if (searchParams.containsKey(SearchParam.price)) {
 				try {
-					Float price = Float.parseFloat(searchParams.get(SearchParam.price));
+					Float price = Float.parseFloat((String) searchParams.get(SearchParam.price));
 					priceMatch = focusMatchForPrice(price);
 				} catch (NumberFormatException e) {
 				}
