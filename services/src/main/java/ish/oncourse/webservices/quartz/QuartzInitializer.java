@@ -1,12 +1,9 @@
 package ish.oncourse.webservices.quartz;
 
-import static org.quartz.TriggerBuilder.newTrigger;
-import ish.oncourse.webservices.jobs.ContactStudentDataFixJob;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 
 import java.text.ParseException;
-import java.util.Calendar;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceResources;
@@ -19,7 +16,6 @@ import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleTrigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
@@ -86,23 +82,6 @@ public class QuartzInitializer implements RegistryShutdownListener {
 				.startNow().withSchedule(CronScheduleBuilder.cronSchedule("0 */2 * * * ?")).build();
 
 		scheduler.scheduleJob(expireJobDetails, expireJobTrigger);
-
-		JobKey duplicateFixJobKey = new JobKey("ContactStudentDataFixJob1", "willowServicesJobs");
-
-		if (scheduler.checkExists(duplicateFixJobKey)) {
-			scheduler.deleteJob(duplicateFixJobKey);
-		}
-
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE, 2);
-
-		JobDetail duplicateFixJobDetails = JobBuilder.newJob(ContactStudentDataFixJob.class).withIdentity(duplicateFixJobKey).build();
-
-		SimpleTrigger duplicateFixJobTrigger = (SimpleTrigger) newTrigger()
-				.withIdentity("ContactStudentDataFixJobTrigger", "willowServicesTriggers").startAt(cal.getTime())
-				.forJob(duplicateFixJobDetails).build();
-
-		scheduler.scheduleJob(duplicateFixJobDetails, duplicateFixJobTrigger);
 	}
 
 	public void registryDidShutdown() {
