@@ -66,7 +66,7 @@ public class CollegeService implements ICollegeService {
 
 		College college = null;
 
-		ObjectContext objectContext = cayenneService.newContext();
+		ObjectContext objectContext = cayenneService.sharedContext();
 
 		Expression qualifier = ExpressionFactory.matchExp(College.WEB_SERVICES_SECURITY_CODE_PROPERTY, securityCode);
 		SelectQuery q = new SelectQuery(College.class, qualifier);
@@ -96,7 +96,7 @@ public class CollegeService implements ICollegeService {
 	@Override
 	public College recordNewCollege(String securityCode, String ipAddress, String angelVersion, Date accessTime) {
 
-		ObjectContext objectContext = cayenneService.newContext();
+		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
 
 		College college = objectContext.newObject(College.class);
 
@@ -138,7 +138,7 @@ public class CollegeService implements ICollegeService {
 	@Override
 	public void recordWSAccess(College college, String ipAddress, String angelVersion, Date accessTime) {
 
-		ObjectContext context = cayenneService.newContext();
+		ObjectContext context = cayenneService.newNonReplicatingContext();
 		college = (College) context.localObject(college.getObjectId(), null);
 		if (college.getFirstRemoteAuthentication() == null) {
 			college.setFirstRemoteAuthentication(accessTime);
