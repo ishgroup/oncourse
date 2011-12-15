@@ -22,7 +22,6 @@ import ish.oncourse.model.Preference;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;

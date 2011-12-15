@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.model.auto._QueuedRecord;
+import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Date;
 
@@ -12,10 +13,11 @@ import org.apache.cayenne.validation.ValidationResult;
 public class QueuedRecord extends _QueuedRecord {
 
 	private static final long serialVersionUID = 5511189858346011489L;
+	
 	/**
 	 * Maximum retry number.
 	 */
-	public static final Integer MAX_NUMBER_OF_RETRY = 5;
+	public static final Integer MAX_NUMBER_OF_RETRY = 3;
 
 	public QueuedRecord() {
 		super();
@@ -25,6 +27,10 @@ public class QueuedRecord extends _QueuedRecord {
 		setAction(action);
 		setEntityIdentifier(entityIdentifier);
 		setEntityWillowId(entityWillowId);
+	}
+	
+	public Long getId() {
+		return QueueableObjectUtils.getId(this);
 	}
 
 	public Queueable getLinkedRecord() {

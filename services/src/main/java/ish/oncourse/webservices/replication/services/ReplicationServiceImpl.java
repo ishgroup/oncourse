@@ -1,11 +1,5 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.QueueKey;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
@@ -14,7 +8,6 @@ import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
-import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.soap.v4.ReplicationFault;
@@ -27,14 +20,11 @@ import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -52,6 +42,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  */
 public class ReplicationServiceImpl implements IReplicationService {
 
+	/**
+	 * Logger
+	 */
 	private static final Logger logger = Logger.getLogger(ReplicationServiceImpl.class);
 
 	/**
@@ -72,7 +65,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 	private ICayenneService cayenneService;
 
 	@Inject
-	private ITransactionStubBuilder transactionBuilder;
+	private ITransactionGroupValidator groupValidator;
 
 	/**
 	 * Process transaction groups from angel for replication.
@@ -119,7 +112,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 				transactions = queueService.getReplicationQueue(from, TRANSACTION_BATCH_SIZE);
 
 				for (QueuedTransaction t : transactions) {
-					if (!shouldSkipTransaction(t)) {
+					if (!t.shouldSkipTransaction()) {
 						List<QueuedRecord> queuedRecords = t.getQueuedRecords();
 						queue.addAll(queuedRecords);
 						number++;
@@ -130,8 +123,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 			} while (number < TRANSACTION_BATCH_SIZE && transactions.size() == TRANSACTION_BATCH_SIZE);
 
 			// now we have records to process
-
-			ReplicationRecords result = new ReplicationRecords();
+			List<TransactionGroup> resultGroups = new ArrayList<TransactionGroup>();
 
 			if (!queue.isEmpty()) {
 				Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<QueueKey, DFADedupper>();
@@ -179,14 +171,14 @@ public class ReplicationServiceImpl implements IReplicationService {
 					ctx.commitChanges();
 
 					TransactionGroup group = null;
-					
+
 					for (String transactionKey : deduper.getTransactionKeys()) {
 						group = groupMap.get(transactionKey);
 						if (group != null) {
 							break;
 						}
 					}
-					
+
 					if (group == null) {
 						group = new TransactionGroup();
 
@@ -194,22 +186,29 @@ public class ReplicationServiceImpl implements IReplicationService {
 							groupMap.put(key, group);
 						}
 
-						result.getGroups().add(group);
+						resultGroups.add(group);
 					}
 
-					ReplicationStub stub = stubBuilder.convert(record);
+					try {
+						ReplicationStub stub = stubBuilder.convert(record);
 
-					if (stub != null) {
-						group.getAttendanceOrBinaryDataOrBinaryInfo().add(stub);
-					} else {
-						// cleanup QueuedRecord if linked object is null.
-						ctx.deleteObject(record);
-						ctx.commitChanges();
+						if (stub == null) {
+							// cleanup QueuedRecord if linked object not found.
+							ctx.deleteObject(record);
+							ctx.commitChanges();
+						} else {
+							group.getAttendanceOrBinaryDataOrBinaryInfo().add(stub);
+						}
+
+					} catch (Exception se) {
+						logger.error(String.format("Unable to build stub for queuedRecord with id:%s. Skipping record.", record.getId()),
+								se);
 					}
 				}
-
-				checkTransactionGroups(result);
 			}
+
+			ReplicationRecords result = new ReplicationRecords();
+			result.getGroups().addAll(groupValidator.validateAndReturnFixedGroups(resultGroups));
 
 			return result;
 
@@ -219,85 +218,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 			faultReason.setDetailMessage(String.format("Unable to get records for replication. Willow exception: %s", e.getMessage()));
 			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
 			throw new ReplicationFault("Unable to get records for replication.", faultReason);
-		}
-	}
-
-	/**
-	 * Check if any record within transaction has reached max retry level.
-	 * 
-	 * @return true/false
-	 */
-	private boolean shouldSkipTransaction(QueuedTransaction t) {
-
-		for (QueuedRecord r : t.getQueuedRecords()) {
-			if (r.getNumberOfAttempts() >= QueuedRecord.MAX_NUMBER_OF_RETRY) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Peforms additional check of transaction groups. Just in case of
-	 * incomplete data appeared in queue. Incomplete data may be entered by
-	 * hands or appear right after college migration.
-	 * 
-	 * @param result
-	 *            replication result
-	 */
-	private void checkTransactionGroups(ReplicationRecords result) {
-
-		for (TransactionGroup g : new ArrayList<TransactionGroup>(result.getGroups())) {
-			if (g.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-				// clean remove group if it's empty
-				result.getGroups().remove(g);
-			}
-		}
-
-		for (TransactionGroup g : new ArrayList<TransactionGroup>(result.getGroups())) {
-
-			Set<ReplicationStub> groupStubs = new HashSet<ReplicationStub>();
-			groupStubs.addAll(g.getAttendanceOrBinaryDataOrBinaryInfo());
-
-			for (ReplicationStub stub : new ArrayList<ReplicationStub>(g.getAttendanceOrBinaryDataOrBinaryInfo())) {
-
-				Invoice invoice = null;
-
-				if ("PaymentIn".equalsIgnoreCase(stub.getEntityIdentifier())) {
-					PaymentIn p = Cayenne.objectForPK(cayenneService.sharedContext(), PaymentIn.class, stub.getWillowId());
-					groupStubs.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(p)));
-				} else if ("PaymentInLine".equalsIgnoreCase(stub.getEntityIdentifier())) {
-					PaymentInLine pLine = Cayenne.objectForPK(cayenneService.sharedContext(), PaymentInLine.class, stub.getWillowId());
-					groupStubs.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(pLine.getPaymentIn())));
-				} else if ("Enrolment".equalsIgnoreCase(stub.getEntityIdentifier())) {
-					Enrolment enrol = Cayenne.objectForPK(cayenneService.sharedContext(), Enrolment.class, stub.getWillowId());
-					if (enrol.getInvoiceLine() != null && !enrol.getInvoiceLine().getInvoice().getPaymentInLines().isEmpty()) {
-						for (PaymentInLine line : enrol.getInvoiceLine().getInvoice().getPaymentInLines()) {
-							groupStubs
-									.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(line.getPaymentIn())));
-						}
-					}
-				} else if ("Invoice".equalsIgnoreCase(stub.getEntityIdentifier())) {
-					invoice = Cayenne.objectForPK(cayenneService.sharedContext(), Invoice.class, stub.getWillowId());
-				} else if ("InvoiceLine".equalsIgnoreCase(stub.getEntityIdentifier())) {
-					InvoiceLine line = Cayenne.objectForPK(cayenneService.sharedContext(), InvoiceLine.class, stub.getWillowId());
-					invoice = line.getInvoice();
-				} else if ("InvoiceLineDiscount".equalsIgnoreCase(stub.getEntityIdentifier())) {
-					InvoiceLineDiscount lineDiscount = Cayenne.objectForPK(cayenneService.sharedContext(), InvoiceLineDiscount.class,
-							stub.getWillowId());
-					invoice = lineDiscount.getInvoiceLine().getInvoice();
-				}
-
-				if (invoice != null && !invoice.getPaymentInLines().isEmpty()) {
-					for (PaymentInLine line : invoice.getPaymentInLines()) {
-						groupStubs.addAll(transactionBuilder.createPaymentInTransaction(Collections.singletonList(line.getPaymentIn())));
-					}
-				}
-			}
-
-			g.getAttendanceOrBinaryDataOrBinaryInfo().clear();
-			g.getAttendanceOrBinaryDataOrBinaryInfo().addAll(groupStubs);
 		}
 	}
 
@@ -323,6 +243,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 				q.andQualifier(ExpressionFactory.greaterExp(QueuedRecord.NUMBER_OF_ATTEMPTS_PROPERTY, 0));
 
+				@SuppressWarnings("unchecked")
 				List<QueuedRecord> list = ctx.performQuery(q);
 
 				for (QueuedRecord queuedRecord : list) {
