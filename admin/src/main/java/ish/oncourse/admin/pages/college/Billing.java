@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import ish.oncourse.model.College;
@@ -14,6 +15,9 @@ import ish.oncourse.services.system.ICollegeService;
 import ish.persistence.CommonPreferenceController;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -86,7 +90,10 @@ public class Billing {
 			this.licenseInfo.put(fee.getKeyCode(), info);
 		}
 		
-		for (Preference p : college.getPreferences()) {
+		ObjectContext context = cayenneService.sharedContext();
+		Expression exp = ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, college);
+		List<Preference> prefs = context.performQuery(new SelectQuery(Preference.class, exp));
+		for (Preference p : prefs) {
 			if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
 				this.amexEnabled = Boolean.parseBoolean(p.getValueString());
 				break;
@@ -112,6 +119,7 @@ public class Billing {
 				if (CommonPreferenceController.SERVICES_CC_AMEX_ENABLED.equals(p.getName())) {
 					p.setValueString(Boolean.toString(this.amexEnabled));
 					found = true;
+					break;
 				}
 			}
 			if (!found) {
