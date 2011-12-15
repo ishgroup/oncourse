@@ -25,7 +25,8 @@
 				<div class="cms-set-right">
 
 					<div id="welcome">
-						<h2>Welcome to the onCourse CMS. For detailed instructions on how to use this CMS please refer to our manual.</h2>
+						<h2>Welcome to the onCourse CMS. For detailed instructions on how to use this CMS please refer to our 
+						<a href="http://www.ish.com.au/s/onCourse/doc/latest/web-manual/">manual</a>.</h2>
 					</div>
 					
 					<div id="contact-settings">
