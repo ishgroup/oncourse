@@ -12,6 +12,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
+import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
 import ish.oncourse.webservices.soap.v4.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationFault;
@@ -36,33 +37,41 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 	private static final Logger logger = Logger.getLogger(PaymentServiceImpl.class);
 
-	@Inject
-	private ITransactionGroupProcessor groupProcessor;
+	private final ITransactionGroupProcessor groupProcessor;
+
+	private final IPaymentGatewayService paymentGatewayService;
+
+	private final ICayenneService cayenneService;
+
+	private final IPaymentService paymentInService;
+
+	private final IEnrolmentService enrolService;
+
+	private final ITransactionStubBuilder transactionBuilder;
+
+	private final SessionIdGenerator idGenerator;
+	
+	private final IWillowStubBuilder stubBuilder;
 
 	@Inject
-	private IPaymentGatewayService paymentGatewayService;
-
-	@Inject
-	private ICayenneService cayenneService;
-
-	@Inject
-	private IPaymentService paymentInService;
-
-	@Inject
-	private IEnrolmentService enrolService;
-
-	@Inject
-	private ITransactionStubBuilder transactionBuilder;
-
-	private SessionIdGenerator idGenerator;
-
-	public PaymentServiceImpl() {
+	public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
+			ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService,
+			ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder) {
+		super();
+		this.groupProcessor = groupProcessor;
+		this.paymentGatewayService = paymentGatewayService;
+		this.cayenneService = cayenneService;
+		this.paymentInService = paymentInService;
+		this.enrolService = enrolService;
+		this.transactionBuilder = transactionBuilder;
+		this.stubBuilder = stubBuilder;
 		this.idGenerator = new SessionIdGenerator();
 	}
 
 	/**
-	 * Process paymentIn and enrolments. Firstly, saves paymentIn and related objects, then check available enrolment places.
-	 * If no places available abandons payment, generates session id for credit card payments. 
+	 * Process paymentIn and enrolments. Firstly, saves paymentIn and related
+	 * objects, then check available enrolment places. If no places available
+	 * abandons payment, generates session id for credit card payments.
 	 */
 	@Override
 	public TransactionGroup processPayment(TransactionGroup transaction) throws ReplicationFault {
@@ -124,12 +133,11 @@ public class PaymentServiceImpl implements PaymentPortType {
 		// payment is saved at this point, that means that we should return
 		// response with status of original payment not matter what happens.
 
-		TransactionGroup response = new TransactionGroup();
-		
-		List<PaymentIn> updatedPayments = new LinkedList<PaymentIn>();
-		updatedPayments.add(paymentIn);
-
 		try {
+			TransactionGroup response = new TransactionGroup();
+			List<PaymentIn> updatedPayments = new LinkedList<PaymentIn>();
+			updatedPayments.add(paymentIn);
+			
 			// check places
 			boolean isPlacesAvailable = true;
 
@@ -157,15 +165,14 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 			newContext.commitChanges();
 			
+			Set<ReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments);
+			response.getAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
+			return response;
+			
 		} catch (Exception e) {
-			logger.error(String.format("Exception happened after paymentIn:%s was saved.", paymentIn.getId()), e);
+			logger.error(String.format("Exception happened after paymentIn:%s was saved. ", paymentIn.getId()), e);
+			return plainPaymentEnrolmentResponse(paymentIn, enrolments);
 		}
-
-		Set<ReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments);
-		response.getAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
-
-		return response;
-
 	}
 
 	/**
@@ -211,8 +218,9 @@ public class PaymentServiceImpl implements PaymentPortType {
 	}
 
 	/**
-	 * Looks for paymentIn by sessionId, if payment is completed success/failed, then returns soap stubs for paymentIn and related objects.
-	 * Returns an empty result otherwise.
+	 * Looks for paymentIn by sessionId, if payment is completed success/failed,
+	 * then returns soap stubs for paymentIn and related objects. Returns an
+	 * empty result otherwise.
 	 */
 	@Override
 	public TransactionGroup getPaymentStatus(String sessionId) throws ReplicationFault {
@@ -242,5 +250,20 @@ public class PaymentServiceImpl implements PaymentPortType {
 			faultReason.setDetailMessage(String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
 			throw new ReplicationFault("Unable to process refund.", faultReason);
 		}
+	}
+	
+	/**
+	 * Transaction group which contains paymentIn and related enrolments only.
+	 * @param paymentIn
+	 * @param enrolments
+	 * @return
+	 */
+	private TransactionGroup plainPaymentEnrolmentResponse(PaymentIn paymentIn, List<Enrolment> enrolments) {
+		TransactionGroup response = new TransactionGroup();
+		response.getAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(paymentIn));
+		for (Enrolment enrl : enrolments) {
+			response.getAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(enrl));
+		}
+		return response;
 	}
 }
