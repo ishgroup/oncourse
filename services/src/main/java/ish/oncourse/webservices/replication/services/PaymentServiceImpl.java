@@ -17,13 +17,16 @@ import ish.oncourse.webservices.soap.v4.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReplicationFault;
 import ish.oncourse.webservices.v4.stubs.replication.FaultReason;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
@@ -57,15 +60,19 @@ public class PaymentServiceImpl implements PaymentPortType {
 		this.idGenerator = new SessionIdGenerator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * ish.oncourse.webservices.soap.v4.PaymentPortType#processPayment(ish.oncourse
-	 * .webservices.v4.stubs.replication.TransactionStub)
+	/**
+	 * Process paymentIn and enrolments. Firstly, saves paymentIn and related objects, then check available enrolment places.
+	 * If no places available abandons payment, generates session id for credit card payments. 
 	 */
 	@Override
 	public TransactionGroup processPayment(TransactionGroup transaction) throws ReplicationFault {
+
+		List<ReplicatedRecord> replicatedRecords = Collections.emptyList();
+		List<Enrolment> enrolments = new ArrayList<Enrolment>();
+		PaymentIn paymentIn = null;
+		boolean isCreditCardPayment = false;
+
+		ObjectContext newContext = cayenneService.newContext();
 
 		try {
 			// check if group from angel is empty
@@ -74,21 +81,14 @@ public class PaymentServiceImpl implements PaymentPortType {
 				throw new Exception("Got an empty paymentIn transaction group from angel.");
 			}
 
-			boolean isCreditCardPayment = ReplicationUtils.isCreditCardPayment(transaction);
-
-			List<ReplicatedRecord> replicatedRecords = groupProcessor.processGroup(transaction);
+			isCreditCardPayment = ReplicationUtils.isCreditCardPayment(transaction);
+			replicatedRecords = groupProcessor.processGroup(transaction);
 
 			// check if records were saved successfully
 			if (replicatedRecords.get(0).getStatus() != Status.SUCCESS) {
 				// records wasn't saved, immediately return to angel.
 				throw new Exception("Willow was unable to save paymentIn transaction group.");
 			}
-
-			ObjectContext newContext = cayenneService.newContext();
-
-			// check places
-			List<Enrolment> enrolments = new ArrayList<Enrolment>();
-			PaymentIn paymentIn = null;
 
 			for (ReplicatedRecord r : replicatedRecords) {
 
@@ -111,9 +111,26 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 					paymentIn = (PaymentIn) newContext.localObject(p.getObjectId(), null);
 				}
-
 			}
 
+		} catch (Exception e) {
+			logger.error("Unable to process payment in.", e);
+			FaultReason faultReason = new FaultReason();
+			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
+			faultReason.setDetailMessage(String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
+			throw new ReplicationFault("Unable to process payment in.", faultReason);
+		}
+
+		// payment is saved at this point, that means that we should return
+		// response with status of original payment not matter what happens.
+
+		TransactionGroup response = new TransactionGroup();
+		
+		List<PaymentIn> updatedPayments = new LinkedList<PaymentIn>();
+		updatedPayments.add(paymentIn);
+
+		try {
+			// check places
 			boolean isPlacesAvailable = true;
 
 			for (Enrolment enrolment : enrolments) {
@@ -125,8 +142,6 @@ public class PaymentServiceImpl implements PaymentPortType {
 					break;
 				}
 			}
-
-			List<PaymentIn> updatedPayments = new LinkedList<PaymentIn>();
 
 			if (!isPlacesAvailable) {
 				paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
@@ -140,23 +155,22 @@ public class PaymentServiceImpl implements PaymentPortType {
 				}
 			}
 
-			updatedPayments.add(paymentIn);
-
 			newContext.commitChanges();
-
-			TransactionGroup group = new TransactionGroup();
-			group.getAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createPaymentInTransaction(updatedPayments));
-
-			return group;
+			
 		} catch (Exception e) {
-			logger.error("Unable to process payment in.", e);
-			FaultReason faultReason = new FaultReason();
-			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			faultReason.setDetailMessage(String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
-			throw new ReplicationFault("Unable to process payment in.", faultReason);
+			logger.error(String.format("Exception happened after paymentIn:%s was saved.", paymentIn.getId()), e);
 		}
+
+		Set<ReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments);
+		response.getAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
+
+		return response;
+
 	}
 
+	/**
+	 * Processes refunds.
+	 */
 	@Override
 	public TransactionGroup processRefund(TransactionGroup refundGroup) throws ReplicationFault {
 		try {
@@ -196,6 +210,10 @@ public class PaymentServiceImpl implements PaymentPortType {
 		}
 	}
 
+	/**
+	 * Looks for paymentIn by sessionId, if payment is completed success/failed, then returns soap stubs for paymentIn and related objects.
+	 * Returns an empty result otherwise.
+	 */
 	@Override
 	public TransactionGroup getPaymentStatus(String sessionId) throws ReplicationFault {
 		try {
