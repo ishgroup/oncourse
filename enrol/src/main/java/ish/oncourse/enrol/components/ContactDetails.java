@@ -369,9 +369,19 @@ public class ContactDetails {
     			contactDetailsForm.recordError(postcode, "Postcode is required.");
     		}
     	}
-    	if (getRequirePhone()) {
+    	if (getRequireHomePhone()) {
     		if (contact.getHomePhoneNumber() == null || "".equals(contact.getHomePhoneNumber())) {
-    			contactDetailsForm.recordError(homePhone, "Phone is required.");
+    			contactDetailsForm.recordError(homePhone, "Home phone is required.");
+    		}
+    	}
+    	if (getRequireBusinessPhone()) {
+    		if (contact.getBusinessPhoneNumber() == null || "".equals(contact.getBusinessPhoneNumber())) {
+    			contactDetailsForm.recordError(businessPhone, "Business phone is required.");
+    		}
+    	}
+    	if (getRequireFax()) {
+    		if (contact.getFaxNumber() == null || "".equals(contact.getFaxNumber())) {
+    			contactDetailsForm.recordError(fax, "Fax is required.");
     		}
     	}
     	if (getRequireMobile()) {
@@ -619,16 +629,48 @@ public class ContactDetails {
 	   return false;
    }
    
-   public boolean getShowPhone() {
-	   String require = preferenceController.getRequireContactPhoneEnrolment();
+   public boolean getShowHomePhone() {
+	   String require = preferenceController.getRequireContactHomePhoneEnrolment();
 	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
 		   return true;
 	   }
 	   return false;
    }
    
-   public boolean getRequirePhone() {
-	   String require = preferenceController.getRequireContactPhoneEnrolment();
+   public boolean getRequireHomePhone() {
+	   String require = preferenceController.getRequireContactHomePhoneEnrolment();
+	   if ("Required".equals(require)) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean getShowBusinessPhone() {
+	   String require = preferenceController.getRequireContactBusinessPhoneEnrolment();
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean getRequireBusinessPhone() {
+	   String require = preferenceController.getRequireContactBusinessPhoneEnrolment();
+	   if ("Required".equals(require)) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean getShowFax() {
+	   String require = preferenceController.getRequireContactFaxEnrolment();
+	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean getRequireFax() {
+	   String require = preferenceController.getRequireContactFaxEnrolment();
 	   if ("Required".equals(require)) {
 		   return true;
 	   }

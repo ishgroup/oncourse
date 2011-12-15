@@ -63,9 +63,9 @@
 					</span>
 				</p>
 			</t:if>
-			<t:if test="showPhone">
+			<t:if test="showHomePhone">
 				<p>
-					<label for="homephone">Home Phone<t:if test="requirePhone"><em title="${message:required}">*</em></t:if></label>
+					<label for="homephone">Home Phone<t:if test="requireHomePhone"><em title="${message:required}">*</em></t:if></label>
 					<span class="${homePhoneInputClass}">
 						<t:textfield value="contact.homePhoneNumber" class ="input-fixed" 
 								clientId="homephone" t:id="homePhone" />
@@ -83,17 +83,19 @@
 					</span>
 				</p>
 			</t:if>
-			<t:if test="showPhone">
+			<t:if test="showBusinessPhone">
 				<p>
-					<label for="businessphone">Work Phone<t:if test="requirePhone"><em title="${message:required}">*</em></t:if></label>
+					<label for="businessphone">Work Phone<t:if test="requireBusinessPhone"><em title="${message:required}">*</em></t:if></label>
 					<span class="${businessPhoneInputClass}">
 						<t:textfield value="contact.businessPhoneNumber" class ="input-fixed" 
 								clientId="businessphone" t:id="businessPhone" />
 						<span t:type="ui/HintComponent" validationMessage="businessPhoneErrorMessage" hint="message:business-phone-hint"/>
 					</span>
 				</p>
+			</t:if>
+			<t:if test="showFax">
 				<p>
-					<label for="facsimile">Fax<t:if test="requirePhone"><em title="${message:required}">*</em></t:if></label>
+					<label for="facsimile">Fax<t:if test="requireFax"><em title="${message:required}">*</em></t:if></label>
 					<span class="${faxInputClass}">
 						<t:textfield value="contact.faxNumber" class ="input-fixed" 
 								clientId="facsimile" t:id="fax" />

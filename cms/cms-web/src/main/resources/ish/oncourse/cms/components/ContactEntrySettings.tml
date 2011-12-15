@@ -149,19 +149,53 @@
 			</div>
 
 			<div class="cms-set-container">
-				<div class="cms-set-name">Phone</div>
+				<div class="cms-set-name">Home phone</div>
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentPhoneState" />
+						blankOption="never" value="enrolmentHomePhoneState" />
 				</div>
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListPhoneState" />
+						blankOption="never" value="waitingListHomePhoneState" />
 				</div>
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListPhoneState" />
+						blankOption="never" value="mailingListHomePhoneState" />
+				</div>
+			</div>
+			
+			<div class="cms-set-container">
+				<div class="cms-set-name">Business phone</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentBusinessPhoneState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListBusinessPhoneState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListBusinessPhoneState" />
+				</div>
+			</div>
+			
+			<div class="cms-set-container">
+				<div class="cms-set-name">Fax</div>
+
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="enrolmentFaxState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="waitingListFaxState" />
+				</div>
+				<div class="cms-set-col">
+					<t:select model="stateSelectModel"
+						blankOption="never" value="mailingListFaxState" />
 				</div>
 			</div>
 

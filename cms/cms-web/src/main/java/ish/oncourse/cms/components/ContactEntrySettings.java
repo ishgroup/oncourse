@@ -45,7 +45,13 @@ public class ContactEntrySettings {
 	private String enrolmentPostcodeState;
 	
 	@Property
-	private String enrolmentPhoneState;
+	private String enrolmentHomePhoneState;
+	
+	@Property
+	private String enrolmentBusinessPhoneState;
+	
+	@Property
+	private String enrolmentFaxState;
 	
 	@Property
 	private String enrolmentMobileState;
@@ -66,7 +72,13 @@ public class ContactEntrySettings {
 	private String waitingListPostcodeState;
 	
 	@Property
-	private String waitingListPhoneState;
+	private String waitingListHomePhoneState;
+	
+	@Property
+	private String waitingListBusinessPhoneState;
+	
+	@Property
+	private String waitingListFaxState;
 	
 	@Property
 	private String waitingListMobileState;
@@ -87,7 +99,13 @@ public class ContactEntrySettings {
 	private String mailingListPostcodeState;
 	
 	@Property
-	private String mailingListPhoneState;
+	private String mailingListHomePhoneState;
+	
+	@Property
+	private String mailingListBusinessPhoneState;
+	
+	@Property
+	private String mailingListFaxState;
 	
 	@Property
 	private String mailingListMobileState;
@@ -130,7 +148,9 @@ public class ContactEntrySettings {
 		this.enrolmentSuburbState = preferenceController.getRequireContactSuburbEnrolment();
 		this.enrolmentStateState = preferenceController.getRequireContactStateEnrolment();
 		this.enrolmentPostcodeState = preferenceController.getRequireContactPostcodeEnrolment();
-		this.enrolmentPhoneState = preferenceController.getRequireContactPhoneEnrolment();
+		this.enrolmentHomePhoneState = preferenceController.getRequireContactHomePhoneEnrolment();
+		this.enrolmentBusinessPhoneState = preferenceController.getRequireContactBusinessPhoneEnrolment();
+		this.enrolmentFaxState = preferenceController.getRequireContactFaxEnrolment();
 		this.enrolmentMobileState = preferenceController.getRequireContactMobileEnrolment();
 		this.enrolmentDateOfBirthState = preferenceController.getRequireContactDateOfBirthEnrolment();
 		
@@ -138,7 +158,9 @@ public class ContactEntrySettings {
 		this.waitingListSuburbState = preferenceController.getRequireContactSuburbWaitingList();
 		this.waitingListStateState = preferenceController.getRequireContactStateWaitingList();
 		this.waitingListPostcodeState = preferenceController.getRequireContactPostcodeWaitingList();
-		this.waitingListPhoneState = preferenceController.getRequireContactPhoneWaitingList();
+		this.waitingListHomePhoneState = preferenceController.getRequireContactHomePhoneWaitingList();
+		this.waitingListBusinessPhoneState = preferenceController.getRequireContactBusinessPhoneWaitingList();
+		this.waitingListFaxState = preferenceController.getRequireContactFaxWaitingList();
 		this.waitingListMobileState = preferenceController.getRequireContactMobileWaitingList();
 		this.waitingListDateOfBirthState = preferenceController.getRequireContactDateOfBirthWaitingList();
 		
@@ -146,7 +168,9 @@ public class ContactEntrySettings {
 		this.mailingListSuburbState = preferenceController.getRequireContactSuburbMailingList();
 		this.mailingListStateState = preferenceController.getRequireContactStateMailingList();
 		this.mailingListPostcodeState = preferenceController.getRequireContactPostcodeMailingList();
-		this.mailingListPhoneState = preferenceController.getRequireContactPhoneMailingList();
+		this.mailingListHomePhoneState = preferenceController.getRequireContactHomePhoneMailingList();
+		this.mailingListBusinessPhoneState = preferenceController.getRequireContactBusinessPhoneMailingList();
+		this.mailingListFaxState = preferenceController.getRequireContactFaxMailingList();
 		this.mailingListMobileState = preferenceController.getRequireContactMobileMailingList();
 		this.mailingListDateOfBirthState = preferenceController.getRequireContactDateOfBirthMailingList();
 	}
@@ -185,7 +209,9 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactSuburbEnrolment(this.enrolmentSuburbState);
 		preferenceController.setRequireContactStateEnrolment(this.enrolmentStateState);
 		preferenceController.setRequireContactPostcodeEnrolment(this.enrolmentPostcodeState);
-		preferenceController.setRequireContactPhoneEnrolment(this.enrolmentPhoneState);
+		preferenceController.setRequireContactHomePhoneEnrolment(this.enrolmentHomePhoneState);
+		preferenceController.setRequireContactBusinessPhoneEnrolment(this.enrolmentBusinessPhoneState);
+		preferenceController.setRequireContactFaxEnrolment(this.enrolmentFaxState);
 		preferenceController.setRequireContactMobileEnrolment(this.enrolmentMobileState);
 		preferenceController.setRequireContactDateOfBirthEnrolment(this.enrolmentDateOfBirthState);
 		
@@ -193,7 +219,9 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactSuburbWaitingList(this.waitingListSuburbState);
 		preferenceController.setRequireContactStateWaitingList(this.waitingListStateState);
 		preferenceController.setRequireContactPostcodeWaitingList(this.waitingListPostcodeState);
-		preferenceController.setRequireContactPhoneWaitingList(this.waitingListPhoneState);
+		preferenceController.setRequireContactHomePhoneWaitingList(this.waitingListHomePhoneState);
+		preferenceController.setRequireContactBusinessPhoneWaitingList(this.waitingListBusinessPhoneState);
+		preferenceController.setRequireContactFaxWaitingList(this.waitingListFaxState);
 		preferenceController.setRequireContactMobileWaitingList(this.waitingListMobileState);
 		preferenceController.setRequireContactDateOfBirthWaitingList(this.waitingListDateOfBirthState);
 		
@@ -201,7 +229,9 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactSuburbMailingList(this.mailingListSuburbState);
 		preferenceController.setRequireContactStateMailingList(this.mailingListStateState);
 		preferenceController.setRequireContactPostcodeMailingList(this.mailingListPostcodeState);
-		preferenceController.setRequireContactPhoneMailingList(this.mailingListPhoneState);
+		preferenceController.setRequireContactHomePhoneMailingList(this.mailingListHomePhoneState);
+		preferenceController.setRequireContactBusinessPhoneMailingList(this.mailingListBusinessPhoneState);
+		preferenceController.setRequireContactFaxMailingList(this.mailingListFaxState);
 		preferenceController.setRequireContactMobileMailingList(this.mailingListMobileState);
 		preferenceController.setRequireContactDateOfBirthMailingList(this.mailingListDateOfBirthState);
 	}

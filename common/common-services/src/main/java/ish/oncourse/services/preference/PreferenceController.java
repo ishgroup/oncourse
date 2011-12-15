@@ -24,7 +24,9 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String REQUIRE_CONTACT_SUBURB_ENROLMENT = "enrolment.contact.suburb.required";
 	private static final String REQUIRE_CONTACT_STATE_ENROLMENT = "enrolment.contact.state.required";
 	private static final String REQUIRE_CONTACT_POSTCODE_ENROLMENT = "enrolment.contact.postcode.required";
-	private static final String REQUIRE_CONTACT_PHONE_ENROLMENT = "enrolment.contact.phone.required";
+	private static final String REQUIRE_CONTACT_HOME_PHONE_ENROLMENT = "enrolment.contact.homephone.required";
+	private static final String REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT = "enrolment.contact.businessphone.required";
+	private static final String REQUIRE_CONTACT_FAX_ENROLMENT = "enrolment.contact.fax.required";
 	private static final String REQUIRE_CONTACT_MOBILE_ENROLMENT = "enrolment.contact.mobile.required";
 	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT = "enrolment.contact.birth.required";
 	
@@ -32,7 +34,9 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String REQUIRE_CONTACT_SUBURB_WAITING_LIST = "waitinglist.contact.suburb.required";
 	private static final String REQUIRE_CONTACT_STATE_WAITING_LIST = "waitinglist.contact.state.required";
 	private static final String REQUIRE_CONTACT_POSTCODE_WAITING_LIST = "waitinglist.contact.postcode.required";
-	private static final String REQUIRE_CONTACT_PHONE_WAITING_LIST = "waitinglist.contact.phone.required";
+	private static final String REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST = "waitinglist.contact.homephone.required";
+	private static final String REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST = "waitinglist.contact.businessphone.required";
+	private static final String REQUIRE_CONTACT_FAX_WAITING_LIST = "waitinglist.contact.fax.required";
 	private static final String REQUIRE_CONTACT_MOBILE_WAITING_LIST = "waitinglist.contact.mobile.required";
 	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST = "waitinglist.contact.birthdate.required";
 	
@@ -40,7 +44,9 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String REQUIRE_CONTACT_SUBURB_MAILING_LIST = "mailinglist.contact.suburb.required";
 	private static final String REQUIRE_CONTACT_STATE_MAILING_LIST = "mailinglist.contact.state.required";
 	private static final String REQUIRE_CONTACT_POSTCODE_MAILING_LIST = "mailinglist.contact.postcode.required";
-	private static final String REQUIRE_CONTACT_PHONE_MAILING_LIST = "mailinglist.contact.phone.required";
+	private static final String REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST = "mailinglist.contact.homephone.required";
+	private static final String REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST = "mailinglist.contact.businessphone.required";
+	private static final String REQUIRE_CONTACT_FAX_MAILING_LIST = "mailinglist.contact.fax.required";
 	private static final String REQUIRE_CONTACT_MOBILE_MAILING_LIST = "mailinglist.contact.mobile.required";
 	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST = "mailinglist.contact.birth.required";
 	
@@ -275,12 +281,28 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(REQUIRE_CONTACT_POSTCODE_WAITING_LIST, false, value);
 	}
 	
-	public synchronized String getRequireContactPhoneWaitingList() {
-		return getValue(REQUIRE_CONTACT_PHONE_WAITING_LIST, false);
+	public synchronized String getRequireContactHomePhoneWaitingList() {
+		return getValue(REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST, false);
 	}
 	
-	public synchronized void setRequireContactPhoneWaitingList(String value) {
-		setValue(REQUIRE_CONTACT_PHONE_WAITING_LIST, false, value);
+	public synchronized void setRequireContactHomePhoneWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactBusinessPhoneWaitingList() {
+		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactBusinessPhoneWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactFaxWaitingList() {
+		return getValue(REQUIRE_CONTACT_FAX_WAITING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactFaxWaitingList(String value) {
+		setValue(REQUIRE_CONTACT_FAX_WAITING_LIST, false, value);
 	}
 	
 	public synchronized String getRequireContactMobileWaitingList() {
@@ -331,12 +353,28 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(REQUIRE_CONTACT_POSTCODE_MAILING_LIST, false, value);
 	}
 	
-	public synchronized String getRequireContactPhoneMailingList() {
-		return getValue(REQUIRE_CONTACT_PHONE_MAILING_LIST, false);
+	public synchronized String getRequireContactHomePhoneMailingList() {
+		return getValue(REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST, false);
 	}
 	
-	public synchronized void setRequireContactPhoneMailingList(String value) {
-		setValue(REQUIRE_CONTACT_PHONE_MAILING_LIST, false, value);
+	public synchronized void setRequireContactHomePhoneMailingList(String value) {
+		setValue(REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactBusinessPhoneMailingList() {
+		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactBusinessPhoneMailingList(String value) {
+		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST, false, value);
+	}
+	
+	public synchronized String getRequireContactFaxMailingList() {
+		return getValue(REQUIRE_CONTACT_FAX_MAILING_LIST, false);
+	}
+	
+	public synchronized void setRequireContactFaxMailingList(String value) {
+		setValue(REQUIRE_CONTACT_FAX_MAILING_LIST, false, value);
 	}
 	
 	public synchronized String getRequireContactMobileMailingList() {
@@ -387,12 +425,28 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(REQUIRE_CONTACT_POSTCODE_ENROLMENT, false, value);
 	}
 	
-	public synchronized String getRequireContactPhoneEnrolment() {
-		return getValue(REQUIRE_CONTACT_PHONE_ENROLMENT, false);
+	public synchronized String getRequireContactHomePhoneEnrolment() {
+		return getValue(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, false);
 	}
 	
-	public synchronized void setRequireContactPhoneEnrolment(String value) {
-		setValue(REQUIRE_CONTACT_PHONE_ENROLMENT, false, value);
+	public synchronized void setRequireContactHomePhoneEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactBusinessPhoneEnrolment() {
+		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactBusinessPhoneEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT, false, value);
+	}
+	
+	public synchronized String getRequireContactFaxEnrolment() {
+		return getValue(REQUIRE_CONTACT_FAX_ENROLMENT, false);
+	}
+	
+	public synchronized void setRequireContactFaxEnrolment(String value) {
+		setValue(REQUIRE_CONTACT_FAX_ENROLMENT, false, value);
 	}
 	
 	public synchronized String getRequireContactMobileEnrolment() {
