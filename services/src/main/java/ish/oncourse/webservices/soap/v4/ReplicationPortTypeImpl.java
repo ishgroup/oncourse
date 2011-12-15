@@ -108,7 +108,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		Expression expr = ExpressionFactory.matchDbExp(Instruction.ID_PK_COLUMN, instrucitonId);
 		SelectQuery q = new SelectQuery(Instruction.class, expr);
 
-		ObjectContext objectContext = cayenneService.newContext();
+		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
 
 		@SuppressWarnings("unchecked")
 		List<Instruction> list = objectContext.performQuery(q);
@@ -204,8 +204,6 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 				LOGGER.error(message, e);
 				throw e;
 			}
-
-			college = (College) cayenneService.newContext().localObject(college.getObjectId(), null);
 
 			Long currentKey = college.getCommunicationKey();
 			boolean recoverFromHALT = (currentKey == null) && (college.getCommunicationKeyStatus() == KeyStatus.HALT);
@@ -313,14 +311,17 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	 * @return communication key
 	 */
 	private Long generateNewKey(College college) {
+		
+		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
+		College local = (College) objectContext.localObject(college.getObjectId(), null);
 
 		Random randomGen = new Random();
 		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
 
-		college.setCommunicationKey(newCommunicationKey);
-		college.setCommunicationKeyStatus(KeyStatus.VALID);
+		local.setCommunicationKey(newCommunicationKey);
+		local.setCommunicationKeyStatus(KeyStatus.VALID);
 
-		college.getObjectContext().commitChanges();
+		objectContext.commitChanges();
 
 		HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
 		HttpSession session = request.getSession(true);
