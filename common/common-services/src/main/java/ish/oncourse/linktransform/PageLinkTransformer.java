@@ -15,12 +15,12 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.internal.EmptyEventContext;
@@ -33,9 +33,15 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
-
+	private static final String REMOVE_ITEM_ID_PARAMETER = "removeItemId";
+	private static final String ADD_ITEM_ID_PARAMETER = "addItemId";
+	private static final String KEY_PARAMETER = "key";
+	private static final String TUTOR_ID_ATTRIBUTE = "tutorId";
+	private static final String DIGIT_PATTERN = "\\d+";
+	private static final String CMS_PATH = "/cms";
+	private static final String COURSES_PATH = "/courses";
+	private static final String LEFT_SLASH_CHARACTER = "/";
 	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
-
 	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage",
 			"/menubuilder", "/pageoptions", "/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages",
 			"/blocks", "/blockedit", "/site.blocks.", "/site.pagetypes.", "/ui/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send"};
@@ -100,20 +106,22 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		switch (pageIdentifier) {
 		case Home:
-			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, "/");
+			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, LEFT_SLASH_CHARACTER);
+			request.getSession(true).setAttribute(IWebNodeService.RELOAD_PAGE_ATTRIBUTE, true);
+			request.getSession(false).setAttribute(IWebNodeService.LOADED_NODE, null);
 			if (webNodeService.getCurrentNode() == null) {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
 			break;
 		case Courses:
 			String tagsPath = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
-					.replaceFirst("/courses", "");
+					.replaceFirst(COURSES_PATH, StringUtils.EMPTY);
 			LOGGER.warn("tagsPath:" + tagsPath);
-			if (!tagsPath.startsWith("/cms")) {
-				if (tagsPath.startsWith("/")) {
-					tagsPath = tagsPath.replaceFirst("/", "");
+			if (!tagsPath.startsWith(CMS_PATH)) {
+				if (tagsPath.startsWith(LEFT_SLASH_CHARACTER)) {
+					tagsPath = tagsPath.replaceFirst(LEFT_SLASH_CHARACTER, StringUtils.EMPTY);
 				}
-				if (!tagsPath.equals("")) {
+				if (!tagsPath.equals(StringUtils.EMPTY)) {
 					Tag tag = tagService.getTagByFullPath(tagsPath);
 
 					if (tag == null) {
@@ -126,7 +134,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case Course:
 			Course course = null;
-			String courseCode = path.substring(path.lastIndexOf("/") + 1);
+			String courseCode = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			if (courseCode != null) {
 				course = courseService.getCourse(Course.CODE_PROPERTY, courseCode);
 			}
@@ -138,7 +146,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case CourseClass:
 			CourseClass courseClass = null;
-			String courseClassCode = path.substring(path.lastIndexOf("/") + 1);
+			String courseClassCode = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			if (courseClassCode != null) {
 				courseClass = courseClassService.getCourseClassByFullCode(courseClassCode);
 			}
@@ -149,9 +157,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			break;
 		case Page:
-			String nodeNumber = path.substring(path.lastIndexOf("/") + 1);
+			String nodeNumber = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			if (nodeNumber != null) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
+				request.getSession(true).setAttribute(IWebNodeService.RELOAD_PAGE_ATTRIBUTE, true);
+				request.getSession(false).setAttribute(IWebNodeService.LOADED_NODE, null);
 				if (webNodeService.getCurrentNode() == null) {
 					pageIdentifier = PageIdentifier.PageNotFound;
 				}
@@ -163,8 +173,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case Site:
 			Site site = null;
-			String siteId = path.substring(path.lastIndexOf("/") + 1);
-			if (siteId != null && siteId.matches("\\d+")) {
+			String siteId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+			if (siteId != null && siteId.matches(DIGIT_PATTERN)) {
 				site = sitesService.getSite(Site.ANGEL_ID_PROPERTY, siteId);
 			}
 			if (site != null) {
@@ -176,8 +186,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case Room:
 			Room room = null;
-			String roomId = path.substring(path.lastIndexOf("/") + 1);
-			if (roomId != null && roomId.matches("\\d+")) {
+			String roomId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+			if (roomId != null && roomId.matches(DIGIT_PATTERN)) {
 				room = roomService.getRoom(Room.ANGEL_ID_PROPERTY, Long.valueOf(roomId));
 			}
 			if (room != null) {
@@ -187,8 +197,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			break;
 		case Tutor:
-			String tutorId = path.substring(path.lastIndexOf("/") + 1);
-			request.setAttribute("tutorId", tutorId);
+			String tutorId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+			request.setAttribute(TUTOR_ID_ATTRIBUTE, tutorId);
 			break;
 		case Sitemap:
 			break;
@@ -215,8 +225,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		if (ADD_TO_COOKIES_PATH.equalsIgnoreCase(path) || REMOVE_FROM_COOKIES_PATH.equalsIgnoreCase(path)) {
 			System.out.println(request.isXHR());
 			boolean isAddAction = ADD_TO_COOKIES_PATH.equalsIgnoreCase(path);
-			String key = request.getParameter("key");
-			String value = isAddAction ? request.getParameter("addItemId") : request.getParameter("removeItemId");
+			String key = request.getParameter(KEY_PARAMETER);
+			String value = isAddAction ? request.getParameter(ADD_ITEM_ID_PARAMETER) : request.getParameter(REMOVE_ITEM_ID_PARAMETER);
 			if (key != null && value != null) {
 				if (value.matches("(\\d+)")) {
 
@@ -241,11 +251,13 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		String nodePath = path;
 
-		if (nodePath.endsWith("/")) {
+		if (nodePath.endsWith(LEFT_SLASH_CHARACTER)) {
 			nodePath = nodePath.substring(0, nodePath.length() - 1);
 		}
 		if (webNodeService.getNodeForNodePath(nodePath) != null) {
-			request.setAttribute(WebNodeService.PAGE_PATH_PARAMETER, path);
+			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, path);
+			request.getSession(true).setAttribute(IWebNodeService.RELOAD_PAGE_ATTRIBUTE, true);
+			request.getSession(false).setAttribute(IWebNodeService.LOADED_NODE, null);
 			return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
 		}
 
@@ -256,7 +268,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 
 		if (requestGlobals.getHTTPServletRequest() != null
-				&& requestGlobals.getHTTPServletRequest().getContextPath().equalsIgnoreCase("/cms")) {
+				&& requestGlobals.getHTTPServletRequest().getContextPath().equalsIgnoreCase(CMS_PATH)) {
 
 			// return just ordinary page for cms to give it the ability to
 			// create the "new page"

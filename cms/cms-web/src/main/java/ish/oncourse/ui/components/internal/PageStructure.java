@@ -21,9 +21,14 @@ import org.apache.tapestry5.services.Request;
  */
 public class PageStructure {
 
+	private static final String USER_AGENT_HEADER = "User-Agent";
+
+	private static final String WEB_NODE_TYPE = "webNodeType";
+
 	@Inject
 	private IWebNodeTypeService webNodeTypeService;
 	
+	@SuppressWarnings("all")
 	@Property
 	@Inject
 	private IWebSiteService webSiteService;
@@ -37,18 +42,22 @@ public class PageStructure {
 	@Parameter
 	private String bodyClass;
 
+	@SuppressWarnings("all")
 	@Property
 	@Parameter
 	private String bodyId;
 
+	@SuppressWarnings("all")
 	@Property
 	@Parameter
 	private WebNodeType webNodeType;
 
+	@SuppressWarnings("all")
 	@Property
 	@Parameter
 	private WebNode node;
 
+	@SuppressWarnings("all")
 	@Property
 	@Parameter
 	private String title;
@@ -56,6 +65,7 @@ public class PageStructure {
 	@Inject
 	private IAuthenticationService authenticationService;
 
+	@SuppressWarnings("all")
 	@InjectComponent
 	@Property
 	private CmsNavigation cmsNavigation;
@@ -66,12 +76,12 @@ public class PageStructure {
 
 	@SetupRender
 	public void beforeRender() {
-		if (!resources.isBound("webNodeType")) {
+		if (!resources.isBound(WEB_NODE_TYPE)) {
 			this.webNodeType = webNodeTypeService.getDefaultWebNodeType();
 		}
 	}
 
 	public String getAgentAwareBodyClass() {
-		return bodyClass + RequestUtil.getAgentAwareClass(request.getHeader("User-Agent"));
+		return bodyClass + RequestUtil.getAgentAwareClass(request.getHeader(USER_AGENT_HEADER));
 	}
 }

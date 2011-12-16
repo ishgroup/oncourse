@@ -13,6 +13,7 @@ import ish.oncourse.ui.utils.EmptyRenderable;
 import ish.oncourse.util.ValidationErrors;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ajax.MultiZoneUpdate;
@@ -29,7 +30,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class ContentStructure {
-
+	private static final String UPDATED_ZONE_NAME = "updatedZone";
+	private static final String EDITOR_ZONE_NAME = "editorZone";
+	private static final String ZONE_PREFIX = "z_";
 	private static final Logger LOGGER = Logger.getLogger(ContentStructure.class);
 
 	@Parameter
@@ -43,6 +46,7 @@ public class ContentStructure {
 	@Parameter
 	private Zone updateZone;
 
+	@SuppressWarnings("all")
 	@Property
 	@Component(id = "regionForm")
 	private Form regionForm;
@@ -60,6 +64,7 @@ public class ContentStructure {
 	@Property
 	private Block regionContentBlock;
 
+	@SuppressWarnings("all")
 	@Property
 	private String syntaxError;
 
@@ -73,7 +78,8 @@ public class ContentStructure {
 	public void beforeRender() {
 		for(WebContentVisibility visibility: node.getWebContentVisibility()){
 			if(visibility == null){
-				LOGGER.error(String.format("The visibility is null in node %s in site %s in college %s", node.getName(), node.getWebSite().getName(), node.getWebSite().getCollege().getName()));
+				LOGGER.error(String.format("The visibility is null in node %s in site %s in college %s", node.getName(), node.getWebSite().getName(), 
+					node.getWebSite().getCollege().getName()));
 			}
 		}
 	}
@@ -85,7 +91,7 @@ public class ContentStructure {
 		if (errors != null) {
 			syntaxError = errors.toString();
 		} else {
-			syntaxError = "";
+			syntaxError = StringUtils.EMPTY;
 		}
 		return accepted;
 	}
@@ -103,8 +109,7 @@ public class ContentStructure {
 		}
 
 		ObjectContext ctx = node.getObjectContext().createChildContext();
-		WebContent region = (WebContent) ctx.localObject(webContentService.findById(Long.parseLong(id)).getObjectId(),
-				null);
+		WebContent region = (WebContent) ctx.localObject(webContentService.findById(Long.parseLong(id)).getObjectId(), null);
 
 		this.visibility = region.getWebContentVisibility(node, null);
 
@@ -118,11 +123,14 @@ public class ContentStructure {
 		WebContent webContent = visibility.getWebContent();
 		webContent.setContent(textileConverter.convertCoreTextile(webContent.getContentTextile()));
 		this.visibility.getObjectContext().commitChanges();
-		return new MultiZoneUpdate("editorZone", new EmptyRenderable()).add(getCurrentZoneKey(), regionContentBlock)
-				.add("updatedZone", updateZone);
+		return new MultiZoneUpdate(EDITOR_ZONE_NAME, new EmptyRenderable()).add(getCurrentZoneKey(), regionContentBlock).add(UPDATED_ZONE_NAME, updateZone);
+	}
+	
+	public boolean isNotEmptyVisibility() {
+		return visibility != null;
 	}
 
 	public String getCurrentZoneKey() {
-		return "z_" + this.visibility.getRegionKey();
+		return ZONE_PREFIX + this.visibility.getRegionKey();
 	}
 }

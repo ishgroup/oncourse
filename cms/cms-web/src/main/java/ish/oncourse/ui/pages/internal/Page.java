@@ -18,6 +18,19 @@ import org.apache.tapestry5.services.Response;
 
 public class Page {
 
+	private static final String INTERNAL_PAGE_BODY_CLASS = "internal-page";
+
+	private static final String MAIN_PAGE_BODY_CLASS = "main-page";
+
+	private static final String DEFAULT_CONTENT_TYPE = "text/html;charset=UTF-8";
+
+	private static final String PAGE_PATH = "/page/";
+
+	private static final String PAGE_BODY_ID_PREFIX = "page";
+
+	private static final String MAIN_BODY_ID = "Main";
+
+	@SuppressWarnings("all")
 	@InjectComponent
 	@Property
 	private PageStructure pageStructure;
@@ -34,6 +47,7 @@ public class Page {
 
 	@Inject
 	private Request request;
+	@SuppressWarnings("all")
 	@Inject
 	private Response response;
 
@@ -44,7 +58,7 @@ public class Page {
 	private Block reloadPageBlock;
 	
 	public String getBodyId() {
-		return (isHomePage() || this.node == null) ? "Main" : ("page" + this.node.getNodeNumber());
+		return (isHomePage() || this.node == null) ? MAIN_BODY_ID : (PAGE_BODY_ID_PREFIX + this.node.getNodeNumber());
 	}
 
 	public boolean setupRender() {
@@ -57,12 +71,10 @@ public class Page {
 		if (node == null) {
 			WebNode newPageNode = webNodeService.createNewNode();
 			newPageNode.getObjectContext().commitChanges();
-
 			try {
 				HttpServletResponse httpServletResponse = requestGlobals.getHTTPServletResponse();
-				httpServletResponse.setContentType("text/html;charset=UTF-8");
-				httpServletResponse.sendRedirect("http://" + request.getServerName() + "/page/"
-						+ newPageNode.getNodeNumber());
+				httpServletResponse.setContentType(DEFAULT_CONTENT_TYPE);
+				httpServletResponse.sendRedirect("http://" + request.getServerName() + PAGE_PATH + newPageNode.getNodeNumber());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -71,7 +83,7 @@ public class Page {
 	}
 
 	public String getBodyClass() {
-		return (isHomePage()) ? "main-page" : "internal-page";
+		return (isHomePage()) ? MAIN_PAGE_BODY_CLASS : INTERNAL_PAGE_BODY_CLASS;
 	}
 
 	private boolean isHomePage() {
@@ -79,7 +91,7 @@ public class Page {
 		if (homePage == null) {
 			return false;
 		}
-		return node.getId() != null && node.getId().equals(homePage.getId());
+		return node != null && node.getId() != null && node.getId().equals(homePage.getId());
 	}
 
 	public Block getReloadPageBlock() {

@@ -25,7 +25,7 @@ import ish.oncourse.model.StudentConcession;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.PreferenceController;
+//import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.utils.FormatUtils;
 
@@ -55,7 +55,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.InjectService;
+//import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
@@ -108,12 +108,15 @@ public class EnrolCourses {
 	@Persist
 	private List<Contact> contacts;
 
+	@SuppressWarnings("unused")
 	@Property
 	private Contact contact;
 
+	@SuppressWarnings("unused")
 	@Property
 	private int studentIndex;
 
+	@SuppressWarnings("unused")
 	@Property
 	private boolean hadPreviousPaymentFailure;
 
@@ -142,14 +145,17 @@ public class EnrolCourses {
 	@Persist
 	private ObjectContext context;
 
+	@SuppressWarnings("unused")
 	@Property
 	@Persist
 	private Format moneyFormat;
 
+	@SuppressWarnings("unused")
 	@InjectComponent
 	@Property
 	private Zone totals;
 
+	@SuppressWarnings("unused")
 	@InjectComponent
 	@Property
 	private EnrolmentPaymentEntry paymentEntry;

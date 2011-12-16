@@ -23,9 +23,13 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 public class WebNodeService implements IWebNodeService {
-
+	private static final String SAMPLE_WEB_CONTENT = "Sample content";
+	private static final String NEW_PAGE_WEB_NODE_NAME = "New Page";
+	private static final String DOT_CHARACTER = ".";
+	private static final String LEFT_SLASH_CHARACTER = "/";
 	private static final Logger LOGGER = Logger.getLogger(WebNodeService.class);
 
 	@Inject
@@ -48,7 +52,7 @@ public class WebNodeService implements IWebNodeService {
 		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier().andExp(qualifier));
 
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
-		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
+		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + DOT_CHARACTER + WebContentVisibility.WEB_CONTENT_PROPERTY);
 
 		appyCacheSettings(q);
 
@@ -60,7 +64,7 @@ public class WebNodeService implements IWebNodeService {
 
 		SelectQuery q = new SelectQuery(WebNode.class, siteQualifier());
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
-		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
+		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + DOT_CHARACTER + WebContentVisibility.WEB_CONTENT_PROPERTY);
 
 		appyCacheSettings(q);
 
@@ -68,7 +72,7 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getHomePage() {
-		return getNodeForNodePath("/");
+		return getNodeForNodePath(LEFT_SLASH_CHARACTER);
 	}
 
 	public WebNode getNodeForNodeNumber(Integer nodeNumber) {
@@ -77,7 +81,7 @@ public class WebNodeService implements IWebNodeService {
 
 		SelectQuery q = new SelectQuery(WebNode.class, expr);
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
-		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
+		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + DOT_CHARACTER + WebContentVisibility.WEB_CONTENT_PROPERTY);
 
 		appyCacheSettings(q);
 
@@ -98,12 +102,12 @@ public class WebNodeService implements IWebNodeService {
 	public WebNode getNodeForNodePath(String nodePath) {
 
 		Expression expr = siteQualifier();
-		expr = expr.andExp(ExpressionFactory.matchExp(WebNode.WEB_URL_ALIASES_PROPERTY + "." + WebUrlAlias.URL_PATH_PROPERTY, nodePath));
+		expr = expr.andExp(ExpressionFactory.matchExp(WebNode.WEB_URL_ALIASES_PROPERTY + DOT_CHARACTER + WebUrlAlias.URL_PATH_PROPERTY, nodePath));
 
 		SelectQuery q = new SelectQuery(WebNode.class, expr);
 
 		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
-		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
+		q.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + DOT_CHARACTER + WebContentVisibility.WEB_CONTENT_PROPERTY);
 
 		appyCacheSettings(q);
 
@@ -111,22 +115,15 @@ public class WebNodeService implements IWebNodeService {
 	}
 
 	public WebNode getCurrentNode() {
-
-		WebNode node = null;
-
-		if (request.getAttribute(IWebNodeService.NODE) != null) {
-
-			node = (WebNode) request.getAttribute(IWebNodeService.NODE);
-
-		} else if (request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null
-				|| request.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER) != null) {
-
-			String nodeNumberString = request.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) != null ? request
-					.getParameter(IWebNodeService.NODE_NUMBER_PARAMETER) : (String) request
-					.getAttribute(IWebNodeService.NODE_NUMBER_PARAMETER);
-
+		WebNode node = null;		
+		if (request.getAttribute(NODE) != null) {
+			node = (WebNode) request.getAttribute(NODE);
+		} else if (request.getParameter(NODE_NUMBER_PARAMETER) != null
+				|| request.getAttribute(NODE_NUMBER_PARAMETER) != null) {
+			String nodeNumberString = request.getParameter(NODE_NUMBER_PARAMETER) != null ? request
+					.getParameter(NODE_NUMBER_PARAMETER) : (String) request
+					.getAttribute(NODE_NUMBER_PARAMETER);
 			Integer nodeNumber = null;
-
 			try {
 				nodeNumber = Integer.parseInt(nodeNumberString);
 			} catch (NumberFormatException e) {
@@ -137,18 +134,28 @@ public class WebNodeService implements IWebNodeService {
 				node = getNodeForNodeNumber(nodeNumber);
 			}
 
-		} else if (request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER) != null) {
+		} else if (request.getAttribute(PAGE_PATH_PARAMETER) != null) {
 
-			String pagePath = (String) request.getAttribute(IWebNodeService.PAGE_PATH_PARAMETER);
+			String pagePath = (String) request.getAttribute(PAGE_PATH_PARAMETER);
 			node = getNodeForNodePath(pagePath);
 		}
-
+		final Session session = request.getSession(true);
+		if (node != null) {
+			if (session != null && Boolean.TRUE.equals((Boolean)session.getAttribute(RELOAD_PAGE_ATTRIBUTE))) {
+				session.setAttribute(RELOAD_PAGE_ATTRIBUTE, false);
+				session.setAttribute(LOADED_NODE, node);
+			}
+		} else {
+			if (session != null) {
+				node = (WebNode) session.getAttribute(LOADED_NODE);
+			}
+		}
 		return node;
 	}
 
 	private Expression siteQualifier() {
 		WebSite site = webSiteService.getCurrentWebSite();
-		Expression expression = (site == null) ? ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY + "." + WebSite.COLLEGE_PROPERTY,
+		Expression expression = (site == null) ? ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY + DOT_CHARACTER + WebSite.COLLEGE_PROPERTY,
 				webSiteService.getCurrentCollege()) : ExpressionFactory.matchExp(WebNode.WEB_SITE_PROPERTY, site);
 		return expression;
 	}
@@ -170,7 +177,7 @@ public class WebNodeService implements IWebNodeService {
 			query.setFetchLimit(1);
 
 			query.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY);
-			query.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + "." + WebContentVisibility.WEB_CONTENT_PROPERTY);
+			query.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY_PROPERTY + DOT_CHARACTER + WebContentVisibility.WEB_CONTENT_PROPERTY);
 
 			appyCacheSettings(query);
 
@@ -198,7 +205,7 @@ public class WebNodeService implements IWebNodeService {
 		ObjectContext ctx = cayenneService.newContext();
 
 		WebNode newPageNode = ctx.newObject(WebNode.class);
-		newPageNode.setName("New Page");
+		newPageNode.setName(NEW_PAGE_WEB_NODE_NAME);
 		WebSite webSite = (WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null);
 		newPageNode.setWebSite(webSite);
 		newPageNode.setNodeNumber(getNextNodeNumber());
@@ -207,7 +214,7 @@ public class WebNodeService implements IWebNodeService {
 
 		WebContent webContent = ctx.newObject(WebContent.class);
 		webContent.setWebSite(webSite);
-		webContent.setContent("Sample content");
+		webContent.setContent(SAMPLE_WEB_CONTENT);
 
 		WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility.class);
 		webContentVisibility.setWebNode(newPageNode);

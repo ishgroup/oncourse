@@ -2,7 +2,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <t:loop source="node.webContentVisibility" value="visibility">
-    	<t:if test="${visibility}!=null">
+    	<t:if test="${notEmptyVisibility}">
 	       <t:zone id="prop:currentZoneKey" class="region">
 	           <t:delegate to="regionContentBlock"/>
 	       </t:zone>
@@ -42,6 +42,7 @@
             		<span class="cms-ico-close cms-close-popup"></span>
        			</div>
     		</div>
+    		<t:if test="${notEmptyVisibility}">
 			<form t:id="regionForm" zone="prop:currentZoneKey">
     		
     		<div class="cms-dialog-line">
@@ -50,6 +51,7 @@
    			</div>
 
     		</form>
+    		 </t:if>
 		</div>
 		
 		<script type="text/javascript">		
