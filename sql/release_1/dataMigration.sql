@@ -115,8 +115,8 @@ INSERT INTO %DESTINATIONDB%_college.CourseModule (id, courseId, moduleId, colleg
 	JOIN %DESTINATIONDB%_college.Course as c ON cm.courseId=c.id
 	WHERE courseId in (SELECT id FROM %DESTINATIONDB%_college.Course WHERE collegeId = @collegeId);
 
-INSERT INTO %DESTINATIONDB%_college.Discount (id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, isCodeRequired, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail)
-	SELECT id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, isCodeRequired, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail
+INSERT INTO %DESTINATIONDB%_college.Discount (id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail)
+	SELECT id, collegeId, angelId, code, validFrom, validTo, combinationType, created, modified, discountAmount, discountRate, maximumDiscount, minimumDiscount, name, roundingMode, studentAge, studentAgeOperator, studentEnrolledWithinDays, studentPostcodes, studentsQualifier, timeZone, detail
 	FROM %SOURCEDB%_college.Discount WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
 
 INSERT INTO %DESTINATIONDB%_college.DiscountConcessionType (id, concessionTypeId, discountId, collegeId, angelId, created, modified)
