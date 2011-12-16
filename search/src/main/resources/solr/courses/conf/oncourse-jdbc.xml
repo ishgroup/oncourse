@@ -54,7 +54,7 @@
 			
 				<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
 					query="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, 
-							IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time from Session s
+							IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'daytime', 'evening') as time from Session s
                 				where s.courseClassId='${courseClass.id}'"
                 	deltaImportQuery="select s.id as id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, 
                 					IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time,

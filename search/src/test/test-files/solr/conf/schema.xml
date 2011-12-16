@@ -1,0 +1,158 @@
+<?xml version="1.0" ?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- The Solr schema file. This file should be named "schema.xml" and
+     should be located where the classloader for the Solr webapp can find it.
+
+     This schema is used for testing, and as such has everything and the
+     kitchen sink thrown in. See example/solr/conf/schema.xml for a
+     more concise example.
+
+     $Id: schema.xml 382610 2006-03-03 01:43:03Z yonik $
+     $Source: /cvs/main/searching/solr-configs/test/WEB-INF/classes/schema.xml,v $
+     $Name:  $
+  -->
+
+<schema name="spatial" version="1.0">
+  <types>
+
+    <!-- field type definitions... note that the "name" attribute is
+         just a label to be used by field definitions.  The "class"
+         attribute and any other attributes determine the real type and
+         behavior of the fieldtype.
+      -->
+
+    <!-- numeric field types that store and index the text
+         value verbatim (and hence don't sort correctly or support range queries.)
+         These are provided more for backward compatability, allowing one
+         to create a schema that matches an existing lucene index.
+    -->
+    <fieldType name="pint" class="solr.IntField"/>
+    <fieldType name="plong" class="solr.LongField"/>
+    <fieldtype name="pfloat" class="solr.FloatField"/>
+    <fieldType name="pdouble" class="solr.DoubleField"/>
+
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+
+    <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+
+    <!-- numeric field types that manipulate the value into
+       a string value that isn't human readable in it's internal form,
+       but sorts correctly and supports range queries.
+
+         If sortMissingLast="true" then a sort on this field will cause documents
+       without the field to come after documents with the field,
+       regardless of the requested sort order.
+         If sortMissingFirst="true" then a sort on this field will cause documents
+       without the field to come before documents with the field,
+       regardless of the requested sort order.
+         If sortMissingLast="false" and sortMissingFirst="false" (the default),
+       then default lucene sorting will be used which places docs without the field
+       first in an ascending sort and last in a descending sort.
+    -->
+    <fieldtype name="sint" class="solr.SortableIntField" sortMissingLast="true"/>
+    <fieldtype name="slong" class="solr.SortableLongField" sortMissingLast="true"/>
+    <fieldtype name="sfloat" class="solr.SortableFloatField" sortMissingLast="true"/>
+    <fieldtype name="sdouble" class="solr.SortableDoubleField" sortMissingLast="true"/>
+
+    <fieldtype name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+    <fieldtype name="string" class="solr.StrField" sortMissingLast="true"/>
+
+    <!-- format for date is 1995-12-31T23:59:59.999Z and only the fractional
+         seconds part (.999) is optional.
+      -->
+    <fieldtype name="date" class="solr.TrieDateField" precisionStep="0"/>
+    <fieldtype name="tdate" class="solr.TrieDateField" precisionStep="6"/>
+    <fieldtype name="pdate" class="solr.DateField" sortMissingLast="true"/>
+
+
+    <!-- solr.TextField allows the specification of custom
+         text analyzers specified as a tokenizer and a list
+         of token filters.
+      -->
+    <fieldtype name="text" class="solr.TextField">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.StopFilterFactory"/>
+        <filter class="solr.PorterStemFilterFactory"/>
+      </analyzer>
+    </fieldtype>
+
+
+    <fieldtype name="nametext" class="solr.TextField">
+      <analyzer class="org.apache.lucene.analysis.WhitespaceAnalyzer"/>
+    </fieldtype>
+
+    <fieldtype  name="unstored" class="solr.StrField" indexed="true" stored="false"/>
+
+
+  <fieldtype name="textgap" class="solr.TextField" multiValued="true" positionIncrementGap="100">
+      <analyzer>
+          <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+  </fieldtype>
+
+    <!-- Try out some point types -->
+  <fieldType name="xy" class="solr.PointType" dimension="2" subFieldType="double"/>
+  <fieldType name="x" class="solr.PointType" dimension="1" subFieldType="double"/>
+  <fieldType name="tenD" class="solr.PointType" dimension="10" subFieldType="double"/>
+    <!-- Use the sub field suffix -->
+  <fieldType name="xyd" class="solr.PointType" dimension="2" subFieldSuffix="_d1"/>
+    <fieldtype name="geohash" class="solr2155.solr.schema.GeoHashField"/>
+
+
+  <fieldType name="latLon" class="solr.LatLonType" subFieldType="double"/>
+
+ </types>
+
+
+ <fields>
+   <field name="id" type="int" indexed="true" stored="true" multiValued="false" required="false"/>
+
+   <!-- Test points -->
+      <!-- Test points -->
+   <field name="home" type="xy" indexed="true" stored="true" multiValued="false"/>
+   <field name="x" type="x" indexed="true" stored="true" multiValued="false"/>
+   <field name="homed" type="xyd" indexed="true" stored="true" multiValued="false"/>
+   <field name="home_ns" type="xy" indexed="true" stored="false" multiValued="false"/>
+   <field name="work" type="xy" indexed="true" stored="true" multiValued="false"/>
+
+   <field name="home_ll" type="latLon" indexed="true" stored="true" multiValued="false"/>
+   <field name="home_gh" type="geohash" indexed="true" stored="true" multiValued="true"/>
+
+
+   <field name="point10" type="tenD" indexed="true" stored="true" multiValued="false"/>
+
+
+
+ </fields>
+
+ <!-- <defaultSearchField>text</defaultSearchField> -->
+ <uniqueKey>id</uniqueKey>
+
+
+</schema>

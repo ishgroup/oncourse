@@ -7,6 +7,9 @@
 		<fieldType name="location" class="solr.LatLonType"
 			subFieldSuffix="_coordinate" />
 
+		<fieldtype name="geohash" class="solr2155.solr.schema.GeoHashField"
+			length="12" />
+
 		<fieldType name="string" class="solr.StrField"
 			sortMissingLast="true" omitNorms="true" />
 
@@ -109,23 +112,23 @@
 
 		<field name="detail" type="text" indexed="true" stored="true"
 			omitNorms="false" boost="1.0" />
-			
-		<field name="class_code" type="text" indexed="true" stored="true" multiValued="true"
-			omitNorms="false" boost="10.0" />
+
+		<field name="class_code" type="text" indexed="true" stored="true"
+			multiValued="true" omitNorms="false" boost="10.0" />
 
 		<field name="tutor" type="textgen" indexed="true" stored="true"
 			omitNorms="false" multiValued="true" boost="5.0" />
 
 		<field name="when" type="textgen" indexed="true" stored="true"
 			omitNorms="false" multiValued="true" boost="5.0" />
-			
-		<field name="startDate" type="date" indexed="true" stored="true" omitNorms="false"/>
 
-		<field name="end" type="date" indexed="true" stored="true"  multiValued="true"
-			omitNorms="false" boost="5.0"/>
-		
-		<field name="course_loc" type="location" indexed="true" stored="true" multiValued="true"
-			omitNorms="false" boost="5.0" />
+		<field name="startDate" type="date" indexed="true" stored="true"
+			omitNorms="false" />
+
+		<field name="end" type="date" indexed="true" stored="true"
+			multiValued="true" omitNorms="false" boost="5.0" />
+			
+		<field name="course_loc" type="geohash" indexed="true" stored="true" multiValued="true" boost="5.0"/>
 
 		<field name="course_suburb" type="textgen" indexed="true"
 			omitNorms="false" stored="true" multiValued="true" boost="5.0" />
@@ -135,11 +138,12 @@
 
 		<field name="price" type="sfloat" indexed="true" stored="true"
 			multiValued="true" omitNorms="false" boost="5.0" />
-			
-		<field name="tagId" type="long" indexed="true" stored="true" multiValued="true" omitNorms="false" boost="5.0" /> 
+
+		<field name="tagId" type="long" indexed="true" stored="true"
+			multiValued="true" omitNorms="false" boost="5.0" />
 
 		<!-- Type used to index the lat and lon components for the "location" FieldType -->
-		<dynamicField name="*_coordinate" type="tdouble" indexed="true" 
+		<dynamicField name="*_coordinate" type="tdouble" indexed="true"
 			stored="false" />
 	</fields>
 

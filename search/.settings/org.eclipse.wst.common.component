@@ -3,7 +3,12 @@
     <wb-module deploy-name="search-app">
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <dependent-module archiveName="common-model-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common-model/common-model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="common-services-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common-services/common-services">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/searchapp/target/classes"/>
