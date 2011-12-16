@@ -11,8 +11,8 @@ import ish.oncourse.portal.services.mail.EmailBuilder;
 import ish.oncourse.portal.services.mail.IMailService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
-import ish.persistence.CommonPreferenceController;
 
 import java.util.Date;
 import java.util.List;
@@ -114,15 +114,11 @@ public class ClassApproval {
 				String body = String.format("Tutor %s %s has submitted the following feedback for the class %s '%s'.\n%s", c.getGivenName(),
 						c.getFamilyName(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
 	
-				College college = courseClass.getCollege();
-	
-				CommonPreferenceController prefController = prefFactory.getPreferenceController(college);
-	
 				EmailBuilder email = new EmailBuilder();
 				email.setFromEmail(FROM_EMAIL);
 				email.setSubject(subject);
 				email.setBody(body);
-				email.setToEmails(prefController.getEmailAdminAddress());
+				email.setToEmails(getTutorFeedbackEmail());
 				mailService.sendEmail(email, true);
 			}
 		}
@@ -144,5 +140,15 @@ public class ClassApproval {
 
 	public String getDeclineLabel() {
 		return getIsClassApproved() ? "Complain" : "Decline";
+	}
+	
+	private String getTutorFeedbackEmail() {
+		College college = courseClass.getCollege();
+		PreferenceController prefController = prefFactory.getPreferenceController(college);
+		
+		if (prefController.getTutorFeedbackEmail() != null) {
+			return prefController.getTutorFeedbackEmail();
+		}
+		return prefController.getEmailAdminAddress();
 	}
 }

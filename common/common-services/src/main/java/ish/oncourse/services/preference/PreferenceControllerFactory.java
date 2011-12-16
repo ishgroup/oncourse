@@ -5,7 +5,6 @@ import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.persistence.CommonPreferenceController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,11 +16,11 @@ public class PreferenceControllerFactory {
 	@Inject
 	private ICayenneService cayenneService;
 	
-	private Map<Long, CommonPreferenceController> controllerMap = new HashMap<Long, CommonPreferenceController>();
+	private Map<Long, PreferenceController> controllerMap = new HashMap<Long, PreferenceController>();
 	
-	public CommonPreferenceController getPreferenceController(final College college) {
+	public PreferenceController getPreferenceController(final College college) {
 		
-		CommonPreferenceController pref = controllerMap.get(college.getId());
+		PreferenceController pref = controllerMap.get(college.getId());
 		
 		if (pref == null) {
 			pref = new PreferenceController(cayenneService, new IWebSiteService() {
@@ -47,4 +46,5 @@ public class PreferenceControllerFactory {
 		
 		return pref;
 	}
+
 }
