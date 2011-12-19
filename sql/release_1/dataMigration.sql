@@ -317,6 +317,9 @@ INSERT INTO %DESTINATIONDB%_college.Tag (angelId, collegeId, created, detail, de
 	FROM %SOURCEDB%_college.Tag
 	WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
 
+-- Mailing lists are a special type
+UPDATE %DESTINATIONDB%_college.Tag AS t SET t.specialType = 3 WHERE t.name LIKE 'Mailing lists' AND t.collegeId = @collegeId LIMIT 1;
+
 UPDATE %DESTINATIONDB%_college.Tag AS t
 	JOIN %SOURCEDB%_college.Tag AS tOld ON tOld.id = t.id
 	SET t.parentId = tOld.parentId

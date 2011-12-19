@@ -107,7 +107,7 @@ public class Billing {
 	Object submitted() throws Exception {
 
 		if (isExport) {
-			String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.Qty\tDetail.UnitPrice\tDescription\n";
+			String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\n";
 			for (College college : colleges) {
 				exportData += buildMWExport(college);
 			}
@@ -460,7 +460,7 @@ public class Billing {
 		text += "DI\t" +
 				college.getBillingCode() + "\t" +
 				"ON-NWEB-CC" + "\t" +
-				"onCourse office credit card transaction fee for " + monthAndYear + "\t";
+				"onCourse office credit card transaction fee for " + monthAndYear;
 		
 		Integer ccOfficeFree = (Integer) licenseData.get(college.getId()).get("cc-office-free");
 		Long ccOffice = (Long) billingData.get(college.getId()).get("ccOffice");
@@ -468,7 +468,7 @@ public class Billing {
 		ccOffice = ccOffice == null ? 0 : ccOffice;
 		
 		if (ccOfficeFree > 0) {
-			text += "(" + ccOffice + " less " + ccOfficeFree + " free transactions)";
+			text += " (" + ccOffice + " less " + ccOfficeFree + " free transactions)";
 		}
 		text += "\t" + Math.max(0, ccOffice - ccOfficeFree) + "\t" + 
 				licenseData.get(college.getId()).get("cc-office") + 
@@ -511,7 +511,7 @@ public class Billing {
 					college.getBillingCode() + "\t" +
 					"ON-ECOM-PERC" + "\t" +
 					"onCourse eCommerce fee at " + (ecommerce.doubleValue() * 100) + "% of " +
-					moneyFormat.format(ccWebValue) + " for " + monthAndYear + "1\t" +
+					moneyFormat.format(ccWebValue) + " for " + monthAndYear + "\t" + "1\t" +
 					decimalFormatter.format(ccWebValue.multiply(ecommerce)) + "\t" +
 					description + "\n";
 		}
