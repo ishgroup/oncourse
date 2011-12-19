@@ -4,7 +4,6 @@
 		<div class="addthis">
 			<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
 		</div>
-        <div class="clearboth"></div>
 	</t:if>
     <div class="clearboth"></div>
 	<t:loop source="node.webContentVisibility" value="visibility">
