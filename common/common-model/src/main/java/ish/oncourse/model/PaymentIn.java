@@ -93,7 +93,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * @param lines
 	 *            paymentInLines
 	 */
-	private void unregisterNotCommittedLines() {
+	void unregisterNotCommittedLines() {
 
 		for (PaymentInLine pinl : new ArrayList<PaymentInLine>(getPaymentInLines())) {
 			if (pinl.getObjectId().isTemporary()) {
@@ -123,7 +123,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * 
 	 * @return true - if amount matches the sum of committed paymentInLines.
 	 */
-	private boolean isCommittedSumValid() {
+	boolean isCommittedSumValid() {
 		Money amount = new Money(getAmount());
 		Money sum = Money.ZERO;
 
@@ -584,7 +584,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	@Override
 	protected void onPreUpdate() {
 		setModified(new Date());
-		
+		for (final PaymentInLine paymentInLine : getPaymentInLines()) {
+			paymentInLine.setModified(new Date());
+		}
 		if (PaymentType.CREDIT_CARD.equals(getType())) {
 			boolean approved = false;
 			for (final PaymentTransaction transaction : getPaymentTransactions()) {
@@ -613,6 +615,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Date today = new Date();
 		setCreated(today);
 		setModified(today);
+		for (final PaymentInLine paymentInLine : getPaymentInLines()) {
+			paymentInLine.setModified(today);
+		}
 	}
 
 	@Override

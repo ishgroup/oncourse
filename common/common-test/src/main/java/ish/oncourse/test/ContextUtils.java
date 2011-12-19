@@ -1,5 +1,7 @@
 package ish.oncourse.test;
 
+import ish.math.MoneyType;
+
 import java.util.Collections;
 
 import javax.naming.Context;
@@ -9,6 +11,7 @@ import javax.sql.DataSource;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataDomain;
+import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.access.DbGenerator;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.dba.derby.DerbyAdapter;
@@ -68,6 +71,9 @@ public class ContextUtils {
 		createTablesForDataSource(oncourse, domain.getDataMap("oncourse"));
 		createTablesForDataSource(oncourseBinary, domain.getDataMap("oncourseBinary"));
 		createTablesForDataSource(oncourseReference, domain.getDataMap("oncourseReference"));
+		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
+			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
+		}
 	}
 
 	public static DataSource getDataSource(String location) throws Exception {
@@ -110,8 +116,9 @@ public class ContextUtils {
 	 * @throws Exception
 	 */
 	private static void createTablesForDataSource(DataSource dataSource, DataMap map) throws Exception {
+		@SuppressWarnings("unused")
 		DataDomain domain = cayenneRuntime.getDataDomain();
-
+		@SuppressWarnings("deprecation")
 		DbGenerator generator = new DbGenerator(new DerbyAdapter(), map, Collections.<DbEntity> emptyList());
 		generator.setShouldCreateTables(true);
 		generator.setShouldCreateFKConstraints(true);

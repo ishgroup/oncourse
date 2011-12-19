@@ -1247,6 +1247,9 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<post-add method-name="onPostAdd"/>
+		<pre-persist method-name="onPrePersist"/>
+		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
 	<obj-entity name="PaymentOut" className="ish.oncourse.model.PaymentOut" dbEntityName="PaymentOut">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

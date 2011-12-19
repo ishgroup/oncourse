@@ -36,7 +36,7 @@ import com.paymentexpress.stubs.TransactionResult;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentExpressGatewayServiceTest {
 
-	private static final String PAYMENT_REF = "W111";
+	private static final String PAYMENT_REF = "W111";//
 
 	private static final String GATEWAY_PASSWORD = "test1234";
 

@@ -14,7 +14,12 @@
 	<name>Willow - Common Test Framework</name>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>ish.oncourse.angel</groupId>
+			<artifactId>waCommon</artifactId>
+			<version>2.1.9b3</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.cayenne</groupId>
 			<artifactId>cayenne-server</artifactId>
