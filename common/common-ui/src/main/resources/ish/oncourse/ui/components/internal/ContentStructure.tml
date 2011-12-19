@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<h1>${node.name}</h1>
+	<h1 class="page-title">${node.name}</h1>
 	<t:if t:test="addThisEnabled">
 		<div class="addthis">
 			<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>

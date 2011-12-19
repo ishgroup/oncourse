@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="vevent courseItem">
 		<t:if t:test="isList" negate="true">
-			<h1 class="summary">${course.name}</h1>
+			<h1 class="summary page-title">${course.name}</h1>
 			<t:if t:test="addThisEnabled">
 				<div class="addthis">
 					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
