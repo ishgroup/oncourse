@@ -44,11 +44,8 @@ public class PaymentSettings {
 	@SetupRender
 	void beforeRender() {
 		this.redirect = preferenceController.getRedirectOnPaymentSuccessful();
-		if (preferenceController.getPaymentSuccessfulRedirectUrl() != null) {
-			this.redirectToUrl = preferenceController.getPaymentSuccessfulRedirectUrl();
-		}
-		else {
-			this.redirectToUrl = "";
+		if (preferenceController.getEnrolSuccessUrl() != null) {
+			this.redirectToUrl = preferenceController.getEnrolSuccessUrl();
 		}
 	}
 	
@@ -64,7 +61,7 @@ public class PaymentSettings {
 		paymentSettingsForm.clearErrors();
 		
 		preferenceController.setRedirectOnPaymentSuccessful(this.redirect);
-		preferenceController.setPaymentSuccessfulRedirectUrl(this.redirectToUrl);
+		preferenceController.setEnrolSuccessUrl(this.redirectToUrl);
 		
 		saved = true;
 		
