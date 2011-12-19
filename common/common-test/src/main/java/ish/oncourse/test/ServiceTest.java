@@ -2,6 +2,7 @@ package ish.oncourse.test;
 
 import javax.sql.DataSource;
 
+import org.apache.tapestry5.ioc.AnnotationProvider;
 import org.apache.tapestry5.test.PageTester;
 import org.junit.After;
 
@@ -16,6 +17,10 @@ public class ServiceTest {
 
 	protected <T> T getService(Class<T> serviceInterface) {
 		return tester.getRegistry().getService(serviceInterface);
+	}
+	
+	protected <T> T getObject(Class<T> objectType, AnnotationProvider annotationProvider) {
+		return tester.getRegistry().getObject(objectType, annotationProvider);
 	}
 	
 	protected PageTester getPageTester() {
