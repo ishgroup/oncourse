@@ -14,6 +14,7 @@ import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
 
 public class PaymentInLineTest {
+	
 	private ObjectContext context;
 	private Calendar calendar;
 	private College college;
@@ -45,18 +46,19 @@ public class PaymentInLineTest {
 	
 	@Test
 	public void testCorrectEnrol() throws Exception {
-		final PaymentIn paymentIn = prepareBaseData(new BigDecimal(150));
+		final PaymentIn paymentIn = prepareBaseData(new BigDecimal(175));
 		context.commitChanges();
 		assertTrue(!paymentIn.getPaymentInLines().isEmpty());
 		assertNotNull("PaymentInline id should not be null", paymentIn.getPaymentInLines().get(0).getId());
 	}
 	
 	private PaymentIn prepareBaseData(final BigDecimal firstPaymentAmount) {
+		
 		final PaymentIn paymentIn = context.newObject(PaymentIn.class);
 		paymentIn.setAngelId(100L);
 		paymentIn.setCollege(college);
 		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
-		paymentIn.setAmount(new BigDecimal(150));
+		paymentIn.setAmount(firstPaymentAmount);
 		paymentIn.setSource(PaymentSource.SOURCE_WEB);		
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
 		
@@ -65,6 +67,7 @@ public class PaymentInLineTest {
 		contact.setFamilyName("testuser");
 		contact.setCollege(college);
 		
+		//First invoice
 		invoice = context.newObject(Invoice.class);
 		invoice.setAngelId(100L);
 		invoice.setAmountOwing(new BigDecimal(75));
@@ -87,16 +90,46 @@ public class PaymentInLineTest {
 		invoice.addToInvoiceLines(invoiceLine);
 		
 		final PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
-		paymentInLine.setAmount(firstPaymentAmount);
+		paymentInLine.setAmount(new BigDecimal(75));
 		paymentInLine.setCollege(college);
 		paymentInLine.setInvoice(invoice);
 		paymentIn.addToPaymentInLines(paymentInLine);
+		
+		//second invoice
+		Invoice invoice2 = context.newObject(Invoice.class);
+		invoice2.setAngelId(100L);
+		invoice2.setAmountOwing(new BigDecimal(100));
+		invoice2.setInvoiceNumber(101L);
+		invoice2.setCollege(college);
+		invoice2.setInvoiceDate(calendar.getTime());
+		invoice2.setTotalExGst(new BigDecimal(100));
+		invoice2.setTotalGst(new BigDecimal(100));
+		invoice2.setStatus(InvoiceStatus.PENDING);
+		invoice2.setDateDue(calendar.getTime());
+		invoice2.setContact(contact);
+		
+		final InvoiceLine invoiceLine2 = context.newObject(InvoiceLine.class);
+		invoiceLine2.setTitle("Test_invLine");
+		invoiceLine2.setCollege(college);
+		invoiceLine2.setPriceEachExTax(new Money(new BigDecimal(100)));
+		invoiceLine2.setTaxEach(new Money(new BigDecimal(0)));
+		invoiceLine2.setQuantity(new BigDecimal(1));
+		invoiceLine2.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invoice2.addToInvoiceLines(invoiceLine2);
+		
+		final PaymentInLine paymentInLine2 = context.newObject(PaymentInLine.class);
+		paymentInLine2.setAmount(new BigDecimal(100));
+		paymentInLine2.setCollege(college);
+		paymentInLine2.setInvoice(invoice2);
+		paymentIn.addToPaymentInLines(paymentInLine2);
+		
 		return paymentIn;
 	}
 	
 	@Test
 	public void testInCorrectEnrolByAmount() throws Exception {
 		prepareBaseData(new BigDecimal(145));
+		
 		boolean invalid = false;
 		try {
 			context.commitChanges();
@@ -108,12 +141,14 @@ public class PaymentInLineTest {
 	
 	@Test
 	public void testInCorrectEnrolByDuplicatePaymentInLine() throws Exception {
-		final PaymentIn paymentIn = prepareBaseData(new BigDecimal(145));
+		final PaymentIn paymentIn = prepareBaseData(new BigDecimal(175));
 		final PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
+		
 		paymentInLine.setAmount(new BigDecimal(5));
 		paymentInLine.setCollege(college);
 		paymentInLine.setInvoice(invoice);
 		paymentIn.addToPaymentInLines(paymentInLine);
+		
 		boolean invalid = false;
 		try {
 			context.commitChanges();

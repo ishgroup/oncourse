@@ -1,8 +1,10 @@
 package ish.oncourse.model;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
 
@@ -19,53 +21,51 @@ public class PaymentInTest {
 	private ObjectContext context;
 	private Calendar calendar;
 	private College college;
-	private Course course;	
+	private Course course;
 	private CourseClass courseClass;
 
 	@Before
 	public void setup() throws Exception {
-		/*
 		ContextUtils.setupDataSources();
 		this.context = ContextUtils.createObjectContext();
 		this.calendar = Calendar.getInstance();
-		
+
 		this.college = context.newObject(College.class);
-		
+
 		college.setName("name");
 		college.setTimeZone("Australia/Sydney");
 		college.setFirstRemoteAuthentication(new Date());
-		
+
 		context.commitChanges();
-		
+
 		this.course = context.newObject(Course.class);
 		course.setCollege(college);
-		
+
 		this.courseClass = context.newObject(CourseClass.class);
 		courseClass.setCourse(course);
 		courseClass.setCollege(college);
 		courseClass.setMaximumPlaces(3);
-		
-		context.commitChanges();*/
+
+		context.commitChanges();
 	}
 
 	@Test
 	public void testAbandonPayment() throws Exception {
-		
-		/*
-		
+
 		PaymentIn paymentIn = context.newObject(PaymentIn.class);
 		paymentIn.setCollege(college);
 		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
 		paymentIn.setAmount(new BigDecimal(150));
 		paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
-		
+		paymentIn.setType(PaymentType.CREDIT_CARD);
+
 		calendar.add(Calendar.DAY_OF_MONTH, 5);
-		
+
 		Contact contact = (Contact) context.newObject(Contact.class);
 		contact.setGivenName("Test_Payer");
 		contact.setFamilyName("Test_Payer");
 		contact.setCollege(college);
-		
+
 		Invoice invoice1 = context.newObject(Invoice.class);
 		invoice1.setAngelId(100l);
 		invoice1.setAmountOwing(new BigDecimal(-75));
@@ -77,8 +77,8 @@ public class PaymentInTest {
 		invoice1.setStatus(InvoiceStatus.PENDING);
 		invoice1.setDateDue(calendar.getTime());
 		invoice1.setContact(contact);
-		
-		
+		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
+
 		Invoice invoice2 = context.newObject(Invoice.class);
 		invoice2.setAngelId(102l);
 		invoice2.setAmountOwing(new BigDecimal(225));
@@ -90,6 +90,7 @@ public class PaymentInTest {
 		invoice2.setStatus(InvoiceStatus.PENDING);
 		invoice2.setDateDue(calendar.getTime());
 		invoice2.setContact(contact);
+		invoice2.setSource(PaymentSource.SOURCE_ONCOURSE);
 
 		InvoiceLine invLine1 = context.newObject(InvoiceLine.class);
 		invLine1.setTitle("Test_invLine1");
@@ -98,6 +99,7 @@ public class PaymentInTest {
 		invLine1.setTaxEach(new Money(new BigDecimal(0)));
 		invLine1.setQuantity(new BigDecimal(1));
 		invLine1.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invLine1.setEnrolment(newEnrolment());
 
 		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
 		invLine2.setTitle("Test_invLine2");
@@ -123,35 +125,39 @@ public class PaymentInTest {
 
 		paymentIn.addToPaymentInLines(pLine1);
 		paymentIn.addToPaymentInLines(pLine2);
-		
+
 		context.commitChanges();
-		
+
 		PaymentIn inversePayment = paymentIn.abandonPayment();
-		
+
 		assertNotNull("Expecting not null inverse payment.", inversePayment);
-		
-		context.commitChanges(); */
+
+		context.commitChanges();
+
+		assertTrue("Checking that id isn't temporary.", !inversePayment.getObjectId().isTemporary());
+		assertTrue("Inverse payment amount is zero.", BigDecimal.ZERO.equals(inversePayment.getAmount()));
 	}
 
 	private Enrolment newEnrolment() {
-		
+
 		Enrolment enrol = new Enrolment();
 		enrol.setCourseClass(courseClass);
 		enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrol.setCollege(college);
-		
+		enrol.setSource(PaymentSource.SOURCE_ONCOURSE);
+
 		Student student = (Student) context.newObject(Student.class);
 		student.setCollege(college);
-		
+
 		Contact contact = (Contact) context.newObject(Contact.class);
 		contact.setCollege(college);
 		contact.setGivenName("Test_CourseClass");
 		contact.setFamilyName("Test_CourseClass");
-		
+
 		student.setContact(contact);
-		
+
 		enrol.setStudent(student);
-		
+
 		return enrol;
 	}
 }
