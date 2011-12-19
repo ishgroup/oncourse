@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.services.replication;
+package ish.oncourse.webservices.replication.builders;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -37,7 +37,7 @@ public class WillowStubBuilderTest extends ServiceTest {
 
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 
-		st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/services/replication/stubBuilderDataSet.xml");
+		st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/builders/stubBuilderDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DataSource onDataSource = getDataSource("jdbc/oncourse");

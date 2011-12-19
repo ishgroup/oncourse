@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<College id="1" name="Sydney Community College"
+		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+		timezone="Australia/Sydney" />
+
+	<College id="2" name="Tasmania Adult Education"
+		webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT"
+		firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" />
+		
+	<Student id="1540" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+
+	<Contact id="1189156" collegeId="1" studentId="1540" angelId="2"
+		countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+		isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+		emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+		isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+		isMarketingViaSMSAllowed="1" />
+		
+	
+		
+	<QueuedTransaction id="1" collegeId="1" transactionKey="12345rewqr" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<QueuedTransaction id="2" collegeId="1" transactionKey="12345ewrwqer" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<QueuedTransaction id="3" collegeId="1" transactionKey="12345322rffdfadf" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	
+	<QueuedRecord id="1" transactionId="1" collegeId="1" action="CREATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="2" transactionId="1" collegeId="1" action="UPDATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="3" transactionId="1" collegeId="1" action="CREATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="4" transactionId="1" collegeId="1" action="UPDATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	
+	<QueuedRecord id="5" transactionId="2" collegeId="1" action="CREATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+	<QueuedRecord id="6" transactionId="2" collegeId="1" action="UPDATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+
+	<QueuedRecord id="7" transactionId="3" collegeId="1" action="CREATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="3"/>
+	<QueuedRecord id="8" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="Contact" entityWillowId="1189156" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="3"/>
+
+</dataset>
