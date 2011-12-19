@@ -24,7 +24,6 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 		pl.setCollege(getCollege());
 		pl.setCreated(getCreated());
 		pl.setInvoice(getInvoice());
-		pl.setPaymentIn(getPaymentIn());
 		pl.setModified(getModified());
 		return pl;
 	}
