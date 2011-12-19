@@ -6,8 +6,8 @@
 				<div class="addthis">
 					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
 				</div>
-                <div class="clearboth"></div>
 			</t:if>
+            <div class="clearboth"></div>
 			<p:else>
 				<h2>
 					<a href="/course/${course.code}" class="url">${course.name}</a>
