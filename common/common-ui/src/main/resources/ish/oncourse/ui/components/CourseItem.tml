@@ -6,6 +6,7 @@
 				<div class="addthis">
 					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
 				</div>
+                <div class="clearboth"></div>
 			</t:if>
 			<p:else>
 				<h2>
