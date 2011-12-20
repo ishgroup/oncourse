@@ -1,11 +1,14 @@
 package ish.oncourse.services.persistence;
 
+import java.security.SecureRandom;
+
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.ObjectStore;
 import org.apache.cayenne.graph.GraphDiff;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * 
@@ -19,6 +22,18 @@ public class ISHObjectContext extends DataContext {
 
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
 		super(channel, objectStore);
+	}
+	
+	/**
+	 * Generates new transaction key.
+	 * 
+	 * @return transaction key
+	 */
+	private String generateTransactionKey() {
+		SecureRandom random = new SecureRandom(String.valueOf(this.hashCode()).getBytes());
+		byte bytes[] = new byte[20];
+		random.nextBytes(bytes);
+		return DigestUtils.md5Hex(bytes);
 	}
 
 	/**
@@ -53,8 +68,7 @@ public class ISHObjectContext extends DataContext {
 	 */
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType) {
-		String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
-		setUserProperty(TRANSACTION_KEY_PROP, transactionKey);
+		setUserProperty(TRANSACTION_KEY_PROP, generateTransactionKey());
 		return super.onSync(originatingContext, changes, syncType); 
 	}
 
@@ -65,8 +79,7 @@ public class ISHObjectContext extends DataContext {
 	 */
 	@Override
 	public void commitChanges() throws CayenneRuntimeException {
-		String transactionKey = String.valueOf(this.hashCode()) + System.nanoTime();
-		setUserProperty(TRANSACTION_KEY_PROP, transactionKey);
+		setUserProperty(TRANSACTION_KEY_PROP, generateTransactionKey());
 		super.commitChanges();
 	}
 }

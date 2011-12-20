@@ -37,6 +37,7 @@ import ish.oncourse.services.persistence.ISHObjectContext;
 
 import java.util.Date;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -76,7 +77,12 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	/**
 	 * DataContext threadlocal storage
 	 */
-	private static final ThreadLocal<Deque<QueuedTransactionContext>> TRANSACTION_CONTEXT_STORAGE = new InheritableThreadLocal<Deque<QueuedTransactionContext>>();
+	private static final ThreadLocal<Deque<ObjectContext>> CONTEXT_STORAGE = new InheritableThreadLocal<Deque<ObjectContext>>();
+	
+	/**
+	 * DataContext threadlocal storage
+	 */
+	private static final ThreadLocal<Map<String, QueuedTransaction>> TRANSACTION_KEY_MAPPING = new InheritableThreadLocal<Map<String, QueuedTransaction>>();
 	
 	/**
 	 * Storage to hold college between invocations of preRemove and postRemove methods.
@@ -112,45 +118,30 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	 */
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
-		Deque<QueuedTransactionContext> deque = null;
-
+		
+		Deque<ObjectContext> stack = CONTEXT_STORAGE.get();
+		
+		if (stack == null) {
+			stack = new LinkedList<ObjectContext>();
+			CONTEXT_STORAGE.set(stack);
+			TRANSACTION_KEY_MAPPING.set(new HashMap<String, QueuedTransaction>());
+		}
+		
 		try {
-			QueuedTransactionContext tContext;
-			deque = TRANSACTION_CONTEXT_STORAGE.get();
-
-			if (deque != null && !deque.isEmpty()) {
-				tContext = deque.peek().shallowCopy();
-			} else {
-				deque = new LinkedList<QueuedTransactionContext>();
-				TRANSACTION_CONTEXT_STORAGE.set(deque);
-				tContext = new QueuedTransactionContext(cayenneService.newNonReplicatingContext());
-			}
-
-			deque.push(tContext);
+			stack.push(cayenneService.newNonReplicatingContext());
 			GraphDiff diff = filterChain.onSync(originatingContext, changes, syncType);
-			tContext = deque.pop();
-
-			if (deque.isEmpty()) {
-				ObjectContext currentContext = tContext.getCurrentObjectContext();
-				if (currentContext.hasChanges()) {
-					currentContext.commitChanges();
-				}
+			ObjectContext objectContext = stack.pop();
+			if (objectContext.hasChanges()) {
+				objectContext.commitChanges();
 			}
-
 			return diff;
-
-		} finally {
-			if (deque == null || deque.isEmpty()) {
-				TRANSACTION_CONTEXT_STORAGE.set(null);
+		}
+		finally {
+			if (stack.isEmpty()) {
+				CONTEXT_STORAGE.set(null);
+				TRANSACTION_KEY_MAPPING.set(null);
 			}
 		}
-	}
-	
-	/**
-	 * Gets current transaction context
-	 */
-	private QueuedTransactionContext getTransactionContext() {
-		return TRANSACTION_CONTEXT_STORAGE.get().peek();
 	}
 
 	/**
@@ -313,11 +304,10 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			entity = (Queueable) Cayenne.objectForQuery(commitingContext, query);
 		}
 		
-		QueuedTransactionContext transactionContext = getTransactionContext();
-		ObjectContext currentContext = transactionContext.getCurrentObjectContext();
+		ObjectContext currentContext = CONTEXT_STORAGE.get().peek();
 		String transactionKey = commitingContext.getTransactionKey();
-		
-		QueuedTransaction t = transactionContext.getTransactionForKey(String.format("%s:%s", college.getId(), transactionKey));
+		String queuedTransactionKey = String.format("%s:%s", college.getId(), transactionKey);
+		QueuedTransaction t = TRANSACTION_KEY_MAPPING.get().get(queuedTransactionKey);
 		
 		if (t == null) {
 			t = currentContext.newObject(QueuedTransaction.class);
@@ -326,7 +316,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			t.setModified(today);
 			t.setTransactionKey(transactionKey);
 			t.setCollege((College) currentContext.localObject(college.getObjectId(), null));
-			transactionContext.assignTransactionToKey(String.format("%s:%s", college.getId(), transactionKey), t);
+			TRANSACTION_KEY_MAPPING.get().put(queuedTransactionKey, t);
 		}
 
 		String entityName = entity.getObjectId().getEntityName();
