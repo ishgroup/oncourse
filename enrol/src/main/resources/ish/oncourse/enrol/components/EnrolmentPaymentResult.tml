@@ -8,13 +8,20 @@
 				<script type="text/javascript">
 					refreshShortList();
 					<t:if test="successUrl">
-						setTimeout("window.location.href='${successUrl}'", 5000);
+						setTimeout("window.location.href='${successUrl}'", 3000);
 					</t:if>
 				</script>
 				<h2>Enrolment <span>&#187;</span> Successful</h2>
 				<p>${thxMsg}</p>
 				<p>Your enrolment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentId}</strong>.</p>
 				<p>${message:successConfirmation}</p>
+				<t:if test="successUrl">
+					<p>
+						<a href="${successUrl}"><strong>Click here for important information and further steps regarding this enrolment.</strong></a>
+						<br/>
+						<small>(you will be automatically redirected in 3 seconds)</small>
+					</p>
+				</t:if>
 				<p><a href="${coursesLink}">If you wish to browse other courses, click here.</a></p>
 				<t:AnalyticsTransaction transaction="transaction"/>
 				<p:else>
