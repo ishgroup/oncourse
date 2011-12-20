@@ -52,7 +52,6 @@ public class PreferenceController extends CommonPreferenceController {
 	
 	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
 	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
-	private static final String REDIRECT_ON_PAYMENT_SUCCESSFUL = "payment.successful.redirect";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS = "website.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
@@ -482,18 +481,6 @@ public class PreferenceController extends CommonPreferenceController {
 	
 	public synchronized void setTutorFeedbackEmail(String value) {
 		setValue(TUTOR_FEEDBACK_EMAIL, false, value);
-	}
-	
-	public synchronized boolean getRedirectOnPaymentSuccessful() {
-		try {
-			return Boolean.parseBoolean(getValue(REDIRECT_ON_PAYMENT_SUCCESSFUL, false));
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
-	public synchronized void setRedirectOnPaymentSuccessful(boolean value) {
-		setValue(REDIRECT_ON_PAYMENT_SUCCESSFUL, false, Boolean.toString(value));
 	}
 	
 	public synchronized boolean getEnableSocialMediaLinks() {
