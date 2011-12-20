@@ -22,6 +22,7 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.ui.utils.FormatUtils;
 import ish.persistence.CommonPreferenceController;
+import ish.util.InvoiceUtil;
 
 import java.math.BigDecimal;
 import java.text.Format;
@@ -313,15 +314,12 @@ public class EnrolmentPaymentEntry {
 
 			if (!isZeroPayment()) {
 				payment.setAmount(totalIncGst.toBigDecimal());
-				BigDecimal totalGst = BigDecimal.ZERO;
-				BigDecimal totalExGst = BigDecimal.ZERO;
+				
+				Money totalGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, true);
+				Money totalExGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, false);
 
-				for (InvoiceLine il : validInvoiceLines) {
-					totalExGst = totalGst.add(il.getPriceTotalExTax().toBigDecimal());
-					totalGst = totalGst.add(il.getPriceTotalIncTax().subtract(il.getPriceTotalExTax()).toBigDecimal());
-				}
-				invoice.setTotalExGst(totalExGst);
-				invoice.setTotalGst(totalGst);
+				invoice.setTotalExGst(totalExGst.toBigDecimal());
+				invoice.setTotalGst(totalGst.toBigDecimal());
 
 				PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
 				paymentInLine.setInvoice(invoice);
