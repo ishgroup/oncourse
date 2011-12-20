@@ -24,6 +24,7 @@ import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.preference.PreferenceController;
 
 @UserRole("tutor")
 public class ClassRoll {
@@ -57,6 +58,9 @@ public class ClassRoll {
 
 	@Inject
 	private ICourseClassService courseClassService;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
 	@Inject
 	@Property
@@ -135,6 +139,10 @@ public class ClassRoll {
 	
 	public boolean isAbsent() {
 		return (attendance.getAttendanceType() == 2 || attendance.getAttendanceType() == 3);
+	}
+	
+	public boolean getHideDetails() {
+		return preferenceController.getHideStudentDetailsFromTutor();
 	}
 
 	StreamResponse onActionFromAttendance(){
