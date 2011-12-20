@@ -70,19 +70,9 @@ public class Pages {
 				ctx.deleteObject(ctx.localObject(v.getWebContent().getObjectId(), null));
 			}
 
-			// FIXME this should be done by using proper constraints and cascade
-			// deletion in cayenne
 			WebNode localNode = (WebNode) ctx.localObject(node.getObjectId(), null);
-			localNode.setDefaultWebURLAlias(null);
-
-			for (WebUrlAlias alias : node.getWebUrlAliases()) {
-				WebUrlAlias localAlias = (WebUrlAlias) ctx.localObject(alias.getObjectId(), null);
-				ctx.deleteObject(localAlias);
-			}
-			ctx.commitChanges();
-			// end of FIXME
-
 			ctx.deleteObject(localNode);
+			
 			ctx.commitChanges();
 		}
 		return pagesListZone.getBody();
