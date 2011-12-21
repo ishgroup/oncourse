@@ -29,8 +29,6 @@ import au.gov.training.services.trainingcomponent.DeletedSearchRequest;
 import au.gov.training.services.trainingcomponent.DeletedTrainingComponent;
 import au.gov.training.services.trainingcomponent.ITrainingComponentService;
 import au.gov.training.services.trainingcomponent.ObjectFactory;
-import au.gov.training.services.trainingcomponent.Release;
-import au.gov.training.services.trainingcomponent.ReleaseComponent;
 import au.gov.training.services.trainingcomponent.TrainingComponent;
 import au.gov.training.services.trainingcomponent.TrainingComponentDetailsRequest;
 import au.gov.training.services.trainingcomponent.TrainingComponentInformationRequested;
@@ -196,6 +194,17 @@ public class NTISUpdaterImpl implements INTISUpdater {
 								q.setFieldOfEducation(c.getValueCode());
 							} else if (LEVEL_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
 								q.setLevel(getEducationLevelName(c.getValueCode()));
+							}
+						}
+						
+						if (component.getParentCode() != null) {
+							Expression e = ExpressionFactory.matchExp(TrainingPackage.NATIONAL_ISC_PROPERTY, 
+									component.getParentCode().getValue());
+							SelectQuery queryParent = new SelectQuery(TrainingPackage.class, e);
+							
+							TrainingPackage parent = (TrainingPackage) Cayenne.objectForQuery(context, queryParent);
+							if (parent != null) {
+								q.setTrainingPackageId(parent.getId());
 							}
 						}
 					}
@@ -406,43 +415,6 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						tp.setNationalISC(summary.getCode().getValue());
 						tp.setTitle(summary.getTitle().getValue());
 						tp.setType(summary.getComponentType().get(0));
-						
-						detailsRequest.setCode(summary.getCode().getValue());
-						
-						TrainingComponent component = trainingService.getDetails(detailsRequest);
-						if (component.getReleases() != null) {
-							List<Release> releases = component.getReleases().getValue().getRelease();
-							if (!releases.isEmpty() && releases.get(0).getComponents() != null) {
-								List<ReleaseComponent> components = releases.get(0).getComponents().getValue().getReleaseComponent();
-								for (ReleaseComponent c : components) {
-									String code = c.getCode().getValue();
-									String cType = c.getType().get(0);
-									if (QUALIFICATION.equals(cType)) {
-										
-										SelectQuery q = new SelectQuery(Qualification.class);
-										Expression e = ExpressionFactory.matchExp("nationalCode", code);
-										q.setQualifier(e);
-										
-										Qualification qual = (Qualification) Cayenne.objectForQuery(context, q);
-										
-										if (qual != null) {
-											qual.setTrainingPackageId(tp.getId());
-										}
-										
-									} else if (UNIT.equals(cType)) {
-										SelectQuery q = new SelectQuery(Module.class);
-										Expression e = ExpressionFactory.matchExp("nationalCode", code);
-										q.setQualifier(e);
-										
-										Module module = (Module) Cayenne.objectForQuery(context, q);
-										
-										if (module != null) {
-											module.setTrainingPackageId(tp.getId());
-										}
-									}
-								}
-							}
-						}
 					}
 				}
 				
@@ -566,6 +538,17 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						for (Classification c : classifications) {
 							if ("04".equals(c.getSchemeCode())) {
 								m.setFieldOfEducation(c.getValueCode());
+							}
+						}
+						
+						if (component.getParentCode() != null) {
+							Expression e = ExpressionFactory.matchExp(TrainingPackage.NATIONAL_ISC_PROPERTY, 
+									component.getParentCode().getValue());
+							SelectQuery queryParent = new SelectQuery(TrainingPackage.class, e);
+							
+							TrainingPackage parent = (TrainingPackage) Cayenne.objectForQuery(context, queryParent);
+							if (parent != null) {
+								m.setTrainingPackageId(parent.getId());
 							}
 						}
 					}

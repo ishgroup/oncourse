@@ -151,6 +151,14 @@ public class NTIS {
 
 					try {
 
+						NTISResult trainingPackageResult = ntisUpdater.doUpdate(fromDate, toDate, TrainingPackage.class);
+
+						LOGGER.debug("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
+								+ trainingPackageResult.getNumberOfUpdated() + " updated.");
+
+						ntisData.add("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
+								+ trainingPackageResult.getNumberOfUpdated() + " updated.");
+						
 						NTISResult moduleResult = ntisUpdater.doUpdate(fromDate, toDate, Module.class);
 
 						LOGGER.debug("Modules: " + moduleResult.getNumberOfNew() + " new, " + moduleResult.getNumberOfUpdated()
@@ -165,14 +173,6 @@ public class NTIS {
 
 						ntisData.add("Qualifications: " + qualificationResult.getNumberOfNew() + " new, "
 								+ qualificationResult.getNumberOfUpdated() + " updated.");
-
-						NTISResult trainingPackageResult = ntisUpdater.doUpdate(fromDate, toDate, TrainingPackage.class);
-
-						LOGGER.debug("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
-								+ trainingPackageResult.getNumberOfUpdated() + " updated.");
-
-						ntisData.add("Training Packages: " + trainingPackageResult.getNumberOfNew() + " new, "
-								+ trainingPackageResult.getNumberOfUpdated() + " updated.");
 
 						preferenceController.setNTISLastUpdate(dateFormat.format(toDate));
 
