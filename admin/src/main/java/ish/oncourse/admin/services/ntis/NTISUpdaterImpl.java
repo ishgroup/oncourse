@@ -288,6 +288,15 @@ public class NTISUpdaterImpl implements INTISUpdater {
 		else if ("621".equals(levelCode)) {
 			return "Year 10";
 		}
+		else if ("991".equals(levelCode)) {
+			return "Course in";
+		}
+		else if ("992".equals(levelCode)) {
+			return "Course in";
+		}
+		else if ("999".equals(levelCode)) {
+			return "Course in";
+		}
 		else {
 			return levelCode;
 		}
