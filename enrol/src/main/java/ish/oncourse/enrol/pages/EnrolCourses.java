@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
@@ -15,17 +16,14 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
-//import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.utils.FormatUtils;
 
@@ -55,7 +53,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
-//import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
@@ -325,7 +322,6 @@ public class EnrolCourses {
 			invoice.setInvoiceDate(new Date());
 			invoice.setAmountOwing(BigDecimal.ZERO);
 			invoice.setDateDue(new Date());
-			invoice.setStatus(InvoiceStatus.PENDING);
 			invoice.setSource(PaymentSource.SOURCE_WEB);
 			invoice.setCollege(college);
 		}
@@ -399,7 +395,7 @@ public class EnrolCourses {
 	 */
 	public Enrolment createEnrolment(CourseClass courseClass, Student student) {
 		Enrolment enrolment = context.newObject(Enrolment.class);
-		enrolment.setStatus(EnrolmentStatus.PENDING);
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 		enrolment.setSource(PaymentSource.SOURCE_WEB);
 
 		enrolment.setCollege(student.getCollege());

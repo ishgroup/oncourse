@@ -10,7 +10,6 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Tag;
@@ -60,7 +59,7 @@ public class EnrolmentPaymentResult {
 
 	@Inject
 	private IPaymentService paymentService;
-	
+
 	@Inject
 	private PreferenceController preferenceController;
 
@@ -130,8 +129,8 @@ public class EnrolmentPaymentResult {
 				for (Enrolment enrolment : enrolments) {
 					Item item = new Item();
 
-					for (Tag tag : tagService.getTagsForEntity(Course.class.getSimpleName(), enrolment.getCourseClass()
-							.getCourse().getId())) {
+					for (Tag tag : tagService
+							.getTagsForEntity(Course.class.getSimpleName(), enrolment.getCourseClass().getCourse().getId())) {
 						if ("Subjects".equalsIgnoreCase(tag.getRoot().getName())) {
 							item.setCategoryName(tag.getDefaultPath().replace('/', '.').substring(1));
 							break;
@@ -170,9 +169,6 @@ public class EnrolmentPaymentResult {
 	 * @return
 	 */
 	public boolean isEnrolmentSuccessful() {
-		if (!isPayment()) {
-			return InvoiceStatus.SUCCESS.equals(invoice.getStatus());
-		}
 		return PaymentStatus.SUCCESS.equals(payment.getStatus());
 	}
 
@@ -182,10 +178,6 @@ public class EnrolmentPaymentResult {
 	 * @return
 	 */
 	public boolean isEnrolmentFailed() {
-
-		if (!isPayment()) {
-			return !InvoiceStatus.SUCCESS.equals(invoice.getStatus());
-		}
 		PaymentStatus status = payment.getStatus();
 		return PaymentStatus.FAILED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status)
 				|| PaymentStatus.FAILED_CARD_DECLINED.equals(status);
@@ -223,8 +215,8 @@ public class EnrolmentPaymentResult {
 	public String getCoursesLink() {
 		return "http://" + request.getServerName() + "/courses";
 	}
-	
-	public String getSuccessUrl(){
+
+	public String getSuccessUrl() {
 		return preferenceController.getEnrolSuccessUrl();
 	}
 }

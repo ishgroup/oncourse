@@ -76,7 +76,6 @@ public class PaymentInLineTest {
 		invoice.setInvoiceDate(calendar.getTime());
 		invoice.setTotalExGst(new BigDecimal(75));
 		invoice.setTotalGst(new BigDecimal(75));
-		invoice.setStatus(InvoiceStatus.PENDING);
 		invoice.setDateDue(calendar.getTime());
 		invoice.setContact(contact);
 		
@@ -104,7 +103,6 @@ public class PaymentInLineTest {
 		invoice2.setInvoiceDate(calendar.getTime());
 		invoice2.setTotalExGst(new BigDecimal(100));
 		invoice2.setTotalGst(new BigDecimal(100));
-		invoice2.setStatus(InvoiceStatus.PENDING);
 		invoice2.setDateDue(calendar.getTime());
 		invoice2.setContact(contact);
 		

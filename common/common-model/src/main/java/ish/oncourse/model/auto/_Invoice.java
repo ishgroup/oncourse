@@ -10,7 +10,6 @@ import ish.common.types.PaymentSource;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentInLine;
 
 /**
@@ -35,7 +34,6 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String PUBLIC_NOTES_PROPERTY = "publicNotes";
     public static final String SHIPPING_ADDRESS_PROPERTY = "shippingAddress";
     public static final String SOURCE_PROPERTY = "source";
-    public static final String STATUS_PROPERTY = "status";
     public static final String TOTAL_EX_GST_PROPERTY = "totalExGst";
     public static final String TOTAL_GST_PROPERTY = "totalGst";
     public static final String COLLEGE_PROPERTY = "college";
@@ -141,13 +139,6 @@ public abstract class _Invoice extends CayenneDataObject {
     }
     public PaymentSource getSource() {
         return (PaymentSource)readProperty("source");
-    }
-
-    public void setStatus(InvoiceStatus status) {
-        writeProperty("status", status);
-    }
-    public InvoiceStatus getStatus() {
-        return (InvoiceStatus)readProperty("status");
     }
 
     public void setTotalExGst(BigDecimal totalExGst) {

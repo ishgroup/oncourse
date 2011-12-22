@@ -460,7 +460,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		enrolStub.setModified(today);
 		enrolStub.setReasonForStudy(1);
 		enrolStub.setSource("W");
-		enrolStub.setStatus("IN_TRANSACTION");
+		enrolStub.setStatus("2");
 		enrolStub.setStudentId(201l);
 		return enrolStub;
 	}

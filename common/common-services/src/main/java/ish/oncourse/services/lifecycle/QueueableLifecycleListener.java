@@ -5,18 +5,14 @@
 
 package ish.oncourse.services.lifecycle;
 
-import ish.common.types.PaymentStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.ContactRelation;
 import ish.oncourse.model.ContactRelationType;
 import ish.oncourse.model.DiscountMembership;
 import ish.oncourse.model.DiscountMembershipRelationType;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.Membership;
 import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.model.PaymentIn;
@@ -353,75 +349,22 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 				entity instanceof DiscountMembershipRelationType || entity instanceof ContactRelation || entity instanceof ContactRelationType || 
 				entity instanceof Membership || entity instanceof MembershipProduct || entity instanceof Product || entity instanceof ProductItem || 
 				entity instanceof Voucher || entity instanceof VoucherProduct) {
-			//currently we do not allow Tags to be replicated willow-angel
 			isAsyncAllowed = false;
 		} else if (entity instanceof PaymentIn) {
-
 			PaymentIn payment = (PaymentIn) entity;
-
-			isAsyncAllowed = payment.getStatus() != null && payment.getStatus() != PaymentStatus.IN_TRANSACTION
-					&& payment.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED;
-
+			isAsyncAllowed = payment.isAsyncReplicationAllowed();
 		} else if (entity instanceof PaymentInLine) {
-
 			PaymentInLine pLine = (PaymentInLine) entity;
-			PaymentStatus status = pLine.getPaymentIn().getStatus();
-
-			isAsyncAllowed = status != PaymentStatus.IN_TRANSACTION && status != PaymentStatus.CARD_DETAILS_REQUIRED;
-
+			isAsyncAllowed = pLine.isAsyncReplicationAllowed();
 		} else if (entity instanceof Enrolment) {
 			Enrolment enrl = (Enrolment) entity;
-
-			if (enrl.getInvoiceLine() != null && !enrl.getInvoiceLine().getInvoice().getPaymentInLines().isEmpty()) {
-				PaymentStatus status = PaymentStatus.IN_TRANSACTION;
-				for (PaymentInLine line : enrl.getInvoiceLine().getInvoice().getPaymentInLines()) {
-					PaymentIn paymentIn = line.getPaymentIn();
-					if (paymentIn.getStatus() != PaymentStatus.IN_TRANSACTION
-							|| paymentIn.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
-						status = paymentIn.getStatus();
-					}
-				}
-
-				isAsyncAllowed = status != PaymentStatus.IN_TRANSACTION && status != PaymentStatus.CARD_DETAILS_REQUIRED;
-			} else {
-				isAsyncAllowed = enrl.getStatus() != null && enrl.getStatus() != EnrolmentStatus.IN_TRANSACTION
-						&& enrl.getStatus() != EnrolmentStatus.PENDING;
-			}
-
-		} else if (entity.getClass().getSimpleName().startsWith("Invoice")) {
-
-			Invoice inv = null;
-
-			if (entity instanceof Invoice) {
-				inv = (Invoice) entity;
-			} else if (entity instanceof InvoiceLine) {
-				inv = ((InvoiceLine) entity).getInvoice();
-			} else if (entity instanceof InvoiceLineDiscount) {
-				inv = ((InvoiceLineDiscount) entity).getInvoiceLine().getInvoice();
-			}
-
-			if (inv != null) {
-
-				if (!inv.getPaymentInLines().isEmpty()) {
-					PaymentStatus status = PaymentStatus.IN_TRANSACTION;
-
-					for (PaymentInLine line : inv.getPaymentInLines()) {
-						PaymentIn paymentIn = line.getPaymentIn();
-						if (paymentIn.getStatus() != PaymentStatus.IN_TRANSACTION
-								|| paymentIn.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
-							status = paymentIn.getStatus();
-						}
-					}
-
-					isAsyncAllowed = status != PaymentStatus.IN_TRANSACTION && status != PaymentStatus.CARD_DETAILS_REQUIRED;
-				} else {
-					isAsyncAllowed = inv != null && inv.getStatus() != null && inv.getStatus() != InvoiceStatus.IN_TRANSACTION
-							&& inv.getStatus() != InvoiceStatus.PENDING;
-				}
-
-			} else {
-				LOGGER.error("Unrecognized object " + entity + " is being attepted to requeue!");
-			}
+			isAsyncAllowed = enrl.isAsyncReplicationAllowed();
+		} else if (entity instanceof Invoice) {
+			Invoice invoice = (Invoice) entity;
+			isAsyncAllowed = invoice.isAsyncReplicationAllowed();
+		} else if (entity instanceof InvoiceLine) {
+			InvoiceLine invoiceLine = (InvoiceLine) entity;
+			isAsyncAllowed = invoiceLine.isAsyncReplicationAllowed();
 		}
 
 		return isAsyncAllowed;

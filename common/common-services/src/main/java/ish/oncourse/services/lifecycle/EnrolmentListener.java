@@ -1,17 +1,17 @@
 package ish.oncourse.services.lifecycle;
 
+import ish.common.types.EnrolmentStatus;
+import ish.oncourse.model.Attendance;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Outcome;
+import ish.oncourse.model.Session;
+import ish.oncourse.services.persistence.ICayenneService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.PostUpdate;
-
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.EnrolmentStatus;
-import ish.oncourse.model.Outcome;
-import ish.oncourse.model.Session;
-import ish.oncourse.services.persistence.ICayenneService;
 
 /**
  * Removes Attendances and Outcomes for Enrolment if its status becomes unsuccessful.

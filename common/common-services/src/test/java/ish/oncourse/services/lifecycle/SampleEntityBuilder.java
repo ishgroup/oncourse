@@ -5,6 +5,7 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.College;
@@ -13,10 +14,8 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.Student;
@@ -131,7 +130,6 @@ public class SampleEntityBuilder {
 		inv.setPublicNotes("test public notes");
 		inv.setShippingAddress("test shipping address");
 		inv.setSource(PaymentSource.SOURCE_WEB);
-		inv.setStatus(InvoiceStatus.SUCCESS);
 		inv.setTotalGst(new BigDecimal(25));
 		inv.setTotalExGst(new BigDecimal(20));
 

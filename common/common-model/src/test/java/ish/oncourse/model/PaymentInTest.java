@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -74,7 +75,6 @@ public class PaymentInTest {
 		invoice1.setInvoiceDate(calendar.getTime());
 		invoice1.setTotalExGst(new BigDecimal(-75));
 		invoice1.setTotalGst(new BigDecimal(-75));
-		invoice1.setStatus(InvoiceStatus.PENDING);
 		invoice1.setDateDue(calendar.getTime());
 		invoice1.setContact(contact);
 		invoice1.setSource(PaymentSource.SOURCE_ONCOURSE);
@@ -87,7 +87,6 @@ public class PaymentInTest {
 		invoice2.setInvoiceDate(calendar.getTime());
 		invoice2.setTotalExGst(new BigDecimal(225));
 		invoice2.setTotalGst(new BigDecimal(225));
-		invoice2.setStatus(InvoiceStatus.PENDING);
 		invoice2.setDateDue(calendar.getTime());
 		invoice2.setContact(contact);
 		invoice2.setSource(PaymentSource.SOURCE_ONCOURSE);

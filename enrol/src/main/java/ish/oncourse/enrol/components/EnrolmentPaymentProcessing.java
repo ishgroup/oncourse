@@ -1,9 +1,8 @@
 package ish.oncourse.enrol.components;
 
+import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 
@@ -55,26 +54,13 @@ public class EnrolmentPaymentProcessing {
 		if (!Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
 			if (enrolments != null) {
-				if (payment != null) {
-					paymentGatewayService.performGatewayOperation(payment);
-				} else if (enrolments != null) {
-					invoice.setStatus(InvoiceStatus.SUCCESS);
-					for (Enrolment enrolment : enrolments) {
-						enrolment.setStatus(EnrolmentStatus.SUCCESS);
-					}
-				}
-
-				if (enrolments != null) {
-					invoice.getObjectContext().commitChanges();
-				}
-				// if the invoice's status is successful, then the whole
-				// checkout is
-				// successful
-				if (!InvoiceStatus.SUCCESS.equals(invoice.getStatus())) {
+				paymentGatewayService.performGatewayOperation(payment);
+				payment.getObjectContext().commitChanges();
+				if (!PaymentStatus.SUCCESS.equals(payment.getStatus())) {
 					session.setAttribute("failedPayment", payment);
 				}
 			}
-
+			
 			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
 		} else {
 			while (Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {

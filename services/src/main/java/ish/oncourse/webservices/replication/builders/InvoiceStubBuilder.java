@@ -22,12 +22,10 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		stub.setModified(entity.getModified());
 		stub.setPublicNotes(entity.getPublicNotes());
 		stub.setShippingAddress(entity.getShippingAddress());
-
 		stub.setSource(entity.getSource().getDatabaseValue());
-
-		stub.setStatus(entity.getStatus().name());
 		stub.setTotalExGst(entity.getTotalExGst());
 		stub.setTotalGst(entity.getTotalGst());
+		
 		return stub;
 	}
 }

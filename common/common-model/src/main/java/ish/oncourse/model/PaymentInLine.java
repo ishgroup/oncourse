@@ -1,10 +1,11 @@
 package ish.oncourse.model;
 
-import org.apache.cayenne.validation.ValidationResult;
-import org.apache.log4j.Logger;
 import ish.math.Money;
 import ish.oncourse.model.auto._PaymentInLine;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import org.apache.cayenne.validation.ValidationResult;
+import org.apache.log4j.Logger;
 
 public class PaymentInLine extends _PaymentInLine implements Queueable {
 
@@ -120,5 +121,13 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 			}
 		}
 
+	}
+
+	/**
+	 * Checks if async replication allowed on entity.
+	 * @return
+	 */
+	public boolean isAsyncReplicationAllowed() {
+		return getPaymentIn().isAsyncReplicationAllowed();
 	}
 }

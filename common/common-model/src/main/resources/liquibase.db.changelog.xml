@@ -571,5 +571,21 @@
 		</preConditions>
 		<dropColumn tableName="Discount" columnName="isConcession"/>
 	</changeSet>
+	
+	<changeSet id="40" author="anton" context="production" runOnChange="true">
+		<sql>alter table Invoice change column status status VARCHAR(30)</sql>
+	</changeSet>
+	
+	<changeSet id="41" author="anton" context="production" runOnChange="true">
+		<sql>alter table Enrolment change column status status_tmp VARCHAR(30)</sql>
+		<sql>alter table Enrolment add column status INTEGER</sql>
+		<sql>update Enrolment set status=2 where status_tmp in ('Pending', 'In Transaction')</sql>
+		<sql>update Enrolment set status=3 where status_tmp='Success'</sql>
+		<sql>update Enrolment set status=4 where status_tmp='Failed'</sql>
+		<sql>update Enrolment set status=8 where status_tmp='Cancelled'</sql>
+		<sql>update Enrolment set status=9 where status_tmp='Refunded'</sql>
+		<sql>alter table Enrolment change column status status INTEGER not null</sql>
+		<dropColumn tableName="Enrolment" columnName="status_tmp"/>
+	</changeSet>
 
 </databaseChangeLog>

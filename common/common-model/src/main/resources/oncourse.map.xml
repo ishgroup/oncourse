@@ -310,7 +310,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
-		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
+		<db-attribute name="status" type="INTEGER" isMandatory="true" length="25"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="Instruction">
@@ -346,7 +346,6 @@
 		<db-attribute name="publicNotes" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="shippingAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
-		<db-attribute name="status" type="VARCHAR" isMandatory="true" length="25"/>
 		<db-attribute name="totalExGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="totalGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 	</db-entity>
@@ -1091,7 +1090,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="reasonForStudy" type="java.lang.Integer" db-attribute-path="reasonForStudy"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
-		<obj-attribute name="status" type="ish.oncourse.model.EnrolmentStatus" db-attribute-path="status"/>
+		<obj-attribute name="status" type="ish.common.types.EnrolmentStatus" db-attribute-path="status"/>
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
@@ -1121,7 +1120,6 @@
 		<obj-attribute name="publicNotes" type="java.lang.String" db-attribute-path="publicNotes"/>
 		<obj-attribute name="shippingAddress" type="java.lang.String" db-attribute-path="shippingAddress"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
-		<obj-attribute name="status" type="ish.oncourse.model.InvoiceStatus" db-attribute-path="status"/>
 		<obj-attribute name="totalExGst" type="java.math.BigDecimal" db-attribute-path="totalExGst"/>
 		<obj-attribute name="totalGst" type="java.math.BigDecimal" db-attribute-path="totalGst"/>
 		<post-add method-name="onPostAdd"/>

@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.DiscountUtils;
@@ -28,6 +29,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
 public class CourseClass extends _CourseClass implements Queueable {
+	
 	private static final long serialVersionUID = 3351739058505297154L;
 
 	/**
@@ -172,11 +174,12 @@ public class CourseClass extends _CourseClass implements Queueable {
 		EJBQLQuery query = new EJBQLQuery(
 				"Select count(e) from Enrolment e where e.courseClass=?1 and e.status in (?2)");
 		query.setParameter(1, this);
-		List<String> statusesValues = new ArrayList<String>();
+		
+		List<Integer> statusesValues = new ArrayList<Integer>();
 		// use values, because the EJBQL in cayenne 3.0 doesn't convert enums in
 		// this expression
-		for (EnrolmentStatus es : EnrolmentStatus.VALID_ENROLMENTS) {
-			statusesValues.add((String) es.getDatabaseValue());
+		for (EnrolmentStatus es : Enrolment.VALID_ENROLMENTS) {
+			statusesValues.add(es.getDatabaseValue());
 		}
 		query.setParameter(2, statusesValues);
 		return ((Number) getObjectContext().performQuery(query).get(0)).intValue();
@@ -192,7 +195,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	public List<Enrolment> getValidEnrolments() {
 		SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
 				Enrolment.COURSE_CLASS_PROPERTY, this).andExp(
-				ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.VALID_ENROLMENTS)));
+				ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, Enrolment.VALID_ENROLMENTS)));
 		return getObjectContext().performQuery(query);
 	}
 

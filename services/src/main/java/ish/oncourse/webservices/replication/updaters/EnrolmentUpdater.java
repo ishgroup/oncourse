@@ -1,10 +1,10 @@
 package ish.oncourse.webservices.replication.updaters;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Student;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
@@ -20,39 +20,7 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		entity.setReasonForStudy(stub.getReasonForStudy());
 
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
-		//entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
-
-		if (stub.getStatus() != null) {
-			ish.common.types.EnrolmentStatus stubStatus = ish.common.types.EnrolmentStatus.valueOf(stub.getStatus());
-			EnrolmentStatus entityStatus = null;
-			switch (stubStatus) {
-			case CANCELLED:
-				entityStatus = EnrolmentStatus.CANCELLED;
-				break;
-			case CORRUPTED:
-				entityStatus = null;
-				break;
-			case FAILED:
-			case FAILED_CARD_DECLINED:
-			case FAILED_NO_PLACES:
-				entityStatus = EnrolmentStatus.FAILED;
-				break;
-			case IN_TRANSACTION:
-				entityStatus = EnrolmentStatus.IN_TRANSACTION;
-				break;
-			case NEW:
-			case QUEUED:
-				entityStatus = EnrolmentStatus.PENDING;
-				break;
-			case REFUNDED:
-				entityStatus = EnrolmentStatus.REFUNDED;
-				break;
-			case SUCCESS:
-				entityStatus = EnrolmentStatus.SUCCESS;
-				break;
-			}
-			entity.setStatus(entityStatus);
-		}
+		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), EnrolmentStatus.class));
 		
 		Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
 		entity.setStudent(student);

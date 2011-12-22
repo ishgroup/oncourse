@@ -1,17 +1,16 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.EnrolmentStatus;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.InvoiceStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.RealDiscountsPolicy;
@@ -24,7 +23,6 @@ import ish.oncourse.ui.utils.FormatUtils;
 import ish.persistence.CommonPreferenceController;
 import ish.util.InvoiceUtil;
 
-import java.math.BigDecimal;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -212,8 +210,9 @@ public class EnrolmentPaymentEntry {
 	}
 
 	/**
-	 * Iterates through all the enrolments selected(ie which has the related invoiceLine) and checks if the related class has any available
-	 * places for enrolling.
+	 * Iterates through all the enrolments selected(ie which has the related
+	 * invoiceLine) and checks if the related class has any available places for
+	 * enrolling.
 	 * 
 	 * @return true if all the selected classes are available for enrolling.
 	 */
@@ -279,14 +278,19 @@ public class EnrolmentPaymentEntry {
 	}
 
 	/**
-	 * Invoked when the paymentDetailsForm is submitted and validated successfully. Fills in the rest of the needed properties, sets the
-	 * transaction status to entities to be committed and commits the appropriate set of entities to context:
+	 * Invoked when the paymentDetailsForm is submitted and validated
+	 * successfully. Fills in the rest of the needed properties, sets the
+	 * transaction status to entities to be committed and commits the
+	 * appropriate set of entities to context:
 	 * <ul>
-	 * <li>if payment amount is not zero, commits the payment with lines, invoice with lines, enrolments</li>
-	 * <li>if payment amount is zero, commits only the enrolments with related invoice and invoice lines(the others are deleted)</li>
+	 * <li>if payment amount is not zero, commits the payment with lines,
+	 * invoice with lines, enrolments</li>
+	 * <li>if payment amount is zero, commits only the enrolments with related
+	 * invoice and invoice lines(the others are deleted)</li>
 	 * </ul>
 	 * 
-	 * @return the block that displays the processing of payment {@see EnrolmentPaymentProcessing}.
+	 * @return the block that displays the processing of payment {@see
+	 *         EnrolmentPaymentProcessing}.
 	 */
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
@@ -294,7 +298,7 @@ public class EnrolmentPaymentEntry {
 		if (!isSubmitted) {
 			return paymentZone.getBody();
 		}
-		
+
 		// enrolments to be persisted
 		List<Enrolment> validEnrolments = getEnrolmentsToPersist();
 		// invoiceLines to be persisted
@@ -312,32 +316,22 @@ public class EnrolmentPaymentEntry {
 		synchronized (payment) {
 			ObjectContext context = payment.getObjectContext();
 
-			if (!isZeroPayment()) {
-				payment.setAmount(totalIncGst.toBigDecimal());
-				
-				Money totalGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, true);
-				Money totalExGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, false);
+			payment.setAmount(totalIncGst.toBigDecimal());
 
-				invoice.setTotalExGst(totalExGst.toBigDecimal());
-				invoice.setTotalGst(totalGst.toBigDecimal());
+			Money totalGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, true);
+			Money totalExGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, false);
 
-				PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
-				paymentInLine.setInvoice(invoice);
-				paymentInLine.setPaymentIn(payment);
-				paymentInLine.setAmount(payment.getAmount());
-				paymentInLine.setCollege(payment.getCollege());
+			invoice.setTotalExGst(totalExGst.toBigDecimal());
+			invoice.setTotalGst(totalGst.toBigDecimal());
 
-				enrolmentPaymentProcessing.setPayment(payment);
-				payment.setStatus(PaymentStatus.IN_TRANSACTION);
+			PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
+			paymentInLine.setInvoice(invoice);
+			paymentInLine.setPaymentIn(payment);
+			paymentInLine.setAmount(payment.getAmount());
+			paymentInLine.setCollege(payment.getCollege());
 
-			} else {
-				context.deleteObject(payment);
-				enrolmentPaymentProcessing.setPayment(null);
-				invoice.setTotalExGst(BigDecimal.ZERO);
-				invoice.setTotalGst(BigDecimal.ZERO);
-			}
-
-			invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
+			enrolmentPaymentProcessing.setPayment(payment);
+			payment.setStatus(PaymentStatus.IN_TRANSACTION);
 
 			if (isAllEnrolmentsAvailable()) {
 				for (Enrolment e : validEnrolments) {
@@ -357,8 +351,8 @@ public class EnrolmentPaymentEntry {
 	}
 
 	/**
-	 * Defines which enrolments are "checked" and should be included into the processing and deletes the non-checked. Invoked on submit the
-	 * checkout.
+	 * Defines which enrolments are "checked" and should be included into the
+	 * processing and deletes the non-checked. Invoked on submit the checkout.
 	 * 
 	 * @return
 	 */
@@ -380,8 +374,9 @@ public class EnrolmentPaymentEntry {
 	}
 
 	/**
-	 * Defines which invoiceLines have the not-null reference to enrolment and should be included into the processing and deletes the
-	 * others. Invoked on submit the checkout.
+	 * Defines which invoiceLines have the not-null reference to enrolment and
+	 * should be included into the processing and deletes the others. Invoked on
+	 * submit the checkout.
 	 * 
 	 * @return
 	 */
@@ -486,8 +481,9 @@ public class EnrolmentPaymentEntry {
 	/**
 	 * Checks if it is need to show or hide the submit button.
 	 * 
-	 * @return true if there is at least one enrolment selected(show submit button), false id there no any enrolments selected(hide submit
-	 * button).
+	 * @return true if there is at least one enrolment selected(show submit
+	 *         button), false id there no any enrolments selected(hide submit
+	 *         button).
 	 */
 	public boolean isHasAnyEnrolmentsSelected() {
 		for (Enrolment enrolment : enrolments) {

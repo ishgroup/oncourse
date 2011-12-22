@@ -18,7 +18,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 * Logger for service.
 	 */
 	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayService.class);
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -26,21 +26,24 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 */
 	@Override
 	public void performGatewayOperation(PaymentIn payment) {
-		if (performPaymentValidation(payment)) {
-			LOG.debug("Payment details validation succeed.");
-			processGateway(payment);
+		if (payment.isZeroPayment()) {
+			payment.succeed();
 		} else {
-			LOG.debug("Payment details validation failed.");
-			payment.setStatusNotes("Validation failed");
-			payment.failPayment();
-		}
+			if (performPaymentValidation(payment)) {
+				LOG.debug("Payment details validation succeed.");
+				processGateway(payment);
+			} else {
+				LOG.debug("Payment details validation failed.");
+				payment.setStatusNotes("Validation failed");
+				payment.failPayment();
+			}
+		}	
 	}
 
+	protected abstract void initNewPaymentTransaction(PaymentIn payment);
 
-	protected abstract void initNewPaymentTransaction(PaymentIn payment); 
-	
 	protected abstract void initNewPaymentOutTransaction(PaymentOut paymentOut);
-	
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -65,8 +68,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 * @param payment
 	 */
 	public abstract void processGateway(PaymentIn payment);
-	
-	
+
 	/**
 	 * Performs actual gateway process if the validation method
 	 * {@link #performPaymentValidation(PaymentOut)} returned true.
@@ -74,7 +76,6 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 * @param payment
 	 */
 	public abstract void processGateway(PaymentOut paymentOut);
-	
 
 	/**
 	 * Perform the validation before send to gateway.
@@ -86,7 +87,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	public boolean performPaymentValidation(PaymentIn payment) {
 		return payment.validateBeforeSend();
 	}
-	
+
 	/**
 	 * Perform the validation before send to gateway.
 	 * 

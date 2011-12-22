@@ -16,6 +16,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
 
 public class Invoice extends _Invoice implements Queueable {
+
 	private static final long serialVersionUID = 2985348837041766278L;
 
 	/**
@@ -40,7 +41,6 @@ public class Invoice extends _Invoice implements Queueable {
 		refundInvoice.setContact(getContact());
 		refundInvoice.setTotalExGst(BigDecimal.ZERO.subtract(getTotalExGst()));
 		refundInvoice.setTotalGst(BigDecimal.ZERO.subtract(getTotalGst()));
-		refundInvoice.setStatus(InvoiceStatus.SUCCESS);
 		refundInvoice.setAmountOwing(BigDecimal.ZERO.subtract(getAmountOwing()));
 		refundInvoice.setSource(PaymentSource.SOURCE_WEB);
 
@@ -58,8 +58,7 @@ public class Invoice extends _Invoice implements Queueable {
 	public List<Invoice> getRefundedInvoices() {
 		Expression expr = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
 		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.COLLEGE_PROPERTY, getCollege()));
-		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.AMOUNT_OWING_PROPERTY,
-				BigDecimal.ZERO.subtract(getAmountOwing())));
+		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.AMOUNT_OWING_PROPERTY, BigDecimal.ZERO.subtract(getAmountOwing())));
 		SelectQuery q = new SelectQuery(Invoice.class, expr);
 		return getObjectContext().performQuery(q);
 	}
@@ -96,15 +95,13 @@ public class Invoice extends _Invoice implements Queueable {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ish.oncourse.model.auto._Invoice#onPostAdd()
 	 */
 	@Override
 	protected void onPostAdd() {
-		if (getStatus() == null) {
-			setStatus(InvoiceStatus.PENDING);
-		}
-		
 		if (getSource() == null) {
 			setSource(PaymentSource.SOURCE_WEB);
 		}
@@ -121,16 +118,33 @@ public class Invoice extends _Invoice implements Queueable {
 		onPostAdd();
 	}
 
-	@Override
-	public void setStatus(InvoiceStatus status) {
-		super.setStatus(status);
-		Date now = new Date();
-		for (InvoiceLine line : getInvoiceLines()) {
-			line.setModified(now);
-			for(InvoiceLineDiscount ilDiscount: line.getInvoiceLineDiscounts()){
-				ilDiscount.setModified(now);
+	/**
+	 * Check if async replication is allowed on this object.
+	 * 
+	 * @return
+	 */
+	public boolean isAsyncReplicationAllowed() {
+		List<PaymentInLine> lines = getPaymentInLines();
+
+		if (!lines.isEmpty()) {
+			for (PaymentInLine line : lines) {
+				PaymentIn paymentIn = line.getPaymentIn();
+				if (paymentIn.getStatus() != PaymentStatus.IN_TRANSACTION && paymentIn.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			for (InvoiceLine invLine : getInvoiceLines()) {
+				Enrolment enrol = invLine.getEnrolment();
+				if (enrol != null) {
+					if (!enrol.isAsyncReplicationAllowed()) {
+						return false;
+					}
+				}
 			}
 		}
+
+		return true;
 	}
-	
 }

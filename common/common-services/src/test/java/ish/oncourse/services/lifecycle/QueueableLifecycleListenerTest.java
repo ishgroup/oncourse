@@ -4,9 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Preference;
@@ -68,8 +70,8 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		InvoiceLine invoiceLine = builder.createInvoiceLine(invoice);
 		Student student = builder.createStudent(contact);
 		CourseClass courseClass = builder.createCourseClass(course);
-
-		builder.createEnrolment(invoiceLine, student, courseClass);
+		Enrolment enrolment = builder.createEnrolment(invoiceLine, student, courseClass);
+		enrolment.setStatus(EnrolmentStatus.SUCCESS);
 
 		ctx.commitChanges();
 

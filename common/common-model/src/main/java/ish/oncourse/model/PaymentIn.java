@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -25,6 +26,7 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.log4j.Logger;
 
 public class PaymentIn extends _PaymentIn implements Queueable {
+
 	private static final long serialVersionUID = -2372029086420124878L;
 
 	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
@@ -106,10 +108,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 				Expression expr = ExpressionFactory.matchExp(PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_NUMBER_PROPERTY,
 						invoiceNumber);
-				
+
 				expr = expr.orExp(ExpressionFactory.matchExp(PaymentInLine.INVOICE_PROPERTY + "." + Invoice.ANGEL_ID_PROPERTY,
 						invoiceAngelId));
-				
+
 				List<PaymentInLine> matchedLines = expr.filterObjects(getPaymentInLines());
 				if (!matchedLines.isEmpty()) {
 					matchedLines.get(0).setAngelId(angelId);
@@ -277,7 +279,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Invoice activeInvoice = findActiveInvoice();
 
 		if (activeInvoice != null) {
-			activeInvoice.setStatus(InvoiceStatus.SUCCESS);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
@@ -360,15 +361,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			}
 
 			if (invoiceToRefund != null) {
-				invoiceToRefund.setStatus(InvoiceStatus.FAILED);
 				// Creating internal payment, with zero amount which will be
 				// linked to invoiceToRefund, and refundInvoice.
 				PaymentIn internalPayment = makeShallowCopy();
 				internalPayment.setAmount(BigDecimal.ZERO);
 				internalPayment.setType(PaymentType.INTERNAL);
 				internalPayment.setStatus(PaymentStatus.SUCCESS);
-
-				invoiceToRefund.setStatus(InvoiceStatus.FAILED);
 
 				// Creating refund invoice
 				Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
@@ -388,8 +386,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
-						boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.PENDING
-								|| enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
+						boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
 						if (shouldFailEnrolment) {
 							enrol.setStatus(EnrolmentStatus.FAILED);
 						}
@@ -427,11 +424,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Invoice activeInvoice = findActiveInvoice();
 
 		if (activeInvoice != null) {
-			activeInvoice.setStatus(InvoiceStatus.SUCCESS);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
-					if (enrol.getStatus() == EnrolmentStatus.PENDING || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
+					if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
 						enrol.setStatus(EnrolmentStatus.SUCCESS);
 					}
 				}
@@ -453,16 +449,14 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
-		
 
 		Invoice activeInvoice = findActiveInvoice();
 
 		if (activeInvoice != null) {
-			activeInvoice.setStatus(InvoiceStatus.PENDING);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null && enrol.getStatus() != EnrolmentStatus.SUCCESS) {
-					enrol.setStatus(EnrolmentStatus.PENDING);
+					enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
 				}
 			}
 		}
@@ -475,7 +469,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
 		for (PaymentInLine pl : getPaymentInLines()) {
 			Invoice invoice = pl.getInvoice();
-			invoice.setStatus(InvoiceStatus.IN_TRANSACTION);
 			for (InvoiceLine il : invoice.getInvoiceLines()) {
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
@@ -565,7 +558,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	public String getClientReference() {
 		PaymentSource source = getSource();
 		if (source == null) {
-			source = PaymentSource.SOURCE_WEB;//If no source set we pass Web
+			source = PaymentSource.SOURCE_WEB;// If no source set we pass Web
 		}
 		return source.getDatabaseValue() + getId();
 	}
@@ -595,12 +588,13 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					break;
 				}
 			}
-			//correct status if we found any  approved transaction but angel side set fail status
+			// correct status if we found any approved transaction but angel
+			// side set fail status
 			if (approved && !PaymentStatus.SUCCESS.equals(getStatus())) {
 				succeed();
 			}
 		}
-		
+
 		if (getStatus() != PaymentStatus.IN_TRANSACTION && getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
 			String cardNumber = CreditCardUtil.obfuscateCCNumber(getCreditCardNumber());
 			String cvv = CreditCardUtil.obfuscateCVVNumber(getCreditCardCVV());
@@ -629,4 +623,16 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		}
 	}
 
+	public boolean isAsyncReplicationAllowed() {
+		return getStatus() != null && getStatus() != PaymentStatus.IN_TRANSACTION && getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED;
+	}
+
+	/**
+	 * Checks if payment is zero payment.
+	 * 
+	 * @return
+	 */
+	public boolean isZeroPayment() {
+		return BigDecimal.ZERO.equals(getAmount());
+	}
 }
