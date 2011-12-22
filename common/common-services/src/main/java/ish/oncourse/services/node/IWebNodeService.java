@@ -7,8 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface IWebNodeService {
-	static final String RELOAD_PAGE_ATTRIBUTE = "reload page";
-	static final String LOADED_NODE = "loaded node";
+	
 	static final String NODE = "node";
 	static final String NODE_NUMBER_PARAMETER = "n";
 	static final String PAGE_PATH_PARAMETER = "p";

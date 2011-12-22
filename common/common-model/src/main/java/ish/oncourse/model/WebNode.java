@@ -6,9 +6,14 @@ import ish.oncourse.model.visitor.IVisitor;
 import java.util.Date;
 
 public class WebNode extends _WebNode {
+	
 	private static final long serialVersionUID = -221961704091301435L;
+	
 	static final String DEFAULT_PAGE_TITLE = "New Page";
-
+	
+	public static final String RELOAD_PAGE_ATTRIBUTE = "reload page";
+	public static final String LOADED_NODE = "loaded node";
+	
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
 				.getIdSnapshot().get(ID_PK_COLUMN) : null;

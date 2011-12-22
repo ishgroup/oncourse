@@ -11,6 +11,7 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
@@ -61,13 +62,18 @@ public class Page {
 		return (isHomePage() || this.node == null) ? MAIN_BODY_ID : (PAGE_BODY_ID_PREFIX + this.node.getNodeNumber());
 	}
 
-	public boolean setupRender() {
+	@SetupRender
+	boolean setupRender() {
+		request.getSession(false).setAttribute(WebNode.LOADED_NODE, null);
+		
 		WebNode currentNode = webNodeService.getCurrentNode();
+		
 		if (currentNode != null) {
 			node = (WebNode) cayenneService.newContext().localObject(currentNode.getObjectId(), null);
 		} else {
 			node = null;
 		}
+		
 		if (node == null) {
 			WebNode newPageNode = webNodeService.createNewNode();
 			newPageNode.getObjectContext().commitChanges();
@@ -79,6 +85,7 @@ public class Page {
 				e.printStackTrace();
 			}
 		}
+		
 		return true;
 	}
 

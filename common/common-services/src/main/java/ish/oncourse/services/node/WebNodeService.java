@@ -23,9 +23,9 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 
 public class WebNodeService implements IWebNodeService {
+	
 	private static final String SAMPLE_WEB_CONTENT = "Sample content";
 	private static final String NEW_PAGE_WEB_NODE_NAME = "New Page";
 	private static final String DOT_CHARACTER = ".";
@@ -139,17 +139,7 @@ public class WebNodeService implements IWebNodeService {
 			String pagePath = (String) request.getAttribute(PAGE_PATH_PARAMETER);
 			node = getNodeForNodePath(pagePath);
 		}
-		final Session session = request.getSession(true);
-		if (node != null) {
-			if (session != null && Boolean.TRUE.equals((Boolean)session.getAttribute(RELOAD_PAGE_ATTRIBUTE))) {
-				session.setAttribute(RELOAD_PAGE_ATTRIBUTE, false);
-				session.setAttribute(LOADED_NODE, node);
-			}
-		} else {
-			if (session != null) {
-				node = (WebNode) session.getAttribute(LOADED_NODE);
-			}
-		}
+		
 		return node;
 	}
 

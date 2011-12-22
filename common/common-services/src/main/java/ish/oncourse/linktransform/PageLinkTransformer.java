@@ -107,8 +107,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		switch (pageIdentifier) {
 		case Home:
 			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, LEFT_SLASH_CHARACTER);
-			request.getSession(true).setAttribute(IWebNodeService.RELOAD_PAGE_ATTRIBUTE, true);
-			request.getSession(false).setAttribute(IWebNodeService.LOADED_NODE, null);
 			if (webNodeService.getCurrentNode() == null) {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
@@ -160,8 +158,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			String nodeNumber = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			if (nodeNumber != null) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
-				request.getSession(true).setAttribute(IWebNodeService.RELOAD_PAGE_ATTRIBUTE, true);
-				request.getSession(false).setAttribute(IWebNodeService.LOADED_NODE, null);
 				if (webNodeService.getCurrentNode() == null) {
 					pageIdentifier = PageIdentifier.PageNotFound;
 				}
@@ -256,8 +252,6 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		}
 		if (webNodeService.getNodeForNodePath(nodePath) != null) {
 			request.setAttribute(IWebNodeService.PAGE_PATH_PARAMETER, path);
-			request.getSession(true).setAttribute(IWebNodeService.RELOAD_PAGE_ATTRIBUTE, true);
-			request.getSession(false).setAttribute(IWebNodeService.LOADED_NODE, null);
 			return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
 		}
 
