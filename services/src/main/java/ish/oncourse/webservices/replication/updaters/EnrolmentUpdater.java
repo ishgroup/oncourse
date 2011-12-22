@@ -20,7 +20,8 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		entity.setReasonForStudy(stub.getReasonForStudy());
 
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
-		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), EnrolmentStatus.class));
+		String statusString = stub.getStatus();
+		entity.setStatus(EnrolmentStatus.valueOf(statusString));
 		
 		Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
 		entity.setStudent(student);
