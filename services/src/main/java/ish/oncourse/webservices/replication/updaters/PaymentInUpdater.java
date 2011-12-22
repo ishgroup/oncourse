@@ -20,31 +20,20 @@ public class PaymentInUpdater extends AbstractWillowUpdater<PaymentInStub, Payme
 		entity.setModified(stub.getModified());
 		
 		PaymentSource source = TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class);
-		//PaymentSource source = PaymentSource.getSourceForValue(stub.getSource());
 		entity.setSource(source);
 
 		if (stub.getStatus() != null) {
 			PaymentStatus st = TypesUtil.getEnumForDatabaseValue(stub.getStatus(), PaymentStatus.class);
-			//PaymentStatus st = PaymentStatus.getEnumForDatabaseValue(stub.getStatus());
 			entity.setStatus(st);
 		}
 		
-		entity.setGatewayReference(stub.getGatewayReference());
-		entity.setGatewayResponse(stub.getGatewayResponse());
 		entity.setSessionId(stub.getSessionId());
-		
-		entity.setCreditCardExpiry(stub.getCreditCardExpiry());
-		entity.setCreditCardName(stub.getCreditCardName());
-		entity.setCreditCardNumber(stub.getCreditCardNumber());
 		
 		if (stub.getCreditCardType() != null) {
 			entity.setCreditCardType(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), CreditCardType.class));
-			//entity.setCreditCardType(CreditCardType.getTypeForDatabaseValue(stub.getCreditCardType()));
 		}
 		
 		entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), PaymentType.class));
-		//entity.setType(PaymentType.getEnumForDatabaseValue(stub.getType()));
-		
 		entity.setDateBanked(stub.getDateBanked());
 	}
 }
