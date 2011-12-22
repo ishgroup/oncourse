@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
@@ -460,7 +461,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		enrolStub.setModified(today);
 		enrolStub.setReasonForStudy(1);
 		enrolStub.setSource("W");
-		enrolStub.setStatus("2");
+		enrolStub.setStatus(EnrolmentStatus.IN_TRANSACTION.name());
 		enrolStub.setStudentId(201l);
 		return enrolStub;
 	}
