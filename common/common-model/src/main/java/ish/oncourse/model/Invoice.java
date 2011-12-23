@@ -10,8 +10,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
 
@@ -127,17 +129,23 @@ public class Invoice extends _Invoice implements Queueable {
 		List<PaymentInLine> lines = getPaymentInLines();
 
 		if (!lines.isEmpty()) {
+			
 			for (PaymentInLine line : lines) {
 				PaymentIn paymentIn = line.getPaymentIn();
-				if (paymentIn.getStatus() != PaymentStatus.IN_TRANSACTION && paymentIn.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
+				ObjectIdQuery q = new ObjectIdQuery(paymentIn.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+				paymentIn = (PaymentIn) Cayenne.objectForQuery(getObjectContext(), q);
+				if (paymentIn.isAsyncReplicationAllowed()) {
 					return true;
 				}
 			}
+			
 			return false;
 		} else {
 			for (InvoiceLine invLine : getInvoiceLines()) {
 				Enrolment enrol = invLine.getEnrolment();
 				if (enrol != null) {
+					ObjectIdQuery q = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+					enrol = (Enrolment) Cayenne.objectForQuery(getObjectContext(), q);
 					if (!enrol.isAsyncReplicationAllowed()) {
 						return false;
 					}

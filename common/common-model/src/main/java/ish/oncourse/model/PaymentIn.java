@@ -277,9 +277,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		setStatus(PaymentStatus.SUCCESS);
 
 		Invoice activeInvoice = findActiveInvoice();
-
+		Date today = new Date();
+		
 		if (activeInvoice != null) {
+			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
+				il.setModified(today);
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
 					enrol.setStatus(EnrolmentStatus.SUCCESS);
@@ -381,9 +384,13 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
 				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
-
+				
+				Date today = new Date();
+				invoiceToRefund.setModified(today);
+				
 				// Fail enrolments on invoiceToRefund
 				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
+					il.setModified(today);
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
 						boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
@@ -422,9 +429,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		}
 
 		Invoice activeInvoice = findActiveInvoice();
+		Date today = new Date();
 
 		if (activeInvoice != null) {
+			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
+				il.setModified(today);
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
 					if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
@@ -451,9 +461,12 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		}
 
 		Invoice activeInvoice = findActiveInvoice();
+		Date today = new Date();
 
 		if (activeInvoice != null) {
+			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
+				il.setModified(today);
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null && enrol.getStatus() != EnrolmentStatus.SUCCESS) {
 					enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
