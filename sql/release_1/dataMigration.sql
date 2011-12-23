@@ -136,15 +136,15 @@ INSERT INTO %DESTINATIONDB%_college.DiscountCourseClass (id, courseClassId, disc
 INSERT INTO %DESTINATIONDB%_college.Enrolment (id, collegeId, courseClassId, studentId, angelId, created, modified, reasonForStudy, source, status, statusNotes)
 	SELECT e.id, e.collegeId, e.courseClassId, e.studentId, e.angelId, e.created, e.modified, e.reasonForStudy, e.source,
   		CASE
-			WHEN (e.status = 1) THEN "Pending"
-			WHEN (e.status = 2) THEN "In Transaction"
-			WHEN (e.status = 3) THEN "Success"
-			WHEN (e.status = 4) THEN "Failed"
-			WHEN (e.status = 6) THEN "Failed"
-			WHEN (e.status = 7) THEN "Failed"
-			WHEN (e.status = 8) THEN "Cancelled"
-			WHEN (e.status = 9) THEN "Cancelled"
-			ELSE "Failed"
+			WHEN (e.status = 1) THEN 2
+			WHEN (e.status = 2) THEN 2
+			WHEN (e.status = 3) THEN 3
+			WHEN (e.status = 4) THEN 4
+			WHEN (e.status = 6) THEN 4
+			WHEN (e.status = 7) THEN 4
+			WHEN (e.status = 8) THEN 8
+			WHEN (e.status = 9) THEN 9
+			ELSE 4
 		END
 		, CASE
 			WHEN (e.status = 6) THEN "Card declined"
