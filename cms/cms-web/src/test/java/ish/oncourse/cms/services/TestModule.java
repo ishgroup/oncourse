@@ -221,7 +221,7 @@ public class TestModule {
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local IWebNodeService webNodeServiceOverride) {
-		configuration.add(IWebNodeService.class, webNodeServiceOverride);
+		configuration.override(IWebNodeService.class, webNodeServiceOverride);
 	}
 	
 	public IAssetGroupService buildAssetGroupServiceOverride() {
