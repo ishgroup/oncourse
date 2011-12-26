@@ -16,7 +16,7 @@ import ish.oncourse.model.visitor.IVisitor;
 @SuppressWarnings("deprecation")
 public class WebNodeType extends _WebNodeType {
 	private static final long serialVersionUID = -1945260610761430515L;
-	public static final String PAGE = "Page";
+	public static final String PAGE = "page";
 	public static final String DEFAULT_LAYOUT_KEY = "default";
 
 	public Long getId() {

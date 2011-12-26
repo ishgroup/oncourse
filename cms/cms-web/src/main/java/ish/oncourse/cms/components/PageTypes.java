@@ -109,4 +109,8 @@ public class PageTypes {
 		return problemMessage;
 	}
 	
+	public boolean getIsSpecialType() {
+		return WebNodeType.PAGE.equals(webNodeType.getName());
+	}
+	
 }
