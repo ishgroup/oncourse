@@ -1,0 +1,37 @@
+<html t:type="pagestructure" title="literal:Replication Status"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	
+	<h2>Replication Status</h2>
+	
+	<table>
+		<thead>
+			<tr>
+				<td><strong>College</strong></td>
+				<td><strong>State</strong></td>
+				<td><strong>Key</strong></td>
+				<td><strong>Last seen on</strong></td>
+				<td><strong>Oldest queued item</strong></td>
+				<td><strong>Angel version</strong></td>
+				<td><strong>Last error</strong></td>
+				<td><strong>Records in queue</strong></td>
+				<td></td>
+			</tr>
+		</thead>
+		<tbody>
+			<t:loop source="colleges" value="currentCollege">
+				<tr>
+					<td>${currentCollege.name}</td>
+					<td>${currentCollege.communicationkeyStatus}</td>
+					<td>${currentCollege.communicationKey}</td>
+					<td>${lastReplicationDate}</td>
+					<td>${oldestQueuedItemTimestamp}</td>
+					<td>${currentCollege.angelVersion}</td>
+					<td>${lastError}</td>
+					<td>${numberOfRecordsInQueue}</td>
+					<td><t:actionlink t:id="resetReplication" t:context="currentCollege.getBillingCode()">Reset replication status</t:actionlink></td>
+				</tr>
+			</t:loop>
+		</tbody>
+	</table>
+	
+</html>
