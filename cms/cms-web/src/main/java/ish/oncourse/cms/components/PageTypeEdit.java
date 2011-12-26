@@ -101,6 +101,10 @@ public class PageTypeEdit {
 	public SortedSet<WebContent> getUnassignedBlocks() {
 		return webContentService.getBlocksForRegionKey(pageType, null);
 	}
+	
+	public boolean getIsSpecialType() {
+		return WebNodeType.PAGE.equals(editPageType.getName());
+	}
 
 	/**
 	 * Handles ajax call to sort menu items. Done when user sorts items with
