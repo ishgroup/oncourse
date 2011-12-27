@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import ish.common.types.EntityMapping;
@@ -11,7 +12,11 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.map.ObjEntity;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -34,6 +39,12 @@ public class Instructions {
 	@Persist
 	private StringSelectModel entitySelectModel;
 	
+	@Property
+	private List<Instruction> lastInstructions;
+	
+	@Property
+	private Instruction currentInstruction;
+	
 	@Inject
 	private ICollegeService collegeService;
 	
@@ -55,6 +66,17 @@ public class Instructions {
 		}
 		
 		this.entitySelectModel = new StringSelectModel(entitiesArray);
+		
+		ObjectContext context = cayenneService.sharedContext();
+		College college = (College) context.localObject(this.college.getObjectId(), null);
+		if (college != null) {
+			Expression exp = ExpressionFactory.matchExp(Instruction.COLLEGE_PROPERTY, college);
+			SelectQuery query = new SelectQuery(Instruction.class, exp);
+			query.addOrdering(Instruction.CREATED_PROPERTY, SortOrder.DESCENDING);
+			query.setFetchLimit(5);
+			
+			lastInstructions = context.performQuery(query);
+		}
 	}
 	
 	Object onActivate(Long id) {

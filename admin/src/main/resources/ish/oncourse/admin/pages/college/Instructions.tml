@@ -27,4 +27,26 @@
 			<span><t:submit t:id="addInstruction" value="Add"/></span>
 		</t:form>
 	</div>
+	
+	<h2>Last Instructions</h2>
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<td>Message</td>
+					<td>Status</td>
+					<td>Created</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t:loop t:source="lastInstructions" t:value="currentInstruction">
+					<tr>
+						<td>${currentInstruction.message}</td>
+						<td>${currentInstruction.response}</td>
+						<td>${currentInstruction.created}</td>
+					</tr>
+				</t:loop>
+			</tbody>
+		</table>
+	</div>
 </html>
