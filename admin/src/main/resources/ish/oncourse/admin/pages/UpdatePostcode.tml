@@ -1,0 +1,42 @@
+<html t:type="pagestructure" title="literal:Update postcodes"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<h4>Postcodes last updated on <span id="lastUpdate">${lastUpdateDate}</span></h4>
+	<div id="updatePostcodes">
+		<t:form t:id="updateForm">
+			<t:submit t:id="update" value="Update" />
+		</t:form>
+	</div>
+	
+	<div id="progress"></div>
+	
+	<t:if test="updateInProgress">
+		<script type="text/javascript">jQuery(function() {jQuery("#updatePostcodes").hide();});</script>
+	</t:if>
+	
+	<script type="text/javascript">
+		jQuery(function() {		
+			var statusUpdate = function() {
+				
+				jQuery.getJSON('${processResultUrl}', function(data) {
+			  		
+					var items = [];
+			  		
+			  		jQuery.each(data, function(key, val) {
+			  			if (val.match(/^Finished_.*$/)) {
+			  				jQuery("#lastUpdate").text(val.split('_')[1]);
+			  				jQuery("#updatePostcodes").show();
+			  			}
+			  			else {
+			  				items.push('<li>' + val + '</li>');	
+			  			}
+				  	});			  		
+			  		jQuery('#progress').empty();
+			  		jQuery('<ul/>', {'class': 'my-new-list', html: items.join('')}).appendTo('#progress');
+			  	});
+			};
+			
+			setTimeout(statusUpdate, 1000);
+			setInterval(statusUpdate, 5000);
+		});
+	</script>
+</html>

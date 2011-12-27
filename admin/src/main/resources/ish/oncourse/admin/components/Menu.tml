@@ -9,6 +9,7 @@
 				<t:pagelink href="#" page="Billing">Billing</t:pagelink><div></div>
 				<t:pagelink href="#" page="AddCollege">Add College</t:pagelink><div></div>
 				<t:pagelink href="#" page="AddSuperUser">Add Super User</t:pagelink><div></div>
+				<t:pagelink href="#" page="UpdatePostcode">Update postcodes</t:pagelink><div></div>
 				<t:pagelink href="#" page="ReplicationStatus">Replication Status</t:pagelink>
 			</div>
 		</div>
