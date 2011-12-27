@@ -18,7 +18,8 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final Logger LOGGER = Logger.getLogger(PreferenceController.class);
 	
-	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
+	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";	
+	private static final String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
 	
 	private static final String REQUIRE_CONTACT_ADDRESS_ENROLMENT = "enrolment.contact.address.required";
 	private static final String REQUIRE_CONTACT_SUBURB_ENROLMENT = "enrolment.contact.suburb.required";
@@ -247,6 +248,14 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(NTIS_LAST_UPDATE, false, value);
 	}
 	
+	public synchronized String getPostcodesLastUpdate() {
+		return getValue(POSTCODES_LAST_UPDATE, false);
+	}
+	
+	public synchronized void setPostcodesLastUpdate(String value) {
+		setValue(POSTCODES_LAST_UPDATE, false, value);
+	}
+
 	public synchronized String getRequireContactAddressWaitingList() {
 		return getValue(REQUIRE_CONTACT_ADDRESS_WAITING_LIST, false);
 	}

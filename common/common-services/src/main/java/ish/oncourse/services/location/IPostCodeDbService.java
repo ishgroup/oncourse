@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IPostCodeDbService {
 	List<PostcodeDb> findBySuburb(String... suburbs);
+	List<PostcodeDb> getAllPostcodes();
 }
