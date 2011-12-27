@@ -77,11 +77,6 @@ public class ReplicationStatus {
 		return "0";
 	}
 	
-	Object onActionFromResetReplication(String billingCode) {
-		
-		return null;
-	}
-	
 	private QueuedRecord getOldestQueuedItem() {
 		ObjectContext context = cayenneService.sharedContext();
 		

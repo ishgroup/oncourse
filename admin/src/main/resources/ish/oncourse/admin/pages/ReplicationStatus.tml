@@ -14,7 +14,6 @@
 				<td><strong>Angel version</strong></td>
 				<td><strong>Last error</strong></td>
 				<td><strong>Records in queue</strong></td>
-				<td></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -28,7 +27,6 @@
 					<td>${currentCollege.angelVersion}</td>
 					<td>${lastError}</td>
 					<td>${numberOfRecordsInQueue}</td>
-					<td><t:actionlink t:id="resetReplication" t:context="currentCollege.getBillingCode()">Reset replication status</t:actionlink></td>
 				</tr>
 			</t:loop>
 		</tbody>
