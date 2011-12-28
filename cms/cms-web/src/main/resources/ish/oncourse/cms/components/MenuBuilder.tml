@@ -72,12 +72,16 @@
 	            });
 
 	            on.empty(function() {
-	              jQuery('#menus li').hide();
+	              if (jQuery('#menuFilter').is(':focus')) {
+	              	jQuery('#menus li').hide();
+	              }
 	            });
 
 	            on.results(function(results) {
-	              jQuery('#menus li').hide();
-	              results.show();
+	              if (jQuery('#menuFilter').is(':focus')) {
+	                jQuery('#menus li').hide();
+	                results.show();
+	              }
 	            });
 	          });
 			
