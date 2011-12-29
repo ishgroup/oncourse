@@ -9,8 +9,11 @@ import java.util.Map;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.LicenseFee;
+import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.system.ICollegeService;
 import ish.persistence.CommonPreferenceController;
 
@@ -55,14 +58,26 @@ public class Billing {
 	@Inject
 	private ICollegeService collegeService;
 	
+	@Inject
+	private PreferenceControllerFactory prefsFactory;
+	
+	@Persist
+	private PreferenceController preferenceController;
+	
 	private SimpleDateFormat dateFormat;
 	
 	@SetupRender
 	void setupRender() {
+		this.preferenceController = prefsFactory.getPreferenceController(college);
 		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		
-		this.webPaymentEnabled = college.getIsWebSitePaymentsEnabled();
-		this.qePaymentEnabled = college.getIsWebServicePaymentsEnabled();
+		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
+			this.webPaymentEnabled = false;
+		}
+		else {
+			this.webPaymentEnabled = true;
+		}
+		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
 		
 		this.licenseInfo = new LinkedHashMap<String, Map<String,String>>();
 		for (LicenseFee fee : college.getLicenseFees()) {
@@ -75,13 +90,6 @@ public class Billing {
 			}
 			else {
 				info.put(LicenseFee.BILLING_MONTH_PROPERTY, "");
-			}
-			
-			if (fee.getValidUntil() != null) {
-				info.put(LicenseFee.VALID_UNTIL_PROPERTY, dateFormat.format(fee.getValidUntil()));
-			}
-			else {
-				info.put(LicenseFee.VALID_UNTIL_PROPERTY, "");
 			}
 			
 			info.put(LicenseFee.FREE_TRANSACTIONS_PROPERTY, String.valueOf(fee.getFreeTransactions()));
@@ -111,8 +119,14 @@ public class Billing {
 		if (col != null) {
 			col.setPaymentGatewayAccount(college.getPaymentGatewayAccount());
 			col.setPaymentGatewayPass(college.getPaymentGatewayPass());
-			col.setIsWebSitePaymentsEnabled(this.webPaymentEnabled);
-			col.setIsWebServicePaymentsEnabled(this.qePaymentEnabled);
+			
+			if (this.webPaymentEnabled) {
+				preferenceController.setPaymentGatewayType(PaymentGatewayType.PAYMENT_EXPRESS);
+			}
+			else {
+				preferenceController.setPaymentGatewayType(PaymentGatewayType.DISABLED);
+			}
+			preferenceController.setLicenseCCProcessing(this.qePaymentEnabled);
 			
 			boolean found = false;
 			for (Preference p : col.getPreferences()) {
@@ -143,9 +157,6 @@ public class Billing {
 				}
 				if (info.get(LicenseFee.BILLING_MONTH_PROPERTY) != null) {
 					lf.setBillingMonth(Integer.parseInt(info.get(LicenseFee.BILLING_MONTH_PROPERTY)));
-				}
-				if (info.get(LicenseFee.VALID_UNTIL_PROPERTY) != null) {
-					lf.setValidUntil(dateFormat.parse(info.get(LicenseFee.VALID_UNTIL_PROPERTY)));
 				}
 				if (info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY) != null) {
 					lf.setFreeTransactions(Integer.parseInt(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
@@ -198,14 +209,6 @@ public class Billing {
 	
 	public void setBillingMonth(String billingMonth) {
 		getCurrentLicenseInfo().put(LicenseFee.BILLING_MONTH_PROPERTY, billingMonth);
-	}
-	
-	public String getValidUntil() {
-		return getCurrentLicenseInfo().get(LicenseFee.VALID_UNTIL_PROPERTY);
-	}
-	
-	public void setValidUntil(String validUntil) {
-		getCurrentLicenseInfo().put(LicenseFee.VALID_UNTIL_PROPERTY, validUntil);
 	}
 	
 	public String getFreeTransactions() {

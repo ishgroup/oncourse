@@ -3,13 +3,12 @@ package ish.oncourse.enrol.utils;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
-import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.preference.PreferenceController;
 
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.junit.BeforeClass;
@@ -29,30 +28,14 @@ public class PaymentGatewayServiceBuilderTest {
 	private static PaymentGatewayServiceBuilder builder;
 	
 	/**
-	 * Mock of the {@link IWebSiteService}.
+	 * Mock of the {@link PreferenceController}.
 	 */
-	private static IWebSiteService webSiteService;
+	private static PreferenceController preferenceController;
 	
 	/**
 	 * Mock of the {@link ServiceResources}.
 	 */
 	private static ServiceResources resources;
-	
-	/**
-	 * Instance to imitate the college which payment gateway is "OFF".
-	 */
-	private static College collegeWithDisabledGateway;
-	
-	/**
-	 * Instance to imitate the college which payment gateway is "TEST".
-	 */
-	private static College collegeWithTestGateway;
-	
-	/**
-	 * Instance to imitate the college which payment gateway is
-	 * "ON"(PaymentExpress).
-	 */
-	private static College collegeWithPaymentExpressGateway;
 	
 	/**
 	 * Initializes parameters for the whole test.
@@ -61,21 +44,14 @@ public class PaymentGatewayServiceBuilderTest {
 	public static void init() {
 		
 		resources = mock(ServiceResources.class);
-		webSiteService = mock(IWebSiteService.class);
-		collegeWithDisabledGateway = new College();
+		preferenceController = mock(PreferenceController.class);
 		
-		builder = new PaymentGatewayServiceBuilder(webSiteService);
+		builder = new PaymentGatewayServiceBuilder(preferenceController);
 
-		collegeWithTestGateway = new College();
-		collegeWithTestGateway.setPaymentGatewayType(PaymentGatewayType.TEST);
-
-		collegeWithPaymentExpressGateway = new College();
-		collegeWithPaymentExpressGateway.setPaymentGatewayType(PaymentGatewayType.PAYMENT_EXPRESS);
-
-		when(resources.getService(IWebSiteService.class)).thenReturn(webSiteService);
-		when(webSiteService.getCurrentCollege()).thenReturn(collegeWithDisabledGateway,
-				collegeWithDisabledGateway, collegeWithTestGateway,
-				collegeWithPaymentExpressGateway);
+		when(resources.getService(PreferenceController.class)).thenReturn(preferenceController);
+		when(preferenceController.getPaymentGatewayType()).thenReturn(
+				PaymentGatewayType.DISABLED, PaymentGatewayType.TEST,
+				PaymentGatewayType.PAYMENT_EXPRESS);
 	}
 
 	/**
@@ -86,8 +62,6 @@ public class PaymentGatewayServiceBuilderTest {
 	 */
 	@Test
 	public void testCollegeWithDisabledGateway() {
-		assertTrue(builder.buildService() instanceof DisabledPaymentGatewayService);
-		collegeWithDisabledGateway.setPaymentGatewayType(PaymentGatewayType.DISABLED);
 		assertTrue(builder.buildService() instanceof DisabledPaymentGatewayService);
 	}
 

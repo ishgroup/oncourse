@@ -1,8 +1,10 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.utils.FormatUtils;
 
@@ -32,6 +34,9 @@ public class ShortList {
 
 	@Inject
 	private IWebSiteService webSiteService;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
 	@Inject
 	private ICookiesService cookiesService;
@@ -118,7 +123,7 @@ public class ShortList {
 	 * @return true if payment gateway is enabled.
 	 */
 	public boolean isPaymentGatewayEnabled() {
-		return webSiteService.getCurrentCollege().isPaymentGatewayEnabled();
+		return !PaymentGatewayType.DISABLED.equals(preferenceController.getPaymentGatewayType());
 	}
 
 	public String getClassForList() {

@@ -40,7 +40,7 @@ public class AppModule {
 		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
 
-	public MetaDataLocator decorateMetaDataLocator(final MetaDataLocator original, final IWebSiteService webSiteService) {
+	public MetaDataLocator decorateMetaDataLocator(final MetaDataLocator original, final PreferenceController preferenceController) {
 		return new MetaDataLocator() {
 			
 			@Override
@@ -49,7 +49,7 @@ public class AppModule {
 				if (MetaDataConstants.SECURE_PAGE.equals(key)) {
 					
 					// checks if the request should be secured
-					boolean isSecured = PaymentGatewayType.SECURED_TYPES.contains(webSiteService.getCurrentCollege()
+					boolean isSecured = PaymentGatewayType.SECURED_TYPES.contains(preferenceController
 							.getPaymentGatewayType()) && pageName.toLowerCase().equals("enrolcourses");
 					
 					return (T) Boolean.valueOf(isSecured);

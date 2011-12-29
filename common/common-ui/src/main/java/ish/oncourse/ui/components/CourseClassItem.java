@@ -1,10 +1,12 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.utils.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -33,6 +35,9 @@ public class CourseClassItem {
 
 	@Inject
 	private ICookiesService cookiesService;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
 	@Parameter
 	@Property
@@ -182,7 +187,7 @@ public class CourseClassItem {
 	}
 	
 	public boolean isPaymentGatewayEnabled() {
-		return courseClass != null && courseClass.getCollege() != null && courseClass.getCollege().isPaymentGatewayEnabled();
+		return courseClass != null && !PaymentGatewayType.DISABLED.equals(preferenceController.getPaymentGatewayType());
 	}
 	
 	public boolean isHasManySessions() {

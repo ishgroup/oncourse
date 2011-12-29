@@ -9,6 +9,8 @@ import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
@@ -52,11 +54,13 @@ public class PaymentServiceImpl implements PaymentPortType {
 	private final SessionIdGenerator idGenerator;
 	
 	private final IWillowStubBuilder stubBuilder;
+	
+	private final PreferenceControllerFactory prefsFactory;
 
 	@Inject
 	public PaymentServiceImpl(ITransactionGroupProcessor groupProcessor, IPaymentGatewayService paymentGatewayService,
 			ICayenneService cayenneService, IPaymentService paymentInService, IEnrolmentService enrolService,
-			ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder) {
+			ITransactionStubBuilder transactionBuilder, IWillowStubBuilder stubBuilder, PreferenceControllerFactory prefsFactory) {
 		super();
 		this.groupProcessor = groupProcessor;
 		this.paymentGatewayService = paymentGatewayService;
@@ -65,6 +69,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 		this.enrolService = enrolService;
 		this.transactionBuilder = transactionBuilder;
 		this.stubBuilder = stubBuilder;
+		this.prefsFactory = prefsFactory;
 		this.idGenerator = new SessionIdGenerator();
 	}
 
@@ -150,8 +155,12 @@ public class PaymentServiceImpl implements PaymentPortType {
 					break;
 				}
 			}
-
-			if (!isPlacesAvailable) {
+			
+			PreferenceController prefsController = prefsFactory.getPreferenceController(paymentIn.getCollege());
+			
+			if (isCreditCardPayment && !prefsController.getLicenseCCProcessing()) {
+				updatedPayments.add(paymentIn.abandonPayment());
+			} else if (!isPlacesAvailable) {
 				paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
 				updatedPayments.add(paymentIn.abandonPayment());
 			} else {

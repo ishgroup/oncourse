@@ -1,6 +1,7 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -57,6 +58,8 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
 	private static final String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
+	
+	private static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
 	
 	@Inject
 	private ICayenneService cayenneService;
@@ -534,5 +537,17 @@ public class PreferenceController extends CommonPreferenceController {
 	
 	public synchronized void setAddThisProfileId(String value) {
 		setValue(ADDTHIS_PROFILE_ID, false, value);
+	}
+	
+	public synchronized PaymentGatewayType getPaymentGatewayType() {
+		try {
+			return PaymentGatewayType.valueOf(getValue(PAYMENT_GATEWAY_TYPE, false));
+		} catch(Exception e) {
+			return PaymentGatewayType.DISABLED;
+		}
+	}
+	
+	public synchronized void setPaymentGatewayType(PaymentGatewayType value) {
+		setValue(PAYMENT_GATEWAY_TYPE, false, value.toString());
 	}
 }

@@ -598,6 +598,17 @@
 		<sql>ALTER TABLE PaymentIn ADD INDEX session (sessionId ( 8 ) );</sql>
 	</changeSet>
 	
+	<changeSet id="43" author="dzmitry" context="production" runOnChange="true">
+		<sql>insert into Preference (collegeId, name, value_string) 
+				select c.id, 'payment.gateway.type', 
+				case  
+    				when c.paymentGatewayType = 2 then 'PAYMENT_EXPRESS'
+    				when c.paymentGatewayType = 0 then 'TEST'
+    				when c.paymentGatewayType is null then 'DISABLED'
+				end
+			 from College c where c.billingCode is not null;</sql>
+	</changeSet>
+	
 	<!--changeSet id="43" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
 	</changeSet-->

@@ -1,19 +1,19 @@
 package ish.oncourse.services.paymentexpress;
 
-import ish.oncourse.model.College;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuilder {
 
-	private IWebSiteService webSiteService;
+	private PreferenceController preferenceController;
 
 	@Inject
-	public PaymentGatewayServiceBuilder(IWebSiteService webSiteService) {
+	public PaymentGatewayServiceBuilder(PreferenceController preferenceController) {
 		super();
-		this.webSiteService = webSiteService;
+		this.preferenceController = preferenceController;
 	}
 
 	/**
@@ -22,29 +22,22 @@ public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuild
 	 * 
 	 */
 	public IPaymentGatewayService buildService() {
-		College currentCollege = webSiteService.getCurrentCollege();
-		return buildService(currentCollege);
-	}
-
-	private IPaymentGatewayService buildService(College currentCollege) {
-
+		
 		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(ServiceModule.APP_TEST_MODE));
 
 		if (isInTestMode) {
 			return new TestPaymentGatewayService();
 		}
 
-		if (!currentCollege.isPaymentGatewayEnabled()) {
-			return new DisabledPaymentGatewayService();
-		}
-
-		switch (currentCollege.getPaymentGatewayType()) {
+		switch (preferenceController.getPaymentGatewayType()) {
 		case PAYMENT_EXPRESS:
 			return new PaymentExpressGatewayService();
 		case TEST:
 			return new TestPaymentGatewayService();
+		case DISABLED:
+			return new DisabledPaymentGatewayService();
 		default:
-			return new TestPaymentGatewayService();
+			return new DisabledPaymentGatewayService();
 		}
 	}
 }

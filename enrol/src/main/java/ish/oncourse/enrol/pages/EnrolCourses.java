@@ -18,12 +18,14 @@ import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.utils.FormatUtils;
 
@@ -97,6 +99,9 @@ public class EnrolCourses {
 
 	@Inject
 	private ComponentResources componentResources;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
 	@Property
 	@Persist
@@ -418,7 +423,7 @@ public class EnrolCourses {
 	 * @return true if payment gateway is enabled.
 	 */
 	public boolean isPaymentGatewayEnabled() {
-		return webSiteService.getCurrentCollege().isPaymentGatewayEnabled();
+		return !PaymentGatewayType.DISABLED.equals(preferenceController.getPaymentGatewayType());
 	}
 
 	public boolean isShowConcessionsArea() {

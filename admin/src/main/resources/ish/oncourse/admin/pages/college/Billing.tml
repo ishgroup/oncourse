@@ -37,7 +37,6 @@
 				<td>Key Code</td>
 				<td>Plan Name</td>
 				<td>Billing Month</td>
-				<td>Valid Until</td>
 				<td>Free Transactions</td>
 				<td>Fee</td>
 			</tr>
@@ -48,7 +47,6 @@
 					<td>${currentLicenseInfoKey}</td>
 					<td><t:textfield t:id="planName" value="planName"/></td>
 					<td><t:textfield t:id="billingMonth" t:validate="regexp=^([1-9]|1[0-2])$" value="billingMonth"/></td>
-					<td><t:textfield t:id="validUntil" value="validUntil"/></td>
 					<td><t:textfield t:id="freeTransactions" t:validate="required" value="freeTransactions"/></td>
 					<td><t:textfield t:id="fee" t:validate="required" value="fee"/></td>
 				</tr>
