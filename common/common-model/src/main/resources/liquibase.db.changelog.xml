@@ -587,5 +587,19 @@
 		<sql>alter table Enrolment change column status status INTEGER not null</sql>
 		<dropColumn tableName="Enrolment" columnName="status_tmp"/>
 	</changeSet>
+	
+	<changeSet id="42" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+			<indexExists indexName="session"
+				tableName="PaymentIn" />
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE PaymentIn ADD INDEX session (sessionId ( 8 ) );</sql>
+	</changeSet>
+	
+	<!--changeSet id="43" author="viacheslav" context="production" runOnChange="true">
+		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
+	</changeSet-->
 
 </databaseChangeLog>
