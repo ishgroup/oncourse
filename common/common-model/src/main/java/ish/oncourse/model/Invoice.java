@@ -146,13 +146,12 @@ public class Invoice extends _Invoice implements Queueable {
 				if (enrol != null) {
 					ObjectIdQuery q = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
 					enrol = (Enrolment) Cayenne.objectForQuery(getObjectContext(), q);
-					if (!enrol.isAsyncReplicationAllowed()) {
-						return false;
+					if (enrol.isAsyncReplicationAllowed()) {
+						return true;
 					}
 				}
 			}
+			return false;
 		}
-
-		return true;
 	}
 }
