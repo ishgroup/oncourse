@@ -1,0 +1,32 @@
+<html t:type="pagestructure" title="literal:Unsubscribe"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+	
+	<t:if test="postUnsubscribe" negate="true">
+		<t:if test="isSubscribed">	
+			<div>You are subscribed to the mailing list:</div>
+			<p:else>
+				<div>You are already unsubscribed from the mailing list: </div>
+			</p:else>
+		</t:if>
+		<br/>
+		<h4>${mailingList.name}</h4>
+		<h5><t:outputraw value="mailingList.detail"/></h5> 
+	
+		<br/>
+		
+		<t:if test="isSubscribed">
+			<t:form t:id="unsubscribeForm">
+				<div class="form-controls" xml:space="preserve">
+					<t:submit t:id="unsubscribeAction" value="Unsubscribe" class="btn"/>
+				</div>
+			</t:form>
+		</t:if>
+	
+		<p:else>
+			<span>You have been unsubscribed from this mailing list. If you wish 
+				to review your details or change other preferences, please login 
+				<t:pagelink page="Login">here</t:pagelink>.</span> 
+		</p:else>
+	</t:if>
+	
+</html>

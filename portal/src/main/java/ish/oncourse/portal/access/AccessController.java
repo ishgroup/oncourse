@@ -23,7 +23,8 @@ public class AccessController implements Dispatcher {
 	private final static String FORGOT_PASSWORD_PAGE = "/forgotpassword";
 	private final static String PASSWORD_RECOVERY_PAGE = "/passwordrecovery"; 
 	private final static String SELECT_COLLEGE_PAGE = "/selectcollege"; 
-	private final static String CALENDAR_FILE = "/calendar"; 
+	private final static String CALENDAR_FILE = "/calendar";
+	private final static String UNSUBSCRIBE_PAGE = "/unsubscribe";
 	
 
 	@Inject
@@ -68,7 +69,7 @@ public class AccessController implements Dispatcher {
 
 			if (authenticationService.getUser() == null) {
 				if (!path.equals(LOGIN_PAGE) && !path.equals(FORGOT_PASSWORD_PAGE) && !path.startsWith(PASSWORD_RECOVERY_PAGE) && !path.equals(SELECT_COLLEGE_PAGE) &&
-						!path.startsWith(CALENDAR_FILE)) {
+						!path.startsWith(CALENDAR_FILE) && !path.startsWith(UNSUBSCRIBE_PAGE)) {
 					cookieService.pushPreviousPagePath(path);
 					response.sendRedirect(loginPath);
 					return true;
