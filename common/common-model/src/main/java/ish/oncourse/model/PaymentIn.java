@@ -285,6 +285,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				il.setModified(today);
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
+					enrol.setModified(today);
 					enrol.setStatus(EnrolmentStatus.SUCCESS);
 				}
 			}
@@ -393,6 +394,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					il.setModified(today);
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
+						enrol.setModified(today);
 						boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
 						if (shouldFailEnrolment) {
 							enrol.setStatus(EnrolmentStatus.FAILED);
@@ -437,6 +439,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				il.setModified(today);
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
+					enrol.setModified(today);
 					if (enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION) {
 						enrol.setStatus(EnrolmentStatus.SUCCESS);
 					}
@@ -468,8 +471,11 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				il.setModified(today);
 				Enrolment enrol = il.getEnrolment();
-				if (enrol != null && enrol.getStatus() != EnrolmentStatus.SUCCESS) {
-					enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
+				if (enrol != null) {
+					enrol.setModified(today);
+					if (enrol.getStatus() != EnrolmentStatus.SUCCESS) {
+						enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
+					}
 				}
 			}
 		}
