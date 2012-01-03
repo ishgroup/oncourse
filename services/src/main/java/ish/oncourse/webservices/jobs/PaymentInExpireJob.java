@@ -46,7 +46,7 @@ public class PaymentInExpireJob implements Job {
 			// IN_TRANSACTION, regardless of sessionId.
 			Expression expr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, cal.getTime());
 			expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.CARD_DETAILS_REQUIRED,
-					PaymentStatus.IN_TRANSACTION));
+					PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW));
 
 			SelectQuery q = new SelectQuery(PaymentIn.class, expr);
 			q.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);
