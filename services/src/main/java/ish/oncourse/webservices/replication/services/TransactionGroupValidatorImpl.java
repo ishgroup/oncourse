@@ -28,11 +28,24 @@ public class TransactionGroupValidatorImpl implements ITransactionGroupValidator
 	 */
 	private static final Logger logger = Logger.getLogger(TransactionGroupValidatorImpl.class);
 
-	@Inject
-	private ITransactionStubBuilder transactionBuilder;
+	/**
+	 * Transaction stub builder.
+	 */
+	private final ITransactionStubBuilder transactionBuilder;
 
+	
+	/**
+	 * Cayenne service.
+	 */
+	private final ICayenneService cayenneService;
+	
+	
 	@Inject
-	private ICayenneService cayenneService;
+	public TransactionGroupValidatorImpl(ITransactionStubBuilder transactionBuilder, ICayenneService cayenneService) {
+		super();
+		this.transactionBuilder = transactionBuilder;
+		this.cayenneService = cayenneService;
+	}
 
 	@Override
 	public List<TransactionGroup> validateAndReturnFixedGroups(List<TransactionGroup> groups) {
@@ -86,7 +99,9 @@ public class TransactionGroupValidatorImpl implements ITransactionGroupValidator
 						}
 					}
 					
-					list.add(group);
+					TransactionGroup newGroup = new TransactionGroup();
+					newGroup.getAttendanceOrBinaryDataOrBinaryInfo().addAll(existingStubs);
+					list.add(newGroup);
 					
 				} catch (Exception se) {
 					logger.error("Unable to validate transaction group. This group will be skipped.", se);

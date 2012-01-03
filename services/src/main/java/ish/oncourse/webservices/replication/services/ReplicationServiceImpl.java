@@ -25,6 +25,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -141,11 +143,15 @@ public class ReplicationServiceImpl implements IReplicationService {
 					deduper.nextState(r);
 				}
 
+				SortedSet<DFADedupper> sortedDeduppers = new TreeSet<DFADedupper>();
+				
+				for (Map.Entry<QueueKey, DFADedupper> entry : dedupMap.entrySet()) {
+					sortedDeduppers.add(entry.getValue());
+				}
+				
 				Map<String, TransactionGroup> groupMap = new LinkedHashMap<String, TransactionGroup>();
 
-				for (Map.Entry<QueueKey, DFADedupper> entry : dedupMap.entrySet()) {
-
-					DFADedupper deduper = entry.getValue();
+				for (DFADedupper deduper : sortedDeduppers) {
 
 					ObjectContext ctx = cayenneService.newContext();
 					List<QueuedRecord> duplicates = deduper.duplicates();
@@ -171,6 +177,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 					ctx.commitChanges();
 
 					TransactionGroup group = null;
+					
+					logger.debug(String.format("Deduper spans %s transactions.", deduper.getTransactionKeys().size()));
 
 					for (String transactionKey : deduper.getTransactionKeys()) {
 						group = groupMap.get(transactionKey);
