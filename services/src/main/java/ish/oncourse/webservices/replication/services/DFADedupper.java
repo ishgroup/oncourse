@@ -107,7 +107,7 @@ public class DFADedupper implements Comparable<DFADedupper> {
 
 	@Override
 	public int compareTo(DFADedupper o) {
-		return getTransactionKeys().size() - o.getTransactionKeys().size();
+		return o.getTransactionKeys().size() - getTransactionKeys().size();
 	}
 
 	public QueuedRecord deDuppedRecord() {

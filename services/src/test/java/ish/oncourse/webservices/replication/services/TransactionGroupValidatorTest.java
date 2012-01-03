@@ -67,7 +67,7 @@ public class TransactionGroupValidatorTest extends ServiceTest {
 		
 		ReplicationRecords result = replicationService.getRecords();
 		List<TransactionGroup> groups = result.getGroups();
-		assertTrue("Groups not empty.", groups.size() == 1);
+		assertTrue("Groups size is one.", groups.size() == 1);
 		
 		//removing invoices from the group
 		TransactionGroup group = groups.get(0);
