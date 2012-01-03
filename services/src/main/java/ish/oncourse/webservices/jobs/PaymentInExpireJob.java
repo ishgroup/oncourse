@@ -42,8 +42,9 @@ public class PaymentInExpireJob implements Job {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MINUTE, -EXPIRE_INTERVAL);
 
-			Expression expr = ExpressionFactory.noMatchExp(PaymentIn.SESSION_ID_PROPERTY, null);
-			expr = expr.andExp(ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, cal.getTime()));
+			// fail every payment older than EXPIRE_INTERVAL with statuses CARD_DETAILS_REQUIRED and
+			// IN_TRANSACTION, regardless of sessionId.
+			Expression expr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, cal.getTime());
 			expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.CARD_DETAILS_REQUIRED,
 					PaymentStatus.IN_TRANSACTION));
 
@@ -55,19 +56,19 @@ public class PaymentInExpireJob implements Job {
 
 			@SuppressWarnings("unchecked")
 			List<PaymentIn> expiredPayments = newContext.performQuery(q);
-			
+
 			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
 
 			for (PaymentIn p : expiredPayments) {
 				try {
-					
-					logger.info(String.format("Canceling paymentIn with id:%s, created:%s and status:%s.", p.getId(), p.getCreated(), p.getStatus()));
-					
+
+					logger.info(String.format("Canceling paymentIn with id:%s, created:%s and status:%s.", p.getId(), p.getCreated(),
+							p.getStatus()));
+
 					p.abandonPayment();
-					
+
 					newContext.commitChanges();
-				}
-				catch (CayenneRuntimeException ce) {
+				} catch (CayenneRuntimeException ce) {
 					logger.debug(String.format("Unable to cancel payment with id:%s and status:%s.", p.getId(), p.getStatus()), ce);
 					newContext.rollbackChanges();
 				}
