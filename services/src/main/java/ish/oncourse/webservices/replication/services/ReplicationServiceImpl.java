@@ -20,6 +20,7 @@ import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -143,11 +144,11 @@ public class ReplicationServiceImpl implements IReplicationService {
 					deduper.nextState(r);
 				}
 
-				SortedSet<DFADedupper> sortedDeduppers = new TreeSet<DFADedupper>();
-				
+				List<DFADedupper> sortedDeduppers = new ArrayList<DFADedupper>(dedupMap.entrySet().size());
 				for (Map.Entry<QueueKey, DFADedupper> entry : dedupMap.entrySet()) {
 					sortedDeduppers.add(entry.getValue());
 				}
+				Collections.sort(sortedDeduppers);
 				
 				Map<String, TransactionGroup> groupMap = new LinkedHashMap<String, TransactionGroup>();
 
