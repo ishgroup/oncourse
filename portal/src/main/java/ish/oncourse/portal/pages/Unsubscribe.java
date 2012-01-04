@@ -12,7 +12,6 @@ import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
 
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -56,16 +55,23 @@ public class Unsubscribe {
 	@InjectPage
 	private PageNotFound pageNotFound;
 	
+	private boolean unsubscribe;
+	
 	Object onActivate(String param) {
 		try {
-			String mailingListId = param.substring(0, param.indexOf(PARAM_DELIMETER));
+			Long mailingListId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
 			String contactUniqueCode = param.substring(param.indexOf(PARAM_DELIMETER) + 1);
 			
-			ObjectContext context = cayenneService.sharedContext();
-			
-			this.mailingList = Cayenne.objectForPK(context, Tag.class, Long.parseLong(mailingListId));
+			List<Tag> tagList = tagService.loadByIds(mailingListId);
+			if (!tagList.isEmpty()) {
+				this.mailingList = tagList.get(0);
+			}
 			this.contact = contactService.findByUniqueCode(contactUniqueCode);
 		
+			if (this.mailingList == null || this.contact == null) {
+				return pageNotFound;
+			}
+			
 			return null;
 		} catch (Exception e) {
 			return pageNotFound;
@@ -74,8 +80,13 @@ public class Unsubscribe {
 	
 	@SetupRender
 	Object setupRender() {
-		if (this.contact != null && this.mailingList != null) {
-			this.isSubscribed = isContactSubscribed(contact, mailingList);
+		if (this.mailingList != null && this.contact != null) {
+			if (isContactSubscribed(contact, mailingList)) {
+				this.isSubscribed = true;
+			}
+			else {
+				this.isSubscribed = false;
+			}
 			return null;
 		}
 		return pageNotFound;
@@ -86,43 +97,50 @@ public class Unsubscribe {
 		postUnsubscribe = false;
 	}
 	
+	void onSelectedFromUnsubscribeAction() {
+		unsubscribe = true;
+	}
+	
+	void onSelectedFromRemainAction() {
+		unsubscribe = false;
+	}
+	
 	@OnEvent(component="unsubscribeForm", value="success")
 	Object submitted() {
-		ObjectContext context = cayenneService.newContext();
-		College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
-		
-		Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
-				.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
-				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, college))
-				.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
-		SelectQuery query = new SelectQuery(Taggable.class, qual);
-		List<Taggable> taggables = context.performQuery(query);
-		
-		for (Taggable t : new ArrayList<Taggable>(taggables)) {
-			for (final TaggableTag tt : new ArrayList<TaggableTag>(t.getTaggableTags())) {
-				context.deleteObject(tt);
-				context.deleteObject(t);
+		if (unsubscribe) {
+			ObjectContext context = cayenneService.newContext();
+			College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
+			
+			Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
+					.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
+					.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, college))
+					.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
+			SelectQuery query = new SelectQuery(Taggable.class, qual);
+			List<Taggable> taggables = context.performQuery(query);
+			
+			for (Taggable t : new ArrayList<Taggable>(taggables)) {
+				for (final TaggableTag tt : new ArrayList<TaggableTag>(t.getTaggableTags())) {
+					context.deleteObject(tt);
+					context.deleteObject(t);
+				}
 			}
+			
+			context.commitChanges();
+			postUnsubscribe = true;
 		}
-		
-		context.commitChanges();
-		postUnsubscribe = true;
 		return null;
 	}
 
 	private boolean isContactSubscribed(Contact contact, Tag mailingList) {
-		ObjectContext context = cayenneService.sharedContext();
-		College currentCollege = contact.getCollege();
-
-		Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
-				.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
-				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, currentCollege))
-				.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
-
-		SelectQuery q = new SelectQuery(Taggable.class, qual);
-		q.addPrefetch(Taggable.TAGGABLE_TAGS_PROPERTY);
-		List<Taggable> taggableList = context.performQuery(q);
-
-		return !taggableList.isEmpty();
+		boolean result = false;
+		
+		for (TaggableTag tt : mailingList.getTaggableTags()) {
+			Taggable tg = tt.getTaggable();
+			if (Contact.class.getSimpleName().equals(tg.getEntityIdentifier()) && contact.getId().equals(tg.getEntityWillowId())) {
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 }

@@ -4,9 +4,9 @@
 	<t:if test="postUnsubscribe" negate="true">
 		<t:if test="isSubscribed">	
 			<div>You are subscribed to the mailing list:</div>
-			<p:else>
-				<div>You are already unsubscribed from the mailing list: </div>
-			</p:else>
+		</t:if>
+		<t:if test="isSubscribed" negate="true">
+			<div id="unsubscribed">You are already unsubscribed from the mailing list: </div>
 		</t:if>
 		<br/>
 		<h4>${mailingList.name}</h4>
@@ -17,16 +17,17 @@
 		<t:if test="isSubscribed">
 			<t:form t:id="unsubscribeForm">
 				<div class="form-controls" xml:space="preserve">
-					<t:submit t:id="unsubscribeAction" value="Unsubscribe" class="btn"/>
+					<input t:type="submit" t:id="unsubscribeAction" value="Unsubscribe" class="btn"/>
+					<input t:type="submit" t:id="remainAction" value="Remain on this list" class="btn"/>
 				</div>
 			</t:form>
 		</t:if>
+	</t:if>
 	
-		<p:else>
-			<span>You have been unsubscribed from this mailing list. If you wish 
-				to review your details or change other preferences, please login 
-				<t:pagelink page="Login">here</t:pagelink>.</span> 
-		</p:else>
+	<t:if test="postUnsubscribe">
+		<span id="postUnsubscribeMessage">You have been unsubscribed from this mailing list. If you wish 
+			to review your details or change other preferences, please login 
+		<t:pagelink page="Login">here</t:pagelink>.</span> 
 	</t:if>
 	
 </html>

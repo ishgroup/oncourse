@@ -69,7 +69,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 			return Collections.emptyList();
 		}
 
-		return findByQualifier(ExpressionFactory.inDbExp("id", ids).andExp(getSiteQualifier()));
+		return findByQualifier(ExpressionFactory.inDbExp("id", ids));
 	}
 
 	/**
