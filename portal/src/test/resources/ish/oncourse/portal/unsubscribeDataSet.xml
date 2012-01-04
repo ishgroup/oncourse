@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+	
+	<Student id="51" collegeId="1" angelId="203" created="2011-09-12 01:03:00.0" modified="2011-09-12 01:03:00.0" disabilityType="0" englishProficiency="0" highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0" priorEducationCode="0" labourForceType="0"/>
+	
+	<Contact id="101" collegeId="1" studentId="51" uniqueCode="tr78gh2" angelId="5" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0" isMale="1" familyName="TestStudent2" givenName="TestStudent2" street="test address2" suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1"/>
+	
+	<Tag id="1001" collegeId="1" name="Mailing Lists" specialType="3"/>
+	
+	<Tag id="1002" collegeId="1" name="List1" parentId="1001"/>
+	<Tag id="1003" collegeId="1" name="List2" parentId="1001"/>
+	
+	<Taggable id="2001" collegeId="1" entityIdentifier="Contact" entityWillowId="101" />
+	
+	<TaggableTag id="3001" collegeId="1" tagId="1002" taggableId="2001"/>
+</dataset>

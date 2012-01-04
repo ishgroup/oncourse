@@ -7,6 +7,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.AppModule;
 import ish.oncourse.portal.services.pageload.IUserAgentDetector;
 import ish.oncourse.portal.services.pageload.UserAgent;
 import ish.oncourse.portal.services.site.PortalSiteService;
@@ -16,15 +17,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
+import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.RequestHandler;
 import org.apache.tapestry5.services.Response;
 
-
+@SubModule(AppModule.class)
 public class TestModule {
 	
 	public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
@@ -105,4 +108,8 @@ public class TestModule {
 			@Local IUserAgentDetector iUserAgentDetector) {
 		configuration.add(IUserAgentDetector.class, iUserAgentDetector);
 	}
+	
+	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
+	     configuration.override(SymbolConstants.SECURE_ENABLED, "false");
+	} 
 }

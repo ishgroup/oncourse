@@ -76,7 +76,7 @@ public class EnvironmentService implements IEnvironmentService {
 							is.close();
 						}
 					}
-				} catch (IOException e) {
+				} catch (Exception e) {
 
 				}
 			}

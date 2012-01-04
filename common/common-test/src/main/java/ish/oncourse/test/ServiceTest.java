@@ -11,8 +11,13 @@ public class ServiceTest {
 	private PageTester tester;
 
 	public void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
-		tester = new PageTester(appPackage, appName, PageTester.DEFAULT_CONTEXT_PATH, moduleClasses);
+		tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 		ContextUtils.setupDataSources();
+	}
+	
+	public void initTest(String appPackage, String appName, String contextPath, Class<?>... moduleClasses) throws Exception {
+		ContextUtils.setupDataSources();
+		tester = new PageTester(appPackage, appName, contextPath, moduleClasses);
 	}
 
 	protected <T> T getService(Class<T> serviceInterface) {
