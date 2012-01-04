@@ -21,13 +21,10 @@ import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -172,7 +169,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 					record = (QueuedRecord) ctx.localObject(record.getObjectId(), record);
 
 					int numberAttempts = (record.getNumberOfAttempts() != null) ? record.getNumberOfAttempts() : 0;
-
 					record.setNumberOfAttempts(numberAttempts + 1);
 
 					ctx.commitChanges();
@@ -249,7 +245,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_WILLOW_ID_PROPERTY, record.getStub().getWillowId()));
 				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, record.getStub().getEntityIdentifier()));
-
 				q.andQualifier(ExpressionFactory.greaterExp(QueuedRecord.NUMBER_OF_ATTEMPTS_PROPERTY, 0));
 
 				@SuppressWarnings("unchecked")
@@ -281,7 +276,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 							ctx.deleteObject(queuedRecord);
 
 						} else {
-							queuedRecord.setLastAttemptTimestamp(new Date());
 							queuedRecord.setErrorMessage(record.getMessage());
 
 							if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(queuedRecord.getNumberOfAttempts())) {

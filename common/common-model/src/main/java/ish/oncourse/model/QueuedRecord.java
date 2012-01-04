@@ -64,4 +64,10 @@ public class QueuedRecord extends _QueuedRecord {
 							.getId())));
 		}
 	}
+
+	@Override
+	public void setNumberOfAttempts(Integer numberOfAttempts) {
+		super.setNumberOfAttempts(numberOfAttempts);
+		setLastAttemptTimestamp(new Date());
+	}
 }
