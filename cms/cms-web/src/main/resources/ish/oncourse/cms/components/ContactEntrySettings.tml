@@ -139,11 +139,11 @@
 				</div>
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListAddressState" />
+						blankOption="never" value="waitingListPostcodeState" />
 				</div>
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListAddressState" />
+						blankOption="never" value="mailingListPostcodeState" />
 				</div>
 
 			</div>
