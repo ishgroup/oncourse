@@ -31,6 +31,7 @@ import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.jndi.LookupService;
+import ish.oncourse.services.jobs.PaymentInExpireJob;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.mail.MailService;
@@ -172,7 +173,8 @@ public class ServiceModule {
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
-
+		binder.bind(PaymentInExpireJob.class);
+		
 		if (isInTestMode) {
 			binder.bind(ISMSService.class, TestModeSMSService.class);
 		} else {

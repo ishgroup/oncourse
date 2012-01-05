@@ -2,6 +2,17 @@ package ish.oncourse.webservices.replication.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
+import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub;
+import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
+import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,18 +29,6 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.jobs.PaymentInExpireJobTest;
-import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
-import ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub;
-import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
-
 public class TransactionGroupValidatorTest extends ServiceTest {
 
 	private IReplicationService replicationService;
@@ -44,7 +43,7 @@ public class TransactionGroupValidatorTest extends ServiceTest {
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-		InputStream st = PaymentInExpireJobTest.class.getClassLoader().getResourceAsStream(
+		InputStream st = TransactionGroupValidatorTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/webservices/replication/services/transactionGroupValidatorDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse");

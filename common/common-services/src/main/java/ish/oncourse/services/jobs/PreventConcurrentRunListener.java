@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.quartz;
+package ish.oncourse.services.jobs;
 
 import java.util.List;
 

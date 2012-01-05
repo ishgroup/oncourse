@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.jobs;
+package ish.oncourse.services.jobs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,9 +7,9 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 
 import java.io.InputStream;
 
@@ -33,7 +33,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
+		initTest("ish.oncourse.services", "service", ServiceModule.class);
 		
 		InputStream st = PaymentInExpireJobTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/jobs/paymentInExpireDataSet.xml");
 

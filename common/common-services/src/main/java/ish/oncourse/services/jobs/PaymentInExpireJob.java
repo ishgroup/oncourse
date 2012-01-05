@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.jobs;
+package ish.oncourse.services.jobs;
 
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;

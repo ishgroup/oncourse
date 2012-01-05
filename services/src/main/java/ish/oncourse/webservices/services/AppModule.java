@@ -11,7 +11,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
-import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 import ish.oncourse.webservices.quartz.QuartzInitializer;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
@@ -88,7 +87,6 @@ public class AppModule {
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceOverride");
 
 		binder.bind(SMSJob.class);
-		binder.bind(PaymentInExpireJob.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {

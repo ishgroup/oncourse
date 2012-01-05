@@ -9,10 +9,6 @@
 		<param-value>ish.oncourse.enrol</param-value>
 	</context-param>
 	
-	<listener>
-		<listener-class>ish.oncourse.enrol.listeners.SessionListener</listener-class>
-	</listener>
-	
 	<filter>
 		<filter-name>app</filter-name>
 		<filter-class>org.apache.tapestry5.TapestryFilter</filter-class>

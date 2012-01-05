@@ -1,62 +1,35 @@
 package ish.oncourse.webservices.quartz;
 
-import ish.oncourse.webservices.jobs.PaymentInExpireJob;
+import ish.oncourse.services.jobs.GenericQuartzInitializer;
+import ish.oncourse.services.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 
-import java.text.ParseException;
-
-import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceResources;
-import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
-import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.spi.JobFactory;
-import org.quartz.spi.TriggerFiredBundle;
 
-public class QuartzInitializer implements RegistryShutdownListener {
-
-	private static final Logger LOGGER = Logger.getLogger(QuartzInitializer.class);
-
-	private Scheduler scheduler;
-
+/**
+ * Initialize specific services quartz jobs.
+ * @author anton
+ *
+ */
+public class QuartzInitializer extends GenericQuartzInitializer {
+	
 	public QuartzInitializer(ServiceResources serviceResources) {
-		try {
-			// disable check for quartz updates on startup
-			System.setProperty("org.quartz.scheduler.skipUpdateCheck", "true");
-
-			StdSchedulerFactory sf = new StdSchedulerFactory();
-
-			scheduler = sf.getScheduler();
-			scheduler.setJobFactory(new QuartzJobFactory(serviceResources));
-			scheduler.getListenerManager().addTriggerListener(new PreventConcurrentRunListener());
-
-			scheduler.start();
-
-			initJobs();
-
-		} catch (SchedulerException e) {
-			LOGGER.error("Error during scheduler initialization, aborting start up.", e);
-			throw new RuntimeException("Error during scheduler initialization, aborting start up.", e);
-		} catch (ParseException pe) {
-			LOGGER.error("Error during scheduler initialization, aborting start up.", pe);
-			throw new RuntimeException("Error during scheduler initialization, aborting start up.", pe);
-		}
+		super(serviceResources);
 	}
 
 	/**
 	 * Initialize quartz jobs and triggers, if they're not loaded into database
 	 * already.
 	 */
-	private void initJobs() throws SchedulerException, ParseException {
-
+	@Override
+	protected void initJobs(Scheduler scheduler) throws Exception {
 		JobKey smsJobKey = new JobKey("SmsJob", "willowServicesJobs");
 
 		if (scheduler.checkExists(smsJobKey)) {
@@ -82,32 +55,5 @@ public class QuartzInitializer implements RegistryShutdownListener {
 				.startNow().withSchedule(CronScheduleBuilder.cronSchedule("0 */2 * * * ?")).build();
 
 		scheduler.scheduleJob(expireJobDetails, expireJobTrigger);
-	}
-
-	public void registryDidShutdown() {
-
-		if (scheduler != null) {
-			try {
-				scheduler.shutdown();
-			} catch (SchedulerException e) {
-				LOGGER.error("Error during scheduler shutdown.", e);
-			}
-		}
-
-		scheduler = null;
-	}
-
-	private static class QuartzJobFactory implements JobFactory {
-
-		private ServiceResources serviceResources;
-
-		private QuartzJobFactory(ServiceResources serviceResources) {
-			this.serviceResources = serviceResources;
-		}
-
-		public Job newJob(TriggerFiredBundle bundle, Scheduler scheduler) throws SchedulerException {
-			Job job = serviceResources.getService(bundle.getJobDetail().getJobClass());
-			return job;
-		}
 	}
 }
