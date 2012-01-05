@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>ish.oncourse.willow</groupId>
-		<version>1.26</version>
+		<version>1.27</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
