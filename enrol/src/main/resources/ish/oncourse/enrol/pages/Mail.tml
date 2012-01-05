@@ -1,0 +1,58 @@
+<html t:type="ui/internal/pagestructure" bodyId="literal:MailingListEntry"
+	bodyClass="literal:internal-page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	
+	<div id="addstudent-block" class="show">
+		<t:zone t:id="addStudentBlock" t:update="show">
+			
+			<t:if test="hasContact">
+				<t:if test="submissionSucceded">
+				<h3>You have been successfully subscribed to the following mailing lists:</h3>
+				
+				<fieldset>
+					<ul>
+						<t:loop t:source="selectedMailingLists" value="currentMailingList">
+							<li><strong>${currentMailingList.name}</strong></li>
+						</t:loop>
+					</ul>
+				</fieldset>
+				
+				<p:else>
+					<t:form zone="addStudentBlock" t:id="detailsForm">
+				
+						<h3>Add me to the following mailing lists:</h3>
+						<div>
+					
+							<fieldset>
+		   						<t:loop t:source="mailingLists" index="listIndex">
+		   							<div>
+		   								<t:label for="listCheckBox" style="width:80%; max-width:none; text-align:left;">
+		   									<t:checkbox t:id="listCheckbox" value="listChecked"/>${currentList.name}
+		   								</t:label>
+		   								<p style="margin-left:5px; margin-bottom:5px;">${currentList.detail}</p>
+		   							</div>
+		   						</t:loop>
+	    					</fieldset>
+	    				
+						</div>
+	
+						<div class="form-controls" xml:space="preserve">
+							<t:submit  t:id="addStudentAction" value="Subscribe" class="btn enrolSubmit" clientId="add-student-enrol"/> <t:submit  t:id="resetAll" value="Reset" class="btn" clientId="reset-student-enrol"/>
+						</div>
+					</t:form>
+				</p:else>
+				</t:if>
+				<p:else>
+					<span t:type="mailingListContactEntry"/>
+				</p:else>
+			</t:if>
+		</t:zone>
+	</div>
+	<script type="text/javascript">
+		Event.observe('addStudentBlock', Tapestry.ZONE_UPDATED_EVENT, function(){
+			initHints("addStudentBlock");
+		});
+	</script>
+
+</html>
