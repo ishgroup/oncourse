@@ -1,26 +1,19 @@
 package ish.oncourse.admin.services.quartz;
 
-import ish.oncourse.admin.jobs.NTISJob;
-
 import java.text.ParseException;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceResources;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
+import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
 import org.quartz.Job;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 
-public class QuartzInitializer {
-	
+public class QuartzInitializer implements RegistryShutdownListener {
+
 	private static final Logger LOGGER = Logger.getLogger(QuartzInitializer.class);
 
 	private Scheduler scheduler;
@@ -53,18 +46,7 @@ public class QuartzInitializer {
 	 * already.
 	 */
 	private void initJobs() throws SchedulerException, ParseException {
-		
-		JobKey ntisJobKey = new JobKey("NtisJob", "willowAdminJobs");
-		
-		if (!scheduler.checkExists(ntisJobKey)) {
-			
-			JobDetail ntisJobDetails = JobBuilder.newJob(NTISJob.class).withIdentity(ntisJobKey).build();
-			
-			CronTrigger ntisJobTrigger = TriggerBuilder.newTrigger().withIdentity("NtisJobTrigger", "willowAdminTriggers").startNow()
-					.withSchedule(CronScheduleBuilder.cronSchedule("0 0 * * 0")).build();
-			
-			scheduler.scheduleJob(ntisJobDetails, ntisJobTrigger);
-		}
+		// TODO: add job definition here
 	}
 
 	public void registryDidShutdown() {
