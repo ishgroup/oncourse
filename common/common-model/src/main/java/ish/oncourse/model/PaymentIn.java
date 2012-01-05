@@ -32,6 +32,11 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
 
 	public static final String PAYMENT_PROCESSED_PARAM = "payment_processed";
+	
+	/**
+	 * Payment expire interval
+	 */
+	public static final int EXPIRE_INTERVAL = 20;
 
 	/**
 	 * Returns the primary key property - id of {@link PaymentIn}.
@@ -331,6 +336,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
+		
+		Date today = new Date();
+		setModified(today);
 
 		if (!getPaymentInLines().isEmpty()) {
 
@@ -386,8 +394,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
 				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
 				
-				Date today = new Date();
 				invoiceToRefund.setModified(today);
+				paymentInLineToRefund.setModified(today);
 				
 				// Fail enrolments on invoiceToRefund
 				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
