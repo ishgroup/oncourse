@@ -8,8 +8,8 @@ import ish.oncourse.services.message.IMessagePersonService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
-import ish.oncourse.webservices.template.WillowMessagingTemplateEngine;
-import ish.oncourse.webservices.template.WillowMessagingTemplateResponder;
+import ish.oncourse.services.template.WillowMessagingTemplateEngine;
+import ish.oncourse.services.template.WillowMessagingTemplateResponder;
 import ish.persistence.CommonPreferenceController;
 
 import java.util.Calendar;

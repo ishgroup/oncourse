@@ -31,7 +31,6 @@ import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.jndi.LookupService;
-import ish.oncourse.services.jobs.PaymentInExpireJob;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.mail.MailService;
@@ -92,6 +91,7 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
+import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;

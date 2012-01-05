@@ -2,20 +2,20 @@ package ish.oncourse.webservices.jobs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import ish.common.types.MessageStatus;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.Pair;
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.message.IMessagePersonService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -43,13 +43,13 @@ public class SMSJobTest extends ServiceTest {
 
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
+		initTest("ish.oncourse.webservices.services", "", ServiceModule.class);
 
 		messagePersonService = getService(IMessagePersonService.class);
 		prefFactory = getService(PreferenceControllerFactory.class);
 		cayenneService = getService(ICayenneService.class);
 
-		InputStream st = SMSJobTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/jobs/smsDataSet.xml");
+		InputStream st = SMSJobTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/jobs/smsDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse");

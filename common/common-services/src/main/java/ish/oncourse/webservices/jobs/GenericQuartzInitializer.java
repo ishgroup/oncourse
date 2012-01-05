@@ -1,11 +1,17 @@
-package ish.oncourse.services.jobs;
+package ish.oncourse.webservices.jobs;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
 import org.quartz.Job;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
@@ -44,9 +50,10 @@ public abstract class GenericQuartzInitializer implements RegistryShutdownListen
 			scheduler.setJobFactory(new QuartzJobFactory(serviceResources));
 			scheduler.getListenerManager().addTriggerListener(new PreventConcurrentRunListener());
 
-			scheduler.start();
-
+			initCommonJobs(scheduler);
 			initJobs(scheduler);
+			
+			scheduler.start();
 
 		} catch (Exception e) {
 			LOGGER.error("Error during scheduler initialization, aborting start up.", e);
@@ -55,7 +62,39 @@ public abstract class GenericQuartzInitializer implements RegistryShutdownListen
 	}
 	
 	/**
-	 * 
+	 * Initializes common quartz jobs.
+	 * @param scheduler
+	 */
+	private void initCommonJobs(Scheduler scheduler) throws Exception {
+		JobKey smsJobKey = new JobKey("SmsJob", "willowServicesJobs");
+
+		if (scheduler.checkExists(smsJobKey)) {
+			scheduler.deleteJob(smsJobKey);
+		}
+
+		JobDetail smsJobDetails = JobBuilder.newJob(SMSJob.class).withIdentity(smsJobKey).build();
+
+		CronTrigger smsJobTrigger = TriggerBuilder.newTrigger().withIdentity("SmsJobTrigger", "willowServicesTriggers").startNow()
+				.withSchedule(CronScheduleBuilder.cronSchedule("0 */3 * * * ?")).build();
+
+		scheduler.scheduleJob(smsJobDetails, smsJobTrigger);
+
+		JobKey expireJobKey = new JobKey("PaymentInExpireJob", "willowServicesJobs");
+
+		if (scheduler.checkExists(expireJobKey)) {
+			scheduler.deleteJob(expireJobKey);
+		}
+
+		JobDetail expireJobDetails = JobBuilder.newJob(PaymentInExpireJob.class).withIdentity(expireJobKey).build();
+
+		CronTrigger expireJobTrigger = TriggerBuilder.newTrigger().withIdentity("PaymentInExpireTrigger", "willowServicesTriggers")
+				.startNow().withSchedule(CronScheduleBuilder.cronSchedule("0 */2 * * * ?")).build();
+
+		scheduler.scheduleJob(expireJobDetails, expireJobTrigger);
+	}
+	
+	/**
+	 * Stops scheduler during DI containter shutdown.
 	 */
 	public void registryDidShutdown() {
 

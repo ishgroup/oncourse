@@ -1,4 +1,4 @@
-package ish.oncourse.services.jobs;
+package ish.oncourse.webservices.jobs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,6 +10,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 
 import java.io.InputStream;
 import java.sql.Connection;

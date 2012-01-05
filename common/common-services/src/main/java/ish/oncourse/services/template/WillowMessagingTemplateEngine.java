@@ -5,7 +5,7 @@
 // Created by Lachlan Deck on 10/03/06.
 // Copyright (c) 2006 ISH Group Pty Ltd. All rights reserved.
 //
-package ish.oncourse.webservices.template;
+package ish.oncourse.services.template;
 
 import java.util.Collections;
 import java.util.HashMap;

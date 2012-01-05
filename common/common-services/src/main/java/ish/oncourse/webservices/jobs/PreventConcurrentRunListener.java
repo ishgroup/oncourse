@@ -1,4 +1,4 @@
-package ish.oncourse.services.jobs;
+package ish.oncourse.webservices.jobs;
 
 import java.util.List;
 
