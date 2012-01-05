@@ -38,7 +38,7 @@ public class TaggableListener {
 			@SuppressWarnings("unchecked")
 			Class<? extends Queueable> entityClass = (Class<? extends Queueable>) objectContext.getEntityResolver()
 					.getObjEntity(taggable.getEntityIdentifier()).getJavaClass();
-			Expression expr = ExpressionFactory.matchDbExp("willowId", taggable.getEntityWillowId()).andExp(
+			Expression expr = ExpressionFactory.matchDbExp("id", taggable.getEntityWillowId()).andExp(
 					ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
 			SelectQuery q = new SelectQuery(entityClass, expr);
 			Queueable object = (Queueable) Cayenne.objectForQuery(objectContext, q);
