@@ -1,12 +1,12 @@
 package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.Mail;
-import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 
 import java.util.List;
@@ -30,6 +30,8 @@ import org.apache.tapestry5.services.Request;
 
 public class MailingListContactEntry {
 	
+	private static final String HIDE = "Hide";
+	
 	/**
 	 * ish services
 	 */
@@ -50,6 +52,9 @@ public class MailingListContactEntry {
 
 	@Inject
 	private Messages messages;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
 	/**
 	 * components
@@ -192,6 +197,12 @@ public class MailingListContactEntry {
 				mail.setContact(contact);
 				return mail;
 			}
+			
+			if (!isAdditionalInfoNeeded()) {
+				contact.getObjectContext().commitChanges();
+				mail.setContact(contact);
+				return mail;
+			}
 			hasContact = true;
 		}
 		return addStudentBlock.getBody();
@@ -213,6 +224,19 @@ public class MailingListContactEntry {
 		ValidationTracker defaultTracker = shortDetailsForm.getDefaultTracker();
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages
 				.get("validateInput");
+	}
+	
+	private boolean isAdditionalInfoNeeded() {
+		
+		return !(HIDE.equals(preferenceController.getRequireContactAddressMailingList()) 
+				&& HIDE.equals(preferenceController.getRequireContactSuburbMailingList())
+				&& HIDE.equals(preferenceController.getRequireContactStateMailingList())
+				&& HIDE.equals(preferenceController.getRequireContactPostcodeMailingList())
+				&& HIDE.equals(preferenceController.getRequireContactHomePhoneMailingList())
+				&& HIDE.equals(preferenceController.getRequireContactBusinessPhoneMailingList())
+				&& HIDE.equals(preferenceController.getRequireContactFaxMailingList())
+				&& HIDE.equals(preferenceController.getRequireContactMobileMailingList())
+				&& HIDE.equals(preferenceController.getRequireContactDateOfBirthMailingList()));
 	}
 
 }
