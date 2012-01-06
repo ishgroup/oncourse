@@ -175,4 +175,8 @@ public class Mail {
 		return this.contact != null;
 	}
 	
+	public boolean getHasMailingLists() {
+		return !this.mailingLists.isEmpty();
+	}
+	
 }

@@ -44,7 +44,13 @@
 				</p:else>
 				</t:if>
 				<p:else>
-					<span t:type="mailingListContactEntry"/>
+					<t:if test="hasMailingLists">
+						<span t:type="mailingListContactEntry"/>
+						
+						<p:else>
+							<h3>Sorry, there are no mailing lists available for online subscription now.</h3>
+						</p:else>
+					</t:if>
 				</p:else>
 			</t:if>
 		</t:zone>
