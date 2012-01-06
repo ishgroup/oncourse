@@ -98,6 +98,7 @@ public class PaymentInExpireJob implements Job {
 	 * @param date
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private List<PaymentIn> getNotCompletedPaymentsFromDate(ObjectContext newContext, Date date) {
 		// Not completed means older than EXPIRE_INTERVAL and with statuses
 		// CARD_DETAILS_REQUIRED and IN_TRANSACTION, regardless of sessionId.
@@ -121,6 +122,7 @@ public class PaymentInExpireJob implements Job {
 	 * @param date
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private Set<PaymentIn> getOnceFailedPaymentsFromDate(ObjectContext newContext, Date date) {
 		
 		Set<PaymentIn> failedOncePayments = new HashSet<PaymentIn>();
