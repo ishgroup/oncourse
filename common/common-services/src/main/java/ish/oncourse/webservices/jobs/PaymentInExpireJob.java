@@ -27,6 +27,13 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+/**
+ * Quartz job to abandon (means fail enrolments and creating refunds) not completed paymentIn. 
+ * Not completed paymentIn can be two types, which were in state CARD_DETAILS_REQUIRED,IN_TRANSACTION, NEW for more then PaymentIn.EXPIRE_INTERVAL minutes
+ * or PamentIn with status FAILED which has linked enrolements with status IN_TRANSACTION  older then PaymentIn.EXPIRE_INTERVAL.
+ * @author anton
+ *
+ */
 @DisallowConcurrentExecution
 public class PaymentInExpireJob implements Job {
 
@@ -39,6 +46,9 @@ public class PaymentInExpireJob implements Job {
 		this.cayenneService = cayenneService;
 	}
 
+	/**
+	 *  Main job method, fetches expired paymentIn and abandons them.
+	 */
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 
@@ -82,6 +92,12 @@ public class PaymentInExpireJob implements Job {
 		}
 	}
 
+	/**
+	 * Fetch payments which were not completed (not success nor failed, expired they were in not completed state for more than PaymentIn.EXPIRE_INTERVAL) 
+	 * @param newContext
+	 * @param date
+	 * @return
+	 */
 	private List<PaymentIn> getNotCompletedPaymentsFromDate(ObjectContext newContext, Date date) {
 		// Not completed means older than EXPIRE_INTERVAL and with statuses
 		// CARD_DETAILS_REQUIRED and IN_TRANSACTION, regardless of sessionId.
