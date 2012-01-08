@@ -1,5 +1,10 @@
 package ish.oncourse.model;
 
+import java.util.List;
+
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+
 import ish.oncourse.model.auto._QueuedTransaction;
 
 public class QueuedTransaction extends _QueuedTransaction {
@@ -20,5 +25,20 @@ public class QueuedTransaction extends _QueuedTransaction {
 		}
 
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see ish.oncourse.model.auto._QueuedTransaction#getQueuedRecords()
+	 */
+	@Override
+	public List<QueuedRecord> getQueuedRecords() {
+		if (getObjectId().isTemporary()) {
+			return super.getQueuedRecords();
+		}
+		else {
+			SelectQuery q = new SelectQuery(QueuedRecord.class);
+			q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.QUEUED_TRANSACTION_PROPERTY, this));
+			return getObjectContext().performQuery(q);
+		}
 	}
 }

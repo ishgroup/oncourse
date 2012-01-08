@@ -9,11 +9,20 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
+import org.apache.log4j.Logger;
 
 public class QueuedRecord extends _QueuedRecord {
 
+	/**
+	 * Logger
+	 */
+	private static final Logger logger = Logger.getLogger(QueuedRecord.class);
+
+	/**
+	 * Serial UID.
+	 */
 	private static final long serialVersionUID = 5511189858346011489L;
-	
+
 	/**
 	 * Maximum retry number.
 	 */
@@ -28,7 +37,7 @@ public class QueuedRecord extends _QueuedRecord {
 		setEntityIdentifier(entityIdentifier);
 		setEntityWillowId(entityWillowId);
 	}
-	
+
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
@@ -69,5 +78,19 @@ public class QueuedRecord extends _QueuedRecord {
 	public void setNumberOfAttempts(Integer numberOfAttempts) {
 		super.setNumberOfAttempts(numberOfAttempts);
 		setLastAttemptTimestamp(new Date());
+	}
+
+	/*
+	 * @see
+	 * ish.oncourse.model.auto._QueuedRecord#setErrorMessage(java.lang.String)
+	 */
+	@Override
+	public void setErrorMessage(String errorMessage) {
+		super.setErrorMessage(errorMessage);
+
+		if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(getNumberOfAttempts())) {
+			logger.error(String.format("Max number of retries has been reached for QueuedRecord entityIdentifier:%s and willowId:%s",
+					getEntityIdentifier(), getEntityWillowId()));
+		}
 	}
 }

@@ -146,7 +146,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 					sortedDeduppers.add(entry.getValue());
 				}
 				Collections.sort(sortedDeduppers);
-				
+
 				Map<String, TransactionGroup> groupMap = new LinkedHashMap<String, TransactionGroup>();
 
 				for (DFADedupper deduper : sortedDeduppers) {
@@ -174,7 +174,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 					ctx.commitChanges();
 
 					TransactionGroup group = null;
-					
+
 					logger.debug(String.format("Deduper spans %s transactions.", deduper.getTransactionKeys().size()));
 
 					for (String transactionKey : deduper.getTransactionKeys()) {
@@ -213,7 +213,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 			}
 
 			ReplicationRecords result = new ReplicationRecords();
-			result.getGroups().addAll(groupValidator.validateAndReturnFixedGroups(resultGroups));
+			List<TransactionGroup> validatedGroups = groupValidator.validateAndReturnFixedGroups(resultGroups);
+			result.getGroups().addAll(validatedGroups);
 
 			return result;
 
@@ -253,37 +254,28 @@ public class ReplicationServiceImpl implements IReplicationService {
 				for (QueuedRecord queuedRecord : list) {
 					try {
 
-						if (record.getStatus() == Status.SUCCESS && record.getStub().getAngelId() != null) {
-
-							try {
-								@SuppressWarnings("unchecked")
-								Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
-										.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
-
-								if (queuedRecord.getAction() != QueuedRecordAction.DELETE) {
+						if (record.getStatus() == Status.SUCCESS) {
+							ctx.deleteObject(queuedRecord);
+							
+							if (queuedRecord.getAction() != QueuedRecordAction.DELETE) {
+								try {
+									@SuppressWarnings("unchecked")
+									Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
+											.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
 									Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
 									object.setAngelId(record.getStub().getAngelId());
+									ctx.commitChanges();
+								} catch (CayenneRuntimeException ce) {
+									ctx.rollbackChanges();
+									String message = String.format("Duplicate angelId:%s for entity:%s with willowId:%s", record.getStub()
+											.getAngelId(), record.getStub().getEntityIdentifier(), record.getStub().getWillowId()); 
+									logger.error(message, ce);
+									queuedRecord.setErrorMessage(message);									
 								}
-
-								ctx.commitChanges();
-
-							} catch (CayenneRuntimeException ce) {
-								logger.error(String.format("Duplicate angelId:%s for entity:%s with willowId:%s", record.getStub()
-										.getAngelId(), record.getStub().getEntityIdentifier(), record.getStub().getWillowId()), ce);
-								ctx.rollbackChanges();
 							}
-
-							ctx.deleteObject(queuedRecord);
-
+							
 						} else {
 							queuedRecord.setErrorMessage(record.getMessage());
-
-							if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(queuedRecord.getNumberOfAttempts())) {
-								logger.error(String
-										.format("Max number of retries has been reached for QueuedRecord entityIdentifier:%s angelId:%s willowId:%s",
-												record.getStub().getEntityIdentifier(), record.getStub().getAngelId(), record.getStub()
-														.getWillowId()));
-							}
 						}
 
 						ctx.commitChanges();

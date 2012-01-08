@@ -8,6 +8,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
+import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class TransactionGroupValidatorImpl implements ITransactionGroupValidator {
-	
+
 	/**
 	 * Logger
 	 */
@@ -33,13 +34,11 @@ public class TransactionGroupValidatorImpl implements ITransactionGroupValidator
 	 */
 	private final ITransactionStubBuilder transactionBuilder;
 
-	
 	/**
 	 * Cayenne service.
 	 */
 	private final ICayenneService cayenneService;
-	
-	
+
 	@Inject
 	public TransactionGroupValidatorImpl(ITransactionStubBuilder transactionBuilder, ICayenneService cayenneService) {
 		super();
@@ -61,6 +60,10 @@ public class TransactionGroupValidatorImpl implements ITransactionGroupValidator
 					existingStubs.addAll(group.getAttendanceOrBinaryDataOrBinaryInfo());
 
 					for (ReplicationStub stub : new ArrayList<ReplicationStub>(group.getAttendanceOrBinaryDataOrBinaryInfo())) {
+
+						if (stub instanceof DeletedStub) {
+							continue;
+						}
 
 						Invoice invoice = null;
 
@@ -98,11 +101,11 @@ public class TransactionGroupValidatorImpl implements ITransactionGroupValidator
 							}
 						}
 					}
-					
+
 					TransactionGroup newGroup = new TransactionGroup();
 					newGroup.getAttendanceOrBinaryDataOrBinaryInfo().addAll(existingStubs);
 					list.add(newGroup);
-					
+
 				} catch (Exception se) {
 					logger.error("Unable to validate transaction group. This group will be skipped.", se);
 				}

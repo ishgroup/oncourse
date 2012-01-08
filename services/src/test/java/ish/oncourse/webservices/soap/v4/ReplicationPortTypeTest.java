@@ -3,9 +3,13 @@ package ish.oncourse.webservices.soap.v4;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
 import ish.oncourse.webservices.v4.stubs.replication.CourseClassStub;
+import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
@@ -22,6 +26,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -68,9 +74,9 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 		List<ReplicationStub> stubs = groups.get(0).getAttendanceOrBinaryDataOrBinaryInfo();
 
-		assertTrue("Expecting only two stubs.", stubs.size() == 2);
+		assertTrue("Expecting only three stubs.", stubs.size() == 3);
 
-		boolean hasEnrolment = false, hasCourseClass = false;
+		boolean hasEnrolment = false, hasCourseClass = false, hasDeleteStub = false;
 
 		for (ReplicationStub st : stubs) {
 			if (st instanceof EnrolmentStub) {
@@ -79,10 +85,14 @@ public class ReplicationPortTypeTest extends ServiceTest {
 			if (st instanceof CourseClassStub) {
 				hasCourseClass = true;
 			}
+			if (st instanceof DeletedStub) {
+				hasDeleteStub = true;
+			}
 		}
 
 		assertTrue("Expecting enrolment stub.", hasEnrolment);
 		assertTrue("Expecting courseClass stub.", hasCourseClass);
+		assertTrue("Expecting DeletedStub", hasDeleteStub);
 	}
 
 	@Test
@@ -163,7 +173,15 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
-
+		
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		ObjectContext objectContext = cayenneService.newContext();
+		CourseClass courseClass = Cayenne.objectForPK(objectContext, CourseClass.class, 1482);
+		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 1);
+		
+		assertNotNull("Expecting angelId not null for courseClass", courseClass.getAngelId());
+		assertNotNull("Expecting angelId not null for enrolment", enrolment.getAngelId());
+		
 		assertEquals("Check that no queueable records exist for confirmed objects", actualData.getRowCount(), 0);
 	}
 }
