@@ -125,35 +125,11 @@ public class Mail {
 		}
 		else {
 			if (!selectedMailingLists.isEmpty()) {
-				ObjectContext context = cayenneService.newContext();
 				
-				Date date = new Date();
-				College col = webSiteService.getCurrentCollege();
-				College college = (College) context.localObject(col.getObjectId(), null);
-				
-				Contact c = (Contact) Cayenne.objectForPK(context, Contact.class, contact.getId());
-				
-				if (college != null) {
-					for (Tag list : selectedMailingLists) {
-						Tag mailingList = (Tag) context.localObject(list.getObjectId(), null);
-						
-						Taggable taggable = context.newObject(Taggable.class);
-						taggable.setCollege(college);
-						taggable.setCreated(date);
-						taggable.setModified(date);
-						taggable.setEntityIdentifier(Contact.class.getSimpleName());
-						taggable.setEntityWillowId(c.getId());
-						taggable.setEntityAngelId(c.getAngelId());
-						
-						TaggableTag taggableTag = context.newObject(TaggableTag.class);
-						taggableTag.setCollege(college);
-						taggableTag.setTag(mailingList);
-						taggable.addToTaggableTags(taggableTag);
-					}
-					
-					context.commitChanges();
-					this.submissionSucceded = true;
+				for (Tag list : selectedMailingLists) {
+					tagService.subscribeContactToMailingList(contact, list);
 				}
+				this.submissionSucceded = true;
 			}
 		}
 		return addStudentBlock.getBody();

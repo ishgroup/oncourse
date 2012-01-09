@@ -93,6 +93,14 @@ public interface ITagService {
 	List<Tag> getMailingListsContactSubscribed(Contact currentUser);
 	
 	/**
+	 * Subscribe specified contact to specified mailing list.
+	 * 
+	 * @param contact
+	 * @param mailingList
+	 */
+	void subscribeContactToMailingList(Contact contact, Tag mailingList);
+	
+	/**
 	 * Unsubscribe specified contact from specified mailing list.
 	 * 
 	 * @param contact

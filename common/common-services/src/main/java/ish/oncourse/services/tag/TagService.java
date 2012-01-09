@@ -244,6 +244,31 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		return tags;
 	}
 	
+	public void subscribeContactToMailingList(Contact contact, Tag mailingList) {
+		ObjectContext context = getCayenneService().newContext();
+		
+		Date date = new Date();
+		
+		College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
+		
+		Tag list = (Tag) context.localObject(mailingList.getObjectId(), null);
+		
+		Taggable taggable = context.newObject(Taggable.class);
+		taggable.setCollege(college);
+		taggable.setCreated(date);
+		taggable.setModified(date);
+		taggable.setEntityIdentifier(Contact.class.getSimpleName());
+		taggable.setEntityWillowId(contact.getId());
+		taggable.setEntityAngelId(contact.getAngelId());
+		
+		TaggableTag taggableTag = context.newObject(TaggableTag.class);
+		taggableTag.setCollege(college);
+		taggableTag.setTag(list);
+		taggable.addToTaggableTags(taggableTag);
+		
+		context.commitChanges();
+	}
+	
 	public void unsubscribeContactFromMailingList(Contact contact, Tag mailingList) {
 		ObjectContext context = getCayenneService().newContext();
 		College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
