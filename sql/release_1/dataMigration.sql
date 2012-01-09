@@ -191,17 +191,6 @@ INSERT INTO %DESTINATIONDB%_college.InvoiceLine_Discount (id, invoiceLineId, dis
 	JOIN %DESTINATIONDB%_college.Discount as d ON d.id=e.discountId
 	WHERE e.collegeId = @collegeId AND (e.isDeleted=0 OR e.isDeleted IS NULL) AND e.discountId is not null;
 
-UPDATE %DESTINATIONDB%_college.Invoice i
-   JOIN %DESTINATIONDB%_college.InvoiceLine il ON i.id = il.invoiceId
-   JOIN %DESTINATIONDB%_college.Enrolment e ON e.id = il.enrolmentId
-SET
-  i.status = CASE
-      WHEN (e.status = "Failed") THEN "Failed"
-      WHEN (e.status = "Success") THEN "Success"
-      WHEN (e.status = "Cancelled") THEN "Success"
-  END
-WHERE i.collegeId = @collegeid;
-
 INSERT INTO %DESTINATIONDB%_college.LicenseFee (id, college_id, key_code, fee, valid_until, free_transactions, plan_name, billingMonth)
 	SELECT id, college_id, `key`, fee, valid_until, free_transactions, plan_name, billingMonth
 	FROM %SOURCEDB%_college.LicenseFee WHERE college_id = @collegeId;
