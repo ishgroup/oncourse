@@ -3,7 +3,11 @@ package ish.oncourse.services.tag;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+
+import ish.common.types.NodeSpecialType;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.Student;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -110,6 +114,7 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 	public void init() throws Exception {
 		tagService = new TagService(cayenneService, webSiteService);
 		when(cayenneService.sharedContext()).thenReturn(context);
+		when(cayenneService.newContext()).thenReturn(context);
 		when(webSiteService.getCurrentCollege()).thenReturn(college);
 	}
 
@@ -170,4 +175,42 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 		tag = tagService.getTagByFullPath(TAG_NAME_2);
 		assertNull(tag);
 	}
+	
+	@Test
+	public void testMailingListSubscribeUnsubscribe() {
+		
+		final Student student = context.newObject(Student.class);
+		student.setCollege(college);
+		
+		final Contact contact = context.newObject(Contact.class);
+		contact.setCollege(college);
+		contact.setStudent(student);
+		
+		final Tag mailingLists = context.newObject(Tag.class);
+		mailingLists.setCollege(college);
+		mailingLists.setName("Mailing Lists");
+		mailingLists.setSpecialType(NodeSpecialType.MAILING_LISTS);
+		mailingLists.setIsTagGroup(true);
+		mailingLists.setIsWebVisible(true);
+		
+		final Tag list = context.newObject(Tag.class);
+		list.setCollege(college);
+		list.setName("List1");
+		list.setParent(mailingLists);
+		list.setIsWebVisible(true);
+		
+		context.commitChanges();
+		
+		assertTrue(tagService.getMailingListsContactSubscribed(contact).isEmpty());
+		
+		tagService.subscribeContactToMailingList(contact, list);
+		
+		assertFalse(tagService.getMailingListsContactSubscribed(contact).isEmpty());
+		assertEquals("List1", tagService.getMailingListsContactSubscribed(contact).get(0).getName());
+		
+		tagService.unsubscribeContactFromMailingList(contact, list);
+		
+		assertTrue(tagService.getMailingListsContactSubscribed(contact).isEmpty());		
+	}
+
 }
