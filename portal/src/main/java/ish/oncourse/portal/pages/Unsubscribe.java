@@ -108,24 +108,7 @@ public class Unsubscribe {
 	@OnEvent(component="unsubscribeForm", value="success")
 	Object submitted() {
 		if (unsubscribe) {
-			ObjectContext context = cayenneService.newContext();
-			College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
-			
-			Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
-					.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
-					.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, college))
-					.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
-			SelectQuery query = new SelectQuery(Taggable.class, qual);
-			List<Taggable> taggables = context.performQuery(query);
-			
-			for (Taggable t : new ArrayList<Taggable>(taggables)) {
-				for (final TaggableTag tt : new ArrayList<TaggableTag>(t.getTaggableTags())) {
-					context.deleteObject(tt);
-					context.deleteObject(t);
-				}
-			}
-			
-			context.commitChanges();
+			tagService.unsubscribeContactFromMailingList(contact, mailingList);
 			postUnsubscribe = true;
 		}
 		return null;

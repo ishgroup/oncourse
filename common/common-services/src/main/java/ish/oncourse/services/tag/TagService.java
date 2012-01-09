@@ -14,11 +14,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -240,5 +242,26 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		}
 
 		return tags;
+	}
+	
+	public void unsubscribeContactFromMailingList(Contact contact, Tag mailingList) {
+		ObjectContext context = getCayenneService().newContext();
+		College college = (College) context.localObject(contact.getCollege().getObjectId(), null);
+		
+		Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
+				.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
+				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, college))
+				.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
+		SelectQuery query = new SelectQuery(Taggable.class, qual);
+		List<Taggable> taggables = context.performQuery(query);
+		
+		for (Taggable t : new ArrayList<Taggable>(taggables)) {
+			for (final TaggableTag tt : new ArrayList<TaggableTag>(t.getTaggableTags())) {
+				context.deleteObject(tt);
+				context.deleteObject(t);
+			}
+		}
+		
+		context.commitChanges();
 	}
 }
