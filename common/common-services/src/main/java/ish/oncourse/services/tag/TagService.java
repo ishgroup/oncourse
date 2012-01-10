@@ -202,7 +202,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		List<Tag> tags = Collections.emptyList();
 
 		// MAILING_LISTS(3, "Mailing lists") - see NodeSpecialType
-		Expression qual = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, NodeSpecialType.MAILING_LISTS));
+		Expression qual = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, getWebSiteService().getCurrentCollege()).andExp(
+				ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, NodeSpecialType.MAILING_LISTS));
 		qual = qual.andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, null));
 		SelectQuery q = new SelectQuery(Tag.class, qual);
 
