@@ -68,10 +68,10 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		Connection connection = null;
 		try {
 			connection = getDataSource("jdbc/oncourse").getConnection();
-			PreparedStatement prepStat = connection.prepareStatement("update Enrolment set modified=?");
+			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set modified=?");
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
-			assertEquals("Expected update on two enrolments.", 2, affected);
+			assertEquals("Expected update on 1 paymentIn.", 1, affected);
 			
 			prepStat.close();
 			

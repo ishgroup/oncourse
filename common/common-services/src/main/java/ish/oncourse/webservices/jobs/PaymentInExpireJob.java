@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.jobs;
 
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -9,10 +10,10 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.persistence.ICayenneService;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +60,7 @@ public class PaymentInExpireJob implements Job {
 			cal.add(Calendar.MINUTE, -PaymentIn.EXPIRE_INTERVAL);
 
 			ObjectContext newContext = cayenneService.newContext();
-			List<PaymentIn> expiredPayments = new ArrayList<PaymentIn>();
+			Set<PaymentIn> expiredPayments = new LinkedHashSet<PaymentIn>();
 
 			List<PaymentIn> notCompletedList = getNotCompletedPaymentsFromDate(newContext, cal.getTime());
 			expiredPayments.addAll(notCompletedList);
@@ -127,20 +128,24 @@ public class PaymentInExpireJob implements Job {
 		
 		Set<PaymentIn> failedOncePayments = new HashSet<PaymentIn>();
 
-		Expression notCompletedExpr = ExpressionFactory.lessExp(Enrolment.MODIFIED_PROPERTY, date);
-		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION));
-
-		SelectQuery notCompletedQuery = new SelectQuery(Enrolment.class, notCompletedExpr);
-		List<Enrolment> notCompletedEnrolments = newContext.performQuery(notCompletedQuery);
-
-		for (Enrolment enrl : notCompletedEnrolments) {
-			InvoiceLine invLine = enrl.getInvoiceLine();
-			if (invLine != null) {
-				Invoice invoice = invLine.getInvoice();
-				for (PaymentInLine line : invoice.getPaymentInLines()) {
-					PaymentIn paymentIn = line.getPaymentIn();
-					if (PaymentStatus.FAILED == paymentIn.getStatus()) {
-						failedOncePayments.add(paymentIn);
+		Expression notCompletedExpr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
+		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
+		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.FAILED));
+		
+		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, notCompletedExpr);
+		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery); 
+		
+		outer:
+		for (PaymentIn p : notCompletedPayments) {
+			for (PaymentInLine line : p.getPaymentInLines()) {
+				Invoice invoice = line.getInvoice();
+				if (invoice != null) {
+					for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+						Enrolment enrolment = invoiceLine.getEnrolment();
+						if (enrolment != null && EnrolmentStatus.IN_TRANSACTION == enrolment.getStatus()) {
+							failedOncePayments.add(p);
+							continue outer;
+						}
 					}
 				}
 			}
