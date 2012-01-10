@@ -26,7 +26,6 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.log4j.Logger;
 
 public class PaymentIn extends _PaymentIn implements Queueable {
-
 	private static final long serialVersionUID = -2372029086420124878L;
 
 	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
@@ -610,7 +609,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		if (PaymentType.CREDIT_CARD.equals(getType())) {
 			boolean approved = false;
 			for (final PaymentTransaction transaction : getPaymentTransactions()) {
-				if ("APPROVED".equalsIgnoreCase(transaction.getResponse())) {
+				if (PaymentTransaction.APPROVED_RESPONSE.equalsIgnoreCase(transaction.getResponse())) {
 					approved = true;
 					break;
 				}
@@ -642,7 +641,11 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	}
 
 	@Override
-	public void setStatus(PaymentStatus status) {
+	public void setStatus(final PaymentStatus status) {
+		if (getStatus() != null && PaymentStatus.STATUSES_FINAL.contains(getStatus()) && !getStatus().equals(status)) {
+			//if payment already in this states there is no reason to change it
+			throw new IllegalArgumentException("Can not change payment status from" + getStatus() + " to " + status);
+		}
 		super.setStatus(status);
 		Date now = new Date();
 		for (PaymentInLine line : getPaymentInLines()) {

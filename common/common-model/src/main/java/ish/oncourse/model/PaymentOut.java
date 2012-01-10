@@ -81,4 +81,18 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 		List<PaymentOutTransaction> activeTransactions = finalisedExpr.filterObjects(transactions);
 		return (activeTransactions.isEmpty()) ? null : activeTransactions.get(0);
 	}
+
+	/* (non-Javadoc)
+	 * @see ish.oncourse.model.auto._PaymentOut#setStatus(ish.common.types.PaymentStatus)
+	 */
+	@Override
+	public void setStatus(final PaymentStatus status) {
+		if (getStatus() != null && PaymentStatus.STATUSES_FINAL.contains(getStatus()) && !getStatus().equals(status)) {
+			// if payment already in this states there is no reason to change it
+			throw new IllegalArgumentException("Can not change payment status from" + getStatus() + " to " + status);
+		}
+		super.setStatus(status);
+	}
+	
+	
 }
