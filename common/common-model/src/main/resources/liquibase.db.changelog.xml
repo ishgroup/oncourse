@@ -613,6 +613,13 @@
 		<dropColumn tableName="Invoice" columnName="status"/>
 	</changeSet>
 	
+	<changeSet id="45" author="anton" context="production" runOnChange="true">
+		<update tableName="Preference">
+			<column name="value_string" value="/terms-conditions?wrap=false"/>
+			<where>name='feature.enrolmentDisclosure' and collegeId=3093</where>
+		</update>
+	</changeSet>
+	
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
 	</changeSet-->
