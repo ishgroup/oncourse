@@ -663,6 +663,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * @return
 	 */
 	public boolean isZeroPayment() {
-		return BigDecimal.ZERO.equals(getAmount());
+		Money amount = new Money(getAmount());
+		return amount.isZero();
 	}
 }

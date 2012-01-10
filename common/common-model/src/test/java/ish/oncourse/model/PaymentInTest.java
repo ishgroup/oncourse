@@ -49,6 +49,23 @@ public class PaymentInTest {
 
 		context.commitChanges();
 	}
+	
+	@Test
+	public void testIsZeroAmount() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		BigDecimal amount = new BigDecimal(224.34);
+		paymentIn.setAmount(amount);
+		assertTrue("PaymentIn is not zero payment.", !paymentIn.isZeroPayment());
+		amount = new BigDecimal(-300);
+		paymentIn.setAmount(amount);
+		assertTrue("PaymentIn is not zero payment.", !paymentIn.isZeroPayment());
+		amount = new BigDecimal(0);
+		paymentIn.setAmount(amount);
+		assertTrue("PaymentIn is zero payment with integer argument.", paymentIn.isZeroPayment());
+		amount = new BigDecimal("0.00");
+		paymentIn.setAmount(amount);
+		assertTrue("PaymentIn is zero payment with string argument.", paymentIn.isZeroPayment());
+	}
 
 	@Test
 	public void testAbandonPayment() throws Exception {
