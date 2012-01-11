@@ -46,6 +46,10 @@ public class Mail {
 	@Persist
 	private boolean submissionSucceded;
 	
+	@Property
+	@Persist
+	private boolean showAddContact;
+	
 	@InjectComponent
 	@Property
 	private Zone addStudentBlock;
@@ -70,34 +74,41 @@ public class Mail {
 	private List<Tag> selectedMailingLists;
 	
 	@SetupRender
-	void setupRender() {
+	Object setupRender() {
 		this.mailingLists = tagService.getMailingLists();
-		this.selectedMailingLists = new ArrayList<Tag>();
+		if (this.selectedMailingLists == null) {
+			this.selectedMailingLists = new ArrayList<Tag>();
+		}
 		
-		if (contact != null) {
-			for (Tag mailingList : tagService.getMailingListsContactSubscribed(contact)) {
-				this.mailingLists.remove(mailingList);
-			}
+		if (getHasContact() && !selectedMailingLists.isEmpty()) {
+			return submit();
 		}
 
 		detailsForm.clearErrors();
+		
+		return null;
 	}
 	
 	@AfterRender
 	void afterRender() {
-		submissionSucceded = false;
+		if (submissionSucceded) {
+			selectedMailingLists.clear();
+			this.contact = null;
+			this.showAddContact = false;
+			this.submissionSucceded = false;
+		}
 	}
 	
 	public boolean getListChecked() {
-		if (this.contact != null) {
-			return tagService.getMailingListsContactSubscribed(contact).contains(currentMailingList);
-		}
-		return false;
+		return this.selectedMailingLists.contains(mailingLists.get(listIndex));
 	}
 	
 	public void setListChecked(boolean checked) {
 		if (checked) {
 			this.selectedMailingLists.add(mailingLists.get(listIndex));
+		}
+		else {
+			this.selectedMailingLists.remove(mailingLists.get(listIndex));
 		}
 	}
 	
@@ -124,12 +135,21 @@ public class Mail {
 			this.selectedMailingLists.clear();
 		}
 		else {
-			if (!selectedMailingLists.isEmpty()) {
+			if (getHasContact()) {
+				if (!selectedMailingLists.isEmpty()) {
 				
-				for (Tag list : selectedMailingLists) {
-					tagService.subscribeContactToMailingList(contact, list);
+					List<Tag> subscribedLists = tagService.getMailingListsContactSubscribed(contact);
+					
+					for (Tag list : selectedMailingLists) {
+						if (!subscribedLists.contains(list)) {
+							tagService.subscribeContactToMailingList(contact, list);
+						}
+					}
+					this.submissionSucceded = true;
 				}
-				this.submissionSucceded = true;
+			}
+			else {
+				this.showAddContact = true;
 			}
 		}
 		return addStudentBlock.getBody();
@@ -145,6 +165,11 @@ public class Mail {
 	
 	public void setContact(Contact contact) {
 		this.contact = contact;
+	}
+	
+	public void resetList() {
+		this.showAddContact = false;
+		this.selectedMailingLists.clear();
 	}
 	
 	public boolean getHasContact() {

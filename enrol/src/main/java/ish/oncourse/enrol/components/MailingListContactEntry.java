@@ -18,6 +18,7 @@ import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -109,6 +110,9 @@ public class MailingListContactEntry {
 
 	@Property
 	private String emailErrorMessage;
+	
+	@Parameter
+	private Zone parentZone;
 
 	@SetupRender
 	void beforeRender() {
@@ -181,6 +185,8 @@ public class MailingListContactEntry {
 			contact.setGivenName(null);
 			contact.setFamilyName(null);
 			contact.setEmailAddress(null);
+			mail.resetList();
+			return parentZone.getBody();
 		} else {
 			Contact studentContact = studentService.getStudentContact(contact.getGivenName(), contact.getFamilyName(),
 					contact.getEmailAddress());
