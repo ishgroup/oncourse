@@ -3,6 +3,7 @@ package ish.oncourse.webservices.jobs;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
@@ -110,14 +111,23 @@ public class PaymentInExpireJob implements Job {
 		// Not completed means older than EXPIRE_INTERVAL and with statuses
 		// CARD_DETAILS_REQUIRED and IN_TRANSACTION, regardless of sessionId.
 		Expression expr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
+		expr = expr.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
 		expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.CARD_DETAILS_REQUIRED,
 				PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW));
+		
 
 		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, expr);
 		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);
 		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.INVOICE_PROPERTY);
 
-		return newContext.performQuery(notCompletedQuery);
+		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery);
+		logger.info(String.format("<getNotCompletedPaymentsFromDate> the number of expired PaymentIn:%s", notCompletedPayments.size()));
+		
+		for (PaymentIn p : notCompletedPayments) {
+			logger.info(String.format("<getNotCompletedPaymentsFromDate> found expired PaymentIn id:%s status:%s type:%s", p.getId(), p.getStatus(), p.getType()));
+		}
+		
+		return notCompletedPayments;
 	}
 
 	/**
@@ -137,6 +147,7 @@ public class PaymentInExpireJob implements Job {
 
 		Expression notCompletedExpr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
 		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
+		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
 		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.FAILED, PaymentStatus.FAILED_CARD_DECLINED));
 		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "."
 				+ PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_LINES_PROPERTY + "." + InvoiceLine.ENROLMENT_PROPERTY + "."
@@ -145,7 +156,13 @@ public class PaymentInExpireJob implements Job {
 		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, notCompletedExpr);
 		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery);
 		
-		failedOncePayments.addAll(notCompletedPayments);
+		logger.info(String.format("<getOnceFailedPaymentsFromDate> the number of expired PaymentIn:%s", notCompletedPayments.size()));
+		
+		for (PaymentIn p : notCompletedPayments) {
+			logger.info(String.format("<getOnceFailedPaymentsFromDate> found expired PaymentIn id:%s status:%s type:%s", p.getId(), p.getStatus(), p.getType()));
+			failedOncePayments.add(p);
+		}
+
 
 		return failedOncePayments;
 	}
