@@ -45,7 +45,7 @@ public class PaymentInExpireJob implements Job {
 
 	private static final Logger logger = Logger.getLogger(PaymentInExpireJob.class);
 
-	private final ICayenneService cayenneService;
+	private final ICayenneService cayenneService; 
 
 	public PaymentInExpireJob(ICayenneService cayenneService) {
 		super();
@@ -111,6 +111,11 @@ public class PaymentInExpireJob implements Job {
 		// Not completed means older than EXPIRE_INTERVAL and with statuses
 		// CARD_DETAILS_REQUIRED and IN_TRANSACTION, regardless of sessionId.
 		Expression expr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
+		expr = expr.andExp(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
+		
 		expr = expr.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
 		expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.CARD_DETAILS_REQUIRED,
 				PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW));
@@ -146,6 +151,11 @@ public class PaymentInExpireJob implements Job {
 		Set<PaymentIn> failedOncePayments = new HashSet<PaymentIn>();
 
 		Expression notCompletedExpr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
+		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
+		
 		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
 		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
 		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.FAILED, PaymentStatus.FAILED_CARD_DECLINED));

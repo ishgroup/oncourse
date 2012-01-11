@@ -33,9 +33,13 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	public static final String PAYMENT_PROCESSED_PARAM = "payment_processed";
 	
 	/**
-	 * Payment expire interval
+	 * Payment expire interval in minutes
 	 */
 	public static final int EXPIRE_INTERVAL = 20;
+	
+	//In order not to query the whole paymentIn
+	//table we limit time window to 3 month
+	public static final int EXPIRE_TIME_WINDOW = 3;
 
 	/**
 	 * Returns the primary key property - id of {@link PaymentIn}.

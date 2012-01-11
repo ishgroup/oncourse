@@ -72,6 +72,14 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
 			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+			prepStat.close();
+			
+			cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);
+			prepStat = connection.prepareStatement("update PaymentIn set created=?");
+			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
+			affected = prepStat.executeUpdate();
+			assertEquals("Expected update on 1 paymentIn.", 1, affected);
 			
 			prepStat.close();
 			
@@ -122,6 +130,37 @@ public class PaymentInExpireJobTest extends ServiceTest {
 
 	@Test
 	public void testExecute() throws Exception {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);
+		
+		// simulate EXPIRE_INTERVAL wait by directly updating enrolments with sql statement
+		Connection connection = null;
+		try {
+			connection = getDataSource("jdbc/oncourse").getConnection();
+			
+			cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);
+			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set created=?");
+			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
+			int affected = prepStat.executeUpdate();
+			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+			
+			prepStat.close();
+			
+			//cleanup the queue before running job
+			Statement st = connection.createStatement();
+			st.execute("delete from QueuedRecord");
+			st.execute("delete from QueuedTransaction");
+			st.close();
+		}
+		finally {
+			if (connection != null) {
+				connection.close();
+			}
+		}
+		
+		
+		
 		JobExecutionContext jobContext = mock(JobExecutionContext.class);
 		job.execute(jobContext);
 
@@ -177,6 +216,15 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set modified=?");
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
+			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+			
+			prepStat.close();
+			
+			cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);
+			prepStat = connection.prepareStatement("update PaymentIn set created=?");
+			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
+			affected = prepStat.executeUpdate();
 			assertEquals("Expected update on 1 paymentIn.", 1, affected);
 			
 			prepStat.close();
