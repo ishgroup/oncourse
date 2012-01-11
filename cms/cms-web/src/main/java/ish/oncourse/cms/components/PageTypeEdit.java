@@ -30,7 +30,6 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
@@ -60,6 +59,7 @@ public class PageTypeEdit {
 	@Component
 	private Form pageTypeEditForm;
 
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private SelectModel layoutSelectModel;
@@ -73,6 +73,7 @@ public class PageTypeEdit {
 	@Inject
 	private ICayenneService cayenneService;
 
+	@SuppressWarnings("all")
 	@Property
 	private WebContent block;
 
@@ -147,8 +148,7 @@ public class PageTypeEdit {
 			webContentVisibility.setRegionKey(regionKey);
 
 			webContentVisibility.setWeight(weight);
-			SortedSet<WebContentVisibility> vSet = webContentService.getBlockVisibilityForRegionKey(editPageType,
-					regionKey);
+			SortedSet<WebContentVisibility> vSet = webContentService.getBlockVisibilityForRegionKey(editPageType, regionKey);
 
 			// change weight of the items in region
 			int w = 0;

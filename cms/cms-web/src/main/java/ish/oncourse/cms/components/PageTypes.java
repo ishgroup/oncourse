@@ -56,6 +56,7 @@ public class PageTypes {
 		return webNodeType.accept(new LastEditedVisitor());
 	}
 	
+	@SuppressWarnings("unused")
 	private Object onActionFromNewPageType() {
 		if(request.getSession(false)==null){
 			return page.getReloadPageBlock();
@@ -67,6 +68,7 @@ public class PageTypes {
 		return editPageTypeBlock;
 	}
 
+	@SuppressWarnings("unused")
 	private Object onActionFromEditPageType(String id) {
 		if(request.getSession(false)==null){
 			return page.getReloadPageBlock();
@@ -75,6 +77,7 @@ public class PageTypes {
 		return editPageTypeBlock;
 	}
 
+	@SuppressWarnings("unused")
 	private Object onActionFromDeletePageType(String id) {
 		if(request.getSession(false)==null){
 			return page.getReloadPageBlock();

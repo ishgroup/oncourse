@@ -47,7 +47,7 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 				if (node.getId().equals(webNode.getId())) {
 					return webContentVisibility;
 				}
-			} else if (nodeType != null && webNodeType != null) {
+			} else if (nodeType != null && webNodeType != null && nodeType.getId() != null) {
 				if (nodeType.getId().equals(webNodeType.getId())) {
 					return webContentVisibility;
 				}

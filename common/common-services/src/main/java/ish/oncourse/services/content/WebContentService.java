@@ -9,13 +9,11 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -30,6 +28,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 public class WebContentService extends BaseService<WebContent> implements
 		IWebContentService {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(BaseService.class);
 
 	@Inject
@@ -47,12 +46,12 @@ public class WebContentService extends BaseService<WebContent> implements
 					searchProperty, value));
 		}
 
-		@SuppressWarnings("unchecked")
 		WebContent result = findRandomWebContentByQualifier(qualifier);
 
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
 
@@ -101,6 +100,7 @@ public class WebContentService extends BaseService<WebContent> implements
 		return treeSet;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<WebContent> getBlocks() {
 
 		SelectQuery q = new SelectQuery(WebContent.class);
@@ -124,12 +124,17 @@ public class WebContentService extends BaseService<WebContent> implements
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(
 			WebNodeType webNodeType, RegionKey regionKey) {
 
 		if (regionKey == null && regionKey == RegionKey.unassigned) {
 			// there con't be visibility for the unassigned block
 			return null;
+		}
+		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
+			//return no visible content for temporary webNodeType
+			return new TreeSet<WebContentVisibility>();
 		}
 		SelectQuery q = new SelectQuery(WebContentVisibility.class);
 
@@ -147,7 +152,6 @@ public class WebContentService extends BaseService<WebContent> implements
 				.performQuery(q));
 	}
 
-	@SuppressWarnings("unchecked")
 	public WebContent findRandomWebContentByQualifier(Expression qualifier) {
 
 		ObjectContext sharedContext = cayenneService.sharedContext();
