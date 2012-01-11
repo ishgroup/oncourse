@@ -345,34 +345,25 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		if (!getPaymentInLines().isEmpty()) {
 
-			// Pick up the newest invoice for refund.
+			//Pick up the invoice related to enrolments with non-finalised status
+			//code will pick up one invoice, if there are more than one invoice matching the description they should be picked up next time, and another set of refunds created 
 			PaymentInLine paymentInLineToRefund = null;
 			Invoice invoiceToRefund = null;
 
+			//iterating through invoices
 			for (PaymentInLine line : getPaymentInLines()) {
 				Invoice invoice = line.getInvoice();
 
-				if (invoiceToRefund == null) {
+				Expression e = ExpressionFactory.matchExp(InvoiceLine.ENROLMENT_PROPERTY+"."+Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION);
+				e = e.orExp(ExpressionFactory.matchExp(InvoiceLine.ENROLMENT_PROPERTY+"."+Enrolment.STATUS_PROPERTY, null));
+				//note: Anton could we limit this expression more? ie invoice.totalIncGst > 0? etc.
+				
+				List<InvoiceLine> invoiceLinesToRefund = e.filterObjects(invoice.getInvoiceLines());
+				
+				if (!invoiceLinesToRefund.isEmpty()) {
 					paymentInLineToRefund = line;
 					invoiceToRefund = invoice;
-				} else {
-					// For angel payments use angelId to determine the last
-					// invoice, since createdDate is very often the same
-					// accross several invoices
-					if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
-						if (invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber()) {
-							paymentInLineToRefund = line;
-							invoiceToRefund = invoice;
-						}
-					} else {
-						// For willow payments, use willowId to determine
-						// the newest invoice.
-						if (invoice.getId() > invoiceToRefund.getId()) {
-							paymentInLineToRefund = line;
-							invoiceToRefund = invoice;
-						}
-					}
-				}
+				} 
 			}
 
 			if (invoiceToRefund != null) {
