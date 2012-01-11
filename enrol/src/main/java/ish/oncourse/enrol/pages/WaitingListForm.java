@@ -125,8 +125,12 @@ public class WaitingListForm {
 				studentContact = contact;
 				studentContact.createNewStudent();
 			}
-
-			context.registerNewObject(waitingList);
+			//this check added to prevent #13048.
+			if (waitingList.getObjectId().isTemporary()) {
+				context.registerNewObject(waitingList);
+			} else {
+				waitingList = (WaitingList) context.localObject(waitingList.getObjectId(), null);
+			}
 			waitingList.setCollege(college);
 			waitingList.setStudent(studentContact.getStudent());
 			waitingList.setCourse((Course) context.localObject(course.getObjectId(), null));
