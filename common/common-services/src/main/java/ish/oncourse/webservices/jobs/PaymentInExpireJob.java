@@ -29,11 +29,15 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * Quartz job to abandon (means fail enrolments and creating refunds) not completed paymentIn. 
- * Not completed paymentIn can be two types, which were in state CARD_DETAILS_REQUIRED,IN_TRANSACTION, NEW for more then PaymentIn.EXPIRE_INTERVAL minutes
- * or PamentIn with status FAILED which has linked enrolements with status IN_TRANSACTION  older then PaymentIn.EXPIRE_INTERVAL.
+ * Quartz job to abandon (means fail enrolments and creating refunds) not
+ * completed paymentIn. Not completed paymentIn can be two types, which were in
+ * state CARD_DETAILS_REQUIRED,IN_TRANSACTION, NEW for more then
+ * PaymentIn.EXPIRE_INTERVAL minutes or PamentIn with status FAILED which has
+ * linked enrolements with status IN_TRANSACTION older then
+ * PaymentIn.EXPIRE_INTERVAL.
+ * 
  * @author anton
- *
+ * 
  */
 @DisallowConcurrentExecution
 public class PaymentInExpireJob implements Job {
@@ -48,7 +52,7 @@ public class PaymentInExpireJob implements Job {
 	}
 
 	/**
-	 *  Main job method, fetches expired paymentIn and abandons them.
+	 * Main job method, fetches expired paymentIn and abandons them.
 	 */
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -64,7 +68,7 @@ public class PaymentInExpireJob implements Job {
 
 			List<PaymentIn> notCompletedList = getNotCompletedPaymentsFromDate(newContext, cal.getTime());
 			expiredPayments.addAll(notCompletedList);
-			
+
 			Set<PaymentIn> failedOnceList = getOnceFailedPaymentsFromDate(newContext, cal.getTime());
 			expiredPayments.addAll(failedOnceList);
 
@@ -94,7 +98,9 @@ public class PaymentInExpireJob implements Job {
 	}
 
 	/**
-	 * Fetch payments which were not completed (not success nor failed, expired they were in not completed state for more than PaymentIn.EXPIRE_INTERVAL) 
+	 * Fetch payments which were not completed (not success nor failed, expired
+	 * they were in not completed state for more than PaymentIn.EXPIRE_INTERVAL)
+	 * 
 	 * @param newContext
 	 * @param date
 	 * @return
@@ -115,9 +121,10 @@ public class PaymentInExpireJob implements Job {
 	}
 
 	/**
-	 * Very specific case, but in occasionally it happens. User has made one payment it's failed but later user closed the browser window 
-	 * and do not press 'Abandon', 'Cancel' or 'Abandon, keep invoice' and 
-	 * left PaymentIn with state FAILED and Enrolments with state IN_TRANSACTION.
+	 * Very specific case, but in occasionally it happens. User has made one
+	 * payment it's failed but later user closed the browser window and do not
+	 * press 'Abandon', 'Cancel' or 'Abandon, keep invoice' and left PaymentIn
+	 * with state FAILED and Enrolments with state IN_TRANSACTION.
 	 * 
 	 * @param newContext
 	 * @param date
@@ -125,31 +132,20 @@ public class PaymentInExpireJob implements Job {
 	 */
 	@SuppressWarnings("unchecked")
 	private Set<PaymentIn> getOnceFailedPaymentsFromDate(ObjectContext newContext, Date date) {
-		
+
 		Set<PaymentIn> failedOncePayments = new HashSet<PaymentIn>();
 
 		Expression notCompletedExpr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
 		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
-		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.FAILED));
-		
+		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.FAILED, PaymentStatus.FAILED_CARD_DECLINED));
+		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "."
+				+ PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_LINES_PROPERTY + "." + InvoiceLine.ENROLMENT_PROPERTY + "."
+				+ Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION));
+
 		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, notCompletedExpr);
-		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery); 
+		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery);
 		
-		outer:
-		for (PaymentIn p : notCompletedPayments) {
-			for (PaymentInLine line : p.getPaymentInLines()) {
-				Invoice invoice = line.getInvoice();
-				if (invoice != null) {
-					for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
-						Enrolment enrolment = invoiceLine.getEnrolment();
-						if (enrolment != null && EnrolmentStatus.IN_TRANSACTION == enrolment.getStatus()) {
-							failedOncePayments.add(p);
-							continue outer;
-						}
-					}
-				}
-			}
-		}
+		failedOncePayments.addAll(notCompletedPayments);
 
 		return failedOncePayments;
 	}
