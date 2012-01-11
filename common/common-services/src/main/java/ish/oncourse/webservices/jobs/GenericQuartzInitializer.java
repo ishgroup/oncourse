@@ -66,19 +66,6 @@ public abstract class GenericQuartzInitializer implements RegistryShutdownListen
 	 * @param scheduler
 	 */
 	private void initCommonJobs(Scheduler scheduler) throws Exception {
-		JobKey smsJobKey = new JobKey("SmsJob", "willowServicesJobs");
-
-		if (scheduler.checkExists(smsJobKey)) {
-			scheduler.deleteJob(smsJobKey);
-		}
-
-		JobDetail smsJobDetails = JobBuilder.newJob(SMSJob.class).withIdentity(smsJobKey).build();
-
-		CronTrigger smsJobTrigger = TriggerBuilder.newTrigger().withIdentity("SmsJobTrigger", "willowServicesTriggers").startNow()
-				.withSchedule(CronScheduleBuilder.cronSchedule("0 */3 * * * ?")).build();
-
-		scheduler.scheduleJob(smsJobDetails, smsJobTrigger);
-
 		JobKey expireJobKey = new JobKey("PaymentInExpireJob", "willowServicesJobs");
 
 		if (scheduler.checkExists(expireJobKey)) {
