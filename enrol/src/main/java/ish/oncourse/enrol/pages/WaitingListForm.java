@@ -126,7 +126,7 @@ public class WaitingListForm {
 				studentContact.createNewStudent();
 			}
 			//this check added to prevent #13048.
-			if (waitingList.getObjectId().isTemporary()) {
+			if (waitingList.getObjectId() == null) {
 				context.registerNewObject(waitingList);
 			} else {
 				waitingList = (WaitingList) context.localObject(waitingList.getObjectId(), null);
