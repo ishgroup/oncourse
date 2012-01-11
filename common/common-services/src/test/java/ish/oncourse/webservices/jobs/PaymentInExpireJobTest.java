@@ -216,6 +216,11 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		
 		assertEquals("There should only be one PaymentIn refund.", 1, actualData.getRowCount());
 		
+		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn'"));
+		
+		assertEquals("Expecting two records in the queue for PaymentIn", 2, actualData.getRowCount());
+		
 		// check that in transaction Payment has failed.
 		p = Cayenne.objectForPK(objectContext, PaymentIn.class, 2000);
 		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
