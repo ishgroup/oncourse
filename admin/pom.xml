@@ -70,12 +70,6 @@
 			<artifactId>wsdl4j</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>${quartz.version}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
