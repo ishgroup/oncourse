@@ -21,10 +21,12 @@
       						<span id="cardtotalstring"><t:output value="totalIncGst" format="moneyFormat"/></span>
     					</p>
     					<p>
+    						<t:if test="notEmptyPayer">
       						<label for="cardpayer">Payer<em title="${message:required}">*</em></label>
       						<span class="valid">
 								<t:select value="payment.contact" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
 							</span>
+							</t:if>
   						</p>
     					<p>
       						<label for="cardtype">Card Type<em title="${message:required}">*</em></label>

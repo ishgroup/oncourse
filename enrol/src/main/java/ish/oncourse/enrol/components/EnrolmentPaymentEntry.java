@@ -93,18 +93,22 @@ public class EnrolmentPaymentEntry {
 	/**
 	 * Auxiliary properties
 	 */
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private Format moneyFormat;
 
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private ListSelectModel<Contact> payersModel;
 
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private ListValueEncoder<Contact> payersEncoder;
 
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private ISHEnumSelectModel cardTypeModel;
@@ -157,6 +161,8 @@ public class EnrolmentPaymentEntry {
 
 	@Parameter
 	private List<Enrolment> enrolments;
+	
+	@SuppressWarnings("all")
 	private final ReentrantLock lock = new ReentrantLock();
 
 	/**
@@ -425,6 +431,10 @@ public class EnrolmentPaymentEntry {
 	void submitButtonPressed() {
 		isSubmitted = true;
 	}
+	
+	public boolean isNotEmptyPayer() {
+		return !payers.isEmpty() && payment.getContact() != null;
+	}
 
 	/**
 	 * Invokes when the {@link #paymentDetailsForm} is attempted to submit.
@@ -435,6 +445,9 @@ public class EnrolmentPaymentEntry {
 			return;
 		}
 		if (!isZeroPayment()) {
+			if (!isNotEmptyPayer()) {
+				paymentDetailsForm.recordError(messages.get("emptyPayerErrorMessage"));
+			}
 			if (!payment.validateCCType()) {
 				paymentDetailsForm.recordError(cardTypeSelect, messages.get("cardTypeErrorMessage"));
 			}
