@@ -9,7 +9,7 @@
 	
 				<div>
 					<span>Enrolments:</span> 
-					${enrolmentsCount} <t:if test="hasEnrolments">(${maleEnrolmentsCount}, ${femaleEnrolmentsCount})</t:if>
+					${enrolmentsCount} <t:if test="hasEnrolments">(${maleEnrolmentsCount}M, ${femaleEnrolmentsCount}F)</t:if>
 				</div>
 				<div><span>Maximum:</span> ${courseClass.maximumPlaces}</div>
 				<div><span>Minimum:</span> ${courseClass.minimumPlaces}</div>
