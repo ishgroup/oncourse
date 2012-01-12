@@ -356,7 +356,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					paymentInLineToRefund = line;
 					invoiceToRefund = invoice;
 				} else {
-					// For angel payments use angelId to determine the last
+					// For angel payments use invoiceNumber to determine the last
 					// invoice, since createdDate is very often the same
 					// accross several invoices
 					if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
