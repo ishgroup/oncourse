@@ -620,6 +620,26 @@
 		</update>
 	</changeSet>
 	
+	<changeSet id="46" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+			<indexExists indexName="status"
+				tableName="PaymentIn" />
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE PaymentIn ADD INDEX status (status);</sql>
+	</changeSet>
+	
+	<changeSet id="47" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+			<indexExists indexName="modified"
+				tableName="PaymentIn" />
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE PaymentIn ADD INDEX modified (modified);</sql>
+	</changeSet>
+		
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
 	</changeSet-->
