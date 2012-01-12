@@ -79,7 +79,7 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
 				if (session == null) {
 					String m = String.format("Session has expired for communication key: %s.", communicationKey);
-					logger.error(m);
+					logger.info(m);
 					throw new AuthSoapFault(m);
 				}
 
