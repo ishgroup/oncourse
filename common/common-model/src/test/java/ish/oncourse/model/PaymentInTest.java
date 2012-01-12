@@ -1,7 +1,6 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
@@ -66,7 +65,7 @@ public class PaymentInTest {
 		paymentIn.setAmount(amount);
 		assertTrue("PaymentIn is zero payment with string argument.", paymentIn.isZeroPayment());
 	}
-
+	
 	@Test
 	public void testAbandonPayment() throws Exception {
 
@@ -175,5 +174,180 @@ public class PaymentInTest {
 		enrol.setStudent(student);
 
 		return enrol;
+	}
+	
+	@Test
+	public void testAvailableSuccessStatusChanges() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		assertTrue("Payment in status should be new when added", PaymentStatus.NEW.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		assertTrue("Payment in status should be able to change to in transaction from new", PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.SUCCESS);
+		assertTrue("Payment in status should be able to change from in transaction to success", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from success to failed", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in success status", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from success to failed card declined", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in success status", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from success to failed no places", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in success status", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.CORRUPTED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from success to corrupted", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in success status", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+	}
+	
+	@Test
+	public void testAvailableCorruptedStatusChanges() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		assertTrue("Payment in status should be new when added", PaymentStatus.NEW.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		assertTrue("Payment in status should be able to change to in transaction from new", PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.CORRUPTED);
+		assertTrue("Payment in status should be able to change from in transaction to corrupted", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from corrupted to failed", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in corrupted status", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from corrupted to failed card declined", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in corrupted status", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from corrupted to failed no places", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in corrupted status", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.SUCCESS);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change to success from corrupted", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in corrupted status", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+	}
+	
+	@Test
+	public void testAvailableFailedStatusChanges() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		assertTrue("Payment in status should be new when added", PaymentStatus.NEW.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		assertTrue("Payment in status should be able to change to in transaction from new", PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.FAILED);
+		assertTrue("Payment in status should be able to change from in transaction to failed", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.SUCCESS);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change to success from failed", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed status", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from failed to failed card declined", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed status", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from failed to failed no places", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed status", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.CORRUPTED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from failed to corrupted", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed status", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+	}
+	
+	@Test
+	public void testAvailableFailedNoPlacesStatusChanges() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		assertTrue("Payment in status should be new when added", PaymentStatus.NEW.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		assertTrue("Payment in status should be able to change to in transaction from new", PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
+		assertTrue("Payment in status should be able to change from in transaction to failed no places", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.SUCCESS);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change to success from failed no places", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed no places status", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from failed no places to failed card declined", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed no places status", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change to failed from failed no places", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed no places status", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.CORRUPTED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from failed no places to corrupted", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed no places status", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
+	}
+	
+	@Test
+	public void testAvailableFailedCardDeclinedStatusChanges() throws Exception {
+		PaymentIn paymentIn = context.newObject(PaymentIn.class);
+		assertTrue("Payment in status should be new when added", PaymentStatus.NEW.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
+		assertTrue("Payment in status should be able to change to in transaction from new", PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus()));
+		paymentIn.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+		assertTrue("Payment in status should be able to change from in transaction to failed card declined", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.SUCCESS);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change to success from failed card declined", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed status", PaymentStatus.SUCCESS.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change to failed from failed card declined", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed card declined status", PaymentStatus.FAILED.equals(paymentIn.getStatus()));
+		
+		try {
+			paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from failed card declined to failed no places", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed status", PaymentStatus.FAILED_NO_PLACES.equals(paymentIn.getStatus()));
+		try {
+			paymentIn.setStatus(PaymentStatus.CORRUPTED);
+		} catch (Exception e) {
+			assertTrue("Payment in status should not be able to change from failed card declined to corrupted", PaymentStatus.FAILED_CARD_DECLINED.equals(paymentIn.getStatus()));
+		}
+		assertFalse("Payment in status should be in failed status", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
 	}
 }
