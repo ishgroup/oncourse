@@ -53,7 +53,7 @@
 		<db-attribute name="printedWhen" type="TIMESTAMP" length="19"/>
 		<db-attribute name="privateNotes" type="VARCHAR" length="1000"/>
 		<db-attribute name="publicNotes" type="VARCHAR" length="1000"/>
-		<db-attribute name="qualificationId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="qualificationId" type="BIGINT" length="19"/>
 		<db-attribute name="revokedWhen" type="TIMESTAMP" length="19"/>
 		<db-attribute name="studentFirstName" type="VARCHAR" length="100"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
