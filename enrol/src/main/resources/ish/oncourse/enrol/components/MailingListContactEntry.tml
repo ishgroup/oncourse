@@ -6,6 +6,8 @@
 		<t:zone t:id="addStudentBlock" t:update="show">
 			<t:if test="hasContact" negate="true">
 				<t:form zone="addStudentBlock" t:id="shortDetailsForm">
+				
+					<t:mailinglistbox/>
 
 					<t:if test="shortDetailsForm.valid">
 						<div class="message">

@@ -5,6 +5,7 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
@@ -76,6 +77,9 @@ public class MailingListContactEntry {
 
 	@InjectComponent
 	private TextField email;
+	
+	@InjectComponent
+	private MailingListBox mailingListBox;
 	
 	@InjectPage
 	private Mail mail;
@@ -170,6 +174,10 @@ public class MailingListContactEntry {
 			if (emailErrorMessage != null) {
 				shortDetailsForm.recordError(email, emailErrorMessage);
 			}
+			
+			if (mailingListBox.getSelectedMailingLists().isEmpty()) {
+				shortDetailsForm.recordError("At least one mailing list should be selected.");
+			}
 
 		}
 	}
@@ -185,9 +193,10 @@ public class MailingListContactEntry {
 			contact.setGivenName(null);
 			contact.setFamilyName(null);
 			contact.setEmailAddress(null);
-			mail.resetList();
 			return parentZone.getBody();
 		} else {
+			mail.setSelectedMailingLists(mailingListBox.getSelectedMailingLists());
+			
 			Contact studentContact = studentService.getStudentContact(contact.getGivenName(), contact.getFamilyName(),
 					contact.getEmailAddress());
 			if (studentContact != null) {
@@ -199,7 +208,6 @@ public class MailingListContactEntry {
 					contact.setStudent(newStudent);
 					context.commitChanges();
 				}
-				
 				mail.setContact(contact);
 				return mail;
 			}
@@ -243,6 +251,10 @@ public class MailingListContactEntry {
 				&& HIDE.equals(preferenceController.getRequireContactFaxMailingList())
 				&& HIDE.equals(preferenceController.getRequireContactMobileMailingList())
 				&& HIDE.equals(preferenceController.getRequireContactDateOfBirthMailingList()));
+	}
+	
+	public List<Tag> getSelectedMailingLists() {
+		return mailingListBox.getSelectedMailingLists();
 	}
 
 }
