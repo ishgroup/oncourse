@@ -19,6 +19,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 public class TimetableJson {
@@ -42,6 +43,9 @@ public class TimetableJson {
 	
 	@Inject
 	private Request request;
+	
+	@Inject
+	private Response response;
 	
 	@Inject
 	private IAuthenticationService authenticationService;
@@ -83,8 +87,8 @@ public class TimetableJson {
 			JSONObject jsonSession = new JSONObject();
 			jsonSession.put("name", s.getCourseClass().getCourse().getName());
 			
-			String href = String.format("https://%s%s/class/%s", request.getServerName(), request.getContextPath() , s.getCourseClass().getId());
-			jsonSession.put("href", href);
+			String href = String.format("%s://%s%s/class/%s", request.isSecure() ? "https" : "http" , request.getServerName(), request.getContextPath() , s.getCourseClass().getId());
+			jsonSession.put("href", response.encodeURL(href));
 			
 			String time = String.format("%s - %s", timeFormatter.format(s.getStartDate()), timeFormatter.format(s.getEndDate()));
 			jsonSession.put("time", time);
