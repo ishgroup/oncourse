@@ -8,7 +8,6 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.lifecycle.QueueableLifecycleListenerTest;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 
@@ -38,14 +37,14 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
+		InputStream st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 
-		st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/model/paymentDataSet.xml");
+		st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream("ish/oncourse/model/paymentDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);

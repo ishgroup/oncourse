@@ -1,14 +1,12 @@
 package ish.oncourse.services.paymentexpress;
 
 import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentOutTransaction;
 import ish.oncourse.model.PaymentTransaction;
 import ish.util.CreditCardUtil;
 
-import java.rmi.RemoteException;
 import java.util.Date;
 
 import javax.xml.rpc.ServiceException;
@@ -73,11 +71,12 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 
 				if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
 					resultDetails.append("Payment succeed.");
+					payment.setStatusNotes("Payment succeed.");
 					payment.succeed();
 					payment.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
 				} else {
-					resultDetails.append("Payment failed.");
-					payment.setStatusNotes("Card declined");
+					resultDetails.append("Payment failed. Card declined.");
+					payment.setStatusNotes("Payment failed. Card declined");
 					payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
 					payment.failPayment();
 				}
@@ -95,27 +94,17 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 						.append(", transactionRef:").append(tr.getDpsTxnRef());
 			} else {
 				resultDetails.append("Payment failed with null transaction response");
-				payment.setStatusNotes("Null transaction response");
+				payment.setStatusNotes("Payment failed. Null transaction response.");
 				payment.failPayment();
 			}
+			
 			LOG.debug(resultDetails.toString());
-		} catch (RemoteException e) {
-			if (PaymentStatus.SUCCESS.equals(payment.getStatus()) && PaymentType.CREDIT_CARD.equals(payment.getType())) {
-				payment.succeed();
-			} else {
-				payment.failPayment();
-				payment.setStatusNotes("Failed to obtain a status for transaction");
-				LOG.error("RemoteException submitting to paymentexpress", e);
-			}
+			
 		} catch (Exception e) {
-			if (PaymentStatus.SUCCESS.equals(payment.getStatus()) && PaymentType.CREDIT_CARD.equals(payment.getType())) {
-				payment.succeed();
-			} else {
-				payment.failPayment();
-				payment.setStatusNotes("Failed to obtain a status for transaction");
-				LOG.error("Failed to obtain a status for transaction", e);
-			}
-		}
+			LOG.error(String.format("PaymentIn id:%s failed with exception.", payment.getId()), e);
+			payment.setStatusNotes("PaymentIn failed with exception.");
+			payment.failPayment();
+		} 
 	}
 
 	@Override
@@ -129,13 +118,15 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 			StringBuilder resultDetails = new StringBuilder();
 			if (tr != null) {
 				if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
-					resultDetails.append("Refund succeed.");
+					resultDetails.append("PaymentOut succeed.");
+					paymentOut.setStatusNotes("PaymentOut succeed.");
 					paymentOut.succeed();
 					paymentOut.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
 					paymentOut.setDatePaid(new Date());
 				} else {
 					// TODO set statusNotes="cardDeclined" to payment here
-					resultDetails.append("Refund failed.");
+					resultDetails.append("PaymentOut failed. Declined by paymentExpress.");
+					paymentOut.setStatusNotes("PaymentOut failed. Declined by paymentExpress.");
 					paymentOut.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
 					paymentOut.failed();
 				}
@@ -152,16 +143,17 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 						.append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
 						.append(", transactionRef:").append(tr.getDpsTxnRef());
 			} else {
-				resultDetails.append("Payment failed with null transaction response");
+				resultDetails.append("PaymentOut failed with null transaction response.");
+				paymentOut.setStatusNotes("PaymentOut failed with null transaction response.");
 				paymentOut.failed();
 			}
+			
 			LOG.debug(resultDetails.toString());
-		} catch (RemoteException e) {
-			LOG.error("RemoteException submitting to paymentexpress", e);
-			paymentOut.failed();
+			
 		} catch (Exception e) {
+			LOG.error(String.format("PaymentOut id:%s failed with exception.", paymentOut.getId()), e);
+			paymentOut.setStatusNotes("PaymentOut failed with exception.");
 			paymentOut.failed();
-			LOG.error("Failed to obtain a status for transaction", e);
 		}
 	}
 

@@ -30,7 +30,15 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
 
+	/**
+	 * Payment processed session attribute.
+	 */
 	public static final String PAYMENT_PROCESSED_PARAM = "payment_processed";
+	
+	/**
+	 * Failed payment session attribute.
+	 */
+	public static final String FAILED_PAYMENT_PARAM = "failedPayment";
 	
 	/**
 	 * Payment expire interval in minutes

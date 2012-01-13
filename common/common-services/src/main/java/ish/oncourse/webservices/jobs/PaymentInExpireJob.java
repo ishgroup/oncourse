@@ -1,19 +1,13 @@
 package ish.oncourse.webservices.jobs;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.persistence.ICayenneService;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,9 +63,6 @@ public class PaymentInExpireJob implements Job {
 
 			List<PaymentIn> notCompletedList = getNotCompletedPaymentsFromDate(newContext, cal.getTime());
 			expiredPayments.addAll(notCompletedList);
-
-			Set<PaymentIn> failedOnceList = getOnceFailedPaymentsFromDate(newContext, cal.getTime());
-			expiredPayments.addAll(failedOnceList);
 
 			logger.debug(String.format("The number of payments to expire:%s.", expiredPayments.size()));
 
@@ -133,47 +124,5 @@ public class PaymentInExpireJob implements Job {
 		}
 		
 		return notCompletedPayments;
-	}
-
-	/**
-	 * Very specific case, but in occasionally it happens. User has made one
-	 * payment it's failed but later user closed the browser window and do not
-	 * press 'Abandon', 'Cancel' or 'Abandon, keep invoice' and left PaymentIn
-	 * with state FAILED and Enrolments with state IN_TRANSACTION.
-	 * 
-	 * @param newContext
-	 * @param date
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	private Set<PaymentIn> getOnceFailedPaymentsFromDate(ObjectContext newContext, Date date) {
-
-		Set<PaymentIn> failedOncePayments = new HashSet<PaymentIn>();
-
-		Expression notCompletedExpr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
-		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
-		
-		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.SOURCE_PROPERTY, PaymentSource.SOURCE_WEB));
-		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
-		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.FAILED, PaymentStatus.FAILED_CARD_DECLINED));
-		notCompletedExpr = notCompletedExpr.andExp(ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "."
-				+ PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_LINES_PROPERTY + "." + InvoiceLine.ENROLMENT_PROPERTY + "."
-				+ Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION));
-
-		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, notCompletedExpr);
-		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery);
-		
-		logger.info(String.format("<getOnceFailedPaymentsFromDate> the number of expired PaymentIn:%s", notCompletedPayments.size()));
-		
-		for (PaymentIn p : notCompletedPayments) {
-			logger.info(String.format("<getOnceFailedPaymentsFromDate> found expired PaymentIn id:%s status:%s type:%s", p.getId(), p.getStatus(), p.getType()));
-			failedOncePayments.add(p);
-		}
-
-
-		return failedOncePayments;
 	}
 }

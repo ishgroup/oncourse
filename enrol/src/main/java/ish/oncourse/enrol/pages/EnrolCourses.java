@@ -308,7 +308,7 @@ public class EnrolCourses {
 			PaymentIn failedPayment = null;
 			Session session = request.getSession(false);
 			if (session != null) {
-				failedPayment = (PaymentIn) session.getAttribute("failedPayment");
+				failedPayment = (PaymentIn) session.getAttribute(PaymentIn.FAILED_PAYMENT_PARAM);
 			}
 			if (failedPayment != null) {
 				hadPreviousPaymentFailure = true;

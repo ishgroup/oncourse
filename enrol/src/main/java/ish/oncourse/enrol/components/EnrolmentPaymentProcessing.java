@@ -55,9 +55,12 @@ public class EnrolmentPaymentProcessing {
 			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
 			if (enrolments != null) {
 				paymentGatewayService.performGatewayOperation(payment);
-				payment.getObjectContext().commitChanges();
 				if (!PaymentStatus.SUCCESS.equals(payment.getStatus())) {
-					session.setAttribute("failedPayment", payment);
+					session.setAttribute(PaymentIn.FAILED_PAYMENT_PARAM, payment);
+				}
+				else {
+					//PaymentIn success so commit.
+					payment.getObjectContext().commitChanges();
 				}
 			}
 			

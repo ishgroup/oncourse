@@ -506,6 +506,7 @@
 		<db-attribute name="paymentInTxnReference" type="VARCHAR" length="16"/>
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="statusNotes" type="VARCHAR" length="100"/>
 		<db-attribute name="totalAmount" type="DECIMAL" length="14" scale="2"/>
 	</db-entity>
 	<db-entity name="PaymentOutTransaction" catalog="willow_college">
@@ -1260,6 +1261,7 @@
 		<obj-attribute name="paymentInTxnReference" type="java.lang.String" db-attribute-path="paymentInTxnReference"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.common.types.PaymentStatus" db-attribute-path="status"/>
+		<obj-attribute name="statusNotes" type="java.lang.String" db-attribute-path="statusNotes"/>
 		<obj-attribute name="totalAmount" type="java.math.BigDecimal" db-attribute-path="totalAmount"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>

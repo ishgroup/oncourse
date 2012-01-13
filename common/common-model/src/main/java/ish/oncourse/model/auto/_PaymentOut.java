@@ -31,6 +31,7 @@ public abstract class _PaymentOut extends CayenneDataObject {
     public static final String PAYMENT_IN_TXN_REFERENCE_PROPERTY = "paymentInTxnReference";
     public static final String SOURCE_PROPERTY = "source";
     public static final String STATUS_PROPERTY = "status";
+    public static final String STATUS_NOTES_PROPERTY = "statusNotes";
     public static final String TOTAL_AMOUNT_PROPERTY = "totalAmount";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
@@ -106,6 +107,13 @@ public abstract class _PaymentOut extends CayenneDataObject {
     }
     public PaymentStatus getStatus() {
         return (PaymentStatus)readProperty("status");
+    }
+
+    public void setStatusNotes(String statusNotes) {
+        writeProperty("statusNotes", statusNotes);
+    }
+    public String getStatusNotes() {
+        return (String)readProperty("statusNotes");
     }
 
     public void setTotalAmount(BigDecimal totalAmount) {

@@ -639,6 +639,12 @@
 		</preConditions>
 		<sql>ALTER TABLE PaymentIn ADD INDEX modified (modified);</sql>
 	</changeSet>
+	
+	<changeSet id="48" author="anton" context="production" runOnChange="true">
+		<addColumn tableName="PaymentOut">
+			<column name="statusNotes" type="varchar(100)" />
+		</addColumn>
+	</changeSet>
 		
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
