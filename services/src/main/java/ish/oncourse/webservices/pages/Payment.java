@@ -156,7 +156,7 @@ public class Payment {
 	public Object tryOtherCard() {
 
 		this.payment = payment.makeCopy();
-		this.payment.setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
+		this.payment.setStatus(PaymentStatus.IN_TRANSACTION);
 		this.payment.getObjectContext().commitChanges();
 
 		return paymentForm;

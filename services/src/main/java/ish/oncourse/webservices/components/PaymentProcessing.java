@@ -37,7 +37,7 @@ public class PaymentProcessing {
 		if (!Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
 
-			if (payment.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED) {
+			if (payment.getStatus() == PaymentStatus.IN_TRANSACTION) {
 				paymentGatewayService.performGatewayOperation(payment);
 
 				if (payment.getStatus() == PaymentStatus.SUCCESS) {

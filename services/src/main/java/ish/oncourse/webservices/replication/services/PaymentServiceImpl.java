@@ -241,7 +241,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 			boolean shouldWait = false;
 
 			for (PaymentIn p : pList) {
-				if (p.getStatus() == PaymentStatus.IN_TRANSACTION || p.getStatus() == PaymentStatus.CARD_DETAILS_REQUIRED) {
+				if (!p.isAsyncReplicationAllowed()) {
 					shouldWait = true;
 					break;
 				}

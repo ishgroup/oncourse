@@ -59,7 +59,7 @@ public class PaymentService implements IPaymentService {
 	public PaymentIn currentPaymentInBySessionId(String sessionId) {
 
 		Expression expr = ExpressionFactory.matchExp(PaymentIn.SESSION_ID_PROPERTY, sessionId);
-		expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.CARD_DETAILS_REQUIRED));
+		expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.IN_TRANSACTION));
 
 		SelectQuery q = new SelectQuery(PaymentIn.class, expr);
 		q.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);

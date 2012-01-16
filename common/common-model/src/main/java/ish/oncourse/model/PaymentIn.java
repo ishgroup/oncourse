@@ -26,27 +26,31 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.log4j.Logger;
 
 public class PaymentIn extends _PaymentIn implements Queueable {
+
 	private static final long serialVersionUID = -2372029086420124878L;
 
+	/**
+	 * Logger
+	 */
 	private static final Logger LOG = Logger.getLogger(PaymentIn.class);
 
 	/**
 	 * Payment processed session attribute.
 	 */
 	public static final String PAYMENT_PROCESSED_PARAM = "payment_processed";
-	
+
 	/**
 	 * Failed payment session attribute.
 	 */
 	public static final String FAILED_PAYMENT_PARAM = "failedPayment";
-	
+
 	/**
 	 * Payment expire interval in minutes
 	 */
-	public static final int EXPIRE_INTERVAL = 20;
-	
-	//In order not to query the whole paymentIn
-	//table we limit time window to 3 month
+	public static final int EXPIRE_INTERVAL = 3;//20;
+
+	// In order not to query the whole paymentIn
+	// table we limit time window to 3 month
 	public static final int EXPIRE_TIME_WINDOW = 3;
 
 	/**
@@ -294,7 +298,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		Invoice activeInvoice = findActiveInvoice();
 		Date today = new Date();
-		
+
 		if (activeInvoice != null) {
 			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
@@ -347,7 +351,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		default:
 			setStatus(PaymentStatus.FAILED);
 		}
-		
+
 		Date today = new Date();
 		setModified(today);
 
@@ -364,7 +368,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					paymentInLineToRefund = line;
 					invoiceToRefund = invoice;
 				} else {
-					// For angel payments use invoiceNumber to determine the last
+					// For angel payments use invoiceNumber to determine the
+					// last
 					// invoice, since createdDate is very often the same
 					// accross several invoices
 					if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
@@ -404,10 +409,10 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
 				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
-				
+
 				invoiceToRefund.setModified(today);
 				paymentInLineToRefund.setModified(today);
-				
+
 				// Fail enrolments on invoiceToRefund
 				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
 					il.setModified(today);
@@ -495,22 +500,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 					if (enrol.getStatus() != EnrolmentStatus.SUCCESS) {
 						enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
 					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Puts all objects related to current payment in transaction state.
-	 */
-	public void putInCardDetailsRequiredState() {
-		setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
-		for (PaymentInLine pl : getPaymentInLines()) {
-			Invoice invoice = pl.getInvoice();
-			for (InvoiceLine il : invoice.getInvoiceLines()) {
-				Enrolment enrol = il.getEnrolment();
-				if (enrol != null) {
-					enrol.setStatus(EnrolmentStatus.IN_TRANSACTION);
 				}
 			}
 		}
@@ -655,7 +644,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	@Override
 	public void setStatus(final PaymentStatus status) {
 		if (getStatus() != null && PaymentStatus.STATUSES_FINAL.contains(getStatus()) && !getStatus().equals(status)) {
-			//if payment already in this states there is no reason to change it
+			// if payment already in this states there is no reason to change it
 			throw new IllegalArgumentException("Can not change payment status from " + getStatus() + " to " + status);
 		}
 		super.setStatus(status);

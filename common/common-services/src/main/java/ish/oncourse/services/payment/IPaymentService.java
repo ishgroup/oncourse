@@ -30,7 +30,7 @@ public interface IPaymentService {
 	PaymentOut paymentOutByAngelId(Long angelId);
 
 	/**
-	 * Finds current payment, which means statuses IN_TRANSACTION or CREDIT_CARD_DETAILS required.
+	 * Finds current payment, which means statuses IN_TRANSACTION required.
 	 * @param sessionId sesion id
 	 * @return payment in
 	 */
