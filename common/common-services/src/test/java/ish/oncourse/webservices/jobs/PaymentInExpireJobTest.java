@@ -58,7 +58,11 @@ public class PaymentInExpireJobTest extends ServiceTest {
 
 		PaymentIn p = Cayenne.objectForPK(objectContext, PaymentIn.class, 2000);
 		p.failPayment();
-
+		
+		PaymentIn newCopy = p.makeCopy();
+		newCopy.setStatus(PaymentStatus.IN_TRANSACTION);
+		newCopy.getObjectContext().commitChanges();
+		
 		objectContext.commitChanges();
 		
 		Calendar cal = Calendar.getInstance();
@@ -68,7 +72,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		Connection connection = null;
 		try {
 			connection = getDataSource("jdbc/oncourse").getConnection();
-			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set modified=?");
+			PreparedStatement prepStat = connection.prepareStatement(String.format("update PaymentIn set modified=? where id=%s", newCopy.getId()));
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
 			assertEquals("Expected update on 1 paymentIn.", 1, affected);
@@ -76,7 +80,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			
 			cal = Calendar.getInstance();
 			cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);
-			prepStat = connection.prepareStatement("update PaymentIn set created=?");
+			prepStat = connection.prepareStatement(String.format("update PaymentIn set created=? where id=%s", newCopy.getId()));
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			affected = prepStat.executeUpdate();
 			assertEquals("Expected update on 1 paymentIn.", 1, affected);
@@ -115,10 +119,10 @@ public class PaymentInExpireJobTest extends ServiceTest {
 				String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine' and entityWillowId=2000"));
 		assertEquals("1 InvoiceLine in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=2000"));
+				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn' and entityWillowId=%s", newCopy.getId()));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=2000"));
+				String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine' and entityWillowId=%s", newCopy.getPaymentInLines().get(0).getId()));
 		assertEquals("1 PaymentInLine in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
@@ -199,13 +203,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 	
 	@Test
 	public void testMultyExecution() throws Exception {
-		ObjectContext objectContext = cayenneService.newContext();
-
-		PaymentIn p = Cayenne.objectForPK(objectContext, PaymentIn.class, 2000);
-		p.failPayment();
-
-		objectContext.commitChanges();
-		
+	
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -PaymentIn.EXPIRE_INTERVAL);
 		
@@ -269,8 +267,10 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		
 		assertEquals("Expecting two records in the queue for PaymentIn", 2, actualData.getRowCount());
 		
+		ObjectContext objectContext = cayenneService.newContext();
+		
 		// check that in transaction Payment has failed.
-		p = Cayenne.objectForPK(objectContext, PaymentIn.class, 2000);
+		PaymentIn p = Cayenne.objectForPK(objectContext, PaymentIn.class, 2000);
 		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
 
 		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 2000);
