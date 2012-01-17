@@ -22,6 +22,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 public class Pages {
 
@@ -48,10 +49,13 @@ public class Pages {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
 		}
+		
+		final Session session = request.getSession(false);
+		session.setAttribute(WebNode.ADD_NEW_PAGE_ATTR, Boolean.TRUE);
 		WebNode newPageNode = webNodeService.createNewNode();
 		newPageNode.getObjectContext().commitChanges();
 
-		return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber());
+		return new URL("http://" + request.getServerName() + "/page/" + newPageNode.getNodeNumber() + "?newpage=y");
 	}
 
 	public String getLastEdited() {

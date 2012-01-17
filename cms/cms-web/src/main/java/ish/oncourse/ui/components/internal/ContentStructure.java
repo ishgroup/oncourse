@@ -111,7 +111,7 @@ public class ContentStructure {
 		ObjectContext ctx = node.getObjectContext().createChildContext();
 		WebContent region = (WebContent) ctx.localObject(webContentService.findById(Long.parseLong(id)).getObjectId(), null);
 
-		this.visibility = region.getWebContentVisibility(node, null);
+		this.visibility = region.getWebContentVisibility(node);
 
 		return editorBlock;
 	}

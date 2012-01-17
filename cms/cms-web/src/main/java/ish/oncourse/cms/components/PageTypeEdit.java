@@ -130,7 +130,7 @@ public class PageTypeEdit {
 
 		block = (WebContent) ctx.localObject(block.getObjectId(), null);
 
-		WebContentVisibility webContentVisibility = block.getWebContentVisibility(null, editPageType);
+		WebContentVisibility webContentVisibility = block.getWebContentVisibility(editPageType);
 
 		if (regionKey == RegionKey.unassigned) {
 			if (webContentVisibility != null) {
