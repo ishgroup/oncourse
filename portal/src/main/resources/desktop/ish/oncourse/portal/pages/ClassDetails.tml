@@ -12,7 +12,8 @@
 			<strong><a href="${classDetailsLink}" target="_blank">See full class description</a></strong>
 			
 			<p:else>
-				<p>The details of this class have been hidden by the college. Please contact them for more details.</p>
+				<br/><br/>
+				<p><strong>The details of this class have been hidden by the college. Please contact them for more details.</strong></p>
 			</p:else>
 		</t:if>
 	</div>
