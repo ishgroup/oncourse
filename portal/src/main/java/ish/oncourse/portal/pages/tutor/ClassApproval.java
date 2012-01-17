@@ -111,8 +111,8 @@ public class ClassApproval {
 			} else {
 			
 				String subject = String.format("Class feedback from tutor %s %s", c.getGivenName(), c.getFamilyName());
-				String body = String.format("Tutor %s %s has submitted the following feedback for the class %s '%s'.\n%s", c.getGivenName(),
-						c.getFamilyName(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
+				String body = String.format("Tutor %s %s has submitted the following feedback for the class %s-%s '%s'.\n%s", c.getGivenName(),
+						c.getFamilyName(), courseClass.getCourse().getCode(), courseClass.getCode(), courseClass.getCourse().getName(), whyDeclined);
 	
 				EmailBuilder email = new EmailBuilder();
 				email.setFromEmail(FROM_EMAIL);
@@ -139,7 +139,7 @@ public class ClassApproval {
 	}
 
 	public String getDeclineLabel() {
-		return getIsClassApproved() ? "Complain" : "Decline";
+		return getIsClassApproved() ? "Accept" : "Decline";
 	}
 	
 	private String getTutorFeedbackEmail() {
