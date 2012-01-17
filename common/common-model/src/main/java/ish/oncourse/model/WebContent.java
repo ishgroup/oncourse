@@ -5,9 +5,23 @@ import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Date;
+import java.util.List;
+
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.log4j.Logger;
 
 public class WebContent extends _WebContent implements Comparable<WebContent> {
+	
+	/**
+	 * SerialUID
+	 */
 	private static final long serialVersionUID = -900137336888575297L;
+	
+	/**
+	 * Logger
+	 */
+	private static final Logger LOG = Logger.getLogger(WebContent.class);
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -39,21 +53,38 @@ public class WebContent extends _WebContent implements Comparable<WebContent> {
 		setModified(today);
 	}
 
-	public WebContentVisibility getWebContentVisibility(WebNode webNode, WebNodeType webNodeType) {
-		for (WebContentVisibility webContentVisibility : getWebContentVisibilities()) {
-			WebNode node = webContentVisibility.getWebNode();
-			WebNodeType nodeType = webContentVisibility.getWebNodeType();
-			if (node != null && webNode != null) {
-				if (node.getId().equals(webNode.getId())) {
-					return webContentVisibility;
-				}
-			} else if (nodeType != null && webNodeType != null && nodeType.getId() != null) {
-				if (nodeType.getId().equals(webNodeType.getId())) {
-					return webContentVisibility;
-				}
-			}
-		}
-		return null;
+	/**
+	 * Search for visibility which corresponds to webNodeType
+	 * @param webNodeType web node type
+	 * @return visibility
+	 */
+	public WebContentVisibility getWebContentVisibility(WebNodeType webNodeType) {
+		LOG.debug(String.format("Searching webVisibility for webContent:%s with webNodeType:%s", this.getId(), webNodeType.getId()));
+		SelectQuery q = new SelectQuery(WebContentVisibility.class);
+		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, this));
+		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_NODE_TYPE_PROPERTY, webNodeType));
+		@SuppressWarnings("unchecked")
+		List<WebContentVisibility> list = getObjectContext().performQuery(q);
+		LOG.debug(String.format("The number of found visibilities: %s", list.size()));
+		return list.isEmpty() ? null : list.get(0);
+
+	}
+	
+	/**
+	 * Search for visibity which corresponds to webNode.
+	 * @param webNode web node
+	 * @return visibility
+	 */
+	public WebContentVisibility getWebContentVisibility(WebNode webNode) {
+		LOG.debug(String.format("Searching webVisibility for webNode:%s and webContent:%s", webNode.getId(), this.getId()));
+		SelectQuery q = new SelectQuery(WebContentVisibility.class);
+		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_NODE_PROPERTY, webNode));
+		q.andQualifier(ExpressionFactory.matchExp(WebContentVisibility.WEB_CONTENT_PROPERTY, this));
+		@SuppressWarnings("unchecked")
+		List<WebContentVisibility> list = getObjectContext().performQuery(q);
+		LOG.debug(String.format("The number of found visibilities: %s", list.size()));
+		
+		return list.isEmpty() ? null : list.get(0);
 	}
 
 	public int compareTo(WebContent arg) {

@@ -11,8 +11,8 @@ public class WebNode extends _WebNode {
 	
 	static final String DEFAULT_PAGE_TITLE = "New Page";
 	
-	public static final String RELOAD_PAGE_ATTRIBUTE = "reload page";
-	public static final String LOADED_NODE = "loaded node";
+	public static final String LOADED_NODE = "loaded node";	
+	public static final String ADD_NEW_PAGE_ATTR = "add_new_page_attribute";
 	
 	public Long getId() {
 		return (getObjectId() != null && !getObjectId().isTemporary()) ? (Long) getObjectId()
