@@ -13,10 +13,13 @@ import ish.oncourse.portal.services.mail.MailServiceImpl;
 import ish.oncourse.portal.services.pageload.IUserAgentDetector;
 import ish.oncourse.portal.services.pageload.PortalComponentRequestSelectorAnalyzer;
 import ish.oncourse.portal.services.pageload.PortalComponentResourceLocator;
+import ish.oncourse.portal.services.pageload.PortalPageRenderer;
 import ish.oncourse.portal.services.pageload.UserAgentDetectorImpl;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.textile.services.TextileModule;
+import ish.oncourse.util.IPageRenderer;
 
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -37,7 +40,7 @@ import org.apache.tapestry5.services.ResponseRenderer;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
 
-@SubModule({ ModelModule.class, ServiceModule.class })
+@SubModule({ ModelModule.class, ServiceModule.class, TextileModule.class })
 public class AppModule {
 
 	public static void bind(ServiceBinder binder) {
@@ -50,6 +53,7 @@ public class AppModule {
 		binder.bind(IDiscussionService.class, DiscussionServiceImpl.class);
 		binder.bind(AccessController.class).withId("AccessController");
 		binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
+		binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
 	}
 
 	@Contribute(ServiceOverride.class)
@@ -61,6 +65,11 @@ public class AppModule {
 	public static void overrideSelectorAnalyzer(MappedConfiguration<Class<?>, Object> cfg,
 			@InjectService("PortalComponentRequestSelectorAnalyzer") ComponentRequestSelectorAnalyzer analyzer) {
 		cfg.add(ComponentRequestSelectorAnalyzer.class, analyzer);
+	}
+	
+	@Contribute(ServiceOverride.class)
+	public static void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IPageRenderer pageRenderer) {
+		configuration.add(IPageRenderer.class, pageRenderer);
 	}
 
 	@Decorate(serviceInterface = ComponentResourceLocator.class)
