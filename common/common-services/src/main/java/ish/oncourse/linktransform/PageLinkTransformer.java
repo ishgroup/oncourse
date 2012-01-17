@@ -33,6 +33,7 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
+	
 	private static final String REMOVE_ITEM_ID_PARAMETER = "removeItemId";
 	private static final String ADD_ITEM_ID_PARAMETER = "addItemId";
 	private static final String KEY_PARAMETER = "key";
@@ -41,10 +42,19 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	private static final String CMS_PATH = "/cms";
 	private static final String COURSES_PATH = "/courses";
 	private static final String LEFT_SLASH_CHARACTER = "/";
+	
+	/**
+	 * Logger.
+	 */
 	private static final Logger LOGGER = Logger.getLogger(PageLinkTransformer.class);
-	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage",
-			"/menubuilder", "/pageoptions", "/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages",
-			"/blocks", "/blockedit", "/site.blocks.", "/site.pagetypes.", "/ui/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send"};
+	
+	
+	/**
+	 * Special reseverved path for system pages, we do not treat them as webnode nor can have the webnode page with such path.
+	 */
+	public static String[] IMMUTABLE_PATHS = new String[] { "/assets", "/login", "/editpage", "/newpage", "/menubuilder", "/pageoptions",
+			"/ma.", "/site", "/sitesettings", "/pagetypes", "/menus", "/pages", "/blocks", "/blockedit", "/site.blocks.",
+			"/site.pagetypes.", "/ui/internal/autocomplete.sub", "/pt.sort", "ui/textileform.send" };
 
 	/**
 	 * Path of the removing from cookies request
@@ -85,7 +95,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Inject
 	IRoomService roomService;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
 
@@ -95,13 +105,11 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		LOGGER.info("Rewrite InBound: path is: " + path);
 
 		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
-		
-		
-		if(webSiteService.getCurrentWebSite() == null){
+
+		if (webSiteService.getCurrentWebSite() == null) {
 			pageIdentifier = PageIdentifier.SiteNotFound;
 			requestGlobals.getResponse().setStatus(404);
-			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(),
-					false);
+			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
 		}
 
 		switch (pageIdentifier) {
@@ -112,9 +120,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			break;
 		case Courses:
-			final boolean isCMSCoursesSearch = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase().startsWith(CMS_PATH + COURSES_PATH);
+			final boolean isCMSCoursesSearch = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
+					.startsWith(CMS_PATH + COURSES_PATH);
 			String tagsPath = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
-					.replaceFirst(isCMSCoursesSearch? CMS_PATH + COURSES_PATH : COURSES_PATH, StringUtils.EMPTY);
+					.replaceFirst(isCMSCoursesSearch ? CMS_PATH + COURSES_PATH : COURSES_PATH, StringUtils.EMPTY);
 			LOGGER.warn("tagsPath:" + tagsPath);
 			if (!tagsPath.startsWith(CMS_PATH)) {
 				if (tagsPath.startsWith(LEFT_SLASH_CHARACTER)) {
@@ -177,8 +186,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			if (site != null) {
 				request.setAttribute(Site.class.getSimpleName(), site);
 			} else {
-				return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(),
-						new EmptyEventContext(), false);
+				return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
 			}
 			break;
 		case Room:
@@ -212,7 +220,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		case Timeline:
 			break;
 		case CoursesSitesMap:
-			break;	
+			break;
 		}
 
 		if (pageIdentifier != PageIdentifier.PageNotFound) {
@@ -234,12 +242,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 					}
 				}
 				if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)) {
-					return new PageRenderRequestParameters(PageIdentifier.Shortlist.getPageName(),
-							new EmptyEventContext(), false);
+					return new PageRenderRequestParameters(PageIdentifier.Shortlist.getPageName(), new EmptyEventContext(), false);
 				}
 				if (key.equalsIgnoreCase(Discount.PROMOTIONS_KEY)) {
-					return new PageRenderRequestParameters(PageIdentifier.Promotions.getPageName(),
-							new EmptyEventContext(), false);
+					return new PageRenderRequestParameters(PageIdentifier.Promotions.getPageName(), new EmptyEventContext(), false);
 				}
 			}
 
@@ -264,16 +270,16 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		if (requestGlobals.getHTTPServletRequest() != null
 				&& requestGlobals.getHTTPServletRequest().getContextPath().equalsIgnoreCase(CMS_PATH)) {
-
-			// return just ordinary page for cms to give it the ability to
-			// create the "new page"
-			return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
+			if ("y".equalsIgnoreCase(requestGlobals.getRequest().getParameter("newpage"))) {
+				// return just ordinary page for cms to give it the ability to
+				// create the "new page"
+				return new PageRenderRequestParameters(PageIdentifier.Page.getPageName(), new EmptyEventContext(), false);
+			}
 		}
 
 		requestGlobals.getResponse().setStatus(404);
 
-		return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(),
-				false);
+		return new PageRenderRequestParameters(PageIdentifier.PageNotFound.getPageName(), new EmptyEventContext(), false);
 	}
 
 	public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {
