@@ -13,14 +13,14 @@ public class CmsWebNodeServiceOverride extends WebNodeService {
 	
 	@Override
 	public WebNode getCurrentNode() {
-		WebNode node = super.getCurrentNode();
-		final Session session = request.getSession(false);
-		if (session != null) {
-			if (node != null) {
-				session.setAttribute(WebNode.LOADED_NODE, node);
-			}
-			else {
+		WebNode node = null; 
+		if (node == null) {
+			final Session session = request.getSession(false);
+			if (session != null) {
 				node = (WebNode) session.getAttribute(WebNode.LOADED_NODE);
+				if (node == null) {
+					node = super.getCurrentNode();
+				}
 			}
 		}
 		return node;
