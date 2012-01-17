@@ -20,6 +20,7 @@
 		<module>common-model</module>
 		<module>common-test</module>
 		<module>common-services</module>
+		<module>common-textile</module>
 	</modules>
 	
 	<repositories>

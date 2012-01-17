@@ -20,13 +20,13 @@ public class TextileUtil {
 	public static final String VIDEO_WIDTH_DEFAULT = "425";
 	public static final String VIDEO_HEIGHT_DEFAULT = "344";
 
-	public static final String TEXTILE_COURSE_PAGE = "ui/TextileCourse";
-	public static final String TEXTILE_COURSE_LIST_PAGE = "ui/TextileCourseList";
-	public static final String TEXTILE_IMAGE_PAGE = "ui/TextileImage";
-	public static final String TEXTILE_PAGE_PAGE = "ui/TextilePage";
-	public static final String TEXTILE_TAGS_PAGE = "ui/TextileTags";
-	public static final String TEXTILE_VIDEO_PAGE = "ui/TextileVideo";
-	public static final String TEXTILE_FORM_PAGE = "ui/TextileForm";
+	public static final String TEXTILE_COURSE_PAGE = "textile/TextileCourse";
+	public static final String TEXTILE_COURSE_LIST_PAGE = "textile/TextileCourseList";
+	public static final String TEXTILE_IMAGE_PAGE = "textile/TextileImage";
+	public static final String TEXTILE_PAGE_PAGE = "textile/TextilePage";
+	public static final String TEXTILE_TAGS_PAGE = "textile/TextileTags";
+	public static final String TEXTILE_VIDEO_PAGE = "textile/TextileVideo";
+	public static final String TEXTILE_FORM_PAGE = "textile/TextileForm";
 
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
 	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
