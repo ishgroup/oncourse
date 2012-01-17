@@ -74,8 +74,7 @@ public class TextileImage {
 			imageBinaryInfo = binaryDataService.getRandomImage();
 		}
 
-		imagePath = imageBinaryInfo != null ? 
-				("http://" + webSiteService.getCurrentDomain().getName() + "/asset/binarydata?id=" + imageBinaryInfo.getId()) : "";
+		imagePath = imageBinaryInfo != null ? ("/asset/binarydata?id=" + imageBinaryInfo.getId()) : "";
 		imageAlign = align != null ? align : "";
 		imageAlt = alt != null ? alt : "";
 		imageTitle = title != null ? title : "";
