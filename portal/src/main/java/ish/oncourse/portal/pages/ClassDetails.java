@@ -2,16 +2,21 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.html.IPlainTextExtractor;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ClassDetails {
+	
+	private static final int CLASS_DETAILS_LENGTH = 490;
 
 	@Property
 	private CourseClass courseClass;
@@ -24,6 +29,12 @@ public class ClassDetails {
 	
 	@Inject
 	private ITextileConverter textileConverter;
+	
+	@Inject
+	private IPlainTextExtractor extractor;
+	
+	@Inject
+	private IWebSiteService webSiteService;
 	
 	@InjectPage
 	private PageNotFound pageNotFound;
@@ -50,7 +61,18 @@ public class ClassDetails {
 			}
 			
 			details = textileConverter.convertCustomTextile(textileDetails.toString(), new ValidationErrors());
+			details = extractor.extractFromHtml(details);
+			details = StringUtils.abbreviate(details, CLASS_DETAILS_LENGTH);
 		}
 		return null;
+	}
+	
+	public String getClassDetailsLink() {
+		return courseClass != null ? "http://" + webSiteService.getCurrentDomain().getName() + "/class/" + 
+				courseClass.getCourse().getCode() + "-" + courseClass.getCode() : "";
+	}
+	
+	public boolean isHidden() {
+		return courseClass != null ? !courseClass.getIsWebVisible() : true;
 	}
 }
