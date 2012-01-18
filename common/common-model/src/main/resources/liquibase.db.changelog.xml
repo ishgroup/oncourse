@@ -649,7 +649,7 @@
 	<changeSet id="49" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="PaymentTransaction" columnName="soapRequest"/>
+				<columnExists tableName="PaymentTransaction" columnName="soapResponse"/>
 			</not>
 		</preConditions>
 		<sql>ALTER TABLE PaymentTransaction ADD COLUMN soapResponse TEXT NULL  AFTER response ;</sql>
@@ -658,7 +658,7 @@
 	<changeSet id="50" author="viacheslav" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="PaymentOutTransaction" columnName="soapRequest"/>
+				<columnExists tableName="PaymentOutTransaction" columnName="soapResponse"/>
 			</not>
 		</preConditions>
 		<sql>ALTER TABLE PaymentOutTransaction ADD COLUMN soapResponse TEXT NULL  AFTER response ;</sql>
