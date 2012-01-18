@@ -645,6 +645,24 @@
 			<column name="statusNotes" type="varchar(100)" />
 		</addColumn>
 	</changeSet>
+	
+	<changeSet id="49" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="PaymentTransaction" columnName="soapRequest"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE PaymentTransaction ADD COLUMN soapRequest TEXT NULL  AFTER response , ADD COLUMN soapResponse TEXT NULL  AFTER soapRequest ;</sql>
+	</changeSet>
+	
+	<changeSet id="50" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="PaymentOutTransaction" columnName="soapRequest"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE PaymentOutTransaction ADD COLUMN soapRequest TEXT NULL  AFTER response , ADD COLUMN soapResponse TEXT NULL  AFTER soapRequest ;</sql>
+	</changeSet>
 		
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>

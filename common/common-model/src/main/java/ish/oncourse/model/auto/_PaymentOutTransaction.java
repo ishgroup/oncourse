@@ -18,6 +18,8 @@ public abstract class _PaymentOutTransaction extends CayenneDataObject {
     public static final String IS_FINALISED_PROPERTY = "isFinalised";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String RESPONSE_PROPERTY = "response";
+    public static final String SOAP_REQUEST_PROPERTY = "soapRequest";
+    public static final String SOAP_RESPONSE_PROPERTY = "soapResponse";
     public static final String TXN_REFERENCE_PROPERTY = "txnReference";
     public static final String PAYMENT_OUT_PROPERTY = "paymentOut";
 
@@ -49,6 +51,20 @@ public abstract class _PaymentOutTransaction extends CayenneDataObject {
     }
     public String getResponse() {
         return (String)readProperty("response");
+    }
+
+    public void setSoapRequest(String soapRequest) {
+        writeProperty("soapRequest", soapRequest);
+    }
+    public String getSoapRequest() {
+        return (String)readProperty("soapRequest");
+    }
+
+    public void setSoapResponse(String soapResponse) {
+        writeProperty("soapResponse", soapResponse);
+    }
+    public String getSoapResponse() {
+        return (String)readProperty("soapResponse");
     }
 
     public void setTxnReference(String txnReference) {
