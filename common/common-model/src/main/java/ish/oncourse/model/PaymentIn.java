@@ -506,19 +506,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	}
 
 	/**
-	 * Gets currently active transaction of payment in object.
-	 * 
-	 * @return payment transaction
-	 */
-	public PaymentTransaction getActiveTransaction() {
-		List<PaymentTransaction> transactions = getPaymentTransactions();
-		Expression finalisedExpr = ExpressionFactory.matchExp(PaymentTransaction.IS_FINALISED_PROPERTY, false);
-		finalisedExpr = finalisedExpr.orExp(ExpressionFactory.matchExp(PaymentTransaction.IS_FINALISED_PROPERTY, null));
-		List<PaymentTransaction> activeTransactions = finalisedExpr.filterObjects(transactions);
-		return (activeTransactions.isEmpty()) ? null : activeTransactions.get(0);
-	}
-
-	/**
 	 * Makes shallow copy of current paymentIn object.
 	 * 
 	 * @return

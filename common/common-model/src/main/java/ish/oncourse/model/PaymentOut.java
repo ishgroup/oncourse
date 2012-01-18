@@ -69,19 +69,6 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 		return PaymentSource.SOURCE_WEB.getDatabaseValue() + getId();
 	}
 
-	/**
-	 * Gets currently active transaction of paymentOut object.
-	 * 
-	 * @return payment out transaction
-	 */
-	public PaymentOutTransaction getActiveTransaction() {
-		List<PaymentOutTransaction> transactions = getPaymentOutTransactions();
-		Expression finalisedExpr = ExpressionFactory.matchExp(PaymentOutTransaction.IS_FINALISED_PROPERTY, false);
-		finalisedExpr = finalisedExpr.orExp(ExpressionFactory.matchExp(PaymentOutTransaction.IS_FINALISED_PROPERTY, null));
-		List<PaymentOutTransaction> activeTransactions = finalisedExpr.filterObjects(transactions);
-		return (activeTransactions.isEmpty()) ? null : activeTransactions.get(0);
-	}
-
 	/* (non-Javadoc)
 	 * @see ish.oncourse.model.auto._PaymentOut#setStatus(ish.common.types.PaymentStatus)
 	 */

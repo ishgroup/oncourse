@@ -5,6 +5,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentOutTransaction;
 import ish.oncourse.model.PaymentTransaction;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.util.CreditCardUtil;
 
 import java.util.Date;
@@ -13,7 +14,7 @@ import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
-import org.apache.commons.lang.StringUtils;
+import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Scope;
 
@@ -38,21 +39,26 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	 * The number of retry attempts.
 	 */
 	private static final int NUMBER_OF_ATTEMPTS = 5;
-	
+
 	/**
 	 * Retry interval.
 	 */
 	private static final int RETRY_INTERVAL = 2000;
-	
+
 	/**
 	 * Webservices calls timeout.
 	 */
 	private static final int TIMEOUT = 1000 * 120;
-	
+
 	/**
 	 * Logger for service.
 	 */
 	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayService.class);
+
+	/**
+	 * Cayenne service
+	 */
+	private ICayenneService cayenneService;
 
 	/**
 	 * {@inheritDoc} Performs Payment Express gateway.
@@ -61,23 +67,17 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	 */
 	@Override
 	public void processGateway(PaymentIn payment) {
-		
+
 		TransactionResult tr = null;
-		PaymentTransaction paymentTransaction = null;
+
 		try {
 
 			tr = doTransaction(payment);
-			if (!payment.getPaymentTransactions().isEmpty()) {
-				//prepare to log the result
-				paymentTransaction = payment.getPaymentTransactions().get(0);
-			}
+
 			StringBuilder resultDetails = new StringBuilder();
-			
+
 			if (tr != null) {
-				if (paymentTransaction != null) {
-					//log the result
-					paymentTransaction.setSoapResponse(tr.getMerchantHelpText());
-				}
+
 				if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
 					resultDetails.append("Payment succeed.");
 					payment.setStatusNotes("Payment succeed.");
@@ -90,60 +90,40 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 					payment.failPayment();
 				}
 
-				resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:")
-						.append(tr.getAuthorized()).append(", cardHolderHelpText:").append(tr.getCardHolderHelpText())
-						.append(", cardHolderName:").append(tr.getCardHolderName())
-						.append(", cardHolderResponseDescription:").append(tr.getCardHolderResponseDescription())
-						.append(", currencyRate:").append(tr.getCurrencyRate()).append(", currencyType:")
-						.append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
-						.append(", responseCode:").append(tr.getReco()).append(", responseText:")
-						.append(tr.getResponseText()).append(", retry:").append(tr.getRetry())
-						.append(", settlementDate:").append(tr.getDateSettlement()).append(", statusRequired:")
-						.append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
+				resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:").append(tr.getAuthorized())
+						.append(", cardHolderHelpText:").append(tr.getCardHolderHelpText()).append(", cardHolderName:")
+						.append(tr.getCardHolderName()).append(", cardHolderResponseDescription:")
+						.append(tr.getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getCurrencyRate())
+						.append(", currencyType:").append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
+						.append(", responseCode:").append(tr.getReco()).append(", responseText:").append(tr.getResponseText())
+						.append(", retry:").append(tr.getRetry()).append(", settlementDate:").append(tr.getDateSettlement())
+						.append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
 						.append(", transactionRef:").append(tr.getDpsTxnRef());
 			} else {
 				resultDetails.append("Payment failed with null transaction response");
 				payment.setStatusNotes("Payment failed. Null transaction response.");
-				if (paymentTransaction != null) {
-					//log the result
-					paymentTransaction.setSoapResponse(getResponseStringFromContext());
-				}
 				payment.failPayment();
 			}
-			
+
 			LOG.debug(resultDetails.toString());
 
 		} catch (Exception e) {
-			if (!payment.getPaymentTransactions().isEmpty()) {
-				//log the result
-				paymentTransaction = payment.getPaymentTransactions().get(0);
-				paymentTransaction.setSoapResponse(e.getMessage());
-			}
 			LOG.error(String.format("PaymentIn id:%s failed with exception.", payment.getId()), e);
 			payment.setStatusNotes("PaymentIn failed with exception.");
 			payment.failPayment();
 		}
-		/*if (paymentTransaction != null) {//commented for production
-			paymentTransaction.setSoapRequest(getRequestString());
-		}*/
 	}
 
 	@Override
 	public void processGateway(PaymentOut paymentOut) {
 
 		TransactionResult tr;
-		PaymentOutTransaction paymentTransaction = null;
+
 		try {
 			tr = doTransaction(paymentOut);
-			if (!paymentOut.getPaymentOutTransactions().isEmpty()) {
-				paymentTransaction = paymentOut.getPaymentOutTransactions().get(0);
-			}
+
 			StringBuilder resultDetails = new StringBuilder();
 			if (tr != null) {
-				if (paymentTransaction != null) {
-					//log the result
-					paymentTransaction.setSoapResponse(tr.getMerchantHelpText());
-				}
 				if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
 					resultDetails.append("PaymentOut succeed.");
 					paymentOut.setStatusNotes("PaymentOut succeed.");
@@ -158,42 +138,28 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 					paymentOut.failed();
 				}
 
-				resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:")
-						.append(tr.getAuthorized()).append(", cardHolderHelpText:").append(tr.getCardHolderHelpText())
-						.append(", cardHolderName:").append(tr.getCardHolderName())
-						.append(", cardHolderResponseDescription:").append(tr.getCardHolderResponseDescription())
-						.append(", currencyRate:").append(tr.getCurrencyRate()).append(", currencyType:")
-						.append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
-						.append(", responseCode:").append(tr.getReco()).append(", responseText:")
-						.append(tr.getResponseText()).append(", retry:").append(tr.getRetry())
-						.append(", settlementDate:").append(tr.getDateSettlement()).append(", statusRequired:")
-						.append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
+				resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:").append(tr.getAuthorized())
+						.append(", cardHolderHelpText:").append(tr.getCardHolderHelpText()).append(", cardHolderName:")
+						.append(tr.getCardHolderName()).append(", cardHolderResponseDescription:")
+						.append(tr.getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getCurrencyRate())
+						.append(", currencyType:").append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
+						.append(", responseCode:").append(tr.getReco()).append(", responseText:").append(tr.getResponseText())
+						.append(", retry:").append(tr.getRetry()).append(", settlementDate:").append(tr.getDateSettlement())
+						.append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
 						.append(", transactionRef:").append(tr.getDpsTxnRef());
 			} else {
 				resultDetails.append("PaymentOut failed with null transaction response.");
 				paymentOut.setStatusNotes("PaymentOut failed with null transaction response.");
-				if (paymentTransaction != null) {
-					//log the result
-					paymentTransaction.setSoapResponse(getResponseStringFromContext());
-				}
 				paymentOut.failed();
 			}
-			
+
 			LOG.debug(resultDetails.toString());
-			
+
 		} catch (Exception e) {
-			if (!paymentOut.getPaymentOutTransactions().isEmpty()) {
-				//log the result
-				paymentTransaction = paymentOut.getPaymentOutTransactions().get(0);
-				paymentTransaction.setSoapResponse(e.getMessage());
-			}
 			LOG.error(String.format("PaymentOut id:%s failed with exception.", paymentOut.getId()), e);
 			paymentOut.setStatusNotes("PaymentOut failed with exception.");
 			paymentOut.failed();
 		}
-		/*if (paymentTransaction != null) {//commented for production
-			paymentTransaction.setSoapRequest(getRequestString());
-		}*/
 	}
 
 	/**
@@ -205,52 +171,62 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	 * @throws Exception
 	 */
 	public TransactionResult doTransaction(PaymentIn payment) throws Exception {
-		
+
 		PaymentExpressWSSoap12Stub stub = soapClientStub();
-	
+
 		// "ISHPaymentExpress.testingGatewayAccount", "ishGroup_Dev"
 		String username = payment.getCollege().getPaymentGatewayAccount();
 		// "ISHPaymentExpress.testingGatewayPass", "test1234"
 		String password = payment.getCollege().getPaymentGatewayPass();
 		TransactionDetails transactionDetails = getTransactionDetails(payment);
 
-		LOG.debug("Submitting payment to paymentexpress, gatewayAccount: " + username + ", gatewayPassword: "
-				+ password);
-		
+		LOG.debug("Submitting payment to paymentexpress, gatewayAccount: " + username + ", gatewayPassword: " + password);
+
 		int n = 0;
 		boolean shouldRetry = true;
-		
+
 		TransactionResult result = null;
 		
 		while (shouldRetry && n < NUMBER_OF_ATTEMPTS) {
-			
-			initNewPaymentTransaction(payment);
-			
-			result = stub.submitTransaction(username, password, transactionDetails);
-			
-			if (result != null) {
-				PaymentTransaction t = payment.getActiveTransaction();
-				t.setResponse(result.getResponseText());
-				t.setTxnReference(result.getTxnRef());
-				// in any case, this transaction is completed
-				t.setIsFinalised(true);
-				shouldRetry = PaymentExpressUtil.translateFlag(result.getRetry());
+
+			PaymentTransaction t = null;
+
+			try {
+				t = createNewPaymentTransaction(payment); 
+				result = stub.submitTransaction(username, password, transactionDetails);
 				
-				if (shouldRetry) {
-					Thread.sleep(RETRY_INTERVAL);
+				t.setSoapResponse(getSoapResponseAsString());
+				
+				if (result != null) {
+					t.setResponse(result.getResponseText());
+					t.setTxnReference(result.getTxnRef());
+					t.setIsFinalised(true);// in any case, this transaction is completed
+					shouldRetry = PaymentExpressUtil.translateFlag(result.getRetry());
+
+					if (shouldRetry) {
+						Thread.sleep(RETRY_INTERVAL);
+					}
 				}
-			}
-			
-			n++;
+
+				n++;
+				
+			} finally {
+				if (t != null) {
+					t.getObjectContext().commitChanges();
+				}
+			}			
 		}
-		
+
 		if (result != null) {
-			if(PaymentExpressUtil.translateFlag(result.getAuthorized())) {
+			if (PaymentExpressUtil.translateFlag(result.getAuthorized())) {
 				payment.setGatewayResponse(result.getResponseText());
 				payment.setGatewayReference(result.getDpsTxnRef());
 			}
 		}
-		
+		else {
+			throw new Exception(String.format("Got null paymentIn response from PaymentExpress. After %s retries.", n));
+		}
+
 		return result;
 	}
 
@@ -272,31 +248,47 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 		String password = paymentOut.getCollege().getPaymentGatewayPass();
 
 		TransactionDetails transactionDetails = getTransactionDetails(paymentOut);
-		
-		LOG.debug("Submitting payment to paymentexpress, gatewayAccount: " + username + ", gatewayPassword: "
-				+ password);
-		
+
+		LOG.debug("Submitting payment to paymentexpress, gatewayAccount: " + username + ", gatewayPassword: " + password);
+
 		int n = 0;
 		boolean shouldRetry = true;
 		TransactionResult result = null;
-		
+
 		while (shouldRetry && n < NUMBER_OF_ATTEMPTS) {
-			initNewPaymentOutTransaction(paymentOut);
-			result = stub.submitTransaction(username, password, transactionDetails);
-			if (result != null) {
-				PaymentOutTransaction t = paymentOut.getActiveTransaction();
-				t.setResponse(result.getResponseText());
-				t.setTxnReference(result.getTxnRef());
-				// in any case, this transaction is completed
-				t.setIsFinalised(true);
-				shouldRetry = PaymentExpressUtil.translateFlag(result.getRetry());
+			
+			PaymentOutTransaction t = null;
+			
+			try {
+				t = createNewPaymentOutTransaction(paymentOut);
+				result = stub.submitTransaction(username, password, transactionDetails);
 				
-				if (shouldRetry) {
-					Thread.sleep(RETRY_INTERVAL);
+				t.setSoapResponse(getSoapResponseAsString());
+				
+				if (result != null) {
+					t.setResponse(result.getResponseText());
+					t.setTxnReference(result.getTxnRef());
+					t.setIsFinalised(true);// in any case, this transaction is
+											// completed
+					shouldRetry = PaymentExpressUtil.translateFlag(result.getRetry());
+
+					if (shouldRetry) {
+						Thread.sleep(RETRY_INTERVAL);
+					}
+				}
+				
+				n++;
+			}
+			finally {
+				if (t != null) {
+					t.getObjectContext().commitChanges();
 				}
 			}
 		}
 		
+		if (result == null) {
+			throw new Exception(String.format("Got null paymentOut response from PaymentExpress. After %s retries.", n));
+		}
 
 		return result;
 	}
@@ -373,17 +365,40 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 		return details;
 	}
 
-	protected void initNewPaymentTransaction(PaymentIn payment) {
-		PaymentTransaction paymentTransaction = payment.getObjectContext().newObject(PaymentTransaction.class);
-		paymentTransaction.setPayment(payment);
+	/**
+	 * Creates a new PaymentTransaction for paymentIn
+	 * 
+	 * @param payment
+	 * @return
+	 */
+	private PaymentTransaction createNewPaymentTransaction(PaymentIn payment) {
+		ObjectContext newObjectContext = cayenneService.newNonReplicatingContext();
+		PaymentTransaction paymentTransaction = newObjectContext.newObject(PaymentTransaction.class);
+		PaymentIn local = (PaymentIn) newObjectContext.localObject(payment.getObjectId(), null);
+		paymentTransaction.setPayment(local);
+		return paymentTransaction;
 	}
 
-	@Override
-	protected void initNewPaymentOutTransaction(PaymentOut paymentOut) {
-		PaymentOutTransaction refundTransaction =paymentOut.getObjectContext().newObject(PaymentOutTransaction.class);
-		refundTransaction.setPaymentOut(paymentOut);
+	/**
+	 * Creates a new PaymentOutTransaction for paymentOut
+	 * 
+	 * @param paymentOut
+	 * @return
+	 */
+	private PaymentOutTransaction createNewPaymentOutTransaction(PaymentOut paymentOut) {
+		ObjectContext newObjectContext = cayenneService.newNonReplicatingContext();
+		PaymentOutTransaction refundTransaction = newObjectContext.newObject(PaymentOutTransaction.class);
+		PaymentOut local = (PaymentOut) newObjectContext.localObject(paymentOut.getObjectId(), null);
+		refundTransaction.setPaymentOut(local);
+		return refundTransaction;
 	}
-	
+
+	/**
+	 * Initializes soap client.
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 */
 	private PaymentExpressWSSoap12Stub soapClientStub() throws ServiceException {
 		PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocator();
 		serviceLocator.setPaymentExpressWSSoapEndpointAddress("https://sec.paymentexpress.com/WSV1/PXWS.asmx");
@@ -392,25 +407,19 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 		return stub;
 	}
 	
-	private String getRequestString() {
+	/**
+	 * Gets soap response of the current webservice call.
+	 * 
+	 * @return
+	 */
+	private String getSoapResponseAsString() {
 		try {
-			MessageContext context = MessageContext.getCurrentContext(); 
-			Message message = context.getRequestMessage();
-			return message.getSOAPPartAsString();
-		} catch (Exception e) {
-			LOG.warn("Can not get soap request.", e);
-		} 
-		return StringUtils.EMPTY;
-	}
-	
-	private String getResponseStringFromContext() {
-		try {
-			MessageContext context = MessageContext.getCurrentContext(); 
+			MessageContext context = MessageContext.getCurrentContext();
 			Message message = context.getResponseMessage();
 			return message.getSOAPPartAsString();
 		} catch (Exception e) {
 			LOG.warn("Can not get soap request.", e);
-		} 
-		return StringUtils.EMPTY;
+		}
+		return null;
 	}
 }

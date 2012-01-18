@@ -40,10 +40,6 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 		}	
 	}
 
-	protected abstract void initNewPaymentTransaction(PaymentIn payment);
-
-	protected abstract void initNewPaymentOutTransaction(PaymentOut paymentOut);
-
 	/**
 	 * {@inheritDoc}
 	 * 
