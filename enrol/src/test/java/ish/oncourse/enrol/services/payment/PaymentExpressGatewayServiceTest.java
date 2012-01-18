@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.services.payment;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +16,7 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -121,12 +121,14 @@ public class PaymentExpressGatewayServiceTest {
 	public void testSuccessfulDoTransaction() throws Exception {
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
-
+		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		TransactionResult tr = gatewayService.doTransaction(payment);
+		assertNotNull("Transaction result should be not empty for successfull payment", tr);
 		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
 		assertTrue("Check if authorized.", isAuthorized);
+		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
 	}
-
+	
 	/**
 	 * Emulates the failed transaction,
 	 * {@link TransactionResult#getAuthorized()} should return false.
@@ -149,10 +151,14 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testSuccessfulProcessGateway() throws Exception {
+		final PaymentTransaction paymentTransaction = new PaymentTransaction();
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		gatewayService.processGateway(payment);
 		verify(payment).succeed();
+		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
+		assertNotNull("Soap Response for successfull payment should not be empty", StringUtils.trimToNull(paymentTransaction.getSoapResponse()));
 	}
 
 	/**
@@ -163,10 +169,14 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testUnsuccessfulProcessGateway() throws Exception {
+		final PaymentTransaction paymentTransaction = new PaymentTransaction();
 		when(payment.getCreditCardNumber()).thenReturn(DECLINED_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
+		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		gatewayService.processGateway(payment);
 		verify(payment).failPayment();
+		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
+		assertNotNull("Soap Response for unsuccessfull payment should not be empty", StringUtils.trimToNull(paymentTransaction.getSoapResponse()));
 	}
 
 	/**

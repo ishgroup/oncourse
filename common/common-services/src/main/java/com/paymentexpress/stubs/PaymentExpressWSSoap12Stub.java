@@ -9,8 +9,6 @@ package com.paymentexpress.stubs;
 
 import java.rmi.RemoteException;
 
-import org.apache.commons.lang.StringUtils;
-
 public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub implements com.paymentexpress.stubs.PaymentExpressWSSoap {
     @SuppressWarnings("rawtypes")
 	private java.util.Vector cachedSerClasses = new java.util.Vector();
@@ -293,27 +291,21 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
         	java.lang.Object _resp = _call.invoke(new java.lang.Object[] {postUsername, postPassword, transactionDetails});
         if (_resp instanceof java.rmi.RemoteException) {
         	throw new RemoteException(_call.getResponseMessage().getSOAPPartAsString(), (RemoteException)_resp);
-            //throw (java.rmi.RemoteException)_resp;
         }
         else {
             extractAttachments(_call);
             try {
             	TransactionResult response = (TransactionResult) _resp;
-            	if (StringUtils.trimToNull(response.getMerchantHelpText()) == null) {
-            		response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
-            	}
+            	response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
                 return response;
             } catch (java.lang.Exception _exception) {
             	TransactionResult response = (TransactionResult) org.apache.axis.utils.JavaUtils.convert(_resp, TransactionResult.class);
-            	if (StringUtils.trimToNull(response.getMerchantHelpText()) == null) {
-            		response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
-            	}
+            	response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
                 return response;
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
 	  throw new org.apache.axis.AxisFault(_call.getResponseMessage().getSOAPPartAsString(), axisFaultException);
-  //throw axisFaultException;
 }
     }
 
