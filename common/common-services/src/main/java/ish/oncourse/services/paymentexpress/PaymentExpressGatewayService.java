@@ -12,8 +12,6 @@ import java.util.Date;
 
 import javax.xml.rpc.ServiceException;
 
-import org.apache.axis.Message;
-import org.apache.axis.MessageContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -202,7 +200,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 				t = createNewPaymentTransaction(payment); 
 				result = stub.submitTransaction(username, password, transactionDetails);
 				
-				t.setSoapResponse(getSoapResponseAsString());
+				t.setSoapResponse(result.getMerchantHelpText());
 				
 				if (result != null) {
 					t.setResponse(result.getResponseText());
@@ -270,7 +268,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 				t = createNewPaymentOutTransaction(paymentOut);
 				result = stub.submitTransaction(username, password, transactionDetails);
 				
-				t.setSoapResponse(getSoapResponseAsString());
+				t.setSoapResponse(result.getMerchantHelpText());
 				
 				if (result != null) {
 					t.setResponse(result.getResponseText());
@@ -412,21 +410,5 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 		PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
 		stub.setTimeout(TIMEOUT);
 		return stub;
-	}
-	
-	/**
-	 * Gets soap response of the current webservice call.
-	 * 
-	 * @return
-	 */
-	private String getSoapResponseAsString() {
-		try {
-			MessageContext context = MessageContext.getCurrentContext();
-			Message message = context.getResponseMessage();
-			return message.getSOAPPartAsString();
-		} catch (Exception e) {
-			LOG.warn("Can not get soap request.", e);
-		}
-		return null;
 	}
 }
