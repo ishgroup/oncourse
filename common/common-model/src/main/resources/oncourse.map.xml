@@ -516,7 +516,6 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="paymentOutId" type="BIGINT" length="19"/>
 		<db-attribute name="response" type="LONGVARCHAR" length="65535"/>
-		<db-attribute name="soapRequest" type="VARCHAR" length="8192"/>
 		<db-attribute name="soapResponse" type="VARCHAR" length="8192"/>
 		<db-attribute name="txnReference" type="VARCHAR" length="64"/>
 	</db-entity>
@@ -527,7 +526,6 @@
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="paymentId" type="BIGINT" length="19"/>
 		<db-attribute name="response" type="LONGVARCHAR" length="65535"/>
-		<db-attribute name="soapRequest" type="VARCHAR" length="8192"/>
 		<db-attribute name="soapResponse" type="VARCHAR" length="8192"/>
 		<db-attribute name="txnReference" type="VARCHAR" length="64"/>
 	</db-entity>
@@ -1274,7 +1272,6 @@
 		<obj-attribute name="isFinalised" type="java.lang.Boolean" db-attribute-path="isFinalised"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
-		<obj-attribute name="soapRequest" type="java.lang.String" db-attribute-path="soapRequest"/>
 		<obj-attribute name="soapResponse" type="java.lang.String" db-attribute-path="soapResponse"/>
 		<obj-attribute name="txnReference" type="java.lang.String" db-attribute-path="txnReference"/>
 	</obj-entity>
@@ -1283,7 +1280,6 @@
 		<obj-attribute name="isFinalised" type="java.lang.Boolean" db-attribute-path="isFinalised"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
-		<obj-attribute name="soapRequest" type="java.lang.String" db-attribute-path="soapRequest"/>
 		<obj-attribute name="soapResponse" type="java.lang.String" db-attribute-path="soapResponse"/>
 		<obj-attribute name="txnReference" type="java.lang.String" db-attribute-path="txnReference"/>
 		<pre-persist method-name="onPrePersist"/>

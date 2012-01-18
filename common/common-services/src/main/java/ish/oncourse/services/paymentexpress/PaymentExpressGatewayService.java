@@ -123,9 +123,9 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 			payment.setStatusNotes("PaymentIn failed with exception.");
 			payment.failPayment();
 		}
-		if (paymentTransaction != null) {
+		/*if (paymentTransaction != null) {//commented for production
 			paymentTransaction.setSoapRequest(getRequestString());
-		}
+		}*/
 	}
 
 	@Override
@@ -191,9 +191,9 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 			paymentOut.setStatusNotes("PaymentOut failed with exception.");
 			paymentOut.failed();
 		}
-		if (paymentTransaction != null) {
+		/*if (paymentTransaction != null) {//commented for production
 			paymentTransaction.setSoapRequest(getRequestString());
-		}
+		}*/
 	}
 
 	/**

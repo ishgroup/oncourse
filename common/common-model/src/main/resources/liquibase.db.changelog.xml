@@ -652,7 +652,7 @@
 				<columnExists tableName="PaymentTransaction" columnName="soapRequest"/>
 			</not>
 		</preConditions>
-		<sql>ALTER TABLE PaymentTransaction ADD COLUMN soapRequest TEXT NULL  AFTER response , ADD COLUMN soapResponse TEXT NULL  AFTER soapRequest ;</sql>
+		<sql>ALTER TABLE PaymentTransaction ADD COLUMN soapResponse TEXT NULL  AFTER response ;</sql>
 	</changeSet>
 	
 	<changeSet id="50" author="viacheslav" context="production" runOnChange="true">
@@ -661,7 +661,7 @@
 				<columnExists tableName="PaymentOutTransaction" columnName="soapRequest"/>
 			</not>
 		</preConditions>
-		<sql>ALTER TABLE PaymentOutTransaction ADD COLUMN soapRequest TEXT NULL  AFTER response , ADD COLUMN soapResponse TEXT NULL  AFTER soapRequest ;</sql>
+		<sql>ALTER TABLE PaymentOutTransaction ADD COLUMN soapResponse TEXT NULL  AFTER response ;</sql>
 	</changeSet>
 		
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
