@@ -8,6 +8,7 @@ import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 
 import org.apache.tapestry5.ioc.ServiceResources;
@@ -46,7 +47,7 @@ public class PaymentGatewayServiceBuilderTest {
 		resources = mock(ServiceResources.class);
 		preferenceController = mock(PreferenceController.class);
 		
-		builder = new PaymentGatewayServiceBuilder(preferenceController);
+		builder = new PaymentGatewayServiceBuilder(preferenceController, mock(ICayenneService.class));
 
 		when(resources.getService(PreferenceController.class)).thenReturn(preferenceController);
 		when(preferenceController.getPaymentGatewayType()).thenReturn(

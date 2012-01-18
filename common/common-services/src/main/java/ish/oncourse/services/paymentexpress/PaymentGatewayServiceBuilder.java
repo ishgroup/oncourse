@@ -1,19 +1,22 @@
 package ish.oncourse.services.paymentexpress;
 
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.site.IWebSiteService;
 
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuilder {
 
-	private PreferenceController preferenceController;
+	private final PreferenceController preferenceController;
+
+	private final ICayenneService cayenneService;
 
 	@Inject
-	public PaymentGatewayServiceBuilder(PreferenceController preferenceController) {
+	public PaymentGatewayServiceBuilder(PreferenceController preferenceController, ICayenneService cayenneService) {
 		super();
 		this.preferenceController = preferenceController;
+		this.cayenneService = cayenneService;
 	}
 
 	/**
@@ -22,7 +25,7 @@ public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuild
 	 * 
 	 */
 	public IPaymentGatewayService buildService() {
-		
+
 		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(ServiceModule.APP_TEST_MODE));
 
 		if (isInTestMode) {
@@ -31,7 +34,7 @@ public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuild
 
 		switch (preferenceController.getPaymentGatewayType()) {
 		case PAYMENT_EXPRESS:
-			return new PaymentExpressGatewayService();
+			return new PaymentExpressGatewayService(cayenneService);
 		case TEST:
 			return new TestPaymentGatewayService();
 		case DISABLED:

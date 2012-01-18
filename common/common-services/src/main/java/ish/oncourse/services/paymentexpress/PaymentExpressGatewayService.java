@@ -16,6 +16,7 @@ import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Scope;
 
 import com.paymentexpress.stubs.PaymentExpressWSLocator;
@@ -59,6 +60,12 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	 * Cayenne service
 	 */
 	private ICayenneService cayenneService;
+	
+	@Inject
+	public PaymentExpressGatewayService(ICayenneService cayenneService) {
+		super();
+		this.cayenneService = cayenneService;
+	}
 
 	/**
 	 * {@inheritDoc} Performs Payment Express gateway.

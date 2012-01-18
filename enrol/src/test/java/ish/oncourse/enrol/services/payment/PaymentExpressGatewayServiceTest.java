@@ -1,6 +1,8 @@
 package ish.oncourse.enrol.services.payment;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +12,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressUtil;
+import ish.oncourse.services.persistence.ICayenneService;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -65,7 +68,7 @@ public class PaymentExpressGatewayServiceTest {
 	/**
 	 * Instance to test.
 	 */
-	private static PaymentExpressGatewayService gatewayService;
+	private PaymentExpressGatewayService gatewayService;
 
 	/**
 	 * The payment for gateway.
@@ -76,8 +79,10 @@ public class PaymentExpressGatewayServiceTest {
 	@Mock
 	private ObjectContext objectContext;
 
-	@Mock
 	private PaymentTransaction paymentTransaction;
+	
+	@Mock
+	private ICayenneService cayenneService;
 
 	/**
 	 * The college for payment.
@@ -88,8 +93,7 @@ public class PaymentExpressGatewayServiceTest {
 	 * Initializes parameters for the whole test.
 	 */
 	@BeforeClass
-	public static void init() {
-		gatewayService = new PaymentExpressGatewayService();
+	public static void init() { 
 		VALID_EXPIRY_DATE.add(Calendar.YEAR, 2);
 		college = new College();
 		college.setPaymentGatewayAccount(GATEWAY_ACCOUNT);
@@ -101,6 +105,28 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Before
 	public void initMethod() {
+		
+		paymentTransaction = new PaymentTransaction() {
+			private String soapResponse;
+			
+			@Override
+			public ObjectContext getObjectContext() {
+				return objectContext;
+			}
+
+			@Override
+			public void setSoapResponse(String soapResponse) {
+				this.soapResponse = soapResponse;
+			}
+
+			@Override
+			public String getSoapResponse() {
+				return this.soapResponse;
+			}
+		};
+		
+		
+		
 		when(payment.getCollege()).thenReturn(college);
 		when(payment.getPaymentInLines()).thenReturn(Collections.EMPTY_LIST);
 		when(payment.getClientReference()).thenReturn(PAYMENT_REF);
@@ -108,7 +134,8 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardExpiry()).thenReturn(VALID_EXPIRY_DATE_STR);
 		when(payment.getObjectContext()).thenReturn(objectContext);
 		when(objectContext.newObject(PaymentTransaction.class)).thenReturn(paymentTransaction);
-		when(payment.getActiveTransaction()).thenReturn(paymentTransaction);
+		when(cayenneService.newNonReplicatingContext()).thenReturn(objectContext);
+		this.gatewayService = new PaymentExpressGatewayService(cayenneService);
 	}
 
 	/**
