@@ -10,6 +10,8 @@ import static org.mockito.Mockito.when;
 import ish.common.types.CreditCardType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentOut;
+import ish.oncourse.model.PaymentOutTransaction;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressUtil;
@@ -39,7 +41,7 @@ import com.paymentexpress.stubs.TransactionResult;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentExpressGatewayServiceTest {
 
-	private static final String PAYMENT_REF = "W111";//
+	private static final String PAYMENT_REF = "W111";//q
 
 	private static final String GATEWAY_PASSWORD = "test1234";
 
@@ -75,6 +77,9 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Mock
 	private PaymentIn payment;
+	
+	@Mock
+	private PaymentOut paymentOut;
 
 	@Mock
 	private ObjectContext objectContext;
@@ -83,12 +88,17 @@ public class PaymentExpressGatewayServiceTest {
 	private PaymentTransaction paymentTransaction;
 	
 	@Mock
+	private PaymentOutTransaction paymentOutTransaction;
+	
+	@Mock
 	private ICayenneService cayenneService;
 
 	/**
 	 * The college for payment.
 	 */
 	private static College college;
+	
+	private static TransactionResult result1;
 
 	/**
 	 * Initializes parameters for the whole test.
@@ -104,6 +114,7 @@ public class PaymentExpressGatewayServiceTest {
 	/**
 	 * Performs common operations for every method.
 	 */
+	@SuppressWarnings("unchecked")
 	@Before
 	public void initMethod() {
 		when(payment.getCollege()).thenReturn(college);
@@ -112,9 +123,17 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
 		when(payment.getCreditCardExpiry()).thenReturn(VALID_EXPIRY_DATE_STR);
 		when(payment.getObjectContext()).thenReturn(objectContext);
+		when(payment.getCreditCardType()).thenReturn(CreditCardType.MASTERCARD);
 		when(paymentTransaction.getObjectContext()).thenReturn(objectContext);
 		when(objectContext.newObject(PaymentTransaction.class)).thenReturn(paymentTransaction);
 		when(cayenneService.newNonReplicatingContext()).thenReturn(objectContext);
+		
+		when(paymentOut.getCollege()).thenReturn(college);
+		when(paymentOut.getClientReference()).thenReturn(PAYMENT_REF);
+		when(paymentOut.getObjectContext()).thenReturn(objectContext);
+		when(paymentOutTransaction.getObjectContext()).thenReturn(objectContext);
+		when(objectContext.newObject(PaymentOutTransaction.class)).thenReturn(paymentOutTransaction);
+		
 		this.gatewayService = new PaymentExpressGatewayService(cayenneService);
 	}
 
@@ -134,6 +153,27 @@ public class PaymentExpressGatewayServiceTest {
 		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
 		assertTrue("Check if authorized.", isAuthorized);
 		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
+		result1 = tr;
+	}
+	
+	/**
+	 * Emulates the successful transaction,
+	 * {@link TransactionResult#getAuthorized()} should return true.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testSuccessfulDoOutTransaction() throws Exception {
+		testSuccessfulDoTransaction();
+		TransactionResult tr1 = result1;
+		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
+		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
+		TransactionResult tr = gatewayService.doTransaction(paymentOut);
+		assertNotNull("Transaction result should be not empty for successfull payment", tr);
+		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
+		assertTrue("Check if authorized.", isAuthorized);
+		assertTrue("PaymentTransaction should exist", !paymentOut.getPaymentOutTransactions().isEmpty() && paymentOut.getPaymentOutTransactions().size() == 1);
 	}
 	
 	/**
@@ -148,6 +188,23 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		TransactionResult tr = gatewayService.doTransaction(payment);
 		assertFalse(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
+	}
+	
+	/**
+	 * Emulates the failed transaction,
+	 * {@link TransactionResult#getAuthorized()} should return false.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testUnsuccessfulDoOutTransaction() throws Exception {
+		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
+		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
+		TransactionResult tr = gatewayService.doTransaction(paymentOut);
+		assertNotNull("Transaction result should be not empty for unsuccessfull payment out", tr);
+		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
+		assertFalse("Check if authorized.", isAuthorized);
+		assertTrue("PaymentTransaction should exist", !paymentOut.getPaymentOutTransactions().isEmpty() && paymentOut.getPaymentOutTransactions().size() == 1);
 	}
 
 	/**
@@ -166,6 +223,25 @@ public class PaymentExpressGatewayServiceTest {
 		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
 		verify(paymentTransaction).setSoapResponse(anyString());
 	}
+	
+	/**
+	 * Emulates the successful payment processing, {@link PaymentOut#succeed()}
+	 * should be invoked.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testSuccessfulOutProcessGateway() throws Exception {
+		testSuccessfulDoTransaction();
+		TransactionResult tr1 = result1;
+		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
+		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));		
+		gatewayService.processGateway(paymentOut);
+		verify(paymentOut).succeed();
+		assertTrue("PaymentTransaction should exist", !paymentOut.getPaymentOutTransactions().isEmpty() && paymentOut.getPaymentOutTransactions().size() == 1);
+		verify(paymentOutTransaction).setSoapResponse(anyString());
+	}
 
 	/**
 	 * Emulates the unsuccessful payment processing(with the declined gateway
@@ -182,6 +258,22 @@ public class PaymentExpressGatewayServiceTest {
 		verify(payment).failPayment();
 		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
 		verify(paymentTransaction).setSoapResponse(anyString());
+	}
+	
+	/**
+	 * Emulates the unsuccessful payment processing(with the declined gateway
+	 * response), {@link PaymentOut#failed()} should be invoked.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testUnsuccessfulOffProcessGateway() throws Exception {
+		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
+		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
+		gatewayService.processGateway(paymentOut);
+		verify(paymentOut).failed();
+		assertTrue("PaymentTransaction should exist", !paymentOut.getPaymentOutTransactions().isEmpty() && paymentOut.getPaymentOutTransactions().size() == 1);
+		verify(paymentOutTransaction).setSoapResponse(anyString());
 	}
 
 	/**
@@ -232,7 +324,7 @@ public class PaymentExpressGatewayServiceTest {
 	public void testPerformGatewayOperationInvalidCCType() throws Exception {
 		forceValidation();
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
-		when(payment.getCreditCardType()).thenReturn(null, null);
+		when(payment.getCreditCardType()).thenReturn(null);
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 
 		gatewayService.performGatewayOperation(payment);
