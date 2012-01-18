@@ -7,11 +7,19 @@
 
 package com.paymentexpress.stubs;
 
+import java.rmi.RemoteException;
+
+import org.apache.commons.lang.StringUtils;
+
 public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub implements com.paymentexpress.stubs.PaymentExpressWSSoap {
-    private java.util.Vector cachedSerClasses = new java.util.Vector();
-    private java.util.Vector cachedSerQNames = new java.util.Vector();
-    private java.util.Vector cachedSerFactories = new java.util.Vector();
-    private java.util.Vector cachedDeserFactories = new java.util.Vector();
+    @SuppressWarnings("rawtypes")
+	private java.util.Vector cachedSerClasses = new java.util.Vector();
+    @SuppressWarnings("rawtypes")
+	private java.util.Vector cachedSerQNames = new java.util.Vector();
+    @SuppressWarnings("rawtypes")
+	private java.util.Vector cachedSerFactories = new java.util.Vector();
+    @SuppressWarnings("rawtypes")
+	private java.util.Vector cachedDeserFactories = new java.util.Vector();
 
     static org.apache.axis.description.OperationDesc [] _operations;
 
@@ -142,7 +150,8 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
          super.cachedEndpoint = endpointURL;
     }
 
-    public PaymentExpressWSSoap12Stub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
+    @SuppressWarnings({ "rawtypes", "unused", "unchecked" })
+	public PaymentExpressWSSoap12Stub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
         if (service == null) {
             super.service = new org.apache.axis.client.Service();
         } else {
@@ -199,7 +208,8 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
 
     }
 
-    protected org.apache.axis.client.Call createCall() throws java.rmi.RemoteException {
+    @SuppressWarnings("rawtypes")
+	protected org.apache.axis.client.Call createCall() throws java.rmi.RemoteException {
         try {
             org.apache.axis.client.Call _call = super._createCall();
             if (super.maintainSessionSet) {
@@ -279,21 +289,31 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
 
         setRequestHeaders(_call);
         setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {postUsername, postPassword, transactionDetails});
-
+        try {        
+        	java.lang.Object _resp = _call.invoke(new java.lang.Object[] {postUsername, postPassword, transactionDetails});
         if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
+        	throw new RemoteException(_call.getResponseMessage().getSOAPPartAsString(), (RemoteException)_resp);
+            //throw (java.rmi.RemoteException)_resp;
         }
         else {
             extractAttachments(_call);
             try {
-                return (com.paymentexpress.stubs.TransactionResult) _resp;
+            	TransactionResult response = (TransactionResult) _resp;
+            	if (StringUtils.trimToNull(response.getMerchantHelpText()) == null) {
+            		response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
+            	}
+                return response;
             } catch (java.lang.Exception _exception) {
-                return (com.paymentexpress.stubs.TransactionResult) org.apache.axis.utils.JavaUtils.convert(_resp, com.paymentexpress.stubs.TransactionResult.class);
+            	TransactionResult response = (TransactionResult) org.apache.axis.utils.JavaUtils.convert(_resp, TransactionResult.class);
+            	if (StringUtils.trimToNull(response.getMerchantHelpText()) == null) {
+            		response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
+            	}
+                return response;
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
-  throw axisFaultException;
+	  throw new org.apache.axis.AxisFault(_call.getResponseMessage().getSOAPPartAsString(), axisFaultException);
+  //throw axisFaultException;
 }
     }
 

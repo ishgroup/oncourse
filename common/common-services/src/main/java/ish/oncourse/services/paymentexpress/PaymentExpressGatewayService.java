@@ -11,6 +11,9 @@ import java.util.Date;
 
 import javax.xml.rpc.ServiceException;
 
+import org.apache.axis.Message;
+import org.apache.axis.MessageContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Scope;
 
@@ -60,15 +63,21 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	public void processGateway(PaymentIn payment) {
 		
 		TransactionResult tr = null;
-
+		PaymentTransaction paymentTransaction = null;
 		try {
 
 			tr = doTransaction(payment);
-
+			if (!payment.getPaymentTransactions().isEmpty()) {
+				//prepare to log the result
+				paymentTransaction = payment.getPaymentTransactions().get(0);
+			}
 			StringBuilder resultDetails = new StringBuilder();
 			
 			if (tr != null) {
-
+				if (paymentTransaction != null) {
+					//log the result
+					paymentTransaction.setSoapResponse(tr.getMerchantHelpText());
+				}
 				if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
 					resultDetails.append("Payment succeed.");
 					payment.setStatusNotes("Payment succeed.");
@@ -95,28 +104,46 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 			} else {
 				resultDetails.append("Payment failed with null transaction response");
 				payment.setStatusNotes("Payment failed. Null transaction response.");
+				if (paymentTransaction != null) {
+					//log the result
+					paymentTransaction.setSoapResponse(getResponseStringFromContext());
+				}
 				payment.failPayment();
 			}
 			
 			LOG.debug(resultDetails.toString());
-			
+
 		} catch (Exception e) {
+			if (!payment.getPaymentTransactions().isEmpty()) {
+				//log the result
+				paymentTransaction = payment.getPaymentTransactions().get(0);
+				paymentTransaction.setSoapResponse(e.getMessage());
+			}
 			LOG.error(String.format("PaymentIn id:%s failed with exception.", payment.getId()), e);
 			payment.setStatusNotes("PaymentIn failed with exception.");
 			payment.failPayment();
-		} 
+		}
+		if (paymentTransaction != null) {
+			paymentTransaction.setSoapRequest(getRequestString());
+		}
 	}
 
 	@Override
 	public void processGateway(PaymentOut paymentOut) {
 
 		TransactionResult tr;
-
+		PaymentOutTransaction paymentTransaction = null;
 		try {
 			tr = doTransaction(paymentOut);
-
+			if (!paymentOut.getPaymentOutTransactions().isEmpty()) {
+				paymentTransaction = paymentOut.getPaymentOutTransactions().get(0);
+			}
 			StringBuilder resultDetails = new StringBuilder();
 			if (tr != null) {
+				if (paymentTransaction != null) {
+					//log the result
+					paymentTransaction.setSoapResponse(tr.getMerchantHelpText());
+				}
 				if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
 					resultDetails.append("PaymentOut succeed.");
 					paymentOut.setStatusNotes("PaymentOut succeed.");
@@ -145,15 +172,27 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 			} else {
 				resultDetails.append("PaymentOut failed with null transaction response.");
 				paymentOut.setStatusNotes("PaymentOut failed with null transaction response.");
+				if (paymentTransaction != null) {
+					//log the result
+					paymentTransaction.setSoapResponse(getResponseStringFromContext());
+				}
 				paymentOut.failed();
 			}
 			
 			LOG.debug(resultDetails.toString());
 			
 		} catch (Exception e) {
+			if (!paymentOut.getPaymentOutTransactions().isEmpty()) {
+				//log the result
+				paymentTransaction = paymentOut.getPaymentOutTransactions().get(0);
+				paymentTransaction.setSoapResponse(e.getMessage());
+			}
 			LOG.error(String.format("PaymentOut id:%s failed with exception.", paymentOut.getId()), e);
 			paymentOut.setStatusNotes("PaymentOut failed with exception.");
 			paymentOut.failed();
+		}
+		if (paymentTransaction != null) {
+			paymentTransaction.setSoapRequest(getRequestString());
 		}
 	}
 
@@ -351,5 +390,27 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 		PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
 		stub.setTimeout(TIMEOUT);
 		return stub;
+	}
+	
+	private String getRequestString() {
+		try {
+			MessageContext context = MessageContext.getCurrentContext(); 
+			Message message = context.getRequestMessage();
+			return message.getSOAPPartAsString();
+		} catch (Exception e) {
+			LOG.warn("Can not get soap request.", e);
+		} 
+		return StringUtils.EMPTY;
+	}
+	
+	private String getResponseStringFromContext() {
+		try {
+			MessageContext context = MessageContext.getCurrentContext(); 
+			Message message = context.getResponseMessage();
+			return message.getSOAPPartAsString();
+		} catch (Exception e) {
+			LOG.warn("Can not get soap request.", e);
+		} 
+		return StringUtils.EMPTY;
 	}
 }
