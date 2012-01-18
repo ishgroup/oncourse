@@ -3,6 +3,7 @@ package ish.oncourse.enrol.services.payment;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,7 +20,6 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -79,6 +79,7 @@ public class PaymentExpressGatewayServiceTest {
 	@Mock
 	private ObjectContext objectContext;
 
+	@Mock
 	private PaymentTransaction paymentTransaction;
 	
 	@Mock
@@ -105,34 +106,13 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Before
 	public void initMethod() {
-		
-		paymentTransaction = new PaymentTransaction() {
-			private String soapResponse;
-			
-			@Override
-			public ObjectContext getObjectContext() {
-				return objectContext;
-			}
-
-			@Override
-			public void setSoapResponse(String soapResponse) {
-				this.soapResponse = soapResponse;
-			}
-
-			@Override
-			public String getSoapResponse() {
-				return this.soapResponse;
-			}
-		};
-		
-		
-		
 		when(payment.getCollege()).thenReturn(college);
 		when(payment.getPaymentInLines()).thenReturn(Collections.EMPTY_LIST);
 		when(payment.getClientReference()).thenReturn(PAYMENT_REF);
 		when(payment.getCreditCardName()).thenReturn(CARD_HOLDER_NAME);
 		when(payment.getCreditCardExpiry()).thenReturn(VALID_EXPIRY_DATE_STR);
 		when(payment.getObjectContext()).thenReturn(objectContext);
+		when(paymentTransaction.getObjectContext()).thenReturn(objectContext);
 		when(objectContext.newObject(PaymentTransaction.class)).thenReturn(paymentTransaction);
 		when(cayenneService.newNonReplicatingContext()).thenReturn(objectContext);
 		this.gatewayService = new PaymentExpressGatewayService(cayenneService);
@@ -178,14 +158,13 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testSuccessfulProcessGateway() throws Exception {
-		final PaymentTransaction paymentTransaction = new PaymentTransaction();
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		gatewayService.processGateway(payment);
 		verify(payment).succeed();
 		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
-		assertNotNull("Soap Response for successfull payment should not be empty", StringUtils.trimToNull(paymentTransaction.getSoapResponse()));
+		verify(paymentTransaction).setSoapResponse(anyString());
 	}
 
 	/**
@@ -196,14 +175,13 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testUnsuccessfulProcessGateway() throws Exception {
-		final PaymentTransaction paymentTransaction = new PaymentTransaction();
 		when(payment.getCreditCardNumber()).thenReturn(DECLINED_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		gatewayService.processGateway(payment);
 		verify(payment).failPayment();
 		assertTrue("PaymentTransaction should exist", !payment.getPaymentTransactions().isEmpty() && payment.getPaymentTransactions().size() == 1);
-		assertNotNull("Soap Response for unsuccessfull payment should not be empty", StringUtils.trimToNull(paymentTransaction.getSoapResponse()));
+		verify(paymentTransaction).setSoapResponse(anyString());
 	}
 
 	/**
