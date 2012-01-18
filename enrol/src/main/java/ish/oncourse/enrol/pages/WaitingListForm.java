@@ -58,6 +58,7 @@ public class WaitingListForm {
 	@Property
 	private WaitingList waitingList;
 
+	@SuppressWarnings("all")
 	@Property
 	private boolean submittedSuccessfully;
 
@@ -84,22 +85,31 @@ public class WaitingListForm {
 		if (!result.isEmpty()) {
 			course = result.get(0);
 		}
-
-		contact = new Contact();
+		getNewContact();
 		waitingList = new WaitingList();
+	}
+	/**
+	 * Return contact for waiting list, create if needed.
+	 * @return contact for waiting list.need to avoid #13108
+	 */
+	public Contact getNewContact() {
+		if (contact == null) {
+			contact = new Contact();
+		}
+		return contact;
 	}
 
 	@OnEvent(component = "waitingListForm", value = "validate")
 	void validate() {
-		String firstNameErrorMessage = contact.validateGivenName();
+		String firstNameErrorMessage = getNewContact().validateGivenName();
 		if (firstNameErrorMessage != null) {
 			waitingListForm.recordError(waitlistFirstName, firstNameErrorMessage);
 		}
-		String lastNameErrorMessage = contact.validateFamilyName();
+		String lastNameErrorMessage = getNewContact().validateFamilyName();
 		if (lastNameErrorMessage != null) {
 			waitingListForm.recordError(waitlistLastName, lastNameErrorMessage);
 		}
-		String emailErrorMessage = contact.validateEmail();
+		String emailErrorMessage = getNewContact().validateEmail();
 		if (emailErrorMessage != null) {
 			waitingListForm.recordError(waitlistEmail, emailErrorMessage);
 		}
@@ -112,17 +122,17 @@ public class WaitingListForm {
 			ObjectContext context = cayenneService.newContext();
 			College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
 
-			Contact studentContact = studentService.getStudentContact(contact.getGivenName(), contact.getFamilyName(),
-					contact.getEmailAddress());
+			Contact studentContact = studentService.getStudentContact(getNewContact().getGivenName(), getNewContact().getFamilyName(),
+					getNewContact().getEmailAddress());
 			if (studentContact != null) {
 				studentContact = (Contact) context.localObject(studentContact.getObjectId(), null);
 				if (studentContact.getStudent() == null) {
 					studentContact.createNewStudent();
 				}
 			} else {
-				context.registerNewObject(contact);
-				contact.setCollege(college);
-				studentContact = contact;
+				context.registerNewObject(getNewContact());
+				getNewContact().setCollege(college);
+				studentContact = getNewContact();
 				studentContact.createNewStudent();
 			}
 			//this check added to prevent #13048.

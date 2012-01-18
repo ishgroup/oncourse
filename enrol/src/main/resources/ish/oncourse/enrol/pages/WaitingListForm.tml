@@ -21,17 +21,17 @@
 							<dt>First Name:</dt>
 							<dd>
 								<t:textfield t:id="waitlistFirstName" validate="required"
-										t:value="contact.givenName" />
+										t:value="newContact.givenName" />
 							</dd>
 							<dt>Last Name:</dt>
 							<dd>
 								<t:textfield t:id="waitlistLastName" validate="required"
-										t:value="contact.familyName" />
+										t:value="newContact.familyName" />
 							</dd>
 							<dt>E-Mail address:</dt>
 							<dd>
 								<t:textfield t:id="waitlistEmail" validate="required"
-										t:value="contact.emailAddress" />
+										t:value="newContact.emailAddress" />
 							</dd>
 							<dt>
 								What you'd like:
