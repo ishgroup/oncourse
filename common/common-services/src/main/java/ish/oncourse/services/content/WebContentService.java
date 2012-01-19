@@ -54,7 +54,10 @@ public class WebContentService extends BaseService<WebContent> implements
 	@SuppressWarnings("unchecked")
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
-
+		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
+			//return no web content for temporary webNodeType because no web visibility exist for it
+			return new TreeSet<WebContent>();
+		}
 		SelectQuery q = new SelectQuery(WebContent.class);
 
 		Expression siteQualifier = ExpressionFactory.matchExp(
@@ -96,7 +99,6 @@ public class WebContentService extends BaseService<WebContent> implements
 		TreeSet<WebContent> treeSet = new TreeSet<WebContent>(
 				new WebContentComparator(webNodeType));
 		treeSet.addAll(webNodeType.getObjectContext().performQuery(q));
-
 		return treeSet;
 	}
 
