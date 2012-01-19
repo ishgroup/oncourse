@@ -32,4 +32,8 @@ public class SearchTermsClarification {
 	public String getSearchTag(){
 		return paramsInError.get(SearchParam.subject);
 	}
+	
+	public String getKm() {
+		return paramsInError.get(SearchParam.km);
+	}
 }

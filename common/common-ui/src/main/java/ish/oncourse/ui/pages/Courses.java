@@ -291,6 +291,11 @@ public class Courses {
 						paramsInError.put(name, parameter);
 					}
 					break;
+				case km:
+					if (!parameter.matches("\\d+")) {
+						paramsInError.put(name, parameter);
+					}
+					break;
 				}
 			}
 		}
