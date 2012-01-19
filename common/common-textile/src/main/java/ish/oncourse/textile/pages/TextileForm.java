@@ -119,7 +119,7 @@ public class TextileForm {
 					emailValue += "_" + encryptedBytes[i];
 				}
 			} catch (Exception e) {
-				LOGGER.error("Problem with processing email");
+				LOGGER.error("Problem with processing email", e);
 			}
 		} else {
 			LOGGER.error("The email for this form is not defined.");
