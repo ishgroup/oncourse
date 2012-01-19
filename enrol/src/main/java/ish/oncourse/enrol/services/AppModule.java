@@ -4,7 +4,6 @@ import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
-import ish.oncourse.enrol.services.quartz.QuartzInitializer;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
 import ish.oncourse.model.PaymentGatewayType;
@@ -19,11 +18,8 @@ import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.ServiceBuilder;
-import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.MetaDataLocator;
 
@@ -38,15 +34,6 @@ public class AppModule {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
 		binder.bind(IStudentService.class, StudentService.class);
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
-		binder.bind(QuartzInitializer.class, new ServiceBuilder<QuartzInitializer>() {
-			@Override
-			public QuartzInitializer buildService(ServiceResources res) {
-				QuartzInitializer quartzInit = new QuartzInitializer(res);
-				RegistryShutdownHub hub = res.getService(RegistryShutdownHub.class);
-				hub.addRegistryShutdownListener(quartzInit);
-				return quartzInit;
-			}
-		}).eagerLoad();
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {

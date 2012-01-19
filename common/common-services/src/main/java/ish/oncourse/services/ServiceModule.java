@@ -91,7 +91,6 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
-import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
@@ -173,7 +172,6 @@ public class ServiceModule {
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
-		binder.bind(PaymentInExpireJob.class);
 		
 		if (isInTestMode) {
 			binder.bind(ISMSService.class, TestModeSMSService.class);

@@ -16,7 +16,6 @@
 	<name>Willow - WebServices</name>
 
 	<properties>
-		<quartz.version>2.1.0</quartz.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<tomcat.cluster>C</tomcat.cluster>
 		<tomcat-dev.port>7201</tomcat-dev.port>

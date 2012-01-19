@@ -11,8 +11,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
+import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
-import ish.oncourse.webservices.quartz.QuartzInitializer;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -70,22 +70,13 @@ public class AppModule {
 			}
 		}).scope(ScopeConstants.PERTHREAD);
 
-		binder.bind(QuartzInitializer.class, new ServiceBuilder<QuartzInitializer>() {
-			@Override
-			public QuartzInitializer buildService(ServiceResources res) {
-				QuartzInitializer quartzInit = new QuartzInitializer(res);
-				RegistryShutdownHub hub = res.getService(RegistryShutdownHub.class);
-				hub.addRegistryShutdownListener(quartzInit);
-				return quartzInit;
-			}
-		}).eagerLoad();
-
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 		binder.bind(PaymentPortType.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
 		binder.bind(ITransactionGroupValidator.class, TransactionGroupValidatorImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceOverride");
 
+		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
 	}
 

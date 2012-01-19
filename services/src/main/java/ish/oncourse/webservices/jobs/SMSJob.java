@@ -24,15 +24,10 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 /**
- * Quartz job for sendng SMS
+ * Job for sending SMS
  */
-@DisallowConcurrentExecution
 public class SMSJob implements Job {
 
 	private static final Logger logger = Logger.getLogger(SMSJob.class);
@@ -53,7 +48,7 @@ public class SMSJob implements Job {
 	/**
 	 * Sends sms messages, which were replicated from Angel.
 	 */
-	public void execute(JobExecutionContext context) throws JobExecutionException {
+	public void execute() {
 
 		logger.info("SMS Job started. Fetching sms messages...");
 
@@ -116,8 +111,6 @@ public class SMSJob implements Job {
 			if (objectContext != null) {
 				objectContext.rollbackChanges();
 			}
-
-			throw new JobExecutionException("Error in SMSJob.", e, false);
 		}
 
 		logger.info("SMS Job finished.");
@@ -163,17 +156,17 @@ public class SMSJob implements Job {
 	 * @throws JobExecutionException
 	 *             if can not contact gateway or empty session id.
 	 */
-	private String getSessionId() throws JobExecutionException {
+	private String getSessionId() throws Exception {
 		try {
 			String sessionId = smsService.authenticate();
 			if (sessionId == null) {
 				logger.error("Empty session id from sms service.");
-				throw new JobExecutionException("Empty session id from sms service.", true);
+				throw new Exception("Empty session id from sms service.");
 			}
 			return sessionId;
 		} catch (Exception e) {
 			logger.error("Fatal error during authentication to sms gateway.", e);
-			throw new JobExecutionException("Fatal error during authentication to sms gateway.", e, false);
+			throw new Exception("Fatal error during authentication to sms gateway.", e);
 		}
 	}
 

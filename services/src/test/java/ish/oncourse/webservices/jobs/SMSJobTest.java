@@ -32,8 +32,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 public class SMSJobTest extends ServiceTest {
 
@@ -49,7 +47,7 @@ public class SMSJobTest extends ServiceTest {
 		prefFactory = getService(PreferenceControllerFactory.class);
 		cayenneService = getService(ICayenneService.class);
 
-		InputStream st = SMSJobTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/jobs/smsDataSet.xml");
+		InputStream st = SMSJobTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/jobs/smsDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse");
@@ -59,14 +57,13 @@ public class SMSJobTest extends ServiceTest {
 	@Test
 	public void testSmsSendingOldMessages() throws Exception {
 		ISMSService smsService = mock(ISMSService.class);
-		JobExecutionContext jobContext = mock(JobExecutionContext.class);
 
 		when(smsService.authenticate()).thenReturn("123456");
 		when(smsService.sendSMS(anyString(), anyString(), anyString(), anyString())).thenReturn(
 				new Pair<MessageStatus, String>(MessageStatus.SENT, "success"));
 
 		SMSJob smsJob = new SMSJob(messagePersonService, smsService, prefFactory, cayenneService);
-		smsJob.execute(jobContext);
+		smsJob.execute();
 
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 
@@ -84,21 +81,14 @@ public class SMSJobTest extends ServiceTest {
 	@Test
 	public void testSmsSendingAuthenticationFatal() throws Exception {
 		ISMSService smsService = mock(ISMSService.class);
-		JobExecutionContext jobContext = mock(JobExecutionContext.class);
+
 
 		when(smsService.authenticate()).thenThrow(new RuntimeException("Fatal error."));
 
 		updateCreatedDate();
 
 		SMSJob smsJob = new SMSJob(messagePersonService, smsService, prefFactory, cayenneService);
-		
-		try {
-			smsJob.execute(jobContext);
-			fail("Expecting exception here due to failed authentication.");
-		}
-		catch (JobExecutionException e) {
-			
-		}
+		smsJob.execute();
 		
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("MessagePerson", String.format("select * from MessagePerson where status=1"));
@@ -111,14 +101,7 @@ public class SMSJobTest extends ServiceTest {
 				new Pair<MessageStatus, String>(MessageStatus.SENT, "success"));
 
 		smsJob = new SMSJob(messagePersonService, mock2, prefFactory, cayenneService);
-		
-		try {
-			smsJob.execute(jobContext);
-			fail("Expecting exception here due to failed authentication.");
-		}
-		catch (JobExecutionException e) {
-			
-		}
+		smsJob.execute();
 
 		actualData = dbUnitConnection.createQueryTable("MessagePerson", String.format("select * from MessagePerson where status=1"));
 		assertEquals("Checking number of QUEUED messages.", 4, actualData.getRowCount());
@@ -129,7 +112,7 @@ public class SMSJobTest extends ServiceTest {
 		when(mock3.sendSMS(anyString(), anyString(), anyString(), anyString())).thenThrow(new RuntimeException("Fatal error"));
 
 		smsJob = new SMSJob(messagePersonService, mock3, prefFactory, cayenneService);
-		smsJob.execute(jobContext);
+		smsJob.execute();
 
 		actualData = dbUnitConnection.createQueryTable("MessagePerson", String.format("select * from MessagePerson where status=3"));
 		assertEquals("Checking number of FAILED messages.", 6, actualData.getRowCount());
@@ -138,7 +121,6 @@ public class SMSJobTest extends ServiceTest {
 	@Test
 	public void testSmsSendingSuccess() throws Exception {
 		ISMSService smsService = mock(ISMSService.class);
-		JobExecutionContext jobContext = mock(JobExecutionContext.class);
 
 		when(smsService.authenticate()).thenReturn("123456");
 		when(smsService.sendSMS(anyString(), anyString(), anyString(), anyString())).thenReturn(
@@ -147,7 +129,7 @@ public class SMSJobTest extends ServiceTest {
 		updateCreatedDate();
 
 		SMSJob smsJob = new SMSJob(messagePersonService, smsService, prefFactory, cayenneService);
-		smsJob.execute(jobContext);
+		smsJob.execute();
 
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("MessagePerson", String.format("select * from MessagePerson where status=2"));

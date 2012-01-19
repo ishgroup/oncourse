@@ -20,7 +20,6 @@
 		<tomcat-test.port>10101</tomcat-test.port>
 		<tomcat-staging.port>10101</tomcat-staging.port>
 		<tomcat.path>/willowAdmin</tomcat.path>
-		<quartz.version>2.1.0</quartz.version>
 	</properties>
 
 	<dependencies>

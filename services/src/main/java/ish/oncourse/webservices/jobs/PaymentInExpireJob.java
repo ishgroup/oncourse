@@ -18,23 +18,19 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 /**
- * Quartz job to abandon (means fail enrolments and creating refunds) not
+ * Job to abandon (means fail enrolments and creating refunds) not
  * completed paymentIn. Not completed paymentIn can be two types, which were in
  * state CARD_DETAILS_REQUIRED,IN_TRANSACTION, NEW for more then
  * PaymentIn.EXPIRE_INTERVAL minutes or PamentIn with status FAILED which has
- * linked enrolements with status IN_TRANSACTION older then
+ * linked enrolments with status IN_TRANSACTION older then
  * PaymentIn.EXPIRE_INTERVAL.
  * 
  * @author anton
  * 
  */
-@DisallowConcurrentExecution
+
 public class PaymentInExpireJob implements Job {
 
 	private static final Logger logger = Logger.getLogger(PaymentInExpireJob.class);
@@ -50,7 +46,7 @@ public class PaymentInExpireJob implements Job {
 	 * Main job method, fetches expired paymentIn and abandons them.
 	 */
 	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
+	public void execute() {
 
 		logger.debug("PaymentInExpireJob started.");
 
@@ -85,7 +81,6 @@ public class PaymentInExpireJob implements Job {
 
 		} catch (Exception e) {
 			logger.error("Error in PaymentInExpireJob.", e);
-			throw new JobExecutionException("Error in PaymentInExpireJob.", e, false);
 		}
 	}
 

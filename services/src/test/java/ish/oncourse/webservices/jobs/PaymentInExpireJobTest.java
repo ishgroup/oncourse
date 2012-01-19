@@ -2,7 +2,6 @@ package ish.oncourse.webservices.jobs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Enrolment;
@@ -29,7 +28,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
-import org.quartz.JobExecutionContext;
 
 public class PaymentInExpireJobTest extends ServiceTest {
 
@@ -41,7 +39,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
 
 		InputStream st = PaymentInExpireJobTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/jobs/paymentInExpireDataSet.xml");
+				"ish/oncourse/webservices/jobs/paymentInExpireDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource refDataSource = getDataSource("jdbc/oncourse");
@@ -99,8 +97,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			}
 		}
 		
-		JobExecutionContext jobContext = mock(JobExecutionContext.class);
-		job.execute(jobContext);
+		job.execute();
 
 		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
 
@@ -163,10 +160,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			}
 		}
 		
-		
-		
-		JobExecutionContext jobContext = mock(JobExecutionContext.class);
-		job.execute(jobContext);
+		job.execute();
 
 		// check that in transaction Payment has failed.
 		ObjectContext objectContext = cayenneService.newContext();
@@ -239,12 +233,10 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			}
 		}
 		
-		JobExecutionContext jobContext = mock(JobExecutionContext.class);
-		
 		//Execute job three times
-		job.execute(jobContext);
-		job.execute(jobContext);
-		job.execute(jobContext);
+		job.execute();
+		job.execute();
+		job.execute();
 		
 		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
 		ITable actualData = dbUnitConnection.createQueryTable("PaymentIn",
