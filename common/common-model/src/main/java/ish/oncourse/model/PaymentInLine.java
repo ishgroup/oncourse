@@ -74,8 +74,7 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 
 		// Amount - mandatory field
 		if (getAmount() == null) {
-			result.addFailure(ValidationFailure.validationFailure(this, _PaymentInLine.AMOUNT_PROPERTY,
-					"The payment amount cannot be empty."));
+			result.addFailure(ValidationFailure.validationFailure(this, _PaymentInLine.AMOUNT_PROPERTY, "The payment amount cannot be empty."));
 			return;
 		}
 
@@ -92,12 +91,15 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 				if (currentPaymentInId != null && currentInvoiceId != null) {
 					if (currentPaymentInId.equals(paymentInId) && currentInvoiceId.equals(invoiceId)) {
 						result.addFailure(ValidationFailure.validationFailure(this, _PaymentInLine.PAYMENT_IN_PROPERTY,
-								"PaymentIn id  and Invoice id couldn't be equal in different PaymentInLines."));
+							"PaymentIn id = " + currentPaymentInId +" and Invoice id " + currentInvoiceId + 
+							"couldn't be equal in different PaymentInLines." + this.getId() + " and " + pil.getId() + " with sourse = " + 
+							getPaymentIn().getSource()));
 					}
 				} else if (getPaymentIn() != null && getPaymentIn().equals(pil.getPaymentIn()) && getInvoice() != null
 						&& getInvoice().equals(pil.getInvoice())) {
 					result.addFailure(ValidationFailure.validationFailure(this, _PaymentInLine.PAYMENT_IN_PROPERTY,
-							"PaymentIn and Invoice couldn't be equal in different PaymentInLines."));
+						"PaymentIn and Invoice couldn't be equal in different PaymentInLines." + this.getId() + " and " + pil.getId() + 
+						" with sourse = " + getPaymentIn().getSource()));
 				}
 			}
 		}
