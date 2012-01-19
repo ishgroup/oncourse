@@ -172,7 +172,16 @@ public class SearchService implements ISearchService {
 				q.addFilterQuery("{!geofilt}");
 				q.add("sfield", "course_loc");
 				q.add("pt", location);
-				q.add("d", "" + MAX_DISTANCE);
+				
+				String distance = String.valueOf(MAX_DISTANCE);
+				if (params.containsKey(SearchParam.km)) {
+					String km = (String) params.get(SearchParam.km);
+					if (km.matches("\\d+")) {
+						distance = km;
+					}
+				}
+				
+				q.add("d", distance);
 
 				q.addSortField("geodist()", ORDER.asc);
 				q.setQuery(qString.toString());
@@ -185,8 +194,9 @@ public class SearchService implements ISearchService {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Solr query:%s", URLDecoder.decode(q.toString(), "UTF-8")));
 			}
-
-			return getSolrServer(SolrCore.courses).query(q);
+			
+			QueryResponse resp = getSolrServer(SolrCore.courses).query(q);
+			return resp;
 
 		} catch (Exception e) {
 			logger.error("Failed to search courses.", e);
@@ -289,7 +299,10 @@ public class SearchService implements ISearchService {
 			StringBuilder query = new StringBuilder();
 			query.append("(doctype:suburb");
 			if (suburbParams[0] != null) {
-				query.append(" AND suburb:").append(suburbParams[0].replaceAll("[\\s]+", "+"));
+				String near = suburbParams[0].replaceAll("[\\s]+", "+");
+				query.append(" AND (suburb:").append(near);
+				query.append("|| postcode:").append(near);
+				query.append(")");
 			}
 
 			if (suburbParams[1] != null) {

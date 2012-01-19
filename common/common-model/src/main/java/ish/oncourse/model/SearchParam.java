@@ -1,5 +1,5 @@
 package ish.oncourse.model;
 
 public enum SearchParam {
-	s, near, price, day, time, subject
+	s, near, price, day, time, subject, km
 }

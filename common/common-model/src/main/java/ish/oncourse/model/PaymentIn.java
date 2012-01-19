@@ -522,7 +522,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		paymentIn.setCreated(today);
 		paymentIn.setModified(today);
 
-		paymentIn.setSource(getSource());
+		paymentIn.setSource(PaymentSource.SOURCE_WEB);
 		paymentIn.setStudent(getStudent());
 
 		return paymentIn;
