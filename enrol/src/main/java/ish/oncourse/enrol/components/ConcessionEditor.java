@@ -5,6 +5,9 @@ import ish.oncourse.model.Student;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -89,9 +92,14 @@ public class ConcessionEditor {
     @Property
     @Parameter
     private int index;
+    
+    @Persist
+    @Property
+    private DateFormat dateFormat;
 
     @SetupRender
     void beginRender() {
+    	dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         if (student != null) {
             List<ConcessionType> activeConcessionTypes = student.getCollege()
                     .getActiveConcessionTypes();

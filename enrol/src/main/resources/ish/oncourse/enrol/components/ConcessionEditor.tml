@@ -24,7 +24,7 @@
   		    <p>
       		    <label for="concession-expiry">Expiry date <em title="${message:required}">*</em></label>
     	      	<span class="${expiryDateInputClass}">
-                    <t:datefield t:id="expiryDate" value="expiryDateValue"
+                    <t:datefield t:id="expiryDate" value="expiryDateValue" t:format="prop:dateFormat"
                                  clientId="concession-expiry" class="input-fixed"/>
                     <span t:type="ui/HintComponent" validationMessage="expiryDateErrorMessage"/>
                 </span>
