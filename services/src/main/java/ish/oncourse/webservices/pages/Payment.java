@@ -47,18 +47,22 @@ public class Payment {
 	@Persist
 	private PaymentIn payment;
 
+	@SuppressWarnings("all")
 	@Property
 	private Money totalIncGst;
 
+	@SuppressWarnings("all")
 	@Property
 	private String enrolmentDisclosure;
 
 	@Property
 	private Contact payer;
 
+	@SuppressWarnings("all")
 	@Property
 	private Format moneyFormat;
 
+	@SuppressWarnings("all")
 	@InjectComponent
 	private Zone paymentZone;
 
@@ -71,6 +75,7 @@ public class Payment {
 	@Inject
 	private Block cancelledMessageBlock;
 
+	@SuppressWarnings("all")
 	@Property
 	@Inject
 	private Block paymentResultBlock;

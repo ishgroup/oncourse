@@ -38,6 +38,7 @@ public class PaymentForm {
 	@Inject
 	private Messages messages;
 	
+	@SuppressWarnings("all")
 	@Inject
 	@Property
 	private CommonPreferenceController preferenceService;
