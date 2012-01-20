@@ -4,10 +4,8 @@ import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.persistence.CommonPreferenceController;
 
 import java.util.List;
 
@@ -25,7 +23,6 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class EnrolmentContactEntry {
 
@@ -44,12 +41,6 @@ public class EnrolmentContactEntry {
 	@Inject
 	private IConcessionsService concessionsService;
 
-	/**
-	 * tapestry services
-	 */
-	@Inject
-	private Request request;
-
 	@Inject
 	private Messages messages;
 
@@ -65,31 +56,36 @@ public class EnrolmentContactEntry {
 	private Form shortDetailsForm;
 
 	@InjectComponent
-	private TextField firstName;
+	private TextField firstNameField;
 
 	@InjectComponent
-	private TextField lastName;
+	private TextField lastNameField;
 
 	@InjectComponent
-	private TextField email;
+	private TextField emailField;
+	
+	@Property
+	private String firstName;
+	
+	@Property
+	private String lastName;
 
+	@Property
+	private String email;
+	
 	/**
 	 * properties
 	 */
 	@Property
 	private boolean needMoreInfo;
 
-	@Persist
-	@Property
-	private boolean hasContact;
-
 	@Property
 	@Persist
 	private Contact contact;
 
-	@Persist
-	private ObjectContext context;
-
+	/**
+	 * Reset form or not.
+	 */
 	private boolean reset;
 
 	/**
@@ -106,21 +102,7 @@ public class EnrolmentContactEntry {
 
 	@SetupRender
 	void beforeRender() {
-		context = cayenneService.newContext();
-		hasContact = false;
-		contact = context.newObject(Contact.class);
-
-		College currentCollege = webSiteService.getCurrentCollege();
-		College college = (College) context.localObject(currentCollege.getObjectId(), currentCollege);
-		contact.setCollege(college);
-
-		contact.createNewStudent();
-		
-		contact.setIsMarketingViaEmailAllowed(true);
-		contact.setIsMarketingViaPostAllowed(true);
-		contact.setIsMarketingViaSMSAllowed(true);
-
-		reset = true;
+		this.reset = true;
 		shortDetailsForm.clearErrors();
 	}
 
@@ -131,6 +113,10 @@ public class EnrolmentContactEntry {
 
 	public boolean isNewStudent() {
 		return contact.getPersistenceState() == PersistenceState.NEW;
+	}
+	
+	public boolean isHasContact() {
+		return this.contact != null;
 	}
 
 	@OnEvent(component = "addStudentAction", value = "selected")
@@ -148,17 +134,17 @@ public class EnrolmentContactEntry {
 		if (reset) {
 			shortDetailsForm.clearErrors();
 		} else {
-			firstNameErrorMessage = contact.validateGivenName();
+			firstNameErrorMessage = Contact.validateGivenName("student", firstName);
 			if (firstNameErrorMessage != null) {
-				shortDetailsForm.recordError(firstName, firstNameErrorMessage);
+				shortDetailsForm.recordError(firstNameField, firstNameErrorMessage);
 			}
-			lastNameErrorMessage = contact.validateFamilyName();
+			lastNameErrorMessage = Contact.validateFamilyName("student", lastName);
 			if (lastNameErrorMessage != null) {
-				shortDetailsForm.recordError(lastName, lastNameErrorMessage);
+				shortDetailsForm.recordError(lastNameField, lastNameErrorMessage);
 			}
-			emailErrorMessage = contact.validateEmail();
+			emailErrorMessage = Contact.validateEmail("student", email);
 			if (emailErrorMessage != null) {
-				shortDetailsForm.recordError(email, emailErrorMessage);
+				shortDetailsForm.recordError(emailField, emailErrorMessage);
 			}
 
 		}
@@ -176,36 +162,50 @@ public class EnrolmentContactEntry {
 			contact.setFamilyName(null);
 			contact.setEmailAddress(null);
 		} else {
-			Contact studentContact = studentService.getStudentContact(contact.getGivenName(), contact.getFamilyName(),
-					contact.getEmailAddress());
+			Contact studentContact = studentService.getStudentContact(firstName, lastName,
+					email);
+			
+			ObjectContext context = cayenneService.newContext();
+			
 			if (studentContact != null) {
-				Student newStudent=contact.getStudent();
-				contact.setStudent(null);
-				context.deleteObject(contact);
-				contact = (Contact) context.localObject(studentContact.getObjectId(), null);
+				this.contact = (Contact) context.localObject(studentContact.getObjectId(), null);
 				if (contact.getStudent() == null) {
-					contact.setStudent(newStudent);
+					contact.createNewStudent();
 					context.commitChanges();
 				}
 				studentService.addStudentToShortlist(contact);
-				
 				return "EnrolCourses";
 			}
-			hasContact = true;
+			else {
+				this.contact = context.newObject(Contact.class);
+				
+				College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
+				contact.setCollege(college);
+				
+				contact.setGivenName(firstName);
+				contact.setFamilyName(lastName);
+				contact.setEmailAddress(email);
+				
+				contact.createNewStudent();
+				contact.setIsMarketingViaEmailAllowed(true);
+				contact.setIsMarketingViaPostAllowed(true);
+				contact.setIsMarketingViaSMSAllowed(true);		
+			}
 		}
+		//Show add new student
 		return addStudentBlock.getBody();
 	}
 
 	public String getFirstNameInput() {
-		return getInputSectionClass(firstName);
+		return getInputSectionClass(firstNameField);
 	}
 
 	public String getLastNameInput() {
-		return getInputSectionClass(lastName);
+		return getInputSectionClass(lastNameField);
 	}
 
 	public String getEmailInput() {
-		return getInputSectionClass(email);
+		return getInputSectionClass(emailField);
 	}
 
 	private String getInputSectionClass(TextField field) {
@@ -217,5 +217,4 @@ public class EnrolmentContactEntry {
 	public boolean isShowConcessionsArea() {
 		return concessionsService.hasActiveConcessionTypes();
 	}
-
 }

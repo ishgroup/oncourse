@@ -21,8 +21,8 @@
 								First Name<em title="${message:required}">*</em>
 							</label> 
 							<span class="${firstNameInput}">
-								<t:textfield value="contact.givenName" class ="input-fixed enrolment-contact-field" 
-									clientId="firstname" t:id="firstName" />
+								<t:textfield value="firstName" class ="input-fixed enrolment-contact-field" 
+									clientId="firstname" t:id="firstNameField" />
 								<span t:type="ui/HintComponent" validationMessage="firstNameErrorMessage"/>
 							</span>
 						</p>
@@ -31,8 +31,8 @@
 								Last Name<em title="${message:required}">*</em>
 							</label> 
 							<span class="${lastNameInput}">
-								<t:textfield value="contact.familyName" class ="input-fixed enrolment-contact-field" 
-									clientId="lastname" t:id="lastName" />
+								<t:textfield value="lastName" class ="input-fixed enrolment-contact-field" 
+									clientId="lastname" t:id="lastNameField" />
 								<span t:type="ui/HintComponent" validationMessage="lastNameErrorMessage"/>
 							</span>		
 						</p>
@@ -41,8 +41,8 @@
 								Email<em title="${message:required}">*</em>
 							</label>
 							<span class="${emailInput}">
-								<t:textfield value="contact.emailAddress" class ="input-fixed enrolment-contact-field" 
-									t:id="email" clientId="email" />
+								<t:textfield value="email" class ="input-fixed enrolment-contact-field" 
+									t:id="emailField" clientId="email" />
 								<span t:type="ui/HintComponent" validationMessage="emailErrorMessage"/>
 							</span>	
 						</p>
