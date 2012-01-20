@@ -6,6 +6,8 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.ui.utils.FormUtils;
+import ish.oncourse.utils.SessionIdGenerator;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class EnrolmentContactEntry {
 
@@ -99,11 +102,27 @@ public class EnrolmentContactEntry {
 
 	@Property
 	private String emailErrorMessage;
+	
+	@Property
+	private String token;
+	
+	@Inject
+	private Request request;
+	
+	@Persist
+	private SessionIdGenerator idGenerator;
 
 	@SetupRender
 	void beforeRender() {
 		this.reset = true;
+		this.idGenerator = new SessionIdGenerator();
+		saveToken();
 		shortDetailsForm.clearErrors();
+	}
+	
+	private void saveToken() {
+		this.token = idGenerator.generateSessionId();
+		FormUtils.saveToken(request, token);
 	}
 
 	public String getAddStudentBlockClass() {
@@ -157,40 +176,43 @@ public class EnrolmentContactEntry {
 
 	@OnEvent(component = "shortDetailsForm", value = "success")
 	Object submittedSuccessfully() {
-		if (reset) {
-			this.firstName = null;
-			this.lastName = null;
-			this.email = null;
-		} else {
-			Contact studentContact = studentService.getStudentContact(firstName, lastName,
-					email);
-			
-			ObjectContext context = cayenneService.newContext();
-			
-			if (studentContact != null) {
-				this.contact = (Contact) context.localObject(studentContact.getObjectId(), null);
-				if (contact.getStudent() == null) {
-					contact.createNewStudent();
-					context.commitChanges();
+		if (FormUtils.isTokenValid(request, token)) {
+			if (reset) {
+				this.firstName = null;
+				this.lastName = null;
+				this.email = null;
+			} else {
+				Contact studentContact = studentService.getStudentContact(firstName, lastName,
+						email);
+				
+				ObjectContext context = cayenneService.newContext();
+				
+				if (studentContact != null) {
+					this.contact = (Contact) context.localObject(studentContact.getObjectId(), null);
+					if (contact.getStudent() == null) {
+						contact.createNewStudent();
+						context.commitChanges();
+					}
+					studentService.addStudentToShortlist(contact);
+					return "EnrolCourses";
 				}
-				studentService.addStudentToShortlist(contact);
-				return "EnrolCourses";
+				else {
+					this.contact = context.newObject(Contact.class);
+					
+					College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
+					contact.setCollege(college);
+					
+					contact.setGivenName(firstName);
+					contact.setFamilyName(lastName);
+					contact.setEmailAddress(email);
+					
+					contact.createNewStudent();
+					contact.setIsMarketingViaEmailAllowed(true);
+					contact.setIsMarketingViaPostAllowed(true);
+					contact.setIsMarketingViaSMSAllowed(true);		
+				}
 			}
-			else {
-				this.contact = context.newObject(Contact.class);
-				
-				College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
-				contact.setCollege(college);
-				
-				contact.setGivenName(firstName);
-				contact.setFamilyName(lastName);
-				contact.setEmailAddress(email);
-				
-				contact.createNewStudent();
-				contact.setIsMarketingViaEmailAllowed(true);
-				contact.setIsMarketingViaPostAllowed(true);
-				contact.setIsMarketingViaSMSAllowed(true);		
-			}
+			saveToken();
 		}
 		//Show add new student
 		return addStudentBlock.getBody();

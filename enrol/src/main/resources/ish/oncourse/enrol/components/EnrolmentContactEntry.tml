@@ -6,7 +6,7 @@
 		<t:zone t:id="addStudentBlock" t:update="show">
 			<t:if test="hasContact" negate="true">
 				<t:form zone="addStudentBlock" t:id="shortDetailsForm">
-				
+					<t:hidden t:id="token" value="token"/>
 					<h2>Add a student</h2>
 					<t:if test="shortDetailsForm.valid">
 						<div class="message">
