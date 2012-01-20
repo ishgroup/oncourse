@@ -158,9 +158,9 @@ public class EnrolmentContactEntry {
 	@OnEvent(component = "shortDetailsForm", value = "success")
 	Object submittedSuccessfully() {
 		if (reset) {
-			contact.setGivenName(null);
-			contact.setFamilyName(null);
-			contact.setEmailAddress(null);
+			this.firstName = null;
+			this.lastName = null;
+			this.email = null;
 		} else {
 			Contact studentContact = studentService.getStudentContact(firstName, lastName,
 					email);
