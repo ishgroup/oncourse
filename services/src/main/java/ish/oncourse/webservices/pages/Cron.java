@@ -9,27 +9,21 @@ import org.apache.tapestry5.util.TextStreamResponse;
 
 public class Cron {
 
-	private static final String SMS_JOB_IDENTIFIER = "smsJob";
-	private static final String PAYMENT_IN_EXPIRE_JOB_IDENTIFIER = "paymentInExpireJob";
-
 	@Inject
 	private SMSJob smsJob;
 
 	@Inject
 	private PaymentInExpireJob paymentInExpireJob;
 
-	public StreamResponse onActivate(final String jobIdentifier) {
+	public StreamResponse onActivate() {
 
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				if (SMS_JOB_IDENTIFIER.equalsIgnoreCase(jobIdentifier)) {
-					smsJob.execute();
-
-				} else if (PAYMENT_IN_EXPIRE_JOB_IDENTIFIER.equalsIgnoreCase(jobIdentifier)) {
-					paymentInExpireJob.execute();
-				}
+				// executing jobs
+				paymentInExpireJob.execute();
+				smsJob.execute();
 			}
 		}).start();
 
