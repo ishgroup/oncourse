@@ -29,6 +29,8 @@ import org.apache.log4j.Logger;
  * Job for sending SMS
  */
 public class SMSJob implements Job {
+	
+	private static final int MESSAGE_FETCH_LIMIT = 500;
 
 	private static final Logger logger = Logger.getLogger(SMSJob.class);
 
@@ -55,7 +57,7 @@ public class SMSJob implements Job {
 		ObjectContext objectContext = null;
 
 		try {
-			List<MessagePerson> smsMessages = messagePersonService.smsToSend();
+			List<MessagePerson> smsMessages = messagePersonService.smsToSend(MESSAGE_FETCH_LIMIT);
 
 			filterStaleMessages(smsMessages);
 

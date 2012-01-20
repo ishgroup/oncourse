@@ -34,6 +34,8 @@ import org.apache.log4j.Logger;
 public class PaymentInExpireJob implements Job {
 
 	private static final Logger logger = Logger.getLogger(PaymentInExpireJob.class);
+	
+	private static final int FETCH_LIMIT = 500;
 
 	private final ICayenneService cayenneService; 
 
@@ -110,6 +112,8 @@ public class PaymentInExpireJob implements Job {
 		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, expr);
 		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);
 		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.INVOICE_PROPERTY);
+		
+		notCompletedQuery.setFetchLimit(FETCH_LIMIT);
 
 		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery);
 		logger.info(String.format("<getNotCompletedPaymentsFromDate> the number of expired PaymentIn:%s", notCompletedPayments.size()));

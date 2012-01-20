@@ -20,10 +20,11 @@ public class MessagePersonService implements IMessagePersonService {
 	private ICayenneService cayenneService;
 
 	@Override
-	public List<MessagePerson> smsToSend() {
+	public List<MessagePerson> smsToSend(int limit) {
 		SelectQuery q = new SelectQuery(MessagePerson.class, dequeueingQualifier());
 		q.addPrefetch(MessagePerson.MESSAGE_PROPERTY);
 		q.addPrefetch(MessagePerson.CONTACT_PROPERTY);
+		q.setFetchLimit(limit);
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
