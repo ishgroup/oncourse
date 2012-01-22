@@ -238,7 +238,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 				} else {
 					AuthFailure e = new AuthFailure(String.format("Invalid communication key: %s.", lastCommKey),
 							ErrorCode.INVALID_COMMUNICATION_KEY);
-					LOGGER.error(String.format("Invalid communication key:%s, for college:%s, expected:%s.", lastCommKey, college.getId(),
+					LOGGER.warn(String.format("Invalid communication key:%s, for college:%s, expected:%s.", lastCommKey, college.getId(),
 							currentKey), e);
 					putCollegeInHaltState(college);
 
