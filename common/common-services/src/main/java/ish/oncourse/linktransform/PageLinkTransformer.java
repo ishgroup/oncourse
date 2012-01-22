@@ -122,9 +122,14 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		case Courses:
 			final boolean isCMSCoursesSearch = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
 					.startsWith(CMS_PATH + COURSES_PATH);
+			
 			String tagsPath = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
 					.replaceFirst(isCMSCoursesSearch ? CMS_PATH + COURSES_PATH : COURSES_PATH, StringUtils.EMPTY);
-			LOGGER.warn("tagsPath:" + tagsPath);
+			
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug(String.format("tagsPath:%s", tagsPath));
+			}
+			
 			if (!tagsPath.startsWith(CMS_PATH)) {
 				if (tagsPath.startsWith(LEFT_SLASH_CHARACTER)) {
 					tagsPath = tagsPath.replaceFirst(LEFT_SLASH_CHARACTER, StringUtils.EMPTY);
