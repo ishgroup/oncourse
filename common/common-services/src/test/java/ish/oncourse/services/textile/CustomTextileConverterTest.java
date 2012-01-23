@@ -53,6 +53,10 @@ public class CustomTextileConverterTest {
 	private static final String BLOCK_BY_NAME = "{block name:\"" + TEST_BLOCK_NAME + "\"}";
 
 	private static final String COMPLEX_WEB_BLOCK_CONTENT = IMAGE_BY_REF_NUMBER;
+	
+	private static final String TEST_ATTACHMENT_NAME = "attachmentName";
+	
+	private static final String ATTACHMENT_BY_NAME = "{attachment name:\"" + TEST_ATTACHMENT_NAME + "\"}";
 
 	private ValidationErrors errors;
 
@@ -109,6 +113,20 @@ public class CustomTextileConverterTest {
 		String successfulResult = "successfully rendered image block";
 		testPageRenderParams(IMAGE_BY_REF_NUMBER, TextileUtil.TEXTILE_IMAGE_PAGE, successfulResult);
 
+	}
+	
+	/**
+	 * Emulates the situation when {attachment name:"attachmentName"} is converted, 
+	 * the binary info with name "attachmentName" exists. Should pass without errors.
+	 */
+	@Test
+	public void smokeAttachmentConvertTest() {
+		binaryData = new BinaryData();
+		when(binaryInfo.getName()).thenReturn(TEST_ATTACHMENT_NAME);
+		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(binaryInfo);
+		when(binaryInfo.getBinaryData()).thenReturn(binaryData);
+		String successfulResult = "successfully rendered attachment block";
+		testPageRenderParams(ATTACHMENT_BY_NAME, TextileUtil.TEXTILE_ATTACHMENT_PAGE, successfulResult);
 	}
 
 	/**
