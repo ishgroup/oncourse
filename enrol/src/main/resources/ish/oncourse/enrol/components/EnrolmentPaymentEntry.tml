@@ -4,6 +4,7 @@
 	<t:zone t:id="paymentZone" t:update="show">
 	<t:form t:id="paymentDetailsForm" zone="paymentZone">
 		<t:errors banner="message:errors" class="literal:validation enrolmentsSelected"/>
+		<t:hidden t:id="token" value="token"/>
 		<t:if test="allEnrolmentsAvailable" negate="true">
   			<div class="error">
     			<p>

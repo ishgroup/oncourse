@@ -19,7 +19,9 @@ import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.ui.utils.FormUtils;
 import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.utils.SessionIdGenerator;
 import ish.persistence.CommonPreferenceController;
 import ish.util.InvoiceUtil;
 
@@ -48,6 +50,7 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.Request;
 
 public class EnrolmentPaymentEntry {
 
@@ -161,7 +164,7 @@ public class EnrolmentPaymentEntry {
 
 	@Parameter
 	private List<Enrolment> enrolments;
-	
+
 	@SuppressWarnings("all")
 	private final ReentrantLock lock = new ReentrantLock();
 
@@ -169,6 +172,15 @@ public class EnrolmentPaymentEntry {
 	 * Indicates if the submit was because of pressing the submit button.
 	 */
 	private boolean isSubmitted;
+
+	@Property
+	private String token;
+
+	@Inject
+	private Request request;
+
+	@Persist
+	private SessionIdGenerator idGenerator;
 
 	@SetupRender
 	void beforeRender() {
@@ -185,6 +197,14 @@ public class EnrolmentPaymentEntry {
 				.getCCAvailableTypes(preferenceService).values().toArray(new CreditCardType[] {}));
 
 		userAgreed = false;
+
+		this.idGenerator = new SessionIdGenerator();
+		saveToken();
+	}
+
+	private void saveToken() {
+		this.token = idGenerator.generateSessionId();
+		FormUtils.saveToken(request, token);
 	}
 
 	private void initYears() {
@@ -300,60 +320,61 @@ public class EnrolmentPaymentEntry {
 	 */
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
+		Object resultPage = enrolCourses;
+		if (FormUtils.isTokenValid(request, token)) {
+			if (isSubmitted) {
+				// enrolments to be persisted
+				List<Enrolment> validEnrolments = getEnrolmentsToPersist();
+				// invoiceLines to be persisted
+				List<InvoiceLine> validInvoiceLines = getInvoiceLinesToPersist();
 
-		if (!isSubmitted) {
-			return paymentZone.getBody();
-		}
+				// fill the processing result component with proper values
+				EnrolmentPaymentProcessing enrolmentPaymentProcessing = enrolCourses.getResultingElement();
+				enrolmentPaymentProcessing.setInvoice(invoice);
 
-		// enrolments to be persisted
-		List<Enrolment> validEnrolments = getEnrolmentsToPersist();
-		// invoiceLines to be persisted
-		List<InvoiceLine> validInvoiceLines = getInvoiceLinesToPersist();
+				// even if the payment amount is zero, the contact for it is
+				// selected(the first in list by default)
+				invoice.setContact(payment.getContact());
 
-		// fill the processing result component with proper values
-		EnrolmentPaymentProcessing enrolmentPaymentProcessing = enrolCourses.getResultingElement();
-		enrolmentPaymentProcessing.setInvoice(invoice);
+				ObjectContext context = payment.getObjectContext();
 
-		// even if the payment amount is zero, the contact for it is
-		// selected(the first in list by default)
-		invoice.setContact(payment.getContact());
+				payment.setAmount(totalIncGst.toBigDecimal());
 
-		// block until checking and the change of state holds
-		synchronized (payment) {
-			ObjectContext context = payment.getObjectContext();
+				Money totalGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, true);
+				Money totalExGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, false);
 
-			payment.setAmount(totalIncGst.toBigDecimal());
+				invoice.setTotalExGst(totalExGst.toBigDecimal());
+				invoice.setTotalGst(totalGst.toBigDecimal());
 
-			Money totalGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, true);
-			Money totalExGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, false);
+				PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
+				paymentInLine.setInvoice(invoice);
+				paymentInLine.setPaymentIn(payment);
+				paymentInLine.setAmount(payment.getAmount());
+				paymentInLine.setCollege(payment.getCollege());
 
-			invoice.setTotalExGst(totalExGst.toBigDecimal());
-			invoice.setTotalGst(totalGst.toBigDecimal());
+				enrolmentPaymentProcessing.setPayment(payment);
+				payment.setStatus(PaymentStatus.IN_TRANSACTION);
 
-			PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
-			paymentInLine.setInvoice(invoice);
-			paymentInLine.setPaymentIn(payment);
-			paymentInLine.setAmount(payment.getAmount());
-			paymentInLine.setCollege(payment.getCollege());
-
-			enrolmentPaymentProcessing.setPayment(payment);
-			payment.setStatus(PaymentStatus.IN_TRANSACTION);
-
-			if (isAllEnrolmentsAvailable()) {
-				for (Enrolment e : validEnrolments) {
-					e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+				if (isAllEnrolmentsAvailable()) {
+					for (Enrolment e : validEnrolments) {
+						e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+					}
+					enrolmentPaymentProcessing.setEnrolments(validEnrolments);
+					context.commitChanges();
+				} else {
+					enrolmentPaymentProcessing.setEnrolments(null);
+					context.rollbackChanges();
 				}
-				enrolmentPaymentProcessing.setEnrolments(validEnrolments);
-				context.commitChanges();
-			} else {
-				enrolmentPaymentProcessing.setEnrolments(null);
-				context.rollbackChanges();
-			}
 
-			enrolCourses.setCheckoutResult(true);
+				enrolCourses.setCheckoutResult(true);
+			} else {
+				resultPage = paymentZone.getBody();
+			}
+			
+			saveToken();
 		}
 
-		return enrolCourses;
+		return resultPage;
 	}
 
 	/**
@@ -431,7 +452,7 @@ public class EnrolmentPaymentEntry {
 	void submitButtonPressed() {
 		isSubmitted = true;
 	}
-	
+
 	public boolean isNotEmptyPayer() {
 		return !payers.isEmpty() && payment.getContact() != null;
 	}

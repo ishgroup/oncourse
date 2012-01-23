@@ -90,6 +90,10 @@ public class EnrolmentContactEntry {
 	 * Reset form or not.
 	 */
 	private boolean reset;
+	
+	@Persist
+	@Property
+	private boolean hasContact;
 
 	/**
 	 * these properties are used for validation list and for hints
@@ -115,6 +119,8 @@ public class EnrolmentContactEntry {
 	@SetupRender
 	void beforeRender() {
 		this.reset = true;
+		this.hasContact = false;
+		this.contact = null;
 		this.idGenerator = new SessionIdGenerator();
 		saveToken();
 		shortDetailsForm.clearErrors();
@@ -131,13 +137,9 @@ public class EnrolmentContactEntry {
 	}
 
 	public boolean isNewStudent() {
-		return contact.getPersistenceState() == PersistenceState.NEW;
+		return (contact != null) && (contact.getPersistenceState() == PersistenceState.NEW);
 	}
 	
-	public boolean isHasContact() {
-		return this.contact != null;
-	}
-
 	@OnEvent(component = "addStudentAction", value = "selected")
 	void onSelectedFromAddStudentAction() {
 		reset = false;
@@ -211,6 +213,7 @@ public class EnrolmentContactEntry {
 					contact.setIsMarketingViaPostAllowed(true);
 					contact.setIsMarketingViaSMSAllowed(true);		
 				}
+				this.hasContact = true;
 			}
 			saveToken();
 		}
