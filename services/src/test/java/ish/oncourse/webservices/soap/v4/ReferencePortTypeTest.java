@@ -55,6 +55,6 @@ public class ReferencePortTypeTest extends ServiceTest {
 
 		assertNotNull(result);
 		int size = result.getCountryOrLanguageOrModule().size();
-		assertTrue("Test results length. Expect 8 here.", size == 8);
+		assertTrue("Test results length. Expect 8 here.", size == 9);
 	}
 }
