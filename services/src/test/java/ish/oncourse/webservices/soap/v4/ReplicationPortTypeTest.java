@@ -61,9 +61,9 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 	@Test
 	public void testGetRecordsSuccess() throws Exception {
-
+		
 		IReplicationService service = getService(IReplicationService.class);
-
+		
 		ReplicationRecords response = service.getRecords();
 
 		assertNotNull("Expecting not null response.", response);
@@ -94,12 +94,63 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		assertTrue("Expecting courseClass stub.", hasCourseClass);
 		assertTrue("Expecting DeletedStub", hasDeleteStub);
 	}
+	
+	@Test
+	public void testSendRecordsFailToDelete() throws Exception {
+
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);		
+		IReplicationService service = getService(IReplicationService.class);
+		
+		ITable actualData = dbUnitConnection.createQueryTable("Contact", "select * from Contact where id=1");
+		assertEquals("Initially have one contact with id.", 1, actualData.getRowCount());
+		actualData = dbUnitConnection.createQueryTable("Student", "select * from Student where id=200");
+		assertEquals("Initially have one student with id.", 1, actualData.getRowCount());
+		
+		DeletedStub contactDeleteStub = new DeletedStub();
+		contactDeleteStub.setWillowId(1l);
+		contactDeleteStub.setAngelId(250l);
+		contactDeleteStub.setEntityIdentifier("Contact");
+		
+		DeletedStub studentDeleteStub = new DeletedStub();
+		studentDeleteStub.setWillowId(200l);
+		studentDeleteStub.setAngelId(1200l);
+		studentDeleteStub.setEntityIdentifier("Student");
+		
+		TransactionGroup group = new TransactionGroup();
+		group.getAttendanceOrBinaryDataOrBinaryInfo().add(contactDeleteStub);
+		group.getAttendanceOrBinaryDataOrBinaryInfo().add(studentDeleteStub);
+		
+		ReplicationRecords records = new ReplicationRecords();
+		records.getGroups().add(group);
+		
+		ReplicationResult replResult = service.sendRecords(records);
+		
+		assertNotNull("Check if replicatin results is not null.", replResult);
+		assertNotNull("Check if repl records is not null.", replResult.getReplicatedRecord());
+		assertEquals("Expecting to get two replication records.", 2, replResult.getReplicatedRecord().size());
+		
+		for (ReplicatedRecord r : replResult.getReplicatedRecord()) {
+			assertEquals("Expecting FAILED status.", Status.FAILED, r.getStatus());
+			String message = r.getMessage();
+			assertNotNull("Error message should be set.", message);
+		}
+		
+	}
 
 	@Test
-	public void testSendRecords() throws Exception {
+	public void testSendRecordsCreateAndDeleteSucess() throws Exception {
 
 		IReplicationService service = getService(IReplicationService.class);
-
+		
+		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+		
+		ITable actualData = dbUnitConnection.createQueryTable("Contact", "select * from Contact where id=1658");
+		assertEquals("Initially have one contact with id.", 1, actualData.getRowCount());
+		actualData = dbUnitConnection.createQueryTable("Student", "select * from Student where id=1540");
+		assertEquals("Initially have one student with id.", 1, actualData.getRowCount());
+		actualData = dbUnitConnection.createQueryTable("CourseClass", "select * from CourseClass where angelId=123");
+		assertEquals("Initially don't have courseClass with angelId.", 0, actualData.getRowCount());
+		
 		ReplicationRecords records = new ReplicationRecords();
 
 		CourseClassStub rootStub = new CourseClassStub();
@@ -117,28 +168,46 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		rootStub.setCountOfSessions(3);
 		rootStub.setCourseId(1l);
 		rootStub.setRoomId(1l);
+		
+		DeletedStub contactDeleteStub = new DeletedStub();
+		contactDeleteStub.setWillowId(1658l);
+		contactDeleteStub.setAngelId(2658l);
+		contactDeleteStub.setEntityIdentifier("Contact");
+		
+		DeletedStub studentDeleteStub = new DeletedStub();
+		studentDeleteStub.setWillowId(1540l);
+		studentDeleteStub.setAngelId(2540l);
+		studentDeleteStub.setEntityIdentifier("Student");
 
 		TransactionGroup group = new TransactionGroup();
 		group.getAttendanceOrBinaryDataOrBinaryInfo().add(rootStub);
+		group.getAttendanceOrBinaryDataOrBinaryInfo().add(contactDeleteStub);
+		group.getAttendanceOrBinaryDataOrBinaryInfo().add(studentDeleteStub);
 
 		records.getGroups().add(group);
 
 		ReplicationResult replResult = service.sendRecords(records);
 
 		assertNotNull("Check if replicatin results is not null.", replResult);
-
 		assertNotNull("Check if repl records is not null.", replResult.getReplicatedRecord());
+		assertEquals("Expecting to get three replication records.", 3, replResult.getReplicatedRecord().size());
 
-		assertTrue("Expecting to get one replication record.", replResult.getReplicatedRecord().size() == 1);
-
+		for (ReplicatedRecord r : replResult.getReplicatedRecord()) {
+			assertEquals("Expecting SUCCESS status.", Status.SUCCESS, r.getStatus());
+			if ("CourseClass".equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
+				assertNotNull("Expecting not null willowId", r.getStub().getWillowId());
+			}
+		}
+		
 		// check if courseClass was created
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("CourseClass", String.format("select * from CourseClass where angelId=123"));
-
+		actualData = dbUnitConnection.createQueryTable("CourseClass", String.format("select * from CourseClass where angelId=123"));
 		int numberOfRecords = actualData.getRowCount();
-
 		assertTrue("Expecting one courseClass record.", numberOfRecords == 1);
-
+		
+		actualData = dbUnitConnection.createQueryTable("Contact", "select * from Contact where id=1658");
+		assertEquals("Contact should be deleted.", 0, actualData.getRowCount());
+		actualData = dbUnitConnection.createQueryTable("Student", "select * from Student where id=1540");
+		assertEquals("Student should be deleted.", 0, actualData.getRowCount());
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
-import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.map.DeleteRule;
@@ -90,15 +89,21 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	@Override
 	public List<ReplicatedRecord> processGroup(TransactionGroup group) {
 
-		this.result = new ArrayList<ReplicatedRecord>();
 		this.transactionGroup = group;
+		this.result = new ArrayList<ReplicatedRecord>();
 
-		while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-			ReplicationStub currentStub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
-			processStub(currentStub);
+		for (ReplicationStub currentStub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			ReplicatedRecord replRecord = toReplicatedRecord(currentStub);
+			result.add(replRecord);
 		}
 
 		try {
+
+			while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+				ReplicationStub currentStub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
+				processStub(currentStub);
+			}
+
 			atomicContext.commitChanges();
 
 			for (ReplicatedRecord r : result) {
@@ -110,10 +115,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to atomically process transaction group.", e);
+			logger.error("Failed to process transaction group.", e);
 			atomicContext.rollbackChanges();
-			updateReplicationStatus(result, Status.FAILED,
-					String.format("Failed to atomically process transaction group:%s", e.getMessage()));
+			updateReplicationStatus(result, Status.FAILED, String.format("Failed to process transaction group:%s", e.getMessage()));
 		}
 
 		return result;
@@ -122,24 +126,29 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	/**
 	 * Updates replication status for the list of replicated records
 	 * 
-	 * @param records replicated records
-	 * @param status replication status
-	 * @param message status message
+	 * @param records
+	 *            replicated records
+	 * @param status
+	 *            replication status
+	 * @param message
+	 *            status message
 	 */
 	private static void updateReplicationStatus(List<ReplicatedRecord> records, Status status, String message) {
 		for (ReplicatedRecord record : records) {
 			record.setStatus(status);
-			if(record.getMessage() == null) {
+			if (record.getMessage() == null) {
 				record.setMessage(message);
 			}
 		}
 	}
 
 	/**
-	 * Process on one single stub either Full or Delete. Creates correspondent Cayenne objects with relationships if any, or delete cayenne
-	 * objects taking entity relations into account.
+	 * Process on one single stub either Full or Delete. Creates correspondent
+	 * Cayenne objects with relationships if any, or delete cayenne objects
+	 * taking entity relations into account.
 	 * 
-	 * @param currentStub replication stub.
+	 * @param currentStub
+	 *            replication stub.
 	 * @return cayenne object which was updated/deleted.
 	 */
 	private Queueable processStub(ReplicationStub currentStub) {
@@ -147,71 +156,82 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		logger.info(String.format("Process stub for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),
 				currentStub.getAngelId(), currentStub.getWillowId()));
 
-		ReplicatedRecord replRecord = toReplicatedRecord(currentStub);
-		result.add(replRecord);
+		ReplicatedRecord replRecord = getReplicatedRecordForStub(currentStub);
+		
+		if (replRecord == null) {
+			throw new IllegalArgumentException(String.format("Replication result is not set for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),
+					currentStub.getAngelId(), currentStub.getWillowId()));
+		}
+		
+		String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
 
-		try {
-
-			String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
-
-			if (currentStub.getAngelId() == null) {
-				replRecord.setStatus(Status.FAILED);
-				replRecord.setMessage(String.format("Empty angelId for object: %s.", willowIdentifier));
-				return null;
-			}
-
-			List<Queueable> objects = objectsByAngelId(currentStub.getAngelId(), willowIdentifier);
-
-			switch (objects.size()) {
-			case 0: {
-				if (currentStub instanceof DeletedStub) {
-					// ignore object was already deleted
-					return null;
-				}
-				// creating new object
-				return createObject(currentStub);
-			}
-			case 1: {
-				Queueable objectToUpdate = objects.get(0);
-
-				if (currentStub.getWillowId() != null && !objectToUpdate.getId().equals(currentStub.getWillowId())) {
-					replRecord.setStatus(Status.FAILED);
-					replRecord.setMessage(String.format("WillowId doesnt match for object: %s. Expected: %s, but got %s.",
-							willowIdentifier, objectToUpdate.getId(), currentStub.getWillowId()));
-					return null;
-				}
-
-				if (currentStub instanceof DeletedStub) {
-					deleteObject(objectToUpdate);
-					return null;
-				} else {
-					willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
-					return objectToUpdate;
-				}
-			}
-			default:
-				// FAILURE angelId uniques
-				replRecord.setStatus(Status.FAILED);
-				replRecord.setMessage(String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId()));
-				return null;
-			}
-		} catch (Exception e) {
-			logger.error("Generic web service failure.", e);
+		if (currentStub.getAngelId() == null) {
 			replRecord.setStatus(Status.FAILED);
-			replRecord.setMessage(String.format("Generic webservice exception:%s", e.getMessage()));
+			replRecord.setMessage(String.format("Empty angelId for object: %s.", willowIdentifier));
+			return null;
+		}
+
+		List<Queueable> objects = objectsByAngelId(currentStub.getAngelId(), willowIdentifier);
+
+		switch (objects.size()) {
+		case 0: {
+			if (currentStub instanceof DeletedStub) {
+				// ignore object was already deleted
+				return null;
+			}
+			// creating new object
+			return createObject(currentStub);
+		}
+		case 1: {
+			Queueable objectToUpdate = objects.get(0);
+
+			if (currentStub.getWillowId() != null && !objectToUpdate.getId().equals(currentStub.getWillowId())) {
+				replRecord.setStatus(Status.FAILED);
+				replRecord.setMessage(String.format("WillowId doesnt match for object: %s. Expected: %s, but got %s.", willowIdentifier,
+						objectToUpdate.getId(), currentStub.getWillowId()));
+				return null;
+			}
+
+			if (currentStub instanceof DeletedStub) {
+				deleteObject(objectToUpdate);
+				return null;
+			} else {
+				willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
+				return objectToUpdate;
+			}
+		}
+		default:
+			// FAILURE angelId uniques
+			replRecord.setStatus(Status.FAILED);
+			replRecord.setMessage(String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId()));
 			return null;
 		}
 	}
 
 	/**
+	 * Takes replicatedRecord object which corresponds to passed soap stub from prefilled replication result.
+	 * @param soapStub
+	 * @return
+	 */
+	private ReplicatedRecord getReplicatedRecordForStub(ReplicationStub soapStub) {
+		for (ReplicatedRecord r : this.result) {
+			if (r.getStub().getEntityIdentifier().equalsIgnoreCase(soapStub.getEntityIdentifier())
+					&& r.getStub().getAngelId().equals(soapStub.getAngelId())) {
+				return r;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Deletes replicable object
 	 * 
-	 * @param objectToDelete object to delete
+	 * @param objectToDelete
+	 *            object to delete
 	 */
 	private void deleteObject(Queueable objectToDelete) {
 
 		ClassDescriptor descriptor = atomicContext.getEntityResolver().getClassDescriptor(objectToDelete.getObjectId().getEntityName());
-		boolean shouldDelete = true;
 
 		for (ObjRelationship relationship : descriptor.getEntity().getRelationships()) {
 
@@ -231,35 +251,19 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					ReplicationStub relStub = takeStubFromGroupByAngelId(r.getAngelId(), entityIdentifier);
 					if (relStub != null && relStub instanceof DeletedStub) {
 						processStub(relStub);
-					} else {
-						shouldDelete = false;
-						break;
 					}
 				}
 			}
 		}
 
-		if (shouldDelete) {
-			ObjectContext deleteContext = null;
-			try {
-				deleteContext = atomicContext.createChildContext();
-				Queueable local = (Queueable) deleteContext.localObject(objectToDelete.getObjectId(), null);
-				deleteContext.deleteObject(local);
-				deleteContext.commitChangesToParent();
-			} catch (DeleteDenyException de) {
-				logger.error(String.format("Unable to delete record with angelId:%s and identifier:%s.", objectToDelete.getAngelId(),
-						objectToDelete.getObjectId().getEntityName()), de);
-				if (deleteContext != null) {
-					deleteContext.rollbackChangesLocally();
-				}
-			}
-		}
+		atomicContext.deleteObject(objectToDelete);
 	}
 
 	/**
 	 * Creates replicable object
 	 * 
-	 * @param currentStub soap stub
+	 * @param currentStub
+	 *            soap stub
 	 * @return queueable object
 	 */
 	private Queueable createObject(ReplicationStub currentStub) {
@@ -290,8 +294,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	/**
 	 * Finds entity by angel id.
 	 * 
-	 * @param angelId Angel identifier
-	 * @param entityName Entity name
+	 * @param angelId
+	 *            Angel identifier
+	 * @param entityName
+	 *            Entity name
 	 * @return list of queueable
 	 */
 	@SuppressWarnings("unchecked")
@@ -305,8 +311,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	/**
 	 * Takes stub from transaction group. Stub is removed when it found.
 	 * 
-	 * @param angelId angel id
-	 * @param entityName entity name
+	 * @param angelId
+	 *            angel id
+	 * @param entityName
+	 *            entity name
 	 * @return replication stub, null if not found.
 	 */
 	public ReplicationStub takeStubFromGroupByAngelId(Long angelId, String entityName) {
@@ -334,15 +342,16 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	class RelationShipCallbackImpl implements RelationShipCallback {
 
 		/**
-		 * @see ish.oncourse.server.replication.updater.RelationShipCallback#updateRelationShip(java.lang.Long, java.lang.Class)
+		 * @see ish.oncourse.server.replication.updater.RelationShipCallback#updateRelationShip(java.lang.Long,
+		 *      java.lang.Class)
 		 */
 		@SuppressWarnings("unchecked")
 		public <M extends Queueable> M updateRelationShip(Long angelId, Class<M> clazz) {
-			
+
 			if (angelId == null) {
 				return null;
 			}
-			
+
 			String entityIdentifier = getEntityName(clazz);
 			List<Queueable> list = objectsByAngelId(angelId, entityIdentifier);
 
