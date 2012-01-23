@@ -15,7 +15,7 @@ import org.apache.tapestry5.services.Session;
 public class PaymentProcessing {
 
 	private static final long POLL_INTERVAL = 1000l * 10;
-	
+
 	@Inject
 	private Block paymentResultBlock;
 
@@ -31,28 +31,30 @@ public class PaymentProcessing {
 
 	@OnEvent(component = "processHolder", value = "progressiveDisplay")
 	Object checkPaymentTask() throws Exception {
-		
+
 		Session session = request.getSession(true);
 
 		if (!Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
-			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
+			try {
+				session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
+				if (payment.getStatus() == PaymentStatus.IN_TRANSACTION || PaymentStatus.CARD_DETAILS_REQUIRED.equals(payment.getStatus())) {
+					// additional check for card details required added to avoid
+					// #13172
+					paymentGatewayService.performGatewayOperation(payment);
 
-			if (payment.getStatus() == PaymentStatus.IN_TRANSACTION || PaymentStatus.CARD_DETAILS_REQUIRED.equals(payment.getStatus())) {
-				//additional check for card details required added to avoid #13172
-				paymentGatewayService.performGatewayOperation(payment);
-
-				if (payment.getStatus() == PaymentStatus.SUCCESS) {
-					payment.getObjectContext().commitChanges();
+					if (payment.getStatus() == PaymentStatus.SUCCESS) {
+						payment.getObjectContext().commitChanges();
+					}
 				}
+			} finally {
+				session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
 			}
-
-			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
 		} else {
 			while (Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 				Thread.sleep(POLL_INTERVAL);
 			}
 		}
-		
+
 		return paymentResultBlock;
 	}
 }
