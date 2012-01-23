@@ -40,7 +40,9 @@ public enum TextileType {
 									+ ")|(default:" + STR_WHITESPACE + ")|(options:" + STR_WHITESPACE + "))){1,4}}", PopupListTextileAttributes.getAttrValues()),
 	FORM("(\\{form([^}]*)}.+?((("+TEXT.regexp+")|("+RADIOLIST.regexp+")|("+POPUPLIST.regexp+")).+?)*(\\{form}))",
 			"\\{form(.+?((name:" + STR_WHITESPACE + ")|(email:" + STR_IN_QUOTS
-					+ ")|(url:" + STR_IN_QUOTS+ "))){2,3}}.+?((("+TEXT.detailedRegexp+")|("+RADIOLIST.detailedRegexp+")|("+POPUPLIST.detailedRegexp+")).+?)*+\\{form}", FormTextileAttributes.getAttrValues());
+					+ ")|(url:" + STR_IN_QUOTS+ "))){2,3}}.+?((("+TEXT.detailedRegexp+")|("+RADIOLIST.detailedRegexp+")|("+POPUPLIST.detailedRegexp+")).+?)*+\\{form}", FormTextileAttributes.getAttrValues()),
+	
+	ATTACHMENT("\\{attachment([^}]*)}", "\\{attachment(.+?name:" + STR_WHITESPACE + ")?}", AttachmentTextileAttributes.getAttrValues());
 
 	private String regexp;
 	private String detailedRegexp;
@@ -64,7 +66,7 @@ public enum TextileType {
 		return attributes;
 	}
 	
-	public static final TextileType[] BASE_TYPES={IMAGE, VIDEO, BLOCK, COURSE, COURSE_LIST, PAGE, TAGS, FORM};
+	public static final TextileType[] BASE_TYPES={IMAGE, VIDEO, BLOCK, COURSE, COURSE_LIST, PAGE, TAGS, FORM, ATTACHMENT};
 
 	public static final String FORM_FIELDS_PATTERN="("+TEXT.regexp+")|("+RADIOLIST.regexp+")|("+POPUPLIST.regexp+")";
 }

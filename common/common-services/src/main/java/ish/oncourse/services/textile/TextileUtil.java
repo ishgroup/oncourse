@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TextileUtil {
-	public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
+	public static final String TEXTILE_REGEXP = "(\\{((block)|(course)|(courses)|(tags)|(page)|(video)|(image)|(attachment))([^}]*)})|(\\{form([^}]*)}.+?(((\\{text([^}]*)})|(\\{radiolist([^}]*)})|(\\{popuplist([^}]*)})).+?)*(\\{form}))";
 	public static final String QUOT = "\"|&#8220;|&#8221;|\u201C|\u201D";
 	public static final String BOOLEAN_IN_QUOTS = inQuots("(true|false)", false);
 	public static final String YES_NO_IN_QUOTS = inQuots("(yes|no|true|false)", false);
@@ -27,6 +27,7 @@ public class TextileUtil {
 	public static final String TEXTILE_TAGS_PAGE = "textile/TextileTags";
 	public static final String TEXTILE_VIDEO_PAGE = "textile/TextileVideo";
 	public static final String TEXTILE_FORM_PAGE = "textile/TextileForm";
+	public static final String TEXTILE_ATTACHMENT_PAGE = "textile/TextileAttachment";
 
 	public static final String TEXTILE_COURSE_PAGE_PARAM = "course";
 	public static final String TEXTILE_COURSE_SHOW_CLASSES_PARAM = "showclasses";
@@ -46,6 +47,8 @@ public class TextileUtil {
 	public static final String TEXTILE_FORM_PAGE_FIELDS_PARAM = "fields";
 	public static final String TEXTILE_FORM_PAGE_AFTER_FIELDS_PARAM = "after_mark-up";
 	public static final String TEXTILE_FORM_PAGE_URL_PARAM = "url";
+	
+	public static final String TEXTILE_ATTACHMENT_PAGE_PARAM = "attachmentParameters";
 
 	public static String inQuots(String param, boolean quotsRequired) {
 		StringBuffer buffer = new StringBuffer();

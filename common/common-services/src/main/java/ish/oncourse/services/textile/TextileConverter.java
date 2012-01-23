@@ -6,6 +6,7 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.renderer.AttachmentTextileRenderer;
 import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
 import ish.oncourse.services.textile.renderer.CourseListTextileRenderer;
 import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
@@ -190,6 +191,8 @@ public class TextileConverter implements ITextileConverter {
 			return new TagsTextileRenderer(tagService, pageRenderer);
 		case FORM:
 			return new FormTextileRenderer(pageRenderer);
+		case ATTACHMENT:
+			return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
 		}
 		return null;
 	}
