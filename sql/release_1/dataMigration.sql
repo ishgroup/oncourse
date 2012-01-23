@@ -280,13 +280,13 @@ INSERT INTO %DESTINATIONDB%_college.PaymentOut (id, collegeId, contactId, angelI
 	SELECT id, collegeId, contactId, angelId, paymentInTxnReference, source, status, created, modified, totalAmount, creditCardCVV, creditCardType
 	FROM %SOURCEDB%_college.PaymentOut WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
 
-INSERT INTO %DESTINATIONDB%_college.PaymentOutTransaction (created, id, isFinalised, modified, paymentOutId, response, txnReference)
-	SELECT created, id, isFinalised, modified, paymentOutId, response, txnReference
-	FROM %SOURCEDB%_college.PaymentOutTransaction WHERE paymentOutId in (SELECT id FROM %DESTINATIONDB%_college.PaymentOut WHERE collegeId = @collegeId) AND (isDeleted=0 OR isDeleted IS NULL);
+-- INSERT INTO %DESTINATIONDB%_college.PaymentOutTransaction (created, id, isFinalised, modified, paymentOutId, response, txnReference)
+-- 	SELECT created, id, isFinalised, modified, paymentOutId, response, txnReference
+-- 	FROM %SOURCEDB%_college.PaymentOutTransaction WHERE paymentOutId in (SELECT id FROM %DESTINATIONDB%_college.PaymentOut WHERE collegeId = @collegeId) AND (isDeleted=0 OR isDeleted IS NULL);
 
-INSERT INTO %DESTINATIONDB%_college.PaymentTransaction (created, id, isFinalised, modified, paymentId, response, txnReference)
-   SELECT created, id, isFinalised, modified, paymentId, response, txnReference
-   FROM %SOURCEDB%_college.PaymentTransaction WHERE paymentId IN (SELECT id FROM %DESTINATIONDB%_college.PaymentIn WHERE collegeId = @collegeId) AND (isDeleted=0 OR isDeleted IS NULL);
+-- INSERT INTO %DESTINATIONDB%_college.PaymentTransaction (created, id, isFinalised, modified, paymentId, response, txnReference)
+--	SELECT created, id, isFinalised, modified, paymentId, response, txnReference
+--	FROM %SOURCEDB%_college.PaymentTransaction WHERE paymentId IN (SELECT id FROM %DESTINATIONDB%_college.PaymentIn WHERE collegeId = @collegeId) AND (isDeleted=0 OR isDeleted IS NULL);
 
 INSERT INTO %DESTINATIONDB%_college.Preference (angelId, collegeId, created, explanation, id, modified, name, sqlType, value)
 	SELECT angelId, collegeId, created, explanation, id, modified, name, sqlType, value
