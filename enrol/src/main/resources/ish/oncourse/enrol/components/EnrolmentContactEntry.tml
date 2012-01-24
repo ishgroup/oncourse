@@ -6,7 +6,6 @@
 		<t:zone t:id="addStudentBlock" t:update="show">
 			<t:if test="hasContact" negate="true">
 				<t:form zone="addStudentBlock" t:id="shortDetailsForm">
-					<t:hidden t:id="token" value="token"/>
 					<h2>Add a student</h2>
 					<t:if test="shortDetailsForm.valid">
 						<div class="message">
@@ -57,7 +56,7 @@
 						<p class="note"><strong class="alert">Note</strong>: Only concessions entered in your <a href="/portal/profile">profile</a> will be used for discounts.</p>
 					</t:if>
 					<div class="form-controls" xml:space="preserve">
-						<t:submit  t:id="addStudentAction" value="Enrol" class="btn enrolSubmit" clientId="add-student-enrol"/> <t:submit  t:id="resetAll" value="Reset" class="btn" clientId="reset-student-enrol"/>
+						<t:submit t:id="addStudentAction" value="Enrol" class="btn enrolSubmit" clientId="add-student-enrol"/> <t:submit  t:id="resetAll" value="Reset" class="btn" clientId="reset-student-enrol"/>
 					</div>
 				</t:form>
 				<p:else>
@@ -77,8 +76,16 @@
 		</t:zone>
 	</div>
 	<script type="text/javascript">
+		var isClicked=false;
 		Event.observe('addStudentBlock', Tapestry.ZONE_UPDATED_EVENT, function(){
 			initHints("addStudentBlock");
+			isClicked=false;
+		});
+		Event.observe('add-student-enrol', 'click', function(e) {
+			if (isClicked) {
+				e.stop();
+			}
+			isClicked = true;
 		});
 	</script>
 </t:container>

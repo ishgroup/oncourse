@@ -4,7 +4,6 @@
 	<t:zone t:id="paymentZone" t:update="show">
 	<t:form t:id="paymentDetailsForm" zone="paymentZone">
 		<t:errors banner="message:errors" class="literal:validation enrolmentsSelected"/>
-		<t:hidden t:id="token" value="token"/>
 		<t:if test="allEnrolmentsAvailable" negate="true">
   			<div class="error">
     			<p>
@@ -111,13 +110,20 @@
 	</t:zone>
 	
 	<script type="text/javascript">
+		var isClicked=false;
 		Event.observe('paymentZone', Tapestry.ZONE_UPDATED_EVENT, 
 				function(){
+					isClicked=false;
 					initHints('paymentZone');  
 					$j('#paymentZone .nyromodal').nyroModal( {debug:false } );
 				}
 		);
-		
+		Event.observe('makepayment', 'click', function(e) {
+			if (isClicked) {
+				e.stop();
+			}
+			isClicked = true;
+		});
 		jQuery(function() {if (jQuery.browser.mozilla) {jQuery("#cvvLink").css("margin-left", "-40%");}});
 	</script>
 

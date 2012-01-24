@@ -6,8 +6,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.ui.utils.FormUtils;
-import ish.oncourse.utils.SessionIdGenerator;
 
 import java.util.List;
 
@@ -66,16 +64,16 @@ public class EnrolmentContactEntry {
 
 	@InjectComponent
 	private TextField emailField;
-	
+
 	@Property
 	private String firstName;
-	
+
 	@Property
 	private String lastName;
 
 	@Property
 	private String email;
-	
+
 	/**
 	 * properties
 	 */
@@ -90,7 +88,7 @@ public class EnrolmentContactEntry {
 	 * Reset form or not.
 	 */
 	private boolean reset;
-	
+
 	@Persist
 	@Property
 	private boolean hasContact;
@@ -106,29 +104,16 @@ public class EnrolmentContactEntry {
 
 	@Property
 	private String emailErrorMessage;
-	
-	@Property
-	private String token;
-	
+
 	@Inject
 	private Request request;
-	
-	@Persist
-	private SessionIdGenerator idGenerator;
 
 	@SetupRender
 	void beforeRender() {
 		this.reset = true;
 		this.hasContact = false;
 		this.contact = null;
-		this.idGenerator = new SessionIdGenerator();
-		saveToken();
 		shortDetailsForm.clearErrors();
-	}
-	
-	private void saveToken() {
-		this.token = idGenerator.generateSessionId();
-		FormUtils.saveToken(request, token);
 	}
 
 	public String getAddStudentBlockClass() {
@@ -139,7 +124,7 @@ public class EnrolmentContactEntry {
 	public boolean isNewStudent() {
 		return (contact != null) && (contact.getPersistenceState() == PersistenceState.NEW);
 	}
-	
+
 	@OnEvent(component = "addStudentAction", value = "selected")
 	void onSelectedFromAddStudentAction() {
 		reset = false;
@@ -178,47 +163,45 @@ public class EnrolmentContactEntry {
 
 	@OnEvent(component = "shortDetailsForm", value = "success")
 	Object submittedSuccessfully() {
-		if (FormUtils.isTokenValid(request, token)) {
-			if (reset) {
-				this.firstName = null;
-				this.lastName = null;
-				this.email = null;
-			} else {
-				Contact studentContact = studentService.getStudentContact(firstName, lastName,
-						email);
-				
-				ObjectContext context = cayenneService.newContext();
-				
-				if (studentContact != null) {
-					this.contact = (Contact) context.localObject(studentContact.getObjectId(), null);
-					if (contact.getStudent() == null) {
-						contact.createNewStudent();
-						context.commitChanges();
-					}
-					studentService.addStudentToShortlist(contact);
-					return "EnrolCourses";
-				}
-				else {
-					this.contact = context.newObject(Contact.class);
-					
-					College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
-					contact.setCollege(college);
-					
-					contact.setGivenName(firstName);
-					contact.setFamilyName(lastName);
-					contact.setEmailAddress(email);
-					
+		Object nextPage = addStudentBlock.getBody();
+
+		if (reset) {
+			this.firstName = null;
+			this.lastName = null;
+			this.email = null;
+		} else {
+			Contact studentContact = studentService.getStudentContact(firstName, lastName, email);
+
+			ObjectContext context = cayenneService.newContext();
+
+			if (studentContact != null) {
+				this.contact = (Contact) context.localObject(studentContact.getObjectId(), null);
+				if (contact.getStudent() == null) {
 					contact.createNewStudent();
-					contact.setIsMarketingViaEmailAllowed(true);
-					contact.setIsMarketingViaPostAllowed(true);
-					contact.setIsMarketingViaSMSAllowed(true);		
+					context.commitChanges();
 				}
-				this.hasContact = true;
+				studentService.addStudentToShortlist(contact);
+				nextPage = "EnrolCourses";
+			} else {
+				this.contact = context.newObject(Contact.class);
+
+				College college = (College) context.localObject(webSiteService.getCurrentCollege().getObjectId(), null);
+				contact.setCollege(college);
+
+				contact.setGivenName(firstName);
+				contact.setFamilyName(lastName);
+				contact.setEmailAddress(email);
+
+				contact.createNewStudent();
+				contact.setIsMarketingViaEmailAllowed(true);
+				contact.setIsMarketingViaPostAllowed(true);
+				contact.setIsMarketingViaSMSAllowed(true);
 			}
-			saveToken();
+			this.hasContact = true;
 		}
-		//Show add new student
-		return addStudentBlock.getBody();
+		
+		// Show add new student
+		return nextPage;
 	}
 
 	public String getFirstNameInput() {
@@ -235,8 +218,7 @@ public class EnrolmentContactEntry {
 
 	private String getInputSectionClass(TextField field) {
 		ValidationTracker defaultTracker = shortDetailsForm.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages
-				.get("validateInput");
+		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages.get("validateInput");
 	}
 
 	public boolean isShowConcessionsArea() {
