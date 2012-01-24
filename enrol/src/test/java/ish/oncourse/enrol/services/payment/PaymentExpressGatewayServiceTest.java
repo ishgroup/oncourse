@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,6 +42,8 @@ import com.paymentexpress.stubs.TransactionResult;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentExpressGatewayServiceTest {
 
+	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayServiceTest.class);
+	
 	private static final String PAYMENT_REF = "W111";//q
 
 	private static final String GATEWAY_PASSWORD = "test1234";
@@ -148,7 +151,10 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
+		
 		TransactionResult tr = gatewayService.doTransaction(payment);
+		LOG.debug("PaymentExpressResponse: " + tr.getMerchantHelpText());
+		
 		assertNotNull("Transaction result should be not empty for successfull payment", tr);
 		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
 		assertTrue("Check if authorized.", isAuthorized);
@@ -169,7 +175,10 @@ public class PaymentExpressGatewayServiceTest {
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
 		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
+		
 		TransactionResult tr = gatewayService.doTransaction(paymentOut);
+		LOG.debug("PaymentExpressResponse: " + tr.getMerchantHelpText());
+		
 		assertNotNull("Transaction result should be not empty for successfull payment", tr);
 		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
 		assertTrue("Check if authorized.", isAuthorized);
@@ -186,7 +195,10 @@ public class PaymentExpressGatewayServiceTest {
 	public void testUnsuccessfulDoTransaction() throws Exception {
 		when(payment.getCreditCardNumber()).thenReturn(DECLINED_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
+		
 		TransactionResult tr = gatewayService.doTransaction(payment);
+		LOG.debug("PaymentExpressResponse: " + tr.getMerchantHelpText());
+		
 		assertFalse(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
 	}
 	
@@ -200,7 +212,10 @@ public class PaymentExpressGatewayServiceTest {
 	public void testUnsuccessfulDoOutTransaction() throws Exception {
 		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
+		
 		TransactionResult tr = gatewayService.doTransaction(paymentOut);
+		LOG.debug("PaymentExpress response:" + tr.getMerchantHelpText());
+		
 		assertNotNull("Transaction result should be not empty for unsuccessfull payment out", tr);
 		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
 		assertFalse("Check if authorized.", isAuthorized);
