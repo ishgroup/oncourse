@@ -283,6 +283,8 @@ public class Courses {
 				case subject:
 					browseTag = tagService.getTagByFullPath(parameter);
 					if (browseTag == null) {
+						//need to clean up not existing tag from search params
+						searchParams.put(SearchParam.subject, null);
 						paramsInError.put(name, parameter);
 					}
 					break;
@@ -306,7 +308,7 @@ public class Courses {
 				searchParams.put(SearchParam.subject, browseTag);
 				//searchParams.put(SearchParam.subject, browseTag.getDefaultPath());
 			}
-		}
+		}		
 
 		if (browseTag != null) {
 			request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag.getId());
