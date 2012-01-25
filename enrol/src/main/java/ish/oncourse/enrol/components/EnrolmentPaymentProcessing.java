@@ -50,7 +50,6 @@ public class EnrolmentPaymentProcessing {
 	@OnEvent(component = "processHolder", value = "progressiveDisplay")
 	Object performGateway() throws Exception {
 		Session session = request.getSession(true);
-
 		if (!Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
 			if (enrolments != null) {
@@ -63,16 +62,15 @@ public class EnrolmentPaymentProcessing {
 					payment.getObjectContext().commitChanges();
 				}
 			}
-			
 			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
 		} else {
-			while (Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
+			while (!session.isInvalidated() && Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 				Thread.sleep(1000);
 			}
 		}
 		return result;
 	}
-
+	
 	public void setEnrolments(List<Enrolment> enrolments) {
 		this.enrolments = enrolments;
 	}
