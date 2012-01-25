@@ -129,7 +129,8 @@
 				<plugin>
 					<groupId>org.apache.cayenne.plugins</groupId>
 					<artifactId>maven-cayenne-plugin</artifactId>
-					<version>3.1M2</version>
+					<!--version>3.1M2</version-->
+					<version>${cayenne.version}</version>
 				</plugin>
 				
 			</plugins>
@@ -633,7 +634,8 @@
 		<servlet-api.version>3.0</servlet-api.version>
 		<cxf.version>2.4.1</cxf.version>
 		<jetty.version>7.0.1.v20091125</jetty.version>
-		<cayenne.version>3.1M3-b1</cayenne.version>
+		<!--cayenne.version>3.1M3-b1</cayenne.version-->
+		<cayenne.version>3.1M4.r1234984</cayenne.version>
 		
 		<!-- define source java version-->
 		<compileSource>1.6</compileSource>
