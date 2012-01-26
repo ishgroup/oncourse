@@ -304,9 +304,9 @@ public class Courses {
 
 		if (browseTag == null && !paramsInError.keySet().contains(SearchParam.subject)) {
 			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
-			if (browseTag != null) {//this code updated because getDefaultPath() return incorrect value for tag group which have aliases
+			if (browseTag != null) {
+				//this code updated because getDefaultPath() return incorrect value for tag group which have aliases
 				searchParams.put(SearchParam.subject, browseTag);
-				//searchParams.put(SearchParam.subject, browseTag.getDefaultPath());
 			}
 		}		
 
