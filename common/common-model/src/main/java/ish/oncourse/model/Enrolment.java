@@ -68,13 +68,15 @@ public class Enrolment extends _Enrolment implements Queueable {
 				&& (EnrolmentStatus.IN_TRANSACTION.equals(getStatus()) || EnrolmentStatus.NEW.equals(getStatus()))
 				&& (EnrolmentStatus.SUCCESS.equals(status))) {
 			
-			for (Session session : getCourseClass().getSessions()) {
-				if (getAttendanceForSessionAndStudent(session, getStudent()) == null) {
-					Attendance a = getObjectContext().newObject(Attendance.class);
-					a.setAttendanceType(0);
-					a.setSession(session);
-					a.setStudent(getStudent());
-					a.setCollege(getCollege());
+			if (getCourseClass() != null) {
+				for (Session session : getCourseClass().getSessions()) {
+					if (getAttendanceForSessionAndStudent(session, getStudent()) == null) {
+						Attendance a = getObjectContext().newObject(Attendance.class);
+						a.setAttendanceType(0);
+						a.setSession(session);
+						a.setStudent(getStudent());
+						a.setCollege(getCollege());
+					}
 				}
 			}
 		}
