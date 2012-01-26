@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ish.common.types.EnrolmentStatus;
@@ -59,6 +60,25 @@ public class Enrolment extends _Enrolment implements Queueable {
 	@Override
 	protected void onPrePersist() {
 		onPostAdd();
+	}
+	
+	@Override
+	public void setStatus(EnrolmentStatus status) {
+		if (PaymentSource.SOURCE_WEB.equals(getSource()) 
+				&& (EnrolmentStatus.IN_TRANSACTION.equals(getStatus()) || EnrolmentStatus.NEW.equals(getStatus()))
+				&& (EnrolmentStatus.SUCCESS.equals(status))) {
+			
+			for (Session session : getCourseClass().getSessions()) {
+				if (getAttendanceForSessionAndStudent(session, getStudent()) == null) {
+					Attendance a = getObjectContext().newObject(Attendance.class);
+					a.setAttendanceType(0);
+					a.setSession(session);
+					a.setStudent(getStudent());
+					a.setCollege(getCollege());
+				}
+			}
+		}
+		super.setStatus(status);
 	}
 
 	/**
