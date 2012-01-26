@@ -28,6 +28,9 @@ public class SearchService implements ISearchService {
 
 	private static final Logger logger = Logger.getLogger(SearchService.class);
 
+	/**
+	 * Default maximum distance for geo-searches
+	 */
 	private static final int MAX_DISTANCE = 100;
 
 	private static final String DATE_BOOST_STM = "{!boost b=$dateboost v=$qq}";
@@ -140,9 +143,6 @@ public class SearchService implements ISearchService {
 			Tag browseTag = null;
 			if (params.containsKey(SearchParam.subject)) {
 				browseTag = (Tag) params.get(SearchParam.subject);
-				//this code comment to avoid duplicated database calls
-				//String subject = params.get(SearchParam.subject);
-				//browseTag = tagService.getTagByFullPath(subject);
 			}
 
 			if (browseTag != null) {
