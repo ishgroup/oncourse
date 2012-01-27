@@ -21,6 +21,7 @@ import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.cayenne.Cayenne;
@@ -172,7 +173,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 
 		List<Queueable> objects = objectsByAngelId(currentStub.getAngelId(), willowIdentifier);
-
+		
+		if (objects.isEmpty()) {
+			//we need this since a lot of old records from angel has angelId=null.
+			objects = objectsByWillowId(currentStub.getWillowId(), willowIdentifier);
+		}
+		
 		switch (objects.size()) {
 		case 0: {
 			if (currentStub instanceof DeletedStub) {
@@ -306,6 +312,24 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		q.andQualifier(ExpressionFactory.matchDbExp("angelId", angelId));
 		q.andQualifier(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
 		return atomicContext.performQuery(q);
+	}
+	
+	/**
+	 * Finds entity by willow id.
+	 * @param willowId primary key in willow system
+	 * @param entityName Entity identifier
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private List<Queueable> objectsByWillowId(Long willowId, String entityName) {
+		List<Queueable> records = Collections.emptyList();
+		if (willowId != null) {
+			SelectQuery q = new SelectQuery(getEntityClass(atomicContext, entityName));
+			q.andQualifier(ExpressionFactory.matchDbExp("id", willowId));
+			q.andQualifier(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
+			records = atomicContext.performQuery(q);
+		}
+		return records;
 	}
 
 	/**
