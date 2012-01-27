@@ -37,7 +37,7 @@ public class WebSiteServiceOverride implements IWebSiteService {
 		
 		Long collegeId = null;
 		
-		if (session != null) {
+		if (session != null && !session.isInvalidated()) {
 			if (session.getAttribute(SessionToken.SESSION_TOKEN_KEY) != null) {
 				SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
 				collegeId = token.getCollegeId();
