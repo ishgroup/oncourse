@@ -33,6 +33,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
+import org.apache.tapestry5.services.Session;
 
 public class EnrolmentPaymentResult {
 
@@ -198,6 +199,12 @@ public class EnrolmentPaymentResult {
 		payment.getObjectContext().commitChanges();
 
 		clearPersistedValues();
+		
+		Session session = request.getSession(false);
+		if (session != null) {
+			session.setAttribute(PaymentIn.FAILED_PAYMENT_PARAM, null);
+		}
+		
 		try {
 			return new URL("http://" + request.getServerName());
 		} catch (MalformedURLException e) {
