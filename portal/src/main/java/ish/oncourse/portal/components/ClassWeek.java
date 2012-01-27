@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -26,6 +27,7 @@ public class ClassWeek {
 	@Parameter
 	private CourseClass courseClass;
 	
+	@SuppressWarnings("all")
 	@InjectPage
 	private Classes classes;
 	
@@ -113,7 +115,7 @@ public class ClassWeek {
 	public String getSessionDateInfo() {
 		Date start = courseClass.getStartDate();
 		DateFormat formatter = new SimpleDateFormat("MMM. dd ");
-		return formatter.format(start);
+		return start != null ? formatter.format(start) : StringUtils.EMPTY;
 	}
 	
 	public String getSessionIntervalInfo() {
