@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -37,12 +38,15 @@ import org.apache.tapestry5.services.Session;
 
 public class EnrolmentPaymentResult {
 
+	private static final String HTTP_PROTOCOL = "http://";
+
 	@Inject
 	private Messages messages;
 
 	@Inject
 	private Request request;
 
+	@SuppressWarnings("all")
 	@Inject
 	private RequestGlobals requestGlobals;
 
@@ -58,6 +62,7 @@ public class EnrolmentPaymentResult {
 	@Inject
 	private IStudentService studentService;
 
+	@SuppressWarnings("all")
 	@Inject
 	private IPaymentService paymentService;
 
@@ -77,12 +82,15 @@ public class EnrolmentPaymentResult {
 	@Parameter
 	private List<Enrolment> enrolments;
 
+	@SuppressWarnings("all")
 	@Property
 	private String thxMsg;
 
+	@SuppressWarnings("all")
 	@Property
 	private String paymentFailedMsg;
 
+	@SuppressWarnings("all")
 	@Property
 	private String enrolmentFailedMsg;
 
@@ -111,8 +119,8 @@ public class EnrolmentPaymentResult {
 
 	private void clearPersistedValues() {
 		// clear all the short lists
-		cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "");
-		cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, "");
+		cookiesService.writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, StringUtils.EMPTY);
+		cookiesService.writeCookieValue(Discount.PROMOTIONS_KEY, StringUtils.EMPTY);
 		enrolCourses.clearPersistedProperties();
 		studentService.clearStudentsShortList();
 	}
@@ -124,7 +132,7 @@ public class EnrolmentPaymentResult {
 	private void initAnalyticTransaction() {
 		String googleAnalyticsAccount = webSiteService.getCurrentWebSite().getGoogleAnalyticsAccount();
 
-		if (googleAnalyticsAccount != null && !googleAnalyticsAccount.equals("")) {
+		if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
 			if (payment != null && isEnrolmentSuccessful() && !enrolments.isEmpty()) {
 				List<Item> transactionItems = new ArrayList<Item>(enrolments.size());
 				for (Enrolment enrolment : enrolments) {
@@ -201,12 +209,12 @@ public class EnrolmentPaymentResult {
 		clearPersistedValues();
 		
 		Session session = request.getSession(false);
-		if (session != null) {
+		if (session != null && !session.isInvalidated()) {
 			session.setAttribute(PaymentIn.FAILED_PAYMENT_PARAM, null);
 		}
 		
 		try {
-			return new URL("http://" + request.getServerName());
+			return new URL(HTTP_PROTOCOL + request.getServerName());
 		} catch (MalformedURLException e) {
 		}
 		return null;
@@ -220,7 +228,7 @@ public class EnrolmentPaymentResult {
 	}
 
 	public String getCoursesLink() {
-		return "http://" + request.getServerName() + "/courses";
+		return HTTP_PROTOCOL + request.getServerName() + "/courses";
 	}
 
 	public String getSuccessUrl() {
