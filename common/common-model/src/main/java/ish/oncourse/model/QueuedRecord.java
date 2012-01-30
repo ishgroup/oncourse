@@ -9,6 +9,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 public class QueuedRecord extends _QueuedRecord {
@@ -86,8 +87,7 @@ public class QueuedRecord extends _QueuedRecord {
 	 */
 	@Override
 	public void setErrorMessage(String errorMessage) {
-		super.setErrorMessage(errorMessage);
-
+		super.setErrorMessage(StringUtils.abbreviate(errorMessage, 1024));
 		if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(getNumberOfAttempts())) {
 			logger.error(String.format("Max number of retries has been reached for QueuedRecord entityIdentifier:%s and willowId:%s",
 					getEntityIdentifier(), getEntityWillowId()));
