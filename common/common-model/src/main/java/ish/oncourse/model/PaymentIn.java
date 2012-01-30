@@ -632,7 +632,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	public void setStatus(final PaymentStatus status) {
 		if (getStatus() != null && PaymentStatus.STATUSES_FINAL.contains(getStatus()) && !getStatus().equals(status)) {
 			// if payment already in this states there is no reason to change it
-			throw new IllegalArgumentException("Can not change payment status from " + getStatus() + " to " + status);
+			throw new IllegalArgumentException("Can not change payment status from " + getStatus() + " to " + status + " payment id is " + getId());
 		}
 		super.setStatus(status);
 		Date now = new Date();
