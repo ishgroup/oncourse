@@ -55,7 +55,7 @@
         					<label for="cardcvv">CVV<em title="${message:required}">*</em></label>
         					<span class="${cardcvvInputClass}">
 								<t:textfield value="payment.creditCardCVV" class ="input-fixed" 
-										clientId="cardcvv" t:id="cardcvv" maxlength="5" />
+										clientId="cardcvv" t:id="cardcvv" maxlength="4" />
 								<span t:type="ui/HintComponent" validationMessage="${message:cardcvv}"/>
 							</span>
 							<a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>
