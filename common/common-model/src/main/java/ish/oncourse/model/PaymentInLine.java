@@ -92,13 +92,13 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 					if (currentPaymentInId.equals(paymentInId) && currentInvoiceId.equals(invoiceId)) {
 						result.addFailure(ValidationFailure.validationFailure(this, _PaymentInLine.PAYMENT_IN_PROPERTY,
 							"PaymentIn id = " + currentPaymentInId +" and Invoice id " + currentInvoiceId + 
-							"couldn't be equal in different PaymentInLines." + this.getId() + " and " + pil.getId() + " with sourse = " + 
+							" couldn't be equal in different PaymentInLines. " + getId() + " and " + pil.getId() + " with sourse = " + 
 							getPaymentIn().getSource()));
 					}
 				} else if (getPaymentIn() != null && getPaymentIn().equals(pil.getPaymentIn()) && getInvoice() != null
 						&& getInvoice().equals(pil.getInvoice())) {
 					result.addFailure(ValidationFailure.validationFailure(this, _PaymentInLine.PAYMENT_IN_PROPERTY,
-						"PaymentIn and Invoice couldn't be equal in different PaymentInLines." + this.getId() + " and " + pil.getId() + 
+						"PaymentIn and Invoice couldn't be equal in different PaymentInLines. " + getId() + " and " + pil.getId() + 
 						" with sourse = " + getPaymentIn().getSource()));
 				}
 			}
