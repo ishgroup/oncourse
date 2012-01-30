@@ -663,6 +663,10 @@
 		</preConditions>
 		<sql>ALTER TABLE PaymentOutTransaction ADD COLUMN soapResponse TEXT NULL  AFTER response ;</sql>
 	</changeSet>
+	
+	<changeSet id="51" author="anton" context="production" runOnChange="true">
+		<dropNotNullConstraint tableName="Certificate" columnName="qualificationId" columnDataType="BIGINT(20)"/>
+	</changeSet>
 		
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>

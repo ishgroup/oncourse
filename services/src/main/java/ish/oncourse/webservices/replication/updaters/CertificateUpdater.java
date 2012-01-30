@@ -23,7 +23,8 @@ public class CertificateUpdater extends AbstractWillowUpdater<CertificateStub, C
 
 		Long qualificationId = stub.getQualificationId();
 		if (qualificationId != null) {
-			entity.setQualification(Cayenne.objectForPK(entity.getObjectContext(), Qualification.class, qualificationId));
+			Qualification qualification = Cayenne.objectForPK(entity.getObjectContext(), Qualification.class, qualificationId);
+			entity.setQualification(qualification);
 		}
 
 		entity.setRevokedWhen(stub.getRevokedWhen());
