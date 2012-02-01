@@ -1,13 +1,11 @@
 package ish.oncourse.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.QueueableObjectUtils;
+
+import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -109,22 +107,11 @@ public class Enrolment extends _Enrolment implements Queueable {
 	}
 
 	/**
-	 * Check if async replication is allowed on this object.
+	 * Check if async replication is allowed on this object. To replicate enrolment shouldn't have null, QUEUED or IN_TRANSACTION statuses.
 	 * 
 	 * @return
 	 */
 	public boolean isAsyncReplicationAllowed() {
-
-		if (getInvoiceLine() != null && !getInvoiceLine().getInvoice().getPaymentInLines().isEmpty()) {
-			for (PaymentInLine line : getInvoiceLine().getInvoice().getPaymentInLines()) {
-				PaymentIn paymentIn = line.getPaymentIn();
-				if (paymentIn.getStatus() != PaymentStatus.IN_TRANSACTION && paymentIn.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION;
+		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
 	}
 }

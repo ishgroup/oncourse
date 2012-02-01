@@ -128,8 +128,8 @@ public class Invoice extends _Invoice implements Queueable {
 	public boolean isAsyncReplicationAllowed() {
 		List<PaymentInLine> lines = getPaymentInLines();
 
+		// We check linked payments, if one of them can replicate invoice can replicate too.
 		if (!lines.isEmpty()) {
-			
 			for (PaymentInLine line : lines) {
 				PaymentIn paymentIn = line.getPaymentIn();
 				ObjectIdQuery q = new ObjectIdQuery(paymentIn.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
@@ -138,20 +138,21 @@ public class Invoice extends _Invoice implements Queueable {
 					return true;
 				}
 			}
-			
-			return false;
-		} else {
-			for (InvoiceLine invLine : getInvoiceLines()) {
-				Enrolment enrol = invLine.getEnrolment();
-				if (enrol != null) {
-					ObjectIdQuery q = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-					enrol = (Enrolment) Cayenne.objectForQuery(getObjectContext(), q);
-					if (enrol.isAsyncReplicationAllowed()) {
-						return true;
-					}
-				}
-			}
 			return false;
 		}
+
+		// If invoice is not yet linked to any payments.
+		for (InvoiceLine invLine : getInvoiceLines()) {
+			Enrolment enrol = invLine.getEnrolment();
+			if (enrol != null) {
+				ObjectIdQuery q = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+				enrol = (Enrolment) Cayenne.objectForQuery(getObjectContext(), q);
+				if (!enrol.isAsyncReplicationAllowed()) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 }
