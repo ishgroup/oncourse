@@ -19,12 +19,10 @@ import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.replication.services.ITransactionGroupValidator;
 import ish.oncourse.webservices.replication.services.IWillowQueueService;
 import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
 import ish.oncourse.webservices.replication.services.ReplicationServiceImpl;
 import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
-import ish.oncourse.webservices.replication.services.TransactionGroupValidatorImpl;
 import ish.oncourse.webservices.replication.services.WillowQueueService;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
@@ -41,7 +39,6 @@ import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.ExceptionReporter;
 import org.apache.tapestry5.services.RequestExceptionHandler;
@@ -73,7 +70,6 @@ public class AppModule {
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 		binder.bind(PaymentPortType.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
-		binder.bind(ITransactionGroupValidator.class, TransactionGroupValidatorImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceOverride");
 
 		binder.bind(PaymentInExpireJob.class);

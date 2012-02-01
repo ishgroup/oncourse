@@ -64,9 +64,6 @@ public class ReplicationServiceImpl implements IReplicationService {
 	@Inject
 	private ICayenneService cayenneService;
 
-	@Inject
-	private ITransactionGroupValidator groupValidator;
-
 	/**
 	 * Process transaction groups from angel for replication.
 	 */
@@ -213,8 +210,14 @@ public class ReplicationServiceImpl implements IReplicationService {
 			}
 
 			ReplicationRecords result = new ReplicationRecords();
-			List<TransactionGroup> validatedGroups = groupValidator.validateAndReturnFixedGroups(resultGroups);
-			result.getGroups().addAll(validatedGroups);
+			result.getGroups().addAll(resultGroups);
+
+			// clean remove group if it's empty
+			for (TransactionGroup g : new ArrayList<TransactionGroup>(result.getGroups())) {
+				if (g.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+					result.getGroups().remove(g);
+				}
+			}
 
 			return result;
 
