@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
+import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.QueueableObjectUtils;
 
@@ -112,6 +113,19 @@ public class Enrolment extends _Enrolment implements Queueable {
 	 * @return
 	 */
 	public boolean isAsyncReplicationAllowed() {
+		//first of all we check if enrolment, linked to PaymentIn with either SUCCESS or FAIL status. 
+		//If so enrolment is allowed to go to the queue. We need that since there may be several payments made for enrolment,
+		//for instance when first payment failed and second payment is in progress, enrolment is allowed to go to the queue.
+		if (getInvoiceLine() != null && !getInvoiceLine().getInvoice().getPaymentInLines().isEmpty()) {
+			for (PaymentInLine line : getInvoiceLine().getInvoice().getPaymentInLines()) {
+				PaymentIn paymentIn = line.getPaymentIn();
+				if (paymentIn.getStatus() != PaymentStatus.IN_TRANSACTION && paymentIn.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
 	}
 }
