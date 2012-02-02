@@ -667,6 +667,10 @@
 	<changeSet id="51" author="anton" context="production" runOnChange="true">
 		<dropNotNullConstraint tableName="Certificate" columnName="qualificationId" columnDataType="BIGINT(20)"/>
 	</changeSet>
+	
+	<!-- changeSet id="52" author="dzmitry" context="production" runOnChange="true">
+		<sql>update Invoice i set i.totalGst = i.totalExGst + i.totalGst where ABS(i.totalGst) &lt; ABS(i.totalExGst);</sql>
+	</changeSet -->
 		
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
