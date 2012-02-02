@@ -668,7 +668,16 @@
 		<dropNotNullConstraint tableName="Certificate" columnName="qualificationId" columnDataType="BIGINT(20)"/>
 	</changeSet>
 	
-	<!-- changeSet id="52" author="dzmitry" context="production" runOnChange="true">
+	<changeSet id="52" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<foreignKeyConstraintExists foreignKeyName="CertificateOutcome_ibfk_3" foreignKeyTableName="CertificateOutcome"/>
+		</preConditions>
+		<dropForeignKeyConstraint baseTableName="CertificateOutcome" constraintName="CertificateOutcome_ibfk_3"/>
+		<dropIndex tableName="CertificateOutcome" indexName="CertificateOutcome_ibfk_3"/>
+		<sql>ALTER TABLE CertificateOutcome CHANGE COLUMN outcomeId outcomeId BIGINT(20) NULL</sql>
+	</changeSet>
+	
+	<!-- changeSet id="53" author="dzmitry" context="production" runOnChange="true">
 		<sql>update Invoice i set i.totalGst = i.totalExGst + i.totalGst where ABS(i.totalGst) &lt; ABS(i.totalExGst);</sql>
 	</changeSet -->
 		
