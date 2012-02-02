@@ -2637,9 +2637,9 @@
 	<obj-relationship name="student" source="StudentConcession" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="college" source="Tag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="parent" source="Tag" target="Tag" deleteRule="Nullify" db-relationship-path="parent"/>
-	<obj-relationship name="tagGroupRequirements" source="Tag" target="TagGroupRequirement" deleteRule="Deny" db-relationship-path="tagGroupRequirements"/>
-	<obj-relationship name="taggableTags" source="Tag" target="TaggableTag" deleteRule="Deny" db-relationship-path="taggableTags"/>
-	<obj-relationship name="tags" source="Tag" target="Tag" deleteRule="Deny" db-relationship-path="tags"/>
+	<obj-relationship name="tagGroupRequirements" source="Tag" target="TagGroupRequirement" deleteRule="Cascade" db-relationship-path="tagGroupRequirements"/>
+	<obj-relationship name="taggableTags" source="Tag" target="TaggableTag" deleteRule="Cascade" db-relationship-path="taggableTags"/>
+	<obj-relationship name="tags" source="Tag" target="Tag" deleteRule="Cascade" db-relationship-path="tags"/>
 	<obj-relationship name="college" source="TagGroupRequirement" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="tag" source="TagGroupRequirement" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="college" source="Taggable" target="College" deleteRule="Nullify" db-relationship-path="college"/>
