@@ -12,7 +12,6 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.CreditCardUtil;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.log4j.Logger;
 
@@ -66,7 +63,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	 * Validation to prevent saving unbalanced PaymentIn into database.
 	 */
 	@Override
-	protected void validateForSave(ValidationResult result) {
+	public void validateForSave(ValidationResult result) {
 
 		super.validateForSave(result);
 
@@ -94,68 +91,11 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		}
 
 		if (!amount.equals(sum)) {
-			// some data after migration doesn't have angelId properly set on
-			// paymentInLines
-			// that is why we need this check too.
-			if (isCommittedSumValid()) {
-				// unregister not committed lines
-				unregisterNotCommittedLines();
-			} else {
-				result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY, String.format(
-						"The payment willowId:%s angelId:%s amount does not match the sum of amounts allocated for invoices/credit notes.",
-						getId(), getAngelId())));
-			}
+			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY, String.format(
+					"The payment willowId:%s angelId:%s amount does not match the sum of amounts allocated for invoices/credit notes.",
+					getId(), getAngelId())));
 		}
 
-	}
-
-	/**
-	 * Unregisters not committed paymentInLines from object context
-	 * 
-	 * @param lines
-	 *            paymentInLines
-	 */
-	void unregisterNotCommittedLines() {
-
-		for (PaymentInLine pinl : new ArrayList<PaymentInLine>(getPaymentInLines())) {
-			if (pinl.getObjectId().isTemporary()) {
-				getPaymentInLines().remove(pinl);
-				getObjectContext().getGraphManager().unregisterNode(pinl);
-
-				Long angelId = pinl.getAngelId();
-				Long invoiceNumber = pinl.getInvoice().getInvoiceNumber();
-				Long invoiceAngelId = pinl.getInvoice().getAngelId();
-
-				Expression expr = ExpressionFactory.matchExp(PaymentInLine.INVOICE_PROPERTY + "." + Invoice.INVOICE_NUMBER_PROPERTY,
-						invoiceNumber);
-
-				expr = expr.orExp(ExpressionFactory.matchExp(PaymentInLine.INVOICE_PROPERTY + "." + Invoice.ANGEL_ID_PROPERTY,
-						invoiceAngelId));
-
-				List<PaymentInLine> matchedLines = expr.filterObjects(getPaymentInLines());
-				if (!matchedLines.isEmpty()) {
-					matchedLines.get(0).setAngelId(angelId);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Check the paymentIn amount against committed payment in lines.
-	 * 
-	 * @return true - if amount matches the sum of committed paymentInLines.
-	 */
-	boolean isCommittedSumValid() {
-		Money amount = new Money(getAmount());
-		Money sum = Money.ZERO;
-
-		for (PaymentInLine pinl : getPaymentInLines()) {
-			if (!pinl.getObjectId().isTemporary()) {
-				sum = sum.add(pinl.getAmount());
-			}
-		}
-
-		return amount.equals(sum);
 	}
 
 	/**
