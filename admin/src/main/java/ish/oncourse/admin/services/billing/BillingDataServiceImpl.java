@@ -119,7 +119,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 
 		// web transaction value
-		sql = "SELECT c.id as collegeId, SUM(i.totalExGst) + SUM(i.totalGst) as value FROM Invoice i JOIN College AS c on c.Id = i.collegeId WHERE c.billingCode IS NOT NULL and i.created >= #bind($from) AND i.created <= #bind($to) AND i.source = 'W' GROUP BY collegeid";
+		sql = "SELECT c.id as collegeId, SUM(i.totalGst) as value FROM Invoice i JOIN College AS c on c.Id = i.collegeId WHERE c.billingCode IS NOT NULL and i.created >= #bind($from) AND i.created <= #bind($to) AND i.source = 'W' GROUP BY collegeid";
 		query = new SQLTemplate(PaymentIn.class, sql);
 		query.setParameters(params);
 		query.setFetchingDataRows(true);
@@ -151,7 +151,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 				cal.add(Calendar.MONTH, -1);
 				tasmaniaParams.put("to", cal.getTime());
 				
-				sql = "SELECT SUM(i.totalExGst) + SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W'";
+				sql = "SELECT SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W'";
 				query = new SQLTemplate(PaymentIn.class, sql);
 				query.setParameters(tasmaniaParams);
 				query.setFetchingDataRows(true);
