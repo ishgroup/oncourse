@@ -2620,7 +2620,7 @@
 	<obj-relationship name="country" source="Site" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
 	<obj-relationship name="rooms" source="Site" target="Room" deleteRule="Deny" db-relationship-path="rooms"/>
 	<obj-relationship name="waitingListSites" source="Site" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
-	<obj-relationship name="attendances" source="Student" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
+	<obj-relationship name="attendances" source="Student" target="Attendance" deleteRule="Cascade" db-relationship-path="attendances"/>
 	<obj-relationship name="certificates" source="Student" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="college" source="Student" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Student" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
