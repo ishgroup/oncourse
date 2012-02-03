@@ -2628,7 +2628,7 @@
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="language" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="language"/>
 	<obj-relationship name="languageHome" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="languageHome"/>
-	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
+	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Student" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentIns"/>
 	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
