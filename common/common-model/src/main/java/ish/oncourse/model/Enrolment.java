@@ -99,7 +99,7 @@ public class Enrolment extends _Enrolment implements Queueable {
 		List<Attendance> attendances = session.getAttendances();
 
 		for (Attendance at : attendances) {
-			if (at.getStudent().equals(student) || at.getStudent().getObjectId().equals(student.getObjectId())) {
+			if (at.getStudent() != null && (at.getStudent().equals(student) || at.getStudent().getObjectId().equals(student.getObjectId()))) {
 				return at;
 			}
 		}
