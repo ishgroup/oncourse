@@ -2631,7 +2631,7 @@
 	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Student" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentIns"/>
 	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
-	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
+	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Cascade" db-relationship-path="waitingLists"/>
 	<obj-relationship name="college" source="StudentConcession" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="concessionType" source="StudentConcession" target="ConcessionType" deleteRule="Nullify" db-relationship-path="concessionType"/>
 	<obj-relationship name="student" source="StudentConcession" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
