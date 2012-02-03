@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.replication.updaters;
 
+import org.apache.commons.lang.StringUtils;
+
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
@@ -21,8 +23,14 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
 		String statusString = stub.getStatus();
-		entity.setStatus(EnrolmentStatus.valueOf(statusString));
-		
+		if (StringUtils.trimToNull(statusString) != null) {
+			entity.setStatus(EnrolmentStatus.valueOf(statusString));
+		} else {
+			if(LOG.isDebugEnabled()) {
+				LOG.warn("Enrolment with id = " + stub.getAngelId() + " with empty status detected!", 
+					new Throwable("Enrolment with id = " + stub.getAngelId() + " with empty status detected!"));
+			}
+		}		
 		Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
 		entity.setStudent(student);
 	}
