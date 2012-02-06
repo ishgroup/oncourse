@@ -13,6 +13,7 @@ import ish.oncourse.model.DiscountMembershipRelationType;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.Membership;
 import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.model.PaymentIn;
@@ -365,6 +366,9 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 		} else if (entity instanceof InvoiceLine) {
 			InvoiceLine invoiceLine = (InvoiceLine) entity;
 			isAsyncAllowed = invoiceLine.isAsyncReplicationAllowed();
+		} else if (entity instanceof InvoiceLineDiscount) {
+			InvoiceLineDiscount invoiceLineDiscount = (InvoiceLineDiscount) entity;
+			isAsyncAllowed = invoiceLineDiscount.isAsyncReplicationAllowed();
 		}
 
 		return isAsyncAllowed;

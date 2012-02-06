@@ -10,4 +10,12 @@ public class InvoiceLineDiscount extends _InvoiceLineDiscount implements Queueab
 		return QueueableObjectUtils.getId(this);
 	}
 
+	/**
+	 * Check if async replication is allowed for this object.
+	 * 
+	 * @return
+	 */
+	public boolean isAsyncReplicationAllowed() {
+		return getInvoiceLine().isAsyncReplicationAllowed();
+	}
 }

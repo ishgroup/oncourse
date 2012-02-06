@@ -243,6 +243,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				il.setModified(today);
+				for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
+					ilDiscount.setModified(today);
+				}
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
 					enrol.setModified(today);
@@ -356,6 +359,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				// Fail enrolments on invoiceToRefund
 				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
 					il.setModified(today);
+					for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
+						ilDiscount.setModified(today);
+					}
 					Enrolment enrol = il.getEnrolment();
 					if (enrol != null) {
 						enrol.setModified(today);
@@ -401,6 +407,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				il.setModified(today);
+				for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
+					ilDiscount.setModified(today);
+				}
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
 					enrol.setModified(today);
@@ -434,6 +443,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				il.setModified(today);
+				for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
+					ilDiscount.setModified(today);
+				}
 				Enrolment enrol = il.getEnrolment();
 				if (enrol != null) {
 					enrol.setModified(today);
