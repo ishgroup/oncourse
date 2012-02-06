@@ -44,7 +44,7 @@ public class PaymentExpressGatewayServiceTest {
 
 	private static final Logger LOG = Logger.getLogger(PaymentExpressGatewayServiceTest.class);
 	
-	private static final String PAYMENT_REF = "W111";//q
+	private static final String PAYMENT_REF = "W111";
 
 	private static final String GATEWAY_PASSWORD = "test1234";
 
@@ -153,7 +153,7 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		
 		TransactionResult tr = gatewayService.doTransaction(payment);
-		LOG.debug("PaymentExpressResponse: " + tr.getMerchantHelpText());
+		LOG.info("PaymentExpressResponse: " + tr.getMerchantHelpText());
 		
 		assertNotNull("Transaction result should be not empty for successfull payment", tr);
 		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
@@ -170,14 +170,16 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testSuccessfulDoOutTransaction() throws Exception {
+		LOG.info("Create payment in for test DoOutTransaction");
 		testSuccessfulDoTransaction();
 		TransactionResult tr1 = result1;
+		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
 		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		
 		TransactionResult tr = gatewayService.doTransaction(paymentOut);
-		LOG.debug("PaymentExpressResponse: " + tr.getMerchantHelpText());
+		LOG.info("PaymentExpressResponse: " + tr.getMerchantHelpText());
 		
 		assertNotNull("Transaction result should be not empty for successfull payment", tr);
 		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
@@ -247,8 +249,10 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	@Test
 	public void testSuccessfulOutProcessGateway() throws Exception {
+		LOG.info("Create payment in for test OutProcessGateway");
 		testSuccessfulDoTransaction();
 		TransactionResult tr1 = result1;
+		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
 		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));		
