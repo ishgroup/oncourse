@@ -17,6 +17,7 @@ import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressUtil;
 import ish.oncourse.services.persistence.ICayenneService;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collections;
@@ -172,6 +173,10 @@ public class PaymentExpressGatewayServiceTest {
 	public void testSuccessfulDoOutTransaction() throws Exception {
 		LOG.info("Create payment in for test DoOutTransaction");
 		testSuccessfulDoTransaction();
+		
+		// a short delay is needed before refund will be accepted in DPS
+		Thread.sleep(10*1000);
+		
 		TransactionResult tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
