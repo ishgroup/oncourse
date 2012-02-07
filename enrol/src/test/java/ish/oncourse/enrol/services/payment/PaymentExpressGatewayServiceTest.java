@@ -256,6 +256,10 @@ public class PaymentExpressGatewayServiceTest {
 	public void testSuccessfulOutProcessGateway() throws Exception {
 		LOG.info("Create payment in for test OutProcessGateway");
 		testSuccessfulDoTransaction();
+		
+		// a short delay is needed before refund will be accepted in DPS
+		Thread.sleep(10*1000);
+				
 		TransactionResult tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
