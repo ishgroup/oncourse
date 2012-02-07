@@ -2489,7 +2489,7 @@
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="memberships" source="Contact" target="Membership" deleteRule="Deny" db-relationship-path="products"/>
-	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
+	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="products" source="Contact" target="ProductItem" deleteRule="Deny" db-relationship-path="products"/>
@@ -2607,7 +2607,7 @@
 	<obj-relationship name="courseClasses" source="Room" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="sessions" source="Room" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
-	<obj-relationship name="attendances" source="Session" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
+	<obj-relationship name="attendances" source="Session" target="Attendance" deleteRule="Cascade" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Session" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Session" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="marker" source="Session" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
