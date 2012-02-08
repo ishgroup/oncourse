@@ -156,40 +156,41 @@ INSERT INTO %DESTINATIONDB%_college.Enrolment (id, collegeId, courseClassId, stu
 	JOIN %DESTINATIONDB%_college.CourseClass AS cc on cc.id = e.courseClassId
 	WHERE e.collegeId = @collegeId AND (e.isDeleted=0 OR e.isDeleted IS NULL);
 
-INSERT INTO %DESTINATIONDB%_college.Invoice (totalExGst, totalGst, amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
-	SELECT p.totalExGst, p.totalGst, 0, p.collegeId, p.contactID, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
-	FROM %SOURCEDB%_college.Payment AS p
-	JOIN %DESTINATIONDB%_college.Contact AS c ON p.contactid = c.id
-	WHERE p.collegeId = @collegeId
-		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
-		AND p.contactId IS NOT NULL
-		AND p.studentId IS NULL;
+-- this migration commented because in any case this migration generate invalid records and better to use Instructions
+-- INSERT INTO %DESTINATIONDB%_college.Invoice (totalExGst, totalGst, amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
+-- 	SELECT p.totalExGst, p.totalGst, 0, p.collegeId, p.contactID, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
+-- 	FROM %SOURCEDB%_college.Payment AS p
+-- 	JOIN %DESTINATIONDB%_college.Contact AS c ON p.contactid = c.id
+-- 	WHERE p.collegeId = @collegeId
+-- 		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
+-- 		AND p.contactId IS NOT NULL
+-- 		AND p.studentId IS NULL;
 
 -- deal with legacy data joined on student id instead of contact id
-INSERT INTO %DESTINATIONDB%_college.Invoice (totalExGst, totalGst, amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
-	SELECT p.totalExGst, p.totalGst, 0, p.collegeId, c.id, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
-	FROM %SOURCEDB%_college.Payment p
-	JOIN %DESTINATIONDB%_college.Contact c ON p.studentID = c.studentID
-	JOIN %DESTINATIONDB%_college.Student AS s ON s.id = p.studentID
-	WHERE p.collegeId = @collegeid
-		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
-		AND p.contactId IS NULL
-		AND p.studentId IS NOT NULL;
+-- INSERT INTO %DESTINATIONDB%_college.Invoice (totalExGst, totalGst, amountOwing, collegeId, contactId, created, dateDue, id, invoiceDate, invoiceNumber, modified, source)
+-- 	SELECT p.totalExGst, p.totalGst, 0, p.collegeId, c.id, p.created, p.created, p.id, p.created, p.id, p.modified, p.source
+-- 	FROM %SOURCEDB%_college.Payment p
+-- 	JOIN %DESTINATIONDB%_college.Contact c ON p.studentID = c.studentID
+-- 	JOIN %DESTINATIONDB%_college.Student AS s ON s.id = p.studentID
+-- 	WHERE p.collegeId = @collegeid
+-- 		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
+-- 		AND p.contactId IS NULL
+-- 		AND p.studentId IS NOT NULL;
 
-INSERT INTO %DESTINATIONDB%_college.InvoiceLine (id, collegeId, invoiceId, enrolmentId, priceEachExTax, discountEachExTax, quantity, taxEach, created, modified, title)
-	SELECT e.id, e.collegeId, e.paymentId, e.id, cc.feeExGst, case when (e.combinedDiscountExTax is null) then 0.00 else e.combinedDiscountExTax end, 1, case when (cc.feeGst is null) then 0.00 else cc.feeGst end, e.created, e.modified, ''
-	FROM %SOURCEDB%_college.Enrolment e
-	JOIN %DESTINATIONDB%_college.Enrolment as newe ON e.id = newe.id
-	JOIN %DESTINATIONDB%_college.Invoice as i ON e.paymentid = i.id
-	JOIN %DESTINATIONDB%_college.CourseClass cc ON e.courseClassId = cc.id
-	WHERE e.collegeId = @collegeId	AND (e.isDeleted=0 OR e.isDeleted IS NULL) AND e.paymentId is not null;
+-- INSERT INTO %DESTINATIONDB%_college.InvoiceLine (id, collegeId, invoiceId, enrolmentId, priceEachExTax, discountEachExTax, quantity, taxEach, created, modified, title)
+-- 	SELECT e.id, e.collegeId, e.paymentId, e.id, cc.feeExGst, case when (e.combinedDiscountExTax is null) then 0.00 else e.combinedDiscountExTax end, 1, case when (cc.feeGst is null) then 0.00 else cc.feeGst end, e.created, e.modified, ''
+-- 	FROM %SOURCEDB%_college.Enrolment e
+-- 	JOIN %DESTINATIONDB%_college.Enrolment as newe ON e.id = newe.id
+-- 	JOIN %DESTINATIONDB%_college.Invoice as i ON e.paymentid = i.id
+-- 	JOIN %DESTINATIONDB%_college.CourseClass cc ON e.courseClassId = cc.id
+-- 	WHERE e.collegeId = @collegeId	AND (e.isDeleted=0 OR e.isDeleted IS NULL) AND e.paymentId is not null;
 
-INSERT INTO %DESTINATIONDB%_college.InvoiceLine_Discount (id, invoiceLineId, discountId, collegeId, angelId, created, modified)
-	SELECT (e.discountId + (e.id << 32)), e.id, e.discountId, @collegeId, (d.angelId + (invL.angelId << 32)), e.created, e.modified
-	FROM %SOURCEDB%_college.Enrolment e 
-	JOIN %DESTINATIONDB%_college.InvoiceLine as invL ON invL.id=e.id
-	JOIN %DESTINATIONDB%_college.Discount as d ON d.id=e.discountId
-	WHERE e.collegeId = @collegeId AND (e.isDeleted=0 OR e.isDeleted IS NULL) AND e.discountId is not null;
+-- INSERT INTO %DESTINATIONDB%_college.InvoiceLine_Discount (id, invoiceLineId, discountId, collegeId, angelId, created, modified)
+-- 	SELECT (e.discountId + (e.id << 32)), e.id, e.discountId, @collegeId, (d.angelId + (invL.angelId << 32)), e.created, e.modified
+-- 	FROM %SOURCEDB%_college.Enrolment e 
+-- 	JOIN %DESTINATIONDB%_college.InvoiceLine as invL ON invL.id=e.id
+-- 	JOIN %DESTINATIONDB%_college.Discount as d ON d.id=e.discountId
+-- 	WHERE e.collegeId = @collegeId AND (e.isDeleted=0 OR e.isDeleted IS NULL) AND e.discountId is not null;
 
 INSERT INTO %DESTINATIONDB%_college.LicenseFee (id, college_id, key_code, fee, valid_until, free_transactions, plan_name, billingMonth)
 	SELECT id, college_id, `key`, fee, valid_until, free_transactions, plan_name, billingMonth
@@ -238,47 +239,51 @@ INSERT INTO %DESTINATIONDB%_college.CertificateOutcome (id, certificateId, outco
 	JOIN %DESTINATIONDB%_college.Certificate as c on c.id = co.certificateId
 	JOIN %DESTINATIONDB%_college.Outcome as o ON co.outcomeid = o.id
 	WHERE co.collegeId = @collegeId;
-
-INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, studentId, amount, status, type, statusNotes)
-	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, NULL, (p.totalExGst + p.totalGst)
-  		, p.status, 2, 
-        CASE
-			WHEN (p.status = 6) THEN "Card declined"
-			WHEN (p.status = 7) THEN "No places"
-			WHEN (p.status = 9) THEN "Credited"
-		END
-	FROM %SOURCEDB%_college.Payment AS p
-	JOIN %DESTINATIONDB%_college.Contact AS c ON p.contactid = c.id
-	WHERE p.collegeId = @collegeId
-		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
-		AND p.contactId IS NOT NULL
-		AND p.studentID IS NULL;
+	
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:Invoice');
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:PaymentIn');
+Insert into %DESTINATIONDB%_college.Instruction(collegeId, created, modified, message) values(@collegeId, now(), now(), 'queue:PaymentOut');
+-- this migration commented because in any case this migration generate invalid records and better to use Instructions
+-- INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, studentId, amount, status, type, statusNotes)
+-- 	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, NULL, (p.totalExGst + p.totalGst)
+--   		, p.status, 2, 
+--         CASE
+-- 			WHEN (p.status = 6) THEN "Card declined"
+-- 			WHEN (p.status = 7) THEN "No places"
+-- 			WHEN (p.status = 9) THEN "Credited"
+-- 		END
+-- 	FROM %SOURCEDB%_college.Payment AS p
+-- 	JOIN %DESTINATIONDB%_college.Contact AS c ON p.contactid = c.id
+-- 	WHERE p.collegeId = @collegeId
+-- 		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
+-- 		AND p.contactId IS NOT NULL
+-- 		AND p.studentID IS NULL;
 
 -- fixing legacy payments linked to students
-INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, studentId, amount, status, statusNotes)
-	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, p.studentId, (p.totalExGst + p.totalGst)
-  		, p.status, 
-        CASE
-			WHEN (p.status = 6) THEN "Card declined"
-			WHEN (p.status = 7) THEN "No places"
-			WHEN (p.status = 9) THEN "Credited"
-		END
-	FROM %SOURCEDB%_college.Payment as p
-	JOIN %DESTINATIONDB%_college.Student as s on p.studentid = s.id
-	WHERE p.collegeId = @collegeId
-		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
-		AND p.contactId IS NULL
-		AND p.studentId IS NOT NULL;
+-- INSERT INTO %DESTINATIONDB%_college.PaymentIn (angelId, collegeId, contactID, created, creditCardCVV, creditCardExpiry, creditCardName, creditCardNumber, creditCardType, id, modified, source, studentId, amount, status, statusNotes)
+-- 	SELECT p.angelId, p.collegeId, p.contactID, p.created, p.creditCardCVV, p.creditCardExpiry, p.creditCardName, p.creditCardNumber, p.creditCardType, p.id, p.modified, p.source, p.studentId, (p.totalExGst + p.totalGst)
+--   		, p.status, 
+--         CASE
+-- 			WHEN (p.status = 6) THEN "Card declined"
+-- 			WHEN (p.status = 7) THEN "No places"
+-- 			WHEN (p.status = 9) THEN "Credited"
+-- 		END
+-- 	FROM %SOURCEDB%_college.Payment as p
+-- 	JOIN %DESTINATIONDB%_college.Student as s on p.studentid = s.id
+-- 	WHERE p.collegeId = @collegeId
+-- 		AND (p.isDeleted=0 OR p.isDeleted IS NULL)
+-- 		AND p.contactId IS NULL
+-- 		AND p.studentId IS NOT NULL;
 
-INSERT INTO %DESTINATIONDB%_college.PaymentInLine (amount, collegeId, angelId, created, id, invoiceId, modified, paymentInId)
-	SELECT (il.priceEachExTax + il.taxEach + il.discountEachexTax), @collegeId, il.angelId, il.created, il.id, il.invoiceId, il.modified, il.invoiceId
-	FROM %DESTINATIONDB%_college.InvoiceLine il
-	JOIN %DESTINATIONDB%_college.Invoice i ON i.id = il.invoiceId
-	WHERE i.collegeId = @collegeId;
+-- INSERT INTO %DESTINATIONDB%_college.PaymentInLine (amount, collegeId, angelId, created, id, invoiceId, modified, paymentInId)
+-- 	SELECT (il.priceEachExTax + il.taxEach + il.discountEachexTax), @collegeId, il.angelId, il.created, il.id, il.invoiceId, il.modified, il.invoiceId
+-- 	FROM %DESTINATIONDB%_college.InvoiceLine il
+-- 	JOIN %DESTINATIONDB%_college.Invoice i ON i.id = il.invoiceId
+-- 	WHERE i.collegeId = @collegeId;
 
-INSERT INTO %DESTINATIONDB%_college.PaymentOut (id, collegeId, contactId, angelId, paymentInTxnReference, source, status, created, modified, totalAmount, creditCardCVV, creditCardType)
-	SELECT id, collegeId, contactId, angelId, paymentInTxnReference, source, status, created, modified, totalAmount, creditCardCVV, creditCardType
-	FROM %SOURCEDB%_college.PaymentOut WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
+-- INSERT INTO %DESTINATIONDB%_college.PaymentOut (id, collegeId, contactId, angelId, paymentInTxnReference, source, status, created, modified, totalAmount, creditCardCVV, creditCardType)
+-- 	SELECT id, collegeId, contactId, angelId, paymentInTxnReference, source, status, created, modified, totalAmount, creditCardCVV, creditCardType
+-- 	FROM %SOURCEDB%_college.PaymentOut WHERE collegeId = @collegeId AND (isDeleted=0 OR isDeleted IS NULL);
 
 -- INSERT INTO %DESTINATIONDB%_college.PaymentOutTransaction (created, id, isFinalised, modified, paymentOutId, response, txnReference)
 -- 	SELECT created, id, isFinalised, modified, paymentOutId, response, txnReference
