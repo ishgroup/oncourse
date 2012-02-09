@@ -61,27 +61,6 @@ public class Enrolment extends _Enrolment implements Queueable {
 		onPostAdd();
 	}
 	
-	@Override
-	public void setStatus(EnrolmentStatus status) {
-		if (PaymentSource.SOURCE_WEB.equals(getSource()) 
-				&& (EnrolmentStatus.IN_TRANSACTION.equals(getStatus()) || EnrolmentStatus.NEW.equals(getStatus()))
-				&& (EnrolmentStatus.SUCCESS.equals(status))) {
-			
-			if (getCourseClass() != null) {
-				for (Session session : getCourseClass().getSessions()) {
-					if (getAttendanceForSessionAndStudent(session, getStudent()) == null) {
-						Attendance a = getObjectContext().newObject(Attendance.class);
-						a.setAttendanceType(0);
-						a.setSession(session);
-						a.setStudent(getStudent());
-						a.setCollege(getCollege());
-					}
-				}
-			}
-		}
-		super.setStatus(status);
-	}
-
 	/**
 	 * Convenience method getting an attendance for a given session and student
 	 * 
