@@ -40,7 +40,12 @@ public class StudentService implements IStudentService {
 				.andExp(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName))
 				.andExp(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
 		SelectQuery query = new SelectQuery(Contact.class, qualifier);
+		@SuppressWarnings("unchecked")
 		List<Contact> results = cayenneService.sharedContext().performQuery(query);
+		if (results.size() > 1) {
+			LOGGER.warn("Duplicate student contact exists for name = " + firstName + " with lastname = " + lastName + " and email = " + email + 
+				" contact with id = " + results.get(0).getId() + " used for this query.");
+		}
 		return results.isEmpty() ? null : results.get(0);
 	}
 
@@ -52,6 +57,7 @@ public class StudentService implements IStudentService {
 
 	public List<Long> getContactsIdsFromShortList() {
 		Session session = request.getSession(false);
+		@SuppressWarnings("unchecked")
 		List<Long> studentIds = (List<Long>) session.getAttribute(SHORTLIST_STUDENTS_KEY);
 		if (studentIds == null) {
 			studentIds = new ArrayList<Long>();
@@ -68,13 +74,12 @@ public class StudentService implements IStudentService {
 		return contacts;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Contact> getContactsByIds(List<Long> ids) {
 		if (ids == null || ids.isEmpty()) {
 			return Collections.emptyList();
 		}
-
 		SelectQuery q = new SelectQuery(Contact.class, ExpressionFactory.inDbExp(Contact.ID_PK_COLUMN, ids));
-
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
@@ -88,7 +93,7 @@ public class StudentService implements IStudentService {
 	@Override
 	public void clearStudentsShortList() {
 		Session session = request.getSession(false);
-		if (session != null) {
+		if (session != null && !session.isInvalidated()) {
 			session.setAttribute(SHORTLIST_STUDENTS_KEY, null);
 		}
 	}
