@@ -27,6 +27,11 @@ public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStu
 		}
 
 		entity.setModified(stub.getModified());
-		entity.setPaymentIn(callback.updateRelationShip(stub.getPaymentInId(), PaymentIn.class));
+		PaymentIn paymentIn = callback.updateRelationShip(stub.getPaymentInId(), PaymentIn.class);
+		if (paymentIn != null) {
+			entity.setPaymentIn(paymentIn);
+		} else {
+			logger.error(String.format("Can not find payment by angelId:%s", stub.getInvoiceId()));
+		}
 	}
 }
