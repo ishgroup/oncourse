@@ -31,7 +31,7 @@ public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStu
 		if (paymentIn != null) {
 			entity.setPaymentIn(paymentIn);
 		} else {
-			logger.error(String.format("Can not find payment by angelId:%s", stub.getInvoiceId()));
+			logger.error(String.format("Can not find payment by angelId:%s", stub.getPaymentInId()));
 		}
 	}
 }
