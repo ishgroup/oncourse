@@ -2,12 +2,14 @@ package ish.oncourse.webservices.replication.updaters;
 
 import java.math.BigDecimal;
 
+import org.apache.log4j.Logger;
+
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.webservices.v4.stubs.replication.OutcomeStub;
 
 public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> {
-
+	private static final Logger logger = Logger.getLogger(OutcomeUpdater.class);
 	@Override
 	protected void updateEntity(OutcomeStub stub, Outcome entity, RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
@@ -17,7 +19,11 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		entity.setEndDate(stub.getEndDate());
 		
 		Enrolment enrolment = callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class);
-		entity.setEnrolment(enrolment);
+		if (enrolment != null) {
+			entity.setEnrolment(enrolment);
+		} else {
+			logger.error(String.format("Can not find enrolment by angelId:%s", stub.getEnrolmentId()));
+		}
 		
 		entity.setFundingSource(stub.getFundingSource());
 		entity.setModuleId(stub.getModuleId());
