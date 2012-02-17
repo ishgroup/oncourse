@@ -320,7 +320,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * @param entityName Entity identifier
 	 * @return
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings({"unchecked" })
 	private List<Queueable> objectsByWillowId(Long willowId, String entityName) {
 		List<Queueable> records = Collections.emptyList();
 		if (willowId != null) {
@@ -385,7 +385,17 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				ReplicationStub stub = takeStubFromGroupByAngelId(angelId, entityIdentifier);
 				if (stub != null) {
 					M relatedObject = (M) processStub(stub);
-					return (M) Cayenne.objectForPK(atomicContext, relatedObject.getObjectId());
+					if (relatedObject == null) {
+						if (stub instanceof DeletedStub) {
+							return null;
+						} else {
+							logger.error(String.format("Empty related object returns for not empty stub. Angelid = %s entity = %s", angelId, entityIdentifier), 
+								new Exception(String.format("Empty related object returns for not empty stub. Angelid = %s entity = %s", angelId, entityIdentifier)));
+							return null;
+						}
+					} else {
+						return (M) Cayenne.objectForPK(atomicContext, relatedObject.getObjectId());
+					}
 				} else {
 					return uncommittedObjectByAngelId(angelId, clazz);
 				}
