@@ -11,10 +11,6 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 	private static final long serialVersionUID = -6157950790523998485L;
 	private static final Logger LOG = Logger.getLogger(PaymentInLine.class);
 
-	public College getCollege() {
-		return getPaymentIn().getCollege();
-	}
-
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
