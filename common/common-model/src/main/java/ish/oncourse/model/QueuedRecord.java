@@ -89,8 +89,8 @@ public class QueuedRecord extends _QueuedRecord {
 	public void setErrorMessage(String errorMessage) {
 		super.setErrorMessage(StringUtils.abbreviate(errorMessage, 1024));
 		if (QueuedRecord.MAX_NUMBER_OF_RETRY.equals(getNumberOfAttempts())) {
-			logger.error(String.format("Max number of retries has been reached for QueuedRecord entityIdentifier:%s and willowId:%s",
-					getEntityIdentifier(), getEntityWillowId()));
+			logger.error(String.format("Max number of retries has been reached for QueuedRecord entityIdentifier:%s and willowId:%s in transaction:\"%s\" \n with errorMessage:%s",
+					getEntityIdentifier(), getEntityWillowId(), getQueuedTransaction().getObjectId(), errorMessage));
 		}
 	}
 }
