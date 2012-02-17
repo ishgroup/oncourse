@@ -12,6 +12,8 @@ public class SMTPAppenderWithTimeout extends SMTPAppender {
 	
 	private int connectionTimeout;
 	private int timeout;
+	private int instanceIndex;
+	private int versionIndex;
 
 	public int getConnectionTimeout() {
 		return connectionTimeout;
@@ -27,6 +29,41 @@ public class SMTPAppenderWithTimeout extends SMTPAppender {
 
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;
+	}
+	
+	public void setInstanceIndex(int instanceIndex) {
+		this.instanceIndex = instanceIndex;
+	}
+	
+	public int getInstanceIndex() {
+		return instanceIndex;
+	}
+	
+	public void setVersionIndex(int versionIndex) {
+		this.versionIndex = versionIndex;
+	}
+	
+	public int getVersionIndex() {
+		return versionIndex;
+	}
+	
+	@Override
+	public void setSubject(String subject) {
+		try {
+			String[] pathComponents = getClass().getResource("/").toString().split("/");
+			
+			if (instanceIndex > 0 && versionIndex > 0 && 
+					instanceIndex < pathComponents.length && versionIndex < pathComponents.length) {
+				super.setSubject(subject + " Instance: " + pathComponents[instanceIndex] + 
+						". Version: " + pathComponents[versionIndex]);
+			}
+			else {
+				super.setSubject(subject);
+			}
+			
+		} catch (Throwable e) {
+			super.setSubject(subject);
+		}
 	}
 
 	@Override
