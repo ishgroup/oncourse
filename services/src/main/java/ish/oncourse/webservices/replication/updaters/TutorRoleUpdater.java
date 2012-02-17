@@ -19,5 +19,6 @@ public class TutorRoleUpdater extends AbstractWillowUpdater<CourseClassTutorStub
 		entity.setIsConfirmed(stub.getConfirmedOn() != null);
 		entity.setModified(stub.getModified());
 		entity.setTutor(callback.updateRelationShip(stub.getTutorId(), Tutor.class));
+		entity.setInPublicity(stub.isInPublicity());
 	}
 }

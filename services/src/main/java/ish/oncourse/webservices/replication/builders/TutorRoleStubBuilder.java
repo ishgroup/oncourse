@@ -18,7 +18,7 @@ public class TutorRoleStubBuilder extends AbstractWillowStubBuilder<TutorRole, C
 		stub.setCourseClassId(entity.getCourseClass().getId());
 		stub.setTutorId(entity.getTutor().getId());
 		stub.setConfirmedOn(entity.getConfirmedDate());
-
+		stub.setInPublicity(entity.getInPublicity());
 		return stub;
 	}
 	
