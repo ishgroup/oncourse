@@ -748,6 +748,7 @@
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="inPublicity" type="BIT" isMandatory="true"/>
 		<db-attribute name="isConfirmed" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="tutorId" type="BIGINT" isMandatory="true" length="19"/>
@@ -1450,6 +1451,7 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="confirmedDate" type="java.util.Date" db-attribute-path="confirmedDate"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="inPublicity" type="java.lang.Boolean" db-attribute-path="inPublicity"/>
 		<obj-attribute name="isConfirmed" type="java.lang.Boolean" db-attribute-path="isConfirmed"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>

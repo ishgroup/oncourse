@@ -672,7 +672,14 @@
 		<addNotNullConstraint tableName="Attendance" columnName="angelId" columnDataType="BIGINT"/>
 	</changeSet>
 	
-	<!-- changeSet id="53" author="dzmitry" context="production" runOnChange="true">
+	<changeSet id="53" author="viacheslav" context="production" runOnChange="true">
+		<addColumn tableName="TutorRole">
+			<column name="inPublicity" type="TINYINT(1)" defaultValue="1"/>
+		</addColumn>
+		<addNotNullConstraint tableName="TutorRole" columnName="inPublicity" columnDataType="TINYINT(1)"/>
+	</changeSet>
+	
+	<!-- changeSet id="54" author="dzmitry" context="production" runOnChange="true">
 		<sql>update Invoice i set i.totalGst = i.totalExGst + i.totalGst where ABS(i.totalGst) &lt; ABS(i.totalExGst);</sql>
 	</changeSet -->
 		

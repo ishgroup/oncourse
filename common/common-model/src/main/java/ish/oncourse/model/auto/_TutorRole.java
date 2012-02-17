@@ -19,6 +19,7 @@ public abstract class _TutorRole extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CONFIRMED_DATE_PROPERTY = "confirmedDate";
     public static final String CREATED_PROPERTY = "created";
+    public static final String IN_PUBLICITY_PROPERTY = "inPublicity";
     public static final String IS_CONFIRMED_PROPERTY = "isConfirmed";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String COLLEGE_PROPERTY = "college";
@@ -46,6 +47,13 @@ public abstract class _TutorRole extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setInPublicity(Boolean inPublicity) {
+        writeProperty("inPublicity", inPublicity);
+    }
+    public Boolean getInPublicity() {
+        return (Boolean)readProperty("inPublicity");
     }
 
     public void setIsConfirmed(Boolean isConfirmed) {
