@@ -64,7 +64,7 @@ public class ForgotPassword {
 		EmailBuilder email = new EmailBuilder();
 		
 		email.setFromEmail(FROM_EMAIL);
-		email.setSubject("Password recovery.");
+		email.setSubject("Password reset.");
 		
 		StringBuilder textBody = new StringBuilder();
 		textBody.append(String.format("Dear %s %s, <br/><br/>", user.getGivenName(), user.getFamilyName()));
