@@ -2579,7 +2579,7 @@
 	<obj-relationship name="tutor" source="MessagePerson" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
 	<obj-relationship name="college" source="MessageTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="NotificationTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="certificateOutcomes" source="Outcome" target="CertificateOutcome" deleteRule="Deny" db-relationship-path="certificateOutcomes"/>
+	<obj-relationship name="certificateOutcomes" source="Outcome" target="CertificateOutcome" deleteRule="Cascade" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="college" source="Outcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="Outcome" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="college" source="PaymentIn" target="College" deleteRule="Nullify" db-relationship-path="college"/>
