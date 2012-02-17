@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <College id="1" name="Sydney Community College" webServicesSecurityCode="345ttn44$%9"
+             communication_key="7059522699886202880" communication_key_status="VALID"
+             firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+    <Site id="1" collegeId="1" angelId="2" isWebVisible="0" created="2011-09-12 00:17:18.0"
+          modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
+          drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
+          longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"
+          publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
+          specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="timeZone"/>
+
+
+    <Room id="1"  collegeId="1" siteId="1" angelId="2" capacity="30" created="2011-09-12 00:47:01.0"
+          modified="2011-09-12 01:02:00.0" name="TestRoom" directions="directions" directions_textile="directions_textile"
+          facilities="facilities" facilities_textile="facilities_textile"/>
+
+
+    <Tutor id="1" collegeId="1" angelId="2" created="2011-09-12 00:47:26.0"
+           modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
+           resume_textile="This is mister Putin resume." startDate="2011-09-12 01:02:00.0"
+           finishDate="2011-09-12 01:02:00.0"/>
+
+    <Course id="1" collegeId="1" angelId="2" code="AAV" isWebVisible="1" isVETCourse="0"
+            isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting" detail="detail"
+            detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
+            nominalHours="1.1" qualificationId="1" searchText="searchText"/>
+
+    <CourseClass id="1" collegeId="1"
+                 code="1" courseId="1" roomId="1" angelId="2"
+                 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+                 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="454.55"
+                 feeGst="45.45"
+                 detail="detail" detail_textile="detailTextile" materials="materials"
+                 materials_textile="materials_textile"
+                 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+                 startingMinutePerSession="1" timeZone="timeZone"
+            />
+
+    <Session id="1" collegeId="1" courseClassId="1" roomId="1" angelId="2" startDate="2011-10-12 00:55:59.0"
+             endDate="2011-10-12 01:55:59.0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+
+    <Student id="1" angelId="2" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1"
+             highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
+             isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
+
+
+    <Contact id="1"
+             collegeId="1"
+             angelId="2"
+             studentId="1"
+             cookieHash="cookieHash"
+             isMarketingViaSMSAllowed="1"
+             isMarketingViaPostAllowed="1"
+             isMarketingViaEmailAllowed="1"
+             isMale="1"
+             isCompany="1"
+             created="2010-02-03 09:18:09"
+             modified="2010-02-03 09:18:09"
+             password="password"
+             passwordHash="passwordHash"
+             postcode="postcode"
+             state="state"
+             street="street"
+             taxFileNumber="taxFileNumber"
+             mobilePhoneNumber="234-456-789"
+             homePhoneNumber="234-456-789"
+             businessPhoneNumber="234-456-789"
+             countryId="1"
+             tutorId="1"
+             uniqueCode="uniqueCode"
+             dateOfBirth="1952-10-07"
+             emailAddress="putin@kremlin.ru"
+             familyName="StubTest"
+             givenName="StubTest"
+             faxNumber="1234-567"
+             suburb="Moscow"/>
+
+    <Attendance id="1" angelId="2" attendanceType="1" collegeId="1" sessionId="1" studentId="1" markerId="1"
+                created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <BinaryInfo id="1"
+                angelId="2"
+                collegeId="1"
+                byteSize="1"
+                isWebVisible="1"
+                mimeType="mimeType"
+                name="name"
+                pixelHeight="1"
+                pixelWidth="1"
+                referenceNumber="1"
+                created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <ConcessionType id="1"
+                    angelId="2"
+                    collegeId="1"
+                    credentialExpiryDays="1"
+                    hasConcessionNumber="1"
+                    hasExpiryDate="1"
+                    isConcession="1"
+                    isEnabled="1"
+                    name="true"
+                    requiresCredentialCheck="1"
+                    created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+    <Discount
+            id="1"
+            angelId="2"
+            code="code"
+            collegeId="1"
+            combinationType="1"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountAmount="1.11"
+            discountRate="1.11"
+            discountType="1"
+            maximumDiscount="1.11"
+            minimumDiscount="1.11"
+            modified="2011-09-12 00:56:00.0"
+            name="name"
+            roundingMode="1"
+            studentAge="1"
+            studentAgeOperator="st"
+            studentEnrolledWithinDays="1"
+            studentPostcodes="studentPostcodes"
+            studentsQualifier="studentsQualifier"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2011-09-12 00:56:00.0"/>
+
+    <Enrolment id="1" angelId="2" source="W" collegeId="1" courseClassId="1"
+               studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="2" reasonForStudy="1"/>
+
+    <Invoice id="1" angelId="2" billToAddress="billToAddress" source="W" amountOwing="100.00" contactId="1"
+             collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+             invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
+             totalGst="10.91" created="2011-09-10 11:14:54" customerPO="customerPO"
+             customerReference="customerReference" modified="2011-09-10 11:14:54"
+             publicNotes="publicNotes" shippingAddress="shippingAddress"/>
+
+
+    <InvoiceLine id="1" angelId="2" collegeId="1" enrolmentId="1"
+                 invoiceId="1" discountEachExTax="0.00"
+                 priceEachExTax="99" title="Test Invoice Line" quantity="1.11" modified="2011-09-10 11:14:54"
+                 created="2011-09-10 11:14:54" description="description"
+                 sortOrder="1" taxEach="1.11" unit="unit"/>
+
+    <InvoiceLine_Discount
+            id="1" collegeId="1" angelId="2" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" discountId="1" invoiceLineId="1"/>
+
+
+    <Message
+        angelId="2"
+        collegeId="1"
+        created="2011-09-20 11:14:54"
+        emailBody="emailBody"
+        emailSubject="emailSubject"
+        id="1"
+        modified="2011-09-20 11:14:54"
+        smsText="smsText"/>
+
+
+    <MessagePerson
+        angelId="2"
+        collegeId="1"
+        contactId="1"
+        created="2011-09-20 11:14:54"
+        destinationAddress="destinationAddress"
+        id="1"
+        messageId="1"
+        modified="2011-09-20 11:14:54"
+        numberOfAttempts="1"
+        response="response"
+        status="1"
+        studentId="1"
+        timeOfDelivery="2011-09-20 11:14:54"
+        type="1"/>
+
+    <MessagePerson
+            angelId="2"
+            collegeId="1"
+            contactId="1"
+            created="2011-09-20 11:14:54"
+            destinationAddress="destinationAddress"
+            id="2"
+            messageId="1"
+            modified="2011-09-20 11:14:54"
+            numberOfAttempts="1"
+            response="response"
+            status="1"
+            tutorId="1"
+            timeOfDelivery="2011-09-20 11:14:54"
+            type="1"/>
+
+
+    <Outcome
+        angelId="2"
+        collegeId="1"
+        created="2011-09-20 11:14:54"
+        deliveryMode="1"
+        endDate="2011-09-20 11:14:54"
+        enrolmentId="1"
+        fundingSource="1"
+        id="1"
+        modified="2011-09-20 11:14:54"
+        moduleId="1"
+        reportableHours="1.11"
+        startDate="2011-09-20 11:14:54"
+        status="1"/>
+
+    <PaymentIn
+            amount="1.11"
+            angelId="2"
+            collegeId="1"
+            contactId="1"
+            created="2011-09-20 11:14:54"
+            creditCardCVV="QWER"
+            creditCardExpiry="creditCardExpiry"
+            creditCardName="creditCardName"
+            creditCardNumber="creditCardNumberX"
+            creditCardType="VISA"
+            dateBanked="2011-09-20 11:14:54"
+            gatewayReference="gatewayReference"
+            gatewayResponse="gatewayResponse"
+            id="1"
+            modified="2011-09-20 11:14:54"
+            sessionId="sessionId"
+            source="W"
+            status="1"
+            statusNotes="statusNotes"
+            studentId="1"
+            type="1"/>
+
+    <PaymentOut
+            angelId="2"
+            collegeId="1"
+            contactId="1"
+            created="2011-09-20 11:14:54"
+            creditCardCVV="QWER"
+            creditCardType="VISA"
+            dateBanked="2011-09-20 11:14:54"
+            datePaid="2011-09-20 11:14:54"
+            id="1"
+            modified="2011-09-20 11:14:54"
+            paymentInTxnReference="TxnReference"
+            source="W"
+            status="1"
+            statusNotes="statusNotes"
+            totalAmount="1.11"/>
+
+    <PaymentInLine
+        amount="1"
+        angelId="2"
+        collegeId="1"
+        created="2011-09-20 11:14:54"
+        id="1"
+        invoiceId="1"
+        modified="2011-09-20 11:14:54"
+        paymentInId="1"/>
+
+    <Preference
+        angelId="2"
+        collegeId="1"
+        created="2011-09-20 11:14:54"
+        explanation="explanation"
+        id="1"
+        modified="2011-09-20 11:14:54"
+        name="name"
+        sqlType="1"
+        value="value"
+        value_string="value_string"/>
+
+
+    <StudentConcession
+        angelId="2"
+        authorisationExpiresOn="2011-09-20 11:14:54"
+        authorisedOn="2011-09-20 11:14:54"
+        collegeId="1"
+        concessionNumber="concessionNumber"
+        concessionTypeId="1"
+        created="2011-09-20 11:14:54"
+        expiresOn="2011-09-20 11:14:54"
+        id="1"
+        modified="2011-09-20 11:14:54"
+        studentId="1"
+        timeZone="timeZone"/>
+
+    <Tag
+            angelId="2"
+            collegeId="1"
+            created="2011-09-20 11:14:54"
+            detail="detail"
+            detail_textile="detail_textile"
+            id="2"
+            isTagGroup="1"
+            isWebVisible="1"
+            modified="2011-09-20 11:14:54"
+            name="parent"
+            nodeType="1"
+            shortName="shortName"
+            specialType="1"
+            weighting="1"
+            />
+
+    <Tag
+            angelId="2"
+            collegeId="1"
+            created="2011-09-20 11:14:54"
+            detail="detail"
+            detail_textile="detail_textile"
+            id="1"
+            isTagGroup="1"
+            isWebVisible="1"
+            modified="2011-09-20 11:14:54"
+            name="name"
+            nodeType="1"
+            parentId="2"
+            shortName="shortName"
+            specialType="1"
+            weighting="1"
+            />
+
+
+
+    <Taggable
+        angelId="2"
+        collegeId="1"
+        created="2011-09-20 11:14:54"
+        entityAngelId="1"
+        entityIdentifier="Taggable"
+        entityWillowId="1"
+        id="1"
+        modified="2011-09-20 11:14:54"/>
+
+
+    <TaggableTag
+        angelId="2"
+        collegeId="1"
+        created="2011-09-20 11:14:54"
+        id="1"
+        modified="2011-09-20 11:14:54"
+        tagId="1"
+        taggableId="1"/>
+
+
+    <TutorRole
+        angelId="2"
+        collegeId="1"
+        confirmedDate="2011-09-20 11:14:54"
+        courseClassId="1"
+        created="2011-09-20 11:14:54"
+        id="1"
+        isConfirmed="1"
+        modified="2011-09-20 11:14:54"
+        tutorId="1"/>
+
+     <WaitingList
+        angelId="2"
+    collegeId="1"
+    courseId="1"
+    created="2011-09-20 11:14:54"
+    detail="detail"
+    id="1"
+    modified="2011-09-20 11:14:54"
+    potentialStudents="1"
+    studentId="1"/>
+
+
+
+
+</dataset>
