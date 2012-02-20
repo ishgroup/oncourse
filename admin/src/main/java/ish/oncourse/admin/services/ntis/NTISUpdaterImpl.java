@@ -7,6 +7,7 @@ import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.ReferenceService;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -50,6 +51,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	private static final String FIELD_OF_EDUCATION_ID = "04";
 	private static final String LEVEL_OF_EDUCATION_ID = "05";
 	
+	@SuppressWarnings("all")
 	private static final List<String> LEVEL_NAMES = Arrays.asList(
   	"Graduate Diploma of",
   	"Graduate Diploma (professional specialist) of",
