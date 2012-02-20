@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.updaters;
 
 import ish.math.Money;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub;
@@ -22,5 +23,6 @@ public class InvoiceLineUpdater extends
 		entity.setTaxEach(Money.valueOf(stub.getTaxEach()));
 		entity.setTitle(stub.getTitle());
 		entity.setUnit(stub.getUnit());
+		entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class));
 	}
 }
