@@ -50,6 +50,28 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	private static final String FIELD_OF_EDUCATION_ID = "04";
 	private static final String LEVEL_OF_EDUCATION_ID = "05";
 	
+	private static final List<String> LEVEL_NAMES = Arrays.asList(
+  	"Graduate Diploma of",
+  	"Graduate Diploma (professional specialist) of",
+  	"Graduate Certificate in",
+  	"Graduate Certificate (professional specialist) in",
+  	"Bachelor degree (honours)",
+  	"Bachelor degree",
+  	"Advanced Diploma of",
+  	"Associate Degree",
+  	"Diploma of",
+  	"Certificate IV in",
+  	"Certificate III in",
+  	"Certificate II in",
+  	"Certificate I in",
+  	"Year 12",
+  	"Year 11",
+  	"Year 10",
+  	"Course in",
+  	"Vocational Graduate Diploma of",
+  	"Vocational Graduate Certificate in"
+	);
+
 	private static final int RESULTS_PAGE_SIZE = 1000;
 
 	private static final Logger LOGGER = Logger.getLogger(NTISUpdaterImpl.class);
