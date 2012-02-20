@@ -1,5 +1,7 @@
 package ish.oncourse.admin.services.ntis;
 
+import ish.oncourse.model.Qualification;
+
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -7,16 +9,41 @@ import junit.framework.TestCase;
 public class NTISUpdaterImplTest extends TestCase {
 	
 	@Test
-	public void testParseQualificationTitle() {
+	public void testSetQualifiactionTitleAndLevel() {
 		NTISUpdaterImpl updater = new NTISUpdaterImpl();
 		
-		assertEquals("Security Operations", 
-				updater.parseQualificationTitle("Certificate III in Security Operations"));
-		assertEquals("Telecommunications Cabling", 
-				updater.parseQualificationTitle("Certificate I in Telecommunications Cabling"));
-		assertEquals("Security Operations", 
-				updater.parseQualificationTitle("Certificate IV Security Operations"));
-		assertEquals("Security Operations", 
-				updater.parseQualificationTitle("Security Operations"));
+		String title;
+		Qualification q;
+		
+		title = "Certificate III in Business";
+		q = new Qualification();
+		updater.setQualificationTitleAndLevel(q, title);
+		assertEquals("Business", q.getTitle());
+		assertEquals("Certificate III in", q.getLevel());
+		
+		title = "Certificate III in  Business"; // extra space
+		q = new Qualification();
+		updater.setQualificationTitleAndLevel(q, title);
+		assertEquals("Business", q.getTitle());
+		assertEquals("Certificate III in", q.getLevel());
+		
+		title = "Aardvaark in Business";
+		q = new Qualification();
+		updater.setQualificationTitleAndLevel(q, title);
+		assertEquals("Aardvaark in Business", q.getTitle());
+		assertEquals("", q.getLevel());
+		
+		title = "Diploma of";
+		q = new Qualification();
+		updater.setQualificationTitleAndLevel(q, title);
+		assertEquals("", q.getTitle());
+		assertEquals("Diploma of", q.getLevel());
+		
+		title = "Certificate IIII in Business";
+		q = new Qualification();
+		updater.setQualificationTitleAndLevel(q, title);
+		assertEquals("Certificate IIII in Business", q.getTitle());
+		assertEquals("", q.getLevel());
 	}
+	
 }

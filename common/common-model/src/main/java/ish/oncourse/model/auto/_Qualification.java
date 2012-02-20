@@ -21,6 +21,7 @@ public abstract class _Qualification extends CayenneDataObject {
     public static final String IS_ACCREDITED_COURSE_PROPERTY = "isAccreditedCourse";
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
     public static final String LEVEL_PROPERTY = "level";
+    public static final String LEVEL_CODE_PROPERTY = "levelCode";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NATIONAL_CODE_PROPERTY = "nationalCode";
     public static final String NEW_APPRENTICESHIP_PROPERTY = "newApprenticeship";
@@ -92,6 +93,13 @@ public abstract class _Qualification extends CayenneDataObject {
     }
     public String getLevel() {
         return (String)readProperty("level");
+    }
+
+    public void setLevelCode(String levelCode) {
+        writeProperty("levelCode", levelCode);
+    }
+    public String getLevelCode() {
+        return (String)readProperty("levelCode");
     }
 
     public void setModified(Date modified) {

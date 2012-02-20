@@ -197,7 +197,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						}
 						
 						q.setNationalCode(summary.getCode().getValue());
-						q.setTitle(parseQualificationTitle(summary.getTitle().getValue()));
+						setQualificationTitleAndLevel(q, summary.getTitle().getValue());
 						
 						if (ACCREDITED_COURSE.equals(type)) {
 							q.setIsAccreditedCourse((byte) 1);
@@ -217,7 +217,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 							} else if (FIELD_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
 								q.setFieldOfEducation(c.getValueCode());
 							} else if (LEVEL_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
-								q.setLevel(getEducationLevelName(c.getValueCode()));
+								q.setLevelCode(c.getValueCode());
 							}
 						}
 						
@@ -266,73 +266,18 @@ public class NTISUpdaterImpl implements INTISUpdater {
 			LOGGER.info("NTIS Qualifications update failed with exception.", e);
 			throw new NTISException(e);
 		}
-	}
+	} 
 	
-	public String parseQualificationTitle(String title) {
-		return title.replaceFirst("Certificate \\w+ (in )*", "");
-	}
-	
-	private String getEducationLevelName(String levelCode) {
-		if ("211".equals(levelCode)) {
-			return "Graduate Diploma of";
+	public void setQualificationTitleAndLevel(Qualification q,String title) {
+		for (String levelName : LEVEL_NAMES) {
+			if (title.startsWith(levelName)) {
+				q.setTitle(title.replace(levelName, "").trim());
+				q.setLevel(levelName);
+				return;
+			}
 		}
-		else if ("213".equals(levelCode)) {
-			return "Graduate Diploma (professional specialist) of";
-		}
-		else if ("221".equals(levelCode)) {
-			return "Graduate Certificate in";
-		}
-		else if ("222".equals(levelCode)) {
-			return "Graduate Certificate (professional specialist) in";
-		}
-		else if ("311".equals(levelCode)) {
-			return "Bachelor degree (honours)";
-		}
-		else if ("312".equals(levelCode)) {
-			return "Bachelor degree";
-		}
-		else if ("411".equals(levelCode)) {
-			return "Advanced Diploma of";
-		}
-		else if ("413".equals(levelCode)) {
-			return "Associate Degree";
-		}
-		else if ("421".equals(levelCode)) {
-			return "Diploma of";
-		}
-		else if ("511".equals(levelCode)) {
-			return "Certificate IV in";
-		}
-		else if ("514".equals(levelCode)) {
-			return "Certificate III in";
-		}
-		else if ("521".equals(levelCode)) {
-			return "Certificate II in";
-		}
-		else if ("524".equals(levelCode)) {
-			return "Certificate I in";
-		}
-		else if ("611".equals(levelCode)) {
-			return "Year 12";
-		}
-		else if ("613".equals(levelCode)) {
-			return "Year 11";
-		}
-		else if ("621".equals(levelCode)) {
-			return "Year 10";
-		}
-		else if ("991".equals(levelCode)) {
-			return "Course in";
-		}
-		else if ("992".equals(levelCode)) {
-			return "Course in";
-		}
-		else if ("999".equals(levelCode)) {
-			return "Course in";
-		}
-		else {
-			return levelCode;
-		}
+		q.setTitle(title);
+		q.setLevel("");
 	}
 
 	/**

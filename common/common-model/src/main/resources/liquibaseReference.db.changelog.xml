@@ -56,5 +56,11 @@
 		<addNotNullConstraint tableName="TrainingPackage"
 			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
 	</changeSet>
+	
+	<changeSet id="4" author="dzmitry" context="production" runOnChange="true">
+		<addColumn tableName="Qualification">
+			<column name="levelCode" type="VARCHAR(3)"></column>
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>
