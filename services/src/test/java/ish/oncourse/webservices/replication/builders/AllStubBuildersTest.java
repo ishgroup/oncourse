@@ -219,7 +219,7 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testTutorRoleStubBuilder() {
-        this.testStubBuilder(TutorRole.class, new TutorRoleStubBuilder());
+        this.testStubBuilder(TutorRole.class, new TutorRoleStubBuilder(), "inPublicity");
     }
 
     @Test
