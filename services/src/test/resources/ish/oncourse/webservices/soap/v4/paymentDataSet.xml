@@ -77,9 +77,9 @@
   <TagGroupRequirement id="478" tagId="3474" collegeId="1" angelId="201" allowsMultipleTags="1" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:16.0"/>
   <TagGroupRequirement id="479" tagId="3475" collegeId="1" angelId="202" allowsMultipleTags="0" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0"/>
   
-  <TutorRole id="1" courseClassId="1186958" tutorId="1185782" collegeId="1" angelId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:55:40.0"/>
-  <TutorRole id="2" courseClassId="1186959" tutorId="1185782" collegeId="1" angelId="2" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:58:51.0"/>
-  <TutorRole id="3" courseClassId="1186960" tutorId="1185782" collegeId="1" angelId="3" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:01:38.0"/>
+  <TutorRole id="1" courseClassId="1186958" tutorId="1185782" collegeId="1" angelId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:55:40.0" inPublicity="1"/>
+  <TutorRole id="2" courseClassId="1186959" tutorId="1185782" collegeId="1" angelId="2" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:58:51.0" inPublicity="1"/>
+  <TutorRole id="3" courseClassId="1186960" tutorId="1185782" collegeId="1" angelId="3" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:01:38.0" inPublicity="1"/>
   
   <Attendance id="1" collegeId="1" sessionId="1186969" studentId="1189150" created="2011-09-12 00:56:00.0"/>
   <Attendance id="2" collegeId="1" sessionId="1186970" studentId="1189150" created="2011-09-12 00:56:00.0"/>
