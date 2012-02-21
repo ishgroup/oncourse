@@ -151,8 +151,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 		InvoiceStub invoiceStub = invoice();
 
 		InvoiceLineStub invLineStub1 = invoiceLine();
+		invLineStub1.setAngelId(4l);
 		InvoiceLineStub invLineStub2 = invoiceLine();
-		invLineStub2.setAngelId(2l);
+		invLineStub2.setAngelId(3l);
 		invLineStub2.setEnrolmentId(2l);
 
 		PaymentInStub paymentInStub = paymentIn();
