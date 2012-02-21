@@ -24,6 +24,7 @@ import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -191,7 +192,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * 
 	 * @return list of valid enrolments.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("all")
 	public List<Enrolment> getValidEnrolments() {
 		SelectQuery query = new SelectQuery(Enrolment.class, ExpressionFactory.matchExp(
 				Enrolment.COURSE_CLASS_PROPERTY, this).andExp(
@@ -584,15 +585,26 @@ public class CourseClass extends _CourseClass implements Queueable {
 	public List<Discount> getConcessionDiscounts() {
 
 		List<Discount> availableDiscountsWithoutCode = (ExpressionFactory.matchExp(Discount.CODE_PROPERTY, null))
-				.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, "")).filterObjects(getDiscounts());
+				.orExp(ExpressionFactory.matchExp(Discount.CODE_PROPERTY, StringUtils.EMPTY)).filterObjects(getDiscounts());
 
 		List<Discount> discounts = new ArrayList<Discount>(availableDiscountsWithoutCode.size());
 		for (Discount discount : availableDiscountsWithoutCode) {
-			if (discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) {
+			if (discount.getDiscountConcessionTypes() != null && 
+				checkDiscountConcessionsContainsActiveConcession(discount.getDiscountConcessionTypes())) {
 				discounts.add(discount);
 			}
 		}
 		return discounts;
+	}
+	
+	private boolean checkDiscountConcessionsContainsActiveConcession(List<DiscountConcessionType> discountConcessions) {
+		for (DiscountConcessionType discountConcession : discountConcessions) {
+			final ConcessionType concession = discountConcession.getConcessionType();
+			if (concession != null && concession.getIsEnabled()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

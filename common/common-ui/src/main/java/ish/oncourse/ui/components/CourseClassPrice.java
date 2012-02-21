@@ -10,7 +10,6 @@ import ish.oncourse.ui.utils.FormatUtils;
 import ish.oncourse.utils.DiscountUtils;
 
 import java.text.Format;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +26,7 @@ public class CourseClassPrice {
 	@Inject
 	private IDiscountService discountService;
 
+	@SuppressWarnings("all")
 	@Inject
 	private PreferenceController preferenceService;
 
@@ -49,15 +49,19 @@ public class CourseClassPrice {
 
 	private List<Discount> applicableDiscounts;
 
+	@SuppressWarnings("all")
 	@Property
 	private Date discountExpiryDate;
 
+	@SuppressWarnings("all")
 	@Property
 	private String discountEligibility;
 
+	@SuppressWarnings("all")
 	@Property
 	private Format dateFormat;
 
+	@SuppressWarnings("all")
 	@Property
 	private String appliedDiscountsTitle;
 
