@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -50,6 +51,11 @@ public class CourseClassTest {
 	private static CourseClass thirdClass;
 	
 	/**
+	 * The courseClass which will contain reference to 1 disabled discount.
+	 */
+	private static CourseClass fourthClass;
+	
+	/**
 	 * The discount for {@link #secondClass} with expired date.
 	 */
 	private static Discount pastSecondClassDiscount;
@@ -77,6 +83,8 @@ public class CourseClassTest {
 	 * The discount for {@link #firstClass} with code = "".
 	 */
 	private static Discount concessionEmptyCode;
+	
+	private static Discount disabledDiscount;
 	
 	/**
 	 * Initializes entities, commit needed changes.
@@ -125,6 +133,7 @@ public class CourseClassTest {
 
 		ConcessionType ct = context.newObject(ConcessionType.class);
 		ct.setName("name");
+		ct.setIsEnabled(true);
 		DiscountConcessionType dct = context.newObject(DiscountConcessionType.class);
 		dct.setCollege(college);
 		dct.setConcessionType(ct);
@@ -169,9 +178,10 @@ public class CourseClassTest {
 		
 		concessionEmptyCode = context.newObject(Discount.class);
 		concessionEmptyCode.setCollege(college);
-		concessionEmptyCode.setCode("");
+		concessionEmptyCode.setCode(StringUtils.EMPTY);
 		ConcessionType ctype = context.newObject(ConcessionType.class);
 		ctype.setName("name");
+		ctype.setIsEnabled(true);
 		DiscountConcessionType dctype = context.newObject(DiscountConcessionType.class);
 		dctype.setCollege(college);
 		dctype.setConcessionType(ctype);
@@ -181,6 +191,27 @@ public class CourseClassTest {
 		dcc.setDiscount(concessionEmptyCode);
 		dcc.setCourseClass(thirdClass);
 		
+		fourthClass = context.newObject(CourseClass.class);
+		fourthClass.setCourse(course);
+		fourthClass.setCollege(college);
+		fourthClass.setMaximumPlaces(3);
+		
+		disabledDiscount = context.newObject(Discount.class);
+		disabledDiscount.setCollege(college);
+		disabledDiscount.setCode(StringUtils.EMPTY);
+		
+		ConcessionType cctype = context.newObject(ConcessionType.class);
+		cctype.setName("name");
+		cctype.setIsEnabled(false);
+		
+		DiscountConcessionType dcctype = context.newObject(DiscountConcessionType.class);
+		dcctype.setCollege(college);
+		dcctype.setConcessionType(cctype);
+		dcctype.setDiscount(disabledDiscount);
+		
+		dcc = context.newObject(DiscountCourseClass.class);
+		dcc.setDiscount(disabledDiscount);
+		dcc.setCourseClass(fourthClass);
 		context.commitChanges();
 		
 	}
@@ -231,7 +262,7 @@ public class CourseClassTest {
 		assertTrue(firstClassDiscounts.contains(currentPromotion));
 		assertTrue(firstClassDiscounts.contains(currentConcession));
 		assertTrue(firstClassDiscounts.contains(concessionEmpty));
-
+		assertFalse(firstClassDiscounts.contains(disabledDiscount));
 		List<Discount> secondClassDiscounts = secondClass.getDiscounts();
 		assertTrue(secondClassDiscounts.isEmpty());
 	}
@@ -254,6 +285,9 @@ public class CourseClassTest {
 		assertFalse(thirdClassDiscounts.isEmpty());
 		assertEquals(1, thirdClassDiscounts.size());
 		assertTrue(thirdClassDiscounts.contains(concessionEmptyCode));
+		
+		List<Discount> fourthClassDiscounts = fourthClass.getConcessionDiscounts();
+		assertTrue("Fourth class should contains only 1 disabled discount", fourthClassDiscounts.isEmpty());
 	}
 
 	/**
