@@ -149,7 +149,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		enrolStub2.setInvoiceLineId(2l);
 
 		InvoiceStub invoiceStub = invoice();
-
+		//NOTE: that invoicelines with collegeid 1 + angelid 1 and 2 already used by replication test and may not be cleanup.
 		InvoiceLineStub invLineStub1 = invoiceLine();
 		invLineStub1.setAngelId(4l);
 		InvoiceLineStub invLineStub2 = invoiceLine();
@@ -395,6 +395,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertEquals("Expecting all attendances to be deleted.", 0, dbUnitConnection.getRowCount("Attendance"));
 		assertEquals("Expecting all outcomes to be deleted.", 0, dbUnitConnection.getRowCount("Outcome"));
 		
+		@SuppressWarnings("unchecked")
 		List<QueuedRecord> records = context.performQuery(new SelectQuery(QueuedRecord.class));
 		
 		int queuedAttendances = 0;
