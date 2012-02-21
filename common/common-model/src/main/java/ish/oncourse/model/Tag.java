@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 
 public class Tag extends _Tag implements Queueable {
 	private static final long serialVersionUID = -1118193158649089145L;
@@ -23,8 +24,17 @@ public class Tag extends _Tag implements Queueable {
 	}
 
 	public List<Tag> getWebVisibleTags() {
-
-		List<Tag> visibleTags = ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
+		List<Tag> visibleTags;
+		
+		if (getObjectId().isTemporary()) {
+			visibleTags = ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
+		}
+		else {
+			SelectQuery  q = new SelectQuery(Tag.class);
+			q.andQualifier(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, this));
+			q.andQualifier(ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true));
+			visibleTags = getObjectContext().performQuery(q);
+		}
 
 		Collections.sort(visibleTags, new Comparator<Tag>() {
 			public int compare(Tag tag1, Tag tag2) {
