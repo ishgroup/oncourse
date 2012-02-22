@@ -117,6 +117,7 @@ public class QueueableLifecycleListenerStudentConcessionTest extends ServiceTest
 		assertTrue("Not found StudentConcession", !foundStudentConsession);
 
 		boolean foundConcessionType = false;
+		foundStudent = false;
 		
 		for (QueuedRecord r : second.getQueuedRecords()) {
 			System.out.println("EntityIdentifier:" + r.getEntityIdentifier());
