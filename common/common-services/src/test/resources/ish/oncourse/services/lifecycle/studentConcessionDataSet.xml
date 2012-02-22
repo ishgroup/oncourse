@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<College id="1" name="Sydney Community College" webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+	<ConcessionType id="1"
+                    angelId="2"
+                    collegeId="1"
+                    credentialExpiryDays="1"
+                    hasConcessionNumber="1"
+                    hasExpiryDate="1"
+                    isConcession="1"
+                    isEnabled="1"
+                    name="true"
+                    requiresCredentialCheck="1"
+                    created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+</dataset>
