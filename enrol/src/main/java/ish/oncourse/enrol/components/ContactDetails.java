@@ -75,7 +75,8 @@ public class ContactDetails {
     @Parameter(value = "required")
     private Contact contact;
 
-    @Property
+    @SuppressWarnings("all")
+	@Property
     @Parameter
     private boolean showEmail;
 
@@ -138,15 +139,19 @@ public class ContactDetails {
     /**
      * template properties
      */
-    @Property
+    @SuppressWarnings("all")
+	@Property
     private ISHEnumSelectModel englishProficiencySelectModel;
 
+    @SuppressWarnings("all")
     @Property
     private ISHEnumSelectModel indigenousStatusSelectModel;
 
+    @SuppressWarnings("all")
     @Property
     private ISHEnumSelectModel schoolLevelSelectModel;
 
+    @SuppressWarnings("all")
     @Property
     private ISHEnumSelectModel priorEducationSelectModel;
 
@@ -260,7 +265,7 @@ public class ContactDetails {
                     studentConcession.setConcessionNumber(concessionEditor.getConcessionNumberValue());
                     studentConcession.setExpiresOn(concessionEditor.getExpiryDateValue());
                     studentConcession.setStudent(contact.getStudent());
-
+                    contact.getStudent().setModified(new Date());//this peace of code is just for sure that student will be enqueued on student concession create
                 }
                 contact.getObjectContext().commitChanges();
                 studentService.addStudentToShortlist(contact);

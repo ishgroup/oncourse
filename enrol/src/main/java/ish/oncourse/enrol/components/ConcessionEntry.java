@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.EnrolCourses;
-import ish.oncourse.model.College;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
@@ -9,6 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ComponentResources;
@@ -54,6 +54,7 @@ public class ConcessionEntry {
     @Persist
     private ObjectContext context;
 
+    @SuppressWarnings("all")
     @Persist
     @Property
     private Format dateFormat;
@@ -79,19 +80,16 @@ public class ConcessionEntry {
         if (concessionEditor.isSavePressed() && !concessionForm.getHasErrors()) {
 
             Student student = getCurrentStudent();
-            ObjectContext newContext = cayenneService.newContext();
-            StudentConcession studentConcession = newContext.newObject(StudentConcession.class);
-            College college = student.getCollege();
-            studentConcession.setCollege((College) newContext.localObject(college.getObjectId(),
-                    college));
+            Student localStudent = (Student) cayenneService.newContext().localObject(student.getObjectId(), student);
+            StudentConcession studentConcession = localStudent.getObjectContext().newObject(StudentConcession.class);
+            studentConcession.setCollege(localStudent.getCollege());
             ConcessionType concessionType = concessionEditor.getConcessionType();
-            studentConcession.setConcessionType((ConcessionType) newContext.localObject(
-                    concessionType.getObjectId(), concessionType));
+            studentConcession.setConcessionType((ConcessionType) localStudent.getObjectContext().localObject(concessionType.getObjectId(), concessionType));
             studentConcession.setConcessionNumber(concessionEditor.getConcessionNumberValue());
             studentConcession.setExpiresOn(concessionEditor.getExpiryDateValue());
-            studentConcession.setStudent((Student) newContext.localObject(student.getObjectId(),
-                    student));
-            newContext.commitChanges();
+            studentConcession.setStudent(localStudent);
+            localStudent.setModified(new Date());//this peace of code is just for sure that student will be enqueued on student concession create
+            localStudent.getObjectContext().commitChanges();
             if (enrolCourses.hasSuitableClasses(studentConcession)) {
                 return enrolCourses;
             }
