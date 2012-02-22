@@ -116,13 +116,29 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to process transaction group.", e);
+            String message = getErrorMessageBy(e);
 			atomicContext.rollbackChanges();
-			updateReplicationStatus(result, Status.FAILED, String.format("Failed to process transaction group:%s", e.getMessage()));
+            logger.error(message, e);
+			updateReplicationStatus(result, Status.FAILED, message);
 		}
-
 		return result;
 	}
+    
+    private String getErrorMessageBy(Exception e)
+    {
+        assert e != null;
+        if (webSiteService != null && webSiteService.getCurrentCollege() != null)
+        {
+            return  String.format("Failed to process transaction group: %s and collegeid: %s",
+                    e.getMessage(),
+                    webSiteService.getCurrentCollege().getId());
+        }
+        else 
+        {
+            return  String.format("Failed to process transaction group: %s",
+                    e.getMessage());           
+        }
+    }
 
 	/**
 	 * Updates replication status for the list of replicated records
@@ -167,9 +183,13 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
 
 		if (currentStub.getAngelId() == null) {
-			replRecord.setStatus(Status.FAILED);
-			replRecord.setMessage(String.format("Empty angelId for object: %s.", willowIdentifier));
-			return null;
+
+            String message = String.format("Empty angelId for object object: %s willowId: %s", 
+                    willowIdentifier, 
+                    currentStub.getWillowId());
+            replRecord.setStatus(Status.FAILED);
+            replRecord.setMessage(message);
+            throw new IllegalArgumentException(message);
 		}
 
 		List<Queueable> objects = objectsByAngelId(currentStub.getAngelId(), willowIdentifier);
@@ -192,10 +212,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			Queueable objectToUpdate = objects.get(0);
 
 			if (currentStub.getWillowId() != null && !objectToUpdate.getId().equals(currentStub.getWillowId())) {
-				replRecord.setStatus(Status.FAILED);
-				replRecord.setMessage(String.format("WillowId doesnt match for object: %s. Expected: %s, but got %s.", willowIdentifier,
-						objectToUpdate.getId(), currentStub.getWillowId()));
-				return null;
+                
+                String message = String.format("WillowId doesn't match for object: %s. Expected: %s, but got %s.", willowIdentifier,
+						objectToUpdate.getId(), currentStub.getWillowId());
+                replRecord.setStatus(Status.FAILED);
+                replRecord.setMessage(message);
+                throw new IllegalArgumentException(message);
 			}
 
 			if (currentStub instanceof DeletedStub) {
@@ -208,9 +230,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 		default:
 			// FAILURE angelId uniques
-			replRecord.setStatus(Status.FAILED);
-			replRecord.setMessage(String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId()));
-			return null;
+            String message = String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId());
+            replRecord.setStatus(Status.FAILED);
+            replRecord.setMessage(message);
+            throw new IllegalArgumentException(message);
 		}
 	}
 
@@ -354,7 +377,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				return s;
 			}
 		}
-
 		return null;
 	}
 
@@ -366,45 +388,35 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	class RelationShipCallbackImpl implements RelationShipCallback {
 
 		/**
-		 * @see ish.oncourse.server.replication.updater.RelationShipCallback#updateRelationShip(java.lang.Long,
-		 *      java.lang.Class)
+		 * @see ish.oncourse.webservices.replication.updaters.RelationShipCallback#updateRelationShip(java.lang.Long,java.lang.Class)
 		 */
 		@SuppressWarnings("unchecked")
 		public <M extends Queueable> M updateRelationShip(Long angelId, Class<M> clazz) {
 
-			if (angelId == null) {
-				return null;
-			}
+            if (angelId == null) {
+                return null;
+            }
 
-			String entityIdentifier = getEntityName(clazz);
-			List<Queueable> list = objectsByAngelId(angelId, entityIdentifier);
+            String entityIdentifier = getEntityName(clazz);
+            List<Queueable> list = objectsByAngelId(angelId, entityIdentifier);
 
-			if (!list.isEmpty()) {
-				return (M) list.get(0);
-			} else {
-				ReplicationStub stub = takeStubFromGroupByAngelId(angelId, entityIdentifier);
-				if (stub != null) {
-					M relatedObject = (M) processStub(stub);
-					if (relatedObject == null) {
-						if (stub instanceof DeletedStub) {
-							return null;
-						} else {
-							logger.error(String.format("Empty related object returns for not empty stub. Angelid = %s entity = %s", angelId, entityIdentifier), 
-								new Exception(String.format("Empty related object returns for not empty stub. Angelid = %s entity = %s", angelId, entityIdentifier)));
-							return null;
-						}
-					} else {
-						return (M) Cayenne.objectForPK(atomicContext, relatedObject.getObjectId());
-					}
-				} else {
-					return uncommittedObjectByAngelId(angelId, clazz);
-				}
-			}
+            if (!list.isEmpty()) {
+                return (M) list.get(0);
+            } else {
+                ReplicationStub stub = takeStubFromGroupByAngelId(angelId, entityIdentifier);
+                if (stub != null) {
+                    M relatedObject = (M) processStub(stub);
+                    return (M) Cayenne.objectForPK(atomicContext, relatedObject.getObjectId());
+                } else {
+                    return uncommittedObjectByAngelId(angelId, clazz);
+                }
+            }
 		}
 
 		@SuppressWarnings("unchecked")
 		private <M extends Queueable> M uncommittedObjectByAngelId(Long angelId, Class<M> clazz) {
 
+            assert angelId != null;
 			String entityName = getEntityName(clazz);
 
 			for (Object obj : atomicContext.uncommittedObjects()) {
@@ -415,8 +427,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					}
 				}
 			}
-
-			return null;
+            String message = String.format("Uncommented object with angelId:%s and entityName:%s wasn't found.", angelId, entityName);
+            throw new IllegalArgumentException(message);
 		}
 	}
 }
