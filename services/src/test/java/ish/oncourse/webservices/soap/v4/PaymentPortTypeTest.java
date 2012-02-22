@@ -140,18 +140,19 @@ public class PaymentPortTypeTest extends ServiceTest {
 		EnrolmentStub enrolStub1 = enrolment();
 		enrolStub1.setCourseClassId(201l);
 		enrolStub1.setStudentId(1l);
-		enrolStub1.setInvoiceLineId(1l);
+		enrolStub1.setInvoiceLineId(4l);
 
 		EnrolmentStub enrolStub2 = enrolment();
 		enrolStub1.setAngelId(2l);
 		enrolStub2.setCourseClassId(201l);
 		enrolStub2.setStudentId(2l);
-		enrolStub2.setInvoiceLineId(2l);
+		enrolStub2.setInvoiceLineId(3l);
 
 		InvoiceStub invoiceStub = invoice();
 		//NOTE: that invoicelines with collegeid 1 + angelid 1 and 2 already used by replication test and may not be cleanup.
 		InvoiceLineStub invLineStub1 = invoiceLine();
 		invLineStub1.setAngelId(4l);
+
 		InvoiceLineStub invLineStub2 = invoiceLine();
 		invLineStub2.setAngelId(3l);
 		invLineStub2.setEnrolmentId(2l);
