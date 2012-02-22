@@ -12,8 +12,8 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="markerId" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
-		<db-attribute name="sessionId" type="BIGINT" length="19"/>
-		<db-attribute name="studentId" type="BIGINT" length="19"/>
+		<db-attribute name="sessionId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="BinaryInfo" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
