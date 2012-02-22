@@ -23,6 +23,12 @@ public class InvoiceLineUpdater extends
 		entity.setTaxEach(Money.valueOf(stub.getTaxEach()));
 		entity.setTitle(stub.getTitle());
 		entity.setUnit(stub.getUnit());
-		entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class));
+        /**
+         * InvoiceLine can be null for not Enrolment's invoices
+         */
+        if (stub.getEnrolmentId() != null)
+        {
+            entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class));
+        }
 	}
 }

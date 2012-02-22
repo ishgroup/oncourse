@@ -10,12 +10,12 @@ public class ContactRelationUpdater extends AbstractWillowUpdater<ContactRelatio
 	@Override
 	protected void updateEntity(final ContactRelationStub stub, final ContactRelation entity, final RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
-		final Contact fromContact = callback.updateRelationShip(stub.getFromContactId(), Contact.class);
+		Contact fromContact = callback.updateRelationShip(stub.getFromContactId(), Contact.class);
 		entity.setFromContact(fromContact);
 		entity.setModified(stub.getModified());
-		final ContactRelationType relationType = callback.updateRelationShip(stub.getTypeId(), ContactRelationType.class);
+		ContactRelationType relationType = callback.updateRelationShip(stub.getTypeId(), ContactRelationType.class);
 		entity.setRelationType(relationType);
-		final Contact toContact = callback.updateRelationShip(stub.getToContactId(), Contact.class);
+		Contact toContact = callback.updateRelationShip(stub.getToContactId(), Contact.class);
 		entity.setToContact(toContact);
 	}
 

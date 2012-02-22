@@ -15,23 +15,35 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 
 	@Override
 	protected void updateEntity(EnrolmentStub stub, Enrolment entity, RelationShipCallback callback) {
+
+        validate(stub);
+
 		entity.setCourseClass(callback.updateRelationShip(stub.getCourseClassId(), CourseClass.class));
 		entity.setCreated(stub.getCreated());
+
 		entity.setInvoiceLine(callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class));
 		entity.setModified(stub.getModified());
 		entity.setReasonForStudy(stub.getReasonForStudy());
 
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
-		String statusString = stub.getStatus();
-		if (StringUtils.trimToNull(statusString) != null) {
-			entity.setStatus(EnrolmentStatus.valueOf(statusString));
-		} else {
-			if(LOG.isDebugEnabled()) {
-				LOG.warn("Enrolment with id = " + stub.getAngelId() + " with empty status detected!", 
-					new Throwable("Enrolment with id = " + stub.getAngelId() + " with empty status detected!"));
-			}
-		}		
+        entity.setStatus(EnrolmentStatus.valueOf(stub.getStatus()));
 		Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
 		entity.setStudent(student);
 	}
+
+
+    private void validate(EnrolmentStub stub)
+    {
+        if (stub.getInvoiceLineId() == null)
+        {
+           String message =String.format("InvoiceLineId should be not null for enrolment with angelId = %s", stub.getAngelId());
+           throw new UpdaterException(message);
+        }
+
+        if (StringUtils.trimToNull(stub.getStatus()) == null) {
+            String message = String.format("Enrolment with angelId = %s with empty status detected!", stub.getAngelId());
+            throw new UpdaterException(message);
+        }
+
+    }
 }

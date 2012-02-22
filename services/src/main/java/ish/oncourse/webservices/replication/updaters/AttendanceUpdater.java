@@ -18,6 +18,10 @@ public class AttendanceUpdater extends AbstractWillowUpdater<AttendanceStub, Att
 		
 		if (markerId != null) {
 			Contact contact = callback.updateRelationShip(markerId, Contact.class);
+            if (contact == null)
+            {
+                throw new UpdaterException(String.format("Contact cannot be null for Attendance angelId: %s and markerId: %s" , stub.getAngelId(), markerId));
+            }
 			if (contact.getTutor() != null) {
 				entity.setMarker(contact.getTutor());
 			}
