@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,9 +16,11 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.threading.ThreadSource;
 
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
@@ -44,6 +47,9 @@ public class NTIS {
 
 	@Inject
 	private ThreadSource threadSource;
+	
+	@InjectComponent
+	private Form updateForm;
 
 	@Property
 	private String dateFrom;
@@ -79,10 +85,20 @@ public class NTIS {
 		Boolean started = (Boolean) session.getAttribute(NTIS_UPDATE_STARTED_ATTR);
 		return Boolean.TRUE.equals(started);
 	}
+	
+	@OnEvent(component = "updateForm", value = "validate")
+	void validate() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			dateFormat.parse(dateFrom);
+			dateFormat.parse(dateTo);
+		} catch (ParseException e) {
+			updateForm.recordError("Date format doesn't match dd/MM/yyyy");
+		}
+	}
 
 	@OnEvent(component = "updateForm", value = "success")
 	void submitted() throws Exception {
-
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 		final Date from = dateFormat.parse(dateFrom);

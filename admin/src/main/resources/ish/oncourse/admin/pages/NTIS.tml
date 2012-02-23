@@ -8,9 +8,9 @@
 			<table>
 				<tr>
 					<td>From:</td>
-					<td><t:textfield t:id="dateFrom" size="10"/></td>
+					<td><t:textfield t:id="dateFrom" size="10" t:validate="required"/></td>
 					<td>To:</td>
-					<td><t:textfield t:id="dateTo" size = "10"/></td>
+					<td><t:textfield t:id="dateTo" size = "10" t:validate="required"/></td>
 				</tr>
 				<tr>
 					<td><t:submit t:id="update" value="Update" /></td>
@@ -30,6 +30,10 @@
 			jQuery( "#dateFrom" ).datepicker({ dateFormat: 'dd/mm/yy' });
 			jQuery( "#dateTo" ).datepicker({ dateFormat: 'dd/mm/yy' });
 			
+			var now = new Date();
+			var twoDigitMonth = ((now.getMonth().length + 1) === 1) ? (now.getMonth() + 1) : '0' + (now.getMonth() + 1);
+			var currentDate = now.getDate() + '/' + twoDigitMonth + '/' + now.getFullYear();
+			jQuery("#dateTo").val(currentDate);
 			jQuery("#dateFrom").val(jQuery("#lastUpdate").text());
 			
 			var statusUpdate = function() {
