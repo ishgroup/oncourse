@@ -18,6 +18,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Scope;
 
 import com.paymentexpress.stubs.PaymentExpressWSLocator;
+import com.paymentexpress.stubs.PaymentExpressWSLocatorWithSoapResponseHandle;
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
 import com.paymentexpress.stubs.TransactionResult2;
@@ -405,7 +406,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	 * @throws ServiceException
 	 */
 	private PaymentExpressWSSoap12Stub soapClientStub() throws ServiceException {
-		PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocator();
+		PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocatorWithSoapResponseHandle();
 		serviceLocator.setPaymentExpressWSSoapEndpointAddress("https://sec.paymentexpress.com/WSV1/PXWS.asmx");
 		PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
 		stub.setTimeout(TIMEOUT);
