@@ -679,6 +679,12 @@
 		<addNotNullConstraint tableName="TutorRole" columnName="inPublicity" columnDataType="TINYINT(1)"/>
 	</changeSet>
 	
+	<changeSet id="54" author="viacheslav" context="production" runOnChange="true">
+		<delete tableName="MessagePerson">
+			<where>messageId IS NULL</where>
+		</delete>
+	</changeSet>
+	
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
 	</changeSet-->
