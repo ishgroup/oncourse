@@ -5,10 +5,6 @@ import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._PaymentOut;
 import ish.oncourse.utils.QueueableObjectUtils;
 
-import java.util.List;
-
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 
 public class PaymentOut extends _PaymentOut implements Queueable {
@@ -57,7 +53,13 @@ public class PaymentOut extends _PaymentOut implements Queueable {
 	 * 
 	 */
 	public void failed() {
-		setStatus(ish.common.types.PaymentStatus.FAILED);
+		switch (getStatus()) {
+		case FAILED:
+		case FAILED_CARD_DECLINED:
+			break;
+		default:
+			setStatus(ish.common.types.PaymentStatus.FAILED);
+		}
 	}
 
 	/**
