@@ -12,7 +12,7 @@ public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStu
 	/**
 	 * Logger
 	 */
-	private static final Logger logger = Logger.getLogger(PaymentInLineUpdater.class);
+	//private static final Logger logger = Logger.getLogger(PaymentInLineUpdater.class);
 
 	@Override
 	protected void updateEntity(PaymentInLineStub stub, PaymentInLine entity, RelationShipCallback callback) {
@@ -23,7 +23,9 @@ public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStu
 		if (invoice != null) {
 			entity.setInvoice(invoice);
 		} else {
-			logger.error(String.format("Can not find invoice by angelId:%s", stub.getInvoiceId()));
+            String message =  String.format("Can not find invoice by angelId:%s for paymentInLine with angelId: %s and willowId: %s",
+                    stub.getInvoiceId(), stub.getAngelId(), entity.getId());
+            throw new UpdaterException(message);
 		}
 
 		entity.setModified(stub.getModified());
@@ -31,7 +33,9 @@ public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStu
 		if (paymentIn != null) {
 			entity.setPaymentIn(paymentIn);
 		} else {
-			logger.error(String.format("Can not find payment by angelId:%s", stub.getPaymentInId()));
+            String message =  String.format("Can not find paymentIn by angelId:%s for paymentInLine with angelId: %s and willowId %s",
+                    stub.getPaymentInId(), stub.getAngelId(), entity.getId());
+            throw new UpdaterException(message);
 		}
 	}
 }
