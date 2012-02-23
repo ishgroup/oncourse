@@ -1,5 +1,5 @@
 /**
- * TransactionDetails.java
+ * 
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -134,6 +134,14 @@ public class TransactionDetails  implements java.io.Serializable {
 
     private java.lang.String clientType;
 
+    private java.lang.String iccData;
+
+    private java.lang.String deviceId;
+
+    private java.lang.String cardNumber2;
+
+    private java.lang.String track2;
+
     public TransactionDetails() {
     }
 
@@ -200,7 +208,11 @@ public class TransactionDetails  implements java.io.Serializable {
            java.lang.String avsStreetAddress,
            java.lang.String enable3DSecure,
            java.lang.String paRes,
-           java.lang.String clientType) {
+           java.lang.String clientType,
+           java.lang.String iccData,
+           java.lang.String deviceId,
+           java.lang.String cardNumber2,
+           java.lang.String track2) {
            this.amount = amount;
            this.billingId = billingId;
            this.cardHolderName = cardHolderName;
@@ -264,6 +276,10 @@ public class TransactionDetails  implements java.io.Serializable {
            this.enable3DSecure = enable3DSecure;
            this.paRes = paRes;
            this.clientType = clientType;
+           this.iccData = iccData;
+           this.deviceId = deviceId;
+           this.cardNumber2 = cardNumber2;
+           this.track2 = track2;
     }
 
 
@@ -1526,6 +1542,86 @@ public class TransactionDetails  implements java.io.Serializable {
         this.clientType = clientType;
     }
 
+
+    /**
+     * Gets the iccData value for this TransactionDetails.
+     * 
+     * @return iccData
+     */
+    public java.lang.String getIccData() {
+        return iccData;
+    }
+
+
+    /**
+     * Sets the iccData value for this TransactionDetails.
+     * 
+     * @param iccData
+     */
+    public void setIccData(java.lang.String iccData) {
+        this.iccData = iccData;
+    }
+
+
+    /**
+     * Gets the deviceId value for this TransactionDetails.
+     * 
+     * @return deviceId
+     */
+    public java.lang.String getDeviceId() {
+        return deviceId;
+    }
+
+
+    /**
+     * Sets the deviceId value for this TransactionDetails.
+     * 
+     * @param deviceId
+     */
+    public void setDeviceId(java.lang.String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+
+    /**
+     * Gets the cardNumber2 value for this TransactionDetails.
+     * 
+     * @return cardNumber2
+     */
+    public java.lang.String getCardNumber2() {
+        return cardNumber2;
+    }
+
+
+    /**
+     * Sets the cardNumber2 value for this TransactionDetails.
+     * 
+     * @param cardNumber2
+     */
+    public void setCardNumber2(java.lang.String cardNumber2) {
+        this.cardNumber2 = cardNumber2;
+    }
+
+
+    /**
+     * Gets the track2 value for this TransactionDetails.
+     * 
+     * @return track2
+     */
+    public java.lang.String getTrack2() {
+        return track2;
+    }
+
+
+    /**
+     * Sets the track2 value for this TransactionDetails.
+     * 
+     * @param track2
+     */
+    public void setTrack2(java.lang.String track2) {
+        this.track2 = track2;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof TransactionDetails)) return false;
@@ -1726,7 +1822,19 @@ public class TransactionDetails  implements java.io.Serializable {
               this.paRes.equals(other.getPaRes()))) &&
             ((this.clientType==null && other.getClientType()==null) || 
              (this.clientType!=null &&
-              this.clientType.equals(other.getClientType())));
+              this.clientType.equals(other.getClientType()))) &&
+            ((this.iccData==null && other.getIccData()==null) || 
+             (this.iccData!=null &&
+              this.iccData.equals(other.getIccData()))) &&
+            ((this.deviceId==null && other.getDeviceId()==null) || 
+             (this.deviceId!=null &&
+              this.deviceId.equals(other.getDeviceId()))) &&
+            ((this.cardNumber2==null && other.getCardNumber2()==null) || 
+             (this.cardNumber2!=null &&
+              this.cardNumber2.equals(other.getCardNumber2()))) &&
+            ((this.track2==null && other.getTrack2()==null) || 
+             (this.track2!=null &&
+              this.track2.equals(other.getTrack2())));
         __equalsCalc = null;
         return _equals;
     }
@@ -1926,6 +2034,18 @@ public class TransactionDetails  implements java.io.Serializable {
         }
         if (getClientType() != null) {
             _hashCode += getClientType().hashCode();
+        }
+        if (getIccData() != null) {
+            _hashCode += getIccData().hashCode();
+        }
+        if (getDeviceId() != null) {
+            _hashCode += getDeviceId().hashCode();
+        }
+        if (getCardNumber2() != null) {
+            _hashCode += getCardNumber2().hashCode();
+        }
+        if (getTrack2() != null) {
+            _hashCode += getTrack2().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -2374,6 +2494,34 @@ public class TransactionDetails  implements java.io.Serializable {
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("clientType");
         elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "clientType"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("iccData");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "iccData"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("deviceId");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "deviceId"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("cardNumber2");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "cardNumber2"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("track2");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "track2"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);

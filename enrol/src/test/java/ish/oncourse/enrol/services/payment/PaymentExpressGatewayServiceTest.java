@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.paymentexpress.stubs.TransactionResult;
+import com.paymentexpress.stubs.TransactionResult2;
 
 /**
  * Test for the {@link PaymentExpressGatewayService}.
@@ -102,7 +102,7 @@ public class PaymentExpressGatewayServiceTest {
 	 */
 	private static College college;
 	
-	private static TransactionResult result1;
+	private static TransactionResult2 result1;
 
 	/**
 	 * Initializes parameters for the whole test.
@@ -153,7 +153,7 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		
-		TransactionResult tr = gatewayService.doTransaction(payment);
+		TransactionResult2 tr = gatewayService.doTransaction(payment);
 		LOG.info("PaymentExpressResponse: " + tr.getMerchantHelpText());
 		
 		assertNotNull("Transaction result should be not empty for successfull payment", tr);
@@ -177,13 +177,13 @@ public class PaymentExpressGatewayServiceTest {
 		// a short delay is needed before refund will be accepted in DPS
 		Thread.sleep(10*1000);
 		
-		TransactionResult tr1 = result1;
+		TransactionResult2 tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
 		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		
-		TransactionResult tr = gatewayService.doTransaction(paymentOut);
+		TransactionResult2 tr = gatewayService.doTransaction(paymentOut);
 		LOG.info("PaymentExpressResponse: " + tr.getMerchantHelpText());
 		
 		assertNotNull("Transaction result should be not empty for successfull payment", tr);
@@ -203,7 +203,7 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardNumber()).thenReturn(DECLINED_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		
-		TransactionResult tr = gatewayService.doTransaction(payment);
+		TransactionResult2 tr = gatewayService.doTransaction(payment);
 		LOG.debug("PaymentExpressResponse: " + tr.getMerchantHelpText());
 		
 		assertFalse(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
@@ -220,7 +220,7 @@ public class PaymentExpressGatewayServiceTest {
 		when(paymentOut.getTotalAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		
-		TransactionResult tr = gatewayService.doTransaction(paymentOut);
+		TransactionResult2 tr = gatewayService.doTransaction(paymentOut);
 		LOG.debug("PaymentExpress response:" + tr.getMerchantHelpText());
 		
 		assertNotNull("Transaction result should be not empty for unsuccessfull payment out", tr);
@@ -260,7 +260,7 @@ public class PaymentExpressGatewayServiceTest {
 		// a short delay is needed before refund will be accepted in DPS
 		Thread.sleep(10*1000);
 				
-		TransactionResult tr1 = result1;
+		TransactionResult2 tr1 = result1;
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
 		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);

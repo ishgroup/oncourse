@@ -1,5 +1,5 @@
 /**
- * PaymentExpressWSSoap12Stub.java
+ * 
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -7,17 +7,11 @@
 
 package com.paymentexpress.stubs;
 
-import java.rmi.RemoteException;
-
 public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub implements com.paymentexpress.stubs.PaymentExpressWSSoap {
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedSerClasses = new java.util.Vector();
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedSerQNames = new java.util.Vector();
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedSerFactories = new java.util.Vector();
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedDeserFactories = new java.util.Vector();
+    private java.util.Vector cachedSerClasses = new java.util.Vector();
+    private java.util.Vector cachedSerQNames = new java.util.Vector();
+    private java.util.Vector cachedSerFactories = new java.util.Vector();
+    private java.util.Vector cachedDeserFactories = new java.util.Vector();
 
     static org.apache.axis.description.OperationDesc [] _operations;
 
@@ -40,8 +34,8 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://PaymentExpress.com", "transactionDetails"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionDetails"), com.paymentexpress.stubs.TransactionDetails.class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionResult"));
-        oper.setReturnClass(com.paymentexpress.stubs.TransactionResult.class);
+        oper.setReturnType(new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionResult2"));
+        oper.setReturnClass(com.paymentexpress.stubs.TransactionResult2.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://PaymentExpress.com", "SubmitTransactionResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -94,8 +88,8 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://PaymentExpress.com", "txnRef"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionResult"));
-        oper.setReturnClass(com.paymentexpress.stubs.TransactionResult.class);
+        oper.setReturnType(new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionResult2"));
+        oper.setReturnClass(com.paymentexpress.stubs.TransactionResult2.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://PaymentExpress.com", "GetStatusResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -148,8 +142,7 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
          super.cachedEndpoint = endpointURL;
     }
 
-    @SuppressWarnings({ "rawtypes", "unused", "unchecked" })
-	public PaymentExpressWSSoap12Stub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
+    public PaymentExpressWSSoap12Stub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
         if (service == null) {
             super.service = new org.apache.axis.client.Service();
         } else {
@@ -169,6 +162,15 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
+            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "ArrayOfRiskRuleMatch");
+            cachedSerQNames.add(qName);
+            cls = com.paymentexpress.stubs.RiskRuleMatch[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch");
+            qName2 = new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
             qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "EnrolmentCheckRequest");
             cachedSerQNames.add(qName);
             cls = com.paymentexpress.stubs.EnrolmentCheckRequest.class;
@@ -183,16 +185,16 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionDetails");
+            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch");
             cachedSerQNames.add(qName);
-            cls = com.paymentexpress.stubs.TransactionDetails.class;
+            cls = com.paymentexpress.stubs.RiskRuleMatch.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionResult");
+            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "TransactionDetails");
             cachedSerQNames.add(qName);
-            cls = com.paymentexpress.stubs.TransactionResult.class;
+            cls = com.paymentexpress.stubs.TransactionDetails.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -206,8 +208,7 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
 
     }
 
-    @SuppressWarnings("rawtypes")
-	protected org.apache.axis.client.Call createCall() throws java.rmi.RemoteException {
+    protected org.apache.axis.client.Call createCall() throws java.rmi.RemoteException {
         try {
             org.apache.axis.client.Call _call = super._createCall();
             if (super.maintainSessionSet) {
@@ -271,7 +272,7 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
         }
     }
 
-    public com.paymentexpress.stubs.TransactionResult submitTransaction(java.lang.String postUsername, java.lang.String postPassword, com.paymentexpress.stubs.TransactionDetails transactionDetails) throws java.rmi.RemoteException {
+    public com.paymentexpress.stubs.TransactionResult2 submitTransaction(java.lang.String postUsername, java.lang.String postPassword, com.paymentexpress.stubs.TransactionDetails transactionDetails) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -287,25 +288,21 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
 
         setRequestHeaders(_call);
         setAttachments(_call);
-        try {        
-        	java.lang.Object _resp = _call.invoke(new java.lang.Object[] {postUsername, postPassword, transactionDetails});
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {postUsername, postPassword, transactionDetails});
+
         if (_resp instanceof java.rmi.RemoteException) {
-        	throw new RemoteException(_call.getResponseMessage().getSOAPPartAsString(), (RemoteException)_resp);
+            throw (java.rmi.RemoteException)_resp;
         }
         else {
             extractAttachments(_call);
             try {
-            	TransactionResult response = (TransactionResult) _resp;
-            	response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
-                return response;
+                return (com.paymentexpress.stubs.TransactionResult2) _resp;
             } catch (java.lang.Exception _exception) {
-            	TransactionResult response = (TransactionResult) org.apache.axis.utils.JavaUtils.convert(_resp, TransactionResult.class);
-            	response.setMerchantHelpText(_call.getResponseMessage().getSOAPPartAsString());
-                return response;
+                return (com.paymentexpress.stubs.TransactionResult2) org.apache.axis.utils.JavaUtils.convert(_resp, com.paymentexpress.stubs.TransactionResult2.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
-	  throw new org.apache.axis.AxisFault(_call.getResponseMessage().getSOAPPartAsString(), axisFaultException);
+  throw axisFaultException;
 }
     }
 
@@ -377,7 +374,7 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
 }
     }
 
-    public com.paymentexpress.stubs.TransactionResult getStatus(java.lang.String postUsername, java.lang.String postPassword, java.lang.String txnRef) throws java.rmi.RemoteException {
+    public com.paymentexpress.stubs.TransactionResult2 getStatus(java.lang.String postUsername, java.lang.String postPassword, java.lang.String txnRef) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -401,9 +398,9 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
         else {
             extractAttachments(_call);
             try {
-                return (com.paymentexpress.stubs.TransactionResult) _resp;
+                return (com.paymentexpress.stubs.TransactionResult2) _resp;
             } catch (java.lang.Exception _exception) {
-                return (com.paymentexpress.stubs.TransactionResult) org.apache.axis.utils.JavaUtils.convert(_resp, com.paymentexpress.stubs.TransactionResult.class);
+                return (com.paymentexpress.stubs.TransactionResult2) org.apache.axis.utils.JavaUtils.convert(_resp, com.paymentexpress.stubs.TransactionResult2.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

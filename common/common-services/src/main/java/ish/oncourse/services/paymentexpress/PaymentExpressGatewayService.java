@@ -20,7 +20,7 @@ import org.apache.tapestry5.ioc.annotations.Scope;
 import com.paymentexpress.stubs.PaymentExpressWSLocator;
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
-import com.paymentexpress.stubs.TransactionResult;
+import com.paymentexpress.stubs.TransactionResult2;
 
 /**
  * Payment Express gateway processing. {@inheritDoc} <br/>
@@ -73,7 +73,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	@Override
 	public void processGateway(PaymentIn payment) {
 
-		TransactionResult tr = null;
+		TransactionResult2 tr = null;
 
 		try {
 
@@ -122,7 +122,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	@Override
 	public void processGateway(PaymentOut paymentOut) {
 
-		TransactionResult tr;
+		TransactionResult2 tr;
 
 		try {
 			tr = doTransaction(paymentOut);
@@ -175,7 +175,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	 * @return the result of submitted transaction.
 	 * @throws Exception
 	 */
-	public TransactionResult doTransaction(PaymentIn payment) throws Exception {
+	public TransactionResult2 doTransaction(PaymentIn payment) throws Exception {
 
 		PaymentExpressWSSoap12Stub stub = soapClientStub();
 
@@ -190,7 +190,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 		int n = 0;
 		boolean shouldRetry = true;
 
-		TransactionResult result = null;
+		TransactionResult2 result = null;
 		
 		while (shouldRetry && n < NUMBER_OF_ATTEMPTS) {
 
@@ -243,7 +243,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	 * @return the result of submitted transaction.
 	 * @throws Exception
 	 */
-	public TransactionResult doTransaction(PaymentOut paymentOut) throws Exception {
+	public TransactionResult2 doTransaction(PaymentOut paymentOut) throws Exception {
 
 		PaymentExpressWSSoap12Stub stub = soapClientStub();
 
@@ -258,7 +258,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 
 		int n = 0;
 		boolean shouldRetry = true;
-		TransactionResult result = null;
+		TransactionResult2 result = null;
 
 		while (shouldRetry && n < NUMBER_OF_ATTEMPTS) {
 			

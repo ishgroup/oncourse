@@ -1,5 +1,5 @@
 /**
- * TransactionResult2.java
+ * 
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -72,6 +72,16 @@ public class TransactionResult2  implements java.io.Serializable {
 
     private java.lang.String txnType;
 
+    private java.lang.String iccData;
+
+    private java.lang.String cardNumber2;
+
+    private java.lang.String issuerCountryId;
+
+    private java.lang.String txnMac;
+
+    private com.paymentexpress.stubs.RiskRuleMatch[] riskRuleMatches;
+
     public TransactionResult2() {
     }
 
@@ -107,7 +117,12 @@ public class TransactionResult2  implements java.io.Serializable {
            java.lang.String statusRequired,
            java.lang.String testMode,
            java.lang.String txnRef,
-           java.lang.String txnType) {
+           java.lang.String txnType,
+           java.lang.String iccData,
+           java.lang.String cardNumber2,
+           java.lang.String issuerCountryId,
+           java.lang.String txnMac,
+           com.paymentexpress.stubs.RiskRuleMatch[] riskRuleMatches) {
            this.acquirerReco = acquirerReco;
            this.acquirerResponseText = acquirerResponseText;
            this.amount = amount;
@@ -140,6 +155,11 @@ public class TransactionResult2  implements java.io.Serializable {
            this.testMode = testMode;
            this.txnRef = txnRef;
            this.txnType = txnType;
+           this.iccData = iccData;
+           this.cardNumber2 = cardNumber2;
+           this.issuerCountryId = issuerCountryId;
+           this.txnMac = txnMac;
+           this.riskRuleMatches = riskRuleMatches;
     }
 
 
@@ -782,6 +802,106 @@ public class TransactionResult2  implements java.io.Serializable {
         this.txnType = txnType;
     }
 
+
+    /**
+     * Gets the iccData value for this TransactionResult2.
+     * 
+     * @return iccData
+     */
+    public java.lang.String getIccData() {
+        return iccData;
+    }
+
+
+    /**
+     * Sets the iccData value for this TransactionResult2.
+     * 
+     * @param iccData
+     */
+    public void setIccData(java.lang.String iccData) {
+        this.iccData = iccData;
+    }
+
+
+    /**
+     * Gets the cardNumber2 value for this TransactionResult2.
+     * 
+     * @return cardNumber2
+     */
+    public java.lang.String getCardNumber2() {
+        return cardNumber2;
+    }
+
+
+    /**
+     * Sets the cardNumber2 value for this TransactionResult2.
+     * 
+     * @param cardNumber2
+     */
+    public void setCardNumber2(java.lang.String cardNumber2) {
+        this.cardNumber2 = cardNumber2;
+    }
+
+
+    /**
+     * Gets the issuerCountryId value for this TransactionResult2.
+     * 
+     * @return issuerCountryId
+     */
+    public java.lang.String getIssuerCountryId() {
+        return issuerCountryId;
+    }
+
+
+    /**
+     * Sets the issuerCountryId value for this TransactionResult2.
+     * 
+     * @param issuerCountryId
+     */
+    public void setIssuerCountryId(java.lang.String issuerCountryId) {
+        this.issuerCountryId = issuerCountryId;
+    }
+
+
+    /**
+     * Gets the txnMac value for this TransactionResult2.
+     * 
+     * @return txnMac
+     */
+    public java.lang.String getTxnMac() {
+        return txnMac;
+    }
+
+
+    /**
+     * Sets the txnMac value for this TransactionResult2.
+     * 
+     * @param txnMac
+     */
+    public void setTxnMac(java.lang.String txnMac) {
+        this.txnMac = txnMac;
+    }
+
+
+    /**
+     * Gets the riskRuleMatches value for this TransactionResult2.
+     * 
+     * @return riskRuleMatches
+     */
+    public com.paymentexpress.stubs.RiskRuleMatch[] getRiskRuleMatches() {
+        return riskRuleMatches;
+    }
+
+
+    /**
+     * Sets the riskRuleMatches value for this TransactionResult2.
+     * 
+     * @param riskRuleMatches
+     */
+    public void setRiskRuleMatches(com.paymentexpress.stubs.RiskRuleMatch[] riskRuleMatches) {
+        this.riskRuleMatches = riskRuleMatches;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof TransactionResult2)) return false;
@@ -889,7 +1009,22 @@ public class TransactionResult2  implements java.io.Serializable {
               this.txnRef.equals(other.getTxnRef()))) &&
             ((this.txnType==null && other.getTxnType()==null) || 
              (this.txnType!=null &&
-              this.txnType.equals(other.getTxnType())));
+              this.txnType.equals(other.getTxnType()))) &&
+            ((this.iccData==null && other.getIccData()==null) || 
+             (this.iccData!=null &&
+              this.iccData.equals(other.getIccData()))) &&
+            ((this.cardNumber2==null && other.getCardNumber2()==null) || 
+             (this.cardNumber2!=null &&
+              this.cardNumber2.equals(other.getCardNumber2()))) &&
+            ((this.issuerCountryId==null && other.getIssuerCountryId()==null) || 
+             (this.issuerCountryId!=null &&
+              this.issuerCountryId.equals(other.getIssuerCountryId()))) &&
+            ((this.txnMac==null && other.getTxnMac()==null) || 
+             (this.txnMac!=null &&
+              this.txnMac.equals(other.getTxnMac()))) &&
+            ((this.riskRuleMatches==null && other.getRiskRuleMatches()==null) || 
+             (this.riskRuleMatches!=null &&
+              java.util.Arrays.equals(this.riskRuleMatches, other.getRiskRuleMatches())));
         __equalsCalc = null;
         return _equals;
     }
@@ -996,6 +1131,29 @@ public class TransactionResult2  implements java.io.Serializable {
         }
         if (getTxnType() != null) {
             _hashCode += getTxnType().hashCode();
+        }
+        if (getIccData() != null) {
+            _hashCode += getIccData().hashCode();
+        }
+        if (getCardNumber2() != null) {
+            _hashCode += getCardNumber2().hashCode();
+        }
+        if (getIssuerCountryId() != null) {
+            _hashCode += getIssuerCountryId().hashCode();
+        }
+        if (getTxnMac() != null) {
+            _hashCode += getTxnMac().hashCode();
+        }
+        if (getRiskRuleMatches() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getRiskRuleMatches());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getRiskRuleMatches(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -1230,6 +1388,42 @@ public class TransactionResult2  implements java.io.Serializable {
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("iccData");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "iccData"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("cardNumber2");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "cardNumber2"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("issuerCountryId");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "issuerCountryId"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("txnMac");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "txnMac"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("riskRuleMatches");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatches"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        elemField.setItemQName(new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch"));
         typeDesc.addFieldDesc(elemField);
     }
 
