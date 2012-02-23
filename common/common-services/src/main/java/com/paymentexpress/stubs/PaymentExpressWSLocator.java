@@ -22,7 +22,7 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
     }
 
     // Use to get a proxy class for PaymentExpressWSSoap
-    private java.lang.String PaymentExpressWSSoap_address = "https://www.paymentexpress.com/WS/PXWS.asmx";
+    private java.lang.String PaymentExpressWSSoap_address = "https://sec.paymentexpress.com/WS/PXWS.asmx";
 
     public java.lang.String getPaymentExpressWSSoapAddress() {
         return PaymentExpressWSSoap_address;
@@ -67,7 +67,7 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
 
 
     // Use to get a proxy class for PaymentExpressWSSoap12
-    private java.lang.String PaymentExpressWSSoap12_address = "https://www.paymentexpress.com/WS/PXWS.asmx";
+    private java.lang.String PaymentExpressWSSoap12_address = "https://sec.paymentexpress.com/WS/PXWS.asmx";
 
     public java.lang.String getPaymentExpressWSSoap12Address() {
         return PaymentExpressWSSoap12_address;
