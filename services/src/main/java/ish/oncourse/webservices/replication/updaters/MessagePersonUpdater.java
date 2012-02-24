@@ -40,12 +40,7 @@ public class MessagePersonUpdater extends AbstractWillowUpdater<MessagePersonStu
 		}
 		entity.setTimeOfDelivery(stub.getTimeOfDelivery());
 		MessageType type = TypesUtil.getEnumForDatabaseValue(stub.getType(), MessageType.class);
-		if (MessageType.SMS.equals(type)) {
-			entity.setType(type);
-		} else {
-			throw new UpdaterException(String.format("Only sms type message person should be replicated but received %s with angelid:%s willowid:%s", 
-				type, stub.getAngelId(), entity.getId()));
-		}
+		entity.setType(type);
 	}
 }
 
