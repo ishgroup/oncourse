@@ -1,5 +1,5 @@
 #!/bin/bash
-ids="3014 111 1323 2291 6 3184 1234 3768 25"
+ids="3014 111 1323 2291 6 3184 1234 3768"
 
 for id in ${ids}; do
 	echo "importing collegeid = ${id}"
