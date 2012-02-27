@@ -6,17 +6,9 @@
 		<td>
 			<form>
 				<label id="i_${studentIndex}_${courseClassIndex}">
-					<input type="checkbox" id="enrolmentCheckbox_${studentIndex}_${courseClassIndex}" class="enrolmentCheckbox"/>				
-					
-						<script type="text/javascript">
-							<t:if test="enrolmentSelected">
-								document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').checked=true;
-							</t:if>
-							<t:if test="disabled">
-								document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').disabled=true;
-							</t:if>
-						</script>
-					
+					<input type="checkbox" id="enrolmentCheckbox_${studentIndex}_${courseClassIndex}" class="enrolmentCheckbox" style="${enrolmentCheckboxStyle}"/>
+					<t:if test="enrolmentSelected"><script type="text/javascript">document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').checked=true;</script></t:if>				
+					<t:if test="disabled"><script type="text/javascript">document.getElementById('enrolmentCheckbox_${studentIndex}_${courseClassIndex}').disabled=true;</script></t:if>
 					${courseClass.course.name}
 	  			</label>
 	  		</form>

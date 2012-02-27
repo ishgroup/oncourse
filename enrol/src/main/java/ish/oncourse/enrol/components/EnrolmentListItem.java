@@ -47,7 +47,14 @@ public class EnrolmentListItem {
 		if (classTimeZone != null) {
 			dateFormat.setTimeZone(classTimeZone);
 		}
-
+	}
+	
+	private boolean isEnrolmentRemovable() {
+		return enrolment.getObjectId().isTemporary();
+	}
+	
+	public String getEnrolmentCheckboxStyle() {
+		return isEnrolmentRemovable() ? "" : "display: none;";
 	}
 
 	public boolean isDisabled() {
@@ -102,5 +109,4 @@ public class EnrolmentListItem {
 	public boolean canEnrol() {
 		return !isDuplicated() && hasAvailablePlaces() && !courseClass.hasEnded();
 	}
-
 }

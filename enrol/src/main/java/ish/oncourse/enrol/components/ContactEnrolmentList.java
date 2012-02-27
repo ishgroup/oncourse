@@ -65,13 +65,14 @@ public class ContactEnrolmentList {
 	}
 
 	public void setEnrolmentSelected(boolean value) {
-
-		if (value) {
-			getEnrolment().setInvoiceLine(getInvoiceLine());
-		} else {
-			getEnrolment().setInvoiceLine(null);
+		//allow only add/remove for not saved enrolments
+		if (getEnrolment().getObjectId().isTemporary()) {
+			if (value) {
+				getEnrolment().setInvoiceLine(getInvoiceLine());
+			} else {
+				getEnrolment().setInvoiceLine(null);
+			}
 		}
-
 	}
 
 	public Enrolment getEnrolment() {

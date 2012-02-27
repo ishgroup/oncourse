@@ -46,6 +46,6 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	 * @return
 	 */
 	public boolean isAsyncReplicationAllowed() {
-		return getInvoice().isAsyncReplicationAllowed();
+		return getInvoice() != null && getInvoice().isAsyncReplicationAllowed();
 	}
 }
