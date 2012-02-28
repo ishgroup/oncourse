@@ -38,8 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
@@ -300,27 +298,22 @@ public class EnrolCourses {
 			payment.setSource(PaymentSource.SOURCE_WEB);
 			payment.setCollege(college);
 
-			HttpSession httpSession = requestGlobals.getHTTPServletRequest().getSession(true);
-
-			String sessionId = httpSession.getId();
-			payment.setSessionId(sessionId);
-
-			PaymentIn failedPayment = null;
 			Session session = request.getSession(false);
+			
 			if (session != null) {
-				failedPayment = (PaymentIn) session.getAttribute(PaymentIn.FAILED_PAYMENT_PARAM);
+				 PaymentIn failedPayment = (PaymentIn) session.getAttribute(PaymentIn.FAILED_PAYMENT_PARAM);
+				 if (failedPayment != null) {
+						hadPreviousPaymentFailure = true;
+						payment.setCreditCardCVV(failedPayment.getCreditCardCVV());
+						payment.setCreditCardExpiry(failedPayment.getCreditCardExpiry());
+						payment.setCreditCardName(failedPayment.getCreditCardName());
+						payment.setCreditCardNumber(failedPayment.getCreditCardNumber());
+						payment.setCreditCardType(failedPayment.getCreditCardType());
+						session.setAttribute("failedPayment", null);
+				}
 			}
-			if (failedPayment != null) {
-				hadPreviousPaymentFailure = true;
-				payment.setCreditCardCVV(failedPayment.getCreditCardCVV());
-				payment.setCreditCardExpiry(failedPayment.getCreditCardExpiry());
-				payment.setCreditCardName(failedPayment.getCreditCardName());
-				payment.setCreditCardNumber(failedPayment.getCreditCardNumber());
-				payment.setCreditCardType(failedPayment.getCreditCardType());
-				session.setAttribute("failedPayment", null);
-			}
-
 		}
+		
 		if (invoice == null) {
 			invoice = context.newObject(Invoice.class);
 			// fill the invoice with default values
@@ -340,20 +333,25 @@ public class EnrolCourses {
 	 */
 	public void initEnrolments() {
 		Enrolment[][] enrolments = new Enrolment[contacts.size()][classesToEnrol.size()];
-
 		InvoiceLine[][] invoiceLines = new InvoiceLine[contacts.size()][classesToEnrol.size()];
+		
 		Map<Enrolment, String> currentEnrolmentsMap = getEnrolmentsIndexesMap();
 		List<Enrolment> currentEnrolments = new ArrayList<Enrolment>(currentEnrolmentsMap.keySet());
+		
 		// Checks the current contacts and classes to create proper enrolments
 		for (int i = 0; i < contacts.size(); i++) {
 			for (int j = 0; j < classesToEnrol.size(); j++) {
+				
 				Enrolment enrolmentToAdd = null;
 				InvoiceLine invoiceLineToAdd = null;
 				Enrolment existingEnrolment = null;
+				
 				Student student = ((Contact) context.localObject(contacts.get(i).getObjectId(), contacts.get(i)))
 						.getStudent();
+				
 				CourseClass courseClass = (CourseClass) context.localObject(classesToEnrol.get(j).getObjectId(),
 						classesToEnrol.get(j));
+				
 				if (!currentEnrolments.isEmpty()) {
 					// checks if the enrolment with such a class and student is
 					// already created
@@ -364,6 +362,7 @@ public class EnrolCourses {
 						existingEnrolment = sameStudentAndClassResult.get(0);
 					}
 				}
+				
 				if (existingEnrolment == null || existingEnrolment.getPersistenceState() == PersistenceState.TRANSIENT) {
 					// create new enrolment if it doen't exist or has been
 					// deleted
@@ -386,6 +385,7 @@ public class EnrolCourses {
 				invoiceLines[i][j] = invoiceLineToAdd;
 			}
 		}
+		
 		this.enrolments = enrolments;
 		this.invoiceLines = invoiceLines;
 	}

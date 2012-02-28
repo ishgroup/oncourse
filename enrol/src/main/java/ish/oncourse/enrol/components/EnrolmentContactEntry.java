@@ -1,16 +1,21 @@
 package ish.oncourse.enrol.components;
 
+import ish.common.types.PaymentStatus;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -180,6 +185,7 @@ public class EnrolmentContactEntry {
 					contact.createNewStudent();
 					context.commitChanges();
 				}
+				completeInTransactionPayments(contact);
 				studentService.addStudentToShortlist(contact);
 				nextPage = "EnrolCourses";
 			} else {
@@ -223,5 +229,29 @@ public class EnrolmentContactEntry {
 
 	public boolean isShowConcessionsArea() {
 		return concessionsService.hasActiveConcessionTypes();
+	}
+	
+	/**
+	 * Check if there are in_transaction payments on enroling contact. If finds any it abandons them.
+	 * @param contact enroling contact
+	 */
+	private void completeInTransactionPayments(Contact contact) {
+		ObjectContext context = cayenneService.newContext();
+		
+		SelectQuery q = new SelectQuery(PaymentIn.class);
+		q.andQualifier(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.IN_TRANSACTION, PaymentStatus.CARD_DETAILS_REQUIRED));
+		q.andQualifier(ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, contact));
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
+		q.andQualifier(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
+		
+		List<PaymentIn> payments = context.performQuery(q);
+		
+		for (PaymentIn p : payments) {
+			p.abandonPayment();
+		}
+		
+		context.commitChanges();
 	}
 }
