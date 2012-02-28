@@ -48,14 +48,6 @@ public class EnrolmentListItem {
 			dateFormat.setTimeZone(classTimeZone);
 		}
 	}
-	
-	private boolean isEnrolmentRemovable() {
-		return enrolment.getObjectId().isTemporary();
-	}
-	
-	public String getEnrolmentCheckboxStyle() {
-		return isEnrolmentRemovable() ? "" : "display: none;";
-	}
 
 	public boolean isDisabled() {
 		return !isEnrolmentSelected() && !canEnrol();

@@ -4,9 +4,6 @@ import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
-
-import java.util.List;
-
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
@@ -15,72 +12,75 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.util.List;
+
 public class ContactEnrolmentList {
 
-	@Inject
-	private Request request;
+    @Inject
+    private Request request;
 
-	private static final String SEPARATOR = "_";
+    private static final String SEPARATOR = "_";
 
-	private static final String DIGIT_PATTERN = "(\\d)+";
+    private static final String DIGIT_PATTERN = "(\\d)+";
 
-	@Parameter
-	@Property
-	private List<CourseClass> classes;
+    @Parameter
+    @Property
+    private List<CourseClass> classes;
 
-	@Parameter
-	@Property
-	private int studentIndex;
+    @Parameter
+    @Property
+    private int studentIndex;
 
-	@Property
-	private CourseClass courseClass;
+    @Property
+    private CourseClass courseClass;
 
-	@Property
-	private int courseClassIndex;
+    @Property
+    private int courseClassIndex;
 
-	@Property
-	private int sIndex;
+    @Property
+    private int sIndex;
 
-	@Property
-	private int cCIndex;
+    @Property
+    private int cCIndex;
 
-	@InjectPage
-	private EnrolCourses enrolCourses;
+    @InjectPage
+    private EnrolCourses enrolCourses;
 
-	public StreamResponse onActionFromTick() {
-		if(request.getSession(false)==null){
-			return new TextStreamResponse("text/html", "session timeout");
-		}
-		String data = request.getParameter("data");
-		String[] indexes = data.split(SEPARATOR);
-		String sIndexStr = indexes[0];
-		String cCIndexStr = indexes[1];
-		if (sIndexStr.matches(DIGIT_PATTERN) && cCIndexStr.matches(DIGIT_PATTERN)) {
-			sIndex = Integer.parseInt(sIndexStr);
-			cCIndex = Integer.parseInt(cCIndexStr);
-			setEnrolmentSelected(Boolean.parseBoolean(indexes[2]));
-		}
-		
-		return new TextStreamResponse("text/html", "succeed");
-	}
+    public StreamResponse onActionFromTick() {
+        if (request.getSession(false) == null) {
+            return new TextStreamResponse("text/html", "session timeout");
+        }
+        String data = request.getParameter("data");
+        String[] indexes = data.split(SEPARATOR);
+        String sIndexStr = indexes[0];
+        String cCIndexStr = indexes[1];
+        if (sIndexStr.matches(DIGIT_PATTERN) && cCIndexStr.matches(DIGIT_PATTERN)) {
+            sIndex = Integer.parseInt(sIndexStr);
+            cCIndex = Integer.parseInt(cCIndexStr);
+            setEnrolmentSelected(Boolean.parseBoolean(indexes[2]));
+        }
 
-	public void setEnrolmentSelected(boolean value) {
-		//allow only add/remove for not saved enrolments
-		if (getEnrolment().getObjectId().isTemporary()) {
-			if (value) {
-				getEnrolment().setInvoiceLine(getInvoiceLine());
-			} else {
-				getEnrolment().setInvoiceLine(null);
-			}
-		}
-	}
+        return new TextStreamResponse("text/html", "succeed");
+    }
 
-	public Enrolment getEnrolment() {
-		return enrolCourses.getEnrolments()[sIndex][cCIndex];
-	}
+    public void setEnrolmentSelected(boolean value) {
+        if (value) {
+            getEnrolment().setInvoiceLine(getInvoiceLine());
+        } else {
+            /**
+             * The enrolment will be deleted on 'Make Payment' in EnrolmentPaymentEntry.getEnrolmentsToPersist()
+             * Correspondent invoice and invoiceLine will be deleted in EnrolmentPaymentEntry.getInvoiceLinesToPersist()
+             */
+            getEnrolment().setInvoiceLine(null);
+        }
+    }
 
-	public InvoiceLine getInvoiceLine() {
-		return enrolCourses.getInvoiceLines()[sIndex][cCIndex];
-	}
+    public Enrolment getEnrolment() {
+        return enrolCourses.getEnrolments()[sIndex][cCIndex];
+    }
+
+    public InvoiceLine getInvoiceLine() {
+        return enrolCourses.getInvoiceLines()[sIndex][cCIndex];
+    }
 
 }
