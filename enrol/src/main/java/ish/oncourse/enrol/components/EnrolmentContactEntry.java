@@ -246,6 +246,7 @@ public class EnrolmentContactEntry {
 		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
 		q.andQualifier(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
 		
+		@SuppressWarnings("unchecked")
 		List<PaymentIn> payments = context.performQuery(q);
 		
 		for (PaymentIn p : payments) {
