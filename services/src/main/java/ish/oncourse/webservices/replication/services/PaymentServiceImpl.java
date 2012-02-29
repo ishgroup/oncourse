@@ -98,10 +98,11 @@ public class PaymentServiceImpl implements PaymentPortType {
 			isCreditCardPayment = ReplicationUtils.isCreditCardPayment(transaction);
 			replicatedRecords = groupProcessor.processGroup(transaction);
 
+           ReplicatedRecord record = replicatedRecords.get(0);
 			// check if records were saved successfully
-			if (replicatedRecords.get(0).getStatus() != Status.SUCCESS) {
+			if (record.getStatus() != Status.SUCCESS) {
 				// records wasn't saved, immediately return to angel.
-				throw new Exception("Willow was unable to save paymentIn transaction group.");
+				throw new Exception(String.format("Willow was unable to save paymentIn transaction group. ReplicationRecord error: %s",record.getMessage()));
 			}
 
 			for (ReplicatedRecord r : replicatedRecords) {
@@ -119,8 +120,8 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 					if (p == null) {
 						throw new Exception(String.format(
-								"The paymentIn record with angelId:%s wasn't saved during the payment group processing.", r.getStub()
-										.getAngelId()));
+								"The paymentIn record with angelId:%s willowId: %s wasn't saved during the payment group processing.", r.getStub()
+										.getAngelId(),r.getStub().getWillowId()));
 					}
 
 					paymentIn = (PaymentIn) newContext.localObject(p.getObjectId(), null);
