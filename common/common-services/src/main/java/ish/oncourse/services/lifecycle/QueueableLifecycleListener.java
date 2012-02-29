@@ -74,12 +74,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	/**
 	 * DataContext threadlocal storage
 	 */
-	private static final ThreadLocal<Deque<ObjectContext>> CONTEXT_STORAGE = new InheritableThreadLocal<Deque<ObjectContext>>();
-	
-	/**
-	 * DataContext threadlocal storage
-	 */
-	private static final ThreadLocal<Map<String, QueuedTransaction>> TRANSACTION_KEY_MAPPING = new InheritableThreadLocal<Map<String, QueuedTransaction>>();
+	private static final ThreadLocal<Deque<StackFrame>> STACK_STORAGE = new InheritableThreadLocal<Deque<StackFrame>>();
 	
 	/**
 	 * Storage to hold college between invocations of preRemove and postRemove methods.
@@ -116,27 +111,35 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
 		
-		Deque<ObjectContext> stack = CONTEXT_STORAGE.get();
-		
-		if (stack == null) {
-			stack = new LinkedList<ObjectContext>();
-			CONTEXT_STORAGE.set(stack);
-			TRANSACTION_KEY_MAPPING.set(new HashMap<String, QueuedTransaction>());
-		}
-		
+		Deque<StackFrame> stack = null;
+	
 		try {
-			stack.push(cayenneService.newNonReplicatingContext());
-			GraphDiff diff = filterChain.onSync(originatingContext, changes, syncType);
-			ObjectContext objectContext = stack.pop();
-			if (objectContext.hasChanges()) {
-				objectContext.commitChanges();
+			
+			stack = STACK_STORAGE.get();
+			
+			if (stack == null) {
+				stack = new LinkedList<StackFrame>();
+				STACK_STORAGE.set(stack);
 			}
+			
+			StackFrame frame = stack.isEmpty() ? new StackFrame(cayenneService.newNonReplicatingContext(), new HashMap<String, QueuedTransaction>()) : stack
+					.peek();
+			
+			stack.push(frame);
+			
+			GraphDiff diff = filterChain.onSync(originatingContext, changes, syncType);
+			
+			stack.pop();
+			
+			if (stack.isEmpty()) {
+				frame.getObjectContext().commitChanges();
+			}
+			
 			return diff;
 		}
 		finally {
-			if (stack.isEmpty()) {
-				CONTEXT_STORAGE.set(null);
-				TRANSACTION_KEY_MAPPING.set(null);
+			if (stack != null && stack.isEmpty()) {
+				STACK_STORAGE.set(null);
 			}
 		}
 	}
@@ -301,10 +304,10 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			entity = (Queueable) Cayenne.objectForQuery(commitingContext, query);
 		}
 		
-		ObjectContext currentContext = CONTEXT_STORAGE.get().peek();
+		ObjectContext currentContext = STACK_STORAGE.get().peek().getObjectContext();
 		String transactionKey = commitingContext.getTransactionKey();
 		String queuedTransactionKey = String.format("%s:%s", college.getId(), transactionKey);
-		QueuedTransaction t = TRANSACTION_KEY_MAPPING.get().get(queuedTransactionKey);
+		QueuedTransaction t = STACK_STORAGE.get().peek().getTransactionMapping().get(queuedTransactionKey);
 		
 		if (t == null) {
 			t = currentContext.newObject(QueuedTransaction.class);
@@ -313,7 +316,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			t.setModified(today);
 			t.setTransactionKey(transactionKey);
 			t.setCollege((College) currentContext.localObject(college.getObjectId(), null));
-			TRANSACTION_KEY_MAPPING.get().put(queuedTransactionKey, t);
+			STACK_STORAGE.get().peek().getTransactionMapping().put(queuedTransactionKey, t);
 		}
 
 		String entityName = entity.getObjectId().getEntityName();

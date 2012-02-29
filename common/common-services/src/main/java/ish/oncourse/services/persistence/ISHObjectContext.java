@@ -1,6 +1,8 @@
 package ish.oncourse.services.persistence;
 
 import java.security.SecureRandom;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.DataChannel;
@@ -16,9 +18,16 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class ISHObjectContext extends DataContext {
 
+	/**
+	 * Property which shows whether replication enabled on the object context.
+	 */
 	private static final String REPLICATING_PROP = "replicating";
 	
-	private static final String TRANSACTION_KEY_PROP = "transaction_key";
+	/**
+	 * We use put the copy of generated transaction key into stack, because there might be nested calls of commitChanges() from callbacks on the same object
+	 * context.
+	 */
+	private Deque<String> transactionKeyStack = new ArrayDeque<String>();
 
 	public ISHObjectContext(DataChannel channel, ObjectStore objectStore) {
 		super(channel, objectStore);
@@ -60,7 +69,7 @@ public class ISHObjectContext extends DataContext {
 	 * @return transaction key
 	 */
 	public String getTransactionKey() {
-		return (String) getUserProperty(TRANSACTION_KEY_PROP);
+		return transactionKeyStack.peek();
 	}
 
 	/**
@@ -68,8 +77,11 @@ public class ISHObjectContext extends DataContext {
 	 */
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType) {
-		setUserProperty(TRANSACTION_KEY_PROP, generateTransactionKey());
-		return super.onSync(originatingContext, changes, syncType); 
+		String transactionKey = transactionKeyStack.isEmpty() ? generateTransactionKey() : transactionKeyStack.peek();
+		transactionKeyStack.push(transactionKey);
+		GraphDiff diff = super.onSync(originatingContext, changes, syncType); 
+		transactionKeyStack.pop();
+		return diff;
 	}
 
 	/*
@@ -79,7 +91,9 @@ public class ISHObjectContext extends DataContext {
 	 */
 	@Override
 	public void commitChanges() throws CayenneRuntimeException {
-		setUserProperty(TRANSACTION_KEY_PROP, generateTransactionKey());
+		String transactionKey = transactionKeyStack.isEmpty() ? generateTransactionKey() : transactionKeyStack.peek();
+		transactionKeyStack.push(transactionKey);
 		super.commitChanges();
+		transactionKeyStack.pop();
 	}
 }
