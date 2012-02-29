@@ -393,25 +393,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		payment.abandonPayment();
 		context.commitChanges();
 		
-		assertEquals("Expecting all attendances to be deleted.", 0, dbUnitConnection.getRowCount("Attendance"));
-		assertEquals("Expecting all outcomes to be deleted.", 0, dbUnitConnection.getRowCount("Outcome"));
-		
-		@SuppressWarnings("unchecked")
-		List<QueuedRecord> records = context.performQuery(new SelectQuery(QueuedRecord.class));
-		
-		int queuedAttendances = 0;
-		int queuedOutcomes = 0;
-		for (QueuedRecord record : records) {
-			if ("Attendance".equals(record.getEntityIdentifier())) {
-				queuedAttendances++;
-			}
-			if ("Outcome".equals(record.getEntityIdentifier())) {
-				queuedOutcomes++;
-			}
-		}
-		
-		assertEquals("Expecting 3 deleted attendances added to replication queue.", 3, queuedAttendances);
-		assertEquals("Expecting 1 deleted outcome added to replication queue", 1, queuedOutcomes);
+		assertEquals("Expecting that attendances remain in the database. Will be deleted later from Angel.", attendanceCount, dbUnitConnection.getRowCount("Attendance"));
+		assertEquals("Expecting that outcomes remain in the database until deleted from angel.", 1, dbUnitConnection.getRowCount("Outcome"));
 	}
 
 	private InvoiceLineStub invoiceLine() {
