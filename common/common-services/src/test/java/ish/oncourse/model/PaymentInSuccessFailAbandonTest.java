@@ -284,7 +284,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		assertEquals("The same transactionId", transactionId, actualData.getValue(0, "transactionId"));
 		assertEquals("1 PaymentIn in the queue.", 1, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment' and entityWillowId=2000"));
-		assertEquals("1 Enrolment in the queue.", 2, actualData.getRowCount());
+		assertEquals("1 Enrolment in the queue.", 1, actualData.getRowCount());
 		
 		assertEquals("Payment status success.", PaymentStatus.FAILED, paymentIn.getStatus());
 		
