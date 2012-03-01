@@ -227,7 +227,7 @@ public class Billing {
 	public String getBillingMonth() {
 		try {
 			int monthNumber = Integer.parseInt(getCurrentLicenseInfo().get(LicenseFee.BILLING_MONTH_PROPERTY));
-			return this.months[monthNumber - 1];
+			return this.months[monthNumber];
 		} catch (Exception e) {
 			return null;
 		}
@@ -237,7 +237,7 @@ public class Billing {
 		String result = null;
 		for (int i = 0; i < months.length; i++) {
 			if (months[i].equals(billingMonth)) {
-				result = String.valueOf(i + 1);
+				result = String.valueOf(i);
 				break;
 			}
 		}
