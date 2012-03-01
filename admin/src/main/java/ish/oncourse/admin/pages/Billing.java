@@ -412,22 +412,22 @@ public class Billing {
 		if (isSupportRenewMonth()) {	
 			text += "DI\t" +
 					college.getBillingCode() + "\t" +
-					getProductCode(String.valueOf(billingData.get(college.getId()).get("support-plan"))) + "\t" +
-					"onCourse " + billingData.get(college.getId()).get("support-plan") + 
-					"support plan, 1 year valid to " + formatter.format(renewalDate) + "\t" +
+					getProductCode(String.valueOf(licenseData.get(college.getId()).get("support-plan"))) + "\t" +
+					"onCourse " + licenseData.get(college.getId()).get("support-plan") + 
+					" support plan, 1 year valid to " + formatter.format(renewalDate) + "\t" +
 					"1\t" +
-					billingData.get(college.getId()).get("support") + "\t" +
+					licenseData.get(college.getId()).get("support") + "\t" +
 					description + "\n";
 		}
 		
 		if (isWebHostingRenewMonth()) {
 			text += "DI\t" +
 					college.getBillingCode() + "\t" +
-					getProductCode(String.valueOf(billingData.get(college.getId()).get("hosting-plan"))) + "\t" +
-					"onCourse " + billingData.get(college.getId()).get("hosting-plan") + 
-					"hosting plan, 1 year valid to " + formatter.format(renewalDate) + "\t" +
+					getProductCode(String.valueOf(licenseData.get(college.getId()).get("hosting-plan"))) + "\t" +
+					"onCourse " + licenseData.get(college.getId()).get("hosting-plan") + 
+					" hosting plan, 1 year valid to " + formatter.format(renewalDate) + "\t" +
 					"1\t" +
-					billingData.get(college.getId()).get("support") + "\t" +
+					licenseData.get(college.getId()).get("support") + "\t" +
 					description + "\n";
 		}
 		
