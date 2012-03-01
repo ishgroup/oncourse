@@ -10,12 +10,12 @@
 	<table>
 		<tr>
 			<td>PaymentExpress user</td>
-			<td><t:textfield t:id="paymentUser" t:validate="required" value="paymentExpUser" />
+			<td><t:textfield t:id="paymentUser" value="paymentExpUser" />
 			</td>
 		</tr>
 		<tr>
 			<td>PaymentExpress password</td>
-			<td><t:textfield t:id="paymentPass" t:validate="required" value="paymentExpPass" />
+			<td><t:textfield t:id="paymentPass" value="paymentExpPass" />
 			</td>
 		</tr>
 	</table>
