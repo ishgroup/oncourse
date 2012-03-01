@@ -2,8 +2,8 @@ package ish.oncourse.services.lifecycle;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.annotation.PrePersist;
-import org.apache.cayenne.annotation.PreUpdate;
+import org.apache.cayenne.annotation.PostPersist;
+import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -19,15 +19,15 @@ public class TaggableListener {
 	public TaggableListener(IWebSiteService webSiteService) {
 		this.webSiteService = webSiteService;
 	}
-
-	@PrePersist(value = Taggable.class)
-	public void prePersist(Taggable taggable) {
+	
+	@PostPersist(value = Taggable.class)
+	public void postPersist(Taggable taggable) {
 		setEntityWillowId(taggable);
 		setEntityAngelId(taggable);
 	}
-
-	@PreUpdate(value = Taggable.class)
-	public void preUpdate(Taggable taggable) {
+	
+	@PostUpdate(value = Taggable.class)
+	public void postUpdate(Taggable taggable) {
 		setEntityWillowId(taggable);
 		setEntityAngelId(taggable);
 	}
