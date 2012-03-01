@@ -46,7 +46,11 @@
 				<tr>
 					<td>${currentLicenseInfoKey}</td>
 					<td><t:textfield t:id="planName" value="planName"/></td>
-					<td><t:textfield t:id="billingMonth" t:validate="regexp=^([1-9]|1[0-2])$" value="billingMonth"/></td>
+					<td>
+						<t:if test="showMonthsCombo">
+							<t:select t:id="billingMonth" model="monthModel" value="billingMonth"/>
+						</t:if>
+					</td>
 					<td><t:textfield t:id="freeTransactions" t:validate="required" value="freeTransactions"/></td>
 					<td><t:textfield t:id="fee" t:validate="required" value="fee"/></td>
 				</tr>

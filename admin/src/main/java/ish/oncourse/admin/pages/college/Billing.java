@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
 import java.math.BigDecimal;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -11,6 +12,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.LicenseFee;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.Preference;
+import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -52,6 +54,10 @@ public class Billing {
 	@Property
 	private boolean amexEnabled;
 	
+	@Property
+	@Persist
+	private StringSelectModel monthModel;
+	
 	@Inject
 	private ICayenneService cayenneService;
 	
@@ -66,10 +72,15 @@ public class Billing {
 	
 	private SimpleDateFormat dateFormat;
 	
+	@Persist
+	private String[] months;
+	
 	@SetupRender
 	void setupRender() {
 		this.preferenceController = prefsFactory.getPreferenceController(college);
 		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		this.months = new DateFormatSymbols().getMonths();
+		this.monthModel = new StringSelectModel(months);
 		
 		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
 			this.webPaymentEnabled = false;
@@ -106,6 +117,14 @@ public class Billing {
 				this.amexEnabled = Boolean.parseBoolean(p.getValueString());
 				break;
 			}
+		}
+	}
+	
+	public boolean getShowMonthsCombo() {
+		if ("support".equals(currentLicenseInfoKey) || "hosting".equals(currentLicenseInfoKey)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -155,8 +174,10 @@ public class Billing {
 				if (info.get(LicenseFee.PLAN_NAME_PROPERTY) != null) {
 					lf.setPlanName(info.get(LicenseFee.PLAN_NAME_PROPERTY));
 				}
-				if (info.get(LicenseFee.BILLING_MONTH_PROPERTY) != null) {
-					lf.setBillingMonth(Integer.parseInt(info.get(LicenseFee.BILLING_MONTH_PROPERTY)));
+				if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
+					if (info.get(LicenseFee.BILLING_MONTH_PROPERTY) != null) {
+						lf.setBillingMonth(Integer.parseInt(info.get(LicenseFee.BILLING_MONTH_PROPERTY)));
+					}
 				}
 				if (info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY) != null) {
 					lf.setFreeTransactions(Integer.parseInt(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
@@ -204,11 +225,25 @@ public class Billing {
 	}
 	
 	public String getBillingMonth() {
-		return getCurrentLicenseInfo().get(LicenseFee.BILLING_MONTH_PROPERTY);
+		try {
+			int monthNumber = Integer.parseInt(getCurrentLicenseInfo().get(LicenseFee.BILLING_MONTH_PROPERTY));
+			return this.months[monthNumber - 1];
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public void setBillingMonth(String billingMonth) {
-		getCurrentLicenseInfo().put(LicenseFee.BILLING_MONTH_PROPERTY, billingMonth);
+		String result = null;
+		for (int i = 0; i < months.length; i++) {
+			if (months[i].equals(billingMonth)) {
+				result = String.valueOf(i + 1);
+				break;
+			}
+		}
+		if (result != null && !"".equals(result)) {
+			getCurrentLicenseInfo().put(LicenseFee.BILLING_MONTH_PROPERTY, result);
+		}
 	}
 	
 	public String getFreeTransactions() {
