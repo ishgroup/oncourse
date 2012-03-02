@@ -427,7 +427,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					}
 				}
 			}
-            String message = String.format("Uncommented object with angelId:%s and entityName:%s wasn't found.", angelId, entityName);
+            String message = String.format("Uncommitted object with angelId:%s and entityName:%s wasn't found.", angelId, entityName);
             throw new IllegalArgumentException(message);
 		}
 	}
