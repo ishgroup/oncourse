@@ -10,7 +10,7 @@ import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends ReplicationStub> implements
 		IWillowStubBuilder {
 
-	private static final Logger logger = Logger.getLogger(AbstractWillowStubBuilder.class);
+	protected static final Logger logger = Logger.getLogger(AbstractWillowStubBuilder.class);
 
 	/**
 	 * @see IWillowStubBuilder#convert(QueuedRecord)

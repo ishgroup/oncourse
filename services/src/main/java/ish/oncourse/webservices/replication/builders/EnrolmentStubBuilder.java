@@ -13,6 +13,9 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 		stub.setCreated(entity.getCreated());
 		if (entity.getInvoiceLine() != null) {
 			stub.setInvoiceLineId(entity.getInvoiceLine().getId());
+		} else {
+			logger.error("Enrollment without linked invoice line found for college" + entity.getCollege().getId() + " with willowid = " + entity.getId() 
+				+ " and angelid=" + entity.getAngelId());
 		}
 		stub.setModified(entity.getModified());
 		
