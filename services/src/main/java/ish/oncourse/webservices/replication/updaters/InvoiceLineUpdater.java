@@ -1,7 +1,6 @@
 package ish.oncourse.webservices.replication.updaters;
 
 import ish.math.Money;
-import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub;
@@ -23,12 +22,12 @@ public class InvoiceLineUpdater extends
 		entity.setTaxEach(Money.valueOf(stub.getTaxEach()));
 		entity.setTitle(stub.getTitle());
 		entity.setUnit(stub.getUnit());
-        /**
-         * InvoiceLine can be null for not Enrolment's invoices
-         */
-        if (stub.getEnrolmentId() != null)
-        {
-            entity.setEnrolment(callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class));
-        }
+		if (stub.getEnrolmentId() != null && entity.getEnrolment() == null) {
+			if (LOG.isDebugEnabled()) {
+				final String message = String.format("Invoice line with angelid = %s and willowid  = %s haven't linked yet with enrollment " 
+				 + "with angelid = %s but link exist!", stub.getAngelId(), stub.getWillowId(), stub.getEnrolmentId());
+				LOG.warn(message);
+			}
+		}
 	}
 }
