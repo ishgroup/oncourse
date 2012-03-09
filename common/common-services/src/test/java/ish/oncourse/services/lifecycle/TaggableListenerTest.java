@@ -36,11 +36,11 @@ public class TaggableListenerTest extends ServiceTest {
 		college.setTimeZone("Australia/Sydney");
 		college.setWebServicesSecurityCode("345ttn44$%9");
 		
+		context.commitChanges();
+		
 		Course course = context.newObject(Course.class);
 		course.setCollege(college);
 		course.setAngelId(1L);
-		
-		context.commitChanges();
 		
 		Taggable t = context.newObject(Taggable.class);
 		t.setCollege(college);
