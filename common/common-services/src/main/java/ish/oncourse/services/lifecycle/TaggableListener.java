@@ -44,6 +44,7 @@ public class TaggableListener {
 			Queueable object = (Queueable) Cayenne.objectForQuery(objectContext, q);
 			if (object != null) {
 				taggable.setEntityAngelId(object.getAngelId());
+				objectContext.commitChanges();
 			}
 		}
 	}
@@ -64,6 +65,7 @@ public class TaggableListener {
 
 			if (object != null) {
 				taggable.setEntityWillowId(object.getId());
+				objectContext.commitChanges();
 			}
 		}
 	}
