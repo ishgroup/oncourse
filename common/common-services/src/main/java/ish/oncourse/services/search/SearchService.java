@@ -142,7 +142,13 @@ public class SearchService implements ISearchService {
 
 			Tag browseTag = null;
 			if (params.containsKey(SearchParam.subject)) {
-				browseTag = (Tag) params.get(SearchParam.subject);
+				Object tagParameter = params.get(SearchParam.subject);
+				if (tagParameter instanceof Tag) {
+					browseTag = (Tag) tagParameter;
+				} else if (tagParameter instanceof String) {
+					final String message = String.format("Illegel parameter detected with value = %s for college = %s", (String) tagParameter, collegeId);
+					logger.error(message, new Exception(message));
+				}
 			}
 
 			if (browseTag != null) {
