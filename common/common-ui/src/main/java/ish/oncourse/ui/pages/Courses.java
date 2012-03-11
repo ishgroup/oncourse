@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -262,8 +263,11 @@ public class Courses {
 
 		for (SearchParam name : SearchParam.values()) {
 			String parameter = request.getParameter(name.name());
-			if (parameter != null && !"".equals(parameter)) {
-				searchParams.put(name, parameter);
+			if (StringUtils.trimToNull(parameter) != null) {
+				//this is additional check to avoid put into request string parameter for subject instead tag parameter
+				if (!SearchParam.subject.equals(name)) {
+					searchParams.put(name, parameter);
+				}
 				switch (name) {
 				case day:
 					if (!parameter.equalsIgnoreCase("weekday") && !parameter.equalsIgnoreCase("weekend")) {
