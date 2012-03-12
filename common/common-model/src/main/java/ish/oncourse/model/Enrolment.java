@@ -8,8 +8,10 @@ import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.List;
 
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectIdQuery;
 
 public class Enrolment extends _Enrolment implements Queueable {
 
@@ -98,7 +100,9 @@ public class Enrolment extends _Enrolment implements Queueable {
 		if (getInvoiceLine() != null && !getInvoiceLine().getInvoice().getPaymentInLines().isEmpty()) {
 			for (PaymentInLine line : getInvoiceLine().getInvoice().getPaymentInLines()) {
 				PaymentIn paymentIn = line.getPaymentIn();
-				if (paymentIn.getStatus() != PaymentStatus.IN_TRANSACTION && paymentIn.getStatus() != PaymentStatus.CARD_DETAILS_REQUIRED) {
+				final ObjectIdQuery q = new ObjectIdQuery(paymentIn.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+				paymentIn = (PaymentIn) Cayenne.objectForQuery(getObjectContext(), q);
+				if (paymentIn.isAsyncReplicationAllowed()) {
 					return true;
 				}
 			}
