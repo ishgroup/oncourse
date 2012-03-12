@@ -49,19 +49,8 @@ public class EnrolmentPaymentProcessing {
 	 */
 	@OnEvent(component = "processHolder", value = "progressiveDisplay")
 	Object performGateway() throws Exception {
-		final Session session = request.getSession(false);
-        Object paymentProcessedParam = null;
-        synchronized (session)
-        {
-            paymentProcessedParam  =  session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM);
-            if (paymentProcessedParam != null)
-            {
-                paymentProcessedParam = Boolean.TRUE;
-                session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, paymentProcessedParam);
-            }
-        }
-            
-		if (!Boolean.TRUE.equals(paymentProcessedParam)) {
+		Session session = request.getSession(true);
+		if (!Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
 			if (enrolments != null) {
 				paymentGatewayService.performGatewayOperation(payment);
@@ -73,23 +62,15 @@ public class EnrolmentPaymentProcessing {
 					payment.getObjectContext().commitChanges();
 				}
 			}
-            
-            synchronized (session)
-            {
-                session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
-            }
+			session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
 		} else {
-			while (!session.isInvalidated() && Boolean.TRUE.equals(paymentProcessedParam)) {
+			while (!session.isInvalidated() && Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 				Thread.sleep(1000);
-                synchronized (session)
-                {
-                    paymentProcessedParam = session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM);
-                }
 			}
 		}
 		return result;
 	}
-    
+
 	public void setEnrolments(List<Enrolment> enrolments) {
 		this.enrolments = enrolments;
 	}
