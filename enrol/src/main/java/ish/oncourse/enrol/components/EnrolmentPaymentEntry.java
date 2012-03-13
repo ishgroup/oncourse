@@ -1,47 +1,22 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.CreditCardType;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
-import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.ui.utils.FormatUtils;
 import ish.persistence.CommonPreferenceController;
-import ish.util.InvoiceUtil;
-
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
@@ -50,6 +25,12 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
+
+import java.text.Format;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class EnrolmentPaymentEntry {
     private static final Logger LOGGER = Logger.getLogger(EnrolmentPaymentEntry.class);

@@ -1,21 +1,17 @@
 package ish.oncourse.enrol.components;
 
-import ish.common.types.PaymentStatus;
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
-
-import java.util.List;
-
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
+
+import java.util.List;
 
 public class EnrolmentPaymentProcessing {
 
