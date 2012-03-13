@@ -13,7 +13,7 @@
 			
 			<p:else>
 				<br/><br/>
-				<p><strong>The details of this class have been hidden by the college. Please contact them for more details.</strong></p>
+				<p><strong>This class has not yet been made visible to the public.</strong></p>
 			</p:else>
 		</t:if>
 	</div>
