@@ -20,14 +20,31 @@ public class MessagePersonUpdater extends AbstractWillowUpdater<MessagePersonStu
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class));
 		entity.setCreated(stub.getCreated());
 		entity.setDestinationAddress(stub.getDestinationAddress());
-		Message message = callback.updateRelationShip(stub.getMessageId(), Message.class);
-		if (message != null) {
-			entity.setMessage(message);
-		} else {
-			final String errorMessage = String.format("No message object found for message person with angelid:%s willowid:%s  and messageid:%s", 
-				stub.getAngelId(), entity.getId(), stub.getMessageId());
-			throw new UpdaterException(errorMessage);
-		}
+
+
+        /**
+         * TODO: The try-catch was introduced because we get tons of errors about MessagePerson cannot get Message.
+         * TODO: The problem will be fixed when angel side gets new version(3.0).
+         * TODO: SO AFTER ANGEL GETS NEW VERSION THE try-catch SHOULD BE REMOVED
+         */
+        try
+        {
+            if (stub.getMessageId() == null)
+            {
+                final String errorMessage = String.format("No message object found for message person with angelid:%s willowid:%s  and messageid:%s",
+                        stub.getAngelId(), entity.getId(), stub.getMessageId());
+                throw new UpdaterException(errorMessage);
+            }
+            Message message = callback.updateRelationShip(stub.getMessageId(), Message.class);
+            entity.setMessage(message);
+        }
+        catch (Throwable e)
+        {
+            final String errorMessage = String.format("No message object found for message person with angelid:%s willowid:%s  and messageid:%s",
+                    stub.getAngelId(), entity.getId(), stub.getMessageId());
+            LOG.warn(errorMessage,e);
+        }
+
 		entity.setModified(stub.getModified());
 		entity.setNumberOfAttempts(stub.getNumberOfAttempts());
 		entity.setResponse(stub.getResponse());
