@@ -32,6 +32,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -51,7 +52,7 @@ import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 
 public class EnrolmentPaymentEntry {
-
+    private static final Logger LOGGER = Logger.getLogger(EnrolmentPaymentEntry.class);
 	/**
 	 * Credit card expire date interval
 	 */
@@ -71,9 +72,6 @@ public class EnrolmentPaymentEntry {
 	 */
 	@Inject
 	private PreferenceController preferenceService;
-
-	@Inject
-	private IDiscountService discountService;
 
 	/**
 	 * Parameters
@@ -219,23 +217,6 @@ public class EnrolmentPaymentEntry {
 		payment.setContact(payers.get(0));
 	}
 
-	/**
-	 * Iterates through all the enrolments selected(ie which has the related
-	 * invoiceLine) and checks if the related class has any available places for
-	 * enrolling.
-	 * 
-	 * @return true if all the selected classes are available for enrolling.
-	 */
-	public boolean isAllEnrolmentsAvailable() {
-		for (Enrolment enrolment : enrolments) {
-			if (enrolment.getInvoiceLine() != null
-					&& (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces() || enrolment.getCourseClass().hasEnded())) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public boolean isZeroPayment() {
 		return totalIncGst.isZero();
 	}
@@ -287,145 +268,39 @@ public class EnrolmentPaymentEntry {
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages.get("validateInput");
 	}
 
-	/**
-	 * Invoked when the paymentDetailsForm is submitted and validated
-	 * successfully. Fills in the rest of the needed properties, sets the
-	 * transaction status to entities to be committed and commits the
-	 * appropriate set of entities to context:
-	 * <ul>
-	 * <li>if payment amount is not zero, commits the payment with lines,
-	 * invoice with lines, enrolments</li>
-	 * <li>if payment amount is zero, commits only the enrolments with related
-	 * invoice and invoice lines(the others are deleted)</li>
-	 * </ul>
-	 * 
-	 * @return the block that displays the processing of payment {@see
-	 *         EnrolmentPaymentProcessing}.
-	 */
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
 		
 		Object resultPage = enrolCourses;
 
-		if (isSubmitted) {
-			// enrolments to be persisted
-			List<Enrolment> validEnrolments = getEnrolmentsToPersist();
-			// invoiceLines to be persisted
-			List<InvoiceLine> validInvoiceLines = getInvoiceLinesToPersist();
+		if (isSubmitted)
+        {
+            synchronized (enrolCourses.getContext())
+            {
 
-			// fill the processing result component with proper values
-			EnrolmentPaymentProcessing enrolmentPaymentProcessing = enrolCourses.getResultingElement();
-			enrolmentPaymentProcessing.setInvoice(invoice);
-
-			// even if the payment amount is zero, the contact for it is
-			// selected(the first in list by default)
-			invoice.setContact(payment.getContact());
-
-			ObjectContext context = payment.getObjectContext();
-
-			payment.setAmount(totalIncGst.toBigDecimal());
-
-			Money totalGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, true);
-			Money totalExGst = InvoiceUtil.sumInvoiceLines(validInvoiceLines, false);
-
-			invoice.setTotalExGst(totalExGst.toBigDecimal());
-			invoice.setTotalGst(totalGst.toBigDecimal());
-
-			PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
-			paymentInLine.setInvoice(invoice);
-			paymentInLine.setPaymentIn(payment);
-			paymentInLine.setAmount(payment.getAmount());
-			paymentInLine.setCollege(payment.getCollege());
-
-			enrolmentPaymentProcessing.setPayment(payment);
-			payment.setStatus(PaymentStatus.IN_TRANSACTION);
-
-			if (isAllEnrolmentsAvailable()) {
-				for (Enrolment e : validEnrolments) {
-					e.setStatus(EnrolmentStatus.IN_TRANSACTION);
-				}
-				enrolmentPaymentProcessing.setEnrolments(validEnrolments);
-				context.commitChanges();
-			} else {
-				enrolmentPaymentProcessing.setEnrolments(null);
-				context.rollbackChanges();
-			}
-
-			enrolCourses.setCheckoutResult(true);
-		} else {
+                if (enrolCourses.canStartPaymentProcess())
+                {
+                    /**
+                     * after we set the property to true EnrolmentPaymentProcessing.performGateway method is called.
+                     */
+                    enrolCourses.setCheckoutResult(true);
+                }
+                else
+                {
+                    resultPage = paymentZone.getBody();
+                }
+            }
+        }
+        else
+        {
 			resultPage = paymentZone.getBody();
 		}
 
 		return resultPage;
 	}
 
-	/**
-	 * Defines which enrolments are "checked" and should be included into the
-	 * processing and deletes the non-checked. Invoked on submit the checkout.
-	 * 
-	 * @return
-	 */
-	public List<Enrolment> getEnrolmentsToPersist() {
-		List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
-		ObjectContext context = payment.getObjectContext();
 
-		// define which enrolments are "checked" and should be included into the
-		// processing
-		for (Enrolment e : enrolments) {
-			if (e.getInvoiceLine() == null) {
-				context.deleteObject(e);
-			} else {
-				validEnrolments.add(e);
-			}
-		}
-
-		return validEnrolments;
-	}
-
-	/**
-	 * Defines which invoiceLines have the not-null reference to enrolment and
-	 * should be included into the processing and deletes the others. Invoked on
-	 * submit the checkout.
-	 * 
-	 * @return
-	 */
-	public List<InvoiceLine> getInvoiceLinesToPersist() {
-		ObjectContext context = payment.getObjectContext();
-		List<InvoiceLine> validInvoiceLines = new ArrayList<InvoiceLine>();
-
-		List<InvoiceLine> invoiceLinesToDelete = new ArrayList<InvoiceLine>();
-		// define which invoiceLines have the reference to enrolment and should
-		// be included into the processing
-		for (InvoiceLine invLine : invoice.getInvoiceLines()) {
-			Enrolment enrolment = invLine.getEnrolment();
-			if (enrolment == null) {
-				invoiceLinesToDelete.add(invLine);
-			} else {
-				validInvoiceLines.add(invLine);
-				// discounts that could be applied to the courseClass and the
-				// student of enrolment
-				List<Discount> discountsToApply = enrolment.getCourseClass().getDiscountsToApply(
-						new RealDiscountsPolicy(discountService.getPromotions(), enrolment.getStudent()));
-				// iterate through the list of discounts and create the
-				// appropriate InvoiceLineDiscount objects
-				for (Discount discount : discountsToApply) {
-					Expression discountQualifier = ExpressionFactory.matchExp(InvoiceLineDiscount.DISCOUNT_PROPERTY, discount);
-					if (discountQualifier.filterObjects(invLine.getInvoiceLineDiscounts()).isEmpty()) {
-						InvoiceLineDiscount invoiceLineDiscount = context.newObject(InvoiceLineDiscount.class);
-						invoiceLineDiscount.setInvoiceLine(invLine);
-						invoiceLineDiscount.setDiscount(discount);
-						invoiceLineDiscount.setCollege(enrolment.getCollege());
-					}
-				}
-			}
-		}
-
-		context.deleteObjects(invoiceLinesToDelete);
-
-		return validInvoiceLines;
-	}
-
-	@OnEvent(component = "paymentDetailsForm", value = "failure")
+    @OnEvent(component = "paymentDetailsForm", value = "failure")
 	Object submitFailed() {
 		return paymentZone.getBody();
 	}
@@ -447,6 +322,17 @@ public class EnrolmentPaymentEntry {
 		if (!isSubmitted) {
 			return;
 		}
+        /**
+         * The test shows error message for an user if he try to make a payment from several tabs
+         */
+        synchronized (enrolCourses.getContext())
+        {
+            if (!enrolCourses.canStartPaymentProcess())
+            {
+                paymentDetailsForm.recordError(cardTypeSelect, messages.get("twoOrMoreOpenedPaymentPagesErrorMessage"));
+            }
+        }
+
 		if (!isZeroPayment()) {
 			if (!isNotEmptyPayer()) {
 				paymentDetailsForm.recordError(messages.get("emptyPayerErrorMessage"));
@@ -483,6 +369,8 @@ public class EnrolmentPaymentEntry {
 			if (hasErrorInDate) {
 				paymentDetailsForm.recordError(messages.get("expiryDateError"));
 			}
+
+
 		}
 		if (!userAgreed) {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
@@ -514,5 +402,18 @@ public class EnrolmentPaymentEntry {
 		moneyFormat = FormatUtils.chooseMoneyFormat(totalIncGst);
 		return totalIncGst;
 	}
+
+    /**
+     * Iterates through all the enrolments selected(ie which has the related
+     * invoiceLine) and checks if the related class has any available places for
+     * enrolling.
+     *
+     * @return true if all the selected classes are available for enrolling.
+     */
+    public boolean isAllEnrolmentsAvailable() {
+        enrolCourses.isAllEnrolmentsAvailable(enrolments);
+        return true;
+    }
+
 
 }

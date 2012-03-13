@@ -203,21 +203,24 @@ public class EnrolmentPaymentResult {
 	}
 
 	public URL onActionFromAbandon() {
-		payment.abandonPayment();
-		payment.getObjectContext().commitChanges();
+        synchronized (enrolCourses.getContext())
+        {
+            payment.abandonPayment();
+            payment.getObjectContext().commitChanges();
 
-		clearPersistedValues();
-		
-		Session session = request.getSession(false);
-		if (session != null && !session.isInvalidated()) {
-			session.setAttribute(PaymentIn.FAILED_PAYMENT_PARAM, null);
-		}
-		
-		try {
-			return new URL(HTTP_PROTOCOL + request.getServerName());
-		} catch (MalformedURLException e) {
-		}
-		return null;
+            clearPersistedValues();
+
+            Session session = request.getSession(false);
+            if (session != null && !session.isInvalidated()) {
+                session.setAttribute(PaymentIn.FAILED_PAYMENT_PARAM, null);
+            }
+
+            try {
+                return new URL(HTTP_PROTOCOL + request.getServerName());
+            } catch (MalformedURLException e) {
+            }
+            return null;
+        }
 	}
 
 	public String getPaymentId() {
