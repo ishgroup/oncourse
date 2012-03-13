@@ -54,8 +54,6 @@ public class Tutor extends _Tutor implements Queueable {
 
 		Expression qualifier = validRolesQualifier.andExp(ExpressionFactory
 				.matchExp(TutorRole.TUTOR_PROPERTY, this)
-				.andExp(ExpressionFactory.matchExp(
-						TutorRole.IS_CONFIRMED_PROPERTY, true))
 				.andExp(ExpressionFactory.matchExp(TutorRole.IN_PUBLICITY_PROPERTY, true))
 				.andExp(ExpressionFactory.greaterOrEqualExp(
 						TutorRole.COURSE_CLASS_PROPERTY + "."
