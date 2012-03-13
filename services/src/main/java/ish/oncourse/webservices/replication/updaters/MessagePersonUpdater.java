@@ -24,8 +24,7 @@ public class MessagePersonUpdater extends AbstractWillowUpdater<MessagePersonStu
 
         /**
          * TODO: The try-catch was introduced because we get tons of errors about MessagePerson cannot get Message.
-         * TODO: The problem will be fixed when angel side gets new version(3.0).
-         * TODO: SO AFTER ANGEL GETS NEW VERSION THE try-catch SHOULD BE REMOVED
+         * TODO: THE try-catch HAS TO BE REMOVED AFTER JULY 2012
          */
         try
         {
