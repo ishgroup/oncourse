@@ -608,8 +608,6 @@ public class EnrolCourses {
             // selected(the first in list by default)
             invoice.setContact(payment.getContact());
 
-            ObjectContext context = payment.getObjectContext();
-
             Money totalIncGst = getTotalIncGst();
             payment.setAmount(totalIncGst.toBigDecimal());
 
