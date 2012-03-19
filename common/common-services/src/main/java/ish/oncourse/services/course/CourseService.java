@@ -26,6 +26,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SQLTemplate;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 @SuppressWarnings("unchecked")
@@ -154,10 +155,12 @@ public class CourseService implements ICourseService {
 			if (ids[i] instanceof Long) {
 				id = (Long) ids[i];
 			}
-			if (ids[i] instanceof String) {
+            //To exclude NumberFormatException  StringUtils.isNumeric has been added
+			if (ids[i] instanceof String && StringUtils.isNumeric((String) ids[i])) {
 				id = Long.valueOf((String) ids[i]);
 			}
-			orderingMap.put(id, i);
+            if (id != null)
+			    orderingMap.put(id, i);
 		}
 		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids).andExp(getSiteQualifier())
 				.andExp(ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true));
