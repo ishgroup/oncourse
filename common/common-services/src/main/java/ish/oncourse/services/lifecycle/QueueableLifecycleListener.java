@@ -188,19 +188,19 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			Queueable q = (Queueable) entity;
 			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
-				if (!recordContext.getIsRecordQueueingEnabled()) {
-					if (LOGGER.isDebugEnabled() && isAsyncReplicationAllowed(q)) {
-						LOGGER.debug("Post persist for not replicating but allowed to replication entity "+ q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-					}
+				final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
+				final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Post Persist entered with " + (replicatedContext ? "replication context" : "non-replication context") + 
+						(isAsyncReplicationAllowed ? "async replication allowed for this object":"async replication not allowed for this object") + 
+						q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
+				}
+				if (!replicatedContext) {
 					return;
 				}
-				if (isAsyncReplicationAllowed(q)) {
+				if (isAsyncReplicationAllowed) {
 					LOGGER.debug("Post Persist event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
 					enqueue(q, QueuedRecordAction.CREATE);
-				} else {
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Post persist event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-					}
 				}
 			}
 		}
@@ -237,19 +237,19 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			Queueable q = (Queueable) entity;
 			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
-				if (!recordContext.getIsRecordQueueingEnabled()) {
-					if (LOGGER.isDebugEnabled() && isAsyncReplicationAllowed(q)) {
-						LOGGER.debug("Post update for not replicating but allowed to replication entity "+ q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-					}
+				final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
+				final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Post Update entered with " + (replicatedContext ? "replication context" : "non-replication context") + 
+						(isAsyncReplicationAllowed ? "async replication allowed for this object":"async replication not allowed for this object") + 
+						q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
+				}
+				if (!replicatedContext) {
 					return;
 				}
-				if (isAsyncReplicationAllowed(q)) {
+				if (isAsyncReplicationAllowed) {
 					LOGGER.debug("Post Update event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
 					enqueue(q, QueuedRecordAction.UPDATE);
-				} else {
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Post update event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-					}
 				}
 			}
 		}
