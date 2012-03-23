@@ -14,6 +14,7 @@
 		            	
 		            	<div class="class-name">
 		            		<t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink>
+		            		<span id="class-code" style="margin-left:10px;font-size:9px;">${courseClassCode}</span>
 		            	</div>
 		            	
 		                <div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>

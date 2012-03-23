@@ -9,7 +9,10 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -77,17 +80,26 @@ public class Classes {
 	public String getCourseName() {
 		return courseClass.getCourse().getName();
 	}
+	
+	public String getCourseClassCode() {
+		return "(" + courseClass.getCourse().getCode() + "-" + courseClass.getCode() + ")";
+	}
 
 	public String getRoom() {
-		return (courseClass.getRoom() != null) ? courseClass.getRoom()
-				.getName() : "";
+		String room = courseClass.getRoom() != null ? courseClass.getRoom().getName() : null;
+		String site = courseClass.getRoom() != null ? 
+				courseClass.getRoom().getSite() != null ? 
+						courseClass.getRoom().getSite().getName() : null : null;
+		return site != null ? site : "" + 
+				site != null && room != null ? ", " : "" + 
+						room != null ? room : "";
 	}
 
 	public String getClassSessionsInfo() {
 		DecimalFormat hoursFormat = new DecimalFormat("0.#");
 		int numberOfSession = courseClass.getSessions().size();
-		String key = (numberOfSession > 1) ? " %s sessions, %s hours total"
-				: " %s session, %s hours total";
+		String key = (numberOfSession > 1) ? " %s sessions, %s hours"
+				: " %s session, %s hours";
 		return String.format(key, numberOfSession, hoursFormat
 				.format(courseClass.getTotalDurationHours().doubleValue()));
 	}
@@ -95,14 +107,15 @@ public class Classes {
 	public String getClassIntervalInfo() {
 		Date start = courseClass.getStartDate();
 		Date end = courseClass.getEndDate();
-		DateFormat formatter = new SimpleDateFormat("MMM. dd ");
+		DateFormat startDateFormatter = new SimpleDateFormat("dd MMM");
+		DateFormat endDateFormatter = new SimpleDateFormat("dd MMM yyyy");
 		String key = "%s - %s ";
 		if (start == null && end == null) {
 			return "";
 		} 
 
-		return String.format(key, formatter.format(start),
-				formatter.format(end));
+		return String.format(key, startDateFormatter.format(start),
+				endDateFormatter.format(end));
 	}
 
 	public List<TutorRole> getTutorRoles() {
