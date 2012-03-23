@@ -190,8 +190,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
 				if (!recordContext.getIsRecordQueueingEnabled()) {
 					if (LOGGER.isDebugEnabled() && isAsyncReplicationAllowed(q)) {
-						LOGGER.debug("Post persist for not replicating but allowed to replication entity "+ q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q), 
-							new Exception("Trace post persist for not replicating but allowed to replication entity" + q.getClass().getSimpleName() + " with ID : " + q.getObjectId()));
+						LOGGER.debug("Post persist for not replicating but allowed to replication entity "+ q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
 					}
 					return;
 				}
@@ -200,8 +199,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 					enqueue(q, QueuedRecordAction.CREATE);
 				} else {
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Post persist event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q), 
-							new Exception("Post persist event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId()));
+						LOGGER.debug("Post persist event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
 					}
 				}
 			}
@@ -241,8 +239,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
 				if (!recordContext.getIsRecordQueueingEnabled()) {
 					if (LOGGER.isDebugEnabled() && isAsyncReplicationAllowed(q)) {
-						LOGGER.debug("Post update for not replicating but allowed to replication entity "+ q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q), 
-							new Exception("Trace post update for not replicating but allowed to replication entity" + q.getClass().getSimpleName() + " with ID : " + q.getObjectId()));
+						LOGGER.debug("Post update for not replicating but allowed to replication entity "+ q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
 					}
 					return;
 				}
@@ -251,8 +248,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 					enqueue(q, QueuedRecordAction.UPDATE);
 				} else {
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Post update event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q), 
-							new Exception("Post update event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId()));
+						LOGGER.debug("Post update event on not allowed to replication entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
 					}
 				}
 			}
