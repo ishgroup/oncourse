@@ -51,7 +51,6 @@ import org.apache.cayenne.annotation.PostRemove;
 import org.apache.cayenne.graph.GraphDiff;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.Query;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -75,7 +74,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	/**
 	 * DataContext threadlocal storage
 	 */
-	private static final ThreadLocal<Deque<StackFrame>> STACK_STORAGE = new InheritableThreadLocal<Deque<StackFrame>>();
+	private static final ThreadLocal<Deque<QueuedTransaction>> STACK_STORAGE = new InheritableThreadLocal<Deque<QueuedTransaction>>();
 	
 	/**
 	 * Storage to hold college between invocations of preRemove and postRemove methods.
@@ -111,29 +110,64 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	 */
 	@Override
 	public GraphDiff onSync(ObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
-		Deque<StackFrame> stack = null;
-		try {
-			stack = STACK_STORAGE.get();
-			if (stack == null) {
-				stack = new LinkedList<StackFrame>();
-				STACK_STORAGE.set(stack);
-			}
-			StackFrame frame = stack.isEmpty() ? new StackFrame(cayenneService.newNonReplicatingContext(), new HashMap<String, QueuedTransaction>()) : stack
-					.peek();
-			stack.push(frame);
-			GraphDiff diff = filterChain.onSync(originatingContext, changes, syncType);
-			stack.pop();
-			if (stack.isEmpty()) {
-				frame.getObjectContext().commitChanges();
-			}
-			return diff;
-		}
-		finally {
-			if (stack != null && stack.isEmpty()) {
-				STACK_STORAGE.set(null);
-			}
-		}
+        if (originatingContext instanceof ISHObjectContext && ((ISHObjectContext)originatingContext).getIsRecordQueueingEnabled())
+            return this.onSync((ISHObjectContext)originatingContext, changes,syncType,filterChain);
+        else
+           return filterChain.onSync(originatingContext, changes, syncType);
 	}
+
+    /**
+     * In the method, we create unique context and QueuedTransaction for the originatingContext. We do it to exclude multiple
+     * context creations and commits of  QueuedRecords
+     *
+     * @see DataChannelFilter#onSync(ObjectContext, GraphDiff, int, DataChannelFilterChain)
+     */
+    private GraphDiff onSync(ISHObjectContext originatingContext, GraphDiff changes, int syncType, DataChannelFilterChain filterChain) {
+        Deque<QueuedTransaction> stack = null;
+        QueuedTransaction transaction = null;
+        try {
+            stack = STACK_STORAGE.get();
+            if (stack == null) {
+                stack = new LinkedList<QueuedTransaction>();
+                STACK_STORAGE.set(stack);
+            }
+            transaction = stack.isEmpty() ? createQueuedTransaction(originatingContext) : stack
+                    .peek();
+            stack.push(transaction);
+            return  filterChain.onSync(originatingContext, changes, syncType);
+        }
+        finally {
+
+            /**
+             * Pop and commit are called from finally block because they should be called always.
+             * Otherwise we can lose uncommitted QueuedRecords when  filterChain.onSync will throw any exception.
+             */
+            if (stack != null && transaction != null)
+            {
+                stack.pop();
+                if (stack.isEmpty()) {
+                    transaction.getObjectContext().commitChanges();
+                }
+            }
+
+            if (stack != null && stack.isEmpty()) {
+                STACK_STORAGE.set(null);
+            }
+        }
+
+    }
+
+
+    private QueuedTransaction createQueuedTransaction(ISHObjectContext originatingContext)
+    {
+        ISHObjectContext context = (ISHObjectContext) cayenneService.newNonReplicatingContext();
+        QueuedTransaction t = context.newObject(QueuedTransaction.class);
+        Date today = new Date();
+        t.setCreated(today);
+        t.setModified(today);
+        t.setTransactionKey(originatingContext.getTransactionKey());
+        return t;
+    }
 
 	/**
 	 * Updates modified date on the object.
@@ -165,11 +199,15 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	public void preRemove(Object entity) {
 		if (entity instanceof Queueable) {
 			Queueable q = (Queueable) entity;
+
 			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
+
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
+
 				if (!recordContext.getIsRecordQueueingEnabled()) {
 					return;
 				}
+
 				if (isAsyncReplicationAllowed(q)) {
 					objectIdCollegeMap.put(q.getObjectId(), q.getCollege());
 				}
@@ -186,19 +224,15 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	public void postPersist(Object entity) {
 		if (entity instanceof Queueable) {
 			Queueable q = (Queueable) entity;
+
 			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
+
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
-				final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
-				final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Post Persist entered with " + (replicatedContext ? "replication context" : "non-replication context") + 
-						(isAsyncReplicationAllowed ? "async replication allowed for this object":"async replication not allowed for this object") + 
-						q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-				}
-				if (!replicatedContext) {
+				if (!recordContext.getIsRecordQueueingEnabled()) {
 					return;
 				}
-				if (isAsyncReplicationAllowed) {
+
+				if (isAsyncReplicationAllowed(q)) {
 					LOGGER.debug("Post Persist event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
 					enqueue(q, QueuedRecordAction.CREATE);
 				}
@@ -208,15 +242,18 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 
 	/**
 	 * Delete record event - post delete.
-	 * 
+	 *
 	 * @param entity
 	 */
 	@PostRemove
 	public void postRemove(Object entity) {
+
 		if (entity instanceof Queueable) {
 			Queueable q = (Queueable) entity;
+
 			if (isAsyncReplicationAllowed(q)) {
-				LOGGER.debug("Post Remove event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
+				LOGGER.debug("Post Remove event on : Entity: " + q.getClass().getSimpleName() + " with ID : "
+						+ q.getObjectId());
 				College college = objectIdCollegeMap.remove(q.getObjectId());
 				if (college != null) {
 					q.setCollege(college);
@@ -229,26 +266,23 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 
 	/**
 	 * Update record event - post save.
-	 * 
+	 *
 	 * @param entity
 	 */
 	public void postUpdate(Object entity) {
 		if ((entity instanceof Queueable)) {
 			Queueable q = (Queueable) entity;
+
 			if (q.getObjectContext() != null && (q.getObjectContext() instanceof ISHObjectContext)) {
+
 				ISHObjectContext recordContext = (ISHObjectContext) q.getObjectContext();
-				final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
-				final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Post Update entered with " + (replicatedContext ? "replication context" : "non-replication context") + 
-						(isAsyncReplicationAllowed ? "async replication allowed for this object":"async replication not allowed for this object") + 
-						q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
-				}
-				if (!replicatedContext) {
+				if (!recordContext.getIsRecordQueueingEnabled()) {
 					return;
 				}
-				if (isAsyncReplicationAllowed) {
-					LOGGER.debug("Post Update event on : Entity: " + q.getClass().getSimpleName() + " with ID : " + q.getObjectId());
+
+				if (isAsyncReplicationAllowed(q)) {
+					LOGGER.debug("Post Update event on : Entity: " + q.getClass().getSimpleName() + " with ID : "
+							+ q.getObjectId());
 					enqueue(q, QueuedRecordAction.UPDATE);
 				}
 			}
@@ -262,28 +296,6 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 
 	public void postLoad(Object entity) {
 		// Not used
-	}
-	
-	private String traceObjectInfo(Queueable entity) {
-		String message = StringUtils.EMPTY;
-		if (entity instanceof PaymentIn) {
-			PaymentIn payment = (PaymentIn) entity;
-			message = String.format(" PaymentIn with id = %s and paymenttype = %s and payment status = %s and amount = %s and source = %s", 
-				payment.getId(), payment.getType().name(), payment.getStatus().name(), payment.getAmount().toPlainString(), payment.getSource().name());
-		} else if (entity instanceof PaymentInLine) {
-			PaymentInLine pLine = (PaymentInLine) entity;
-			message = String.format(" PaymentInLine with id = %s and amount = %s", pLine.getId(), pLine.getAmount().toPlainString());
-		} else if (entity instanceof Enrolment) {
-			Enrolment enrl = (Enrolment) entity;
-			message = String.format(" Enrolment with id = %s and source = %s and status = %s", enrl.getId(), enrl.getSource().name(), enrl.getStatus().name());
-		} else if (entity instanceof Invoice) {
-			Invoice invoice = (Invoice) entity;
-			message = String.format(" Invoice with id = %s source = %s and amount owing = %s", invoice.getId(), invoice.getSource().name(), invoice.getAmountOwing());
-		} else if (entity instanceof InvoiceLine) {
-			InvoiceLine invoiceLine = (InvoiceLine) entity;
-			message = String.format(" InvoiceLine with id = %s linked with enrollment with id = %s", invoiceLine.getId(), invoiceLine.getEnrolment() != null ? invoiceLine.getEnrolment().getId() : null);
-		}
-		return message;
 	}
 
 	/**
@@ -301,35 +313,39 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	 *            QueuedRecordAction}
 	 */
 	private void enqueue(Queueable entity, QueuedRecordAction action) {
+
 		College college = entity.getCollege();
+
 		if (college == null) {
 			// we don't need to add QueuedRecords on entities where
 			// collegeId=null, such as global preferences.
 			return;
 		}
+
 		ISHObjectContext commitingContext = (ISHObjectContext) college.getObjectContext();
+
 		if (action != QueuedRecordAction.DELETE) {
 			ObjectIdQuery query = new ObjectIdQuery(entity.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
 			entity = (Queueable) Cayenne.objectForQuery(commitingContext, query);
 		}
+
 		ObjectContext currentContext = STACK_STORAGE.get().peek().getObjectContext();
 		String transactionKey = commitingContext.getTransactionKey();
+
 		String queuedTransactionKey = String.format("%s:%s", college.getId(), transactionKey);
-		QueuedTransaction t = STACK_STORAGE.get().peek().getTransactionMapping().get(queuedTransactionKey);
-		if (t == null) {
-			t = currentContext.newObject(QueuedTransaction.class);
-			Date today = new Date();
-			t.setCreated(today);
-			t.setModified(today);
-			t.setTransactionKey(transactionKey);
+
+		QueuedTransaction t = STACK_STORAGE.get().peek();
+		if (t.getCollege() == null) {
 			t.setCollege((College) currentContext.localObject(college.getObjectId(), null));
-			STACK_STORAGE.get().peek().getTransactionMapping().put(queuedTransactionKey, t);
 		}
+
 		String entityName = entity.getObjectId().getEntityName();
 		Long entityId = entity.getId();
 		Long angelId = entity.getAngelId();
+
 		LOGGER.debug(String.format("Creating QueuedRecord<id:%s, entityName:%s, action:%s, transactionKey:%s>", entityId, entityName,
 				action, transactionKey));
+
 		QueuedRecord qr = currentContext.newObject(QueuedRecord.class);
 		qr.setCollege((College) currentContext.localObject(college.getObjectId(), null));
 		qr.setEntityIdentifier(entityName);
@@ -350,8 +366,10 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 	 * @return true - queued record allowed, false - not allowed.
 	 */
 	private boolean isAsyncReplicationAllowed(Queueable entity) {
+
 		boolean isAsyncAllowed = true;
-		if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session || entity instanceof DiscountMembership || 
+
+		if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session || entity instanceof DiscountMembership ||
 				entity instanceof DiscountMembershipRelationType || entity instanceof ContactRelation || entity instanceof ContactRelationType || 
 				entity instanceof Membership || entity instanceof MembershipProduct || entity instanceof Product || entity instanceof ProductItem || 
 				entity instanceof Voucher || entity instanceof VoucherProduct) {
@@ -375,6 +393,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
 			InvoiceLineDiscount invoiceLineDiscount = (InvoiceLineDiscount) entity;
 			isAsyncAllowed = invoiceLineDiscount.isAsyncReplicationAllowed();
 		}
+
 		return isAsyncAllowed;
 	}
 }
