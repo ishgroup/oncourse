@@ -91,6 +91,11 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                 stack.push(frame);
                 return filterChain.onSync(originatingContext, changes, syncType);
             }
+            catch (Throwable e)
+            {
+                LOGGER.error("QueueableLifecycleListener thrown an exception", e);
+                throw new RuntimeException(e);
+            }
             finally {
                 /**
                  * Pop and commit are called from finally block because they should be called always.
@@ -101,6 +106,11 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                     frame.getObjectContext().commitChanges();
                 }
             }
+        }
+        catch (Throwable e)
+        {
+            LOGGER.error("QueueableLifecycleListener thrown an exception", e);
+            throw new RuntimeException(e);
         }
         finally {
             if (STACK_STORAGE.get() != null && STACK_STORAGE.get().isEmpty()) {
