@@ -11,7 +11,11 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+
+import static ish.oncourse.enrol.pages.EnrolCourses.HTTP_PROTOCOL;
 
 public class EnrolmentPaymentProcessing {
 
@@ -48,6 +52,17 @@ public class EnrolmentPaymentProcessing {
 	 */
 	@OnEvent(component = "processHolder", value = "progressiveDisplay")
 	Object performGateway() throws Exception {
+
+        /**
+         *  Workaround to exclude NullPointerException on context synchronize block. Unknown reason. (possible reason is expired session).
+         */
+        if (enrolCourses.getContext() == null)
+        {
+            try {
+                return new URL(HTTP_PROTOCOL + request.getServerName());
+            } catch (MalformedURLException e) {
+            }
+        }
         enrolCourses.processPayment();
 		return result;
 	}

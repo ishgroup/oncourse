@@ -30,8 +30,6 @@ import java.util.List;
 
 public class EnrolmentPaymentResult {
 
-	private static final String HTTP_PROTOCOL = "http://";
-
 	@Inject
 	private Messages messages;
 
@@ -208,7 +206,7 @@ public class EnrolmentPaymentResult {
             }
 
             try {
-                return new URL(HTTP_PROTOCOL + request.getServerName());
+                return new URL(EnrolCourses.HTTP_PROTOCOL + request.getServerName());
             } catch (MalformedURLException e) {
             }
             return null;
@@ -223,7 +221,7 @@ public class EnrolmentPaymentResult {
 	}
 
 	public String getCoursesLink() {
-		return HTTP_PROTOCOL + request.getServerName() + "/courses";
+		return EnrolCourses.HTTP_PROTOCOL + request.getServerName() + "/courses";
 	}
 
 	public String getSuccessUrl() {

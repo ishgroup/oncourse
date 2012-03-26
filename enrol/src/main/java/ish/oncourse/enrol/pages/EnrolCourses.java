@@ -43,6 +43,8 @@ import java.util.*;
 public class EnrolCourses {
 
     private static final String INDEX_SEPARATOR = "_";
+    public static final String HTTP_PROTOCOL = "http://";
+
 
     /**
      * ish services
