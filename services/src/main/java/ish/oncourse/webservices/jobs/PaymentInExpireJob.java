@@ -1,11 +1,15 @@
 package ish.oncourse.webservices.jobs;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.persistence.ICayenneService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -69,9 +73,26 @@ public class PaymentInExpireJob implements Job {
 
 					logger.info(String.format("Canceling paymentIn with id:%s, created:%s and status:%s.", p.getId(), p.getCreated(),
 							p.getStatus()));
-
-					p.abandonPayment();
-
+					// we should check that there is no enrollments with amount owing exist in this payment.
+					final List<Enrolment> enrollmentsForKeepInvoice = new ArrayList<Enrolment>();
+					if (p.getPaymentInLines() != null) {
+						for (PaymentInLine paymentLine: p.getPaymentInLines()) {
+							if (paymentLine.getInvoice().getInvoiceLines() != null) {
+								for (InvoiceLine invoiceLine : paymentLine.getInvoice().getInvoiceLines()) {
+									if (invoiceLine.getEnrolment() != null && EnrolmentStatus.SUCCESS.equals(invoiceLine.getEnrolment().getStatus())) {
+										enrollmentsForKeepInvoice.add(invoiceLine.getEnrolment());
+									}
+								}
+							}
+						}
+					}
+					if (enrollmentsForKeepInvoice.isEmpty()) {
+						//if all enrollments in transaction we can just fail them
+						p.abandonPayment();
+					} else {
+						//we should not fail enrollments when college allow them to enroll with owing.
+						p.abandonPaymentKeepInvoice();
+					}
 					newContext.commitChanges();
 				} catch (CayenneRuntimeException ce) {
 					logger.debug(String.format("Unable to cancel payment with id:%s and status:%s.", p.getId(), p.getStatus()), ce);

@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.services;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
@@ -111,8 +112,10 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 					Enrolment enrolment = (Enrolment) newContext.localObject(
 							enrolService.loadById(r.getStub().getWillowId()).getObjectId(), null);
-
-					enrolments.add(enrolment);
+					// this case deny check for enrollments which active via QE with case Abandon payment keep invoice
+					if (!EnrolmentStatus.SUCCESS.equals(enrolment.getStatus())) {
+						enrolments.add(enrolment);
+					}
 
 				} else if (ReplicationUtils.getEntityName(PaymentIn.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
 
