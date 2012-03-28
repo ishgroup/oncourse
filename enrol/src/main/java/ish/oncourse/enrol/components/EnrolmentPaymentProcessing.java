@@ -56,14 +56,14 @@ public class EnrolmentPaymentProcessing {
         /**
          *  Workaround to exclude NullPointerException on context synchronize block. Unknown reason. (possible reason is expired session).
          */
-        if (enrolCourses.getContext() == null)
+        try
         {
-            try {
-                return new URL(HTTP_PROTOCOL + request.getServerName());
-            } catch (MalformedURLException e) {
-            }
+            enrolCourses.processPayment();
         }
-        enrolCourses.processPayment();
+        catch (Exception e)
+        {
+           result.setUnexpectedException(e);
+        }
 		return result;
 	}
 

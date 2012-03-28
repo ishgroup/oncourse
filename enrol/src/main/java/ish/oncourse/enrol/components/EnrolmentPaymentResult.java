@@ -89,9 +89,12 @@ public class EnrolmentPaymentResult {
 	@Property
 	private Transaction transaction;
 
+
+    private Exception unexpectedException;
+
 	@SetupRender
 	Object beforeRender() {
-		if (invoice == null) {
+		if (invoice == null || unexpectedException != null) {
 			clearPersistedValues();
 			return null;
 		}
@@ -227,4 +230,12 @@ public class EnrolmentPaymentResult {
 	public String getSuccessUrl() {
 		return preferenceController.getEnrolSuccessUrl();
 	}
+
+    public Exception getUnexpectedException() {
+        return unexpectedException;
+    }
+
+    public void setUnexpectedException(Exception unexpectedException) {
+        this.unexpectedException = unexpectedException;
+    }
 }
