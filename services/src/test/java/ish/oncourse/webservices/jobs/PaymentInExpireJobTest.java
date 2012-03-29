@@ -144,7 +144,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set created=?");
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
-			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+			assertEquals("Expected update on 2 paymentIn.", 2, affected);
 			
 			prepStat.close();
 			
@@ -208,7 +208,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			PreparedStatement prepStat = connection.prepareStatement("update PaymentIn set modified=?");
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			int affected = prepStat.executeUpdate();
-			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+			assertEquals("Expected update on 2 paymentIn.", 2, affected);
 			
 			prepStat.close();
 			
@@ -217,7 +217,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 			prepStat = connection.prepareStatement("update PaymentIn set created=?");
 			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
 			affected = prepStat.executeUpdate();
-			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+			assertEquals("Expected update on 2 paymentIn.", 2, affected);
 			
 			prepStat.close();
 			
@@ -242,12 +242,12 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		ITable actualData = dbUnitConnection.createQueryTable("PaymentIn",
 				String.format("select * from PaymentIn"));
 		
-		assertEquals("There should be only two PaymentIn", 2, actualData.getRowCount());
+		assertEquals("There should be only three PaymentIn", 3, actualData.getRowCount());
 		
 		actualData = dbUnitConnection.createQueryTable("PaymentIn",
 				String.format("select * from PaymentIn where status=4"));
 		
-		assertEquals("Expecting only one failed paymentIn", 1, actualData.getRowCount());
+		assertEquals("Expecting only two failed paymentIn", 2, actualData.getRowCount());
 		
 		actualData = dbUnitConnection.createQueryTable("PaymentIn",
 				String.format("select * from PaymentIn where amount=0 and type=5 and status=3"));
@@ -257,12 +257,15 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord",
 				String.format("select * from QueuedRecord where entityIdentifier='PaymentIn'"));
 		
-		assertEquals("Expecting two records in the queue for PaymentIn", 2, actualData.getRowCount());
+		assertEquals("Expecting three records in the queue for PaymentIn", 3, actualData.getRowCount());
 		
 		ObjectContext objectContext = cayenneService.newContext();
 		
 		// check that in transaction Payment has failed.
 		PaymentIn p = Cayenne.objectForPK(objectContext, PaymentIn.class, 2000);
+		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
+		
+		p = Cayenne.objectForPK(objectContext, PaymentIn.class, 20000);
 		assertEquals("Payment has failed.", PaymentStatus.FAILED, p.getStatus());
 
 		Enrolment enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 2000);
@@ -270,5 +273,11 @@ public class PaymentInExpireJobTest extends ServiceTest {
 
 		Enrolment enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 2001);
 		assertEquals("Enrolment2 has failed.", EnrolmentStatus.FAILED, enrolment2.getStatus());
+		
+		enrolment = Cayenne.objectForPK(objectContext, Enrolment.class, 20000);
+		assertEquals("Enrolment is active.", EnrolmentStatus.SUCCESS, enrolment.getStatus());
+
+		enrolment2 = Cayenne.objectForPK(objectContext, Enrolment.class, 20010);
+		assertEquals("Enrolment2 is active.", EnrolmentStatus.SUCCESS, enrolment2.getStatus());
 	}
 }
