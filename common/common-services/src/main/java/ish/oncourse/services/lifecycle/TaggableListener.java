@@ -14,12 +14,6 @@ import ish.oncourse.services.site.IWebSiteService;
 
 public class TaggableListener {
 
-	private IWebSiteService webSiteService;
-
-	public TaggableListener(IWebSiteService webSiteService) {
-		this.webSiteService = webSiteService;
-	}
-	
 	@PostPersist(value = Taggable.class)
 	public void postPersist(Taggable taggable) {
 		setEntityWillowId(taggable);
@@ -39,7 +33,7 @@ public class TaggableListener {
 			Class<? extends Queueable> entityClass = (Class<? extends Queueable>) objectContext.getEntityResolver()
 					.getObjEntity(taggable.getEntityIdentifier()).getJavaClass();
 			Expression expr = ExpressionFactory.matchDbExp("id", taggable.getEntityWillowId()).andExp(
-					ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
+					ExpressionFactory.matchExp("college", taggable.getCollege()));
 			SelectQuery q = new SelectQuery(entityClass, expr);
 			Queueable object = (Queueable) Cayenne.objectForQuery(objectContext, q);
 			if (object != null) {
@@ -58,7 +52,7 @@ public class TaggableListener {
 					.getObjEntity(taggable.getEntityIdentifier()).getJavaClass();
 
 			Expression expr = ExpressionFactory.matchDbExp("angelId", taggable.getEntityAngelId()).andExp(
-					ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
+					ExpressionFactory.matchExp("college", taggable.getCollege()));
 
 			SelectQuery q = new SelectQuery(entityClass, expr);
 			Queueable object = (Queueable) Cayenne.objectForQuery(objectContext, q);
