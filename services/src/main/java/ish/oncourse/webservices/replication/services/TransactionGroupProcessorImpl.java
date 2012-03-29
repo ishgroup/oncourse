@@ -123,20 +123,41 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 		return result;
 	}
-    
+
+
     private String getErrorMessageBy(Exception e)
     {
-        assert e != null;
-        if (webSiteService != null && webSiteService.getCurrentCollege() != null)
+        College college = null;
+
+        /**
+         * The catch has been introduced to exclude IllegalStateException when session expired.
+         */
+        try
         {
-            return  String.format("Failed to process transaction group: %s and collegeid: %s",
-                    e.getMessage(),
-                    webSiteService.getCurrentCollege().getId());
+            if (webSiteService != null)
+            {
+                college = webSiteService.getCurrentCollege();
+            }
         }
-        else 
+        catch (Exception e1)
+        {
+            /**
+             * Log the exception to get information why it can not get college.
+             */
+            logger.error(e1.getMessage(), e);
+        }
+
+
+        if (college != null)
+        {
+            return  String.format("Failed to process transaction group: %s and collegeId: %s",
+                    e.getMessage(),
+                    college.getId());
+        }
+        else
         {
             return  String.format("Failed to process transaction group: %s",
-                    e.getMessage());           
+                    e.getMessage());
         }
     }
 
