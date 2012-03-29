@@ -13,6 +13,7 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
+import ish.oncourse.webservices.utils.PaymentInAbandonUtil;
 
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -176,28 +177,7 @@ public class Payment {
 	 * @return abandon payment message block
 	 */
 	public Object abandonPaymentReverseInvoice() {
-		// we should check that there is no enrollments with amount owing exist in this payment.
-		final List<Enrolment> enrollmentsForKeepInvoice = new ArrayList<Enrolment>();
-		if (payment.getPaymentInLines() != null) {
-			for (PaymentInLine paymentLine: payment.getPaymentInLines()) {
-				if (paymentLine.getInvoice().getInvoiceLines() != null) {
-					for (InvoiceLine invoiceLine : paymentLine.getInvoice().getInvoiceLines()) {
-						if (invoiceLine.getEnrolment() != null && EnrolmentStatus.SUCCESS.equals(invoiceLine.getEnrolment().getStatus())) {
-							enrollmentsForKeepInvoice.add(invoiceLine.getEnrolment());
-						}
-					}
-				}
-			}
-		}
-		if (enrollmentsForKeepInvoice.isEmpty()) {
-			//if all enrollments in transaction we can just fail them
-			payment.abandonPayment();
-		} else {
-			//we should not fail enrollments when college allow them to enroll with owing.
-			payment.abandonPaymentKeepInvoice();
-		}
-		payment.getObjectContext().commitChanges();
-
+		PaymentInAbandonUtil.abandonPaymentReverseInvoice(payment);
 		return cancelledMessageBlock;
 	}
 
