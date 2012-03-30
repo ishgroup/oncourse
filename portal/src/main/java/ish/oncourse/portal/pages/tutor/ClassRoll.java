@@ -144,6 +144,14 @@ public class ClassRoll {
 	public boolean getHideDetails() {
 		return preferenceController.getHideStudentDetailsFromTutor();
 	}
+	
+	public String getEnrolmentDate() {
+		DateFormat format = new SimpleDateFormat("dd MMMM yyyy");
+		if (this.attendance != null && this.attendance.getCreated() != null) {
+			return format.format(this.attendance.getCreated());
+		}
+		return "";
+	}
 
 	StreamResponse onActionFromAttendance(){
 	
