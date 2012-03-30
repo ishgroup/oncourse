@@ -1,9 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="vcard locationInfo">
-		<h1>Location</h1>
+		<h1>${site.name}</h1>
 		<div class="adr" id="">
 			<t:if t:test="hasAddress">
-				<h4 class="classSiteAddress">Address</h4>
+				<h4 class="classSiteAddress">Directions</h4>
 				<p>
 					<div class="adr-site-name">${site.name}</div>
 					<div class="street-address">${site.street}</div>
@@ -13,6 +13,7 @@
 					</t:if>
 				</p>
 			</t:if>
+            <h4>${site.name}</h4>
 			<t:if t:test="hasDrivingDirections">
 				<h4 class="locationInfo_driving">Directions</h4>
 				<p>
