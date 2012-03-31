@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
@@ -16,6 +17,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 
 public class EnrolmentListItem {
 
+    private static final Logger LOGGER = Logger.getLogger(EnrolmentListItem.class);
 	@InjectPage
 	private EnrolCourses enrolCourses;
 
@@ -80,6 +82,7 @@ public class EnrolmentListItem {
 	 * @return true if the enrolment under consideration is duplicated.
 	 */
 	private boolean isDuplicated() {
+
 		return enrolment.isDuplicated();
 	}
 

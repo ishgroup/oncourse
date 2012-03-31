@@ -25,6 +25,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.*;
@@ -41,6 +42,8 @@ import java.text.Format;
 import java.util.*;
 
 public class EnrolCourses {
+
+    private static final Logger LOGGER = Logger.getLogger(EnrolCourses.class);
 
     private static final String INDEX_SEPARATOR = "_";
     public static final String HTTP_PROTOCOL = "http://";
@@ -217,44 +220,89 @@ public class EnrolCourses {
     public void initClassesToEnrol() {
         List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY,
                 Long.class);
-        boolean shouldCreateNewClasses = orderedClassesIds != null;
-        if (!shouldCreateNewClasses) {
-            // if there no any shortlisted classes, the list is set with null.
+
+        List<Enrolment> enrolments = getEnrolmentsList();
+        deleteNotUsedEnrolments(enrolments, orderedClassesIds);
+
+        if (orderedClassesIds == null || orderedClassesIds.size() < 1)
+        {
             classesToEnrol = null;
             return;
         }
 
-        // checks if the list is already filled
-        shouldCreateNewClasses = shouldCreateNewClasses && classesToEnrol == null;
-
-        if (!shouldCreateNewClasses) {
-            // checks id the list of shortlisted classes hasn't been changed
-            if (orderedClassesIds.size() != classesToEnrol.size()) {
-                // if the sizes are not equal, the shortlisted classes list has
-                // been changed and we need to refill the list.
-                shouldCreateNewClasses = true;
-            } else {
-                // checks if the both lists contains the same classes: if the
-                // any element from one of lists isn't contained in another
-                // list(assuming that sizes of lists are equal), then the lists
-                // don't contain the same classes
-                for (CourseClass courseClass : classesToEnrol) {
-                    if (!orderedClassesIds.contains(courseClass.getId())) {
-                        shouldCreateNewClasses = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // if the list should be filled or refilled
-        if (shouldCreateNewClasses) {
+        if (shouldReloadClassesToEnrol(orderedClassesIds))
+        {
             classesToEnrol = courseClassService.loadByIds(orderedClassesIds);
             List<Ordering> orderings = new ArrayList<Ordering>();
             orderings.add(new Ordering(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, SortOrder.ASCENDING));
             orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.ASCENDING));
             Ordering.orderList(classesToEnrol, orderings);
         }
+    }
+
+    /**
+     * The method returns true if orderedClassesIds and classesToEnrol doesn't contain the same classes.
+     * @param orderedClassesIds
+     * @return
+     */
+
+    private boolean shouldReloadClassesToEnrol(List<Long> orderedClassesIds)
+    {
+        if (classesToEnrol == null)
+            return true;
+        if (orderedClassesIds.size() != classesToEnrol.size())
+            return true;
+        for (CourseClass courseClass: classesToEnrol)
+        {
+            if (!orderedClassesIds.contains(courseClass.getId()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * The method deletes existed in-transaction enrolments  if the orderedClassesIds does not contains classes for these enrollments
+     *
+     * @param orderedClassesIds
+     */
+    private void deleteNotUsedEnrolments(List<Enrolment> enrolments, List<Long> orderedClassesIds) {
+
+        List<Enrolment> enrolmentsToDelete = new ArrayList<Enrolment>();
+        List<InvoiceLine> invoiceLinesToDelete = new ArrayList<InvoiceLine>();
+        if (enrolments.size()> 0)
+        {
+            for (Enrolment enrolment:enrolments)
+            {
+                if (orderedClassesIds == null ||
+                        orderedClassesIds.size() < 1 ||
+                        !orderedClassesIds.contains(enrolment.getCourseClass().getId()))
+                {
+                    /**
+                     * We can delete only IN_TRANSACTION enrollments
+                     */
+                    if (enrolment.getStatus() == EnrolmentStatus.IN_TRANSACTION)
+                    {
+                        enrolmentsToDelete.add(enrolment);
+                        InvoiceLine invoiceLine = enrolment.getInvoiceLine();
+                        if (invoiceLine != null)
+                        {
+                            invoiceLinesToDelete.add(enrolment.getInvoiceLine());
+                        }
+                    }
+                    else
+                    {
+                        String message = String.format("State of enrollment with id=%d is %s !", enrolment.getId(), enrolment.getStatus());
+                        LOGGER.error(message);
+                        throw new IllegalArgumentException(message);
+                    }
+                }
+            }
+        }
+
+        getContext().deleteObjects(enrolmentsToDelete);
+        getContext().deleteObjects(invoiceLinesToDelete);
     }
 
     @CleanupRender
