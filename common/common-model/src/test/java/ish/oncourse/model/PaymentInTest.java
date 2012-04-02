@@ -11,6 +11,7 @@ import ish.oncourse.test.ContextUtils;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
@@ -151,6 +152,14 @@ public class PaymentInTest {
 
 		assertTrue("Checking that id isn't temporary.", !inversePayment.getObjectId().isTemporary());
 		assertTrue("Inverse payment amount is zero.", BigDecimal.ZERO.equals(inversePayment.getAmount()));
+
+        // test for invoice source (#13908) -  if direct invoice was has source ONCOURSE so reverse invoice should have the same source
+        List<PaymentInLine> lines = inversePayment.getPaymentInLines();
+        for (PaymentInLine paymentInLine : lines) {
+            Invoice invoice = paymentInLine.getInvoice();
+            assertTrue("Invoice source is ONCOURSE", invoice.getSource() == PaymentSource.SOURCE_ONCOURSE);
+        }
+
 	}
 
 	private Enrolment newEnrolment() {
