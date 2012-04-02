@@ -20,6 +20,7 @@
                 			<input class="cms-field" disabled="disabled" value="${editPageType.name}"/>
                 		</p:else>
                     </t:if>
+
                 </div>
 
                 <div class="cms-theme-title-k">
