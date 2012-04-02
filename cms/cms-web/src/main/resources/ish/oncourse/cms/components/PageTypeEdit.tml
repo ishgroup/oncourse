@@ -45,7 +45,7 @@
                             <td class="header" colspan="3">
 								<ul id="b_header" class="cms-theme-list-m sortableThemes">
 									<t:loop source="headerBlocks" value="block" formState="none">
-										<li id="bl_${block.id}" class="well">${block.name}</li>
+										<li id="bl_${block.id}" class="cms-well">${block.name}</li>
 									</t:loop>
 								</ul>
                             </td>
@@ -54,21 +54,21 @@
                             <td class="left">
 								<ul id="b_left" class="cms-theme-list-m sortableThemes">
 									<t:loop source="leftBlocks" value="block" formState="none">
-										<li id="bl_${block.id}" class="well">${block.name}</li>
+										<li id="bl_${block.id}" class="cms-well">${block.name}</li>
 									</t:loop>
 								</ul>
                             </td>
                             <td class="center">
 								<ul id="b_content" class="cms-theme-list-m sortableThemes">
 									<t:loop source="centerBlocks" value="block" formState="none">
-										<li id="bl_${block.id}" class="well">${block.name}</li>
+										<li id="bl_${block.id}" class="cms-well">${block.name}</li>
 									</t:loop>
 								</ul>
 							</td>
                             <td class="right">
 								<ul id="b_right" class="cms-theme-list-m sortableThemes">
 									<t:loop source="rightBlocks" value="block" formState="none">
-										<li id="bl_${block.id}" class="well">${block.name}</li>
+										<li id="bl_${block.id}" class="cms-well">${block.name}</li>
 									</t:loop>
 								</ul>
                             </td>
@@ -78,7 +78,7 @@
 
                                 <ul id="b_footer" class="cms-theme-list-m sortableThemes">
 									<t:loop source="footerBlocks" value="block" formState="none">
-										<li id="bl_${block.id}" class="well">${block.name}</li>
+										<li id="bl_${block.id}" class="cms-well">${block.name}</li>
 									</t:loop>
 								</ul>
 
@@ -100,7 +100,7 @@
                         <div class="viewport">
                         	<ul id="b_unassigned" class="overview sortableThemes">
 									<t:loop source="unassignedBlocks" value="block" formState="none">
-										<li id="bl_${block.id}" class="well"><span class="icon-move"></span>${block.name}</li>
+										<li id="bl_${block.id}" class="cms-well"><i class="cms-icon-move"></i>${block.name}</li>
 									</t:loop>
 								</ul>
                         </div>
