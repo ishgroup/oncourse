@@ -100,7 +100,7 @@
                         <div class="viewport">
                         	<ul id="b_unassigned" class="overview sortableThemes">
 									<t:loop source="unassignedBlocks" value="block" formState="none">
-										<li id="bl_${block.id}" class="cms-well"><i class="cms-icon-move"></i>${block.name}</li>
+										<li id="bl_${block.id}" class="cms-well"><i class="icon-move"></i>${block.name}</li>
 									</t:loop>
 								</ul>
                         </div>
