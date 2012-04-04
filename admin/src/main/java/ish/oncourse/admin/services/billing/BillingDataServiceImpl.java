@@ -27,7 +27,14 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	
 	private final String DATE_MONTH_FORMAT = "MMMMM, yyyy";
 
-	@Inject
+    private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.key_code as keyCode, l.fee as fee, l.billingMonth as billingMonth, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
+    private static final String SQL_SMS = "SELECT count(*) as count, c.id as collegeId FROM MessagePerson AS m JOIN College AS c on c.Id = m.collegeId WHERE c.billingCode IS NOT NULL and type = 2 AND timeOfDelivery >= #bind($from)  AND timeOfDelivery <= #bind($to) GROUP BY collegeid";
+    private static final String SQL_OFFICE_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'O' AND p.type = 2 NOT NULL AND (status = 3 OR status = 6) GROUP BY collegeid";
+    private static final String SQL_WEB_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'W' AND p.type = 2 IS NOT NULL AND (status = 3 OR status = 6) GROUP BY collegeid";
+    private static final String SQL_WEB_TRANSACTION_VALUE = "SELECT c.id as collegeId, SUM(i.totalGst) as value FROM Invoice i JOIN College AS c on c.Id = i.collegeId WHERE c.billingCode IS NOT NULL and i.created >= #bind($from) AND i.created <= #bind($to) AND i.source = 'W' GROUP BY collegeid";
+    private static final String SQL_TASMANIA_ECOMMERCE = "SELECT SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W'";
+
+    @Inject
 	private ICayenneService cayenneService;
 
 	@Inject
@@ -44,8 +51,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			}
 		}
 
-		String sql = "SELECT l.college_id as collegeId, l.key_code as keyCode, l.fee as fee, l.billingMonth as billingMonth, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
-		SQLTemplate query = new SQLTemplate(LicenseFee.class, sql);
+		SQLTemplate query = new SQLTemplate(LicenseFee.class, SQL_LICENSE_FEE);
 		query.setFetchingDataRows(true);
 
 		List<DataRow> result = cayenneService.sharedContext().performQuery(query);
@@ -82,8 +88,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 		
 		// SMS
-		String sql = "SELECT count(*) as count, c.id as collegeId FROM MessagePerson AS m JOIN College AS c on c.Id = m.collegeId WHERE c.billingCode IS NOT NULL and type = 2 AND timeOfDelivery >= #bind($from)  AND timeOfDelivery <= #bind($to) GROUP BY collegeid";
-		SQLTemplate query = new SQLTemplate(MessagePerson.class, sql);
+		SQLTemplate query = new SQLTemplate(MessagePerson.class, SQL_SMS);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("from", from);
@@ -100,8 +105,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 
 		// office transaction count
-		sql = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'O' AND creditCardType IS NOT NULL AND (status = 3 OR status = 6) GROUP BY collegeid";
-		query = new SQLTemplate(PaymentIn.class, sql);
+		query = new SQLTemplate(PaymentIn.class, SQL_OFFICE_TRANSACTION_COUNT);
 		query.setParameters(params);
 		query.setFetchingDataRows(true);
 
@@ -113,8 +117,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 
 		// web transaction count
-		sql = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'W' AND creditCardType IS NOT NULL AND (status = 3 OR status = 6) GROUP BY collegeid";
-		query = new SQLTemplate(PaymentIn.class, sql);
+		query = new SQLTemplate(PaymentIn.class, SQL_WEB_TRANSACTION_COUNT);
 		query.setParameters(params);
 		query.setFetchingDataRows(true);
 
@@ -126,8 +129,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 
 		// web transaction value
-		sql = "SELECT c.id as collegeId, SUM(i.totalGst) as value FROM Invoice i JOIN College AS c on c.Id = i.collegeId WHERE c.billingCode IS NOT NULL and i.created >= #bind($from) AND i.created <= #bind($to) AND i.source = 'W' GROUP BY collegeid";
-		query = new SQLTemplate(PaymentIn.class, sql);
+		query = new SQLTemplate(PaymentIn.class, SQL_WEB_TRANSACTION_VALUE);
 		query.setParameters(params);
 		query.setFetchingDataRows(true);
 
@@ -158,8 +160,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 				cal.add(Calendar.MONTH, -1);
 				tasmaniaParams.put("to", cal.getTime());
 				
-				sql = "SELECT SUM(i.totalGst) as value FROM Invoice i WHERE i.created >= #bind($from) AND i.created <= #bind($to) AND i.collegeId = 15 AND i.source = 'W'";
-				query = new SQLTemplate(PaymentIn.class, sql);
+				query = new SQLTemplate(PaymentIn.class, SQL_TASMANIA_ECOMMERCE);
 				query.setParameters(tasmaniaParams);
 				query.setFetchingDataRows(true);
 				
