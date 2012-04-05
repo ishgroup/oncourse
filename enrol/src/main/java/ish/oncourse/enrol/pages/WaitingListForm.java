@@ -124,6 +124,16 @@ public class WaitingListForm {
 
 			Contact studentContact = studentService.getStudentContact(getNewContact().getGivenName(), getNewContact().getFamilyName(),
 					getNewContact().getEmailAddress());
+			//add this check to avoid the state when we try to register contact which were previously registered, but not committed yet
+			if (studentContact == null && getNewContact().getObjectId() != null) {
+				if (getNewContact().getObjectId().isTemporary()) {
+					if (getNewContact().getCollege() == null) {
+						getNewContact().setCollege(college);
+					}
+					getNewContact().getObjectContext().commitChanges();
+				}
+				studentContact = getNewContact();
+			}
 			if (studentContact != null) {
 				studentContact = (Contact) context.localObject(studentContact.getObjectId(), null);
 				if (studentContact.getStudent() == null) {
