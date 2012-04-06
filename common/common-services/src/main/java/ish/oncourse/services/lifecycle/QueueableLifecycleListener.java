@@ -132,13 +132,21 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
     /**
      * Initially sets created and modified dates on the object.
      */
-    public void prePersist(Object entity) {
+    public void postAdd(Object entity) {
         if (entity instanceof Queueable) {
             Queueable p = (Queueable) entity;
             Date today = new Date();
-            p.setCreated(today);
+            /**
+             * The test has been introduced to exclude rewrite created date when the entity came from angel
+             */
+            if (p.getCreated() == null)
+                p.setCreated(today);
             p.setModified(today);
         }
+    }
+
+    // The following events are ignored for queueing purposes:
+    public void prePersist(Object entity) {
     }
 
     /**
@@ -239,10 +247,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         }
     }
 
-    // The following events are ignored for queueing purposes:
-    public void postAdd(Object entity) {
-        // Not used
-    }
+
 
     public void postLoad(Object entity) {
         // Not used

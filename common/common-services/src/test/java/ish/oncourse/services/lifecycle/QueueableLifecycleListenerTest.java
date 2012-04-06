@@ -5,29 +5,23 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Preference;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
+import ish.common.types.PaymentSource;
+import ish.common.types.PaymentStatus;
+import ish.math.Money;
+import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 
 import javax.sql.DataSource;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.ClassUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -263,4 +257,103 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("QueuedTransaction", String.format("select * from QueuedTransaction"));
 		assertEquals("Expecting only one transactions.", 1, actualData.getRowCount());
 	}
+
+    @Test
+    public  void  testPostAdd()
+    {
+        ICayenneService cayenneService = getService(ICayenneService.class);
+        ObjectContext context = cayenneService.newContext();
+
+        try {
+            testQueueablePostAdd(BinaryInfo.class, context);
+            testQueueablePostAdd(DiscountConcessionType.class, context);
+            testQueueablePostAdd(Preference.class, context);
+            testQueueablePostAdd(ContactRelationType.class, context);
+            testQueueablePostAdd(Discount.class, context);
+            testQueueablePostAdd(TaggableTag.class, context);
+            testQueueablePostAdd(Session.class, context);
+            testQueueablePostAdd(InvoiceLine.class, context);
+            testQueueablePostAdd(Contact.class, context);
+            testQueueablePostAdd(SessionTutor.class, context);
+            testQueueablePostAdd(WaitingListSite.class, context);
+            testQueueablePostAdd(BinaryInfoRelation.class, context);
+            testQueueablePostAdd(Invoice.class, context);
+            testQueueablePostAdd(VoucherProduct.class, context);
+            testQueueablePostAdd(ProductItem.class, context);
+            testQueueablePostAdd(Outcome.class, context);
+            testQueueablePostAdd(MessageTemplate.class, context);
+            testQueueablePostAdd(TutorRole.class, context);
+            testQueueablePostAdd(Attendance.class, context);
+            testQueueablePostAdd(Room.class, context);
+            testQueueablePostAdd(BinaryData.class, context);
+            testQueueablePostAdd(Tag.class, context);
+            testQueueablePostAdd(Message.class, context);
+            testQueueablePostAdd(PaymentIn.class, context);
+            testQueueablePostAdd(CourseClass.class, context);
+            testQueueablePostAdd(ConcessionType.class, context);
+            testQueueablePostAdd(PaymentInLine.class, context);
+            testQueueablePostAdd(ContactRelation.class, context);
+            testQueueablePostAdd(PaymentOut.class, context);
+            testQueueablePostAdd(MessagePerson.class, context);
+            testQueueablePostAdd(Membership.class, context);
+            testQueueablePostAdd(Enrolment.class, context);
+            testQueueablePostAdd(Certificate.class, context);
+            testQueueablePostAdd(Course.class, context);
+            testQueueablePostAdd(InvoiceLineDiscount.class, context);
+            testQueueablePostAdd(Voucher.class, context);
+            testQueueablePostAdd(CourseModule.class, context);
+            testQueueablePostAdd(Tutor.class, context);
+            testQueueablePostAdd(PaymentOut.class, context);
+            testQueueablePostAdd(DiscountMembership.class, context);
+            testQueueablePostAdd(TagGroupRequirement.class, context);
+            testQueueablePostAdd(Site.class, context);
+            testQueueablePostAdd(Taggable.class, context);
+            testQueueablePostAdd(DiscountMembershipRelationType.class, context);
+            testQueueablePostAdd(WaitingList.class, context);
+            testQueueablePostAdd(MembershipProduct.class, context);
+            testQueueablePostAdd(Student.class, context);
+            testQueueablePostAdd(DiscountCourseClass.class, context);
+            testQueueablePostAdd(Product.class, context);
+            testQueueablePostAdd(CertificateOutcome.class, context);
+            testQueueablePostAdd(StudentConcession.class, context);
+        } finally {
+            context.rollbackChanges();
+        }
+
+    }
+
+    private void testQueueablePostAdd(Class<? extends Queueable> queueableClass, ObjectContext context) {
+        Queueable queueable = context.newObject(queueableClass);
+        assertTrue(String.format("created property is not null on postAdd for %s ",queueableClass.getSimpleName()), queueable.getCreated() != null);
+        assertTrue(String.format("modified property is not null on postAdd for %s ",queueableClass.getSimpleName()), queueable.getCreated() != null);
+    }
+
+    @Test
+    /**
+     * * The test has been introduced to exclude rewrite created date by QueueableLifecycleListener when the entity came from angel
+     */
+    public void testQueueableWithPresetCreatedDate()
+    {
+        ICayenneService cayenneService = getService(ICayenneService.class);
+        ObjectContext context = cayenneService.newContext();
+
+        PaymentIn paymentIn = context.newObject(PaymentIn.class);
+        Date zero = new Date(0);
+        paymentIn.setCreated(zero);
+        paymentIn.setAmount(new BigDecimal(0.0d));
+        paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
+        paymentIn.setCollege(Cayenne.objectForPK(context,College.class,1));
+        context.commitChanges();
+
+        try {
+            context = cayenneService.newContext();
+            paymentIn = Cayenne.objectForPK(context, PaymentIn.class, paymentIn.getId());
+
+            assertEquals("PaymentIn date after saved should be the same", zero, paymentIn.getCreated());
+        } finally {
+            context.deleteObject(paymentIn);
+        }
+
+    }
+
 }

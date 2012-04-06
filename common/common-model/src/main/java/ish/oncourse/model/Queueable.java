@@ -26,4 +26,5 @@ public interface Queueable extends Persistent {
 	
 	void setModified(Date modified);
 
+    Date getCreated();
 }

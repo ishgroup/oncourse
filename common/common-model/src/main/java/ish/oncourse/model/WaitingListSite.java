@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import ish.oncourse.model.auto._WaitingListSite;
@@ -15,7 +16,15 @@ public class WaitingListSite extends _WaitingListSite implements Queueable {
 	public void setCreated(Date created) {
 	}
 
-	public void setModified(Date modified) {
-		getWaitingList().setModified(modified);
+    @Override
+    public Date getCreated() {
+        return Calendar.getInstance().getTime();
+    }
+
+    public void setModified(Date modified) {
+        if (getWaitingList() != null)
+        {
+		    getWaitingList().setModified(modified);
+        }
 	}
 }

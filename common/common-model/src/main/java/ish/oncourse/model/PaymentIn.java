@@ -559,7 +559,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	protected void onPrePersist() {
 		onPostAdd();
 		Date today = new Date();
-		setCreated(today);
+        if (getCreated() == null)
+		    setCreated(today);
 		setModified(today);
 		for (final PaymentInLine paymentInLine : getPaymentInLines()) {
 			paymentInLine.setModified(today);
