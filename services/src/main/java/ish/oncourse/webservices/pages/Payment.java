@@ -1,13 +1,10 @@
 package ish.oncourse.webservices.pages;
 
-import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.payment.IPaymentService;
@@ -105,7 +102,6 @@ public class Payment {
 		}
 
 		this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
-
 		Session session = request.getSession(true);
 		session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, payment.getCollege().getId());
 

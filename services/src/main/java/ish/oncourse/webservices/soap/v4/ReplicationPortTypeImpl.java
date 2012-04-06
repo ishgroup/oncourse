@@ -183,18 +183,18 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		try {
 			HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(
 					AbstractHTTPDestination.HTTP_REQUEST);
-			HttpSession session = request.getSession(false);
+			//HttpSession session = request.getSession(false);
 
 			LOGGER.info(String.format("Got college request with securityCode:%s, lastCommKey:%s.", webServicesSecurityCode, lastCommKey));
-
-			if (session != null && session.getAttribute(SessionToken.SESSION_TOKEN_KEY) != null) {
+			//TODO: should be unreachable
+			/*if (session != null && session.getAttribute(SessionToken.SESSION_TOKEN_KEY) != null) {
 				String message = String.format(
 						"Authentication failure, existing session:%s must be terminated before next authentication attempt.",
 						session.getId());
 				AuthFailure e = new AuthFailure(message, ErrorCode.INVALID_SESSION);
 				LOGGER.error(message, e);
 				throw e;
-			}
+			}*/
 
 			College college = collegeService.findBySecurityCode(webServicesSecurityCode);
 
@@ -217,7 +217,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 				} else {
 					AuthFailure e = new AuthFailure(String.format("Invalid communication key:%s", lastCommKey),
 							ErrorCode.INVALID_COMMUNICATION_KEY);
-					LOGGER.error(String.format("Communication key is null for college:%s, when received key is %s.", college.getId(),
+					LOGGER.warn(String.format("Communication key is null for college:%s, when received key is %s.", college.getId(),
 							lastCommKey), e);
 					putCollegeInHaltState(college);
 					throw e;
@@ -269,11 +269,9 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	 */
 	@Override
 	public void logout(long newCommKey) {
-
 		HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-
 		HttpSession session = request.getSession(false);
-
+		//TODO: should be unreachable
 		if (session != null) {
 			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
 			if (token.getCommunicationKey().equals(newCommKey)) {
@@ -281,9 +279,9 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 			} else {
 				String message = String.format("Invalid communication key:%s, for college:%s, expected:%s.", newCommKey,
 						token.getCollegeId(), token.getCommunicationKey());
-				LOGGER.error(message, new AuthFailure(message, ErrorCode.INVALID_COMMUNICATION_KEY));
+				LOGGER.warn(message, new AuthFailure(message, ErrorCode.INVALID_COMMUNICATION_KEY));
 			}
-		}
+		}/**/
 	}
 
 	/**
@@ -294,7 +292,7 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	 *            willow college
 	 */
 	private void putCollegeInHaltState(College college) {
-		LOGGER.error(String.format("Putting college:%s into HALT state.", college.getId()));
+		LOGGER.warn(String.format("Putting college:%s into HALT state.", college.getId()));
 		/*
 		 * college.setCommunicationKeyStatus(KeyStatus.HALT);
 		 * college.getObjectContext().commitChanges();
@@ -324,8 +322,9 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		objectContext.commitChanges();
 
 		HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-		HttpSession session = request.getSession(true);
-		session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(college.getId(), newCommunicationKey));
+		request.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(college.getId(), newCommunicationKey));
+		//HttpSession session = request.getSession(true);
+		//session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(college.getId(), newCommunicationKey));
 
 		return newCommunicationKey;
 	}

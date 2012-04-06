@@ -50,6 +50,7 @@ import org.apache.tapestry5.services.ResponseRenderer;
 @SuppressWarnings("all")
 @SubModule({ ModelModule.class, ServiceModule.class })
 public class AppModule {
+	private static final String WEB_SITE_SERVICE_OVERRIDE_NAME = WebSiteServiceOverride.class.getSimpleName();
 
 	public static void bind(ServiceBinder binder) {
 
@@ -62,7 +63,7 @@ public class AppModule {
 		binder.bind(ITransactionGroupProcessor.class, new ServiceBuilder<ITransactionGroupProcessor>() {
 			@Override
 			public ITransactionGroupProcessor buildService(ServiceResources res) {
-				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService("WebSiteServiceOverride",
+				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService(WEB_SITE_SERVICE_OVERRIDE_NAME,
 						IWebSiteService.class), res.getService(IWillowUpdater.class));
 			}
 		}).scope(ScopeConstants.PERTHREAD);
@@ -70,7 +71,7 @@ public class AppModule {
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
 		binder.bind(PaymentPortType.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
-		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceOverride");
+		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId(WEB_SITE_SERVICE_OVERRIDE_NAME);
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);

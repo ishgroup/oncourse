@@ -7,11 +7,8 @@ import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.exception.AuthSoapFault;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.util.SoapUtil;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.xml.namespace.QName;
-
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
@@ -24,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
+	private static final String LOGOUT_METHOD = "logout";
+	private static final String AUTHENTICATE_METHOD = "authenticate";
 	private static final Logger logger = Logger.getLogger(CommunicationKeyInterceptor.class);
 
 	@Inject
@@ -42,7 +41,7 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			
 			QName op = (QName) bindingInfo.getName();
 
-			if (op != null && ("authenticate".equalsIgnoreCase(op.getLocalPart()) || "logout".equalsIgnoreCase(op.getLocalPart()))) {
+			if (op != null && (AUTHENTICATE_METHOD.equalsIgnoreCase(op.getLocalPart()) || LOGOUT_METHOD.equalsIgnoreCase(op.getLocalPart()))) {
 				return;
 			}
 
@@ -72,37 +71,10 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
 			try {
 				communicationKey = Long.parseLong(SoapUtil.getCommunicationKey(message));
-
-				HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
-
-				HttpSession session = req.getSession(false);
-
-				if (session == null) {
-					String m = String.format("Session has expired for communication key: %s.", communicationKey);
-					logger.info(m);
-					throw new AuthSoapFault(m);
-				}
-
-				SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-
-				if (token == null) {
-					String m = String.format("Empty session token for college:%s", college.getId());
-					logger.error(m);
-					throw new AuthSoapFault(m);
-				}
-
-				if (!college.getId().equals(token.getCollegeId())) {
-					String m = String.format("Security code:%s doesn't belong to college which started session. ", securityCode);
-					logger.error(m);
-					throw new AuthSoapFault(m);
-				}
-
-				if (!token.getCommunicationKey().equals(communicationKey)) {
-					String m = String.format("Communication key:%s doesn't match currently active key.", communicationKey);
-					logger.error(m);
-					throw new AuthSoapFault(m);
-				}
-
+				final HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
+				//each request should contain session token (need for #13890)
+				final SessionToken token = new SessionToken(college.getId(), communicationKey);
+				req.setAttribute(SessionToken.SESSION_TOKEN_KEY, token);
 				req.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, token.getCollegeId());
 
 			} catch (NumberFormatException ne) {
