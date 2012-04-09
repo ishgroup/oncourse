@@ -807,4 +807,14 @@ public class EnrolCourses {
     }
 
 
+    /**
+     * Method returns true if by some reason persist properties have been cleared.
+     * For example: the payment has been processed from other tab of the browser.
+     */
+    public boolean isPersistCleared()
+    {
+        return context == null;
+    }
+
+
 }

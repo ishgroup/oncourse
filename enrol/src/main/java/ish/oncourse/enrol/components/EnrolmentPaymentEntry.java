@@ -249,6 +249,22 @@ public class EnrolmentPaymentEntry {
 		return defaultTracker == null || !defaultTracker.inError(field) ? messages.get("validInput") : messages.get("validateInput");
 	}
 
+    /**
+     * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
+     */
+    Object onException(Throwable cause)
+    {
+        if (enrolCourses.isPersistCleared())
+        {
+            LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
+        }
+        else
+        {
+            throw new IllegalArgumentException(cause);
+        }
+        return enrolCourses;
+    }
+
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
 		
