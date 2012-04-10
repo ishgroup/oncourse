@@ -98,19 +98,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentAddressState" class="span1" />
+						blankOption="never" value="enrolmentAddressState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListAddressState" class="span1" />
+						blankOption="never" value="waitingListAddressState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListAddressState" class="span1" />
+						blankOption="never" value="mailingListAddressState" class="span2" />
 				</div>
 			</div>
 
@@ -119,19 +119,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentSuburbState" class="span1" />
+						blankOption="never" value="enrolmentSuburbState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListSuburbState" class="span1" />
+						blankOption="never" value="waitingListSuburbState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListSuburbState" class="span1" />
+						blankOption="never" value="mailingListSuburbState" class="span2" />
 				</div>
 			</div>
 
@@ -140,19 +140,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentStateState" class="span1" />
+						blankOption="never" value="enrolmentStateState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListStateState" class="span1" />
+						blankOption="never" value="waitingListStateState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListStateState" class="span1" />
+						blankOption="never" value="mailingListStateState" class="span2" />
 				</div>
 
 			</div>
@@ -162,19 +162,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentPostcodeState" class="span1" />
+						blankOption="never" value="enrolmentPostcodeState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListPostcodeState" class="span1" />
+						blankOption="never" value="waitingListPostcodeState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListPostcodeState" class="span1" />
+						blankOption="never" value="mailingListPostcodeState" class="span2" />
 				</div>
 
 			</div>
@@ -184,19 +184,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentHomePhoneState" class="span1" />
+						blankOption="never" value="enrolmentHomePhoneState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListHomePhoneState" class="span1" />
+						blankOption="never" value="waitingListHomePhoneState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListHomePhoneState" class="span1" />
+						blankOption="never" value="mailingListHomePhoneState" class="span2" />
 				</div>
 			</div>
 			
@@ -205,19 +205,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentBusinessPhoneState" class="span1" />
+						blankOption="never" value="enrolmentBusinessPhoneState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListBusinessPhoneState" class="span1" />
+						blankOption="never" value="waitingListBusinessPhoneState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListBusinessPhoneState" class="span1" />
+						blankOption="never" value="mailingListBusinessPhoneState" class="span2" />
 				</div>
 			</div>
 			
@@ -226,19 +226,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentFaxState" class="span1" />
+						blankOption="never" value="enrolmentFaxState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListFaxState" class="span1" />
+						blankOption="never" value="waitingListFaxState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListFaxState" class="span1" />
+						blankOption="never" value="mailingListFaxState" class="span2" />
 				</div>
 			</div>
 
@@ -247,19 +247,19 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentMobileState" class="span1" />
+						blankOption="never" value="enrolmentMobileState" class="span2" />
 				</div>
 				
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListMobileState" class="span1" />
+						blankOption="never" value="waitingListMobileState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListMobileState" class="span1" />
+						blankOption="never" value="mailingListMobileState" class="span2" />
 				</div>
 
 			</div>
@@ -275,13 +275,13 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListDateOfBirthState" class="span1" />
+						blankOption="never" value="waitingListDateOfBirthState" class="span2" />
 				</div>
 			-->
 				
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="mailingListDateOfBirthState" class="span1" />
+						blankOption="never" value="mailingListDateOfBirthState" class="span2" />
 				</div>
 			</div>
 
