@@ -269,7 +269,7 @@
 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="enrolmentDateOfBirthState" />
+						blankOption="never" value="enrolmentDateOfBirthState" class="span2" />
 				</div>
 				
 			<!-- 
