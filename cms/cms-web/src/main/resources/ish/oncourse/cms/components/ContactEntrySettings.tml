@@ -288,12 +288,14 @@
 
 
 			<div class="cms-set-opts">
-				<t:checkbox t:id="avetmissCheckbox" value="avetmissQuestionsEnabled" />
-				<label for="avetmissCheckbox">Enable AVETMISS optional questions</label>
+                <label class="checkbox">
+                    <t:checkbox t:id="avetmissCheckbox" value="avetmissQuestionsEnabled" /> Enable AVETMISS optional questions
+              </label>
+
 			</div>
 
 			<div class="cms-btns">
-				<t:submit t:id="save" value="Save" class="cms-but cms-btn-next cms-settings-button"/>
+				<t:submit t:id="save" value="Save" class="btn btn-success cms-settings-button"/>
 			</div>
 			
 		</t:form>
