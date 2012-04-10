@@ -174,12 +174,19 @@ public class Billing {
 			if (info != null && lf != null) {
 				if (StringUtils.trimToNull(info.get(LicenseFee.PLAN_NAME_PROPERTY)) != null) {
 					lf.setPlanName(info.get(LicenseFee.PLAN_NAME_PROPERTY));
-				}
-				if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
-					if (StringUtils.trimToNull(info.get(LicenseFee.BILLING_MONTH_PROPERTY)) != null) {
-						lf.setBillingMonth(Integer.parseInt(info.get(LicenseFee.BILLING_MONTH_PROPERTY)));
+					
+					if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
+						if (StringUtils.trimToNull(info.get(LicenseFee.BILLING_MONTH_PROPERTY)) != null) {
+							lf.setBillingMonth(Integer.parseInt(info.get(LicenseFee.BILLING_MONTH_PROPERTY)));
+						} else { 
+							lf.setBillingMonth(0);
+						}
 					}
+				} else {
+					lf.setPlanName(null);
+					lf.setBillingMonth(null);
 				}
+
 				if (StringUtils.trimToNull(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)) != null) {
 					lf.setFreeTransactions(Integer.parseInt(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
 				}
