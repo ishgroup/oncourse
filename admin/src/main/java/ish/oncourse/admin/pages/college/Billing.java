@@ -23,6 +23,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -171,18 +172,18 @@ public class Billing {
 			LicenseFee lf = (LicenseFee) context.localObject(fee.getObjectId(), null);
 			
 			if (info != null && lf != null) {
-				if (info.get(LicenseFee.PLAN_NAME_PROPERTY) != null) {
+				if (StringUtils.trimToNull(info.get(LicenseFee.PLAN_NAME_PROPERTY)) != null) {
 					lf.setPlanName(info.get(LicenseFee.PLAN_NAME_PROPERTY));
 				}
 				if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
-					if (info.get(LicenseFee.BILLING_MONTH_PROPERTY) != null) {
+					if (StringUtils.trimToNull(info.get(LicenseFee.BILLING_MONTH_PROPERTY)) != null) {
 						lf.setBillingMonth(Integer.parseInt(info.get(LicenseFee.BILLING_MONTH_PROPERTY)));
 					}
 				}
-				if (info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY) != null) {
+				if (StringUtils.trimToNull(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)) != null) {
 					lf.setFreeTransactions(Integer.parseInt(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
 				}
-				if (info.get(LicenseFee.FEE_PROPERTY) != null) {
+				if (StringUtils.trimToNull(info.get(LicenseFee.FEE_PROPERTY)) != null) {
 					lf.setFee(new BigDecimal(info.get(LicenseFee.FEE_PROPERTY)));
 				}
 			}
