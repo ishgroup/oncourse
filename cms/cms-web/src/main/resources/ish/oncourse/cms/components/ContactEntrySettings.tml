@@ -104,7 +104,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListAddressState" />
+						blankOption="never" value="waitingListAddressState" class="span1" />
 				</div>
 			-->
 				
@@ -125,7 +125,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListSuburbState" />
+						blankOption="never" value="waitingListSuburbState" class="span1" />
 				</div>
 			-->
 				
@@ -146,7 +146,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListStateState" />
+						blankOption="never" value="waitingListStateState" class="span1" />
 				</div>
 			-->
 				
@@ -168,7 +168,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListPostcodeState" />
+						blankOption="never" value="waitingListPostcodeState" class="span1" />
 				</div>
 			-->
 				
@@ -190,7 +190,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListHomePhoneState" />
+						blankOption="never" value="waitingListHomePhoneState" class="span1" />
 				</div>
 			-->
 				
@@ -211,7 +211,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListBusinessPhoneState" />
+						blankOption="never" value="waitingListBusinessPhoneState" class="span1" />
 				</div>
 			-->
 				
@@ -232,7 +232,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListFaxState" />
+						blankOption="never" value="waitingListFaxState" class="span1" />
 				</div>
 			-->
 				
@@ -253,7 +253,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListMobileState" />
+						blankOption="never" value="waitingListMobileState" class="span1" />
 				</div>
 			-->
 				
@@ -275,7 +275,7 @@
 			<!-- 
 				<div class="cms-set-col">
 					<t:select model="stateSelectModel"
-						blankOption="never" value="waitingListDateOfBirthState" />
+						blankOption="never" value="waitingListDateOfBirthState" class="span1" />
 				</div>
 			-->
 				
