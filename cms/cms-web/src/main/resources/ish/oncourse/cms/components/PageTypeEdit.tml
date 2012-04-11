@@ -15,9 +15,9 @@
                 <div class="cms-theme-title-n clearfix">
                 	<label for="themeName">Name</label>
                 	<t:if test="isSpecialType" negate="true">
-                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required,minlength=3" maxlength="500" class="cms-field"/>
+                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required,minlength=3" maxlength="500" class="span2"/>
                 		<p:else>
-                			<input class="cms-field" disabled="disabled" value="${editPageType.name}"/>
+                			<input class="span2" disabled="disabled" value="${editPageType.name}"/>
                 		</p:else>
                     </t:if>
 
@@ -115,8 +115,8 @@
 
 
             <div class="cms-btns alignCenter">
-            	<t:submit t:id="cancel" value="Cancel" mode="CANCEL" class="cms-but cms-btn-prev"/>
-				<t:submit t:id="save" value="Save" class="cms-but cms-btn-next"/>
+            	<t:submit t:id="cancel" value="Cancel" mode="CANCEL" class="btn btn-warning"/>
+				<t:submit t:id="save" value="Save" class="btn btn-success"/>
             </div>
 
 		</t:form>

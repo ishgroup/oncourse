@@ -13,7 +13,7 @@
 				<h5 class="cms-block-sub-title">
 					Name <span class="cms-ico-help" title="The name of this block"/>
 				</h5>
-				<t:textfield t:id="name" value="editBlock.name" t:validate="required,minlength=3" class="cms-field-wide"/>
+				<t:textfield t:id="name" value="editBlock.name" t:validate="required,minlength=3" class="span3"/>
 
 			</div>
 			
@@ -27,15 +27,15 @@
 					Content <span class="cms-ico-help" title="The content of this block"/>
 				</h5>
 				<textarea t:type="TextArea" t:id="content" value="editBlock.contentTextile" rows="18"
-				          class="cms-field-wide"/>
+				          class="span3"/>
 
 			</div>
 		</div>
 		
 		<div class="alignCenter cms-btns">
-			<t:submit t:id="cancel" value="Cancel" mode="CANCEL" class="cms-but cms-btn-prev"/>
-			<t:submit t:id="delete" value="Delete" mode="CANCEL" class="cms-but cms-btn-prev"/>
-			<t:submit t:id="save" value="Save" class="cms-but cms-btn-next"/>
+			<t:submit t:id="cancel" value="Cancel" mode="CANCEL" class="btn btn-warning"/>
+			<t:submit t:id="delete" value="Delete" mode="CANCEL" class="btn btn-danger"/>
+			<t:submit t:id="save" value="Save" class="btn btn-success"/>
 		</div>
 	</t:form>
 </div>
