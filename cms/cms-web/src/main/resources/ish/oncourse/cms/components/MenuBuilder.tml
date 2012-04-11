@@ -9,8 +9,8 @@
             <span class="cms-ico-plus"></span>
              <a class="cms-main-control cms_add_menuitem">Add new menu</a>
 		</div>
-        <div class="cms-search-block">
-            <input id="menuFilter" type="text" maxlength="300" class="cms-field-wide cms-field-search"/>
+        <div class="cms-search-block form-search">
+            <input id="menuFilter" type="text" maxlength="300" class="span2 search-query"/>
             <!-- button type="button" class="cms-btn-select"></button>
             <button class="cms-btn-search" type="button"></button-->
         </div>

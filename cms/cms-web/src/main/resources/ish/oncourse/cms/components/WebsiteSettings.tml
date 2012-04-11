@@ -35,25 +35,37 @@
 						}
 					}
 				</script>
+
+                <label class="checkbox">
+				<t:checkbox t:id="socialMediaCheckbox" class="enable-sm-checkbox" onChange="checkState()" value="enableSocialMedia"/> Enable social media links.
+                    </label>
+
+				<label>AddThis profile id</label> <t:textfield t:id="addthisProfileField" class="input-xlarge" value="addthisProfileId"/>
+                <span class="help-inline"><a href="http://www.addthis.com/">Click here</a> to create one.</span>
 				
-				<t:checkbox t:id="socialMediaCheckbox" class="enable-sm-checkbox" onChange="checkState()" value="enableSocialMedia"/>
-				<label for="socialMediaCheckbox">Enable social media links.</label>
-				AddThis profile id <t:textfield t:id="addthisProfileField" class="cms-field" value="addthisProfileId"/>
-				
-				<a href="http://www.addthis.com/">Click here</a> to create one.
+
 
 			</div>
             <br />
             <div class="cms-set-ops">
             					<h5 class="cms-block-sub-title">Enable for these pages:</h5>
             					<ul class="cms-sub-options">
-            						<li><t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/><label for="enableForCourseCheckbox">Course</label></li>
-            						<li><t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/><label for="enableForWebPageCheckbox">Web page</label></li>
+            						<li>
+                                        <label class="checkbox">
+                                        <t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/> Course
+                                            </label>
+
+                                    </li>
+            						<li>
+                                        <label class="checkbox">
+                                        <t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/> Web page
+                                            </label>
+                                           </li>
             					</ul>
             				</div>
 			
 			<div class="cms-btns">
-				<t:submit id="save" class="cms-but cms-btn-next cms-settings-button" value="Save"/>
+				<t:submit id="save" class="btn btn-success cms-settings-button" value="Save"/>
 			</div>
 		</t:form>
 	</t:zone>

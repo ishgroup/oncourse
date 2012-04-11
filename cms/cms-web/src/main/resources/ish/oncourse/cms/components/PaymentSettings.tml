@@ -18,12 +18,13 @@
 			</t:if>
 		
 			<div class="cms-set-ops">
+
 				<t:checkbox t:id="redirectCheckbox" value="redirect"/>
 				<label for="redirectCheckbox">After payment successful redirect user to URL </label><t:textfield t:id="urlField" class="cms-field" value="redirectToUrl"/>
 			</div>
 			
 			<div class="cms-btns">
-				<t:submit id="save" class="cms-but cms-btn-next cms-settings-button" value="Save"/>
+				<t:submit id="save" class="btn btn-success cms-settings-button" value="Save"/>
 			</div>
 		</t:form>
 	</t:zone>

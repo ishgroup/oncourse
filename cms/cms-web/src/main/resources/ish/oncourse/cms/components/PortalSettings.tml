@@ -18,17 +18,21 @@
 			</t:if>
 		
 			<div class="cms-set-ops">
+                <label class="checkbox">
 				<t:checkbox t:id="hideDetailsCheckbox"
-					value="hideDetails" /><label for="hideDetailsCheckbox">Hide student contact details from tutor.</label>
+					value="hideDetails" /> Hide student contact details from tutor.
+                    </label>
+
 			</div>
 			<br/>
 			<div class="cms-set-ops>">
-			Email tutor feedback to <t:textfield t:id="feedbackEmailCheckbox" class="cms-field"
+			<label>Email tutor feedback to</label>
+                <t:textfield t:id="feedbackEmailCheckbox" class="input-xlarge"
 					value="feedbackEmail" />
 			</div>
 			
 			<div class="cms-btns">
-		 		<t:submit t:id="save" value="Save" class="cms-but cms-btn-next cms-settings-button"/>
+		 		<t:submit t:id="save" value="Save" class="btn btn-success cms-settings-button"/>
 		 	</div>
 		</t:form>
 	</t:zone>
