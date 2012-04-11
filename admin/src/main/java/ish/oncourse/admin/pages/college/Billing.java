@@ -269,4 +269,14 @@ public class Billing {
 	public void setFee(String fee) {
 		getCurrentLicenseInfo().put(LicenseFee.FEE_PROPERTY, fee);
 	}
+	
+	public String getCollegeName() {
+		return college.getName();
+	}
+	
+	public void setCollegeName(String collegeName) {
+		if (StringUtils.trimToNull(collegeName) != null) {
+			college.setName(collegeName);
+		}
+	}
 }

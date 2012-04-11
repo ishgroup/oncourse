@@ -9,6 +9,10 @@
 <t:form t:id="billingForm">
 	<table>
 		<tr>
+			<td>College name</td>
+			<td><t:textfield t:id="collegeName" value="collegeName" /></td>
+		</tr>
+		<tr>
 			<td>PaymentExpress user</td>
 			<td><t:textfield t:id="paymentUser" value="paymentExpUser" />
 			</td>
