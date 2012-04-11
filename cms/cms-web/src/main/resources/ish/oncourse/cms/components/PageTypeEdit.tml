@@ -15,7 +15,7 @@
                 <div class="cms-theme-title-n clearfix">
                 	<label for="themeName">Name</label>
                 	<t:if test="isSpecialType" negate="true">
-                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required,minlength=3" maxlength="500" class="span2"/>
+                		<t:textfield t:id="name" clientId="themeName" t:value="editPageType.name" t:validate="required,minlength=3" maxlength="500" class="span3"/>
                 		<p:else>
                 			<input class="span2" disabled="disabled" value="${editPageType.name}"/>
                 		</p:else>

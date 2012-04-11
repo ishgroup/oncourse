@@ -35,7 +35,7 @@
 						Page Name <span class="cms-ico-help" title="The name of this page"/>
 					</h5>
 					<t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
-							class="span3" />
+							class="span4" />
 
 
 
@@ -140,7 +140,7 @@
 
 					<td>
 						<t:form t:id="urlForm" zone="prop:urlZone.clientId">
-							<t:textfield value="urlPath" maxlength="100" class="span3"
+							<t:textfield value="urlPath" maxlength="100" class="span4"
 							             validate="required"
 							             t:id="urlPath"/>
 							<t:error class="literal:cms-error-txt" for="urlPath"/>
