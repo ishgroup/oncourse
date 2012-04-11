@@ -19,8 +19,11 @@
 		
 			<div class="cms-set-ops">
 
-				<t:checkbox t:id="redirectCheckbox" value="redirect"/>
-				<label for="redirectCheckbox">After payment successful redirect user to URL </label><t:textfield t:id="urlField" class="cms-field" value="redirectToUrl"/>
+                <label class="checkbox">
+                    <t:checkbox t:id="redirectCheckbox" value="redirect"/> After payment successful redirect user to URL <t:textfield t:id="urlField" class="span2" value="redirectToUrl"/>
+                </label>
+
+
 			</div>
 			
 			<div class="cms-btns">

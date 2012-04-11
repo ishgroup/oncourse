@@ -40,7 +40,7 @@
 				<t:checkbox t:id="socialMediaCheckbox" class="enable-sm-checkbox" onChange="checkState()" value="enableSocialMedia"/> Enable social media links.
                     </label>
 
-				<label>AddThis profile id</label> <t:textfield t:id="addthisProfileField" class="input-xlarge" value="addthisProfileId"/>
+				<label>AddThis profile id</label> <t:textfield t:id="addthisProfileField" class="span3" value="addthisProfileId"/>
                 <span class="help-inline"><a href="http://www.addthis.com/">Click here</a> to create one.</span>
 				
 

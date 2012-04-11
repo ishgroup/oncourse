@@ -27,7 +27,7 @@
 			<br/>
 			<div class="cms-set-ops>">
 			<label>Email tutor feedback to</label>
-                <t:textfield t:id="feedbackEmailCheckbox" class="input-xlarge"
+                <t:textfield t:id="feedbackEmailCheckbox" class="span3"
 					value="feedbackEmail" />
 			</div>
 			
