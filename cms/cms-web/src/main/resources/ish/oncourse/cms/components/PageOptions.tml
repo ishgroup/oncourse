@@ -166,12 +166,12 @@
 
 	<t:zone t:id="buttonsZone" t:update="show">
 		<div class="cms-btns">
-			<button type="button" class="btn btn-warning" onclick="$('${cancelEditingHiddenField.clientId}').value=true;
+			<button type="button" class="cms-btn cms-btn-warning" onclick="$('${cancelEditingHiddenField.clientId}').value=true;
 																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
 																		jQuery('.cms-btn-control.active').click();" >
 				Cancel
 			</button>
-			<button type="button" class="btn btn-success" onclick="$('${cancelEditingHiddenField.clientId}').value=false;
+			<button type="button" class="cms-btn cms-btn-success" onclick="$('${cancelEditingHiddenField.clientId}').value=false;
 																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
 				Save
 			</button>

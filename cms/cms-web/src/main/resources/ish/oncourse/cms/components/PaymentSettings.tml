@@ -17,7 +17,7 @@
 				</div>
 			</t:if>
 		
-			<div class="cms-set-ops form-inline">
+			<div class="cms-set-ops cms-form-inline">
 
                 <label class="cms-checkbox">
                     <t:checkbox t:id="redirectCheckbox" value="redirect"/> After payment successful redirect user to URL <t:textfield t:id="urlField" class="cms-span2" value="redirectToUrl"/>

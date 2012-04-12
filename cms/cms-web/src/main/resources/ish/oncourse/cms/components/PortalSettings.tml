@@ -25,7 +25,7 @@
 
 			</div>
 			<br/>
-			<div class="cms-set-ops form-inline">
+			<div class="cms-set-ops cms-form-inline">
 			<label>Email tutor feedback to</label>
                 <t:textfield t:id="feedbackEmailCheckbox" class="cms-span3"
 					value="feedbackEmail" />
