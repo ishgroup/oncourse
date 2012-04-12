@@ -18,7 +18,7 @@
 			</t:if>
 		
 			<div class="cms-set-ops">
-                <label class="checkbox">
+                <label class="cms-checkbox">
 				<t:checkbox t:id="hideDetailsCheckbox"
 					value="hideDetails" /> Hide student contact details from tutor.
                     </label>
@@ -27,12 +27,12 @@
 			<br/>
 			<div class="cms-set-ops form-inline">
 			<label>Email tutor feedback to</label>
-                <t:textfield t:id="feedbackEmailCheckbox" class="span3"
+                <t:textfield t:id="feedbackEmailCheckbox" class="cms-span3"
 					value="feedbackEmail" />
 			</div>
 			
 			<div class="cms-btns">
-		 		<t:submit t:id="save" value="Save" class="btn btn-success cms-settings-button"/>
+		 		<t:submit t:id="save" value="Save" class="cms-btn cms-btn-success cms-settings-button"/>
 		 	</div>
 		</t:form>
 	</t:zone>
