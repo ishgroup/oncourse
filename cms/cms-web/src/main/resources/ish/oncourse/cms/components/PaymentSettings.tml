@@ -19,15 +19,15 @@
 		
 			<div class="cms-set-ops form-inline">
 
-                <label class="checkbox">
-                    <t:checkbox t:id="redirectCheckbox" value="redirect"/> After payment successful redirect user to URL <t:textfield t:id="urlField" class="span2" value="redirectToUrl"/>
+                <label class="cms-checkbox">
+                    <t:checkbox t:id="redirectCheckbox" value="redirect"/> After payment successful redirect user to URL <t:textfield t:id="urlField" class="cms-span2" value="redirectToUrl"/>
                 </label>
 
 
 			</div>
 			
 			<div class="cms-btns">
-				<t:submit id="save" class="btn btn-success cms-settings-button" value="Save"/>
+				<t:submit id="save" class="cms-btn cms-btn-success cms-settings-button" value="Save"/>
 			</div>
 		</t:form>
 	</t:zone>

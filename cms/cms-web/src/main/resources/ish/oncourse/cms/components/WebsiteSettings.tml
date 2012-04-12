@@ -36,12 +36,12 @@
 					}
 				</script>
 
-                <label class="checkbox">
+                <label class="cms-checkbox">
 				<t:checkbox t:id="socialMediaCheckbox" class="enable-sm-checkbox" onChange="checkState()" value="enableSocialMedia"/> Enable social media links.
                     </label>
 
-				<label>AddThis profile id</label> <t:textfield t:id="addthisProfileField" class="span3" value="addthisProfileId"/>
-                <span class="help-inline"><a href="http://www.addthis.com/">Click here</a> to create one.</span>
+				<label>AddThis profile id</label> <t:textfield t:id="addthisProfileField" class="cms-span3" value="addthisProfileId"/>
+                <span class="cms-help-inline"><a href="http://www.addthis.com/">Click here</a> to create one.</span>
 				
 
 
@@ -51,13 +51,13 @@
             					<h5 class="cms-block-sub-title">Enable for these pages:</h5>
             					<ul class="cms-sub-options">
             						<li>
-                                        <label class="checkbox">
+                                        <label class="cms-checkbox">
                                         <t:checkbox t:id="enableForCourseCheckbox" class="sm-checkbox" value="enableForCourse"/> Course
                                             </label>
 
                                     </li>
             						<li>
-                                        <label class="checkbox">
+                                        <label class="cms-checkbox">
                                         <t:checkbox t:id="enableForWebPageCheckbox" class="sm-checkbox" value="enableForWebPage"/> Web page
                                             </label>
                                            </li>
@@ -65,7 +65,7 @@
             				</div>
 			
 			<div class="cms-btns">
-				<t:submit id="save" class="btn btn-success cms-settings-button" value="Save"/>
+				<t:submit id="save" class="cms-btn cms-btn-success cms-settings-button" value="Save"/>
 			</div>
 		</t:form>
 	</t:zone>
