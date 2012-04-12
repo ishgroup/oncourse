@@ -359,4 +359,24 @@ public class PaymentInTest {
 		}
 		assertFalse("Payment in status should be in failed status", PaymentStatus.CORRUPTED.equals(paymentIn.getStatus()));
 	}
+
+
+    @Test
+    public void testMakeShallowCopy()
+    {
+        try {
+            PaymentIn paymentIn = context.newObject(PaymentIn.class);
+            paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+            PaymentIn copy = paymentIn.makeShallowCopy();
+            assertEquals("copy source field  should equals original source field", paymentIn.getSource(), copy.getSource());
+
+            paymentIn = context.newObject(PaymentIn.class);
+            paymentIn.setSource(PaymentSource.SOURCE_WEB);
+            copy = paymentIn.makeShallowCopy();
+            assertEquals("copy source field  should equals original source field", paymentIn.getSource(), copy.getSource());
+        } finally {
+            context.rollbackChanges();
+        }
+    }
 }
