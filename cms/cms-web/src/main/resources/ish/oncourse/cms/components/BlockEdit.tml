@@ -27,7 +27,7 @@
 					Content <span class="cms-ico-help" title="The content of this block"/>
 				</h5>
 				<textarea t:type="TextArea" t:id="content" value="editBlock.contentTextile" rows="18"
-				          class="cms-span5"/>
+				          class="cms-span10"/>
 
 			</div>
 		</div>
