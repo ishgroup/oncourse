@@ -23,10 +23,10 @@ import org.apache.cayenne.DataRow;
 import org.apache.cayenne.query.SQLTemplate;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT;
+
 public class BillingDataServiceImpl implements IBillingDataService {
 	
-	private final String DATE_MONTH_FORMAT = "MMMMM, yyyy";
-
     private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.key_code as keyCode, l.fee as fee, l.billingMonth as billingMonth, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
     private static final String SQL_SMS = "SELECT count(*) as count, c.id as collegeId FROM MessagePerson AS m JOIN College AS c on c.Id = m.collegeId WHERE c.billingCode IS NOT NULL and type = 2 AND timeOfDelivery >= #bind($from)  AND timeOfDelivery <= #bind($to) GROUP BY collegeid";
     private static final String SQL_OFFICE_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'O' AND p.type = 2 AND (status = 3 OR status = 6) GROUP BY collegeid";
@@ -43,13 +43,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	@Override
 	public Map<Long, Map<String, Object>> getLicenseFeeData() {
 
-		Map<Long, Map<String, Object>> data = new HashMap<Long, Map<String, Object>>();
-
-		for (College college : collegeService.allColleges()) {
-			if (!data.containsKey(college.getId())) {
-				data.put(college.getId(), new HashMap<String, Object>());
-			}
-		}
+		Map<Long, Map<String, Object>> data = createMap();
 
 		SQLTemplate query = new SQLTemplate(LicenseFee.class, SQL_LICENSE_FEE);
 		query.setFetchingDataRows(true);
@@ -79,13 +73,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	@SuppressWarnings("unchecked")
 	public Map<Long, Map<String, Object>> getBillingData(Date from, Date to) {
 
-		Map<Long, Map<String, Object>> data = new HashMap<Long, Map<String, Object>>();
-		
-		for (College college : collegeService.allColleges()) {
-			if (!data.containsKey(college.getId())) {
-				data.put(college.getId(), new HashMap<String, Object>());
-			}
-		}
+        Map<Long, Map<String, Object>> data = createMap();
 		
 		// SMS
 		SQLTemplate query = new SQLTemplate(MessagePerson.class, SQL_SMS);
@@ -176,8 +164,19 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		
 		return data;
 	}
-	
-	public String getBillingDataExport(List<College> colleges, Date month) {
+
+    private Map<Long, Map<String, Object>> createMap() {
+        Map<Long, Map<String, Object>> data = new HashMap<Long, Map<String, Object>>();
+
+        for (College college : collegeService.allColleges()) {
+            if (!data.containsKey(college.getId())) {
+                data.put(college.getId(), new HashMap<String, Object>());
+            }
+        }
+        return data;
+    }
+
+    public String getBillingDataExport(List<College> colleges, Date month) {
 		String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\n";
 		for (College college : colleges) {
 			exportData += buildMWExport(college, month);
@@ -185,7 +184,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		
 		return exportData;
 	}
-	
+
 	private String buildMWExport(College college, Date month) {
 		
 		Calendar cal = Calendar.getInstance();
@@ -201,7 +200,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		Map<Long, Map<String, Object>> billingData = getBillingData(from, to);
 		Map<Long, Map<String, Object>> licenseData = getLicenseFeeData();
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_MONTH_FORMAT);
 		String monthAndYear = dateFormat.format(from);
 		String description = "onCourse " + monthAndYear;
 		String text = "";
@@ -216,27 +215,13 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		renewalDate = cal.getTime();
 		
 		if (isSupportRenewMonth(college, from, licenseData)) {	
-			text += "DI\t" +
-					college.getBillingCode() + "\t" +
-					getProductCode(String.valueOf(licenseData.get(college.getId()).get("support-plan"))) + "\t" +
-					"onCourse " + licenseData.get(college.getId()).get("support-plan") + 
-					" support plan, 1 year valid to " + formatter.format(renewalDate) + "\t" +
-					"1\t" +
-					licenseData.get(college.getId()).get("support") + "\t" +
-					description + "\n";
+			text += MWExportFormat.SupportFormat.format(licenseData, college, renewalDate,description);
 		}
 		
 		if (isWebHostingRenewMonth(college, from, licenseData)) {
-			text += "DI\t" +
-					college.getBillingCode() + "\t" +
-					getProductCode(String.valueOf(licenseData.get(college.getId()).get("hosting-plan"))) + "\t" +
-					"onCourse " + licenseData.get(college.getId()).get("hosting-plan") + 
-					" hosting plan, 1 year valid to " + formatter.format(renewalDate) + "\t" +
-					"1\t" +
-					licenseData.get(college.getId()).get("support") + "\t" +
-					description + "\n";
+			text += MWExportFormat.HostingFormat.format(licenseData,college,renewalDate,description);
 		}
-		
+		//TODO refactoring all other report's string to use MWExportFormat
 		DecimalFormat decimalFormatter = new DecimalFormat();
 		decimalFormatter.setRoundingMode(RoundingMode.valueOf(2));
 		
@@ -393,32 +378,5 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 		
 		return result;
-	}
-	
-	private String getProductCode(String name) {
-		if ("light".equals(name)) {
-			return "OC-LIGHT";
-		}
-		else if ("professional".equals(name)) {
-			return "OC-11";
-		}
-		else if ("enterprise".equals(name)) {
-			return "OC-10";
-		}
-		else if ("starter".equals(name)) {
-			return "OCW-20";
-		}
-		else if ("standard".equals(name)) {
-			return "OCW-21";
-		}
-		else if ("premium".equals(name)) {
-			return "OCW-22";
-		}
-		else if ("platinum".equals(name)) {
-			return "OCW-23";
-		}
-		else {
-			return null;
-		}
 	}
 }
