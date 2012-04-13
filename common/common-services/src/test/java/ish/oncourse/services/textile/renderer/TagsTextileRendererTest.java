@@ -39,13 +39,14 @@ public class TagsTextileRendererTest {
 
 	private Tag tag;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void init() {
 		errors = new ValidationErrors();
 		rootTag = new Tag();
 		tag = new Tag();
 		tag.setName(TEST_TAG_NAME);
-		tagsTextileRenderer = new TagsTextileRenderer(tagService, pageRenderer);
+		tagsTextileRenderer = new TagsTextileRenderer(tagService, pageRenderer, null);
 		when(tagService.getSubjectsTag()).thenReturn(rootTag);
 		when(tagService.getTagByFullPath(TEST_TAG_NAME)).thenReturn(tag);
 		when(pageRenderer.renderPage(eq(TextileUtil.TEXTILE_TAGS_PAGE), anyMap())).thenReturn(

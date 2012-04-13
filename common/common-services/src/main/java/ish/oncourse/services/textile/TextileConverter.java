@@ -188,7 +188,7 @@ public class TextileConverter implements ITextileConverter {
 		case PAGE:
 			return new PageTextileRenderer(webNodeService, pageRenderer);
 		case TAGS:
-			return new TagsTextileRenderer(tagService, pageRenderer);
+			return new TagsTextileRenderer(tagService, pageRenderer, this);
 		case FORM:
 			return new FormTextileRenderer(pageRenderer);
 		case ATTACHMENT:

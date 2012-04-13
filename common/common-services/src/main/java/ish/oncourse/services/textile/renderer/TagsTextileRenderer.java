@@ -2,6 +2,7 @@ package ish.oncourse.services.textile.renderer;
 
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.TagsTextileAttributes;
 import ish.oncourse.services.textile.validator.TagsTextileValidator;
@@ -10,6 +11,8 @@ import ish.oncourse.util.ValidationErrors;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Displays a tree of tags links
@@ -36,10 +39,13 @@ public class TagsTextileRenderer extends AbstractRenderer {
 	private ITagService tagService;
 
 	private IPageRenderer pageRenderer;
+	
+	private ITextileConverter converter;
 
-	public TagsTextileRenderer(ITagService tagService, IPageRenderer pageRenderer) {
+	public TagsTextileRenderer(final ITagService tagService, final IPageRenderer pageRenderer, final ITextileConverter converter) {
 		this.tagService = tagService;
 		this.pageRenderer = pageRenderer;
+		this.converter = converter;
 		validator = new TagsTextileValidator(tagService);
 	}
 
@@ -82,6 +88,12 @@ public class TagsTextileRenderer extends AbstractRenderer {
 				parameters.put(TextileUtil.TEXTILE_TAGS_PAGE_HIDE_TOP_PARAM,
 						Boolean.valueOf(hideTopLevel));
 				tag = pageRenderer.renderPage(TextileUtil.TEXTILE_TAGS_PAGE, parameters);
+				//if any additional compilation required need to analyze this and apply. 
+				Pattern pattern = Pattern.compile(TextileUtil.TEXTILE_REGEXP, Pattern.DOTALL);
+				Matcher matcher = pattern.matcher(tag);
+				if (matcher.find() && !errors.hasFailures()) {
+					tag = converter.convertCustomTextile(tag, errors);
+				}
 			} else {
 				tag = null;
 			}
