@@ -139,6 +139,7 @@ public class Billing {
 		if (col != null) {
 			col.setPaymentGatewayAccount(college.getPaymentGatewayAccount());
 			col.setPaymentGatewayPass(college.getPaymentGatewayPass());
+			col.setName(college.getName());
 			
 			if (this.webPaymentEnabled) {
 				preferenceController.setPaymentGatewayType(PaymentGatewayType.PAYMENT_EXPRESS);
