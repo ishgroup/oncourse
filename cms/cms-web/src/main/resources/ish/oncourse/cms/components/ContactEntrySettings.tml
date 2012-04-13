@@ -288,7 +288,7 @@
 
 
 			<div class="cms-set-opts">
-                <label class="checkbox">
+                <label class="cms-checkbox">
                     <t:checkbox t:id="avetmissCheckbox" value="avetmissQuestionsEnabled" /> Enable AVETMISS optional questions
               </label>
 
