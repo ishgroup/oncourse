@@ -48,7 +48,8 @@ public class NTISUpdaterImpl implements INTISUpdater {
 
 	private static final String ANZSCO_ID = "01";
 	private static final String ASCO_ID = "02";
-	private static final String FIELD_OF_EDUCATION_ID = "04";
+	private static final String MODULE_FIELD_OF_EDUCATION_ID = "03";
+	private static final String QUALIFICATION_FIELD_OF_EDUCATION_ID = "04";
 	private static final String LEVEL_OF_EDUCATION_ID = "05";
 	
 	@SuppressWarnings("all")
@@ -214,7 +215,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 								q.setAnzsco(c.getValueCode());
 							} else if (ASCO_ID.equals(c.getSchemeCode())) {
 								q.setAsco(c.getValueCode());
-							} else if (FIELD_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
+							} else if (QUALIFICATION_FIELD_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
 								q.setFieldOfEducation(c.getValueCode());
 							} else if (LEVEL_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
 								q.setLevelCode(c.getValueCode());
@@ -505,7 +506,7 @@ public class NTISUpdaterImpl implements INTISUpdater {
 						TrainingComponent component = trainingService.getDetails(detailsRequest);
 						List<Classification> classifications = component.getClassifications().getValue().getClassification();
 						for (Classification c : classifications) {
-							if ("04".equals(c.getSchemeCode())) {
+							if (MODULE_FIELD_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
 								m.setFieldOfEducation(c.getValueCode());
 							}
 						}
