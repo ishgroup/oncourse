@@ -136,9 +136,11 @@
                                  t:id="urlPath"/>
                     <t:error class="literal:cms-error-txt" for="urlPath"/>
                 </t:form>
-                <a href="#" class="cms-btn cms-btn-small"
+                <span class="cms-help-inline">
+                    <a href="#" class="cms-btn cms-btn-small"
                    onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
                         class="cms-icon-plus-sign"></i> Add link</a>
+                </span>
             </div>
 
 
@@ -153,7 +155,7 @@
 																		jQuery('.cms-btn-control.active').click();">
                 Cancel
             </button>
-            <button type="button" class="cms-btn cms-btn-success" onclick="$('${cancelEditingHiddenField.clientId}').value=false;
+            <button type="button" class="cms-btn cms-btn-primary" onclick="$('${cancelEditingHiddenField.clientId}').value=false;
 																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
                 Save
             </button>
