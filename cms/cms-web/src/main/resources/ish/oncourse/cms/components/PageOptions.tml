@@ -50,7 +50,8 @@
                               value="editNode.webNodeType"
                               validate="required"/>
 
-
+</p>
+                <p>
 
                         <label title="Publish this page on website or not">
                             Page visibility
@@ -151,7 +152,7 @@
 
     <t:zone t:id="buttonsZone" t:update="show">
         <div class="cms-btns">
-            <button type="button" class="cms-btn cms-btn-warning" onclick="$('${cancelEditingHiddenField.clientId}').value=true;
+            <button type="button" class="cms-btn" onclick="$('${cancelEditingHiddenField.clientId}').value=true;
 																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
 																		jQuery('.cms-btn-control.active').click();">
                 Cancel
