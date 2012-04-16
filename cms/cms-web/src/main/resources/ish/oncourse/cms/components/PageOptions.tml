@@ -135,12 +135,13 @@
                                  validate="required"
                                  t:id="urlPath"/>
                     <t:error class="literal:cms-error-txt" for="urlPath"/>
+                    <span class="cms-help-inline">
+                                        <a href="#" class="cms-btn cms-btn-mini"
+                                       onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
+                                            class="cms-icon-plus-sign"></i> Add link</a>
+                                    </span>
                 </t:form>
-                <span class="cms-help-inline">
-                    <a href="#" class="cms-btn cms-btn-mini"
-                   onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
-                        class="cms-icon-plus-sign"></i> Add link</a>
-                </span>
+
             </div>
 
 
