@@ -107,7 +107,7 @@
                     <span>${siteUrl}/page/${editNode.nodeNumber}</span>
                     <a t:id="removeDefault" t:type="actionLink"
                        zone="prop:urlZone.clientId"
-                       class="cms-btn cms-btn-small">make default</a>
+                       class="cms-btn cms-btn-mini">make default</a>
                 </p>
 
             </t:if>
@@ -119,8 +119,8 @@
                         <span>${siteUrl}${webUrlAlias.urlPath}</span>
 
                         <a t:id="makeDefault" t:type="actionLink"
-                           t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="cms-btn cms-btn-small">make default</a>
-                        <a class="cms-btn cms-btn-small" t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
+                           t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="cms-btn cms-btn-mini">make default</a>
+                        <a class="cms-btn cms-btn-mini" t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
                                                     <i class="cms-icon-trash"></i>
                                                 </a>
                     </p>
@@ -137,7 +137,7 @@
                     <t:error class="literal:cms-error-txt" for="urlPath"/>
                 </t:form>
                 <span class="cms-help-inline">
-                    <a href="#" class="cms-btn cms-btn-small"
+                    <a href="#" class="cms-btn cms-btn-mini"
                    onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
                         class="cms-icon-plus-sign"></i> Add link</a>
                 </span>
