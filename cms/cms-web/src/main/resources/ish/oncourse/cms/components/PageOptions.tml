@@ -1,180 +1,162 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+        xmlns:p="tapestry:parameter">
 
-	<t:zone t:id="optionsZone" t:update="show">
-		<t:form t:id="optionsForm" zone="${optionsZone.clientId}">
-			<script>
-				if(${savedNewPage}){
-					window.location="/page/${editNode.nodeNumber}";
-		 		}else if(${savedPage}){
-		 			jQuery('.cms-btn-control.active').click();
-		 		}
-		 		
-		 	</script>
-			<t:hidden value="cancelEditing" t:id="cancelEditingHiddenField"/>
-			<div class="cms-main-head">
-				<div class="cms-main-title">
-					<h1 class="cms-page-title">Page options for current page (${editNode.name})</h1>
-				</div>
-				<div class="cms-main-controls alignRight">
-					<span class="cms-ico-close cms-close-pane" 
-						onclick="$('${cancelEditingHiddenField.clientId}').value=true; 
+    <t:zone t:id="optionsZone" t:update="show">
+        <t:form t:id="optionsForm" zone="${optionsZone.clientId}">
+            <script>
+                if (${savedNewPage}) {
+                    window.location = "/page/${editNode.nodeNumber}";
+                } else if (${savedPage}) {
+                    jQuery('.cms-btn-control.active').click();
+                }
+
+            </script>
+            <t:hidden value="cancelEditing" t:id="cancelEditingHiddenField"/>
+            <div class="cms-main-head">
+                <div class="cms-main-title">
+                    <h1 class="cms-page-title">Page options for current page (${editNode.name})</h1>
+                </div>
+                <div class="cms-main-controls alignRight">
+					<span class="cms-ico-close cms-close-pane"
+                          onclick="$('${cancelEditingHiddenField.clientId}').value=true;
 									$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT); 
 									jQuery('.cms-btn-control.active').click();"/>
-				</div>
-			</div>
-	
-			<t:errors class="literal:cms-error-txt" />
-			<div class="cms-cols-pane">
+                </div>
+            </div>
 
-				<div class="cms-colpane cms-pane-pname">
+            <t:errors class="literal:cms-error-txt"/>
+            <div class="cms-cols-pane">
 
-					<h5 class="cms-block-sub-title">
-						Page Name <span class="cms-ico-help" title="The name of this page"/>
-					</h5>
-					<t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
-							class="cms-span4" />
+                <p>
+
+                    <label>
+                        Page Name <i class="cms-icon-question-sign" title="The name of this page"/>
+                    </label>
+                    <t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
+                                 class="cms-span4"/>
 
 
+                </p>
 
-				</div>
+                <div class="cms-colpane cms-pane-ptype">
+                    <label>
+                        Page theme <i class="cms-icon-question-sign"
+                                         title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design. "/>
+                    </label>
+                    <t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder"
+                              value="editNode.webNodeType"
+                              validate="required"/>
 
-				<div class="cms-colpane cms-pane-ptype">
-					<h5 class="cms-block-sub-title">
-						Page theme <span class="cms-ico-help" title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design. "/>
-					</h5>
-					<t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder" value="editNode.webNodeType"
-							validate="required" />
+                    <p>
 
-					<div class="cms-block-visibility">
+                        <label>
+                            Page visibility <i class="cms-icon-question-sign" title="Publish this page on website or not"/>
+                        </label>
 
-						<h5 class="cms-block-sub-title">
-							Page visibility <span class="cms-ico-help" title="Publish this page on website or not"/>
-						</h5>
-
-						<span class="cms-page-pub">Published</span>
+                        <span class="cms-page-pub">Published</span>
 					<span class="cms-slide-control">
 						<t:checkbox t:id="published" value="editNode.published" class="cms-onoff"/>
 					</span>
 
-					</div>
+                    </p>
 
 
-
-				</div>
-
-
-			</div>
- 		
-		</t:form>
-	</t:zone>
+                </div>
 
 
-	<script type="text/javascript">
-		Event.observe('${optionsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
-	</script>
+            </div>
+
+        </t:form>
+    </t:zone>
 
 
-	<div class="cms-page-opts">
-
-		<h5 class="cms-block-sub-title">Page Links (URLs) <span class="cms-ico-help"
-		                                                        title="This page is accessible via the following URLs"/>
-		</h5>
-
-		<t:zone t:id="urlZone" t:update="show">
+    <script type="text/javascript">
+        Event.observe('${optionsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
+    </script>
 
 
-			<h6 class="cms-block-sub-title">
-				<b>
-					<t:if t:test="hasDefault">
-						${siteUrl}${editNode.defaultWebURLAlias.urlPath}
-						<p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
-					</t:if>
-				</b>
-				&lt;----- DEFAULT
-				<span class="cms-ico-help" title="Default URL for this page"/>
-			</h6>
+    <div class="cms-page-opts">
 
-			<table class="cms-page-opts-links">
-				<t:if t:test="hasDefault">
-					<tr>
-						<td>${siteUrl}/page/${editNode.nodeNumber}</td>
-						<td class="cms-page-opts-action">
-							<img src="/s/img/arrow_left.png" border="0"
-								     style="vertical-align: middle;"/>
-							<a t:id="removeDefault" t:type="actionLink"
-							   zone="prop:urlZone.clientId">make default</a>
-						</td>
-						<td></td>
-					</tr>
-				</t:if>
-				
-				<t:loop source="editNode.webUrlAliases" value="webUrlAlias">
-					<t:if t:test="notDefault">
-						<tr>
-							<td>${siteUrl}${webUrlAlias.urlPath}</td>
-							<td class="cms-page-opts-action">
-								<a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
-								   zone="prop:urlZone.clientId">
-									<span class="cms-ico-field-del"/>
-								</a>
-								<img src="/s/img/arrow_left.png" border="0"
-								     style="vertical-align: middle;"/>
-								<a t:id="makeDefault" t:type="actionLink"
-								   t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
-									make default
-								</a>
-							</td>
-							<td></td>
-						</tr>
-					</t:if>
-				</t:loop>
+        <p>
+            <label>Page Links (URLs) <i class="cms-icon-question-sign"
+                                        title="This page is accessible via the following URLs"/>
+            </label>
+        </p>
+
+        <t:zone t:id="urlZone" t:update="show">
 
 
-			</table>
-			
-			<table class="cms-page-opts-addurl">
-				<tr>
-
-					<td>
-						<t:form t:id="urlForm" zone="prop:urlZone.clientId">
-							<t:textfield value="urlPath" maxlength="100" class="cms-span4"
-							             validate="required"
-							             t:id="urlPath"/>
-							<t:error class="literal:cms-error-txt" for="urlPath"/>
-						</t:form>
-					</td>
-					<td>
-						<div class="cms-add-wrapper">
-							<a href="#" class="cms-add-link"
-							   onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
-								Add link
-							</a>
-						</div>
-					</td>
-				</tr>
-			</table>
-			
-			
-		</t:zone>
-	</div>
+            <div class="cms-well cms-well-small">
+                <b>
+                    <t:if t:test="hasDefault">
+                        ${siteUrl}${editNode.defaultWebURLAlias.urlPath}
+                        <p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
+                    </t:if>
+                </b>
+                <span class="cms-label">default</span>
+                <i class="cms-icon-question-sign" title="Default URL for this page"/>
+            </div>
 
 
+            <t:if t:test="hasDefault">
+
+                <p>
+                    <span>${siteUrl}/page/${editNode.nodeNumber}</span>
+                    <a t:id="removeDefault" t:type="actionLink"
+                       zone="prop:urlZone.clientId"
+                       class="btn btn-small">make default</a>
+                </p>
+
+            </t:if>
+
+            <t:loop source="editNode.webUrlAliases" value="webUrlAlias">
+                <t:if t:test="notDefault">
+
+                    <p>
+                        <span>${siteUrl}${webUrlAlias.urlPath}</span>
+                        <a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
+                           zone="prop:urlZone.clientId">
+                            <i class="cms-icon-trash"/>
+                        </a>
+                        <a t:id="makeDefault" t:type="actionLink"
+                           t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="btn btn-small">make
+                            default</a>
+                    </p>
+
+                </t:if>
+            </t:loop>
 
 
-	<t:zone t:id="buttonsZone" t:update="show">
-		<div class="cms-btns">
-			<button type="button" class="cms-btn cms-btn-warning" onclick="$('${cancelEditingHiddenField.clientId}').value=true;
+            <p>
+                <t:form t:id="urlForm" zone="prop:urlZone.clientId">
+                    <t:textfield value="urlPath" maxlength="100" class="cms-span4"
+                                 validate="required"
+                                 t:id="urlPath"/>
+                    <t:error class="literal:cms-error-txt" for="urlPath"/>
+                </t:form>
+                <a href="#" class="btn btn-small"
+                   onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
+                        class="cms-icon-plus-sign"/>Add link</a>
+            </p>
+
+
+        </t:zone>
+    </div>
+
+
+    <t:zone t:id="buttonsZone" t:update="show">
+        <div class="cms-btns">
+            <button type="button" class="cms-btn cms-btn-warning" onclick="$('${cancelEditingHiddenField.clientId}').value=true;
 																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);
-																		jQuery('.cms-btn-control.active').click();" >
-				Cancel
-			</button>
-			<button type="button" class="cms-btn cms-btn-success" onclick="$('${cancelEditingHiddenField.clientId}').value=false;
+																		jQuery('.cms-btn-control.active').click();">
+                Cancel
+            </button>
+            <button type="button" class="cms-btn cms-btn-success" onclick="$('${cancelEditingHiddenField.clientId}').value=false;
 																		$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);">
-				Save
-			</button>
-		</div>
-	</t:zone>
+                Save
+            </button>
+        </div>
+    </t:zone>
 </t:container>
