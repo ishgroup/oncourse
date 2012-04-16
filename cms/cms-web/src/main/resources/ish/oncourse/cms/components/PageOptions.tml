@@ -31,8 +31,8 @@
 
                 <p>
 
-                    <label>
-                        Page Name <i class="cms-icon-question-sign" title="The name of this page"/>
+                    <label title="The name of this page">
+                        Page Name
                     </label>
                     <t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
                                  class="cms-span4"/>
@@ -41,18 +41,17 @@
                 </p>
 
                 <div class="cms-colpane cms-pane-ptype">
-                    <label>
-                        Page theme <i class="cms-icon-question-sign"
-                                         title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design. "/>
+                    <label title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design.">
+                        Page theme
                     </label>
-                    <t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder"
+                    <t:select  t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder"
                               value="editNode.webNodeType"
                               validate="required"/>
 
                     <p>
 
-                        <label>
-                            Page visibility <i class="cms-icon-question-sign" title="Publish this page on website or not"/>
+                        <label title="Publish this page on website or not">
+                            Page visibility
                         </label>
 
                         <span class="cms-page-pub">Published</span>
@@ -80,8 +79,8 @@
     <div class="cms-page-opts">
 
         <p>
-            <label>Page Links (URLs) <i class="cms-icon-question-sign"
-                                        title="This page is accessible via the following URLs"/>
+            <label title="This page is accessible via the following URLs">
+                Page Links (URLs)
             </label>
         </p>
 
@@ -95,8 +94,8 @@
                         <p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
                     </t:if>
                 </b>
-                <span class="cms-label">default</span>
-                <i class="cms-icon-question-sign" title="Default URL for this page"/>
+                <span class="cms-label" title="Default URL for this page">default</span>
+
             </div>
 
 
