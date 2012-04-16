@@ -1,4 +1,4 @@
-package ish.oncourse.admin.services.ntis;
+package ish.oncourse.admin.services.billing;
 
 import ish.oncourse.admin.services.billing.BillingPlan;
 import ish.oncourse.admin.services.billing.Constants;
