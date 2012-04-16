@@ -32,10 +32,13 @@
 			</div>
 		</div>
 		
-		<div class="alignCenter cms-btns">
-			<t:submit t:id="cancel" value="Cancel" mode="CANCEL" class="cms-btn cms-btn-warning"/>
-			<t:submit t:id="delete" value="Delete" mode="CANCEL" class="cms-btn cms-btn-danger"/>
-			<t:submit t:id="save" value="Save" class="cms-btn cms-btn-success"/>
+		<div class="cms-btns container-fluid">
+            <div class="floatLeft">
+                <t:submit t:id="delete" value="Delete" mode="CANCEL" class="cms-btn cms-btn-danger cms-btn-mini"/>
+            </div>
+            <div class="floatRight">
+                <t:submit t:id="cancel" value="Cancel" mode="CANCEL" class="cms-btn"/>
+            	<t:submit t:id="save" value="Save" class="cms-btn cms-btn-primary"/></div>
 		</div>
 	</t:form>
 </div>

@@ -27,7 +27,7 @@
 			</div>
 			
 			<div class="cms-btns">
-				<t:submit id="save" class="cms-btn cms-btn-success cms-settings-button" value="Save"/>
+				<t:submit id="save" class="cms-btn cms-btn-primary cms-settings-button" value="Save"/>
 			</div>
 		</t:form>
 	</t:zone>

@@ -295,7 +295,7 @@
 			</div>
 
 			<div class="cms-btns">
-				<t:submit t:id="save" value="Save" class="cms-btn cms-btn-success cms-settings-button"/>
+				<t:submit t:id="save" value="Save" class="cms-btn cms-btn-primary cms-settings-button"/>
 			</div>
 			
 		</t:form>
