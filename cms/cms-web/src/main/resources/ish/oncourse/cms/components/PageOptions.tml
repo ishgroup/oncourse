@@ -120,9 +120,8 @@
 
                         <a t:id="makeDefault" t:type="actionLink"
                            t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="cms-btn cms-btn-small">make default</a>
-                        <a class="cms-btn cms-btn-small" t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
-                                                   zone="prop:urlZone.clientId">
-                                                    <i class="cms-icon-trash"/>
+                        <a class="cms-btn cms-btn-small" t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
+                                                    <i class="cms-icon-trash"></i>
                                                 </a>
                     </p>
 
@@ -137,9 +136,9 @@
                                  t:id="urlPath"/>
                     <t:error class="literal:cms-error-txt" for="urlPath"/>
                 </t:form>
-                <a href="#" class="btn btn-small"
+                <a href="#" class="cms-btn cms-btn-small"
                    onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
-                        class="cms-icon-plus-sign"/>Add link</a>
+                        class="cms-icon-plus-sign"></i> Add link</a>
             </div>
 
 
