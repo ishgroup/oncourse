@@ -46,7 +46,7 @@
 			<form t:id="regionForm" zone="prop:currentZoneKey">
     		
     		<div class="cms-dialog-line">
-        		<h5 class="cms-block-sub-title">Content <span class="cms-ico-help" title="The content of this block"></span></h5>
+        		<label title="The content of this block" class="cms-block-sub-title">Content</label>
         		<textarea class="cms-field-txt" t:type="TextArea" value="visibility.webContent.contentTextile" rows="18"/>
    			</div>
 
