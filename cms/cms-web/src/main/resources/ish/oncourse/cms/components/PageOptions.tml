@@ -127,7 +127,7 @@
                 </t:if>
             </t:loop>
 
-<br>
+<br />
             <div>
                 <t:form t:id="urlForm" zone="prop:urlZone.clientId">
                     <t:textfield value="urlPath" maxlength="100" class="cms-span4"
