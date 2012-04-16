@@ -2,7 +2,7 @@
 <t:container
         xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         xmlns:p="tapestry:parameter">
-
+    <div class="cms-row-fluid">
     <t:zone t:id="optionsZone" t:update="show">
         <t:form t:id="optionsForm" zone="${optionsZone.clientId}">
             <script>
@@ -27,7 +27,9 @@
             </div>
 
             <t:errors class="literal:cms-error-txt"/>
-            <div class="cms-cols-pane">
+
+
+            <div class="cms-span5">
 
                 <p>
 
@@ -40,7 +42,7 @@
 
                 </p>
 
-                <div class="cms-colpane cms-pane-ptype">
+                <p>
                     <label title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design.">
                         Page theme
                     </label>
@@ -48,7 +50,7 @@
                               value="editNode.webNodeType"
                               validate="required"/>
 
-                    <p>
+
 
                         <label title="Publish this page on website or not">
                             Page visibility
@@ -59,10 +61,10 @@
 						<t:checkbox t:id="published" value="editNode.published" class="cms-onoff"/>
 					</span>
 
-                    </p>
 
 
-                </div>
+
+                </p>
 
 
             </div>
@@ -76,7 +78,7 @@
     </script>
 
 
-    <div class="cms-page-opts">
+    <div class="cms-span7">
 
         <p>
             <label title="This page is accessible via the following URLs">
@@ -143,7 +145,7 @@
 
         </t:zone>
     </div>
-
+    </div>
 
     <t:zone t:id="buttonsZone" t:update="show">
         <div class="cms-btns">
