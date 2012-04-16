@@ -87,7 +87,7 @@
         <t:zone t:id="urlZone" t:update="show">
 
 
-            <div class="cms-well cms-well-small">
+           <p>
                 <b>
                     <t:if t:test="hasDefault">
                         ${siteUrl}${editNode.defaultWebURLAlias.urlPath}
@@ -96,7 +96,7 @@
                 </b>
                 <span class="cms-label" title="Default URL for this page">default</span>
 
-            </div>
+           </p>
 
 
             <t:if t:test="hasDefault">
@@ -105,7 +105,7 @@
                     <span>${siteUrl}/page/${editNode.nodeNumber}</span>
                     <a t:id="removeDefault" t:type="actionLink"
                        zone="prop:urlZone.clientId"
-                       class="btn btn-small">make default</a>
+                       class="cms-btn cms-btn-small">make default</a>
                 </p>
 
             </t:if>
@@ -115,20 +115,20 @@
 
                     <p>
                         <span>${siteUrl}${webUrlAlias.urlPath}</span>
-                        <a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
-                           zone="prop:urlZone.clientId">
-                            <i class="cms-icon-trash"/>
-                        </a>
+
                         <a t:id="makeDefault" t:type="actionLink"
-                           t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="btn btn-small">make
-                            default</a>
+                           t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="cms-btn cms-btn-small">make default</a>
+                        <a class="cms-btn cms-btn-small" t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
+                                                   zone="prop:urlZone.clientId">
+                                                    <i class="cms-icon-trash"/>
+                                                </a>
                     </p>
 
                 </t:if>
             </t:loop>
 
-
-            <p>
+<br>
+            <div>
                 <t:form t:id="urlForm" zone="prop:urlZone.clientId">
                     <t:textfield value="urlPath" maxlength="100" class="cms-span4"
                                  validate="required"
@@ -138,7 +138,7 @@
                 <a href="#" class="btn btn-small"
                    onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
                         class="cms-icon-plus-sign"/>Add link</a>
-            </p>
+            </div>
 
 
         </t:zone>
