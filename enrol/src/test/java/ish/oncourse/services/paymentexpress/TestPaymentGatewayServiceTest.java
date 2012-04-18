@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.services.payment;
+package ish.oncourse.services.paymentexpress;
 
 import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;

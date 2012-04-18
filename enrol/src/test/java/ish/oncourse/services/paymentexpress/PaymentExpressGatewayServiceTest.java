@@ -1,23 +1,21 @@
-package ish.oncourse.enrol.services.payment;
+package ish.oncourse.services.paymentexpress;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
+import com.paymentexpress.stubs.TransactionDetails;
 import ish.common.types.CreditCardType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentOutTransaction;
 import ish.oncourse.model.PaymentTransaction;
-import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
-import ish.oncourse.services.paymentexpress.PaymentExpressUtil;
 import ish.oncourse.services.persistence.ICayenneService;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collections;
@@ -32,6 +30,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.paymentexpress.stubs.TransactionResult2;
+
+import javax.xml.rpc.ServiceException;
 
 /**
  * Test for the {@link PaymentExpressGatewayService}.
@@ -143,7 +143,7 @@ public class PaymentExpressGatewayServiceTest {
 
 	/**
 	 * Emulates the successful transaction,
-	 * {@link TransactionResult#getAuthorized()} should return true.
+	 * {@link TransactionResult2#getAuthorized()} should return true.
 	 * 
 	 * @throws Exception
 	 */
@@ -165,7 +165,7 @@ public class PaymentExpressGatewayServiceTest {
 	
 	/**
 	 * Emulates the successful transaction,
-	 * {@link TransactionResult#getAuthorized()} should return true.
+	 * {@link TransactionResult2#getAuthorized()} should return true.
 	 * 
 	 * @throws Exception
 	 */
@@ -194,7 +194,7 @@ public class PaymentExpressGatewayServiceTest {
 	
 	/**
 	 * Emulates the failed transaction,
-	 * {@link TransactionResult#getAuthorized()} should return false.
+	 * {@link TransactionResult2#getAuthorized()} should return false.
 	 * 
 	 * @throws Exception
 	 */
@@ -211,7 +211,7 @@ public class PaymentExpressGatewayServiceTest {
 	
 	/**
 	 * Emulates the failed transaction,
-	 * {@link TransactionResult#getAuthorized()} should return false.
+	 * {@link TransactionResult2#getAuthorized()} should return false.
 	 * 
 	 * @throws Exception
 	 */
@@ -264,7 +264,7 @@ public class PaymentExpressGatewayServiceTest {
 		LOG.info("DpsTxnRef to refund is "+ tr1.getDpsTxnRef());
 		when(paymentOut.getPaymentInTxnReference()).thenReturn(tr1.getDpsTxnRef());
 		when(paymentOut.getTotalAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
-		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));		
+		when(paymentOut.getPaymentOutTransactions()).thenReturn(Collections.singletonList(paymentOutTransaction));
 		gatewayService.processGateway(paymentOut);
 		verify(paymentOut).succeed();
 		assertTrue("PaymentTransaction should exist", !paymentOut.getPaymentOutTransactions().isEmpty() && paymentOut.getPaymentOutTransactions().size() == 1);
@@ -436,5 +436,90 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.validateCCNumber()).thenCallRealMethod();
 		when(payment.validateCCExpiry()).thenCallRealMethod();
 	}
+
+
+    @Test
+    public void testSuccessGetStatusOperation() throws ServiceException {
+        when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
+        when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+        when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
+
+
+        PaymentExpressWSSoap12Stub stub = gatewayService.soapClientStub();
+
+        PaymentInSupport paymentInSupport = new PaymentInSupport(payment,cayenneService);
+        TransactionDetails transactionDetails = paymentInSupport.getTransactionDetails();
+        SubmitTransactionOperation submitTransactionOperation = new SubmitTransactionOperation(GATEWAY_ACCOUNT,
+                GATEWAY_PASSWORD,
+                transactionDetails,stub);
+
+        TransactionResult2 submitResult = submitTransactionOperation.getResult();
+        GetStatusOperation getStatusOperation = new GetStatusOperation(GATEWAY_ACCOUNT, GATEWAY_PASSWORD, transactionDetails.getTxnRef(),stub);
+        TransactionResult2 getStatusResult = getStatusOperation.getResult();
+
+        assertGetStatusResult(submitResult, getStatusResult);
+    }
+
+
+    @Test
+    public void testUnsuccessfulGetStatusOperation() throws ServiceException {
+        when(payment.getCreditCardNumber()).thenReturn(INVALID_CARD_NUMBER);
+        when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
+        when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
+
+
+        PaymentExpressWSSoap12Stub stub = gatewayService.soapClientStub();
+
+        PaymentInSupport paymentInSupport = new PaymentInSupport(payment,cayenneService);
+        TransactionDetails transactionDetails = paymentInSupport.getTransactionDetails();
+        SubmitTransactionOperation submitTransactionOperation = new SubmitTransactionOperation(GATEWAY_ACCOUNT,
+                GATEWAY_PASSWORD,
+                transactionDetails,stub);
+
+        TransactionResult2 submitResult = submitTransactionOperation.getResult();
+        GetStatusOperation getStatusOperation = new GetStatusOperation(GATEWAY_ACCOUNT, GATEWAY_PASSWORD, transactionDetails.getTxnRef(),stub);
+        TransactionResult2 getStatusResult = getStatusOperation.getResult();
+
+        assertGetStatusResult(submitResult, getStatusResult);
+    }
+
+    private void assertGetStatusResult(TransactionResult2 submitResult, TransactionResult2 getStatusResult) {
+        assertEquals(submitResult.getAuthorized(), getStatusResult.getAuthorized());
+//        assertEquals(submitResult.getAcquirerReco(), getStatusResult.getAcquirerReco());
+        assertEquals(submitResult.getAcquirerResponseText().toLowerCase(), getStatusResult.getAcquirerResponseText().toLowerCase());
+        assertEquals(submitResult.getAmount(), getStatusResult.getAmount());
+        assertEquals(submitResult.getAuthCode(), getStatusResult.getAuthCode());
+        assertEquals(submitResult.getBillingId(), getStatusResult.getBillingId());
+        assertEquals(submitResult.getCardHolderHelpText(), getStatusResult.getCardHolderHelpText());
+        assertEquals(submitResult.getCardHolderName(), getStatusResult.getCardHolderName());
+        assertEquals(submitResult.getCardHolderResponseDescription(), getStatusResult.getCardHolderResponseDescription());
+        assertEquals(submitResult.getCardHolderResponseText(), getStatusResult.getCardHolderResponseText());
+        assertEquals(submitResult.getCardName(), getStatusResult.getCardName());
+        assertEquals(submitResult.getCardNumber(), getStatusResult.getCardNumber());
+//        assertEquals(submitResult.getCurrencyName(), getStatusResult.getCurrencyName());
+        assertEquals(submitResult.getCurrencyRate(), getStatusResult.getCurrencyRate());
+        assertEquals(submitResult.getCvc2(), getStatusResult.getCvc2());
+//        assertEquals(submitResult.getDateExpiry(), getStatusResult.getDateExpiry());
+        assertEquals(submitResult.getDateSettlement(), getStatusResult.getDateSettlement());
+        assertEquals(submitResult.getDpsBillingId(), getStatusResult.getDpsBillingId());
+//        assertEquals(submitResult.getDpsTxnRef(), getStatusResult.getDpsTxnRef());
+        assertEquals(submitResult.getHelpText(), getStatusResult.getHelpText());
+        assertEquals(submitResult.getIccData(), getStatusResult.getIccData());
+        assertEquals(submitResult.getIssuerCountryId(), getStatusResult.getIssuerCountryId());
+//        assertEquals(submitResult.getMerchantHelpText(), getStatusResult.getMerchantHelpText());
+        assertEquals(submitResult.getMerchantReference(), getStatusResult.getMerchantReference());
+        assertEquals(submitResult.getMerchantResponseDescription(), getStatusResult.getMerchantResponseDescription());
+        assertEquals(submitResult.getMerchantResponseText(), getStatusResult.getMerchantResponseText());
+        assertEquals(submitResult.getReco(), getStatusResult.getReco());
+        assertEquals(submitResult.getResponseText(), getStatusResult.getResponseText());
+        assertEquals(submitResult.getResponseText(), getStatusResult.getResponseText());
+        assertEquals(submitResult.getRetry(), getStatusResult.getRetry());
+        assertArrayEquals(submitResult.getRiskRuleMatches(), getStatusResult.getRiskRuleMatches());
+        assertEquals(submitResult.getStatusRequired(), getStatusResult.getStatusRequired());
+        assertEquals(submitResult.getTestMode(), getStatusResult.getTestMode());
+//        assertEquals(submitResult.getTxnMac(), getStatusResult.getTxnMac());
+        assertEquals(submitResult.getTxnRef(), getStatusResult.getTxnRef());
+        assertEquals(submitResult.getTxnType(), getStatusResult.getTxnType());
+    }
 
 }

@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.services.payment;
+package ish.oncourse.services.paymentexpress;
 
 import static org.mockito.Mockito.*;
 import ish.oncourse.model.PaymentIn;
