@@ -30,6 +30,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -267,6 +268,10 @@ public class ReplicationServiceImpl implements IReplicationService {
 									Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
 											.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
 									Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
+									//add cache refresh to receive actual data before angel id set.
+									ObjectIdQuery query = new ObjectIdQuery(object.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+									object = (Queueable) Cayenne.objectForQuery(ctx, query);
+									
 									collegeid = object.getCollege().getId();
 									object.setAngelId(record.getStub().getAngelId());
 									ctx.commitChanges();
