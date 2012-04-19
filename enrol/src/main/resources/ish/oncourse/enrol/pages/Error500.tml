@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+<head>
+	<t:any element="meta" name="generator" content="prop:metaGeneratorContent" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="image/ico" href="/s/img/favicon.ico" />
+	<link rel="apple-touch-icon" href="/s/img/apple-touch-icon.png" />
+	<title>${title}</title>
+	<link href="/s/stylesheets/css/site.css" media="screen, print" rel="stylesheet" />
+	<link href="/s/stylesheets/css/defaultError.css" media="screen" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	<!--
+	function toggleException() {
+
+	 var div = document.getElementById('exception');
+
+	 if(div.style.display == 'none') {
+	 div.style.display = 'block';
+	 } else {
+	 div.style.display = 'none';
+	 }
+	}
+	// -->
+	</script> 
+	
+</head>
+<body>
+ <div id="container" class="clearfix">
+ 	
+		<div id="form_error">
+			<form action="http://www.ish.com.au/oncourse/feature" accept-charset="UTF-8" method="post">
+			<fieldset class="clearfix">
+				<label>Name <input type="text" maxlength="255" name="name" id="edit-name" size="30"/></label>
+				<label>E-mail <input type="text" maxlength="255" name="mail" id="edit-mail" size="30"/></label>
+	
+				<textarea cols="60" rows="5" name="message" id="edit-message"  class="form-textarea"></textarea>
+				<button type="submit" class="button positive">Let us know</button>
+			</fieldset>
+			<input id="edit-subject" class="form-text required error example" type="hidden" value="onCourse Error" size="60" name="subject" maxlength="255"/>	
+			<input type="hidden" name="form_build_id" id="form-9d9e46fa5e7e3cd52379bf687742a57e" value="form-9d9e46fa5e7e3cd52379bf687742a57e"  />
+			<input type="hidden" name="form_token" id="edit-form-token" value="7577a43bf4f2482831c25a08235d6046"  />
+			<input type="hidden" name="form_id" id="edit-contact-mail-page" value="contact_mail_page"  />
+	
+			</form>
+
+		</div>
+	
+		<h1>Something unexpected has happened.</h1>
+		
+		<p>We're sorry you're seeing this error message. To make sure this doesn't happen again, we'd appreciate if you could let us know how you got to this page.</p>
+		
+		<p id="links"><a onClick="history.go(-1);">Go back</a><span id="dropper"> or <a href="">Drop us a line</a></span></p>
+		
+		<p id="ish_tag">This website is powered by <a href="http://ish.com.au/oncourse/">ish onCourse</a>.</p>
+
+</div>
+
+<div id="roundedExceptionBox" style="float: left; width: 667px; padding: 0px; margin: 4px 4px 4px 1px;">
+	<table cellpadding="4" border="0" cellspaceing="4" style="height: 600px;">
+	<tbody>
+		<tr style="height: 40px;">
+			<td style="float: left; width: 10px;">
+			<hr onclick="toggleException()" style="height: 4px; width: 4px;"/>
+			</td>
+		</tr>
+		<tr>
+			<td style="float: left; width: 650px;">
+			<div id="exception" style="display: none;">
+			<table class="exception-display">
+			<tbody>
+			<tr>
+				<td><b>${exceptionType}</b></td>
+			</tr>
+			<tr>
+				<td><p>${exception.message}</p></td>
+			</tr>
+			<tr>
+				<td >Stack Trace:</td>
+			</tr>
+			<tr>
+			<td>
+			<ul>
+				<t:loop source="stackTraces" value="stackTrace">
+					<li> ${stackTrace}</li>
+				</t:loop>	
+			</ul>
+			</td>
+		</tr>
+	</tbody>
+	</table>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</body>
+</html>
