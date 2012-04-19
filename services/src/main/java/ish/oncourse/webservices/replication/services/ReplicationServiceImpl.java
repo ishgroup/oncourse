@@ -261,17 +261,19 @@ public class ReplicationServiceImpl implements IReplicationService {
 							ctx.deleteObject(queuedRecord);
 							
 							if (queuedRecord.getAction() != QueuedRecordAction.DELETE) {
+								Long collegeid = null;
 								try {
 									@SuppressWarnings("unchecked")
 									Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
 											.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
 									Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
+									collegeid = object.getCollege().getId();
 									object.setAngelId(record.getStub().getAngelId());
 									ctx.commitChanges();
 								} catch (CayenneRuntimeException ce) {
 									ctx.rollbackChanges();
-									String message = String.format("Duplicate angelId:%s for entity:%s with willowId:%s", record.getStub()
-											.getAngelId(), record.getStub().getEntityIdentifier(), record.getStub().getWillowId()); 
+									String message = String.format("Failed to update entity:%s with angelId:%s and willowId:%s for college:%s after replication to angel.", record.getStub()
+											.getAngelId(), record.getStub().getEntityIdentifier(), record.getStub().getWillowId(), collegeid); 
 									logger.error(message, ce);
 									queuedRecord.setErrorMessage(message);									
 								}
