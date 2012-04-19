@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -24,6 +25,7 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ConcessionEntry {
+	private static final Logger LOGGER = Logger.getLogger(ConcessionEntry.class);
 
     @Inject
     private ICayenneService cayenneService;
@@ -73,6 +75,18 @@ public class ConcessionEntry {
             concessionForm.clearErrors();
         }
     }
+    
+    /**
+     * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
+     */
+	Object onException(Throwable cause) {
+		if (enrolCourses.isPersistCleared()) {
+			LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
+		} else {
+			throw new IllegalArgumentException(cause);
+		}
+		return enrolCourses;
+	}
 
     @OnEvent(component = "concessionForm", value = "submit")
     Object submitConcession() {
