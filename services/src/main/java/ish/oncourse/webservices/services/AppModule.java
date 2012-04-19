@@ -39,6 +39,8 @@ import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.internal.OperationException;
+import org.apache.tapestry5.runtime.ComponentEventException;
 import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.ExceptionReporter;
 import org.apache.tapestry5.services.RequestExceptionHandler;
@@ -85,7 +87,13 @@ public class AppModule {
 			final ComponentSource componentSource) {
 		return new RequestExceptionHandler() {
 			public void handleRequestException(Throwable exception) throws IOException {
-				logger.error("Unexpected runtime exception: " + exception.getMessage(), exception);
+				if (exception instanceof OperationException && exception.getCause() instanceof ComponentEventException && 
+					exception.getCause().getCause() instanceof RuntimeException && 
+					"Forms require that the request method be POST and that the t:formdata query parameter have values.".equals(exception.getMessage())) {
+					logger.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
+				} else {
+					logger.error("Unexpected runtime exception: " + exception.getMessage(), exception);
+				}
 				Throwable cause = exception.getCause();
 				if (cause != null) {
 					// Trying to get possible PaymentNotFoundException, which is
