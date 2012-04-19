@@ -272,7 +272,7 @@ public class EnrolCourses {
 
         List<Enrolment> enrolmentsToDelete = new ArrayList<Enrolment>();
         List<InvoiceLine> invoiceLinesToDelete = new ArrayList<InvoiceLine>();
-        if (enrolments.size()> 0)
+        if (enrolments != null && !enrolments.isEmpty())
         {
             for (Enrolment enrolment:enrolments)
             {
