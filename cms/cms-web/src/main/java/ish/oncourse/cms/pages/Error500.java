@@ -9,6 +9,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.internal.OperationException;
+import org.apache.tapestry5.runtime.ComponentEventException;
 import org.apache.tapestry5.services.ExceptionReporter;
 
 public class Error500 implements ExceptionReporter {
@@ -18,12 +20,15 @@ public class Error500 implements ExceptionReporter {
 	@Property
 	private Throwable exception;
 
+	@SuppressWarnings("all")
 	@Property
 	private String stackTrace;
 
+	@SuppressWarnings("all")
 	@Property
 	private String title;
 
+	@SuppressWarnings("all")
 	@Inject
 	private IWebSiteService siteService;
 
@@ -32,7 +37,13 @@ public class Error500 implements ExceptionReporter {
 
 
 	public void reportException(Throwable exception) {
-		logger.error("Unexpected runtime exception: " + exception.getMessage(), exception);
+		if (exception instanceof OperationException && exception.getCause() instanceof ComponentEventException && 
+			exception.getCause().getCause() instanceof RuntimeException && 
+			"Forms require that the request method be POST and that the t:formdata query parameter have values.".equals(exception.getMessage())) {
+			logger.warn("Unexpected runtime exception: " + exception.getMessage(), exception);
+		} else {
+			logger.error("Unexpected runtime exception: " + exception.getMessage(), exception);
+		}
 		this.exception = exception;
 	}
 
