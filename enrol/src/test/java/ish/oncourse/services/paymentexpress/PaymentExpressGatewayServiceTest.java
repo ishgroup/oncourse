@@ -484,42 +484,41 @@ public class PaymentExpressGatewayServiceTest {
     }
 
     private void assertGetStatusResult(TransactionResult2 submitResult, TransactionResult2 getStatusResult) {
-        assertEquals(submitResult.getAuthorized(), getStatusResult.getAuthorized());
+        assertEquals("Test getAuthorized",submitResult.getAuthorized(), getStatusResult.getAuthorized());
 //        assertEquals(submitResult.getAcquirerReco(), getStatusResult.getAcquirerReco());
-        assertEquals(submitResult.getAcquirerResponseText().toLowerCase(), getStatusResult.getAcquirerResponseText().toLowerCase());
-        assertEquals(submitResult.getAmount(), getStatusResult.getAmount());
-        assertEquals(submitResult.getAuthCode(), getStatusResult.getAuthCode());
-        assertEquals(submitResult.getBillingId(), getStatusResult.getBillingId());
-        assertEquals(submitResult.getCardHolderHelpText(), getStatusResult.getCardHolderHelpText());
-        assertEquals(submitResult.getCardHolderName(), getStatusResult.getCardHolderName());
-        assertEquals(submitResult.getCardHolderResponseDescription(), getStatusResult.getCardHolderResponseDescription());
-        assertEquals(submitResult.getCardHolderResponseText(), getStatusResult.getCardHolderResponseText());
-        assertEquals(submitResult.getCardName(), getStatusResult.getCardName());
-        assertEquals(submitResult.getCardNumber(), getStatusResult.getCardNumber());
+        assertEquals("Test getAcquirerResponseText",submitResult.getAcquirerResponseText().toLowerCase(), getStatusResult.getAcquirerResponseText().toLowerCase());
+        assertEquals("Test getAmount",submitResult.getAmount(), getStatusResult.getAmount());
+        assertEquals("Test getAuthCode",submitResult.getAuthCode(), getStatusResult.getAuthCode());
+        assertEquals("Test getBillingId",submitResult.getBillingId(), getStatusResult.getBillingId());
+        assertEquals("Test getCardHolderHelpText",submitResult.getCardHolderHelpText(), getStatusResult.getCardHolderHelpText());
+        assertEquals("Test getCardHolderName",submitResult.getCardHolderName(), getStatusResult.getCardHolderName());
+        assertEquals("Test getCardHolderResponseDescription",submitResult.getCardHolderResponseDescription(), getStatusResult.getCardHolderResponseDescription());
+        assertEquals("Test getCardHolderResponseText",submitResult.getCardHolderResponseText(), getStatusResult.getCardHolderResponseText());
+        assertEquals("Test getCardName",submitResult.getCardName(), getStatusResult.getCardName());
+        assertEquals("Test getCardNumber",submitResult.getCardNumber(), getStatusResult.getCardNumber());
 //        assertEquals(submitResult.getCurrencyName(), getStatusResult.getCurrencyName());
-        assertEquals(submitResult.getCurrencyRate(), getStatusResult.getCurrencyRate());
-        assertEquals(submitResult.getCvc2(), getStatusResult.getCvc2());
+        assertEquals("Test getCurrencyRate",submitResult.getCurrencyRate(), getStatusResult.getCurrencyRate());
+        assertEquals("Test getCvc2",submitResult.getCvc2(), getStatusResult.getCvc2());
 //        assertEquals(submitResult.getDateExpiry(), getStatusResult.getDateExpiry());
-        assertEquals(submitResult.getDateSettlement(), getStatusResult.getDateSettlement());
-        assertEquals(submitResult.getDpsBillingId(), getStatusResult.getDpsBillingId());
+        assertEquals("Test getDateSettlement",submitResult.getDateSettlement(), getStatusResult.getDateSettlement());
+        assertEquals("Test getDpsBillingId",submitResult.getDpsBillingId(), getStatusResult.getDpsBillingId());
 //        assertEquals(submitResult.getDpsTxnRef(), getStatusResult.getDpsTxnRef());
-        assertEquals(submitResult.getHelpText(), getStatusResult.getHelpText());
-        assertEquals(submitResult.getIccData(), getStatusResult.getIccData());
-        assertEquals(submitResult.getIssuerCountryId(), getStatusResult.getIssuerCountryId());
+        assertEquals("Test getHelpText",submitResult.getHelpText(), getStatusResult.getHelpText());
+        assertEquals("Test getIccData",submitResult.getIccData(), getStatusResult.getIccData());
+        assertEquals("Test getIssuerCountryId",submitResult.getIssuerCountryId(), getStatusResult.getIssuerCountryId());
 //        assertEquals(submitResult.getMerchantHelpText(), getStatusResult.getMerchantHelpText());
-        assertEquals(submitResult.getMerchantReference(), getStatusResult.getMerchantReference());
-        assertEquals(submitResult.getMerchantResponseDescription(), getStatusResult.getMerchantResponseDescription());
-        assertEquals(submitResult.getMerchantResponseText(), getStatusResult.getMerchantResponseText());
-        assertEquals(submitResult.getReco(), getStatusResult.getReco());
-        assertEquals(submitResult.getResponseText(), getStatusResult.getResponseText());
-        assertEquals(submitResult.getResponseText(), getStatusResult.getResponseText());
-        assertEquals(submitResult.getRetry(), getStatusResult.getRetry());
-        assertArrayEquals(submitResult.getRiskRuleMatches(), getStatusResult.getRiskRuleMatches());
-        assertEquals(submitResult.getStatusRequired(), getStatusResult.getStatusRequired());
-        assertEquals(submitResult.getTestMode(), getStatusResult.getTestMode());
-//        assertEquals(submitResult.getTxnMac(), getStatusResult.getTxnMac());
-        assertEquals(submitResult.getTxnRef(), getStatusResult.getTxnRef());
-        assertEquals(submitResult.getTxnType(), getStatusResult.getTxnType());
+        assertEquals("Test getMerchantReference",submitResult.getMerchantReference(), getStatusResult.getMerchantReference());
+        assertEquals("Test getMerchantResponseDescription",submitResult.getMerchantResponseDescription(), getStatusResult.getMerchantResponseDescription());
+        assertEquals("Test getMerchantResponseText",submitResult.getMerchantResponseText(), getStatusResult.getMerchantResponseText());
+        assertEquals("Test getReco",submitResult.getReco(), getStatusResult.getReco());
+        assertEquals("Test getResponseText",submitResult.getResponseText(), getStatusResult.getResponseText());
+        assertEquals("Test getRetry",submitResult.getRetry(), getStatusResult.getRetry());
+        assertArrayEquals("Test getRiskRuleMatches",submitResult.getRiskRuleMatches(), getStatusResult.getRiskRuleMatches());
+        assertEquals("Test getStatusRequired",submitResult.getStatusRequired(), getStatusResult.getStatusRequired());
+        assertEquals("Test getTestMode",submitResult.getTestMode(), getStatusResult.getTestMode());
+//        assertEquals("Test ",submitResult.getTxnMac(), getStatusResult.getTxnMac());
+        assertEquals("Test getTxnRef",submitResult.getTxnRef(), getStatusResult.getTxnRef());
+        assertEquals("Test getTxnType", submitResult.getTxnType(), getStatusResult.getTxnType());
     }
 
 }
