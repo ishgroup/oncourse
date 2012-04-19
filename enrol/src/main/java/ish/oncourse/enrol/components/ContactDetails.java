@@ -5,6 +5,7 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.ConcessionType;
@@ -27,6 +28,7 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -202,6 +204,20 @@ public class ContactDetails {
      * reset form method flag
      */
     private boolean reset;
+    
+    /**
+     * Inject global parent form to be able return it in a case of clear persisted values after enrollment finished 
+     */
+    @SuppressWarnings("all")
+	@InjectPage
+    private EnrolCourses enrolCourses;
+    
+    /**
+     * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
+     */
+	Object onException(Throwable cause) {
+		return enrolCourses.handleUnexpectedException(cause);
+	}
 
     @SetupRender
     void beforeRender() {
