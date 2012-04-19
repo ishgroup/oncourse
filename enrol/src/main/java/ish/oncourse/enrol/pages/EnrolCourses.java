@@ -85,7 +85,8 @@ public class EnrolCourses {
     @Inject
     private Request request;
 
-    @Inject
+    @SuppressWarnings("all")
+	@Inject
     private RequestGlobals requestGlobals;
 
     @Inject
@@ -334,8 +335,7 @@ public class EnrolCourses {
         College currentCollege = webSiteService.getCurrentCollege();
         College college = (College) context.localObject(currentCollege.getObjectId(), currentCollege);
 
-        if (payment == null || payment.getStatus() == PaymentStatus.FAILED
-                || payment.getStatus() == PaymentStatus.FAILED_CARD_DECLINED) {
+        if (payment == null ||payment.getStatus() == PaymentStatus.FAILED || payment.getStatus() == PaymentStatus.FAILED_CARD_DECLINED) {
 
             payment = context.newObject(PaymentIn.class);
             payment.setStatus(PaymentStatus.NEW);
@@ -814,6 +814,15 @@ public class EnrolCourses {
     public boolean isPersistCleared()
     {
         return context == null;
+    }
+    
+    public Object handleUnexpectedException(final Throwable cause) {
+    	if (isPersistCleared()) {
+			LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
+			return this;
+		} else {
+			throw new IllegalArgumentException(cause);
+		}
     }
 
 

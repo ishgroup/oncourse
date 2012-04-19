@@ -252,18 +252,9 @@ public class EnrolmentPaymentEntry {
     /**
      * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
      */
-    Object onException(Throwable cause)
-    {
-        if (enrolCourses.isPersistCleared())
-        {
-            LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
-        }
-        else
-        {
-            throw new IllegalArgumentException(cause);
-        }
-        return enrolCourses;
-    }
+	Object onException(Throwable cause) {
+		return enrolCourses.handleUnexpectedException(cause);
+	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {

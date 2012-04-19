@@ -25,6 +25,7 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ConcessionEntry {
+	@SuppressWarnings("all")
 	private static final Logger LOGGER = Logger.getLogger(ConcessionEntry.class);
 
     @Inject
@@ -80,12 +81,7 @@ public class ConcessionEntry {
      * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
      */
 	Object onException(Throwable cause) {
-		if (enrolCourses.isPersistCleared()) {
-			LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
-		} else {
-			throw new IllegalArgumentException(cause);
-		}
-		return enrolCourses;
+		return enrolCourses.handleUnexpectedException(cause);
 	}
 
     @OnEvent(component = "concessionForm", value = "submit")
