@@ -8,11 +8,7 @@
     <div class="classes-classroll">
         <div class="day-head">
             <div id="prevSession">
-                <a href="#" id="prevButton" class="prev-session">
-                    <t:if test="ShowSessionNavigation">
-                        Previous session
-                    </t:if>
-                </a>
+                <a href="#" id="prevButton" class="prev-session">Previous session</a>
             </div>
             <div id='classes_inner'>
                 <ul id='classes_ul'>
@@ -30,13 +26,8 @@
                     </t:loop>
                 </ul>
             </div>
-            <!-- #12388 cannot exclude the div when only one session because jquery.slider uses nextButton id to shown the first session in the list. -->
             <div id="nextSession">
-                <a href="#" id="nextButton" class="next-session">
-                    <t:if test="ShowSessionNavigation">
-                        Next session
-                    </t:if>
-                </a>
+                <a href="#" id="nextButton" class="next-session">Next session</a>
             </div>
         </div>
 

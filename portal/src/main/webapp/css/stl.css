@@ -1711,12 +1711,15 @@ a.btn2{
 #prevSession .disabled {
   color: grey; 
   cursor: default;
+  visibility:hidden;
+
 }
 
 
 #nextSession .disabled {
   color: grey; 
   cursor: default;
+  visibility:hidden;
 }
 
 #effect_attendance h3 {

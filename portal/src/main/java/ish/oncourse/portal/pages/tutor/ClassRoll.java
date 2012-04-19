@@ -194,13 +194,4 @@ public class ClassRoll {
 		return new TextStreamResponse(CONTENT_TYPE, "NOT SUCCESS");
 		
 	}
-
-
-    /**
-     * The method returns true if the page should contains navigation controls for sessions
-     */
-    public boolean getShowSessionNavigation()
-    {
-        return sessions != null && sessions.size() > 1;
-    }
 }
