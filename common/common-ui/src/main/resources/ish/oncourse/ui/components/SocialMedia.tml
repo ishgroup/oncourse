@@ -1,5 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
+    <link href="http://s7.addthis.com/static/r07/widget082.css" media="screen" rel="stylesheet" type="text/css" />
+
 	<div class="addthis_toolbox addthis_default_style ">
 		<a class="addthis_button_email"></a>
 		<a class="addthis_button_preferred_1"></a>
