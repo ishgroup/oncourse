@@ -63,6 +63,8 @@ public interface ICourseClassService {
 	 * @return courseClass list
 	 */
 	public List<CourseClass> getContactCourseClasses(Contact contact);
-	
-	Attendance loadAttendanceById(Object ids);
+
+    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassPeriod period);
+
+    Attendance loadAttendanceById(Object ids);
 }

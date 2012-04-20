@@ -5,6 +5,7 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
 import java.text.ParseException;
@@ -26,21 +27,7 @@ public class TimetableJson {
 	
 	private static final Logger logger = Logger.getLogger(TimetableJson.class);
 	
-	/**
-	 * Format for parsing month parameter.
-	 */
-	private static final String DATE_FORMAT = "MM-yyyy";
-	
-	/**
-	 * Format for month.
-	 */
-	private static final String MONTH_FORMAT = "MMM";
-	
-	/**
-	 * Format for printing classes time.
-	 */
-	private static final String TIME_FORMAT = "h:mm a";
-	
+
 	@Inject
 	private Request request;
 	
@@ -60,8 +47,8 @@ public class TimetableJson {
 		List<Session> sessions = courseClassService.getContactSessionsForMonth(contact, currentMonth(monthStr));
 		
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat timeFormatter = new SimpleDateFormat(TIME_FORMAT);
-		SimpleDateFormat monthFormatter = new SimpleDateFormat(MONTH_FORMAT);
+		SimpleDateFormat timeFormatter = PortalUtils.DATE_FORMATTER_MM_yyyy;
+		SimpleDateFormat monthFormatter = PortalUtils.DATE_FORMATTER_MMM;
 		
 		JSONObject jsonTimetable = new JSONObject();
 		JSONArray jsonSessions = null;
@@ -121,7 +108,7 @@ public class TimetableJson {
 	
 	private Date currentMonth(String monthStr) {
 		
-		SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+		SimpleDateFormat formatter = PortalUtils.DATE_FORMATTER_MM_yyyy;
 		
 		Date currentMonth = null; 
 		

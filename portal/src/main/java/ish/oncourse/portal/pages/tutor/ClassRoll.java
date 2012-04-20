@@ -5,6 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import ish.oncourse.model.*;
+import ish.oncourse.portal.services.PortalUtils;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
@@ -13,13 +20,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.SessionTutor;
-import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.pages.PageNotFound;
@@ -29,12 +29,6 @@ import ish.oncourse.services.preference.PreferenceController;
 @UserRole("tutor")
 public class ClassRoll {
 
-	private static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
-	
-	private static final String DATE_FORMAT = "dd/MMM";
-	
-	private static final String CONTENT_TYPE = "text/json";
-	
 	@Inject
 	private Request request;
 
@@ -66,9 +60,6 @@ public class ClassRoll {
 	@Property
 	private IAuthenticationService authenticationService;
 	
-	
-	private SimpleDateFormat dateFormatter;
-	
 	@InjectPage
 	private PageNotFound pageNotFound;
 	
@@ -89,13 +80,24 @@ public class ClassRoll {
 		}
 		List<Enrolment> enrolments = courseClass.getValidEnrolments();
 		enrolmentsCount = enrolments.size();
-		sessions = courseClass.getSessions();
+
+        sessions = searchSessionBy(courseClass);
 		availableEnrolmentPlaces = courseClass.getAvailableEnrolmentPlaces();
-		this.dateFormatter = new SimpleDateFormat(DATE_FORMAT);
 		return true;
 	}
 
-	public String getClassInfoPageName() {
+    /**
+     *  The method searches Sessions for the  courseClass and sorts them by startDate field.
+     *  The method has been introduced because we need sorting by startDate field, CourseClass.getSessions()
+     */
+    List<Session> searchSessionBy(CourseClass courseClass) {
+        Expression exp = ExpressionFactory.matchDbExp(Session.COURSE_CLASS_PROPERTY, courseClass);
+        SelectQuery selectQuery = new SelectQuery(Session.class, exp);
+        selectQuery.addOrdering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING);
+        return  (List<Session>) courseClass.getObjectContext().performQuery(selectQuery);
+    }
+
+    public String getClassInfoPageName() {
 		return "class";
 	}
 
@@ -122,15 +124,15 @@ public class ClassRoll {
 	}
 	
 	public String getDay() {
-		return dateFormatter.format(currentSession.getStartDate()).split("/")[0];
+		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentSession.getStartDate()).split("/")[0];
 	}
 
 	public String getMonth() {
-		return dateFormatter.format(currentSession.getStartDate()).split("/")[1];
+		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentSession.getStartDate()).split("/")[1];
 	}
 
 	public boolean isToday() {
-		return Math.abs(System.currentTimeMillis() - currentSession.getStartDate().getTime()) <= MILLISECONDS_IN_DAY;
+		return Math.abs(System.currentTimeMillis() - currentSession.getStartDate().getTime()) <= PortalUtils.MILLISECONDS_IN_DAY;
 	}
 	
 	public boolean isAttended() {
@@ -146,9 +148,8 @@ public class ClassRoll {
 	}
 	
 	public String getEnrolmentDate() {
-		DateFormat format = new SimpleDateFormat("dd MMMM yyyy");
 		if (this.attendance != null && this.attendance.getCreated() != null) {
-			return format.format(this.attendance.getCreated());
+			return PortalUtils.DATE_FORMATTER_dd_MMMM_yyyy.format(this.attendance.getCreated());
 		}
 		return "";
 	}
@@ -182,16 +183,16 @@ public class ClassRoll {
 				if ("attended".equals(action)){ 
 					attandance.setAttendanceType(1);
 					attandance.getObjectContext().commitChanges();
-					return new TextStreamResponse(CONTENT_TYPE, "SUCCESS");
+					return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
 				} else if ("absent".equals(action)) {
 					attandance.setAttendanceType(2);
 					attandance.getObjectContext().commitChanges();
-					return new TextStreamResponse(CONTENT_TYPE, "SUCCESS");
+					return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
 				} 
 			}
 		} 
 		
-		return new TextStreamResponse(CONTENT_TYPE, "NOT SUCCESS");
+		return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "NOT SUCCESS");
 		
 	}
 }

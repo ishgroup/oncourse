@@ -4,6 +4,7 @@ import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
 import java.text.SimpleDateFormat;
@@ -22,14 +23,6 @@ import org.apache.tapestry5.services.Request;
 
 public class TimetableList {
 
-	private static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
-
-	private static final String DATE_FORMAT = "dd/MMM";
-	
-	/**
-	 * Format for printing classes time.
-	 */
-	private static final String TIME_FORMAT = "h:mm a";
 
 	@Inject
 	private ICourseClassService classService;
@@ -48,10 +41,7 @@ public class TimetableList {
 	
 	private Map<Date, List<Session>> sessionsByDate;
 	
-	private SimpleDateFormat dateFormatter;
-	
-	private SimpleDateFormat timeFormatter;
-	
+
 	@Inject
 	private Request request;
 	
@@ -62,8 +52,6 @@ public class TimetableList {
 	@SetupRender
 	void setupRender() {
 		this.sessionsByDate = new LinkedHashMap<Date, List<Session>>();
-		this.dateFormatter = new SimpleDateFormat(DATE_FORMAT);
-		this.timeFormatter = new SimpleDateFormat(TIME_FORMAT);
 
 		Calendar cal = Calendar.getInstance();
 
@@ -108,19 +96,19 @@ public class TimetableList {
 	}
 
 	public String getDay() {
-		return dateFormatter.format(currentBucket.getKey()).split("/")[0];
+		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentBucket.getKey()).split("/")[0];
 	}
 
 	public String getMonth() {
-		return dateFormatter.format(currentBucket.getKey()).split("/")[1];
+		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentBucket.getKey()).split("/")[1];
 	}
 
 	public boolean isToday() {
-		return Math.abs(System.currentTimeMillis() - currentBucket.getKey().getTime()) <= MILLISECONDS_IN_DAY;
+		return Math.abs(System.currentTimeMillis() - currentBucket.getKey().getTime()) <= PortalUtils.MILLISECONDS_IN_DAY;
 	}
 
 	public String getTime() {
-		return String.format("%s - %s", timeFormatter.format(session.getStartDate()), timeFormatter.format(session.getEndDate()));
+		return String.format("%s - %s", PortalUtils.TIME_FORMATTER_h_mm_a.format(session.getStartDate()), PortalUtils.TIME_FORMATTER_h_mm_a.format(session.getEndDate()));
 	}
 
 	public String getName() {

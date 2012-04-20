@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Classes"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_classes">
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="${activeMenu}">
 	
  	<h1>Classes</h1>
  	
@@ -33,7 +33,14 @@
 		          </tr>
 	      	</t:loop>
    		</table>
-   		<p:else>You have no currently scheduled classes.</p:else>	 	
+   		<p:else>
+               <t:if test="currentPeriod">
+                       You have no currently scheduled classes.
+                   <p:else>
+                       You have no scheduled classes in past.
+                   </p:else>
+               </t:if>
+        </p:else>
  	</t:if>
 	
 </html>

@@ -3,6 +3,7 @@ package ish.oncourse.portal.components;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 
+import ish.oncourse.services.courseclass.CourseClassPeriod;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Menu {
@@ -48,4 +49,15 @@ public class Menu {
 	public String getSurveysPageName() {
 		return isTutor() ? "tutor/surveys" : "student/surveys";
 	}
+
+    public String getCurrent()
+    {
+        return CourseClassPeriod.CURRENT.name();
+    }
+
+    public String getPast()
+    {
+        return CourseClassPeriod.PAST.name();
+    }
+
 }
