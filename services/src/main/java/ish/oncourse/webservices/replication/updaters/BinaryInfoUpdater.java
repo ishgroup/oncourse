@@ -13,10 +13,6 @@ public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, Bin
 		entity.setMimeType(stub.getMimeType());
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
-		if (stub.isWebVisible() && stub.getName().contains(BinaryInfo.UNSUPPORTED_NAME_CHARACTER)) {
-			LOG.error(String.format("Unsupported characters exist in web visible binary info name: %s with id: %s angelid: %s", stub.getName(), 
-				stub.getWillowId(), stub.getAngelId()));
-		}
 		entity.setPixelHeight(stub.getPixelHeight());
 		entity.setPixelWidth(stub.getPixelWidth());
 	}
