@@ -131,7 +131,7 @@ public class ClassApproval {
 
 		for (TutorRole t : courseClass.getTutorRoles()) {
 			if (t.getTutor().getContact().getId().equals(c.getId())) {
-				return t.getConfirmedDate() != null;
+				return t.getIsConfirmed();
 			}
 		}
 
