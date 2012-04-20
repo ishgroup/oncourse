@@ -33,7 +33,7 @@
 
                 <p>
 
-                    <label title="The name of this page">
+                    <label rel="tooltip" title="The name of this page">
                         Page Name
                     </label>
                     <t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
@@ -43,7 +43,7 @@
                 </p>
 
                 <p>
-                    <label title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design.">
+                    <label rel="tooltip" title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design.">
                         Page theme
                     </label>
                     <t:select  t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder"
@@ -53,7 +53,7 @@
 </p>
                 <p>
 
-                        <label title="Publish this page on website or not">
+                        <label rel="tooltip" title="Publish this page on website or not">
                             Page visibility
                         </label>
 
@@ -82,7 +82,7 @@
     <div class="cms-span7">
 
         <p>
-            <label title="This page is accessible via the following URLs">
+            <label rel="tooltip" title="This page is accessible via the following URLs">
                 Page Links (URLs)
             </label>
         </p>
@@ -97,7 +97,7 @@
                         <p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
                     </t:if>
                 </b>
-                <span class="cms-label" title="Default URL for this page">default</span>
+                <span class="cms-label" rel="tooltip" title="Default URL for this page">default</span>
 
            </p>
 
