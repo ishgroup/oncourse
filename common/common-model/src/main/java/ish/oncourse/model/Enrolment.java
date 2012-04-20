@@ -2,7 +2,6 @@ package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.QueueableObjectUtils;
 

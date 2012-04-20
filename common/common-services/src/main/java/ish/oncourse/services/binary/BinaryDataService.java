@@ -58,6 +58,10 @@ public class BinaryDataService implements IBinaryDataService {
 
 	public BinaryInfo getBinaryInfo(String searchProperty, Object value) {
 		Expression qualifier = getCollegeQualifier().andExp(ExpressionFactory.matchExp(searchProperty, value));
+		if (BinaryInfo.NAME_PROPERTY.equals(searchProperty) && ((String)value).contains(BinaryInfo.UNSUPPORTED_NAME_CHARACTER)) {
+			LOGGER.error(String.format("Incorrect binary info name passed with name : %s for collegeid : %s", value, 
+				webSiteService.getCurrentCollege().getId()), new Exception("invocation trace"));
+		}
 		return getRandomBinaryInfo(qualifier);
 	}
 
@@ -85,7 +89,10 @@ public class BinaryDataService implements IBinaryDataService {
 		ObjectContext sharedContext = cayenneService.sharedContext();
 
 		EJBQLQuery q = new EJBQLQuery("select count(i) from BinaryInfo i where " + qualifier.toEJBQL("i"));
-
+		if (LOGGER.isInfoEnabled()) {
+			final String ejbqlStatement = q.getEjbqlStatement();
+			LOGGER.info(String.format("Binary info select: %s", ejbqlStatement));
+		}
 		Long count = (Long) sharedContext.performQuery(q).get(0);
 
 		BinaryInfo randomResult = null;
@@ -113,11 +120,10 @@ public class BinaryDataService implements IBinaryDataService {
 	@Override
 	public List<BinaryInfo> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean isWebVisible) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
-
 		SelectQuery query = new SelectQuery(BinaryInfoRelation.class, ExpressionFactory.matchExp(
 				BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, entityIdNum).andExp(
 				ExpressionFactory.matchExp(BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, entityIdentifier)));
-
+		@SuppressWarnings("unchecked")
 		List<BinaryInfoRelation> relations = sharedContext.performQuery(query);
 		if (!relations.isEmpty()) {
 			List<BinaryInfo> attachedFiles = new ArrayList<BinaryInfo>(relations.size());
@@ -126,7 +132,6 @@ public class BinaryDataService implements IBinaryDataService {
 			}
 			return getCollegeQualifier(isWebVisible).filterObjects(attachedFiles);
 		}
-
 		return new ArrayList<BinaryInfo>(0);
 	}
 
