@@ -5,16 +5,13 @@ import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -56,12 +53,8 @@ public class BinaryDataService implements IBinaryDataService {
 				qualifier));
 	}
 
-	public BinaryInfo getBinaryInfo(String searchProperty, Object value) {
-		Expression qualifier = getCollegeQualifier().andExp(ExpressionFactory.matchExp(searchProperty, value));
-		if (BinaryInfo.NAME_PROPERTY.equals(searchProperty) && ((String)value).contains(BinaryInfo.UNSUPPORTED_NAME_CHARACTER)) {
-			LOGGER.error(String.format("Incorrect binary info name passed with name : %s for collegeid : %s", value, 
-				webSiteService.getCurrentCollege().getId()), new Exception("invocation trace"));
-		}
+	public BinaryInfo getBinaryInfo(final String searchProperty, Object value) {
+		final Expression qualifier = getCollegeQualifier().andExp(ExpressionFactory.matchExp(searchProperty, value));
 		return getRandomBinaryInfo(qualifier);
 	}
 
@@ -84,22 +77,15 @@ public class BinaryDataService implements IBinaryDataService {
 		return qualifier;
 	}
 
-	private BinaryInfo getRandomBinaryInfo(Expression qualifier) {
-
+	private BinaryInfo getRandomBinaryInfo(final Expression qualifier) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
-
-		EJBQLQuery q = new EJBQLQuery("select count(i) from BinaryInfo i where " + qualifier.toEJBQL("i"));
-		if (LOGGER.isInfoEnabled()) {
-			final String ejbqlStatement = q.getEjbqlStatement();
-			LOGGER.info(String.format("Binary info select: %s", ejbqlStatement));
-		}
-		Long count = (Long) sharedContext.performQuery(q).get(0);
-
+		final SelectQuery binaryCount = new SelectQuery(BinaryInfo.class, qualifier);
+		@SuppressWarnings("unchecked")
+		List<BinaryInfo> binaries = (List<BinaryInfo>)sharedContext.performQuery(binaryCount);
+		Long count = (long) binaries.size();
 		BinaryInfo randomResult = null;
-
 		int attempt = 0;
-
-		if (count != null && count > 0) {
+		if (count > 0) {
 			while ((randomResult == null || randomResult.getBinaryData() == null) && attempt++ < 5) {
 				int random = new Random().nextInt(count.intValue());
 
