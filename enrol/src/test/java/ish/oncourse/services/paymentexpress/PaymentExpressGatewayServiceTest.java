@@ -21,6 +21,9 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -440,6 +443,9 @@ public class PaymentExpressGatewayServiceTest {
 
     @Test
     public void testSuccessGetStatusOperation() throws ServiceException {
+
+        when(payment.getClientReference()).thenReturn("W" + RandomStringUtils.random(10,false,true));
+
         when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
         when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
         when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
@@ -457,12 +463,17 @@ public class PaymentExpressGatewayServiceTest {
         GetStatusOperation getStatusOperation = new GetStatusOperation(GATEWAY_ACCOUNT, GATEWAY_PASSWORD, transactionDetails.getTxnRef(),stub);
         TransactionResult2 getStatusResult = getStatusOperation.getResult();
 
+        assertTrue("submitResult is SUCCESS", PaymentExpressUtil.translateFlag(submitResult.getAuthorized()));
+        assertTrue("getStatusResult is SUCCESS", PaymentExpressUtil.translateFlag(getStatusResult.getAuthorized()));
+
         assertGetStatusResult(submitResult, getStatusResult);
     }
 
 
     @Test
     public void testUnsuccessfulGetStatusOperation() throws ServiceException {
+        when(payment.getClientReference()).thenReturn("O" + RandomStringUtils.random(10,false,true));
+
         when(payment.getCreditCardNumber()).thenReturn(INVALID_CARD_NUMBER);
         when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
         when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
@@ -479,6 +490,9 @@ public class PaymentExpressGatewayServiceTest {
         TransactionResult2 submitResult = submitTransactionOperation.getResult();
         GetStatusOperation getStatusOperation = new GetStatusOperation(GATEWAY_ACCOUNT, GATEWAY_PASSWORD, transactionDetails.getTxnRef(),stub);
         TransactionResult2 getStatusResult = getStatusOperation.getResult();
+
+        assertFalse("submitResult is FAILED", PaymentExpressUtil.translateFlag(submitResult.getAuthorized()));
+        assertFalse("getStatusResult is FAILED", PaymentExpressUtil.translateFlag(getStatusResult.getAuthorized()));
 
         assertGetStatusResult(submitResult, getStatusResult);
     }
