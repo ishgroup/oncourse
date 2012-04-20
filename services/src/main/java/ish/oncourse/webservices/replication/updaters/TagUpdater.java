@@ -19,9 +19,8 @@ public class TagUpdater extends AbstractWillowUpdater<TagStub, Tag>{
 	@Override
 	protected void updateEntity(final TagStub stub, final Tag entity, final RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
-		if (StringUtils.trimToNull(stub.getDetailTextile()) != null) {
-			entity.setDetail(textileConverter.convertCoreTextile(stub.getDetailTextile()));
-		}
+		entity.setDetail(StringUtils.trimToNull(stub.getDetailTextile()) != null ? textileConverter.convertCoreTextile(stub.getDetailTextile()) : 
+			StringUtils.EMPTY);
 		entity.setDetailTextile(stub.getDetailTextile());
 		entity.setIsTagGroup(Boolean.TRUE.equals(stub.isTagGroup()));
 		entity.setIsWebVisible(Boolean.TRUE.equals(stub.isWebVisible()));
