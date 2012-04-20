@@ -114,19 +114,19 @@
             </t:if>
 
             <t:loop source="editNode.webUrlAliases" value="webUrlAlias">
-                <t:if t:test="notDefault">
+
 
                     <p>
                         <span>${siteUrl}${webUrlAlias.urlPath}</span>
 
                         <a t:id="makeDefault" t:type="actionLink"
                            t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="cms-btn cms-btn-mini">make default</a>
-                        <a class="cms-btn cms-btn-mini" t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
+                        <a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
                                                     <i class="cms-icon-trash"></i>
                                                 </a>
                     </p>
 
-                </t:if>
+
             </t:loop>
 
 <br />
