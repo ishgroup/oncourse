@@ -97,7 +97,7 @@
                         <p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
                     </t:if>
                 </b>
-                <span class="cms-label" rel="tooltip" title="Default URL for this page">default</span>
+                <span class="cms-label cms-label-success" rel="tooltip" title="Default URL for this page">default</span>
 
            </p>
 
