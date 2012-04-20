@@ -3,55 +3,55 @@
         xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         xmlns:p="tapestry:parameter">
     <div class="cms-row-fluid">
-    <t:zone t:id="optionsZone" t:update="show">
-        <t:form t:id="optionsForm" zone="${optionsZone.clientId}">
-            <script>
-                if (${savedNewPage}) {
-                    window.location = "/page/${editNode.nodeNumber}";
-                } else if (${savedPage}) {
-                    jQuery('.cms-btn-control.active').click();
-                }
+        <t:zone t:id="optionsZone" t:update="show">
+            <t:form t:id="optionsForm" zone="${optionsZone.clientId}">
+                <script>
+                    if (${savedNewPage}) {
+                        window.location = "/page/${editNode.nodeNumber}";
+                    } else if (${savedPage}) {
+                        jQuery('.cms-btn-control.active').click();
+                    }
 
-            </script>
-            <t:hidden value="cancelEditing" t:id="cancelEditingHiddenField"/>
-            <div class="cms-main-head">
-                <div class="cms-main-title">
-                    <h1 class="cms-page-title">Page options for current page (${editNode.name})</h1>
-                </div>
-                <div class="cms-main-controls alignRight">
+                </script>
+                <t:hidden value="cancelEditing" t:id="cancelEditingHiddenField"/>
+                <div class="cms-main-head">
+                    <div class="cms-main-title">
+                        <h1 class="cms-page-title">Page options for current page (${editNode.name})</h1>
+                    </div>
+                    <div class="cms-main-controls alignRight">
 					<span class="cms-ico-close cms-close-pane"
                           onclick="$('${cancelEditingHiddenField.clientId}').value=true;
 									$('${optionsForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT); 
 									jQuery('.cms-btn-control.active').click();"/>
+                    </div>
                 </div>
-            </div>
 
-            <t:errors class="literal:cms-error-txt"/>
-
-
-            <div class="cms-span5">
-
-                <p>
-
-                    <label title="The name of this page">
-                        Page Name
-                    </label>
-                    <t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
-                                 class="cms-span4"/>
+                <t:errors class="literal:cms-error-txt"/>
 
 
-                </p>
+                <div class="cms-span5">
 
-                <p>
-                    <label title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design.">
-                        Page theme
-                    </label>
-                    <t:select  t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder"
-                              value="editNode.webNodeType"
-                              validate="required"/>
+                    <p>
 
-</p>
-                <p>
+                        <label title="The name of this page">
+                            Page Name
+                        </label>
+                        <t:textfield t:id="pageName" t:value="editNode.name" validate="required" maxlength="100"
+                                     class="cms-span4"/>
+
+
+                    </p>
+
+                    <p>
+                        <label title="Theme for this page. This may affect the layout of the page, the blocks which appear and the page design.">
+                            Page theme
+                        </label>
+                        <t:select t:id="pageType" name="pageType" model="pageTypeModel" encoder="pageTypeEncoder"
+                                  value="editNode.webNodeType"
+                                  validate="required"/>
+
+                    </p>
+                    <p>
 
                         <label title="Publish this page on website or not">
                             Page visibility
@@ -63,91 +63,93 @@
 					</span>
 
 
-
-
-                </p>
-
-
-            </div>
-
-        </t:form>
-    </t:zone>
-
-
-    <script type="text/javascript">
-        Event.observe('${optionsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
-    </script>
-
-
-    <div class="cms-span7">
-
-        <p>
-            <label title="This page is accessible via the following URLs">
-                Page Links (URLs)
-            </label>
-        </p>
-
-        <t:zone t:id="urlZone" t:update="show">
-
-
-           <p>
-                <b>
-                    <t:if t:test="hasDefault">
-                        ${siteUrl}${editNode.defaultWebURLAlias.urlPath}
-                        <p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
-                    </t:if>
-                </b>
-                <span class="cms-label" title="Default URL for this page">default</span>
-
-           </p>
-
-
-            <t:if t:test="hasDefault">
-
-                <p>
-                    <span>${siteUrl}/page/${editNode.nodeNumber}</span>
-                    <a t:id="removeDefault" t:type="actionLink"
-                       zone="prop:urlZone.clientId"
-                       class="cms-btn cms-btn-mini">make default</a>
-                </p>
-
-            </t:if>
-
-            <t:loop source="editNode.webUrlAliases" value="webUrlAlias">
-
-
-                    <p>
-                        <span>${siteUrl}${webUrlAlias.urlPath}</span>
-
-                        <a t:id="makeDefault" t:type="actionLink"
-                           t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId" class="cms-btn cms-btn-mini">make default</a>
-                        <a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId">
-                                                    <i class="cms-icon-trash"></i>
-                                                </a>
                     </p>
 
 
-            </t:loop>
+                </div>
 
-<br />
-            <div>
-                <t:form t:id="urlForm" zone="prop:urlZone.clientId">
-                    <t:textfield value="urlPath" maxlength="100" class="cms-span4"
-                                 validate="required"
-                                 t:id="urlPath"/>
-                    <t:error class="literal:cms-error-txt" for="urlPath"/>
+            </t:form>
+        </t:zone>
+
+
+        <script type="text/javascript">
+            Event.observe('${optionsZone.clientId}', Tapestry.ZONE_UPDATED_EVENT, customForms);
+        </script>
+
+
+        <div class="cms-span7">
+
+            <p>
+                <label title="This page is accessible via the following URLs">
+                    Page Links (URLs)
+                </label>
+            </p>
+
+            <t:zone t:id="urlZone" t:update="show">
+
+
+                <t:if t:test="hasDefault">
+
+                    <p>
+                        <span>${siteUrl}/page/${editNode.nodeNumber}</span>
+                        <a t:id="removeDefault" t:type="actionLink"
+                           zone="prop:urlZone.clientId"
+                           class="cms-btn cms-btn-mini">make default</a>
+                    </p>
+
+                </t:if>
+
+                <t:loop source="editNode.webUrlAliases" value="webUrlAlias">
+
+                    <t:if t:test="notDefault">
+                        <p>
+                            <span>${siteUrl}${webUrlAlias.urlPath}</span>
+
+                            <a t:id="makeDefault" t:type="actionLink"
+                               t:context="webUrlAlias.urlPath" zone="prop:urlZone.clientId"
+                               class="cms-btn cms-btn-mini">make default</a>
+                            <a t:id="removeUrl" t:type="actionLink" t:context="webUrlAlias.urlPath"
+                               zone="prop:urlZone.clientId">
+                                <i class="cms-icon-trash"></i>
+                            </a>
+                        </p>
+
+                        <p:else>
+                            <p>
+                                <b>
+                                    <t:if t:test="hasDefault">
+                                        ${siteUrl}${editNode.defaultWebURLAlias.urlPath}
+                                        <p:else>${siteUrl}/page/${editNode.nodeNumber}</p:else>
+                                    </t:if>
+                                </b>
+                                <span class="cms-label" title="Default URL for this page">default</span>
+
+                            </p>
+                        </p:else>
+                    </t:if>
+
+                </t:loop>
+
+                <br/>
+
+                <div>
+                    <t:form t:id="urlForm" zone="prop:urlZone.clientId">
+                        <t:textfield value="urlPath" maxlength="100" class="cms-span4"
+                                     validate="required"
+                                     t:id="urlPath"/>
+                        <t:error class="literal:cms-error-txt" for="urlPath"/>
                     <span class="cms-help-inline">
                                         <a href="#" class="cms-btn cms-btn-mini"
-                                       onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
-                                            class="cms-icon-plus-sign"></i> Add link</a>
+                                           onclick="$('${urlForm.clientId}').fire(Tapestry.FORM_PROCESS_SUBMIT_EVENT);"><i
+                                                class="cms-icon-plus-sign"></i> Add link</a>
                                     </span>
-                </t:form>
+                    </t:form>
 
-            </div>
+                </div>
 
 
-        </t:zone>
-    </div>
+            </t:zone>
+        </div>
     </div>
 
     <t:zone t:id="buttonsZone" t:update="show">
