@@ -21,7 +21,7 @@ public class FindCollege {
 		String serviceKey = request.getParameter("key");
 		JSONObject response = new JSONObject();
 		
-		College college = collegeService.findBySecurityCode(serviceKey);
+		College college = collegeService.findBySecurityCodeLastChars(serviceKey);
 		if (college != null) {
 			if (college.getBillingCode() != null) {
 				response.put("status", "ACTIVE");

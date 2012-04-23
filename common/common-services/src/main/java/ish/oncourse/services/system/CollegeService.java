@@ -89,6 +89,27 @@ public class CollegeService implements ICollegeService {
 
 		return college;
 	}
+	
+	/**
+	 * @see ICollegeService#findBySecurityCodeLastChars(String)
+	 */
+	@Override
+	public College findBySecurityCodeLastChars(String securityCodeEnding) {
+		College college = null;
+
+		ObjectContext objectContext = cayenneService.sharedContext();
+
+		Expression qualifier = ExpressionFactory.likeExp(College.WEB_SERVICES_SECURITY_CODE_PROPERTY, "%" + securityCodeEnding);
+		SelectQuery q = new SelectQuery(College.class, qualifier);
+
+		List<College> records = objectContext.performQuery(q);
+
+		if (records.size() == 1) {
+			college = records.get(0);
+		}
+
+		return college;
+	}
 
 	/**
 	 * @see ICollegeService#recordNewCollege(String, String, String, Date)

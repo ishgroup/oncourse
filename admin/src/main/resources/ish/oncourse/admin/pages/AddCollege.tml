@@ -22,10 +22,6 @@
 					<td>Billing Code</td>
 					<td><t:textfield t:id="billingCode" t:validate="required" value="billingCode"/></td>
 				</tr>
-				<tr>
-					<td>Web Services Password</td>
-					<td><t:textfield t:id="servicesPass" t:validate="required" value="servicesPassword"/></td>
-				</tr>
 			</table>
 			<t:submit t:id="addNewCollege" value="Next"/>
 		</t:form>
