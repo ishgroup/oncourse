@@ -5,15 +5,11 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Invoice;
 import ish.oncourse.utils.QueueableObjectUtils;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
 
@@ -97,11 +93,6 @@ public class Invoice extends _Invoice implements Queueable {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ish.oncourse.model.auto._Invoice#onPostAdd()
-	 */
 	@Override
 	protected void onPostAdd() {
 		if (getSource() == null) {
@@ -121,38 +112,10 @@ public class Invoice extends _Invoice implements Queueable {
 	}
 
 	/**
-	 * Check if async replication is allowed on this object.
-	 * 
-	 * @return
+	 * Async replication always allowed on this object.
+	 * @return true
 	 */
 	public boolean isAsyncReplicationAllowed() {
-		List<PaymentInLine> lines = getPaymentInLines();
-
-		// We check linked payments, if one of them can replicate invoice can replicate too.
-		if (!lines.isEmpty()) {
-			for (PaymentInLine line : lines) {
-				PaymentIn paymentIn = line.getPaymentIn();
-				ObjectIdQuery q = new ObjectIdQuery(paymentIn.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-				paymentIn = (PaymentIn) Cayenne.objectForQuery(getObjectContext(), q);
-				if (paymentIn.isAsyncReplicationAllowed()) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		// If invoice is not yet linked to any payments.
-		for (InvoiceLine invLine : getInvoiceLines()) {
-			Enrolment enrol = invLine.getEnrolment();
-			if (enrol != null) {
-				ObjectIdQuery q = new ObjectIdQuery(enrol.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
-				enrol = (Enrolment) Cayenne.objectForQuery(getObjectContext(), q);
-				if (!enrol.isAsyncReplicationAllowed()) {
-					return false;
-				}
-			}
-		}
-
 		return true;
 	}
 }
