@@ -7,7 +7,6 @@ import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.ui.utils.FormatUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -24,6 +23,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static ish.oncourse.util.FormatUtils.*;
 
 @UserRole("tutor")
 public class ClassRoll {
@@ -123,11 +124,11 @@ public class ClassRoll {
 	}
 	
 	public String getDay() {
-		return FormatUtils.getDateFormat_dd_MMM_E(currentSession.getTimeZone()).format(currentSession.getStartDate()).split("/")[0];
+		return getDateFormat_dd_MMM_E(currentSession.getTimeZone()).format(currentSession.getStartDate()).split("/")[0];
 	}
 
 	public String getMonth() {
-		return FormatUtils.getDateFormat_dd_MMM_E(currentSession.getTimeZone()).format(currentSession.getStartDate()).split("/")[1];
+		return getDateFormat_dd_MMM_E(currentSession.getTimeZone()).format(currentSession.getStartDate()).split("/")[1];
 	}
 
 	public boolean isToday() {
@@ -148,7 +149,7 @@ public class ClassRoll {
 	
 	public String getEnrolmentDate() {
 		if (this.attendance != null && this.attendance.getCreated() != null) {
-			return FormatUtils.getShortDateFormat(currentSession.getTimeZone()).format(this.attendance.getCreated());
+			return getShortDateFormat(currentSession.getTimeZone()).format(this.attendance.getCreated());
 		}
 		return "";
 	}

@@ -11,7 +11,7 @@ import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.util.FormatUtils;
 import ish.persistence.CommonPreferenceController;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Field;

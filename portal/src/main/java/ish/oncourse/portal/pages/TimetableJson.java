@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ish.oncourse.ui.utils.FormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -23,7 +22,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-import static ish.oncourse.ui.utils.FormatUtils.*;
+import static ish.oncourse.util.FormatUtils.*;
 
 public class TimetableJson {
 	
@@ -110,7 +109,7 @@ public class TimetableJson {
 	
 	private Date currentMonth(String monthStr) {
 		
-		DateFormat formatter = FormatUtils.getDateFormat(DATE_FORMAT_MM_yyyy, null);
+		DateFormat formatter = getDateFormat(DATE_FORMAT_MM_yyyy, null);
 		
 		Date currentMonth = null; 
 		

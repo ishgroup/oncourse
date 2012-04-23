@@ -9,7 +9,7 @@ import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.util.FormatUtils;
 
 import java.text.DecimalFormat;
 import java.text.Format;

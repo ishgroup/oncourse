@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.ui.utils.FormatUtils.*;
+import static ish.oncourse.util.FormatUtils.*;
 
 public class Classes {
 

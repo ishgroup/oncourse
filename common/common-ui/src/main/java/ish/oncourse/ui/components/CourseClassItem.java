@@ -8,7 +8,7 @@ import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.TimestampUtilities;
 

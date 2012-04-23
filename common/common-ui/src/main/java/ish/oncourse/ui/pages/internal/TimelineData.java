@@ -3,7 +3,7 @@ package ish.oncourse.ui.pages.internal;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.IPageRenderer;
 import org.apache.tapestry5.annotations.Meta;
 import org.apache.tapestry5.annotations.Property;

@@ -6,7 +6,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.util.FormatUtils;
 
 import java.text.Format;
 import java.util.Collections;

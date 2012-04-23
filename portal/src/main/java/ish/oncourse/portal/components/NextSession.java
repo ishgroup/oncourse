@@ -13,8 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.ui.utils.FormatUtils.getDateFormat_dd_MMM_E;
-import static ish.oncourse.ui.utils.FormatUtils.getTimeFormat_h_mm_a;
+import static ish.oncourse.util.FormatUtils.*;
 
 public class NextSession {
 	

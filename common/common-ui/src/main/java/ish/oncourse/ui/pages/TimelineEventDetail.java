@@ -1,7 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Session;
-import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.util.FormatUtils;
 
 import java.text.Format;
 

@@ -17,7 +17,7 @@ import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.ui.utils.FormatUtils;
+import ish.oncourse.util.FormatUtils;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
