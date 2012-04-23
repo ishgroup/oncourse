@@ -1,13 +1,13 @@
 package ish.oncourse.portal.pages.tutor;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import ish.oncourse.model.*;
+import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.annotations.UserRole;
+import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.PortalUtils;
-import org.apache.cayenne.Cayenne;
+import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.ui.utils.FormatUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -20,11 +20,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.annotations.UserRole;
-import ish.oncourse.portal.pages.PageNotFound;
-import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.preference.PreferenceController;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @UserRole("tutor")
 public class ClassRoll {
@@ -124,11 +123,11 @@ public class ClassRoll {
 	}
 	
 	public String getDay() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentSession.getStartDate()).split("/")[0];
+		return FormatUtils.getDateFormat_dd_MMM_E(currentSession.getTimeZone()).format(currentSession.getStartDate()).split("/")[0];
 	}
 
 	public String getMonth() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentSession.getStartDate()).split("/")[1];
+		return FormatUtils.getDateFormat_dd_MMM_E(currentSession.getTimeZone()).format(currentSession.getStartDate()).split("/")[1];
 	}
 
 	public boolean isToday() {
@@ -149,7 +148,7 @@ public class ClassRoll {
 	
 	public String getEnrolmentDate() {
 		if (this.attendance != null && this.attendance.getCreated() != null) {
-			return PortalUtils.DATE_FORMATTER_dd_MMMM_yyyy.format(this.attendance.getCreated());
+			return FormatUtils.getShortDateFormat(currentSession.getTimeZone()).format(this.attendance.getCreated());
 		}
 		return "";
 	}

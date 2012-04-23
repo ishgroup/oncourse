@@ -5,15 +5,15 @@ import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import ish.oncourse.ui.utils.FormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -22,6 +22,8 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import static ish.oncourse.ui.utils.FormatUtils.*;
 
 public class TimetableJson {
 	
@@ -47,16 +49,16 @@ public class TimetableJson {
 		List<Session> sessions = courseClassService.getContactSessionsForMonth(contact, currentMonth(monthStr));
 		
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat timeFormatter = PortalUtils.DATE_FORMATTER_MM_yyyy;
-		SimpleDateFormat monthFormatter = PortalUtils.DATE_FORMATTER_MMM;
-		
+
 		JSONObject jsonTimetable = new JSONObject();
 		JSONArray jsonSessions = null;
 		
 		int currentDay = -1;
 		
 		for (Session s : sessions) {
-			cal.setTime(s.getStartDate());
+            DateFormat timeFormatter = getDateFormat(DATE_FORMAT_MM_yyyy, s.getTimeZone());
+            DateFormat monthFormatter = getDateFormat(DATE_FORMAT_MMM, s.getTimeZone());
+            cal.setTime(s.getStartDate());
 			int day = cal.get(Calendar.DAY_OF_MONTH);
 			
 			if (day != currentDay) {
@@ -108,7 +110,7 @@ public class TimetableJson {
 	
 	private Date currentMonth(String monthStr) {
 		
-		SimpleDateFormat formatter = PortalUtils.DATE_FORMATTER_MM_yyyy;
+		DateFormat formatter = FormatUtils.getDateFormat(DATE_FORMAT_MM_yyyy, null);
 		
 		Date currentMonth = null; 
 		

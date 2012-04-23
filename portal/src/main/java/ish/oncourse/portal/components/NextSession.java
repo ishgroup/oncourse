@@ -1,17 +1,20 @@
 package ish.oncourse.portal.components;
 
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.portal.services.PortalUtils;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import static ish.oncourse.ui.utils.FormatUtils.getDateFormat_dd_MMM_E;
+import static ish.oncourse.ui.utils.FormatUtils.getTimeFormat_h_mm_a;
 
 public class NextSession {
 	
@@ -59,18 +62,27 @@ public class NextSession {
 	}
 
 	public String getDay() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(nextSession.getStartDate()).split("/")[0];
+		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[0];
 	}
 
 	public String getMonth() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(nextSession.getStartDate()).split("/")[1];
+		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[1];
 	}
 
 	public String getWeekDay() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(nextSession.getStartDate()).split("/")[2];
+		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[2];
 	}
 
-	public boolean isToday() {
+
+    private String getSessionTime(Session session)
+    {
+        DateFormat dateFormat = getTimeFormat_h_mm_a(session.getTimeZone());
+        return String.format("%s - %s", dateFormat.format(session.getStartDate()),
+                dateFormat.format(session.getEndDate())).toLowerCase();
+    }
+
+
+    public boolean isToday() {
 		Calendar date = Calendar.getInstance();
 		int year = date.get(Calendar.YEAR);
 		int month = date.get(Calendar.MONTH);
@@ -81,11 +93,11 @@ public class NextSession {
 	}
 
 	public String getTime() {
-		return String.format("%s - %s", PortalUtils.TIME_FORMATTER_h_mm_a.format(nextSession.getStartDate()),
-                PortalUtils.TIME_FORMATTER_h_mm_a.format(nextSession.getEndDate())).toLowerCase();
+        return getSessionTime(nextSession);
 	}
-	
-	public Room getRoom(){
+
+
+    public Room getRoom(){
 		return nextSession.getRoom();
 	}
 	
@@ -98,15 +110,15 @@ public class NextSession {
 	}
 	
 	public String getSessionDay() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(session.getStartDate()).split("/")[0];
+		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(session.getStartDate()).split("/")[0];
 	}
 
 	public String getSessionMonth() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(session.getStartDate()).split("/")[1];
+		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(session.getStartDate()).split("/")[1];
 	}
 
 	public String getSessionWeekDay() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(session.getStartDate()).split("/")[2];
+		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(session.getStartDate()).split("/")[2];
 	}
 
 	public boolean isSessionToday() {
@@ -120,8 +132,7 @@ public class NextSession {
 	}
 
 	public String getSessionTime() {
-		return String.format("%s - %s", PortalUtils.TIME_FORMATTER_h_mm_a.format(session.getStartDate()),
-                PortalUtils.TIME_FORMATTER_h_mm_a.format(session.getEndDate())).toLowerCase();
+		return  getSessionTime(session);
 	}
 	
 	public String getRoomInformation() {

@@ -4,7 +4,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.CourseClassPeriod;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.log4j.Logger;
@@ -19,6 +18,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
+
+import static ish.oncourse.ui.utils.FormatUtils.*;
 
 public class Classes {
 
@@ -119,8 +120,8 @@ public class Classes {
     public String getClassIntervalInfo() {
         Date start = courseClass.getStartDate();
         Date end = courseClass.getEndDate();
-        DateFormat startDateFormatter = PortalUtils.DATE_FORMATTER_dd_MMM;
-        DateFormat endDateFormatter = PortalUtils.DATE_FORMATTER_dd_MMMM_yyyy;
+        DateFormat startDateFormatter = getDateFormat(DATE_FORMAT_dd_MMM ,courseClass.getTimeZone());
+        DateFormat endDateFormatter = getDateFormat(shortDateFormatString ,courseClass.getTimeZone());
         String key = "%s - %s ";
         if (start == null && end == null) {
             return "";

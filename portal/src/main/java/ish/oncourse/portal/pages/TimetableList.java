@@ -7,6 +7,7 @@ import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ish.oncourse.ui.utils.FormatUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -96,19 +98,21 @@ public class TimetableList {
 	}
 
 	public String getDay() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentBucket.getKey()).split("/")[0];
+        return  FormatUtils.getDateFormat_dd_MMM_E(null).format(currentBucket.getKey()).split("/")[0];
 	}
 
 	public String getMonth() {
-		return PortalUtils.DATE_FORMATTER_dd_MMM_E.format(currentBucket.getKey()).split("/")[1];
-	}
+        return  FormatUtils.getDateFormat_dd_MMM_E(null).format(currentBucket.getKey()).split("/")[1];
+    }
 
 	public boolean isToday() {
 		return Math.abs(System.currentTimeMillis() - currentBucket.getKey().getTime()) <= PortalUtils.MILLISECONDS_IN_DAY;
 	}
 
 	public String getTime() {
-		return String.format("%s - %s", PortalUtils.TIME_FORMATTER_h_mm_a.format(session.getStartDate()), PortalUtils.TIME_FORMATTER_h_mm_a.format(session.getEndDate()));
+
+        DateFormat timeFormat = FormatUtils.getTimeFormat_h_mm_a(session.getTimeZone());
+		return String.format("%s - %s", timeFormat.format(session.getStartDate()), timeFormat.format(session.getEndDate()));
 	}
 
 	public String getName() {
