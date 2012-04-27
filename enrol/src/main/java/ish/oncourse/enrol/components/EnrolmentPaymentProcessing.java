@@ -4,6 +4,7 @@ import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -11,13 +12,11 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
-import static ish.oncourse.enrol.pages.EnrolCourses.HTTP_PROTOCOL;
-
 public class EnrolmentPaymentProcessing {
+
+    private static final Logger LOGGER = Logger.getLogger(EnrolmentPaymentProcessing.class);
 
 	/**
 	 * ish services
@@ -46,7 +45,7 @@ public class EnrolmentPaymentProcessing {
 	 * performed and when it is finished, the
 	 * {@link EnrolmentPaymentProcessing#result} component is shown instead the
 	 * processHolder's content.
-	 * 
+	 *
 	 * @return the result block. {@see EnrolmentPaymentResult}
 	 * @throws Exception
 	 */
@@ -56,16 +55,14 @@ public class EnrolmentPaymentProcessing {
         /**
          *  Workaround to exclude NullPointerException on context synchronize block. Unknown reason. (possible reason is expired session).
          */
-        try
-        {
+        try {
             enrolCourses.processPayment();
+        } catch (Exception e) {
+            LOGGER.warn("Unexpected Exception", e);
+            result.setUnexpectedException(e);
         }
-        catch (Exception e)
-        {
-           result.setUnexpectedException(e);
-        }
-		return result;
-	}
+        return result;
+    }
 
 	public void setEnrolments(List<Enrolment> enrolments) {
 		this.enrolments = enrolments;

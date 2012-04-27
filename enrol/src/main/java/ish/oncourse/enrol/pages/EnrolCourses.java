@@ -650,6 +650,14 @@ public class EnrolCourses {
             // invoiceLines to be persisted
             List<InvoiceLine> validInvoiceLines = getInvoiceLinesToPersist();
 
+            /**
+             * The test has been added to exclude problem described in task #14138
+             */
+            if (validEnrolments.isEmpty() || validInvoiceLines.isEmpty())
+            {
+                throw new IllegalStateException("Course is not selected. Perhaps,  two or more tabs are used to pay for the courses.");
+            }
+
             // fill the processing result component with proper values
             EnrolmentPaymentProcessing enrolmentPaymentProcessing = getResultingElement();
             enrolmentPaymentProcessing.setInvoice(invoice);
@@ -700,7 +708,6 @@ public class EnrolCourses {
             payment.getObjectContext().commitChanges();
         } else {
             failedPayment = payment;
-
         }
     }
 
