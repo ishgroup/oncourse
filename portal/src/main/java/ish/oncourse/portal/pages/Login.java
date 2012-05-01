@@ -23,6 +23,8 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -50,9 +52,6 @@ public class Login {
 
 	@Property
 	private String password;
-
-	@Component
-	private Form loginForm;
 
 	@Inject
 	private Request request;
@@ -89,6 +88,37 @@ public class Login {
 
 	private boolean isForgotPassword;
 
+    @Inject
+    private Messages messages;
+
+    @InjectComponent
+    private Zone loginZone;
+
+    @InjectComponent
+    @Property
+    private Form loginForm;
+
+    @Persist
+    private String companyNameErrorMessage;
+
+    @Persist
+    private String firstNameErrorMessage;
+
+    @Persist
+    private String secondNameErrorMessage;
+
+    @Persist
+    private String emailNameErrorMessage;
+
+    @Persist
+    private String passwordNameErrorMessage;
+
+
+
+    public Zone getLoginZone() {
+        return loginZone;
+    }
+
 	@SetupRender
 	void setupRender() {
 		// perform logout to cleanup the session before the new login
@@ -102,37 +132,52 @@ public class Login {
 
 	Object onSuccess() throws IOException {
 
+        clearErrorFields();
+
 		if (StringUtils.isBlank(email)) {
-			loginForm.recordError(emailField, "Please enter your email");
+            emailNameErrorMessage = messages.get("emailNameErrorMessage");
+			loginForm.recordError(emailField, emailNameErrorMessage);
 		}
 
 		if (!isForgotPassword) {
 			if (StringUtils.isBlank(password)) {
-				loginForm.recordError(passwordField, "Please enter your password");
+
+                passwordNameErrorMessage = messages.get("passwordNameErrorMessage");
+                loginForm.recordError(passwordField, passwordNameErrorMessage);
 			}
 		}
 
 		if (iscompany) {
 			if (StringUtils.isBlank(companyName)) {
-				loginForm.recordError(companyNameField, "Please enter your company name");
+                companyNameErrorMessage = messages.get("companyNameErrorMessage");
+				loginForm.recordError(companyNameField, companyNameErrorMessage);
 			}
 		} else {
 			if (StringUtils.isBlank(lastName)) {
-				loginForm.recordError(lastNameField, "Please enter your last name");
+                secondNameErrorMessage = messages.get("secondNameErrorMessage");
+                loginForm.recordError(lastNameField, secondNameErrorMessage);
 			}
 			if (StringUtils.isBlank(firstName)) {
-				loginForm.recordError(firstNameField, "Please enter your first name");
+                firstNameErrorMessage =   messages.get("firstNameErrorMessage");
+				loginForm.recordError(firstNameField, firstNameErrorMessage);
 			}
 		}
 
 		if (!loginForm.getHasErrors()) {
 			return (isForgotPassword) ? forgotPassword() : doLogin();
 		}
-
 		return this;
 	}
 
-	private Object doLogin() {
+    private void clearErrorFields() {
+        emailNameErrorMessage = null;
+        passwordNameErrorMessage = null;
+        companyNameErrorMessage = null;
+        secondNameErrorMessage = null;
+        firstNameErrorMessage = null;
+    }
+
+    private Object doLogin() {
 		List<Contact> users = new ArrayList<Contact>();
 		if(iscompany) {
 			users= authenticationService.authenticateCompany(companyName, email, password);
@@ -141,7 +186,12 @@ public class Login {
 		}
 		
 		if (users.isEmpty()) {
-			loginForm.recordError("Login unsucessful! Invalid login name or password");
+            emailNameErrorMessage = messages.get("emailNameErrorMessage");
+            passwordNameErrorMessage = messages.get("passwordNameErrorMessage");
+            companyNameErrorMessage = messages.get("companyNameErrorMessage");
+            secondNameErrorMessage =  messages.get("secondNameErrorMessage");
+            firstNameErrorMessage =  messages.get("firstNameErrorMessage");
+            loginForm.recordError("Login unsucessful! Invalid login name or password");
 			return this;
 		} else if (users.size() == 1) {
 			authenticationService.storeCurrentUser(users.get(0));
@@ -216,4 +266,44 @@ public class Login {
 			return selectCollege;
 		}
 	}
+
+    public String getUserDetailsStyle()
+    {
+        return  iscompany != null && iscompany ? "display: none;" : "display: block;";
+    }
+
+    public String getCompanyDetailsStyle()
+    {
+        return  iscompany != null && iscompany ? "display: block;" : "display: none;";
+    }
+
+    public String getUserDetailsClass()
+    {
+        return iscompany != null && iscompany ? "user-details collapse": "user-details ";
+    }
+
+    public String getCompanyDetailsClass()
+    {
+        return iscompany != null && iscompany ? "company-details ": "company-details collapse";
+    }
+
+    public String getCompanyNameErrorMessage() {
+        return companyNameErrorMessage;
+    }
+
+    public String getFirstNameErrorMessage() {
+        return firstNameErrorMessage;
+    }
+
+    public String getSecondNameErrorMessage() {
+        return secondNameErrorMessage;
+    }
+
+    public String getEmailNameErrorMessage() {
+        return emailNameErrorMessage;
+    }
+
+    public String getPasswordNameErrorMessage() {
+        return passwordNameErrorMessage;
+    }
 }

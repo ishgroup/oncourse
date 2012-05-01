@@ -8,5 +8,3 @@ function set_is_company(ch){
 	}
 }
 
-
-

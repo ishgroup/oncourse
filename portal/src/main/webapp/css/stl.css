@@ -1744,6 +1744,7 @@ div.t-error li {
 img.t-error-icon {
 	position:absolute !important;
 	z-index:15 !important;
+    background: none;
 }
 
 /* subscribe button */
@@ -1809,6 +1810,22 @@ img.t-error-icon {
 #mailingListForm label.list {
 	margin: 6px 0 0;
 }
+
+/* Start HintComponent*/
+.validate-text { /* display: block;*/ position: absolute; right: -100%; top: 0.0em; width: 100%; }
+.validate-text .hint { display: none; }
+.validate-text .reason-pointer { background-image: url("../img/message-pointers.gif"); background-position: right top; background-repeat: no-repeat; display: block; height: 15px; left: 0; position: absolute; top: 2px; width: 12px; }
+.validate-text .reason { color: #000000; }
+
+span.valid, span.validate { position: relative; width: 62% !important; }
+
+.reason { background-color: #FEF0F0; border: 1px solid #FCC5C5; /*  display: block;*/ font-size: 100%; font-weight: bold; margin: 0 0 -1.5em 10px; padding: 3px; width: 220px; }
+
+form p { clear: both; display: block; position: relative; }
+
+.hidden-text { display: none !important; }
+
+/* End HintComponent*/
 
 
 
