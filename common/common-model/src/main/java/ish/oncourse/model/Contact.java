@@ -259,8 +259,9 @@ public class Contact extends _Contact implements Queueable {
 	public String validateBirthDate() {
 		Date birthDate = getDateOfBirth();
 
+        //birthDate is not required field,
 		if (birthDate == null) {
-			return "The " + getEntityName() + "'s date of birth is required.";
+            return null;
 		}
 
 		if (birthDate.after(new Date())) {

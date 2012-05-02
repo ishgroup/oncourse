@@ -15,7 +15,7 @@
 					</span>
 			</p>
 			<p>
-				<label for="street">Address</label><br/>
+				<label for="street">Address<t:if test="contactFieldHelper.requireAddress"><em title="${message:required}">*</em></t:if></label><br/>
 				<span class="valid">
 					<t:textfield value="contact.street" class ="input-fixed" 
 									clientId="street" t:id="street"/>
@@ -23,21 +23,21 @@
 			</p>
 			
 			<p>
-				<label for="suburb">Suburb</label> <br/>
+				<label for="suburb">Suburb<t:if test="contactFieldHelper.requireSuburb"><em title="${message:required}">*</em></t:if></label> <br/>
 				<span class="${suburbInputClass}">
 					<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
 						clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
 				</span>
 			</p>
 			<p>
-				<label for="postcode">Postcode</label> <br/>
+				<label for="postcode">Postcode<t:if test="contactFieldHelper.requirePostcode"><em title="${message:required}">*</em></t:if></label> <br/>
 				<span class="${postcodeInputClass}">
 					<t:textfield value="contact.postcode" class ="input-fixed" 
 							clientId="postcode" t:id="postcode" />
 				</span>
 			</p>
 			<p>
-				<label for="state">State</label> <br/>
+				<label for="state">State<t:if test="contactFieldHelper.requireState"><em title="${message:required}">*</em></t:if></label> <br/>
 				<span class="${stateInputClass}">
 					<t:textfield value="contact.state" class ="input-fixed" 
 							clientId="state" t:id="state" />
@@ -45,7 +45,7 @@
 			</p>
 			
 			<p>
-				<label for="homephone">Home Phone</label><br/>
+				<label for="homephone">Home Phone<t:if test="contactFieldHelper.requireHomePhone"><em title="${message:required}">*</em></t:if></label><br/>
 				<span class="${homePhoneInputClass}">
 					<t:textfield value="contact.homePhoneNumber" class ="input-fixed" 
 							clientId="homephone" t:id="homePhone" />
@@ -53,7 +53,7 @@
 				</span>
 			</p>
 			<p>
-				<label for="mobilephone">Mobile Phone</label><br/>
+				<label for="mobilephone">Mobile Phone<t:if test="contactFieldHelper.requireMobile"><em title="${message:required}">*</em></t:if></label><br/>
 				<span class="${mobilePhoneInputClass}">
 					<t:textfield value="contact.mobilePhoneNumber" class ="input-fixed" 
 							clientId="mobilephone" t:id="mobilePhone" />
@@ -62,14 +62,14 @@
 			</p>
 			
 			<p>
-				<label for="businessphone">Work Phone</label> <br/>
+				<label for="businessphone">Work Phone<t:if test="contactFieldHelper.requireBusinessPhone"><em title="${message:required}">*</em></t:if></label> <br/>
 				<span class="${businessPhoneInputClass}">
 					<t:textfield value="contact.businessPhoneNumber" class ="input-fixed" 
 							clientId="businessphone" t:id="businessPhone" />
 				</span>
 			</p>
 			<p>
-				<label for="facsimile">Fax</label> <br/>
+				<label for="facsimile">Fax<t:if test="contactFieldHelper.requireFax"><em title="${message:required}">*</em></t:if></label> <br/>
 				<span class="${faxInputClass}">
 					<t:textfield value="contact.faxNumber" class ="input-fixed" 
 							clientId="facsimile" t:id="fax" />
@@ -89,7 +89,7 @@
 			
 		<br/>
 			<p>
-				<label for="birthdate">Date of birth<em title="${message:required}">*</em></label> <br/>
+				<label for="birthdate">Date of birth<t:if test="contactFieldHelper.requireDateOfBirth"><em title="${message:required}">*</em></t:if></label> <br/>
 				<span class="${birthDateInputClass}">
 					<t:textField value="birthDateProperty" class ="input-fixed" 
 							clientId="birthdate" t:id="birthDate"/>

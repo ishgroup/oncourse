@@ -11,6 +11,8 @@ import ish.oncourse.model.Language;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.ContactFieldHelper;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 
@@ -20,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -36,6 +39,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Profile {
 
+    private static final Logger LOGGER = Logger.getLogger(Profile.class);
+
 	private static final DateFormat FORMAT = new SimpleDateFormat("d/M/y");
 
 	@Inject
@@ -49,6 +54,13 @@ public class Profile {
 
 	@Inject
 	private ILanguageService languageService;
+
+    @Inject
+    private PreferenceController preferenceController;
+
+    @Property
+    @Persist
+    private ContactFieldHelper contactFieldHelper;
 
 	@Property
 	@Persist
@@ -189,6 +201,10 @@ public class Profile {
 
 	@SetupRender
 	void beforeRender() {
+
+        if (contactFieldHelper == null)
+            contactFieldHelper = new ContactFieldHelper(preferenceController);
+
 		if (contact == null) {
 			ObjectContext ctx = cayenneService.newContext();
 			this.contact = (Contact) ctx.localObject(authService.getUser()
@@ -385,6 +401,15 @@ public class Profile {
 		reset = false;
 	}
 
+    Object onException(Throwable cause) throws Throwable{
+        if (contact == null)
+        {
+            LOGGER.warn("Session expired",cause);
+            return this;
+        }
+        throw cause;
+    }
+
 	@OnEvent(component = "profileForm", value = "success")
 	Object submitted() {
 		if (reset) {
@@ -471,9 +496,8 @@ public class Profile {
 				profileForm.recordError(fax, faxErrorMessage);
 			}
 
-			if (birthDateErrorMessage == null) {
-				birthDateErrorMessage = contact.validateBirthDate();
-			}
+            if (birthDateErrorMessage == null)
+		        birthDateErrorMessage = contact.validateBirthDate();
 			if (birthDateErrorMessage != null) {
 				profileForm.recordError(birthDate, birthDateErrorMessage);
 			}

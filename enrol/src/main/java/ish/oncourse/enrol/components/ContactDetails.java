@@ -14,6 +14,7 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
+import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
@@ -27,12 +28,7 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -68,6 +64,10 @@ public class ContactDetails {
     
     @Inject
     private PreferenceController preferenceController;
+
+    @Property
+    @Persist
+    private ContactFieldHelper contactFieldHelper;
 
 
     /**
@@ -221,6 +221,9 @@ public class ContactDetails {
 
     @SetupRender
     void beforeRender() {
+
+        if (contactFieldHelper == null)
+                contactFieldHelper = new ContactFieldHelper(preferenceController);
         englishProficiencySelectModel = new ISHEnumSelectModel(
                 AvetmissStudentEnglishProficiency.class, messages);
         indigenousStatusSelectModel = new ISHEnumSelectModel(AvetmissStudentIndigenousStatus.class,
@@ -342,7 +345,7 @@ public class ContactDetails {
                     contactDetailsForm.recordError(fax, faxErrorMessage);
                 }
                 
-                if (getRequireDateOfBirth() || contact.getDateOfBirth() != null) {
+                if (contactFieldHelper.getRequireDateOfBirth() || contact.getDateOfBirth() != null) {
                 	if (birthDateErrorMessage == null) {
                 		birthDateErrorMessage = contact.validateBirthDate();
                 	}
@@ -370,47 +373,47 @@ public class ContactDetails {
     }
     
     private void validateRequiredFields() {
-    	if (getRequireAddress()) {
+    	if (contactFieldHelper.getRequireAddress()) {
     		if (contact.getStreet() == null || "".equals(contact.getStreet())) {
     			contactDetailsForm.recordError(street, "Address is required.");
     		}
     	}
-    	if (getRequireSuburb()) {
+    	if (contactFieldHelper.getRequireSuburb()) {
     		if (contact.getSuburb() == null || "".equals(contact.getSuburb())) {
     			contactDetailsForm.recordError(suburb, "Suburb is required.");
     		}
     	}
-    	if (getRequireState()) {
+    	if (contactFieldHelper.getRequireState()) {
     		if (contact.getState() == null || "".equals(contact.getState())) {
     			contactDetailsForm.recordError(state, "State is required.");
     		}
     	}
-    	if (getRequirePostcode()) {
+    	if (contactFieldHelper.getRequirePostcode()) {
     		if (contact.getPostcode() == null || "".equals(contact.getPostcode())) {
     			contactDetailsForm.recordError(postcode, "Postcode is required.");
     		}
     	}
-    	if (getRequireHomePhone()) {
+    	if (contactFieldHelper.getRequireHomePhone()) {
     		if (contact.getHomePhoneNumber() == null || "".equals(contact.getHomePhoneNumber())) {
     			contactDetailsForm.recordError(homePhone, "Home phone is required.");
     		}
     	}
-    	if (getRequireBusinessPhone()) {
+    	if (contactFieldHelper.getRequireBusinessPhone()) {
     		if (contact.getBusinessPhoneNumber() == null || "".equals(contact.getBusinessPhoneNumber())) {
     			contactDetailsForm.recordError(businessPhone, "Business phone is required.");
     		}
     	}
-    	if (getRequireFax()) {
+    	if (contactFieldHelper.getRequireFax()) {
     		if (contact.getFaxNumber() == null || "".equals(contact.getFaxNumber())) {
     			contactDetailsForm.recordError(fax, "Fax is required.");
     		}
     	}
-    	if (getRequireMobile()) {
+    	if (contactFieldHelper.getRequireMobile()) {
     		if (contact.getMobilePhoneNumber() == null || "".equals(contact.getMobilePhoneNumber())) {
     			contactDetailsForm.recordError(mobilePhone, "Mobile phone is required.");
     		}
     	}
-    	if (getRequireDateOfBirth()) {
+    	if (contactFieldHelper.getRequireDateOfBirth()) {
     		if (contact.getDateOfBirth() == null) {
     			contactDetailsForm.recordError(birthDate, "Date of birth is required.");
     		}
@@ -586,148 +589,5 @@ public class ContactDetails {
         return concessionsService.hasActiveConcessionTypes();
     }
    
-   public boolean getShowAddress() {
-	   String require = preferenceController.getRequireContactAddressEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireAddress() {
-	   String require = preferenceController.getRequireContactAddressEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowSuburb() {
-	   String require = preferenceController.getRequireContactSuburbEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireSuburb() {
-	   String require = preferenceController.getRequireContactSuburbEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowState() {
-	   String require = preferenceController.getRequireContactStateEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireState() {
-	   String require = preferenceController.getRequireContactStateEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowPostcode() {
-	   String require = preferenceController.getRequireContactPostcodeEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequirePostcode() {
-	   String require = preferenceController.getRequireContactPostcodeEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowHomePhone() {
-	   String require = preferenceController.getRequireContactHomePhoneEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireHomePhone() {
-	   String require = preferenceController.getRequireContactHomePhoneEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowBusinessPhone() {
-	   String require = preferenceController.getRequireContactBusinessPhoneEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireBusinessPhone() {
-	   String require = preferenceController.getRequireContactBusinessPhoneEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowFax() {
-	   String require = preferenceController.getRequireContactFaxEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireFax() {
-	   String require = preferenceController.getRequireContactFaxEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowMobile() {
-	   String require = preferenceController.getRequireContactMobileEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireMobile() {
-	   String require = preferenceController.getRequireContactMobileEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getShowDateOfBirth() {
-	   String require = preferenceController.getRequireContactDateOfBirthEnrolment();
-	   if ("Show".equals(require) || "Required".equals(require) || require == null) {
-		   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean getRequireDateOfBirth() {
-	   String require = preferenceController.getRequireContactDateOfBirthEnrolment();
-	   if ("Required".equals(require)) {
-		   return true;
-	   }
-	   return false;
-   }
-   
+
 }
