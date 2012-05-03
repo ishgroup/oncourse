@@ -12,6 +12,7 @@ import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.util.InvoiceUtil;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -69,10 +70,7 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		CourseClass courseClass = enrolment.getCourseClass();
 		List<Discount> enrolmentDiscounts = enrolment.getCourseClass().getDiscountsToApply(
 				new RealDiscountsPolicy(discountService.getPromotions(), enrolment.getStudent()));
-
-		invoiceLine.setDiscountEachExTax(courseClass.getDiscountAmountExTax(enrolmentDiscounts));
-
-		invoiceLine.setTaxEach(courseClass.getDiscountedTax(enrolmentDiscounts));
+		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts), courseClass.getTaxRate(), null);
 	}
 
 }

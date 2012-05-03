@@ -112,9 +112,9 @@ public class PaymentInTest {
 		invLine1.setTitle("Test_invLine1");
 		invLine1.setCollege(college);
 		invLine1.setPriceEachExTax(new Money(new BigDecimal(-75)));
-		invLine1.setTaxEach(new Money(new BigDecimal(0)));
+		invLine1.setTaxEach(Money.ZERO);
 		invLine1.setQuantity(new BigDecimal(1));
-		invLine1.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invLine1.setDiscountEachExTax(Money.ZERO);
 		invLine1.setEnrolment(newEnrolment());
 
 		InvoiceLine invLine2 = context.newObject(InvoiceLine.class);
@@ -122,9 +122,9 @@ public class PaymentInTest {
 		invLine2.setCollege(college);
 		invLine2.setEnrolment(newEnrolment());
 		invLine2.setPriceEachExTax(new Money(new BigDecimal(220)));
-		invLine2.setTaxEach(new Money(new BigDecimal(0)));
+		invLine2.setTaxEach(Money.ZERO);
 		invLine2.setQuantity(new BigDecimal(1));
-		invLine2.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invLine2.setDiscountEachExTax(Money.ZERO);
 
 		invoice2.addToInvoiceLines(invLine1);
 		invoice2.addToInvoiceLines(invLine2);

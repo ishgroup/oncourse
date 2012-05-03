@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.common.payable.EnrolmentInterface;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.auto._Enrolment;
@@ -12,7 +13,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
 
-public class Enrolment extends _Enrolment implements Queueable {
+public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueable {
 
 	private static final long serialVersionUID = 8361159336001022666L;
 
@@ -109,5 +110,10 @@ public class Enrolment extends _Enrolment implements Queueable {
 		}
 		
 		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
+	}
+
+	//@Override
+	public boolean isInFinalStatus() {
+		return EnrolmentStatus.STATUSES_FINAL.contains(getStatus());
 	}
 }

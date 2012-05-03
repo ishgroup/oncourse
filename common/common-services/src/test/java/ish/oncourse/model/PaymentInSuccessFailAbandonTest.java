@@ -141,9 +141,9 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		invLine1.setTitle("Test_invLine1");
 		invLine1.setCollege(college);
 		invLine1.setPriceEachExTax(new Money(new BigDecimal(150)));
-		invLine1.setTaxEach(new Money(new BigDecimal(0)));
+		invLine1.setTaxEach(Money.ZERO);
 		invLine1.setQuantity(new BigDecimal(1));
-		invLine1.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invLine1.setDiscountEachExTax(Money.ZERO);
 		invLine1.setEnrolment(enrol1);
 		invLine1.setInvoice(invoice1);
 
@@ -159,9 +159,9 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		invLine2.setCollege(college);
 		invLine2.setEnrolment(enrol2);
 		invLine2.setPriceEachExTax(new Money(new BigDecimal(160)));
-		invLine2.setTaxEach(new Money(new BigDecimal(0)));
+		invLine2.setTaxEach(Money.ZERO);
 		invLine2.setQuantity(new BigDecimal(1));
-		invLine2.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invLine2.setDiscountEachExTax(Money.ZERO);
 		invLine2.setInvoice(invoice1);
 
 		PaymentInLine pLine1 = context.newObject(PaymentInLine.class);

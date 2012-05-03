@@ -83,9 +83,9 @@ public class PaymentInLineTest {
 		invoiceLine.setTitle("Test_invLine");
 		invoiceLine.setCollege(college);
 		invoiceLine.setPriceEachExTax(new Money(new BigDecimal(75)));
-		invoiceLine.setTaxEach(new Money(new BigDecimal(0)));
+		invoiceLine.setTaxEach(Money.ZERO);
 		invoiceLine.setQuantity(new BigDecimal(1));
-		invoiceLine.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invoiceLine.setDiscountEachExTax(Money.ZERO);
 		invoice.addToInvoiceLines(invoiceLine);
 		
 		final PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
@@ -110,9 +110,9 @@ public class PaymentInLineTest {
 		invoiceLine2.setTitle("Test_invLine");
 		invoiceLine2.setCollege(college);
 		invoiceLine2.setPriceEachExTax(new Money(new BigDecimal(100)));
-		invoiceLine2.setTaxEach(new Money(new BigDecimal(0)));
+		invoiceLine2.setTaxEach(Money.ZERO);
 		invoiceLine2.setQuantity(new BigDecimal(1));
-		invoiceLine2.setDiscountEachExTax(new Money(new BigDecimal(0)));
+		invoiceLine2.setDiscountEachExTax(Money.ZERO);
 		invoice2.addToInvoiceLines(invoiceLine2);
 		
 		final PaymentInLine paymentInLine2 = context.newObject(PaymentInLine.class);

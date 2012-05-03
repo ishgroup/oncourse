@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.payable.EnrolmentInterface;
 import ish.common.payable.IInvoiceLineInterface;
 import ish.common.payable.InvoicePayableLineWrapper;
 import ish.common.payable.TaxInterface;
@@ -157,6 +158,23 @@ public class InvoicePayableLine extends CayenneDataObject implements IInvoiceLin
 	 */
 	public Money getFinalPriceToPayExTax() {
 		return waPayableLine.getFinalPriceToPayExTax();
+	}
+	
+	/**
+	 * @see ish.common.payable.IInvoiceLineInterface#getEnrolment()
+	 */
+	public EnrolmentInterface getEnrolment() {
+		return waPayableLine.getEnrolment();
+	}
+
+	@Override
+	public void setPriceEachExTax(Money priceExTax) {
+		waPayableLine.setPriceEachExTax(priceExTax);
+	}
+
+	@Override
+	public void setTaxEach(Money taxEach) {
+		waPayableLine.setTaxEach(taxEach);		
 	}
 
 }
