@@ -13,14 +13,14 @@
 	<meta name="MobileOptimized" content="320"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 		  
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="${contextPath}/img/apple-touch-icon.png"/>
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="${contextPath}/img/apple-touch-icon.png"/>
-	<link rel="apple-touch-icon-precomposed" href="${contextPath}/img/apple-touch-icon-precomposed.png"/>
-	<link rel="shortcut icon" href="${contextPath}/img/apple-touch-icon.png"/>
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/s/portal/img/apple-touch-icon.png"/>
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/s/portal/img/apple-touch-icon.png"/>
+	<link rel="apple-touch-icon-precomposed" href="/s/portal/img/apple-touch-icon-precomposed.png"/>
+	<link rel="shortcut icon" href="/s/portal/img/apple-touch-icon.png"/>
 	<meta http-equiv="cleartype" content="on/"/>
 
-	<link rel="stylesheet" media="all" href="${contextPath}/css/screen.css"/>
-	<script type="text/javascript" src="${contextPath}/js/scroller.js"></script>
-	<script type="text/javascript" src="${contextPath}/js/main.js"></script>
+	<link rel="stylesheet" media="all" href="/s/portal/css/screen.css"/>
+	<script type="text/javascript" src="/s/portal/js/scroller.js"></script>
+	<script type="text/javascript" src="/s/portal/js/main.js"></script>
 	
 </t:container>
