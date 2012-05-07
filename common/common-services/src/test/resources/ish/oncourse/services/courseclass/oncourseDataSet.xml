@@ -30,8 +30,15 @@
     <CourseClass id="6" code="5-2" collegeId="1" countOfSessions="6" courseId="5" deliveryMode="1" detail="Test Course Class 6-1" feeExGst="20.00" feeGst="1.25" roomId="6" maximumPlaces="3"
                  startDate="2012-01-04 00:00:00" endDate="2103-01-04 00:00:00" isCancelled="1"/>
 
+
     <Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
+    <Student id="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1"
+             highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
+             isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
+
     <Contact id="1" collegeId="1" tutorId="1"/>
+    <Contact id="2" collegeId="1"/>
+    <Contact id="3" collegeId="1" studentId="1"/>
 
     <TutorRole id="1" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="1" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
     <TutorRole id="2" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="2" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
@@ -40,10 +47,29 @@
     <TutorRole id="5" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="5" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
     <TutorRole id="6" angelId="1" collegeId="1" confirmedDate="2010-02-03 09:18:09" courseClassId="6" created="2010-02-03 09:18:09" isConfirmed="1" modified="2010-02-03 09:18:09" tutorId="1" inPublicity="1"/>
 
-    <Session id="1" collegeId="1" courseClassId="1" roomId="1" angelId="201" startDate="2011-10-12 00:55:59.0" endDate="2011-10-12 01:55:59.0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
-    <Session id="2" collegeId="1" courseClassId="2" roomId="2" angelId="202" startDate="2011-10-14 00:55:59.0" endDate="2011-10-14 01:55:59.0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
-    <Session id="3" collegeId="1" courseClassId="3" roomId="3" angelId="203" startDate="2011-10-16 00:55:59.0" endDate="2011-10-16 01:55:59.0" created="2011-09-12 00:56:01.0" modified="2011-09-12 00:56:01.0"/>
-    <Session id="4" collegeId="1" courseClassId="4" roomId="4" angelId="204" startDate="2011-09-13 00:58:59.0" endDate="2011-09-13 01:58:59.0" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
-    <Session id="5" collegeId="1" courseClassId="5" roomId="5" angelId="205" startDate="2011-09-19 00:58:59.0" endDate="2011-09-19 01:58:59.0" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
-    <Session id="6" collegeId="1" courseClassId="6" roomId="6" angelId="206" startDate="2011-09-25 00:58:59.0" endDate="2011-09-25 01:58:59.0" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="1"  collegeId="1" courseClassId="1" roomId="1" angelId="201" startDate="1980-01-01 01:00:00" endDate="1980-01-01 01:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+    <Session id="2" collegeId="1" courseClassId="2" roomId="2" angelId="202" startDate="1980-01-02 01:00:00" endDate="1980-01-02 00:00:00" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+    <Session id="3" collegeId="1" courseClassId="3" roomId="3" angelId="203" startDate="2100-01-01 00:00:00" endDate="2100-01-01 00:00:00" created="2011-09-12 00:56:01.0" modified="2011-09-12 00:56:01.0"/>
+    <Session id="4" collegeId="1" courseClassId="4" roomId="4" angelId="204" startDate="2101-01-02 00:00:00" endDate="2101-01-02 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="5" collegeId="1" courseClassId="5" roomId="5" angelId="205" startDate="2102-01-03 00:00:00" endDate="2102-01-03 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <Session id="6" collegeId="1" courseClassId="6" roomId="6" angelId="206" startDate="2103-01-04 00:00:00" endDate="2103-01-04 00:00:00" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+
+    <SessionTutor id="1" collegeId="1" sessionId="1" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="2" collegeId="1" sessionId="2" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="3" collegeId="1" sessionId="3" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="4" collegeId="1" sessionId="4" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="5" collegeId="1" sessionId="5" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+    <SessionTutor id="6" collegeId="1" sessionId="6" tutorId="1" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:00.0"/>
+
+
+    <Enrolment id="1" collegeId="1" courseClassId="1" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="2" collegeId="1" courseClassId="2" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="3" collegeId="1" courseClassId="3" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="4" collegeId="1" courseClassId="4" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+    <Enrolment id="5" collegeId="1" courseClassId="5" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="4" source="O"/>
+    <Enrolment id="6" collegeId="1" courseClassId="6" studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O"/>
+
+
+
+
 </dataset>

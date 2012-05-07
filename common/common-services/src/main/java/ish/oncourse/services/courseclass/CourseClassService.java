@@ -1,5 +1,6 @@
 package ish.oncourse.services.courseclass;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -162,7 +163,10 @@ public class CourseClassService implements ICourseClassService {
         if (contact.getStudent() != null) {
             Student student = contact.getStudent();
             Expression expr = ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.ENROLMENTS_PROPERTY + "."
-                    + Enrolment.STUDENT_PROPERTY, student);
+                    + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS);
+            expr = expr.andExp(ExpressionFactory.matchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.ENROLMENTS_PROPERTY + "."
+                    + Enrolment.STUDENT_PROPERTY, student));
+
             if (addingExpresion != null) {
                 expr = addingExpresion.andExp(expr);
             }
