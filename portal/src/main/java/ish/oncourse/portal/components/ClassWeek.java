@@ -5,7 +5,6 @@ import ish.oncourse.model.Session;
 import ish.oncourse.portal.pages.Classes;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -14,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
@@ -39,8 +39,15 @@ public class ClassWeek {
 	
 	@Inject
 	private Request request;
-	
-	public String getContextPath() {
+
+
+    private Map<String, List<Session>> daysOfWeekMap;
+
+    @Parameter
+    @Property
+    private Session session;
+
+    public String getContextPath() {
 		return request.getContextPath();
 	}
 	
@@ -48,13 +55,7 @@ public class ClassWeek {
 		return daysOfWeek;
 	}
 
-	private Map<String, List<Session>> daysOfWeekMap;
-	
-	@Parameter
-	@Property
-	private Session session;
-	
-	
+
 	@SetupRender
 	void beforeRender() {
 		
@@ -113,15 +114,14 @@ public class ClassWeek {
 	}
 	
 	public String getSessionDateInfo() {
-		Date start = courseClass.getStartDate();
-		DateFormat formatter = new SimpleDateFormat("MMM. dd ");
-		return start != null ? formatter.format(start) : StringUtils.EMPTY;
+		Date start = session.getStartDate();
+		return start != null ? FormatUtils.getDateFormat(FormatUtils.DATE_FORMAT_MMM_dd, session.getTimeZone()).format(start) : StringUtils.EMPTY;
 	}
 	
 	public String getSessionIntervalInfo() {
-		Date start = courseClass.getStartDate();
-		Date end = courseClass.getEndDate();
-		DateFormat formatter = new SimpleDateFormat("h:mma ");
+		Date start = session.getStartDate();
+		Date end = session.getEndDate();
+        DateFormat formatter =  FormatUtils.getTimeFormat_h_mm_a(session.getTimeZone());
 		String key = "%s - %s";
 		return String.format(key, formatter.format(start), formatter.format(end));
 	}

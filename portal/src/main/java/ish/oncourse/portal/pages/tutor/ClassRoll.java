@@ -7,6 +7,7 @@ import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -20,7 +21,6 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +29,11 @@ import static ish.oncourse.util.FormatUtils.*;
 @UserRole("tutor")
 public class ClassRoll {
 
-	@Inject
+
+    private static final String DATE_FORMAT_E = "E ";
+    private static final String DATE_FORMAT_HH_mm_a = "HH:mm a";
+
+    @Inject
 	private Request request;
 
 	@Property
@@ -108,8 +112,8 @@ public class ClassRoll {
 	public String getSessionIntervalInfo() {
 		Date start = currentSession.getStartDate();
 		Date end = currentSession.getEndDate();
-		DateFormat formatterWeakDay = new SimpleDateFormat("E ");
-		DateFormat formatter = new SimpleDateFormat("HH:mm a");
+		DateFormat formatterWeakDay = FormatUtils.getDateFormat(DATE_FORMAT_E, currentSession.getTimeZone());
+		DateFormat formatter = FormatUtils.getDateFormat(DATE_FORMAT_HH_mm_a, currentSession.getTimeZone());;
 		String key = "%s %s - %s ";
 		if (start == null && end == null) {
 			return "";

@@ -30,6 +30,7 @@ public class FormatUtils {
      * Date/time formats for portal
      */
     public static final String DATE_FORMAT_dd_MMM = "dd MMM";
+    public static final String DATE_FORMAT_MMM_dd = "MMM. dd ";
 
     public static final String DATE_FORMAT_dd_MMM_E = "dd/MMM/E";
 
