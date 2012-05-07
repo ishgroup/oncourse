@@ -70,7 +70,12 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		CourseClass courseClass = enrolment.getCourseClass();
 		List<Discount> enrolmentDiscounts = enrolment.getCourseClass().getDiscountsToApply(
 				new RealDiscountsPolicy(discountService.getPromotions(), enrolment.getStudent()));
-		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts), courseClass.getTaxRate(), null);
+		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts), 
+			courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
+	}
+	
+	private Money calculateTaxAdjustment(final CourseClass courseClass) {
+		return courseClass.getFeeIncGst().subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
 	}
 
 }
