@@ -59,13 +59,12 @@ public class Calendar {
 
 				ish.oncourse.model.Contact contact = contactService.findByUniqueCode(uniqueCode);
 
-                TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-                TimeZone tz = registry.getTimeZone(contact.getCollege().getTimeZone());
-
-
                 if (contact != null) {
 
-					net.fortuna.ical4j.model.Calendar icsCalendar = new net.fortuna.ical4j.model.Calendar();
+                    TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+                    TimeZone tz = registry.getTimeZone(contact.getCollege().getTimeZone());
+
+                    net.fortuna.ical4j.model.Calendar icsCalendar = new net.fortuna.ical4j.model.Calendar();
 
 					icsCalendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
 					icsCalendar.getProperties().add(Version.VERSION_2_0);
