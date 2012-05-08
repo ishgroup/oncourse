@@ -21,6 +21,7 @@ import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -113,9 +114,25 @@ public class Web {
 	void setupRender() {
 		this.changeSiteUrl = response.encodeURL(request.getContextPath() + "/college/changeDomainSite");
 		
-		this.sites = college.getWebSites();
-		this.domains = college.getCollegeDomains();
-		this.cmsUsers = college.getWillowUsers();
+		ObjectContext context = cayenneService.sharedContext();
+		
+		College college = (College) context.localObject(this.college.getObjectId(), null);
+		
+		Expression sitesExp = ExpressionFactory.matchExp(WebSite.COLLEGE_PROPERTY, college);
+		Expression domainsExp = ExpressionFactory.matchExp(WebHostName.COLLEGE_PROPERTY, college);
+		Expression cmsUsersExp = ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, college);
+		
+		SelectQuery sitesQuery = new SelectQuery(WebSite.class, sitesExp);
+		SelectQuery domainsQuery = new SelectQuery(WebHostName.class, domainsExp);
+		SelectQuery cmsUsersQuery = new SelectQuery(WillowUser.class, cmsUsersExp);
+		
+		sitesQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
+		domainsQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
+		cmsUsersQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
+		
+		this.sites = context.performQuery(sitesQuery);
+		this.domains = context.performQuery(domainsQuery);
+		this.cmsUsers = context.performQuery(cmsUsersQuery);
 		
 		String[] siteKeys = new String[sites.size()];
 		int i = 0;
