@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Dur;
+import net.fortuna.ical4j.model.TimeZone;
 import net.fortuna.ical4j.model.TimeZoneRegistry;
 import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
 import net.fortuna.ical4j.model.component.VEvent;
@@ -58,7 +59,11 @@ public class Calendar {
 
 				ish.oncourse.model.Contact contact = contactService.findByUniqueCode(uniqueCode);
 
-				if (contact != null) {
+                TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+                TimeZone tz = registry.getTimeZone(contact.getCollege().getTimeZone());
+
+
+                if (contact != null) {
 
 					net.fortuna.ical4j.model.Calendar icsCalendar = new net.fortuna.ical4j.model.Calendar();
 
@@ -100,8 +105,10 @@ public class Calendar {
 						courseInformation.append(")");
 						
 						Dur dur = new Dur(s.getStartDate(), s.getEndDate());
-						
-						VEvent event = new VEvent(new net.fortuna.ical4j.model.DateTime(s.getStartDate()), dur, courseInformation.toString());
+
+                        net.fortuna.ical4j.model.DateTime dateTime = new net.fortuna.ical4j.model.DateTime(s.getStartDate());
+                        dateTime.setTimeZone(tz);
+						VEvent event = new VEvent(dateTime, dur, courseInformation.toString());
 						event.getProperties().add(new Description(sessionInformation.toString()));
 						
 						UidGenerator ug = new UidGenerator("uidGen");
@@ -111,16 +118,12 @@ public class Calendar {
 						events.add(event);
 
 					}
-					
-					if (events.size() > 0) {
+
+                    if (events.size() > 0) {
 						icsCalendar.getComponents().addAll(events);
-						TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-						VTimeZone tz = registry.getTimeZone(sessions.get(0).getCollege().getTimeZone()).getVTimeZone();
-						icsCalendar.getComponents().add(tz);
+						icsCalendar.getComponents().add(tz.getVTimeZone());
 					} else {
-						TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-						VTimeZone tz = registry.getTimeZone(contact.getCollege().getTimeZone()).getVTimeZone();
-						icsCalendar.getComponents().add(tz);
+						icsCalendar.getComponents().add(tz.getVTimeZone());
 					}
 
 					CalendarOutputter iCalOutputter = new CalendarOutputter();
