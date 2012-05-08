@@ -73,7 +73,10 @@ public class DFADedupper implements Comparable<DFADedupper> {
 		case DFA_CREATE:
 			switch (record.getAction()) {
 			case CREATE:
-				throw new DedupperException("Can't accept second CREATE event.");
+				DedupperException exception = new DedupperException(String.format("Can't accept second CREATE event for entity:%s with id:%s for college:%s.", 
+						record.getEntityIdentifier(), record.getEntityWillowId(), record.getCollege().getId()));
+				logger.warn(exception);
+				throw exception;
 			case UPDATE:
 				break;
 			case DELETE:
@@ -84,8 +87,8 @@ public class DFADedupper implements Comparable<DFADedupper> {
 		case DFA_UPDATE:
 			switch (record.getAction()) {
 			case CREATE:
-				logger.warn(String.format("Accept secod CREATE event for entity:%s with id:%s.", record.getEntityIdentifier(),
-						record.getEntityWillowId()));
+				logger.warn(String.format("Accept second CREATE event for entity:%s with id:%s for college:%s.", record.getEntityIdentifier(),
+						record.getEntityWillowId(), record.getCollege().getId()));
 				break;
 			case UPDATE:
 				break;
@@ -97,8 +100,8 @@ public class DFADedupper implements Comparable<DFADedupper> {
 		case DFA_DELETE:
 			throw new DedupperException(
                     String.format(
-                    "Can't accept any events after DELETE event. EntityWillowId: %d  EntityIdentifier: %s, Action: %s",
-                            record.getEntityWillowId(), record.getEntityIdentifier(), record.getAction()));
+                    "Can't accept any events after DELETE event. EntityWillowId: %d  EntityIdentifier: %s, Action: %s college:%s",
+                            record.getEntityWillowId(), record.getEntityIdentifier(), record.getAction(), record.getCollege().getId()));
 		case DFA_NOP:
 			throw new DedupperException("Can't accept any events in NOP state.");
 		}
