@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -10,6 +11,10 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -71,7 +76,8 @@ public class Preferences {
 			
 		if (isNew) {
 			College college = (College) context.localObject(this.college.getObjectId(), null);
-			if (college != null) {
+			if (college != null && StringUtils.trimToNull(newPreferenceKey) != null 
+					&& StringUtils.trimToNull(newPreferenceValue) != null) {
 				Preference p = context.newObject(Preference.class);
 				p.setCollege(college);
 				p.setName(newPreferenceKey);
@@ -94,10 +100,21 @@ public class Preferences {
 	}
 	
 	private Map<String, String> initPreferences() {
+		ObjectContext context = cayenneService.sharedContext();
+		
 		Map<String, String> prefs = new TreeMap<String, String>();
 		
-		for (Preference pref : college.getPreferences()) {
-			prefs.put(pref.getName(), pref.getValueString());
+		College college = (College) context.localObject(this.college.getObjectId(), null);
+		
+		SelectQuery q = new SelectQuery(Preference.class, ExpressionFactory.matchExp(
+				Preference.COLLEGE_PROPERTY, college));
+		q.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
+		List<Preference> prefList = context.performQuery(q); 
+		
+		for (Preference pref : prefList) {
+			if (pref.getName() != null) {
+				prefs.put(pref.getName(), pref.getValueString());
+			}
 		}
 		
 		return prefs;
@@ -108,7 +125,9 @@ public class Preferences {
 	}
 	
 	public void setCurrentValue(String value) {
-		preferences.put(currentKey, value);
+		if (currentKey != null) {
+			preferences.put(currentKey, value);
+		}
 	}
 
 }
