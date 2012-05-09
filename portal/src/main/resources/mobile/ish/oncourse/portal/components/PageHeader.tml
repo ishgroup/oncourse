@@ -19,7 +19,7 @@
 	<link rel="shortcut icon" href="/s/portal/img/apple-touch-icon.png"/>
 	<meta http-equiv="cleartype" content="on/"/>
 
-	<link rel="stylesheet" media="all" href="/s/portal/css/screen.css"/>
+	<link rel="stylesheet" media="all" href="/s/portal/css/mobile.css"/>
 	<script type="text/javascript" src="/s/portal/js/scroller.js"></script>
 	<script type="text/javascript" src="/s/portal/js/main.js"></script>
 	
