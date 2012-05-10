@@ -7,6 +7,9 @@
 	<title>${title}</title>
 	
 	<link rel="stylesheet" type="text/css" href="/s/portal/css/site.css"/>
+	<!--[if IE]>
+		<link rel="stylesheet" type="text/css" href="/s/portal/css/ie.css"/>
+	<![endif]-->
 
  	<script type="text/javascript" src="/s/portal/js/jquery-1.6.2.min.js"></script>  
  	<script type="text/javascript" src="/s/portal/js/jquery.prettyCheckboxes.js"></script>
