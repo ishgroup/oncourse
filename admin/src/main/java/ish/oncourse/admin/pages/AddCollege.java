@@ -58,6 +58,7 @@ public class AddCollege {
 		College college = (College) context.localObject(collegeService.findById(collegeId).getObjectId(), null);
 		if (college != null) {
 			college.setBillingCode(billingCode);
+			college.setCommunicationKey(null);
 		}
 		
 		createFee(context, college, "sms");
