@@ -685,6 +685,10 @@
 		</delete>
 	</changeSet>
 	
+	<changeSet id="55" author="dzmitry" context="production" runOnChange="true">
+		<addUniqueConstraint tableName="WebSite" columnNames="siteKey" constraintName="siteKey_unique"/>
+	</changeSet>
+	
 	<!--changeSet id="XYZ" author="viacheslav" context="production" runOnChange="true">
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
 	</changeSet-->
