@@ -216,9 +216,13 @@ public class NTISUpdaterImpl implements INTISUpdater {
 							} else if (ASCO_ID.equals(c.getSchemeCode())) {
 								q.setAsco(c.getValueCode());
 							} else if (QUALIFICATION_FIELD_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
-								q.setFieldOfEducation(c.getValueCode());
+								if (c.getValueCode() != null) {
+									q.setFieldOfEducation(c.getValueCode());
+								}
 							} else if (LEVEL_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
-								q.setLevelCode(c.getValueCode());
+								if (c.getValueCode() != null) {
+									q.setLevelCode(c.getValueCode());
+								}
 							}
 						}
 						
@@ -231,6 +235,11 @@ public class NTISUpdaterImpl implements INTISUpdater {
 							if (parent != null) {
 								q.setTrainingPackageId(parent.getId());
 							}
+						}
+						
+						if (q.getLevelCode() == null) {
+							LOGGER.error("Skipping qualification record without level of education code. National code is " + q.getNationalCode());
+							context.deleteObject(q);
 						}
 					}
 				}
