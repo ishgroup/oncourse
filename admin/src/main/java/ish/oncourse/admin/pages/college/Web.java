@@ -11,6 +11,7 @@ import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.model.WillowUser;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -219,6 +220,14 @@ public class Web {
 				tag.setModified(now);
 			}
 		}
+		
+		context.commitChanges();
+		
+		WebUrlAlias urlAlias = context.newObject(WebUrlAlias.class);
+		urlAlias.setWebSite(site);
+		urlAlias.setUrlPath("/");
+		urlAlias.setWebNode(node);
+		node.setDefaultWebURLAlias(urlAlias);
 		
 		context.commitChanges();
 	}
