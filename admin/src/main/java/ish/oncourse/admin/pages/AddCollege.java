@@ -59,6 +59,7 @@ public class AddCollege {
 		if (college != null) {
 			college.setBillingCode(billingCode);
 			college.setCommunicationKey(null);
+			college.setRequiresAvetmiss(true);
 		}
 		
 		createFee(context, college, "sms");
