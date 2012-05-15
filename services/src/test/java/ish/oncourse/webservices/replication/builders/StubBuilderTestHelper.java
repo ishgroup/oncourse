@@ -121,7 +121,14 @@ public class StubBuilderTestHelper<E extends Queueable, S extends ReplicationStu
             {
                 propertyName = WaitingList.POTENTIAL_STUDENTS_PROPERTY;
             }
+        } else if (entity instanceof Certificate)
+        {
+            if (propertyName.equals("qualification"))
+            {
+                propertyName = Certificate.IS_QUALIFICATION_PROPERTY;
+            }
         }
+
 
         if (propertyName.equals("willowId"))
         {

@@ -1,34 +1,8 @@
 package ish.oncourse.webservices.replication.builders;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.BinaryData;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.ConcessionType;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.MessagePerson;
-import ish.oncourse.model.Outcome;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.PaymentOut;
-import ish.oncourse.model.Preference;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.Taggable;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
-import ish.oncourse.model.WaitingList;
+
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
@@ -66,8 +40,9 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		builderMap.put(getEntityName(WaitingList.class), new WaitingListStubBuilder());
 		builderMap.put(getEntityName(Taggable.class), new TaggableStubBuilder());
 		builderMap.put(getEntityName(Outcome.class), new OutcomeStubBuilder());
-
-	}
+        builderMap.put(getEntityName(Certificate.class), new CertificateStubBuilder());
+        builderMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeStubBuilder());
+    }
 
 	/*
 	 * (non-Javadoc)

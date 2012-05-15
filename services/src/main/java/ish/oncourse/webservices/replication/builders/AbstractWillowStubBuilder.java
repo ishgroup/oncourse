@@ -62,6 +62,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 		soapStub.setWillowId(entity.getId());
 		soapStub.setAngelId(entity.getAngelId());
 		soapStub.setEntityIdentifier(entity.getObjectId().getEntityName());
+        soapStub.setCreated(entity.getCreated());
 
 		return soapStub;
 	}

@@ -65,7 +65,7 @@ public class AllStubBuildersTest extends ServiceTest {
     }
 
     private void initReferenceDataSet() throws Exception {
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
+        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/builders/oncourseReferenceDataSet.xml");
 
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
@@ -232,5 +232,13 @@ public class AllStubBuildersTest extends ServiceTest {
         this.testStubBuilder(WaitingList.class, new WaitingListStubBuilder());
     }
 
+    @Test
+    public void testCertificateStubBuilder() {
+        this.testStubBuilder(Certificate.class, new CertificateStubBuilder());
+    }
 
+    @Test
+    public void testCertificateOutcome() {
+        this.testStubBuilder(CertificateOutcome.class, new CertificateOutcomeStubBuilder());
+    }
 }
