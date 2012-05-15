@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 public class Discount extends _Discount implements Queueable {
@@ -62,7 +63,18 @@ public class Discount extends _Discount implements Queueable {
 			}
 			result.append(" with concessions:");
 			for (DiscountConcessionType type : getDiscountConcessionTypes()) {
-				result.append(" ").append(type.getConcessionType().getName());
+				result.append(" ").append(type.getConcessionType().getName())
+					.append(getDiscountConcessionTypes().indexOf(type) < (getDiscountConcessionTypes().size() -1) ? "," : StringUtils.EMPTY);
+			}
+		}
+		if (getDiscountMembershipProducts() != null && !getDiscountMembershipProducts().isEmpty()) {
+			if (result.length() != 0) {
+				result.append(",");
+			}
+			result.append(" with memberships:");
+			for (DiscountMembership membership : getDiscountMembershipProducts()) {
+				result.append(" ").append(membership.getMembershipProduct().getName())
+					.append(getDiscountMembershipProducts().indexOf(membership) < (getDiscountMembershipProducts().size() -1) ? "," : StringUtils.EMPTY);
 			}
 		}
 		if (getStudentPostcodes() != null) {

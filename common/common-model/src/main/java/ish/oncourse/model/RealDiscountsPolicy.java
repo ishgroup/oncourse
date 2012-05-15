@@ -166,6 +166,20 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 				}
 			}
 		}
+		
+		if (discount.getDiscountMembershipProducts() != null) {
+			boolean eligableMembership = discount.getDiscountMembershipProducts().isEmpty();
+			for (DiscountMembership membership : discount.getDiscountMembershipProducts()) {
+				for (Membership contactMembership : student.getContact().getMemberships()) {
+					if (contactMembership.getProduct().getObjectId().equals(membership.getMembershipProduct().getObjectId())) {
+						eligableMembership = true;
+					}
+				}
+			}
+			if (!eligableMembership) {
+				return false;
+			}
+		}
 		return true;// eligibile
 	}
 
