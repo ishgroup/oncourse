@@ -2,7 +2,7 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <t:zone t:id="loginZone" t:update="show">
-	<t:form t:id="loginForm" class="login-form" method="post"  zone="loginZone">
+	<t:form t:id="loginForm" class="login-form form-horizontal" method="post"  zone="loginZone">
 
         <div class="login-wrapper">
 	
@@ -13,13 +13,13 @@
 					 <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
 					<div class="login-table">
 						<div style="width:100%;">
-							<p class="ascompany"><t:label for="iscompany">As company</t:label>
+							<p class="ascompany clearfix"><t:label for="iscompany">As company</t:label>
 								<t:checkbox onclick="set_is_company(document.getElementsByName('iscompany')[0].checked)" t:id="iscompany" value="iscompany"  style="float: right;" />
 							</p>
 						</div>
 
                         <div style="${companyDetailsStyle}" class="${companyDetailsClass}">
-                            <p>
+                            <p class="clearfix">
                                 <t:label for="companyName">Company Name</t:label>
                                 <span class="textField">
                                     <span class="validate">
@@ -32,7 +32,7 @@
                         </div>
 
                         <div style="${userDetailsStyle}" class="${userDetailsClass}">
-                            <p>
+                            <p class="clearfix">
                                 <t:label for="firstName">First Name</t:label>
                                 <span class="textField">
                                     <span class="validate">
@@ -42,7 +42,7 @@
                                 </span>
                             </p>
 
-                            <p>
+                            <p class="clearfix">
                                 <t:label for="lastName">Last Name</t:label>
                                 <span class="textField">
                                     <span class="validate">
@@ -53,7 +53,7 @@
                             </p>
                         </div>
 
-						<p>
+						<p class="clearfix">
                             <t:label for="email">E-mail</t:label>
                             <span class="textField">
                                 <span class="validate">
@@ -63,7 +63,7 @@
                             </span>
                         </p>
 					
-						<p>
+						<p class="clearfix">
                             <t:label for="password">Password</t:label>
                             <span class="textField">
                                 <span class="validate">
@@ -73,9 +73,9 @@
                             </span>
                         </p>
 						
-						<p>
+						<p class="clearfix">
                             <span class="textField">
-                                <t:submit t:id="signIn" class="btn-login" value="Login" clientId="loginBtn"/>
+                                <t:submit t:id="signIn" class="btn-login btn btn-primary" value="Login" clientId="loginBtn"/>
                                 <a t:id="forgotPassword" t:type="linksubmit" href="#" class="login-forgot">Forgot Password?</a>
                             </span>
 						</p>
