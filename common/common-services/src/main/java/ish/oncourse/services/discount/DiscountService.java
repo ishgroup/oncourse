@@ -1,6 +1,7 @@
 package ish.oncourse.services.discount;
 
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -11,6 +12,7 @@ import java.util.List;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class DiscountService implements IDiscountService {
@@ -54,6 +56,7 @@ public class DiscountService implements IDiscountService {
 	 * 
 	 * @see ish.oncourse.services.discount.IDiscountService#loadByIds(java.lang.Object[])
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Discount> loadByIds(Object... ids) {
 		if (ids == null || ids.length == 0) {
@@ -76,12 +79,13 @@ public class DiscountService implements IDiscountService {
 	 */
 	@Override
 	public Discount getByCode(String code) {
-		if (code == null || code.equals("")) {
+		if (StringUtils.trimToNull(code) == null) {
 			return null;
 		}
 		Expression qualifier = ExpressionFactory.matchExp(Discount.CODE_PROPERTY, code).andExp(
 				Discount.getCurrentDateFilter()).andExp(getCurrentCollegeFilter());
 		SelectQuery query = new SelectQuery(Discount.class, qualifier);
+		@SuppressWarnings("unchecked")
 		List<Discount> result = cayenneService.sharedContext().performQuery(query);
 		return result.isEmpty() ? null : result.get(0);
 	}
