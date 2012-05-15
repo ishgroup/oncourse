@@ -694,7 +694,20 @@
 	</changeSet-->
 
     <changeSet id="56" author="akoyro" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<indexExists tableName="Contact" indexName="studentId_unique"/>
+    		</not>
+    	</preConditions>
         <addUniqueConstraint tableName="Contact" columnNames="studentId" constraintName="studentId_unique"/>
+    </changeSet>
+    
+    <changeSet id="57" author="akoyro" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<indexExists tableName="Contact" indexName="tutorId_unique"/>
+    		</not>
+    	</preConditions>
         <addUniqueConstraint tableName="Contact" columnNames="tutorId" constraintName="tutorId_unique"/>
     </changeSet>
 
