@@ -693,4 +693,9 @@
 		<addUniqueConstraint tableName="PaymentInLine" columnNames="paymentInId,invoiceId" constraintName="paymentInIdAndInvoiceIdForPaymentInLine_unique"/>
 	</changeSet-->
 
+    <changeSet id="56" author="akoyro" context="production" runOnChange="true">
+        <addUniqueConstraint tableName="Contact" columnNames="studentId" constraintName="studentId_unique"/>
+        <addUniqueConstraint tableName="Contact" columnNames="tutorId" constraintName="tutorId_unique"/>
+    </changeSet>
+
 </databaseChangeLog>
