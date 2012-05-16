@@ -333,4 +333,29 @@ public class Contact extends _Contact implements Queueable {
 		setStudent(student);
 		return student;
 	}
+	
+	public String getAddress() {
+		String result = "";
+
+		if (getSuburb() != null && !getSuburb().equals("")) {
+			result = result + getSuburb();
+		}
+		if (getState() != null && !getState().equals("")) {
+			if (result.length() > 0) {
+				result = result + " ";
+			}
+			result = result + getState();
+		}
+		if (getPostcode() != null && !getPostcode().trim().equals("")) {
+			if (result.length() > 0) {
+				result = result + " ";
+			}
+			result = result + getPostcode().trim();
+		}
+
+		if (getStreet() != null && !getStreet().equals("")) {
+			result = getStreet() + "\n" + result;
+		}
+		return result;
+	}
 }

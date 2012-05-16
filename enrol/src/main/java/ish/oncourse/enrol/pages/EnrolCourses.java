@@ -665,6 +665,7 @@ public class EnrolCourses {
             // even if the payment amount is zero, the contact for it is
             // selected(the first in list by default)
             invoice.setContact(payment.getContact());
+            invoice.setBillToAddress(payment.getContact().getAddress());
 
             Money totalIncGst = getTotalIncGst();
             payment.setAmount(totalIncGst.toBigDecimal());
