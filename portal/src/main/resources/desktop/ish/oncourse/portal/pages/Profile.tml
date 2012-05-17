@@ -93,19 +93,15 @@
 					
 				</span>
 			</p>
-			<p>
+			<div class="radio-list">
 				<label>Gender</label>
-				<div class="radio-list">
-					<t:radiogroup t:value="contact.isMale"> 
-						<label for="male" class="radio"><input type="radio" t:type="radio" t:value="true"/>Male</label>
-						<label for="female" class="radio"><input type="radio" t:type="radio" t:value="false"/>Female</label>
-					</t:radiogroup>
-				</div>
-			</p>
-			<p>
-				<label>I would like to receive marketing material via: </label>
-			</p>
+				<t:radiogroup t:value="contact.isMale"> 
+					<label for="male" class="radio"><input type="radio" t:type="radio" t:value="true"/>Male</label>
+					<label for="female" class="radio"><input type="radio" t:type="radio" t:value="false"/>Female</label>
+				</t:radiogroup>
+			</div>
 			<p>	
+				<label>I would like to receive marketing material via: </label>
 				<t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> <label for="allowEmail">E-Mail</label>
 				<t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> <label for="allowSms">SMS</label>
 				<t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> <label for="allowPost">Post</label> 
@@ -173,7 +169,7 @@
 			</t:if>
 		</t:if>
 		
-		<div class="form-actions" xml:space="preserve">
+		<div class="actions" xml:space="preserve">
 			<t:submit  t:id="saveProfileAction" value="Save" class="btn btn-primary" clientId="save-student-profile"/> 
 		</div>	
 	</t:form>
