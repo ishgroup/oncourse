@@ -8,7 +8,7 @@
 	<t:form t:id="approvalForm">
 		<t:if test="isClassApproved" negate="true">
 			<t:checkbox t:id="approved"/>
-			<label for="approved"><span class="fl" style="width:729px;">I hereby agree that the date, time, venue and description of the class are all correct and that I am able to teach the class material at the times stated.</span></label>
+			<label for="approved"><span>I hereby agree that the date, time, venue and description of the class are all correct and that I am able to teach the class material at the times stated.</span></label>
 			<div class="cl mb15"></div>
 			<t:linksubmit t:id="accept" class="btn1 mb20">Accept</t:linksubmit>
 			<div class="bord mb20"></div>
