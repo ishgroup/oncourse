@@ -43,20 +43,29 @@
 				<tr>
 					<td>Site Name</td>
 					<td>Site Key</td>
+					<td>Google Analytics</td>
 				</tr>
 			</thead>
 			<tbody>
-				<t:loop source="sites" value="currentSite">
+				<t:form t:id="sitesEditForm">
+					<t:loop source="sites.keySet()" value="currentSiteKey">
+						<tr>
+							<td>${currentWebSite.name}</td>
+							<td>${currentWebSite.siteKey}</td>
+							<td><t:textfield t:id="currentWebSiteKey" value="currentWebSite.googleAnalyticsAccount"/></td>
+							<td><t:actionlink t:id="deleteSite" context="currentWebSite.siteKey">[x]</t:actionlink></td>
+						</tr>
+					</t:loop>
 					<tr>
-						<td>${currentSite.name}</td>
-						<td>${currentSite.siteKey}</td>
-						<td><t:actionlink t:id="deleteSite" context="currentSite.siteKey">[x]</t:actionlink></td>
+						<td></td><td></td><td></td>
+						<td><t:submit t:id="saveSites" value="Save"/></td>
 					</tr>
-				</t:loop>
+				</t:form>
 				<t:form t:id="sitesForm">
 				<tr>
 					<td><t:textfield t:id="newSiteName" t:validate="required" value="newSiteNameValue"/></td>
 					<td><t:textfield t:id="newSiteKey" t:validate="required" value="newSiteKeyValue"/></td>
+					<td><t:textfield t:id="newSiteGoogeAnalytics" value="newSiteGoogleAnalyticsValue"/></td>
 					<td><t:submit t:id="addNewSite" value="Add"/></td>
 				</tr>
 				</t:form>

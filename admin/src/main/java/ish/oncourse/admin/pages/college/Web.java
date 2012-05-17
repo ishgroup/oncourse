@@ -2,7 +2,9 @@ package ish.oncourse.admin.pages.college;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Tag;
@@ -40,7 +42,8 @@ public class Web {
 	private College college;
 	
 	@Property
-	private List<WebSite> sites;
+	@Persist
+	private Map<String, WebSite> sites;
 	
 	@Property
 	private List<WebHostName> domains;
@@ -64,6 +67,9 @@ public class Web {
 	private String newSiteKeyValue;
 	
 	@Property
+	private String newSiteGoogleAnalyticsValue;
+	
+	@Property
 	private String newDomainValue;
 	
 	@Property
@@ -83,6 +89,9 @@ public class Web {
 	
 	@Property
 	private String changeSiteUrl;
+	
+	@Property
+	private String currentSiteKey;
 	
 	@Property
 	@Persist
@@ -114,6 +123,7 @@ public class Web {
 	@SetupRender
 	void setupRender() {
 		this.changeSiteUrl = response.encodeURL(request.getContextPath() + "/college/changeDomainSite");
+		this.sites = new HashMap<String, WebSite>();
 		
 		ObjectContext context = cayenneService.sharedContext();
 		
@@ -131,7 +141,10 @@ public class Web {
 		domainsQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
 		cmsUsersQuery.setCacheStrategy(QueryCacheStrategy.NO_CACHE);
 		
-		this.sites = context.performQuery(sitesQuery);
+		List<WebSite> sites = context.performQuery(sitesQuery);
+		for (WebSite site : sites) {
+			this.sites.put(site.getSiteKey(), site);
+		}
 		this.domains = context.performQuery(domainsQuery);
 		this.cmsUsers = context.performQuery(cmsUsersQuery);
 		
@@ -168,6 +181,23 @@ public class Web {
 		context.commitChanges();
 	}
 	
+	@OnEvent(component="sitesEditForm", value="success")
+	void saveSites() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		
+		for (String key : sites.keySet()) {
+			if (sites.get(key) != null) {
+				WebSite webSite = (WebSite) context.localObject(sites.get(key).getObjectId(), null);
+				
+				if (webSite != null) {
+					webSite.setGoogleAnalyticsAccount(sites.get(key).getGoogleAnalyticsAccount());
+				}
+			}
+		}
+		
+		context.commitChanges();
+	}
+	
 	@OnEvent(component="sitesForm", value="success")
 	void addSite() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -177,6 +207,7 @@ public class Web {
 		site.setCollege((College) context.localObject(college.getObjectId(), null));
 		site.setName(newSiteNameValue);
 		site.setSiteKey(newSiteKeyValue);
+		site.setGoogleAnalyticsAccount(newSiteGoogleAnalyticsValue);
 		site.setCreated(now);
 		site.setModified(now);
 		
@@ -321,6 +352,11 @@ public class Web {
 	
 	public String getSelectedSite() {
 		return currentDomain.getWebSite().getSiteKey();
+	}
+	
+	public WebSite getCurrentWebSite() {
+		System.out.println(currentSiteKey);
+		return this.sites.get(currentSiteKey);
 	}
 	
 }
