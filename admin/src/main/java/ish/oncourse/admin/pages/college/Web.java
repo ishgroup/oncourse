@@ -355,7 +355,6 @@ public class Web {
 	}
 	
 	public WebSite getCurrentWebSite() {
-		System.out.println(currentSiteKey);
 		return this.sites.get(currentSiteKey);
 	}
 	
