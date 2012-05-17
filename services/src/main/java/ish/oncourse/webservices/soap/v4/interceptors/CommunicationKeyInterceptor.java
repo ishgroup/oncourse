@@ -46,9 +46,12 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			}
 
 			String securityCode = SoapUtil.getSecurityCode(message);
-
+			final HttpServletRequest httpRequest = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
+			final String ip = (httpRequest != null) ? httpRequest.getRemoteAddr() : "unknown";
+			final String version = SoapUtil.getAngelVersion(message);
 			if (securityCode == null) {
-				String m = "Empty security code in replication soap message.";
+				final String m = String.format("Empty security code in replication soap message from ip = %s with angel server version = %s .", 
+					ip, version);
 				logger.error(m);
 				throw new AuthSoapFault(m);
 			}
@@ -56,7 +59,8 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			College college = collegeService.findBySecurityCode(securityCode);
 
 			if (college == null) {
-				String m = String.format("College not found. Invalid security code %s.", securityCode);
+				String m = String.format("College not found. Invalid security code %s from ip = %s with angel server version = %s .", securityCode, ip, 
+					version);
 				logger.error(m);
 				throw new AuthSoapFault(m);
 			}
@@ -71,15 +75,16 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
 			try {
 				communicationKey = Long.parseLong(SoapUtil.getCommunicationKey(message));
-				final HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
+				//final HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
 				//each request should contain session token (need for #13890)
 				final SessionToken token = new SessionToken(college.getId(), communicationKey);
-				req.setAttribute(SessionToken.SESSION_TOKEN_KEY, token);
-				req.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, token.getCollegeId());
+				httpRequest.setAttribute(SessionToken.SESSION_TOKEN_KEY, token);
+				httpRequest.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, token.getCollegeId());
 
 			} catch (NumberFormatException ne) {
-				logger.error("Failed to parse communication key.", ne);
-				throw new AuthSoapFault(String.format("Invalid communication key:%s", communicationKey));
+				String m = String.format("Invalid communication key %s from ip = %s with angel server version = %s .", communicationKey, ip, version);
+				logger.error(m, ne);
+				throw new AuthSoapFault(m);
 			}
 
 		} catch (Exception e) {
