@@ -44,6 +44,7 @@ import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Site;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TagGroupRequirement;
 import ish.oncourse.model.Taggable;
@@ -101,6 +102,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		updaterMap.put(getEntityName(PaymentOut.class), new PaymentOutUpdater());
 		updaterMap.put(getEntityName(Preference.class), new PreferenceUpdater());
 		updaterMap.put(getEntityName(Student.class), new StudentUpdater());
+		updaterMap.put(getEntityName(SystemUser.class), new SystemUserUpdater());
 		updaterMap.put(getEntityName(Tag.class), new TagUpdater(textileConverter));
 		updaterMap.put(getEntityName(Taggable.class), new TagRelationUpdater());
 		updaterMap.put(getEntityName(TagGroupRequirement.class), new TagGroupRequirementUpdater());

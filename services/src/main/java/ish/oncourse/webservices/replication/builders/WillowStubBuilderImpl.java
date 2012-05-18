@@ -32,6 +32,7 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 		builderMap.put(getEntityName(Preference.class), new PreferenceStubBuilder());
 		builderMap.put(getEntityName(StudentConcession.class), new StudentConcessionStubBuilder());
 		builderMap.put(getEntityName(Student.class), new StudentStubBuilder());
+		builderMap.put(getEntityName(SystemUser.class), new SystemUserStubBuilder());
 		builderMap.put(getEntityName(Tutor.class), new TutorStubBuilder());
 		builderMap.put(getEntityName(TutorRole.class), new TutorRoleStubBuilder());
 		builderMap.put(getEntityName(Site.class), new SiteStubBuilder());
