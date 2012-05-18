@@ -2495,7 +2495,7 @@
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="products" source="Contact" target="ProductItem" deleteRule="Deny" db-relationship-path="products"/>
-	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Cascade" db-relationship-path="student"/>
+	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Deny" db-relationship-path="student"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
 	<obj-relationship name="vouchers" source="Contact" target="Voucher" deleteRule="Deny" db-relationship-path="products"/>

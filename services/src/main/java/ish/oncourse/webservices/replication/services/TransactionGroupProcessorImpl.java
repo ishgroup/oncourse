@@ -43,7 +43,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  */
 public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
 
-	/**
+    static final String MESSAGE_TEMPLATE_NO_STUB = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s!";
+    static final String MESSAGE_TEMPLATE_NO_ANGELID = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s but without has null angelId!";
+
+    /**
 	 * Logger
 	 */
 	private static final Logger logger = Logger.getLogger(TransactionGroupProcessorImpl.class);
@@ -274,7 +277,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	}
 
 	/**
-	 * Deletes replicable object
+	 * Deletes replicable object.
+     * The method:
+     * 1. finds all relationships for the objectToDelete which have DeleteRule.DENY
+     * 2. gets all related objects for every relationship
+     * 3. finds and proccid
 	 * 
 	 * @param objectToDelete
 	 *            object to delete
@@ -295,13 +302,21 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 						// log the record details to have the ability to
 						// erase it from the existing dump if we shouldn't
 						// delete it.
-						logger.error("The record with willowId:" + r.getId() + " and identifier:" + entityIdentifier + " has null angelId!");
+                        String message = String.format(MESSAGE_TEMPLATE_NO_ANGELID,objectToDelete.getId(), objectToDelete.getObjectId().getEntityName(), r.getId(), entityIdentifier);
+                        throw new IllegalArgumentException(message);
 					}
 
 					ReplicationStub relStub = takeStubFromGroupByAngelId(r.getAngelId(), entityIdentifier);
-					if (relStub != null && relStub instanceof DeletedStub) {
+
+					if (relStub != null)
+                    {
 						processStub(relStub);
 					}
+                    else
+                    {
+                        String message = String.format(MESSAGE_TEMPLATE_NO_STUB, objectToDelete.getId(), objectToDelete.getObjectId().getEntityName(), r.getId(), entityIdentifier);
+                        throw new IllegalArgumentException(message);
+                    }
 				}
 			}
 		}
