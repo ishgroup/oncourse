@@ -138,7 +138,7 @@
 
 
         <fieldset class="opt-in">
-			<p class="fieldset-intro">I would like to receive marketing material via:</p>
+			<p class="fieldset-intro">I would like to receive information and offers via:</p>
 			<p><label for="allowEmail">E-Mail</label><t:checkbox id="allowEmail" value="contact.isMarketingViaEmailAllowed"/></p>
 			<p><label for="allowSms">SMS</label><t:checkbox id="allowSms" value="contact.isMarketingViaSMSAllowed"/></p>
 			<p><label for="allowPost">Post</label><t:checkbox id="allowPost" value="contact.isMarketingViaPostAllowed"/></p>
