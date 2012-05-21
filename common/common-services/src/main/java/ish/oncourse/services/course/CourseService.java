@@ -175,7 +175,7 @@ public class CourseService implements ICourseService {
                 return Collections.EMPTY_LIST;
             }
 		}
-		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids).andExp(getSiteQualifier())
+		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, orderingMap.keySet()).andExp(getSiteQualifier())
 				.andExp(ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true));
 
 		SelectQuery q = new SelectQuery(Course.class, expr);
