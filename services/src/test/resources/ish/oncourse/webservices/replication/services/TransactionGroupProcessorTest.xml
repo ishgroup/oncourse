@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 
     <Student id="1" angelId="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
     <Contact id="1" angelId="1" collegeId="1" studentId="1" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
