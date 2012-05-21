@@ -35,6 +35,7 @@ public class TaggableListenerTest extends ServiceTest {
 		college.setFirstRemoteAuthentication(new Date());
 		college.setTimeZone("Australia/Sydney");
 		college.setWebServicesSecurityCode("345ttn44$%9");
+		college.setRequiresAvetmiss(false);
 		
 		context.commitChanges();
 		

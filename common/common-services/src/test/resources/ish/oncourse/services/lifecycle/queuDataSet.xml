@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
-	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney"/>
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 	
 	<Course id="3" collegeId="1" code="BNN-453" angelId="1" detail="Course Basic New Test" name="Course Basic New Test"/>
 	<Course id="4" collegeId="1" code="CNN-876" angelId="1" detail="Basic Art Work" name="Basic Art Work"/>

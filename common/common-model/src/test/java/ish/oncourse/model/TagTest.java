@@ -45,6 +45,7 @@ public class TagTest {
 		college.setName("name");
 		college.setTimeZone("Australia/Sydney");
 		college.setFirstRemoteAuthentication(new Date());
+		college.setRequiresAvetmiss(false);
 
 		Tag rootTag = context.newObject(Tag.class);
 		rootTag.setCollege(college);

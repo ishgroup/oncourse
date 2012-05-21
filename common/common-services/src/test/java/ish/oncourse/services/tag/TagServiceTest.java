@@ -61,6 +61,7 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 		college.setName("testCollege");
 		college.setTimeZone("Australia/Sydney");
 		college.setFirstRemoteAuthentication(new Date());
+		college.setRequiresAvetmiss(false);
 		final Tag subjects = context.newObject(Tag.class);
 		subjects.setName(Tag.SUBJECTS_TAG_NAME);
 		subjects.setCollege(college);

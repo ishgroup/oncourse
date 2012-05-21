@@ -3,7 +3,8 @@
 	<College id="1" name="Sydney Community College"
 		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
 		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
-		timezone="Australia/Sydney" />
+		timezone="Australia/Sydney" 
+		requiresAvetmiss="0"/>
 
 	<Site id="1181610" collegeId="1" angelId="200" isWebVisible="0"
 		created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" />
@@ -262,7 +263,8 @@
 	<College id="10" name="Sydney Community College"
 		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
 		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
-		timezone="Australia/Sydney" />
+		timezone="Australia/Sydney" 
+		requiresAvetmiss="0"/>
 
 	<Site id="11816100" collegeId="10" angelId="2000" isWebVisible="0"
 		created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" />

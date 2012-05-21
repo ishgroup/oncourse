@@ -106,6 +106,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		college.setName("name");
 		college.setTimeZone("Australia/Sydney");
 		college.setFirstRemoteAuthentication(new Date());
+		college.setRequiresAvetmiss(false);
 		Contact contact = context.newObject(Contact.class);
 		contact.setFamilyName("familyName");
 		contact.setCollege(college);

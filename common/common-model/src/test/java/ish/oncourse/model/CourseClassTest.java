@@ -103,6 +103,7 @@ public class CourseClassTest {
 		college.setName("name");
 		college.setTimeZone("Australia/Sydney");
 		college.setFirstRemoteAuthentication(new Date());
+		college.setRequiresAvetmiss(false);
 
 		Course course = context.newObject(Course.class);
 		course.setCollege(college);

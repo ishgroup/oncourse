@@ -31,6 +31,7 @@ public class PaymentInLineTest {
 		college.setName("name");
 		college.setTimeZone("Australia/Sydney");
 		college.setFirstRemoteAuthentication(new Date());
+		college.setRequiresAvetmiss(false);
 		context.commitChanges();
 		
 		course = context.newObject(Course.class);

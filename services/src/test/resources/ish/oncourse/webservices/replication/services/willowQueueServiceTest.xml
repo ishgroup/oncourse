@@ -4,11 +4,11 @@
 	<College id="1" name="Sydney Community College"
 		webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
 		communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
-		timezone="Australia/Sydney" />
+		timezone="Australia/Sydney" requiresAvetmiss="0"/>
 
 	<College id="2" name="Tasmania Adult Education"
 		webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT"
-		firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" />
+		firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
 		
 	<Student id="1540" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
 
