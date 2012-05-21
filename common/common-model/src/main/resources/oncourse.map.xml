@@ -88,7 +88,7 @@
 		<db-attribute name="paymentGatewayAccount" type="VARCHAR" length="32"/>
 		<db-attribute name="paymentGatewayPass" type="VARCHAR" length="16"/>
 		<db-attribute name="paymentGatewayType" type="INTEGER" length="10"/>
-		<db-attribute name="requiresAvetmiss" type="BIT"/>
+		<db-attribute name="requiresAvetmiss" type="BIT" isMandatory="true"/>
 		<db-attribute name="timeZone" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="webServicesLogin" type="VARCHAR" length="16"/>
 		<db-attribute name="webServicesPass" type="VARCHAR" length="16"/>

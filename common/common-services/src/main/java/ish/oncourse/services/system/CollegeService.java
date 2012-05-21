@@ -143,7 +143,7 @@ public class CollegeService implements ICollegeService {
 		college.setPaymentGatewayAccount(null);
 		college.setPaymentGatewayPass(null);
 		college.setPaymentGatewayType(null);
-		college.setRequiresAvetmiss(null);
+		college.setRequiresAvetmiss(false);
 		college.setWebServicesLogin(null);
 		college.setWebServicesPass(null);
 		college.setTimeZone("Australia/Sydney");

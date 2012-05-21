@@ -763,5 +763,10 @@
     	<addForeignKeyConstraint constraintName="systemUserCollegeId_ind" referencedTableName="College" baseColumnNames="collegeId" 
     		baseTableName="SystemUser" referencedColumnNames="id"/>
     </changeSet>
+    
+	<changeSet id="59" author="dzmitry" context="production" runOnChange="true">
+    	<sql>update College set requiresAvetmiss = 0 where requiresAvetmiss is null;</sql>
+    	<addNotNullConstraint tableName="College" columnName="requiresAvetmiss" columnDataType="TINYINT(1)" defaultNullValue="0"/>
+	</changeSet>
 
 </databaseChangeLog>
