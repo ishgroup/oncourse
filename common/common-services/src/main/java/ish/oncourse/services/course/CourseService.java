@@ -27,10 +27,13 @@ import org.apache.cayenne.query.SQLTemplate;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 @SuppressWarnings("unchecked")
 public class CourseService implements ICourseService {
+
+    private static final Logger LOGGER = Logger.getLogger(CourseService.class);
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -160,7 +163,17 @@ public class CourseService implements ICourseService {
 				id = Long.valueOf((String) ids[i]);
 			}
             if (id != null)
+            {
 			    orderingMap.put(id, i);
+            }
+            else
+            {
+                /**
+                 * The warn has been added to exclude error when some hacked request is going with not numeric ids
+                 */
+                LOGGER.warn(String.format("ids cannot contain not numeric element like this: %s",ids[i]));
+                return Collections.EMPTY_LIST;
+            }
 		}
 		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, ids).andExp(getSiteQualifier())
 				.andExp(ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true));
