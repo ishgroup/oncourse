@@ -71,7 +71,7 @@ public class PageStructure {
 	private CmsNavigation cmsNavigation;
 
 	public boolean isLoggedIn() {
-		return authenticationService.getUser() != null;
+		return authenticationService.getUser() != null || authenticationService.getSystemUser() != null;
 	}
 
 	@SetupRender

@@ -1,5 +1,6 @@
 package ish.oncourse.cms.services.access;
 
+import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.WillowUser;
 import ish.oncourse.services.access.AuthenticationStatus;
 
@@ -21,10 +22,16 @@ public interface IAuthenticationService {
 
 
 	/**
-	 * Returns current session user for authenticated sessions, or null for
+	 * Returns current session willow user for authenticated sessions, or null for
 	 * unauthenticated sessions.
 	 */
 	WillowUser getUser();
+	
+	/**
+	 * Returns current session system user for authenticated sessions, or null for
+	 * unauthenticated sessions.
+	 */
+	SystemUser getSystemUser();
 	
 	/**
 	 * Performs logout, cleanups cookies, invalidates http session.

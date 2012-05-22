@@ -35,7 +35,7 @@ public class PageAccessDispatcher implements Dispatcher {
 			os.flush();
 			return true;
 		}
-		if (authenticationService.getUser() == null) {
+		if (authenticationService.getUser() == null && authenticationService.getSystemUser() == null) {
 			String loginPath = request.getContextPath() + LOGIN_PAGE;
 			response.sendRedirect(loginPath);
 			return true;
