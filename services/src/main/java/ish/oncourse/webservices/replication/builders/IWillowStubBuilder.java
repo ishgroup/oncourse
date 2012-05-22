@@ -2,7 +2,8 @@ package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 
 public interface IWillowStubBuilder {
 	/**
@@ -11,7 +12,7 @@ public interface IWillowStubBuilder {
 	 * @param queuedRecord record from the queue.
 	 * @return soap stub
 	 */
-	ReplicationStub convert(QueuedRecord entity);
+	GenericReplicationStub convert(final QueuedRecord entity, final SupportedVersions version);
 	
 	/**
 	 * Converts queueable entity to correspondent soap stub.
@@ -19,5 +20,5 @@ public interface IWillowStubBuilder {
 	 * @param entity queueable entity
 	 * @return soap stub.
 	 */
-	ReplicationStub convert(Queueable entity);
+	GenericReplicationStub convert(final Queueable entity, final SupportedVersions version);
 }

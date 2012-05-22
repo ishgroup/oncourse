@@ -10,22 +10,17 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.FaultCode;
-import ish.oncourse.webservices.soap.v4.ReplicationFault;
-import ish.oncourse.webservices.v4.stubs.replication.FaultReason;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-import ish.oncourse.webservices.v4.stubs.replication.Status;
-import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
-
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationRecords;
+import ish.oncourse.webservices.util.GenericReplicationResult;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -69,25 +64,20 @@ public class ReplicationServiceImpl implements IReplicationService {
 	 * Process transaction groups from angel for replication.
 	 */
 	@Override
-	public ReplicationResult sendRecords(ReplicationRecords req) throws ReplicationFault {
+	public GenericReplicationResult sendRecords(GenericReplicationRecords req) throws InternalReplicationFault {
 		try {
-			List<ReplicatedRecord> replicatedRecords = new ArrayList<ReplicatedRecord>();
-
-			for (TransactionGroup group : req.getGroups()) {
+			List<GenericReplicatedRecord> replicatedRecords = new ArrayList<GenericReplicatedRecord>();
+			for (GenericTransactionGroup group : req.getGroups()) {
 				replicatedRecords.addAll(transactionGroupAtomicUpdater.processGroup(group));
 			}
-
-			ReplicationResult result = new ReplicationResult();
-			result.getReplicatedRecord().addAll(replicatedRecords);
-
+			GenericReplicationResult result = PortHelper.createReplicationResult(req);
+			result.getGenericReplicatedRecord().addAll(replicatedRecords);
 			return result;
 
 		} catch (Exception e) {
 			logger.error("Unable to process replication records.", e);
-			FaultReason faultReason = new FaultReason();
-			faultReason.setDetailMessage(String.format("Unable to process replication records. Willow exception: %s", e.getMessage()));
-			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			throw new ReplicationFault("Unable to process replication records.", faultReason);
+			throw new InternalReplicationFault("Unable to process replication records.", FaultCode.GENERIC_EXCEPTION, 
+				String.format("Unable to process replication records. Willow exception: %s", e.getMessage()));
 		}
 	}
 
@@ -96,7 +86,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 	 * to Angel.
 	 */
 	@Override
-	public ReplicationRecords getRecords() throws ReplicationFault {
+	public GenericReplicationRecords getRecords(final SupportedVersions version) throws InternalReplicationFault {
 
 		try {
 
@@ -121,7 +111,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 			} while (number < TRANSACTION_BATCH_SIZE && transactions.size() == TRANSACTION_BATCH_SIZE);
 
 			// now we have records to process
-			List<TransactionGroup> resultGroups = new ArrayList<TransactionGroup>();
+			List<GenericTransactionGroup> resultGroups = new ArrayList<GenericTransactionGroup>();
 
 			if (!queue.isEmpty()) {
 				Map<QueueKey, DFADedupper> dedupMap = new LinkedHashMap<QueueKey, DFADedupper>();
@@ -145,7 +135,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 				}
 				Collections.sort(sortedDeduppers);
 
-				Map<String, TransactionGroup> groupMap = new LinkedHashMap<String, TransactionGroup>();
+				Map<String, GenericTransactionGroup> groupMap = new LinkedHashMap<String, GenericTransactionGroup>();
 
 				for (DFADedupper deduper : sortedDeduppers) {
 
@@ -171,7 +161,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 					ctx.commitChanges();
 
-					TransactionGroup group = null;
+					GenericTransactionGroup group = null;
 
 					logger.debug(String.format("Deduper spans %s transactions.", deduper.getTransactionKeys().size()));
 
@@ -183,7 +173,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 					}
 
 					if (group == null) {
-						group = new TransactionGroup();
+						group = PortHelper.createTransactionGroup(version);
 
 						for (String key : deduper.getTransactionKeys()) {
 							groupMap.put(key, group);
@@ -193,14 +183,14 @@ public class ReplicationServiceImpl implements IReplicationService {
 					}
 
 					try {
-						ReplicationStub stub = stubBuilder.convert(record);
+						GenericReplicationStub stub = stubBuilder.convert(record, PortHelper.getVersionByTransactionGroup(group));
 
 						if (stub == null) {
 							// cleanup QueuedRecord if linked object not found.
 							ctx.deleteObject(record);
 							ctx.commitChanges();
 						} else {
-							group.getAttendanceOrBinaryDataOrBinaryInfo().add(stub);
+							group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stub);
 						}
 
 					} catch (Exception se) {
@@ -210,11 +200,11 @@ public class ReplicationServiceImpl implements IReplicationService {
 				}
 			}
 
-			ReplicationRecords result = new ReplicationRecords();
-			result.getGroups().addAll(resultGroups);
+			GenericReplicationRecords result = PortHelper.createReplicationRecords(version);
+			result.getGenericGroups().addAll(resultGroups);
 
 			// clean remove group if it's empty
-			for (TransactionGroup g : new ArrayList<TransactionGroup>(result.getGroups())) {
+			for (GenericTransactionGroup g : new ArrayList<GenericTransactionGroup>(result.getGenericGroups())) {
 				if (g.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 					result.getGroups().remove(g);
 				}
@@ -224,10 +214,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 		} catch (Exception e) {
 			logger.error("Unable to get records for replication.", e);
-			FaultReason faultReason = new FaultReason();
-			faultReason.setDetailMessage(String.format("Unable to get records for replication. Willow exception: %s", e.getMessage()));
-			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			throw new ReplicationFault("Unable to get records for replication.", faultReason);
+			throw new InternalReplicationFault("Unable to get records for replication.", FaultCode.GENERIC_EXCEPTION, 
+				String.format("Unable to get records for replication. Willow exception: %s", e.getMessage()));
 		}
 	}
 
@@ -236,7 +224,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 	 * updates angelId, otherwise increases attempts count.
 	 */
 	@Override
-	public int sendResults(ReplicationResult request) throws ReplicationFault {
+	public int sendResults(GenericReplicationResult request) throws InternalReplicationFault {
 
 		try {
 
@@ -244,7 +232,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 			int numberDeleted = 0;
 
-			for (ReplicatedRecord record : request.getReplicatedRecord()) {
+			for (GenericReplicatedRecord record : request.getReplicatedRecord()) {
 
 				SelectQuery q = new SelectQuery(QueuedRecord.class);
 
@@ -258,7 +246,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 				for (QueuedRecord queuedRecord : list) {
 					try {
 
-						if (record.getStatus() == Status.SUCCESS) {
+						if (record.isSuccessStatus()) {
 							ctx.deleteObject(queuedRecord);
 							
 							if (queuedRecord.getAction() != QueuedRecordAction.DELETE) {
@@ -308,12 +296,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 		} catch (Exception e) {
 			logger.error("Unable to confirm replication results.", e);
-
-			FaultReason faultReason = new FaultReason();
-			faultReason.setDetailMessage(String.format("Unable to confirm replication results. Willow exception: %s", e.getMessage()));
-			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-
-			throw new ReplicationFault("Unable to confirm replication results.", faultReason);
+			throw new InternalReplicationFault("Unable to confirm replication results.", FaultCode.GENERIC_EXCEPTION, 
+				String.format("Unable to confirm replication results. Willow exception: %s", e.getMessage()));
 		}
 	}
 }

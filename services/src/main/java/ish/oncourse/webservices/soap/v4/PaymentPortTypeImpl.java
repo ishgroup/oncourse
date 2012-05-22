@@ -1,5 +1,9 @@
 package ish.oncourse.webservices.soap.v4;
 
+import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
+import ish.oncourse.webservices.replication.services.InternalPaymentService;
+import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
 import javax.jws.WebMethod;
@@ -23,23 +27,35 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 
 	@Inject
 	@Autowired
-	private PaymentPortType paymentPort;
+	private InternalPaymentService paymentPort;
 
 	@Override
 	@WebMethod(operationName = "processRefund")
 	public TransactionGroup processRefund(TransactionGroup paymentOut) throws ReplicationFault {
-		return paymentPort.processRefund(paymentOut);
+		try {
+			return PortHelper.getv4TransactionGroup(paymentPort.processRefund(paymentOut));
+		} catch (InternalReplicationFault e) {
+			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
+		}
 	}
 
 	@Override
 	@WebMethod(operationName = "processPayment")
 	public TransactionGroup processPayment(TransactionGroup transaction) throws ReplicationFault {
-		return paymentPort.processPayment(transaction);
+		try {
+			return PortHelper.getv4TransactionGroup(paymentPort.processPayment(transaction));
+		} catch (InternalReplicationFault e) {
+			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
+		}
 	}
 
 	@Override
 	@WebMethod(action = "getPaymentStatus")
 	public TransactionGroup getPaymentStatus(String sessionId) throws ReplicationFault {
-		return paymentPort.getPaymentStatus(sessionId);
+		try {
+			return PortHelper.getv4TransactionGroup(paymentPort.getPaymentStatus(sessionId, SupportedVersions.V4));
+		} catch (InternalReplicationFault e) {
+			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
+		}
 	}
 }

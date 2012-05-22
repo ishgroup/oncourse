@@ -7,10 +7,13 @@ import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.replication.services.InternalPaymentService;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v4.stubs.replication.ContactStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
 import ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub;
@@ -18,7 +21,6 @@ import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentOutStub;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.StudentStub;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
 
@@ -33,7 +35,6 @@ import javax.sql.DataSource;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -76,7 +77,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 	@Test
 	public void testProcessCreditCardPayment() throws Exception {
 
-		TransactionGroup group = new TransactionGroup();
+		GenericTransactionGroup group = new TransactionGroup();
 
 		EnrolmentStub enrolStub = enrolment();
 		InvoiceStub invoiceStub = invoice();
@@ -86,7 +87,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		ContactStub contactStub = contact();
 		StudentStub studentStub = student();
 
-		List<ReplicationStub> stubs = group.getAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 
 		stubs.add(enrolStub);
 		stubs.add(paymentInStub);
@@ -96,15 +97,15 @@ public class PaymentPortTypeTest extends ServiceTest {
 		stubs.add(contactStub);
 		stubs.add(studentStub);
 
-		PaymentPortType port = getService(PaymentPortType.class);
-		TransactionGroup respGroup = port.processPayment(group);
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		GenericTransactionGroup respGroup = port.processPayment(group);
 
 		assertNotNull("Check Response Group is not null", respGroup);
 
 		EnrolmentStub respEnrolStub = null;
 		PaymentInStub respPaymentInStub = null;
 
-		for (ReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (EnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
@@ -124,7 +125,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 	@Test
 	public void testProcessPaymentNoPlaces() throws Exception {
 
-		TransactionGroup group = new TransactionGroup();
+		GenericTransactionGroup group = new TransactionGroup();
 
 		ContactStub contactStub1 = contact();
 		StudentStub studentStub1 = student();
@@ -160,7 +161,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		PaymentInStub paymentInStub = paymentIn();
 		PaymentInLineStub pLineStub = paymentInLine();
 
-		List<ReplicationStub> stubs = group.getAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 
 		stubs.add(contactStub1);
 		stubs.add(studentStub1);
@@ -174,8 +175,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		stubs.add(enrolStub1);
 		stubs.add(enrolStub2);
 
-		PaymentPortType port = getService(PaymentPortType.class);
-		TransactionGroup respGroup = port.processPayment(group);
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		GenericTransactionGroup respGroup = port.processPayment(group);
 
 		assertNotNull("Check Response Group is not null", respGroup);
 
@@ -183,7 +184,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		List<PaymentInStub> paymentStubs = new ArrayList<PaymentInStub>(2);
 		List<InvoiceStub> invoiceStubs = new ArrayList<InvoiceStub>();
 
-		for (ReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				EnrolmentStub enrol = (EnrolmentStub) stub;
 				assertEquals("Check enrolment status.", "FAILED", enrol.getStatus());
@@ -221,7 +222,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 	private void notCreditCardOrZeroPayment(boolean isZeroPayment) throws Exception {
 
-		TransactionGroup group = new TransactionGroup();
+		GenericTransactionGroup group = new TransactionGroup();
 
 		EnrolmentStub enrolStub = enrolment();
 
@@ -242,7 +243,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 			pLineStub.setAmount(BigDecimal.ZERO);
 		}
 
-		List<ReplicationStub> stubs = group.getAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 
 		stubs.add(enrolStub);
 		stubs.add(paymentInStub);
@@ -252,15 +253,15 @@ public class PaymentPortTypeTest extends ServiceTest {
 		stubs.add(contactStub);
 		stubs.add(studentStub);
 
-		PaymentPortType port = getService(PaymentPortType.class);
-		TransactionGroup respGroup = port.processPayment(group);
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		GenericTransactionGroup respGroup = port.processPayment(group);
 
 		assertNotNull("Check Response Group is not null", respGroup);
 
 		EnrolmentStub respEnrolStub = null;
 		PaymentInStub respPaymentInStub = null;
 
-		for (ReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (EnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
@@ -279,25 +280,25 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 	@Test
 	public void testPaymentStatus() throws Exception {
-		PaymentPortType port = getService(PaymentPortType.class);
+		InternalPaymentService port = getService(InternalPaymentService.class);
 		
 		//sessionId for in transaction payment, we expect an empty group as response
 		String sessionId = "AAVV#$%%%#$3333";
-		TransactionGroup respGroup = port.getPaymentStatus(sessionId);
+		GenericTransactionGroup respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V4);
 		
 		assertNotNull("Check transaction group is not null.", respGroup);
 		assertTrue("Check that group is empty.", respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		
 		//sessionId for payment in success status, we expect not empty group with paymentIn record inside.
 		sessionId = "jfjf790aaajjj9900";
-		respGroup = port.getPaymentStatus(sessionId);
+		respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V4);
 		
 		assertNotNull("Check transaction group is not null.", respGroup);
 		assertTrue("Check that group isn't empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		
 		PaymentInStub respPaymentInStub = null;
 		
-		for (ReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentIn".equals(stub.getEntityIdentifier())) {
 				respPaymentInStub = (PaymentInStub) stub;
 			}
@@ -310,7 +311,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 	@Test
 	public void testProcessRefund() throws Exception {
 
-		TransactionGroup reqGroup = new TransactionGroup();
+		GenericTransactionGroup reqGroup = new TransactionGroup();
 
 		PaymentOutStub paymentOut = new PaymentOutStub();
 		paymentOut.setAmount(new BigDecimal(100));
@@ -324,17 +325,17 @@ public class PaymentPortTypeTest extends ServiceTest {
 		paymentOut.setStatus(2);
 		paymentOut.setType(2);
 
-		PaymentPortType port = getService(PaymentPortType.class);
-		List<ReplicationStub> stubs = reqGroup.getAttendanceOrBinaryDataOrBinaryInfo();
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		List<GenericReplicationStub> stubs = reqGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		stubs.add(paymentOut);
 
-		TransactionGroup respGroup = port.processRefund(reqGroup);
+		GenericTransactionGroup respGroup = port.processRefund(reqGroup);
 
 		assertNotNull(respGroup);
 
 		PaymentOutStub pResp = null;
 
-		for (ReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
 				pResp = (PaymentOutStub) stub;
 			}
@@ -349,7 +350,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 		paymentOut.setAngelId(2l);
 		paymentOut.setAmount(new BigDecimal(2100));
-		stubs = reqGroup.getAttendanceOrBinaryDataOrBinaryInfo();
+		stubs = reqGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		stubs.add(paymentOut);
 
 		respGroup = port.processRefund(reqGroup);
@@ -358,7 +359,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		
 		pResp = null;
 		
-		for (ReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
 				pResp = (PaymentOutStub) stub;
 			}

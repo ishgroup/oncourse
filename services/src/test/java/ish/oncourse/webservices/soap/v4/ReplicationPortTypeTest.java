@@ -8,6 +8,9 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationResult;
 import ish.oncourse.webservices.v4.stubs.replication.CourseClassStub;
 import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
@@ -64,7 +67,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		
 		IReplicationService service = getService(IReplicationService.class);
 		
-		ReplicationRecords response = service.getRecords();
+		ReplicationRecords response = (ReplicationRecords) service.getRecords(SupportedVersions.V4);
 
 		assertNotNull("Expecting not null response.", response);
 
@@ -123,7 +126,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		ReplicationRecords records = new ReplicationRecords();
 		records.getGroups().add(group);
 		
-		ReplicationResult replResult = service.sendRecords(records);
+		ReplicationResult replResult = (ReplicationResult) service.sendRecords(records);
 		
 		assertNotNull("Check if replicatin results is not null.", replResult);
 		assertNotNull("Check if repl records is not null.", replResult.getReplicatedRecord());
@@ -186,14 +189,14 @@ public class ReplicationPortTypeTest extends ServiceTest {
 
 		records.getGroups().add(group);
 
-		ReplicationResult replResult = service.sendRecords(records);
+		GenericReplicationResult replResult = service.sendRecords(records);
 
 		assertNotNull("Check if replicatin results is not null.", replResult);
 		assertNotNull("Check if repl records is not null.", replResult.getReplicatedRecord());
 		assertEquals("Expecting to get three replication records.", 3, replResult.getReplicatedRecord().size());
 
-		for (ReplicatedRecord r : replResult.getReplicatedRecord()) {
-			assertEquals("Expecting SUCCESS status.", Status.SUCCESS, r.getStatus());
+		for (GenericReplicatedRecord r : replResult.getReplicatedRecord()) {
+			assertEquals("Expecting SUCCESS status.", true, r.isSuccessStatus());
 			if ("CourseClass".equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
 				assertNotNull("Expecting not null willowId", r.getStub().getWillowId());
 			}
@@ -217,7 +220,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		
 		ReplicationResult result = new ReplicationResult();
 		
-		ReplicationRecords replicatedRecords = service.getRecords();
+		ReplicationRecords replicatedRecords = (ReplicationRecords) service.getRecords(SupportedVersions.V4);
 
 		for (TransactionGroup group : replicatedRecords.getGroups()) {
 			long angelId = 1;

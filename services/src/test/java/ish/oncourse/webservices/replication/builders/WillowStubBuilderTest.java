@@ -6,9 +6,10 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
 
 import java.io.InputStream;
 
@@ -56,7 +57,7 @@ public class WillowStubBuilderTest extends ServiceTest {
 		
 		IWillowStubBuilder builder = getService(IWillowStubBuilder.class);
 		
-		ReplicationStub replStub = builder.convert(record);
+		GenericReplicationStub replStub = builder.convert(record, SupportedVersions.V4);
 		
 		assertNotNull("Expecting not null willow id.", replStub.getWillowId());
 		assertTrue("Expecting EnrolmentStub.", replStub instanceof EnrolmentStub);

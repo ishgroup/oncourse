@@ -1,40 +1,27 @@
 package ish.oncourse.webservices.soap.v4;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Instruction;
-import ish.oncourse.model.InstructionParameter;
-import ish.oncourse.model.KeyStatus;
-import ish.oncourse.model.access.SessionToken;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.exception.StackTraceUtils;
+import ish.oncourse.webservices.replication.services.AuthenticateServiceImpl;
+import ish.oncourse.webservices.replication.services.IAuthenticateService;
+import ish.oncourse.webservices.replication.services.IAuthenticateService.InternalAuthenticationException;
+import ish.oncourse.webservices.replication.services.IInstructionService;
 import ish.oncourse.webservices.replication.services.IReplicationService;
+import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
+import ish.oncourse.webservices.replication.services.InstructionServiceImpl;
+import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.v4.stubs.replication.ErrorCode;
+import ish.oncourse.webservices.v4.stubs.replication.FaultReason;
 import ish.oncourse.webservices.v4.stubs.replication.InstructionStub;
-import ish.oncourse.webservices.v4.stubs.replication.ParameterEntry;
-import ish.oncourse.webservices.v4.stubs.replication.ParametersMap;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceContext;
-
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,8 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v4.soap.webservices.oncourse.ish/")
 public class ReplicationPortTypeImpl implements ReplicationPortType {
 
-	private final static Logger LOGGER = Logger.getLogger(ReplicationPortTypeImpl.class);
-
 	@Inject
 	@Autowired
 	private ICollegeService collegeService;
@@ -59,6 +44,10 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@Inject
 	@Autowired
 	private IReplicationService replicationService;
+	
+	private IAuthenticateService authenticateService;
+	
+	private IInstructionService instructionService;
 
 	@Resource
 	private WebServiceContext webServiceContext;
@@ -75,7 +64,33 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	 * Default constructor for injection.
 	 */
 	public ReplicationPortTypeImpl() {
+		this.authenticateService = new AuthenticateServiceImpl() {
+			@Override
+			public ICayenneService takeCayenneService() {
+				return cayenneService;
+			}
 
+			@Override
+			public WebServiceContext takeWebServiceContext() {
+				return webServiceContext;
+			}
+
+			@Override
+			public ICollegeService takeCollegeService() {
+				return collegeService;
+			}
+		};
+		this.instructionService = new InstructionServiceImpl() {
+			@Override
+			public ICayenneService takeCayenneService() {
+				return cayenneService;
+			}
+			
+			@Override
+			public IWebSiteService takeWebSiteService() {
+				return webSiteService;
+			}
+		};
 	}
 
 	/**
@@ -92,80 +107,26 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	 * @param cayenneService
 	 *            cayenne service
 	 */
-	public ReplicationPortTypeImpl(WebServiceContext webServiceContext, ICollegeService collegeService,
-			IReplicationService replicationService, IWebSiteService webSiteService, ICayenneService cayenneService) {
+	public ReplicationPortTypeImpl(WebServiceContext webServiceContext, ICollegeService collegeService, IReplicationService replicationService, 
+		IWebSiteService webSiteService, ICayenneService cayenneService) {
 		super();
 		this.collegeService = collegeService;
 		this.replicationService = replicationService;
 		this.webServiceContext = webServiceContext;
 		this.webSiteService = webSiteService;
 		this.cayenneService = cayenneService;
+		this.authenticateService = new AuthenticateServiceImpl(cayenneService, webServiceContext, collegeService);
+		this.instructionService = new InstructionServiceImpl(cayenneService, webSiteService);
 	}
 
 	@Override
 	public void confirmExecution(Long instrucitonId, String response) {
-
-		Expression expr = ExpressionFactory.matchDbExp(Instruction.ID_PK_COLUMN, instrucitonId);
-		SelectQuery q = new SelectQuery(Instruction.class, expr);
-
-		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
-
-		@SuppressWarnings("unchecked")
-		List<Instruction> list = objectContext.performQuery(q);
-		
-		if (!list.isEmpty()) {
-			Instruction instruction = list.get(0);
-			instruction.setExecuted(new Date());
-			instruction.setResponse(response);
-			objectContext.commitChanges();
-		}
+		instructionService.confirmExecution(instrucitonId, response);
 	}
 
 	@Override
 	public List<InstructionStub> getInstructions() {
-
-		List<InstructionStub> result = new ArrayList<InstructionStub>();
-
-		Expression expr = ExpressionFactory.matchExp(Instruction.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
-				ExpressionFactory.matchExp(Instruction.EXECUTED_PROPERTY, null));
-
-		SelectQuery q = new SelectQuery(Instruction.class, expr);
-		q.addPrefetch(Instruction.PARAMETERS_PROPERTY);
-
-		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
-
-		@SuppressWarnings("unchecked")
-		List<Instruction> list = objectContext.performQuery(q);
-
-		for (Instruction inst : list) {
-			InstructionStub stub = new InstructionStub();
-
-			stub.setId(inst.getId());
-			stub.setMessage(inst.getMessage());
-
-			if (!inst.getParameters().isEmpty()) {
-				ParametersMap paramMap = new ParametersMap();
-
-				for (InstructionParameter param : inst.getParameters()) {
-					ParameterEntry entry = new ParameterEntry();
-					entry.setName(param.getName());
-					entry.setValue(param.getValue());
-					paramMap.getEntry().add(entry);
-				}
-
-				stub.setParameters(paramMap);
-			}
-
-			result.add(stub);
-			
-			//set executed to prevent execution during next replication run, 
-			//even if session timed out.
-			inst.setExecuted(new Date());
-		}
-		
-		objectContext.commitChanges();
-
-		return result;
+		return PortHelper.convertv4InstructionsList(instructionService.getInstructions(SupportedVersions.V4));
 	}
 
 	/**
@@ -181,81 +142,9 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@Override
 	public long authenticate(String webServicesSecurityCode, long lastCommKey) throws AuthFailure {
 		try {
-			HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(
-					AbstractHTTPDestination.HTTP_REQUEST);
-			//HttpSession session = request.getSession(false);
-
-			LOGGER.info(String.format("Got college request with securityCode:%s, lastCommKey:%s.", webServicesSecurityCode, lastCommKey));
-			//TODO: should be unreachable
-			/*if (session != null && session.getAttribute(SessionToken.SESSION_TOKEN_KEY) != null) {
-				String message = String.format(
-						"Authentication failure, existing session:%s must be terminated before next authentication attempt.",
-						session.getId());
-				AuthFailure e = new AuthFailure(message, ErrorCode.INVALID_SESSION);
-				LOGGER.error(message, e);
-				throw e;
-			}*/
-
-			College college = collegeService.findBySecurityCode(webServicesSecurityCode);
-
-			if (college == null) {
-				String message = String.format("No college found for 'security code':%s.", webServicesSecurityCode);
-				AuthFailure e = new AuthFailure(message, ErrorCode.INVALID_SECURITY_CODE);
-				LOGGER.error(message, e);
-				throw e;
-			}
-
-			Long currentKey = college.getCommunicationKey();
-			boolean recoverFromHALT = (currentKey == null) && (college.getCommunicationKeyStatus() == KeyStatus.HALT);
-
-			if (currentKey == null) {
-				// we didn't find key
-				if (recoverFromHALT) {
-					// recovering from HALT state
-					Long newKey = generateNewKey(college);
-					return newKey;
-				} else {
-					AuthFailure e = new AuthFailure(String.format("Invalid communication key:%s", lastCommKey),
-							ErrorCode.INVALID_COMMUNICATION_KEY);
-					LOGGER.warn(String.format("Communication key is null for college:%s, when received key is %s.", college.getId(),
-							lastCommKey), e);
-					putCollegeInHaltState(college);
-					throw e;
-				}
-			} else {
-				if (college.getCommunicationKeyStatus() != KeyStatus.VALID) {
-					// Communication key in a HALT state. Refuse authentication
-					// attempt.
-					AuthFailure e = new AuthFailure(String.format("Communication key:%s in a HALT state.", lastCommKey),
-							ErrorCode.HALT_COMMUNICATION_KEY);
-					LOGGER.debug(String.format("Communication key:%s for college:%s in a HALT state.", lastCommKey, college.getId()), e);
-					throw e;
-				}
-
-				if (lastCommKey == currentKey.longValue()) {
-					Long newKey = generateNewKey(college);
-					return newKey;
-				} else {
-					AuthFailure e = new AuthFailure(String.format("Invalid communication key: %s.", lastCommKey),
-							ErrorCode.INVALID_COMMUNICATION_KEY);
-					LOGGER.warn(String.format("Invalid communication key:%s, for college:%s, expected:%s.", lastCommKey, college.getId(),
-							currentKey), e);
-					putCollegeInHaltState(college);
-
-					// TODO: !!!!! Here should be exception, since we're in HALT
-					// state !!!!!!
-					return generateNewKey(college);// throw e;
-				}
-			}
-		} catch (Exception e) {
-			if (e instanceof AuthFailure) {
-				throw (AuthFailure) e;
-			} else {
-				LOGGER.error("Unable to authenticate. Generic exception.", e);
-				String message = String.format("Unable to authenticate. Willow generic exception: %s",
-						StackTraceUtils.stackTraceAsString(e));
-				throw new AuthFailure(message);
-			}
+			return authenticateService.authenticate(webServicesSecurityCode, lastCommKey);
+		} catch (InternalAuthenticationException e) {
+			throw createAuthFailureForException(e);
 		}
 	}
 
@@ -269,81 +158,72 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	 */
 	@Override
 	public void logout(long newCommKey) {
-		HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-		HttpSession session = request.getSession(false);
-		//TODO: should be unreachable
-		if (session != null) {
-			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-			if (token.getCommunicationKey().equals(newCommKey)) {
-				session.invalidate();
-			} else {
-				String message = String.format("Invalid communication key:%s, for college:%s, expected:%s.", newCommKey,
-						token.getCollegeId(), token.getCommunicationKey());
-				LOGGER.warn(message, new AuthFailure(message, ErrorCode.INVALID_COMMUNICATION_KEY));
-			}
-		}/**/
-	}
-
-	/**
-	 * Puts college into HALT state, which prevents all further replication,
-	 * until recovery from HALT is done by admins.
-	 * 
-	 * @param college
-	 *            willow college
-	 */
-	private void putCollegeInHaltState(College college) {
-		LOGGER.warn(String.format("Putting college:%s into HALT state.", college.getId()));
-		/*
-		 * college.setCommunicationKeyStatus(KeyStatus.HALT);
-		 * college.getObjectContext().commitChanges();
-		 */
-	}
-
-	/**
-	 * Generates new communication key for college, for details refer
-	 * http://intranet.ish.com.au/drupal/ReplicationWorkflow#Use of the
-	 * communication key
-	 * 
-	 * @param college
-	 *            willow college
-	 * @return communication key
-	 */
-	private Long generateNewKey(College college) {
-		
-		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
-		College local = (College) objectContext.localObject(college.getObjectId(), null);
-
-		Random randomGen = new Random();
-		long newCommunicationKey = ((long) randomGen.nextInt(63) << 59) + System.currentTimeMillis();
-
-		local.setCommunicationKey(newCommunicationKey);
-		local.setCommunicationKeyStatus(KeyStatus.VALID);
-
-		objectContext.commitChanges();
-
-		HttpServletRequest request = (HttpServletRequest) webServiceContext.getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-		request.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(college.getId(), newCommunicationKey));
-		//HttpSession session = request.getSession(true);
-		//session.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(college.getId(), newCommunicationKey));
-
-		return newCommunicationKey;
+		authenticateService.logout(newCommKey);
 	}
 
 	@Override
 	@WebMethod(operationName = "getRecords")
 	public ReplicationRecords getRecords() throws ReplicationFault {
-		return replicationService.getRecords();
+		try {
+			return PortHelper.getv4ReplicationRecords(replicationService.getRecords(SupportedVersions.V4));
+		} catch (InternalReplicationFault e) {
+			throw createReplicationFaultForException(e);
+		}
 	}
 
 	@Override
 	@WebMethod(operationName = "sendRecords")
 	public ReplicationResult sendRecords(ReplicationRecords replicationRecords) throws ReplicationFault {
-		return replicationService.sendRecords(replicationRecords);
+		try {
+			return PortHelper.getv4ReplicationResult(replicationService.sendRecords(replicationRecords));
+		} catch (InternalReplicationFault e) {
+			throw createReplicationFaultForException(e);
+		}
 	}
 
 	@Override
 	@WebMethod(operationName = "sendResults")
 	public int sendResults(ReplicationResult replicationResults) throws ReplicationFault {
-		return replicationService.sendResults(replicationResults);
+		try {
+			return replicationService.sendResults(replicationResults);
+		} catch (InternalReplicationFault e) {
+			throw createReplicationFaultForException(e);
+		}
+	}
+	
+	static ReplicationFault createReplicationFaultForException(final InternalReplicationFault exception) {
+		FaultReason faultReason = new FaultReason();
+		faultReason.setDetailMessage(exception.getFaultReasonMessage());
+		faultReason.setFaultCode(exception.getFaultCode());
+		return new ReplicationFault(exception.getMessage(), faultReason);
+	}
+	
+	static AuthFailure createAuthFailureForException(final InternalAuthenticationException exception) {
+		if (exception.getErrorCode() != null) {
+			ErrorCode errorCode = null;
+			switch (exception.getErrorCode()) {
+				case INVALID_SESSION:
+					errorCode = ErrorCode.INVALID_SESSION;
+					break;
+				case INVALID_SECURITY_CODE:
+					errorCode = ErrorCode.INVALID_SECURITY_CODE;
+					break;
+				case EMPTY_COMMUNICATION_KEY:
+					errorCode = ErrorCode.EMPTY_COMMUNICATION_KEY;
+					break;
+				case HALT_COMMUNICATION_KEY:
+					errorCode = ErrorCode.HALT_COMMUNICATION_KEY;
+					break;
+				case INVALID_COMMUNICATION_KEY:
+					errorCode = ErrorCode.INVALID_COMMUNICATION_KEY;
+					break;
+				case NO_KEYS:
+					errorCode = ErrorCode.NO_KEYS;
+					break;
+			}
+			return new AuthFailure(exception.getMessage(), errorCode);
+		} else {
+			return new AuthFailure(exception.getMessage());
+		}
 	}
 }

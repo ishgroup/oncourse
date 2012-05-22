@@ -17,6 +17,7 @@ import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.services.IReplicationService;
 import ish.oncourse.webservices.replication.services.IWillowQueueService;
+import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
 import ish.oncourse.webservices.replication.services.ReplicationServiceImpl;
 import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
@@ -53,7 +54,7 @@ public class ReplicationTestModule {
 		}).scope(ScopeConstants.PERTHREAD);
 
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
-		binder.bind(PaymentPortType.class, PaymentServiceImpl.class);
+		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 
 		binder.bind(IWebSiteService.class, new ServiceBuilder<IWebSiteService>() {
 

@@ -12,18 +12,15 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-import ish.oncourse.webservices.v4.stubs.replication.Status;
-import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
-
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.util.GenericDeletedStub;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -69,12 +66,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	/**
 	 * Replication result
 	 */
-	private List<ReplicatedRecord> result;
+	private List<GenericReplicatedRecord> result;
 
 	/**
 	 * Transaction group
 	 */
-	private TransactionGroup transactionGroup;
+	private GenericTransactionGroup transactionGroup;
 
 	/**
 	 * Constructor
@@ -88,29 +85,28 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	}
 
 	/**
-	 * @see ish.oncourse.webservices.ITransactionGroupProcessor#processGroup(TransactionGroup)
+	 * @see ish.oncourse.webservices.ITransactionGroupProcessor#processGroup(GenericTransactionGroup)
 	 */
 	@Override
-	public List<ReplicatedRecord> processGroup(TransactionGroup group) {
-
+	public List<GenericReplicatedRecord> processGroup(GenericTransactionGroup group) {
 		this.transactionGroup = group;
-		this.result = new ArrayList<ReplicatedRecord>();
+		this.result = new ArrayList<GenericReplicatedRecord>();
 
-		for (ReplicationStub currentStub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
-			ReplicatedRecord replRecord = toReplicatedRecord(currentStub);
+		for (GenericReplicationStub currentStub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub);
 			result.add(replRecord);
 		}
 
 		try {
 
 			while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-				ReplicationStub currentStub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
+				GenericReplicationStub currentStub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
 				processStub(currentStub);
 			}
 
 			atomicContext.commitChanges();
 
-			for (ReplicatedRecord r : result) {
+			for (GenericReplicatedRecord r : result) {
 				String willowIdentifier = EntityMapping.getWillowEntityIdentifer(r.getStub().getEntityIdentifier());
 				List<Queueable> savedObjects = objectsByAngelId(r.getStub().getAngelId(), willowIdentifier);
 				if (!savedObjects.isEmpty()) {
@@ -122,7 +118,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
             String message = getErrorMessageBy(e);
 			atomicContext.rollbackChanges();
             logger.error(message, e);
-			updateReplicationStatus(result, Status.FAILED, message);
+            updateReplicationStatusToFailed(result, message);
 		}
 		return result;
 	}
@@ -174,9 +170,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * @param message
 	 *            status message
 	 */
-	private static void updateReplicationStatus(List<ReplicatedRecord> records, Status status, String message) {
-		for (ReplicatedRecord record : records) {
-			record.setStatus(status);
+	private static void updateReplicationStatusToFailed(List<GenericReplicatedRecord> records, String message) {
+		for (GenericReplicatedRecord record : records) {
+			record.setFailedStatus();
+			//record.setStatus(status);
 			if (record.getMessage() == null) {
 				record.setMessage(message);
 			}
@@ -192,12 +189,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 *            replication stub.
 	 * @return cayenne object which was updated/deleted.
 	 */
-	private Queueable processStub(ReplicationStub currentStub) {
+	private Queueable processStub(GenericReplicationStub currentStub) {
 
 		logger.info(String.format("Process stub for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),
 				currentStub.getAngelId(), currentStub.getWillowId()));
 
-		ReplicatedRecord replRecord = getReplicatedRecordForStub(currentStub);
+		GenericReplicatedRecord replRecord = getReplicatedRecordForStub(currentStub);
 		
 		if (replRecord == null) {
 			throw new IllegalArgumentException(String.format("Replication result is not set for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),
@@ -211,7 +208,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
             String message = String.format("Empty angelId for object object: %s willowId: %s", 
                     willowIdentifier, 
                     currentStub.getWillowId());
-            replRecord.setStatus(Status.FAILED);
+            replRecord.setFailedStatus();
+            //replRecord.setStatus(Status.FAILED);
             replRecord.setMessage(message);
             throw new IllegalArgumentException(message);
 		}
@@ -225,7 +223,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		
 		switch (objects.size()) {
 		case 0: {
-			if (currentStub instanceof DeletedStub) {
+			if (currentStub instanceof GenericDeletedStub) {
 				// ignore object was already deleted
 				return null;
 			}
@@ -239,12 +237,13 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
                 
                 String message = String.format("WillowId doesn't match for object: %s. Expected: %s, but got %s.", willowIdentifier,
 						objectToUpdate.getId(), currentStub.getWillowId());
-                replRecord.setStatus(Status.FAILED);
+                replRecord.setFailedStatus();
+                //replRecord.setStatus(Status.FAILED);
                 replRecord.setMessage(message);
                 throw new IllegalArgumentException(message);
 			}
 
-			if (currentStub instanceof DeletedStub) {
+			if (currentStub instanceof GenericDeletedStub) {
 				deleteObject(objectToUpdate);
 				return null;
 			} else {
@@ -255,7 +254,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		default:
 			// FAILURE angelId uniques
             String message = String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId());
-            replRecord.setStatus(Status.FAILED);
+            replRecord.setFailedStatus();
+            //replRecord.setStatus(Status.FAILED);
             replRecord.setMessage(message);
             throw new IllegalArgumentException(message);
 		}
@@ -266,8 +266,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * @param soapStub
 	 * @return
 	 */
-	private ReplicatedRecord getReplicatedRecordForStub(ReplicationStub soapStub) {
-		for (ReplicatedRecord r : this.result) {
+	private GenericReplicatedRecord getReplicatedRecordForStub(GenericReplicationStub soapStub) {
+		for (GenericReplicatedRecord r : this.result) {
 			if (r.getStub().getEntityIdentifier().equalsIgnoreCase(soapStub.getEntityIdentifier())
 					&& r.getStub().getAngelId().equals(soapStub.getAngelId())) {
 				return r;
@@ -306,7 +306,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
                         throw new IllegalArgumentException(message);
 					}
 
-					ReplicationStub relStub = takeStubFromGroupByAngelId(r.getAngelId(), entityIdentifier);
+					GenericReplicationStub relStub = takeStubFromGroupByAngelId(r.getAngelId(), entityIdentifier);
 
 					if (relStub != null)
                     {
@@ -331,7 +331,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 *            soap stub
 	 * @return queueable object
 	 */
-	private Queueable createObject(ReplicationStub currentStub) {
+	private Queueable createObject(GenericReplicationStub currentStub) {
 
 		try {
 			Queueable objectToUpdate = atomicContext.newObject(getEntityClass(atomicContext,
@@ -400,14 +400,14 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 *            entity name
 	 * @return replication stub, null if not found.
 	 */
-	public ReplicationStub takeStubFromGroupByAngelId(Long angelId, String entityName) {
+	public GenericReplicationStub takeStubFromGroupByAngelId(Long angelId, String entityName) {
 		if (angelId == null) {
 			return null;
 		}
 
 		String angelIdentifier = EntityMapping.getAngelEntityIdentifer(entityName);
 
-		for (ReplicationStub s : new ArrayList<ReplicationStub>(transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo())) {
+		for (GenericReplicationStub s : new ArrayList<GenericReplicationStub>(transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo())) {
 			if (angelId.equals(s.getAngelId()) && s.getEntityIdentifier().equals(angelIdentifier)) {
 				transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo().remove(s);
 				return s;
@@ -439,7 +439,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
             if (!list.isEmpty()) {
                 return (M) list.get(0);
             } else {
-                ReplicationStub stub = takeStubFromGroupByAngelId(angelId, entityIdentifier);
+            	GenericReplicationStub stub = takeStubFromGroupByAngelId(angelId, entityIdentifier);
                 if (stub != null) {
                     M relatedObject = (M) processStub(stub);
                     return (M) Cayenne.objectForPK(atomicContext, relatedObject.getObjectId());

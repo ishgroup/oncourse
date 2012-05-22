@@ -20,6 +20,7 @@ import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.services.IReplicationService;
 import ish.oncourse.webservices.replication.services.IWillowQueueService;
+import ish.oncourse.webservices.replication.services.InternalPaymentService;
 import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
 import ish.oncourse.webservices.replication.services.ReplicationServiceImpl;
 import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
@@ -71,7 +72,8 @@ public class AppModule {
 		}).scope(ScopeConstants.PERTHREAD);
 
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
-		binder.bind(PaymentPortType.class, PaymentServiceImpl.class);
+		//binder.bind(PaymentPortType.class, PaymentServiceImpl.class);
+		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId(WEB_SITE_SERVICE_OVERRIDE_NAME);
 

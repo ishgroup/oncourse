@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
@@ -52,7 +53,7 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 
 		ReplicationResult result = new ReplicationResult();
 		
-		ReplicationRecords replicatedRecords = service.getRecords();
+		ReplicationRecords replicatedRecords = (ReplicationRecords) service.getRecords(SupportedVersions.V4);
 		
 		for (TransactionGroup group : replicatedRecords.getGroups()) {
 			for (ReplicationStub stub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {

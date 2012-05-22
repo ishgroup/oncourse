@@ -4,10 +4,11 @@ import org.apache.log4j.Logger;
 
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.replication.services.PortHelper;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 
-public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends ReplicationStub> implements
+public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends GenericReplicationStub> implements
 		IWillowStubBuilder {
 
 	protected static final Logger logger = Logger.getLogger(AbstractWillowStubBuilder.class);
@@ -15,9 +16,9 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 	/**
 	 * @see IWillowStubBuilder#convert(QueuedRecord)
 	 */
-	public ReplicationStub convert(QueuedRecord queuedRecord) {
+	public GenericReplicationStub convert(final QueuedRecord queuedRecord, final SupportedVersions version) {
 
-		ReplicationStub soapStub = null;
+		GenericReplicationStub soapStub = null;
 
 		switch (queuedRecord.getAction()) {
 		case CREATE:
@@ -32,11 +33,11 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 				queuedRecord.getObjectContext().commitChanges();
 				return null;
 			}
-			soapStub = convert(entity);
+			soapStub = convert(entity, version);
 			soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			break;
 		case DELETE:
-			soapStub = new DeletedStub();
+			soapStub = PortHelper.createDeleteStub(version);
 			soapStub.setWillowId(queuedRecord.getEntityWillowId());
 			soapStub.setAngelId(queuedRecord.getAngelId());
 			soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
@@ -55,14 +56,14 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends R
 	 * @see IWillowStubBuilder#convert(Queueable)
 	 */
 	@Override
-	public ReplicationStub convert(Queueable entity) {
+	public GenericReplicationStub convert(final Queueable entity, final SupportedVersions version) {
 		@SuppressWarnings("unchecked")
 		V soapStub = createFullStub((T) entity);
 
 		soapStub.setWillowId(entity.getId());
 		soapStub.setAngelId(entity.getAngelId());
 		soapStub.setEntityIdentifier(entity.getObjectId().getEntityName());
-        soapStub.setCreated(entity.getCreated());
+		PortHelper.updateCreated(soapStub, entity.getCreated());
 
 		return soapStub;
 	}

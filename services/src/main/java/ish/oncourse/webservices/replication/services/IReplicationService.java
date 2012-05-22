@@ -1,14 +1,54 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.webservices.soap.v4.ReplicationFault;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
+import ish.oncourse.webservices.util.GenericReplicationRecords;
+import ish.oncourse.webservices.util.GenericReplicationResult;
 
 public interface IReplicationService {
 	
-	ReplicationResult sendRecords(ReplicationRecords req) throws ReplicationFault;
+	GenericReplicationResult sendRecords(GenericReplicationRecords req) throws InternalReplicationFault;
+	
+	GenericReplicationRecords getRecords(final SupportedVersions version) throws InternalReplicationFault;
+	
+	int sendResults(GenericReplicationResult request) throws InternalReplicationFault;
+	
+	public class InternalReplicationFault extends Exception {
+		private static final long serialVersionUID = 8559175687600028596L;
+		private String faultReasonMessage;
+		private Integer faultCode;
 
-	ReplicationRecords getRecords() throws ReplicationFault;
+		public InternalReplicationFault(String message, Integer faultReasonCode, String faultReasonMessage) {
+			super(message);
+			this.faultCode = faultReasonCode;
+			this.faultReasonMessage = faultReasonMessage;
+		}
+		
+		/**
+		 * @return the faultReasonMessage
+		 */
+		public String getFaultReasonMessage() {
+			return faultReasonMessage;
+		}
+		
+		/**
+		 * @param faultReasonMessage the faultReasonMessage to set
+		 */
+		public void setFaultReasonMessage(String faultReasonMessage) {
+			this.faultReasonMessage = faultReasonMessage;
+		}
+		
+		/**
+		 * @return the faultCode
+		 */
+		public Integer getFaultCode() {
+			return faultCode;
+		}
+		
+		/**
+		 * @param faultCode the faultCode to set
+		 */
+		public void setFaultCode(Integer faultCode) {
+			this.faultCode = faultCode;
+		}
 
-	int sendResults(ReplicationResult request) throws ReplicationFault;
+	}
 }

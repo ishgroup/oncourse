@@ -2,8 +2,8 @@ package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public interface ITransactionStubBuilder {
 
-	Set<ReplicationStub> createPaymentInTransaction(List<PaymentIn> paymentIn);
+	Set<GenericReplicationStub> createPaymentInTransaction(List<PaymentIn> paymentIn, final SupportedVersions version);
 
-	Set<ReplicationStub> createRefundTransaction(PaymentOut paymentOut);
+	Set<GenericReplicationStub> createRefundTransaction(PaymentOut paymentOut, final SupportedVersions version);
 }

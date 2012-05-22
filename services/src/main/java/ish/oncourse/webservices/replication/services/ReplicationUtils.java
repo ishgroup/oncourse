@@ -9,15 +9,16 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Queueable;
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
 import ish.oncourse.webservices.v4.stubs.replication.HollowStub;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentOutStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-import ish.oncourse.webservices.v4.stubs.replication.Status;
 import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -58,14 +59,14 @@ public class ReplicationUtils {
 		}
 	}
 
-	public static ReplicatedRecord toReplicatedRecord(ReplicationStub stub) {
+	public static GenericReplicatedRecord toReplicatedRecord(GenericReplicationStub stub) {
 		ReplicatedRecord replRecord = new ReplicatedRecord();
-		replRecord.setStatus(Status.SUCCESS);
+		replRecord.setSuccessStatus();
 		replRecord.setStub(toHollow(stub));
 		return replRecord;
 	}
 
-	public static HollowStub toHollow(ReplicationStub stub) {
+	public static HollowStub toHollow(GenericReplicationStub stub) {
 		HollowStub hollowStub = new HollowStub();
 		hollowStub.setEntityIdentifier(stub.getEntityIdentifier());
 		hollowStub.setAngelId(stub.getAngelId());
@@ -75,9 +76,9 @@ public class ReplicationUtils {
 		return hollowStub;
 	}
 
-	private static PaymentInStub getPaymentInStub(TransactionGroup group) {
+	private static PaymentInStub getPaymentInStub(GenericTransactionGroup group) {
 
-		for (ReplicationStub stub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof PaymentInStub) {
 				return (PaymentInStub) stub;
 			}
@@ -86,7 +87,7 @@ public class ReplicationUtils {
 		return null;
 	}
 	
-	public static boolean isCreditCardPayment(TransactionGroup group) {
+	public static boolean isCreditCardPayment(GenericTransactionGroup group) {
 		PaymentInStub paymentInStub = getPaymentInStub(group);
 		if (paymentInStub != null) {
 			return PaymentType.CREDIT_CARD.getDatabaseValue().equals(paymentInStub.getType());
@@ -125,8 +126,8 @@ public class ReplicationUtils {
 		throw new RuntimeException(String.format("Enrolment record with should always present."));
 	}
 
-	public static ReplicatedRecord replicatedPaymentOutRecord(List<ReplicatedRecord> records) {
-		for (ReplicatedRecord r : records) {
+	public static GenericReplicatedRecord replicatedPaymentOutRecord(List<GenericReplicatedRecord> records) {
+		for (GenericReplicatedRecord r : records) {
 			if (ReplicationUtils.getEntityName(PaymentOut.class).equals(r.getStub().getEntityIdentifier())) {
 				return r;
 			}

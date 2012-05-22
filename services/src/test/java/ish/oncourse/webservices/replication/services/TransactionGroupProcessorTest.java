@@ -1,6 +1,5 @@
 package ish.oncourse.webservices.replication.services;
 
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -10,9 +9,12 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
-import ish.oncourse.webservices.v4.stubs.replication.*;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
+import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
+import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -22,7 +24,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.sql.DataSource;
-import javax.swing.*;
 import java.io.InputStream;
 import java.util.List;
 
@@ -69,10 +70,10 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         /**
          * Transaction with one Contact delete.
          */
-        TransactionGroup transactionGroup = getTransactionGroup(0);
-        List<ReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
+    	GenericTransactionGroup transactionGroup = getTransactionGroup(0);
+        List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
-        assertEquals("Expecting one failed replicatedRecord, status test", Status.FAILED, replicatedRecords.get(0).getStatus());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Contact",1,"Invoice") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
 
         /**
@@ -81,7 +82,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         transactionGroup = getTransactionGroup(1);
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
-        assertEquals("Expecting one failed replicatedRecord, status test", Status.FAILED, replicatedRecords.get(0).getStatus());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Student",1,"Enrolment") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
 
 
@@ -89,11 +90,11 @@ public class TransactionGroupProcessorTest extends ServiceTest {
          * Transaction with Merge Student 1 to 2  delete.
          */
         transactionGroup = getTransactionGroup(2);
-        List<ReplicationStub> replicationStubs = transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo();
+        List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
         /**
          * Adjust relationships as the angel side does it.
          */
-        for (ReplicationStub replicationStub : replicationStubs) {
+        for (GenericReplicationStub replicationStub : replicationStubs) {
             if (replicationStub instanceof EnrolmentStub)
             {
                 ((EnrolmentStub)replicationStub).setStudentId(2L);
@@ -109,19 +110,19 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         }
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting success records, size test", 5, replicatedRecords.size());
-        for (ReplicatedRecord replicatedRecord : replicatedRecords) {
-            assertEquals("Expecting success record, status test", Status.SUCCESS, replicatedRecord.getStatus());
+        for (GenericReplicatedRecord replicatedRecord : replicatedRecords) {
+            assertEquals("Expecting success record, status test", true, replicatedRecord.isSuccessStatus());
         }
     }
 
-    private TransactionGroup getTransactionGroup(int fromTransaction) {
+    private GenericTransactionGroup getTransactionGroup(int fromTransaction) {
         List<QueuedTransaction> transactions = willowQueueService.getReplicationQueue(fromTransaction, 1);
-        TransactionGroup transactionGroup = new TransactionGroup();
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
 
         for (QueuedRecord record: transactions.get(0).getQueuedRecords())
         {
-            ReplicationStub replicationStub = willowStubBuilder.convert(record);
-            transactionGroup.getAttendanceOrBinaryDataOrBinaryInfo().add(replicationStub);
+            GenericReplicationStub replicationStub = willowStubBuilder.convert(record,PortHelper.getVersionByTransactionGroup(transactionGroup));
+            transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(replicationStub);
         }
         return transactionGroup;
     }

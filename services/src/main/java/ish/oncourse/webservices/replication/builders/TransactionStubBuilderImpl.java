@@ -10,8 +10,8 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Room;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,74 +37,74 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 	 * @param paymentIn paymentIn object
 	 * @return soap stub
 	 */
-	public Set<ReplicationStub> createPaymentInTransaction(List<PaymentIn> payments) {
+	public Set<GenericReplicationStub> createPaymentInTransaction(List<PaymentIn> payments, final SupportedVersions version) {
 
-		Set<ReplicationStub> paymentRelated = new LinkedHashSet<ReplicationStub>(20);
+		Set<GenericReplicationStub> paymentRelated = new LinkedHashSet<GenericReplicationStub>(20);
 
 		for (PaymentIn paymentIn : payments) {
 			
-			addRelatedStub(paymentRelated, paymentIn);
+			addRelatedStub(paymentRelated, paymentIn, version);
 
 			for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
 
-				addRelatedStub(paymentRelated, paymentLine);
+				addRelatedStub(paymentRelated, paymentLine, version);
 
 				Invoice invoice = paymentLine.getInvoice();
-				addRelatedStub(paymentRelated, invoice);
+				addRelatedStub(paymentRelated, invoice, version);
 
 				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
 
-					addRelatedStub(paymentRelated, invoiceLine);
+					addRelatedStub(paymentRelated, invoiceLine, version);
 
 					Enrolment enrol = invoiceLine.getEnrolment();
 
 					if (enrol != null) {
-						addRelatedStub(paymentRelated, enrol);
+						addRelatedStub(paymentRelated, enrol, version);
 
 						CourseClass courseClass = enrol.getCourseClass();
-						addRelatedStub(paymentRelated, courseClass);
-						addRelatedStub(paymentRelated, courseClass.getCourse());
+						addRelatedStub(paymentRelated, courseClass, version);
+						addRelatedStub(paymentRelated, courseClass.getCourse(), version);
 
 						Room room = courseClass.getRoom();
-						addRelatedStub(paymentRelated, room);
+						addRelatedStub(paymentRelated, room, version);
 
 						if (room != null) {
-							addRelatedStub(paymentRelated, room.getSite());
+							addRelatedStub(paymentRelated, room.getSite(), version);
 						}
 
-						addRelatedStub(paymentRelated, enrol.getStudent());
-						addRelatedStub(paymentRelated, enrol.getStudent().getContact());
+						addRelatedStub(paymentRelated, enrol.getStudent(), version);
+						addRelatedStub(paymentRelated, enrol.getStudent().getContact(), version);
 						
 						if (enrol.getStudent().getContact() != null) {
-							addRelatedStub(paymentRelated, enrol.getStudent().getContact().getTutor());
+							addRelatedStub(paymentRelated, enrol.getStudent().getContact().getTutor(), version);
 						}
 					}
 
 					for (InvoiceLineDiscount lineDiscount : invoiceLine.getInvoiceLineDiscounts()) {
-						addRelatedStub(paymentRelated, lineDiscount);
-						addRelatedStub(paymentRelated, lineDiscount.getDiscount());
+						addRelatedStub(paymentRelated, lineDiscount, version);
+						addRelatedStub(paymentRelated, lineDiscount.getDiscount(), version);
 					}
 				}
 			}
 
-			addRelatedStub(paymentRelated, paymentIn.getContact());
+			addRelatedStub(paymentRelated, paymentIn.getContact(), version);
 			
 			if (paymentIn.getContact() != null) {
-				addRelatedStub(paymentRelated, paymentIn.getContact().getStudent());
-				addRelatedStub(paymentRelated, paymentIn.getContact().getTutor());
+				addRelatedStub(paymentRelated, paymentIn.getContact().getStudent(), version);
+				addRelatedStub(paymentRelated, paymentIn.getContact().getTutor(), version);
 			}
 		}
 		
 		return paymentRelated;
 	}
 
-	public Set<ReplicationStub> createRefundTransaction(PaymentOut paymentOut) {
+	public Set<GenericReplicationStub> createRefundTransaction(PaymentOut paymentOut, final SupportedVersions version) {
 
-		Set<ReplicationStub> paymentOutRelated = new LinkedHashSet<ReplicationStub>(20);
-		addRelatedStub(paymentOutRelated, paymentOut);
-		addRelatedStub(paymentOutRelated, paymentOut.getContact());
-		addRelatedStub(paymentOutRelated, paymentOut.getContact().getStudent());
-		addRelatedStub(paymentOutRelated, paymentOut.getContact().getTutor());
+		Set<GenericReplicationStub> paymentOutRelated = new LinkedHashSet<GenericReplicationStub>(20);
+		addRelatedStub(paymentOutRelated, paymentOut, version);
+		addRelatedStub(paymentOutRelated, paymentOut.getContact(), version);
+		addRelatedStub(paymentOutRelated, paymentOut.getContact().getStudent(), version);
+		addRelatedStub(paymentOutRelated, paymentOut.getContact().getTutor(), version);
 
 		return paymentOutRelated;
 	}
@@ -115,9 +115,9 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 	 * @param enrlRelated
 	 * @param relatedEntity
 	 */
-	private void addRelatedStub(Set<ReplicationStub> enrlRelated, Queueable relatedEntity) {
+	private void addRelatedStub(Set<GenericReplicationStub> enrlRelated, Queueable relatedEntity, final SupportedVersions version) {
 		if (relatedEntity != null) {
-			enrlRelated.add(builder.convert(relatedEntity));
+			enrlRelated.add(builder.convert(relatedEntity, version));
 		}
 	}
 }

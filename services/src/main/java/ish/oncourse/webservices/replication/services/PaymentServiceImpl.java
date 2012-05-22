@@ -16,27 +16,21 @@ import ish.oncourse.utils.SessionIdGenerator;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
+import ish.oncourse.webservices.replication.services.IReplicationService.InternalReplicationFault;
 import ish.oncourse.webservices.soap.v4.FaultCode;
-import ish.oncourse.webservices.soap.v4.PaymentPortType;
-import ish.oncourse.webservices.soap.v4.ReplicationFault;
-import ish.oncourse.webservices.v4.stubs.replication.FaultReason;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicatedRecord;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
-import ish.oncourse.webservices.v4.stubs.replication.Status;
-import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
-
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class PaymentServiceImpl implements PaymentPortType {
+public class PaymentServiceImpl implements InternalPaymentService {
 
 	private static final Logger logger = Logger.getLogger(PaymentServiceImpl.class);
 
@@ -80,9 +74,9 @@ public class PaymentServiceImpl implements PaymentPortType {
 	 * abandons payment, generates session id for credit card payments.
 	 */
 	@Override
-	public TransactionGroup processPayment(TransactionGroup transaction) throws ReplicationFault {
+	public GenericTransactionGroup processPayment(GenericTransactionGroup transaction) throws InternalReplicationFault {
 
-		List<ReplicatedRecord> replicatedRecords = Collections.emptyList();
+		List<GenericReplicatedRecord> replicatedRecords = new ArrayList<GenericReplicatedRecord>();
 		List<Enrolment> enrolments = new ArrayList<Enrolment>();
 		PaymentIn paymentIn = null;
 		boolean isCreditCardPayment = false;
@@ -99,14 +93,14 @@ public class PaymentServiceImpl implements PaymentPortType {
 			isCreditCardPayment = ReplicationUtils.isCreditCardPayment(transaction);
 			replicatedRecords = groupProcessor.processGroup(transaction);
 
-           ReplicatedRecord record = replicatedRecords.get(0);
+			GenericReplicatedRecord record = replicatedRecords.get(0);
 			// check if records were saved successfully
-			if (record.getStatus() != Status.SUCCESS) {
+           if (!replicatedRecords.get(0).isSuccessStatus()) {
 				// records wasn't saved, immediately return to angel.
 				throw new Exception(String.format("Willow was unable to save paymentIn transaction group. ReplicationRecord error: %s",record.getMessage()));
 			}
 
-			for (ReplicatedRecord r : replicatedRecords) {
+			for (GenericReplicatedRecord r : replicatedRecords) {
 
 				if (ReplicationUtils.getEntityName(Enrolment.class).equalsIgnoreCase(r.getStub().getEntityIdentifier())) {
 
@@ -133,17 +127,15 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 		} catch (Exception e) {
 			logger.error("Unable to process payment in.", e);
-			FaultReason faultReason = new FaultReason();
-			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			faultReason.setDetailMessage(String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
-			throw new ReplicationFault("Unable to process payment in.", faultReason);
+			throw new InternalReplicationFault("Unable to process payment in.", FaultCode.GENERIC_EXCEPTION, 
+				String.format("Unable to process payment in. Willow exception: %s", e.getMessage()));
 		}
 
 		// payment is saved at this point, that means that we should return
 		// response with status of original payment not matter what happens.
 
 		try {
-			TransactionGroup response = new TransactionGroup();
+			GenericTransactionGroup response = PortHelper.createTransactionGroup(transaction);
 			List<PaymentIn> updatedPayments = new LinkedList<PaymentIn>();
 			updatedPayments.add(paymentIn);
 			
@@ -178,13 +170,15 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 			newContext.commitChanges();
 			
-			Set<ReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments);
-			response.getAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
+			//Set<ReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments);
+			//response.getAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
+			Set<GenericReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments, PortHelper.getVersionByTransactionGroup(transaction));
+			response.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
 			return response;
 			
 		} catch (Exception e) {
 			logger.error(String.format("Exception happened after paymentIn:%s was saved. ", paymentIn.getId()), e);
-			return plainPaymentEnrolmentResponse(paymentIn, enrolments);
+			return plainPaymentEnrolmentResponse(paymentIn, enrolments, PortHelper.getVersionByTransactionGroup(transaction));
 		}
 	}
 
@@ -192,7 +186,7 @@ public class PaymentServiceImpl implements PaymentPortType {
 	 * Processes refunds.
 	 */
 	@Override
-	public TransactionGroup processRefund(TransactionGroup refundGroup) throws ReplicationFault {
+	public GenericTransactionGroup processRefund(GenericTransactionGroup refundGroup) throws InternalReplicationFault {
 		try {
 			// check if paymentOut group is empty
 			if (refundGroup.getAttendanceOrBinaryDataOrBinaryInfo() == null
@@ -201,13 +195,14 @@ public class PaymentServiceImpl implements PaymentPortType {
 			}
 
 			// save payment out to database
-			List<ReplicatedRecord> replicatedRecords = groupProcessor.processGroup(refundGroup);
+			List<GenericReplicatedRecord> replicatedRecords = groupProcessor.processGroup(refundGroup);
 
-			if (replicatedRecords.get(0).getStatus() != Status.SUCCESS) {
+			if (!replicatedRecords.get(0).isSuccessStatus()) {
 				throw new Exception("Willow was unable to save paymentOut transaction group.");
 			}
-
-			ReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
+			
+			GenericReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
+			//ReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
 			PaymentOut paymentOut = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
 
 			if (paymentOut == null) {
@@ -217,16 +212,15 @@ public class PaymentServiceImpl implements PaymentPortType {
 
 			paymentGatewayService.performGatewayOperation(paymentOut);
 
-			TransactionGroup group = new TransactionGroup();
-			group.getAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createRefundTransaction(paymentOut));
+			GenericTransactionGroup group = PortHelper.createTransactionGroup(refundGroup);
+			group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createRefundTransaction(paymentOut, 
+				PortHelper.getVersionByTransactionGroup(refundGroup)));
 
 			return group;
 		} catch (Exception e) {
 			logger.error("Unable to process refund.", e);
-			FaultReason faultReason = new FaultReason();
-			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			faultReason.setDetailMessage(String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
-			throw new ReplicationFault("Unable to process refund.", faultReason);
+			throw new InternalReplicationFault("Unable to process refund.", FaultCode.GENERIC_EXCEPTION, 
+				String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
 		}
 	}
 
@@ -236,9 +230,9 @@ public class PaymentServiceImpl implements PaymentPortType {
 	 * empty result otherwise.
 	 */
 	@Override
-	public TransactionGroup getPaymentStatus(String sessionId) throws ReplicationFault {
+	public GenericTransactionGroup getPaymentStatus(String sessionId, final SupportedVersions version) throws InternalReplicationFault {
 		try {
-			TransactionGroup tGroup = new TransactionGroup();
+			GenericTransactionGroup tGroup = PortHelper.createTransactionGroup(version);
 
 			List<PaymentIn> pList = paymentInService.getPaymentsBySessionId(sessionId);
 
@@ -252,16 +246,14 @@ public class PaymentServiceImpl implements PaymentPortType {
 			}
 
 			if (!shouldWait) {
-				tGroup.getAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createPaymentInTransaction(pList));
+				tGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(transactionBuilder.createPaymentInTransaction(pList, version));
 			}
 
 			return tGroup;
 		} catch (Exception e) {
 			logger.error("Unable to get payment status.", e);
-			FaultReason faultReason = new FaultReason();
-			faultReason.setFaultCode(FaultCode.GENERIC_EXCEPTION);
-			faultReason.setDetailMessage(String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
-			throw new ReplicationFault("Unable to process refund.", faultReason);
+			throw new InternalReplicationFault("Unable to get payment status.", FaultCode.GENERIC_EXCEPTION, 
+				String.format("Unable to process refund. Willow exception: %s", e.getMessage()));
 		}
 	}
 	
@@ -271,11 +263,11 @@ public class PaymentServiceImpl implements PaymentPortType {
 	 * @param enrolments
 	 * @return
 	 */
-	private TransactionGroup plainPaymentEnrolmentResponse(PaymentIn paymentIn, List<Enrolment> enrolments) {
-		TransactionGroup response = new TransactionGroup();
-		response.getAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(paymentIn));
+	private GenericTransactionGroup plainPaymentEnrolmentResponse(PaymentIn paymentIn, List<Enrolment> enrolments, final SupportedVersions version) {
+		GenericTransactionGroup response = PortHelper.createTransactionGroup(version);
+		response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(paymentIn, version));
 		for (Enrolment enrl : enrolments) {
-			response.getAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(enrl));
+			response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(enrl, version));
 		}
 		return response;
 	}

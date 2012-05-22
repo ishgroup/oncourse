@@ -4,8 +4,8 @@ import ish.common.types.*;
 import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.*;
-import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertTrue;
  * cat ContactStub.java  | grep --color -E 'public\ [a-zA-Z]{1,}\ (get|is)[a-zA-Z_-0-9]{1,}\(\)' | awk '{print "contactStub."$3";"}' | uniq | sort
  */
 
-public class StubBuilderTestHelper<E extends Queueable, S extends ReplicationStub> {
+public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplicationStub> {
     private static final Logger LOGGER = Logger.getLogger(StubBuilderTestHelper.class);
 
     private E entity;
@@ -57,7 +57,7 @@ public class StubBuilderTestHelper<E extends Queueable, S extends ReplicationStu
 
     public void assertStubBuilder(AbstractWillowStubBuilder<E, S>  stubBuilder) {
         LOGGER.info(String.format("test stubBuilder - \"%s\"", stubBuilder.getClass().getSimpleName()));
-        ReplicationStub stub = stubBuilder.convert(entity);
+        GenericReplicationStub stub = stubBuilder.convert(entity, SupportedVersions.V4);
 
         PropertyDescriptor[] contactDescriptors = PropertyUtils.getPropertyDescriptors(stub);
         for (PropertyDescriptor descriptor : contactDescriptors) {
@@ -187,7 +187,7 @@ public class StubBuilderTestHelper<E extends Queueable, S extends ReplicationStu
      * @param stub -  stub object
      * @return - value for the descriptor from the stub object
      */
-    public Object getStubValueBy(PropertyDescriptor descriptor, ReplicationStub stub) {
+    public Object getStubValueBy(PropertyDescriptor descriptor, GenericReplicationStub stub) {
         Object actual;
         try {
             if (descriptor.getReadMethod() == null) {
@@ -214,7 +214,8 @@ public class StubBuilderTestHelper<E extends Queueable, S extends ReplicationStu
      * @param actualClass - stub-property type
      * @return - converted value
      */
-    public Object convert(Object expectedValue, Class actualClass)
+    @SuppressWarnings("rawtypes")
+	public Object convert(Object expectedValue, Class actualClass)
     {
         Class expectedClass = expectedValue.getClass();
         if (expectedClass == Float.class && actualClass == BigDecimal.class)

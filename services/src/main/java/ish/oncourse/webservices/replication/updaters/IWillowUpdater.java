@@ -1,8 +1,8 @@
 package ish.oncourse.webservices.replication.updaters;
 
 import ish.oncourse.model.Queueable;
-import ish.oncourse.webservices.v4.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.util.GenericReplicationStub;
 
 public interface IWillowUpdater {
-	void updateEntityFromStub(ReplicationStub stub, Queueable entity, RelationShipCallback callback);
+	void updateEntityFromStub(GenericReplicationStub stub, Queueable entity, RelationShipCallback callback);
 }
