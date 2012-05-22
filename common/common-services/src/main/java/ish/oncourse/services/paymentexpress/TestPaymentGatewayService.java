@@ -2,11 +2,14 @@ package ish.oncourse.services.paymentexpress;
 
 import java.util.Date;
 
+import org.apache.cayenne.ObjectContext;
+
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentTransaction;
+import ish.oncourse.services.persistence.ICayenneService;
 
 /**
  * Test payment gateway processing.
@@ -15,6 +18,12 @@ import ish.oncourse.model.PaymentTransaction;
  * 
  */
 public class TestPaymentGatewayService implements IPaymentGatewayService {
+	
+	private ICayenneService cayenneService;
+	
+	public TestPaymentGatewayService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService;
+	}
 
 	/**
 	 * {@inheritDoc} <br/>
@@ -24,10 +33,13 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 	 * @see ish.oncourse.services.paymentexpress.IPaymentGatewayService#performGatewayOperation(ish.oncourse.model.PaymentIn)
 	 */
 	public void performGatewayOperation(PaymentIn payment) {
+		
+		ObjectContext context = cayenneService.newNonReplicatingContext();
 
-		PaymentTransaction paymentTransaction = payment.getObjectContext().newObject(PaymentTransaction.class);
+		PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
 
-		paymentTransaction.setPayment(payment);
+		PaymentIn local = (PaymentIn) context.localObject(payment.getObjectId(), null);
+		paymentTransaction.setPayment(local);
 
 		try {
 			Thread.sleep(10000);
@@ -50,6 +62,8 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 			payment.failPayment();
 		}
 		paymentTransaction.setIsFinalised(true);
+		
+		context.commitChanges();
 	}
 
 	@Override
@@ -64,5 +78,6 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 		} else {
 			paymentOut.failed();
 		}
+		
 	}
 }

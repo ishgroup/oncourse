@@ -4,6 +4,7 @@ import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
+import ish.oncourse.services.persistence.ICayenneService;
 
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
@@ -29,11 +30,14 @@ public class TestPaymentGatewayServiceTest {
 
 	@Mock
 	private PaymentTransaction paymentTransaction;
+	
+	@Mock
+	private ICayenneService cayenneService;
 
 	/**
 	 * Instance to test.
 	 */
-	private static TestPaymentGatewayService gatewayService;
+	private TestPaymentGatewayService gatewayService;
 
 	/**
 	 * Mock payment.
@@ -41,18 +45,13 @@ public class TestPaymentGatewayServiceTest {
 	@Mock
 	private PaymentIn payment;
 
-	/**
-	 * Initializes the test.
-	 */
-	@BeforeClass
-	public static void init() {
-		gatewayService = new TestPaymentGatewayService();
-	}
-
 	@Before
 	public void initMethod() {
 		when(payment.getObjectContext()).thenReturn(objectContext);
 		when(objectContext.newObject(PaymentTransaction.class)).thenReturn(paymentTransaction);
+		when(cayenneService.newNonReplicatingContext()).thenReturn(objectContext);
+		
+		this.gatewayService = new TestPaymentGatewayService(cayenneService);
 	}
 
 	/**
