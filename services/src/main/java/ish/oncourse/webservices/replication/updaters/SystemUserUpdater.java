@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.replication.updaters;
 
+import org.apache.commons.lang.StringUtils;
+
 import ish.oncourse.model.SystemUser;
 import ish.oncourse.webservices.v4.stubs.replication.SystemUserStub;
 
@@ -7,19 +9,18 @@ public class SystemUserUpdater extends AbstractWillowUpdater<SystemUserStub, Sys
 
 	@Override
 	protected void updateEntity(SystemUserStub stub, SystemUser entity, RelationShipCallback callback) {
-		entity.setCanEditCMS(stub.isEditCMS());
-		entity.setCanEditTara(stub.isEditTara());
+		entity.setCanEditCMS(Boolean.TRUE.equals(stub.isEditCMS()));
+		entity.setCanEditTara(Boolean.TRUE.equals(stub.isEditTara()));
 		entity.setDefaultAdministrationCentreId(stub.getDefaultAdministrationCentreId());
 		entity.setEmail(stub.getEmail());
-		entity.setFirstName(stub.getFirstName());
-		entity.setIsActive(stub.isIsActive());
-		entity.setIsAdmin(stub.isIsAdmin());
-		//entity.setLastLoginIP(stub.getLastLoginIP());
-		//entity.setLastLoginOn(stub.getLastLoginOn());
-		entity.setLastName(stub.getSurname());
-		entity.setLogin(stub.getLogin());
-		entity.setPassword(stub.getPassword());
-		//TODO: change stub versions
+		entity.setFirstName(StringUtils.trimToNull(stub.getFirstName()) != null ? stub.getFirstName() : StringUtils.EMPTY);
+		entity.setIsActive(Boolean.TRUE.equals(stub.isIsActive()));
+		entity.setIsAdmin(Boolean.TRUE.equals(stub.isIsAdmin()));
+		entity.setLastLoginIP(StringUtils.trimToNull(stub.getLastLoginIP()) != null ? stub.getLastLoginIP() : "unknown");
+		entity.setLastLoginOn(stub.getLastLoginOn());
+		entity.setLastName(StringUtils.trimToNull(stub.getSurname()) != null ? stub.getSurname() : StringUtils.EMPTY);
+		entity.setLogin(StringUtils.trimToNull(stub.getLogin()) != null ? stub.getLogin() : StringUtils.EMPTY);
+		entity.setPassword(StringUtils.trimToNull(stub.getPassword()) != null ? stub.getPassword() : StringUtils.EMPTY);
 	}
 
 }
