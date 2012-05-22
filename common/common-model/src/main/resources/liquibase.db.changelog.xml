@@ -768,5 +768,12 @@
     	<sql>update College set requiresAvetmiss = 0 where requiresAvetmiss is null;</sql>
     	<addNotNullConstraint tableName="College" columnName="requiresAvetmiss" columnDataType="TINYINT(1)" defaultNullValue="0"/>
 	</changeSet>
+	
+	<changeSet id="60" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+    			<tableExists tableName="SystemUser"/>
+    	</preConditions>
+    	<addAutoIncrement tableName="SystemUser" columnName="id" columnDataType="BIGINT"/>
+	</changeSet>
 
 </databaseChangeLog>
