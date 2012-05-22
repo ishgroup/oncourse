@@ -11,7 +11,7 @@ package ish.oncourse.webservices.exception;
  * @author marek
  */
 public class BuilderNotFoundException extends RuntimeException {
-
+	private static final long serialVersionUID = 3971215992430028578L;
 	private String entityName;
 
 

@@ -5,8 +5,6 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub;
 
-import org.apache.log4j.Logger;
-
 public class PaymentInLineUpdater extends AbstractWillowUpdater<PaymentInLineStub, PaymentInLine> {
 
 	/**

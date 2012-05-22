@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.exception;
 
-public class UpdaterNotFoundException extends RuntimeException {
-	
+public class UpdaterNotFoundException extends RuntimeException {	
+	private static final long serialVersionUID = -2266471072981378627L;
 	private String entityName;
 
 

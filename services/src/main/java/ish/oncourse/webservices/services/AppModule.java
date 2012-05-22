@@ -72,7 +72,6 @@ public class AppModule {
 		}).scope(ScopeConstants.PERTHREAD);
 
 		binder.bind(ReferencePortType.class, ReferencePortTypeImpl.class);
-		//binder.bind(PaymentPortType.class, PaymentServiceImpl.class);
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId(WEB_SITE_SERVICE_OVERRIDE_NAME);

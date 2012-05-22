@@ -86,7 +86,6 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	 * @return all records with this version or empty list if no records with
 	 *		that version exist
 	 */
-	@SuppressWarnings("unchecked")
 	public ReferenceResult getRecords(long ishVersion) {
 
 		List<ReferenceStub> stubs = new ArrayList<ReferenceStub>();

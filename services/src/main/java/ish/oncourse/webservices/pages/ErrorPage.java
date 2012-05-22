@@ -7,6 +7,7 @@ import org.apache.tapestry5.services.ExceptionReporter;
 @Import(stylesheet="css/screen.css")
 public class ErrorPage implements ExceptionReporter {
 
+	@SuppressWarnings("all")
 	@Property
     private Throwable exception;
 	
