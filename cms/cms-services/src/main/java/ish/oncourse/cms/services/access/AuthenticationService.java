@@ -72,9 +72,6 @@ public class AuthenticationService implements IAuthenticationService {
 				status = AuthenticationStatus.MORE_THAN_ONE_USER;
 			} else {
 				status = succedAuthentication(SystemUser.class, systemUsers.get(0));
-				/*applicationStateManager.set(SystemUser.class, systemUsers.get(0));
-				status = AuthenticationStatus.SUCCESS;
-				cookiesService.writeCookieValue("cms", "enabled");*/
 			}
 		} else {
 			//try to login by login and password
@@ -96,7 +93,7 @@ public class AuthenticationService implements IAuthenticationService {
 				query.orQualifier(ExpressionFactory.matchExp(WillowUser.COLLEGE_PROPERTY, null));
 				
 				query.andQualifier(ExpressionFactory.matchExp(WillowUser.EMAIL_PROPERTY, userName));
-				query.andQualifier(ExpressionFactory.matchExp(WillowUser.PASSWORD_PROPERTY, password));
+				query.andQualifier(ExpressionFactory.matchExp(WillowUser.PASSWORD_PROPERTY, password));//TODO: setup via hashedPassword 
 				
 				final List<WillowUser> users = cayenneService.newContext().performQuery(query);
 				if (!users.isEmpty()) {
