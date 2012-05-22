@@ -2,7 +2,9 @@ package ish.oncourse.admin.pages;
 
 import ish.oncourse.model.WillowUser;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.util.SecurityUtil;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.cayenne.Cayenne;
@@ -17,9 +19,11 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class AddSuperUser {
 	
+	@SuppressWarnings("all")
 	@Property
 	private List<WillowUser> cmsSuperUsers;
 	
+	@SuppressWarnings("all")
 	@Property
 	private WillowUser currentUser;
 	
@@ -38,6 +42,7 @@ public class AddSuperUser {
 	@Inject
 	private ICayenneService cayenneService;
 	
+	@SuppressWarnings("unchecked")
 	@SetupRender
 	void setupRender() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -47,13 +52,14 @@ public class AddSuperUser {
 	}
 	
 	@OnEvent(component="cmsUsersForm", value="success")
-	void addSuperUser() {
+	void addSuperUser() throws UnsupportedEncodingException {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
 		WillowUser user = context.newObject(WillowUser.class);
 		user.setCollege(null);
 		user.setEmail(newUserEmailValue);
-		user.setPassword(newUserPasswordValue);
+		final String hashedPassword = SecurityUtil.hashPassword(newUserPasswordValue);
+		user.setPassword(newUserPasswordValue);//TODO: migrate when found logic which will update old passwords
 		user.setFirstName(newUserFirstNameValue);
 		user.setLastName(newUserLastNameValue);
 		

@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages.college;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import ish.oncourse.model.WillowUser;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
+import ish.util.SecurityUtil;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.DeleteDenyException;
@@ -45,18 +47,22 @@ public class Web {
 	@Persist
 	private Map<String, WebSite> sites;
 	
+	@SuppressWarnings("all")
 	@Property
 	private List<WebHostName> domains;
 	
+	@SuppressWarnings("all")
 	@Property
 	private List<WillowUser> cmsUsers;
 	
 	@Property
 	private WebHostName currentDomain;
 	
+	@SuppressWarnings("all")
 	@Property
 	private WebSite currentSite;
 	
+	@SuppressWarnings("all")
 	@Property
 	private WillowUser currentUser;
 	
@@ -87,20 +93,24 @@ public class Web {
 	@Property
 	private String newUserLastNameValue;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String changeSiteUrl;
 	
 	@Property
 	private String currentSiteKey;
 	
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private StringSelectModel siteSelectModel;
 	
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private boolean siteDeleteFailed;
 	
+	@SuppressWarnings("all")
 	private String selectedSite;
 	
 	@Inject
@@ -120,6 +130,7 @@ public class Web {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@SetupRender
 	void setupRender() {
 		this.changeSiteUrl = response.encodeURL(request.getContextPath() + "/college/changeDomainSite");
@@ -239,6 +250,7 @@ public class Web {
 		if (college != null) {
 			Expression exp = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, college).andExp(
 					ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME));
+			@SuppressWarnings("unchecked")
 			List<Tag> subjectsTags = context.performQuery(new SelectQuery(Tag.class, exp));
 			
 			if (subjectsTags.size() == 0) {
@@ -264,13 +276,14 @@ public class Web {
 	}
 	
 	@OnEvent(component="cmsUsersForm", value="success")
-	void addUser() {
+	void addUser() throws UnsupportedEncodingException {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
 		WillowUser user = context.newObject(WillowUser.class);
 		user.setCollege((College) context.localObject(college.getObjectId(), null));
 		user.setEmail(newUserEmailValue);
-		user.setPassword(newUserPasswordValue);
+		final String hashedPassword = SecurityUtil.hashPassword(newUserPasswordValue);
+		user.setPassword(newUserPasswordValue);//TODO: migrate when found logic which will update old passwords
 		user.setFirstName(newUserFirstNameValue);
 		user.setLastName(newUserLastNameValue);
 		
