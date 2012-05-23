@@ -232,8 +232,6 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             return ((PaymentSource)expectedValue).getDatabaseValue();
         else if (expectedClass == EnrolmentStatus.class && actualClass == Integer.class)
             return ((EnrolmentStatus) expectedValue).getDatabaseValue();
-        else if (expectedClass == EnrolmentStatus.class && actualClass == Integer.class)
-            return ((EnrolmentStatus) expectedValue).getDatabaseValue();
         else if (expectedClass == EnrolmentStatus.class && actualClass == String.class)
             return ((EnrolmentStatus) expectedValue).name();
         else if (expectedClass == MessageStatus.class && actualClass == Integer.class)
@@ -244,6 +242,8 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             return ((CreditCardType) expectedValue).getDatabaseValue();
         else if (expectedClass == PaymentStatus.class && actualClass == Integer.class)
             return ((PaymentStatus)expectedValue).getDatabaseValue();
+        else if (expectedClass == AttachmentInfoVisibility.class && actualClass == Integer.class)
+        	return ((AttachmentInfoVisibility)expectedValue).getDatabaseValue();
         else if (expectedClass == PaymentType.class && actualClass == Integer.class)
             return  ((PaymentType)expectedValue).getDatabaseValue();
         else if (expectedClass == AvetmissStudentDisabilityType.class && actualClass == Integer.class)
