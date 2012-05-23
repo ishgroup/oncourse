@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
@@ -20,7 +21,7 @@ public abstract class _BinaryInfo extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String BYTE_SIZE_PROPERTY = "byteSize";
     public static final String CREATED_PROPERTY = "created";
-    public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
+    public static final String IS_WEB_VISIBLE_PROPERTY = "webVisible";
     public static final String MIME_TYPE_PROPERTY = "mimeType";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
@@ -54,11 +55,11 @@ public abstract class _BinaryInfo extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
-    public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+    public void setWebVisible(AttachmentInfoVisibility isWebVisible) {
+        writeProperty("webVisible", isWebVisible);
     }
-    public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+    public AttachmentInfoVisibility getWebVisible() {
+        return (AttachmentInfoVisibility)readProperty("webVisible");
     }
 
     public void setMimeType(String mimeType) {

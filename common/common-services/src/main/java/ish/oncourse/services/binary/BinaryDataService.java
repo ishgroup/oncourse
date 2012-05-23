@@ -1,5 +1,6 @@
 package ish.oncourse.services.binary;
 
+import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
@@ -72,7 +73,7 @@ public class BinaryDataService implements IBinaryDataService {
 		Expression qualifier = ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY, cayenneService.sharedContext()
 				.localObject(currentCollege.getObjectId(), null));
 		if (isWebVisible) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(BinaryInfo.IS_WEB_VISIBLE_PROPERTY, true));
+			qualifier = qualifier.andExp(ExpressionFactory.matchExp(BinaryInfo.IS_WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PUBLIC));
 		}
 		return qualifier;
 	}

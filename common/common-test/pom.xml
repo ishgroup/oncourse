@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>ish.oncourse.angel</groupId>
 			<artifactId>waCommon</artifactId>
-			<version>3.0b15</version>
+			<version>3.1b5</version>
 		</dependency>
 		
 		<dependency>

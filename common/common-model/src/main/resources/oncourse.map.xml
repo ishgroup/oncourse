@@ -21,7 +21,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="isWebVisible" type="BIT" isMandatory="true"/>
+		<db-attribute name="isWebVisible" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="mimeType" type="VARCHAR" length="512"/>
 		<db-attribute name="modified" type="TIMESTAMP" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="512"/>
@@ -888,13 +888,13 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="byteSize" type="java.lang.Long" db-attribute-path="byteSize"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="mimeType" type="java.lang.String" db-attribute-path="mimeType"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="pixelHeight" type="java.lang.Integer" db-attribute-path="pixelHeight"/>
 		<obj-attribute name="pixelWidth" type="java.lang.Integer" db-attribute-path="pixelWidth"/>
 		<obj-attribute name="referenceNumber" type="java.lang.Integer" db-attribute-path="referenceNumber"/>
+		<obj-attribute name="webVisible" type="ish.common.types.AttachmentInfoVisibility" db-attribute-path="isWebVisible"/>
 	</obj-entity>
 	<obj-entity name="BinaryInfoRelation" className="ish.oncourse.model.BinaryInfoRelation" dbEntityName="BinaryInfoRelation">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
