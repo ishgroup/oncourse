@@ -15,20 +15,20 @@ import ish.oncourse.model.College;
 public abstract class _SystemUser extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String CAN_EDIT_CMS_PROPERTY = "canEditCMS";
-    public static final String CAN_EDIT_TARA_PROPERTY = "canEditTara";
     public static final String CREATED_PROPERTY = "created";
     public static final String DEFAULT_ADMINISTRATION_CENTRE_ID_PROPERTY = "defaultAdministrationCentreId";
+    public static final String EDIT_CMS_PROPERTY = "editCMS";
+    public static final String EDIT_TARA_PROPERTY = "editTara";
     public static final String EMAIL_PROPERTY = "email";
     public static final String FIRST_NAME_PROPERTY = "firstName";
     public static final String IS_ACTIVE_PROPERTY = "isActive";
     public static final String IS_ADMIN_PROPERTY = "isAdmin";
     public static final String LAST_LOGIN_IP_PROPERTY = "lastLoginIP";
     public static final String LAST_LOGIN_ON_PROPERTY = "lastLoginOn";
-    public static final String LAST_NAME_PROPERTY = "lastName";
     public static final String LOGIN_PROPERTY = "login";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String PASSWORD_PROPERTY = "password";
+    public static final String SURNAME_PROPERTY = "surname";
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";
@@ -38,20 +38,6 @@ public abstract class _SystemUser extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
-    }
-
-    public void setCanEditCMS(Boolean canEditCMS) {
-        writeProperty("canEditCMS", canEditCMS);
-    }
-    public Boolean getCanEditCMS() {
-        return (Boolean)readProperty("canEditCMS");
-    }
-
-    public void setCanEditTara(Boolean canEditTara) {
-        writeProperty("canEditTara", canEditTara);
-    }
-    public Boolean getCanEditTara() {
-        return (Boolean)readProperty("canEditTara");
     }
 
     public void setCreated(Date created) {
@@ -66,6 +52,20 @@ public abstract class _SystemUser extends CayenneDataObject {
     }
     public Long getDefaultAdministrationCentreId() {
         return (Long)readProperty("defaultAdministrationCentreId");
+    }
+
+    public void setEditCMS(Boolean editCMS) {
+        writeProperty("editCMS", editCMS);
+    }
+    public Boolean getEditCMS() {
+        return (Boolean)readProperty("editCMS");
+    }
+
+    public void setEditTara(Boolean editTara) {
+        writeProperty("editTara", editTara);
+    }
+    public Boolean getEditTara() {
+        return (Boolean)readProperty("editTara");
     }
 
     public void setEmail(String email) {
@@ -110,13 +110,6 @@ public abstract class _SystemUser extends CayenneDataObject {
         return (Date)readProperty("lastLoginOn");
     }
 
-    public void setLastName(String lastName) {
-        writeProperty("lastName", lastName);
-    }
-    public String getLastName() {
-        return (String)readProperty("lastName");
-    }
-
     public void setLogin(String login) {
         writeProperty("login", login);
     }
@@ -136,6 +129,13 @@ public abstract class _SystemUser extends CayenneDataObject {
     }
     public String getPassword() {
         return (String)readProperty("password");
+    }
+
+    public void setSurname(String surname) {
+        writeProperty("surname", surname);
+    }
+    public String getSurname() {
+        return (String)readProperty("surname");
     }
 
     public void setCollege(College college) {

@@ -1424,20 +1424,20 @@
 	</obj-entity>
 	<obj-entity name="SystemUser" className="ish.oncourse.model.SystemUser" dbEntityName="SystemUser">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="canEditCMS" type="java.lang.Boolean" db-attribute-path="canEditCMS"/>
-		<obj-attribute name="canEditTara" type="java.lang.Boolean" db-attribute-path="canEditTara"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="defaultAdministrationCentreId" type="java.lang.Long" db-attribute-path="defaultAdministrationCentreId"/>
+		<obj-attribute name="editCMS" type="java.lang.Boolean" db-attribute-path="canEditCMS"/>
+		<obj-attribute name="editTara" type="java.lang.Boolean" db-attribute-path="canEditTara"/>
 		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
 		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="firstName"/>
 		<obj-attribute name="isActive" type="java.lang.Boolean" db-attribute-path="isActive"/>
 		<obj-attribute name="isAdmin" type="java.lang.Boolean" db-attribute-path="isAdmin"/>
 		<obj-attribute name="lastLoginIP" type="java.lang.String" db-attribute-path="lastLoginIP"/>
 		<obj-attribute name="lastLoginOn" type="java.util.Date" db-attribute-path="lastLoginOn"/>
-		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="lastName"/>
 		<obj-attribute name="login" type="java.lang.String" db-attribute-path="login"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
+		<obj-attribute name="surname" type="java.lang.String" db-attribute-path="lastName"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.model.Tag" dbEntityName="Tag">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
