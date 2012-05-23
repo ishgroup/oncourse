@@ -9,8 +9,8 @@ public class SystemUserUpdater extends AbstractWillowUpdater<SystemUserStub, Sys
 
 	@Override
 	protected void updateEntity(SystemUserStub stub, SystemUser entity, RelationShipCallback callback) {
-		entity.setCanEditCMS(Boolean.TRUE.equals(stub.isEditCMS()));
-		entity.setCanEditTara(Boolean.TRUE.equals(stub.isEditTara()));
+		entity.setEditCMS(Boolean.TRUE.equals(stub.isEditCMS()));
+		entity.setEditTara(Boolean.TRUE.equals(stub.isEditTara()));
 		entity.setDefaultAdministrationCentreId(stub.getDefaultAdministrationCentreId());
 		entity.setEmail(stub.getEmail());
 		entity.setFirstName(StringUtils.trimToNull(stub.getFirstName()) != null ? stub.getFirstName() : StringUtils.EMPTY);

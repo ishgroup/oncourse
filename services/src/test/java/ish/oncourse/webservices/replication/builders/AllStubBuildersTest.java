@@ -210,6 +210,11 @@ public class AllStubBuildersTest extends ServiceTest {
     public void testStudentStubBuilder() {
         this.testStubBuilder(Student.class, new StudentStubBuilder());
     }
+    
+    @Test
+    public void testSystemUserStubBuilder() {
+        this.testStubBuilder(SystemUser.class, new SystemUserStubBuilder());
+    }
 
     @Test
 
