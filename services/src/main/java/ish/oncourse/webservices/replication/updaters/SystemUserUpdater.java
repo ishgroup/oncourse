@@ -18,7 +18,7 @@ public class SystemUserUpdater extends AbstractWillowUpdater<SystemUserStub, Sys
 		entity.setIsAdmin(Boolean.TRUE.equals(stub.isIsAdmin()));
 		entity.setLastLoginIP(StringUtils.trimToNull(stub.getLastLoginIP()) != null ? stub.getLastLoginIP() : "unknown");
 		entity.setLastLoginOn(stub.getLastLoginOn());
-		entity.setLastName(StringUtils.trimToNull(stub.getSurname()) != null ? stub.getSurname() : StringUtils.EMPTY);
+		entity.setSurname(StringUtils.trimToNull(stub.getSurname()) != null ? stub.getSurname() : StringUtils.EMPTY);
 		entity.setLogin(StringUtils.trimToNull(stub.getLogin()) != null ? stub.getLogin() : StringUtils.EMPTY);
 		entity.setPassword(StringUtils.trimToNull(stub.getPassword()) != null ? stub.getPassword() : StringUtils.EMPTY);
 	}
