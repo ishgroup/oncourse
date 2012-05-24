@@ -13,9 +13,11 @@ public class Timetable {
 	@Inject
 	private IAuthenticationService authService;
 
+	@SuppressWarnings("all")
 	@Property
 	private Contact currentUser;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String timetableMonthUrl;
 	

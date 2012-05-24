@@ -127,11 +127,7 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see IAuthenticationService#getUser()
 	 */
 	public Contact getUser() {
-		Contact user = applicationStateManager.getIfExists(Contact.class);
-		if (user != null) {
-			return user;
-		}
-		return null;
+		return applicationStateManager.getIfExists(Contact.class);
 	}
 
 	/**

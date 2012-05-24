@@ -11,6 +11,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Class {
 
+	@SuppressWarnings("all")
 	@Property
 	private CourseClass courseClass;
 	

@@ -36,6 +36,7 @@ public class Classes {
     @Property
     private TutorRole tutorRole;
 
+    @SuppressWarnings("all")
     private List<TutorRole> tutorRoles;
 
     @Inject
