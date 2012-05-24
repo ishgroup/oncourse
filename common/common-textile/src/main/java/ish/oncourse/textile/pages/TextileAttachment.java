@@ -20,9 +20,11 @@ public class TextileAttachment {
 	@Inject
 	private IBinaryDataService binaryDataService;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String attachmentLink;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String attachmentTitle;
 	
@@ -31,8 +33,8 @@ public class TextileAttachment {
 	
 	@SetupRender
 	void beforeRender() {
-		Map<String, String> tagParams = 
-			(Map<String, String>) request.getAttribute(TextileUtil.TEXTILE_ATTACHMENT_PAGE_PARAM);
+		@SuppressWarnings("unchecked")
+		Map<String, String> tagParams = (Map<String, String>) request.getAttribute(TextileUtil.TEXTILE_ATTACHMENT_PAGE_PARAM);
 		
 		attachmentName = tagParams.get(AttachmentTextileAttributes.ATTACHMENT_PARAM_NAME.getValue());
 		

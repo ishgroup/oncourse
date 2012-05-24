@@ -4,6 +4,7 @@ import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.ApplicationStateManager;
 
 public class BinaryDataService implements IBinaryDataService {
 
@@ -26,6 +28,9 @@ public class BinaryDataService implements IBinaryDataService {
 
 	@Inject
 	private IWebSiteService webSiteService;
+	
+	@Inject
+	private ApplicationStateManager applicationStateManager;
 
 	@Override
 	public BinaryInfo getBinaryInfoById(Object id) {
@@ -68,12 +73,16 @@ public class BinaryDataService implements IBinaryDataService {
 		return getCollegeQualifier(true);
 	}
 
-	private Expression getCollegeQualifier(boolean isWebVisible) {
+	private Expression getCollegeQualifier(boolean showOnlyPublic) {
 		College currentCollege = webSiteService.getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(BinaryInfo.COLLEGE_PROPERTY, cayenneService.sharedContext()
 				.localObject(currentCollege.getObjectId(), null));
-		if (isWebVisible) {
-			qualifier = qualifier.andExp(ExpressionFactory.matchExp(BinaryInfo.IS_WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PUBLIC));
+		if (showOnlyPublic) {
+			if (showStudentsAttachments()) {
+				qualifier = qualifier.andExp(ExpressionFactory.noMatchExp(BinaryInfo.IS_WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PRIVATE));
+			} else {
+				qualifier = qualifier.andExp(ExpressionFactory.matchExp(BinaryInfo.IS_WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PUBLIC));
+			}
 		}
 		return qualifier;
 	}
@@ -105,7 +114,7 @@ public class BinaryDataService implements IBinaryDataService {
 	}
 
 	@Override
-	public List<BinaryInfo> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean isWebVisible) {
+	public List<BinaryInfo> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean showOnlyPublic) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
 		SelectQuery query = new SelectQuery(BinaryInfoRelation.class, ExpressionFactory.matchExp(
 				BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, entityIdNum).andExp(
@@ -117,9 +126,13 @@ public class BinaryDataService implements IBinaryDataService {
 			for (BinaryInfoRelation relation : relations) {
 				attachedFiles.add(relation.getBinaryInfo());
 			}
-			return getCollegeQualifier(isWebVisible).filterObjects(attachedFiles);
+			return getCollegeQualifier(showOnlyPublic).filterObjects(attachedFiles);
 		}
 		return new ArrayList<BinaryInfo>(0);
+	}
+	
+	private boolean showStudentsAttachments() {
+		return applicationStateManager.getIfExists(Contact.class) != null;
 	}
 
 }

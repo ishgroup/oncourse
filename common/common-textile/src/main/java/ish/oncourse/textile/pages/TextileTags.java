@@ -26,6 +26,7 @@ public class TextileTags {
 
 	private String entityType;
 
+	@SuppressWarnings("all")
 	@Property
 	@Component(id = "childTag", parameters = { "tag=currentTag",
 			"childPosition=currentChildPosition", "maxLevels=maxLevelsForChild" })
@@ -36,8 +37,10 @@ public class TextileTags {
 	private Map<Tag, Integer> childPositions;
 
 	private Integer maxLevels;
+	@SuppressWarnings("all")
 	@Property
 	private boolean showTopLevel;
+	@SuppressWarnings("all")
 	@Property
 	private Integer maxLevelsForChild;
 

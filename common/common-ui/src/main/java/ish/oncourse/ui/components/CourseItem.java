@@ -34,6 +34,7 @@ public class CourseItem {
 	@Property
 	private boolean isList;
 
+	@SuppressWarnings("all")
 	@Parameter
 	@Property
 	private boolean linkToLocationsMap;
@@ -65,10 +66,13 @@ public class CourseItem {
 	public String getMoreLink() {
 		return "/course/" + course.getCode();
 	}
+	
+	protected Course takeCourse() {
+		return course;
+	}
 
 	public String getCourseDetail() {
-
-		String detail = textileConverter.convertCustomTextile(course.getDetail(), new ValidationErrors());
+		String detail = textileConverter.convertCustomTextile(takeCourse().getDetail(), new ValidationErrors());
 		if (detail == null) {
 			return "";
 		}
@@ -99,6 +103,7 @@ public class CourseItem {
 		return courseClass.hasEnded();
 	}
 
+	@SuppressWarnings("unused")
 	private String truncateHTML(String text, int size) {
 		boolean inTag = false;
 		int cntr = 0;

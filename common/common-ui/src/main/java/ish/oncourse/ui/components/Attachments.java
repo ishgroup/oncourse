@@ -25,15 +25,19 @@ public class Attachments {
 	@Parameter
 	private Long entityIdNum;
 
+	@SuppressWarnings("all")
 	@Property
 	private List<BinaryInfo> attachedImages;
 
+	@SuppressWarnings("all")
 	@Property
 	private BinaryInfo image;
 
+	@SuppressWarnings("all")
 	@Property
 	private List<BinaryInfo> attachments;
 
+	@SuppressWarnings("all")
 	@Property
 	private BinaryInfo attachment;
 
@@ -45,6 +49,7 @@ public class Attachments {
 		List<BinaryInfo> allAttachedFiles = binaryDataService.getAttachedFiles(entityIdNum, entityIdentifier, true);
 		Expression imageQualifier = BinaryInfo.getImageQualifier();
 		attachments = imageQualifier.notExp().filterObjects(allAttachedFiles);
+		@SuppressWarnings("unchecked")
 		ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
 		if (ids != null && !ids.isEmpty()) {
 			imageQualifier = imageQualifier.andExp(ExpressionFactory.notInDbExp(BinaryInfo.ID_PK_COLUMN, ids));
