@@ -71,32 +71,23 @@ public class CourseClassDetails {
 
 	public List<Session> getSortedTimelineableSessions() {
 		List<Session> sessions = courseClass.getTimelineableSessions();
+		
 		Collections.sort(sessions, new Comparator<Session>() {
-			public int compare(Session o1, Session o2) {
-				String location1 = "";
-				String location2 = "";
-				Room room1 = o1.getRoom();
-				Room room2 = o2.getRoom();
-
-				if (room1 != null) {
-					Site site1 = room1.getSite();
-					if (site1 != null) {
-						location1 = site1.getName();
+			public int compare(Session s1, Session s2) {
+				
+				// sorting sessions by their start date, if start dates are equal then sorting by site name
+				
+				if (s1.getStartDate().equals(s2.getStartDate())) {
+					
+					if (s1.getRoom() != null && s1.getRoom().getSite() != null
+							&& s2.getRoom() != null && s2.getRoom().getSite() != null) {
+						
+						return s1.getRoom().getSite().getName().compareTo(
+								s2.getRoom().getSite().getName());
 					}
 				}
-
-				if (room2 != null) {
-					Site site2 = room2.getSite();
-					if (site2 != null) {
-						location2 = site2.getName();
-					}
-				}
-
-				int siteNameComparison = location1.compareTo(location2);
-				if (siteNameComparison == 0) {
-					return o1.getStartDate().compareTo(o2.getStartDate());
-				}
-				return siteNameComparison;
+				
+				return s1.getStartDate().compareTo(s2.getStartDate());
 			}
 		});
 		return sessions;
