@@ -776,4 +776,31 @@
     	<addAutoIncrement tableName="SystemUser" columnName="id" columnDataType="BIGINT"/>
 	</changeSet>
 
+	<changeSet id="61" author="viacheslav" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+    			<tableExists tableName="QueuedStatistic"/>
+    		</not>
+		</preConditions>
+		<createTable tableName="QueuedStatistic">
+			<column name="id" type="BIGINT">
+    			<constraints primaryKey="true" nullable="false" unique="true"/>
+    		</column>
+    		<column name="collegeId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="entityIdentifier" type="VARCHAR(64)">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="receivedTimestamp" type="DATETIME"/>
+    		<column name="stackedCount" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="stackedTransactionsCount" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+		</createTable>
+		<addAutoIncrement tableName="QueuedStatistic" columnName="id" columnDataType="BIGINT"/>
+	</changeSet>
+
 </databaseChangeLog>
