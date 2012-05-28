@@ -131,7 +131,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 			i = 1;
 		}
 		if (rootTag == null) {
-			if (subjectsTag.hasChildWithName(tagNames[0])) {
+			if (subjectsTag != null && subjectsTag.hasChildWithName(tagNames[0])) {
 				rootTag = subjectsTag;
 			} else {
 				rootTag = getTagGroupByName(tagNames[0]);
