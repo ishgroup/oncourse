@@ -58,7 +58,8 @@ public class DerbyUtils {
      /**
       * Remove all objects in all schemas from the database.
       */
-     private static void removeObjects(Connection conn) throws SQLException {
+     @SuppressWarnings({ "rawtypes", "unchecked" })
+	private static void removeObjects(Connection conn) throws SQLException {
    
         DatabaseMetaData dmd = conn.getMetaData();
 

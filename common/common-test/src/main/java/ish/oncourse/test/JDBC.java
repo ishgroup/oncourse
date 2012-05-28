@@ -268,6 +268,7 @@ public class JDBC {
 	 * @throws SQLException
 	 *             database errors.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static void dropUsingDMD(Statement s, ResultSet rs, String schema, String mdColumn, String dropType) throws SQLException {
 		String dropLeadIn = "DROP " + dropType + " ";
 
@@ -365,6 +366,7 @@ public class JDBC {
 	 *            Byte array to be converted.
 	 * @return Hexadecimal string representation. Returns null on null input.
 	 */
+	@SuppressWarnings("unused")
 	private static String bytesToString(byte[] ba) {
 		if (ba == null)
 			return null;
