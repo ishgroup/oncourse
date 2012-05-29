@@ -12,7 +12,7 @@ import ish.oncourse.webservices.reference.builders.LanguageStubBuilder;
 import ish.oncourse.webservices.reference.builders.ModuleStubBuilder;
 import ish.oncourse.webservices.reference.builders.QualificationStubBuilder;
 import ish.oncourse.webservices.reference.builders.TrainingPackageStubBuilder;
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
+import ish.oncourse.webservices.util.GenericReferenceStub;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,14 +39,12 @@ public class ReferenceStubBuilder {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public ReferenceStub convert(Persistent record) {
+	public GenericReferenceStub convert(Persistent record) {
 		String key = record.getObjectId().getEntityName();
 		IReferenceStubBuilder builder = builders.get(key);
-
 		if (builder == null) {
 			throw new BuilderNotFoundException("Builder not found during record conversion", key);
 		}
-
 		return builder.convert(record);
 	}
 	

@@ -104,7 +104,7 @@ public class AllStubBuildersTest extends ServiceTest {
 
     @Test
     public void testBinaryInfoStubBuilder() {
-        this.testStubBuilder(BinaryInfo.class, new BinaryInfoStubBuilder());
+        this.testStubBuilder(BinaryInfo.class, new BinaryInfoStubBuilder(),"webVisible");
     }
 
     @Test

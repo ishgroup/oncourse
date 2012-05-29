@@ -7,11 +7,13 @@ import static ish.oncourse.webservices.replication.services.ReplicationUtils.toR
 import ish.common.types.EntityMapping;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
+import ish.oncourse.model.QueuedStatistic;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
@@ -108,9 +110,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 			for (GenericReplicatedRecord r : result) {
 				String willowIdentifier = EntityMapping.getWillowEntityIdentifer(r.getStub().getEntityIdentifier());
-				List<Queueable> savedObjects = objectsByAngelId(r.getStub().getAngelId(), willowIdentifier);
-				if (!savedObjects.isEmpty()) {
-					r.getStub().setWillowId(savedObjects.get(0).getId());
+				//no reason in upgrade generated data
+				if (!QueuedStatistic.class.getSimpleName().equals(willowIdentifier)) {
+					List<Queueable> savedObjects = objectsByAngelId(r.getStub().getAngelId(), willowIdentifier);
+					if (!savedObjects.isEmpty()) {
+						r.getStub().setWillowId(savedObjects.get(0).getId());
+					}
 				}
 			}
 
@@ -173,10 +178,20 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	private static void updateReplicationStatusToFailed(List<GenericReplicatedRecord> records, String message) {
 		for (GenericReplicatedRecord record : records) {
 			record.setFailedStatus();
-			//record.setStatus(status);
 			if (record.getMessage() == null) {
 				record.setMessage(message);
 			}
+		}
+	}
+	
+	private void cleanupStatistic(GenericQueuedStatisticStub statisticStub) {
+		final SelectQuery q = new SelectQuery(QueuedStatistic.class);
+		q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
+		q.andQualifier(ExpressionFactory.lessExp(QueuedStatistic.RECEIVED_TIMESTAMP_PROPERTY, statisticStub.getReceivedTimestamp()));
+		@SuppressWarnings("unchecked")
+		List<QueuedStatistic> statisticForDelete = atomicContext.performQuery(q);
+		if (!statisticForDelete.isEmpty()) {
+			atomicContext.deleteObjects(statisticForDelete);
 		}
 	}
 
@@ -200,16 +215,38 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			throw new IllegalArgumentException(String.format("Replication result is not set for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),
 					currentStub.getAngelId(), currentStub.getWillowId()));
 		}
+
+		if (currentStub instanceof GenericQueuedStatisticStub) {
+			final GenericQueuedStatisticStub statisticStub = (GenericQueuedStatisticStub) currentStub;
+			if (Boolean.TRUE.equals(statisticStub.isCleanupStub())) {
+				//we should commit current statistic changes before commit
+				atomicContext.commitChanges();
+				cleanupStatistic(statisticStub);
+				return null;
+			} else {
+				final List<QueuedStatistic> objects = statisticByEntity(statisticStub.getStackedEntityIdentifier());
+				switch (objects.size()) {
+				case 0:
+					return createObject(currentStub);
+				case 1:
+					QueuedStatistic objectToUpdate = objects.get(0);
+					willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
+					return objectToUpdate;
+				default:
+					//we should not throw and exception because even if this occurs on next replication data will be correct.
+					String message = String.format("%s statistic objects found for entity:%s", objects.size(), 
+						statisticStub.getStackedEntityIdentifier());
+		            logger.warn(message);
+		            return null;
+				}
+			}
+		}
 		
 		String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
 
 		if (currentStub.getAngelId() == null) {
-
-            String message = String.format("Empty angelId for object object: %s willowId: %s", 
-                    willowIdentifier, 
-                    currentStub.getWillowId());
+            String message = String.format("Empty angelId for object object: %s willowId: %s", willowIdentifier, currentStub.getWillowId());
             replRecord.setFailedStatus();
-            //replRecord.setStatus(Status.FAILED);
             replRecord.setMessage(message);
             throw new IllegalArgumentException(message);
 		}
@@ -238,7 +275,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
                 String message = String.format("WillowId doesn't match for object: %s. Expected: %s, but got %s.", willowIdentifier,
 						objectToUpdate.getId(), currentStub.getWillowId());
                 replRecord.setFailedStatus();
-                //replRecord.setStatus(Status.FAILED);
                 replRecord.setMessage(message);
                 throw new IllegalArgumentException(message);
 			}
@@ -255,7 +291,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			// FAILURE angelId uniques
             String message = String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId());
             replRecord.setFailedStatus();
-            //replRecord.setStatus(Status.FAILED);
             replRecord.setMessage(message);
             throw new IllegalArgumentException(message);
 		}
@@ -370,6 +405,14 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		SelectQuery q = new SelectQuery(getEntityClass(atomicContext, entityName));
 		q.andQualifier(ExpressionFactory.matchDbExp("angelId", angelId));
 		q.andQualifier(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
+		return atomicContext.performQuery(q);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<QueuedStatistic> statisticByEntity(final String entityName) {
+		SelectQuery q = new SelectQuery(QueuedStatistic.class);
+		q.andQualifier(ExpressionFactory.matchDbExp(QueuedStatistic.ENTITY_IDENTIFIER_PROPERTY, entityName));
+		q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 		return atomicContext.performQuery(q);
 	}
 	

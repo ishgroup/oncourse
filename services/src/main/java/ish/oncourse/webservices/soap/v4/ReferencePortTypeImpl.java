@@ -3,8 +3,8 @@ package ish.oncourse.webservices.soap.v4;
 import ish.oncourse.services.reference.ReferenceService;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
+import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,13 +88,13 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	 */
 	public ReferenceResult getRecords(long ishVersion) {
 
-		List<ReferenceStub> stubs = new ArrayList<ReferenceStub>();
+		List<GenericReferenceStub> stubs = new ArrayList<GenericReferenceStub>();
 		
 		List<Persistent> records = referenceService.getForReplication(ishVersion);
 		
 		for (Persistent p: records) {
 			try {
-				ReferenceStub stub = stubBuilder.convert(p);
+				GenericReferenceStub stub = stubBuilder.convert(p);
 				stubs.add(stub);
 			} catch (BuilderNotFoundException e) {
 				LOGGER.error("Exception while converting records to stubs", e);
@@ -104,8 +104,7 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 		}
 		
 		ReferenceResult result = new ReferenceResult();
-		result.getCountryOrLanguageOrModule().addAll(stubs);
-
+		result.getGenericCountryOrLanguageOrModule().addAll(stubs);
 		return result;
 	}
 

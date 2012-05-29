@@ -61,6 +61,7 @@ public class V4UpdatersMap {
 		updaterMap.put(getEntityName(ProductItem.class), new ProductItemUpdater());
 		updaterMap.put(getEntityName(VoucherProduct.class), new VoucherProductUpdater());
 		updaterMap.put(getEntityName(Voucher.class), new VoucherUpdater());
+		updaterMap.put(getEntityName(QueuedStatistic.class), new QueuedStatisticUpdater());
 	}
 
 	/**

@@ -5,7 +5,7 @@
 
 package ish.oncourse.webservices.reference.builders;
 
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
+import ish.oncourse.webservices.util.GenericReferenceStub;
 
 import org.apache.cayenne.Persistent;
 
@@ -14,5 +14,5 @@ import org.apache.cayenne.Persistent;
  * @author marek
  */
 public interface IReferenceStubBuilder<T extends Persistent> {
-	ReferenceStub convert(T record);
+	GenericReferenceStub convert(T record);
 }

@@ -5,6 +5,8 @@
 
 package ish.oncourse.webservices.reference.builders;
 
+import java.util.Date;
+
 import ish.oncourse.model.Qualification;
 import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
 
@@ -22,6 +24,12 @@ public final class QualificationStubBuilder implements IReferenceStubBuilder<Qua
 		stub.setAnzsco(record.getAnzsco());
 		stub.setAnzsic(record.getAnzsic());
 		stub.setAsco(record.getAsco());
+		if (record.getCreated() == null) {
+			record.setCreated(new Date());
+		}
+		if (record.getModified() == null) {
+			record.setModified(new Date());
+		}
 		stub.setCreated(record.getCreated());
 		stub.setFieldOfEducation(record.getFieldOfEducation());
 		stub.setFieldOfStudy(record.getFieldOfStudy());

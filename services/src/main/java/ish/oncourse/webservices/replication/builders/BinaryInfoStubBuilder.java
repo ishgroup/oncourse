@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.builders;
 
+import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.webservices.v4.stubs.replication.BinaryInfoStub;
 
@@ -16,7 +17,9 @@ public class BinaryInfoStubBuilder extends AbstractWillowStubBuilder<BinaryInfo,
 		stub.setPixelHeight(entity.getPixelHeight());
 		stub.setPixelWidth(entity.getPixelWidth());
 		stub.setReferenceNumber(entity.getReferenceNumber());
-		stub.setWebVisible(entity.getWebVisible().getDatabaseValue());
+		//this implementation is correct for backward compatibility in v5 stubs commented line should be used
+		stub.setWebVisible(AttachmentInfoVisibility.PUBLIC.equals(entity.getWebVisible()));
+		//stub.setWebVisible(entity.getWebVisible().getDatabaseValue());
 		return stub;
 	}
 	

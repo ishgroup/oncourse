@@ -5,6 +5,8 @@
 
 package ish.oncourse.webservices.reference.builders;
 
+import java.util.Date;
+
 import ish.oncourse.model.Module;
 import ish.oncourse.webservices.v4.stubs.reference.ModuleStub;
 
@@ -19,6 +21,12 @@ public final class ModuleStubBuilder implements IReferenceStubBuilder<Module> {
 		ModuleStub stub = new ModuleStub();
 
 		stub.setWillowId(record.getId());
+		if (record.getCreated() == null) {
+			record.setCreated(new Date());
+		}
+		if (record.getModified() == null) {
+			record.setModified(new Date());
+		}
 		stub.setCreated(record.getCreated());
 		stub.setDisciplineCode(record.getDisciplineCode());
 		stub.setFieldOfEducation(record.getFieldOfEducation());
