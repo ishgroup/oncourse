@@ -26,9 +26,9 @@
     <ramBufferSizeMB>32</ramBufferSizeMB>
     <!-- <maxMergeDocs>2147483647</maxMergeDocs> -->
     <maxFieldLength>10000</maxFieldLength>
-    <writeLockTimeout>1000</writeLockTimeout>
-    <commitLockTimeout>10000</commitLockTimeout>
-    <lockType>native</lockType>
+    <writeLockTimeout>60000</writeLockTimeout>
+    <commitLockTimeout>60000</commitLockTimeout>
+    <lockType>simple</lockType>
   </indexDefaults>
 
   <mainIndex>
@@ -36,7 +36,7 @@
     <useCompoundFile>false</useCompoundFile>
     <ramBufferSizeMB>32</ramBufferSizeMB>
     <mergeFactor>10</mergeFactor>
-    <unlockOnStartup>false</unlockOnStartup>
+    <unlockOnStartup>true</unlockOnStartup>
     <reopenReaders>true</reopenReaders>
     
     <deletionPolicy class="solr.SolrDeletionPolicy">
