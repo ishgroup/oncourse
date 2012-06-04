@@ -182,9 +182,10 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='PaymentInLine'"));
 		assertEquals("zero PaymentInLine in the queue.", 0, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Invoice'"));
-		assertEquals("one Invoice should be in the queue.", 1, actualData.getRowCount());
+		// invoice ant its lines should not go to the queue until one of its payments is in final state (this is needed for 2.1.x email notifications to work properly)
+		assertEquals("no Invoices should be in the queue.", 0, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='InvoiceLine'"));
-		assertEquals("two InvoiceLine in the queue.", 2, actualData.getRowCount());
+		assertEquals("no InvoiceLines in the queue.", 0, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Enrolment'"));
 		assertEquals("zero Enrolment in the queue.", 0, actualData.getRowCount());
 		actualData = dbUnitConnection.createQueryTable("QueuedRecord", String.format("select * from QueuedRecord where entityIdentifier='Contact'"));
