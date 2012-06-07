@@ -93,7 +93,7 @@
                 pixelHeight="1"
                 pixelWidth="1"
                 referenceNumber="1"
-                created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+                created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0" filePath="filePath"/>
 
     <ConcessionType id="1"
                     angelId="2"

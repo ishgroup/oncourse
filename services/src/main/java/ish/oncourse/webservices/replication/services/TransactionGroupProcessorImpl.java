@@ -1,28 +1,16 @@
 package ish.oncourse.webservices.replication.services;
 
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityClass;
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.toCollection;
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.toReplicatedRecord;
 import ish.common.types.EntityMapping;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedStatistic;
+import ish.oncourse.model.*;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.util.GenericDeletedStub;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v4.stubs.replication.BinaryDataStub;
+import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -35,9 +23,17 @@ import org.apache.cayenne.reflect.ClassDescriptor;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.*;
+
 /**
  * The core replication class responsible for replaying data changes.
- * 
+ *
  * @author anton
  */
 public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
@@ -59,8 +55,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * WillowUpdater
 	 */
 	private final IWillowUpdater willowUpdater;
+    private IFileStorageAssetService fileStorageAssetService;
 
-	/**
+    /**
 	 * Atomic context
 	 */
 	private ObjectContext atomicContext;
@@ -75,15 +72,20 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	private GenericTransactionGroup transactionGroup;
 
+
 	/**
 	 * Constructor
 	 */
 	@Inject
-	public TransactionGroupProcessorImpl(ICayenneService cayenneService, IWebSiteService webSiteService, IWillowUpdater willowUpdater) {
+	public TransactionGroupProcessorImpl(ICayenneService cayenneService,
+                                         IWebSiteService webSiteService,
+                                         IWillowUpdater willowUpdater,
+                                         IFileStorageAssetService fileStorageAssetService) {
 		super();
 		this.webSiteService = webSiteService;
 		this.willowUpdater = willowUpdater;
-		this.atomicContext = cayenneService.newNonReplicatingContext();
+        this.fileStorageAssetService = fileStorageAssetService;
+        this.atomicContext = cayenneService.newNonReplicatingContext();
 	}
 
 	/**
@@ -167,11 +169,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	/**
 	 * Updates replication status for the list of replicated records
-	 * 
+	 *
 	 * @param records
 	 *            replicated records
-	 * @param status
-	 *            replication status
 	 * @param message
 	 *            status message
 	 */
@@ -183,7 +183,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			}
 		}
 	}
-	
+
 	private void cleanupStatistic(GenericQueuedStatisticStub statisticStub) {
 		final SelectQuery q = new SelectQuery(QueuedStatistic.class);
 		q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
@@ -199,7 +199,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * Process on one single stub either Full or Delete. Creates correspondent
 	 * Cayenne objects with relationships if any, or delete cayenne objects
 	 * taking entity relations into account.
-	 * 
+	 *
 	 * @param currentStub
 	 *            replication stub.
 	 * @return cayenne object which was updated/deleted.
@@ -210,7 +210,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				currentStub.getAngelId(), currentStub.getWillowId()));
 
 		GenericReplicatedRecord replRecord = getReplicatedRecordForStub(currentStub);
-		
+
 		if (replRecord == null) {
 			throw new IllegalArgumentException(String.format("Replication result is not set for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),
 					currentStub.getAngelId(), currentStub.getWillowId()));
@@ -234,14 +234,14 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					return objectToUpdate;
 				default:
 					//we should not throw and exception because even if this occurs on next replication data will be correct.
-					String message = String.format("%s statistic objects found for entity:%s", objects.size(), 
+					String message = String.format("%s statistic objects found for entity:%s", objects.size(),
 						statisticStub.getStackedEntityIdentifier());
 		            logger.warn(message);
 		            return null;
 				}
 			}
 		}
-		
+
 		String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
 
 		if (currentStub.getAngelId() == null) {
@@ -252,12 +252,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 
 		List<Queueable> objects = objectsByAngelId(currentStub.getAngelId(), willowIdentifier);
-		
+
 		if (objects.isEmpty()) {
 			//we need this since a lot of old records from angel has angelId=null.
 			objects = objectsByWillowId(currentStub.getWillowId(), willowIdentifier);
 		}
-		
+
 		switch (objects.size()) {
 		case 0: {
 			if (currentStub instanceof GenericDeletedStub) {
@@ -265,13 +265,15 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				return null;
 			}
 			// creating new object
-			return createObject(currentStub);
+            Queueable objectToUpdate = createObject(currentStub);
+            updateFileStorage(currentStub, objectToUpdate);
+			return objectToUpdate;
 		}
 		case 1: {
 			Queueable objectToUpdate = objects.get(0);
 
 			if (currentStub.getWillowId() != null && !objectToUpdate.getId().equals(currentStub.getWillowId())) {
-                
+
                 String message = String.format("WillowId doesn't match for object: %s. Expected: %s, but got %s.", willowIdentifier,
 						objectToUpdate.getId(), currentStub.getWillowId());
                 replRecord.setFailedStatus();
@@ -279,14 +281,17 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
                 throw new IllegalArgumentException(message);
 			}
 
-			if (currentStub instanceof GenericDeletedStub) {
+            if (currentStub instanceof GenericDeletedStub) {
+
 				deleteObject(objectToUpdate);
+                updateFileStorage(currentStub, objectToUpdate);
 				return null;
 			} else {
 				willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
+                updateFileStorage(currentStub,objectToUpdate);
 				return objectToUpdate;
 			}
-		}
+        }
 		default:
 			// FAILURE angelId uniques
             String message = String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId());
@@ -298,8 +303,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	/**
 	 * Takes replicatedRecord object which corresponds to passed soap stub from prefilled replication result.
-	 * @param soapStub
-	 * @return
+	 * @param soapStub  - stub
+	 * @return - record for the stub
 	 */
 	private GenericReplicatedRecord getReplicatedRecordForStub(GenericReplicationStub soapStub) {
 		for (GenericReplicatedRecord r : this.result) {
@@ -317,7 +322,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
      * 1. finds all relationships for the objectToDelete which have DeleteRule.DENY
      * 2. gets all related objects for every relationship
      * 3. finds and proccid
-	 * 
+	 *
 	 * @param objectToDelete
 	 *            object to delete
 	 */
@@ -361,7 +366,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	/**
 	 * Creates replicable object
-	 * 
+	 *
 	 * @param currentStub
 	 *            soap stub
 	 * @return queueable object
@@ -393,7 +398,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	/**
 	 * Finds entity by angel id.
-	 * 
+	 *
 	 * @param angelId
 	 *            Angel identifier
 	 * @param entityName
@@ -407,7 +412,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		q.andQualifier(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
 		return atomicContext.performQuery(q);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private List<QueuedStatistic> statisticByEntity(final String entityName) {
 		SelectQuery q = new SelectQuery(QueuedStatistic.class);
@@ -415,12 +420,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 		return atomicContext.performQuery(q);
 	}
-	
+
 	/**
 	 * Finds entity by willow id.
 	 * @param willowId primary key in willow system
 	 * @param entityName Entity identifier
-	 * @return
+	 * @return - list Queueable's objects
 	 */
 	@SuppressWarnings({"unchecked" })
 	private List<Queueable> objectsByWillowId(Long willowId, String entityName) {
@@ -436,7 +441,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	/**
 	 * Takes stub from transaction group. Stub is removed when it found.
-	 * 
+	 *
 	 * @param angelId
 	 *            angel id
 	 * @param entityName
@@ -459,9 +464,31 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		return null;
 	}
 
+    /**
+     * The method puts or deletes content to/from file storage.
+     */
+    private void updateFileStorage(GenericReplicationStub stub, Queueable entity)
+    {
+        //the file storage processing
+        try {
+            if (entity instanceof  BinaryInfo && stub instanceof DeletedStub)
+            {
+                    fileStorageAssetService.delete((BinaryInfo)entity);
+            }
+            //todo the conde should be adjusted after we will stop saving BinaryData to the database.
+            else  if (entity instanceof BinaryData && stub instanceof BinaryDataStub)
+            {
+               BinaryDataStub binaryDataStub = (BinaryDataStub) stub;
+               fileStorageAssetService.put(binaryDataStub.getContent(), ((BinaryData) entity).getBinaryInfo());
+            }
+        } catch (Throwable e) {
+            logger.error(String.format("Cannot update file storage with the stub %s and entity %s.", stub, entity),e);
+        }
+    }
+
 	/**
 	 * Callback for updating relationships.
-	 * 
+	 *
 	 * @author anton
 	 */
 	class RelationShipCallbackImpl implements RelationShipCallback {

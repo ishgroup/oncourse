@@ -803,4 +803,8 @@
 		<addAutoIncrement tableName="QueuedStatistic" columnName="id" columnDataType="BIGINT"/>
 	</changeSet>
 
+    <changeSet id="62" author="andrey" context="production" runOnChange="true">
+        <sql>alter table BinaryInfo add column filePath VARCHAR(512)</sql>
+    </changeSet>
+
 </databaseChangeLog>

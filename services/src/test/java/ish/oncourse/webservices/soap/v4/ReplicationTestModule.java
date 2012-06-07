@@ -3,6 +3,7 @@ package ish.oncourse.webservices.soap.v4;
 import ish.oncourse.model.College;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -15,21 +16,10 @@ import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
-import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.replication.services.IWillowQueueService;
-import ish.oncourse.webservices.replication.services.InternalPaymentService;
-import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
-import ish.oncourse.webservices.replication.services.ReplicationServiceImpl;
-import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
-import ish.oncourse.webservices.replication.services.WillowQueueService;
+import ish.oncourse.webservices.replication.services.*;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
-
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.ScopeConstants;
-import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.ServiceBuilder;
-import org.apache.tapestry5.ioc.ServiceResources;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 
@@ -49,7 +39,7 @@ public class ReplicationTestModule {
 			@Override
 			public ITransactionGroupProcessor buildService(ServiceResources res) {
 				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService("WebSiteServiceOverride",
-						IWebSiteService.class), res.getService(IWillowUpdater.class));
+						IWebSiteService.class), res.getService(IWillowUpdater.class), res.getService(IFileStorageAssetService.class));
 			}
 		}).scope(ScopeConstants.PERTHREAD);
 

@@ -6,6 +6,8 @@ package ish.oncourse.webservices.services;
 
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
+import ish.oncourse.services.filestorage.TempFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
@@ -18,26 +20,12 @@ import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
-import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.replication.services.IWillowQueueService;
-import ish.oncourse.webservices.replication.services.InternalPaymentService;
-import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
-import ish.oncourse.webservices.replication.services.ReplicationServiceImpl;
-import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
-import ish.oncourse.webservices.replication.services.WillowQueueService;
+import ish.oncourse.webservices.replication.services.*;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
-import ish.oncourse.webservices.soap.v4.PaymentPortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
-
-import java.io.IOException;
-
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.ScopeConstants;
-import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.ServiceBuilder;
-import org.apache.tapestry5.ioc.ServiceResources;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.internal.OperationException;
@@ -46,6 +34,8 @@ import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.ExceptionReporter;
 import org.apache.tapestry5.services.RequestExceptionHandler;
 import org.apache.tapestry5.services.ResponseRenderer;
+
+import java.io.IOException;
 
 /**
  * @author marek
@@ -67,7 +57,7 @@ public class AppModule {
 			@Override
 			public ITransactionGroupProcessor buildService(ServiceResources res) {
 				return new TransactionGroupProcessorImpl(res.getService(ICayenneService.class), res.getService(WEB_SITE_SERVICE_OVERRIDE_NAME,
-						IWebSiteService.class), res.getService(IWillowUpdater.class));
+						IWebSiteService.class), res.getService(IWillowUpdater.class), res.getService(IFileStorageAssetService.class));
 			}
 		}).scope(ScopeConstants.PERTHREAD);
 
@@ -78,6 +68,11 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
+
+        /**
+         * TODO TempFileStorageAssetService should be replaced on FileStorageAssetService after we will stop saving BinaryData to the database.
+         */
+        binder.bind(IFileStorageAssetService.class, TempFileStorageAssetService.class).eagerLoad();
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
