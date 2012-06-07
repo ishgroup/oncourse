@@ -10,12 +10,14 @@ import ish.oncourse.services.tag.ITagService;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,6 +96,34 @@ public class SearchService implements ISearchService {
         return solrServer;
     }
 
+    /**
+     * TODO the workaround for problem #14293. we should delete it this after the problem will be resolved
+     * @param q
+     * @return
+     * @throws SolrServerException
+     */
+    private QueryResponse query(SolrQuery q) throws SolrServerException {
+        int count = 0;
+        SolrServerException exception = null;
+        while (count < 3) {
+            try {
+                return getSolrServer(SolrCore.courses).query(q);
+            } catch (SolrServerException e) {
+                exception = e;
+                count++;
+                logger.error(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(q),count), e);
+                #14293                try {
+                    Thread.currentThread().wait(100);
+                } catch (InterruptedException e1) {
+                }
+            }
+        }
+        if (exception!= null)
+            throw exception;
+        else
+            throw new IllegalArgumentException();
+    }
+
     public QueryResponse searchCourses(Map<SearchParam, Object> params, int start, int rows) {
 
         try {
@@ -102,14 +132,22 @@ public class SearchService implements ISearchService {
             SolrQuery q = new SolrQueryBuilder(this, params, collegeId, start, rows).create();
 
             if (logger.isDebugEnabled()) {
-                logger.debug(String.format("Solr query:%s", URLDecoder.decode(q.toString(), "UTF-8")));
+                logger.debug(String.format("Solr query:%s", solrQueryToString(q)));
             }
 
-            QueryResponse resp = getSolrServer(SolrCore.courses).query(q);
-            return resp;
+            return query(q);
 
         } catch (Exception e) {
             throw new SearchException("Unable to find courses.", e);
+        }
+    }
+
+    private String solrQueryToString(SolrQuery q) {
+        try {
+            return URLDecoder.decode(q.toString(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e);
+            return q.toString();
         }
     }
 
