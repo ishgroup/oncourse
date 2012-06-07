@@ -112,6 +112,8 @@ public class SearchService implements ISearchService {
                 exception = e;
                 count++;
                 logger.error(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(q),count), e);
+                if (e.getCause() != null)
+                    logger.error(String.format("Cause of parent Exception. Cannot execute query: %s with attempt %d",solrQueryToString(q),count), e.getCause());
                 try {
                     Thread.currentThread().wait(100);
                 } catch (InterruptedException e1) {
