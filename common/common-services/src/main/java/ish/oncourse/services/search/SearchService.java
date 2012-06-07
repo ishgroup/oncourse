@@ -111,9 +111,7 @@ public class SearchService implements ISearchService {
             } catch (SolrServerException e) {
                 exception = e;
                 count++;
-                logger.error(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(q),count), e);
-                if (e.getCause() != null)
-                    logger.error(String.format("Cause of parent Exception. Cannot execute query: %s with attempt %d",solrQueryToString(q),count), e.getCause());
+                handleException(null,e,q,count);
                 try {
                     Thread.currentThread().wait(100);
                 } catch (InterruptedException e1) {
@@ -124,6 +122,20 @@ public class SearchService implements ISearchService {
             throw exception;
         else
             throw new IllegalArgumentException();
+    }
+
+    /**
+     * The method logs stacktraces every exception from hierarchy. I have added it to see full stack trace of a exception.
+     */
+    private void handleException(Throwable parent, Throwable current, SolrQuery solrQuery, int count)
+    {
+        if (parent == null)
+            logger.error(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(solrQuery),count), current);
+        else
+            logger.error(String.format("Cause of parent %s. Cannot execute query: %s with attempt %d",parent.getClass().getName(),solrQueryToString(solrQuery),count), current);
+
+        if (current.getCause() != null)
+            handleException(current, current.getCause(), solrQuery,count);
     }
 
     public QueryResponse searchCourses(Map<SearchParam, Object> params, int start, int rows) {
