@@ -112,7 +112,7 @@ public class SearchService implements ISearchService {
                 exception = e;
                 count++;
                 logger.error(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(q),count), e);
-                #14293                try {
+                try {
                     Thread.currentThread().wait(100);
                 } catch (InterruptedException e1) {
                 }
