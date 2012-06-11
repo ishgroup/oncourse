@@ -1,6 +1,7 @@
 package ish.oncourse.ui.pages.internal;
 
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.node.IWebNodeService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
@@ -44,6 +45,11 @@ public class Page {
 	public String getBodyId() {
 		return (isHomePage() || this.node == null) ? "Main" : ("page" + this.node.getNodeNumber());
 	}
+
+    public WebNodeType getWebNodeType()
+    {
+        return node != null ? node.getWebNodeType() : null;
+    }
 
 	public String getBodyClass() {
 		return (isHomePage()) ? "main-page" : "internal-page";
