@@ -949,7 +949,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 			}
 		}
 	}
-		
+	
+	/**
+	 * Method which check current container definition for backward compatibility.
+	 * @param stub - container for test.
+	 * @param paramethers defined for this stub.
+	 */
 	private void testCollectorDefinition(final Object stub, final List<ReplicationStubFieldParamether> paramethers) {
 		assertNotNull(String.format("No paramether defined for stub %s", stub.getClass().getSimpleName()), paramethers);
 		final PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(stub);
@@ -1078,6 +1083,11 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		testStubDefinition(stub, paramethers);
 	}
 	
+	/**
+	 * Method which check current stub definition for backward compatibility.
+	 * @param stub for test.
+	 * @param paramethers defined for this stub.
+	 */
 	private void testStubDefinition(final Object stub, final List<ReplicationStubFieldParamether> paramethers) {
 		assertNotNull(String.format("No paramether defined for stub %s", stub.getClass().getSimpleName()), paramethers);
 		final PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(stub);
@@ -1147,16 +1157,43 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	 * @author vdavidovich
 	 */
 	private class ReplicationStubFieldParamether {
+		/**
+		 * Stub field name.
+		 */
 		private String name;
+		/**
+		 * Stub alias name.
+		 */
 		private String replacementName;
+		/**
+		 * Stub field type.
+		 */
 		@SuppressWarnings("rawtypes")
 		private Class type;
+		/**
+		 * Is required field flag.
+		 */
 		private boolean requerdedField;
+		/**
+		 * Internal property used to catch defined but not founded fields.
+		 */
 		private boolean found;
+		/**
+		 * Class field name (used to catch some transient methods associated with some field)
+		 */
 		private String dependentFieldName;
+		/**
+		 * Internal property used to hold class field property loaded by previous parameter.
+		 */
 		private Field dependentToField;
+		/**
+		 * Parameterized class type used when type = List.
+		 */
 		@SuppressWarnings("rawtypes")
 		private Class parameterizedType;
+		/**
+		 * Property define the list of class types available to store in this field. 
+		 */
 		@SuppressWarnings("rawtypes")
 		private List<Class> availableClasses;
 		
@@ -1196,7 +1233,10 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 			this(name, replacementName, type, requerdedField, dependentFieldName, null);
 		}
 
-		private ReplicationStubFieldParamether(String name, String replacementName, @SuppressWarnings("rawtypes") Class type, boolean requerdedField, 
+		/**
+		 * Full constructor.
+		 */
+		public ReplicationStubFieldParamether(String name, String replacementName, @SuppressWarnings("rawtypes") Class type, boolean requerdedField, 
 			String dependentFieldName, @SuppressWarnings("rawtypes") Class parameterizedType) {
 			super();
 			this.name = name;
