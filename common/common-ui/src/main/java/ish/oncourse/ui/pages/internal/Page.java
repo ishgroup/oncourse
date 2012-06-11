@@ -2,17 +2,15 @@ package ish.oncourse.ui.pages.internal;
 
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.node.IWebNodeService;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class Page {
 
@@ -33,7 +31,7 @@ public class Page {
 	@SetupRender
 	public boolean beforeRender() throws IOException {
 		node = webNodeService.getCurrentNode();
-		if (node == null) {
+		if (node == null || !node.isPublished()) {
 			logger.error("CurrentNode is null in " + request.getServerName());
 			
 			HttpServletResponse httpServletResponse = requestGlobals.getHTTPServletResponse();
