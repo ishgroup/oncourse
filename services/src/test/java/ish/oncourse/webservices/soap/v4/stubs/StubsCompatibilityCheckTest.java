@@ -8,6 +8,8 @@ import static junit.framework.Assert.assertFalse;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,13 +17,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.util.GenericDeletedStub;
+import ish.oncourse.webservices.util.GenericInstructionStub;
+import ish.oncourse.webservices.util.GenericParameterEntry;
+import ish.oncourse.webservices.util.GenericParametersMap;
+import ish.oncourse.webservices.util.GenericReferenceResult;
+import ish.oncourse.webservices.util.GenericReferenceStub;
+import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationRecords;
+import ish.oncourse.webservices.util.GenericReplicationResult;
 import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.v4.stubs.reference.*;
 import ish.oncourse.webservices.v4.stubs.replication.*;
 
 /**
@@ -38,8 +54,16 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	private Map<String,List<ReplicationStubFieldParamether>> stubsPropertyMap = new HashMap<String,List<ReplicationStubFieldParamether>>();
 	
 	private static String getStubName(Class<? extends GenericReplicationStub> clazz) {
+		return getName(clazz);
+	}
+	
+	private static String getName(@SuppressWarnings("rawtypes") Class clazz) {
 		int index = clazz.getName().lastIndexOf(".") + 1;
 		return clazz.getName().substring(index);
+	}
+	
+	private static String getReferenceStubName(Class<? extends GenericReferenceStub> clazz) {
+		return getName(clazz);
 	}
 	
 	@Override
@@ -364,180 +388,501 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		certificateOutcomeParamethers.add(new ReplicationStubFieldParamether("certificateId", Long.class));
 		certificateOutcomeParamethers.add(new ReplicationStubFieldParamether("outcomeId", Long.class));
 		stubsPropertyMap.put(getStubName(CertificateOutcomeStub.class), certificateOutcomeParamethers);
+		final List<ReplicationStubFieldParamether> deletedStubParamethers = fillDefaultReplicationStubFields();
+		stubsPropertyMap.put(getStubName(DeletedStub.class), deletedStubParamethers);
+		final List<ReplicationStubFieldParamether> hollowStubParamethers = fillDefaultReplicationStubFields();
+		stubsPropertyMap.put(getStubName(HollowStub.class), hollowStubParamethers);
+		final List<ReplicationStubFieldParamether> queuedStatisticParamethers = fillDefaultReplicationStubFields();
+		queuedStatisticParamethers.add(new ReplicationStubFieldParamether("stackedTransactionsCount", Long.class));
+		queuedStatisticParamethers.add(new ReplicationStubFieldParamether("stackedCount", Long.class));
+		queuedStatisticParamethers.add(new ReplicationStubFieldParamether("stackedEntityIdentifier", String.class));
+		queuedStatisticParamethers.add(new ReplicationStubFieldParamether("receivedTimestamp", Date.class));
+		queuedStatisticParamethers.add(new ReplicationStubFieldParamether("cleanupStub", Boolean.class));
+		stubsPropertyMap.put(getStubName(QueuedStatisticStub.class), queuedStatisticParamethers);
+		final List<ReplicationStubFieldParamether> replicationStubParamethers = fillDefaultReplicationStubFields();
+		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParamethers);
+		final List<ReplicationStubFieldParamether> referenceStubParamethers = fillDefaultReferenceStubFields();
+		stubsPropertyMap.put(getReferenceStubName(ReferenceStub.class), referenceStubParamethers);
+		final List<ReplicationStubFieldParamether> countryParamethers = fillDefaultReferenceStubFields();
+		countryParamethers.add(new ReplicationStubFieldParamether("asccssCode", String.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("created", Date.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("ishVersion", Long.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("isoCodeAlpha2", String.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("isoCodeAlpha3", String.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("isoCodeNumeric", Integer.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("modified", Date.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("name", String.class, false));
+		countryParamethers.add(new ReplicationStubFieldParamether("saccCode", Integer.class, false));
+		stubsPropertyMap.put(getReferenceStubName(CountryStub.class), countryParamethers);
+		final List<ReplicationStubFieldParamether> languageParamethers = fillDefaultReferenceStubFields();
+		languageParamethers.add(new ReplicationStubFieldParamether("absCode", String.class, false));
+		languageParamethers.add(new ReplicationStubFieldParamether("created", Date.class, false));
+		languageParamethers.add(new ReplicationStubFieldParamether("isActive", Boolean.class, false));
+		languageParamethers.add(new ReplicationStubFieldParamether("ishVersion", Long.class, false));
+		languageParamethers.add(new ReplicationStubFieldParamether("modified", Date.class, false));
+		languageParamethers.add(new ReplicationStubFieldParamether("name", String.class, false));
+		stubsPropertyMap.put(getReferenceStubName(LanguageStub.class), languageParamethers);
+		final List<ReplicationStubFieldParamether> moduleParamethers = fillDefaultReferenceStubFields();
+		moduleParamethers.add(new ReplicationStubFieldParamether("created", Date.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("disciplineCode", String.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("fieldOfEducation", String.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("isModule", Boolean.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("ishVersion", Long.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("modified", Date.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("nationalCode", String.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("title", String.class, false));
+		moduleParamethers.add(new ReplicationStubFieldParamether("trainingPackageId", Long.class, false));
+		stubsPropertyMap.put(getReferenceStubName(ModuleStub.class), moduleParamethers);
+		final List<ReplicationStubFieldParamether> qualificationParamethers = fillDefaultReferenceStubFields();
+		qualificationParamethers.add(new ReplicationStubFieldParamether("created", Date.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("anzsco", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("anzsic", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("asco", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("fieldOfEducation", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("fieldOfStudy", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("isAccreditedCourse", Boolean.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("ishVersion", Long.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("level", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("modified", Date.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("nationalCode", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("newApprentices", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("nominalHours", Float.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("reviewDate", Date.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("title", String.class, false));
+		qualificationParamethers.add(new ReplicationStubFieldParamether("trainingPackageId", Long.class, false));
+		stubsPropertyMap.put(getReferenceStubName(QualificationStub.class), qualificationParamethers);
+		final List<ReplicationStubFieldParamether> trainingPackageParamethers = fillDefaultReferenceStubFields();
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("copyrightCategory", String.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("copyrightContract", String.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("created", Date.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("developer", String.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("endorsementFrom", Date.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("endorsementTo", Date.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("ishVersion", Long.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("modified", Date.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("nationalISC", String.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("purchaseFrom", String.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("title", String.class, false));
+		trainingPackageParamethers.add(new ReplicationStubFieldParamether("type", String.class, false));
+		stubsPropertyMap.put(getReferenceStubName(TrainingPackageStub.class), trainingPackageParamethers);
+		final List<ReplicationStubFieldParamether> referenceResultParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		final ReplicationStubFieldParamether countryOrLanguageOrModule = new ReplicationStubFieldParamether("countryOrLanguageOrModule", true, false, 
+			ReferenceStub.class);
+		@SuppressWarnings("rawtypes")
+		final List<Class> countryOrLanguageOrModuleAvailableClasses = new ArrayList<Class>();
+		countryOrLanguageOrModuleAvailableClasses.add(QualificationStub.class);
+		countryOrLanguageOrModuleAvailableClasses.add(TrainingPackageStub.class);
+		countryOrLanguageOrModuleAvailableClasses.add(ModuleStub.class);
+		countryOrLanguageOrModuleAvailableClasses.add(LanguageStub.class);
+		countryOrLanguageOrModuleAvailableClasses.add(CountryStub.class);
+		countryOrLanguageOrModule.getAvailableClasses().addAll(countryOrLanguageOrModuleAvailableClasses);
+		referenceResultParamethers.add(countryOrLanguageOrModule);
+		final ReplicationStubFieldParamether genericCountryOrLanguageOrModule = new ReplicationStubFieldParamether("genericCountryOrLanguageOrModule", 
+			"countryOrLanguageOrModule", List.class, false, null, ReferenceStub.class);
+		genericCountryOrLanguageOrModule.getAvailableClasses().addAll(countryOrLanguageOrModuleAvailableClasses);
+		referenceResultParamethers.add(genericCountryOrLanguageOrModule);
+		stubsPropertyMap.put(getName(ReferenceResult.class), referenceResultParamethers);
+		final List<ReplicationStubFieldParamether> replicationResultParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		replicationResultParamethers.add(new ReplicationStubFieldParamether("replicatedRecord", true, ReplicatedRecord.class));
+		replicationResultParamethers.add(new ReplicationStubFieldParamether("genericReplicatedRecord", "replicatedRecord", List.class, true, null, 
+			ReplicatedRecord.class));
+		stubsPropertyMap.put(getName(ReplicationResult.class), replicationResultParamethers);
+		final List<ReplicationStubFieldParamether> replicationRecordsParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		replicationRecordsParamethers.add(new ReplicationStubFieldParamether("groups", true, TransactionGroup.class));
+		replicationRecordsParamethers.add(new ReplicationStubFieldParamether("genericGroups", "groups", List.class, true, null, 
+			TransactionGroup.class));
+		stubsPropertyMap.put(getName(ReplicationRecords.class), replicationRecordsParamethers);
+		final List<ReplicationStubFieldParamether> replicatedRecordParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("status", Status.class));
+		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("message", String.class));
+		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("stub", GenericReplicationStub.class));
+		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("failedStatus", boolean.class, "status"));
+		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("successStatus", boolean.class, "status"));
+		stubsPropertyMap.put(getName(ReplicatedRecord.class), replicatedRecordParamethers);
+		final List<ReplicationStubFieldParamether> parameterEntryParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		parameterEntryParamethers.add(new ReplicationStubFieldParamether("name", String.class));
+		parameterEntryParamethers.add(new ReplicationStubFieldParamether("value", String.class));
+		stubsPropertyMap.put(getName(ParameterEntry.class), parameterEntryParamethers);
+		final List<ReplicationStubFieldParamether> parametersMapParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		parametersMapParamethers.add(new ReplicationStubFieldParamether("entry", true, false, ParameterEntry.class));
+		parametersMapParamethers.add(new ReplicationStubFieldParamether("genericEntry", "entry", List.class, false, null, ParameterEntry.class));
+		stubsPropertyMap.put(getName(ParametersMap.class), parametersMapParamethers);
+		final List<ReplicationStubFieldParamether> instructionStubParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		instructionStubParamethers.add(new ReplicationStubFieldParamether("id", Long.class));
+		instructionStubParamethers.add(new ReplicationStubFieldParamether("message", String.class));
+		instructionStubParamethers.add(new ReplicationStubFieldParamether("parameters", ParametersMap.class, false));
+		stubsPropertyMap.put(getName(InstructionStub.class), instructionStubParamethers);
+		final List<ReplicationStubFieldParamether> instructionsResponseParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		instructionsResponseParamethers.add(new ReplicationStubFieldParamether("_return", "return", List.class, false, null, InstructionStub.class));
+		stubsPropertyMap.put(getName(GetInstructionsResponse.class), instructionsResponseParamethers);
+		final List<ReplicationStubFieldParamether> faultReasonParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		faultReasonParamethers.add(new ReplicationStubFieldParamether("detailMessage", String.class, false));
+		faultReasonParamethers.add(new ReplicationStubFieldParamether("faultCode", Integer.class, false));		
+		stubsPropertyMap.put(getName(FaultReason.class), faultReasonParamethers);
+		final List<ReplicationStubFieldParamether> transactionGroupParamethers = new ArrayList<ReplicationStubFieldParamether>();
+		transactionGroupParamethers.add(new ReplicationStubFieldParamether("transactionKeys", List.class));
+		final ReplicationStubFieldParamether attendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParamether(
+			"attendanceOrBinaryDataOrBinaryInfo", List.class, false);
+		@SuppressWarnings("rawtypes")
+		final List<Class> attendanceOrBinaryDataOrBinaryInfoAvailableClasses = new ArrayList<Class>();
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CertificateStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SystemUserStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ProductStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(InvoiceLineDiscountStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SessionStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ContactRelationTypeStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PaymentOutStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(BinaryDataStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountMembershipStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ContactStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(WaitingListStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TagRelationStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherProductStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseModuleStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SiteStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MessagePersonStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MessageTemplateStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MembershipProductStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(AttendanceStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(BinaryInfoStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(BinaryInfoRelationStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PaymentInLineStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountMembershipRelationTypeStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ConcessionTypeStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(InvoiceLineStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MembershipStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TagRequirementStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TagStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PaymentInStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ProductItemStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(InvoiceStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(StudentStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(EnrolmentStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SessionTutorStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(MessageStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(QueuedStatisticStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(PreferenceStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DeletedStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(WaitingListSiteStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(OutcomeStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(ContactRelationStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TutorStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountConcessionTypeStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(StudentConcessionStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseClassStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(RoomStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CertificateOutcomeStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseClassTutorStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountCourseClassStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TutorAttendanceStub.class);
+		attendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
+		transactionGroupParamethers.add(attendanceOrBinaryDataOrBinaryInfo);
+		
+		final ReplicationStubFieldParamether genericAttendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParamether(
+			"genericAttendanceOrBinaryDataOrBinaryInfo", "attendanceOrBinaryDataOrBinaryInfo", List.class, false, null);
+		genericAttendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
+		transactionGroupParamethers.add(genericAttendanceOrBinaryDataOrBinaryInfo);
+		stubsPropertyMap.put(getName(TransactionGroup.class), transactionGroupParamethers);
 	}
 	
 	@Test
     public void testAttendanceStub() {
 		final GenericReplicationStub stub = new AttendanceStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testBinaryDataStub() {
 		final GenericReplicationStub stub = new BinaryDataStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testBinaryInfoStub() {
 		final GenericReplicationStub stub = new BinaryInfoStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testConcessionTypeStub() {
 		final GenericReplicationStub stub = new ConcessionTypeStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testContactStub() {
 		final GenericReplicationStub stub = new ContactStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testCourseClassStub() {
 		final GenericReplicationStub stub = new CourseClassStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testCourseStub() {
 		final GenericReplicationStub stub = new CourseStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testDiscountStub() {
 		final GenericReplicationStub stub = new DiscountStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testEnrolmentStub() {
 		final GenericReplicationStub stub = new EnrolmentStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testInvoiceLineDiscountStub() {
 		final GenericReplicationStub stub = new InvoiceLineDiscountStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testInvoiceLineStub() {
 		final GenericReplicationStub stub = new InvoiceLineStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testInvoiceStub() {
 		final GenericReplicationStub stub = new InvoiceStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testMessagePersonStub() {
 		final GenericReplicationStub stub = new MessagePersonStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testOutcomeStub() {
 		final GenericReplicationStub stub = new OutcomeStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testPaymentInLineStub() {
 		final GenericReplicationStub stub = new PaymentInLineStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testPaymentInStub() {
 		final GenericReplicationStub stub = new PaymentInStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testPaymentOutStub() {
 		final GenericReplicationStub stub = new PaymentOutStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testPreferenceStub() {
 		final GenericReplicationStub stub = new PreferenceStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testRoomStub() {
 		final GenericReplicationStub stub = new RoomStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testSiteStub() {
 		final GenericReplicationStub stub = new SiteStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testStudentConcessionStub() {
 		final GenericReplicationStub stub = new StudentConcessionStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testStudentStub() {
 		final GenericReplicationStub stub = new StudentStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testSystemUserStub() {
 		final GenericReplicationStub stub = new SystemUserStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testTagRelationStub() {
 		final GenericReplicationStub stub = new TagRelationStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testCourseClassTutorStub() {
 		final GenericReplicationStub stub = new CourseClassTutorStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testTutorStub() {
 		final GenericReplicationStub stub = new TutorStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testWaitingListStub() {
 		final GenericReplicationStub stub = new WaitingListStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testCertificateStub() {
 		final GenericReplicationStub stub = new CertificateStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testCertificateOutcomeStub() {
 		final GenericReplicationStub stub = new CertificateOutcomeStub();
-		testStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testTransactionGroup() {
+		final GenericTransactionGroup group = new TransactionGroup();
+		testCollectorDefinition(group, stubsPropertyMap.get(getName(group.getClass())));
+	}
+	
+	@Test
+	public void testFaultReason() {
+		final FaultReason reason = new FaultReason();
+		testStubDefinition(reason, stubsPropertyMap.get(getName(reason.getClass())));
+	}
+	
+	@Test
+	public void testDeletedStub() {
+		final GenericReplicationStub stub = new DeletedStub();
+		assertTrue("Delete stub shoul implement GenericDeletedStub interface.", (stub instanceof GenericDeletedStub));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testHollowStub() {
+		final GenericReplicationStub stub = new HollowStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testGetInstructionsResponse() {
+		final GetInstructionsResponse response = new GetInstructionsResponse();
+		testCollectorDefinition(response, stubsPropertyMap.get(getName(response.getClass())));
+	}
+	
+	@Test
+	public void testInstructionStub() {
+		final GenericInstructionStub stub = new InstructionStub();
+		testStubDefinition(stub, stubsPropertyMap.get(getName(stub.getClass())));
+	}
+	
+	@Test
+	public void testQueuedStatisticStub() {
+		final GenericReplicationStub stub = new QueuedStatisticStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testParametersMap() {
+		final GenericParametersMap result = new ParametersMap();
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+	}
+	
+	@Test
+	public void testParameterEntry() {
+		final GenericParameterEntry result = new ParameterEntry();
+		testStubDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+	}
+	
+	@Test
+	public void testReplicatedRecord() {
+		final GenericReplicatedRecord result = new ReplicatedRecord();
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+	}
+	
+	@Test
+	public void testReplicationRecords() {
+		final GenericReplicationRecords result = new ReplicationRecords();
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+	}
+	
+	@Test
+	public void testReplicationResult() {
+		final GenericReplicationResult result = new ReplicationResult();
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+	}
+	
+	@Test
+	public void testReplicationStub() {
+		final GenericReplicationStub stub = new ReplicationStub() {};
+		assertTrue("ReplicationStub should have abstract modifier", Modifier.isAbstract(ReplicationStub.class.getModifiers()));
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(ReplicationStub.class)));
+	}
+	
+	@Test
+	public void testCountryStub() {
+		final GenericReferenceStub stub = new CountryStub() ;
+		testReferenceStubDefinition(stub, stubsPropertyMap.get(getReferenceStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testLanguageStub() {
+		final GenericReferenceStub stub = new LanguageStub() ;
+		testReferenceStubDefinition(stub, stubsPropertyMap.get(getReferenceStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testModuleStub() {
+		final GenericReferenceStub stub = new ModuleStub() ;
+		testReferenceStubDefinition(stub, stubsPropertyMap.get(getReferenceStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testQualificationStub() {
+		final GenericReferenceStub stub = new QualificationStub() ;
+		testReferenceStubDefinition(stub, stubsPropertyMap.get(getReferenceStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testReferenceResult() {
+		final GenericReferenceResult result = new ReferenceResult();
+		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
+	}
+	
+	@Test
+	public void testReferenceStub() {
+		final GenericReferenceStub stub = new ReferenceStub() {};
+		assertTrue("ReferenceStub should have abstract modifier", Modifier.isAbstract(ReferenceStub.class.getModifiers()));
+		testReferenceStubDefinition(stub, stubsPropertyMap.get(getReferenceStubName(ReferenceStub.class)));
+	}
+	
+	@Test
+	public void testTrainingPackageStub() {
+		final GenericReferenceStub stub = new TrainingPackageStub() ;
+		testReferenceStubDefinition(stub, stubsPropertyMap.get(getReferenceStubName(stub.getClass())));
 	}
 	
 	private List<ReplicationStubFieldParamether> fillDefaultReplicationStubFields() {
@@ -550,10 +895,16 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		return paramethers;
 	}
 	
+	private List<ReplicationStubFieldParamether> fillDefaultReferenceStubFields() {
+		final List<ReplicationStubFieldParamether> paramethers = new ArrayList<ReplicationStubFieldParamether>();
+		paramethers.add(new ReplicationStubFieldParamether("willowId", Long.class, false));
+		return paramethers;
+	}
+	
 	private ReplicationStubFieldParamether getReplicationParametherForReplacement(final List<ReplicationStubFieldParamether> paramethers, 
 		final String replacementName) {
 		for (final ReplicationStubFieldParamether paramether : paramethers) {
-			if (!paramether.isEmptyReplacement() && paramether.getReplacementName().equals(replacementName)) {
+			if (!paramether.isEmptyReplacement() && paramether.getReplacementName().equalsIgnoreCase(replacementName)) {
 				paramether.setFound(true);
 				return paramether;
 			}
@@ -561,7 +912,173 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		return null;
 	}
 	
-	private void testStubDefinition(final GenericReplicationStub stub, final List<ReplicationStubFieldParamether> paramethers) {
+	private ReplicationStubFieldParamether getReplicationParametherForDependendFields(final List<ReplicationStubFieldParamether> paramethers, 
+		final String descriptorName) {
+		for (final ReplicationStubFieldParamether paramether : paramethers) {
+			if (StringUtils.trimToNull(paramether.getDependentFieldName()) != null && paramether.getName().equals(descriptorName)) {
+				assertNotNull(String.format("Dependent field with name %s not exist for paramather %s ", paramether.getDependentFieldName(), 
+					paramether.getName()), paramether.getDependentToField());
+				return paramether;
+			}
+		}
+		return null;
+	}
+	
+	private void fillFieldDependency(final List<ReplicationStubFieldParamether> paramethers, final Object stub) {
+		for (final PropertyDescriptor descriptor : PropertyUtils.getPropertyDescriptors(stub)) {
+			if ("class".equals(descriptor.getName())) {
+				continue;
+			}
+			Field field = ReflectionUtils.findField(stub.getClass(), descriptor.getName());
+			if (field == null) {
+				ReplicationStubFieldParamether paramether = getReplicationParametherForReplacement(paramethers, descriptor.getName());
+				if (paramether != null) {
+					field = ReflectionUtils.findField(stub.getClass(), paramether.getName());
+					assertNotNull(String.format("No field could be loaded for descriptor with name %s for stub %s with alias %s", descriptor.getName(), 
+						stub.getClass().getName(), paramether.getName()), field);
+				}
+			}
+			if (field != null) {
+				for (final ReplicationStubFieldParamether paramether : paramethers) {
+					//fill the dependent fields if required
+					if (StringUtils.trimToNull(paramether.getDependentFieldName()) != null && paramether.getDependentToField() == null 
+						&& field.getName().equals(paramether.getDependentFieldName())) {
+						paramether.setDependentToField(field);
+					}
+				}
+			}
+		}
+	}
+		
+	private void testCollectorDefinition(final Object stub, final List<ReplicationStubFieldParamether> paramethers) {
+		assertNotNull(String.format("No paramether defined for stub %s", stub.getClass().getSimpleName()), paramethers);
+		final PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(stub);
+		fillFieldDependency(paramethers, stub);
+		for (final PropertyDescriptor descriptor : descriptors) {
+			if ("class".equals(descriptor.getName())) {
+				continue;
+			}
+			Field field = ReflectionUtils.findField(stub.getClass(), descriptor.getName());
+			boolean useReplacement = false;
+			if (field == null) {
+				ReplicationStubFieldParamether paramether = getReplicationParametherForReplacement(paramethers, descriptor.getName());
+				if (paramether != null) {
+					useReplacement = true;
+					field = ReflectionUtils.findField(stub.getClass(), paramether.getName());
+					assertNotNull(String.format("No field could be loaded for descriptor with name %s for stub %s with alias %s", descriptor.getName(), 
+						stub.getClass().getName(), paramether.getName()), field);
+				} else if (descriptor.getName().startsWith("generic")) {
+					paramether = getReplicationParametherForReplacement(paramethers, descriptor.getName().replaceFirst("generic", StringUtils.EMPTY));
+					if (paramether != null) {
+						field = ReflectionUtils.findField(stub.getClass(), paramether.getReplacementName());
+						assertNotNull(String.format("No field could be loaded for generic descriptor with name %s for stub %s with alias %s", 
+							descriptor.getName(), stub.getClass().getName(), paramether.getName()), field);
+					}
+				} else {
+					paramether = getReplicationParametherForDependendFields(paramethers, descriptor.getName());
+					if (paramether != null) {
+						field = paramether.getDependentToField();
+					}
+				}
+			}
+			assertNotNull(String.format("No field could be loaded for descriptor with name %s for stub %s possible alias used", descriptor.getName(), 
+				stub.getClass().getName()), field);
+			final XmlElement elementAnotation = field.getAnnotation(XmlElement.class);
+			final boolean requiredField = elementAnotation != null ? elementAnotation.required() : false;
+			final XmlElements availableElementsAnotation = field.getAnnotation(XmlElements.class);
+			@SuppressWarnings("rawtypes")
+			final List<Class> availableElements = new ArrayList<Class>();
+			if (availableElementsAnotation != null) {
+				for (final XmlElement element : availableElementsAnotation.value()) {
+					availableElements.add(element.type());
+				}
+			}
+			boolean founded = false;
+			for (final ReplicationStubFieldParamether paramether : paramethers) {
+				if (descriptor.getName().equals(useReplacement? paramether.getReplacementName() : paramether.getName())) {
+					founded = true;
+					if (descriptor.getName().startsWith("generic")) {
+						useReplacement = true;
+					}
+					assertFalse(String.format("Not used alias defined for paramether with name %s and alias %s", paramether.getName(), 
+						paramether.getReplacementName()), !useReplacement && !paramether.isEmptyReplacement());
+					paramether.setFound(founded);
+					for (@SuppressWarnings("rawtypes") final Class availableElement : availableElements) {
+						assertTrue(String.format("%s type should be  available for %s field but not defined", availableElement, paramether.getName()), 
+							paramether.getAvailableClasses().contains(availableElement));
+					}
+					//we should check this descriptor
+					Method readMethod = descriptor.getReadMethod();
+					if (readMethod == null) {
+						if (paramether.getType().equals(Boolean.class)) {
+							String readMethodName = "is" + WordUtils.capitalize(descriptor.getName());
+							readMethod = ReflectionUtils.findMethod(stub.getClass(), readMethodName);
+						}
+					}
+					assertNotNull(String.format("There are no getter for %s field found on %s stub", descriptor.getName(), stub.getClass().getName()), readMethod);
+					assertEquals(String.format("test property - %s return type incompatible with defined type %s", descriptor.getName(), 
+						paramether.getType()), paramether.getType(), readMethod.getReturnType());
+					if (paramether.isListWithDefinedParamethers()) {
+						ParameterizedType entityType = (ParameterizedType) field.getGenericType();
+						@SuppressWarnings("rawtypes")
+						Class clazz = (Class) entityType.getActualTypeArguments()[0];
+						assertEquals(String.format("Incorrect definition of generics for %s paramether. ", paramether.getName()), 
+							paramether.getParameterizedType(), clazz);
+					}
+					if (paramether.isList()) {
+						assertEquals(String.format("test property - %s should have no setter", descriptor.getName()), null, 
+							descriptor.getWriteMethod());
+					} else {
+						Method writeMethod = descriptor.getWriteMethod();
+						boolean withParam = true;
+						if (writeMethod == null) {
+							if (paramether.getDependentToField() != null) {
+								withParam = false;
+								String writeMethodName = "set" + WordUtils.capitalize(descriptor.getName());
+								writeMethod = ReflectionUtils.findMethod(stub.getClass(), writeMethodName);
+							}
+						}
+						if (writeMethod != null) {
+							if (withParam) {
+							assertEquals(String.format("test property - %s should have one paramether for setter", descriptor.getName()), 1, 
+									writeMethod.getParameterTypes().length);
+							} else {
+								assertEquals(String.format("test property - %s should have no paramether for setter", descriptor.getName()), 0, 
+									writeMethod.getParameterTypes().length);
+							}
+						}
+					}
+					assertTrue(String.format("Method modifiers should be public for property %s", descriptor.getName()), 
+							(readMethod.getModifiers() == 1/*public*/ || readMethod.getModifiers() == 17 || 
+								readMethod.getModifiers() == 1025/*public final*/ || readMethod.getModifiers() == 4161/*public abstract with override*/));
+					assertTrue(String.format("Required anotation should be equal to defined for property %s", descriptor.getName()), 
+						paramether.isRequerdedField() == requiredField);
+				}
+			}
+			if (requiredField) {
+				assertTrue(String.format("Required field descriptor not defined in property map %s", descriptor.getName()), founded);
+			} else {
+				assertTrue(String.format("Advise field descriptor not defined in property map %s", descriptor.getName()), founded);
+			}
+		}
+		for (final ReplicationStubFieldParamether paramether : paramethers) {
+			assertTrue(String.format("Stub %s have not defined field %s", stub.getClass().getName(), paramether.getName()), paramether.isFound());
+			if (StringUtils.trimToNull(paramether.getDependentFieldName()) != null) {
+				assertNotNull(String.format("Dependent field with name %s should be loaded.", paramether.getDependentFieldName()), 
+					paramether.getDependentToField());
+			}
+		}
+	}
+	
+	private void testReferenceStubDefinition(final GenericReferenceStub stub, final List<ReplicationStubFieldParamether> paramethers) {
+		testStubDefinition(stub, paramethers);
+	}
+	
+	private void testReplicationStubDefinition(final GenericReplicationStub stub, final List<ReplicationStubFieldParamether> paramethers) {
+		testStubDefinition(stub, paramethers);
+	}
+	
+	private void testStubDefinition(final Object stub, final List<ReplicationStubFieldParamether> paramethers) {
 		assertNotNull(String.format("No paramether defined for stub %s", stub.getClass().getSimpleName()), paramethers);
 		final PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(stub);
 		for (final PropertyDescriptor descriptor : descriptors) {
@@ -582,7 +1099,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 			assertNotNull(String.format("No field could be loaded for descriptor with name %s for stub %s possible alias used", descriptor.getName(), 
 				stub.getClass().getName()),field);
 			final XmlElement elementAnotation = field.getAnnotation(XmlElement.class);
-			final boolean requiredField = elementAnotation.required();
+			final boolean requiredField = elementAnotation != null ? elementAnotation.required() : false;;
 			boolean founded = false;
 			for (final ReplicationStubFieldParamether paramether : paramethers) {
 				if (descriptor.getName().equals(useReplacement? paramether.getReplacementName() : paramether.getName())) {
@@ -615,6 +1132,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 			}
 			if (requiredField) {
 				assertTrue(String.format("Required field descriptor not defined in property map %s", descriptor.getName()), founded);
+			} else {
+				assertTrue(String.format("Advise field descriptor not defined in property map %s", descriptor.getName()), founded);
 			}
 		}
 		for (final ReplicationStubFieldParamether paramether : paramethers) {
@@ -634,25 +1153,58 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		private Class type;
 		private boolean requerdedField;
 		private boolean found;
+		private String dependentFieldName;
+		private Field dependentToField;
+		@SuppressWarnings("rawtypes")
+		private Class parameterizedType;
+		@SuppressWarnings("rawtypes")
+		private List<Class> availableClasses;
+		
+		private ReplicationStubFieldParamether(String name, boolean listUsed, @SuppressWarnings("rawtypes") Class parameterizedType) {
+			this(name, null, List.class, true, null, parameterizedType);
+			if (!listUsed) {
+				throw new IllegalArgumentException();
+			}
+		}
 		
 		private ReplicationStubFieldParamether(String name, @SuppressWarnings("rawtypes") Class type) {
 			this(name, null, type);
 		}
 		
+		private ReplicationStubFieldParamether(String name, boolean listUsed, boolean requerdedField, 
+			@SuppressWarnings("rawtypes") Class parameterizedType) {
+			this(name, null, List.class, requerdedField, null, parameterizedType);
+			if (!listUsed) {
+				throw new IllegalArgumentException();
+			}
+		}
+		
 		private ReplicationStubFieldParamether(String name, @SuppressWarnings("rawtypes") Class type, boolean requerdedField) {
-			this(name, null, type, requerdedField);
+			this(name, null, type, requerdedField, null);
 		}
 		
 		private ReplicationStubFieldParamether(String name, String replacementName, @SuppressWarnings("rawtypes") Class type) {
-			this(name, replacementName, type, true);
+			this(name, replacementName, type, true, null);
 		}
 		
-		private ReplicationStubFieldParamether(String name, String replacementName, @SuppressWarnings("rawtypes") Class type, boolean requerdedField) {
+		private ReplicationStubFieldParamether(String name, @SuppressWarnings("rawtypes") Class type, String dependentFieldName) {
+			this(name, null, type, true, dependentFieldName);
+		}
+		
+		private ReplicationStubFieldParamether(String name, String replacementName, @SuppressWarnings("rawtypes") Class type, boolean requerdedField, 
+				String dependentFieldName) {
+			this(name, replacementName, type, requerdedField, dependentFieldName, null);
+		}
+
+		private ReplicationStubFieldParamether(String name, String replacementName, @SuppressWarnings("rawtypes") Class type, boolean requerdedField, 
+			String dependentFieldName, @SuppressWarnings("rawtypes") Class parameterizedType) {
 			super();
 			this.name = name;
 			this.replacementName = replacementName;
 			this.type = type;
 			this.requerdedField = requerdedField;
+			this.dependentFieldName = dependentFieldName;
+			this.parameterizedType = parameterizedType;
 		}
 
 		public String getName() {
@@ -662,6 +1214,14 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		@SuppressWarnings("rawtypes")
 		public Class getType() {
 			return type;
+		}
+		
+		public boolean isList() {
+			return List.class.equals(type);
+		}
+		
+		public boolean isListWithDefinedParamethers() {
+			return isList() && getParameterizedType() != null;
 		}
 		
 		public boolean isRequerdedField() {
@@ -682,6 +1242,31 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		
 		public boolean isEmptyReplacement() {
 			return replacementName == null;
+		}
+
+		public Field getDependentToField() {
+			return dependentToField;
+		}
+
+		public void setDependentToField(Field dependentToField) {
+			this.dependentToField = dependentToField;
+		}
+
+		public String getDependentFieldName() {
+			return dependentFieldName;
+		}
+
+		@SuppressWarnings("rawtypes")
+		public Class getParameterizedType() {
+			return parameterizedType;
+		}
+
+		@SuppressWarnings("rawtypes")
+		public List<Class> getAvailableClasses() {
+			if (availableClasses == null) {
+				availableClasses = new ArrayList<Class>();
+			}
+			return availableClasses;
 		}
 	}
 
