@@ -478,7 +478,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		final List<ReplicationStubFieldParamether> replicatedRecordParamethers = new ArrayList<ReplicationStubFieldParamether>();
 		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("status", Status.class));
 		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("message", String.class));
-		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("stub", GenericReplicationStub.class));
+		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("stub", HollowStub.class));
+		//TODO: check what depend to this field definition and mvn and IDE get different result
 		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("failedStatus", boolean.class, "status"));
 		replicatedRecordParamethers.add(new ReplicationStubFieldParamether("successStatus", boolean.class, "status"));
 		stubsPropertyMap.put(getName(ReplicatedRecord.class), replicatedRecordParamethers);
@@ -800,7 +801,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		testStubDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
 	}
 	
-	//@Test
+	@Test
 	public void testReplicatedRecord() {
 		final GenericReplicatedRecord result = new ReplicatedRecord();
 		testCollectorDefinition(result, stubsPropertyMap.get(getName(result.getClass())));
