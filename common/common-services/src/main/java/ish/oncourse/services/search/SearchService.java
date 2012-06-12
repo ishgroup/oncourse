@@ -113,7 +113,7 @@ public class SearchService implements ISearchService {
                 count++;
                 handleException(null,e,q,count);
                 try {
-                    Thread.currentThread().wait(100);
+                    Thread.sleep(100);
                 } catch (InterruptedException e1) {
                 }
             }
