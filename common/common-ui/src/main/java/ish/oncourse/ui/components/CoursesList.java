@@ -20,6 +20,7 @@ public class CoursesList {
 	@Parameter
 	private Integer itemIndex;
 
+	@SuppressWarnings("all")
 	@Parameter
 	@Property
 	private List<Course> courses;
@@ -28,6 +29,7 @@ public class CoursesList {
 	@Property
 	private String sitesParameter;
 
+	@SuppressWarnings("all")
 	@Property
 	private Course course;
 

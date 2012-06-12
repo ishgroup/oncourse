@@ -2,21 +2,25 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Module;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
-
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.EventConstants;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class CourseItem {
@@ -38,6 +42,11 @@ public class CourseItem {
 	@Parameter
 	@Property
 	private boolean linkToLocationsMap;
+	
+	@SuppressWarnings("all")
+	@Parameter
+	@Property
+	private boolean expandedModules;
 
 	@Inject
 	private IPlainTextExtractor extractor;
@@ -47,6 +56,45 @@ public class CourseItem {
 	
 	@Inject
 	private PreferenceController preferenceController;
+	
+	@Property
+	@InjectComponent
+	private Zone modulesZone;
+	
+	@SuppressWarnings("all")
+	@Property
+	private Module module;
+		
+	@Inject
+	private ICourseService courseService;
+		
+	public String getZoneId() {
+		return "modulesZone" + getCurrentCourseId();
+	}
+	
+	public Long getCurrentCourseId() {
+		return takeCourse().getId();
+	}
+	
+	@OnEvent(value = EventConstants.ACTION, component = "expandModules")
+	public final Object expandModules(final Long currentCourseId) {
+		return changeModules(currentCourseId, true);
+	}
+	
+	private Object changeModules(final Long id, final boolean expanded) {
+		expandedModules = expanded;
+		course = courseService.loadByIds(id).get(0);
+		return modulesZone.getBody();
+	}
+		
+	@OnEvent(value = EventConstants.ACTION, component = "collapsModules")
+	public final Object collapsModules(final Long currentCourseId) {
+		return changeModules(currentCourseId, false);
+	}
+	
+	public List<Module> getCourseModules() {
+		return takeCourse().getModules();
+	}
 
 	public String getAvailMsg() {
 		int numberOfClasses = course.getEnrollableClasses().size();
@@ -70,11 +118,23 @@ public class CourseItem {
 	protected Course takeCourse() {
 		return course;
 	}
+	
+	public boolean isCourseContainQualification() {
+		return takeCourse().getQualification() != null && !takeCourse().getModules().isEmpty();
+	}
+	
+	public boolean isCourseContainsOnlyModules() {
+		return takeCourse().getQualification() == null && !takeCourse().getModules().isEmpty();
+	}
+	
+	public boolean isContainsQualificationOrModules() {
+		return takeCourse().getQualification() != null || !takeCourse().getModules().isEmpty();
+	}
 
 	public String getCourseDetail() {
 		String detail = textileConverter.convertCustomTextile(takeCourse().getDetail(), new ValidationErrors());
 		if (detail == null) {
-			return "";
+			return StringUtils.EMPTY;
 		}
 
 		if (isList) {
