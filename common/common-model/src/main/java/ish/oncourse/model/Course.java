@@ -58,4 +58,18 @@ public class Course extends _Course implements Queueable {
 
 		return list;
 	}
+
+	public List<Module> getModules() {
+		final List<Module> result = new ArrayList<Module>();
+		for (final CourseModule courseModule : super.getCourseModules()) {
+			result.add(courseModule.getModule());
+		}
+		return result;
+	}
+
+	@Override
+	public Qualification getQualification() {
+		return super.getQualification();
+	}
+	
 }

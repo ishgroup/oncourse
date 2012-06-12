@@ -158,6 +158,7 @@
 						<id>cgen3</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourseReference.map.xml</map>
+							<excludeEntities>Module</excludeEntities>
 						</configuration>
 						<goals>
 							<goal>cgen</goal>

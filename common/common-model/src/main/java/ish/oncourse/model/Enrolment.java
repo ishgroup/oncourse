@@ -112,7 +112,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
 	}
 
-	//@Override
+	@Override
 	public boolean isInFinalStatus() {
 		return EnrolmentStatus.STATUSES_FINAL.contains(getStatus());
 	}

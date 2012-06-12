@@ -191,7 +191,11 @@
 	<db-relationship name="untitledRel" source="Language" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="languageId"/>
 	</db-relationship>
+	<db-relationship name="moduleCourses" source="Module" target="CourseModule" toMany="true">
+		<db-attribute-pair source="id" target="moduleId"/>
+	</db-relationship>
 	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
 	</db-relationship>
+	<obj-relationship name="moduleCourses" source="Module" target="CourseModule" deleteRule="Deny" db-relationship-path="moduleCourses"/>
 </data-map>

@@ -17,7 +17,11 @@ public class Module extends _Module {
 	 */
 	@Override
 	protected void onPreUpdate() {
-		setModified(new Date());
+		Date today = new Date();
+		if (getCreated() == null) {
+			setCreated(today);
+		}
+		setModified(today);
 	}
 
 	/* 
@@ -25,12 +29,10 @@ public class Module extends _Module {
 	 */
 	@Override
 	protected void onPrePersist() {
-		Date today = new Date();
-		
-		if(getCreated() == null) {
+		Date today = new Date();		
+		if (getCreated() == null) {
 			setCreated(today);
-		}
-		
+		}		
 		if (getModified() == null) {
 			setModified(today);
 		}
