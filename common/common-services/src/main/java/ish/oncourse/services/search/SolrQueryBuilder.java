@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,9 @@ public class SolrQueryBuilder {
     static final String PARAMETER_loc = "loc";
     static final String PARAMETER_dateboost = "dateboost";
     static final String PARAMETER_qq = "qq";
+
+    static final String FIELD_score = "score";
+    static final String FIELD_name = "name";
 
     static final String PARAMETER_VALUE_fl = "id,name,course_loc";
     static final String PARAMETER_VALUE_sfield = "course_loc";
@@ -204,6 +206,7 @@ public class SolrQueryBuilder {
         query.add(PARAMETER_pt, location);
         query.add(PARAMETER_d, getDistance());
         query.addSortField(QUERY_SORT_FIELD_geodist, SolrQuery.ORDER.asc);
+        query.addSortField(FIELD_name, SolrQuery.ORDER.asc);
         query.setQuery(String.format(QUERY_brackets,convert(filters)));
     }
 
@@ -218,6 +221,8 @@ public class SolrQueryBuilder {
             query.setQuery(DATE_BOOST_STM);
             query.setParam(PARAMETER_dateboost, DATE_BOOST_FUNCTION);
             query.setParam(PARAMETER_qq, String.format(QUERY_brackets,convert(filters)));
+            query.addSortField(FIELD_score, SolrQuery.ORDER.desc);
+            query.addSortField(FIELD_name, SolrQuery.ORDER.asc);
         }
     }
 
