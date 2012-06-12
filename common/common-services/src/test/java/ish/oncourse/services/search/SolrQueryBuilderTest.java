@@ -21,7 +21,7 @@ public class SolrQueryBuilderTest {
         SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(new SearchService(), Collections.EMPTY_MAP,"1",0,100);
         SolrQuery q = solrQueryBuilder.create();
         String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
-        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=(*:*)", value);
+        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=(*:*)&sort=score desc,name asc", value);
         System.out.println(value);
 
         HashMap<SearchParam,Object> params = new HashMap<SearchParam, Object>();
