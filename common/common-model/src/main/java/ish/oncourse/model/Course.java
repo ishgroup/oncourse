@@ -18,7 +18,7 @@ public class Course extends _Course implements Queueable {
 
 	public List<CourseClass> getEnrollableClasses() {
 		List<CourseClass> currentClasses = getCurrentClasses();
-		List<CourseClass> list = new ArrayList<CourseClass>(currentClasses.size());
+		List<CourseClass> list = new ArrayList<CourseClass>();
 
 		for (CourseClass courseClass : currentClasses) {
 			if (courseClass.isHasAvailableEnrolmentPlaces()) {
@@ -31,7 +31,7 @@ public class Course extends _Course implements Queueable {
 
 	public List<CourseClass> getCurrentClasses() {
 		List<CourseClass> courseClasses = getCourseClasses();
-		List<CourseClass> list = new ArrayList<CourseClass>(courseClasses.size());
+		List<CourseClass> list = new ArrayList<CourseClass>();
 
 		for (CourseClass courseClass : courseClasses) {
 			if (Boolean.TRUE.equals(courseClass.getIsWebVisible())
@@ -48,7 +48,7 @@ public class Course extends _Course implements Queueable {
 	
 	public List<CourseClass> getFullClasses() {
 		List<CourseClass> currentClasses = getCurrentClasses();
-		List<CourseClass> list = new ArrayList<CourseClass>(currentClasses.size());
+		List<CourseClass> list = new ArrayList<CourseClass>();
 
 		for (CourseClass courseClass : currentClasses) {
 			if (!courseClass.isHasAvailableEnrolmentPlaces()) {
@@ -61,7 +61,7 @@ public class Course extends _Course implements Queueable {
 
 	public List<Module> getModules() {
 		final List<Module> result = new ArrayList<Module>();
-		for (final CourseModule courseModule : super.getCourseModules()) {
+		for (final CourseModule courseModule : getCourseModules()) {
 			result.add(courseModule.getModule());
 		}
 		return result;
