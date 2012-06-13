@@ -31,24 +31,6 @@ public class SearchService implements ISearchService {
      */
     static final int MAX_DISTANCE = 100;
 
-    private static final String DATE_BOOST_STM = "{!boost b=$dateboost v=$qq}";
-
-    private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)";
-
-    private static final String FILTER_TEMPLATE = "+collegeId:%s +doctype:course end:[NOW TO *]";
-    private static final String FILTER_TEMPLATE_FOR_PARAM_s = " (detail: %s || tutor:%s || course_code:%s) ";
-
-    private static final String FILTER_TEMPLATE_price = " price:[* TO %s] ";
-    private static final String FILTER_TEMPLATE_when = " when:%s ";
-    private static final String FILTER_TEMPLATE_tagId = "tagId:%d";
-    private static final String FILTER_TEMPLATE_brackets = "(%s)";
-
-
-    private static final String FILTER_TEMPLATE_AND = "AND";
-    private static final String FILTER_TEMPLATE_OR = "||";
-    private static final String FILTER_TEMPLATE_ALL = "(*:*)";
-
-
     @Inject
     private IWebSiteService webSiteService;
 

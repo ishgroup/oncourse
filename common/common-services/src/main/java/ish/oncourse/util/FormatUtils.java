@@ -3,11 +3,8 @@ package ish.oncourse.util;
 import ish.math.Country;
 import ish.math.Money;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+import java.text.*;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class FormatUtils {
@@ -39,6 +36,9 @@ public class FormatUtils {
     public static final String DATE_FORMAT_MMM = "MMM";
     public static final String TIME_FORMAT_h_mm_a = "h:mm a";
 
+    public static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'hh:mm:ss'Z'";
+
+    public static final String TIME_ZONE_UTC = "UTC";
 
     private static NumberFormat feeFormatWithCents;
 
@@ -123,5 +123,10 @@ public class FormatUtils {
             format = getFeeFormatWithoutCents();
         }
         return format;
+    }
+
+    public static String convertDateToISO8601(Date date)
+    {
+        return FormatUtils.getDateFormat(DATE_FORMAT_ISO8601,TIME_ZONE_UTC).format(date);
     }
 }

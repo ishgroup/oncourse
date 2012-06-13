@@ -1,11 +1,10 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.SearchParam;
-
-import java.util.Map;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+
+import java.util.Map;
 
 public class SearchTermsClarification {
 
@@ -36,4 +35,12 @@ public class SearchTermsClarification {
 	public String getKm() {
 		return paramsInError.get(SearchParam.km);
 	}
+
+    public String getAfter() {
+        return paramsInError.get(SearchParam.after);
+    }
+
+    public String getBefore() {
+        return paramsInError.get(SearchParam.before);
+    }
 }

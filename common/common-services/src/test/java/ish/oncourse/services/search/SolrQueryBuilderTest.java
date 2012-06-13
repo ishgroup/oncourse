@@ -25,6 +25,8 @@ public class SolrQueryBuilderTest {
         System.out.println(value);
 
         HashMap<SearchParam,Object> params = new HashMap<SearchParam, Object>();
+        params.put(SearchParam.after, "20120101");
+        params.put(SearchParam.before, "20120101");
         params.put(SearchParam.s, "1");
         params.put(SearchParam.price, "1999.99$");
         params.put(SearchParam.day, "DAY");
@@ -81,10 +83,18 @@ public class SolrQueryBuilderTest {
         assertEquals("Test filters.size for filter SearchParam.subject",1,filters.size());
         assertEquals("Test filters.get(0) for filter SearchParam.subject", "(tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5)",filters.get(0));
 
+        filters.clear();
+        solrQueryBuilder.appendFilterAfter(filters);
+        assertEquals("Test filters.size for filter SearchParam.after",1,filters.size());
+        assertEquals("Test filters.get(0) for filter SearchParam.after", "startDate:[20120101 TO *]",filters.get(0));
 
-        q = solrQueryBuilder.create();
+        filters.clear();
+        solrQueryBuilder.appendFilterBefore(filters);
+        assertEquals("Test filters.size for filter SearchParam.before",1,filters.size());
+        assertEquals("Test filters.get(0) for filter SearchParam.before", "end:[NOW TO 20120101]",filters.get(0));
+
         value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
-        //assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=(*:*)", value);
+        assertEquals("Query parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=((detail:1 || tutor:1 || course_code:1) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND startDate:[20120101 TO *] AND end:[NOW TO 20120101] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))&sort=score desc,name asc", value);
         System.out.println(value);
 
     }

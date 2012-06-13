@@ -25,6 +25,7 @@ public class SolrQueryBuilder {
 
     static final String FIELD_score = "score";
     static final String FIELD_name = "name";
+    static final String FIELD_startDate = "startDate";
 
     static final String PARAMETER_VALUE_fl = "id,name,course_loc";
     static final String PARAMETER_VALUE_sfield = "course_loc";
@@ -35,6 +36,8 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
+    static final String FILTER_TEMPLATE_after = "startDate:[%s TO *]";
+    static final String FILTER_TEMPLATE_before = "end:[NOW TO %s]";
 
     static final String FILTER_TEMPLATE_geofilt = "{!geofilt}";
 
@@ -92,7 +95,14 @@ public class SolrQueryBuilder {
         appendFilterTime(filters);
         appendAnd(filters);
 
+        appendFilterAfter(filters);
+        appendAnd(filters);
+
+        appendFilterBefore(filters);
+        appendAnd(filters);
+
         appendFilterSubject(filters);
+
         clearLastAnd(filters);
 
         if (filters.isEmpty())
@@ -132,6 +142,20 @@ public class SolrQueryBuilder {
     void appendFilterAll(List<String> filters)
     {
         filters.add(FILTER_TEMPLATE_ALL);
+    }
+
+    void appendFilterAfter(List<String> filters) {
+        if (params.containsKey(SearchParam.after)) {
+            String value = (String) params.get(SearchParam.after);
+            filters.add(String.format(FILTER_TEMPLATE_after, value));
+        }
+    }
+
+    void appendFilterBefore(List<String> filters) {
+        if (params.containsKey(SearchParam.before)) {
+            String value = (String) params.get(SearchParam.before);
+            filters.add(String.format(FILTER_TEMPLATE_before, value));
+        }
     }
 
     void appendFilterS(List<String> filters) {
@@ -216,6 +240,12 @@ public class SolrQueryBuilder {
         {
             setFiltersAndNearTo(query,filters);
         }
+//        else if (params.containsKey(SearchParam.after) || params.containsKey(SearchParam.before))
+//        {
+//            query.setQuery(String.format(QUERY_brackets,convert(filters)));
+//            query.addSortField(FIELD_score, SolrQuery.ORDER.desc);
+//            query.addSortField(FIELD_startDate,SolrQuery.ORDER.asc);
+//        }
         else
         {
             query.setQuery(DATE_BOOST_STM);

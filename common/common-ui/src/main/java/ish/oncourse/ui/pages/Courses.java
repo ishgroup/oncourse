@@ -1,23 +1,13 @@
 package ish.oncourse.ui.pages;
 
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.SearchParam;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Tag;
+import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -28,6 +18,9 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Page component representing a Course list.
@@ -49,6 +42,8 @@ public class Courses {
 	private static final Logger LOGGER = Logger.getLogger(Courses.class);
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
+
+    private static final String DATE_FORMAT_FOR_AFTER_BEFORE = "yyyyMMdd";
 
 	@Inject
 	private ICourseService courseService;
@@ -288,7 +283,7 @@ public class Courses {
 					browseTag = tagService.getTagByFullPath(parameter);
 					if (browseTag == null) {
 						//need to clean up not existing tag from search params
-						searchParams.put(SearchParam.subject, null);
+						searchParams.remove(SearchParam.subject);
 						paramsInError.put(name, parameter);
 					}
 					break;
@@ -302,7 +297,17 @@ public class Courses {
 						paramsInError.put(name, parameter);
 					}
 					break;
-				}
+                case after:
+                case before:
+                    try {
+                        Date date = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE,null).parse(parameter);
+                        searchParams.put(name, FormatUtils.convertDateToISO8601(date));
+                    } catch (ParseException e) {
+                        paramsInError.put(name, parameter);
+                    }
+                    break;
+                }
+
 			}
 		}
 
