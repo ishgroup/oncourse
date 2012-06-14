@@ -16,7 +16,6 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -226,9 +225,24 @@ public class SearchService implements ISearchService {
             throw new SearchException("Unable to find suburbs.", e);
         }
     }
+    
+    private static String escapeQueryChars(String original) {
+    	StringBuilder sb = new StringBuilder();
+    	for (int i = 0; i < original.length(); i++) {
+    		char c = original.charAt(i);
+    		// These characters are part of the SOLR query syntax and must be escaped
+    		if (c == '\\' || c == '+' || c == '-' || c == '!'  || c == '(' || c == ')' || c == ':' || c == '^' || c == '[' || c == ']' || c == '\"' 
+    			|| c == '{' || c == '}' || c == '~' || c == '*' || c == '?' || c == '|' || c == '&'  || c == ';') {
+    			sb.append('\\');
+    		}
+    		sb.append(c);
+    	}
+    	return sb.toString();
+    }
 
     public QueryResponse searchSuburb(String location) {
         try {
+        	location = location.trim();
             int separator = location.lastIndexOf(" ");
 
             String[] suburbParams = separator > 0 ? new String[]{location.substring(0, separator), location.substring(separator + 1)}
@@ -242,14 +256,14 @@ public class SearchService implements ISearchService {
             StringBuilder query = new StringBuilder();
             query.append("(doctype:suburb");
             if (suburbParams[0] != null) {
-                String near = suburbParams[0].replaceAll("[\\s]+", "+");
+                String near = escapeQueryChars(suburbParams[0]).replaceAll("[\\s]+", "+");
                 query.append(" AND (suburb:").append(near);
                 query.append("|| postcode:").append(near);
                 query.append(")");
             }
 
             if (suburbParams[1] != null) {
-                query.append(" AND postcode:").append(suburbParams[1]);
+                query.append(" AND postcode:").append(escapeQueryChars(suburbParams[1]));
             }
 
             query.append(") ");
