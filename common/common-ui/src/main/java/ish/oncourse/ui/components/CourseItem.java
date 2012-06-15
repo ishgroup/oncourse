@@ -22,6 +22,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class CourseItem {
 
@@ -67,6 +68,9 @@ public class CourseItem {
 		
 	@Inject
 	private ICourseService courseService;
+	
+	@Inject
+	private Request request;
 		
 	public String getZoneId() {
 		return "modulesZone" + getCurrentCourseId();
@@ -84,7 +88,12 @@ public class CourseItem {
 	private Object changeModules(final Long id, final boolean expanded) {
 		expandedModules = expanded;
 		course = courseService.loadByIds(id).get(0);
-		return modulesZone.getBody();
+		if (request.isXHR()) {
+			return modulesZone.getBody();
+		} else {
+			//this case mean IE request
+			return this;
+		}
 	}
 		
 	@OnEvent(value = EventConstants.ACTION, component = "collapsModules")
