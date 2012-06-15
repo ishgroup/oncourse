@@ -11,10 +11,6 @@
 			<p:else>
 				<h2>
 					<a href="/course/${course.code}" class="url">${course.name}</a>
-					<t:if t:test="containsQualificationOrModules" negate="false">
-						<img class="NRTLogo" style="float: right;" alt="NRT" src="/s/img/nrt.png"/>
-						<img class="VETABLogo" style="float: right; padding-right: 5px;" alt="VETAB" src="/s/img/vetab.png"/>
-					</t:if>
 				</h2>
 				<div class="description courseShortDescription">
 
@@ -57,41 +53,6 @@
 				<t:outputraw value="${courseDetail}" />
 			</div>
 		</t:if>
-		<t:if t:test="containsQualificationOrModules" negate="false">
-			<t:zone t:id="modulesZone" id="${zoneId}" update="show">
-				<t:if t:test="expandedModules" negate="false">
-					<t:actionlink t:id="collapsModules" zone="${zoneId}" title="Units taught" class="modules-expand" context="currentCourseId">
-						Units taught
-            		</t:actionlink>
-					<p:else>
-						<t:actionlink t:id="expandModules" zone="${zoneId}" title="Units taught" class="modules-expand" context="currentCourseId">
-							Units taught
-            			</t:actionlink>
-					</p:else>
-				</t:if>
-				<t:if t:test="expandedModules" negate="false">
-					<ul>
-					<t:loop source="courseModules" value="module">
-						<li>
-						${module.title}
-						</li>
-					</t:loop>
-					</ul>
-				</t:if>
-				<br/>
-			</t:zone>
-			<t:if t:test="courseContainQualification" negate="false">
-				<div class="qualificationAndModulesCourse">
-					Assessments are made against the following units of competency from the ${course.qualification.title} ${course.qualification.nationalCode}
-				</div>
-			<p:else>
-				<t:if t:test="courseContainsOnlyModules" negate="false">
-					<div class="noQualificationButModulesCourse">
-						Assessments are made against the following units of competency
-					</div>
-				</t:if>
-			</p:else>
-			</t:if>
-		</t:if>
+		
 	</div>
 </t:container>

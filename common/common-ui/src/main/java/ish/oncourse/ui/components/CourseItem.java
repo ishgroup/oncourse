@@ -59,7 +59,7 @@ public class CourseItem {
 	private PreferenceController preferenceController;
 	
 	@Property
-	@InjectComponent
+	//@InjectComponent
 	private Zone modulesZone;
 	
 	@SuppressWarnings("all")
