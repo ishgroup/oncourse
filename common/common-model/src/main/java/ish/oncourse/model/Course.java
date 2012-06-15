@@ -11,10 +11,12 @@ import java.util.List;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.log4j.Logger;
 
 public class Course extends _Course implements Queueable {
 	private static final long serialVersionUID = 254942637990278217L;
 	public static final String COURSE_TAG = "courseTag";
+	private static final Logger LOGGER = Logger.getLogger(Course.class);
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -66,13 +68,24 @@ public class Course extends _Course implements Queueable {
 	public List<Module> getModules() {
 		final List<Module> result = new ArrayList<Module>();
 		for (final CourseModule courseModule : getCourseModules()) {
-			Module module = courseModule.getModule();
+			Module module = null;
+			try {
+				module = courseModule.getModule();
+			} catch (Exception e) {
+				LOGGER.warn(String.format("Exception occurrs when try to load course module with course id %s for college %s", getId(), 
+						getCollege().getId()), e);
+				module = null;
+			}
 			if (module != null && module.getPersistenceState() == PersistenceState.HOLLOW) {
 				final SelectQuery moduleQuery = new SelectQuery(Module.class);
 				moduleQuery.andQualifier(ExpressionFactory.matchDbExp(Module.ID_PK_COLUMN, module.getId()));
 				@SuppressWarnings("unchecked")
 				List<Module> queryResult = getObjectContext().performQuery(moduleQuery);
-				module = queryResult.isEmpty() ? null : queryResult.get(0); 
+				module = queryResult.isEmpty() ? null : queryResult.get(0);
+				if (queryResult.size() > 1) {
+					LOGGER.warn(String.format("%s objects found for module with id %s to course %s relationship but should be 1", 
+						queryResult.size(), module.getId(), getId()));
+				}
 			}
 			if (module != null) {
 				result.add(module);
@@ -83,13 +96,24 @@ public class Course extends _Course implements Queueable {
 
 	@Override
 	public Qualification getQualification() {
-		Qualification qualification = super.getQualification();
+		Qualification qualification = null;
+		try {
+			qualification = super.getQualification();
+		} catch (Exception e) {
+			LOGGER.warn(String.format("Exception occurrs when try to load course qualification with course id %s for college %s", getId(), 
+				getCollege().getId()), e);
+			qualification = null;
+		}
 		if (qualification != null && qualification.getPersistenceState() == PersistenceState.HOLLOW) {
 			final SelectQuery qualificationQuery = new SelectQuery(Qualification.class);
 			qualificationQuery.andQualifier(ExpressionFactory.matchDbExp(Qualification.ID_PK_COLUMN, qualification.getId()));
 			@SuppressWarnings("unchecked")
 			List<Qualification> result = getObjectContext().performQuery(qualificationQuery);
 			qualification = result.isEmpty() ? null : result.get(0);
+			if (result.size() > 1) {
+				LOGGER.warn(String.format("%s objects found for qualification with id %s to course %s relationship but should be 1", 
+					result.size(), qualification.getId(), getId()));
+			}
 		}
 		return qualification;
 	}
