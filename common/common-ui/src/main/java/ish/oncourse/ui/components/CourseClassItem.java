@@ -182,6 +182,10 @@ public class CourseClassItem {
 		return !courseClass.isCancelled() && !courseClass.hasEnded();
 	}
 	
+	public boolean isFinishedClass() {
+		return !courseClass.isCancelled() && courseClass.hasEnded();
+	}
+	
 	public boolean isHasAvailableEnrolmentPlaces() {
 		return courseClass != null && courseClass.isHasAvailableEnrolmentPlaces();
 	}
