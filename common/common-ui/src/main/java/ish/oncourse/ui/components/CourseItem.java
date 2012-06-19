@@ -3,11 +3,17 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Module;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.SearchParam;
+import ish.oncourse.model.Site;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -16,7 +22,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.EventConstants;
-import org.apache.tapestry5.annotations.InjectComponent;
+//import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -71,6 +77,18 @@ public class CourseItem {
 	
 	@Inject
 	private Request request;
+	
+	@Property
+	private String postcodeParamether;
+		
+	public boolean isPostcodeSpecified() {
+		String parameter = request.getParameter(SearchParam.near.name());
+		String kmParameter = request.getParameter(SearchParam.km.name());
+		//TODO: need to update code to catch also the locations in selected radius to finish the #14153
+		postcodeParamether = parameter.matches("\\d+") ? parameter : null;
+		//System.out.println(kmParameter);
+		return StringUtils.trimToNull(postcodeParamether) != null;
+	}
 		
 	public String getZoneId() {
 		return "modulesZone" + getCurrentCourseId();
@@ -247,10 +265,61 @@ public class CourseItem {
 	}
 
 	public List<CourseClass> getClasses() {
-		List<CourseClass> classes = (isList) ? course.getEnrollableClasses() :  course.getCurrentClasses();
+		final boolean filterByPostcode = isPostcodeSpecified();
+		final List<CourseClass> classes = (isList) ? getEnrollableClasses(filterByPostcode, true) :  getCurrentClasses(filterByPostcode, true);
 		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(classes);
 		return classes;
+	}
+	
+	public List<CourseClass> getOtherClasses() {
+		final boolean filterByPostcode = isPostcodeSpecified();
+		@SuppressWarnings("unchecked")
+		final List<CourseClass> classes = filterByPostcode ? (isList) ? getEnrollableClasses(true, false) :  getCurrentClasses(true, false) : 
+			Collections.EMPTY_LIST;
+		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
+		ordering.orderList(classes);
+		return classes;
+	}
+	
+	private List<CourseClass> getEnrollableClasses(final boolean filterByPostcode, final boolean includeMatching) {
+		final List<CourseClass> data = takeCourse().getEnrollableClasses();
+		return filterByPostcode ? filterByPostcode(data, includeMatching) : data;
+	}
+	
+	private List<CourseClass> filterByPostcode(final List<CourseClass> data, final boolean includeMatching) {
+		final List<CourseClass> result = new ArrayList<CourseClass>();
+		for (final CourseClass courseClass : data) {
+			if (includeMatching && isCourseClassMatchByPostcode(courseClass, postcodeParamether)) {
+				result.add(courseClass);
+			}
+			if (!includeMatching && !isCourseClassMatchByPostcode(courseClass, postcodeParamether)) {
+				result.add(courseClass);
+			}
+		}
+		return result;
+	}
+	
+	private boolean isCourseClassMatchByPostcode(final CourseClass courseClass, final String postcode) {
+		Room room = courseClass.getRoom();
+		if (room != null) {
+			Site site = room.getSite();
+			if (site != null && site.getIsWebVisible() && StringUtils.trimToNull(site.getSuburb()) != null && site.isHasCoordinates() 
+				&& StringUtils.trimToNull(site.getPostcode()) != null && site.getPostcode().equals(postcode)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private List<CourseClass> getCurrentClasses(final boolean filterByPostcode, final boolean includeMatching) {
+		final List<CourseClass> data = takeCourse().getCurrentClasses();
+		return filterByPostcode ? filterByPostcode(data, includeMatching) : data;
+	}
+	
+	public List<CourseClass> getFullClasses() {
+		final List<CourseClass> data = takeCourse().getFullClasses();
+		return data;
 	}
 	
 	public boolean getAddThisEnabled() {

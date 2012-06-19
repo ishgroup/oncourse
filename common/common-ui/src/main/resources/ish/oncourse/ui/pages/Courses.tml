@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<t:if test="request.XHR">
+	<t:if test="XHR">
 		<span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount"
 			itemIndex="itemIndex" sitesParameter="sitesParameter"/>
 		<p:else>

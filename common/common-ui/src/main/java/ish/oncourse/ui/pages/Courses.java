@@ -136,7 +136,11 @@ public class Courses {
 		}
 		setupMapSites();
 	}
-
+	
+	public boolean isXHR() {
+		return request.isXHR();
+	}
+	
 	private void setupMapSites() {
 		mapSites = new ArrayList<Site>();
 		if (hasAnyFormValuesForFocus()) {

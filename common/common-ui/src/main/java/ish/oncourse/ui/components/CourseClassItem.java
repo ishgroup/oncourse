@@ -11,14 +11,12 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.TimestampUtilities;
-
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -26,7 +24,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class CourseClassItem {
-
+	
 	@Inject
 	private Messages messages;
 
@@ -78,7 +76,7 @@ public class CourseClassItem {
 
 	@Property
 	private int dayIndex;
-
+	
 	@SetupRender
 	public void beforeRender() {
 		timetableLabels = new ArrayList<String>();
