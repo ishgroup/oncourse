@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 public class PaymentInLine extends _PaymentInLine implements Queueable {
 
 	private static final long serialVersionUID = -6157950790523998485L;
+	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(PaymentInLine.class);
 
 	public Long getId() {
@@ -31,33 +32,33 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 	}
 
 	protected void onPostAdd() {
-		final Long paymentInId = (getPaymentIn() != null) ? getPaymentIn().getId() : null;
+		/*final Long paymentInId = (getPaymentIn() != null) ? getPaymentIn().getId() : null;
 		final Long invoiceId = (getInvoice() != null) ? getInvoice().getId() : null;
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Trace the source of PaymentInLines.", new Exception("trace post add for PaymentInLine with paymentin id = "
 					+ paymentInId + " and invoiceid = " + invoiceId + " and PaymentInLineId = " + getId() + " and amount = " + getAmount()));
-		}
+		}*/
 	}
 
 	protected void onPrePersist() {
-		final Long paymentInId = (getPaymentIn() != null) ? getPaymentIn().getId() : null;
+		/*final Long paymentInId = (getPaymentIn() != null) ? getPaymentIn().getId() : null;
 		final Long invoiceId = (getInvoice() != null) ? getInvoice().getId() : null;
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Trace the source of PaymentInLines.", new Exception("trace persist new PaymentInLine with paymentin id = "
 					+ paymentInId + " and invoiceid = " + invoiceId + " and PaymentInLineId = " + getId() + " and amount = " + getAmount()));
-		}
+		}*/
 	}
 
 	protected void onPreUpdate() {
-		final Long paymentInId = (getPaymentIn() != null) ? getPaymentIn().getId() : null;
+		/*final Long paymentInId = (getPaymentIn() != null) ? getPaymentIn().getId() : null;
 		final Long invoiceId = (getInvoice() != null) ? getInvoice().getId() : null;
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Trace the source of PaymentInLines.", new Exception("trace update of PaymentInLine with paymentin id = "
 					+ paymentInId + " and invoiceid = " + invoiceId + " and PaymentInLineId = " + getId() + " and amount = " + getAmount()));
-		}
+		}*/
 	}
 
 	/**

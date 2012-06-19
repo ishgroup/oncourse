@@ -14,7 +14,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -358,19 +357,6 @@ public class CourseClass extends _CourseClass implements Queueable {
 		return latest;
 	}
 
-	private Integer getLatestSessionStartHour() {
-		Integer latest = null;
-		for (Session session : getSessions()) {
-			Calendar end = Calendar.getInstance();
-			end.setTime(session.getStartDate());
-			Integer sessionStartHour = end.get(Calendar.HOUR_OF_DAY);
-			if (latest == null || sessionStartHour > latest) {
-				latest = sessionStartHour;
-			}
-		}
-		return latest;
-	}
-
 	/**
 	 * @return all sessions that satisfy hasStartAndEndTimestamps
 	 * @see Session#hasStartAndEndTimestamps()
@@ -401,150 +387,6 @@ public class CourseClass extends _CourseClass implements Queueable {
 
 	public boolean isHasRoom() {
 		return getRoom() != null && getRoom().getSite() != null && getRoom().getSite().getIsWebVisible();
-	}
-
-	public float focusMatchForClass(Double locatonLat, Double locationLong, Map<SearchParam, Object> searchParams) {
-		float bestFocusMatch = -1.0f;
-
-		if (!searchParams.isEmpty()) {
-
-			float daysMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.day)) {
-				daysMatch = focusMatchForDays((String) searchParams.get(SearchParam.day));
-			}
-
-			float timeMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.time)) {
-				timeMatch = focusMatchForTime((String) searchParams.get(SearchParam.time));
-			}
-
-			float priceMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.price)) {
-				try {
-					Float price = Float.parseFloat((String) searchParams.get(SearchParam.price));
-					priceMatch = focusMatchForPrice(price);
-				} catch (NumberFormatException e) {
-				}
-			}
-
-			float nearMatch = 1.0f;
-			if (locatonLat != null && locationLong != null) {
-				nearMatch = focusMatchForNear(locatonLat, locationLong);
-
-			}
-
-			float result = daysMatch * timeMatch * priceMatch * nearMatch;
-
-			return result;
-		}
-
-		return bestFocusMatch;
-
-	}
-
-	public float focusMatchForDays(String searchDay) {
-		float result = 0.0f;
-		if (getDaysOfWeek() != null) {
-			List<String> uniqueDays = new ArrayList<String>();
-			uniqueDays.addAll(getDaysOfWeek());
-			for (String day : uniqueDays) {
-				String lowerDay = day.toLowerCase();
-				if (TimestampUtilities.DaysOfWeekNamesLowerCase.contains(lowerDay) && lowerDay.equalsIgnoreCase(day)) {
-					result = 1.0f;
-					break;
-				}
-				if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(lowerDay)
-						&& "weekday".equalsIgnoreCase(day)) {
-					result = 1.0f;
-					break;
-				}
-				if (TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(lowerDay)
-						&& "weekend".equalsIgnoreCase(day)) {
-					result = 1.0f;
-					break;
-				}
-			}
-		}
-
-		return result;
-	}
-
-	public float focusMatchForTime(String time) {
-		float result = 0.0f;
-
-		Integer latestHour = getLatestSessionStartHour();
-		Integer earliestHour = getEarliestSessionStartHour();
-		// much discussion about what day and evening mean...
-		// current definitions is that any session that starts before 5 pm is
-		// daytime, any that starts after 5pm is evening
-		boolean isEvening = latestHour != null && latestHour >= 17;
-		boolean isDaytime = earliestHour != null && earliestHour < 17;
-		if (isEvening && isDaytime || isDaytime && "daytime".equalsIgnoreCase(time) || isEvening
-				&& "evening".equalsIgnoreCase(time)) {
-			result = 1.0f;
-		}
-		return result;
-
-	}
-
-	public float focusMatchForPrice(Float price) {
-		float result = 0.0f;
-		float maxPrice = price;
-		if (hasFeeIncTax()) {
-			if (getFeeIncGst().floatValue() > maxPrice) {
-				result = 0.75f - (getFeeIncGst().floatValue() - maxPrice) / maxPrice * 0.25f;
-				if (result < 0.25f) {
-					result = 0.25f;
-				}
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Haversine formula: R = earth�s radius (mean radius = 6,371km) dLat =
-	 * lat2 - lat1 dLon = lon2 - lon1 a = (sin(dLat/2))^2 +
-	 * cos(lat1)*cos(lat2)*(sin(dLat/2))^2 c = 2*atan2(sqrt(a), sqrt(1-a)) d =
-	 * R*c
-	 * 
-	 * @param nearLatitude
-	 * @param nearLongitude
-	 * @return
-	 */
-	public float focusMatchForNear(Double nearLatitude, Double nearLongitude) {
-		float result = 0.0f;
-
-		if (nearLatitude != null && nearLongitude != null && getRoom() != null && getRoom().getSite() != null
-				&& getRoom().getSite().getIsWebVisible() && getRoom().getSite().isHasCoordinates()) {
-			Site site = getRoom().getSite();
-
-			double earthRadius = 6371; // km
-
-			double lat1 = Math.toRadians(site.getLatitude().doubleValue());
-			double lon1 = Math.toRadians(site.getLongitude().doubleValue());
-			double lat2 = Math.toRadians(nearLatitude);
-			double lon2 = Math.toRadians(nearLongitude);
-
-			double dLat = lat2 - lat1;
-			double dLon = lon2 - lon1;
-			double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2)
-					* Math.sin(dLon / 2);
-			double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-			double distance = earthRadius * c;
-			float searchKilometers = 10.0f;
-			if (distance >= 5d * searchKilometers) {
-				result = 0f;
-			} else if (distance <= searchKilometers) {
-				result = 1f;
-			} else {
-				result = 1 - ((float) distance - searchKilometers) / (4f * searchKilometers);
-			}
-
-		}
-		return result;
-
 	}
 
 	public boolean hasEnded() {
