@@ -59,6 +59,7 @@ public class Classes {
         try {
             courseClassPeriod = CourseClassPeriod.valueOf(period);
         } catch (Throwable e) {
+            courseClassPeriod = CourseClassPeriod.CURRENT;
             LOGGER.warn(String.format("Undefined period \"%s\"", period),e);
         }
     }
