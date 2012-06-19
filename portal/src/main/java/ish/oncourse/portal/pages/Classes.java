@@ -56,7 +56,11 @@ public class Classes {
     }
 
     void onActivate(String period) {
-        courseClassPeriod = CourseClassPeriod.valueOf(period);
+        try {
+            courseClassPeriod = CourseClassPeriod.valueOf(period);
+        } catch (Throwable e) {
+            LOGGER.warn(String.format("Undefined period \"%s\"", period),e);
+        }
     }
 
     String onPassivate() {
