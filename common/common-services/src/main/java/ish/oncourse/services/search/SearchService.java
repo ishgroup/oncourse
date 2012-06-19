@@ -28,7 +28,7 @@ public class SearchService implements ISearchService {
     /**
      * Default maximum distance for geo-searches
      */
-    static final int MAX_DISTANCE = 100;
+    public static final int MAX_DISTANCE = 100;
 
     @Inject
     private IWebSiteService webSiteService;
