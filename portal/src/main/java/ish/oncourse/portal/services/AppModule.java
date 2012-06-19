@@ -1,7 +1,5 @@
 package ish.oncourse.portal.services;
 
-import java.io.IOException;
-
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.access.AccessController;
 import ish.oncourse.portal.access.AuthenticationService;
@@ -10,35 +8,23 @@ import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.mail.IMailService;
 import ish.oncourse.portal.services.mail.MailServiceImpl;
-import ish.oncourse.portal.services.pageload.IUserAgentDetector;
-import ish.oncourse.portal.services.pageload.PortalComponentRequestSelectorAnalyzer;
-import ish.oncourse.portal.services.pageload.PortalComponentResourceLocator;
-import ish.oncourse.portal.services.pageload.PortalPageRenderer;
-import ish.oncourse.portal.services.pageload.UserAgentDetectorImpl;
+import ish.oncourse.portal.services.pageload.*;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.IPageRenderer;
-
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.Contribute;
-import org.apache.tapestry5.ioc.annotations.Decorate;
-import org.apache.tapestry5.ioc.annotations.InjectService;
-import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
-import org.apache.tapestry5.services.ComponentSource;
-import org.apache.tapestry5.services.Dispatcher;
-import org.apache.tapestry5.services.ExceptionReporter;
-import org.apache.tapestry5.services.RequestExceptionHandler;
-import org.apache.tapestry5.services.Response;
-import org.apache.tapestry5.services.ResponseRenderer;
+import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
+
+import java.io.IOException;
 
 @SubModule({ ModelModule.class, ServiceModule.class, TextileModule.class })
 public class AppModule {
@@ -90,13 +76,12 @@ public class AppModule {
 			final ComponentSource componentSource) {
 		return new RequestExceptionHandler() {
 			public void handleRequestException(Throwable exception) throws IOException {
-				logger.debug("Unexpected runtime exception: " + exception.getMessage(), exception);
-				
 				if (response != null && exception != null && exception.getMessage() != null &&
 						exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
 					response.sendRedirect("login"); 
-				} else { 
-					String exceptionPageName = "errorPage";
+				} else {
+                    logger.error("Unexpected runtime exception.", exception);
+                    String exceptionPageName = "errorPage";
 					ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(exceptionPageName);
 					exceptionReporter.reportException(exception);
 					renderer.renderPageMarkupResponse(exceptionPageName);

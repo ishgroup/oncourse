@@ -1,7 +1,8 @@
 <html t:type="pagestructure" title="literal:Student Timetable"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes" xmlns:p="tapestry:parameter">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
 
-	<h1>${courseClass.course.name}</h1>
+<t:if test="courseClass">
+    <h1>${courseClass.course.name}</h1>
 	
 	<span t:type="classTabs" courseClass="courseClass" selected="literal:classroll"/>
 
@@ -66,5 +67,5 @@
 			<strong>${enrolmentsCount}</strong> enrolments | <strong>${availableEnrolmentPlaces}</strong> places available
 		</div>
 	</div>
-
+</t:if>
 </html>

@@ -15,7 +15,6 @@ import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
@@ -24,7 +23,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.util.FormatUtils.*;
+import static ish.oncourse.util.FormatUtils.getDateFormat_dd_MMM_E;
+import static ish.oncourse.util.FormatUtils.getShortDateFormat;
 
 @UserRole("tutor")
 public class ClassRoll {
@@ -66,28 +66,24 @@ public class ClassRoll {
 	
 	@InjectPage
 	private PageNotFound pageNotFound;
-	
+
 	Object onActivate(String id) {
 		if (id != null && id.length() > 0 && id.matches("\\d+")) {
 			List<CourseClass> list = courseClassService.loadByIds(Long.parseLong(id));
 			this.courseClass = (!list.isEmpty()) ? list.get(0) : null;
-		} else {
-			return pageNotFound;
 		}
-		return null;
-	}
 
-	@SetupRender
-	boolean setupRender() {
-		if (courseClass == null) {
-			return false;
-		}
-		List<Enrolment> enrolments = courseClass.getValidEnrolments();
-		enrolmentsCount = enrolments.size();
+        if (this.courseClass == null )
+        {
+            return pageNotFound;
+        }
+
+        List<Enrolment> enrolments = courseClass.getValidEnrolments();
+        enrolmentsCount = enrolments.size();
 
         sessions = searchSessionBy(courseClass);
-		availableEnrolmentPlaces = courseClass.getAvailableEnrolmentPlaces();
-		return true;
+        availableEnrolmentPlaces = courseClass.getAvailableEnrolmentPlaces();
+        return null;
 	}
 
     /**

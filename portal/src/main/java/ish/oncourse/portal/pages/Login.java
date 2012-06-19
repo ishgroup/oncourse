@@ -4,6 +4,14 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cookies.ICookiesService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.PasswordField;
+import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.io.IOException;
 import java.net.URL;
@@ -11,22 +19,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.PasswordField;
-import org.apache.tapestry5.corelib.components.TextField;
-import org.apache.tapestry5.corelib.components.Zone;
-import org.apache.tapestry5.ioc.Messages;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class Login {
 
@@ -91,8 +83,8 @@ public class Login {
     @Inject
     private Messages messages;
 
-    @InjectComponent
-    private Zone loginZone;
+//    @InjectComponent
+//    private Zone loginZone;
 
     @InjectComponent
     @Property
@@ -115,9 +107,9 @@ public class Login {
 
 
 
-    public Zone getLoginZone() {
-        return loginZone;
-    }
+//    public Zone getLoginZone() {
+//        return loginZone;
+//    }
 
 	@SetupRender
 	void setupRender() {

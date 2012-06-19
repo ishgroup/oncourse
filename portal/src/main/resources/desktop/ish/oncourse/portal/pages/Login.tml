@@ -1,8 +1,8 @@
 <html t:type="pagestructure" title="literal:Login page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-    <t:zone t:id="loginZone" t:update="show">
-	<t:form t:id="loginForm" class="login-form" method="post"  zone="loginZone">
+<div id="loginZone">
+	<t:form t:id="loginForm" class="login-form" method="post" >
 
         <div class="login-wrapper">
 	
@@ -88,10 +88,9 @@
 	</div>
 	
 	</t:form>
-    </t:zone>
-
     <script type="text/javascript">
         initHints("loginZone");
     </script>
     <div class="cl"></div>
+</div>
 </html>
