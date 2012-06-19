@@ -56,7 +56,7 @@ public class CourseItem {
 	private boolean linkToLocationsMap;
 	
 	@SuppressWarnings("all")
-	@Parameter
+	//@Parameter
 	@Property
 	private boolean expandedModules;
 
@@ -124,7 +124,7 @@ public class CourseItem {
 		return takeCourse().getId();
 	}
 	
-	@OnEvent(value = EventConstants.ACTION, component = "expandModules")
+	//@OnEvent(value = EventConstants.ACTION, component = "expandModules")
 	public final Object expandModules(final Long currentCourseId) {
 		return changeModules(currentCourseId, true);
 	}
@@ -140,7 +140,7 @@ public class CourseItem {
 		}
 	}
 		
-	@OnEvent(value = EventConstants.ACTION, component = "collapsModules")
+	//@OnEvent(value = EventConstants.ACTION, component = "collapsModules")
 	public final Object collapsModules(final Long currentCourseId) {
 		return changeModules(currentCourseId, false);
 	}
