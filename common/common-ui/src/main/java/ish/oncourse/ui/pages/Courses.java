@@ -8,6 +8,8 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.utils.CourseClassUtils;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -180,7 +182,8 @@ public class Courses {
 							}
 						}
 						if (hasAnyFormValuesForFocus()) {
-							float focusMatchForClass = courseClass.focusMatchForClass(locationPoints[0], locationPoints[1], searchParams);
+							float focusMatchForClass = CourseClassUtils.focusMatchForClass(courseClass, locationPoints[0], locationPoints[1], 
+								searchParams);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
 								focusesForMapSites.put(site.getId(), focusMatchForClass);

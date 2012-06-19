@@ -9,8 +9,11 @@ import ish.oncourse.model.Site;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
+import ish.oncourse.utils.CourseClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +24,8 @@ import java.util.regex.Pattern;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.EventConstants;
 //import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -80,14 +85,35 @@ public class CourseItem {
 	
 	@Property
 	private String postcodeParamether;
+	
+	@Property
+	private String kmParamether;
+	
+	@Property
+	private Double[] locationPoints;
+	
+	@Inject
+	private ISearchService searchService;
 		
 	public boolean isPostcodeSpecified() {
-		String parameter = request.getParameter(SearchParam.near.name());
-		String kmParameter = request.getParameter(SearchParam.km.name());
-		//TODO: need to update code to catch also the locations in selected radius to finish the #14153
-		postcodeParamether = parameter.matches("\\d+") ? parameter : null;
-		//System.out.println(kmParameter);
+		if (postcodeParamether == null) {
+			final String parameter = request.getParameter(SearchParam.near.name());
+			final String kmParameter = request.getParameter(SearchParam.km.name());
+			postcodeParamether = parameter != null && parameter.matches("\\d+") ? parameter : null;
+			kmParamether = kmParameter != null && kmParameter.matches("\\d+") ? kmParameter : (SearchService.MAX_DISTANCE + StringUtils.EMPTY);
+			if (StringUtils.trimToNull(postcodeParamether) != null && StringUtils.trimToNull(kmParamether) != null) {
+				locationPoints = getLocationPointByPostcode(postcodeParamether);
+			}
+		}
 		return StringUtils.trimToNull(postcodeParamether) != null;
+	}
+	
+	private boolean isLocationPointsFounded() {
+		return locationPoints != null && locationPoints.length == 2 && locationPoints[0] != null && locationPoints[1] != null;
+	}
+	
+	private boolean isKmParametherSpecified() {
+		return StringUtils.trimToNull(kmParamether) != null;
 	}
 		
 	public String getZoneId() {
@@ -272,6 +298,21 @@ public class CourseItem {
 		return classes;
 	}
 	
+	private Double[] getLocationPointByPostcode(final String postcode) {
+		Double[] locationPoints = { null, null };
+		try {
+			SolrDocumentList responseResults = searchService.searchSuburb(postcode).getResults();
+			if (!responseResults.isEmpty()) {
+				SolrDocument doc = responseResults.get(0);
+				String[] points = ((String) doc.get("loc")).split(",");
+				locationPoints[0] = Double.parseDouble(points[0]);//locatonLat
+				locationPoints[1] = Double.parseDouble(points[1]);//locationLong
+			}
+		} catch (NumberFormatException e) {
+		}
+		return locationPoints;
+	}
+	
 	public List<CourseClass> getOtherClasses() {
 		final boolean filterByPostcode = isPostcodeSpecified();
 		@SuppressWarnings("unchecked")
@@ -305,8 +346,18 @@ public class CourseItem {
 		if (room != null) {
 			Site site = room.getSite();
 			if (site != null && site.getIsWebVisible() && StringUtils.trimToNull(site.getSuburb()) != null && site.isHasCoordinates() 
-				&& StringUtils.trimToNull(site.getPostcode()) != null && site.getPostcode().equals(postcode)) {
-				return true;
+				&& StringUtils.trimToNull(site.getPostcode()) != null) {
+				boolean isEqualPostcode = site.getPostcode().equals(postcode);
+				if (isEqualPostcode) {
+					return true;
+				}
+				if (isKmParametherSpecified() && isLocationPointsFounded()) {
+					double distance = CourseClassUtils.evaluateDistanceForCourseClassSiteAndLocation(courseClass, locationPoints[0], locationPoints[1]);
+					if (distance <= Double.valueOf(kmParamether).doubleValue()) {
+						return true;
+					}
+				}
+				return false;
 			}
 		}
 		return false;
