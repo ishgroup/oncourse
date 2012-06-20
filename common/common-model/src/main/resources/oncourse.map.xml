@@ -822,7 +822,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
-		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
+		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
 	<db-entity name="WebMenu" catalog="willow_college">
 		<db-attribute name="URL" type="LONGVARCHAR" length="65535"/>
