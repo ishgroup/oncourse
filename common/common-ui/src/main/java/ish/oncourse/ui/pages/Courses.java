@@ -6,6 +6,7 @@ import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.ui.utils.SearchCoursesModel;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.CourseClassUtils;
@@ -73,7 +74,7 @@ public class Courses {
 	private Integer itemIndex;
 
 	private Map<SearchParam, Object> searchParams;
-
+	
 	@Property
 	private Map<SearchParam, String> paramsInError;
 
@@ -91,6 +92,8 @@ public class Courses {
 	private String sitesParameter;
 
 	private List<Long> sitesIds;
+	
+	private SearchCoursesModel searchCoursesModel;
 
 	@SetupRender
 	public void beforeRender() {
@@ -149,6 +152,7 @@ public class Courses {
 			focusesForMapSites = new HashMap<Long, Float>();
 		}
 		Double[] locationPoints = { null, null };
+		searchCoursesModel = null;
 		if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
 			try {
 				String place = (String) searchParams.get(SearchParam.near);
@@ -158,10 +162,16 @@ public class Courses {
 					String[] points = ((String) doc.get("loc")).split(",");
 					locationPoints[0] = Double.parseDouble(points[0]);
 					locationPoints[1] = Double.parseDouble(points[1]);
+					String postcode = (String) doc.get("postcode");
+					if (responseResults.size() == 1) {
+						searchCoursesModel = new SearchCoursesModel(locationPoints, postcode, searchParams);
+					}
 				}
+				
 			} catch (NumberFormatException e) {
 			}
 		}
+		request.setAttribute("searchCoursesModel", searchCoursesModel);
 		for (Course course : courses) {
 			for (CourseClass courseClass : course.getEnrollableClasses()) {
 				Room room = courseClass.getRoom();

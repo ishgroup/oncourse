@@ -9,9 +9,9 @@ import ish.oncourse.model.Site;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.ui.utils.SearchCoursesModel;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.CourseClassUtils;
 
@@ -24,11 +24,9 @@ import java.util.regex.Pattern;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.apache.tapestry5.EventConstants;
+//import org.apache.tapestry5.EventConstants;
 //import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
+//import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -92,17 +90,22 @@ public class CourseItem {
 	@Property
 	private Double[] locationPoints;
 	
-	@Inject
-	private ISearchService searchService;
+	@Property
+	private SearchCoursesModel searchCoursesModel;
 		
+	public SearchCoursesModel takeSearchCoursesModel() {
+		return searchCoursesModel;
+	}
+
 	public boolean isPostcodeSpecified() {
 		if (postcodeParamether == null) {
-			final String parameter = request.getParameter(SearchParam.near.name());
-			final String kmParameter = request.getParameter(SearchParam.km.name());
-			postcodeParamether = parameter != null && parameter.matches("\\d+") ? parameter : null;
-			kmParamether = kmParameter != null && kmParameter.matches("\\d+") ? kmParameter : (SearchService.MAX_DISTANCE + StringUtils.EMPTY);
-			if (StringUtils.trimToNull(postcodeParamether) != null && StringUtils.trimToNull(kmParamether) != null) {
-				locationPoints = getLocationPointByPostcode(postcodeParamether);
+			searchCoursesModel = (SearchCoursesModel) request.getAttribute("searchCoursesModel");
+			if (takeSearchCoursesModel() != null) {
+				postcodeParamether = takeSearchCoursesModel().getPostcode();
+				final String kmParameter = (String) (takeSearchCoursesModel().getSearchParams().containsKey(SearchParam.km) ? 
+					takeSearchCoursesModel().getSearchParams().get(SearchParam.km) : (SearchService.MAX_DISTANCE + StringUtils.EMPTY));
+				kmParamether = kmParameter;
+				locationPoints = takeSearchCoursesModel().getLocationPoints();
 			}
 		}
 		return StringUtils.trimToNull(postcodeParamether) != null;
@@ -298,25 +301,10 @@ public class CourseItem {
 		return classes;
 	}
 	
-	private Double[] getLocationPointByPostcode(final String postcode) {
-		Double[] locationPoints = { null, null };
-		try {
-			SolrDocumentList responseResults = searchService.searchSuburb(postcode).getResults();
-			if (!responseResults.isEmpty()) {
-				SolrDocument doc = responseResults.get(0);
-				String[] points = ((String) doc.get("loc")).split(",");
-				locationPoints[0] = Double.parseDouble(points[0]);//locatonLat
-				locationPoints[1] = Double.parseDouble(points[1]);//locationLong
-			}
-		} catch (NumberFormatException e) {
-		}
-		return locationPoints;
-	}
-	
 	public List<CourseClass> getOtherClasses() {
 		final boolean filterByPostcode = isPostcodeSpecified();
 		@SuppressWarnings("unchecked")
-		final List<CourseClass> classes = filterByPostcode ? (isList) ? getEnrollableClasses(true, false) :  getCurrentClasses(true, false) : 
+		final List<CourseClass> classes = filterByPostcode ? ((isList) ? getEnrollableClasses(true, false) :  getCurrentClasses(true, false)) : 
 			Collections.EMPTY_LIST;
 		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(classes);
