@@ -25,7 +25,8 @@
 				<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
 			</t:if>
 		</t:loop>
-		<t:if test="otherClasses.empty" negate="true">
+		<t:if test="isList">
+			<t:if test="otherClasses.empty" negate="true">
 			<p class="really-other-classes-control clearfix">
 				<a href="javascript:return false;" >Show other classes</a>
 			</p>
@@ -35,7 +36,6 @@
 				</t:loop>
 			</div>
 		</t:if>
-		<t:if test="isList">
 			<t:if test="fullClasses.empty" negate="true">
 			<p class="other-classes-control clearfix">
 				<a href="javascript:return false;" >Show full classes</a>
