@@ -11,9 +11,6 @@ import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
-
-import java.io.IOException;
-
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
@@ -21,14 +18,8 @@ import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
-import org.apache.tapestry5.services.ComponentSource;
-import org.apache.tapestry5.services.ExceptionReporter;
-import org.apache.tapestry5.services.RequestExceptionHandler;
-import org.apache.tapestry5.services.ResponseRenderer;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
-import org.slf4j.Logger;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -56,19 +47,5 @@ public class AppModule {
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ThreadLocale locale) {
 		configuration.add(ThreadLocale.class, locale);
-	}
-
-	public RequestExceptionHandler decorateRequestExceptionHandler(final Logger logger, final ResponseRenderer renderer,
-			final ComponentSource componentSource,
-			@Symbol(SymbolConstants.PRODUCTION_MODE) boolean productionMode,
-			Object service) {
-
-		return new RequestExceptionHandler() {
-			public void handleRequestException(Throwable exception) throws IOException {
-				ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage("Error500");
-				exceptionReporter.reportException(exception);
-				renderer.renderPageMarkupResponse("Error500");
-			}
-		};
 	}
 }

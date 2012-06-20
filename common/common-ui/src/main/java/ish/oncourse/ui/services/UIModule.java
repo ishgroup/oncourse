@@ -7,7 +7,6 @@ import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.template.T5FileResource;
-
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.pageload.ComponentTemplateSourceOverride;
 import org.apache.tapestry5.internal.pageload.PageLoaderOverride;
@@ -27,15 +26,7 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
-import org.apache.tapestry5.services.ComponentClasses;
-import org.apache.tapestry5.services.ComponentMessages;
-import org.apache.tapestry5.services.ComponentTemplates;
-import org.apache.tapestry5.services.InvalidationEventHub;
-import org.apache.tapestry5.services.LibraryMapping;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.RequestGlobals;
-import org.apache.tapestry5.services.UpdateListenerHub;
+import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.templates.ComponentTemplateLocator;
 
 /**
@@ -125,4 +116,18 @@ public class UIModule {
 					}
 				}));
 	}
+
+
+    public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource,
+                                                                   ResponseRenderer renderer,
+                                                                   Request request,
+                                                                   Response response
+    )
+    {
+        return new UIRequestExceptionHandler(componentSource,renderer,request,response);
+    }
+
+    public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
+        configuration.add(RequestExceptionHandler.class, handler);
+    }
 }
