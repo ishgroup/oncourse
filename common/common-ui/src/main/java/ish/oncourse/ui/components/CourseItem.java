@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 //import org.apache.tapestry5.EventConstants;
 //import org.apache.tapestry5.annotations.InjectComponent;
 //import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -36,6 +37,7 @@ import org.apache.tapestry5.services.Request;
 public class CourseItem {
 
 	private static final int COURSE_DETAILS_LENGTH = 490;
+	private static final Logger LOGGER = Logger.getLogger(CourseItem.class);
 
 	@Property
 	@Parameter(required = true)
@@ -153,7 +155,7 @@ public class CourseItem {
 	}
 
 	public String getAvailMsg() {
-		int numberOfClasses = course.getEnrollableClasses().size();
+		int numberOfClasses = takeCourse().getEnrollableClasses().size();
 		String msg;
 
 		if (numberOfClasses <= 0) {
@@ -168,7 +170,7 @@ public class CourseItem {
 	}
 
 	public String getMoreLink() {
-		return "/course/" + course.getCode();
+		return "/course/" + takeCourse().getCode();
 	}
 	
 	protected Course takeCourse() {
@@ -287,7 +289,7 @@ public class CourseItem {
 
 	public boolean isHasMoreAvailablePlaces() {
 		int places = 0;
-		for (CourseClass courseClass : course.getEnrollableClasses()) {
+		for (CourseClass courseClass : takeCourse().getEnrollableClasses()) {
 			places += courseClass.getAvailableEnrolmentPlaces();
 		}
 		return places > 0;
@@ -295,7 +297,7 @@ public class CourseItem {
 
 	public List<CourseClass> getClasses() {
 		final boolean filterByPostcode = isPostcodeSpecified();
-		final List<CourseClass> classes = (isList) ? getEnrollableClasses(filterByPostcode, true) :  getCurrentClasses(filterByPostcode, true);
+		final List<CourseClass> classes = (isList) ? getEnrollableClasses(filterByPostcode, true) :  getCurrentClasses();
 		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(classes);
 		return classes;
@@ -304,10 +306,15 @@ public class CourseItem {
 	public List<CourseClass> getOtherClasses() {
 		final boolean filterByPostcode = isPostcodeSpecified();
 		@SuppressWarnings("unchecked")
-		final List<CourseClass> classes = filterByPostcode ? ((isList) ? getEnrollableClasses(true, false) :  getCurrentClasses(true, false)) : 
-			Collections.EMPTY_LIST;
+		final List<CourseClass> classes = filterByPostcode ? getEnrollableClasses(true, false) : Collections.EMPTY_LIST;
 		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(classes);
+		//TODO: this logger should be info, used only to detect what's wrong on live server.
+		String postcode = takeSearchCoursesModel() != null ? postcodeParamether : "no postcode defined";
+		String km = takeSearchCoursesModel() != null ? kmParamether : "no km defined";
+		String message = String.format("%s of %s classes suppressed for course %s with search params postcode : %s and km : %s for college %s", 
+			classes.size(), getEnrollableClasses(false, false).size(), takeCourse().getName(), postcode, km, takeCourse().getCollege().getId());
+		LOGGER.error(message);
 		return classes;
 	}
 	
@@ -351,9 +358,9 @@ public class CourseItem {
 		return false;
 	}
 	
-	private List<CourseClass> getCurrentClasses(final boolean filterByPostcode, final boolean includeMatching) {
+	private List<CourseClass> getCurrentClasses() {
 		final List<CourseClass> data = takeCourse().getCurrentClasses();
-		return filterByPostcode ? filterByPostcode(data, includeMatching) : data;
+		return data;
 	}
 	
 	public List<CourseClass> getFullClasses() {
