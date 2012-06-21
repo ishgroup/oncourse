@@ -156,7 +156,10 @@ public class EnrolmentPaymentResult {
 				transaction.setState(payment.getContact().getState());
 				BigDecimal tax = new BigDecimal(0);
 				for (PaymentInLine pil : payment.getPaymentInLines()) {
-					tax = tax.add(pil.getInvoice().getTotalGst());
+					for (InvoiceLine invoiceLine : pil.getInvoice().getInvoiceLines()) {
+						tax = tax.add(invoiceLine.getTotalTax().toBigDecimal());
+					}
+					//tax = tax.add(pil.getInvoice().getTotalGst());
 				}
 				transaction.setTax(tax);
 				transaction.setTotal(payment.getAmount());
