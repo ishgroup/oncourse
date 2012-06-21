@@ -17,6 +17,15 @@ public class PageHead {
 	
 	@Parameter
 	private String title;
+	
+	public String getAnalyticsAccount() {
+		String analyticsAccount = siteService.getCurrentWebSite().getGoogleAnalyticsAccount();
+		return (StringUtils.trimToNull(analyticsAccount) == null) ? StringUtils.EMPTY : analyticsAccount.trim();
+	}
+
+	public boolean isAccountValid() {
+		return StringUtils.trimToNull(getAnalyticsAccount()) != null;
+	}
 
 	public String getTitle() {
 		String collegeName = siteService.getCurrentCollege().getName();
