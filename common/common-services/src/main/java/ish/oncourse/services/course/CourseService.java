@@ -63,8 +63,7 @@ public class CourseService implements ICourseService {
 		q.setFetchOffset(startDefault);
 		q.setFetchLimit(rowsDefault);
 
-		appyCourseCacheSettings(q);
-
+		applyCourseCacheSettings(q);
 		return cayenneService.sharedContext().performQuery(q);
 	}
 
@@ -180,7 +179,7 @@ public class CourseService implements ICourseService {
 
 		SelectQuery q = new SelectQuery(Course.class, expr);
 
-		appyCourseCacheSettings(q);
+		applyCourseCacheSettings(q);
 		List<Course> courses = cayenneService.sharedContext().performQuery(q);
 		Collections.sort(courses, new Comparator<Course>() {
 
@@ -192,7 +191,6 @@ public class CourseService implements ICourseService {
 		return courses;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Course getCourse(String searchProperty, Object value) {
 
 		Expression qualifier = getSiteQualifier();
@@ -207,7 +205,7 @@ public class CourseService implements ICourseService {
 
 		SelectQuery q = new SelectQuery(Course.class, qualifier);
 
-		appyCourseCacheSettings(q);
+		applyCourseCacheSettings(q);
 
 		return (Course) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
@@ -239,7 +237,7 @@ public class CourseService implements ICourseService {
 			query.setFetchOffset(random);
 			query.setFetchLimit(1);
 
-			appyCourseCacheSettings(query);
+			applyCourseCacheSettings(query);
 
 			randomResult = (Course) Cayenne.objectForQuery(sharedContext, query);
 		}
@@ -323,7 +321,7 @@ public class CourseService implements ICourseService {
 	 * @param q
 	 *            course query
 	 */
-	private static void appyCourseCacheSettings(SelectQuery q) {
+	private static void applyCourseCacheSettings(SelectQuery q) {
 
 		// TODO: uncomment when after upgrading to newer cayenne where
 		// https://issues.apache.org/jira/browse/CAY-1585 is fixed.
@@ -338,6 +336,8 @@ public class CourseService implements ICourseService {
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.SESSIONS_PROPERTY);
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.TUTOR_ROLES_PROPERTY);
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.DISCOUNT_COURSE_CLASSES_PROPERTY);
-
+		//q.addPrefetch(Course.QUALIFICATION_PROPERTY);
+		//q.addPrefetch(Course.COURSE_MODULES_PROPERTY);
+		//q.addPrefetch(Course.COURSE_MODULES_PROPERTY + "." + CourseModule.MODULE_PROPERTY);
 	}
 }
