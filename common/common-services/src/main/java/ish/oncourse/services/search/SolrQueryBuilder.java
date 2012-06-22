@@ -32,7 +32,7 @@ public class SolrQueryBuilder {
 
 
     static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course end:[NOW TO *]";
-    static final String FILTER_TEMPLATE_s = "(detail:%s || tutor:%s || course_code:%s)";
+    static final String FILTER_TEMPLATE_s = "(detail:%s || tutor:%s || course_code:%s || name:%s)";
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
@@ -161,7 +161,7 @@ public class SolrQueryBuilder {
     void appendFilterS(List<String> filters) {
         if (params.containsKey(SearchParam.s)) {
             String value = ClientUtils.escapeQueryChars((String) params.get(SearchParam.s));
-            filters.add(String.format(FILTER_TEMPLATE_s, value, value, value));
+            filters.add(String.format(FILTER_TEMPLATE_s, value, value, value, value));
         }
     }
 
