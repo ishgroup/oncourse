@@ -806,5 +806,194 @@
     <changeSet id="62" author="andrey" context="production" runOnChange="true">
         <sql>alter table BinaryInfo add column filePath VARCHAR(512)</sql>
     </changeSet>
+    
+    <changeSet id="63" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+			<not>
+    			<tableExists tableName="Country"/>
+    		</not>
+		</preConditions>
+		<createTable tableName="Country">
+			<column name="id" type="BIGINT(20)">
+    			<constraints primaryKey="true" nullable="false" unique="true"/>
+    		</column>
+    		<column name="asccssCode" type="VARCHAR(10)"/>
+    		<column name="created" type="DATETIME"/>
+    		<column name="ishVersion" type="BIGINT(11)"/>
+    		<column name="isoCodeAlpha2" type="CHAR(3)"/>
+    		<column name="isoCodeAlpha3" type="CHAR(3)"/>
+    		<column name="isoCodeNumeric" type="INT(11)"/>
+    		<column name="modified" type="DATETIME"/>
+    		<column name="name" type="VARCHAR(50)"/>
+    		<column name="saccCode" type="INT(11)"/>
+		</createTable>
+		<addAutoIncrement tableName="Country" columnName="id" columnDataType="BIGINT(20)"/>
+		<addNotNullConstraint tableName="Country"
+			columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+    </changeSet>
+    
+    <changeSet id="64" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+			<not>
+    			<tableExists tableName="Language"/>
+    		</not>
+		</preConditions>
+		<createTable tableName="Language">
+			<column name="id" type="BIGINT(20)">
+    			<constraints primaryKey="true" nullable="false" unique="true"/>
+    		</column>
+    		<column name="absCode" type="VARCHAR(10)"/>
+    		<column name="created" type="DATETIME"/>
+    		<column name="ishVersion" type="BIGINT(11)"/>
+    		<column name="isActive" type="TINYINT(4)"/>
+    		<column name="modified" type="DATETIME"/>
+    		<column name="name" type="VARCHAR(50)"/>
+		</createTable>
+		<addAutoIncrement tableName="Language" columnName="id" columnDataType="BIGINT(20)"/>
+		<addNotNullConstraint tableName="Language" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Language" columnName="isActive" defaultNullValue="0" columnDataType="TINYINT(4)"/>
+		<createTable tableName="Module">
+			<column name="id" type="BIGINT(20)">
+    			<constraints primaryKey="true" nullable="false" unique="true"/>
+    		</column>
+    		<column name="nationalCode" type="VARCHAR(16)">
+    			<constraints primaryKey="false" nullable="false" unique="true"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="ishVersion" type="BIGINT(11)"/>
+    		<column name="title" type="VARCHAR(256)"/>
+    		<column name="modified" type="DATETIME"/>
+    		<column name="disciplineCode" type="VARCHAR(8)"/>
+    		<column name="fieldOfEducation" type="VARCHAR(8)"/>
+    		<column name="isModule" type="TINYINT(4)"/>
+    		<column name="trainingPackageId" type="BIGINT(20)"/>
+		</createTable>
+		<addAutoIncrement tableName="Module" columnName="id" columnDataType="BIGINT(20)"/>
+		<addNotNullConstraint tableName="Module" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Module" columnName="isModule" defaultNullValue="0" columnDataType="TINYINT(4)"/>
+		<createTable tableName="Qualification">
+			<column name="id" type="BIGINT(20)">
+    			<constraints primaryKey="true" nullable="false" unique="true"/>
+    		</column>
+    		<column name="nationalCode" type="VARCHAR(16)">
+    			<constraints primaryKey="false" nullable="true" unique="true"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="ishVersion" type="BIGINT(11)"/>
+    		<column name="modified" type="DATETIME"/>
+			<column name="level" type="VARCHAR(256)"/>
+			<column name="title" type="VARCHAR(256)"/>
+			<column name="anzsco" type="VARCHAR(256)"/>
+			<column name="anzsic" type="VARCHAR(64)"/>
+			<column name="asco" type="VARCHAR(64)"/>
+			<column name="fieldOfStudy" type="VARCHAR(4)"/>
+			<column name="fieldOfEducation" type="VARCHAR(8)"/>
+			<column name="nominalHours" type="FLOAT"/>
+			<column name="reviewDate" type="DATE"/>
+			<column name="isAccreditedCourse" type="TINYINT(4)"/>
+			<column name="newApprenticeship" type="VARCHAR(64)"/>
+			<column name="trainingPackageId" type="BIGINT(20)"/>
+			<column name="levelCode" type="VARCHAR(3)"/>
+		</createTable>
+		<addAutoIncrement tableName="Qualification" columnName="id" columnDataType="BIGINT(20)"/>
+		<addNotNullConstraint tableName="Qualification" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="Qualification" columnName="isAccreditedCourse" defaultNullValue="0" columnDataType="TINYINT(4)"/>
+		<createTable tableName="TrainingPackage">
+			<column name="id" type="BIGINT(20)">
+    			<constraints primaryKey="true" nullable="false" unique="true"/>
+    		</column>
+    		<column name="nationalISC" type="VARCHAR(64)">
+    			<constraints primaryKey="false" nullable="true" unique="true"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="ishVersion" type="BIGINT(11)"/>
+    		<column name="title" type="VARCHAR(256)"/>
+    		<column name="modified" type="DATETIME"/>
+    		<column name="copyrightCategory" type="VARCHAR(64)"/>
+    		<column name="copyrightContact" type="VARCHAR(64)"/>
+    		<column name="developer" type="VARCHAR(64)"/>
+    		<column name="endorsementFrom" type="DATETIME"/>
+    		<column name="endorsementTo" type="DATETIME"/>
+    		<column name="purchaseFrom" type="VARCHAR(128)"/>
+    		<column name="type" type="VARCHAR(32)"/>
+		</createTable>
+		<addAutoIncrement tableName="TrainingPackage" columnName="id" columnDataType="BIGINT(20)"/>
+		<addNotNullConstraint tableName="TrainingPackage" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<createTable tableName="postcode">
+    		<column name="postcode" type="SMALLINT(6)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="ishVersion" type="BIGINT(11)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="locality" type="VARCHAR(60)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="state" type="CHAR(3)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="comments" type="VARCHAR(255)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="deliveryOffice" type="VARCHAR(60)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="presortIndicator" type="SMALLINT(6)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="parcelZone" type="CHAR(3)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="BSPnumber" type="SMALLINT(6)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="BSPname" type="VARCHAR(60)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="category" type="VARCHAR(60)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+		</createTable>
+		<addNotNullConstraint tableName="postcode" columnName="ishVersion" defaultNullValue="1" columnDataType="BIGINT(11)"/>
+		<addNotNullConstraint tableName="postcode" columnName="postcode" defaultNullValue="0" columnDataType="SMALLINT(6)"/>
+		<addNotNullConstraint tableName="postcode" columnName="presortIndicator" defaultNullValue="0" columnDataType="SMALLINT(6)"/>
+		<addNotNullConstraint tableName="postcode" columnName="BSPnumber" defaultNullValue="0" columnDataType="SMALLINT(6)"/>
+		<createIndex tableName="postcode" indexName="postcode">
+			<column name="postcode"/>
+			<column name="locality"/>
+			<column name="state"/>
+			<column name="comments"/>
+		</createIndex>
+		<createTable tableName="postcode_db">
+    		<column name="postcode" type="INT(4)">
+    			<constraints primaryKey="false" nullable="false" unique="true"/>
+    		</column>
+    		<column name="suburb" type="VARCHAR(45)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="state" type="VARCHAR(4)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="dc" type="VARCHAR(45)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="type" type="VARCHAR(45)">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="lat" type="DOUBLE">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+    		<column name="lon" type="DOUBLE">
+    			<constraints primaryKey="false" nullable="false" unique="false"/>
+    		</column>
+		</createTable>
+		<createIndex tableName="postcode_db" indexName="idx_lat">
+			<column name="lat"/>
+		</createIndex>
+		<createIndex tableName="postcode_db" indexName="idx_lon">
+			<column name="lon"/>
+		</createIndex>
+		<addPrimaryKey tableName="postcode_db" columnNames="postcode,suburb"/>
+    </changeSet>
 
 </databaseChangeLog>
