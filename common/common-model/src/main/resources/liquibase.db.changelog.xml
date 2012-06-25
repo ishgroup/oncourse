@@ -995,5 +995,14 @@
 		</createIndex>
 		<addPrimaryKey tableName="postcode_db" columnNames="postcode,suburb"/>
     </changeSet>
+    
+    
+    <changeSet id="65" author="viacheslav" context="production" runOnChange="true">
+    <preConditions onFail="MARK_RAN">
+    	<indexExists tableName="postcode_db" indexName="postcode"/>
+	</preConditions>
+    <sql>ALTER TABLE postcode_db CHANGE COLUMN postcode postcode INT(4) UNSIGNED NOT NULL </sql>
+    <dropIndex tableName="postcode_db" indexName="postcode"/>
+    </changeSet>
 
 </databaseChangeLog>
