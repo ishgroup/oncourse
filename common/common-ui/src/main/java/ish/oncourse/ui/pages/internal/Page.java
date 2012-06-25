@@ -33,7 +33,11 @@ public class Page {
 	public boolean beforeRender() throws IOException {
 		node = webNodeService.getCurrentNode();
 		if (node == null || !node.isPublished()) {
-			logger.error("CurrentNode is null in " + request.getServerName());
+			logger.error(String.format("CurrentNode \"%s\" is %s in %s/%s",
+                    node == null ? "undefined": node.getPath(),
+                    node == null ? "null" : "unpublished",
+                    request.getServerName(),
+                    request.getPath()));
 			
 			HttpServletResponse httpServletResponse = requestGlobals.getHTTPServletResponse();
 			httpServletResponse.setContentType("text/html;charset=UTF-8");
