@@ -1,16 +1,13 @@
 package ish.oncourse.ui.pages.internal;
 
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.ui.components.internal.PageStructure;
-
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
@@ -26,7 +23,10 @@ public class Page {
 
 	private static final String MAIN_BODY_ID = "Main";
 
-	@SuppressWarnings("all")
+    private static final Logger logger = Logger.getLogger(Page.class);
+
+
+    @SuppressWarnings("all")
 	@InjectComponent
 	@Property
 	private PageStructure pageStructure;
@@ -70,13 +70,22 @@ public class Page {
 		if (currentNode != null) {
 			this.node = (WebNode) cayenneService.newContext().localObject(currentNode.getObjectId(), null);
 		} else {
-			this.node = null;
+            logger.error(String.format("CurrentNode is null in %s/%s",
+                    request.getServerName(),
+                    request.getPath()));
+            this.node = null;
 		}
 		
 		return true;
 	}
 
-	public String getBodyClass() {
+    public WebNodeType getWebNodeType()
+    {
+        return node != null ? node.getWebNodeType() : null;
+    }
+
+
+    public String getBodyClass() {
 		return (isHomePage()) ? MAIN_PAGE_BODY_CLASS : INTERNAL_PAGE_BODY_CLASS;
 	}
 
