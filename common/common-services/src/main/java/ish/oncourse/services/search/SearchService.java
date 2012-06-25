@@ -253,7 +253,7 @@ public class SearchService implements ISearchService {
             if (suburbParams[0] != null) {
                 String near = escapeQueryChars(suburbParams[0]).replaceAll("[\\s]+", "+");
                 query.append(" AND (suburb:").append(near);
-                query.append("|| postcode:").append(near);
+                query.append(" || postcode:").append(near);
                 query.append(")");
             }
 
