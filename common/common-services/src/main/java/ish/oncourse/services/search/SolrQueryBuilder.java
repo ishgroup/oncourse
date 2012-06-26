@@ -214,17 +214,8 @@ public class SolrQueryBuilder {
 
     void setFiltersAndNearTo(SolrQuery query,List<String> filters)
     {
-        String near = (String) params.get(SearchParam.near);
-        SolrDocumentList responseResults = searchService.searchSuburb(near).getResults();
-        /**
-         * The test has been introduced to exclude IndexOutOfBoundsException exception. responseResults should be always not empty , because
-         * we validate the parameter's value in method
-         */
-        if (responseResults.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("Cannot find suburbs with parameter %s = %s.", SearchParam.near, near));
-        }
-        String location = (String) responseResults.get(0).get(PARAMETER_loc);
+        SolrDocumentList solrSuburbs = (SolrDocumentList) params.get(SearchParam.near);
+        String location = (String) solrSuburbs.get(0).get(PARAMETER_loc);
         query.addFilterQuery(FILTER_TEMPLATE_geofilt);
         query.add(PARAMETER_sfield, PARAMETER_VALUE_sfield);
         query.add(PARAMETER_pt, location);
@@ -240,12 +231,6 @@ public class SolrQueryBuilder {
         {
             setFiltersAndNearTo(query,filters);
         }
-//        else if (params.containsKey(SearchParam.after) || params.containsKey(SearchParam.before))
-//        {
-//            query.setQuery(String.format(QUERY_brackets,convert(filters)));
-//            query.addSortField(FIELD_score, SolrQuery.ORDER.desc);
-//            query.addSortField(FIELD_startDate,SolrQuery.ORDER.asc);
-//        }
         else
         {
             query.setQuery(DATE_BOOST_STM);

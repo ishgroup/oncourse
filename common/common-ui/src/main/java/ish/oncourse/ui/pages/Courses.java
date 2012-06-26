@@ -10,7 +10,6 @@ import ish.oncourse.ui.utils.SearchCoursesModel;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.CourseClassUtils;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -48,7 +47,13 @@ public class Courses {
 
     private static final String DATE_FORMAT_FOR_AFTER_BEFORE = "yyyyMMdd";
 
-	@Inject
+    public static final String ATTR_searchCoursesModel = "searchCoursesModel";
+
+    public static final String PARAM_VALUE_weekday = "weekday";
+    public static final String PARAM_VALUE_weekend = "weekend";
+
+
+    @Inject
 	private ICourseService courseService;
 	@Inject
 	private ISearchService searchService;
@@ -155,8 +160,7 @@ public class Courses {
 		searchCoursesModel = null;
 		if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
 			try {
-				String place = (String) searchParams.get(SearchParam.near);
-				SolrDocumentList responseResults = searchService.searchSuburb(place).getResults();
+				SolrDocumentList responseResults = (SolrDocumentList) searchParams.get(SearchParam.near);
 				if (!responseResults.isEmpty()) {
 					SolrDocument doc = responseResults.get(0);
 					String[] points = ((String) doc.get("loc")).split(",");
@@ -171,7 +175,7 @@ public class Courses {
 			} catch (NumberFormatException e) {
 			}
 		}
-		request.setAttribute("searchCoursesModel", searchCoursesModel);
+		request.setAttribute(ATTR_searchCoursesModel, searchCoursesModel);
 		for (Course course : courses) {
 			for (CourseClass courseClass : course.getEnrollableClasses()) {
 				Room room = courseClass.getRoom();
@@ -282,14 +286,20 @@ public class Courses {
 				}
 				switch (name) {
 				case day:
-					if (!parameter.equalsIgnoreCase("weekday") && !parameter.equalsIgnoreCase("weekend")) {
+					if (!(parameter.equalsIgnoreCase(PARAM_VALUE_weekday) || parameter.equalsIgnoreCase(PARAM_VALUE_weekend))) {
 						paramsInError.put(name, parameter);
 					}
 					break;
 				case near:
-					if (searchService.searchSuburb(parameter).getResults().isEmpty()) {
+                    SolrDocumentList solrSuburbs = searchService.searchSuburb(parameter).getResults();
+
+					if (solrSuburbs.isEmpty()) {
 						paramsInError.put(name, parameter);
 					}
+                    else
+                    {
+                        searchParams.put(name, solrSuburbs);
+                    }
 					break;
 				case price:
 					if (!parameter.matches("[$]?(\\d)+[$]?")) {
