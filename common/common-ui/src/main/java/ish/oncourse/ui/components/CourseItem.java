@@ -297,16 +297,9 @@ public class CourseItem {
 	
 	public List<CourseClass> getOtherClasses() {
 		final boolean filterByPostcode = isPostcodeSpecified();
-		@SuppressWarnings("unchecked")
 		final List<CourseClass> classes = filterByPostcode ? getEnrollableClasses(true, false) : Collections.EMPTY_LIST;
 		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(classes);
-		//TODO: this logger should be info, used only to detect what's wrong on live server.
-		String postcode = takeSearchCoursesModel() != null ? postcodeParameter : "no postcode defined";
-		String km = takeSearchCoursesModel() != null ? kmParameter : "no km defined";
-		String message = String.format("%s of %s classes suppressed for course %s with search params postcode : %s and km : %s for college %s", 
-			classes.size(), getEnrollableClasses(false, false).size(), course.getName(), postcode, km, course.getCollege().getId());
-		LOGGER.error(message);
 		return classes;
 	}
 	
