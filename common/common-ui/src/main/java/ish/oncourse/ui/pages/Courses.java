@@ -7,10 +7,9 @@ import ish.oncourse.services.search.SearchException;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.ui.utils.SearchCoursesModel;
-import ish.oncourse.util.FormatUtils;
+import ish.oncourse.ui.utils.SearchParamsParser;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.CourseClassUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -21,8 +20,10 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Page component representing a Course list.
@@ -45,12 +46,8 @@ public class Courses {
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
 
-    private static final String DATE_FORMAT_FOR_AFTER_BEFORE = "yyyyMMdd";
 
     public static final String ATTR_searchCoursesModel = "searchCoursesModel";
-
-    public static final String PARAM_VALUE_weekday = "weekday";
-    public static final String PARAM_VALUE_weekend = "weekend";
 
 
     @Inject
@@ -231,7 +228,10 @@ public class Courses {
 
 		searchParams = getCourseSearchParams();
 
-		return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
+        if (searchParams.containsKey(SearchParam.subject)) {
+            request.setAttribute(Tag.BROWSE_TAG_PARAM, ((Tag)searchParams.get(SearchParam.subject)).getId());
+        }
+        return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
 	}
 
 	/**
@@ -271,86 +271,10 @@ public class Courses {
 	}
 
 	public Map<SearchParam, Object> getCourseSearchParams() {
-		Map<SearchParam, Object> searchParams = new HashMap<SearchParam, Object>();
-
-		paramsInError = new HashMap<SearchParam, String>();
-
-		Tag browseTag = null;
-
-		for (SearchParam name : SearchParam.values()) {
-			String parameter = request.getParameter(name.name());
-			if (StringUtils.trimToNull(parameter) != null) {
-				//this is additional check to avoid put into request string parameter for subject instead tag parameter
-				if (!SearchParam.subject.equals(name)) {
-					searchParams.put(name, parameter);
-				}
-				switch (name) {
-				case day:
-					if (!(parameter.equalsIgnoreCase(PARAM_VALUE_weekday) || parameter.equalsIgnoreCase(PARAM_VALUE_weekend))) {
-						paramsInError.put(name, parameter);
-					}
-					break;
-				case near:
-                    SolrDocumentList solrSuburbs = searchService.searchSuburb(parameter).getResults();
-
-					if (solrSuburbs.isEmpty()) {
-						paramsInError.put(name, parameter);
-					}
-                    else
-                    {
-                        searchParams.put(name, solrSuburbs);
-                    }
-					break;
-				case price:
-					if (!parameter.matches("[$]?(\\d)+[$]?")) {
-						paramsInError.put(name, parameter);
-					}
-					break;
-				case subject:
-					browseTag = tagService.getTagByFullPath(parameter);
-					if (browseTag == null) {
-						//need to clean up not existing tag from search params
-						searchParams.remove(SearchParam.subject);
-						paramsInError.put(name, parameter);
-					}
-					break;
-				case time:
-					if (!parameter.equalsIgnoreCase("daytime") && !parameter.equalsIgnoreCase("evening")) {
-						paramsInError.put(name, parameter);
-					}
-					break;
-				case km:
-					if (!parameter.matches("\\d+")) {
-						paramsInError.put(name, parameter);
-					}
-					break;
-                case after:
-                case before:
-                    try {
-                        Date date = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE,null).parse(parameter);
-                        searchParams.put(name, FormatUtils.convertDateToISO8601(date));
-                    } catch (ParseException e) {
-                        paramsInError.put(name, parameter);
-                    }
-                    break;
-                }
-
-			}
-		}
-
-		if (browseTag == null && !paramsInError.keySet().contains(SearchParam.subject)) {
-			browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
-			if (browseTag != null) {
-				//this code updated because getDefaultPath() return incorrect value for tag group which have aliases
-				searchParams.put(SearchParam.subject, browseTag);
-			}
-		}		
-
-		if (browseTag != null) {
-			request.setAttribute(Tag.BROWSE_TAG_PARAM, browseTag.getId());
-		}
-
-		return searchParams;
+        SearchParamsParser searchParamsParser = new SearchParamsParser(request,searchService,tagService);
+        searchParamsParser.parse();
+        paramsInError = searchParamsParser.getParamsInError();
+        return searchParamsParser.getSearchParams();
 	}
 
 	public Tag getBrowseTag() {
