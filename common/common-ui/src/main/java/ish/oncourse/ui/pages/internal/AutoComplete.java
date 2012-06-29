@@ -16,7 +16,7 @@ import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_suburb;
 
 public class AutoComplete {
 
-    private final static String REQUEST_PARAM = "term";
+    private final static String REQUEST_PARAM_term = "term";
     @Inject
     private Request request;
 
@@ -24,7 +24,7 @@ public class AutoComplete {
     private ISearchService searchService;
 
     StreamResponse onActionFromSub() {
-        String term = request.getParameter(REQUEST_PARAM);
+        String term = StringUtils.trimToNull(request.getParameter(REQUEST_PARAM_term));
         final JSONArray array = new JSONArray();
 
         //this is incorrect state which mean that next js code not able to evaluate input item value in some browser or pass less then 3 characters
@@ -36,7 +36,7 @@ public class AutoComplete {
            *	}
            *	});
         */
-        if (StringUtils.trimToNull(term) == null || StringUtils.trimToNull(term).length() < 3) {
+        if (term != null && term.length() >= 3) {
             SolrDocumentList responseResults = searchService.searchSuburbs(term).getResults();
 
             for (SolrDocument doc : responseResults) {
