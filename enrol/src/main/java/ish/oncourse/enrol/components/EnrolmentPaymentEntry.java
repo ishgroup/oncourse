@@ -3,6 +3,7 @@ package ish.oncourse.enrol.components;
 import ish.common.types.CreditCardType;
 import ish.math.Money;
 import ish.oncourse.enrol.pages.EnrolCourses;
+import ish.oncourse.enrol.utils.EnrolmentValidationUtil;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -38,6 +39,8 @@ public class EnrolmentPaymentEntry {
 	 * Credit card expire date interval
 	 */
 	private static final int EXPIRE_YEAR_INTERVAL = 15;
+	
+	private static final String MESSAGE_NO_PLACES = "noPlaces";
 
 	/**
 	 * tapestry services
@@ -362,6 +365,10 @@ public class EnrolmentPaymentEntry {
 		}
 		if (!userAgreed) {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
+		}
+		
+		if (!EnrolmentValidationUtil.isPlacesLimitExceeded(enrolCourses.getEnrolmentsToPersist(enrolments))) {
+			paymentDetailsForm.recordError(messages.get(MESSAGE_NO_PLACES));
 		}
 
 	}

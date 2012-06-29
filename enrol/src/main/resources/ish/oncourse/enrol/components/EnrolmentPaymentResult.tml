@@ -35,7 +35,7 @@
                     <t:AnalyticsTransaction transaction="transaction"/>
                     <p:else>
                         <t:if test="enrolmentFailed">
-                            <t:if test="payment">
+                            <t:if test="enrolmentFailedNoPlaces" negate="true">
                                 <h2>Enrolment <span>&#187;</span> Payment rejected</h2>
                                 <p>${paymentFailedMsg}</p>
                                 <p>${message:checkCreditCard} <a href="/enrol/enrolCourses" title="Proceed with this enrolment">Try again with another card or reenter details</a>.</p>

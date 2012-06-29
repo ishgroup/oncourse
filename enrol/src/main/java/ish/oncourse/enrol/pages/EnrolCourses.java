@@ -9,6 +9,7 @@ import ish.oncourse.enrol.components.EnrolmentPaymentProcessing;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.enrol.utils.EnrolmentValidationUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -335,7 +336,9 @@ public class EnrolCourses {
         College currentCollege = webSiteService.getCurrentCollege();
         College college = (College) context.localObject(currentCollege.getObjectId(), currentCollege);
 
-        if (payment == null ||payment.getStatus() == PaymentStatus.FAILED || payment.getStatus() == PaymentStatus.FAILED_CARD_DECLINED) {
+        if (payment == null ||payment.getStatus() == PaymentStatus.FAILED || 
+        		payment.getStatus() == PaymentStatus.FAILED_CARD_DECLINED || 
+        		payment.getStatus() == PaymentStatus.FAILED_NO_PLACES) {
 
             payment = context.newObject(PaymentIn.class);
             payment.setStatus(PaymentStatus.NEW);
@@ -685,18 +688,25 @@ public class EnrolCourses {
             enrolmentPaymentProcessing.setPayment(payment);
             payment.setStatus(PaymentStatus.IN_TRANSACTION);
 
-            if (isAllEnrolmentsAvailable(enrolments)) {
-                for (Enrolment e : validEnrolments) {
-                    e.setStatus(EnrolmentStatus.IN_TRANSACTION);
-                }
-                enrolmentPaymentProcessing.setEnrolments(validEnrolments);
-                context.commitChanges();
+            for (Enrolment e : validEnrolments) {
+            	e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+            }
+            enrolmentPaymentProcessing.setEnrolments(validEnrolments);
+                
+            // commit enrolments in IN_TRANSACTION state and then run validation for places
+            context.commitChanges();
+            
+            if (EnrolmentValidationUtil.isPlacesLimitExceeded(validEnrolments)) {
+            	performGatewayOperation();
             } else {
-                enrolmentPaymentProcessing.setEnrolments(null);
-                context.rollbackChanges();
+            	
+            	// if places limit exceeded then failing payment and process everything the same
+            	// way like if payment was failed by gateway
+            	payment.setStatus(PaymentStatus.FAILED_NO_PLACES);
+            	payment.failPayment();
+            	failedPayment = payment;
             }
 
-            performGatewayOperation();
             setCheckoutResult(false);
         }
 
@@ -737,7 +747,7 @@ public class EnrolCourses {
      *
      * @return
      */
-    List<Enrolment> getEnrolmentsToPersist(List<Enrolment> enrolments) {
+    public List<Enrolment> getEnrolmentsToPersist(List<Enrolment> enrolments) {
         List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
         ObjectContext context = payment.getObjectContext();
 

@@ -185,7 +185,16 @@ public class EnrolmentPaymentResult {
 	public boolean isEnrolmentFailed() {
 		PaymentStatus status = payment.getStatus();
 		return PaymentStatus.FAILED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status)
-				|| PaymentStatus.FAILED_CARD_DECLINED.equals(status);
+				|| PaymentStatus.FAILED_CARD_DECLINED.equals(status) || PaymentStatus.FAILED_NO_PLACES.equals(status);
+	}
+	
+	/**
+	 * Returns true if payment was failed because of insufficient places for one of enrolments.
+	 * 
+	 * @return
+	 */
+	public boolean isEnrolmentFailedNoPlaces() {
+		return PaymentStatus.FAILED_NO_PLACES.equals(payment.getStatus());
 	}
 
 	/**
