@@ -23,9 +23,12 @@ public class SolrQueryBuilder {
     static final String PARAMETER_dateboost = "dateboost";
     static final String PARAMETER_qq = "qq";
 
-    static final String FIELD_score = "score";
-    static final String FIELD_name = "name";
-    static final String FIELD_startDate = "startDate";
+    public static final String FIELD_score = "score";
+    public static final String FIELD_name = "name";
+    public static final String FIELD_startDate = "startDate";
+    public static final String FIELD_suburb = "suburb";
+    public static final String FIELD_postcode = "postcode";
+
 
     static final String PARAMETER_VALUE_fl = "id,name,course_loc";
     static final String PARAMETER_VALUE_sfield = "course_loc";
