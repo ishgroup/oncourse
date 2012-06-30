@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class BinaryDataServlet extends ServiceAwareServlet {
+	private static final long serialVersionUID = 1376738011903521168L;
 
 	@Override
 	public synchronized void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

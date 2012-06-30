@@ -15,7 +15,8 @@ import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.services.RequestGlobals;
 
 public class ServiceAwareServlet extends HttpServlet {
-	
+	private static final long serialVersionUID = -3704585412303650379L;
+
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
