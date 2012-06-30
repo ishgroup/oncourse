@@ -10,7 +10,6 @@ import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v4.stubs.replication.BinaryDataStub;
-import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -471,11 +470,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
     {
         //the file storage processing
         try {
-            if (entity instanceof  BinaryInfo && stub instanceof DeletedStub)
+            if (entity instanceof  BinaryInfo && stub instanceof GenericDeletedStub)
             {
                     fileStorageAssetService.delete((BinaryInfo)entity);
             }
-            //todo the conde should be adjusted after we will stop saving BinaryData to the database.
+            //TODO: the conde should be adjusted after we will stop saving BinaryData to the database.
+            //slava: also this code should be changed to generic for both v4 and v5 stubs
             else  if (entity instanceof BinaryData && stub instanceof BinaryDataStub)
             {
                BinaryDataStub binaryDataStub = (BinaryDataStub) stub;
