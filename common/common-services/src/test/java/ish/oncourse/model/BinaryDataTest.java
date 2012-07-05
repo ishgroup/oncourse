@@ -25,7 +25,9 @@ import static org.junit.Assert.assertNotNull;
 
 public class BinaryDataTest extends ServiceTest {
 
-    private ICayenneService cayenneService;
+    private static final String UTF_8_CONTENT_ENCODING = "UTF-8";
+	private static final String TEST_BINARY_DATA_CONTENT = "12345678901234567890";
+	private ICayenneService cayenneService;
 
     @Before
     public void setup() throws Exception {
@@ -57,7 +59,7 @@ public class BinaryDataTest extends ServiceTest {
 
         ObjectContext objectContext1 = cayenneService.newNonReplicatingContext();
         binaryData = Cayenne.objectForPK(objectContext1, BinaryData.class, 1);
-        binaryData.setContent("12345678901234567890".getBytes());
+        binaryData.setContent(TEST_BINARY_DATA_CONTENT.getBytes(UTF_8_CONTENT_ENCODING));
         objectContext1.commitChanges();
 
         Expression qualifier = ExpressionFactory.matchDbExp(BinaryInfo.ID_PK_COLUMN, 1);
@@ -66,6 +68,6 @@ public class BinaryDataTest extends ServiceTest {
         binaryInfo = (BinaryInfo) Cayenne.objectForQuery(cayenneService.sharedContext(), selectQuery);
         BinaryData test = binaryInfo.getBinaryData();
         assertNotNull(test);
-        assertEquals(new String(test.getContent(),"UTF-8"),"12345678901234567890" );
+        assertEquals(new String(test.getContent(),UTF_8_CONTENT_ENCODING),TEST_BINARY_DATA_CONTENT );
     }
 }
