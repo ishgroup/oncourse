@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>searchapp</artifactId>
-	<version>2.15</version>
+	<version>2.16-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Willow - Search Web App</name>
@@ -106,9 +106,9 @@
 	</build>
 
 	<scm>
-		<connection>scm:svn:https://svn.ish.com.au/ish/willow/tags/searchapp/searchapp-2.15</connection>
-		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/tags/searchapp/searchapp-2.15</developerConnection>
-		<url>http://websvn.ish.com.au/ish/willow/tags/searchapp/searchapp-2.15</url>
+		<connection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/search</connection>
+		<developerConnection>scm:svn:https://svn.ish.com.au/ish/willow/trunk/search</developerConnection>
+		<url>http://websvn.ish.com.au/ish/willow/trunk/search</url>
 	</scm>
 
 	<repositories>
