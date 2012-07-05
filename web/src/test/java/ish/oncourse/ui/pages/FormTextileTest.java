@@ -1,16 +1,12 @@
 package ish.oncourse.ui.pages;
 
 import static org.junit.Assert.assertTrue;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import ish.oncourse.ui.services.TestModule;
-
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.test.PageTester;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class FormTextileTest {

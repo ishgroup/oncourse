@@ -147,6 +147,7 @@ public class TestModule {
 		configuration.add(IWebSiteService.class, webSiteServiceOverride);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ICourseClassService buildCourseClassServiceOverride() {
 		ICourseClassService mock = mock(ICourseClassService.class);
 
