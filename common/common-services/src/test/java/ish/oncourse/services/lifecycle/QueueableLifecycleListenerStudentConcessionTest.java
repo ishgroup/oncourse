@@ -36,17 +36,9 @@ public class QueueableLifecycleListenerStudentConcessionTest extends ServiceTest
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
-
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
-
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-		st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/services/lifecycle/studentConcessionDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
+		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}

@@ -61,16 +61,16 @@ public class ContextUtils {
 		InitialContextFactoryMock.bind("jdbc/oncourse_binary", oncourseBinary);
 		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse_binary", oncourse);
 
-		DataSource oncourseReference = createDataSource("oncourse_reference");
-
-		InitialContextFactoryMock.bind("jdbc/oncourse_reference", oncourseReference);
-		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse_reference", oncourseReference);
+		//reference datanode is empty now so there is no reason to init
+		/*DataSource oncourseReference = createDataSource("oncourse_reference");
+		InitialContextFactoryMock.bind("jdbc/oncourse", oncourseReference);
+		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourseReference);*/
 
 		DataDomain domain = cayenneRuntime.getDataDomain();
 
 		createTablesForDataSource(oncourse, domain.getDataMap("oncourse"));
 		createTablesForDataSource(oncourseBinary, domain.getDataMap("oncourseBinary"));
-		createTablesForDataSource(oncourseReference, domain.getDataMap("oncourseReference"));
+		//createTablesForDataSource(oncourseReference, domain.getDataMap("oncourseReference"));
 		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}

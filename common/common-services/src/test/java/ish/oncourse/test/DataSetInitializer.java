@@ -25,11 +25,8 @@ public class DataSetInitializer {
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
     }
 
-    public static void initDataSets(String referenceDataSetPath,
-                             String binaryDataSetPath,
-                             String dataSetPath) throws Exception {
-
-        initDataSetBy(referenceDataSetPath,"jdbc/oncourse_reference");
+    public static void initDataSets(String binaryDataSetPath, String dataSetPath) throws Exception {
+        //initDataSetBy(referenceDataSetPath,"jdbc/oncourse");
         initDataSetBy(binaryDataSetPath,"jdbc/oncourse_binary");
         initDataSetBy(dataSetPath, "jdbc/oncourse");
     }

@@ -6,8 +6,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -21,7 +19,6 @@ import javax.sql.DataSource;
 
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.commons.lang.ClassUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -36,15 +33,8 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
-
+		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-		st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}

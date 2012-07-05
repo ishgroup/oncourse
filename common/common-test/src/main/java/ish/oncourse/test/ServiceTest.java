@@ -41,7 +41,7 @@ public class ServiceTest {
 	}
 
 	public static void cleanDataSources() throws Exception {
-		cleanDataSource(getDataSource("jdbc/oncourse_reference"));
+		//cleanDataSource(getDataSource("jdbc/oncourse_reference"));
 		cleanDataSource(getDataSource("jdbc/oncourse_binary"));
 		cleanDataSource(getDataSource("jdbc/oncourse"));
 

@@ -41,7 +41,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 				"ish/oncourse/services/lifecycle/referenceDataSet.xml");
 
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
+		DataSource refDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 
 		st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream("ish/oncourse/model/paymentDataSet.xml");

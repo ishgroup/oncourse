@@ -1004,5 +1004,9 @@
     <sql>ALTER TABLE postcode_db CHANGE COLUMN postcode postcode INT(4) UNSIGNED NOT NULL </sql>
     <dropIndex tableName="postcode_db" indexName="postcode"/>
     </changeSet>
-
+    
+    <changeSet id="66" author="viacheslav" context="production" runOnChange="true">
+    	<customChange class="ish.oncourse.utils.MigrateReferencesUpgrage"/>
+    </changeSet>
+    
 </databaseChangeLog>

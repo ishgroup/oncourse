@@ -31,20 +31,13 @@ public class BinaryDataTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-        InputStream referenceDS = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/model/BinaryDataTest/referenceDS.xml");
         InputStream binaryDataDS = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/model/BinaryDataTest/binaryDataDS.xml");
         InputStream onCourseDS = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/model/BinaryDataTest/onCourseDS.xml");
 
-
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(referenceDS);
-        DataSource dataSource = getDataSource("jdbc/oncourse_reference");
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(dataSource.getConnection(), null), dataSet);
-
-        dataSet = new FlatXmlDataSetBuilder().build(binaryDataDS);
-        dataSource = getDataSource("jdbc/oncourse_binary");
+        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(binaryDataDS);
+        DataSource dataSource = getDataSource("jdbc/oncourse_binary");
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(dataSource.getConnection(), null), dataSet);
 
         dataSet = new FlatXmlDataSetBuilder().build(onCourseDS);

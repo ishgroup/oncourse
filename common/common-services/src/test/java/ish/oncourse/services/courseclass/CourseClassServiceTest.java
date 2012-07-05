@@ -6,9 +6,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -21,7 +18,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CourseClassServiceTest extends ServiceTest {
@@ -30,19 +26,10 @@ public class CourseClassServiceTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-        InputStream st = CourseClassServiceTest.class.getClassLoader().getResourceAsStream(
-                "ish/oncourse/services/courseclass/referenceDataSet.xml");
-
-        FlatXmlDataSetBuilder builder =   new FlatXmlDataSetBuilder();
+        InputStream st = CourseClassServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/courseclass/oncourseDataSet.xml");
+        FlatXmlDataSetBuilder builder =  new FlatXmlDataSetBuilder();
         builder.setColumnSensing(true);
         FlatXmlDataSet dataSet = builder.build(st);
-        DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-        st = CourseClassServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/courseclass/oncourseDataSet.xml");
-        builder =  new FlatXmlDataSetBuilder();
-        builder.setColumnSensing(true);
-        dataSet = builder.build(st);
         DataSource onDataSource = getDataSource("jdbc/oncourse");
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
     }

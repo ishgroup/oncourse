@@ -25,21 +25,21 @@ import static org.junit.Assert.*;
 public class FileStorageAssetServiceTest extends ServiceTest {
 
     private File rootDir;
-    private TempFileStorageAssetService fileStorageAssetService;
+    @SuppressWarnings("deprecation")
+	private TempFileStorageAssetService fileStorageAssetService;
     private ICayenneService cayenneService;
 
     @Before
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-        DataSetInitializer.initDataSets("ish/oncourse/services/filestorage/referenceDataSet.xml",
-                "ish/oncourse/services/filestorage/binaryDataSet.xml",
-                "ish/oncourse/services/filestorage/dataSet.xml");
+        DataSetInitializer.initDataSets("ish/oncourse/services/filestorage/binaryDataSet.xml", "ish/oncourse/services/filestorage/dataSet.xml");
         cayenneService = getService(ICayenneService.class);
         initFileStorageAssetService();
     }
 
-    private void initFileStorageAssetService() {
+    @SuppressWarnings("deprecation")
+	private void initFileStorageAssetService() {
         rootDir = new File(System.getProperty("user.dir"), "FileStorageServiceTest");
         boolean result = rootDir.mkdirs();
         if (!result) {
@@ -53,7 +53,8 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
 
 
-    @Test
+    @SuppressWarnings("deprecation")
+	@Test
     public void test() throws Exception
     {
         InputStream inputStream = FileStorageAssetService.class.getResourceAsStream("FileStorageAssetService.class");

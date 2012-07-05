@@ -4,7 +4,6 @@
 
 	<map name="oncourse"/>
 	<map name="oncourseBinary"/>
-	<map name="oncourseReference"/>
 
 	<node name="oncourse"
 		 factory="org.apache.cayenne.configuration.server.JNDIDataSourceFactory"
@@ -17,11 +16,5 @@
 		 parameters="jdbc/oncourse_binary"
 		>
 		<map-ref name="oncourseBinary"/>
-	</node>
-	<node name="oncourseReference"
-		 factory="org.apache.cayenne.configuration.server.JNDIDataSourceFactory"
-		 parameters="jdbc/oncourse_reference"
-		>
-		<map-ref name="oncourseReference"/>
 	</node>
 </domain>

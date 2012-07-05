@@ -138,7 +138,7 @@
 						<id>cgen1</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourse.map.xml</map>
-							<excludeEntities>BinaryInfo,Course,CourseModule,Certificate,Site,Student,Contact,College</excludeEntities>
+							<excludeEntities>BinaryInfo,Course,CourseModule,Certificate,Site,Student,Contact,College,Module,Qualification</excludeEntities>
 						</configuration>
 						<goals>
 							<goal>cgen</goal>
