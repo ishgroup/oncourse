@@ -28,6 +28,7 @@ public class WebsiteSettings {
 	@Property
 	private String addthisProfileId;
 	
+	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
 	

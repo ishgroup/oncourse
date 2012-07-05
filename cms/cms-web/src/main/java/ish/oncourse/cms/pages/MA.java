@@ -42,6 +42,7 @@ public class MA {
 	@Inject
 	private ICayenneService cayenneService;
 
+	@SuppressWarnings("all")
 	@Property
 	private String message;
 

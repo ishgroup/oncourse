@@ -22,6 +22,7 @@ public class PaymentSettings {
 	@Property
 	private String redirectToUrl;
 	
+	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
 	

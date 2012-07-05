@@ -14,11 +14,13 @@ import org.apache.tapestry5.json.JSONObject;
 
 public class MenuBuilder extends ish.oncourse.ui.components.Menu {
 	
+	@SuppressWarnings("all")
 	@Property
 	@Component(id = "menuItem", parameters = { "menu=currentMenu",
 			"childPosition=currentChildPosition" })
 	private MenuNode menuItem;
 
+	@SuppressWarnings("all")
 	@Inject
 	private IWebUrlAliasService aliasService;
 

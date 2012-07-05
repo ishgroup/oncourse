@@ -26,14 +26,17 @@ public class CmsNavigation {
 	@Property
 	private IAuthenticationService authenticationService;
 
+	@SuppressWarnings("all")
 	@Property
 	@Inject
 	private IWebMenuService webMenuService;
 
+	@SuppressWarnings("all")
 	@Property
 	@Parameter
 	private WebNode node;
 
+	@SuppressWarnings("all")
 	@InjectComponent
 	@Property
 	private PageInfo pageInfo;

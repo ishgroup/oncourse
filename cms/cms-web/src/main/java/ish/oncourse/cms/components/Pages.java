@@ -2,7 +2,6 @@ package ish.oncourse.cms.components;
 
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.visitor.LastEditedVisitor;
@@ -13,7 +12,6 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.Persistent;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.InjectComponent;

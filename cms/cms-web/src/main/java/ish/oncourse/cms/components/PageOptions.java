@@ -83,10 +83,12 @@ public class PageOptions {
 	@Inject
 	private IWebUrlAliasService aliasService;
 
+	@SuppressWarnings("all")
 	@Persist
 	@Property
 	private ListSelectModel<WebNodeType> pageTypeModel;
 
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private ListValueEncoder<WebNodeType> pageTypeEncoder;
@@ -100,9 +102,11 @@ public class PageOptions {
 	@Property
 	private boolean cancelEditing;
 
+	@SuppressWarnings("all")
 	@Property
 	private boolean savedNewPage;
 
+	@SuppressWarnings("all")
 	@Property
 	private boolean savedPage;
 
@@ -112,6 +116,7 @@ public class PageOptions {
 	@InjectComponent
 	private Field pageName;
 
+	@SuppressWarnings("all")
 	@InjectComponent
 	@Property
 	private Hidden cancelEditingHiddenField;

@@ -8,23 +8,21 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Hidden;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class ContactEntrySettings {
 	
+	@SuppressWarnings("all")
 	@Property
 	@Persist
 	private StringSelectModel stateSelectModel;
@@ -59,30 +57,39 @@ public class ContactEntrySettings {
 	@Property
 	private String enrolmentDateOfBirthState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListAddressState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListSuburbState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListStateState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListPostcodeState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListHomePhoneState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListBusinessPhoneState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListFaxState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListMobileState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private String waitingListDateOfBirthState;
 	
@@ -113,6 +120,7 @@ public class ContactEntrySettings {
 	@Property
 	private String mailingListDateOfBirthState;
 	
+	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
 	

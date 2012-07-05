@@ -4,16 +4,12 @@ import ish.oncourse.model.RegionKey;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ContextUtils;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class LinkPageForContentStructure {
 

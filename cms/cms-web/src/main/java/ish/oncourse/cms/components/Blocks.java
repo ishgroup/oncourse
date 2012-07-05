@@ -56,6 +56,7 @@ public class Blocks {
 		return block.accept(new LastEditedVisitor());
 	}
 
+	@SuppressWarnings("unused")
 	private Object onActionFromNewBlock() {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
@@ -72,6 +73,7 @@ public class Blocks {
 		return editBlock;
 	}
 
+	@SuppressWarnings("unused")
 	private Object onActionFromEditBlock(String id) {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
@@ -80,6 +82,7 @@ public class Blocks {
 		return editBlock;
 	}
 
+	@SuppressWarnings("unused")
 	private Object onActionFromDeleteBlock(String id) {
 		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();

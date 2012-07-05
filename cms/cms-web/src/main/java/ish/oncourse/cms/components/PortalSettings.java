@@ -22,6 +22,7 @@ public class PortalSettings {
 	@Property
 	private String feedbackEmail;
 	
+	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
 	

@@ -42,6 +42,7 @@ public class PageInfo {
 
 	private List<WebNode> nodes;
 
+	@SuppressWarnings("all")
 	@Property
 	private WebNode newPageNode;
 
