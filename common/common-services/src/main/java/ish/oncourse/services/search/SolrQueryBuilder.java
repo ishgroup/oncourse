@@ -254,10 +254,8 @@ public class SolrQueryBuilder {
     {
         String distance = String.valueOf(SearchService.MAX_DISTANCE);
         if (params.containsKey(SearchParam.km)) {
-            String km = (String) params.get(SearchParam.km);
-            if (km.matches("\\d+")) {
-                distance = km;
-            }
+            Double km = (Double) params.get(SearchParam.km);
+            return km.toString();
         }
         return  distance;
     }
