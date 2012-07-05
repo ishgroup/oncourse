@@ -31,16 +31,8 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 	public void setupDataSet() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 		
-		InputStream st = ReplicationSendFailedResultTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
-
+		InputStream st = ReplicationSendFailedResultTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/replicationDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-
-		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-		st = ReplicationSendFailedResultTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/replicationDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);

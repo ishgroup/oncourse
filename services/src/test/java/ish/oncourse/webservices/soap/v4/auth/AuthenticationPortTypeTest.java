@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.test.ServiceTest;
@@ -117,6 +116,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		ReplicationPortType port = getAuthenticationPort();
 
 		try {
+			@SuppressWarnings("unused")
 			long newCommKey = port.authenticate("123456", 7059522699886202880L);
 			fail("Passed wrong Security code. Failure is expected.");
 		} catch (AuthFailure e) {
@@ -143,6 +143,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		ReplicationPortType port = getAuthenticationPort();
 
 		try {
+			@SuppressWarnings("unused")
 			long newCommKey = port.authenticate("345ttn44$%9", 12345L);
 			// TODO uncomment this when throwing of exception is restored.
 			// fail("Passed wrong communication key. Failure is expected.");
@@ -155,6 +156,7 @@ public class AuthenticationPortTypeTest extends ServiceTest {
 		ITable actualData = dbUnitConnection.createQueryTable("College", "select * from College where id = 1");
 		String keyStatus = (String) actualData.getValue(0, "communication_key_status");
 
+		@SuppressWarnings("unused")
 		boolean isHalted = KeyStatus.HALT.name().equals(keyStatus);
 
 		// TODO: Uncomment when we starting to HALT college in authService when

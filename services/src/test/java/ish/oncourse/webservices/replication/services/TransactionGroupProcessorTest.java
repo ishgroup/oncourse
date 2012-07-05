@@ -40,16 +40,8 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
-
+        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-
-        DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-        st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml");
-        dataSet = new FlatXmlDataSetBuilder().build(st);
 
         DataSource onDataSource = getDataSource("jdbc/oncourse");
         DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);

@@ -24,14 +24,8 @@ public class ReferencePortTypeTest extends ServiceTest {
 	public void setupDataSet() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 		
-		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
-
+		InputStream st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse_reference").getConnection(), null),
-				dataSet);
-
-		st = ReferencePortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/auth/authDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DatabaseOperation.INSERT.execute(new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null), dataSet);
 	}

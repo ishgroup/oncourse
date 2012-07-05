@@ -45,17 +45,8 @@ public class ReplicationPortTypeTest extends ServiceTest {
 	public void setupDataSet() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 
-		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/webservices/soap/v4/referenceDataSet.xml");
-
+		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/replicationDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-
-		DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
-
-		st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/replicationDataSet.xml");
-		dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
 

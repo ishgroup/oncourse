@@ -26,8 +26,6 @@ public class AllStubBuildersTest extends ServiceTest {
     @Before
     public void setupDataSet() throws Exception {
         initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-
-        initReferenceDataSet();
         initOncourseBinaryDataSet();
         initOncourseDataSet();
     }
@@ -62,16 +60,6 @@ public class AllStubBuildersTest extends ServiceTest {
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
-    }
-
-    private void initReferenceDataSet() throws Exception {
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/builders/oncourseReferenceDataSet.xml");
-
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-
-        DataSource refDataSource = getDataSource("jdbc/oncourse_reference");
-
-        DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
     }
 
     private <E extends Queueable, S extends ReplicationStub> void testStubBuilder(Class<E> entityClass,
