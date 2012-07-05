@@ -2,7 +2,7 @@
 <dataConfig>
 
 	<dataSource name="onCourseRef" type="JdbcDataSource"
-		jndiName="java:comp/env/jdbc/oncourse_reference" />
+		jndiName="java:comp/env/jdbc/oncourse" />
 
 	<document>
 		<entity name="suburb" dataSource="onCourseRef" pk="id"
