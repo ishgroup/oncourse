@@ -5,6 +5,7 @@ import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.WordUtils;
