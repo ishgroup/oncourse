@@ -55,7 +55,8 @@ public class FileStorageAssetService implements IFileStorageAssetService{
         SelectQuery selectQuery = new SelectQuery(BinaryInfo.class, exp);
         selectQuery.setPageSize(1);
 
-        List list = binaryInfo.getObjectContext().performQuery(selectQuery);
+        @SuppressWarnings("unchecked")
+		List<BinaryInfo> list = binaryInfo.getObjectContext().performQuery(selectQuery);
         if (list.size() == 1) {
             getFileStorageService().delete(binaryInfo.getFilePath());
         }

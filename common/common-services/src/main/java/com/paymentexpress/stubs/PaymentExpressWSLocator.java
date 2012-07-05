@@ -7,8 +7,9 @@
 package com.paymentexpress.stubs;
 
 public class PaymentExpressWSLocator extends org.apache.axis.client.Service implements com.paymentexpress.stubs.PaymentExpressWS {
+	private static final long serialVersionUID = 4340752584717492065L;
 
-    public PaymentExpressWSLocator() {
+	public PaymentExpressWSLocator() {
     }
 
 
@@ -116,7 +117,8 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
      * This service has multiple ports for a given interface;
      * the proxy implementation returned may be indeterminate.
      */
-    public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    @SuppressWarnings("rawtypes")
+	public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
             if (com.paymentexpress.stubs.PaymentExpressWSSoap.class.isAssignableFrom(serviceEndpointInterface)) {
                 com.paymentexpress.stubs.PaymentExpressWSSoapStub _stub = new com.paymentexpress.stubs.PaymentExpressWSSoapStub(new java.net.URL(PaymentExpressWSSoap_address), this);
@@ -140,7 +142,8 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
      * If this service has no port for the given interface,
      * then ServiceException is thrown.
      */
-    public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    @SuppressWarnings("rawtypes")
+	public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         if (portName == null) {
             return getPort(serviceEndpointInterface);
         }
@@ -162,9 +165,11 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
         return new javax.xml.namespace.QName("http://PaymentExpress.com", "PaymentExpressWS");
     }
 
-    private java.util.HashSet ports = null;
+    @SuppressWarnings("rawtypes")
+	private java.util.HashSet ports = null;
 
-    public java.util.Iterator getPorts() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
             ports.add(new javax.xml.namespace.QName("http://PaymentExpress.com", "PaymentExpressWSSoap"));

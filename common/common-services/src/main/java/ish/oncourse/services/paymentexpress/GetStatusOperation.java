@@ -1,7 +1,6 @@
 package ish.oncourse.services.paymentexpress;
 
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
-import com.paymentexpress.stubs.TransactionDetails;
 import com.paymentexpress.stubs.TransactionResult2;
 import org.apache.log4j.Logger;
 

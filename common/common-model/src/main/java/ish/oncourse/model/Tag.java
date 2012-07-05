@@ -23,6 +23,7 @@ public class Tag extends _Tag implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Tag> getWebVisibleTags() {
 		List<Tag> visibleTags;
 		

@@ -71,6 +71,7 @@ public class CollegeService implements ICollegeService {
 		Expression qualifier = ExpressionFactory.matchExp(College.WEB_SERVICES_SECURITY_CODE_PROPERTY, securityCode);
 		SelectQuery q = new SelectQuery(College.class, qualifier);
 
+		@SuppressWarnings("unchecked")
 		List<College> records = objectContext.performQuery(q);
 
 		if ((records == null) || records.isEmpty()) {
@@ -102,6 +103,7 @@ public class CollegeService implements ICollegeService {
 		Expression qualifier = ExpressionFactory.likeExp(College.WEB_SERVICES_SECURITY_CODE_PROPERTY, "%" + securityCodeEnding);
 		SelectQuery q = new SelectQuery(College.class, qualifier);
 
+		@SuppressWarnings("unchecked")
 		List<College> records = objectContext.performQuery(q);
 
 		if (records.size() == 1) {
@@ -175,6 +177,7 @@ public class CollegeService implements ICollegeService {
 	/**
 	 * @see ICollegeService#allColleges()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<College> allColleges() {
 		Expression expr = ExpressionFactory.noMatchExp(College.BILLING_CODE_PROPERTY, null);
@@ -187,6 +190,7 @@ public class CollegeService implements ICollegeService {
 	@Override
 	public Set<String> allSiteKeys() {
 		EJBQLQuery q = new EJBQLQuery("select distinct w.siteKey from WebSite w");
+		@SuppressWarnings("unchecked")
 		List<String> keys = cayenneService.sharedContext().performQuery(q);
 		return new HashSet<String>(keys);
 	}

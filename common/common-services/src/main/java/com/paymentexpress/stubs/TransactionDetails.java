@@ -8,7 +8,9 @@
 package com.paymentexpress.stubs;
 
 public class TransactionDetails  implements java.io.Serializable {
-    private java.lang.String amount;
+	private static final long serialVersionUID = -8160409922789258551L;
+
+	private java.lang.String amount;
 
     private java.lang.String billingId;
 
@@ -1624,9 +1626,9 @@ public class TransactionDetails  implements java.io.Serializable {
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof TransactionDetails)) return false;
+        if (obj == null || !(obj instanceof TransactionDetails)) return false;
         TransactionDetails other = (TransactionDetails) obj;
-        if (obj == null) return false;
+        //if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
@@ -2538,7 +2540,8 @@ public class TransactionDetails  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    public static org.apache.axis.encoding.Serializer getSerializer(
+    @SuppressWarnings("rawtypes")
+	public static org.apache.axis.encoding.Serializer getSerializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
@@ -2550,7 +2553,8 @@ public class TransactionDetails  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
+    @SuppressWarnings("rawtypes")
+	public static org.apache.axis.encoding.Deserializer getDeserializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {

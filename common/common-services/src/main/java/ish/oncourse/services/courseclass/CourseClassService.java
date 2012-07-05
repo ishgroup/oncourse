@@ -57,7 +57,6 @@ public class CourseClassService implements ICourseClassService {
         return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
     }
 
-    @SuppressWarnings("unchecked")
     public List<CourseClass> loadByIds(Object... ids) {
         if (ids.length == 0) {
             return Collections.emptyList();
@@ -72,7 +71,6 @@ public class CourseClassService implements ICourseClassService {
         return cayenneService.sharedContext().performQuery(q);
     }
 
-    @SuppressWarnings("unchecked")
     public List<CourseClass> loadByIds(List<Long> ids) {
         if ((ids == null) || (ids.isEmpty())) {
             return Collections.emptyList();

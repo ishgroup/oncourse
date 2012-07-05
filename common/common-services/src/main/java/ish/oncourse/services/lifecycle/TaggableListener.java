@@ -7,10 +7,8 @@ import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Taggable;
-import ish.oncourse.services.site.IWebSiteService;
 
 public class TaggableListener {
 

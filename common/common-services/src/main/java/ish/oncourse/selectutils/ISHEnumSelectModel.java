@@ -24,10 +24,12 @@ import org.apache.tapestry5.util.EnumSelectModel;
 public class ISHEnumSelectModel extends AbstractSelectModel {
 	private final List<OptionModel> options = CollectionFactory.newList();
 
+	@SuppressWarnings("rawtypes")
 	public <T extends Enum> ISHEnumSelectModel(Class<T> enumClass, Messages messages) {
 		this(enumClass, messages, enumClass.getEnumConstants());
 	}
 
+	@SuppressWarnings("rawtypes")
 	public <T extends Enum> ISHEnumSelectModel(Class<T> enumClass, Messages messages, T[] values) {
 		assert enumClass != null;
 		assert messages != null;

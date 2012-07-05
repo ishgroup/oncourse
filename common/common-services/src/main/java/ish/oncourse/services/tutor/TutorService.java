@@ -13,6 +13,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 
+@SuppressWarnings("deprecation")
 public class TutorService extends BaseService<Tutor> implements ITutorService {
 
 	/**
@@ -29,7 +30,6 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 				getWebSiteService().getCurrentCollege()).andExp(
 				ExpressionFactory.matchExp(Tutor.ANGEL_ID_PROPERTY, tutorId));
 
-		@SuppressWarnings("unchecked")
 		List<Tutor> result = findByQualifier(expr);
 
 		return ((result != null) && !(result.isEmpty())) ? result.get(0) : null;
@@ -51,7 +51,6 @@ public class TutorService extends BaseService<Tutor> implements ITutorService {
 								+ getSiteQualifier().toEJBQL("t"))).get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Tutor> getTutors() {
 		return findByQualifier(getSiteQualifier());
 	}

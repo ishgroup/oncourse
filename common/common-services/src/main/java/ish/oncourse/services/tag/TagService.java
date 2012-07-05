@@ -279,6 +279,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, college))
 				.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
 		SelectQuery query = new SelectQuery(Taggable.class, qual);
+		@SuppressWarnings("unchecked")
 		List<Taggable> taggables = context.performQuery(query);
 		
 		for (Taggable t : new ArrayList<Taggable>(taggables)) {

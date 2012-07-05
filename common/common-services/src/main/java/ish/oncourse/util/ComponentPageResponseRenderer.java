@@ -21,6 +21,7 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.slf4j.Logger;
 
+@SuppressWarnings("deprecation")
 public class ComponentPageResponseRenderer implements IComponentPageResponseRenderer {
 	
 	@Inject

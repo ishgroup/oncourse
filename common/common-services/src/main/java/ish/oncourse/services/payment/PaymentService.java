@@ -71,6 +71,7 @@ public class PaymentService implements IPaymentService {
 	/**
 	 * @see IPaymentService#getPaymentsBySessionId(String)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<PaymentIn> getPaymentsBySessionId(String sessionId) {
 		SelectQuery q = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(PaymentIn.SESSION_ID_PROPERTY, sessionId));

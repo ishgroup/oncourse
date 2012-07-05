@@ -77,8 +77,9 @@ public class OSCacheService implements ICacheService {
 	}
 
 	// an extension of GeneralCacheAdministrator that exposes cache properties
-	final class ExtendedGeneralCacheAdministrator extends
-			GeneralCacheAdministrator {
+	final class ExtendedGeneralCacheAdministrator extends GeneralCacheAdministrator {
+		private static final long serialVersionUID = 1184315318442383556L;
+
 		Properties getProperties() {
 			return config.getProperties();
 		}

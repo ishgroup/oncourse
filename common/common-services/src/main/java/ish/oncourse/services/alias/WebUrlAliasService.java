@@ -30,6 +30,7 @@ public class WebUrlAliasService extends BaseService<WebUrlAlias> implements
 				WebUrlAlias.URL_PATH_PROPERTY, path);
 		Expression qualifier = siteQualifier().andExp(pathExp);
 		SelectQuery query = new SelectQuery(WebUrlAlias.class, qualifier);
+		@SuppressWarnings("unchecked")
 		List<WebUrlAlias> aliases = cayenneService.sharedContext()
 				.performQuery(query);
 

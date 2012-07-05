@@ -25,7 +25,8 @@ public class TheLeakPreventionListener implements ServletContextListener {
 		org.apache.log4j.LogManager.shutdown();
 		LogFactory.release(classLoader);
 
-		for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements();) {
+		for (@SuppressWarnings("rawtypes")
+		Enumeration e = DriverManager.getDrivers(); e.hasMoreElements();) {
 			Driver driver = (Driver) e.nextElement();
 			if (driver.getClass().getClassLoader() == getClass().getClassLoader()) {
 				try {

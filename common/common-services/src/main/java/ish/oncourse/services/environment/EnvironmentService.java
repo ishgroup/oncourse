@@ -1,18 +1,14 @@
 package ish.oncourse.services.environment;
 
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Manifest;
-
-import javax.servlet.ServletContext;
-
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationGlobals;
 
 public class EnvironmentService implements IEnvironmentService {
 
+	@SuppressWarnings("all")
 	@Inject
 	private IWebSiteService siteService;
 

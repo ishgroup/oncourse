@@ -27,6 +27,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		DataRowStore snapshotCache = (dataDomain.isSharedCacheEnabled()) ? dataDomain.getSharedSnapshotCache()
 				: new DataRowStore(dataDomain.getName(), dataDomain.getProperties(), eventManager);
 
+		@SuppressWarnings("deprecation")
 		ISHObjectContext context = new ISHObjectContext(parent, new ObjectStore(snapshotCache));
 		
 		context.setValidatingObjectsOnCommit(dataDomain.isValidatingObjectsOnCommit());
@@ -38,6 +39,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 	}
 
 	protected ObjectContext createFromDataContext(DataContext parent) {
+		@SuppressWarnings("deprecation")
 		ObjectStore objectStore = new ObjectStore();
 
 		ISHObjectContext context = new ISHObjectContext(parent, objectStore);
@@ -55,6 +57,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		DataRowStore snapshotCache = (parent.isSharedCacheEnabled()) ? parent.getSharedSnapshotCache() : new DataRowStore(
 				parent.getName(), parent.getProperties(), eventManager);
 
+		@SuppressWarnings("deprecation")
 		ISHObjectContext context = new ISHObjectContext(parent, new ObjectStore(snapshotCache));
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
 		context.setQueryCache(injector.getInstance(Key.get(QueryCache.class, BaseContext.QUERY_CACHE_INJECTION_KEY)));

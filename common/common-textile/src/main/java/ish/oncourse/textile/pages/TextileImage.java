@@ -5,6 +5,8 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TextileImage {
+	private static final String ASSET_BINARYDATA_PATH = "/asset/binarydata?id=";
+
 	@Inject
 	private Request request;
 
@@ -84,15 +88,15 @@ public class TextileImage {
 			imageBinaryInfo = binaryDataService.getRandomImage();
 		}
 
-		imagePath = imageBinaryInfo != null ? ("/asset/binarydata?id=" + imageBinaryInfo.getId()) : "";
-		imageAlign = align != null ? align : "";
-		imageAlt = alt != null ? alt : "";
-		imageTitle = title != null ? title : "";
+		imagePath = imageBinaryInfo != null ? (ASSET_BINARYDATA_PATH + imageBinaryInfo.getId()) : StringUtils.EMPTY;
+		imageAlign = align != null ? align : StringUtils.EMPTY;
+		imageAlt = alt != null ? alt : StringUtils.EMPTY;
+		imageTitle = title != null ? title : StringUtils.EMPTY;
 		imageWidth = width != null ? width : (imageBinaryInfo.getPixelWidth() + "px");
 		imageHeight = height != null ? height : (imageBinaryInfo.getPixelHeight() + "px");
-		imageClass = cssClass != null ? cssClass : "";
+		imageClass = cssClass != null ? cssClass : StringUtils.EMPTY;
 		imageCaption = caption;
-		imageLink = link != null ? link : "";
+		imageLink = link != null ? link : StringUtils.EMPTY;
 
 		ArrayList<Long> ids = (ArrayList<Long>) request.getAttribute(BinaryInfo.DISPLAYED_IMAGES_IDS);
 		if (ids == null) {

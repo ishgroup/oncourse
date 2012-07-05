@@ -17,6 +17,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @author marek
  */
 public class ISHObjectContext extends DataContext {
+	private static final long serialVersionUID = -4572980938171252406L;
 
 	/**
 	 * Property which shows whether replication enabled on the object context.

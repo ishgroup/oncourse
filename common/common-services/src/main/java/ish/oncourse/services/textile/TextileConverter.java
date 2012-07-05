@@ -57,6 +57,7 @@ public class TextileConverter implements ITextileConverter {
 
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
+	@SuppressWarnings("all")
 	@Inject
 	private IPlainTextExtractor extractor;
 

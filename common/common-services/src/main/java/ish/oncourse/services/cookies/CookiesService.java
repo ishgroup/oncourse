@@ -113,6 +113,7 @@ public class CookiesService implements ICookiesService {
 	 * @param result
 	 */
 	private void addCookieToDictionary(String cookieKey, Object result) {
+		@SuppressWarnings("unchecked")
 		Map<String, Object> cookiesDictionary = (Map<String, Object>) request
 				.getAttribute(COOKIES_DICTIONARY_REQUEST_ATTR);
 		if (cookiesDictionary == null) {
@@ -126,6 +127,7 @@ public class CookiesService implements ICookiesService {
 	 * @param cookieKey
 	 */
 	private Object getCookieFromDictionary(String cookieKey) {
+		@SuppressWarnings("unchecked")
 		Map<String, Object> cookiesDictionary = (Map<String, Object>) request
 				.getAttribute(COOKIES_DICTIONARY_REQUEST_ATTR);
 		if (cookiesDictionary != null && cookiesDictionary.containsKey(cookieKey)) {

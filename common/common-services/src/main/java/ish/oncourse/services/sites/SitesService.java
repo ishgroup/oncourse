@@ -53,6 +53,7 @@ public class SitesService implements ISitesService {
 								+ getSiteQualifier().andExp(getAvailabilityQualifier()).toEJBQL("s"))).get(0);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Site> loadByIds(List<Long> ids) {
 		SelectQuery q = new SelectQuery(Site.class, ExpressionFactory.inDbExp(Site.ID_PK_COLUMN, ids));

@@ -8,7 +8,9 @@
 package com.paymentexpress.stubs;
 
 public class EnrolmentCheckRequest  implements java.io.Serializable {
-    private java.lang.String amount;
+	private static final long serialVersionUID = 8802718777054297L;
+
+	private java.lang.String amount;
 
     private java.lang.String cardNumber;
 
@@ -160,9 +162,9 @@ public class EnrolmentCheckRequest  implements java.io.Serializable {
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof EnrolmentCheckRequest)) return false;
+        if (obj == null || !(obj instanceof EnrolmentCheckRequest)) return false;
         EnrolmentCheckRequest other = (EnrolmentCheckRequest) obj;
-        if (obj == null) return false;
+        //if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
@@ -281,7 +283,8 @@ public class EnrolmentCheckRequest  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    public static org.apache.axis.encoding.Serializer getSerializer(
+    @SuppressWarnings("rawtypes")
+	public static org.apache.axis.encoding.Serializer getSerializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
@@ -293,7 +296,8 @@ public class EnrolmentCheckRequest  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
+    @SuppressWarnings("rawtypes")
+	public static org.apache.axis.encoding.Deserializer getDeserializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {

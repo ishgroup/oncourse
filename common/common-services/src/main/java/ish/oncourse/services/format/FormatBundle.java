@@ -37,6 +37,7 @@ public class FormatBundle extends ListResourceBundle {
 		return new Factory() {
 			public Object create() {
 				return new Format() {
+					private static final long serialVersionUID = -1216760086337892665L;
 
 					@Override
 					public StringBuffer format(Object object,

@@ -174,6 +174,7 @@ public class PreferenceController extends CommonPreferenceController {
 		SelectQuery query = new SelectQuery(Preference.class, ExpressionFactory.matchExp(Preference.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
 				ExpressionFactory.matchExp(Preference.NAME_PROPERTY, key)));
 
+		@SuppressWarnings("unchecked")
 		List<Preference> results = cayenneService.newContext().performQuery(query);
 
 		return results.isEmpty() ? null : results.get(0);

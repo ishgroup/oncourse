@@ -1,7 +1,6 @@
 package ish.oncourse.services.discount;
 
 import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;

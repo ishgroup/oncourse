@@ -152,7 +152,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @return the result of submitted transaction.
      * @throws Exception
      */
-    TransactionResult2 doTransaction(IPaymentSupport paymentSupport) throws ServiceException {
+    TransactionResult2 doTransaction(@SuppressWarnings("rawtypes") IPaymentSupport paymentSupport) throws ServiceException {
 
         PaymentExpressWSSoap12Stub stub = soapClientStub();
 

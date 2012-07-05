@@ -19,6 +19,7 @@ public class MessagePersonService implements IMessagePersonService {
 	@Inject
 	private ICayenneService cayenneService;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MessagePerson> smsToSend(int limit) {
 		SelectQuery q = new SelectQuery(MessagePerson.class, dequeueingQualifier());
