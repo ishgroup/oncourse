@@ -19,7 +19,7 @@ public class SolrQueryBuilder {
     static final String PARAMETER_sfield = "sfield";
     static final String PARAMETER_pt = "pt";
     static final String PARAMETER_d = "d";
-    static final String PARAMETER_loc = "loc";
+    public static final String PARAMETER_loc = "loc";
     static final String PARAMETER_dateboost = "dateboost";
     static final String PARAMETER_qq = "qq";
 
@@ -28,7 +28,6 @@ public class SolrQueryBuilder {
     public static final String FIELD_startDate = "startDate";
     public static final String FIELD_suburb = "suburb";
     public static final String FIELD_postcode = "postcode";
-
 
     static final String PARAMETER_VALUE_fl = "id,name,course_loc";
     static final String PARAMETER_VALUE_sfield = "course_loc";

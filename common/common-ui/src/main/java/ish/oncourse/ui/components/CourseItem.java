@@ -1,28 +1,22 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Module;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.ui.pages.Courses;
-import ish.oncourse.ui.utils.SearchCoursesModel;
+import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.ValidationErrors;
-import ish.oncourse.utils.CourseClassUtils;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,10 +31,6 @@ public class CourseItem {
 	private static final Logger LOGGER = Logger.getLogger(CourseItem.class);
 
 	@Property
-	@Parameter(required = true)
-	private Course course;
-
-	@Property
 	private CourseClass courseClass;
 
 	@Parameter
@@ -52,11 +42,6 @@ public class CourseItem {
 	@Property
 	private boolean linkToLocationsMap;
 	
-	@SuppressWarnings("all")
-	//@Parameter
-	@Property
-	private boolean expandedModules;
-
 	@Inject
 	private IPlainTextExtractor extractor;
 
@@ -79,79 +64,30 @@ public class CourseItem {
 	
 	@Inject
 	private Request request;
-	
-	@Property
-	private String postcodeParameter;
-	
-	@Property
-	private String kmParameter;
-	
-	@Property
-	private Double[] locationPoints;
-	
-	@Property
-	private SearchCoursesModel searchCoursesModel;
-		
-	public SearchCoursesModel takeSearchCoursesModel() {
-		return searchCoursesModel;
-	}
 
-	public boolean isPostcodeSpecified() {
-		if (postcodeParameter == null) {
-			searchCoursesModel = (SearchCoursesModel) request.getAttribute(Courses.ATTR_searchCoursesModel);
-			if (takeSearchCoursesModel() != null) {
-				postcodeParameter = takeSearchCoursesModel().getPostcode();
-                this.kmParameter = (String) (takeSearchCoursesModel().getSearchParams().containsKey(SearchParam.km) ?
-                    takeSearchCoursesModel().getSearchParams().get(SearchParam.km) : String.valueOf(SearchService.MAX_DISTANCE));
-				locationPoints = takeSearchCoursesModel().getLocationPoints();
-			}
-		}
-		return StringUtils.trimToNull(postcodeParameter) != null;
-	}
-	
-	private boolean isLocationPointsFounded() {
-		return locationPoints != null && locationPoints.length == 2 && locationPoints[0] != null && locationPoints[1] != null;
-	}
-	
-	private boolean isKmParametherSpecified() {
-		return StringUtils.trimToNull(kmParameter) != null;
-	}
-		
+
+    @Property
+    @Parameter(required = true)
+    private CourseItemModel courseItemModel;
+
+
+    @SetupRender
+    public void beforeRender() {
+
+    }
+
+
+
 	public String getZoneId() {
 		return "modulesZone" + getCurrentCourseId();
 	}
 	
 	public Long getCurrentCourseId() {
-		return course.getId();
+		return courseItemModel.getCourse().getId();
 	}
 	
-	//@OnEvent(value = EventConstants.ACTION, component = "expandModules")
-	public final Object expandModules(final Long currentCourseId) {
-		return changeModules(currentCourseId, true);
-	}
-	
-	private Object changeModules(final Long id, final boolean expanded) {
-		expandedModules = expanded;
-		course = courseService.loadByIds(id).get(0);
-		if (request.isXHR()) {
-			return modulesZone.getBody();
-		} else {
-			//this case mean IE request
-			return this;
-		}
-	}
-		
-	//@OnEvent(value = EventConstants.ACTION, component = "collapsModules")
-	public final Object collapsModules(final Long currentCourseId) {
-		return changeModules(currentCourseId, false);
-	}
-	
-	public List<Module> getCourseModules() {
-		return course.getModules();
-	}
-
 	public String getAvailMsg() {
-		int numberOfClasses = course.getEnrollableClasses().size();
+		int numberOfClasses = courseItemModel.getCourse().getEnrollableClasses().size();
 		String msg;
 
 		if (numberOfClasses <= 0) {
@@ -166,23 +102,23 @@ public class CourseItem {
 	}
 
 	public String getMoreLink() {
-		return "/course/" + course.getCode();
+		return "/course/" + courseItemModel.getCourse().getCode();
 	}
 	
 	public boolean isCourseContainQualification() {
-		return course.getQualification() != null && !course.getModules().isEmpty();
+		return courseItemModel.getCourse().getQualification() != null && !courseItemModel.getCourse().getModules().isEmpty();
 	}
 	
 	public boolean isCourseContainsOnlyModules() {
-		return course.getQualification() == null && !course.getModules().isEmpty();
+		return courseItemModel.getCourse().getQualification() == null && !courseItemModel.getCourse().getModules().isEmpty();
 	}
 	
 	public boolean isContainsQualificationOrModules() {
-		return course.getQualification() != null || !course.getModules().isEmpty();
+		return courseItemModel.getCourse().getQualification() != null || !courseItemModel.getCourse().getModules().isEmpty();
 	}
 
 	public String getCourseDetail() {
-		String detail = textileConverter.convertCustomTextile(course.getDetail(), new ValidationErrors());
+		String detail = textileConverter.convertCustomTextile(courseItemModel.getCourse().getDetail(), new ValidationErrors());
 		if (detail == null) {
 			return StringUtils.EMPTY;
 		}
@@ -213,7 +149,16 @@ public class CourseItem {
 		return courseClass.hasEnded();
 	}
 
-	@SuppressWarnings("unused")
+    public boolean isHasMoreAvailablePlaces() {
+        int places = 0;
+        for (CourseClass courseClass : courseItemModel.getCourse().getEnrollableClasses()) {
+            places += courseClass.getAvailableEnrolmentPlaces();
+        }
+        return places > 0;
+    }
+
+
+    @SuppressWarnings("unused")
 	private String truncateHTML(String text, int size) {
 		boolean inTag = false;
 		int cntr = 0;
@@ -279,80 +224,6 @@ public class CourseItem {
 		return substr;
 	}
 
-	public boolean isHasMoreAvailablePlaces() {
-		int places = 0;
-		for (CourseClass courseClass : course.getEnrollableClasses()) {
-			places += courseClass.getAvailableEnrolmentPlaces();
-		}
-		return places > 0;
-	}
-
-	public List<CourseClass> getClasses() {
-		final boolean filterByPostcode = isPostcodeSpecified();
-		final List<CourseClass> classes = (isList) ? getEnrollableClasses(filterByPostcode, true) :  getCurrentClasses();
-		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
-		ordering.orderList(classes);
-		return classes;
-	}
-	
-	public List<CourseClass> getOtherClasses() {
-		final boolean filterByPostcode = isPostcodeSpecified();
-		final List<CourseClass> classes = filterByPostcode ? getEnrollableClasses(true, false) : Collections.EMPTY_LIST;
-		Ordering ordering = new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
-		ordering.orderList(classes);
-		return classes;
-	}
-	
-	private List<CourseClass> getEnrollableClasses(final boolean filterByPostcode, final boolean includeMatching) {
-		final List<CourseClass> data = course.getEnrollableClasses();
-		return filterByPostcode ? filterByPostcode(data, includeMatching) : data;
-	}
-	
-	private List<CourseClass> filterByPostcode(final List<CourseClass> data, final boolean includeMatching) {
-		final List<CourseClass> result = new ArrayList<CourseClass>();
-		for (final CourseClass courseClass : data) {
-			if (includeMatching && isCourseClassMatchByPostcode(courseClass, postcodeParameter)) {
-				result.add(courseClass);
-			}
-			if (!includeMatching && !isCourseClassMatchByPostcode(courseClass, postcodeParameter)) {
-				result.add(courseClass);
-			}
-		}
-		return result;
-	}
-	
-	private boolean isCourseClassMatchByPostcode(final CourseClass courseClass, final String postcode) {
-		Room room = courseClass.getRoom();
-		if (room != null) {
-			Site site = room.getSite();
-			if (site != null && site.getIsWebVisible() && StringUtils.trimToNull(site.getSuburb()) != null && site.isHasCoordinates() 
-				&& StringUtils.trimToNull(site.getPostcode()) != null) {
-				boolean isEqualPostcode = site.getPostcode().equals(postcode);
-				if (isEqualPostcode) {
-					return true;
-				}
-				if (isKmParametherSpecified() && isLocationPointsFounded()) {
-					double distance = CourseClassUtils.evaluateDistanceForCourseClassSiteAndLocation(courseClass, locationPoints[0], locationPoints[1]);
-					if (distance <= Double.valueOf(kmParameter)) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
-		return false;
-	}
-	
-	private List<CourseClass> getCurrentClasses() {
-		List<CourseClass> data = course.getCurrentClasses();
-		return data;
-	}
-	
-	public List<CourseClass> getFullClasses() {
-		List<CourseClass> data = course.getFullClasses();
-		return data;
-	}
-	
 	public boolean getAddThisEnabled() {
 		return preferenceController.getEnableSocialMediaLinks() && preferenceController.getEnableSocialMediaLinksCourse();
 	}

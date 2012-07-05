@@ -1,14 +1,12 @@
 package ish.oncourse.utils;
 
+import ish.oncourse.model.*;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.SearchParam;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.Site;
 
 /**
  * Utility class s to evaluate course class 
@@ -26,7 +24,7 @@ public class CourseClassUtils {
 	 * @param nearLongitude
 	 * @return
 	 */
-	public static final double evaluateDistanceForCourseClassSiteAndLocation(final CourseClass courseClass, final Double nearLatitude, 
+	public static double evaluateDistanceForCourseClassSiteAndLocation(final CourseClass courseClass, final Double nearLatitude,
 		final Double nearLongitude) {
 		if (nearLatitude != null && nearLongitude != null && courseClass.getRoom() != null && courseClass.getRoom().getSite() != null
 				&&courseClass.getRoom().getSite().getIsWebVisible() && courseClass.getRoom().getSite().isHasCoordinates()) {
@@ -50,8 +48,34 @@ public class CourseClassUtils {
 			}
 		return -1d;
 	}
-	
-	private static float focusMatchForNear(final CourseClass courseClass, final Double nearLatitude, final Double nearLongitude) {
+
+    public static boolean isCourseClassMatchBy(CourseClass courseClass, String postcode, Double km , Double latitude, Double longitude)
+    {
+        Room room = courseClass.getRoom();
+        if (room != null && room.getSite() != null) {
+            Site site = room.getSite();
+            if (site.getIsWebVisible() && site.isHasCoordinates() && StringUtils.trimToNull(site.getPostcode()) != null)
+            {
+                if (postcode != null && postcode.equals(site.getPostcode()))
+                {
+                        return true;
+                }
+
+                if (km != null && latitude != null && longitude != null)
+                {
+                    double distance = CourseClassUtils.evaluateDistanceForCourseClassSiteAndLocation(courseClass, latitude, longitude);
+                    if (distance <= km) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+    private static float focusMatchForNear(final CourseClass courseClass, final Double nearLatitude, final Double nearLongitude) {
 		float result = 0.0f;
 		double distance = evaluateDistanceForCourseClassSiteAndLocation(courseClass, nearLatitude, nearLongitude);
 		if (distance > -1d) {

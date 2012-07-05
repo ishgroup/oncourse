@@ -1,7 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Course;
-
+import ish.oncourse.ui.utils.CourseItemModel;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -16,8 +16,14 @@ public class CourseDetails {
 	void beginRender() {
 		course = (Course) request.getAttribute(Course.class.getSimpleName());
 	}
-	
-	public String getCourseDetailsTitle(){
+
+    public CourseItemModel getCourseItemModel()
+    {
+        return CourseItemModel.createCourseItemModel(course, null);
+    }
+
+
+    public String getCourseDetailsTitle(){
 		if(course==null){
 			return "Course Not Found";
 		}

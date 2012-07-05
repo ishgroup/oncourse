@@ -112,8 +112,8 @@ public class SearchParamsParser
         }
     }
 
-    private String parseKm(String parameter) {
-        return  StringUtils.isNumeric(parameter) ? parameter:null;
+    private Double parseKm(String parameter) {
+        return  StringUtils.isNumeric(parameter) ? Double.valueOf(parameter):null;
     }
 
     private String parseTime(String parameter) {

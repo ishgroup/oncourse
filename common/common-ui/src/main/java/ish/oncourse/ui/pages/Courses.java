@@ -6,14 +6,16 @@ import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.ui.utils.SearchCoursesModel;
+import ish.oncourse.ui.components.CoursesList;
 import ish.oncourse.ui.utils.SearchParamsParser;
+import ish.oncourse.ui.utils.Suburb;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.CourseClassUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -94,8 +96,12 @@ public class Courses {
 	private String sitesParameter;
 
 	private List<Long> sitesIds;
-	
-	private SearchCoursesModel searchCoursesModel;
+
+    @Property
+	private Suburb suburb;
+
+    @InjectComponent
+    private CoursesList coursesList;
 
 	@SetupRender
 	public void beforeRender() {
@@ -132,6 +138,7 @@ public class Courses {
 		}
 
 		coursesIds = new ArrayList<Long>();
+        initSuburb();
 		updateIdsAndIndexes();
 	}
 
@@ -153,27 +160,9 @@ public class Courses {
 		if (hasAnyFormValuesForFocus()) {
 			focusesForMapSites = new HashMap<Long, Float>();
 		}
-		Double[] locationPoints = { null, null };
-		searchCoursesModel = null;
-		if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
-			try {
-				SolrDocumentList responseResults = (SolrDocumentList) searchParams.get(SearchParam.near);
-				if (!responseResults.isEmpty()) {
-					SolrDocument doc = responseResults.get(0);
-					String[] points = ((String) doc.get("loc")).split(",");
-					locationPoints[0] = Double.parseDouble(points[0]);
-					locationPoints[1] = Double.parseDouble(points[1]);
-					String postcode = (String) doc.get("postcode");
-					if (responseResults.size() == 1) {
-						searchCoursesModel = new SearchCoursesModel(locationPoints, postcode, searchParams);
-					}
-				}
-				
-			} catch (NumberFormatException e) {
-			}
-		}
-		request.setAttribute(ATTR_searchCoursesModel, searchCoursesModel);
-		for (Course course : courses) {
+
+
+        for (Course course : courses) {
 			for (CourseClass courseClass : course.getEnrollableClasses()) {
 				Room room = courseClass.getRoom();
 				if (room != null) {
@@ -193,7 +182,9 @@ public class Courses {
 							}
 						}
 						if (hasAnyFormValuesForFocus()) {
-							float focusMatchForClass = CourseClassUtils.focusMatchForClass(courseClass, locationPoints[0], locationPoints[1], 
+							float focusMatchForClass = CourseClassUtils.focusMatchForClass(courseClass,
+                                    suburb != null ? suburb.getLatitude():null,
+                                    suburb != null ? suburb.getLongitude():null,
 								searchParams);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
@@ -210,7 +201,19 @@ public class Courses {
 
 	}
 
-	private boolean hasAnyFormValuesForFocus() {
+    private void initSuburb() {
+        if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
+            try {
+                SolrDocumentList responseResults = (SolrDocumentList) searchParams.get(SearchParam.near);
+                if (responseResults.size() == 1)
+                    suburb = Suburb.valueOf(responseResults.get(0), searchParams);
+            } catch (NumberFormatException e) {
+                    LOGGER.warn(e);
+            }
+        }
+    }
+
+    private boolean hasAnyFormValuesForFocus() {
 		if (searchParams == null) {
 			return false;
 		}

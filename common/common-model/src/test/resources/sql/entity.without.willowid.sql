@@ -1,0 +1,52 @@
+select cnt as non_replicated_count, entity as entity_name from (
+select COUNT(*) as cnt,'BinaryData' as entity FROM BinaryData where willowid is null
+union select COUNT(*) as cnt,'BinaryInfo' as entity FROM BinaryInfo where willowid is null
+union select COUNT(*) as cnt,'BinaryRelation' as entity FROM BinaryRelation where willowid is null
+union select COUNT(*) as cnt,'Category' as entity FROM Category where willowid is null
+union select COUNT(*) as cnt,'Certificate' as entity FROM Certificate where willowid is null
+union select COUNT(*) as cnt,'Certificate_Outcome' as entity FROM Certificate_Outcome where willowid is null
+union select COUNT(*) as cnt,'ConcessionType' as entity FROM ConcessionType where willowid is null
+union select COUNT(*) as cnt,'ContactRelation' as entity from ContactRelation where willowid is null
+union select COUNT(*) as cnt,'Country' as entity FROM Country where willowid is null
+union select COUNT(*) as cnt,'Course' as entity FROM Course where willowid is null
+union select COUNT(*) as cnt,'CourseClass' as entity FROM CourseClass where willowid is null
+union select COUNT(*) as cnt,'CourseClassTutor' as entity FROM CourseClassTutor where willowid is null
+union select COUNT(*) as cnt,'CourseSession' as entity FROM CourseSession where willowid is null
+union select COUNT(*) as cnt,'Discount' as entity FROM Discount where willowid is null
+union select COUNT(*) as cnt,'Discount_ConcessionType' as entity FROM Discount_ConcessionType where willowid is null
+union select COUNT(*) as cnt,'Discount_CourseClass' as entity FROM Discount_CourseClass where willowid is null
+union select COUNT(*) as cnt,'Discount_Membership' as entity FROM Discount_Membership where willowid is null
+union select COUNT(*) as cnt,'Discount_Membership_RelationType' as entity FROM Discount_Membership_RelationType where willowid is null
+union select COUNT(*) as cnt,'Enrolment' as entity FROM Enrolment where willowid is null
+union select COUNT(*) as cnt,'Invoice' as entity FROM Invoice where willowid is null
+union select COUNT(*) as cnt,'InvoiceLine' as entity FROM InvoiceLine where willowid is null
+union select COUNT(*) as cnt,'InvoiceLine_Discount' as entity FROM InvoiceLine_Discount where willowid is null
+union select COUNT(*) as cnt,'Language' as entity FROM Language where willowid is null
+union select COUNT(*) as cnt,'Message' as entity FROM Message where willowid is null
+union select COUNT(*) as cnt,'Message_Person' as entity FROM Message_Person where willowid is null
+union select COUNT(*) as cnt,'MessageTemplate' as entity FROM MessageTemplate where willowid is null
+union select COUNT(*) as cnt,'Module' as entity FROM Module where willowid is null
+union select COUNT(*) as cnt,'Module_Course' as entity FROM Module_Course where willowid is null
+union select COUNT(*) as cnt,'Node' as entity FROM Node where willowid is null
+union select COUNT(*) as cnt,'NodeRelation' as entity FROM NodeRelation where willowid is null
+union select COUNT(*) as cnt,'NodeRequirement' as entity FROM NodeRequirement where willowid is null
+union select COUNT(*) as cnt,'Outcome' as entity FROM Outcome where willowid is null
+union select COUNT(*) as cnt,'PaymentIn' as entity FROM PaymentIn where willowid is null
+union select COUNT(*) as cnt,'PaymentInLine' as entity FROM PaymentInLine where willowid is null
+union select COUNT(*) as cnt,'PaymentOut' as entity FROM PaymentOut where willowid is null
+union select COUNT(*) as cnt,'ProductItem' as entity FROM ProductItem where willowid is null
+union select COUNT(*) as cnt,'Qualification' as entity FROM Qualification where willowid is null
+union select COUNT(*) as cnt,'Room' as entity FROM Room where willowid is null
+union select COUNT(*) as cnt,'SessionCourseClassTutor' as entity FROM SessionCourseClassTutor where willowid is null
+union select COUNT(*) as cnt,'Site' as entity FROM Site where willowid is null
+union select COUNT(*) as cnt,'Student' as entity FROM Student where willowid is null
+union select COUNT(*) as cnt,'StudentConcession' as entity FROM StudentConcession where willowid is null
+union select COUNT(*) as cnt,'SubCategory' as entity FROM SubCategory where willowid is null
+union select COUNT(*) as cnt,'Tutor' as entity FROM Tutor where willowid is null
+union select COUNT(*) as cnt,'WaitingList' as entity FROM WaitingList where willowid is null
+union select COUNT(*) as cnt,'WaitingList_Site' as entity FROM WaitingList_Site where willowid is null
+union select COUNT(*) as cnt,'Attendance' as entity FROM Attendance where willowid is null
+union select COUNT(*) as cnt,'Contact' as entity FROM Contact where willowid is null
+union select COUNT(*) as cnt,'ContactRelationType' as entity FROM ContactRelationType where willowid is null
+union select COUNT(*) as cnt,'Product' as entity FROM Product where willowid is null )
+as data where cnt>0;
