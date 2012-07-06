@@ -291,8 +291,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			}
         }
 		default:
-			// FAILURE angelId uniques
-            String message = String.format("%s objects found for angelId:%s", objects.size(), currentStub.getAngelId());
+			// FAILURE angelId unique
+            String message = String.format("%s objects found for angelId:%s with entity %s", objects.size(), currentStub.getAngelId(), currentStub.getEntityIdentifier());
             replRecord.setFailedStatus();
             replRecord.setMessage(message);
             throw new IllegalArgumentException(message);
