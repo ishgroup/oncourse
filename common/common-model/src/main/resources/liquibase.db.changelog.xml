@@ -1009,4 +1009,10 @@
     	<customChange class="ish.oncourse.utils.MigrateReferencesUpgrage"/>
     </changeSet>
     
+    <changeSet id="67" author="andrey" context="production" runOnChange="true">
+        <sql>ALTER TABLE webcontentvisibility DROP FOREIGN KEY WebContentVisibility_WebNode</sql>
+        <sql>ALTER TABLE webcontentvisibility ADD CONSTRAINT WebContentVisibility_WebNode FOREIGN KEY (WebNodeId) REFERENCES WebNode (id) ON DELETE CASCADE ON UPDATE NO ACTION</sql>
+        <sql>ALTER TABLE weburlalias DROP FOREIGN KEY WebURLAlias_webNode</sql>
+        <sql>ALTER TABLE weburlalias ADD CONSTRAINT WebURLAlias_webNode FOREIGN KEY (webNodeId) REFERENCES WebNode (id) ON DELETE CASCADE</sql>
+    </changeSet>
 </databaseChangeLog>
