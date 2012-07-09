@@ -123,6 +123,17 @@ public class PortHelper {
 				return null;
 		}
 	}
+	
+	public static GenericReplicationResult createReplicationResult(final SupportedVersions version) {
+		switch (version) {
+			case V4:
+				return new ReplicationResult();
+			case V5:
+				return new ish.oncourse.webservices.v5.stubs.replication.ReplicationResult();
+			default:
+				return null;
+		}
+	}
 
 	public static GenericInstructionStub createInstructionStub(final SupportedVersions version) {
 		switch (version) {

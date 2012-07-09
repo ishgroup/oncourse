@@ -95,7 +95,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		this.result = new ArrayList<GenericReplicatedRecord>();
 
 		for (GenericReplicationStub currentStub : group.getAttendanceOrBinaryDataOrBinaryInfo()) {
-			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub);
+			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
 			result.add(replRecord);
 		}
 

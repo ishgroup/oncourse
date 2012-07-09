@@ -11,19 +11,14 @@ import ish.oncourse.model.Session;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.InternalPaymentService;
+import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
+import ish.oncourse.webservices.util.GenericEnrolmentStub;
+import ish.oncourse.webservices.util.GenericInvoiceStub;
+import ish.oncourse.webservices.util.GenericPaymentInStub;
+import ish.oncourse.webservices.util.GenericPaymentOutStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v4.stubs.replication.ContactStub;
-import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub;
-import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
-import ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub;
-import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
-import ish.oncourse.webservices.v4.stubs.replication.PaymentOutStub;
-import ish.oncourse.webservices.v4.stubs.replication.StudentStub;
-import ish.oncourse.webservices.v4.stubs.replication.TransactionGroup;
-
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -66,20 +61,16 @@ public class PaymentPortTypeTest extends ServiceTest {
 	}
 
 	@Test
-	public void testProcessCreditCardPayment() throws Exception {
-
-		GenericTransactionGroup group = new TransactionGroup();
-
-		EnrolmentStub enrolStub = enrolment();
-		InvoiceStub invoiceStub = invoice();
-		InvoiceLineStub invLineStub = invoiceLine();
-		PaymentInStub paymentInStub = paymentIn();
-		PaymentInLineStub pLineStub = paymentInLine();
-		ContactStub contactStub = contact();
-		StudentStub studentStub = student();
-
+	public void testV4ProcessCreditCardPayment() throws Exception {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
+		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = enrolmentV4();
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV4();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = paymentInV4();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV4();
+		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub = contactV4();
+		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub = studentV4();
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-
 		stubs.add(enrolStub);
 		stubs.add(paymentInStub);
 		stubs.add(pLineStub);
@@ -87,73 +78,92 @@ public class PaymentPortTypeTest extends ServiceTest {
 		stubs.add(invLineStub);
 		stubs.add(contactStub);
 		stubs.add(studentStub);
-
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		GenericTransactionGroup respGroup = port.processPayment(group);
-
 		assertNotNull("Check Response Group is not null", respGroup);
-
-		EnrolmentStub respEnrolStub = null;
-		PaymentInStub respPaymentInStub = null;
-
+		GenericEnrolmentStub respEnrolStub = null;
+		GenericPaymentInStub respPaymentInStub = null;
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
-				respEnrolStub = (EnrolmentStub) stub;
+				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (PaymentInStub) stub;
+				respPaymentInStub = (GenericPaymentInStub) stub;
 			}
 		}
-
 		assertNotNull("Check enrolment presents in response.", respEnrolStub);
 		assertNotNull("Check payment presents in response.", respPaymentInStub);
-
 		assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
 		assertEquals("Check payment status.", Integer.valueOf(2), respPaymentInStub.getStatus());
-
+		assertNotNull("Check if sessionId is set.", respPaymentInStub.getSessionId());
+	}
+	
+	@Test
+	public void testV5ProcessCreditCardPayment() throws Exception {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
+		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = enrolmentV5();
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV5();
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub = paymentInV5();
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV5();
+		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub = contactV5();
+		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub = studentV5();
+		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		stubs.add(enrolStub);
+		stubs.add(paymentInStub);
+		stubs.add(pLineStub);
+		stubs.add(invoiceStub);
+		stubs.add(invLineStub);
+		stubs.add(contactStub);
+		stubs.add(studentStub);
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		GenericTransactionGroup respGroup = port.processPayment(group);
+		assertNotNull("Check Response Group is not null", respGroup);
+		GenericEnrolmentStub respEnrolStub = null;
+		GenericPaymentInStub respPaymentInStub = null;
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			if ("Enrolment".equals(stub.getEntityIdentifier())) {
+				respEnrolStub = (GenericEnrolmentStub) stub;
+			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
+				respPaymentInStub = (GenericPaymentInStub) stub;
+			}
+		}
+		assertNotNull("Check enrolment presents in response.", respEnrolStub);
+		assertNotNull("Check payment presents in response.", respPaymentInStub);
+		assertEquals("Check enrolment status.", "IN_TRANSACTION", respEnrolStub.getStatus());
+		assertEquals("Check payment status.", Integer.valueOf(2), respPaymentInStub.getStatus());
 		assertNotNull("Check if sessionId is set.", respPaymentInStub.getSessionId());
 	}
 
 	@Test
-	public void testProcessPaymentNoPlaces() throws Exception {
-
-		GenericTransactionGroup group = new TransactionGroup();
-
-		ContactStub contactStub1 = contact();
-		StudentStub studentStub1 = student();
-
-		ContactStub contactStub2 = contact();
+	public void testV4ProcessPaymentNoPlaces() throws Exception {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
+		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub1 = contactV4();
+		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub1 = studentV4();
+		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub2 = contactV4();
 		contactStub2.setAngelId(2l);
 		contactStub2.setStudentId(2l);
-
-		StudentStub studentStub2 = student();
+		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub2 = studentV4();
 		studentStub2.setAngelId(2l);
 		studentStub2.setContactId(2l);
-
-		EnrolmentStub enrolStub1 = enrolment();
+		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub1 = enrolmentV4();
 		enrolStub1.setCourseClassId(201l);
 		enrolStub1.setStudentId(1l);
 		enrolStub1.setInvoiceLineId(4l);
-
-		EnrolmentStub enrolStub2 = enrolment();
+		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV4();
 		enrolStub1.setAngelId(2l);
 		enrolStub2.setCourseClassId(201l);
 		enrolStub2.setStudentId(2l);
 		enrolStub2.setInvoiceLineId(3l);
-
-		InvoiceStub invoiceStub = invoice();
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
 		//NOTE: that invoicelines with collegeid 1 + angelid 1 and 2 already used by replication test and may not be cleanup.
-		InvoiceLineStub invLineStub1 = invoiceLine();
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub1 = invoiceLineV4();
 		invLineStub1.setAngelId(4l);
-
-		InvoiceLineStub invLineStub2 = invoiceLine();
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV4();
 		invLineStub2.setAngelId(3l);
 		invLineStub2.setEnrolmentId(2l);
-
-		PaymentInStub paymentInStub = paymentIn();
-		PaymentInLineStub pLineStub = paymentInLine();
-
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = paymentInV4();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV4();
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
-
 		stubs.add(contactStub1);
 		stubs.add(studentStub1);
 		stubs.add(contactStub2);
@@ -168,61 +178,135 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		GenericTransactionGroup respGroup = port.processPayment(group);
-
 		assertNotNull("Check Response Group is not null", respGroup);
-
-		List<EnrolmentStub> enrolStubs = new ArrayList<EnrolmentStub>(2);
-		List<PaymentInStub> paymentStubs = new ArrayList<PaymentInStub>(2);
-		List<InvoiceStub> invoiceStubs = new ArrayList<InvoiceStub>();
-
+		final List<GenericEnrolmentStub> enrolStubs = new ArrayList<GenericEnrolmentStub>(2);
+		final List<GenericPaymentInStub> paymentStubs = new ArrayList<GenericPaymentInStub>(2);
+		final List<GenericInvoiceStub> invoiceStubs = new ArrayList<GenericInvoiceStub>();
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
-				EnrolmentStub enrol = (EnrolmentStub) stub;
+				GenericEnrolmentStub enrol = (GenericEnrolmentStub) stub;
 				assertEquals("Check enrolment status.", "FAILED", enrol.getStatus());
 				enrolStubs.add(enrol);
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				PaymentInStub p = (PaymentInStub) stub;
+				GenericPaymentInStub p = (GenericPaymentInStub) stub;
 				assertNull("Check that sessionId wasn't set.", p.getSessionId());
 				assertTrue("Check payment status. Expecting SUCESS or FAILED_NO_PLACES.", p.getStatus().equals(Integer.valueOf(3))
 						|| p.getStatus().equals(Integer.valueOf(7)));
 				paymentStubs.add(p);
 			} else if ("Invoice".equals(stub.getEntityIdentifier())) {
-				InvoiceStub inv = (InvoiceStub) stub;
+				ish.oncourse.webservices.v4.stubs.replication.InvoiceStub inv = (ish.oncourse.webservices.v4.stubs.replication.InvoiceStub) stub;
 				invoiceStubs.add(inv);
 			}
 		}
-
 		assertEquals("Check if two enrolments present in response.", 2, enrolStubs.size());
 		assertEquals("Check if two payments present in response.", 2, paymentStubs.size());
 		assertEquals("Check if two invoices present in response.", 2, invoiceStubs.size());
+		// Check amount of invoices.
+		long sum = invoiceStubs.get(0).getAmountOwing().add(invoiceStubs.get(1).getAmountOwing()).longValue();
+		assertEquals("Check that the amounts are opposite.", 0, sum);
+	}
+	
+	@Test
+	public void testV5ProcessPaymentNoPlaces() throws Exception {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
+		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub1 = contactV5();
+		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub1 = studentV5();
+		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub2 = contactV5();
+		contactStub2.setAngelId(2l);
+		contactStub2.setStudentId(2l);
+		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub2 = studentV5();
+		studentStub2.setAngelId(2l);
+		studentStub2.setContactId(2l);
+		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub1 = enrolmentV5();
+		enrolStub1.setCourseClassId(201l);
+		enrolStub1.setStudentId(1l);
+		enrolStub1.setInvoiceLineId(4l);
+		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV5();
+		enrolStub1.setAngelId(2l);
+		enrolStub2.setCourseClassId(201l);
+		enrolStub2.setStudentId(2l);
+		enrolStub2.setInvoiceLineId(3l);
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
+		//NOTE: that invoicelines with collegeid 1 + angelid 1 and 2 already used by replication test and may not be cleanup.
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub1 = invoiceLineV5();
+		invLineStub1.setAngelId(4l);
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV5();
+		invLineStub2.setAngelId(3l);
+		invLineStub2.setEnrolmentId(2l);
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub = paymentInV5();
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV5();
+		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		stubs.add(contactStub1);
+		stubs.add(studentStub1);
+		stubs.add(contactStub2);
+		stubs.add(studentStub2);
+		stubs.add(invoiceStub);
+		stubs.add(invLineStub1);
+		stubs.add(invLineStub2);
+		stubs.add(paymentInStub);
+		stubs.add(pLineStub);
+		stubs.add(enrolStub1);
+		stubs.add(enrolStub2);
 
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		GenericTransactionGroup respGroup = port.processPayment(group);
+		assertNotNull("Check Response Group is not null", respGroup);
+		final List<GenericEnrolmentStub> enrolStubs = new ArrayList<GenericEnrolmentStub>(2);
+		final List<GenericPaymentInStub> paymentStubs = new ArrayList<GenericPaymentInStub>(2);
+		final List<GenericInvoiceStub> invoiceStubs = new ArrayList<GenericInvoiceStub>();
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			if ("Enrolment".equals(stub.getEntityIdentifier())) {
+				GenericEnrolmentStub enrol = (GenericEnrolmentStub) stub;
+				assertEquals("Check enrolment status.", "FAILED", enrol.getStatus());
+				enrolStubs.add(enrol);
+			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
+				GenericPaymentInStub p = (GenericPaymentInStub) stub;
+				assertNull("Check that sessionId wasn't set.", p.getSessionId());
+				assertTrue("Check payment status. Expecting SUCESS or FAILED_NO_PLACES.", p.getStatus().equals(Integer.valueOf(3))
+						|| p.getStatus().equals(Integer.valueOf(7)));
+				paymentStubs.add(p);
+			} else if ("Invoice".equals(stub.getEntityIdentifier())) {
+				ish.oncourse.webservices.v5.stubs.replication.InvoiceStub inv = (ish.oncourse.webservices.v5.stubs.replication.InvoiceStub) stub;
+				invoiceStubs.add(inv);
+			}
+		}
+		assertEquals("Check if two enrolments present in response.", 2, enrolStubs.size());
+		assertEquals("Check if two payments present in response.", 2, paymentStubs.size());
+		assertEquals("Check if two invoices present in response.", 2, invoiceStubs.size());
 		// Check amount of invoices.
 		long sum = invoiceStubs.get(0).getAmountOwing().add(invoiceStubs.get(1).getAmountOwing()).longValue();
 		assertEquals("Check that the amounts are opposite.", 0, sum);
 	}
 
 	@Test
-	public void testProcessPaymentZero() throws Exception {
-		notCreditCardOrZeroPayment(true);
+	public void testV4ProcessPaymentZero() throws Exception {
+		notCreditCardOrZeroPaymentV4(true);
 	}
 
 	@Test
-	public void testProcessNotCreditCardPayment() throws Exception {
-		notCreditCardOrZeroPayment(false);
+	public void testV4ProcessNotCreditCardPayment() throws Exception {
+		notCreditCardOrZeroPaymentV4(false);
+	}
+	
+	@Test
+	public void testV5ProcessPaymentZero() throws Exception {
+		notCreditCardOrZeroPaymentV5(true);
 	}
 
-	private void notCreditCardOrZeroPayment(boolean isZeroPayment) throws Exception {
+	@Test
+	public void testV5ProcessNotCreditCardPayment() throws Exception {
+		notCreditCardOrZeroPaymentV5(false);
+	}
 
-		GenericTransactionGroup group = new TransactionGroup();
-
-		EnrolmentStub enrolStub = enrolment();
-
-		InvoiceStub invoiceStub = invoice();
-		InvoiceLineStub invLineStub = invoiceLine();
-		PaymentInStub paymentInStub = paymentIn();
-		PaymentInLineStub pLineStub = paymentInLine();
-		ContactStub contactStub = contact();
-		StudentStub studentStub = student();
+	private void notCreditCardOrZeroPaymentV4(boolean isZeroPayment) throws Exception {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
+		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = enrolmentV4();
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV4();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = paymentInV4();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV4();
+		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub = contactV4();
+		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub = studentV4();
 
 		if (!isZeroPayment) {
 			// setting payment type to CASH
@@ -249,28 +333,77 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 		assertNotNull("Check Response Group is not null", respGroup);
 
-		EnrolmentStub respEnrolStub = null;
-		PaymentInStub respPaymentInStub = null;
+		GenericEnrolmentStub respEnrolStub = null;
+		GenericPaymentInStub respPaymentInStub = null;
 
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
-				respEnrolStub = (EnrolmentStub) stub;
+				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (PaymentInStub) stub;
+				respPaymentInStub = (GenericPaymentInStub) stub;
 			}
 		}
-
 		assertNotNull("Check enrolment presents in response.", respEnrolStub);
 		assertNotNull("Check payment presents in response.", respPaymentInStub);
-
 		assertEquals("Check enrolment status.", "SUCCESS", respEnrolStub.getStatus());
 		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
-
 		assertNull("Check that sessionId wasn't set.", respPaymentInStub.getSessionId());
 	}
+	
+	private void notCreditCardOrZeroPaymentV5(boolean isZeroPayment) throws Exception {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
+		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = enrolmentV5();
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV5();
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub = paymentInV5();
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV5();
+		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub = contactV5();
+		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub = studentV5();
 
+		if (!isZeroPayment) {
+			// setting payment type to CASH
+			paymentInStub.setType(0);
+		} else {
+			enrolStub.setCourseClassId(202l);
+			paymentInStub.setAmount(BigDecimal.ZERO);
+			invoiceStub.setAmountOwing(BigDecimal.ZERO);
+			pLineStub.setAmount(BigDecimal.ZERO);
+		}
+
+		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+
+		stubs.add(enrolStub);
+		stubs.add(paymentInStub);
+		stubs.add(pLineStub);
+		stubs.add(invoiceStub);
+		stubs.add(invLineStub);
+		stubs.add(contactStub);
+		stubs.add(studentStub);
+
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		GenericTransactionGroup respGroup = port.processPayment(group);
+
+		assertNotNull("Check Response Group is not null", respGroup);
+
+		GenericEnrolmentStub respEnrolStub = null;
+		GenericPaymentInStub respPaymentInStub = null;
+
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			if ("Enrolment".equals(stub.getEntityIdentifier())) {
+				respEnrolStub = (GenericEnrolmentStub) stub;
+			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
+				respPaymentInStub = (GenericPaymentInStub) stub;
+			}
+		}
+		assertNotNull("Check enrolment presents in response.", respEnrolStub);
+		assertNotNull("Check payment presents in response.", respPaymentInStub);
+		assertEquals("Check enrolment status.", "SUCCESS", respEnrolStub.getStatus());
+		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
+		assertNull("Check that sessionId wasn't set.", respPaymentInStub.getSessionId());
+	}
+	
 	@Test
-	public void testPaymentStatus() throws Exception {
+	public void testV4PaymentStatus() throws Exception {
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		
 		//sessionId for in transaction payment, we expect an empty group as response
@@ -287,24 +420,52 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check transaction group is not null.", respGroup);
 		assertTrue("Check that group isn't empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 		
-		PaymentInStub respPaymentInStub = null;
+		GenericPaymentInStub respPaymentInStub = null;
 		
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (PaymentInStub) stub;
+				respPaymentInStub = (GenericPaymentInStub) stub;
 			}
 		}
+		assertNotNull("Check payment presents in response.", respPaymentInStub);
+		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
+	}
+	
+	@Test
+	public void testV5PaymentStatus() throws Exception {
+		InternalPaymentService port = getService(InternalPaymentService.class);
 		
+		//sessionId for in transaction payment, we expect an empty group as response
+		String sessionId = "AAVV#$%%%#$3333";
+		GenericTransactionGroup respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V5);
+		
+		assertNotNull("Check transaction group is not null.", respGroup);
+		assertTrue("Check that group is empty.", respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		
+		//sessionId for payment in success status, we expect not empty group with paymentIn record inside.
+		sessionId = "jfjf790aaajjj9900";
+		respGroup = port.getPaymentStatus(sessionId, SupportedVersions.V5);
+		
+		assertNotNull("Check transaction group is not null.", respGroup);
+		assertTrue("Check that group isn't empty.", !respGroup.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+		
+		GenericPaymentInStub respPaymentInStub = null;
+		
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			if ("PaymentIn".equals(stub.getEntityIdentifier())) {
+				respPaymentInStub = (GenericPaymentInStub) stub;
+			}
+		}
 		assertNotNull("Check payment presents in response.", respPaymentInStub);
 		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
 	}
 
 	@Test
-	public void testProcessRefund() throws Exception {
+	public void testV4ProcessRefund() throws Exception {
 
-		GenericTransactionGroup reqGroup = new TransactionGroup();
+		GenericTransactionGroup reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
 
-		PaymentOutStub paymentOut = new PaymentOutStub();
+		ish.oncourse.webservices.v4.stubs.replication.PaymentOutStub paymentOut = new ish.oncourse.webservices.v4.stubs.replication.PaymentOutStub();
 		paymentOut.setAmount(new BigDecimal(100));
 		paymentOut.setAngelId(1l);
 		paymentOut.setContactId(3l);
@@ -324,11 +485,11 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 		assertNotNull(respGroup);
 
-		PaymentOutStub pResp = null;
+		GenericPaymentOutStub pResp = null;
 
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
-				pResp = (PaymentOutStub) stub;
+				pResp = (GenericPaymentOutStub) stub;
 			}
 		}
 
@@ -337,7 +498,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNotNull("Check that dateBanked is set.", pResp.getDateBanked());
 		assertNotNull("Check that datePaid is set.", pResp.getDatePaid());
 
-		reqGroup = new TransactionGroup();
+		reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
 
 		paymentOut.setAngelId(2l);
 		paymentOut.setAmount(new BigDecimal(2100));
@@ -352,7 +513,69 @@ public class PaymentPortTypeTest extends ServiceTest {
 		
 		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
 			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
-				pResp = (PaymentOutStub) stub;
+				pResp = (GenericPaymentOutStub) stub;
+			}
+		}
+		
+		assertNotNull("Check paymentOut presents in response.", pResp);
+		assertEquals("Check paymentOut status. Expecting FAILED.", Integer.valueOf(4), pResp.getStatus());
+
+	}
+	
+	@Test
+	public void testV5ProcessRefund() throws Exception {
+
+		GenericTransactionGroup reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V5);
+
+		ish.oncourse.webservices.v5.stubs.replication.PaymentOutStub paymentOut = new ish.oncourse.webservices.v5.stubs.replication.PaymentOutStub();
+		paymentOut.setAmount(new BigDecimal(100));
+		paymentOut.setAngelId(1l);
+		paymentOut.setContactId(3l);
+		paymentOut.setCreated(today);
+		paymentOut.setEntityIdentifier("PaymentOut");
+		paymentOut.setModified(today);
+		paymentOut.setPaymentInTxnReference("tx123");
+		paymentOut.setSource("W");
+		paymentOut.setStatus(2);
+		paymentOut.setType(2);
+
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		List<GenericReplicationStub> stubs = reqGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		stubs.add(paymentOut);
+
+		GenericTransactionGroup respGroup = port.processRefund(reqGroup);
+
+		assertNotNull(respGroup);
+
+		GenericPaymentOutStub pResp = null;
+
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
+				pResp = (GenericPaymentOutStub) stub;
+			}
+		}
+
+		assertNotNull("Check paymentOut presents in response.", pResp);
+		assertEquals("Check paymentOut status. Expecting SUCESS.", Integer.valueOf(3), pResp.getStatus());
+		assertNotNull("Check that dateBanked is set.", pResp.getDateBanked());
+		assertNotNull("Check that datePaid is set.", pResp.getDatePaid());
+
+		reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V5);
+
+		paymentOut.setAngelId(2l);
+		paymentOut.setAmount(new BigDecimal(2100));
+		stubs = reqGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		stubs.add(paymentOut);
+
+		respGroup = port.processRefund(reqGroup);
+
+		assertNotNull(respGroup);
+		
+		pResp = null;
+		
+		for (GenericReplicationStub stub : respGroup.getAttendanceOrBinaryDataOrBinaryInfo()) {
+			if ("PaymentOut".equals(stub.getEntityIdentifier())) {
+				pResp = (GenericPaymentOutStub) stub;
 			}
 		}
 		
@@ -389,8 +612,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertEquals("Expecting that outcomes remain in the database until deleted from angel.", 1, dbUnitConnection.getRowCount("Outcome"));
 	}
 
-	private InvoiceLineStub invoiceLine() {
-		InvoiceLineStub invLineStub = new InvoiceLineStub();
+	private ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invoiceLineV4() {
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub invLineStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceLineStub();
 		invLineStub.setEntityIdentifier("InvoiceLine");
 		invLineStub.setAngelId(1l);
 		invLineStub.setCreated(today);
@@ -407,8 +630,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return invLineStub;
 	}
 
-	private InvoiceStub invoice() {
-		InvoiceStub invoiceStub = new InvoiceStub();
+	private ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceV4() {
+		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v4.stubs.replication.InvoiceStub();
 		invoiceStub.setAngelId(1l);
 		invoiceStub.setAmountOwing(new BigDecimal(110l));
 		invoiceStub.setBillToAddress("Test billing address");
@@ -429,8 +652,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return invoiceStub;
 	}
 
-	private EnrolmentStub enrolment() {
-		EnrolmentStub enrolStub = new EnrolmentStub();
+	private ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolmentV4() {
+		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = new ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub();
 		enrolStub.setAngelId(1l);
 		enrolStub.setCourseClassId(200l);
 		enrolStub.setCreated(today);
@@ -444,8 +667,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return enrolStub;
 	}
 
-	private StudentStub student() {
-		StudentStub studentStub = new StudentStub();
+	private ish.oncourse.webservices.v4.stubs.replication.StudentStub studentV4() {
+		ish.oncourse.webservices.v4.stubs.replication.StudentStub studentStub = new ish.oncourse.webservices.v4.stubs.replication.StudentStub();
 		studentStub.setAngelId(1l);
 		studentStub.setContactId(1l);
 		studentStub.setCountryOfBirthId(86l);
@@ -455,8 +678,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return studentStub;
 	}
 
-	private PaymentInStub paymentIn() {
-		PaymentInStub paymentInStub = new PaymentInStub();
+	private ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInV4() {
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInStub();
 		paymentInStub.setAmount(new BigDecimal(110));
 		paymentInStub.setAngelId(1l);
 		paymentInStub.setContactId(4l);
@@ -469,8 +692,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return paymentInStub;
 	}
 
-	private ContactStub contact() {
-		ContactStub contactStub = new ContactStub();
+	private ish.oncourse.webservices.v4.stubs.replication.ContactStub contactV4() {
+		ish.oncourse.webservices.v4.stubs.replication.ContactStub contactStub = new ish.oncourse.webservices.v4.stubs.replication.ContactStub();
 		contactStub.setAngelId(1l);
 		contactStub.setBusinessPhoneNumber("3241322");
 		contactStub.setCompany(false);
@@ -481,8 +704,111 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return contactStub;
 	}
 
-	private PaymentInLineStub paymentInLine() {
-		PaymentInLineStub pLineStub = new PaymentInLineStub();
+	private ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub paymentInLineV4() {
+		ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub pLineStub = new ish.oncourse.webservices.v4.stubs.replication.PaymentInLineStub();
+		pLineStub.setAngelId(1l);
+		pLineStub.setCreated(today);
+		pLineStub.setEntityIdentifier("PaymentInLine");
+		pLineStub.setInvoiceId(1l);
+		pLineStub.setPaymentInId(1l);
+		pLineStub.setAmount(new BigDecimal(110l));
+		return pLineStub;
+	}
+	
+	private ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invoiceLineV5() {
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub invLineStub = new ish.oncourse.webservices.v5.stubs.replication.InvoiceLineStub();
+		invLineStub.setEntityIdentifier("InvoiceLine");
+		invLineStub.setAngelId(1l);
+		invLineStub.setCreated(today);
+		invLineStub.setDescription("Invoice line item  for accounting course");
+		invLineStub.setDiscountEachExTax(new BigDecimal(0));
+		invLineStub.setEnrolmentId(1l);
+		invLineStub.setModified(today);
+		invLineStub.setPriceEachExTax(new BigDecimal(110));
+		invLineStub.setQuantity(new BigDecimal(1));
+		invLineStub.setTaxEach(new BigDecimal(10));
+		invLineStub.setTitle("Accouting course item");
+		invLineStub.setUnit("unit");
+		invLineStub.setInvoiceId(1l);
+		return invLineStub;
+	}
+
+	private ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceV5() {
+		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v5.stubs.replication.InvoiceStub();
+		invoiceStub.setAngelId(1l);
+		invoiceStub.setAmountOwing(new BigDecimal(110l));
+		invoiceStub.setBillToAddress("Test billing address");
+		invoiceStub.setContactId(2l);
+		invoiceStub.setCreated(today);
+		invoiceStub.setCustomerPO("PO");
+		invoiceStub.setCustomerReference("ref123");
+		invoiceStub.setDateDue(dueDate);
+		invoiceStub.setDescription("Invoice for accounting course");
+		invoiceStub.setEntityIdentifier("Invoice");
+		invoiceStub.setInvoiceDate(today);
+		invoiceStub.setInvoiceNumber(123l);
+		invoiceStub.setModified(today);
+		invoiceStub.setTotalExGst(new BigDecimal(100));
+		invoiceStub.setTotalGst(new BigDecimal(110));
+		invoiceStub.setSource("W");
+		invoiceStub.setStatus("Pending");
+		return invoiceStub;
+	}
+
+	private ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolmentV5() {
+		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = new ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub();
+		enrolStub.setAngelId(1l);
+		enrolStub.setCourseClassId(200l);
+		enrolStub.setCreated(today);
+		enrolStub.setEntityIdentifier("Enrolment");
+		enrolStub.setInvoiceLineId(1l);
+		enrolStub.setModified(today);
+		enrolStub.setReasonForStudy(1);
+		enrolStub.setSource("W");
+		enrolStub.setStatus(EnrolmentStatus.IN_TRANSACTION.name());
+		enrolStub.setStudentId(201l);
+		return enrolStub;
+	}
+
+	private ish.oncourse.webservices.v5.stubs.replication.StudentStub studentV5() {
+		ish.oncourse.webservices.v5.stubs.replication.StudentStub studentStub = new ish.oncourse.webservices.v5.stubs.replication.StudentStub();
+		studentStub.setAngelId(1l);
+		studentStub.setContactId(1l);
+		studentStub.setCountryOfBirthId(86l);
+		studentStub.setCreated(today);
+		studentStub.setModified(today);
+		studentStub.setEntityIdentifier("Student");
+		return studentStub;
+	}
+
+	private ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInV5() {
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v5.stubs.replication.PaymentInStub();
+		paymentInStub.setAmount(new BigDecimal(110));
+		paymentInStub.setAngelId(1l);
+		paymentInStub.setContactId(4l);
+		paymentInStub.setCreated(today);
+		paymentInStub.setEntityIdentifier("PaymentIn");
+		paymentInStub.setModified(today);
+		paymentInStub.setSource("W");
+		paymentInStub.setStatus(2);
+		paymentInStub.setType(2);
+		return paymentInStub;
+	}
+
+	private ish.oncourse.webservices.v5.stubs.replication.ContactStub contactV5() {
+		ish.oncourse.webservices.v5.stubs.replication.ContactStub contactStub = new ish.oncourse.webservices.v5.stubs.replication.ContactStub();
+		contactStub.setAngelId(1l);
+		contactStub.setBusinessPhoneNumber("3241322");
+		contactStub.setCompany(false);
+		contactStub.setCountryId(86l);
+		contactStub.setDateOfBirth(today);
+		contactStub.setEmailAddress("test@test.com");
+		contactStub.setEntityIdentifier("Contact");
+		return contactStub;
+	}
+
+	private ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub paymentInLineV5() {
+		ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub pLineStub = new ish.oncourse.webservices.v5.stubs.replication.PaymentInLineStub();
 		pLineStub.setAngelId(1l);
 		pLineStub.setCreated(today);
 		pLineStub.setEntityIdentifier("PaymentInLine");

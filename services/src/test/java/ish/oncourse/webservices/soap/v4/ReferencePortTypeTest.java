@@ -3,7 +3,7 @@ package ish.oncourse.webservices.soap.v4;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
+import ish.oncourse.webservices.util.GenericReferenceResult;
 
 import java.io.InputStream;
 
@@ -45,7 +45,7 @@ public class ReferencePortTypeTest extends ServiceTest {
 	public void testGetRecords() throws Exception {
 		ReferencePortType referencePort = getReferencePort();
 
-		ReferenceResult result = referencePort.getRecords(1L);
+		GenericReferenceResult result = referencePort.getRecords(1L);
 
 		assertNotNull(result);
 		int size = result.getCountryOrLanguageOrModule().size();

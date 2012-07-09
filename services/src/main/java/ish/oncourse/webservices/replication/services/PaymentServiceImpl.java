@@ -202,7 +202,6 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			}
 			
 			GenericReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
-			//ReplicatedRecord paymentOutRecord = ReplicationUtils.replicatedPaymentOutRecord(replicatedRecords);
 			PaymentOut paymentOut = paymentInService.paymentOutByAngelId(paymentOutRecord.getStub().getAngelId());
 
 			if (paymentOut == null) {

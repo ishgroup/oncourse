@@ -9,12 +9,12 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.util.GenericEnrolmentStub;
+import ish.oncourse.webservices.util.GenericInvoiceStub;
+import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v4.stubs.replication.InvoiceStub;
-import ish.oncourse.webservices.v4.stubs.replication.PaymentInStub;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -56,48 +56,40 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     }
 
     @Test
-    public void testDeleteObject() throws Exception {
-
-
+    public void testDeleteV4Object() throws Exception {
         /**
          * Transaction with one Contact delete.
          */
-    	GenericTransactionGroup transactionGroup = getTransactionGroup(0);
+    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V4);
         List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Contact",1,"Invoice") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
-
         /**
          * Transaction with one Student delete.
          */
-        transactionGroup = getTransactionGroup(1);
+        transactionGroup = getTransactionGroup(1, SupportedVersions.V4);
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
         assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Student",1,"Enrolment") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
-
-
         /**
          * Transaction with Merge Student 1 to 2  delete.
          */
-        transactionGroup = getTransactionGroup(2);
+        transactionGroup = getTransactionGroup(2, SupportedVersions.V4);
         List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
         /**
          * Adjust relationships as the angel side does it.
          */
         for (GenericReplicationStub replicationStub : replicationStubs) {
-            if (replicationStub instanceof EnrolmentStub)
-            {
-                ((EnrolmentStub)replicationStub).setStudentId(2L);
+            if (replicationStub instanceof GenericEnrolmentStub) {
+                ((GenericEnrolmentStub)replicationStub).setStudentId(2L);
             }
-            else if (replicationStub instanceof PaymentInStub)
-            {
-                ((PaymentInStub) replicationStub).setContactId(2L);
+            else if (replicationStub instanceof GenericPaymentInStub) {
+                ((GenericPaymentInStub) replicationStub).setContactId(2L);
             }
-            else if (replicationStub instanceof InvoiceStub)
-            {
-                ((InvoiceStub) replicationStub).setContactId(2L);
+            else if (replicationStub instanceof GenericInvoiceStub) {
+                ((GenericInvoiceStub) replicationStub).setContactId(2L);
             }
         }
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
@@ -106,14 +98,59 @@ public class TransactionGroupProcessorTest extends ServiceTest {
             assertEquals("Expecting success record, status test", true, replicatedRecord.isSuccessStatus());
         }
     }
-
-    private GenericTransactionGroup getTransactionGroup(int fromTransaction) {
+    
+    @Test
+    public void testDeleteV5Object() throws Exception {
+    	setup();
+        /**
+         * Transaction with one Contact delete.
+         */
+    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V5);
+        List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
+        assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
+        assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Contact",1,"Invoice") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
+        /**
+         * Transaction with one Student delete.
+         */
+        transactionGroup = getTransactionGroup(1, SupportedVersions.V5);
+        replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
+        assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
+        assertEquals("Expecting one failed replicatedRecord, status test", true, replicatedRecords.get(0).isFailedStatus());
+        assertEquals("Expecting one failed replicatedRecord, message test", "Failed to process transaction group: " + String.format(TransactionGroupProcessorImpl.MESSAGE_TEMPLATE_NO_STUB,1,"Student",1,"Enrolment") +  " and collegeId: 1", replicatedRecords.get(0).getMessage());
+        /**
+         * Transaction with Merge Student 1 to 2  delete.
+         */
+        transactionGroup = getTransactionGroup(2, SupportedVersions.V5);
+        List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+        /**
+         * Adjust relationships as the angel side does it.
+         */
+        for (GenericReplicationStub replicationStub : replicationStubs) {
+            if (replicationStub instanceof GenericEnrolmentStub) {
+                ((GenericEnrolmentStub)replicationStub).setStudentId(2L);
+            }
+            else if (replicationStub instanceof GenericPaymentInStub) {
+                ((GenericPaymentInStub) replicationStub).setContactId(2L);
+            }
+            else if (replicationStub instanceof GenericInvoiceStub) {
+                ((GenericInvoiceStub) replicationStub).setContactId(2L);
+            }
+        }
+        replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
+        assertEquals("Expecting success records, size test", 5, replicatedRecords.size());
+        for (GenericReplicatedRecord replicatedRecord : replicatedRecords) {
+            assertEquals("Expecting success record, status test", true, replicatedRecord.isSuccessStatus());
+        }
+    }
+    
+    private GenericTransactionGroup getTransactionGroup(int fromTransaction, final SupportedVersions version) {
         List<QueuedTransaction> transactions = willowQueueService.getReplicationQueue(fromTransaction, 1);
-        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(version);
 
         for (QueuedRecord record: transactions.get(0).getQueuedRecords())
         {
-            GenericReplicationStub replicationStub = willowStubBuilder.convert(record,PortHelper.getVersionByTransactionGroup(transactionGroup));
+            GenericReplicationStub replicationStub = willowStubBuilder.convert(record, PortHelper.getVersionByTransactionGroup(transactionGroup));
             transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(replicationStub);
         }
         return transactionGroup;
