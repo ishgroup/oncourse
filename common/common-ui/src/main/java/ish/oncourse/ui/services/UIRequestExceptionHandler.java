@@ -31,7 +31,9 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler
                 exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
             response.sendRedirect("/");
         } else {
-            LOGGER.error(String.format("Unexpected runtime exception on \"%s\"", request != null ? request.getPath(): "undefined path") , exception);
+            LOGGER.error(String.format("Unexpected runtime exception on \"%s/%s\"",
+                    request != null ? request.getServerName(): "undefined host",
+                    request != null ? request.getPath(): "undefined path") , exception);
             String exceptionPageName = "ui/Error500";
             ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(exceptionPageName);
             exceptionReporter.reportException(exception);
