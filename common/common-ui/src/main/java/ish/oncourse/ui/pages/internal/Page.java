@@ -33,7 +33,7 @@ public class Page {
 	public boolean beforeRender() throws IOException {
 		node = webNodeService.getCurrentNode();
 		if (node == null || !node.isPublished()) {
-			logger.error(String.format("CurrentNode \"%s\" is %s in %s/%s",
+			logger.warn(String.format("CurrentNode \"%s\" is %s in %s/%s",
                     node == null ? "undefined": node.getPath(),
                     node == null ? "null" : "unpublished",
                     request.getServerName(),
