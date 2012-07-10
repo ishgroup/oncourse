@@ -6,9 +6,6 @@ import ish.oncourse.services.mail.MailService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.TextileUtil;
-
-import java.util.List;
-
 import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
@@ -17,6 +14,8 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.util.List;
 
 public class TextileForm {
 
@@ -122,7 +121,10 @@ public class TextileForm {
 				LOGGER.error("Problem with processing email", e);
 			}
 		} else {
-			LOGGER.error("The email for this form is not defined.");
+			LOGGER.error(String.format("The email for this form is not defined.Host: %s. Path %s",
+                    request != null? request.getServerName():"undefined",
+                    request != null? request.getPath():"undefined"
+                    ));
 		}
 
 		afterFieldsMarkUp = (String) request.getAttribute(TextileUtil.TEXTILE_FORM_PAGE_AFTER_FIELDS_PARAM);
