@@ -36,9 +36,9 @@ public class CourseItemModel {
             courseItemModel.availableClasses.addAll(course.getEnrollableClasses());
             courseItemModel.fullClasses.addAll(course.getFullClasses());
         } else {
+            Suburb suburb = suburbs.get(0);
+
             List<CourseClass> currentClasses = course.getCurrentClasses();
-            for (Suburb suburb:suburbs)
-            {
                 for (CourseClass courseClass : currentClasses) {
                     if (!courseClass.isHasAvailableEnrolmentPlaces()) {
                         courseItemModel.fullClasses.add(courseClass);
@@ -52,7 +52,6 @@ public class CourseItemModel {
                         courseItemModel.otherClasses.add(courseClass);
                     }
                 }
-            }
         }
 
         ORDERING.orderList(courseItemModel.fullClasses);
