@@ -138,7 +138,7 @@ public class Courses {
 		}
 
 		coursesIds = new ArrayList<Long>();
-        initSuburb();
+        initSuburbs();
 		updateIdsAndIndexes();
 	}
 
@@ -201,7 +201,7 @@ public class Courses {
 
 	}
 
-    private void initSuburb() {
+    private void initSuburbs() {
         if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
             try {
                 SolrDocumentList responseResults = (SolrDocumentList) searchParams.get(SearchParam.near);
