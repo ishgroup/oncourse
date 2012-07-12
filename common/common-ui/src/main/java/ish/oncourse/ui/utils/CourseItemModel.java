@@ -25,29 +25,32 @@ public class CourseItemModel {
         return createCourseItemModel(course, null);
     }
 
-        public static CourseItemModel createCourseItemModel(Course course, Suburb suburb) {
+    public static CourseItemModel createCourseItemModel(Course course, List<Suburb> suburbs) {
         CourseItemModel courseItemModel = new CourseItemModel();
         courseItemModel.course = course;
         courseItemModel.otherClasses = new ArrayList<CourseClass>();
         courseItemModel.fullClasses = new ArrayList<CourseClass>();
         courseItemModel.availableClasses = new ArrayList<CourseClass>();
 
-        if (suburb == null) {
+        if (suburbs == null || suburbs.isEmpty()) {
             courseItemModel.availableClasses.addAll(course.getEnrollableClasses());
             courseItemModel.fullClasses.addAll(course.getFullClasses());
         } else {
             List<CourseClass> currentClasses = course.getCurrentClasses();
-            for (CourseClass courseClass : currentClasses) {
-                if (!courseClass.isHasAvailableEnrolmentPlaces()) {
-                    courseItemModel.fullClasses.add(courseClass);
-                } else if (CourseClassUtils.isCourseClassMatchBy(courseClass,
-                        suburb.getPostcode(),
-                        suburb.getDistance(),
-                        suburb.getLatitude(),
-                        suburb.getLongitude())) {
-                    courseItemModel.availableClasses.add(courseClass);
-                } else {
-                    courseItemModel.otherClasses.add(courseClass);
+            for (Suburb suburb:suburbs)
+            {
+                for (CourseClass courseClass : currentClasses) {
+                    if (!courseClass.isHasAvailableEnrolmentPlaces()) {
+                        courseItemModel.fullClasses.add(courseClass);
+                    } else if (CourseClassUtils.isCourseClassMatchBy(courseClass,
+                            suburb.getPostcode(),
+                            suburb.getDistance(),
+                            suburb.getLatitude(),
+                            suburb.getLongitude())) {
+                        courseItemModel.availableClasses.add(courseClass);
+                    } else {
+                        courseItemModel.otherClasses.add(courseClass);
+                    }
                 }
             }
         }
@@ -89,5 +92,13 @@ public class CourseItemModel {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    /**
+     * The method returns true when the course has qualification or modules
+     */
+    public boolean isNRT()
+    {
+       return course.getQualification() != null || !course.getModules().isEmpty();
     }
 }

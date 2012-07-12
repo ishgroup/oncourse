@@ -98,7 +98,7 @@ public class Courses {
 	private List<Long> sitesIds;
 
     @Property
-	private Suburb suburb;
+	private List<Suburb> suburbs;
 
     @InjectComponent
     private CoursesList coursesList;
@@ -183,9 +183,9 @@ public class Courses {
 						}
 						if (hasAnyFormValuesForFocus()) {
 							float focusMatchForClass = CourseClassUtils.focusMatchForClass(courseClass,
-                                    suburb != null ? suburb.getLatitude():null,
-                                    suburb != null ? suburb.getLongitude():null,
-								searchParams);
+                                    suburbs != null && !suburbs.isEmpty() ? suburbs.get(0).getLatitude() : null,
+                                    suburbs != null && !suburbs.isEmpty() ? suburbs.get(0).getLatitude() : null,
+                                    searchParams);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
 								focusesForMapSites.put(site.getId(), focusMatchForClass);
@@ -205,10 +205,14 @@ public class Courses {
         if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
             try {
                 SolrDocumentList responseResults = (SolrDocumentList) searchParams.get(SearchParam.near);
-                if (responseResults.size() == 1)
-                    suburb = Suburb.valueOf(responseResults.get(0), searchParams);
+                suburbs = new ArrayList<Suburb>();
+                for (SolrDocument solrDocument: responseResults)
+                {
+                    suburbs.add(Suburb.valueOf(solrDocument, searchParams));
+                }
             } catch (NumberFormatException e) {
-                    LOGGER.warn(e);
+                suburbs = null;
+                LOGGER.warn(e);
             }
         }
     }

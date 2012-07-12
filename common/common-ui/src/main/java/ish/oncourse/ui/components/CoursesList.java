@@ -36,7 +36,7 @@ public class CoursesList {
 
     @Property
     @Parameter
-    private Suburb suburb;
+    private List<Suburb> suburbs;
 
 
     public boolean isHasMoreItems() {
@@ -45,7 +45,7 @@ public class CoursesList {
 
     public CourseItemModel getCourseItemModel()
     {
-        return CourseItemModel.createCourseItemModel(course, suburb);
+        return CourseItemModel.createCourseItemModel(course, suburbs);
     }
 
 	public String getSearchParamsStr() {
