@@ -25,6 +25,13 @@ public class SolrQueryBuilder {
 
     public static final String FIELD_score = "score";
     public static final String FIELD_name = "name";
+    /**
+     * CourseClass solr fields
+     */
+    public static final String FIELD_class_start = "class_start";
+    public static final String FIELD_end = "end";
+
+
     public static final String FIELD_startDate = "startDate";
     public static final String FIELD_suburb = "suburb";
     public static final String FIELD_postcode = "postcode";
@@ -38,8 +45,8 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
-    static final String FILTER_TEMPLATE_after = "startDate:[%s TO *]";
-    static final String FILTER_TEMPLATE_before = "end:[NOW TO %s]";
+    static final String FILTER_TEMPLATE_after = FIELD_class_start  + ":[%s TO *]";
+    static final String FILTER_TEMPLATE_before = FIELD_end + ":[NOW TO %s]";
 
     static final String FILTER_TEMPLATE_geofilt = "{!geofilt}";
 
@@ -57,21 +64,17 @@ public class SolrQueryBuilder {
 
 
 
-    private ISearchService searchService;
-
-
 
     private Map<SearchParam, Object> params;
     private String collegeId;
     private final int start;
     private final int rows;
 
-    public SolrQueryBuilder(ISearchService searchService,
+    public SolrQueryBuilder(
                             Map<SearchParam, Object> params,
                             String collegeId,
                             int start,
                             int rows) {
-        this.searchService = searchService;
         this.params = params;
         this.collegeId = collegeId;
         this.start = start;

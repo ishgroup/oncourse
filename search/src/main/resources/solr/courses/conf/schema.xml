@@ -127,8 +127,11 @@
 
 		<field name="end" type="date" indexed="true" stored="true"
 			multiValued="true" omitNorms="false" boost="5.0" />
-			
-		<field name="course_loc" type="geohash" indexed="true" stored="true" multiValued="true" boost="5.0"/>
+
+        <field name="class_start" type="date" indexed="true" stored="true"
+               multiValued="true" omitNorms="false" boost="5.0" />
+
+        <field name="course_loc" type="geohash" indexed="true" stored="true" multiValued="true" boost="5.0"/>
 
 		<field name="course_suburb" type="textgen" indexed="true"
 			omitNorms="false" stored="true" multiValued="true" boost="5.0" />

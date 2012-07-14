@@ -20,7 +20,7 @@
 			<field name="startDate" column="startDate" />
 
 			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
-				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end from CourseClass cc 
+				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end, cc.startDate as start from CourseClass cc
 							where cc.isWebVisible=1 
 									and cc.courseid='${course.id}'
                        				and cc.isCancelled=0 and cc.endDate &gt; CURDATE()"
@@ -32,8 +32,9 @@
 				<field name="price" column="pr" />
 				<field name="class_code" column="code" template="${course.code}\-${courseClass.code}"/>
 				<field name="end" column="end"/>
-				
-				<entity name="contact" dataSource="onCourseDS" pk="id"
+                <field name="class_start" column="start"/>
+
+                <entity name="contact" dataSource="onCourseDS" pk="id"
 					transformer="RegexTransformer"
 					query="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct
                 	    inner join Tutor t on ct.tutorId = t.id

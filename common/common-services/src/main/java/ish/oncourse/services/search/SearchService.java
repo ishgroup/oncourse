@@ -119,7 +119,7 @@ public class SearchService implements ISearchService {
         try {
 
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-            SolrQuery q = new SolrQueryBuilder(this, params, collegeId, start, rows).create();
+            SolrQuery q = new SolrQueryBuilder(params, collegeId, start, rows).create();
 
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Solr query:%s", solrQueryToString(q)));
