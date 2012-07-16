@@ -11,12 +11,15 @@ public class FileStorageReplicationService {
 
 
     public void replicate(final File file) {
+
+        LOGGER.debug(String.format("Start FileStorageReplicationService.replicate with parameters: syncScriptPath=%s, file=%s", syncScriptPath, file.getAbsolutePath()));
         final ProcessBuilder processBuilder = new ProcessBuilder(syncScriptPath, file.getAbsolutePath());
         try {
             processBuilder.start();
         } catch (Throwable e) {
             LOGGER.error(String.format("Cannot execute script %s with parameter %s", syncScriptPath, file.getAbsolutePath()));
         }
+        LOGGER.debug(String.format("Finish FileStorageReplicationService.replicate with parameters: syncScriptPath=%s, file=%s", syncScriptPath, file.getAbsolutePath()));
     }
 
     public String getSyncScriptPath() {

@@ -5,10 +5,13 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class FileStorageAssetService implements IFileStorageAssetService{
+
+    private static final Logger LOGGER = Logger.getLogger(FileStorageAssetService.class);
 
     private FileStorageService fileStorageService;
 
@@ -22,6 +25,8 @@ public class FileStorageAssetService implements IFileStorageAssetService{
      * @param binaryInfo - binary info, not null
      */
     public void put(byte[] data, BinaryInfo binaryInfo) {
+        LOGGER.debug(String.format("Start FileStorageAssetService.put with parameters: data.length: %s, binaryInfo: %s",
+                data != null ?data.length:0, binaryInfo));
         String relatedPath = getPathBy(data, binaryInfo);
         /**
          * delete old file if new path is not the same as old
@@ -34,6 +39,8 @@ public class FileStorageAssetService implements IFileStorageAssetService{
             getFileStorageService().put(data, relatedPath);
         }
         binaryInfo.setFilePath(relatedPath);
+        LOGGER.debug(String.format("Finish FileStorageAssetService.put with parameters: data.length: %s, binaryInfo: %s",
+                data != null ?data.length:0, binaryInfo));
     }
 
     /**

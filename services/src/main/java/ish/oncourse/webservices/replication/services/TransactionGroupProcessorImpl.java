@@ -44,7 +44,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	private static final Logger logger = Logger.getLogger(TransactionGroupProcessorImpl.class);
 
-	/**
+    /**
+     * TODO the logger should be removed after FileStorage functionality will be implemented.
+     */
+    private static final Logger loggerForFileStorage = Logger.getLogger(TransactionGroupProcessorImpl.class.getName() + ".FileStorage");
+
+    /**
 	 * WebSiteService
 	 */
 	private final IWebSiteService webSiteService;
@@ -467,15 +472,18 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
      */
     private void updateFileStorage(GenericReplicationStub stub, Queueable entity)
     {
+        logger.warn(String.format("TransactionGroupProcessorImpl.updateFileStorage with parameters: stub = %s, entity = %s", stub, entity));
         //the file storage processing
         try {
             if (entity instanceof  BinaryInfo && stub instanceof GenericDeletedStub) {
-                    fileStorageAssetService.delete((BinaryInfo)entity);
+                loggerForFileStorage.debug(String.format("TransactionGroupProcessorImpl.updateFileStorage fileStorageAssetService.delete for binaryInfo %s", entity));
+                fileStorageAssetService.delete((BinaryInfo)entity);
             }
             //TODO: the conde should be adjusted after we will stop saving BinaryData to the database.
             else  if (entity instanceof BinaryData && stub instanceof GenericBinaryDataStub) {
-            	GenericBinaryDataStub binaryDataStub = (GenericBinaryDataStub) stub;
-               fileStorageAssetService.put(binaryDataStub.getContent(), ((BinaryData) entity).getBinaryInfo());
+                GenericBinaryDataStub binaryDataStub = (GenericBinaryDataStub) stub;
+                loggerForFileStorage.debug(String.format("TransactionGroupProcessorImpl.updateFileStorage fileStorageAssetService.put for binaryDataStub %s and binaryData %s", binaryDataStub, entity));
+                fileStorageAssetService.put(binaryDataStub.getContent(), ((BinaryData) entity).getBinaryInfo());
             }
         } catch (Throwable e) {
             logger.error(String.format("Cannot update file storage with the stub %s and entity %s.", stub, entity),e);

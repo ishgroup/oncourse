@@ -24,18 +24,10 @@ public class FileStorageService {
         return targetFile.exists();
     }
 
-    private void replicate(File file)
-    {
-        try {
-            getReplicationService().replicate(file);
-        } catch (Exception e) {
-            LOGGER.error(String.format("File %s has been not replicated.", file.getAbsolutePath()), e);
-        }
-    }
-
     public void put(byte[] data, String relatedPath)
     {
         File targetFile = new File(getRootDir(),relatedPath);
+        LOGGER.debug(String.format("Start FileStorageService.put with parameters: data.length = %s, relatedPath = %s.",data != null ? data.length: 0, targetFile.getAbsolutePath()));
         if (!targetFile.getParentFile().exists())
         {
             boolean result = targetFile.getParentFile().mkdirs();
@@ -52,6 +44,7 @@ public class FileStorageService {
         } finally {
             if (outputStream != null)
             IOUtils.closeQuietly(outputStream);
+            LOGGER.debug(String.format("Finish FileStorageService.put with parameters: data.length = %s, relatedPath = %s.",data != null ? data.length: 0, targetFile.getAbsolutePath()));
         }
     }
 
