@@ -28,6 +28,8 @@ public class SiteStubBuilder extends AbstractWillowStubBuilder<Site, SiteStub> {
 		stub.setState(s.getState());
 		stub.setStreet(s.getStreet());
 		stub.setSuburb(s.getSuburb());
+		stub.setTimeZone(s.getTimeZone());
+		stub.setVirtual(s.getIsVirtual());
 
 		return stub;
 	}

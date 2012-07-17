@@ -51,6 +51,8 @@ public class SiteUpdater extends AbstractWillowUpdater<SiteStub, Site> {
 		entity.setState(stub.getState());
 		entity.setStreet(stub.getStreet());
 		entity.setSuburb(stub.getSuburb());
+		entity.setTimeZone(stub.getTimeZone());
+		entity.setIsVirtual(stub.isVirtual());
 	}
 
 }
