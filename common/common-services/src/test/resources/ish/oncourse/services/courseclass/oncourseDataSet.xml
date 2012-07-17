@@ -25,17 +25,17 @@
 
 
     <CourseClass id="1" code="1-1" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-1" feeExGst="20.00" feeGst="1.25" roomId="1" maximumPlaces="3"
-                 startDate="2011-01-01 00:00:00" endDate="1980-01-01 01:00:00" isCancelled="0"/>
+                 startDate="2011-01-01 00:00:00" endDate="1980-01-01 01:00:00" isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass id="2" code="2-1" collegeId="1" countOfSessions="2" courseId="2" deliveryMode="1" detail="Test Course Class 2-1" feeExGst="20.00" feeGst="1.25" roomId="2" maximumPlaces="3"
-                 startDate="2011-01-02 00:00:00" endDate="1980-01-02 00:00:00"  isCancelled="0"/>
+                 startDate="2011-01-02 00:00:00" endDate="1980-01-02 00:00:00"  isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass id="3" code="3-1" collegeId="1" countOfSessions="3" courseId="3" deliveryMode="1" detail="Test Course Class 3-1" feeExGst="20.00" feeGst="1.25" roomId="3" maximumPlaces="3"
-                 startDate="2012-01-01 00:00:00" endDate="2100-01-01 00:00:00"  isCancelled="0"/>
+                 startDate="2012-01-01 00:00:00" endDate="2100-01-01 00:00:00"  isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass id="4" code="4-1" collegeId="1" countOfSessions="4" courseId="4" deliveryMode="1" detail="Test Course Class 4-1" feeExGst="20.00" feeGst="1.25" roomId="4" maximumPlaces="3"
-                 startDate="2012-01-02 00:00:00" endDate="2101-01-02 00:00:00"  isCancelled="0"/>
+                 startDate="2012-01-02 00:00:00" endDate="2101-01-02 00:00:00"  isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass id="5" code="5-1" collegeId="1" countOfSessions="5" courseId="5" deliveryMode="1" detail="Test Course Class 5-1" feeExGst="20.00" feeGst="1.25" roomId="5" maximumPlaces="3"
-                 startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0"/>
+                 startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
     <CourseClass id="6" code="5-2" collegeId="1" countOfSessions="6" courseId="5" deliveryMode="1" detail="Test Course Class 6-1" feeExGst="20.00" feeGst="1.25" roomId="6" maximumPlaces="3"
-                 startDate="2012-01-04 00:00:00" endDate="2103-01-04 00:00:00" isCancelled="1"/>
+                 startDate="2012-01-04 00:00:00" endDate="2103-01-04 00:00:00" isCancelled="1" isDistantLearningCourse="0"/>
 
 
     <Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />

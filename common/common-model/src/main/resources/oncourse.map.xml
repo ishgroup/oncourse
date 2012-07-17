@@ -204,13 +204,16 @@
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
+		<db-attribute name="expectedHours" type="DOUBLE" length="14"/>
 		<db-attribute name="feeExGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isCancelled" type="BIT"/>
+		<db-attribute name="isDistantLearningCourse" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="materials" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="materials_textile" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="maximumDays" type="INTEGER" length="10"/>
 		<db-attribute name="maximumPlaces" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="minimumPlaces" type="INTEGER" length="10"/>
 		<db-attribute name="minutesPerSession" type="INTEGER" length="10"/>
@@ -1144,11 +1147,14 @@
 		<obj-attribute name="detail" type="java.lang.String" db-attribute-path="detail"/>
 		<obj-attribute name="detailTextile" type="java.lang.String" db-attribute-path="detail_textile"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
+		<obj-attribute name="expectedHours" type="java.math.BigDecimal" db-attribute-path="expectedHours"/>
 		<obj-attribute name="feeExGst" type="ish.math.Money" db-attribute-path="feeExGst"/>
 		<obj-attribute name="feeGst" type="ish.math.Money" db-attribute-path="feeGst"/>
+		<obj-attribute name="isDistantLearningCourse" type="java.lang.Boolean" db-attribute-path="isDistantLearningCourse"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="materialsTextile" type="java.lang.String" db-attribute-path="materials_textile"/>
+		<obj-attribute name="maximumDays" type="java.lang.Integer" db-attribute-path="maximumDays"/>
 		<obj-attribute name="maximumPlaces" type="java.lang.Integer" db-attribute-path="maximumPlaces"/>
 		<obj-attribute name="minimumPlaces" type="java.lang.Integer" db-attribute-path="minimumPlaces"/>
 		<obj-attribute name="minutesPerSession" type="java.lang.Integer" db-attribute-path="minutesPerSession"/>

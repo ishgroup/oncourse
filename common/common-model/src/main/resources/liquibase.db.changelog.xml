@@ -1046,4 +1046,21 @@
     	</addColumn>
     </changeSet>
     
+    <changeSet id="71" author="dzmitry" context="production" runOnChange="true">
+    	<preConditions>
+    		<not>
+    			<columnExists tableName="CourseClass" columnName="isDistantLearningCourse"/>
+    			<columnExists tableName="CourseClass" columnName="maximumDays"/>
+    			<columnExists tableName="CourseClass" columnName="expectedHours"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="CourseClass">
+    		<column name="isDistantLearningCourse" type="TINYINT(1)" defaultValueNumeric="0">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="maximumDays" type="INTEGER"/>
+    		<column name="expectedHours" type="DOUBLE"/>
+    	</addColumn>
+    </changeSet>
+    
 </databaseChangeLog>

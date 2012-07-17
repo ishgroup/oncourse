@@ -1,5 +1,6 @@
 package ish.oncourse.model.auto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -32,11 +33,14 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String DETAIL_PROPERTY = "detail";
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
     public static final String END_DATE_PROPERTY = "endDate";
+    public static final String EXPECTED_HOURS_PROPERTY = "expectedHours";
     public static final String FEE_EX_GST_PROPERTY = "feeExGst";
     public static final String FEE_GST_PROPERTY = "feeGst";
+    public static final String IS_DISTANT_LEARNING_COURSE_PROPERTY = "isDistantLearningCourse";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String MATERIALS_PROPERTY = "materials";
     public static final String MATERIALS_TEXTILE_PROPERTY = "materialsTextile";
+    public static final String MAXIMUM_DAYS_PROPERTY = "maximumDays";
     public static final String MAXIMUM_PLACES_PROPERTY = "maximumPlaces";
     public static final String MINIMUM_PLACES_PROPERTY = "minimumPlaces";
     public static final String MINUTES_PER_SESSION_PROPERTY = "minutesPerSession";
@@ -121,6 +125,13 @@ public abstract class _CourseClass extends CayenneDataObject {
         return (Date)readProperty("endDate");
     }
 
+    public void setExpectedHours(BigDecimal expectedHours) {
+        writeProperty("expectedHours", expectedHours);
+    }
+    public BigDecimal getExpectedHours() {
+        return (BigDecimal)readProperty("expectedHours");
+    }
+
     public void setFeeExGst(Money feeExGst) {
         writeProperty("feeExGst", feeExGst);
     }
@@ -133,6 +144,13 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public Money getFeeGst() {
         return (Money)readProperty("feeGst");
+    }
+
+    public void setIsDistantLearningCourse(Boolean isDistantLearningCourse) {
+        writeProperty("isDistantLearningCourse", isDistantLearningCourse);
+    }
+    public Boolean getIsDistantLearningCourse() {
+        return (Boolean)readProperty("isDistantLearningCourse");
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
@@ -154,6 +172,13 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public String getMaterialsTextile() {
         return (String)readProperty("materialsTextile");
+    }
+
+    public void setMaximumDays(Integer maximumDays) {
+        writeProperty("maximumDays", maximumDays);
+    }
+    public Integer getMaximumDays() {
+        return (Integer)readProperty("maximumDays");
     }
 
     public void setMaximumPlaces(Integer maximumPlaces) {
