@@ -48,7 +48,8 @@
                  detail="detail" detail_textile="detailTextile" materials="materials"
                  materials_textile="materials_textile"
                  minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
-                 startingMinutePerSession="1" timeZone="timeZone"
+                 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+                 maximumDays="3"
             />
 
     <Session id="1" collegeId="3" courseClassId="1" roomId="1" angelId="2" startDate="2011-10-12 00:55:59.0"

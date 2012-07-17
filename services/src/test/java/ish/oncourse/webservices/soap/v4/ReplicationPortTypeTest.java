@@ -315,6 +315,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		rootStub.setCountOfSessions(3);
 		rootStub.setCourseId(1l);
 		rootStub.setRoomId(1l);
+		rootStub.setDistantLearningCourse(false);
 		
 		ish.oncourse.webservices.v5.stubs.replication.DeletedStub contactDeleteStub = new ish.oncourse.webservices.v5.stubs.replication.DeletedStub();
 		contactDeleteStub.setWillowId(1658l);
