@@ -699,6 +699,7 @@
 		<db-attribute name="drivingDirections" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="drivingDirections_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="isVirtual" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="latitude" type="DECIMAL" length="12" scale="8"/>
 		<db-attribute name="longitude" type="DECIMAL" length="12" scale="8"/>
@@ -1566,6 +1567,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="drivingDirections" type="java.lang.String" db-attribute-path="drivingDirections"/>
 		<obj-attribute name="drivingDirectionsTextile" type="java.lang.String" db-attribute-path="drivingDirections_textile"/>
+		<obj-attribute name="isVirtual" type="java.lang.Boolean" db-attribute-path="isVirtual"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="latitude" type="java.math.BigDecimal" db-attribute-path="latitude"/>
 		<obj-attribute name="longitude" type="java.math.BigDecimal" db-attribute-path="longitude"/>

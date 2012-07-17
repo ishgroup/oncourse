@@ -24,6 +24,7 @@ public abstract class _Site extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String DRIVING_DIRECTIONS_PROPERTY = "drivingDirections";
     public static final String DRIVING_DIRECTIONS_TEXTILE_PROPERTY = "drivingDirectionsTextile";
+    public static final String IS_VIRTUAL_PROPERTY = "isVirtual";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
     public static final String LATITUDE_PROPERTY = "latitude";
     public static final String LONGITUDE_PROPERTY = "longitude";
@@ -46,177 +47,184 @@ public abstract class _Site extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public void setAngelId(Long angelId) {
-        writeProperty("angelId", angelId);
+        writeProperty(ANGEL_ID_PROPERTY, angelId);
     }
     public Long getAngelId() {
-        return (Long)readProperty("angelId");
+        return (Long)readProperty(ANGEL_ID_PROPERTY);
     }
 
     public void setCountryId(Long countryId) {
-        writeProperty("countryId", countryId);
+        writeProperty(COUNTRY_ID_PROPERTY, countryId);
     }
     public Long getCountryId() {
-        return (Long)readProperty("countryId");
+        return (Long)readProperty(COUNTRY_ID_PROPERTY);
     }
 
     public void setCreated(Date created) {
-        writeProperty("created", created);
+        writeProperty(CREATED_PROPERTY, created);
     }
     public Date getCreated() {
-        return (Date)readProperty("created");
+        return (Date)readProperty(CREATED_PROPERTY);
     }
 
     public void setDrivingDirections(String drivingDirections) {
-        writeProperty("drivingDirections", drivingDirections);
+        writeProperty(DRIVING_DIRECTIONS_PROPERTY, drivingDirections);
     }
     public String getDrivingDirections() {
-        return (String)readProperty("drivingDirections");
+        return (String)readProperty(DRIVING_DIRECTIONS_PROPERTY);
     }
 
     public void setDrivingDirectionsTextile(String drivingDirectionsTextile) {
-        writeProperty("drivingDirectionsTextile", drivingDirectionsTextile);
+        writeProperty(DRIVING_DIRECTIONS_TEXTILE_PROPERTY, drivingDirectionsTextile);
     }
     public String getDrivingDirectionsTextile() {
-        return (String)readProperty("drivingDirectionsTextile");
+        return (String)readProperty(DRIVING_DIRECTIONS_TEXTILE_PROPERTY);
+    }
+
+    public void setIsVirtual(Boolean isVirtual) {
+        writeProperty(IS_VIRTUAL_PROPERTY, isVirtual);
+    }
+    public Boolean getIsVirtual() {
+        return (Boolean)readProperty(IS_VIRTUAL_PROPERTY);
     }
 
     public void setIsWebVisible(Boolean isWebVisible) {
-        writeProperty("isWebVisible", isWebVisible);
+        writeProperty(IS_WEB_VISIBLE_PROPERTY, isWebVisible);
     }
     public Boolean getIsWebVisible() {
-        return (Boolean)readProperty("isWebVisible");
+        return (Boolean)readProperty(IS_WEB_VISIBLE_PROPERTY);
     }
 
     public void setLatitude(BigDecimal latitude) {
-        writeProperty("latitude", latitude);
+        writeProperty(LATITUDE_PROPERTY, latitude);
     }
     public BigDecimal getLatitude() {
-        return (BigDecimal)readProperty("latitude");
+        return (BigDecimal)readProperty(LATITUDE_PROPERTY);
     }
 
     public void setLongitude(BigDecimal longitude) {
-        writeProperty("longitude", longitude);
+        writeProperty(LONGITUDE_PROPERTY, longitude);
     }
     public BigDecimal getLongitude() {
-        return (BigDecimal)readProperty("longitude");
+        return (BigDecimal)readProperty(LONGITUDE_PROPERTY);
     }
 
     public void setModified(Date modified) {
-        writeProperty("modified", modified);
+        writeProperty(MODIFIED_PROPERTY, modified);
     }
     public Date getModified() {
-        return (Date)readProperty("modified");
+        return (Date)readProperty(MODIFIED_PROPERTY);
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME_PROPERTY, name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME_PROPERTY);
     }
 
     public void setPostcode(String postcode) {
-        writeProperty("postcode", postcode);
+        writeProperty(POSTCODE_PROPERTY, postcode);
     }
     public String getPostcode() {
-        return (String)readProperty("postcode");
+        return (String)readProperty(POSTCODE_PROPERTY);
     }
 
     public void setPublicTransportDirections(String publicTransportDirections) {
-        writeProperty("publicTransportDirections", publicTransportDirections);
+        writeProperty(PUBLIC_TRANSPORT_DIRECTIONS_PROPERTY, publicTransportDirections);
     }
     public String getPublicTransportDirections() {
-        return (String)readProperty("publicTransportDirections");
+        return (String)readProperty(PUBLIC_TRANSPORT_DIRECTIONS_PROPERTY);
     }
 
     public void setPublicTransportDirectionsTextile(String publicTransportDirectionsTextile) {
-        writeProperty("publicTransportDirectionsTextile", publicTransportDirectionsTextile);
+        writeProperty(PUBLIC_TRANSPORT_DIRECTIONS_TEXTILE_PROPERTY, publicTransportDirectionsTextile);
     }
     public String getPublicTransportDirectionsTextile() {
-        return (String)readProperty("publicTransportDirectionsTextile");
+        return (String)readProperty(PUBLIC_TRANSPORT_DIRECTIONS_TEXTILE_PROPERTY);
     }
 
     public void setSpecialInstructions(String specialInstructions) {
-        writeProperty("specialInstructions", specialInstructions);
+        writeProperty(SPECIAL_INSTRUCTIONS_PROPERTY, specialInstructions);
     }
     public String getSpecialInstructions() {
-        return (String)readProperty("specialInstructions");
+        return (String)readProperty(SPECIAL_INSTRUCTIONS_PROPERTY);
     }
 
     public void setSpecialInstructionsTextile(String specialInstructionsTextile) {
-        writeProperty("specialInstructionsTextile", specialInstructionsTextile);
+        writeProperty(SPECIAL_INSTRUCTIONS_TEXTILE_PROPERTY, specialInstructionsTextile);
     }
     public String getSpecialInstructionsTextile() {
-        return (String)readProperty("specialInstructionsTextile");
+        return (String)readProperty(SPECIAL_INSTRUCTIONS_TEXTILE_PROPERTY);
     }
 
     public void setState(String state) {
-        writeProperty("state", state);
+        writeProperty(STATE_PROPERTY, state);
     }
     public String getState() {
-        return (String)readProperty("state");
+        return (String)readProperty(STATE_PROPERTY);
     }
 
     public void setStreet(String street) {
-        writeProperty("street", street);
+        writeProperty(STREET_PROPERTY, street);
     }
     public String getStreet() {
-        return (String)readProperty("street");
+        return (String)readProperty(STREET_PROPERTY);
     }
 
     public void setSuburb(String suburb) {
-        writeProperty("suburb", suburb);
+        writeProperty(SUBURB_PROPERTY, suburb);
     }
     public String getSuburb() {
-        return (String)readProperty("suburb");
+        return (String)readProperty(SUBURB_PROPERTY);
     }
 
     public void setTimeZone(String timeZone) {
-        writeProperty("timeZone", timeZone);
+        writeProperty(TIME_ZONE_PROPERTY, timeZone);
     }
     public String getTimeZone() {
-        return (String)readProperty("timeZone");
+        return (String)readProperty(TIME_ZONE_PROPERTY);
     }
 
     public void setCollege(College college) {
-        setToOneTarget("college", college, true);
+        setToOneTarget(COLLEGE_PROPERTY, college, true);
     }
 
     public College getCollege() {
-        return (College)readProperty("college");
+        return (College)readProperty(COLLEGE_PROPERTY);
     }
 
 
     public void setCountry(Country country) {
-        setToOneTarget("country", country, true);
+        setToOneTarget(COUNTRY_PROPERTY, country, true);
     }
 
     public Country getCountry() {
-        return (Country)readProperty("country");
+        return (Country)readProperty(COUNTRY_PROPERTY);
     }
 
 
     public void addToRooms(Room obj) {
-        addToManyTarget("rooms", obj, true);
+        addToManyTarget(ROOMS_PROPERTY, obj, true);
     }
     public void removeFromRooms(Room obj) {
-        removeToManyTarget("rooms", obj, true);
+        removeToManyTarget(ROOMS_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Room> getRooms() {
-        return (List<Room>)readProperty("rooms");
+        return (List<Room>)readProperty(ROOMS_PROPERTY);
     }
 
 
     public void addToWaitingListSites(WaitingListSite obj) {
-        addToManyTarget("waitingListSites", obj, true);
+        addToManyTarget(WAITING_LIST_SITES_PROPERTY, obj, true);
     }
     public void removeFromWaitingListSites(WaitingListSite obj) {
-        removeToManyTarget("waitingListSites", obj, true);
+        removeToManyTarget(WAITING_LIST_SITES_PROPERTY, obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<WaitingListSite> getWaitingListSites() {
-        return (List<WaitingListSite>)readProperty("waitingListSites");
+        return (List<WaitingListSite>)readProperty(WAITING_LIST_SITES_PROPERTY);
     }
 
 

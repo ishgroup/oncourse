@@ -1033,4 +1033,17 @@
     	<customChange class="ish.oncourse.model.liquibase.LicenseFeeBillingMonthUpgrade"/>
     </changeSet>
     
+    <changeSet id="70" author="dzmitry" context="production" runOnChange="true">
+    	<preConditions>
+    		<not>
+    			<columnExists tableName="Site" columnName="isVirtual"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="Site">
+    		<column name="isVirtual" type="TINYINT(1)" defaultValueNumeric="0">
+    			<constraints nullable="false"/>
+    		</column>
+    	</addColumn>
+    </changeSet>
+    
 </databaseChangeLog>
