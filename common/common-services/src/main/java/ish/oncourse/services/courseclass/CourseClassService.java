@@ -237,9 +237,9 @@ public class CourseClassService implements ICourseClassService {
         else
         {
             expr = ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, contact.getStudent());
+            //for student only where enrolment has status SUCCESS.
+            expr = expr.andExp(ExpressionFactory.matchExp(CourseClass.ENROLMENTS_PROPERTY + "." + Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
         }
-
-        // expression: get only ACTIVE classes (not canceled)
         Expression activeClassesExp = ExpressionFactory.noMatchExp(CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);
         expr = expr.andExp(activeClassesExp);
 

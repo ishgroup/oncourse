@@ -1,6 +1,8 @@
 package ish.oncourse.services.courseclass;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Session;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -41,6 +43,7 @@ public class CourseClassServiceTest extends ServiceTest {
         ICourseClassService service = getService(ICourseClassService.class);
         ObjectContext objectContext = cayenneService.sharedContext();
 
+        //tutor test
         Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
 
         List<CourseClass>  courseClasses = service.getContactCourseClasses(contact, CourseClassPeriod.ALL);
@@ -57,6 +60,16 @@ public class CourseClassServiceTest extends ServiceTest {
         assertEquals("Past courses count",2, courseClasses.size());
         assertEquals("Test order Past course 2",2L, courseClasses.get(0).getId().longValue());
         assertEquals("Test order Past course 1",1L, courseClasses.get(1).getId().longValue());
+
+
+        //student test
+        contact = Cayenne.objectForPK(objectContext, Contact.class, 3);
+        courseClasses = service.getContactCourseClasses(contact, CourseClassPeriod.ALL);
+        assertEquals("Past courses count",4, courseClasses.size());
+        assertEquals("Test order Past course 4",4L, courseClasses.get(0).getId().longValue());
+        assertEquals("Test order Past course 3",3L, courseClasses.get(1).getId().longValue());
+        assertEquals("Test order Past course 2",2L, courseClasses.get(2).getId().longValue());
+        assertEquals("Test order Past course 1",1L, courseClasses.get(3).getId().longValue());
     }
 
     @Test
