@@ -40,7 +40,8 @@
 			<tr>
 				<td>Key Code</td>
 				<td>Plan Name</td>
-				<td>Billing Month</td>
+				<td>Paid Until</td>
+				<td>Renewal Date</td>
 				<td>Free Transactions</td>
 				<td>Fee</td>
 			</tr>
@@ -51,8 +52,13 @@
 					<td>${currentLicenseInfoKey}</td>
 					<td><t:textfield t:id="planName" value="planName"/></td>
 					<td>
-						<t:if test="showMonthsCombo">
-							<t:select t:id="billingMonth" model="monthModel" value="billingMonth"/>
+						<t:if test="supportOrHosting">
+							<t:datefield t:id="paidUntil" value="paidUntil"/>
+						</t:if>
+					</td>
+					<td>
+						<t:if test="supportOrHosting">
+							<t:datefield t:id="renewalDate" value="renewalDate"/>
 						</t:if>
 					</td>
 					<td><t:textfield t:id="freeTransactions" t:validate="required" value="freeTransactions"/></td>

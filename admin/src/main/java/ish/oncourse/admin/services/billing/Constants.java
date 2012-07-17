@@ -14,10 +14,10 @@ public class Constants {
             "{0}\t" +
             "{1}\t" +
             "onCourse {2}"  +
-            " {3} plan, 1 year valid to {4}\t" +
+            " {3} plan for {4}: {5} (contract until {6})\t" +
             "1\t" +
-            "{5, number,0.000}\t" +
-            "{6}\n";
+            "{7, number,0.000}\t" +
+            "{8}\n";
 
 
 

@@ -7,6 +7,7 @@ import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.system.ICollegeService;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -73,11 +74,14 @@ public class Billing {
 	private NumberFormat moneyFormat;
 	
 	private Map<Double, Double> tasmaniaEcommerceFees;
+	
+	private DateFormat dateFormat;
 
 	@SetupRender
 	void setupRender() throws Exception {
 
 		this.monthModel = initMonthModel();
+		this.dateFormat = new SimpleDateFormat(DATE_MONTH_FORMAT);
 
 		colleges = collegeService.allColleges();
 
@@ -141,22 +145,26 @@ public class Billing {
 	public boolean isTasmaniaEcommerce() {
 		return college.getId().longValue() == 15;
 	}
-
-	public boolean isSupportRenewMonth() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(fromMonth);
-		Integer renewMonth = (Integer) licenseData.get(college.getId()).get("support-renewMonth");
-		if (renewMonth != null) {
-			int month = calendar.get(Calendar.MONTH);
-			return renewMonth.equals(month);
+	
+	public boolean isSupportPayMonth() {
+		Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
+		if (paidUntil != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(paidUntil);
+			
+			Calendar payDate = Calendar.getInstance();
+			payDate.setTime(fromMonth);
+			if (cal.get(Calendar.MONTH) == payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) == payDate.get(Calendar.YEAR)) {
+				return true;
+			}
 		}
+		
 		return false;
-
 	}
 
-	public String getSupportRenew() {
-		Object supportRenew = licenseData.get(college.getId()).get("support-renewMonth");
-		return supportRenew == null ? "" : DateFormatSymbols.getInstance().getMonths()[(Integer) supportRenew];
+	public String getSupportPaidUntil() {
+		Object supportPaidUntil = licenseData.get(college.getId()).get("support-paidUntil");
+		return supportPaidUntil == null ? "" : dateFormat.format(supportPaidUntil);
 	}
 
 	public String getSupportFree() {
@@ -179,20 +187,25 @@ public class Billing {
 		return hosting == null ? moneyFormat.format(0.0) : moneyFormat.format(hosting);
 	}
 
-	public boolean isWebHostingRenewMonth() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(fromMonth);
-		Integer renewMonth = (Integer) licenseData.get(college.getId()).get("hosting-renewMonth");
-		if (renewMonth != null) {
-			return renewMonth.equals(calendar.get(Calendar.MONTH));
+	public boolean isWebHostingPayMonth() {
+		Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
+		if (paidUntil != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(paidUntil);
+			
+			Calendar payDate = Calendar.getInstance();
+			payDate.setTime(fromMonth);
+			if (cal.get(Calendar.MONTH) == payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) == payDate.get(Calendar.YEAR)) {
+				return true;
+			}
 		}
+		
 		return false;
 	}
 
-	public String getWebHostingRenew() {
-		Object webHostingRenew = licenseData.get(college.getId()).get("hosting-renewMonth");
-		return webHostingRenew == null ? "" : 
-				DateFormatSymbols.getInstance().getMonths()[(Integer) webHostingRenew];
+	public String getWebHostingPaidUntil() {
+		Object webHostingPaidUntil = licenseData.get(college.getId()).get("hosting-paidUntil");
+		return webHostingPaidUntil == null ? "" : dateFormat.format(webHostingPaidUntil);
 	}
 
 	public String getSms() {

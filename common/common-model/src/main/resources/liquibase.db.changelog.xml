@@ -1015,4 +1015,22 @@
         <sql>ALTER TABLE WebURLAlias DROP FOREIGN KEY WebURLAlias_webNode</sql>
         <sql>ALTER TABLE WebURLAlias ADD CONSTRAINT WebURLAlias_webNode FOREIGN KEY (webNodeId) REFERENCES WebNode (id) ON DELETE CASCADE</sql>
     </changeSet>
+    
+    <changeSet id="68" author="dzmitry" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<columnExists tableName="LicenseFee" columnName="paidUntil"/>
+    			<columnExists tableName="LicenseFee" columnName="renewalDate"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="LicenseFee">
+    		<column name="paidUntil" type="DATETIME"/>
+    		<column name="renewalDate" type="DATETIME"/>
+    	</addColumn>
+    </changeSet>
+    
+    <changeSet id="69" author="dzmitry" context="production" runOnChange="true">
+    	<customChange class="ish.oncourse.model.liquibase.LicenseFeeBillingMonthUpgrade"/>
+    </changeSet>
+    
 </databaseChangeLog>

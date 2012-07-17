@@ -20,24 +20,24 @@
 							<td colspan="5"><h3><a t:type="pagelink" t:page="college/edit" t:context="college.id">${college.name} <small>${college.billingCode}:${college.id}</small></a></h3></td>
 						</tr>
 						<tr>
-							<td>Support (renew every ${supportRenew})</td>
+							<td>Support (paid until ${supportPaidUntil})</td>
 							<td></td>
 							<td>${supportFree}</td>
 							<td>${support} <small>ex GST</small></td>
 							<td>
-								<t:if test="supportRenewMonth">
+								<t:if test="supportPayMonth">
 									${support} <small>ex GST</small>
 									<p:else>$0</p:else>
 								</t:if>
 							</td>
 						</tr>
 						<tr>
-							<td>Web hosting (renew every ${webHostingRenew})</td>
+							<td>Web hosting (paid until ${webHostingPaidUntil})</td>
 							<td></td>
 							<td>${webHostingFree}</td>
 							<td>${hosting} <small>ex GST</small></td>
 							<td>
-								<t:if test="webHostingRenewMonth">
+								<t:if test="webHostingPayMonth">
 									${hosting} <small>ex GST</small>
 									<p:else>$0</p:else>
 								</t:if>

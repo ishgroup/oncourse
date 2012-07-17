@@ -3,6 +3,7 @@ package ish.oncourse.admin.pages.college;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Billing {
 	
 	@Property
 	@Persist
-	private Map<String, Map<String, String>> licenseInfo;
+	private Map<String, Map<String, Object>> licenseInfo;
 	
 	@Property
 	private String currentLicenseInfoKey;
@@ -55,10 +56,6 @@ public class Billing {
 	@Property
 	private boolean amexEnabled;
 	
-	@Property
-	@Persist
-	private StringSelectModel monthModel;
-	
 	@Inject
 	private ICayenneService cayenneService;
 	
@@ -73,15 +70,10 @@ public class Billing {
 	
 	private SimpleDateFormat dateFormat;
 	
-	@Persist
-	private String[] months;
-	
 	@SetupRender
 	void setupRender() {
 		this.preferenceController = prefsFactory.getPreferenceController(college);
 		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		this.months = new DateFormatSymbols().getMonths();
-		this.monthModel = new StringSelectModel(months);
 		
 		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
 			this.webPaymentEnabled = false;
@@ -91,17 +83,18 @@ public class Billing {
 		}
 		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
 		
-		this.licenseInfo = new LinkedHashMap<String, Map<String,String>>();
+		this.licenseInfo = new LinkedHashMap<String, Map<String, Object>>();
 		for (LicenseFee fee : college.getLicenseFees()) {
-			Map<String, String> info = new LinkedHashMap<String, String>();
+			Map<String, Object> info = new LinkedHashMap<String, Object>();
 			
 			info.put(LicenseFee.PLAN_NAME_PROPERTY, fee.getPlanName());
 			
-			if (fee.getBillingMonth() != null) {
-				info.put(LicenseFee.BILLING_MONTH_PROPERTY, String.valueOf(fee.getBillingMonth()));
+			if (fee.getPaidUntil() != null) {
+				info.put(LicenseFee.PAID_UNTIL_PROPERTY, fee.getPaidUntil());
 			}
-			else {
-				info.put(LicenseFee.BILLING_MONTH_PROPERTY, "");
+			
+			if (fee.getRenewalDate() != null) {
+				info.put(LicenseFee.RENEWAL_DATE_PROPERTY, fee.getRenewalDate());
 			}
 			
 			info.put(LicenseFee.FREE_TRANSACTIONS_PROPERTY, String.valueOf(fee.getFreeTransactions()));
@@ -121,7 +114,7 @@ public class Billing {
 		}
 	}
 	
-	public boolean getShowMonthsCombo() {
+	public boolean isSupportOrHosting() {
 		if ("support".equals(currentLicenseInfoKey) || "hosting".equals(currentLicenseInfoKey)) {
 			return true;
 		} else {
@@ -169,30 +162,26 @@ public class Billing {
 		}
 		
 		for (LicenseFee fee : college.getLicenseFees()) {
-			Map<String, String> info = licenseInfo.get(fee.getKeyCode());
+			Map<String, Object> info = licenseInfo.get(fee.getKeyCode());
 			LicenseFee lf = (LicenseFee) context.localObject(fee.getObjectId(), null);
 			
 			if (info != null && lf != null) {
-				if (StringUtils.trimToNull(info.get(LicenseFee.PLAN_NAME_PROPERTY)) != null) {
-					lf.setPlanName(info.get(LicenseFee.PLAN_NAME_PROPERTY));
+				if (StringUtils.trimToNull((String) info.get(LicenseFee.PLAN_NAME_PROPERTY)) != null) {
+					lf.setPlanName((String) info.get(LicenseFee.PLAN_NAME_PROPERTY));
 					
 					if ("support".equals(fee.getKeyCode()) || "hosting".equals(fee.getKeyCode())) {
-						if (StringUtils.trimToNull(info.get(LicenseFee.BILLING_MONTH_PROPERTY)) != null) {
-							lf.setBillingMonth(Integer.parseInt(info.get(LicenseFee.BILLING_MONTH_PROPERTY)));
-						} else { 
-							lf.setBillingMonth(0);
-						}
+						lf.setPaidUntil((Date) info.get(LicenseFee.PAID_UNTIL_PROPERTY));
+						lf.setRenewalDate((Date) info.get(LicenseFee.RENEWAL_DATE_PROPERTY));
 					}
 				} else {
-					lf.setPlanName(null);
-					lf.setBillingMonth(null);
+					context.deleteObject(lf);
 				}
 
-				if (StringUtils.trimToNull(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)) != null) {
-					lf.setFreeTransactions(Integer.parseInt(info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
+				if (StringUtils.trimToNull((String) info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)) != null) {
+					lf.setFreeTransactions(Integer.parseInt((String) info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)));
 				}
-				if (StringUtils.trimToNull(info.get(LicenseFee.FEE_PROPERTY)) != null) {
-					lf.setFee(new BigDecimal(info.get(LicenseFee.FEE_PROPERTY)));
+				if (StringUtils.trimToNull((String) info.get(LicenseFee.FEE_PROPERTY)) != null) {
+					lf.setFee(new BigDecimal((String) info.get(LicenseFee.FEE_PROPERTY)));
 				}
 			}
 		}
@@ -221,42 +210,46 @@ public class Billing {
 		college.setPaymentGatewayPass(value);
 	}
 	
-	public Map<String, String> getCurrentLicenseInfo() {
+	public Map<String, Object> getCurrentLicenseInfo() {
 		return licenseInfo.get(currentLicenseInfoKey);
 	}
 	
 	public String getPlanName() {
-		return getCurrentLicenseInfo().get(LicenseFee.PLAN_NAME_PROPERTY);
+		return (String) getCurrentLicenseInfo().get(LicenseFee.PLAN_NAME_PROPERTY);
 	}
 	
 	public void setPlanName(String planName) {
 		getCurrentLicenseInfo().put(LicenseFee.PLAN_NAME_PROPERTY, planName);
 	}
 	
-	public String getBillingMonth() {
-		try {
-			int monthNumber = Integer.parseInt(getCurrentLicenseInfo().get(LicenseFee.BILLING_MONTH_PROPERTY));
-			return this.months[monthNumber];
-		} catch (Exception e) {
-			return null;
+	public Date getPaidUntil() {
+		return (Date) getCurrentLicenseInfo().get(LicenseFee.PAID_UNTIL_PROPERTY);
+	}
+	
+	public void setPaidUntil(Date date) {
+		if (date != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			getCurrentLicenseInfo().put(LicenseFee.PAID_UNTIL_PROPERTY, cal.getTime());
 		}
 	}
 	
-	public void setBillingMonth(String billingMonth) {
-		String result = null;
-		for (int i = 0; i < months.length; i++) {
-			if (months[i].equals(billingMonth)) {
-				result = String.valueOf(i);
-				break;
-			}
-		}
-		if (result != null && !"".equals(result)) {
-			getCurrentLicenseInfo().put(LicenseFee.BILLING_MONTH_PROPERTY, result);
+	public Date getRenewalDate() {
+		return (Date) getCurrentLicenseInfo().get(LicenseFee.RENEWAL_DATE_PROPERTY);
+	}
+	
+	public void setRenewalDate(Date date) {
+		if (date != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			getCurrentLicenseInfo().put(LicenseFee.RENEWAL_DATE_PROPERTY, cal.getTime());
 		}
 	}
 	
 	public String getFreeTransactions() {
-		return getCurrentLicenseInfo().get(LicenseFee.FREE_TRANSACTIONS_PROPERTY);
+		return (String) getCurrentLicenseInfo().get(LicenseFee.FREE_TRANSACTIONS_PROPERTY);
 	}
 	
 	public void setFreeTransactions(String freeTransactions) {
@@ -264,7 +257,7 @@ public class Billing {
 	}
 	
 	public String getFee() {
-		return getCurrentLicenseInfo().get(LicenseFee.FEE_PROPERTY);
+		return (String) getCurrentLicenseInfo().get(LicenseFee.FEE_PROPERTY);
 	}
 	
 	public void setFee(String fee) {

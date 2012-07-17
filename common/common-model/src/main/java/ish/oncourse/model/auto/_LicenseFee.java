@@ -19,7 +19,9 @@ public abstract class _LicenseFee extends CayenneDataObject {
     public static final String FEE_PROPERTY = "fee";
     public static final String FREE_TRANSACTIONS_PROPERTY = "freeTransactions";
     public static final String KEY_CODE_PROPERTY = "keyCode";
+    public static final String PAID_UNTIL_PROPERTY = "paidUntil";
     public static final String PLAN_NAME_PROPERTY = "planName";
+    public static final String RENEWAL_DATE_PROPERTY = "renewalDate";
     public static final String VALID_UNTIL_PROPERTY = "validUntil";
     public static final String COLLEGE_PROPERTY = "college";
 
@@ -53,11 +55,25 @@ public abstract class _LicenseFee extends CayenneDataObject {
         return (String)readProperty("keyCode");
     }
 
+    public void setPaidUntil(Date paidUntil) {
+        writeProperty("paidUntil", paidUntil);
+    }
+    public Date getPaidUntil() {
+        return (Date)readProperty("paidUntil");
+    }
+
     public void setPlanName(String planName) {
         writeProperty("planName", planName);
     }
     public String getPlanName() {
         return (String)readProperty("planName");
+    }
+
+    public void setRenewalDate(Date renewalDate) {
+        writeProperty("renewalDate", renewalDate);
+    }
+    public Date getRenewalDate() {
+        return (Date)readProperty("renewalDate");
     }
 
     public void setValidUntil(Date validUntil) {

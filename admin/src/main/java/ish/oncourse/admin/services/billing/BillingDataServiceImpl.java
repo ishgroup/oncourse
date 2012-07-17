@@ -27,7 +27,7 @@ import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT;
 
 public class BillingDataServiceImpl implements IBillingDataService {
 	
-    private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.key_code as keyCode, l.fee as fee, l.billingMonth as billingMonth, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
+    private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.key_code as keyCode, l.fee as fee, l.paidUntil as paidUntil, l.renewalDate as renewalDate, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
     private static final String SQL_SMS = "SELECT count(*) as count, c.id as collegeId FROM MessagePerson AS m JOIN College AS c on c.Id = m.collegeId WHERE c.billingCode IS NOT NULL and type = 2 AND timeOfDelivery >= #bind($from)  AND timeOfDelivery <= #bind($to) GROUP BY collegeid";
     private static final String SQL_OFFICE_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'O' AND p.type = 2 AND (status = 3 OR status = 6) GROUP BY collegeid";
     private static final String SQL_WEB_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'W' AND p.type = 2 AND (status = 3 OR status = 6) GROUP BY collegeid";
@@ -59,6 +59,8 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			billingRow.put(key, r.get("fee"));
 			billingRow.put(key + "-renewMonth", r.get("billingMonth"));
 			billingRow.put(key + "-plan", r.get("plan"));
+			billingRow.put(key + "-paidUntil", r.get("paidUntil"));
+			billingRow.put(key + "-renewalDate", r.get("renewalDate"));
 
 			Integer freeTransactions = (Integer) r.get("freeTransactions");
 
@@ -209,17 +211,19 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		moneyFormat.setMinimumFractionDigits(2);
 		
 		SimpleDateFormat formatter = new SimpleDateFormat(DATE_MONTH_FORMAT);
-		Date renewalDate = from;
-		cal.setTime(renewalDate);
-		cal.add(Calendar.YEAR, 1);
-		renewalDate = cal.getTime();
 		
-		if (isSupportRenewMonth(college, from, licenseData)) {	
-			text += MWExportFormat.SupportFormat.format(licenseData, college, renewalDate,description);
+		if (isSupportBillingMonth(college, from, licenseData)) {
+			Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
+			Date renewalDate = (Date) licenseData.get(college.getId()).get("support-renewalDate");
+			
+			text += MWExportFormat.SupportFormat.format(licenseData, college, paidUntil, renewalDate, description);
 		}
 		
-		if (isWebHostingRenewMonth(college, from, licenseData)) {
-			text += MWExportFormat.HostingFormat.format(licenseData,college,renewalDate,description);
+		if (isWebHostingBillingMonth(college, from, licenseData)) {
+			Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
+			Date renewalDate = (Date) licenseData.get(college.getId()).get("hosting-renewalDate");
+			
+			text += MWExportFormat.HostingFormat.format(licenseData, college, paidUntil, renewalDate, description);
 		}
 		//TODO refactoring all other report's string to use MWExportFormat
 		DecimalFormat decimalFormatter = new DecimalFormat();
@@ -314,26 +318,38 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		return text;
 	}
 	
-	private boolean isSupportRenewMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(fromMonth);
-		Integer renewMonth = (Integer) licenseData.get(college.getId()).get("support-renewMonth");
-		if (renewMonth != null) {
-			int month = calendar.get(Calendar.MONTH);
-			return renewMonth.equals(month);
+	private boolean isSupportBillingMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
+		Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
+		
+		if (paidUntil == null) {
+			return false;
 		}
-		return false;
-
+		
+		Calendar payMonth = Calendar.getInstance();
+		payMonth.setTime(paidUntil);
+		
+		Calendar billingMonth = Calendar.getInstance();
+		billingMonth.setTime(fromMonth);
+		
+		return (payMonth.get(Calendar.YEAR) == billingMonth.get(Calendar.YEAR) 
+				&& payMonth.get(Calendar.MONTH) == billingMonth.get(Calendar.MONTH));
 	}
 	
-	private boolean isWebHostingRenewMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(fromMonth);
-		Integer renewMonth = (Integer) licenseData.get(college.getId()).get("hosting-renewMonth");
-		if (renewMonth != null) {
-			return renewMonth.equals(calendar.get(Calendar.MONTH));
+	private boolean isWebHostingBillingMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
+		Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
+		
+		if (paidUntil == null) {
+			return false;
 		}
-		return false;
+		
+		Calendar payMonth = Calendar.getInstance();
+		payMonth.setTime(paidUntil);
+		
+		Calendar billingMonth = Calendar.getInstance();
+		billingMonth.setTime(fromMonth);
+		
+		return (payMonth.get(Calendar.YEAR) == billingMonth.get(Calendar.YEAR) 
+				&& payMonth.get(Calendar.MONTH) == billingMonth.get(Calendar.MONTH));
 	}
 	
 	private Map<Double, Double> getTasmaniaFees(College college, Map<Long, Map<String, Object>> billingData) {
