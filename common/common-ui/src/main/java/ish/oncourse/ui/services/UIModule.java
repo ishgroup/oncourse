@@ -7,6 +7,7 @@ import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.ui.services.filter.LogFilter;
 import ish.oncourse.ui.template.T5FileResource;
+import ish.oncourse.util.UIRequestExceptionHandler;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.pageload.ComponentTemplateSourceOverride;
 import org.apache.tapestry5.internal.pageload.PageLoaderOverride;
@@ -124,7 +125,7 @@ public class UIModule {
                                                                    Response response
     )
     {
-        return new UIRequestExceptionHandler(componentSource,renderer,request,response);
+        return new UIRequestExceptionHandler(componentSource,renderer,request,response,"ui/Error500","/");
     }
 
     public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {

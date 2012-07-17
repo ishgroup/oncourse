@@ -1,4 +1,4 @@
-package ish.oncourse.ui.services;
+package ish.oncourse.util;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.services.*;
@@ -12,32 +12,36 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler
     private final Response response;
     private final ComponentSource componentSource;
     private Request request;
+    private String errorPageName;
+    private String redirectPage;
 
     public UIRequestExceptionHandler(ComponentSource componentSource,
                                      ResponseRenderer renderer,
                                      Request request,
-                                     Response response) {
+                                     Response response,
+                                     String errorPageName,
+                                     String redirectPage) {
         this.renderer = renderer;
         this.response = response;
         this.componentSource = componentSource;
         this.request = request;
+        this.errorPageName = errorPageName;
+        this.redirectPage = redirectPage;
     }
-
 
     public void handleRequestException(Throwable exception) throws IOException {
 
 
         if (response != null && exception != null && exception.getMessage() != null &&
                 exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
-            response.sendRedirect("/");
+            response.sendRedirect(redirectPage);
         } else {
             LOGGER.error(String.format("Unexpected runtime exception on \"%s/%s\"",
                     request != null ? request.getServerName(): "undefined host",
                     request != null ? request.getPath(): "undefined path") , exception);
-            String exceptionPageName = "ui/Error500";
-            ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(exceptionPageName);
+            ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(errorPageName);
             exceptionReporter.reportException(exception);
-            renderer.renderPageMarkupResponse(exceptionPageName);
+            renderer.renderPageMarkupResponse(errorPageName);
         }
     }
 }

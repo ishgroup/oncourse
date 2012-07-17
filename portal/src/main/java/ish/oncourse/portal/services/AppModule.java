@@ -14,6 +14,7 @@ import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.IPageRenderer;
+import ish.oncourse.util.UIRequestExceptionHandler;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
@@ -23,8 +24,6 @@ import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
 import org.apache.tapestry5.services.pageload.ComponentResourceLocator;
-
-import java.io.IOException;
 
 @SubModule({ ModelModule.class, ServiceModule.class, TextileModule.class })
 public class AppModule {
@@ -72,22 +71,11 @@ public class AppModule {
 		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
 	}
 	
-	public RequestExceptionHandler buildAppRequestExceptionHandler(final org.slf4j.Logger logger, final ResponseRenderer renderer, final Response response, 
-			final ComponentSource componentSource) {
-		return new RequestExceptionHandler() {
-			public void handleRequestException(Throwable exception) throws IOException {
-				if (response != null && exception != null && exception.getMessage() != null &&
-						exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
-					response.sendRedirect("login"); 
-				} else {
-                    logger.error("Unexpected runtime exception.", exception);
-                    String exceptionPageName = "errorPage";
-					ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(exceptionPageName);
-					exceptionReporter.reportException(exception);
-					renderer.renderPageMarkupResponse(exceptionPageName);
-				}
-			}
-		};
+	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource,
+                                                                   ResponseRenderer renderer,
+                                                                   Request request,
+                                                                   Response response) {
+		return new UIRequestExceptionHandler(componentSource,renderer,request,response, "errorPage", "login");
 	}
 	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
