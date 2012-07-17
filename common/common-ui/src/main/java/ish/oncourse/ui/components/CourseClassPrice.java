@@ -67,7 +67,6 @@ public class CourseClassPrice {
 
 	@SetupRender
 	public void beforeRender() {
-
 		List<Discount> promotions = discountService.getPromotions();
 		applicableDiscounts = courseClass.getDiscountsToApply(new PotentialDiscountsPolicy(promotions));
 		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscounts);
@@ -80,7 +79,7 @@ public class CourseClassPrice {
 			if (applicableDiscounts.size() > 1) {
 				appliedDiscountsTitleBuf.append(" combined with: ");
 				for (int i = 1; i < applicableDiscounts.size(); i++) {
-					appliedDiscountsTitleBuf.append(applicableDiscounts.get(i));
+					appliedDiscountsTitleBuf.append(applicableDiscounts.get(i).getName());
 					if (i != applicableDiscounts.size() - 1) {
 						appliedDiscountsTitleBuf.append(", ");
 					}

@@ -3,6 +3,8 @@ package ish.oncourse.utils;
 import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.DiscountMembership;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -12,6 +14,7 @@ import java.util.Vector;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Util class for calculating discounts applying results.
@@ -20,6 +23,16 @@ import org.apache.cayenne.exp.ExpressionFactory;
  * 
  */
 public class DiscountUtils {
+	private static final String SPACE_CHARACTER = " ";
+	private static final String WITH_POSCODES_CONDITION_TEXT = " with poscodes: ";
+	private static final String WITH_MEMBERSHIPS_CONDITION_TEXT = " with memberships:";
+	private static final String WITH_CONCESSIONS_CONDITION_TEXT = " with concessions:";
+	private static final String OF_AGE_CONDITION_TEXT = " of age ";
+	private static final String COMMA_CHARACTER = ",";
+	private static final String ENROLLED_WITHIN_CONDITION_TEXT = "enrolled within ";
+	private static final String CONDITION_SEPARATOR_STRING = "; ";
+	private static final String FOR_STUDENTS_START_STRING = "for students: ";
+
 	/**
 	 * Returns the discount value for the given price if apply the given
 	 * discount.
@@ -185,20 +198,64 @@ public class DiscountUtils {
 	 * @return
 	 */
 	public static String getEligibilityConditions(List<Discount> applicableDiscounts) {
-		StringBuffer result = new StringBuffer("for students: ");
+		StringBuffer result = new StringBuffer(FOR_STUDENTS_START_STRING);
 		boolean hasFilter = false;
 		for (Discount discount : applicableDiscounts) {
-			if (discount.hasEligibilityFilter() && result.indexOf(discount.getEligibilityConditions()) == -1) {
-				if(hasFilter){
-					result.append("; ");
+			if ((discount.hasEligibilityFilter() 
+				|| (discount.getDiscountMembershipProducts() != null && !discount.getDiscountMembershipProducts().isEmpty())) 
+				&& result.indexOf(buildEligibilityConditionText(discount)) == -1) {
+				if (hasFilter) {
+					result.append(CONDITION_SEPARATOR_STRING);
 				}
 				hasFilter = true;
-				result.append(discount.getEligibilityConditions());
+				result.append(buildEligibilityConditionText(discount));
 			}
 		}
 		if (hasFilter) {
 			return result.toString();
 		}
 		return null;
+	}
+	
+	private static String buildEligibilityConditionText(final Discount discount) {
+		StringBuffer result = new StringBuffer();
+		if (discount.getStudentEnrolledWithinDays() != null) {
+			result.append(ENROLLED_WITHIN_CONDITION_TEXT).append(discount.getStudentEnrolledWithinDays());
+		}
+		if (discount.getStudentAge() != null) {
+			if (result.length() != 0) {
+				result.append(COMMA_CHARACTER);
+			}
+			result.append(OF_AGE_CONDITION_TEXT).append(discount.getStudentAgeOperator()).append(discount.getStudentAge());
+		}
+		if (discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) {
+			if (result.length() != 0) {
+				result.append(COMMA_CHARACTER);
+			}
+			result.append(WITH_CONCESSIONS_CONDITION_TEXT);
+			for (DiscountConcessionType type : discount.getDiscountConcessionTypes()) {
+				result.append(SPACE_CHARACTER).append(type.getConcessionType().getName())
+					.append(discount.getDiscountConcessionTypes().indexOf(type) < (discount.getDiscountConcessionTypes().size() -1) 
+						? COMMA_CHARACTER : StringUtils.EMPTY);
+			}
+		}
+		if (discount.getDiscountMembershipProducts() != null && !discount.getDiscountMembershipProducts().isEmpty()) {
+			if (result.length() != 0) {
+				result.append(COMMA_CHARACTER);
+			}
+			result.append(WITH_MEMBERSHIPS_CONDITION_TEXT);
+			for (DiscountMembership membership : discount.getDiscountMembershipProducts()) {
+				result.append(SPACE_CHARACTER).append(membership.getMembershipProduct().getName())
+					.append(discount.getDiscountMembershipProducts().indexOf(membership) < (discount.getDiscountMembershipProducts().size() -1) 
+						? COMMA_CHARACTER : StringUtils.EMPTY);
+			}
+		}
+		if (discount.getStudentPostcodes() != null) {
+			if (result.length() != 0) {
+				result.append(COMMA_CHARACTER);
+			}
+			result.append(WITH_POSCODES_CONDITION_TEXT).append(discount.getStudentPostcodes());
+		}
+		return result.toString();
 	}
 }

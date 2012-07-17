@@ -19,7 +19,14 @@
 			</span>
 		</t:if>
 		<t:if test="hasDiscountValue">
-			<t:if test="discountExpiryDate">(until <t:output format="dateFormat" value="discountExpiryDate"/><t:if test="discountEligibility">, ${discountEligibility}</t:if>)</t:if>
+			<t:if test="discountExpiryDate">(until <t:output format="dateFormat" value="discountExpiryDate"/>
+				<t:if test="discountEligibility">, ${discountEligibility}
+				</t:if>)
+				<p:else>
+					<t:if test="discountEligibility"> ${discountEligibility}
+					</t:if>
+				</p:else>
+			</t:if>
 		</t:if> 
 		<t:if t:test="courseClass.college.paymentGatewayEnabled">
 			<t:loop source="discountsWithConcessions" value="discountItem">

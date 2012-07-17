@@ -37,52 +37,12 @@ public class Discount extends _Discount implements Queueable {
 	}
 
 	public boolean isPromotion() {
-		return getCode() != null && !getCode().equals("");
+		return getCode() != null && !StringUtils.EMPTY.equals(getCode());
 	}
 
 	public boolean hasEligibilityFilter() {
 		return getStudentEnrolledWithinDays() != null || getStudentAge() != null
 				|| !(getDiscountConcessionTypes() == null || getDiscountConcessionTypes().isEmpty())
 				|| getStudentPostcodes() != null;
-	}
-
-	public String getEligibilityConditions() {
-		StringBuffer result = new StringBuffer();
-		if (getStudentEnrolledWithinDays() != null) {
-			result.append("enrolled within ").append(getStudentEnrolledWithinDays());
-		}
-		if (getStudentAge() != null) {
-			if (result.length() != 0) {
-				result.append(",");
-			}
-			result.append(" of age ").append(getStudentAgeOperator()).append(getStudentAge());
-		}
-		if (getDiscountConcessionTypes() != null && !getDiscountConcessionTypes().isEmpty()) {
-			if (result.length() != 0) {
-				result.append(",");
-			}
-			result.append(" with concessions:");
-			for (DiscountConcessionType type : getDiscountConcessionTypes()) {
-				result.append(" ").append(type.getConcessionType().getName())
-					.append(getDiscountConcessionTypes().indexOf(type) < (getDiscountConcessionTypes().size() -1) ? "," : StringUtils.EMPTY);
-			}
-		}
-		if (getDiscountMembershipProducts() != null && !getDiscountMembershipProducts().isEmpty()) {
-			if (result.length() != 0) {
-				result.append(",");
-			}
-			result.append(" with memberships:");
-			for (DiscountMembership membership : getDiscountMembershipProducts()) {
-				result.append(" ").append(membership.getMembershipProduct().getName())
-					.append(getDiscountMembershipProducts().indexOf(membership) < (getDiscountMembershipProducts().size() -1) ? "," : StringUtils.EMPTY);
-			}
-		}
-		if (getStudentPostcodes() != null) {
-			if (result.length() != 0) {
-				result.append(",");
-			}
-			result.append(" with poscodes: ").append(getStudentPostcodes());
-		}
-		return result.toString();
 	}
 }
