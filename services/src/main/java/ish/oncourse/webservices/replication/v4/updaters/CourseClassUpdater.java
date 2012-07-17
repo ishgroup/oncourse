@@ -48,5 +48,8 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setStartDate(stub.getStartDate());
 		entity.setStartingMinutePerSession(stub.getStartingMinutePerSession());
 		entity.setTimeZone(stub.getTimeZone());
+		
+		// not used in v4 stubs, setting default value
+		entity.setIsDistantLearningCourse(Boolean.FALSE);
 	}
 }

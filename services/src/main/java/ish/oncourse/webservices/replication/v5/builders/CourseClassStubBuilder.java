@@ -32,6 +32,9 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 		}
 		c.setSessionDetail(entity.getSessionDetail());
 		c.setWebVisible(entity.getIsWebVisible());
+		c.setDistantLearningCourse(entity.getIsDistantLearningCourse());
+		c.setMaximumDays(entity.getMaximumDays());
+		c.setExpectedHours(entity.getExpectedHours());
 		
 		return c;
 	}
