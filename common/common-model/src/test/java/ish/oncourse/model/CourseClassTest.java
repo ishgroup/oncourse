@@ -112,6 +112,7 @@ public class CourseClassTest {
 		firstClass.setCourse(course);
 		firstClass.setCollege(college);
 		firstClass.setMaximumPlaces(3);
+		firstClass.setIsDistantLearningCourse(false);
 
 		currentPromotion = context.newObject(Discount.class);
 		currentPromotion.setCollege(college);
@@ -160,6 +161,7 @@ public class CourseClassTest {
 		secondClass.setCourse(course);
 		secondClass.setCollege(college);
 		secondClass.setMaximumPlaces(3);
+		secondClass.setIsDistantLearningCourse(false);
 		
 		pastSecondClassDiscount = context.newObject(Discount.class);
 		pastSecondClassDiscount.setCollege(college);
@@ -176,6 +178,7 @@ public class CourseClassTest {
 		thirdClass.setCourse(course);
 		thirdClass.setCollege(college);
 		thirdClass.setMaximumPlaces(3);
+		thirdClass.setIsDistantLearningCourse(false);
 		
 		concessionEmptyCode = context.newObject(Discount.class);
 		concessionEmptyCode.setCollege(college);
@@ -196,6 +199,7 @@ public class CourseClassTest {
 		fourthClass.setCourse(course);
 		fourthClass.setCollege(college);
 		fourthClass.setMaximumPlaces(3);
+		fourthClass.setIsDistantLearningCourse(false);
 		
 		disabledDiscount = context.newObject(Discount.class);
 		disabledDiscount.setCollege(college);

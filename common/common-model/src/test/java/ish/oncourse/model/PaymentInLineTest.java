@@ -41,6 +41,7 @@ public class PaymentInLineTest {
 		courseClass.setCourse(course);
 		courseClass.setCollege(college);
 		courseClass.setMaximumPlaces(3);
+		courseClass.setIsDistantLearningCourse(false);
 		
 		context.commitChanges();
 	}
