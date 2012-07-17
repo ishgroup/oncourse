@@ -12,7 +12,7 @@
 	<WaitingList id="1" angelId="1" collegeId="1" courseId="1" detail="test" potentialStudents="5" studentId="4"/>
 	<WaitingList id="2" angelId="2" collegeId="1" courseId="2" detail="test" potentialStudents="10" studentId="4"/>
 	
-	<Site id="1" collegeId="1"/>
+	<Site id="1" collegeId="1" isVirtual="0"/>
 	
 	<WaitingListSite id="1" angelId="1" collegeId="1" waitingListId="1" siteId="1"/>
 	<WaitingListSite id="2" angelId="1" collegeId="1" waitingListId="2" siteId="1"/>

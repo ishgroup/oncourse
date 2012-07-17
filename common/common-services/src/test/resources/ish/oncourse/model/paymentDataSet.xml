@@ -2,7 +2,7 @@
 <dataset>
   <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
   
-  <Site id="1181610" collegeId="1" angelId="200" isWebVisible="0" created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite"/>
+  <Site id="1181610" collegeId="1" angelId="200" isWebVisible="0" created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtula="0"/>
   <Room id="1181746" collegeId="1" siteId="1181610" angelId="200" capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0" name="TestRoom"/>
   
   <Student id="1189147" collegeId="1" angelId="200" created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0" disabilityType="0" englishProficiency="0" highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0" priorEducationCode="0" labourForceType="0"/>
@@ -22,9 +22,9 @@
   <Course id="1186953" collegeId="1" angelId="201" code="MSC" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" created="2011-09-12 00:57:38.0" modified="2011-09-12 00:59:00.0" allowWaitingList="1" name="Microsoft Word"/>
   <Course id="1186954" collegeId="1" angelId="202" code="PPO" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" created="2011-09-12 00:59:38.0" modified="2011-09-12 01:02:00.0" allowWaitingList="1" name="Adobe Photoshop essentials"/>
   
-  <CourseClass id="1186958" collegeId="1" code="1" courseId="1186952" roomId="1181746" angelId="200" startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0" isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0" maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="454.55" feeGst="45.45" isVirtual="0"/>
-  <CourseClass id="1186959" collegeId="1" code="1" courseId="1186953" roomId="1181746" angelId="201" startDate="2011-09-13 00:58:59.0" endDate="2011-10-07 01:58:59.0" isWebVisible="1" isCancelled="0" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0" maximumPlaces="1" minimumPlaces="1" countOfSessions="5" deliveryMode="1" feeExGst="300.00" feeGst="30.00" isVirtual="0"/>
-  <CourseClass id="1186960" collegeId="1" code="1" courseId="1186954" roomId="1181746" angelId="202" startDate="2011-11-03 01:01:59.0" endDate="2011-11-03 02:01:59.0" isWebVisible="0" isCancelled="0" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" maximumPlaces="2" minimumPlaces="2" countOfSessions="1" deliveryMode="1" feeExGst="0.00" feeGst="0.00" isVirtual="0"/>
+  <CourseClass id="1186958" collegeId="1" code="1" courseId="1186952" roomId="1181746" angelId="200" startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0" isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0" maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="454.55" feeGst="45.45"/>
+  <CourseClass id="1186959" collegeId="1" code="1" courseId="1186953" roomId="1181746" angelId="201" startDate="2011-09-13 00:58:59.0" endDate="2011-10-07 01:58:59.0" isWebVisible="1" isCancelled="0" created="2011-09-12 00:59:00.0" modified="2011-09-12 00:59:01.0" maximumPlaces="1" minimumPlaces="1" countOfSessions="5" deliveryMode="1" feeExGst="300.00" feeGst="30.00"/>
+  <CourseClass id="1186960" collegeId="1" code="1" courseId="1186954" roomId="1181746" angelId="202" startDate="2011-11-03 01:01:59.0" endDate="2011-11-03 02:01:59.0" isWebVisible="0" isCancelled="0" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" maximumPlaces="2" minimumPlaces="2" countOfSessions="1" deliveryMode="1" feeExGst="0.00" feeGst="0.00"/>
   
   <Enrolment id="2000" source="O" collegeId="1" courseClassId="1186958" studentId="1189150" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="2"/>
   <Enrolment id="2001" source="O" collegeId="1" courseClassId="1186960" studentId="1189150" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3"/>

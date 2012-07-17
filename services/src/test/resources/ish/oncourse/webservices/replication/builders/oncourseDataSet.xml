@@ -20,7 +20,7 @@
           drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
           longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"
           publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
-          specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="timeZone"/>
+          specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="timeZone" isVirtual="0"/>
 
 
     <Room id="1"  collegeId="3" siteId="1" angelId="2" capacity="30" created="2011-09-12 00:47:01.0"
