@@ -204,7 +204,7 @@
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="endDate" type="TIMESTAMP" length="19"/>
-		<db-attribute name="expectedHours" type="DOUBLE" length="14"/>
+		<db-attribute name="expectedHours" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeExGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>

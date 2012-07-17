@@ -72,6 +72,7 @@ public class SampleEntityBuilder {
 		c.setFeeExGst(new Money(123, 25));
 		c.setMaterials("Test materials");
 		c.setMaximumPlaces(18);
+		c.setIsDistantLearningCourse(false);
 
 		return c;
 	}
