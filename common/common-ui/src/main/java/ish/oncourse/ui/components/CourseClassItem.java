@@ -1,31 +1,28 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.PaymentGatewayType;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.TutorRole;
+import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.TimestampUtilities;
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.text.Format;
+import java.util.*;
+
 public class CourseClassItem {
-	
-	@Inject
+
+    private static final String VALUE_yes = "yes";
+    private static final String VALUE_no = "no";
+
+    @Inject
 	private Messages messages;
 
 	@Inject
@@ -224,7 +221,7 @@ public class CourseClassItem {
 
 	public String getHasTiming() {
 		Set<String> daysOfWeek = courseClass.getDaysOfWeek();
-		return daysOfWeek.contains(day) ? "yes" : "no";
+		return daysOfWeek.contains(day) ? VALUE_yes : VALUE_no;
 	}
 
 	public String getDayShortName() {
@@ -233,10 +230,30 @@ public class CourseClassItem {
 	}
 
 	public String getDayTimeClass() {
-		return courseClass.isDaytime() ? "yes" : "no";
+		return courseClass.isDaytime() ? VALUE_yes : VALUE_no;
 	}
 
 	public String getEveningClass() {
-		return courseClass.isEvening() ? "yes" : "no";
+		return courseClass.isEvening() ? VALUE_yes : VALUE_no;
 	}
+
+    /**
+     * The method returns true only if start date and end date for the courseClass more than 1 day.
+     */
+    public boolean isShowDateEnd()
+    {
+        Date endDate = courseClass.getEndDate();
+        List<Session> sessions = courseClass.getSessions();
+
+        if (endDate == null || sessions.isEmpty())
+            return false;
+
+        for (Session session : sessions) {
+            if (!DateUtils.isSameDay(endDate, session.getStartDate()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

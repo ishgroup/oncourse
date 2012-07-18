@@ -10,7 +10,8 @@
 							<abbr class="dtstart" title="">
 								<t:output format="dateFormat" value="courseClass.firstSession.startDate" />
 							</abbr>
-							<t:if t:test="courseClass.endDate"> - <abbr class="dtend" title="">
+
+							<t:if t:test="showDateEnd"> - <abbr class="dtend" title="">
 									<t:output format="dateFormat" value="courseClass.endDate" />
 								</abbr>
 							</t:if>
