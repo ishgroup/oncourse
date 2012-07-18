@@ -2,6 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.oncourse.services.site.IWebSiteService;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 
@@ -16,11 +17,10 @@ public class GoogleAnalytics {
 
 	public String getAnalyticsAccount() {
 		String analyticsAccount = siteService.getCurrentWebSite().getGoogleAnalyticsAccount();
-
-		return (analyticsAccount == null) ? "" : analyticsAccount.trim();
+		return (StringUtils.trimToNull(analyticsAccount) == null) ? StringUtils.EMPTY : analyticsAccount.trim();
 	}
 
 	public boolean isAccountValid() {
-		return ((getAnalyticsAccount() != null) && (! "".equals(getAnalyticsAccount())));
+		return StringUtils.trimToNull(getAnalyticsAccount()) != null;
 	}
 }
