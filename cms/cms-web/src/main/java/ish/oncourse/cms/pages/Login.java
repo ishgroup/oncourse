@@ -66,12 +66,12 @@ public class Login {
 
 			if (status == AuthenticationStatus.NO_MATCHING_USER) {
 				loginForm
-						.recordError("Login unsucessful! Invalid login name or password");
+						.recordError("Login unsuccessful. Invalid login name or password.");
 			} else if (status == AuthenticationStatus.MORE_THAN_ONE_USER) {
 				loginForm
-						.recordError("Login unsuccessful! There is a problem with your account, please contact the college for support (MU)");
+						.recordError("Login unsuccessful. There are two users with the same login details. Please contact the college for help.");
 			} else if (status != AuthenticationStatus.SUCCESS) {
-				loginForm.recordError("Login unsuccessful! " + status.name());
+				loginForm.recordError("Login unsuccessful. " + status.name());
 			}
 		}
 		
