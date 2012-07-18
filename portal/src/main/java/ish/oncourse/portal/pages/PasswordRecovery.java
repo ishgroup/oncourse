@@ -3,20 +3,15 @@ package ish.oncourse.portal.pages;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.persistence.ICayenneService;
-
-import java.io.IOException;
-import java.util.Date;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.io.IOException;
+import java.util.Date;
 
 public class PasswordRecovery {
 
@@ -71,12 +66,10 @@ public class PasswordRecovery {
 		if (StringUtils.isBlank(password)) {
 			recoveryForm.recordError(passwordField, "Please enter your password");
 		}
-
-		if (StringUtils.isBlank(confirmpassword)) {
+        else if (StringUtils.isBlank(confirmpassword)) {
 			recoveryForm.recordError(confirmPasswordField, "Please, confirm your password");
 		}
-
-		if (!password.equals(confirmpassword)) {
+        else if (!password.equals(confirmpassword)) {
 			recoveryForm.recordError(confirmPasswordField, "Password does not match the confirm password.");
 		}
 		
