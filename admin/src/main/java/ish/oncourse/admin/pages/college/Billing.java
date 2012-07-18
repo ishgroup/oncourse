@@ -2,6 +2,7 @@ package ish.oncourse.admin.pages.college;
 
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,13 +26,20 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Billing {
+	
+	@InjectComponent
+	@Property
+	private Form billingForm;
 	
 	@Property
 	@Persist
@@ -68,12 +76,11 @@ public class Billing {
 	@Persist
 	private PreferenceController preferenceController;
 	
-	private SimpleDateFormat dateFormat;
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	@SetupRender
 	void setupRender() {
 		this.preferenceController = prefsFactory.getPreferenceController(college);
-		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		
 		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
 			this.webPaymentEnabled = false;
@@ -124,8 +131,6 @@ public class Billing {
 	
 	@OnEvent(component="billingForm", value="success")
 	void submitted() throws Exception {
-		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		
 		ObjectContext context = cayenneService.newContext();
 		
 		College col = (College) context.localObject(college.getObjectId(), null);
@@ -173,8 +178,6 @@ public class Billing {
 						lf.setPaidUntil((Date) info.get(LicenseFee.PAID_UNTIL_PROPERTY));
 						lf.setRenewalDate((Date) info.get(LicenseFee.RENEWAL_DATE_PROPERTY));
 					}
-				} else {
-					context.deleteObject(lf);
 				}
 
 				if (StringUtils.trimToNull((String) info.get(LicenseFee.FREE_TRANSACTIONS_PROPERTY)) != null) {
@@ -222,29 +225,49 @@ public class Billing {
 		getCurrentLicenseInfo().put(LicenseFee.PLAN_NAME_PROPERTY, planName);
 	}
 	
-	public Date getPaidUntil() {
-		return (Date) getCurrentLicenseInfo().get(LicenseFee.PAID_UNTIL_PROPERTY);
+	public String getPaidUntil() {
+		Date paidUntil = (Date) getCurrentLicenseInfo().get(LicenseFee.PAID_UNTIL_PROPERTY);
+		return paidUntil == null ? "" : dateFormat.format(paidUntil);
 	}
 	
-	public void setPaidUntil(Date date) {
-		if (date != null) {
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			cal.set(Calendar.DAY_OF_MONTH, 1);
-			getCurrentLicenseInfo().put(LicenseFee.PAID_UNTIL_PROPERTY, cal.getTime());
+	public void setPaidUntil(String dateString) {
+		if (dateString != null) {
+			try {
+				Date date = dateFormat.parse(dateString);
+				if (date != null) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(date);
+					cal.set(Calendar.DAY_OF_MONTH, 1);
+					getCurrentLicenseInfo().put(LicenseFee.PAID_UNTIL_PROPERTY, cal.getTime());
+				}
+			} catch (ParseException e) {
+				billingForm.recordError("Paid until date not valid.");
+			}
+		} else {
+			getCurrentLicenseInfo().put(LicenseFee.PAID_UNTIL_PROPERTY, null);
 		}
 	}
 	
-	public Date getRenewalDate() {
-		return (Date) getCurrentLicenseInfo().get(LicenseFee.RENEWAL_DATE_PROPERTY);
+	public String getRenewalDate() {
+		Date renewalDate = (Date) getCurrentLicenseInfo().get(LicenseFee.RENEWAL_DATE_PROPERTY);
+		return renewalDate == null ? "" : dateFormat.format(renewalDate);
 	}
 	
-	public void setRenewalDate(Date date) {
-		if (date != null) {
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			cal.set(Calendar.DAY_OF_MONTH, 1);
-			getCurrentLicenseInfo().put(LicenseFee.RENEWAL_DATE_PROPERTY, cal.getTime());
+	public void setRenewalDate(String dateString){
+		if (dateString != null) {
+			try {
+				Date date = dateFormat.parse(dateString);
+				if (date != null) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(date);
+					cal.set(Calendar.DAY_OF_MONTH, 1);
+					getCurrentLicenseInfo().put(LicenseFee.RENEWAL_DATE_PROPERTY, cal.getTime());
+				}
+			} catch (ParseException e) {
+				billingForm.recordError("Renewal date not valid.");
+			}
+		} else {
+			getCurrentLicenseInfo().put(LicenseFee.RENEWAL_DATE_PROPERTY, null);
 		}
 	}
 	

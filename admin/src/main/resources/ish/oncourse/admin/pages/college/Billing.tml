@@ -53,12 +53,12 @@
 					<td><t:textfield t:id="planName" value="planName"/></td>
 					<td>
 						<t:if test="supportOrHosting">
-							<t:datefield t:id="paidUntil" value="paidUntil"/>
+							<t:textfield t:id="paidUntil" class="datefield" value="paidUntil"/>
 						</t:if>
 					</td>
 					<td>
 						<t:if test="supportOrHosting">
-							<t:datefield t:id="renewalDate" value="renewalDate"/>
+							<t:textfield t:id="renewalDate" class="datefield" value="renewalDate"/>
 						</t:if>
 					</td>
 					<td><t:textfield t:id="freeTransactions" t:validate="required" value="freeTransactions"/></td>
@@ -70,5 +70,12 @@
 	
 	<t:submit t:id="save" value="Save"/>
 </t:form>
+
+	<script type="text/javascript">
+		jQuery(function() {		
+			jQuery( ".datefield" ).datepicker({ dateFormat: 'dd/mm/yy' });
+			jQuery( ".datefield" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		});
+	</script>
 
 </html>
