@@ -35,7 +35,8 @@ public class DiscountService implements IDiscountService {
 		if (discountIds == null) {
 			return new ArrayList<Discount>();
 		}
-		return ExpressionFactory.noMatchExp(Discount.CODE_PROPERTY, null).filterObjects(loadByIds(discountIds.toArray()));
+		final List<Discount> result = ExpressionFactory.noMatchExp(Discount.CODE_PROPERTY, null).filterObjects(loadByIds(discountIds.toArray()));
+		return result.isEmpty() ? new ArrayList<Discount>(0): result;
 	}
 
 	/**
