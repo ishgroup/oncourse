@@ -80,9 +80,7 @@
 		   				<div class="conditions">
 		   					<t:checkbox value="userAgreed" clientId="agree"/>
 	   						<t:if test="enrolmentDisclosure">
-   							 	I have read the 
-        						<a href="${enrolmentDisclosure}?wrap=false" title="Student information" class="nyromodal" >Student Information</a>
-    	    					or have had it explained to me, and I agree to accept these enrolment conditions.
+   							 	I have read and accept the <a href="${enrolmentDisclosure}?wrap=false" title="Student information" class="nyromodal" >terms and conditions</a>.
 	   						</t:if>
 	     					I understand the enrolment and refund policy. 
 		    			</div>
