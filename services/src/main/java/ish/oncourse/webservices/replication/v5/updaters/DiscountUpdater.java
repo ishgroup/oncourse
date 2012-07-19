@@ -34,5 +34,6 @@ public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discoun
 		if(discountType!=null) {
 			entity.setDiscountType(TypesUtil.getEnumForDatabaseValue(discountType, DiscountType.class));
 		}
+		entity.setHideOnWeb(stub.isHideOnWeb());
 	}
 }

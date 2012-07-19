@@ -52,6 +52,7 @@ public class DiscountStubBuilder extends AbstractWillowStubBuilder<Discount, Dis
 		stub.setStudentPostcodes(entity.getStudentPostcodes());
 		stub.setValidFrom(entity.getValidFrom());
 		stub.setValidTo(entity.getValidTo());
+		stub.setHideOnWeb(entity.getHideOnWeb());
 		return stub;
 	}
 

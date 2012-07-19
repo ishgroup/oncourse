@@ -1063,4 +1063,17 @@
     	</addColumn>
     </changeSet>
     
+    <changeSet id="72" author="dzmitry" context="production" runOnChange="true">
+    	<preConditions>
+    		<not>
+    			<columnExists tableName="Discount" columnName="hideOnWeb"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="Discount">
+    		<column name="hideOnWeb" type="TINYINT(1)" defaultValueNumeric="0">
+    			<constraints nullable="false"/>
+    		</column>
+    	</addColumn>
+    </changeSet>
+    
 </databaseChangeLog>

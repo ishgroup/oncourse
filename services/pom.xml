@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>ish.oncourse.angel</groupId>
 			<artifactId>webservices-client</artifactId>
-			<version>4.0b1</version>
+			<version>4.0a1</version>
 		</dependency>
 
 		<dependency>

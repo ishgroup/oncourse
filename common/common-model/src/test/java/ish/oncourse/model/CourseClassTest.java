@@ -121,6 +121,7 @@ public class CourseClassTest {
 		// two days ago
 		date.add(Calendar.DATE, -2);
 		currentPromotion.setValidFrom(date.getTime());
+		currentPromotion.setHideOnWeb(false);
 
 		DiscountCourseClass dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(currentPromotion);
@@ -132,6 +133,7 @@ public class CourseClassTest {
 		date.add(Calendar.MONTH, 1);
 		currentConcession.setValidTo(date.getTime());
 		currentConcession.setName("name");
+		currentConcession.setHideOnWeb(false);
 
 		ConcessionType ct = context.newObject(ConcessionType.class);
 		ct.setName("name");
@@ -146,6 +148,7 @@ public class CourseClassTest {
 
 		concessionEmpty = context.newObject(Discount.class);
 		concessionEmpty.setCollege(college);
+		concessionEmpty.setHideOnWeb(false);
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(concessionEmpty);
 		dcc.setCourseClass(firstClass);
@@ -153,6 +156,7 @@ public class CourseClassTest {
 		futureDicount = context.newObject(Discount.class);
 		futureDicount.setCollege(college);
 		futureDicount.setValidFrom(date.getTime());
+		futureDicount.setHideOnWeb(false);
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(futureDicount);
 		dcc.setCourseClass(firstClass);
@@ -169,6 +173,7 @@ public class CourseClassTest {
 		// almost one month ago
 		date.add(Calendar.MONTH, -2);
 		pastSecondClassDiscount.setValidTo(date.getTime());
+		pastSecondClassDiscount.setHideOnWeb(false);
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(pastSecondClassDiscount);
 		dcc.setCourseClass(secondClass);
@@ -183,6 +188,7 @@ public class CourseClassTest {
 		concessionEmptyCode = context.newObject(Discount.class);
 		concessionEmptyCode.setCollege(college);
 		concessionEmptyCode.setCode(StringUtils.EMPTY);
+		concessionEmptyCode.setHideOnWeb(false);
 		ConcessionType ctype = context.newObject(ConcessionType.class);
 		ctype.setName("name");
 		ctype.setIsEnabled(true);
@@ -204,6 +210,7 @@ public class CourseClassTest {
 		disabledDiscount = context.newObject(Discount.class);
 		disabledDiscount.setCollege(college);
 		disabledDiscount.setCode(StringUtils.EMPTY);
+		disabledDiscount.setHideOnWeb(false);
 		
 		ConcessionType cctype = context.newObject(ConcessionType.class);
 		cctype.setName("name");
