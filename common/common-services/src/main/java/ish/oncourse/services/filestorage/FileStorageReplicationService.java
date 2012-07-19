@@ -17,7 +17,7 @@ public class FileStorageReplicationService {
         try {
             processBuilder.start();
         } catch (Throwable e) {
-            LOGGER.error(String.format("Cannot execute script %s with parameter %s", syncScriptPath, file.getAbsolutePath()));
+            LOGGER.error(String.format("Cannot execute script %s with parameter %s", syncScriptPath, file.getAbsolutePath()),e);
         }
         LOGGER.debug(String.format("Finish FileStorageReplicationService.replicate with parameters: syncScriptPath=%s, file=%s", syncScriptPath, file.getAbsolutePath()));
     }
