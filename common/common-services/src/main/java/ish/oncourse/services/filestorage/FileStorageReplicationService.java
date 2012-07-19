@@ -10,10 +10,10 @@ public class FileStorageReplicationService {
     private String syncScriptPath;
 
 
-    public void replicate(final File file) {
+    public void replicate(File file) {
 
         LOGGER.debug(String.format("Start FileStorageReplicationService.replicate with parameters: syncScriptPath=%s, file=%s", syncScriptPath, file.getAbsolutePath()));
-        final ProcessBuilder processBuilder = new ProcessBuilder(syncScriptPath, file.getAbsolutePath());
+        ProcessBuilder processBuilder = new ProcessBuilder(syncScriptPath, file.getAbsolutePath());
         try {
             processBuilder.start();
         } catch (Throwable e) {
