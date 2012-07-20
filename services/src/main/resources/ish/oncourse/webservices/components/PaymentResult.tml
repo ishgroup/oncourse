@@ -31,9 +31,16 @@
 			</div>
 		</div>
 		<p:else>
-			<div class="pay-success">
-				<h2 class="page-title">Payment was successful.</h2>
-			</div>
+			<t:if t:test="paymentSuccess">
+				<div class="pay-success">
+					<h2 class="page-title">Payment was successful.</h2>
+				</div>
+				<p:else>
+					<div class="pay-fail">
+						<h2 class="page-title">This payment was cancelled.</h2>
+					</div>
+				</p:else>
+			</t:if>
 			<script type="text/javascript">showWarning = false;</script>
 		</p:else>
 	</t:if>

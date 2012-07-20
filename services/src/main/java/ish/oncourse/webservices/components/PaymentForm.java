@@ -23,6 +23,8 @@ import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.Session;
 
 public class PaymentForm {
 	
@@ -87,6 +89,9 @@ public class PaymentForm {
 	 * Indicates if the submit was because of pressing the submit button.
 	 */
 	private boolean isSubmitted;
+	
+	@Inject
+	private Request request;
 	
 	@Inject
 	private ComponentResources componentResources;
@@ -162,15 +167,27 @@ public class PaymentForm {
 	Object submitFailed() {
 		return this;
 	}
+	
+	private Payment getPaymentPage() {
+		return (Payment) componentResources.getPage();
+	}
+	
+	Object onException(Throwable cause) {
+		return getPaymentPage().handleUnexpectedException(cause);
+	}
 
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
-		Payment paymentPage = (Payment) componentResources.getPage();
-		if (isSubmitted) {
-			return paymentPage.submitToGateway();
-		} else {
-			return paymentPage.cancelPayment();
-		}
+		Payment paymentPage = getPaymentPage();
+		Session session = request.getSession(true);
+			if (isSubmitted) {
+				return paymentPage.submitToGateway();
+			} else {
+				if (paymentPage.isPaymentProcessed() || Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
+					return paymentPage.submitToGateway();
+				}
+				return paymentPage.cancelPayment();
+			}
 	}
 
 	public CreditCardType getMasterCard() {

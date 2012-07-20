@@ -31,9 +31,7 @@ public class PaymentProcessing {
 
 	@OnEvent(component = "processHolder", value = "progressiveDisplay")
 	Object checkPaymentTask() throws Exception {
-
 		Session session = request.getSession(true);
-
 		if (!Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
 			try {
 				session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
@@ -41,7 +39,6 @@ public class PaymentProcessing {
 					// additional check for card details required added to avoid
 					// #13172
 					paymentGatewayService.performGatewayOperation(payment);
-
 					if (payment.getStatus() == PaymentStatus.SUCCESS) {
 						payment.getObjectContext().commitChanges();
 					}
@@ -54,7 +51,6 @@ public class PaymentProcessing {
 				Thread.sleep(POLL_INTERVAL);
 			}
 		}
-
 		return paymentResultBlock;
 	}
 }

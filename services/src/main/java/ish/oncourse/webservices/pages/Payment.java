@@ -1,24 +1,25 @@
 package ish.oncourse.webservices.pages;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.utils.PaymentInAbandonUtil;
-
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -32,7 +33,7 @@ import org.apache.tapestry5.services.Session;
 
 @Import(stylesheet = "css/screen.css")
 public class Payment {
-
+	 private static final Logger LOGGER = Logger.getLogger(Payment.class);
 	private static final String PAYMENT_AMOUNT_FORMAT = "###,##0.00";
 
 	@Inject
@@ -87,44 +88,36 @@ public class Payment {
 
 	@InjectComponent
 	private PaymentForm paymentForm;
-
+					
 	/**
 	 * Finds and init payment and payment transaciton by referenceId.
 	 * 
 	 * @param sessionId
 	 */
 	void onActivate(String sessionId) {
-
-		this.payment = paymentService.currentPaymentInBySessionId(sessionId);
-
-		if (this.payment == null) {
-			throw new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
-		}
-
-		this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
-		Session session = request.getSession(true);
-		session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, payment.getCollege().getId());
-
-		this.totalIncGst = new Money(payment.getAmount());
-		this.payer = this.payment.getContact();
-
-		initInvoices();
+			this.payment = paymentService.currentPaymentInBySessionId(sessionId);
+			if (this.payment == null) {
+				throw new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
+			}
+			this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
+			Session session = request.getSession(true);
+			session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, payment.getCollege().getId());
+			this.totalIncGst = new Money(payment.getAmount());
+			this.payer = this.payment.getContact();
+			initInvoices();
 	}
 
 	private void initInvoices() {
-		this.invoices = new ArrayList<Invoice>();
-		
+		this.invoices = new ArrayList<Invoice>();		
 		for (PaymentInLine paymentLine : this.payment.getPaymentInLines()) {
 			this.invoices.add(paymentLine.getInvoice());
-		}
-		
+		}		
 		Ordering ordering = new Ordering(Invoice.INVOICE_NUMBER_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(this.invoices);
 	}
 
 	public boolean isPaymentBeingProcessed() {
 		Session session = request.getSession(false);
-
 		if (session == null) {
 			return false;
 		} else {
@@ -159,11 +152,9 @@ public class Payment {
 	 * @return payment form component
 	 */
 	public Object tryOtherCard() {
-
 		this.payment = payment.makeCopy();
 		this.payment.setStatus(PaymentStatus.IN_TRANSACTION);
 		this.payment.getObjectContext().commitChanges();
-
 		return paymentForm;
 	}
 
@@ -173,8 +164,18 @@ public class Payment {
 	 * @return abandon payment message block
 	 */
 	public Object abandonPaymentReverseInvoice() {
-		PaymentInAbandonUtil.abandonPaymentReverseInvoice(payment);
-		return cancelledMessageBlock;
+		final Session session = request.getSession(true);
+		if (!isPaymentProcessed() && !Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM)) && !isPaymentCanceled(payment)) {
+			try {
+				session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
+				PaymentInAbandonUtil.abandonPaymentReverseInvoice(payment);
+			} finally {
+				session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
+			}
+			return cancelledMessageBlock;
+		} else {
+			return progressDisplayBlock;
+		}
 	}
 
 	/**
@@ -183,9 +184,19 @@ public class Payment {
 	 * @return abandon payment message block
 	 */
 	public Object abandonPaymentKeepInvoice() {
-		payment.abandonPaymentKeepInvoice();
-		payment.getObjectContext().commitChanges();
-		return cancelledMessageBlock;
+		final Session session = request.getSession(true);
+		if (!isPaymentProcessed() && !Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM)) && !isPaymentCanceled(payment)) {
+			try {
+				session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, Boolean.TRUE);
+				payment.abandonPaymentKeepInvoice();
+				payment.getObjectContext().commitChanges();
+			} finally {
+				session.setAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM, null);
+			}
+			return cancelledMessageBlock;
+		} else {
+			return progressDisplayBlock;
+		}
 	}
 
 	/**
@@ -196,4 +207,39 @@ public class Payment {
 	public Object cancelPayment() {
 		return abandonPaymentReverseInvoice();
 	}
+    
+	public boolean isPaymentProcessed() {
+    	return PaymentStatus.SUCCESS.equals(payment.getStatus());
+    }
+	
+	public static boolean isPaymentCanceled(final PaymentIn paymentIn) {
+		if (!PaymentStatus.FAILED.equals(paymentIn.getStatus())) {
+			return false;
+		} else {
+			for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
+				for (InvoiceLine invoiceLine : paymentLine.getInvoice().getInvoiceLines()) {
+					if (invoiceLine.getEnrolment() != null) {
+						if (EnrolmentStatus.FAILED.equals(invoiceLine.getEnrolment().getStatus()) 
+								|| EnrolmentStatus.SUCCESS.equals(invoiceLine.getEnrolment().getStatus())) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+	}
+    
+    public Object handleUnexpectedException(final Throwable cause) {
+    	if (isPaymentProcessed() || isPaymentCanceled(payment)) {
+			LOGGER.warn("Payment were processed. User used two or more tabs", cause);
+			return this;
+		} else {
+			throw new IllegalArgumentException(cause);
+		}
+    }
+	
+	
 }

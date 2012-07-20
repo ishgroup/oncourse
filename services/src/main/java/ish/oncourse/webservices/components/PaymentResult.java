@@ -22,11 +22,15 @@ public class PaymentResult {
 	private ComponentResources componentResources;
 
 	public boolean isPaymentFailed() {
-		return payment.getStatus() != PaymentStatus.SUCCESS;
+		return PaymentStatus.STATUSES_FAILED.contains(payment.getStatus()) && !Payment.isPaymentCanceled(payment);
+	}
+	
+	public boolean isPaymentSuccess() {
+		return PaymentStatus.SUCCESS.equals(payment.getStatus());
 	}
 
 	public boolean isPaymentStatusNodeNullTransactionResponse() {
-		return payment.getStatusNotes().equals("Null transaction response");
+		return "Null transaction response".equals(payment.getStatusNotes());
 	}
 
 	private void cleanSelections() {
