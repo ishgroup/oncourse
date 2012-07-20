@@ -147,14 +147,18 @@ public class Billing {
 	}
 	
 	public boolean isSupportPayMonth() {
+		String plan = (String) licenseData.get(college.getId()).get("support-plan");
 		Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
-		if (paidUntil != null) {
+		if (plan != null) {
+			if (paidUntil == null) {
+				return true;
+			}
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(paidUntil);
 			
 			Calendar payDate = Calendar.getInstance();
 			payDate.setTime(fromMonth);
-			if (cal.get(Calendar.MONTH) == payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) == payDate.get(Calendar.YEAR)) {
+			if (cal.get(Calendar.MONTH) <= payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) <= payDate.get(Calendar.YEAR)) {
 				return true;
 			}
 		}
@@ -188,14 +192,19 @@ public class Billing {
 	}
 
 	public boolean isWebHostingPayMonth() {
+		String plan = (String) licenseData.get(college.getId()).get("hosting-plan");
 		Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
-		if (paidUntil != null) {
+		if (plan != null) {
+			if (paidUntil == null) {
+				return true;
+			}
+			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(paidUntil);
 			
 			Calendar payDate = Calendar.getInstance();
 			payDate.setTime(fromMonth);
-			if (cal.get(Calendar.MONTH) == payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) == payDate.get(Calendar.YEAR)) {
+			if (cal.get(Calendar.MONTH) <= payDate.get(Calendar.MONTH) && cal.get(Calendar.YEAR) <= payDate.get(Calendar.YEAR)) {
 				return true;
 			}
 		}

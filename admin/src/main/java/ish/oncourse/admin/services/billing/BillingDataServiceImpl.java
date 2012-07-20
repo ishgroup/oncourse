@@ -216,14 +216,14 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
 			Date renewalDate = (Date) licenseData.get(college.getId()).get("support-renewalDate");
 			
-			text += MWExportFormat.SupportFormat.format(licenseData, college, paidUntil, renewalDate, description);
+			text += MWExportFormat.SupportFormat.format(licenseData, college, from, renewalDate, description);
 		}
 		
 		if (isWebHostingBillingMonth(college, from, licenseData)) {
 			Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
 			Date renewalDate = (Date) licenseData.get(college.getId()).get("hosting-renewalDate");
 			
-			text += MWExportFormat.HostingFormat.format(licenseData, college, paidUntil, renewalDate, description);
+			text += MWExportFormat.HostingFormat.format(licenseData, college, from, renewalDate, description);
 		}
 		//TODO refactoring all other report's string to use MWExportFormat
 		DecimalFormat decimalFormatter = new DecimalFormat();
@@ -319,10 +319,17 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	}
 	
 	private boolean isSupportBillingMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
+		
+		String billingPlan = (String) licenseData.get(college.getId()).get("support-plan");
+		
+		if (billingPlan == null) {
+			return false;
+		}
+		
 		Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
 		
 		if (paidUntil == null) {
-			return false;
+			return true;
 		}
 		
 		Calendar payMonth = Calendar.getInstance();
@@ -331,15 +338,22 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		Calendar billingMonth = Calendar.getInstance();
 		billingMonth.setTime(fromMonth);
 		
-		return (payMonth.get(Calendar.YEAR) == billingMonth.get(Calendar.YEAR) 
-				&& payMonth.get(Calendar.MONTH) == billingMonth.get(Calendar.MONTH));
+		return (payMonth.get(Calendar.YEAR) <= billingMonth.get(Calendar.YEAR) 
+				&& payMonth.get(Calendar.MONTH) <= billingMonth.get(Calendar.MONTH));
 	}
 	
 	private boolean isWebHostingBillingMonth(College college, Date fromMonth, Map<Long, Map<String, Object>> licenseData) {
+		
+		String billingPlan = (String) licenseData.get(college.getId()).get("hosting-plan");
+		
+		if (billingPlan == null) {
+			return false;
+		}
+		
 		Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
 		
 		if (paidUntil == null) {
-			return false;
+			return true;
 		}
 		
 		Calendar payMonth = Calendar.getInstance();
@@ -348,8 +362,8 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		Calendar billingMonth = Calendar.getInstance();
 		billingMonth.setTime(fromMonth);
 		
-		return (payMonth.get(Calendar.YEAR) == billingMonth.get(Calendar.YEAR) 
-				&& payMonth.get(Calendar.MONTH) == billingMonth.get(Calendar.MONTH));
+		return (payMonth.get(Calendar.YEAR) <= billingMonth.get(Calendar.YEAR) 
+				&& payMonth.get(Calendar.MONTH) <= billingMonth.get(Calendar.MONTH));
 	}
 	
 	private Map<Double, Double> getTasmaniaFees(College college, Map<Long, Map<String, Object>> billingData) {

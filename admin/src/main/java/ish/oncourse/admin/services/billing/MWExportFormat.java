@@ -38,7 +38,7 @@ public enum MWExportFormat {
     }
 
 
-    public String format(Map<Long, Map<String, Object>> licenseData, College college, Date paidUntil, Date renewalDate, String description)
+    public String format(Map<Long, Map<String, Object>> licenseData, College college, Date billingDate, Date renewalDate, String description)
     {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_MONTH_FORMAT);
         String billingPlan = String.valueOf(licenseData.get(college.getId()).get(getPlanKey()));
@@ -48,7 +48,7 @@ public enum MWExportFormat {
                 billingPlan,
                 getValueKey(),
                 college.getName(),
-                formatter.format(paidUntil),
+                formatter.format(billingDate),
                 formatter.format(renewalDate),
                 licenseData.get(college.getId()).get(getValueKey()),description);
     }
