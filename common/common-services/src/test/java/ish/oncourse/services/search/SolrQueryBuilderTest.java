@@ -1,37 +1,37 @@
 package ish.oncourse.services.search;
 
-import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
+import ish.oncourse.util.FormatUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
+import static ish.oncourse.services.search.SearchParamsParser.DATE_FORMAT_FOR_AFTER_BEFORE;
 import static org.junit.Assert.assertEquals;
 
 public class SolrQueryBuilderTest {
     @Test
-    public void testCreate() throws UnsupportedEncodingException {
-
-        SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(Collections.EMPTY_MAP,"1",0,100);
+    public void testCreate() throws UnsupportedEncodingException, ParseException {
+        SearchParams searchParams = new SearchParams();
+        SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
         SolrQuery q = solrQueryBuilder.create();
         String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
-        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=(*:*)&sort=score desc,name asc", value);
+        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=(*:*)", value);
         System.out.println(value);
 
-        HashMap<SearchParam,Object> params = new HashMap<SearchParam, Object>();
-        params.put(SearchParam.after, "20120101");
-        params.put(SearchParam.before, "20120101");
-        params.put(SearchParam.s, "1");
-        params.put(SearchParam.price, "1999.99$");
-        params.put(SearchParam.day, "DAY");
-        params.put(SearchParam.time, "TIME");
-        params.put(SearchParam.subject, new Tag(){
+
+        searchParams.setAfter(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, null).parse("20120101"));
+        searchParams.setBefore(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, null).parse("20120101"));
+        searchParams.setS("1");
+        searchParams.setPrice(1999.99d);
+        searchParams.setDay("DAY");
+        searchParams.setTime("TIME");
+        searchParams.setSubject(new Tag(){
             @Override
             public Long getId() {
                 return 0L;
@@ -56,7 +56,7 @@ public class SolrQueryBuilderTest {
             }
         });
 
-        solrQueryBuilder = new SolrQueryBuilder(params,"1",0,100);
+        solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
         ArrayList<String> filters = new ArrayList<String>();
 
         solrQueryBuilder.appendFilterS(filters);
@@ -86,15 +86,15 @@ public class SolrQueryBuilderTest {
         filters.clear();
         solrQueryBuilder.appendFilterAfter(filters);
         assertEquals("Test filters.size for filter SearchParam.after",1,filters.size());
-        assertEquals("Test filters.get(0) for filter SearchParam.after", "class_start:[20120101 TO *]",filters.get(0));
+        assertEquals("Test filters.get(0) for filter SearchParam.after", "class_start:[2011-12-31T09:00:00Z TO *]",filters.get(0));
 
         filters.clear();
         solrQueryBuilder.appendFilterBefore(filters);
         assertEquals("Test filters.size for filter SearchParam.before",1,filters.size());
-        assertEquals("Test filters.get(0) for filter SearchParam.before", "end:[NOW TO 20120101]",filters.get(0));
+        assertEquals("Test filters.get(0) for filter SearchParam.before", "end:[NOW TO 2011-12-31T09:00:00Z]",filters.get(0));
 
         value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
-        assertEquals("Query parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=((detail:1 || tutor:1 || course_code:1 || name:1) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[20120101 TO *] AND end:[NOW TO 20120101] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))&sort=score desc,name asc", value);
+        assertEquals("Query parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=((detail:1 || tutor:1 || course_code:1 || name:1) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2011-12-31T09:00:00Z TO *] AND end:[NOW TO 2011-12-31T09:00:00Z] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))", value);
         System.out.println(value);
 
     }

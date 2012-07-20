@@ -2,20 +2,13 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
-import ish.oncourse.services.search.ISearchService;
-import ish.oncourse.services.search.SearchException;
+import ish.oncourse.services.search.*;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.ui.components.CoursesList;
-import ish.oncourse.ui.utils.SearchParamsParser;
-import ish.oncourse.ui.utils.Suburb;
 import ish.oncourse.util.ValidationErrors;
-import ish.oncourse.utils.CourseClassUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -48,10 +41,6 @@ public class Courses {
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
 
-
-    public static final String ATTR_searchCoursesModel = "searchCoursesModel";
-
-
     @Inject
 	private ICourseService courseService;
 	@Inject
@@ -77,7 +66,8 @@ public class Courses {
 	@Property
 	private Integer itemIndex;
 
-	private Map<SearchParam, Object> searchParams;
+    @Property
+	private SearchParams searchParams;
 	
 	@Property
 	private Map<SearchParam, String> paramsInError;
@@ -97,11 +87,6 @@ public class Courses {
 
 	private List<Long> sitesIds;
 
-    @Property
-	private List<Suburb> suburbs;
-
-    @InjectComponent
-    private CoursesList coursesList;
 
 	@SetupRender
 	public void beforeRender() {
@@ -114,7 +99,7 @@ public class Courses {
 		} else {
 			String[] splittedSites = sitesParameter.split(",");
 			for (String siteParam : splittedSites) {
-				if (siteParam.indexOf("(") != -1) {
+				if (siteParam.contains("(")) {
 					siteParam = siteParam.substring(0, siteParam.indexOf("("));
 				}
 				if (siteParam.matches("\\d+")) {
@@ -138,7 +123,6 @@ public class Courses {
 		}
 
 		coursesIds = new ArrayList<Long>();
-        initSuburbs();
 		updateIdsAndIndexes();
 	}
 
@@ -183,8 +167,6 @@ public class Courses {
 						}
 						if (hasAnyFormValuesForFocus()) {
 							float focusMatchForClass = CourseClassUtils.focusMatchForClass(courseClass,
-                                    suburbs != null && !suburbs.isEmpty() ? suburbs.get(0).getLatitude() : null,
-                                    suburbs != null && !suburbs.isEmpty() ? suburbs.get(0).getLatitude() : null,
                                     searchParams);
 							Float focusMatchForSite = focusesForMapSites.get(site.getId());
 							if (focusMatchForSite == null || focusMatchForClass > focusMatchForSite) {
@@ -201,29 +183,13 @@ public class Courses {
 
 	}
 
-    private void initSuburbs() {
-        if (searchParams != null && searchParams.containsKey(SearchParam.near)) {
-            try {
-                SolrDocumentList responseResults = (SolrDocumentList) searchParams.get(SearchParam.near);
-                suburbs = new ArrayList<Suburb>();
-                for (SolrDocument solrDocument: responseResults)
-                {
-                    suburbs.add(Suburb.valueOf(solrDocument, searchParams));
-                }
-            } catch (NumberFormatException e) {
-                suburbs = null;
-                LOGGER.warn(e);
-            }
-        }
-    }
-
     private boolean hasAnyFormValuesForFocus() {
-		if (searchParams == null) {
-			return false;
-		}
-		return searchParams.containsKey(SearchParam.day) || searchParams.containsKey(SearchParam.near)
-				|| searchParams.containsKey(SearchParam.price) || searchParams.containsKey(SearchParam.time);
-	}
+        return searchParams != null &&
+                (searchParams.getDay() != null ||
+                        searchParams.getNear() != null ||
+                        searchParams.getPrice() != null ||
+                        searchParams.getTime() != null);
+    }
 
 	public boolean isHasMapItemList() {
 		return !mapSites.isEmpty();
@@ -235,17 +201,12 @@ public class Courses {
 
 		searchParams = getCourseSearchParams();
 
-        if (searchParams.containsKey(SearchParam.subject)) {
-            request.setAttribute(Tag.BROWSE_TAG_PARAM, ((Tag)searchParams.get(SearchParam.subject)).getId());
+        if (searchParams.getSubject() != null) {
+            request.setAttribute(Tag.BROWSE_TAG_PARAM, searchParams.getSubject().getId());
         }
         return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
 	}
 
-	/**
-	 * @param start
-	 * @param rows
-	 * @return
-	 */
 	private List<Course> searchCourses(int start, int rows) {
 
 		QueryResponse resp = searchService.searchCourses(searchParams, start, rows);
@@ -277,7 +238,7 @@ public class Courses {
 		return paramsInError != null && !paramsInError.isEmpty();
 	}
 
-	public Map<SearchParam, Object> getCourseSearchParams() {
+	public SearchParams getCourseSearchParams() {
         SearchParamsParser searchParamsParser = new SearchParamsParser(request,searchService,tagService);
         searchParamsParser.parse();
         paramsInError = searchParamsParser.getParamsInError();

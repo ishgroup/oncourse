@@ -1,16 +1,12 @@
 package ish.oncourse.services.search;
 
-import ish.oncourse.model.SearchParam;
-
-import java.util.Map;
-
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 
 public interface ISearchService {
 	SolrDocumentList autoSuggest(String term);
 	
-	QueryResponse searchCourses(Map<SearchParam, Object> params, int start, int rows);
+	QueryResponse searchCourses(SearchParams searchParams, int start, int rows);
 	
 	QueryResponse searchSuburbs(String term);
 	

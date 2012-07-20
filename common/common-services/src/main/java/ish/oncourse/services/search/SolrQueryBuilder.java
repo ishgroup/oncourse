@@ -1,15 +1,13 @@
 package ish.oncourse.services.search;
 
-import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.util.ClientUtils;
-import org.apache.solr.common.SolrDocumentList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SolrQueryBuilder {
 
@@ -65,13 +63,13 @@ public class SolrQueryBuilder {
 
 
 
-    private Map<SearchParam, Object> params;
+    private SearchParams params;
     private String collegeId;
     private final int start;
     private final int rows;
 
     public SolrQueryBuilder(
-                            Map<SearchParam, Object> params,
+                            SearchParams params,
                             String collegeId,
                             int start,
                             int rows) {
@@ -150,48 +148,42 @@ public class SolrQueryBuilder {
     }
 
     void appendFilterAfter(List<String> filters) {
-        if (params.containsKey(SearchParam.after)) {
-            String value = (String) params.get(SearchParam.after);
-            filters.add(String.format(FILTER_TEMPLATE_after, value));
+        if (params.getAfter() != null) {
+            filters.add(String.format(FILTER_TEMPLATE_after, FormatUtils.convertDateToISO8601(params.getAfter())));
         }
     }
 
     void appendFilterBefore(List<String> filters) {
-        if (params.containsKey(SearchParam.before)) {
-            String value = (String) params.get(SearchParam.before);
-            filters.add(String.format(FILTER_TEMPLATE_before, value));
+        if (params.getBefore() != null) {
+            filters.add(String.format(FILTER_TEMPLATE_before, FormatUtils.convertDateToISO8601(params.getBefore())));
         }
     }
 
     void appendFilterS(List<String> filters) {
-        if (params.containsKey(SearchParam.s)) {
-            String value = ClientUtils.escapeQueryChars((String) params.get(SearchParam.s));
+        if (params.getS() != null) {
+            String value = ClientUtils.escapeQueryChars(params.getS());
             filters.add(String.format(FILTER_TEMPLATE_s, value, value, value, value));
         }
     }
 
     void appendFilterPrice(List<String> filters) {
-        if (params.containsKey(SearchParam.price)) {
-            String price = (String) params.get(SearchParam.price);
-            if (price != null && price.length() > 0 && !StringUtils.isNumeric(price)) {
-                // remove the possible currency sign
-                price = price.replaceAll("[$]", "");
-            }
+        if (params.getPrice() != null) {
+            Double price = params.getPrice();
             filters.add(String.format(FILTER_TEMPLATE_price, price));
         }
     }
 
     void appendFilterDay(List<String> filters) {
-         appendFilterWhen(filters, SearchParam.day);
+         appendFilterWhen(filters, params.getDay());
     }
 
     void appendFilterTime(List<String> filters) {
-         appendFilterWhen(filters, SearchParam.time);
+         appendFilterWhen(filters, params.getTime());
     }
 
     void appendFilterSubject(List<String> filters) {
-        if (params.containsKey(SearchParam.subject)) {
-            Object tagParameter = params.get(SearchParam.subject);
+        if (params.getSubject() != null) {
+            Object tagParameter = params.getSubject();
             if (tagParameter instanceof Tag) {
                 Tag browseTag = (Tag) tagParameter;
                 ArrayList<String> tags = new ArrayList<String>();
@@ -209,22 +201,21 @@ public class SolrQueryBuilder {
         }
     }
 
-    private void appendFilterWhen(List<String> filters, SearchParam param) {
-        if (params.containsKey(param)) {
-            String value = (String) params.get(param);
-            filters.add(String.format(FILTER_TEMPLATE_when, value));
+    private void appendFilterWhen(List<String> filters, String whenValue) {
+        if (whenValue != null) {
+            filters.add(String.format(FILTER_TEMPLATE_when, whenValue));
         }
     }
 
 
     void setFiltersAndNearTo(SolrQuery query,List<String> filters)
     {
-        SolrDocumentList solrSuburbs = (SolrDocumentList) params.get(SearchParam.near);
-        String location = (String) solrSuburbs.get(0).get(PARAMETER_loc);
+        List<Suburb> suburbs = params.getSuburbs();
+        Suburb suburb = suburbs.get(0);
         query.addFilterQuery(FILTER_TEMPLATE_geofilt);
         query.add(PARAMETER_sfield, PARAMETER_VALUE_sfield);
-        query.add(PARAMETER_pt, location);
-        query.add(PARAMETER_d, getDistance());
+        query.add(PARAMETER_pt, suburb.getLocation());
+        query.add(PARAMETER_d, suburb.getDistance().toString());
         query.addSortField(QUERY_SORT_FIELD_geodist, SolrQuery.ORDER.asc);
         query.addSortField(FIELD_name, SolrQuery.ORDER.asc);
         query.setQuery(String.format(QUERY_brackets,convert(filters)));
@@ -232,7 +223,7 @@ public class SolrQueryBuilder {
 
     void setFiltersTo(SolrQuery query,List<String> filters)
     {
-        if (params.containsKey(SearchParam.near))
+        if (!params.getSuburbs().isEmpty())
         {
             setFiltersAndNearTo(query,filters);
         }
@@ -241,8 +232,6 @@ public class SolrQueryBuilder {
             query.setQuery(DATE_BOOST_STM);
             query.setParam(PARAMETER_dateboost, DATE_BOOST_FUNCTION);
             query.setParam(PARAMETER_qq, String.format(QUERY_brackets,convert(filters)));
-            query.addSortField(FIELD_score, SolrQuery.ORDER.desc);
-            query.addSortField(FIELD_name, SolrQuery.ORDER.asc);
         }
     }
 
@@ -251,16 +240,4 @@ public class SolrQueryBuilder {
     {
         return StringUtils.join(filters.toArray(), QUERY_DELIMITER);
     }
-
-
-    String getDistance()
-    {
-        String distance = String.valueOf(SearchService.MAX_DISTANCE);
-        if (params.containsKey(SearchParam.km)) {
-            Double km = (Double) params.get(SearchParam.km);
-            return km.toString();
-        }
-        return  distance;
-    }
-
 }

@@ -1,8 +1,8 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Course;
+import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.ui.utils.CourseItemModel;
-import ish.oncourse.ui.utils.Suburb;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -36,7 +36,7 @@ public class CoursesList {
 
     @Property
     @Parameter
-    private List<Suburb> suburbs;
+    private SearchParams searchParams;
 
 
     public boolean isHasMoreItems() {
@@ -45,7 +45,7 @@ public class CoursesList {
 
     public CourseItemModel getCourseItemModel()
     {
-        return CourseItemModel.createCourseItemModel(course, suburbs);
+        return CourseItemModel.createCourseItemModel(course, searchParams);
     }
 
 	public String getSearchParamsStr() {

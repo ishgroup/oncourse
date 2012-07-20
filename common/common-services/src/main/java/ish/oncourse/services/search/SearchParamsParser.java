@@ -1,9 +1,8 @@
-package ish.oncourse.ui.utils;
+package ish.oncourse.services.search;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
@@ -18,13 +17,14 @@ import java.util.Map;
 
 public class SearchParamsParser
 {
-    private static final String DATE_FORMAT_FOR_AFTER_BEFORE = "yyyyMMdd";
 
     public static final String PARAM_VALUE_weekday = "weekday";
     public static final String PARAM_VALUE_weekend = "weekend";
 
     public static final String PARAM_VALUE_daytime = "daytime";
     public static final String PARAM_VALUE_evening = "evening";
+
+    static final String DATE_FORMAT_FOR_AFTER_BEFORE = "yyyyMMdd";
 
     public static final String PATTERN_PRICE = "[$]?(\\d)+[$]?";
 
@@ -33,9 +33,9 @@ public class SearchParamsParser
     private final ISearchService searchService;
     private ITagService tagService;
 
-    private Map<SearchParam, Object> searchParams = new HashMap<SearchParam, Object>();
-
     private Map<SearchParam, String> paramsInError = new HashMap<SearchParam, String>();
+
+    private SearchParams searchParams = new SearchParams();
 
 
     public SearchParamsParser(Request request, ISearchService searchService, ITagService tagService) {
@@ -54,41 +54,47 @@ public class SearchParamsParser
             if (parameter != null) {
                 switch (name) {
                     case s :
-                        value = parameter;
+                        searchParams.setS(parameter);
+                        value = searchParams.getS();
                         break;
                     case day:
-                        value = parseDay(parameter);
+                        searchParams.setDay(parseDay(parameter));
+                        value = searchParams.getDay();
                         break;
                     case near:
-                        value = parseNear(parameter);
+                        searchParams.setNear(parseNear(parameter));
+                        value = searchParams.getNear();
                         break;
                     case price:
-                        value = parsePrice(parameter);
+                        searchParams.setPrice(parsePrice(parameter));
+                        value = searchParams.getPrice();
                         break;
                     case subject:
                         browseTag = parseSubject(parameter);
-                        value = browseTag;
+                        searchParams.setSubject(browseTag);
+                        value = searchParams.getSubject();
                         break;
                     case time:
-                        value = parseTime(parameter);
+                        searchParams.setTime(parseTime(parameter));
+                        value = searchParams.getTime();
                         break;
                     case km:
-                        value = parseKm(parameter);
+                        searchParams.setKm(parseKm(parameter));
+                        value = searchParams.getKm();
                         break;
                     case after:
+                        searchParams.setAfter(parseAfter(parameter));
+                        value = searchParams.getAfter();
+                        break;
                     case before:
-                        value = parseAfter(parameter);
+                        searchParams.setBefore(parseAfter(parameter));
+                        value = searchParams.getBefore();
                         break;
                     default:
                         LOGGER.warn(String.format("Parser is not defined for SearchParam \"%s\"", name));
                 }
             }
-
-            if (value != null)
-            {
-                searchParams.put(name, value);
-            }
-            else if (parameter != null)
+            if (parameter != null && value == null)
             {
                 paramsInError.put(name, parameter);
             }
@@ -98,15 +104,14 @@ public class SearchParamsParser
             browseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
             if (browseTag != null) {
                 //this code updated because getDefaultPath() return incorrect value for tag group which have aliases
-                searchParams.put(SearchParam.subject, browseTag);
+                searchParams.setSubject(browseTag);
             }
         }
     }
 
-    private String parseAfter(String parameter) {
+    private Date parseAfter(String parameter) {
         try {
-            Date date = FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, null).parse(parameter);
-            return FormatUtils.convertDateToISO8601(date);
+            return FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, null).parse(parameter);
         } catch (ParseException e) {
             return null;
         }
@@ -124,8 +129,8 @@ public class SearchParamsParser
         return tagService.getTagByFullPath(parameter);
     }
 
-    private String parsePrice(String parameter) {
-        return parameter.matches(PATTERN_PRICE)? parameter:null;
+    private Double parsePrice(String parameter) {
+        return parameter.matches(PATTERN_PRICE)? Double.valueOf(parameter.replaceAll("[$]", "")):null;
     }
 
     private SolrDocumentList parseNear(String parameter) {
@@ -137,7 +142,7 @@ public class SearchParamsParser
         return parameter.equalsIgnoreCase(PARAM_VALUE_weekday) || parameter.equalsIgnoreCase(PARAM_VALUE_weekend)?parameter:null;
     }
 
-    public Map<SearchParam, Object> getSearchParams() {
+    public SearchParams getSearchParams() {
         return searchParams;
     }
 

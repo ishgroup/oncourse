@@ -1,11 +1,6 @@
-package ish.oncourse.ui.utils;
+package ish.oncourse.services.search;
 
-import ish.oncourse.model.SearchParam;
-import ish.oncourse.services.search.SearchService;
-import ish.oncourse.services.search.SolrQueryBuilder;
 import org.apache.solr.common.SolrDocument;
-
-import java.util.Map;
 
 public class Suburb{
 
@@ -16,6 +11,8 @@ public class Suburb{
     private Double longitude;
 
     private Double distance;
+
+    private String location;
 
 
     public String getPostcode() {
@@ -50,15 +47,23 @@ public class Suburb{
         this.distance = distance;
     }
 
+    public String getLocation()
+    {
+        if (location == null)
+            location = String.format("%s,%s", latitude,longitude);
+        return location;
+    }
 
-    public static Suburb valueOf(SolrDocument doc, Map<SearchParam, Object> searchParams) throws NumberFormatException
+
+    public static Suburb valueOf(SolrDocument doc, Double distance)
     {
         Suburb suburb = new Suburb();
-        String[] points = ((String) doc.get(SolrQueryBuilder.PARAMETER_loc)).split(",");
+        suburb.location = (String) doc.get(SolrQueryBuilder.PARAMETER_loc);
+        String[] points = suburb.location.split(",");
         suburb.latitude = Double.parseDouble(points[0]);
         suburb.longitude = Double.parseDouble(points[1]);
         suburb.postcode = (String) doc.get(SolrQueryBuilder.FIELD_postcode);
-        suburb.distance = searchParams.containsKey(SearchParam.km) ? (Double)searchParams.get(SearchParam.km): SearchService.MAX_DISTANCE;
+        suburb.distance = distance != null ? distance: SearchService.MAX_DISTANCE;
         return suburb;
     }
 }

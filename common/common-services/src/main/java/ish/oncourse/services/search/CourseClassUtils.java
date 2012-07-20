@@ -1,12 +1,17 @@
-package ish.oncourse.utils;
+package ish.oncourse.services.search;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
+import ish.oncourse.model.Site;
+import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
+
+import static ish.oncourse.services.search.SearchParamsParser.*;
 
 /**
  * Utility class s to evaluate course class 
@@ -75,32 +80,33 @@ public class CourseClassUtils {
 
 
 
-    private static float focusMatchForNear(final CourseClass courseClass, final Double nearLatitude, final Double nearLongitude) {
+    private static float focusMatchForNear(CourseClass courseClass, Double nearLatitude, Double nearLongitude, Double distance) {
 		float result = 0.0f;
-		double distance = evaluateDistanceForCourseClassSiteAndLocation(courseClass, nearLatitude, nearLongitude);
-		if (distance > -1d) {
-			float searchKilometers = 10.0f;
-			if (distance >= 5d * searchKilometers) {
+		double classDistance = evaluateDistanceForCourseClassSiteAndLocation(courseClass, nearLatitude, nearLongitude);
+		if (classDistance > -1d) {
+			if (classDistance >= 5d * distance) {
 				result = 0f;
-			} else if (distance <= searchKilometers) {
+			} else if (classDistance <= distance) {
 				result = 1f;
 			} else {
-				result = 1 - ((float) distance - searchKilometers) / (4f * searchKilometers);
+				result = 1 - ((float) classDistance - distance.floatValue()) / (4f * distance.floatValue());
 			}
 		}
 		return result;
 	}
 	
-	private static float focusMatchForPrice(final CourseClass courseClass, final Float price) {
+	private static float focusMatchForPrice(final CourseClass courseClass, Float price) {
 		float result = 0.0f;
-		float maxPrice = price;
 		if (courseClass.hasFeeIncTax()) {
-			if (courseClass.getFeeIncGst().floatValue() > maxPrice) {
-				result = 0.75f - (courseClass.getFeeIncGst().floatValue() - maxPrice) / maxPrice * 0.25f;
+            if (courseClass.getFeeIncGst().floatValue() <= price){
+                result =  1.0f;
+            } else if (courseClass.getFeeIncGst().floatValue() > price) {
+				result = 0.75f - (courseClass.getFeeIncGst().floatValue() - price) / price * 0.25f;
 				if (result < 0.25f) {
 					result = 0.25f;
 				}
 			}
+
 		}
 		return result;
 	}
@@ -115,8 +121,8 @@ public class CourseClassUtils {
 		// daytime, any that starts after 5pm is evening
 		boolean isEvening = latestHour != null && latestHour >= 17;
 		boolean isDaytime = earliestHour != null && earliestHour < 17;
-		if (isEvening && isDaytime || isDaytime && "daytime".equalsIgnoreCase(time) || isEvening
-				&& "evening".equalsIgnoreCase(time)) {
+		if (isEvening && isDaytime || isDaytime && PARAM_VALUE_daytime.equalsIgnoreCase(time) || isEvening
+				&& PARAM_VALUE_evening.equalsIgnoreCase(time)) {
 			result = 1.0f;
 		}
 		return result;
@@ -148,12 +154,12 @@ public class CourseClassUtils {
 					break;
 				}
 				if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(lowerDay)
-						&& "weekday".equalsIgnoreCase(day)) {
+						&& PARAM_VALUE_weekday.equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
 				if (TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(lowerDay)
-						&& "weekend".equalsIgnoreCase(day)) {
+						&& PARAM_VALUE_weekend.equalsIgnoreCase(day)) {
 					result = 1.0f;
 					break;
 				}
@@ -162,38 +168,68 @@ public class CourseClassUtils {
 		return result;
 	}
 	
-	public static float focusMatchForClass(final CourseClass courseClass, final Double locatonLat, final Double locationLong, 
-		final Map<SearchParam, Object> searchParams) {
+	public static float focusMatchForClass(CourseClass courseClass,
+		 SearchParams searchParams) {
 		float bestFocusMatch = -1.0f;
 
-		if (!searchParams.isEmpty()) {
+		if (searchParams != null) {
 
 			float daysMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.day)) {
-				daysMatch = CourseClassUtils.focusMatchForDays(courseClass, (String) searchParams.get(SearchParam.day));
+			if (searchParams.getDay() != null) {
+				daysMatch = CourseClassUtils.focusMatchForDays(courseClass, searchParams.getDay());
 			}
 
 			float timeMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.time)) {
-				timeMatch = CourseClassUtils.focusMatchForTime(courseClass, (String) searchParams.get(SearchParam.time));
+			if (searchParams.getTime() != null) {
+				timeMatch = CourseClassUtils.focusMatchForTime(courseClass, searchParams.getTime());
 			}
 
 			float priceMatch = 1.0f;
-			if (searchParams.containsKey(SearchParam.price)) {
-				try {
-					Float price = Float.parseFloat((String) searchParams.get(SearchParam.price));
-					priceMatch = CourseClassUtils.focusMatchForPrice(courseClass, price);
-				} catch (NumberFormatException e) {
-				}
+			if (searchParams.getPrice() != null) {
+			    priceMatch = CourseClassUtils.focusMatchForPrice(courseClass, searchParams.getPrice().floatValue());
 			}
 
 			float nearMatch = 1.0f;
-			if (locatonLat != null && locationLong != null) {
-				nearMatch = CourseClassUtils.focusMatchForNear(courseClass, locatonLat, locationLong);
+            List<Suburb> suburbs = searchParams.getSuburbs();
+            Suburb suburb = suburbs.isEmpty() ? null:suburbs.get(0);
+			if (suburb != null) {
+				nearMatch = CourseClassUtils.focusMatchForNear(courseClass, suburb.getLatitude(), suburb.getLongitude(),suburb.getDistance());
 			}
-			
-			float result = daysMatch * timeMatch * priceMatch * nearMatch;
-			return result;
+
+            float afterMatch = 1.0f;
+            if (searchParams.getAfter() != null)
+            {
+
+                if (courseClass.getStartDate().after(searchParams.getAfter()))
+                    afterMatch = 1.0f;
+                else
+                {
+                    int days =  (int) Math.ceil( (searchParams.getAfter().getTime() - courseClass.getStartDate().getTime())/ (1000 * 60 * 60 * 24));
+                    afterMatch = 1/days;
+                }
+
+            }
+
+            float beforeMatch = 1.0f;
+            if (searchParams.getBefore() != null)
+            {
+                if (courseClass.getEndDate() == null)
+                {
+                    beforeMatch = 0f;
+                }
+                else if (courseClass.getEndDate().before(searchParams.getBefore()))
+                    beforeMatch = 1.0f;
+                else
+                {
+                    int days =  (int) Math.ceil( (courseClass.getEndDate().getTime() - searchParams.getBefore().getTime())/ (1000 * 60 * 60 * 24));
+                    beforeMatch = 1/days;
+                }
+
+            }
+
+
+
+            return daysMatch * timeMatch * priceMatch * nearMatch * afterMatch * beforeMatch;
 		}
 
 		return bestFocusMatch;

@@ -1,7 +1,6 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.SearchParam;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
@@ -114,7 +113,7 @@ public class SearchService implements ISearchService {
         logger.warn(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(solrQuery),count), throwable);
     }
 
-    public QueryResponse searchCourses(Map<SearchParam, Object> params, int start, int rows) {
+    public QueryResponse searchCourses(SearchParams params, int start, int rows) {
 
         try {
 
