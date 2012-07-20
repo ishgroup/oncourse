@@ -6,17 +6,6 @@ import ish.oncourse.model.auto._CourseClass;
 import ish.oncourse.utils.DiscountUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TimestampUtilities;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -27,6 +16,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class CourseClass extends _CourseClass implements Queueable {
 	
@@ -347,7 +340,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	public Integer getLatestSessionEndHour() {
 		Integer latest = null;
 		for (Session session : getSessions()) {
-			Calendar end = Calendar.getInstance();
+			Calendar end = Calendar.getInstance(TimeZone.getTimeZone(getTimeZone()));
 			end.setTime(session.getEndDate());
 			Integer sessionEndHour = end.get(Calendar.HOUR_OF_DAY);
 			if (latest == null || sessionEndHour > latest) {
@@ -359,7 +352,6 @@ public class CourseClass extends _CourseClass implements Queueable {
 
 	/**
 	 * @return all sessions that satisfy hasStartAndEndTimestamps
-	 * @see Session#hasStartAndEndTimestamps()
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Session> getTimelineableSessions() {

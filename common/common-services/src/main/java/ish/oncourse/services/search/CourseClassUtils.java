@@ -2,13 +2,11 @@ package ish.oncourse.services.search;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static ish.oncourse.services.search.SearchParamsParser.*;
@@ -114,13 +112,8 @@ public class CourseClassUtils {
 	private static float focusMatchForTime(final CourseClass courseClass, final String time) {
 		float result = 0.0f;
 
-		Integer latestHour = getLatestSessionStartHour(courseClass);
-		Integer earliestHour = courseClass.getEarliestSessionStartHour();
-		// much discussion about what day and evening mean...
-		// current definitions is that any session that starts before 5 pm is
-		// daytime, any that starts after 5pm is evening
-		boolean isEvening = latestHour != null && latestHour >= 17;
-		boolean isDaytime = earliestHour != null && earliestHour < 17;
+		boolean isEvening = courseClass.isEvening();
+		boolean isDaytime = courseClass.isDaytime();
 		if (isEvening && isDaytime || isDaytime && PARAM_VALUE_daytime.equalsIgnoreCase(time) || isEvening
 				&& PARAM_VALUE_evening.equalsIgnoreCase(time)) {
 			result = 1.0f;
@@ -129,40 +122,27 @@ public class CourseClassUtils {
 
 	}
 	
-	private static Integer getLatestSessionStartHour(final CourseClass courseClass) {
-		Integer latest = null;
-		for (Session session : courseClass.getSessions()) {
-			Calendar end = Calendar.getInstance();
-			end.setTime(session.getStartDate());
-			Integer sessionStartHour = end.get(Calendar.HOUR_OF_DAY);
-			if (latest == null || sessionStartHour > latest) {
-				latest = sessionStartHour;
-			}
-		}
-		return latest;
-	}
-	
 	private static float focusMatchForDays(final CourseClass courseClass, final String searchDay) {
 		float result = 0.0f;
 		if (courseClass.getDaysOfWeek() != null) {
 			List<String> uniqueDays = new ArrayList<String>();
 			uniqueDays.addAll(courseClass.getDaysOfWeek());
 			for (String day : uniqueDays) {
-				String lowerDay = day.toLowerCase();
-				if (TimestampUtilities.DaysOfWeekNamesLowerCase.contains(lowerDay) && lowerDay.equalsIgnoreCase(day)) {
-					result = 1.0f;
-					break;
-				}
-				if (TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(lowerDay)
-						&& PARAM_VALUE_weekday.equalsIgnoreCase(day)) {
-					result = 1.0f;
-					break;
-				}
-				if (TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(lowerDay)
-						&& PARAM_VALUE_weekend.equalsIgnoreCase(day)) {
-					result = 1.0f;
-					break;
-				}
+                if (PARAM_VALUE_weekday.equalsIgnoreCase(searchDay) && TimestampUtilities.DaysOfWorkingWeekNamesLowerCase.contains(day.toLowerCase()))
+                {
+                    result = 1.0f;
+                    break;
+                }
+                if (PARAM_VALUE_weekend.equalsIgnoreCase(searchDay) && TimestampUtilities.DaysOfWeekendNamesLowerCase.contains(day.toLowerCase()))
+                {
+                    result = 1.0f;
+                    break;
+                }
+                if (day.equalsIgnoreCase(searchDay))
+                {
+                    result = 1.0f;
+                    break;
+                }
 			}
 		}
 		return result;
@@ -207,7 +187,6 @@ public class CourseClassUtils {
                     int days =  (int) Math.ceil( (searchParams.getAfter().getTime() - courseClass.getStartDate().getTime())/ (1000 * 60 * 60 * 24));
                     afterMatch = 1/days;
                 }
-
             }
 
             float beforeMatch = 1.0f;
