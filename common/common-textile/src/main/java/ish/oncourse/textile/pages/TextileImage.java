@@ -5,7 +5,6 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TextileImage {
-	private static final String ASSET_BINARYDATA_PATH = "/asset/binarydata?id=";
-
 	@Inject
 	private Request request;
 
@@ -88,7 +85,7 @@ public class TextileImage {
 			imageBinaryInfo = binaryDataService.getRandomImage();
 		}
 
-		imagePath = imageBinaryInfo != null ? (ASSET_BINARYDATA_PATH + imageBinaryInfo.getId()) : StringUtils.EMPTY;
+		imagePath = imageBinaryInfo != null ? (imageBinaryInfo.getContextPath()) : StringUtils.EMPTY;
 		imageAlign = align != null ? align : StringUtils.EMPTY;
 		imageAlt = alt != null ? alt : StringUtils.EMPTY;
 		imageTitle = title != null ? title : StringUtils.EMPTY;

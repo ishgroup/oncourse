@@ -3,7 +3,7 @@
 	<t:loop source="materials" value="material">	
 		<div class="${material.type}">
 			<img src="${contextPath}/img/ico-${material.type}.png" alt=""/>
-			<a href="/asset/binarydata?id=${material.id}">${material.name}<t:if test="material.type.empty" negate="true">.${material.type}</t:if></a> ${material.size} kb.
+			<a href="${material.contextPath}">${material.name}<t:if test="material.type.empty" negate="true">.${material.type}</t:if></a> ${material.size} kb.
 		</div>
 	</t:loop>
 
