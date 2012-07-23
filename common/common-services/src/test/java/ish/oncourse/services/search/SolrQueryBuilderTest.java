@@ -94,7 +94,7 @@ public class SolrQueryBuilderTest {
         assertEquals("Test filters.get(0) for filter SearchParam.before", "end:[NOW TO 2012-01-01T12:00:00Z]",filters.get(0));
 
         value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
-        assertEquals("Query parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=((detail:1 || tutor:1 || course_code:1 || name:1) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))", value);
+        assertEquals("Query parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=((detail:(1) || tutor:(1) || course_code:(1) || name:(1)) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))", value);
         System.out.println(value);
 
     }
