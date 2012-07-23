@@ -2,7 +2,6 @@ package ish.oncourse.ui.pages;
 
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.ui.pages.internal.SuburbAutocomplete;
-
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -25,7 +24,7 @@ public class SuburbsTextArray extends SuburbAutocomplete {
 		String searchParam = request.getParameter("q");
 		
 		SolrDocumentList responseResults = searchService.searchSuburbs(
-				searchParam).getResults();
+				searchParam);
 		
 		if (!responseResults.isEmpty()) {
 			strings = new ArrayList<String>(responseResults.size());

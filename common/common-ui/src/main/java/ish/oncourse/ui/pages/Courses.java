@@ -7,8 +7,8 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.log4j.Logger;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -209,16 +209,16 @@ public class Courses {
 
 	private List<Course> searchCourses(int start, int rows) {
 
-		QueryResponse resp = searchService.searchCourses(searchParams, start, rows);
+		SolrDocumentList results = searchService.searchCourses(searchParams, start, rows);
 
-		LOGGER.info(String.format("The number of courses found: %s", resp.getResults().size()));
+		LOGGER.info(String.format("The number of courses found: %s", results.size()));
 		if (coursesCount == null) {
-			coursesCount = ((Number) resp.getResults().getNumFound()).intValue();
+			coursesCount = ((Number) results.getNumFound()).intValue();
 		}
 
-		List<String> ids = new ArrayList<String>(resp.getResults().size());
+		List<String> ids = new ArrayList<String>(results.size());
 
-		for (SolrDocument doc : resp.getResults()) {
+		for (SolrDocument doc : results) {
 			ids.add((String) doc.getFieldValue("id"));
 		}
 

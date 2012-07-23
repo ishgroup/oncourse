@@ -134,7 +134,7 @@ public class SearchParamsParser
     }
 
     private SolrDocumentList parseNear(String parameter) {
-        SolrDocumentList solrSuburbs = searchService.searchSuburb(parameter).getResults();
+        SolrDocumentList solrSuburbs = searchService.searchSuburb(parameter);
         return solrSuburbs != null && !solrSuburbs.isEmpty() ? solrSuburbs:null;
     }
 

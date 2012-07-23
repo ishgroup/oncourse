@@ -4,7 +4,6 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.util.ClientUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class SolrQueryBuilder {
 
 
     static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course end:[NOW TO *]";
-    static final String FILTER_TEMPLATE_s = "(detail:%s || tutor:%s || course_code:%s || name:%s)";
+    static final String FILTER_TEMPLATE_s = "(detail:(%s) || tutor:(%s) || course_code:(%s) || name:(%s))";
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
@@ -161,7 +160,7 @@ public class SolrQueryBuilder {
 
     void appendFilterS(List<String> filters) {
         if (params.getS() != null) {
-            String value = ClientUtils.escapeQueryChars(params.getS());
+            String value = params.getS();
             filters.add(String.format(FILTER_TEMPLATE_s, value, value, value, value));
         }
     }

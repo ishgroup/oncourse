@@ -37,7 +37,7 @@ public class AutoComplete {
            *	});
         */
         if (term != null && term.length() >= 3) {
-            SolrDocumentList responseResults = searchService.searchSuburbs(term).getResults();
+            SolrDocumentList responseResults = searchService.searchSuburbs(term);
 
             for (SolrDocument doc : responseResults) {
                 String val = doc.getFieldValue(FIELD_suburb) + " "

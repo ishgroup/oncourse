@@ -11,9 +11,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.UnsupportedEncodingException;
@@ -83,23 +82,25 @@ public class SearchService implements ISearchService {
      * @return
      * @throws SolrServerException
      */
-    private QueryResponse query(SolrQuery q, SolrCore core) throws SolrServerException {
+    private SolrDocumentList query(SolrQuery q, SolrCore core) throws SolrServerException {
         int count = 0;
         SolrServerException exception = null;
         while (count < 3) {
             try {
-                return getSolrServer(core).query(q);
+                return getSolrServer(core).query(q).getResults();
             } catch (SolrServerException e) {
                 exception = e;
                 count++;
-                handleException(e,q,count);
+                SolrDocumentList result = handleException(e,q,count);
+                if (result != null)
+                    return result;
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e1) {
                 }
             }
         }
-        if (exception!= null)
+        if (exception != null)
             throw exception;
         else
             throw new IllegalArgumentException();
@@ -108,12 +109,21 @@ public class SearchService implements ISearchService {
     /**
      * The method logs stacktraces every exception from hierarchy. I have added it to see full stack trace of a exception.
      */
-    private void handleException(Throwable throwable, SolrQuery solrQuery, int count)
+    private SolrDocumentList handleException(Throwable throwable, SolrQuery solrQuery, int count)
     {
         logger.warn(String.format("Cannot execute query: %s with attempt %d",solrQueryToString(solrQuery),count), throwable);
+
+        if (throwable instanceof SolrServerException &&
+                throwable.getCause() instanceof SolrException &&
+                throwable.getCause().getMessage().contains("Bad Request"))
+        {
+            return new SolrDocumentList();
+        }
+        else
+            return null;
     }
 
-    public QueryResponse searchCourses(SearchParams params, int start, int rows) {
+    public SolrDocumentList searchCourses(SearchParams params, int start, int rows) {
 
         try {
 
@@ -142,7 +152,6 @@ public class SearchService implements ISearchService {
 
     public SolrDocumentList autoSuggest(String term) {
         try {
-            term = ClientUtils.escapeQueryChars(term);
             College college = webSiteService.getCurrentCollege();
             String collegeId = String.valueOf(college.getId());
 
@@ -173,13 +182,13 @@ public class SearchService implements ISearchService {
 
             SolrDocumentList results = new SolrDocumentList();
             if (coursesQuery.length() != 0) {
-                results.addAll(query(new SolrQuery(coursesQuery.toString()),SolrCore.courses).getResults());
+                results.addAll(query(new SolrQuery(coursesQuery.toString()), SolrCore.courses));
             }
             if (suburbsQuery.length() != 0) {
-                results.addAll(query(new SolrQuery(suburbsQuery.toString()),SolrCore.suburbs).getResults());
+                results.addAll(query(new SolrQuery(suburbsQuery.toString()), SolrCore.suburbs));
             }
             if (tagsQuery.length() != 0) {
-                results.addAll(query(new SolrQuery(tagsQuery.toString()),SolrCore.tags).getResults());
+                results.addAll(query(new SolrQuery(tagsQuery.toString()), SolrCore.tags));
             }
             return results;
         } catch (Exception e) {
@@ -188,9 +197,8 @@ public class SearchService implements ISearchService {
         }
     }
 
-    public QueryResponse searchSuburbs(String term) {
+    public SolrDocumentList searchSuburbs(String term) {
         try {
-            term = ClientUtils.escapeQueryChars(term);
             SolrQuery q = new SolrQuery();
 
             StringBuilder query = new StringBuilder();
@@ -212,7 +220,7 @@ public class SearchService implements ISearchService {
             if ("".equals(q.getQuery())) {
                 q.setQuery("*:*");
             }
-            return query(q,SolrCore.suburbs);
+            return query(q, SolrCore.suburbs);
 
         } catch (Exception e) {
             logger.error("Failed to search suburbs.", e);
@@ -234,7 +242,7 @@ public class SearchService implements ISearchService {
     	return sb.toString();
     }
 
-    public QueryResponse searchSuburb(String location) {
+    public SolrDocumentList searchSuburb(String location) {
         try {
         	location = location.trim();
             int separator = location.lastIndexOf(" ");
@@ -250,21 +258,21 @@ public class SearchService implements ISearchService {
             StringBuilder query = new StringBuilder();
             query.append("(doctype:suburb");
             if (suburbParams[0] != null) {
-                String near = escapeQueryChars(suburbParams[0]).replaceAll("[\\s]+", "+");
+                String near = suburbParams[0].replaceAll("[\\s]+", "+");
                 query.append(" AND (suburb:").append(near);
                 query.append(" || postcode:").append(near);
                 query.append(")");
             }
 
             if (suburbParams[1] != null) {
-                query.append(" AND postcode:").append(escapeQueryChars(suburbParams[1]));
+                query.append(" AND postcode:").append(suburbParams[1]);
             }
 
             query.append(") ");
 
             q.setQuery(query.toString());
 
-            return query(q,SolrCore.suburbs);
+            return query(q, SolrCore.suburbs);
         } catch (Exception e) {
             logger.error("Failed to search suburb.", e);
             throw new SearchException("Unable to find suburb.", e);
