@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebNode;
 import ish.oncourse.model.visitor.IVisitor;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
 
@@ -70,4 +71,10 @@ public class WebNode extends _WebNode {
 		}
 		return null;
 	}
+
+    public String getNameWithoutSpaces()
+    {
+        String name  = getName();
+        return StringUtils.remove(name, " ");
+    }
 }

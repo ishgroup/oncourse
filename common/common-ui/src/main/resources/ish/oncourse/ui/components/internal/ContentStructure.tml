@@ -7,7 +7,9 @@
 	</t:if>
     <div class="clearboth"></div>
 	<t:loop source="node.webContentVisibility" value="visibility">
-		<t:outputraw value="regionContent"/>
+        <div class="block-${node.nameWithoutSpaces}">
+		    <t:outputraw value="regionContent"/>
+        </div>
 	</t:loop>
 </t:container>
 
