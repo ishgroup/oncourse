@@ -6,7 +6,7 @@ for work and for life - for all Tasmanians.
 Discover your hidden talents, meet new people, unwind, get fit, be creative or pursue a passion by enrolling in one of 
 our popular courses today!
 
-{tags hideTopLevel:"true" maxLevels:"2"}';
+{tags hideTopLevel:"true" maxLevels:"2"}' WHERE id = 1298 AND webSiteId = 15;
 
 UPDATE WebContent set content_textile = content where id = 1298 AND webSiteId = 15;
 
