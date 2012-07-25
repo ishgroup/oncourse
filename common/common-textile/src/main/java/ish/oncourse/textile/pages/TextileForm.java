@@ -55,9 +55,11 @@ public class TextileForm {
 	@Property
 	private String emailValue;
 
+	@SuppressWarnings("all")
 	@Property
 	private String afterFieldsMarkUp;
 
+	@SuppressWarnings("all")
 	@Property
 	private boolean shouldSend;
 
@@ -67,18 +69,25 @@ public class TextileForm {
 	@Property
 	private TextileFormField field;
 
+	@SuppressWarnings("all")
 	@Property
 	private int index;
 
 	@Property
 	private String option;
 
+	@SuppressWarnings("all")
 	@Property
 	private String url;
 
 	@Property
 	private Integer formIndex;
+	
+	public String getTextileFormId() {
+		return formIndex + "TextileForm";
+	}
 
+	@SuppressWarnings("unchecked")
 	@SetupRender
 	boolean beginRender() {
 
