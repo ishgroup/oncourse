@@ -3,8 +3,8 @@ package ish.oncourse.webservices.soap.v4;
 import ish.oncourse.model.College;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.filestorage.FileStorageAssetService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
-import ish.oncourse.services.filestorage.TempFileStorageAssetService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -20,7 +20,6 @@ import ish.oncourse.webservices.replication.v4.builders.TransactionStubBuilderIm
 import ish.oncourse.webservices.replication.v4.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
-
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
@@ -68,7 +67,7 @@ public class ReplicationTestModule {
 		}).withId("WebSiteServiceOverride");
 
 		binder.bind(IPaymentGatewayService.class, TestPaymentGatewayService.class).withId("PaymentGatewayServiceOverride");
-        binder.bind(IFileStorageAssetService.class, TempFileStorageAssetService.class);
+        binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {

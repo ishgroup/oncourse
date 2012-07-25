@@ -17,6 +17,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.File;
 import java.io.InputStream;
 
@@ -26,7 +29,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
     private File rootDir;
     @SuppressWarnings("deprecation")
-	private TempFileStorageAssetService fileStorageAssetService;
+	private FileStorageAssetService fileStorageAssetService;
     private ICayenneService cayenneService;
 
     @Before
@@ -39,16 +42,18 @@ public class FileStorageAssetServiceTest extends ServiceTest {
     }
 
     @SuppressWarnings("deprecation")
-	private void initFileStorageAssetService() {
+	private void initFileStorageAssetService() throws NamingException {
         rootDir = new File(System.getProperty("user.dir"), "FileStorageServiceTest");
         boolean result = rootDir.mkdirs();
         if (!result) {
             throw new IllegalArgumentException();
         }
-        InitialContextFactoryMock.bind(FileStorageService.ENV_NAME_fileStorageRoot, rootDir.getAbsolutePath());
-        InitialContextFactoryMock.bind(FileStorageReplicationService.ENV_NAME_syncScript, rootDir.getAbsolutePath());
+        Context context = new InitialContext();
+        InitialContextFactoryMock.bind("java:comp/env",context);
+        context.bind(FileStorageService.ENV_NAME_fileStorageRoot, rootDir.getAbsolutePath());
+        context.bind(FileStorageReplicationService.ENV_NAME_syncScript, rootDir.getAbsolutePath());
 
-        fileStorageAssetService = new TempFileStorageAssetService();
+        fileStorageAssetService = new FileStorageAssetService();
     }
 
 
@@ -69,7 +74,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
 
         binaryInfo.setByteSize((long) data.length);
         binaryInfo.setCollege(college);
-        String path = fileStorageAssetService.getFileStorageAssetService().getPathBy(data, binaryInfo);
+        String path = fileStorageAssetService.getPathBy(data, binaryInfo);
         //test path building
         assertNotNull("path is not null", path);
         assertEquals("check path value", String.format("%d/%s", college.getId(), md5), path);
@@ -96,13 +101,13 @@ public class FileStorageAssetServiceTest extends ServiceTest {
         fileStorageAssetService.delete(binaryInfo2);
         context.deleteObject(binaryInfo2);
         context.commitChanges();
-        assertTrue("file exists for the binaryInfo2", fileStorageAssetService.getFileStorageAssetService().getFileStorageService().contains(binaryInfo2.getFilePath()));
+        assertTrue("file exists for the binaryInfo2", fileStorageAssetService.contains(binaryInfo2));
 
         //test delete binaryInfo
         fileStorageAssetService.delete(binaryInfo);
         context.deleteObject(binaryInfo);
         context.commitChanges();
-        assertFalse("file does not exist for the binaryInfo", fileStorageAssetService.getFileStorageAssetService().getFileStorageService().contains(binaryInfo.getFilePath()));
+        assertFalse("file does not exist for the binaryInfo", fileStorageAssetService.contains(binaryInfo));
 
         //test put again the same final but new binaryInfo
         binaryInfo = createBinaryInfo(context,"file2");
@@ -110,7 +115,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
         binaryInfo.setCollege(college);
         fileStorageAssetService.put(data, binaryInfo);
         context.commitChanges();
-        assertTrue("file does exist for the binaryInfo", fileStorageAssetService.getFileStorageAssetService().getFileStorageService().contains(binaryInfo.getFilePath()));
+        assertTrue("file does exist for the binaryInfo", fileStorageAssetService.contains(binaryInfo));
 
     }
 

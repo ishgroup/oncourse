@@ -1,7 +1,10 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EntityMapping;
-import ish.oncourse.model.*;
+import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.College;
+import ish.oncourse.model.Queueable;
+import ish.oncourse.model.QueuedStatistic;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -45,11 +48,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	private static final Logger logger = Logger.getLogger(TransactionGroupProcessorImpl.class);
 
     /**
-     * TODO the logger should be removed after FileStorage functionality will be implemented.
-     */
-    private static final Logger loggerForFileStorage = Logger.getLogger(TransactionGroupProcessorImpl.class.getName() + ".FileStorage");
-
-    /**
 	 * WebSiteService
 	 */
 	private final IWebSiteService webSiteService;
@@ -75,6 +73,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	private GenericTransactionGroup transactionGroup;
 
+    private QueuedStatisticProcessor queuedStatisticProcessor;
+    private AttachmentProcessor attachmentProcessor;
 
 	/**
 	 * Constructor
@@ -89,6 +89,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		this.willowUpdater = willowUpdater;
         this.fileStorageAssetService = fileStorageAssetService;
         this.atomicContext = cayenneService.newNonReplicatingContext();
+        this.queuedStatisticProcessor = new QueuedStatisticProcessor(this.atomicContext,webSiteService,willowUpdater,this);
+        this.attachmentProcessor = new AttachmentProcessor(this.fileStorageAssetService);
 	}
 
 	/**
@@ -104,7 +106,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			result.add(replRecord);
 		}
 
-		try {
+        try {
 
 			while (!group.getAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
 				GenericReplicationStub currentStub = group.getAttendanceOrBinaryDataOrBinaryInfo().remove(0);
@@ -112,6 +114,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			}
 
 			atomicContext.commitChanges();
+            queuedStatisticProcessor.cleanupStatistic();
 
 			for (GenericReplicatedRecord r : result) {
 				String willowIdentifier = EntityMapping.getWillowEntityIdentifer(r.getStub().getEntityIdentifier());
@@ -187,17 +190,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 	}
 
-	private void cleanupStatistic(GenericQueuedStatisticStub statisticStub) {
-		final SelectQuery q = new SelectQuery(QueuedStatistic.class);
-		q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-		q.andQualifier(ExpressionFactory.lessExp(QueuedStatistic.RECEIVED_TIMESTAMP_PROPERTY, statisticStub.getReceivedTimestamp()));
-		@SuppressWarnings("unchecked")
-		List<QueuedStatistic> statisticForDelete = atomicContext.performQuery(q);
-		if (!statisticForDelete.isEmpty()) {
-			atomicContext.deleteObjects(statisticForDelete);
-		}
-	}
-
 	/**
 	 * Process on one single stub either Full or Delete. Creates correspondent
 	 * Cayenne objects with relationships if any, or delete cayenne objects
@@ -220,34 +212,25 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 
 		if (currentStub instanceof GenericQueuedStatisticStub) {
-			final GenericQueuedStatisticStub statisticStub = (GenericQueuedStatisticStub) currentStub;
-			if (Boolean.TRUE.equals(statisticStub.isCleanupStub())) {
-				//we should commit current statistic changes before commit
-				atomicContext.commitChanges();
-				cleanupStatistic(statisticStub);
-				return null;
-			} else {
-				final List<QueuedStatistic> objects = statisticByEntity(statisticStub.getStackedEntityIdentifier());
-				switch (objects.size()) {
-				case 0:
-					return createObject(currentStub);
-				case 1:
-					QueuedStatistic objectToUpdate = objects.get(0);
-					willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
-					return objectToUpdate;
-				default:
-					//we should not throw and exception because even if this occurs on next replication data will be correct.
-					String message = String.format("%s statistic objects found for entity:%s", objects.size(),
-						statisticStub.getStackedEntityIdentifier());
-		            logger.warn(message);
-		            return null;
-				}
-			}
+            return queuedStatisticProcessor.process((GenericQueuedStatisticStub)currentStub);
 		}
 
-		String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
+        if (currentStub instanceof GenericBinaryDataStub)
+        {
+            return attachmentProcessor.processBinaryDataStub((GenericBinaryDataStub) currentStub, createRelationShipCallback());
+        }
 
-		if (currentStub.getAngelId() == null) {
+        /**
+         *  AttachmentData DeleteStub should be ignored because correspondent file will be deleted with deleting BinaryInfo
+         */
+        if (currentStub instanceof GenericDeletedStub && currentStub.getEntityIdentifier().equals("AttachmentData"))
+        {
+            return null;
+        }
+
+        String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
+
+        if (currentStub.getAngelId() == null) {
             String message = String.format("Empty angelId for object object: %s willowId: %s", willowIdentifier, currentStub.getWillowId());
             replRecord.setFailedStatus();
             replRecord.setMessage(message);
@@ -267,10 +250,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				// ignore object was already deleted
 				return null;
 			}
-			// creating new object
-            Queueable objectToUpdate = createObject(currentStub);
-            updateFileStorage(currentStub, objectToUpdate);
-			return objectToUpdate;
+            return createObject(currentStub);
 		}
 		case 1: {
 			Queueable objectToUpdate = objects.get(0);
@@ -285,13 +265,12 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			}
 
             if (currentStub instanceof GenericDeletedStub) {
-
 				deleteObject(objectToUpdate);
-                updateFileStorage(currentStub, objectToUpdate);
+                if (objectToUpdate instanceof BinaryInfo)
+                    attachmentProcessor.deletedBinaryDataBy((BinaryInfo) objectToUpdate);
 				return null;
 			} else {
 				willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
-                updateFileStorage(currentStub,objectToUpdate);
 				return objectToUpdate;
 			}
         }
@@ -304,7 +283,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 	}
 
-	/**
+    /**
 	 * Takes replicatedRecord object which corresponds to passed soap stub from prefilled replication result.
 	 * @param soapStub  - stub
 	 * @return - record for the stub
@@ -374,7 +353,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 *            soap stub
 	 * @return queueable object
 	 */
-	private Queueable createObject(GenericReplicationStub currentStub) {
+	Queueable createObject(GenericReplicationStub currentStub) {
 
 		try {
 			Queueable objectToUpdate = atomicContext.newObject(getEntityClass(atomicContext,
@@ -413,14 +392,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		SelectQuery q = new SelectQuery(getEntityClass(atomicContext, entityName));
 		q.andQualifier(ExpressionFactory.matchDbExp("angelId", angelId));
 		q.andQualifier(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
-		return atomicContext.performQuery(q);
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<QueuedStatistic> statisticByEntity(final String entityName) {
-		SelectQuery q = new SelectQuery(QueuedStatistic.class);
-		q.andQualifier(ExpressionFactory.matchDbExp(QueuedStatistic.ENTITY_IDENTIFIER_PROPERTY, entityName));
-		q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
 		return atomicContext.performQuery(q);
 	}
 
@@ -467,27 +438,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		return null;
 	}
 
-    /**
-     * The method puts or deletes content to/from file storage.
-     */
-    private void updateFileStorage(GenericReplicationStub stub, Queueable entity)
+    RelationShipCallback createRelationShipCallback()
     {
-        logger.warn(String.format("TransactionGroupProcessorImpl.updateFileStorage with parameters: stub = %s, entity = %s", stub, entity));
-        //the file storage processing
-        try {
-            if (entity instanceof  BinaryInfo && stub instanceof GenericDeletedStub) {
-                loggerForFileStorage.debug(String.format("TransactionGroupProcessorImpl.updateFileStorage fileStorageAssetService.delete for binaryInfo %s", entity));
-                fileStorageAssetService.delete((BinaryInfo)entity);
-            }
-            //TODO: the conde should be adjusted after we will stop saving BinaryData to the database.
-            else  if (entity instanceof BinaryData && stub instanceof GenericBinaryDataStub) {
-                GenericBinaryDataStub binaryDataStub = (GenericBinaryDataStub) stub;
-                loggerForFileStorage.debug(String.format("TransactionGroupProcessorImpl.updateFileStorage fileStorageAssetService.put for binaryDataStub %s and binaryData %s", binaryDataStub, entity));
-                fileStorageAssetService.put(binaryDataStub.getContent(), ((BinaryData) entity).getBinaryInfo());
-            }
-        } catch (Throwable e) {
-            logger.error(String.format("Cannot update file storage with the stub %s and entity %s.", stub, entity),e);
-        }
+        return new RelationShipCallbackImpl();
     }
 
 	/**

@@ -7,6 +7,10 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.io.File;
 import java.util.List;
 
 public class FileStorageAssetService implements IFileStorageAssetService{
@@ -15,8 +19,8 @@ public class FileStorageAssetService implements IFileStorageAssetService{
 
     private FileStorageService fileStorageService;
 
-    public FileStorageAssetService(FileStorageService fileStorageService) {
-        this.fileStorageService = fileStorageService;
+    public FileStorageAssetService() {
+        init();
     }
 
     /**
@@ -82,6 +86,44 @@ public class FileStorageAssetService implements IFileStorageAssetService{
 
     public FileStorageService getFileStorageService() {
         return fileStorageService;
+    }
+
+    public boolean contains(BinaryInfo binaryInfo)
+    {
+        return getFileStorageService().contains(binaryInfo.getFilePath());
+    }
+
+    public void init() {
+
+        try {
+            String fileStorageRoot = (String)lookup(FileStorageService.ENV_NAME_fileStorageRoot);
+            String syncScriptPath = (String)lookup(FileStorageReplicationService.ENV_NAME_syncScript);
+
+            FileStorageReplicationService replicationService = new FileStorageReplicationService();
+            replicationService.setSyncScriptPath(syncScriptPath);
+
+            FileStorageService fileStorageService = new FileStorageService();
+            fileStorageService.setRootDir(fileStorageRoot != null ? new File(fileStorageRoot): null);
+            fileStorageService.setReplicationService(replicationService);
+
+            this.fileStorageService = fileStorageService;
+
+        } catch (Exception e) {
+            LOGGER.error(e);
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private Object lookup(String path) throws NamingException {
+        InitialContext context = new InitialContext();
+        Context ctx = null;
+        try {
+            ctx = (Context) context.lookup("java:comp/env");
+        } catch (NamingException e) {
+            ctx = context;
+            LOGGER.warn(e);
+        }
+        return ctx.lookup(path);
     }
 }
 

@@ -1,10 +1,12 @@
 package ish.oncourse.webservices.replication.v4.updaters;
 
-import java.util.HashMap;
-import java.util.Map;
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
 import ish.oncourse.model.*;
 import ish.oncourse.services.textile.ITextileConverter;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
 
 public class V4UpdatersMap {
 	private Map<String, IWillowUpdater> updaterMap;
@@ -12,7 +14,6 @@ public class V4UpdatersMap {
 	public void initMap(final ITextileConverter textileConverter) {
 		getUpdaterMap().clear();
 		updaterMap.put(getEntityName(Attendance.class), new AttendanceUpdater());
-		updaterMap.put(getEntityName(BinaryData.class), new BinaryDataUpdater());
 		updaterMap.put(getEntityName(BinaryInfo.class), new BinaryInfoUpdater());
 		updaterMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
 		updaterMap.put(getEntityName(Contact.class), new ContactUpdater());

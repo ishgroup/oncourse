@@ -1,61 +1,13 @@
 package ish.oncourse.webservices.replication.v5.updaters;
 
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.BinaryData;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.BinaryInfoRelation;
-import ish.oncourse.model.Certificate;
-import ish.oncourse.model.CertificateOutcome;
-import ish.oncourse.model.ConcessionType;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.ContactRelation;
-import ish.oncourse.model.ContactRelationType;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.CourseModule;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.model.DiscountMembership;
-import ish.oncourse.model.DiscountMembershipRelationType;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.Membership;
-import ish.oncourse.model.MembershipProduct;
-import ish.oncourse.model.Message;
-import ish.oncourse.model.MessagePerson;
-import ish.oncourse.model.MessageTemplate;
-import ish.oncourse.model.Outcome;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.PaymentOut;
-import ish.oncourse.model.Preference;
-import ish.oncourse.model.Product;
-import ish.oncourse.model.ProductItem;
-import ish.oncourse.model.QueuedStatistic;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.SessionTutor;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.SystemUser;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.TagGroupRequirement;
-import ish.oncourse.model.Taggable;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
-import ish.oncourse.model.Voucher;
-import ish.oncourse.model.VoucherProduct;
-import ish.oncourse.model.WaitingList;
-import ish.oncourse.model.WaitingListSite;
+import ish.oncourse.model.*;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
 
 public class V5UpdatersMap {
 private Map<String, IWillowUpdater> updaterMap;
@@ -63,7 +15,6 @@ private Map<String, IWillowUpdater> updaterMap;
 	public void initMap(final ITextileConverter textileConverter) {
 		getUpdaterMap().clear();
 		updaterMap.put(getEntityName(Attendance.class), new AttendanceUpdater());
-		updaterMap.put(getEntityName(BinaryData.class), new BinaryDataUpdater());
 		updaterMap.put(getEntityName(BinaryInfo.class), new BinaryInfoUpdater());
 		updaterMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationUpdater());
 		updaterMap.put(getEntityName(Contact.class), new ContactUpdater());

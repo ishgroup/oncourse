@@ -6,8 +6,8 @@ package ish.oncourse.webservices.services;
 
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.filestorage.FileStorageAssetService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
-import ish.oncourse.services.filestorage.TempFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
@@ -69,10 +69,7 @@ public class AppModule {
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
 
-        /**
-         * TODO TempFileStorageAssetService should be replaced on FileStorageAssetService after we will stop saving BinaryData to the database.
-         */
-        binder.bind(IFileStorageAssetService.class, TempFileStorageAssetService.class).eagerLoad();
+        binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class).eagerLoad();
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
