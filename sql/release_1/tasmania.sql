@@ -1,5 +1,10 @@
-UPDATE WebContent set content = '<ul class="formating-option"><li><a href="#"><img src="/s/img/font_size.png" /></a></li><li><a href="#"><img src="/s/img/print.png" /></a></li></ul>
-<h1>Courses open for enrolment or some such text</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p><div id="nav">{tags name:"/Subjects/Leisure" maxLevels:"2"}</div>' WHERE id = 1298 AND webSiteId = 15;
+UPDATE WebContent set content = 'h1. Courses open for enrolment
+
+LearnXpress offers a range of course in leisure and lifestyle activities as well as courses to learn new skills -
+for work and for life - for all Tasmanians.
+
+Discover your hidden talents, meet new people, unwind, get fit, be creative or pursue a passion by enrolling in one of 
+our popular courses today!'
 
 UPDATE WebContent set content_textile = content where id = 1298 AND webSiteId = 15;
 
