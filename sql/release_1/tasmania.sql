@@ -4,7 +4,9 @@ LearnXpress offers a range of course in leisure and lifestyle activities as well
 for work and for life - for all Tasmanians.
 
 Discover your hidden talents, meet new people, unwind, get fit, be creative or pursue a passion by enrolling in one of 
-our popular courses today!'
+our popular courses today!
+
+{tags hideTopLevel:"true" maxLevels:"2"}';
 
 UPDATE WebContent set content_textile = content where id = 1298 AND webSiteId = 15;
 
