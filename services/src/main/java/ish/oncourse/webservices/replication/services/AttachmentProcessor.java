@@ -18,11 +18,21 @@ public class AttachmentProcessor {
         this.fileStorageAssetService = fileStorageAssetService;
     }
 
+    public Long getBinaryInfoId(GenericBinaryDataStub currentStub)
+    {
+        if (currentStub instanceof BinaryDataStub)
+            return ((BinaryDataStub)currentStub).getBinaryInfoId();
+        else if (currentStub instanceof ish.oncourse.webservices.v5.stubs.replication.BinaryDataStub)
+            return ((ish.oncourse.webservices.v5.stubs.replication.BinaryDataStub)currentStub).getBinaryInfoId();
+        else
+            throw new IllegalArgumentException();
+    }
+
     public Queueable processBinaryDataStub(GenericBinaryDataStub currentStub, RelationShipCallback callback) {
 
         logger.info(String.format("AttachmentProcessor.processBinaryDataStub with parameters: stub = %s", currentStub));
 
-        BinaryInfo binaryInfo = callback.updateRelationShip(((BinaryDataStub)currentStub).getBinaryInfoId(), BinaryInfo.class);
+        BinaryInfo binaryInfo = callback.updateRelationShip(getBinaryInfoId(currentStub), BinaryInfo.class);
         logger.info(String.format("AttachmentProcessor.processBinaryDataStub fileStorageAssetService.put for binaryDataStub %s and binaryInfo %s", currentStub, binaryInfo));
         fileStorageAssetService.put(currentStub.getContent(), binaryInfo);
         return null;
