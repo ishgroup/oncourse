@@ -1,38 +1,11 @@
 package ish.oncourse.webservices.replication.v4.builders;
 
-import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
-import ish.oncourse.model.Attendance;
-import ish.oncourse.model.BinaryData;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.Certificate;
-import ish.oncourse.model.CertificateOutcome;
-import ish.oncourse.model.ConcessionType;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.MessagePerson;
-import ish.oncourse.model.Outcome;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.PaymentOut;
-import ish.oncourse.model.Preference;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.SystemUser;
-import ish.oncourse.model.Taggable;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
-import ish.oncourse.model.WaitingList;
+import ish.oncourse.model.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityName;
 
 public class V4BuildersMap {
 	private Map<String, IWillowStubBuilder> builderMap;
@@ -50,7 +23,6 @@ public class V4BuildersMap {
 	public void initMap() {
 		getBuilderMap().clear();
 		builderMap.put(getEntityName(Attendance.class), new AttendanceStubBuilder());
-		builderMap.put(getEntityName(BinaryData.class), new BinaryDataStubBuilder());
 		builderMap.put(getEntityName(BinaryInfo.class), new BinaryInfoStubBuilder());
 		builderMap.put(getEntityName(ConcessionType.class), new ConcessionTypeStubBuilder());
 		builderMap.put(getEntityName(CourseClass.class), new CourseClassStubBuilder());
