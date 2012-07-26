@@ -1,16 +1,12 @@
 package ish.oncourse.asset.servlet;
 
-import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
-
-import java.io.IOException;
-import java.io.OutputStream;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.IOException;
 
 public class BinaryDataServlet extends ServiceAwareServlet {
 	private static final String DIGIT_REGEXP = "\\d+";
@@ -31,13 +27,13 @@ public class BinaryDataServlet extends ServiceAwareServlet {
 					fileName.append(DOT_CHARACTER).append(binaryInfo.getType());
 				}
 				resp.setHeader("Content-disposition", "filename=" + fileName.toString());
-				OutputStream out = resp.getOutputStream();
-				final BinaryData binaryData = binaryInfo.getBinaryData();
-				if (binaryData != null) {
-					byte[] content = binaryData.getContent();
-					out.write(content);
-				}
-				out.close();
+//				OutputStream out = resp.getOutputStream();
+//				final BinaryData binaryData = binaryInfo.getBinaryData();
+//				if (binaryData != null) {
+//					byte[] content = binaryData.getContent();
+//					out.write(content);
+//				}
+//				out.close();
 			}
 		}
 	}
