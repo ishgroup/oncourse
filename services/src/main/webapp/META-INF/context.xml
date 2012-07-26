@@ -4,6 +4,7 @@
   <ResourceLink global="jdbc/oncourse_binary" name="jdbc/oncourse_binary" type="javax.sql.DataSource"/>
   <ResourceLink global="jdbc/oncourse_reference" name="jdbc/oncourse_reference" type="javax.sql.DataSource"/>
   <Environment name="CustomComponentsPath" value="/var/onCourse/resources" type="java.lang.String" override="false"/>
-  <ResourceLink global="asset.fileStorageRoot" name="asset.fileStorageRoot" type="java.lang.String"/>
-  <ResourceLink global="asset.syncScript" name="asset.syncScript" type="java.lang.String"/>
+
+  <Environment name="asset.fileStorageRoot" override="false" type="java.lang.String" value="/var/tomonCourse/assets" />
+  <Environment name="asset.syncScript" override="false" type="java.lang.String" value="/var/tomonCourse/scripts/assetSync.sh" />
 </Context>
