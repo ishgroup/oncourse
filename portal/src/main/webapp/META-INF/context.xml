@@ -6,4 +6,7 @@
 	<ResourceLink global="jdbc/oncourse_reference" name="jdbc/oncourse_reference" type="javax.sql.DataSource"/>
 	<Environment name="CustomComponentsPath" value="/Users/Shared/willow/active/custom" type="java.lang.String" override="false"/>
 	<ResourceLink global="mail/Session" name="mail/Session" type="javax.mail.Session"/>
+
+    <Environment name="asset.fileStorageRoot" override="false" type="java.lang.String" value="/var/tomonCourse/assets" />
+    <Environment name="asset.syncScript" override="false" type="java.lang.String" value="/var/tomonCourse/scripts/assetSync.sh" />
 </Context>
