@@ -28,8 +28,7 @@ public class QueuedStatisticProcessor {
                                     IWebSiteService webSiteService,
                                     IWillowUpdater willowUpdater,
                                     TransactionGroupProcessorImpl transactionGroupProcessor
-                                    )
-    {
+    ) {
         this.atomicContext = atomicContext;
         this.webSiteService = webSiteService;
         this.willowUpdater = willowUpdater;
@@ -62,24 +61,26 @@ public class QueuedStatisticProcessor {
     }
 
 
-    public Queueable process(GenericQueuedStatisticStub statisticStub)
-    {
+    public Queueable process(GenericQueuedStatisticStub statisticStub) {
         if (statisticStub.isCleanupStub())
+        {
             receivedTimestamp = statisticStub.getReceivedTimestamp();
-            final List<QueuedStatistic> objects = statisticByEntity(statisticStub.getStackedEntityIdentifier());
-            switch (objects.size()) {
-                case 0:
-                    return transactionGroupProcessor.createObject((GenericReplicationStub) statisticStub);
-                case 1:
-                    QueuedStatistic objectToUpdate = objects.get(0);
-                    willowUpdater.updateEntityFromStub((GenericReplicationStub) statisticStub, objectToUpdate, transactionGroupProcessor.createRelationShipCallback());
-                    return objectToUpdate;
-                default:
-                    //we should not throw and exception because even if this occurs on next replication data will be correct.
-                    String message = String.format("%s statistic objects found for entity:%s", objects.size(),
-                            statisticStub.getStackedEntityIdentifier());
-                    logger.warn(message);
-                    return null;
-            }
+            return null;
+        }
+        final List<QueuedStatistic> objects = statisticByEntity(statisticStub.getStackedEntityIdentifier());
+        switch (objects.size()) {
+            case 0:
+                return transactionGroupProcessor.createObject((GenericReplicationStub) statisticStub);
+            case 1:
+                QueuedStatistic objectToUpdate = objects.get(0);
+                willowUpdater.updateEntityFromStub((GenericReplicationStub) statisticStub, objectToUpdate, transactionGroupProcessor.createRelationShipCallback());
+                return objectToUpdate;
+            default:
+                //we should not throw and exception because even if this occurs on next replication data will be correct.
+                String message = String.format("%s statistic objects found for entity:%s", objects.size(),
+                        statisticStub.getStackedEntityIdentifier());
+                logger.warn(message);
+                return null;
+        }
     }
 }
