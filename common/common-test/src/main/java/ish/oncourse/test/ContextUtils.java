@@ -137,7 +137,7 @@ public class ContextUtils {
 		dataSource.setUrl("jdbc:derby:memory:" + name + ";create=true");
 		dataSource.setUsername("");
 		dataSource.setPassword("");
-//        dataSource.setMaxActive(100);
+        dataSource.setMaxActive(100);
 		return dataSource;
 	}
 
