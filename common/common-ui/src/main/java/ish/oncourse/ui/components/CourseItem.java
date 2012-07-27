@@ -21,10 +21,6 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//import org.apache.tapestry5.EventConstants;
-//import org.apache.tapestry5.annotations.InjectComponent;
-//import org.apache.tapestry5.annotations.OnEvent;
-
 public class CourseItem {
 
 	private static final int COURSE_DETAILS_LENGTH = 490;

@@ -2,7 +2,10 @@
 	<div class="vevent courseItem">
 		<t:if t:test="isList" negate="true">
 			<h1 class="summary page-title">${courseItemModel.course.name}</h1>
-			<t:if t:test="addThisEnabled">
+            <t:if t:test="courseItemModel.nrt">
+                <img class="NRTLogo" style="float: right;" alt="NRT" src="/s/img/nrt.png"/>
+            </t:if>
+            <t:if t:test="addThisEnabled">
 				<div class="addthis">
 					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
 				</div>
@@ -11,6 +14,9 @@
 			<p:else>
 				<h2>
 					<a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
+                    <t:if t:test="courseItemModel.nrt">
+                        <img class="NRTLogo" style="float: right;" alt="NRT" src="/s/img/nrt.png"/>
+                    </t:if>
 				</h2>
 				<div class="description courseShortDescription">
 
@@ -59,6 +65,10 @@
 				<t:outputraw value="${courseDetail}" />
 			</div>
 		</t:if>
-		
-	</div>
+        <t:if t:test="${courseItemModel.showModules}">
+            <div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
+                 qualification="courseItemModel.course.qualification"
+                 course="courseItemModel.course"></div>
+        </t:if>
+    </div>
 </t:container>

@@ -1,0 +1,27 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<div class="course_modules">
+    <a class="modules_control_${course.id}" href="javascript:return false;">Units taught</a>
+    <div class="modules_${course.id}">
+        <t:if test="qualification">
+            <div class="qualification">Assessments are made against the following units of competency from the ${qualification.title} ${qualification.nationalCode} where there is a qualification linked to the course.</div>
+        </t:if>
+        <ul>
+            <t:loop source="modules" value="module">
+                <li class="module">${module.title} ${module.nationalCode}</li>
+            </t:loop>
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery(".modules_${course.id}").hide();
+            //toggle the componenet with class msg_body
+            jQuery(".modules_control_${course.id}").click(function()
+            {
+                jQuery(this).next(".modules_${course.id}").slideToggle(500);
+            });
+        });
+    </script>
+</div>
+</t:container>
+

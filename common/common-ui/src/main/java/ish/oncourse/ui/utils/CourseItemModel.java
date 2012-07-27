@@ -100,6 +100,6 @@ public class CourseItemModel {
 
     public boolean isShowModules()
     {
-        return course.getQualification() != null && !course.getModules().isEmpty();
+        return !course.getModules().isEmpty();
     }
 }
