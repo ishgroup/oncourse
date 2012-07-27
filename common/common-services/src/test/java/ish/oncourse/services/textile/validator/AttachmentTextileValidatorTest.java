@@ -1,21 +1,20 @@
 package ish.oncourse.services.textile.validator;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AttachmentTextileValidatorTest extends CommonValidatorTest {
@@ -26,28 +25,27 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
 	
 	@Mock
 	private IBinaryDataService binaryDataService;
-	
+
+    @Mock
+    private IFileStorageAssetService fileStorageAssetService;
+
 	@Mock
 	private BinaryInfo binaryInfo;
 	
 	@Mock
 	private BinaryInfo emptyBinaryInfo;
 	
-	private BinaryData binaryData;
 
 	@Override
 	public void init() {
-		validator = new AttachmentTextileValidator(binaryDataService);
+		validator = new AttachmentTextileValidator(binaryDataService,fileStorageAssetService);
 		errors = new ValidationErrors();
-		binaryData = new BinaryData();
-		
+
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(binaryInfo);
-		when(binaryInfo.getBinaryData()).thenReturn(binaryData);
-		
-		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, NOT_EXISTING_ATTACHMENT_NAME)).thenReturn(null);
+        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
+
+        when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, NOT_EXISTING_ATTACHMENT_NAME)).thenReturn(null);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, EMPTY_BINARY_INFO_ATTACHMENT_NAME)).thenReturn(emptyBinaryInfo);
-		
-		when(emptyBinaryInfo.getBinaryData()).thenReturn(null);
 	}
 
 	@Override

@@ -1,22 +1,25 @@
 package ish.oncourse.services.textile.validator;
 
-import java.util.Map;
-
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileType;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.util.ValidationFailureType;
 
+import java.util.Map;
+
 public class AttachmentTextileValidator extends AbstractTextileValidator {
 	
 	private IBinaryDataService binaryDataService;
-	
-	public AttachmentTextileValidator(IBinaryDataService binaryDataService) {
+    private IFileStorageAssetService fileStorageAssetService;
+
+    public AttachmentTextileValidator(IBinaryDataService binaryDataService, IFileStorageAssetService fileStorageAssetService) {
 		this.binaryDataService = binaryDataService;
-	}
+        this.fileStorageAssetService = fileStorageAssetService;
+    }
 	
 	@Override
 	protected void initValidator() {
@@ -37,7 +40,7 @@ public class AttachmentTextileValidator extends AbstractTextileValidator {
 			}
 		}
 		
-		if (result != null && result.getBinaryData() == null) {
+		if (result != null && !fileStorageAssetService.contains(result)) {
 			errors.addFailure(getNotFoundContentMessage(), ValidationFailureType.CONTENT_NOT_FOUND);
 		}
 	}

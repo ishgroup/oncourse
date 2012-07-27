@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Deprecated
 public class BinaryDataServlet extends ServiceAwareServlet {
 	private static final String DIGIT_REGEXP = "\\d+";
 	private static final String DOT_CHARACTER = ".";
@@ -27,13 +28,6 @@ public class BinaryDataServlet extends ServiceAwareServlet {
 					fileName.append(DOT_CHARACTER).append(binaryInfo.getType());
 				}
 				resp.setHeader("Content-disposition", "filename=" + fileName.toString());
-//				OutputStream out = resp.getOutputStream();
-//				final BinaryData binaryData = binaryInfo.getBinaryData();
-//				if (binaryData != null) {
-//					byte[] content = binaryData.getContent();
-//					out.write(content);
-//				}
-//				out.close();
 			}
 		}
 	}

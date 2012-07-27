@@ -1,17 +1,6 @@
 package ish.oncourse.cms.services;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import ish.oncourse.model.BinaryData;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.WebHostName;
-import ish.oncourse.model.WebMenu;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
+import ish.oncourse.model.*;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.binary.IBinaryDataService;
@@ -26,19 +15,17 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.ui.services.UIModule;
-
-import java.io.IOException;
-import java.util.Arrays;
-
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.RequestGlobals;
-import org.apache.tapestry5.services.RequestHandler;
-import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.*;
+
+import java.io.IOException;
+import java.util.Arrays;
+
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 
 @SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
@@ -197,11 +184,9 @@ public class TestModuleForContentStructure {
 		
 		public IBinaryDataService buildBinaryDataServiceOverride() {
 			IBinaryDataService mock = mock(IBinaryDataService.class);
-			BinaryData binaryData = new BinaryData();
 			BinaryInfo binaryInfo = mock(BinaryInfo.class);
 			when(binaryInfo.getReferenceNumber()).thenReturn(REFERENCE_NUMBER_FOR_BINARY_INFO);
-			when(binaryInfo.getBinaryData()).thenReturn(binaryData);
-			
+
 			when(mock.getRandomImage()).thenReturn(
 					binaryInfo);
 

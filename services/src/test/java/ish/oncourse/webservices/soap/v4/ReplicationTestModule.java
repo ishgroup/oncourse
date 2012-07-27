@@ -3,7 +3,6 @@ package ish.oncourse.webservices.soap.v4;
 import ish.oncourse.model.College;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.filestorage.FileStorageAssetService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
@@ -67,7 +66,6 @@ public class ReplicationTestModule {
 		}).withId("WebSiteServiceOverride");
 
 		binder.bind(IPaymentGatewayService.class, TestPaymentGatewayService.class).withId("PaymentGatewayServiceOverride");
-        binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {

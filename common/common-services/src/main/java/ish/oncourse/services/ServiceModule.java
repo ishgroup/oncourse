@@ -25,6 +25,8 @@ import ish.oncourse.services.enrol.EnrolmentServiceImpl;
 import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.filestorage.FileStorageAssetService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -53,17 +55,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
-import ish.oncourse.services.reference.CountryService;
-import ish.oncourse.services.reference.ICountryService;
-import ish.oncourse.services.reference.ILanguageService;
-import ish.oncourse.services.reference.IModuleService;
-import ish.oncourse.services.reference.IQualificationService;
-import ish.oncourse.services.reference.ITrainingPackageService;
-import ish.oncourse.services.reference.LanguageService;
-import ish.oncourse.services.reference.ModuleService;
-import ish.oncourse.services.reference.QualificationService;
-import ish.oncourse.services.reference.ReferenceService;
-import ish.oncourse.services.reference.TrainingPackageService;
+import ish.oncourse.services.reference.*;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
@@ -91,7 +83,6 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -178,6 +169,7 @@ public class ServiceModule {
 		} else {
 			binder.bind(ISMSService.class, DefaultSMSService.class);
 		}
+        binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
 	}
 
 	@Scope("perthread")

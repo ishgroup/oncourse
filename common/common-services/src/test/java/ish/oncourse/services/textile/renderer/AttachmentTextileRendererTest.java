@@ -1,24 +1,23 @@
 package ish.oncourse.services.textile.renderer;
 
-import static org.mockito.Mockito.when;
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.TextileUtil;
 import ish.oncourse.services.textile.attrs.AttachmentTextileAttributes;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AttachmentTextileRendererTest {
@@ -28,7 +27,10 @@ public class AttachmentTextileRendererTest {
 	
 	@Mock
 	private IBinaryDataService binaryDataService;
-	
+
+    @Mock
+    private IFileStorageAssetService fileStorageAssetService;
+
 	@Mock
 	private IPageRenderer pageRenderer;
 	
@@ -42,17 +44,17 @@ public class AttachmentTextileRendererTest {
 	@Before
 	public void init() {
 		errors = new ValidationErrors();
-		attachmentTextileRenderer = new AttachmentTextileRenderer(binaryDataService, pageRenderer);
+		attachmentTextileRenderer = new AttachmentTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
 	}
 	
 	@Test
 	public void testAttachmentRendering() {
-		BinaryData binaryData = new BinaryData();
-		when(binaryInfo.getBinaryData()).thenReturn(binaryData);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_ATTACHMENT_NAME))
 				.thenReturn(binaryInfo);
-		
-		Map<String, Object> params = new HashMap<String, Object>();
+        when(fileStorageAssetService.contains(binaryInfo))
+                .thenReturn(Boolean.TRUE);
+
+        Map<String, Object> params = new HashMap<String, Object>();
 		Map<String, Object> attachmentParams = new HashMap<String, Object>();
 		attachmentParams.put(AttachmentTextileAttributes.ATTACHMENT_PARAM_NAME.getValue(), TEST_ATTACHMENT_NAME);
 		params.put(TextileUtil.TEXTILE_ATTACHMENT_PAGE_PARAM, attachmentParams);

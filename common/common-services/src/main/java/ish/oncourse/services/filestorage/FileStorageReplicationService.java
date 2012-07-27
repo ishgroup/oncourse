@@ -6,7 +6,7 @@ import java.io.File;
 
 public class FileStorageReplicationService {
     private static final Logger LOGGER = Logger.getLogger(FileStorageReplicationService.class);
-    final static String ENV_NAME_syncScript = "asset.syncScript";
+    public final static String ENV_NAME_syncScript = "asset.syncScript";
     private String syncScriptPath;
 
 

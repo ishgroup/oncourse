@@ -3,35 +3,25 @@ package ish.oncourse.services.textile;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
-import ish.oncourse.services.textile.renderer.AttachmentTextileRenderer;
-import ish.oncourse.services.textile.renderer.BlockTextileRenderer;
-import ish.oncourse.services.textile.renderer.CourseListTextileRenderer;
-import ish.oncourse.services.textile.renderer.CourseTextileRenderer;
-import ish.oncourse.services.textile.renderer.FormTextileRenderer;
-import ish.oncourse.services.textile.renderer.IRenderer;
-import ish.oncourse.services.textile.renderer.ImageTextileRenderer;
-import ish.oncourse.services.textile.renderer.PageTextileRenderer;
-import ish.oncourse.services.textile.renderer.TagsTextileRenderer;
-import ish.oncourse.services.textile.renderer.VideoTextileRenderer;
+import ish.oncourse.services.textile.renderer.*;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
+import net.java.textilej.parser.MarkupParser;
+import net.java.textilej.parser.builder.HtmlDocumentBuilder;
+import net.java.textilej.parser.markup.textile.TextileDialect;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import net.java.textilej.parser.MarkupParser;
-import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import net.java.textilej.parser.markup.textile.TextileDialect;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class TextileConverter implements ITextileConverter {
 
@@ -55,6 +45,9 @@ public class TextileConverter implements ITextileConverter {
 	@Inject
 	private ITagService tagService;
 
+    @Inject
+    private IFileStorageAssetService fileStorageAssetService;
+
 	private Map<TextileType, IRenderer> renderers = new HashMap<TextileType, IRenderer>();
 
 	@SuppressWarnings("all")
@@ -68,15 +61,19 @@ public class TextileConverter implements ITextileConverter {
 		this.extractor = extractor;
 	}
 
-	public TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
+    /**
+     *This constructor is used only for test
+     */
+	TextileConverter(IBinaryDataService binaryDataService, IWebContentService webContentService,
 			ICourseService courseService, IPageRenderer pageRenderer, IWebNodeService webNodeService,
-			ITagService tagService) {
+			ITagService tagService, IFileStorageAssetService fileStorageAssetService) {
 		this.binaryDataService = binaryDataService;
 		this.webContentService = webContentService;
 		this.courseService = courseService;
 		this.pageRenderer = pageRenderer;
 		this.webNodeService = webNodeService;
 		this.tagService = tagService;
+        this.fileStorageAssetService = fileStorageAssetService;
 	}
 
 	public String convertCoreTextile(String content) {
@@ -177,7 +174,7 @@ public class TextileConverter implements ITextileConverter {
 	private IRenderer createRendererForType(TextileType type) {
 		switch (type) {
 		case IMAGE:
-			return new ImageTextileRenderer(binaryDataService, pageRenderer);
+			return new ImageTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
 		case BLOCK:
 			return new BlockTextileRenderer(webContentService, this);
 		case VIDEO:
@@ -193,7 +190,7 @@ public class TextileConverter implements ITextileConverter {
 		case FORM:
 			return new FormTextileRenderer(pageRenderer);
 		case ATTACHMENT:
-			return new AttachmentTextileRenderer(binaryDataService, pageRenderer);
+			return new AttachmentTextileRenderer(binaryDataService, fileStorageAssetService, pageRenderer);
 		}
 		return null;
 	}

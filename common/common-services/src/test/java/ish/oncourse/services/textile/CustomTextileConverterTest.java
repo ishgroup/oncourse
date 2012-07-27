@@ -1,31 +1,25 @@
 package ish.oncourse.services.textile;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
-
-import ish.oncourse.model.BinaryData;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebNode;
+import ish.oncourse.model.*;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomTextileConverterTest {
@@ -81,9 +75,11 @@ public class CustomTextileConverterTest {
 	@Mock
 	private BinaryInfo binaryInfo;
 
+    @Mock
+    private IFileStorageAssetService fileStorageAssetService;
+
 	private ITextileConverter textileConverter;
 
-	private BinaryData binaryData;
 
 	private WebContent webContent;
 
@@ -97,7 +93,7 @@ public class CustomTextileConverterTest {
 	public void init() {
 		errors = new ValidationErrors();
 		textileConverter = new TextileConverter(binaryDataService, webContentService, courseService, pageRenderer,
-				webNodeService, tagService);
+				webNodeService, tagService,fileStorageAssetService);
 	}
 
 	/**
@@ -106,11 +102,10 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void smokeImageConvertTest() {
-		binaryData = new BinaryData();
 		when(binaryInfo.getReferenceNumber()).thenReturn(TEST_BINARYINFO_REFERENCE_NUMBER);
 		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
-		when(binaryInfo.getBinaryData()).thenReturn(binaryData);
-		String successfulResult = "successfully rendered image block";
+        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
+        String successfulResult = "successfully rendered image block";
 		testPageRenderParams(IMAGE_BY_REF_NUMBER, TextileUtil.TEXTILE_IMAGE_PAGE, successfulResult);
 
 	}
@@ -121,11 +116,10 @@ public class CustomTextileConverterTest {
 	 */
 	@Test
 	public void smokeAttachmentConvertTest() {
-		binaryData = new BinaryData();
 		when(binaryInfo.getName()).thenReturn(TEST_ATTACHMENT_NAME);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(binaryInfo);
-		when(binaryInfo.getBinaryData()).thenReturn(binaryData);
-		String successfulResult = "successfully rendered attachment block";
+        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
+        String successfulResult = "successfully rendered attachment block";
 		testPageRenderParams(ATTACHMENT_BY_NAME, TextileUtil.TEXTILE_ATTACHMENT_PAGE, successfulResult);
 	}
 
@@ -154,10 +148,9 @@ public class CustomTextileConverterTest {
 		webContent.setContent(COMPLEX_WEB_BLOCK_CONTENT);
 		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
 		reset(binaryDataService);
-		binaryData = new BinaryData();
 		when(binaryInfo.getReferenceNumber()).thenReturn(TEST_BINARYINFO_REFERENCE_NUMBER);
 		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
-		when(binaryInfo.getBinaryData()).thenReturn(binaryData);
+        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
 
 		String successfulResult = "successfully rendered image block";
 
@@ -176,7 +169,7 @@ public class CustomTextileConverterTest {
 	@Test
 	public void smokeVideoConvertTest() {
 		String successfulResult = "successfully rendered video block";
-		testPageRenderParams(VIDEO, TextileUtil.TEXTILE_VIDEO_PAGE, successfulResult);
+        testPageRenderParams(VIDEO, TextileUtil.TEXTILE_VIDEO_PAGE, successfulResult);
 	}
 
 	/**

@@ -12,7 +12,7 @@ public class FileStorageService {
 
     private static final Logger LOGGER = Logger.getLogger(FileStorageService.class);
 
-    final static String ENV_NAME_fileStorageRoot = "asset.fileStorageRoot";
+    public final static String ENV_NAME_fileStorageRoot = "asset.fileStorageRoot";
 
     private File rootDir;
 

@@ -1,21 +1,21 @@
 package ish.oncourse.services.textile.validator;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import ish.oncourse.model.BinaryData;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.services.binary.IBinaryDataService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.textile.attrs.ImageTextileAttributes;
 import ish.oncourse.util.ValidationErrors;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ImageTextileValidatorTest extends CommonValidatorTest {
@@ -29,7 +29,9 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 	private static final Integer REF_NUM_OF_EMPTY_BINARY_INFO = 0;
 	@Mock
 	private IBinaryDataService binaryDataService;
-	private BinaryData binaryData;
+
+    @Mock
+    private IFileStorageAssetService fileStorageAssetService;
 	@Mock
 	private BinaryInfo binaryInfo;
 	@Mock
@@ -91,22 +93,20 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 
 	@Override
 	public void init() {
-		validator = new ImageTextileValidator(binaryDataService);
+		validator = new ImageTextileValidator(binaryDataService, fileStorageAssetService);
 		errors = new ValidationErrors();
-		binaryData = new BinaryData();
 		when(binaryDataService.getBinaryInfoByReferenceNumber(TEST_BINARYINFO_REFERENCE_NUMBER)).thenReturn(binaryInfo);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(binaryInfo);
 		when(binaryDataService.getBinaryInfoByReferenceNumber(REF_NUM_OF_EMPTY_BINARY_INFO))
 				.thenReturn(emptyBinaryInfo);
 		when(binaryDataService.getBinaryInfoByReferenceNumber(NOT_EXISTING_REFERENCE_NUMBER)).thenReturn(null);
 		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, NOT_EXISTING_NAME)).thenReturn(null);
-		when(binaryInfo.getBinaryData()).thenReturn(binaryData);
 		when(binaryInfo.getReferenceNumber()).thenReturn(TEST_BINARYINFO_REFERENCE_NUMBER);
 
-		when(emptyBinaryInfo.getBinaryData()).thenReturn(null);
 		when(emptyBinaryInfo.getReferenceNumber()).thenReturn(REF_NUM_OF_EMPTY_BINARY_INFO);
 
-	}
+        when(fileStorageAssetService.contains(binaryInfo)).thenReturn(Boolean.TRUE);
+    }
 
 	/**
 	 * Image textile should have at least one of the required parameters: name

@@ -1,14 +1,6 @@
 package ish.oncourse.test;
 
 import ish.math.MoneyType;
-
-import java.util.Collections;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataNode;
@@ -18,6 +10,12 @@ import org.apache.cayenne.dba.derby.DerbyAdapter;
 import org.apache.cayenne.map.DataMap;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.commons.dbcp.BasicDataSource;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.util.Collections;
 
 /**
  * The class for {@link InitialContext} setup.
@@ -139,6 +137,7 @@ public class ContextUtils {
 		dataSource.setUrl("jdbc:derby:memory:" + name + ";create=true");
 		dataSource.setUsername("");
 		dataSource.setPassword("");
+//        dataSource.setMaxActive(100);
 		return dataSource;
 	}
 

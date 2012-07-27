@@ -5,11 +5,9 @@ import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -18,6 +16,10 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BinaryDataService implements IBinaryDataService {
 
@@ -31,6 +33,9 @@ public class BinaryDataService implements IBinaryDataService {
 	
 	@Inject
 	private ApplicationStateManager applicationStateManager;
+
+    @Inject
+    private IFileStorageAssetService fileStorageAssetService;
 
 	@Override
 	public BinaryInfo getBinaryInfoById(Object id) {
@@ -79,9 +84,9 @@ public class BinaryDataService implements IBinaryDataService {
 				.localObject(currentCollege.getObjectId(), null));
 		if (showOnlyPublic) {
 			if (showStudentsAttachments()) {
-				qualifier = qualifier.andExp(ExpressionFactory.noMatchExp(BinaryInfo.IS_WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PRIVATE));
+				qualifier = qualifier.andExp(ExpressionFactory.noMatchExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PRIVATE));
 			} else {
-				qualifier = qualifier.andExp(ExpressionFactory.matchExp(BinaryInfo.IS_WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PUBLIC));
+				qualifier = qualifier.andExp(ExpressionFactory.matchExp(BinaryInfo.WEB_VISIBLE_PROPERTY, AttachmentInfoVisibility.PUBLIC));
 			}
 		}
 		return qualifier;
@@ -96,7 +101,7 @@ public class BinaryDataService implements IBinaryDataService {
 		BinaryInfo randomResult = null;
 		int attempt = 0;
 		if (count > 0) {
-			while ((randomResult == null || randomResult.getBinaryData() == null) && attempt++ < 5) {
+			while ((randomResult == null || !fileStorageAssetService.contains(randomResult) ) && attempt++ < 5) {
 				int random = new Random().nextInt(count.intValue());
 
 				SelectQuery query = new SelectQuery(BinaryInfo.class, qualifier);
