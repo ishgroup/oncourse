@@ -56,7 +56,7 @@
 				</dependencies>
 				<configuration>
 					<forkMode>once</forkMode>
-					<forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
+					<forkedProcessTimeoutInSeconds>6000</forkedProcessTimeoutInSeconds>
 					<threadCount>1</threadCount>
 					<useUnlimitedThreads>false</useUnlimitedThreads>
 				</configuration>
