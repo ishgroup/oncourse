@@ -15,18 +15,34 @@ public class PaymentResult {
 	private PaymentIn payment;
 
 	private boolean isTryOtherCard;
-
 	private boolean isAbandonReverse;
+	private Exception unexpectedException;
 
 	@Inject
 	private ComponentResources componentResources;
-
+	
 	public boolean isPaymentFailed() {
-		return PaymentStatus.STATUSES_FAILED.contains(payment.getStatus()) && !Payment.isPaymentCanceled(payment);
+		return isFailedPayment(payment) && !Payment.isPaymentCanceled(payment);
+	}
+	
+	public static boolean isFailedPayment(final PaymentIn paymentIn) {
+		return PaymentStatus.STATUSES_FAILED.contains(paymentIn.getStatus());
+	}
+	
+	public static boolean isNewPayment(final PaymentIn paymentIn) {
+		return PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus()) || PaymentStatus.CARD_DETAILS_REQUIRED.equals(paymentIn.getStatus());
+	}
+	
+	public static boolean isSuccessPayment(final PaymentIn paymentIn) {
+		return PaymentStatus.SUCCESS.equals(paymentIn.getStatus());
+	}
+	
+	public boolean isNotProcessed() {
+		return isNewPayment(payment);
 	}
 	
 	public boolean isPaymentSuccess() {
-		return PaymentStatus.SUCCESS.equals(payment.getStatus());
+		return isSuccessPayment(payment);
 	}
 
 	public boolean isPaymentStatusNodeNullTransactionResponse() {
@@ -51,9 +67,7 @@ public class PaymentResult {
 
 	@OnEvent(component = "paymentResultForm", value = "success")
 	Object submitted() {
-		
 		Payment paymentPage = (Payment) componentResources.getPage();
-
 		if (isTryOtherCard) {
 			return paymentPage.tryOtherCard();
 		} else if (isAbandonReverse) {
@@ -61,5 +75,19 @@ public class PaymentResult {
 		} else {
 			return paymentPage.abandonPaymentKeepInvoice();
 		}
+	}
+
+	/**
+	 * @return the unexpectedException
+	 */
+	public Exception getUnexpectedException() {
+		return unexpectedException;
+	}
+
+	/**
+	 * @param unexpectedException the unexpectedException to set
+	 */
+	public void setUnexpectedException(Exception unexpectedException) {
+		this.unexpectedException = unexpectedException;
 	}
 }

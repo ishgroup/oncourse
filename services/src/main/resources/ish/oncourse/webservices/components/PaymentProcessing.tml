@@ -11,6 +11,6 @@
 		</div>
 	</t:block>
 	<t:block id="paymentResultBlock">
-		<span t:type="PaymentResult" payment="payment" />
+		<span t:type="PaymentResult" t:id="result" payment="payment"/>
 	</t:block>
 </t:container>

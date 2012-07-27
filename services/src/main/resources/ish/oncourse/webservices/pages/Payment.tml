@@ -36,7 +36,7 @@
 		   <t:if test="showPaymentResult">
 		   		<t:delegate to="paymentResultBlock"/>
 		   		<p:else>
-		   			<t:if test="paymentBeingProcessed">
+		   			<t:if test="checkoutResult">
 		   				<t:delegate to="progressDisplayBlock" />
 		   				<p:else>
 		   					<span t:id="paymentForm" t:type="PaymentForm" payment="payment"/>
@@ -45,7 +45,12 @@
 		   		</p:else>
 		   </t:if>
 		</t:zone>
-		
+		<t:if test="checkoutResult">
+			<t:PaymentProcessing t:id="resultComponent"/>
+			<p:else>
+				<t:PaymentResult t:id="result" payment="payment"/>
+			</p:else>
+		</t:if>
 		<t:block id="progressDisplayBlock">
 			<span t:type="PaymentProcessing" payment="payment" />
 		</t:block>

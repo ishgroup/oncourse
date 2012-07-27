@@ -4,11 +4,9 @@ import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.pages.Payment;
 import ish.persistence.CommonPreferenceController;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
@@ -24,7 +22,6 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 
 public class PaymentForm {
 	
@@ -90,6 +87,7 @@ public class PaymentForm {
 	 */
 	private boolean isSubmitted;
 	
+	@SuppressWarnings("all")
 	@Inject
 	private Request request;
 	
@@ -118,7 +116,10 @@ public class PaymentForm {
 		if (!isSubmitted) {
 			return;
 		}
-
+		if (getPaymentPage().isPersistCleared()) {
+			//nothing to validate if data were cleaned
+			return;
+		}
 		if (!payment.validateCCType()) {
 			paymentDetailsForm.recordError(cardTypeField,
 					messages.get("cardTypeErrorMessage"));
@@ -179,15 +180,16 @@ public class PaymentForm {
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
 		Payment paymentPage = getPaymentPage();
-		Session session = request.getSession(true);
+		synchronized (paymentPage.getContext()) {
 			if (isSubmitted) {
 				return paymentPage.submitToGateway();
 			} else {
-				if (paymentPage.isPaymentProcessed() || Boolean.TRUE.equals(session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM))) {
+				if (paymentPage.isPaymentProcessed() && !paymentPage.isCheckoutResult()) {
 					return paymentPage.submitToGateway();
 				}
 				return paymentPage.cancelPayment();
 			}
+		}	
 	}
 
 	public CreditCardType getMasterCard() {
