@@ -42,7 +42,8 @@ public class QueuedStatisticProcessor {
         SelectQuery q = new SelectQuery(QueuedStatistic.class);
         q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
         q.andQualifier(ExpressionFactory.lessExp(QueuedStatistic.RECEIVED_TIMESTAMP_PROPERTY, receivedTimestamp));
-        List<QueuedStatistic> statisticForDelete = atomicContext.performQuery(q);
+        @SuppressWarnings("unchecked")
+		List<QueuedStatistic> statisticForDelete = atomicContext.performQuery(q);
         if (!statisticForDelete.isEmpty()) {
             atomicContext.deleteObjects(statisticForDelete);
         }
@@ -53,7 +54,8 @@ public class QueuedStatisticProcessor {
         receivedTimestamp = null;
     }
 
-    private List<QueuedStatistic> statisticByEntity(final String entityName) {
+    @SuppressWarnings("unchecked")
+	private List<QueuedStatistic> statisticByEntity(final String entityName) {
         SelectQuery q = new SelectQuery(QueuedStatistic.class);
         q.andQualifier(ExpressionFactory.matchDbExp(QueuedStatistic.ENTITY_IDENTIFIER_PROPERTY, entityName));
         q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
