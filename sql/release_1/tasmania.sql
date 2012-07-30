@@ -55,8 +55,5 @@ INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) S
 -- Footer position
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '660',0,'footer' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
 
--- Changing HomePage theme
-UPDATE WebNode 
-SET WebNode.webNodeTypeId = WebNodeType.id 
-FROM WebNodeType  
-WHERE  WebNode.name = 'Home Page' AND WebNode.webSiteId = 15 AND WebNodeType.webSiteId = 15 and WebNodeType.name = 'HomePage';
+-- Changing HomePage theme the easy way
+UPDATE WebNode SET webNodeTypeId = (SELECT id from WebNodeType WHERE webSiteId = 15 AND name = 'HomePage') WHERE name = 'Home Page' AND webSiteId = 15;
