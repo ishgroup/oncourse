@@ -1,4 +1,4 @@
-<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<section class="site-wrapper" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<section class="site-container" id="container">
 		<header class="site-header" id="header">
 			<div t:type="ui/bodyheader" />
@@ -13,7 +13,7 @@
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:left" />
 			</aside>
 			<article class="content" id="content">
-				<t:if t:test="college.paymentGatewayEnabled">
+				<t:if t:test="paymentGatewayEnabled">
 					<div class="confirmOrderDialog dialogContainer">
 						<p class="confirm-message">
 							<strong class="confirm-txt">Thanks for adding:</strong>

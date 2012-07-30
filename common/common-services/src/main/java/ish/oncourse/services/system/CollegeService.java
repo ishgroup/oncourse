@@ -9,12 +9,6 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -25,6 +19,11 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -144,7 +143,6 @@ public class CollegeService implements ICollegeService {
 		college.setNationalProviderCode(null);
 		college.setPaymentGatewayAccount(null);
 		college.setPaymentGatewayPass(null);
-		college.setPaymentGatewayType(null);
 		college.setRequiresAvetmiss(false);
 		college.setWebServicesLogin(null);
 		college.setWebServicesPass(null);

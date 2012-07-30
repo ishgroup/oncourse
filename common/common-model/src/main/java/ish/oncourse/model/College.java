@@ -2,17 +2,16 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._College;
 import ish.oncourse.utils.QueueableObjectUtils;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class College extends _College {
 	private static final long serialVersionUID = 8618498696778850266L;
@@ -42,15 +41,6 @@ public class College extends _College {
 			}
 		}
 		return activeConcessionTypes;
-	}
-
-	/**
-	 * Checks if the payment gateway processing is enabled for this college
-	 * 
-	 * @return
-	 */
-	public boolean isPaymentGatewayEnabled() {
-		return getPaymentGatewayType() != null && !PaymentGatewayType.DISABLED.equals(getPaymentGatewayType());
 	}
 
 	/**

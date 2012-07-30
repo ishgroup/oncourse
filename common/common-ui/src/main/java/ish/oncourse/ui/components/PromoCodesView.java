@@ -3,14 +3,14 @@ package ish.oncourse.ui.components;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Discount;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.List;
-
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 /**
  * The component that displays the list of discounts added by promocodes and
@@ -29,6 +29,9 @@ public class PromoCodesView {
 	 */
 	@Inject
 	private IDiscountService discountService;
+
+    @Inject
+    private PreferenceController preferenceController;
 
 	/**
 	 * The list of promotions to be displayed.
@@ -61,4 +64,8 @@ public class PromoCodesView {
 		return request.getServerName();
 	}
 
+
+    public boolean isPaymentGatewayEnabled() {
+        return preferenceController.isPaymentGatewayEnabled();
+    }
 }

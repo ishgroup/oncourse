@@ -1,6 +1,9 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
+import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -186,7 +189,7 @@ public class CourseClassItem {
 	}
 	
 	public boolean isPaymentGatewayEnabled() {
-		return courseClass != null && !PaymentGatewayType.DISABLED.equals(preferenceController.getPaymentGatewayType());
+		return courseClass != null && preferenceController.isPaymentGatewayEnabled();
 	}
 	
 	public boolean isHasManySessions() {

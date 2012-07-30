@@ -8,12 +8,6 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.utils.DiscountUtils;
-
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.Parameter;
@@ -21,10 +15,18 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.text.Format;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class CourseClassPrice {
 
 	@Inject
 	private IDiscountService discountService;
+
+    @Inject
+    private PreferenceController preferenceController;
 
 	@SuppressWarnings("all")
 	@Inject
@@ -134,5 +136,9 @@ public class CourseClassPrice {
 		feeFormat = FormatUtils.chooseMoneyFormat(discountedFee);
 		return discountedFee;
 	}
+
+    public boolean isPaymentGatewayEnabled() {
+        return preferenceController.isPaymentGatewayEnabled();
+    }
 
 }

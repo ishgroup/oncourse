@@ -28,7 +28,7 @@
 				</p:else>
 			</t:if>
 		</t:if> 
-		<t:if t:test="courseClass.college.paymentGatewayEnabled">
+		<t:if t:test="paymentGatewayEnabled">
 			<t:loop source="discountsWithConcessions" value="discountItem">
 				<span class="discount-price">/</span>
 				<acronym class="discount-price" title="${discountItem.name}">

@@ -469,7 +469,7 @@ public class EnrolCourses {
      * @return true if payment gateway is enabled.
      */
     public boolean isPaymentGatewayEnabled() {
-        return !PaymentGatewayType.DISABLED.equals(preferenceController.getPaymentGatewayType());
+        return preferenceController.isPaymentGatewayEnabled();
     }
 
     public boolean isShowConcessionsArea() {

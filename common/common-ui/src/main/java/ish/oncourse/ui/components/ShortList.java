@@ -1,17 +1,11 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
-
-import java.text.Format;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -19,6 +13,10 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.text.Format;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Based on DynamicCookieView
@@ -123,7 +121,7 @@ public class ShortList {
 	 * @return true if payment gateway is enabled.
 	 */
 	public boolean isPaymentGatewayEnabled() {
-		return !PaymentGatewayType.DISABLED.equals(preferenceController.getPaymentGatewayType());
+		return preferenceController.isPaymentGatewayEnabled();
 	}
 
 	public String getClassForList() {

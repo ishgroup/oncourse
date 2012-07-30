@@ -6,14 +6,13 @@ import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.persistence.CommonPreferenceController;
-
-import java.util.List;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.List;
 
 public class PreferenceController extends CommonPreferenceController {
 
@@ -551,4 +550,8 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setPaymentGatewayType(PaymentGatewayType value) {
 		setValue(PAYMENT_GATEWAY_TYPE, false, value.toString());
 	}
+
+    public synchronized boolean isPaymentGatewayEnabled() {
+        return !PaymentGatewayType.DISABLED.equals(this.getPaymentGatewayType());
+    }
 }
