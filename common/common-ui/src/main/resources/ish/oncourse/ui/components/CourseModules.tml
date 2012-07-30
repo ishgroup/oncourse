@@ -1,16 +1,21 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 <div class="course_modules">
+    <t:if test="qualification">
+        <div class="qualification">Assessments are made against the following units of competency from the ${qualification.level} ${qualification.title} ${qualification.nationalCode}</div>
+        <p:else>
+            <div class="qualification">Assessments are made against the following units of competency</div>
+        </p:else>
+    </t:if>
     <a class="modules_control_${course.id}" href="javascript:return false;">Units taught</a>
+
     <div class="modules_${course.id}">
-        <t:if test="qualification">
-            <div class="qualification">Assessments are made against the following units of competency from the ${qualification.title} ${qualification.nationalCode} where there is a qualification linked to the course.</div>
-        </t:if>
         <ul>
             <t:loop source="modules" value="module">
                 <li class="module">${module.title} ${module.nationalCode}</li>
             </t:loop>
         </ul>
     </div>
+
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
