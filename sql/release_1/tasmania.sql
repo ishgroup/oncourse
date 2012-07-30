@@ -1,4 +1,4 @@
-UPDATE WebContent set content = 'h1. Courses open for enrolment
+UPDATE WebContent set content_textile = 'h1. Courses open for enrolment
 
 LearnXpress offers a range of course in leisure and lifestyle activities as well as courses to learn new skills -for work and for life - for all Tasmanians.
 
@@ -6,7 +6,7 @@ Discover your hidden talents, meet new people, unwind, get fit, be creative or p
 
 {tags hideTopLevel:"true" maxLevels:"2"}' WHERE id = 1298 AND webSiteId = 15;
 
-UPDATE WebContent set content_textile = '<h1 id="Coursesopenforenrolment">Courses open for enrolment</h1>
+UPDATE WebContent set content = '<h1 id="Coursesopenforenrolment">Courses open for enrolment</h1>
 <p>LearnXpress offers a range of course in leisure and lifestyle activities as well as courses to learn new 
 skills - for work and for life &ndash; for all Tasmanians.</p><p>Discover your hidden talents, meet new people, unwind, get fit, be creative or pursue a passion by 
 enrolling in one of our popular courses today!</p>
