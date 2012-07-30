@@ -30,3 +30,33 @@ INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) V
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,653,3,'left');
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,657,4,'left');
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,655,5,'left');
+
+-- This should create the new theme and add the homepage to it.
+
+-- Creating the new theme HomePage
+INSERT into WebNodeType (webSiteId, name, layoutKey, created, modified) VALUES (15, 'HomePage', 'default',CURDATE(), CURDATE())
+
+-- Left position 
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '654',0,'left' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '652',1,'left' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '658',2,'left' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '653',3,'left' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '657',4,'left' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '655',5,'left' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+-- Header position
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '659',0,'header' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+-- Footer position
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '660',0,'footer' FROM WebNodeType where name = 'HomePage' AND webSiteId = 15;
+
+-- Changing HomePage theme
+UPDATE WebNode 
+SET WebNode.webNodeTypeId = WebNodeType.id 
+FROM WebNodeType  
+WHERE  WebNode.name = 'Home Page' AND WebNode.webSiteId = 15 AND WebNodeType.webSiteId = 15 and WebNodeType.name = 'HomePage';
