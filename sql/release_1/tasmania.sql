@@ -1,3 +1,4 @@
+-- Home Page content
 UPDATE WebContent set content_textile = 'h1. Courses open for enrolment
 
 LearnXpress offers a range of course in leisure and lifestyle activities as well as courses to learn new skills -for work and for life - for all Tasmanians.
@@ -15,6 +16,7 @@ where id = 1298 AND webSiteId = 15;
 
 UPDATE WebContentVisibility set regionKey = 'content' WHERE WebContentId = 1298;
 
+-- Content not needed
 DELETE FROM WebContentVisibility WHERE WebContentId = 46 and regionKey = 'footer';
 DELETE FROM WebContentVisibility WHERE WebContentId = 94 and regionKey = 'header';
 DELETE FROM WebContentVisibility WHERE WebContentId = 122 and regionKey = 'left';
@@ -23,13 +25,16 @@ DELETE FROM WebContentVisibility WHERE WebContentId = 638 and regionKey = 'conte
 DELETE FROM WebContentVisibility WHERE WebContentId = 639 and regionKey = 'right';
 DELETE FROM WebContentVisibility WHERE WebContentId = 645 and regionKey = 'header';
 
-
+-- Layout for the page theme
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,654,0,'left');
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,652,1,'left');
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,658,2,'left');
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,653,3,'left');
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,657,4,'left');
 INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,655,5,'left');
+
+-- Page theme footer
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES (54,660,0,'footer');
 
 -- This should create the new theme and add the homepage to it.
 
