@@ -31,7 +31,7 @@ fi
 /usr/bin/sed -f edit.sed dataMigration.sql > tmp.sql
 
 /bin/echo "#run the migration"
-/usr/local/bin/mysql -h ${mysqlhost} -u${mysqluser} -p${mysqlpass}   < tmp.sql
+#/usr/local/bin/mysql -h ${mysqlhost} -u${mysqluser} -p${mysqlpass}   < tmp.sql
 
 /bin/echo "#Grab blob values from table and set them into a values_string column as text"
 /usr/local/bin/javac stagingMigratePreferences.java
@@ -39,6 +39,6 @@ fi
 
 #clean up
 /bin/rm -f *.class
-/bin/rm -f tmp.sql
+#/bin/rm -f tmp.sql
 /bin/rm -f edit.sed
 
