@@ -26,15 +26,15 @@ DELETE FROM WebContentVisibility WHERE WebContentId = 639 and regionKey = 'right
 DELETE FROM WebContentVisibility WHERE WebContentId = 645 and regionKey = 'header';
 
 -- Layout for the page theme
-INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES SELECT id, '654',0,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
-INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES SELECT id, '652',1,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
-INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES SELECT id, '658',2,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
-INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES SELECT id, '653',3,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
-INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES SELECT id, '657',4,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
-INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES SELECT id, '655',5,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '654',0,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '652',1,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '658',2,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '653',3,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '657',4,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '655',5,'left' FROM WebNodeType where name = 'page' AND webSiteId = 15;
 
 -- Page theme footer
-INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) VALUES SELECT id, '660',0,'footer' FROM WebNodeType where name = 'page' AND webSiteId = 15;
+INSERT INTO WebContentVisibility (WebNodeTypeId,WebContentId,weight,regionKey) SELECT id, '660',0,'footer' FROM WebNodeType where name = 'page' AND webSiteId = 15;
 
 -- This should create the new theme and add the homepage to it.
 
