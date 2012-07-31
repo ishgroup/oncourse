@@ -74,7 +74,10 @@ public enum PageIdentifier {
 
 	PageNotFound(".", "ui/PageNotFound"),
 
-	SiteNotFound(".", "ui/SiteNotFound");
+	SiteNotFound(".", "ui/SiteNotFound"),
+    ISHHealthCheck("/ishhealthcheck", "ish/ISHHealthCheck");
+
+
 
 	private Pattern pattern;
 	private String pageName;

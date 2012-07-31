@@ -85,11 +85,13 @@ import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
+import org.apache.tapestry5.services.LibraryMapping;
 
 /**
  * A Tapestry IoC module definition for all common services.
@@ -190,4 +192,9 @@ public class ServiceModule {
 		// used each time.
 		configuration.add(SymbolConstants.APPLICATION_VERSION, "2");
 	}
+
+    public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
+        configuration.add(new LibraryMapping("ish", "ish.oncourse"));
+    }
+
 }
