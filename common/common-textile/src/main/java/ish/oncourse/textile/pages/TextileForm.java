@@ -28,7 +28,7 @@ public class TextileForm {
 	private static final String ERROR_MESSAGE = "Contact support@ish.com.au, some exception occured.";
 
 	private static final String EMAIL_FORM_NAME = "emailForm";
-	
+
 	private static final String EMAIL_DELIMITER = ",";
 
 	@Property
@@ -82,7 +82,7 @@ public class TextileForm {
 
 	@Property
 	private Integer formIndex;
-	
+
 	public String getTextileFormId() {
 		return formIndex + "TextileForm";
 	}
@@ -103,7 +103,7 @@ public class TextileForm {
 		emailValue = (String) request.getAttribute(TextileUtil.TEXTILE_FORM_PAGE_EMAIL_PARAM);
 		EmailValidator validator = EmailValidator.getInstance();
 		String emailFromAddress = preferenceController.getEmailFromAddress();
-		
+
 		boolean isValid = false;
 		if (emailValue != null) {
 			isValid = true;
@@ -115,7 +115,7 @@ public class TextileForm {
 				}
 			}
 		}
-		
+
 		shouldSend = emailValue != null && isValid && emailFromAddress != null
 				&& validator.isValid(emailFromAddress);
 		if (emailValue != null) {
@@ -152,65 +152,68 @@ public class TextileForm {
 
 	/**
 	 * Handles ajax call to send.
-	 * 
+	 *
 	 * @return json-status
 	 */
 	StreamResponse onActionFromSend() {
 
-		String emailTo = request.getParameter(EMAIL_FIELD_NAME);
-		if (emailTo != null) {
-			try {
-				String[] splitted = emailTo.split("_");
-				byte[] encryptedBytes = new byte[splitted.length];
-				for (int i = 0; i < splitted.length; i++) {
-					encryptedBytes[i] = Byte.parseByte(splitted[i]);
-				}
-				emailTo = encryptionService.decrypt(encryptedBytes);
-				
-				if (emailTo != null) {
-					for (String email : emailTo.split(EMAIL_DELIMITER)) {
-						if (EmailValidator.getInstance().isValid(email)) {
-							
-							List<String> parameterNames = request.getParameterNames();
+        if (request.isXHR())
+        {
+            String emailTo = request.getParameter(EMAIL_FIELD_NAME);
+            if (emailTo != null) {
+                try {
+                    String[] splitted = emailTo.split("_");
+                    byte[] encryptedBytes = new byte[splitted.length];
+                    for (int i = 0; i < splitted.length; i++) {
+                        encryptedBytes[i] = Byte.parseByte(splitted[i]);
+                    }
+                    emailTo = encryptionService.decrypt(encryptedBytes);
 
-							String pagePath = request.getParameter("pagePath");
-							// FIXME extract js to the separate file(where "&" is
-							// allowed to be used) and remove this
-							if (pagePath == null) {
-								pagePath = request.getParameter("amp;pagePath");
-							}
-							
-							StringBuffer body = new StringBuffer("----------------\nA user submitted a form at http://")
-								.append(request.getServerName()).append("/").append(pagePath)
-								.append(" with the following information:\n");
-							
-							for (String name : parameterNames) {
-								if (name.endsWith("_input")) {
-									body.append(name.split("_")[1]).append(": ").append(request.getParameter(name))
-											.append("\n");
-								}
-							}
-							body.append("----------------");
-							if (!mailService.sendMail(null, email, "Submitted via website", body.toString())) {
-								LOGGER.error("Failed to send mail");
-								return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
-							}
-						} else {
-							LOGGER.error("Recipient email is not valid:" + email);
-							return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
-						}
-					}
-					
-					return new TextStreamResponse(CONTENT_TYPE,
-							"Thank you for your submission. The information has been supplied to "
-							+ webSiteService.getCurrentCollege().getName() + ".");
-				}
-			} catch (Exception e) {
-				LOGGER.error("Failed to send mail with exception " + e.getMessage());
-				return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
-			}
-			
-		}
+                    if (emailTo != null) {
+                        for (String email : emailTo.split(EMAIL_DELIMITER)) {
+                            if (EmailValidator.getInstance().isValid(email)) {
+
+                                List<String> parameterNames = request.getParameterNames();
+
+                                String pagePath = request.getParameter("pagePath");
+                                // FIXME extract js to the separate file(where "&" is
+                                // allowed to be used) and remove this
+                                if (pagePath == null) {
+                                    pagePath = request.getParameter("amp;pagePath");
+                                }
+
+                                StringBuffer body = new StringBuffer("----------------\nA user submitted a form at http://")
+                                    .append(request.getServerName()).append("/").append(pagePath)
+                                    .append(" with the following information:\n");
+
+                                for (String name : parameterNames) {
+                                    if (name.endsWith("_input")) {
+                                        body.append(name.split("_")[1]).append(": ").append(request.getParameter(name))
+                                                .append("\n");
+                                    }
+                                }
+                                body.append("----------------");
+                                if (!mailService.sendMail(null, email, "Submitted via website", body.toString())) {
+                                    LOGGER.error("Failed to send mail");
+                                    return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
+                                }
+                            } else {
+                                LOGGER.error("Recipient email is not valid:" + email);
+                                return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
+                            }
+                        }
+
+                        return new TextStreamResponse(CONTENT_TYPE,
+                                "Thank you for your submission. The information has been supplied to "
+                                + webSiteService.getCurrentCollege().getName() + ".");
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("Failed to send mail with exception " + e.getMessage());
+                    return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
+                }
+
+            }
+        }
 
 		return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
 
