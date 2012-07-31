@@ -26,6 +26,8 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
+import javax.servlet.http.HttpServletResponse;
+
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 	
 	private static final String REMOVE_ITEM_ID_PARAMETER = "removeItemId";
@@ -104,8 +106,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
          * ISHHealthCheck can be used without college keyCode.
          */
 		if (webSiteService.getCurrentWebSite() == null && pageIdentifier != PageIdentifier.ISHHealthCheck) {
-			pageIdentifier = PageIdentifier.SiteNotFound;
-			requestGlobals.getResponse().setStatus(404);
+			requestGlobals.getResponse().setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
 		}
 
