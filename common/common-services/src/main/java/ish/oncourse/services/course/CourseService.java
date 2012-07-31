@@ -6,29 +6,16 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.attrs.CourseListSortValue;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.EJBQLQuery;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class CourseService implements ICourseService {
@@ -158,7 +145,9 @@ public class CourseService implements ICourseService {
 				id = (Long) ids[i];
 			}
             //To exclude NumberFormatException  StringUtils.isNumeric has been added
-			if (ids[i] instanceof String && StringUtils.isNumeric((String) ids[i])) {
+			if (ids[i] instanceof String &&
+                    StringUtils.trimToNull((String) ids[i]) != null &&
+                    StringUtils.isNumeric((String) ids[i])) {
 				id = Long.valueOf((String) ids[i]);
 			}
             if (id != null)
