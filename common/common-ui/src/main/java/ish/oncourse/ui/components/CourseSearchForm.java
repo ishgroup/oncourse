@@ -4,18 +4,17 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.tag.ITagService;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
+import org.apache.tapestry5.services.Request;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.Request;
 
 public class CourseSearchForm {
 
@@ -56,7 +55,11 @@ public class CourseSearchForm {
 
 	@SetupRender
 	void beforeRender() {
-		subjectTagChildTags = tagService.getSubjectsTag().getWebVisibleTags();
+
+        Tag subjectsTag = tagService.getSubjectsTag();
+        if (subjectsTag == null)
+            throw new IllegalArgumentException(String.format("college \"%s\" does not contains \"Subjects\" tag.", request.getServerName()));
+		subjectTagChildTags = subjectsTag.getWebVisibleTags();
 
 		Collections.sort(subjectTagChildTags, new Comparator<Tag>() {
 			public int compare(Tag tag1, Tag tag2) {
