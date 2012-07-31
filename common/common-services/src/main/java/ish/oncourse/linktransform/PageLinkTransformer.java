@@ -5,12 +5,7 @@
 
 package ish.oncourse.linktransform;
 
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Tag;
+import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -19,7 +14,6 @@ import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
@@ -106,7 +100,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 		PageIdentifier pageIdentifier = PageIdentifier.getPageIdentifierByPath(path);
 
-		if (webSiteService.getCurrentWebSite() == null) {
+        /**
+         * ISHHealthCheck can be used without college keyCode.
+         */
+		if (webSiteService.getCurrentWebSite() == null && pageIdentifier != PageIdentifier.ISHHealthCheck) {
 			pageIdentifier = PageIdentifier.SiteNotFound;
 			requestGlobals.getResponse().setStatus(404);
 			return new PageRenderRequestParameters(PageIdentifier.SiteNotFound.getPageName(), new EmptyEventContext(), false);
