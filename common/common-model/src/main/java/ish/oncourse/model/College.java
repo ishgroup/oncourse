@@ -44,6 +44,16 @@ public class College extends _College {
 	}
 
 	/**
+	 * Checks if the payment gateway processing is enabled for this college
+	 *
+	 * @return
+     * @deprecated should be removed after web 2.0 will be deployed to live
+	 */
+	public boolean isPaymentGatewayEnabled() {
+		return getPaymentGatewayType() != null && !PaymentGatewayType.DISABLED.equals(getPaymentGatewayType());
+	}
+
+	/**
 	 * Returns college sites which marked as web visible.
 	 * @return list of sites
 	 */
