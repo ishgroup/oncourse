@@ -5,6 +5,7 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.common.types.TypesUtil;
@@ -22,6 +23,11 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 		
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
+		
+		if (stub.getContactId() != null) {
+			Contact contact = callback.updateRelationShip(stub.getContactId(), Contact.class);
+			contact.setStudent(entity);
+		}
 		
 		entity.setConcessionType(stub.getConcessionType());
 		
