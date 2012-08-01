@@ -11,6 +11,8 @@ import ish.util.SecurityUtil;
 
 import java.util.Date;
 
+import org.apache.cayenne.DataObject;
+import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.validator.EmailValidator;
 
@@ -358,4 +360,37 @@ public class Contact extends _Contact implements Queueable {
 		}
 		return result;
 	}
+
+	@Override
+	public void setStudent(final Student student) {
+		setToOneTargetWithCheck(STUDENT_PROPERTY, student, true);
+	}
+	
+	protected void setToOneTargetWithCheck(final String relationshipName, final DataObject value, final boolean setReverse) {
+		final DataObject oldValue = (DataObject) readProperty(relationshipName);
+		DataObject oldObject = null;
+		if ((oldValue != null && !oldValue.equals(value)) || (oldValue == null && value != null)) {
+			oldObject = getReverseRelationShip(relationshipName, value);
+			if (oldObject != null && this.equals(oldObject)) {
+				oldObject = null;
+			}
+		}
+		setToOneTarget(relationshipName, value, setReverse);
+		if (oldObject != null && oldObject.readProperty(relationshipName) != null && value.equals((DataObject) oldObject.readProperty(relationshipName))) {
+			oldObject.setToOneTarget(relationshipName, null, false);
+		}
+	}
+	
+	protected DataObject getReverseRelationShip(final String relationshipName, final DataObject value) {
+		final ObjRelationship relation = (ObjRelationship) objectContext.getEntityResolver().getObjEntity(objectId.getEntityName())
+			.getRelationship(relationshipName);
+		final ObjRelationship reverseRelation = relation.getReverseRelationship();
+		return (DataObject) value.readProperty(reverseRelation.getName());
+	}
+
+	@Override
+	public void setTutor(Tutor tutor) {
+		setToOneTargetWithCheck(TUTOR_PROPERTY, tutor, true);
+	}
+	
 }
