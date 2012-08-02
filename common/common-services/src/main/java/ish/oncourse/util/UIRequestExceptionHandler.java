@@ -36,9 +36,10 @@ public class UIRequestExceptionHandler implements RequestExceptionHandler
                 exception.getMessage().contains("Forms require that the request method be POST and that the t:formdata query parameter have values")) {
             response.sendRedirect(redirectPage);
         } else {
-            LOGGER.error(String.format("Unexpected runtime exception on \"%s/%s\"",
+            LOGGER.error(String.format("Unexpected runtime exception on \"%s%s\". Request is \"%s\"",
                     request != null ? request.getServerName(): "undefined host",
-                    request != null ? request.getPath(): "undefined path") , exception);
+                    request != null ? request.getPath(): "undefined path",
+                    (request != null && request.isXHR())? "XmlHttpRequest":"HttpRequest") , exception);
             ExceptionReporter exceptionReporter = (ExceptionReporter) componentSource.getPage(errorPageName);
             exceptionReporter.reportException(exception);
             renderer.renderPageMarkupResponse(errorPageName);
