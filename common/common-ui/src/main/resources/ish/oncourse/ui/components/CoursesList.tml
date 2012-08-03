@@ -10,4 +10,10 @@
 			</a>
 		</div>	
 	</t:if>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery(".modules_control").click(function()   { jQuery(this).next("ul").slideToggle(500); });
+        });
+    </script>
 </div>
