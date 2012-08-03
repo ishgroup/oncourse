@@ -1076,4 +1076,12 @@
     	</addColumn>
     </changeSet>
     
+    <changeSet id="73" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<indexExists tableName="Contact" indexName="studentId_unique"/>
+    	</preConditions>
+    	<dropUniqueConstraint tableName="Contact" constraintName="studentId_unique"/>
+    	<dropUniqueConstraint tableName="Contact" constraintName="tutorId_unique"/>
+    </changeSet>
+    
 </databaseChangeLog>

@@ -360,12 +360,15 @@ public class Contact extends _Contact implements Queueable {
 		}
 		return result;
 	}
-
-	@Override
-	public void setStudent(final Student student) {
-		setToOneTargetWithCheck(STUDENT_PROPERTY, student, true);
-	}
 	
+	/**
+	 * The alternative for setToOneTarget(relationshipName, value, setReverse) but with check that reverse relationship also updated.
+	 * Should be used only in case when we can't be sure that relationships will be changed for all required entities.
+	 * @see org.apache.cayenne.CayenneDataObject#setToOneTarget(java.lang.String, org.apache.cayenne.DataObject, boolean)
+	 * @param relationshipName
+	 * @param value
+	 * @param setReverse
+	 */
 	protected void setToOneTargetWithCheck(final String relationshipName, final DataObject value, final boolean setReverse) {
 		final DataObject oldValue = (DataObject) readProperty(relationshipName);
 		DataObject oldObject = null;
@@ -381,16 +384,11 @@ public class Contact extends _Contact implements Queueable {
 		}
 	}
 	
-	protected DataObject getReverseRelationShip(final String relationshipName, final DataObject value) {
+	private DataObject getReverseRelationShip(final String relationshipName, final DataObject value) {
 		final ObjRelationship relation = (ObjRelationship) objectContext.getEntityResolver().getObjEntity(objectId.getEntityName())
 			.getRelationship(relationshipName);
 		final ObjRelationship reverseRelation = relation.getReverseRelationship();
 		return (DataObject) value.readProperty(reverseRelation.getName());
-	}
-
-	@Override
-	public void setTutor(Tutor tutor) {
-		setToOneTargetWithCheck(TUTOR_PROPERTY, tutor, true);
 	}
 	
 }
