@@ -14,7 +14,7 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 	protected void updateEntity(ContactStub stub, Contact entity, RelationShipCallback callback) {
 		entity.setBusinessPhoneNumber(stub.getBusinessPhoneNumber());
 		entity.setCookieHash(stub.getCookieHash());
-		
+		//TODO: remove Student and Tutor callback.updateRelationShip because this should be updated from Student and Tutor updaters only.
 		if (stub.getStudentId() != null) {
 			Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
 			entity.setStudent(student);
