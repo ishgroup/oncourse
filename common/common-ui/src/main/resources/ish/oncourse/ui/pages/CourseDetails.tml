@@ -2,12 +2,7 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:if t:test="course">
 		<span t:type="ui/courseitem" course="course" linkToLocationsMap="true" isList="false" courseItemModel="courseItemModel"></span>
-        <script type="text/javascript">
-            jQuery(document).ready(function() {
-                jQuery(".modules_control").click(function()   { jQuery(this).next("ul").slideToggle(500); });
-            });
-        </script>
-		<p:else> The requested course is not found. </p:else>
+	<p:else>The requested course is not found.</p:else>
 	</t:if>
 	<span t:type="ui/Attachments" entityIdentifier="literal:Course" entityIdNum="${course.id}"/>
 </html>
