@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.replication.builders;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -10,11 +8,6 @@ import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub;
-
-import java.io.InputStream;
-
-import javax.sql.DataSource;
-
 import org.apache.cayenne.Cayenne;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -23,6 +16,12 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class WillowStubBuilderTest extends ServiceTest {
 	
@@ -37,7 +36,7 @@ public class WillowStubBuilderTest extends ServiceTest {
 		DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
 		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 		
-		DatabaseOperation.INSERT.execute(dbConnection, dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
 	}
 	
 	@Test

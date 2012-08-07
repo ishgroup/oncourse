@@ -36,7 +36,7 @@ public class FileStorageAssetServiceTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-        DataSetInitializer.initDataSets("ish/oncourse/services/filestorage/binaryDataSet.xml", "ish/oncourse/services/filestorage/dataSet.xml");
+        DataSetInitializer.initDataSets("ish/oncourse/services/filestorage/dataSet.xml");
         cayenneService = getService(ICayenneService.class);
         initFileStorageAssetService();
     }

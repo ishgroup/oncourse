@@ -1,22 +1,11 @@
 package ish.oncourse.services.lifecycle;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.*;
-
-import javax.sql.DataSource;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
@@ -27,6 +16,15 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.*;
+
 public class QueueableLifecycleListenerTest extends ServiceTest {
 
 	@Before
@@ -36,7 +34,7 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
 		InputStream st = QueueableLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/services/lifecycle/queuDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}
 
 	@Test
@@ -275,7 +273,6 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
             testQueueablePostAdd(TutorRole.class, context);
             testQueueablePostAdd(Attendance.class, context);
             testQueueablePostAdd(Room.class, context);
-            testQueueablePostAdd(BinaryData.class, context);
             testQueueablePostAdd(Tag.class, context);
             testQueueablePostAdd(Message.class, context);
             testQueueablePostAdd(PaymentIn.class, context);

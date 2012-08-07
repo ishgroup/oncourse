@@ -1,26 +1,9 @@
 package ish.oncourse.services.lifecycle;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import ish.oncourse.model.College;
-import ish.oncourse.model.ConcessionType;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.model.QueuedTransaction;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.StudentConcession;
+import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.sql.DataSource;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.dbunit.database.DatabaseConnection;
@@ -31,6 +14,16 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class QueueableLifecycleListenerStudentConcessionTest extends ServiceTest {
 
 	@Before
@@ -40,7 +33,7 @@ public class QueueableLifecycleListenerStudentConcessionTest extends ServiceTest
 				"ish/oncourse/services/lifecycle/studentConcessionDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}
 
 	@Test

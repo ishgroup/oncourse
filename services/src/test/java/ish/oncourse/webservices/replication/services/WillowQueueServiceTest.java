@@ -1,18 +1,11 @@
 package ish.oncourse.webservices.replication.services;
 
-import static org.junit.Assert.assertEquals;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
-
-import java.io.InputStream;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -20,6 +13,12 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class WillowQueueServiceTest extends ServiceTest {
 
@@ -36,7 +35,7 @@ public class WillowQueueServiceTest extends ServiceTest {
 		DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
 		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 		
-		DatabaseOperation.INSERT.execute(dbConnection, dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
 		
 		this.service = new WillowQueueService(getObject(IWebSiteService.class, null), getService(ICayenneService.class));
 	}

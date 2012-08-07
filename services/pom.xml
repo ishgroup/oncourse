@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>ish.oncourse.willow</groupId>
-		<version>1.27</version>
+		<version>1.29b</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
@@ -187,26 +187,6 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>2.9</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <forkMode>once</forkMode>
-                    <forkedProcessTimeoutInSeconds>12000</forkedProcessTimeoutInSeconds>
-                    <threadCount>1</threadCount>
-                    <useUnlimitedThreads>false</useUnlimitedThreads>
-                </configuration>
-            </plugin>
-
         </plugins>
 
 

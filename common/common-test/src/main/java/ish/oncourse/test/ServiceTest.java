@@ -1,17 +1,19 @@
 package ish.oncourse.test;
 
-import javax.sql.DataSource;
-
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.tapestry5.ioc.AnnotationProvider;
 import org.apache.tapestry5.test.PageTester;
 import org.junit.After;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 public class ServiceTest {
 
 	private PageTester tester;
 
 	public void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
-		tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
+        tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 		ContextUtils.setupDataSources();
 	}
 	
@@ -41,10 +43,16 @@ public class ServiceTest {
 	}
 
 	public static void cleanDataSources() throws Exception {
-		//cleanDataSource(getDataSource("jdbc/oncourse_reference"));
-		cleanDataSource(getDataSource("jdbc/oncourse_binary"));
-		cleanDataSource(getDataSource("jdbc/oncourse"));
-
+        BasicDataSource dataSource = (BasicDataSource)getDataSource("jdbc/oncourse");
+        dataSource.close();
+        BasicDataSource deleteDbDataSourse = (BasicDataSource)ContextUtils.createDeleteDataSource("oncourse");
+        try {
+            deleteDbDataSourse.getConnection();
+        } catch (SQLException e) {
+            //ignore
+        }
+        deleteDbDataSourse.close();
+		//cleanDataSource(getDataSource("jdbc/oncourse"));
 	}
 
 	@After
@@ -54,5 +62,5 @@ public class ServiceTest {
 		if (tester != null && tester.getRegistry() != null) {
 			tester.getRegistry().shutdown();
 		}
-	}
+    }
 }

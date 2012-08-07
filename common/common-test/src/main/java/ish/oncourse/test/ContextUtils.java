@@ -54,21 +54,9 @@ public class ContextUtils {
 		InitialContextFactoryMock.bind("jdbc/oncourse", oncourse);
 		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse);
 
-		DataSource oncourseBinary = createDataSource("oncourse_binary");
-
-		InitialContextFactoryMock.bind("jdbc/oncourse_binary", oncourseBinary);
-		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse_binary", oncourse);
-
-		//reference datanode is empty now so there is no reason to init
-		/*DataSource oncourseReference = createDataSource("oncourse_reference");
-		InitialContextFactoryMock.bind("jdbc/oncourse", oncourseReference);
-		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourseReference);*/
-
 		DataDomain domain = cayenneRuntime.getDataDomain();
 
 		createTablesForDataSource(oncourse, domain.getDataMap("oncourse"));
-		createTablesForDataSource(oncourseBinary, domain.getDataMap("oncourseBinary"));
-		//createTablesForDataSource(oncourseReference, domain.getDataMap("oncourseReference"));
 		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}
@@ -141,7 +129,18 @@ public class ContextUtils {
 		return dataSource;
 	}
 
-	/**
+    public static DataSource createDeleteDataSource(String name) {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
+        dataSource.setUrl("jdbc:derby:memory:" + name + ";drop=true");
+        dataSource.setUsername("");
+        dataSource.setPassword("");
+        dataSource.setMaxActive(100);
+        return dataSource;
+    }
+
+
+    /**
 	 * Sets empty string to the {@link Context#INITIAL_CONTEXT_FACTORY} system
 	 * property.
 	 */

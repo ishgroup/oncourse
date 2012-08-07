@@ -1803,9 +1803,6 @@
 	<db-relationship name="student" source="Attendance" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="binaryData" source="BinaryInfo" target="BinaryData" toMany="false">
-		<db-attribute-pair source="id" target="binaryInfoId"/>
-	</db-relationship>
 	<db-relationship name="binaryInfoRelations" source="BinaryInfo" target="BinaryInfoRelation" toMany="true">
 		<db-attribute-pair source="id" target="binaryInfoId"/>
 	</db-relationship>
@@ -1840,9 +1837,6 @@
 		<db-attribute-pair source="outcomeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="attendances" source="College" target="Attendance" toMany="true">
-		<db-attribute-pair source="id" target="collegeId"/>
-	</db-relationship>
-	<db-relationship name="binaryData" source="College" target="BinaryData" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="binaryInfoRelations" source="College" target="BinaryInfoRelation" toMany="true">

@@ -27,25 +27,8 @@ public class AllStubBuildersTest extends ServiceTest {
     @Before
     public void setupDataSet() throws Exception {
         initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-        initOncourseBinaryDataSet();
         initOncourseDataSet();
     }
-
-    private void initOncourseBinaryDataSet() throws Exception {
-
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/builders/oncourseBinaryDataSet.xml");
-        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-        builder.setColumnSensing(true);
-        FlatXmlDataSet dataSet = builder.build(st);
-
-
-        DataSource onDataSource = getDataSource("jdbc/oncourse_binary");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
-    }
-
 
     private void initOncourseDataSet() throws Exception {
 
@@ -86,10 +69,6 @@ public class AllStubBuildersTest extends ServiceTest {
         this.testStubBuilder(Attendance.class, new ish.oncourse.webservices.replication.v5.builders.AttendanceStubBuilder());
     }
 
-    @Test
-    public void testV5BinaryDataStubBuilder() {
-        this.testStubBuilder(BinaryData.class, new ish.oncourse.webservices.replication.v5.builders.BinaryDataStubBuilder());
-    }
 
     @Test
     public void testV5BinaryInfoStubBuilder() {
@@ -239,11 +218,6 @@ public class AllStubBuildersTest extends ServiceTest {
     @Test
     public void testAttendanceStubBuilder() {
         this.testStubBuilder(Attendance.class, new AttendanceStubBuilder());
-    }
-
-    @Test
-    public void testBinaryDataStubBuilder() {
-        this.testStubBuilder(BinaryData.class, new BinaryDataStubBuilder());
     }
 
     @Test
