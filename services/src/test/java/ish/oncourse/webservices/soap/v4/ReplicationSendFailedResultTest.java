@@ -1,19 +1,11 @@
 package ish.oncourse.webservices.soap.v4;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
 import ish.oncourse.webservices.replication.services.PortHelper;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
 import ish.oncourse.webservices.replication.services.SupportedVersions;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-import ish.oncourse.webservices.util.GenericReplicationRecords;
-import ish.oncourse.webservices.util.GenericReplicationResult;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import java.io.InputStream;
-import javax.sql.DataSource;
+import ish.oncourse.webservices.util.*;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -21,6 +13,12 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ReplicationSendFailedResultTest extends ServiceTest {
 	
@@ -32,7 +30,7 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 	}
 	
 	@Test

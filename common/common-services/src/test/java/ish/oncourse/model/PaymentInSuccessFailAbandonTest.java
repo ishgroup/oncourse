@@ -1,7 +1,5 @@
 package ish.oncourse.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
@@ -10,14 +8,6 @@ import ish.math.Money;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Calendar;
-
-import javax.sql.DataSource;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.EJBQLQuery;
@@ -28,6 +18,15 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	
@@ -47,7 +46,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream("ish/oncourse/model/paymentDataSet.xml");
 		dataSet = new FlatXmlDataSetBuilder().build(st);
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseOperation.INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 		
 		this.cayenneService = getService(ICayenneService.class);
 	}
