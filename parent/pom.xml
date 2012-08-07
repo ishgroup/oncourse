@@ -56,7 +56,8 @@
 				</dependencies>
 				<configuration>
 					<forkMode>once</forkMode>
-					<forkedProcessTimeoutInSeconds>6000</forkedProcessTimeoutInSeconds>
+					<forkedProcessTimeoutInSeconds>12000</forkedProcessTimeoutInSeconds>
+                    <argLine>-Xms128m -Xmx512m</argLine>
 					<threadCount>1</threadCount>
 					<useUnlimitedThreads>false</useUnlimitedThreads>
 				</configuration>
