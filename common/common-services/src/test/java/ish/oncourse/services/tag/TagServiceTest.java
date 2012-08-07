@@ -1,31 +1,33 @@
 package ish.oncourse.services.tag;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Date;
-
 import ish.common.types.NodeSpecialType;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.test.ContextUtils;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.sql.DataSource;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Date;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
-public class TagServiceTest {
+public class TagServiceTest extends ServiceTest{
 
 private static final String LEFT_SLASH_CHARACTER = "/";
 
@@ -41,22 +43,20 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 	
 	
 	private ITagService tagService;
-	
-	private static ObjectContext context;
-	
-	private static College college;
+    private College college;
 
 	@Mock
 	private IWebSiteService webSiteService;
-	
-	@Mock
+
 	private ICayenneService cayenneService;
-	
-	@BeforeClass
-	public static void initTest() throws Exception {
-		LOGGER.info("init data for TagServiceTest");
-		ContextUtils.setupDataSources();
-		context = ContextUtils.createObjectContext();
+
+    @Before
+    public void setup() throws Exception {
+        initTest("ish.oncourse.services", "service", ServiceModule.class);
+        DataSource dataSource = getDataSource("jdbc/oncourse");
+
+        this.cayenneService = getService(ICayenneService.class);
+        ObjectContext context = this.cayenneService.newNonReplicatingContext();
 		college = context.newObject(College.class);
 		college.setName("testCollege");
 		college.setTimeZone("Australia/Sydney");
@@ -109,15 +109,11 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 		alternativeTagLeaf2.setParent(alternativeTagGroup2);
 
 		context.commitChanges();
-	}
 
-	@Before
-	public void init() throws Exception {
-		tagService = new TagService(cayenneService, webSiteService);
-		when(cayenneService.sharedContext()).thenReturn(context);
-		when(cayenneService.newContext()).thenReturn(context);
-		when(webSiteService.getCurrentCollege()).thenReturn(college);
-	}
+        tagService = new TagService(cayenneService, webSiteService);
+        when(webSiteService.getCurrentCollege()).thenReturn(college);
+    }
+
 
 	@Test
 	public void getSubjectsTagTest() {
@@ -179,8 +175,10 @@ private static final Logger LOGGER = Logger.getLogger(TagServiceTest.class);
 	
 	@Test
 	public void testMailingListSubscribeUnsubscribe() {
-		
+
+        ObjectContext context = cayenneService.newNonReplicatingContext();
 		final Student student = context.newObject(Student.class);
+        College college =  (College) context.localObject(this.college.getObjectId(), null);
 		student.setCollege(college);
 		
 		final Contact contact = context.newObject(Contact.class);
