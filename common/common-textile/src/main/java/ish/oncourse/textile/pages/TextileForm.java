@@ -13,7 +13,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.List;
@@ -79,9 +78,6 @@ public class TextileForm {
 
 	@Property
 	private Integer formIndex;
-
-    @Inject
-    private JavaScriptSupport javaScriptSupport;
 
 	@SetupRender
 	boolean beginRender() {

@@ -58,19 +58,24 @@
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
 					jQuery("#submit_btn_${formIndex}").click(function() {
-                        //replace current form content on "Sending the mail ..." while the mail is processed.
                         dataString = "${EMAIL_FIELD_NAME}=${emailValue}&amp;pagePath="+window.location;
 						fillRequired=false;
 						requiredFields=jQuery("#${formIndex} .required");
 						for(i=0; i!=requiredFields.length; i++){
 							field=requiredFields[i];
-							if(field.value==null||field.value==""){
+                            value = field.value;
+                            if (field.type == "select-one")
+                            {
+                                value = field.options[field.selectedIndex];
+                            }
+                            if(value==null ||value=="" ){
 								fillRequired=true;
 								break;
 							}
 						}	
 						
 						if(!fillRequired){
+                            //replace current form content on "Sending the mail ..." while the mail is processed.
                             jQuery('#emailFormBlock_${formIndex}').html(jQuery('#sendingMail').html());
                             fields=jQuery("#${formIndex} .formField");
 							for(i=0; i!=fields.length; i++){
