@@ -2,32 +2,37 @@
 	<div class="vevent courseItem">
 		<t:if t:test="isList" negate="true">
 			<h1 class="summary page-title">${courseItemModel.course.name}</h1>
-            <t:if t:test="courseItemModel.nrt">
-                <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
-            </t:if>
-            <t:if t:test="addThisEnabled">
+			<t:if t:test="courseItemModel.nrt">
+				<img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
+			</t:if>
+			<t:if t:test="addThisEnabled">
 				<div class="addthis">
 					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
 				</div>
 			</t:if>
-            <div class="clearboth"></div>
-			<p:else>
-				<h2>
-					<a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
-                    <t:if t:test="courseItemModel.nrt">
-                        <img class="NRTLogo" style="float: right;" alt="NRT" src="/s/img/nrt.png"/>
-                    </t:if>
-				</h2>
-				<div class="description courseShortDescription">
+			<div class="clearboth"></div>
+		<p:else>
+			<h2>
+				<a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
+				<t:if t:test="courseItemModel.nrt">
+					<img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
+				</t:if>
+			</h2>
+			<div class="description courseShortDescription">
 
-					<t:outputraw value="${courseDetail}" />
+				<t:outputraw value="${courseDetail}" />
 
-					<strong class="more">[<a href="/course/${courseItemModel.course.code}">More</a>]</strong>
-				</div>
-			</p:else>
+				<strong class="more">[<a href="/course/${courseItemModel.course.code}">More</a>]</strong>
+			</div>
+		</p:else>
+		</t:if>
+		<t:if t:test="${courseItemModel.showModules}">
+			<div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
+				 qualification="courseItemModel.course.qualification"
+				 course="courseItemModel.course"></div>
 		</t:if>
 		<t:loop source="courseItemModel.availableClasses" value="courseClass">
-				<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
+			<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="linkToLocationsMap" isList="isList"/>
 		</t:loop>
 		<t:if test="courseItemModel.otherClasses.empty" negate="true">
 			<p class="other-classes-control clearfix">
@@ -65,10 +70,5 @@
 				<t:outputraw value="${courseDetail}" />
 			</div>
 		</t:if>
-        <t:if t:test="${courseItemModel.showModules}">
-            <div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
-                 qualification="courseItemModel.course.qualification"
-                 course="courseItemModel.course"></div>
-        </t:if>
-    </div>
+	</div>
 </t:container>
