@@ -13,6 +13,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.List;
@@ -55,11 +56,9 @@ public class TextileForm {
 	@Property
 	private String emailValue;
 
-	@SuppressWarnings("all")
 	@Property
 	private String afterFieldsMarkUp;
 
-	@SuppressWarnings("all")
 	@Property
 	private boolean shouldSend;
 
@@ -69,25 +68,21 @@ public class TextileForm {
 	@Property
 	private TextileFormField field;
 
-	@SuppressWarnings("all")
 	@Property
 	private int index;
 
 	@Property
 	private String option;
 
-	@SuppressWarnings("all")
 	@Property
 	private String url;
 
 	@Property
 	private Integer formIndex;
 
-	public String getTextileFormId() {
-		return formIndex + "TextileForm";
-	}
+    @Inject
+    private JavaScriptSupport javaScriptSupport;
 
-	@SuppressWarnings("unchecked")
 	@SetupRender
 	boolean beginRender() {
 
@@ -175,45 +170,45 @@ public class TextileForm {
 
                                 List<String> parameterNames = request.getParameterNames();
 
-                                String pagePath = request.getParameter("pagePath");
-                                // FIXME extract js to the separate file(where "&" is
-                                // allowed to be used) and remove this
-                                if (pagePath == null) {
-                                    pagePath = request.getParameter("amp;pagePath");
-                                }
+							String pagePath = request.getParameter("pagePath");
+							// FIXME extract js to the separate file(where "&" is
+							// allowed to be used) and remove this
+							if (pagePath == null) {
+								pagePath = request.getParameter("amp;pagePath");
+							}
 
-                                StringBuffer body = new StringBuffer("----------------\nA user submitted a form at http://")
-                                    .append(request.getServerName()).append("/").append(pagePath)
-                                    .append(" with the following information:\n");
+							StringBuffer body = new StringBuffer("----------------\nA user submitted a form at http://")
+								.append(request.getServerName()).append("/").append(pagePath)
+								.append(" with the following information:\n");
 
-                                for (String name : parameterNames) {
-                                    if (name.endsWith("_input")) {
-                                        body.append(name.split("_")[1]).append(": ").append(request.getParameter(name))
-                                                .append("\n");
-                                    }
-                                }
-                                body.append("----------------");
-                                if (!mailService.sendMail(null, email, "Submitted via website", body.toString())) {
-                                    LOGGER.error("Failed to send mail");
-                                    return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
-                                }
-                            } else {
-                                LOGGER.error("Recipient email is not valid:" + email);
-                                return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
-                            }
-                        }
+							for (String name : parameterNames) {
+								if (name.endsWith("_input")) {
+									body.append(name.split("_")[1]).append(": ").append(request.getParameter(name))
+											.append("\n");
+								}
+							}
+							body.append("----------------");
+							if (!mailService.sendMail(null, email, "Submitted via website", body.toString())) {
+								LOGGER.error("Failed to send mail");
+								return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
+							}
+						} else {
+							LOGGER.error("Recipient email is not valid:" + email);
+							return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
+						}
+					}
 
-                        return new TextStreamResponse(CONTENT_TYPE,
-                                "Thank you for your submission. The information has been supplied to "
-                                + webSiteService.getCurrentCollege().getName() + ".");
-                    }
-                } catch (Exception e) {
-                    LOGGER.error("Failed to send mail with exception " + e.getMessage());
-                    return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
-                }
+					return new TextStreamResponse(CONTENT_TYPE,
+							"Thank you for your submission. The information has been supplied to "
+							+ webSiteService.getCurrentCollege().getName() + ".");
+				}
+			} catch (Exception e) {
+				LOGGER.error("Failed to send mail with exception " + e.getMessage());
+				return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
+			}
 
             }
-        }
+		}
 
 		return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
 

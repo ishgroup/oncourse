@@ -1,8 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div>
-		<div id="emailFormBlock_${textileFormId}">
-			<div id="errorMessage_${textileFormId}"/>
-			<form name="${formName}" id="${textileFormId}" action="">
+		<div id="emailFormBlock_${formIndex}">
+			<div id="errorMessage_${formIndex}"/>
+			<form name="${formName}" id="${formIndex}" action="">
 				<fieldset>
 					<input type="hidden" name="${EMAIL_FIELD_NAME}" value="${emailValue}"/>
 					<t:loop source="fields" value="field" index="index">
@@ -43,22 +43,25 @@
 						</p>
 					</t:loop>
 					<div class="form-controls">
-					<input type="submit" name="submit" class="submit_btn" id="submit_btn_${textileFormId}" value="Send" />  
-					<t:actionlink t:id="send"/>
+                        <a id="submit_btn_${formIndex}" href="javascript:return false;">Send</a>
+					    <t:actionlink t:id="send"/>
 					</div>
 				</fieldset>
 				<t:outputRaw value="afterFieldsMarkUp"/>
 			</form>
 		</div>
+        <div id="sendingMail" style="display: none; ">
+            <h3>Your message is being processed. This will take a few seconds.</h3>
+            <p><img src="/s/img/loading.gif" width="32" height="32" alt="processing"/></p>
+        </div>
 		<t:if test="shouldSend">
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
-					var submitButton = $T("submit_btn_${textileFormId}");
-    				submitButton.trackingClicks = true;
-					jQuery("#submit_btn_${textileFormId}").click(function() {  
-						dataString = "${EMAIL_FIELD_NAME}=${emailValue}&amp;pagePath="+window.location;
+					jQuery("#submit_btn_${formIndex}").click(function() {
+                        //replace current form content on "Sending the mail ..." while the mail is processed.
+                        dataString = "${EMAIL_FIELD_NAME}=${emailValue}&amp;pagePath="+window.location;
 						fillRequired=false;
-						requiredFields=jQuery("#${textileFormId} .required");
+						requiredFields=jQuery("#${formIndex} .required");
 						for(i=0; i!=requiredFields.length; i++){
 							field=requiredFields[i];
 							if(field.value==null||field.value==""){
@@ -68,7 +71,8 @@
 						}	
 						
 						if(!fillRequired){
-							fields=jQuery("#${textileFormId} .formField");
+                            jQuery('#emailFormBlock_${formIndex}').html(jQuery('#sendingMail').html());
+                            fields=jQuery("#${formIndex} .formField");
 							for(i=0; i!=fields.length; i++){
 								field=fields[i];
 							
@@ -89,13 +93,13 @@
 					 					if("${url}"!=""){
 					 						window.location='${url}';
 					 					}else{
-            								jQuery('#emailFormBlock_${textileFormId}').html(data.responseText);
+            								jQuery('#emailFormBlock_${formIndex}').html(data.responseText);
             							}
         	        			}
 					 		
 						 	});
 						}else{
-							jQuery('#errorMessage_${textileFormId}').html("Please, fill all the required fields");
+							jQuery('#errorMessage_${formIndex}').html("Please, fill all the required fields");
 						}
 						return false;
 					});
@@ -105,9 +109,9 @@
 				<script type="text/javascript">
 					jQuery(document).ready(function() {
 				
-						jQuery("#submit_btn_${textileFormId}").click(function() {  
+						jQuery("#submit_btn_${formIndex}").click(function() {
 		
-							jQuery('#errorMessage_${textileFormId}').html("Email properties are not configured, contact support@ish.com.au");
+							jQuery('#errorMessage_${formIndex}').html("Email properties are not configured, contact support@ish.com.au");
 			
 							return false;
 						});
@@ -115,5 +119,5 @@
 				</script>
 			</p:else>
 		</t:if>
-	</div> 
+	</div>
 </t:container>
