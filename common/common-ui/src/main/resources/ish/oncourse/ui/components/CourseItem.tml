@@ -3,7 +3,7 @@
 		<t:if t:test="isList" negate="true">
 			<h1 class="summary page-title">${courseItemModel.course.name}</h1>
             <t:if t:test="courseItemModel.nrt">
-                <img class="NRTLogo" style="float: right;" alt="NRT" src="/s/img/nrt.png"/>
+                <img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
             </t:if>
             <t:if t:test="addThisEnabled">
 				<div class="addthis">
