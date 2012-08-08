@@ -6,6 +6,11 @@ import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.cache.QueryCacheEntryFactory;
 import org.apache.cayenne.query.QueryMetadata;
 
+/**
+ * {@link QueryCache} implementation which performs no caching.
+ * 
+ * @author dzmitry
+ */
 public class NoopQueryCache implements QueryCache {
 
 	@Override
