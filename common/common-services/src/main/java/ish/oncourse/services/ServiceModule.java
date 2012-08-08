@@ -7,6 +7,7 @@ import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.ICacheService;
+import ish.oncourse.services.cache.NoopCacheService;
 import ish.oncourse.services.cache.OSCacheService;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
@@ -80,6 +81,7 @@ import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
+import ish.oncourse.util.ContextUtil;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
@@ -114,7 +116,13 @@ public class ServiceModule {
 
 		// Tapestry and environment specific services
 		binder.bind(ReferenceService.class);
-		binder.bind(ICacheService.class, OSCacheService.class);
+		
+		if (ContextUtil.isQueryCacheEnabled()) {
+			binder.bind(ICacheService.class, OSCacheService.class);
+		} else {
+			binder.bind(ICacheService.class, NoopCacheService.class);
+			LOGGER.info("Query caching disabled.");
+		}
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
