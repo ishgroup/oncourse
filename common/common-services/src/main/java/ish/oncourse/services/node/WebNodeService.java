@@ -1,19 +1,8 @@
 package ish.oncourse.services.node;
 
-import ish.oncourse.model.RegionKey;
-import ish.oncourse.model.WebContent;
-import ish.oncourse.model.WebContentVisibility;
-import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
-import ish.oncourse.model.WebUrlAlias;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -23,6 +12,10 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 public class WebNodeService implements IWebNodeService {
 	
@@ -187,6 +180,8 @@ public class WebNodeService implements IWebNodeService {
 
 		Integer number = (Integer) cayenneService.sharedContext()
 				.performQuery(new EJBQLQuery("select max(wn.nodeNumber) from WebNode wn where " + siteExpr.toEJBQL("wn"))).get(0);
+        if (number == null)
+            number = 0;
 		return ++number;
 	}
 
@@ -194,25 +189,37 @@ public class WebNodeService implements IWebNodeService {
 	public synchronized WebNode createNewNode() {
 		ObjectContext ctx = cayenneService.newContext();
 
-		WebNode newPageNode = ctx.newObject(WebNode.class);
-		newPageNode.setName(NEW_PAGE_WEB_NODE_NAME);
 		WebSite webSite = (WebSite) ctx.localObject(webSiteService.getCurrentWebSite().getObjectId(), null);
-		newPageNode.setWebSite(webSite);
-		newPageNode.setNodeNumber(getNextNodeNumber());
+		WebNodeType webNodeType = (WebNodeType) ctx.localObject(webNodeTypeService.getDefaultWebNodeType().getObjectId(), null);
 
-		newPageNode.setWebNodeType((WebNodeType) ctx.localObject(webNodeTypeService.getDefaultWebNodeType().getObjectId(), null));
-
-		WebContent webContent = ctx.newObject(WebContent.class);
-		webContent.setWebSite(webSite);
-		webContent.setContent(SAMPLE_WEB_CONTENT);
-
-		WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility.class);
-		webContentVisibility.setWebNode(newPageNode);
-		webContentVisibility.setRegionKey(RegionKey.content);
-		webContentVisibility.setWebContent(webContent);
-
-		return newPageNode;
+        return createNewNodeBy(webSite, webNodeType, NEW_PAGE_WEB_NODE_NAME, SAMPLE_WEB_CONTENT, getNextNodeNumber());
 	}
+
+    public synchronized WebNode createNewNodeBy(WebSite webSite,
+                                                WebNodeType webNodeType,
+                                                String nodeName,
+                                                String content,
+                                                Integer nodeNumber)
+    {
+        ObjectContext ctx = webSite.getObjectContext();
+        WebNode newPageNode = ctx.newObject(WebNode.class);
+        newPageNode.setName(nodeName);
+        newPageNode.setWebSite(webSite);
+        newPageNode.setNodeNumber(nodeNumber);
+
+        newPageNode.setWebNodeType(webNodeType);
+
+        WebContent webContent = ctx.newObject(WebContent.class);
+        webContent.setWebSite(webSite);
+        webContent.setContent(content);
+
+        WebContentVisibility webContentVisibility = ctx.newObject(WebContentVisibility.class);
+        webContentVisibility.setWebNode(newPageNode);
+        webContentVisibility.setRegionKey(RegionKey.content);
+        webContentVisibility.setWebContent(webContent);
+
+        return newPageNode;
+    }
 
 	private void appyCacheSettings(SelectQuery query) {
 		// TODO: uncomment after we've properly configure JGroups or JMS, and

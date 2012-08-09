@@ -1,26 +1,11 @@
 package ish.oncourse.admin.pages.college;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import ish.oncourse.model.College;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.WebHostName;
-import ish.oncourse.model.WebMenu;
-import ish.oncourse.model.WebNode;
-import ish.oncourse.model.WebNodeType;
-import ish.oncourse.model.WebSite;
-import ish.oncourse.model.WebUrlAlias;
-import ish.oncourse.model.WillowUser;
+import ish.oncourse.model.*;
 import ish.oncourse.selectutils.StringSelectModel;
+import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.util.SecurityUtil;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
@@ -28,16 +13,17 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+
 public class Web {
+
+    public final static String DEFAULT_HOME_PAGE_NAME = "Home page";
 	
 	@Property
 	@Persist
@@ -118,6 +104,9 @@ public class Web {
 	
 	@Inject
 	private ICayenneService cayenneService;
+
+    @Inject
+    private IWebNodeService webNodeService;
 	
 	@Inject
 	private Request request;
@@ -228,14 +217,8 @@ public class Web {
 		page.setModified(now);
 		page.setLayoutKey("default");
 		page.setWebSite(site);
-		
-		WebNode node = context.newObject(WebNode.class);
-		node.setName("Home page");
-		node.setCreated(now);
-		node.setModified(now);
-		node.setWebNodeType(page);
-		node.setWebSite(site);
-		node.setNodeNumber(1);
+
+        WebNode node = webNodeService.createNewNodeBy(site, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
 		node.setPublished(true);
 		
 		WebMenu menu = context.newObject(WebMenu.class);

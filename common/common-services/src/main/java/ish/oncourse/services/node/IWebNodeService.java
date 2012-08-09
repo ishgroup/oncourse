@@ -1,6 +1,8 @@
 package ish.oncourse.services.node;
 
 import ish.oncourse.model.WebNode;
+import ish.oncourse.model.WebNodeType;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.IBaseService;
 
 import java.util.Date;
@@ -77,4 +79,13 @@ public interface IWebNodeService {
 	 * @return
 	 */
 	WebNode createNewNode();
+
+    /**
+     * Creates new WebNode by these parameters.
+     */
+   WebNode createNewNodeBy(WebSite webSite,
+                           WebNodeType webNodeType,
+                           String nodeName,
+                           String content,
+                           Integer nodeNumber);
 }

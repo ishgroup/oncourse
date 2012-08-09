@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	
+	<WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	<WebSite id="2" collegeId="2" name="Tasmania Adult Education" siteKey="tae" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	
+	<WebHostName name="tasm.education.com.au" webSiteId="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+    <WebHostName name="scc.education.com.au" webSiteId="2" collegeId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <WebNodeType id="1" created="2010-02-03 09:18:09" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="1"/>
+    <WebNodeType id="2" created="2010-02-03 09:18:09" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="2"/>
+
+    <!--<WebNode id="1" created="2010-02-03 09:18:09" isPublished="1" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="1"/>-->
+    <!--<WebNode id="2" created="2010-02-03 09:18:09" isPublished="1" name="page" layoutKey="default" modified="2010-02-03 09:18:09" webSiteId="2"/>-->
+
+
+    <!--<db-entity name="WebNode" catalog="willow_college">-->
+        <!--<db-attribute name="created" type="TIMESTAMP" length="19"/>-->
+        <!--<db-attribute name="defaultURLAlias" type="BIGINT" length="19"/>-->
+        <!--<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>-->
+        <!--<db-attribute name="isPublished" type="BIT" isMandatory="true"/>-->
+        <!--<db-attribute name="modified" type="TIMESTAMP" length="19"/>-->
+        <!--<db-attribute name="name" type="VARCHAR" isMandatory="true" length="128"/>-->
+        <!--<db-attribute name="nodeNumber" type="INTEGER" isMandatory="true" length="10"/>-->
+        <!--<db-attribute name="webNodeTypeId" type="BIGINT" isMandatory="true" length="19"/>-->
+        <!--<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>-->
+    <!--</db-entity>-->
+
+</dataset>
