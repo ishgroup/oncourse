@@ -2,9 +2,8 @@
 	<div>
 		<div id="emailFormBlock_${formIndex}">
 			<div id="errorMessage_${formIndex}"/>
-			<form name="${formName}" id="${formIndex}" action="">
+			<form name="${formName}" id="${formIndex}" action="" data-email="${emailValue}" data-url="${url}">
 				<fieldset>
-					<input type="hidden" name="${EMAIL_FIELD_NAME}" value="${emailValue}"/>
 					<t:loop source="fields" value="field" index="index">
 						<p class="form-cont-row">
 						<t:outputRaw value="field.beforeFieldMarkUp"/>
@@ -42,87 +41,15 @@
 						</t:if>
 						</p>
 					</t:loop>
-					<div class="form-controls">
-                        <a id="submit_btn_${formIndex}" href="javascript:return false;">Send</a>
-					    <t:actionlink t:id="send"/>
-					</div>
-				</fieldset>
-				<t:outputRaw value="afterFieldsMarkUp"/>
-			</form>
-		</div>
+                </fieldset>
+                <button type="button" class="form-submit-button">Send</button>
+                <t:actionlink t:id="send"/>
+                <t:outputRaw value="afterFieldsMarkUp"/>
+            </form>
+        </div>
         <div id="sendingMail" style="display: none; ">
             <h3>Your message is being processed. This will take a few seconds.</h3>
             <p><img src="/s/img/loading.gif" width="32" height="32" alt="processing"/></p>
         </div>
-		<t:if test="shouldSend">
-			<script type="text/javascript">
-				jQuery(document).ready(function() {
-					jQuery("#submit_btn_${formIndex}").click(function() {
-                        dataString = "${EMAIL_FIELD_NAME}=${emailValue}&amp;pagePath="+window.location;
-						fillRequired=false;
-						requiredFields=jQuery("#${formIndex} .required");
-						for(i=0; i!=requiredFields.length; i++){
-							field=requiredFields[i];
-                            value = field.value;
-                            if (field.type == "select-one")
-                            {
-                                value = field.options[field.selectedIndex];
-                            }
-                            if(value==null ||value=="" ){
-								fillRequired=true;
-								break;
-							}
-						}	
-						
-						if(!fillRequired){
-                            //replace current form content on "Sending the mail ..." while the mail is processed.
-                            jQuery('#emailFormBlock_${formIndex}').html(jQuery('#sendingMail').html());
-                            fields=jQuery("#${formIndex} .formField");
-							for(i=0; i!=fields.length; i++){
-								field=fields[i];
-							
-								if(field.id.endsWith("_radio")){
-									if(field.checked){
-										dataString+='&amp;'+field.name+'='+escape(field.value);
-									}
-								}else{
-									dataString+='&amp;'+field.id+'='+escape(field.value);
-								}
-							}
-						
-						 	jQuery.ajax({
-								type: "POST",
-								data: dataString,
-						 		url: '/textile/textileform.send',
-						 		complete: function(data) {
-					 					if("${url}"!=""){
-					 						window.location='${url}';
-					 					}else{
-            								jQuery('#emailFormBlock_${formIndex}').html(data.responseText);
-            							}
-        	        			}
-					 		
-						 	});
-						}else{
-							jQuery('#errorMessage_${formIndex}').html("Please, fill all the required fields");
-						}
-						return false;
-					});
-				});
-			</script>
-			<p:else>
-				<script type="text/javascript">
-					jQuery(document).ready(function() {
-				
-						jQuery("#submit_btn_${formIndex}").click(function() {
-		
-							jQuery('#errorMessage_${formIndex}').html("Email properties are not configured, contact support@ish.com.au");
-			
-							return false;
-						});
-					});
-				</script>
-			</p:else>
-		</t:if>
 	</div>
 </t:container>

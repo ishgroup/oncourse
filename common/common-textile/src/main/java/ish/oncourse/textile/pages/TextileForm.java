@@ -173,8 +173,8 @@ public class TextileForm {
 								pagePath = request.getParameter("amp;pagePath");
 							}
 
-							StringBuffer body = new StringBuffer("----------------\nA user submitted a form at http://")
-								.append(request.getServerName()).append("/").append(pagePath)
+							StringBuffer body = new StringBuffer("----------------\nA user submitted a form at ")
+								.append(pagePath)
 								.append(" with the following information:\n");
 
 							for (String name : parameterNames) {
