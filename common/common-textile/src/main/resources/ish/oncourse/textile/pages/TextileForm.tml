@@ -2,8 +2,9 @@
 	<div>
 		<div id="emailFormBlock_${formIndex}">
 			<div id="errorMessage_${formIndex}"/>
-			<form name="${formName}" id="${formIndex}" action="" data-email="${emailValue}" data-url="${url}">
+			<form name="${formName}" id="${formIndex}" action="" data-url="${url}">
 				<fieldset>
+                    <input type="hidden" name="${EMAIL_FIELD_NAME}" value="${emailValue}"/>
 					<t:loop source="fields" value="field" index="index">
 						<p class="form-cont-row">
 						<t:outputRaw value="field.beforeFieldMarkUp"/>
