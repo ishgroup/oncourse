@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import ish.common.types.DiscountType;
 import ish.math.Money;
+import ish.math.MoneyRounding;
 import ish.oncourse.model.Discount;
 
 import java.math.BigDecimal;
@@ -251,5 +252,28 @@ public class DiscountUtilsTest {
 
 		assertEquals("Expecting one discount.", 1, chosenDiscounts.size());
 		assertEquals("Expecting feeOverride.", feeOverride, chosenDiscounts.get(0));
+	}
+	
+	@Test
+	public void testDiscountRounding() {
+		Discount discount = new Discount();
+		discount.setDiscountType(DiscountType.PERCENT);
+		discount.setDiscountRate(new BigDecimal("0.11"));
+		
+		discount.setRoundingMode(MoneyRounding.ROUNDING_NONE);
+		
+		assertEquals(new Money("96.25"), DiscountUtils.discountValue(discount, new Money("875.00")));
+		
+		discount.setRoundingMode(MoneyRounding.ROUNDING_10C);
+		
+		assertEquals(new Money("96.30"), DiscountUtils.discountValue(discount, new Money("875.00")));
+		
+		discount.setRoundingMode(MoneyRounding.ROUNDING_50C);
+		
+		assertEquals(new Money("96.50"), DiscountUtils.discountValue(discount, new Money("875.00")));
+		
+		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		
+		assertEquals(new Money("96.00"), DiscountUtils.discountValue(discount, new Money("875.00")));
 	}
 }

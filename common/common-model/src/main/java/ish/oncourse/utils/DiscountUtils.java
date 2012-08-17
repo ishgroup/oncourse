@@ -67,6 +67,7 @@ public class DiscountUtils {
 				break;
 			case PERCENT:
 				discountValue = price.multiply(discountRate);
+				discountValue = discountValue.round(discount.getRoundingMode());
 				break;
 			}
 		}
