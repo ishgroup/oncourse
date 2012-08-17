@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
-    <link href="http://s7.addthis.com/static/r07/widget082.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://s7.addthis.com/static/r07/widget082.css" media="screen" rel="stylesheet" type="text/css" />
 
 	<div class="addthis_toolbox addthis_default_style ">
 		<a class="addthis_button_email"></a>
@@ -10,7 +10,7 @@
 		<a class="addthis_button_compact"></a>
 	</div>
 	 
-	<script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=${addThisProfileId}"></script> 
+	<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=${addThisProfileId}"></script> 
 	<script type="text/javascript">
 		var addthis_config = {services_exclude: 'print'};
 	</script>
