@@ -3,10 +3,7 @@
 		<t:if t:test="isList" negate="true">
 			<h1 class="summary page-title">${courseItemModel.course.name}</h1>
 			<t:if t:test="courseItemModel.nrt">
-				<h1 class="summary page-title nrt">${courseItemModel.course.name}</h1>
-			<p:else>
-				<h1 class="summary page-title">${courseItemModel.course.name}</h1>
-			</p:else>
+				<img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
 			</t:if>
 			<t:if t:test="addThisEnabled">
 				<div class="addthis">
@@ -16,11 +13,9 @@
 			<div class="clearboth"></div>
 		<p:else>
 			<h2>
+				<a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
 				<t:if t:test="courseItemModel.nrt">
-					<h2 class="nrt"><a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a></h2>
-				<p:else>
-					<h2><a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a></h2>
-				</p:else>
+					<img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
 				</t:if>
 			</h2>
 			<div class="description courseShortDescription">
