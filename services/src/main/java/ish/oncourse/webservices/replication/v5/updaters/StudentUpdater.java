@@ -12,6 +12,7 @@ import ish.common.types.TypesUtil;
 import ish.oncourse.model.Student;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.v4.updaters.UpdaterException;
 import ish.oncourse.webservices.v5.stubs.replication.StudentStub;
 
 import org.apache.cayenne.Cayenne;
@@ -27,6 +28,9 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 		if (stub.getContactId() != null) {
 			Contact contact = callback.updateRelationShip(stub.getContactId(), Contact.class);
 			contact.setStudent(entity);
+		} else {
+			final String message = String.format("Student with angelId = %s without linked contact detected!", stub.getAngelId());
+            throw new UpdaterException(message);
 		}
 		
 		entity.setConcessionType(stub.getConcessionType());

@@ -25,6 +25,9 @@ public class StudentUpdater extends AbstractWillowUpdater<StudentStub, Student> 
 		if (stub.getContactId() != null) {
 			Contact contact = callback.updateRelationShip(stub.getContactId(), Contact.class);
 			contact.setStudent(entity);
+		} else {
+			final String message = String.format("Student with angelId = %s without linked contact detected!", stub.getAngelId());
+            throw new UpdaterException(message);
 		}
 		entity.setConcessionType(stub.getConcessionType());
 		
