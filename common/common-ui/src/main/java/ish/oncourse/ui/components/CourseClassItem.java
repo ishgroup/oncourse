@@ -10,6 +10,8 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.TimestampUtilities;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -91,7 +93,17 @@ public class CourseClassItem {
 
 	public String getCourseClassDetail() {
 		String detail = textileConverter.convertCustomTextile(courseClass.getDetail(), new ValidationErrors());
-		return detail == null ? "" : detail;
+		return detail == null ? StringUtils.EMPTY : detail;
+	}
+	
+	public List<TutorRole> getVisibleTutorRoles() {
+		final List<TutorRole> visibleRoles = new ArrayList<TutorRole>();
+		for (TutorRole role : courseClass.getTutorRoles()) {
+			if (role.getInPublicity()) {
+				visibleRoles.add(role);
+			}
+		}
+		return visibleRoles;
 	}
 
 	public boolean isHasTutorRoles() {

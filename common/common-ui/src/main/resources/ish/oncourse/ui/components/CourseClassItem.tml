@@ -45,7 +45,7 @@
 				</t:if>
 				<t:if test="hasTutorRoles">
 					<div class="tutor">
-						<t:loop source="courseClass.tutorRoles" value="tutorRole" index="index">
+						<t:loop source="visibleTutorRoles" value="tutorRole" index="index">
 							<a class="nyromodal" href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">${tutorRole.tutor.fullName}
 							</a>
 							<t:if test="lastIndex" negate="true">
