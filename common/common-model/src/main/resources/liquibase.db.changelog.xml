@@ -1084,4 +1084,20 @@
     	<dropUniqueConstraint tableName="Contact" constraintName="tutorId_unique"/>
     </changeSet>
     
+    <changeSet id="74" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<indexExists tableName="College" columnNames="webServicesLogin,webServicesPass"/>
+    	</preConditions>
+    	<dropIndex tableName="College" indexName="webServicesLogin_idx"/>
+    </changeSet>
+    
+    <changeSet id="75" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<columnExists tableName="College" columnName="webServicesLogin"/>
+    	</preConditions>
+    	<dropColumn tableName="College" columnName="webServicesLogin"/>
+    	<dropColumn tableName="College" columnName="webServicesPass"/>
+    	<dropColumn tableName="College" columnName="nationalProviderCode"/>
+    </changeSet>
+        
 </databaseChangeLog>

@@ -140,12 +140,9 @@ public class CollegeService implements ICollegeService {
 		college.setIsTestingWebSitePayments(false);
 		college.setIsWebServicePaymentsEnabled(false);
 		college.setIsWebSitePaymentsEnabled(false);
-		college.setNationalProviderCode(null);
 		college.setPaymentGatewayAccount(null);
 		college.setPaymentGatewayPass(null);
 		college.setRequiresAvetmiss(false);
-		college.setWebServicesLogin(null);
-		college.setWebServicesPass(null);
 		college.setTimeZone("Australia/Sydney");
 
 		objectContext.commitChanges();

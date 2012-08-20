@@ -28,14 +28,11 @@ public abstract class _College extends CayenneDataObject {
     public static final String LAST_REMOTE_AUTHENTICATION_PROPERTY = "lastRemoteAuthentication";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
-    public static final String NATIONAL_PROVIDER_CODE_PROPERTY = "nationalProviderCode";
     public static final String PAYMENT_GATEWAY_ACCOUNT_PROPERTY = "paymentGatewayAccount";
     public static final String PAYMENT_GATEWAY_PASS_PROPERTY = "paymentGatewayPass";
     public static final String PAYMENT_GATEWAY_TYPE_PROPERTY = "paymentGatewayType";
     public static final String REQUIRES_AVETMISS_PROPERTY = "requiresAvetmiss";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
-    public static final String WEB_SERVICES_LOGIN_PROPERTY = "webServicesLogin";
-    public static final String WEB_SERVICES_PASS_PROPERTY = "webServicesPass";
     public static final String WEB_SERVICES_SECURITY_CODE_PROPERTY = "webServicesSecurityCode";
     public static final String ATTENDANCES_PROPERTY = "attendances";
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
@@ -192,13 +189,6 @@ public abstract class _College extends CayenneDataObject {
         return (String)readProperty(NAME_PROPERTY);
     }
 
-    public void setNationalProviderCode(String nationalProviderCode) {
-        writeProperty(NATIONAL_PROVIDER_CODE_PROPERTY, nationalProviderCode);
-    }
-    public String getNationalProviderCode() {
-        return (String)readProperty(NATIONAL_PROVIDER_CODE_PROPERTY);
-    }
-
     public void setPaymentGatewayAccount(String paymentGatewayAccount) {
         writeProperty(PAYMENT_GATEWAY_ACCOUNT_PROPERTY, paymentGatewayAccount);
     }
@@ -232,20 +222,6 @@ public abstract class _College extends CayenneDataObject {
     }
     public String getTimeZone() {
         return (String)readProperty(TIME_ZONE_PROPERTY);
-    }
-
-    public void setWebServicesLogin(String webServicesLogin) {
-        writeProperty(WEB_SERVICES_LOGIN_PROPERTY, webServicesLogin);
-    }
-    public String getWebServicesLogin() {
-        return (String)readProperty(WEB_SERVICES_LOGIN_PROPERTY);
-    }
-
-    public void setWebServicesPass(String webServicesPass) {
-        writeProperty(WEB_SERVICES_PASS_PROPERTY, webServicesPass);
-    }
-    public String getWebServicesPass() {
-        return (String)readProperty(WEB_SERVICES_PASS_PROPERTY);
     }
 
     public void setWebServicesSecurityCode(String webServicesSecurityCode) {
