@@ -7,6 +7,8 @@ package ish.oncourse.webservices.reference.builders;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import ish.oncourse.model.Qualification;
 import ish.oncourse.webservices.v4.stubs.reference.QualificationStub;
 
@@ -22,7 +24,9 @@ public final class QualificationStubBuilder implements IReferenceStubBuilder<Qua
 
 		stub.setWillowId(record.getId());
 		stub.setAnzsco(record.getAnzsco());
-		stub.setAnzsic(record.getAnzsic());
+		//stub.setAnzsic(record.getAnzsic());
+		//stop to pass this deprecated field because task#12152.
+		stub.setAnzsic(StringUtils.EMPTY);
 		stub.setAsco(record.getAsco());
 		if (record.getCreated() == null) {
 			record.setCreated(new Date());
