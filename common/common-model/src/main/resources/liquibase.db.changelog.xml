@@ -1099,5 +1099,13 @@
     	<dropColumn tableName="College" columnName="webServicesPass"/>
     	<dropColumn tableName="College" columnName="nationalProviderCode"/>
     </changeSet>
+    
+    <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
+    	-- uncomment me and set number when all instancies of applications which used Qualification will be redeployed without anzsic field in entity 
+    	<preConditions onFail="MARK_RAN">
+    		<columnExists tableName="Qualification" columnName="anzsic"/>
+    	</preConditions>
+    	<dropColumn tableName="Qualification" columnName="anzsic"/>
+    </changeSet-->
         
 </databaseChangeLog>

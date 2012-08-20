@@ -17,7 +17,6 @@ import ish.oncourse.model.Course;
 public abstract class _Qualification extends CayenneDataObject {
 
     public static final String ANZSCO_PROPERTY = "anzsco";
-    public static final String ANZSIC_PROPERTY = "anzsic";
     public static final String ASCO_PROPERTY = "asco";
     public static final String CREATED_PROPERTY = "created";
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
@@ -41,15 +40,9 @@ public abstract class _Qualification extends CayenneDataObject {
     public void setAnzsco(String anzsco) {
         writeProperty("anzsco", anzsco);
     }
+    
     public String getAnzsco() {
         return (String)readProperty("anzsco");
-    }
-
-    public void setAnzsic(String anzsic) {
-        writeProperty("anzsic", anzsic);
-    }
-    public String getAnzsic() {
-        return (String)readProperty("anzsic");
     }
 
     public void setAsco(String asco) {
