@@ -1084,7 +1084,9 @@
     	<dropUniqueConstraint tableName="Contact" constraintName="tutorId_unique"/>
     </changeSet>
     
-    <changeSet id="74" author="viacheslav" context="production" runOnChange="true">
+    <!--changeSet id="74" author="viacheslav" context="production" runOnChange="true">
+    	-- uncomment and set correct number after all applications which used College will be redeployed without removed field in entity
+    	-- task#11090
     	<preConditions onFail="MARK_RAN">
     		<indexExists tableName="College" columnNames="webServicesLogin,webServicesPass"/>
     	</preConditions>
@@ -1098,7 +1100,7 @@
     	<dropColumn tableName="College" columnName="webServicesLogin"/>
     	<dropColumn tableName="College" columnName="webServicesPass"/>
     	<dropColumn tableName="College" columnName="nationalProviderCode"/>
-    </changeSet>
+    </changeSet-->
     
     <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
     	-- uncomment me and set number when all instancies of applications which used Qualification will be redeployed without anzsic field in entity 
