@@ -527,7 +527,6 @@ public class PaymentExpressGatewayServiceTest {
         assertEquals("Test getReco",submitResult.getReco(), getStatusResult.getReco());
         assertEquals("Test getResponseText",submitResult.getResponseText(), getStatusResult.getResponseText());
         assertEquals("Test getRetry",submitResult.getRetry(), getStatusResult.getRetry());
-        assertArrayEquals("Test getRiskRuleMatches",submitResult.getRiskRuleMatches(), getStatusResult.getRiskRuleMatches());
         assertEquals("Test getStatusRequired",submitResult.getStatusRequired(), getStatusResult.getStatusRequired());
         assertEquals("Test getTestMode",submitResult.getTestMode(), getStatusResult.getTestMode());
 //        assertEquals("Test ",submitResult.getTxnMac(), getStatusResult.getTxnMac());
