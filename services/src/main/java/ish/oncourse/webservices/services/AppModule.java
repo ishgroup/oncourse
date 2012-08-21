@@ -4,6 +4,8 @@
  */
 package ish.oncourse.webservices.services;
 
+import ish.oncourse.mbean.ApplicationData;
+import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
@@ -35,7 +37,6 @@ import org.apache.tapestry5.services.RequestExceptionHandler;
 import org.apache.tapestry5.services.ResponseRenderer;
 
 import java.io.IOException;
-
 /**
  * @author marek
  */
@@ -67,8 +68,9 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
+		MBeanRegisterUtil.registerMbeanService(new ApplicationData("current","services"), "ish.oncourse:type=ServicesApplicationData");
 	}
-
+	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
 	}
