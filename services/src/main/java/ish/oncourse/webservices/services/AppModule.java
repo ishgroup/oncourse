@@ -68,7 +68,7 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
-		MBeanRegisterUtil.registerMbeanService(new ApplicationData("current","services"), "ish.oncourse:type=ServicesApplicationData");
+		MBeanRegisterUtil.registerMbeanService(new ApplicationData("services"), "ish.oncourse:type=ServicesApplicationData");
 	}
 	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
