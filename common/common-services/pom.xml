@@ -148,6 +148,10 @@
 		<!--
 		mvn clean install -PrebuildWS
 		command line will execute build with this profile and regenerate WS stubs.
+		
+		NOTE: after rebuild you should check that PaymentExpressWSSoap12Stub's _operations field still have protected static or higher access modifier.
+		This field change the modifier to protected from default for PaymentExpressWSSoap12WithSoapResponseHandleStub extension.
+		Should be revert to protected static in case of stubs regeneration.
 		-->
 		<profile>
 			<id>rebuildWS</id>

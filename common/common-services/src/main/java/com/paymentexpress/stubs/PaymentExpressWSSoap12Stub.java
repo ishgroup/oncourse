@@ -15,7 +15,7 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
 
     /**
 	 * This field change the modifier to protected from default for PaymentExpressWSSoap12WithSoapResponseHandleStub extension.
-	 * Should be revert to protected in case of stubs regeneration.
+	 * Should be revert to protected static in case of stubs regeneration.
 	 */
     protected static org.apache.axis.description.OperationDesc [] _operations;
 
