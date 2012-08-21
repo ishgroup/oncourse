@@ -143,32 +143,45 @@
 		</dependency>
 		
 	</dependencies>
-
-	<build>
-		<plugins>
-		<plugin>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>axistools-maven-plugin</artifactId>
-			<version>1.4</version>
-			<configuration>
-				<urls>
-					<url>https://sec.paymentexpress.com/WS/PXWS.asmx?WSDL</url>
-				</urls>
-				<packageSpace>com.paymentexpress.stubs</packageSpace>
-				<outputDirectory>src/main/java</outputDirectory>
-				<testCases>true</testCases>
-				<runTestCasesAsUnitTests>true</runTestCasesAsUnitTests>
-				<testSourceDirectory>src/test/java</testSourceDirectory>
-				<allElements>true</allElements>
-			</configuration>
-			<executions>
-				<execution>
-					<goals>
-						<goal>wsdl2java</goal>
-					</goals>
-				</execution>
-			</executions>
-			</plugin>
-		</plugins>
-	</build>
+	
+	<profiles>
+		<!--
+		mvn clean install -PrebuildWS
+		command line will execute build with this profile and regenerate WS stubs.
+		-->
+		<profile>
+			<id>rebuildWS</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>axistools-maven-plugin</artifactId>
+						<version>1.4</version>
+						<configuration>
+							<urls>
+								<url>https://sec.paymentexpress.com/WS/PXWS.asmx?WSDL</url>
+							</urls>
+							<packageSpace>com.paymentexpress.stubs</packageSpace>
+							<outputDirectory>src/main/java</outputDirectory>
+							<testCases>true</testCases>
+							<runTestCasesAsUnitTests>true</runTestCasesAsUnitTests>
+							<testSourceDirectory>src/test/java</testSourceDirectory>
+							<allElements>true</allElements>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>wsdl2java</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 </project>

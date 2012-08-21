@@ -13,7 +13,11 @@ public class PaymentExpressWSSoap12Stub extends org.apache.axis.client.Stub impl
     private java.util.Vector cachedSerFactories = new java.util.Vector();
     private java.util.Vector cachedDeserFactories = new java.util.Vector();
 
-    static org.apache.axis.description.OperationDesc [] _operations;
+    /**
+	 * This field change the modifier to protected from default for PaymentExpressWSSoap12WithSoapResponseHandleStub extension.
+	 * Should be revert to protected in case of stubs regeneration.
+	 */
+    protected static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
         _operations = new org.apache.axis.description.OperationDesc[6];
