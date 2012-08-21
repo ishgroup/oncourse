@@ -1,5 +1,5 @@
 /**
- * 
+ * TransactionResult2.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -8,9 +8,7 @@
 package com.paymentexpress.stubs;
 
 public class TransactionResult2  implements java.io.Serializable {
-	private static final long serialVersionUID = -3860326993576259984L;
-
-	private java.lang.String acquirerReco;
+    private java.lang.String acquirerReco;
 
     private java.lang.String acquirerResponseText;
 
@@ -82,7 +80,11 @@ public class TransactionResult2  implements java.io.Serializable {
 
     private java.lang.String txnMac;
 
-    private com.paymentexpress.stubs.RiskRuleMatch[] riskRuleMatches;
+    private java.lang.String cvc2ResultCode;
+
+    private com.paymentexpress.stubs.ArrayOfRiskRuleMatch riskRuleMatches;
+
+    private com.paymentexpress.stubs.ArrayOfNameValueField extendedData;
 
     public TransactionResult2() {
     }
@@ -124,7 +126,9 @@ public class TransactionResult2  implements java.io.Serializable {
            java.lang.String cardNumber2,
            java.lang.String issuerCountryId,
            java.lang.String txnMac,
-           com.paymentexpress.stubs.RiskRuleMatch[] riskRuleMatches) {
+           java.lang.String cvc2ResultCode,
+           com.paymentexpress.stubs.ArrayOfRiskRuleMatch riskRuleMatches,
+           com.paymentexpress.stubs.ArrayOfNameValueField extendedData) {
            this.acquirerReco = acquirerReco;
            this.acquirerResponseText = acquirerResponseText;
            this.amount = amount;
@@ -161,7 +165,9 @@ public class TransactionResult2  implements java.io.Serializable {
            this.cardNumber2 = cardNumber2;
            this.issuerCountryId = issuerCountryId;
            this.txnMac = txnMac;
+           this.cvc2ResultCode = cvc2ResultCode;
            this.riskRuleMatches = riskRuleMatches;
+           this.extendedData = extendedData;
     }
 
 
@@ -886,11 +892,31 @@ public class TransactionResult2  implements java.io.Serializable {
 
 
     /**
+     * Gets the cvc2ResultCode value for this TransactionResult2.
+     * 
+     * @return cvc2ResultCode
+     */
+    public java.lang.String getCvc2ResultCode() {
+        return cvc2ResultCode;
+    }
+
+
+    /**
+     * Sets the cvc2ResultCode value for this TransactionResult2.
+     * 
+     * @param cvc2ResultCode
+     */
+    public void setCvc2ResultCode(java.lang.String cvc2ResultCode) {
+        this.cvc2ResultCode = cvc2ResultCode;
+    }
+
+
+    /**
      * Gets the riskRuleMatches value for this TransactionResult2.
      * 
      * @return riskRuleMatches
      */
-    public com.paymentexpress.stubs.RiskRuleMatch[] getRiskRuleMatches() {
+    public com.paymentexpress.stubs.ArrayOfRiskRuleMatch getRiskRuleMatches() {
         return riskRuleMatches;
     }
 
@@ -900,15 +926,35 @@ public class TransactionResult2  implements java.io.Serializable {
      * 
      * @param riskRuleMatches
      */
-    public void setRiskRuleMatches(com.paymentexpress.stubs.RiskRuleMatch[] riskRuleMatches) {
+    public void setRiskRuleMatches(com.paymentexpress.stubs.ArrayOfRiskRuleMatch riskRuleMatches) {
         this.riskRuleMatches = riskRuleMatches;
+    }
+
+
+    /**
+     * Gets the extendedData value for this TransactionResult2.
+     * 
+     * @return extendedData
+     */
+    public com.paymentexpress.stubs.ArrayOfNameValueField getExtendedData() {
+        return extendedData;
+    }
+
+
+    /**
+     * Sets the extendedData value for this TransactionResult2.
+     * 
+     * @param extendedData
+     */
+    public void setExtendedData(com.paymentexpress.stubs.ArrayOfNameValueField extendedData) {
+        this.extendedData = extendedData;
     }
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (obj == null ||!(obj instanceof TransactionResult2)) return false;
+        if (!(obj instanceof TransactionResult2)) return false;
         TransactionResult2 other = (TransactionResult2) obj;
-        //if (obj == null) return false;
+        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
@@ -1024,9 +1070,15 @@ public class TransactionResult2  implements java.io.Serializable {
             ((this.txnMac==null && other.getTxnMac()==null) || 
              (this.txnMac!=null &&
               this.txnMac.equals(other.getTxnMac()))) &&
+            ((this.cvc2ResultCode==null && other.getCvc2ResultCode()==null) || 
+             (this.cvc2ResultCode!=null &&
+              this.cvc2ResultCode.equals(other.getCvc2ResultCode()))) &&
             ((this.riskRuleMatches==null && other.getRiskRuleMatches()==null) || 
              (this.riskRuleMatches!=null &&
-              java.util.Arrays.equals(this.riskRuleMatches, other.getRiskRuleMatches())));
+              this.riskRuleMatches.equals(other.getRiskRuleMatches()))) &&
+            ((this.extendedData==null && other.getExtendedData()==null) || 
+             (this.extendedData!=null &&
+              this.extendedData.equals(other.getExtendedData())));
         __equalsCalc = null;
         return _equals;
     }
@@ -1146,16 +1198,14 @@ public class TransactionResult2  implements java.io.Serializable {
         if (getTxnMac() != null) {
             _hashCode += getTxnMac().hashCode();
         }
+        if (getCvc2ResultCode() != null) {
+            _hashCode += getCvc2ResultCode().hashCode();
+        }
         if (getRiskRuleMatches() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getRiskRuleMatches());
-                 i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(getRiskRuleMatches(), i);
-                if (obj != null &&
-                    !obj.getClass().isArray()) {
-                    _hashCode += obj.hashCode();
-                }
-            }
+            _hashCode += getRiskRuleMatches().hashCode();
+        }
+        if (getExtendedData() != null) {
+            _hashCode += getExtendedData().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -1420,12 +1470,25 @@ public class TransactionResult2  implements java.io.Serializable {
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("riskRuleMatches");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatches"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch"));
+        elemField.setFieldName("cvc2ResultCode");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "cvc2ResultCode"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
-        elemField.setItemQName(new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch"));
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("riskRuleMatches");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatches"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://PaymentExpress.com", "ArrayOfRiskRuleMatch"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("extendedData");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "extendedData"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://PaymentExpress.com", "ArrayOfNameValueField"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
 
@@ -1439,8 +1502,7 @@ public class TransactionResult2  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    @SuppressWarnings("rawtypes")
-	public static org.apache.axis.encoding.Serializer getSerializer(
+    public static org.apache.axis.encoding.Serializer getSerializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
@@ -1452,8 +1514,7 @@ public class TransactionResult2  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    @SuppressWarnings("rawtypes")
-	public static org.apache.axis.encoding.Deserializer getDeserializer(
+    public static org.apache.axis.encoding.Deserializer getDeserializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {

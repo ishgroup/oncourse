@@ -1,5 +1,5 @@
 /**
- * 
+ * EnrolmentCheckRequest.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -8,9 +8,7 @@
 package com.paymentexpress.stubs;
 
 public class EnrolmentCheckRequest  implements java.io.Serializable {
-	private static final long serialVersionUID = 8802718777054297L;
-
-	private java.lang.String amount;
+    private java.lang.String amount;
 
     private java.lang.String cardNumber;
 
@@ -162,9 +160,9 @@ public class EnrolmentCheckRequest  implements java.io.Serializable {
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (obj == null || !(obj instanceof EnrolmentCheckRequest)) return false;
+        if (!(obj instanceof EnrolmentCheckRequest)) return false;
         EnrolmentCheckRequest other = (EnrolmentCheckRequest) obj;
-        //if (obj == null) return false;
+        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
@@ -283,8 +281,7 @@ public class EnrolmentCheckRequest  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    @SuppressWarnings("rawtypes")
-	public static org.apache.axis.encoding.Serializer getSerializer(
+    public static org.apache.axis.encoding.Serializer getSerializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
@@ -296,8 +293,7 @@ public class EnrolmentCheckRequest  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    @SuppressWarnings("rawtypes")
-	public static org.apache.axis.encoding.Deserializer getDeserializer(
+    public static org.apache.axis.encoding.Deserializer getDeserializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {

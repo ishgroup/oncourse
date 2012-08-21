@@ -1,5 +1,5 @@
 /**
- * 
+ * PaymentExpressWSSoap_BindingStub.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -7,15 +7,11 @@
 
 package com.paymentexpress.stubs;
 
-public class PaymentExpressWSSoapStub extends org.apache.axis.client.Stub implements com.paymentexpress.stubs.PaymentExpressWSSoap {
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedSerClasses = new java.util.Vector();
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedSerQNames = new java.util.Vector();
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedSerFactories = new java.util.Vector();
-    @SuppressWarnings("rawtypes")
-	private java.util.Vector cachedDeserFactories = new java.util.Vector();
+public class PaymentExpressWSSoap_BindingStub extends org.apache.axis.client.Stub implements com.paymentexpress.stubs.PaymentExpressWSSoap_PortType {
+    private java.util.Vector cachedSerClasses = new java.util.Vector();
+    private java.util.Vector cachedSerQNames = new java.util.Vector();
+    private java.util.Vector cachedSerFactories = new java.util.Vector();
+    private java.util.Vector cachedDeserFactories = new java.util.Vector();
 
     static org.apache.axis.description.OperationDesc [] _operations;
 
@@ -137,23 +133,22 @@ public class PaymentExpressWSSoapStub extends org.apache.axis.client.Stub implem
 
     }
 
-    public PaymentExpressWSSoapStub() throws org.apache.axis.AxisFault {
+    public PaymentExpressWSSoap_BindingStub() throws org.apache.axis.AxisFault {
          this(null);
     }
 
-    public PaymentExpressWSSoapStub(java.net.URL endpointURL, javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
+    public PaymentExpressWSSoap_BindingStub(java.net.URL endpointURL, javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
          this(service);
          super.cachedEndpoint = endpointURL;
     }
 
-    @SuppressWarnings({ "rawtypes", "unused", "unchecked" })
-	public PaymentExpressWSSoapStub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
+    public PaymentExpressWSSoap_BindingStub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
         if (service == null) {
             super.service = new org.apache.axis.client.Service();
         } else {
             super.service = service;
         }
-        ((org.apache.axis.client.Service)super.service).setTypeMappingVersion("1.2");
+        ((org.apache.axis.client.Service)super.service).setTypeMappingVersion("1.1");
             java.lang.Class cls;
             javax.xml.namespace.QName qName;
             javax.xml.namespace.QName qName2;
@@ -167,14 +162,19 @@ public class PaymentExpressWSSoapStub extends org.apache.axis.client.Stub implem
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
+            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "ArrayOfNameValueField");
+            cachedSerQNames.add(qName);
+            cls = com.paymentexpress.stubs.ArrayOfNameValueField.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "ArrayOfRiskRuleMatch");
             cachedSerQNames.add(qName);
-            cls = com.paymentexpress.stubs.RiskRuleMatch[].class;
+            cls = com.paymentexpress.stubs.ArrayOfRiskRuleMatch.class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch");
-            qName2 = new javax.xml.namespace.QName("http://PaymentExpress.com", "riskRuleMatch");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "EnrolmentCheckRequest");
             cachedSerQNames.add(qName);
@@ -186,6 +186,13 @@ public class PaymentExpressWSSoapStub extends org.apache.axis.client.Stub implem
             qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "EnrolmentCheckResult");
             cachedSerQNames.add(qName);
             cls = com.paymentexpress.stubs.EnrolmentCheckResult.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://PaymentExpress.com", "NameValueField");
+            cachedSerQNames.add(qName);
+            cls = com.paymentexpress.stubs.NameValueField.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -213,8 +220,7 @@ public class PaymentExpressWSSoapStub extends org.apache.axis.client.Stub implem
 
     }
 
-    @SuppressWarnings("rawtypes")
-	protected org.apache.axis.client.Call createCall() throws java.rmi.RemoteException {
+    protected org.apache.axis.client.Call createCall() throws java.rmi.RemoteException {
         try {
             org.apache.axis.client.Call _call = super._createCall();
             if (super.maintainSessionSet) {

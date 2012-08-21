@@ -233,7 +233,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @throws ServiceException
      */
     PaymentExpressWSSoap12Stub soapClientStub() throws ServiceException {
-        PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocatorWithSoapResponseHandle();
+        PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocator();
         serviceLocator.setPaymentExpressWSSoapEndpointAddress("https://sec.paymentexpress.com/WSV1/PXWS.asmx");
         PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
         stub.setTimeout(TIMEOUT);

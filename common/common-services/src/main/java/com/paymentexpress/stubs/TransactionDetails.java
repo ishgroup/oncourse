@@ -1,5 +1,5 @@
 /**
- * 
+ * TransactionDetails.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -8,9 +8,7 @@
 package com.paymentexpress.stubs;
 
 public class TransactionDetails  implements java.io.Serializable {
-	private static final long serialVersionUID = -8160409922789258551L;
-
-	private java.lang.String amount;
+    private java.lang.String amount;
 
     private java.lang.String billingId;
 
@@ -144,6 +142,10 @@ public class TransactionDetails  implements java.io.Serializable {
 
     private java.lang.String track2;
 
+    private java.lang.String cvc2Presence;
+
+    private com.paymentexpress.stubs.ArrayOfNameValueField extendedData;
+
     public TransactionDetails() {
     }
 
@@ -214,7 +216,9 @@ public class TransactionDetails  implements java.io.Serializable {
            java.lang.String iccData,
            java.lang.String deviceId,
            java.lang.String cardNumber2,
-           java.lang.String track2) {
+           java.lang.String track2,
+           java.lang.String cvc2Presence,
+           com.paymentexpress.stubs.ArrayOfNameValueField extendedData) {
            this.amount = amount;
            this.billingId = billingId;
            this.cardHolderName = cardHolderName;
@@ -282,6 +286,8 @@ public class TransactionDetails  implements java.io.Serializable {
            this.deviceId = deviceId;
            this.cardNumber2 = cardNumber2;
            this.track2 = track2;
+           this.cvc2Presence = cvc2Presence;
+           this.extendedData = extendedData;
     }
 
 
@@ -1624,11 +1630,51 @@ public class TransactionDetails  implements java.io.Serializable {
         this.track2 = track2;
     }
 
+
+    /**
+     * Gets the cvc2Presence value for this TransactionDetails.
+     * 
+     * @return cvc2Presence
+     */
+    public java.lang.String getCvc2Presence() {
+        return cvc2Presence;
+    }
+
+
+    /**
+     * Sets the cvc2Presence value for this TransactionDetails.
+     * 
+     * @param cvc2Presence
+     */
+    public void setCvc2Presence(java.lang.String cvc2Presence) {
+        this.cvc2Presence = cvc2Presence;
+    }
+
+
+    /**
+     * Gets the extendedData value for this TransactionDetails.
+     * 
+     * @return extendedData
+     */
+    public com.paymentexpress.stubs.ArrayOfNameValueField getExtendedData() {
+        return extendedData;
+    }
+
+
+    /**
+     * Sets the extendedData value for this TransactionDetails.
+     * 
+     * @param extendedData
+     */
+    public void setExtendedData(com.paymentexpress.stubs.ArrayOfNameValueField extendedData) {
+        this.extendedData = extendedData;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (obj == null || !(obj instanceof TransactionDetails)) return false;
+        if (!(obj instanceof TransactionDetails)) return false;
         TransactionDetails other = (TransactionDetails) obj;
-        //if (obj == null) return false;
+        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
@@ -1836,7 +1882,13 @@ public class TransactionDetails  implements java.io.Serializable {
               this.cardNumber2.equals(other.getCardNumber2()))) &&
             ((this.track2==null && other.getTrack2()==null) || 
              (this.track2!=null &&
-              this.track2.equals(other.getTrack2())));
+              this.track2.equals(other.getTrack2()))) &&
+            ((this.cvc2Presence==null && other.getCvc2Presence()==null) || 
+             (this.cvc2Presence!=null &&
+              this.cvc2Presence.equals(other.getCvc2Presence()))) &&
+            ((this.extendedData==null && other.getExtendedData()==null) || 
+             (this.extendedData!=null &&
+              this.extendedData.equals(other.getExtendedData())));
         __equalsCalc = null;
         return _equals;
     }
@@ -2048,6 +2100,12 @@ public class TransactionDetails  implements java.io.Serializable {
         }
         if (getTrack2() != null) {
             _hashCode += getTrack2().hashCode();
+        }
+        if (getCvc2Presence() != null) {
+            _hashCode += getCvc2Presence().hashCode();
+        }
+        if (getExtendedData() != null) {
+            _hashCode += getExtendedData().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -2528,6 +2586,20 @@ public class TransactionDetails  implements java.io.Serializable {
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("cvc2Presence");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "cvc2Presence"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("extendedData");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://PaymentExpress.com", "extendedData"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://PaymentExpress.com", "ArrayOfNameValueField"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
     }
 
     /**
@@ -2540,8 +2612,7 @@ public class TransactionDetails  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    @SuppressWarnings("rawtypes")
-	public static org.apache.axis.encoding.Serializer getSerializer(
+    public static org.apache.axis.encoding.Serializer getSerializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
@@ -2553,8 +2624,7 @@ public class TransactionDetails  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    @SuppressWarnings("rawtypes")
-	public static org.apache.axis.encoding.Deserializer getDeserializer(
+    public static org.apache.axis.encoding.Deserializer getDeserializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {

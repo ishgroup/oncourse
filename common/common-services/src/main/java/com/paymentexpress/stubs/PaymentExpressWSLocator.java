@@ -1,5 +1,6 @@
 /**
- * 
+ * PaymentExpressWSLocator.java
+ *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
@@ -7,9 +8,8 @@
 package com.paymentexpress.stubs;
 
 public class PaymentExpressWSLocator extends org.apache.axis.client.Service implements com.paymentexpress.stubs.PaymentExpressWS {
-	private static final long serialVersionUID = 4340752584717492065L;
 
-	public PaymentExpressWSLocator() {
+    public PaymentExpressWSLocator() {
     }
 
 
@@ -39,7 +39,7 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
         PaymentExpressWSSoapWSDDServiceName = name;
     }
 
-    public com.paymentexpress.stubs.PaymentExpressWSSoap getPaymentExpressWSSoap() throws javax.xml.rpc.ServiceException {
+    public com.paymentexpress.stubs.PaymentExpressWSSoap_PortType getPaymentExpressWSSoap() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(PaymentExpressWSSoap_address);
@@ -50,9 +50,9 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
         return getPaymentExpressWSSoap(endpoint);
     }
 
-    public com.paymentexpress.stubs.PaymentExpressWSSoap getPaymentExpressWSSoap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public com.paymentexpress.stubs.PaymentExpressWSSoap_PortType getPaymentExpressWSSoap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            com.paymentexpress.stubs.PaymentExpressWSSoapStub _stub = new com.paymentexpress.stubs.PaymentExpressWSSoapStub(portAddress, this);
+            com.paymentexpress.stubs.PaymentExpressWSSoap_BindingStub _stub = new com.paymentexpress.stubs.PaymentExpressWSSoap_BindingStub(portAddress, this);
             _stub.setPortName(getPaymentExpressWSSoapWSDDServiceName());
             return _stub;
         }
@@ -84,7 +84,7 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
         PaymentExpressWSSoap12WSDDServiceName = name;
     }
 
-    public com.paymentexpress.stubs.PaymentExpressWSSoap getPaymentExpressWSSoap12() throws javax.xml.rpc.ServiceException {
+    public com.paymentexpress.stubs.PaymentExpressWSSoap_PortType getPaymentExpressWSSoap12() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(PaymentExpressWSSoap12_address);
@@ -95,7 +95,7 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
         return getPaymentExpressWSSoap12(endpoint);
     }
 
-    public com.paymentexpress.stubs.PaymentExpressWSSoap getPaymentExpressWSSoap12(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public com.paymentexpress.stubs.PaymentExpressWSSoap_PortType getPaymentExpressWSSoap12(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
             com.paymentexpress.stubs.PaymentExpressWSSoap12Stub _stub = new com.paymentexpress.stubs.PaymentExpressWSSoap12Stub(portAddress, this);
             _stub.setPortName(getPaymentExpressWSSoap12WSDDServiceName());
@@ -117,15 +117,14 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
      * This service has multiple ports for a given interface;
      * the proxy implementation returned may be indeterminate.
      */
-    @SuppressWarnings("rawtypes")
-	public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (com.paymentexpress.stubs.PaymentExpressWSSoap.class.isAssignableFrom(serviceEndpointInterface)) {
-                com.paymentexpress.stubs.PaymentExpressWSSoapStub _stub = new com.paymentexpress.stubs.PaymentExpressWSSoapStub(new java.net.URL(PaymentExpressWSSoap_address), this);
+            if (com.paymentexpress.stubs.PaymentExpressWSSoap_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
+                com.paymentexpress.stubs.PaymentExpressWSSoap_BindingStub _stub = new com.paymentexpress.stubs.PaymentExpressWSSoap_BindingStub(new java.net.URL(PaymentExpressWSSoap_address), this);
                 _stub.setPortName(getPaymentExpressWSSoapWSDDServiceName());
                 return _stub;
             }
-            if (com.paymentexpress.stubs.PaymentExpressWSSoap.class.isAssignableFrom(serviceEndpointInterface)) {
+            if (com.paymentexpress.stubs.PaymentExpressWSSoap_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
                 com.paymentexpress.stubs.PaymentExpressWSSoap12Stub _stub = new com.paymentexpress.stubs.PaymentExpressWSSoap12Stub(new java.net.URL(PaymentExpressWSSoap12_address), this);
                 _stub.setPortName(getPaymentExpressWSSoap12WSDDServiceName());
                 return _stub;
@@ -142,8 +141,7 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
      * If this service has no port for the given interface,
      * then ServiceException is thrown.
      */
-    @SuppressWarnings("rawtypes")
-	public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         if (portName == null) {
             return getPort(serviceEndpointInterface);
         }
@@ -165,11 +163,9 @@ public class PaymentExpressWSLocator extends org.apache.axis.client.Service impl
         return new javax.xml.namespace.QName("http://PaymentExpress.com", "PaymentExpressWS");
     }
 
-    @SuppressWarnings("rawtypes")
-	private java.util.HashSet ports = null;
+    private java.util.HashSet ports = null;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public java.util.Iterator getPorts() {
+    public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
             ports.add(new javax.xml.namespace.QName("http://PaymentExpress.com", "PaymentExpressWSSoap"));
