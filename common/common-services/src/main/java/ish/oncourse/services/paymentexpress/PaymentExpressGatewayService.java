@@ -4,6 +4,7 @@ import com.paymentexpress.stubs.*;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
+import ish.oncourse.paymentexpress.customization.PaymentExpressWSLocatorWithSoapResponseHandle;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -233,7 +234,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @throws ServiceException
      */
     PaymentExpressWSSoap12Stub soapClientStub() throws ServiceException {
-        PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocator();
+        PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocatorWithSoapResponseHandle();
         serviceLocator.setPaymentExpressWSSoapEndpointAddress("https://sec.paymentexpress.com/WSV1/PXWS.asmx");
         PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
         stub.setTimeout(TIMEOUT);
