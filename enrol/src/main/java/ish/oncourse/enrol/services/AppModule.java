@@ -6,11 +6,11 @@ import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
-import ish.oncourse.mbean.ApplicationData;
-import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.jmx.IJMXInitService;
+import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.UIModule;
@@ -19,9 +19,12 @@ import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
+import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.MetaDataLocator;
 
 /**
@@ -35,7 +38,13 @@ public class AppModule {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
 		binder.bind(IStudentService.class, StudentService.class);
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
-		MBeanRegisterUtil.registerMbeanService(new ApplicationData("enrol"), "ish.oncourse:type=EnrolApplicationData");
+	}
+	
+	@EagerLoad
+	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
+		JMXInitService jmxService = new JMXInitService(applicationGlobals,"enrol","ish.oncourse:type=EnrolApplicationData");
+		hub.addRegistryShutdownListener(jmxService);
+		return jmxService;
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
