@@ -20,9 +20,6 @@
 		<tomcat-test.port>10101</tomcat-test.port>
 		<tomcat-staging.port>10101</tomcat-staging.port>
 		<tomcat.path>/willowAdmin</tomcat.path>
-		<currentBuildVersion>${project.version}</currentBuildVersion>
-		<maven.build.timestamp.format>yyyy/MM/dd HH:mm:ss</maven.build.timestamp.format>
-		<currentTime>${maven.build.timestamp}</currentTime>
 	</properties>
 
 	<dependencies>
@@ -86,28 +83,15 @@
 		<finalName>willowAdmin</finalName>
 		<resources>
 			<resource>
-				<directory>src/main/resources/buildInfo</directory>
-				<includes>
-					<include>buildInfo.properties</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<filtering>false</filtering>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.*</include>
-				</includes>
-				<excludes>
-					<exclude>buildInfo/buildInfo.properties</exclude>
-				</excludes>
-			</resource>
-			<resource>
 				<directory>src/main/java</directory>
 				<filtering>false</filtering>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 		<plugins>
