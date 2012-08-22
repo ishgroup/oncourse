@@ -1,10 +1,10 @@
 package ish.oncourse.cms.services;
 
 import ish.oncourse.linktransform.PageLinkTransformer;
-import ish.oncourse.mbean.ApplicationData;
-import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.jmx.IJMXInitService;
+import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.PrivateResource;
 import ish.oncourse.services.resource.Resource;
@@ -17,9 +17,10 @@ import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
+import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
+import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.Dispatcher;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
@@ -34,10 +35,6 @@ import java.util.List;
 		UIModule.class })
 		
 public class AppModule {
-	
-	public static void bind(ServiceBinder binder) {
-		MBeanRegisterUtil.registerMbeanService(new ApplicationData("cms"), "ish.oncourse:type=CmsApplicationData");
-	}
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
@@ -45,6 +42,13 @@ public class AppModule {
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
+	}
+	
+	@EagerLoad
+	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
+		JMXInitService jmxService = new JMXInitService(applicationGlobals,"cms","ish.oncourse:type=CmsApplicationData");
+		hub.addRegistryShutdownListener(jmxService);
+		return jmxService;
 	}
 
 	/**
