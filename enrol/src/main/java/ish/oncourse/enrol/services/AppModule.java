@@ -6,6 +6,8 @@ import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
+import ish.oncourse.mbean.ApplicationData;
+import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.PaymentGatewayType;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
@@ -33,6 +35,7 @@ public class AppModule {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
 		binder.bind(IStudentService.class, StudentService.class);
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
+		MBeanRegisterUtil.registerMbeanService(new ApplicationData("enrol"), "ish.oncourse:type=EnrolApplicationData");
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
