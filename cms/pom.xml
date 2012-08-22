@@ -24,6 +24,9 @@
 		<tomcat-test.port>10101</tomcat-test.port>
 		<tomcat-staging.port>10101</tomcat-staging.port>
 		<tomcat.path>/cms</tomcat.path>
+		<currentBuildVersion>${project.version}</currentBuildVersion>
+		<maven.build.timestamp.format>yyyy/MM/dd HH:mm:ss</maven.build.timestamp.format>
+		<currentTime>${maven.build.timestamp}</currentTime>
 	</properties>
 
 	<modules>

@@ -4,8 +4,10 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/config/dev"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
-        <dependent-module archiveName="cms-services-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cms-services/cms-services">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+        <dependent-module archiveName="cms-services-2.46-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cms-services/cms-services">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="common-services-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common-services/common-services">
@@ -17,7 +19,10 @@
         <dependent-module archiveName="common-ui-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common-ui/common-ui">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="common-textile-2.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common-textile/common-textile">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/cms-web1/target/classes"/>
-        <property name="context-root" value="cms-web"/>
+        <property name="context-root" value="cms"/>
     </wb-module>
 </project-modules>
