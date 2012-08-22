@@ -1,53 +1,55 @@
 package ish.oncourse.mbean;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
+import java.util.jar.Manifest;
+
 import javax.management.AttributeChangeNotification;
 import javax.management.MBeanNotificationInfo;
 import javax.management.NotificationBroadcasterSupport;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.services.ApplicationGlobals;
 
 public class ApplicationData extends NotificationBroadcasterSupport implements ApplicationDataMBean {
+	private static final String MANIFEST_FILE_PATH = "/META-INF/MANIFEST.MF";
+	private static final String HUDSON_RELEASE_VERSION = "Implementation-Version";
 	private static Logger LOGGER = Logger.getLogger(ApplicationData.class);	
 	private final String version;
 	private final String application;
-	private final Properties properties = new Properties();
+	private final ApplicationGlobals applicationGlobals;
+	private final DataSource dataSource;
 		
-	public ApplicationData(final String application) {
+	public ApplicationData(final String application, final ApplicationGlobals applicationGlobals, final DataSource dataSource) {
 		super();
 		this.application = application;
-		loadProperties();
-		String version = properties.getProperty(VERSION_PROPERTY);
-		this.version  = isCorrectVersion(version) ? version : UNKNOWN_VERSION_VALUE;
+		this.applicationGlobals = applicationGlobals;
+		this.version = getCiVersion();
+		this.dataSource = dataSource;
 	}
 	
-	private boolean isCorrectVersion(final String version) {
-		return StringUtils.trimToNull(version) != null && !DEFAULT_PROJECT_VERSION.equalsIgnoreCase(version);
-	}
-	
-	private boolean isPropertiesCorrectlyInited() {
-		return !properties.isEmpty() && properties.size() == 2;
-	}
-	
-	private void loadProperties() {
-		if (!isPropertiesCorrectlyInited()) {
-			try {
-				properties.clear();
-				properties.load(getClass().getClassLoader().getResourceAsStream(BUILD_INFO_PROPERTIES_FILE));
-			} catch (IOException e) {
-				LOGGER.warn(FAILED_TO_LOAD_BUILD_INFO_PROPERTIES_FILE_MESSAGE, e);
-				properties.put(VERSION_PROPERTY, UNKNOWN_VERSION_VALUE);
+	private synchronized String getCiVersion() {
+		String ciVersion = StringUtils.EMPTY;
+		Manifest manifest = null;
+		try {
+			InputStream is = applicationGlobals.getServletContext().getResourceAsStream(MANIFEST_FILE_PATH);
+			if (is != null) {
+				try {
+					manifest = new Manifest(is);
+					ciVersion = manifest.getMainAttributes().getValue(HUDSON_RELEASE_VERSION);
+				} finally {
+					is.close();
+				}
 			}
+		} catch (Exception e) {
+			LOGGER.error("Failed to load build version", e);
 		}
+		return ciVersion;
 	}
 	
 	@Override
@@ -62,14 +64,11 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 	
 	@Override
 	public String getTotalSuccessEnrolments() {
-		return StringUtils.EMPTY;
-		//final String enrolmentsCount = evaluateEnrolmentsCount();
-		//return enrolmentsCount != null ? enrolmentsCount : "Failed to load success enrolments count due the errors";
+		final String enrolmentsCount = evaluateEnrolmentsCount();
+		return enrolmentsCount != null ? enrolmentsCount : "Failed to load success enrolments count due the errors";
 	}
 	
 	private Statement takeStatement() throws NamingException, SQLException {
-		Context context = (Context) new InitialContext().lookup("java:comp/env/jdbc");
-		DataSource dataSource = (DataSource) context.lookup("/oncourse");
 		if (dataSource != null && !dataSource.getConnection().isClosed()) {
 			return dataSource.getConnection().createStatement();
 		}
@@ -86,8 +85,10 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 			try {
 				result = statement.executeQuery("select count(*) from Enrolment where status=3;");
 				if (result != null) {
-					System.out.println(result.getLong(0));
-					return result.getLong(0) + "";
+					result.beforeFirst();
+					result.next();
+					long count = result.getLong(1);
+					return count + StringUtils.EMPTY;
 				}
 			} finally {
 				if (result != null && !result.isClosed()) {
