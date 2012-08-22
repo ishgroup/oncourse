@@ -6,22 +6,24 @@
 package ish.oncourse.website.services;
 
 import ish.oncourse.linktransform.PageLinkTransformer;
-import ish.oncourse.mbean.ApplicationData;
-import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.jmx.IJMXInitService;
+import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
+import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 /**
@@ -31,8 +33,11 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 @SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
 public class AppModule {
 	
-	public static void bind(ServiceBinder binder) {
-		MBeanRegisterUtil.registerMbeanService(new ApplicationData("website"), "ish.oncourse:type=WebSiteApplicationData");
+	@EagerLoad
+	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
+		JMXInitService jmxService = new JMXInitService(applicationGlobals,"website","ish.oncourse:type=WebSiteApplicationData");
+		hub.addRegistryShutdownListener(jmxService);
+		return jmxService;
 	}
 
 	public static void contributeApplicationDefaults(
