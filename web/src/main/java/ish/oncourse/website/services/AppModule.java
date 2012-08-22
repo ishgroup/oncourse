@@ -6,6 +6,8 @@
 package ish.oncourse.website.services;
 
 import ish.oncourse.linktransform.PageLinkTransformer;
+import ish.oncourse.mbean.ApplicationData;
+import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
@@ -14,6 +16,7 @@ import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Primary;
@@ -27,6 +30,10 @@ import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
  */
 @SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
 public class AppModule {
+	
+	public static void bind(ServiceBinder binder) {
+		MBeanRegisterUtil.registerMbeanService(new ApplicationData("website"), "ish.oncourse:type=WebSiteApplicationData");
+	}
 
 	public static void contributeApplicationDefaults(
 			MappedConfiguration<String, String> configuration) {
