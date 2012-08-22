@@ -145,14 +145,11 @@ public class CourseClassItem {
 		List<Session> sessions = courseClass.getTimelineableSessions();
 		Collections.sort(sessions, new Comparator<Session>() {
 			public int compare(Session o1, Session o2) {
-				int siteNameComparison = 0;
+				int siteNameComparison = o1.getStartDate().compareTo(o2.getStartDate());
 				Room room1 = o1.getRoom();
 				Room room2 = o2.getRoom();
-				if (room1 != null && room2 != null) {
+				if (siteNameComparison == 0 && room1 != null && room2 != null) {
 					siteNameComparison = room1.getSite().getName().compareTo(room2.getSite().getName());
-				}
-				if (siteNameComparison == 0) {
-					return o1.getStartDate().compareTo(o2.getStartDate());
 				}
 				return siteNameComparison;
 			}
