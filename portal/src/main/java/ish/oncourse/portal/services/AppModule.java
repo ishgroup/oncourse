@@ -1,5 +1,7 @@
 package ish.oncourse.portal.services;
 
+import ish.oncourse.mbean.ApplicationData;
+import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.access.AccessController;
 import ish.oncourse.portal.access.AuthenticationService;
@@ -39,6 +41,7 @@ public class AppModule {
 		binder.bind(AccessController.class).withId("AccessController");
 		binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
 		binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
+		MBeanRegisterUtil.registerMbeanService(new ApplicationData("portal"), "ish.oncourse:type=PortalApplicationData");
 	}
 
 	@Contribute(ServiceOverride.class)
