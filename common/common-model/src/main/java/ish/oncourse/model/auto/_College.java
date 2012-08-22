@@ -30,7 +30,6 @@ public abstract class _College extends CayenneDataObject {
     public static final String NAME_PROPERTY = "name";
     public static final String PAYMENT_GATEWAY_ACCOUNT_PROPERTY = "paymentGatewayAccount";
     public static final String PAYMENT_GATEWAY_PASS_PROPERTY = "paymentGatewayPass";
-    public static final String PAYMENT_GATEWAY_TYPE_PROPERTY = "paymentGatewayType";
     public static final String REQUIRES_AVETMISS_PROPERTY = "requiresAvetmiss";
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String WEB_SERVICES_SECURITY_CODE_PROPERTY = "webServicesSecurityCode";
@@ -201,13 +200,6 @@ public abstract class _College extends CayenneDataObject {
     }
     public String getPaymentGatewayPass() {
         return (String)readProperty(PAYMENT_GATEWAY_PASS_PROPERTY);
-    }
-
-    public void setPaymentGatewayType(PaymentGatewayType paymentGatewayType) {
-        writeProperty(PAYMENT_GATEWAY_TYPE_PROPERTY, paymentGatewayType);
-    }
-    public PaymentGatewayType getPaymentGatewayType() {
-        return (PaymentGatewayType)readProperty(PAYMENT_GATEWAY_TYPE_PROPERTY);
     }
 
     public void setRequiresAvetmiss(Boolean requiresAvetmiss) {
