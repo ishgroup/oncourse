@@ -9,5 +9,5 @@ public interface ApplicationDataMBean {
 	static final String DEFAULT_PROJECT_VERSION = "${currentBuildVersion}";
 	public String getVersion();
 	public String getApplication();
-	public boolean isCayenneLoaded();
+	public String getTotalSuccessEnrolments();
 }
