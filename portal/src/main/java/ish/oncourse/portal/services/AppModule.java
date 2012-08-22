@@ -1,7 +1,5 @@
 package ish.oncourse.portal.services;
 
-import ish.oncourse.mbean.ApplicationData;
-import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.access.AccessController;
 import ish.oncourse.portal.access.AuthenticationService;
@@ -13,6 +11,8 @@ import ish.oncourse.portal.services.mail.MailServiceImpl;
 import ish.oncourse.portal.services.pageload.*;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.jmx.IJMXInitService;
+import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.textile.services.TextileModule;
 import ish.oncourse.util.IPageRenderer;
@@ -22,6 +22,7 @@ import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.*;
+import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.pageload.ComponentRequestSelectorAnalyzer;
@@ -41,7 +42,13 @@ public class AppModule {
 		binder.bind(AccessController.class).withId("AccessController");
 		binder.bind(IWebSiteService.class, PortalSiteService.class).withId("WebSiteServiceOverride");
 		binder.bind(IPageRenderer.class, PortalPageRenderer.class).withId("PortalPageRenderer");
-		MBeanRegisterUtil.registerMbeanService(new ApplicationData("portal"), "ish.oncourse:type=PortalApplicationData");
+	}
+	
+	@EagerLoad
+	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
+		JMXInitService jmxService = new JMXInitService(applicationGlobals,"portal","ish.oncourse:type=PortalApplicationData");
+		hub.addRegistryShutdownListener(jmxService);
+		return jmxService;
 	}
 
 	@Contribute(ServiceOverride.class)
