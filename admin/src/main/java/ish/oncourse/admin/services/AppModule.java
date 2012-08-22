@@ -5,6 +5,8 @@ import ish.oncourse.admin.services.billing.IBillingDataService;
 import ish.oncourse.admin.services.ntis.INTISUpdater;
 import ish.oncourse.admin.services.ntis.NTISUpdaterImpl;
 import ish.oncourse.admin.services.ntis.TrainingComponentServiceBuilder;
+import ish.oncourse.mbean.ApplicationData;
+import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
@@ -30,6 +32,7 @@ public class AppModule {
 		binder.bind(ITrainingComponentService.class, new TrainingComponentServiceBuilder());
 		binder.bind(INTISUpdater.class, NTISUpdaterImpl.class);
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceAdmin");
+		MBeanRegisterUtil.registerMbeanService(new ApplicationData("admin"), "ish.oncourse:type=AdminApplicationData");
 	}
 
 	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
