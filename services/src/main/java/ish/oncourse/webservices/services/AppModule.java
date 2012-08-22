@@ -8,7 +8,11 @@ import ish.oncourse.mbean.ApplicationData;
 import ish.oncourse.mbean.MBeanRegisterUtil;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.cache.ICacheService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
+import ish.oncourse.services.jmx.IJMXInitService;
+import ish.oncourse.services.jmx.JMXInitService;
+import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
@@ -27,10 +31,13 @@ import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
 import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.internal.OperationException;
+import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.runtime.ComponentEventException;
+import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.ExceptionReporter;
 import org.apache.tapestry5.services.RequestExceptionHandler;
@@ -68,7 +75,13 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
-		MBeanRegisterUtil.registerMbeanService(new ApplicationData("services"), "ish.oncourse:type=ServicesApplicationData");
+	}
+	
+	@EagerLoad
+	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
+		JMXInitService jmxService = new JMXInitService(applicationGlobals,"services","ish.oncourse:type=ServicesApplicationData");
+		hub.addRegistryShutdownListener(jmxService);
+		return jmxService;
 	}
 	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
