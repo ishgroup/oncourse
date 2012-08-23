@@ -38,7 +38,7 @@ public class PotentialDiscountsPolicy extends DiscountPolicy {
 					}
 					continue;
 
-				} else if (!discount.hasEligibilityFilter()) {
+				} else if (!discount.hasEligibilityFilter() && !discount.getHideOnWeb()) {
 					result.add(discount);
 				}
 			}

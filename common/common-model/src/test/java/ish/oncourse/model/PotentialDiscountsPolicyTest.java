@@ -33,12 +33,15 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	public void getApplicableByPolicyTest() {
 		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
-				singleDiscountWithRateMin));
+				singleDiscountWithRateMin, hiddenDiscountWithAmount));
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(3, applicableByPolicy.size());
 		assertEquals(combDiscountWithAmount, applicableByPolicy.get(0));
 		assertEquals(singleDiscountWithRate, applicableByPolicy.get(1));
 		assertEquals(singleDiscountWithRateMin, applicableByPolicy.get(2));
+		
+		// hidden discount should not be in potential discounts list
+		assertFalse(applicableByPolicy.contains(hiddenDiscountWithAmount));
 	}
 
 	/**

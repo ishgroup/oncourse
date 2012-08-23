@@ -332,13 +332,15 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	public void getApplicableByPolicySmokeTest() {
 		discountPolicy = new RealDiscountsPolicy(promotions, student);
 		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(discount,
-				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin));
+				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, hiddenDiscountWithAmount));
 		assertFalse(applicableByPolicy.isEmpty());
-		assertEquals(4, applicableByPolicy.size());
+		assertEquals(5, applicableByPolicy.size());
 		assertEquals(discount, applicableByPolicy.get(0));
 		assertEquals(combDiscountWithAmount, applicableByPolicy.get(1));
 		assertEquals(singleDiscountWithRate, applicableByPolicy.get(2));
 		assertEquals(singleDiscountWithRateMin, applicableByPolicy.get(3));
+		// hidden discount should appear in real discounts list
+		assertEquals(hiddenDiscountWithAmount, applicableByPolicy.get(4));
 	}
 
 	/**

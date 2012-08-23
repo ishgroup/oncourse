@@ -34,6 +34,10 @@ public abstract class AbstractDiscountPolicyTest {
 	 * Not combinable discount with the rate 10% and minimum 15.
 	 */
 	public static Discount singleDiscountWithRateMin;
+	/**
+	 * Combinable discount which for $10 amount which has hideOnWeb property set to true
+	 */
+	public static Discount hiddenDiscountWithAmount;
 
 	public static List<Discount> promotions;
 	public static DiscountPolicy discountPolicy;
@@ -48,24 +52,34 @@ public abstract class AbstractDiscountPolicyTest {
 		combDiscountWithAmount.setDiscountAmount(new Money(BigDecimal.TEN));
 		combDiscountWithAmount.setCombinationType(true);
 		combDiscountWithAmount.setCode("code1");
+		combDiscountWithAmount.setHideOnWeb(false);
 
 		singleDiscountWithRate = new Discount();
 		singleDiscountWithRate.setDiscountRate(new BigDecimal(0.2));
 		singleDiscountWithRate.setMaximumDiscount(Money.ZERO);
 		singleDiscountWithRate.setMinimumDiscount(Money.ZERO);
 		singleDiscountWithRate.setCombinationType(false);
+		singleDiscountWithRate.setHideOnWeb(false);
 
 		combDiscountWithRateMax = new Discount();
 		combDiscountWithRateMax.setDiscountRate(new BigDecimal(0.2));
 		combDiscountWithRateMax.setMaximumDiscount(new Money(BigDecimal.TEN));
 		combDiscountWithRateMax.setCombinationType(true);
 		combDiscountWithRateMax.setCode("code2");
+		combDiscountWithRateMax.setHideOnWeb(false);
 
 		singleDiscountWithRateMin = new Discount();
 		singleDiscountWithRateMin.setDiscountRate(new BigDecimal(0.1));
 		singleDiscountWithRateMin.setMinimumDiscount(new Money("15"));
 		singleDiscountWithRateMin.setCombinationType(false);
 		singleDiscountWithRateMin.setCode("code3");
+		singleDiscountWithRateMin.setHideOnWeb(false);
+		
+		hiddenDiscountWithAmount = new Discount();
+		hiddenDiscountWithAmount.setDiscountAmount(new Money(BigDecimal.TEN));
+		hiddenDiscountWithAmount.setCombinationType(true);
+		hiddenDiscountWithAmount.setHideOnWeb(true);
+		
 		promotions = new ArrayList<Discount>();
 		promotions.add(combDiscountWithAmount);
 		promotions.add(singleDiscountWithRateMin);
