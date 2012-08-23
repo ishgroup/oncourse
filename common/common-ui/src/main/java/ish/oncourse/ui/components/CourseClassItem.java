@@ -164,6 +164,11 @@ public class CourseClassItem {
 		return String.format(key, numberOfSession,
 				FormatUtils.hoursFormat.format(courseClass.getTotalDurationHours().doubleValue()));
 	}
+	
+	public String getExpectedHours() {
+		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null) ? 
+				String.format("Approximately %.2f hours", courseClass.getExpectedHours().doubleValue()) : "";
+	}
 
 	public String getCssTableClass() {
 		return "session-table";
@@ -186,7 +191,7 @@ public class CourseClassItem {
 	}
 
 	public boolean isCurrentClass() {
-		return !courseClass.isCancelled() && !courseClass.hasEnded();
+		return !courseClass.isCancelled() && (!courseClass.hasEnded() || courseClass.getIsDistantLearningCourse());
 	}
 	
 	public boolean isFinishedClass() {
@@ -208,6 +213,10 @@ public class CourseClassItem {
 	public boolean isAddedClass() {
 		List<Long> classIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
 		return classIds.contains(courseClass.getId());
+	}
+	
+	public boolean isSelfPacedClass() {
+		return courseClass.getIsDistantLearningCourse();
 	}
 
 	public String getEnrolHoverTitle() {

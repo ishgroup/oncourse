@@ -29,7 +29,12 @@
 						<a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
 					</div>
 					<p:else>
-						<b>no session</b>
+						<t:if t:test="selfPacedClass">
+							<div class="date">Self paced<br/><br/>${expectedHours}</div>
+							<p:else>
+								<b>no session</b>
+							</p:else>
+						</t:if>
 					</p:else>
 				</t:if>
 				<div class="summary">${courseClass.course.name}</div>
