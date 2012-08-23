@@ -3,7 +3,6 @@ package ish.oncourse.webservices.jobs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -145,6 +144,7 @@ public class SMSJobTest extends ServiceTest {
 		SelectQuery q = new SelectQuery(MessagePerson.class);
 
 		ObjectContext context = cayenneService.newNonReplicatingContext();
+		@SuppressWarnings("unchecked")
 		List<MessagePerson> list = context.performQuery(q);
 
 		Date today = new Date();
