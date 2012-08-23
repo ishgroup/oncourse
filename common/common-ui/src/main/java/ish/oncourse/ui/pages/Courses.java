@@ -204,7 +204,12 @@ public class Courses {
         if (searchParams.getSubject() != null) {
             request.setAttribute(Tag.BROWSE_TAG_PARAM, searchParams.getSubject().getId());
         }
-        return isHasInvalidSearchTerms() ? new ArrayList<Course>() : searchCourses(start, rows);
+        
+        if (isHasInvalidSearchTerms()) {
+        	coursesCount = 0;
+        	return new ArrayList<Course>();
+        }
+        return searchCourses(start, rows);
 	}
 
 	private List<Course> searchCourses(int start, int rows) {
