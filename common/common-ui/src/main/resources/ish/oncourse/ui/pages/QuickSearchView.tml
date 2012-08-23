@@ -7,8 +7,7 @@
 			<p:else>
 				<t:if t:test="hasLocationDetailList">
 					<ul class="suburb_list">
-						<li class="title"> Show courses <t:if t:test="hasSearchingLocationsSearchString"> for <em>${searchingLocationsSearchString}</em>
-							</t:if> near... </li>
+						<li class="title"> Show courses near... </li>
 						<t:loop source="locationDetailList" value="location">
 							<li class="location hoverable">
 								<a href="/courses?near=${location.displayName}">${location.displayName}</a>
