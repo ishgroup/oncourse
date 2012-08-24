@@ -11,7 +11,7 @@
 		<t:if t:test="loggedIn">
 			<link href="/s/cms/css/cms.css" media="screen" rel="stylesheet" />
 			<link href="/s/cms/js/plugins/plugins.css" rel="stylesheet" type="text/css"/>
-			<script t:type="ui/jsassetgroup" group="literal:core-cms"/>
+			<script src="/s/cms/js/all.js" />
   		</t:if>
 	</head>
 	<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
