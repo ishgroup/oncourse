@@ -64,8 +64,7 @@ public class QueuedStatisticProcessor {
 
 
     public Queueable process(GenericQueuedStatisticStub statisticStub) {
-        if (statisticStub.isCleanupStub())
-        {
+        if (Boolean.TRUE.equals(statisticStub.isCleanupStub())) {
             receivedTimestamp = statisticStub.getReceivedTimestamp();
             return null;
         }
