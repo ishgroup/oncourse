@@ -58,5 +58,9 @@ public class Attachments {
 
 		return !allAttachedFiles.isEmpty();
 	}
+	
+	public boolean isHasAttachments() {
+		return attachments != null && !attachments.isEmpty();
+	}
 
 }

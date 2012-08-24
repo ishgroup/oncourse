@@ -4,10 +4,12 @@
 		<li><img src="${image.contextPath}"/></li>
 	</t:loop>
 	
-	<h3>Additional information</h3>
-	
-	<t:loop element="ul" class="literal:attachments"  source="attachments" value="attachment">
-		<li><a href="${attachment.contextPath}" name="${attachment.name}">${attachment.name}</a> <span class="attachmentSize">${attachment.size} kB</span> <span class="attachmentType">${attachment.type}</span></li>
-	</t:loop>
+	<t:if test="hasAttachments">
+		<h3>Additional information</h3>
+		
+		<t:loop element="ul" class="literal:attachments"  source="attachments" value="attachment">
+			<li><a href="${attachment.contextPath}" name="${attachment.name}">${attachment.name}</a> <span class="attachmentSize">${attachment.size} kB</span> <span class="attachmentType">${attachment.type}</span></li>
+		</t:loop>
+	</t:if>
 	
 </t:container>
