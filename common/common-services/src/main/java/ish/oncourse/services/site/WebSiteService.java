@@ -25,7 +25,7 @@ public class WebSiteService implements IWebSiteService {
 	private final static Logger LOGGER = Logger.getLogger(WebSiteService.class);
 
 	private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
-			.compile("([a-z]+)([.].+[.]oncourse[.]net[.]au)");
+			.compile("([a-z,-]+)([.].+[.]oncourse[.]net[.]au)");
 
 	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
 
