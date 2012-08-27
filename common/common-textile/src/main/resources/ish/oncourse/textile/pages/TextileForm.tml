@@ -12,7 +12,7 @@
 						<label for="${index}_${field.label}_input">${field.label} <t:if test="${field.required}"><sup>*</sup></t:if> </label>
 						
 						<t:if test="textArea">
-							<textarea rows="${field.textAreaRows}" id="${index}_${field.label}_input" name="${index}_${field.label}" class="formField ${required}"/>
+							<textarea rows="${field.textAreaRows}" id="${index}_${field.label}_input" name="${index}_${field.label}_input" class="formField ${required}"/>
 						</t:if>
 						<t:if test="textWithMaxLength">
 							<input type="text" maxlength="${field.maxLength}" name="${index}_${field.label}_input" id="${index}_${field.label}_input" class="formField ${required}"/>
