@@ -13,7 +13,7 @@
 					</t:if>
 				</div>
 				${weekDay} ${time}.
-				<t:if test="room"><div>${room.name}, ${room.site.name}</div><p>${weekDay} ${day} ${month} ${year}</p></t:if>
+				<t:if test="room"><div>${room.name}, ${room.site.name}</div></t:if>
 			</div>
 		
 			<p:else>There's no next sessions for this class.</p:else>
