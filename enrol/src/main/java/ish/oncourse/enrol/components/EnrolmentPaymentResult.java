@@ -12,10 +12,14 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -89,8 +93,16 @@ public class EnrolmentPaymentResult {
 	@Property
 	private Transaction transaction;
 
-
     private Exception unexpectedException;
+    
+    @SuppressWarnings("all")
+	@InjectComponent
+	private Zone successEnrolmentContinueZone;
+
+    @SuppressWarnings("all")
+	@InjectComponent
+	@Property
+	private Form successEnrolmentContinueForm;
 
 	@SetupRender
 	Object beforeRender() {
@@ -249,5 +261,22 @@ public class EnrolmentPaymentResult {
 
     public void setUnexpectedException(Exception unexpectedException) {
         this.unexpectedException = unexpectedException;
+    }
+        
+    @OnEvent(component = "successEnrolmentContinueForm", value = "success")
+	Object submitted() {
+    	Object resultPage = getSuccessUrl();
+    	try {
+    		if (resultPage != null) {
+    			return new URL(getSuccessUrl());
+    		} else {
+    			return new URL(getCoursesLink());
+    		}
+        } catch (MalformedURLException e) {}
+    	return null;
+    }
+    
+    public String getContinueButtonText() {
+    	return messages.get("continue.button.text");
     }
 }

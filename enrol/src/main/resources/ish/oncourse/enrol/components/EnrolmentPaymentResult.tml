@@ -6,7 +6,7 @@
         <script type="text/javascript">
             refreshShortList();
             <t:if test="coursesLink">
-                    setTimeout("window.location.href='${coursesLink}'", 3000);
+                    setTimeout("window.location.href='${coursesLink}'", 10000);
             </t:if>
         </script>
         <p:else>
@@ -16,9 +16,6 @@
                 <t:if test="enrolmentSuccessful">
                     <script type="text/javascript">
                         refreshShortList();
-                        <t:if test="successUrl">
-                            setTimeout("window.location.href='${successUrl}'", 3000);
-                        </t:if>
                     </script>
                     <h2>Enrolment <span>&#187;</span> Successful</h2>
                     <p>${thxMsg}</p>
@@ -26,12 +23,18 @@
                     <p>${message:successConfirmation}</p>
                     <t:if test="successUrl">
                         <p>
-                            <a href="${successUrl}"><strong>Click here for important information and further steps regarding this enrolment.</strong></a>
+                        	<strong>Please press continue to view further important information with regard to this enrolment</strong>
                             <br/>
-                            <small>(you will be automatically redirected in 3 seconds)</small>
                         </p>
                     </t:if>
-                    <p><a href="${coursesLink}">If you wish to browse other courses, click here.</a></p>
+                    <t:zone t:id="successEnrolmentContinueZone" t:update="show">
+                    	<t:form t:id="successEnrolmentContinueForm" zone="successEnrolmentContinueZone">
+                    		<div class="successEnrolmentContinueButton">
+                    			<t:submit t:id="continueEnrolmentSubmit" value="${continueButtonText}" class="btn"  
+    								clientId="continueEnrolment"/>
+                    		</div>
+                    	</t:form>
+                    </t:zone>
                     <t:AnalyticsTransaction transaction="transaction"/>
                     <p:else>
                         <t:if test="enrolmentFailed">
