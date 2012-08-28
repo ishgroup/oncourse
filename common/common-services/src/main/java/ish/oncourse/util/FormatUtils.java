@@ -31,6 +31,8 @@ public class FormatUtils {
 
     public static final String DATE_FORMAT_dd_MMM_E = "dd/MMM/E";
 
+    public static final String DATE_FORMAT_dd_MMM_E_yyyy = "dd/MMM/E/yyyy";
+
     public static final String DATE_FORMAT_MM_yyyy = "MM-yyyy";
 
     public static final String DATE_FORMAT_MMM = "MMM";
@@ -44,6 +46,10 @@ public class FormatUtils {
 
     private static NumberFormat feeFormatWithoutCents;
 
+
+    public static DateFormat getDateFormat_dd_MMM_E_yyyy(String timeZone) {
+        return FormatUtils.getDateFormat(DATE_FORMAT_dd_MMM_E_yyyy, timeZone);
+    }
 
     public static DateFormat getDateFormat_dd_MMM_E(String timeZone) {
         return FormatUtils.getDateFormat(DATE_FORMAT_dd_MMM_E, timeZone);

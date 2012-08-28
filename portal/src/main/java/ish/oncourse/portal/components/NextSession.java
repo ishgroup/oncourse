@@ -61,16 +61,20 @@ public class NextSession {
 	}
 
 	public String getDay() {
-		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[0];
+		return getDateFormat_dd_MMM_E_yyyy(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[0];
 	}
 
 	public String getMonth() {
-		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[1];
+		return getDateFormat_dd_MMM_E_yyyy(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[1];
 	}
 
 	public String getWeekDay() {
-		return getDateFormat_dd_MMM_E(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[2];
+		return getDateFormat_dd_MMM_E_yyyy(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[2];
 	}
+
+    public String getYear() {
+        return getDateFormat_dd_MMM_E_yyyy(nextSession.getTimeZone()).format(nextSession.getStartDate()).split("/")[3];
+    }
 
 
     private String getSessionTime(Session session)
