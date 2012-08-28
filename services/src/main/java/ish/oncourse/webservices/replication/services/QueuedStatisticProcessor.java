@@ -46,6 +46,7 @@ public class QueuedStatisticProcessor {
 		List<QueuedStatistic> statisticForDelete = atomicContext.performQuery(q);
         if (!statisticForDelete.isEmpty()) {
             atomicContext.deleteObjects(statisticForDelete);
+            atomicContext.commitChanges();
         }
 
         /**
