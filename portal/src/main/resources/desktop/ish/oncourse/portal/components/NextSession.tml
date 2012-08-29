@@ -12,7 +12,7 @@
 						<i>today</i>
 					</t:if>
 				</div>
-				${weekDay} ${time}.
+				${weekDay} ${time}
 				<t:if test="room"><div>${room.name}, ${room.site.name}</div><p>${weekDay} ${day} ${month} ${year}</p></t:if>
 			</div>
 		
@@ -33,7 +33,7 @@
 									<i>today</i>
 								</t:if>
 							</div>
-							${sessionWeekDay} ${sessionTime}.
+							${sessionWeekDay} ${sessionTime}
 							<t:if test="room"><div>${roomInformation}</div></t:if>
 		               	 </li>  
 			       </t:loop>
