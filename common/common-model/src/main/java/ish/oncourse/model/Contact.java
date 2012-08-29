@@ -11,6 +11,7 @@ import ish.util.SecurityUtil;
 
 import java.util.Date;
 
+import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
@@ -361,6 +362,16 @@ public class Contact extends _Contact implements Queueable {
 		return result;
 	}
 	
+	@Override
+	public void setStudent(final Student student) {
+		setObjectToOneTargetWithCheck(STUDENT_PROPERTY, student, true, this);
+	}
+
+	@Override
+	public void setTutor(final Tutor tutor) {
+		setObjectToOneTargetWithCheck(TUTOR_PROPERTY, tutor, true, this);
+	}
+
 	/**
 	 * The alternative for setToOneTarget(relationshipName, value, setReverse) but with check that reverse relationship also updated.
 	 * Should be used only in case when we can't be sure that relationships will be changed for all required entities.
@@ -368,25 +379,27 @@ public class Contact extends _Contact implements Queueable {
 	 * @param relationshipName
 	 * @param value
 	 * @param setReverse
+	 * @param object - object to update
 	 */
-	protected void setToOneTargetWithCheck(final String relationshipName, final DataObject value, final boolean setReverse) {
-		final DataObject oldValue = (DataObject) readProperty(relationshipName);
+	public static void setObjectToOneTargetWithCheck(final String relationshipName, final DataObject value, final boolean setReverse, 
+		final CayenneDataObject object) {
+		final DataObject oldValue = (DataObject) object.readProperty(relationshipName);
 		DataObject oldObject = null;
 		if ((oldValue != null && !oldValue.equals(value)) || (oldValue == null && value != null)) {
-			oldObject = getReverseRelationShip(relationshipName, value);
-			if (oldObject != null && this.equals(oldObject)) {
+			oldObject = getObjectReverseRelationShip(relationshipName, value, object);
+			if (oldObject != null && object.equals(oldObject)) {
 				oldObject = null;
 			}
 		}
-		setToOneTarget(relationshipName, value, setReverse);
+		object.setToOneTarget(relationshipName, value, setReverse);
 		if (oldObject != null && oldObject.readProperty(relationshipName) != null && value.equals((DataObject) oldObject.readProperty(relationshipName))) {
 			oldObject.setToOneTarget(relationshipName, null, false);
 		}
 	}
 	
-	private DataObject getReverseRelationShip(final String relationshipName, final DataObject value) {
-		final ObjRelationship relation = (ObjRelationship) objectContext.getEntityResolver().getObjEntity(objectId.getEntityName())
-			.getRelationship(relationshipName);
+	private static DataObject getObjectReverseRelationShip(final String relationshipName, final DataObject value, final CayenneDataObject object) {
+		final ObjRelationship relation = (ObjRelationship) object.getObjectContext().getEntityResolver()
+			.getObjEntity(object.getObjectId().getEntityName()).getRelationship(relationshipName);
 		final ObjRelationship reverseRelation = relation.getReverseRelationship();
 		return (DataObject) value.readProperty(reverseRelation.getName());
 	}
