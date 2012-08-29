@@ -21,7 +21,7 @@ public class TutorUpdater extends AbstractWillowUpdater<TutorStub, Tutor> {
 
 		if (stub.getContactId() != null) {
 			Contact contact = callback.updateRelationShip(stub.getContactId(), Contact.class);
-			contact.setTutor(entity);
+			entity.setContact(contact);
 		} else {
 			final String message = String.format("Tutor with angelId = %s without linked contact detected!", stub.getAngelId());
             throw new UpdaterException(message);
