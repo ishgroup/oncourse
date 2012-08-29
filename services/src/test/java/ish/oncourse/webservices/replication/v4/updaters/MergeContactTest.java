@@ -48,7 +48,7 @@ public class MergeContactTest extends ServiceTest {
 	@Test
 	public void testContactStudentMergeFail() {
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		List<Contact> data = createTwoContacts(objectContext);
+		List<Contact> data = getFirstTwoContacts(objectContext);
 		Contact contact1 = data.get(0);
 		Contact contact2 = data.get(1);
 		Student student1 = contact1.getStudent();
@@ -60,11 +60,20 @@ public class MergeContactTest extends ServiceTest {
 			//contact2.setStudent(student1);
 			//use the orthodox setter logic
 			contact2.setToOneTarget(Contact.STUDENT_PROPERTY, student1, true);
+			boolean commitFailed = false;
+			try {
+				objectContext.commitChanges();
+			} catch (Exception e) {
+				commitFailed = true;
+			}
+			assertFalse(commitFailed);
+			
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
 			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
 			assertNotNull("student 1 linked with the contact 2", student1.getContact());
 			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
-
+			contact1 = (Contact) objectContext.performQuery(
+				new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);
 			assertNull("contact 1 have no link to students", contact1.getStudent());
 		} finally {
 			objectContext.rollbackChanges();
@@ -74,7 +83,7 @@ public class MergeContactTest extends ServiceTest {
 	@Test
 	public void testContactsStudentsMergeFail() {
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		List<Contact> data = createTwoMoreContacts(objectContext);
+		List<Contact> data = getSecondTwoContacts(objectContext);
 		Contact contact1 = data.get(0);
 		Contact contact2 = data.get(1);
 		Student student1 = contact1.getStudent();
@@ -89,26 +98,6 @@ public class MergeContactTest extends ServiceTest {
 			//contact2.setStudent(student1);
 			//use the orthodox setter logic
 			contact2.setToOneTarget(Contact.STUDENT_PROPERTY, student1, true);
-			//objectContext.commitChanges();
-			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
-			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
-			assertNotNull("student 1 linked with the contact 2", student1.getContact());
-			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
-			
-			assertNull("contact 1 have no more link to students", contact1.getStudent());
-		
-			//contact1.setStudent(student2);
-			//use the orthodox setter logic
-			contact1.setToOneTarget(Contact.STUDENT_PROPERTY, student2, true);
-			//objectContext.commitChanges();
-			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
-			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
-			
-			assertNotNull("student 1 linked with the contact 2", student1.getContact());
-			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
-			assertNotNull("contact 1 have no link to students", contact1.getStudent());
-			assertTrue("Student 1 have link with the contact 2 only", contact1.getStudent().getContact().equals(contact1));
-			assertTrue("Student 1 have link with the contact 2", contact1.getStudent().equals(student2));
 			boolean commitFailed = false;
 			try {
 				objectContext.commitChanges();
@@ -116,6 +105,26 @@ public class MergeContactTest extends ServiceTest {
 				commitFailed = true;
 			}
 			assertFalse(commitFailed);
+		
+			//contact1.setStudent(student2);
+			//use the orthodox setter logic
+			contact1.setToOneTarget(Contact.STUDENT_PROPERTY, student2, true);
+			try {
+				objectContext.commitChanges();
+			} catch (Exception e) {
+				commitFailed = true;
+			}
+			assertFalse(commitFailed);
+			//contact 2 part check
+			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
+			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
+			assertNotNull("student 1 linked with the contact 2", student1.getContact());
+			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
+			contact1 = (Contact) objectContext.performQuery(
+					new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 3L))).get(0);
+			assertNotNull("contact 1 have no link to students", contact1.getStudent());
+			assertTrue("Student 1 have link with the contact 2 only", contact1.getStudent().getContact().equals(contact1));
+			assertTrue("Student 1 have link with the contact 2", contact1.getStudent().equals(student2));
 		} finally {
 			objectContext.rollbackChanges();
 		}
@@ -124,7 +133,7 @@ public class MergeContactTest extends ServiceTest {
 	@Test
 	public void testContactsStudentsMergeWithCheckRelationShip() {
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		List<Contact> data = createTwoMoreContacts(objectContext);
+		List<Contact> data = getSecondTwoContacts(objectContext);
 		Contact contact1 = data.get(0);
 		Contact contact2 = data.get(1);
 		Student student1 = contact1.getStudent();
@@ -166,7 +175,7 @@ public class MergeContactTest extends ServiceTest {
 	@Test
 	public void testContactStudentMergeWithCheckRelationShip() {
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		List<Contact> data = createTwoContacts(objectContext);
+		List<Contact> data = getFirstTwoContacts(objectContext);
 		Contact contact1 = data.get(0);
 		Contact contact2 = data.get(1);
 		Student student1 = contact1.getStudent();
@@ -184,6 +193,9 @@ public class MergeContactTest extends ServiceTest {
 			assertNotNull("student 1 linked with the contact 2", student1.getContact());
 			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
 			assertNull("contact 1 have no link to students", contact1.getStudent());
+			contact1 = (Contact) objectContext.performQuery(
+				new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);
+			assertNull("contact 1 have no link to students", contact1.getStudent());
 		} finally {
 			objectContext.rollbackChanges();
 		}
@@ -192,7 +204,7 @@ public class MergeContactTest extends ServiceTest {
 	@Test
 	public void testStudentContactMerge() {
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		List<Contact> data = createTwoContacts(objectContext);
+		List<Contact> data = getFirstTwoContacts(objectContext);
 		Contact contact1 = data.get(0);
 		Contact contact2 = data.get(1);
 		Student student1 = contact1.getStudent();
@@ -219,7 +231,7 @@ public class MergeContactTest extends ServiceTest {
 	@Test
 	public void testStudentContactMergeWithCheckRelationShip() {
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		List<Contact> data = createTwoMoreContacts(objectContext);
+		List<Contact> data = getSecondTwoContacts(objectContext);
 		Contact contact1 = data.get(0);
 		Contact contact2 = data.get(1);
 		Student student1 = contact1.getStudent();
@@ -250,7 +262,7 @@ public class MergeContactTest extends ServiceTest {
 	@Test
 	public void testStudentsContactsMergeFail() {
 		final ObjectContext objectContext = getService(ICayenneService.class).newContext();
-		List<Contact> data = createTwoMoreContacts(objectContext);
+		List<Contact> data = getSecondTwoContacts(objectContext);
 		Contact contact1 = data.get(0);
 		Contact contact2 = data.get(1);
 		Student student1 = contact1.getStudent();
@@ -271,14 +283,16 @@ public class MergeContactTest extends ServiceTest {
 			assertNotNull("student 1 linked with the contact 2", student1.getContact());
 			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
 			assertNull("contact 1 have no link to students", contact1.getStudent());
-
+			//without the reloading student2 will have the link to contact2
+			student2 = (Student) objectContext.performQuery(
+				new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 4L))).get(0);
 			assertNull("student 2 should have no link to contacts", student2.getContact());
 		} finally {
 			objectContext.rollbackChanges();
 		}
 	}
 	
-	private List<Contact> createTwoContacts(final ObjectContext objectContext) {
+	private List<Contact> getFirstTwoContacts(final ObjectContext objectContext) {
 		Contact contact1 = (Contact) objectContext.performQuery(
 			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);		
 		Contact contact2 = (Contact) objectContext.performQuery(
@@ -293,7 +307,7 @@ public class MergeContactTest extends ServiceTest {
 		return result;
 	}
 	
-	private List<Contact> createTwoMoreContacts(final ObjectContext objectContext) {
+	private List<Contact> getSecondTwoContacts(final ObjectContext objectContext) {
 		Contact contact1 = (Contact) objectContext.performQuery(
 			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 3L))).get(0);		
 		Contact contact2 = (Contact) objectContext.performQuery(
