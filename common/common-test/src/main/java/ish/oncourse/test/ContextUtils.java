@@ -16,6 +16,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * The class for {@link InitialContext} setup.
@@ -26,6 +27,10 @@ import java.util.Collections;
 public class ContextUtils {
 
 	private static ServerRuntime cayenneRuntime;
+	
+	public static final String SHOULD_CREATE_TABLES="createTables";
+	public static final String SHOULD_CREATE_FK_CONSTRAINTS="createFKConstraints";
+	public static final String SHOULD_CREATE_PK_SUPPORT="createPKSupport";
 
 	static {
 		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
@@ -41,6 +46,10 @@ public class ContextUtils {
 	 * @throws Exception
 	 */
 	public static void setupDataSources() throws Exception {
+		setupDataSourcesWithParams(null);
+	}
+	
+	public static void setupDataSourcesWithParams(Map<String, Boolean> params) throws Exception {
 		// sets up the InitialContextFactoryForTest as default factory.
 
 		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
@@ -56,7 +65,7 @@ public class ContextUtils {
 
 		DataDomain domain = cayenneRuntime.getDataDomain();
 
-		createTablesForDataSource(oncourse, domain.getDataMap("oncourse"));
+		createTablesForDataSourceByParams(oncourse, domain.getDataMap("oncourse"), params);
 		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}
@@ -102,14 +111,30 @@ public class ContextUtils {
 	 * @throws Exception
 	 */
 	private static void createTablesForDataSource(DataSource dataSource, DataMap map) throws Exception {
+		createTablesForDataSourceByParams(dataSource, map, null);
+	}
+	
+	/**
+	 * Generates table for the given dataSource.
+	 * 
+	 * @param dataSource
+	 * @throws Exception
+	 */
+	private static void createTablesForDataSourceByParams(DataSource dataSource, DataMap map, Map<String, Boolean> params) throws Exception {
 		@SuppressWarnings("unused")
 		DataDomain domain = cayenneRuntime.getDataDomain();
 		@SuppressWarnings("deprecation")
 		DbGenerator generator = new DbGenerator(new DerbyAdapter(), map, Collections.<DbEntity> emptyList());
-		generator.setShouldCreateTables(true);
-		generator.setShouldCreateFKConstraints(true);
-		generator.setShouldCreatePKSupport(true);
-
+		boolean isParamsEmpty = params == null || params.isEmpty();
+		if (isParamsEmpty) {
+			generator.setShouldCreateTables(true);
+			generator.setShouldCreateFKConstraints(true);
+			generator.setShouldCreatePKSupport(true);
+		} else {
+			generator.setShouldCreateTables(Boolean.TRUE.equals(params.get(SHOULD_CREATE_TABLES)));
+			generator.setShouldCreateFKConstraints(Boolean.TRUE.equals(params.get(SHOULD_CREATE_FK_CONSTRAINTS)));
+			generator.setShouldCreatePKSupport(Boolean.TRUE.equals(params.get(SHOULD_CREATE_PK_SUPPORT)));
+		}
 		generator.runGenerator(dataSource);
 	}
 

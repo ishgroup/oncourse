@@ -7,6 +7,7 @@ import org.junit.After;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class ServiceTest {
 
@@ -15,6 +16,11 @@ public class ServiceTest {
 	public void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
         tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 		ContextUtils.setupDataSources();
+	}
+	
+	public void initTestWithParams(Map<String, Boolean> params, String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
+        tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
+		ContextUtils.setupDataSourcesWithParams(params);
 	}
 	
 	public void initTest(String appPackage, String appName, String contextPath, Class<?>... moduleClasses) throws Exception {
