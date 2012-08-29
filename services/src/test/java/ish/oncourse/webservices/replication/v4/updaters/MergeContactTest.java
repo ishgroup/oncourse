@@ -57,9 +57,7 @@ public class MergeContactTest extends ServiceTest {
 		assertNotNull("student 1 linked with the contact 1", student1.getContact());
 		assertNull("contact 2 have no link to students", contact2.getStudent());
 		try {
-			//contact2.setStudent(student1);
-			//use the orthodox setter logic
-			contact2.setToOneTarget(Contact.STUDENT_PROPERTY, student1, true);
+			contact2.setStudent(student1);
 			boolean commitFailed = false;
 			try {
 				objectContext.commitChanges();
@@ -95,9 +93,7 @@ public class MergeContactTest extends ServiceTest {
 		assertNotNull("student 2 linked with the contact 2", student2.getContact());
 		
 		try {
-			//contact2.setStudent(student1);
-			//use the orthodox setter logic
-			contact2.setToOneTarget(Contact.STUDENT_PROPERTY, student1, true);
+			contact2.setStudent(student1);
 			boolean commitFailed = false;
 			try {
 				objectContext.commitChanges();
@@ -106,9 +102,7 @@ public class MergeContactTest extends ServiceTest {
 			}
 			assertFalse(commitFailed);
 		
-			//contact1.setStudent(student2);
-			//use the orthodox setter logic
-			contact1.setToOneTarget(Contact.STUDENT_PROPERTY, student2, true);
+			contact1.setStudent(student2);
 			try {
 				objectContext.commitChanges();
 			} catch (Exception e) {
@@ -146,7 +140,6 @@ public class MergeContactTest extends ServiceTest {
 
 		try {
 			//contact2.setStudent(student1);
-			//use the correct setter logic
 			Contact.setObjectToOneTargetWithCheck(Contact.STUDENT_PROPERTY, student1, true, contact2);
 			objectContext.commitChanges();
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
@@ -156,7 +149,6 @@ public class MergeContactTest extends ServiceTest {
 			assertNull("contact 1 have no more link to students", contact1.getStudent());
 		
 			//contact1.setStudent(student2);
-			//use the correct setter logic
 			Contact.setObjectToOneTargetWithCheck(Contact.STUDENT_PROPERTY, student2, true, contact1);
 			objectContext.commitChanges();
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
@@ -186,7 +178,6 @@ public class MergeContactTest extends ServiceTest {
 
 		try {
 			//contact2.setStudent(student1);
-			//use the correct setter logic
 			Contact.setObjectToOneTargetWithCheck(Contact.STUDENT_PROPERTY, student1, true, contact2);
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
 			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
@@ -216,7 +207,6 @@ public class MergeContactTest extends ServiceTest {
 		try {
 			student1.setContact(contact2);
 			//use the orthodox setter logic in this case will be correct 
-			//student1.setToOneTarget(Student.CONTACT_PROPERTY, contact2, true);
 			objectContext.commitChanges();
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
 			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
@@ -244,7 +234,6 @@ public class MergeContactTest extends ServiceTest {
 
 		try { 
 			//student1.setContact(contact2);
-			//use the correct setter logic
 			Contact.setObjectToOneTargetWithCheck(Student.CONTACT_PROPERTY, contact2, true, student1);
 			objectContext.commitChanges();
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
@@ -275,8 +264,6 @@ public class MergeContactTest extends ServiceTest {
 
 		try { 
 			student1.setContact(contact2);
-			//use the orthodox setter logic
-			//student1.setToOneTarget(Student.CONTACT_PROPERTY, contact2, true);
 			objectContext.commitChanges();
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
 			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
