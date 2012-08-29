@@ -1205,6 +1205,19 @@
     	</createIndex>
     </changeSet>
     
+    <changeSet id="78" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<columnExists tableName="Discount" columnName="isAvailableOnWeb"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="Discount">
+    		<column name="isAvailableOnWeb" type="SMALLINT" defaultValueNumeric="1">
+    			<constraints nullable="false"/>
+    		</column>
+    	</addColumn>
+    </changeSet>
+    
     <!--changeSet id="XX1" author="viacheslav" context="production" runOnChange="true">
     	uncomment and set correct number after all applications which used College will be redeployed without removed field in entity
     	task#11090 + task#15142
