@@ -60,6 +60,22 @@ public class PreferenceController extends CommonPreferenceController {
 	
 	private static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
 	
+	//deprecated part
+	@Deprecated
+	public static final String LICENSE_AVETMISS_UPDATES = "license.avetmiss.updates";
+	@Deprecated
+	public static final String LICENSE_EMAIL = "license.email";
+	@Deprecated
+	public static final String LICENSE_WEBSITE_TUTOR_PORTAL = "license.website.tutor.portal";
+	@Deprecated
+	public static final String LICENSE_WEBSITE_ONLINE_ENROLMENTS = "license.website.online.enrolments";
+	@Deprecated
+	public static final String LICENSE_WEBSITE_PLAN_NAME = "license.website.plan.name";
+	@Deprecated
+	public static final String LICENSE_SUPPORT_PLAN_NAME = "license.support.plan.name";
+	@Deprecated
+	public static final String LICENSE_SUPPORT_PLAN_EXPIRY = "license.support.plan.expiry";
+	
 	@Inject
 	private ICayenneService cayenneService;
 	
@@ -182,6 +198,10 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setLicenseAvetmissUpdates(boolean value) {
 		setValue(LICENSE_AVETMISS_UPDATES, false, Boolean.toString(value));
 	}
+	
+	public synchronized boolean getLicenseAvetmissUpdates() {
+		return Boolean.valueOf(getValue(LICENSE_AVETMISS_UPDATES, false));
+	}
 
 	public synchronized void setLicenseAccessControl(boolean value) {
 		setValue(LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
@@ -206,6 +226,10 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setLicenseEmail(boolean value) {
 		setValue(LICENSE_EMAIL, false, Boolean.toString(value));
 	}
+	
+	public synchronized boolean getLicenseEmail() {
+		return Boolean.valueOf(getValue(LICENSE_EMAIL, false));
+	}
 
 	public synchronized void setLicenseSms(boolean value) {
 		setValue(LICENSE_SMS, false, Boolean.toString(value));
@@ -226,21 +250,41 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setLicenseWebsiteOnlineEnrolments(boolean value) {
 		setValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false, Boolean.toString(value));
 	}
+	
+	public synchronized boolean getLicenseWebsiteOnlineEnrolments() {
+		return Boolean.valueOf(getValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false));
+	}
 
 	public synchronized void setLicenseWebsiteTutorPortal(boolean value) {
 		setValue(LICENSE_WEBSITE_TUTOR_PORTAL, false, Boolean.toString(value));
+	}
+	
+	public synchronized boolean getLicenseWebsiteTutorPortal() {
+		return Boolean.valueOf(getValue(LICENSE_WEBSITE_TUTOR_PORTAL, false));
 	}
 
 	public synchronized void setWebsitePlanName(String value) {
 		setValue(LICENSE_WEBSITE_PLAN_NAME, false, value);
 	}
+	
+	public synchronized boolean getWebsitePlanName() {
+		return Boolean.valueOf(getValue(LICENSE_WEBSITE_PLAN_NAME, false));
+	}
 
 	public synchronized void setSupportPlanName(String value) {
 		setValue(LICENSE_SUPPORT_PLAN_NAME, false, value);
 	}
+	
+	public synchronized boolean getSupportPlanName() {
+		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_NAME, false));
+	}
 
 	public synchronized void setSupportPlanExpiry(String value) {
 		setValue(LICENSE_SUPPORT_PLAN_EXPIRY, false, value);
+	}
+	
+	public synchronized boolean getSupportPlanExpiry() {
+		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_EXPIRY, false));
 	}
 	
 	public synchronized String getNTISLastUpdate() {

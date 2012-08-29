@@ -1084,7 +1084,128 @@
     	<dropUniqueConstraint tableName="Contact" constraintName="tutorId_unique"/>
     </changeSet>
     
-    <!--changeSet id="74" author="viacheslav" context="production" runOnChange="true">
+    <changeSet id="74" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<columnExists tableName="Product" columnName="maxCoursesRedemption"/>
+    			<columnExists tableName="Product" columnName="value"/>
+    			<columnExists tableName="Product" columnName="priceExTax"/>
+    			<columnExists tableName="Product" columnName="taxAdjustment"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="Product">
+    		<column name="maxCoursesRedemption" type="INTEGER"/>
+    	</addColumn>
+    	<addColumn tableName="Product">
+    		<column name="value" type="DECIMAL(10,2)"/>
+    	</addColumn>
+    	<addColumn tableName="Product">
+    		<column name="priceExTax" type="DECIMAL(10,2)"/>
+    	</addColumn>
+    	<addColumn tableName="Product">
+    		<column name="taxAdjustment" type="DECIMAL(10,2)"/>
+    	</addColumn>
+    </changeSet>
+    
+    <changeSet id="75" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<columnExists tableName="ProductItem" columnName="code"/>
+    			<columnExists tableName="ProductItem" columnName="value"/>
+    			<columnExists tableName="ProductItem" columnName="redeemedCoursesCount"/>
+    			<columnExists tableName="ProductItem" columnName="status"/>
+    			<columnExists tableName="ProductItem" columnName="source"/>
+    			<columnExists tableName="ProductItem" columnName="valueRemaining"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="ProductItem">
+    		<column name="code" type="VARCHAR(10)"/>
+    		<column name="value" type="DECIMAL(10,2)"/>
+    		<column name="redeemedCoursesCount" type="INTEGER"/>
+    		<column name="status" type="INTEGER"/>
+    		<column name="source" type="CHAR(1)"/>
+    	</addColumn>
+    	
+    	<createIndex tableName="ProductItem" indexName="ProductItem_code">
+    		<column name="code"/>
+    	</createIndex>
+    	<createIndex tableName="ProductItem" indexName="ProductItem_status">
+    		<column name="status"/>
+    	</createIndex>
+    	<createIndex tableName="ProductItem" indexName="ProductItem_source">
+    		<column name="source"/>
+    	</createIndex>
+    </changeSet>
+    
+    <changeSet id="76" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<tableExists tableName="VoucherProductCourse"/>
+    		</not>
+    	</preConditions>
+    	<createTable tableName="VoucherProductCourse">
+    		<column name="id" type="BIGINT">
+    			<constraints nullable="false" primaryKey="true"/>
+    		</column>
+    		<column name="angelId" type="BIGINT"/>
+    		<column name="collegeId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="modified" type="DATETIME"/>
+    		<column name="courseId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="voucherProductId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    	</createTable>
+    	
+    	<addForeignKeyConstraint constraintName="fk_VoucherProductCourse_Course" referencedTableName="Course" baseColumnNames="courseId" 
+    		baseTableName="VoucherProductCourse" referencedColumnNames="id"/>
+    	<addForeignKeyConstraint constraintName="fk_VoucherProductCourse_Product" referencedTableName="Product" baseColumnNames="voucherProductId" 
+    		baseTableName="VoucherProductCourse" referencedColumnNames="id"/>
+    	<createIndex tableName="VoucherProductCourse" indexName="collegeId_angelId_uniq_idx" unique="true">
+    		<column name="angelId"/>
+    		<column name="collegeId"/>
+    	</createIndex>
+    </changeSet>
+    
+    <changeSet id="77" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<tableExists tableName="VoucherPaymentIn"/>
+    		</not>
+    	</preConditions>
+    	<createTable tableName="VoucherPaymentIn">
+    		<column name="id" type="BIGINT">
+    			<constraints nullable="false" primaryKey="true"/>
+    		</column>
+    		<column name="angelId" type="BIGINT"/>
+    		<column name="collegeId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="modified" type="DATETIME"/>
+    		<column name="paymentInId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="voucherId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    	</createTable>
+    	
+    	<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_PaymentIn" referencedTableName="PaymentIn" baseColumnNames="paymentInId" 
+    		baseTableName="VoucherPaymentIn" referencedColumnNames="id"/>
+    	<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_ProductItem" referencedTableName="ProductItem" baseColumnNames="voucherId" 
+    		baseTableName="VoucherPaymentIn" referencedColumnNames="id"/>
+    	<createIndex tableName="VoucherPaymentIn" indexName="collegeId_angelId_uniq_idx" unique="true">
+    		<column name="angelId"/>
+    		<column name="collegeId"/>
+    	</createIndex>
+    </changeSet>
+    
+    <!--changeSet id="XX1" author="viacheslav" context="production" runOnChange="true">
     	uncomment and set correct number after all applications which used College will be redeployed without removed field in entity
     	task#11090 + task#15142
     	<preConditions onFail="MARK_RAN">
@@ -1093,7 +1214,7 @@
     	<dropIndex tableName="College" indexName="webServicesLogin_idx"/>
     </changeSet>
     
-    <changeSet id="75" author="viacheslav" context="production" runOnChange="true">
+    <changeSet id="XX2" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<columnExists tableName="College" columnName="webServicesLogin"/>
     	</preConditions>
@@ -1102,7 +1223,7 @@
     	<dropColumn tableName="College" columnName="nationalProviderCode"/>
     </changeSet>
     
-    <changeSet id="76" author="viacheslav" context="production" runOnChange="true">
+    <changeSet id="XX3" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<columnExists tableName="College" columnName="paymentGatewayType"/>
     	</preConditions>

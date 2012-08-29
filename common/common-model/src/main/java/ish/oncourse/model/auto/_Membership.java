@@ -14,7 +14,6 @@ import ish.oncourse.model.ProductItem;
 public abstract class _Membership extends ProductItem {
 
     public static final String EXPIRY_DATE_PROPERTY = "expiryDate";
-    public static final String ID_KEY_PROPERTY = "idKey";
     public static final String CONTACT_PROPERTY = "contact";
 
     public static final String ID_PK_COLUMN = "id";
@@ -24,13 +23,6 @@ public abstract class _Membership extends ProductItem {
     }
     public Date getExpiryDate() {
         return (Date)readProperty("expiryDate");
-    }
-
-    public void setIdKey(String idKey) {
-        writeProperty("idKey", idKey);
-    }
-    public String getIdKey() {
-        return (String)readProperty("idKey");
     }
 
     public void setContact(Contact contact) {

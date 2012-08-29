@@ -15,6 +15,10 @@
 	<packaging>pom</packaging>
 	<name>Willow - Common Framework</name>
 	
+	<properties>
+		<angel.artifact.version>4.0M3</angel.artifact.version>
+	</properties>
+	
 	<modules>
 		<module>common-ui</module>
 		<module>common-model</module>

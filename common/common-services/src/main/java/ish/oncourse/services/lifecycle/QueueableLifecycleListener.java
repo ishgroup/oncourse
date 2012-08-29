@@ -351,8 +351,8 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         boolean isAsyncAllowed = true;
         if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session || entity instanceof DiscountMembership ||
                 entity instanceof DiscountMembershipRelationType || entity instanceof ContactRelation || entity instanceof ContactRelationType ||
-                entity instanceof Membership || entity instanceof MembershipProduct || entity instanceof Product || entity instanceof ProductItem ||
-                entity instanceof Voucher || entity instanceof VoucherProduct) {
+                entity instanceof Membership || entity instanceof MembershipProduct || entity instanceof Product || entity instanceof ProductItem 
+                /*|| entity instanceof Voucher*/ || entity instanceof VoucherProduct) {
             isAsyncAllowed = false;
         } else if (entity instanceof PaymentIn) {
             PaymentIn payment = (PaymentIn) entity;

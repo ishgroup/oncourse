@@ -2,6 +2,9 @@ package ish.oncourse.model.auto;
 
 import java.util.Date;
 
+import ish.common.types.PaymentSource;
+import ish.common.types.VoucherStatus;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.ProductItem;
@@ -14,12 +17,24 @@ import ish.oncourse.model.ProductItem;
  */
 public abstract class _Voucher extends ProductItem {
 
+    public static final String CODE_PROPERTY = "code";
     public static final String EXPIRY_DATE_PROPERTY = "expiryDate";
     public static final String ID_KEY_PROPERTY = "idKey";
+    public static final String REDEEMED_COURSES_COUNT_PROPERTY = "redeemedCoursesCount";
+    public static final String REDEMPTION_VALUE_PROPERTY = "redemptionValue";
+    public static final String SOURCE_PROPERTY = "source";
+    public static final String STATUS_PROPERTY = "status";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String REDEEMED_INVOICE_LINE_PROPERTY = "redeemedInvoiceLine";
 
     public static final String ID_PK_COLUMN = "id";
+
+    public void setCode(String code) {
+        writeProperty("code", code);
+    }
+    public String getCode() {
+        return (String)readProperty("code");
+    }
 
     public void setExpiryDate(Date expiryDate) {
         writeProperty("expiryDate", expiryDate);
@@ -33,6 +48,34 @@ public abstract class _Voucher extends ProductItem {
     }
     public String getIdKey() {
         return (String)readProperty("idKey");
+    }
+
+    public void setRedeemedCoursesCount(Integer redeemedCoursesCount) {
+        writeProperty("redeemedCoursesCount", redeemedCoursesCount);
+    }
+    public Integer getRedeemedCoursesCount() {
+        return (Integer)readProperty("redeemedCoursesCount");
+    }
+
+    public void setRedemptionValue(Money redemptionValue) {
+        writeProperty("redemptionValue", redemptionValue);
+    }
+    public Money getRedemptionValue() {
+        return (Money)readProperty("redemptionValue");
+    }
+
+    public void setSource(PaymentSource source) {
+        writeProperty("source", source);
+    }
+    public PaymentSource getSource() {
+        return (PaymentSource)readProperty("source");
+    }
+
+    public void setStatus(VoucherStatus status) {
+        writeProperty("status", status);
+    }
+    public VoucherStatus getStatus() {
+        return (VoucherStatus)readProperty("status");
     }
 
     public void setContact(Contact contact) {

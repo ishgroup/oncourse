@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>ish.oncourse.angel</groupId>
 			<artifactId>waCommon</artifactId>
-			<version>3.1b5</version>
+			<version>${angel.artifact.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -154,7 +154,7 @@
 							<goal>cgen</goal>
 						</goals>
 					</execution>
-					<execution>
+					<!--execution>
 						<id>cgen3</id>
 						<configuration>
 							<map>${project.build.sourceDirectory}/../resources/oncourseReference.map.xml</map>
@@ -163,7 +163,7 @@
 						<goals>
 							<goal>cgen</goal>
 						</goals>
-					</execution>
+					</execution-->
 				</executions>
 			</plugin>
 			
