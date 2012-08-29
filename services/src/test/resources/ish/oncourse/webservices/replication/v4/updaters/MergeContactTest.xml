@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<Country id="2" ishVersion="2" name="Kiribati" isoCodeAlpha2="KI" isoCodeAlpha3="KIR" isoCodeNumeric="296" asccssCode="1503" saccCode="1402"/>
+	<Country id="3" ishVersion="1" name="Belarus" isoCodeAlpha2="BY" isoCodeAlpha3="BLR" isoCodeNumeric="112" asccssCode="2603" saccCode="3301"/>
+	<Language id="1" name="English" isActive="1" ishVersion="1"/>
+	<Language id="2" ishVersion="1" name="Asian" isActive="1"/>
+	<Language id="3" ishVersion="1" name="Belgian" isActive="1"/>
+	<Language id="4" ishVersion="1" name="Belorussian" isActive="1"/>
+		
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" 
+    	communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+    <Student id="2" angelId="2" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Contact id="2" angelId="2" collegeId="1" studentId="2" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
+    	emailAddress="1@kremlin.ru" familyName="1" givenName="1" faxNumber="1234-567" suburb="Moscow"/>
+    
+    <Contact id="1" angelId="1" collegeId="1" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="2@kremlin.ru" 
+    	familyName="2" givenName="2"  faxNumber="1234-567" suburb="Moscow"/>
+    	
+    <Student id="3" angelId="3" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Contact id="3" angelId="3" collegeId="1" studentId="3" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
+    	emailAddress="3@kremlin.ru" familyName="3" givenName="3" faxNumber="1234-567" suburb="Moscow"/>
+    
+    <Student id="4" angelId="4" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Contact id="4" angelId="4" collegeId="1" studentId="4" businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" 
+    	emailAddress="4@kremlin.ru" familyName="4" givenName="4" faxNumber="1234-567" suburb="Moscow"/>
+	
+</dataset>
