@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -25,6 +27,7 @@ import org.junit.Test;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
@@ -33,7 +36,11 @@ public class MergeContactTest extends ServiceTest {
 	
 	@Before
     public void setupDataSet() throws Exception {
-        initTest("ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
+		final Map<String, Boolean> params = new HashMap<String, Boolean>(3);
+		params.put(ContextUtils.SHOULD_CREATE_TABLES, true);
+		params.put(ContextUtils.SHOULD_CREATE_PK_SUPPORT, true);
+		params.put(ContextUtils.SHOULD_CREATE_FK_CONSTRAINTS, false);
+		initTestWithParams(params, "ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
         
         InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v4/updaters/MergeContactTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
@@ -95,13 +102,6 @@ public class MergeContactTest extends ServiceTest {
 		try {
 			contact2.setStudent(student1);
 			boolean commitFailed = false;
-			try {
-				objectContext.commitChanges();
-			} catch (Exception e) {
-				commitFailed = true;
-			}
-			assertFalse(commitFailed);
-		
 			contact1.setStudent(student2);
 			try {
 				objectContext.commitChanges();
@@ -141,7 +141,6 @@ public class MergeContactTest extends ServiceTest {
 		try {
 			//contact2.setStudent(student1);
 			Contact.setObjectToOneTargetWithCheck(Contact.STUDENT_PROPERTY, student1, true, contact2);
-			objectContext.commitChanges();
 			assertNotNull("contact 2 linked with the student 1", contact2.getStudent());
 			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
 			assertNotNull("student 1 linked with the contact 2", student1.getContact());
