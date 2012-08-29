@@ -22,6 +22,7 @@
 		<tomcat-test.port>10201</tomcat-test.port>
 		<tomcat-staging.port>10201</tomcat-staging.port>
 		<tomcat.path>/services</tomcat.path>
+		<angel.artifact.version>4.0M3</angel.artifact.version>
 	</properties>
 
 	<dependencies>
@@ -47,7 +48,7 @@
 		<dependency>
 			<groupId>ish.oncourse.angel</groupId>
 			<artifactId>webservices-client</artifactId>
-			<version>4.0a1</version>
+			<version>${angel.artifact.version}</version>
 		</dependency>
 
 		<dependency>

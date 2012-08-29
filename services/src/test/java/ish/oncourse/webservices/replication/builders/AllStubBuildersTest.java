@@ -62,7 +62,21 @@ public class AllStubBuildersTest extends ServiceTest {
     ) {
         this.testStubBuilder(entityClass,stubBuilder, 1l, excludeProperty);
     }
-
+    
+    //@Test
+    public void testV5VoucherStubBuilder() {
+        this.testStubBuilder(Voucher.class, new ish.oncourse.webservices.replication.v5.builders.VoucherStubBuilder());
+    }
+    
+    //@Test
+    public void testV5VoucherProductCourseStubBuilder() {
+        this.testStubBuilder(VoucherProductCourse.class, new ish.oncourse.webservices.replication.v5.builders.VoucherProductCourseStubBuilder());
+    }
+    
+    //@Test
+    public void testV5VoucherPaymentInStubBuilder() {
+        this.testStubBuilder(VoucherPaymentIn.class, new ish.oncourse.webservices.replication.v5.builders.VoucherPaymentInStubBuilder());
+    }
 
     @Test
     public void testV5AttendanceStubBuilder() {

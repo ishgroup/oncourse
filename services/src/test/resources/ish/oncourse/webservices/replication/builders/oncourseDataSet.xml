@@ -408,5 +408,8 @@
             />
 
     <CertificateOutcome certificateId="1" angelId="2" collegeId="3" created="2011-09-20 11:14:54" id="1" modified="2011-09-20 11:14:54" outcomeId="1"/>
+    
+    <!--Voucher angelId="1" id="1" collegeId="3" code="123" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" expiryDate="2011-09-20 11:14:54"
+    	idKey="123" redeemedCoursesCount="1" redemptionValue="1.0" source="W" status="1" contactId="1" redeemedInvoiceLineId="1"/-->
 
 </dataset>

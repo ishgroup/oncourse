@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v5.updaters;
 
+import ish.math.Money;
 import ish.oncourse.model.Product;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
@@ -17,7 +18,9 @@ public class ProductUpdater extends AbstractWillowUpdater<ProductStub, Product> 
 		entity.setName(stub.getName());
 		entity.setNotes(stub.getNotes());
 		entity.setSku(stub.getSku());
-		entity.setType(stub.getType());		
+		entity.setType(stub.getType());
+		entity.setPriceExTax(Money.valueOf(stub.getPriceExTax()));
+		entity.setTaxAdjustment(Money.valueOf(stub.getTaxAdjustment()));
 	}
 
 }

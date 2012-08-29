@@ -381,6 +381,45 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		queuedStatisticParamethers.add(new ReplicationStubFieldParamether("receivedTimestamp", Date.class));
 		queuedStatisticParamethers.add(new ReplicationStubFieldParamether("cleanupStub", Boolean.class));
 		stubsPropertyMap.put(getStubName(QueuedStatisticStub.class), queuedStatisticParamethers);
+		final List<ReplicationStubFieldParamether> voucherProductCourseParamethers = fillDefaultReplicationStubFields();
+		voucherProductCourseParamethers.add(new ReplicationStubFieldParamether("courseId", Long.class));
+		voucherProductCourseParamethers.add(new ReplicationStubFieldParamether("voucherProductId", Long.class));
+		stubsPropertyMap.put(getStubName(VoucherProductCourseStub.class), voucherProductCourseParamethers);
+		final List<ReplicationStubFieldParamether> voucherPaymentInParamethers = fillDefaultReplicationStubFields();
+		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("paymentInId", Long.class));
+		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("voucherId", Long.class));
+		stubsPropertyMap.put(getStubName(VoucherPaymentInStub.class), voucherPaymentInParamethers);
+		final List<ReplicationStubFieldParamether> productItemParamethers = fillProductItemStubFields(fillDefaultReplicationStubFields());
+		stubsPropertyMap.put(getStubName(ProductItemStub.class), productItemParamethers);
+		final List<ReplicationStubFieldParamether> productParamethers = fillProductStubFields(fillDefaultReplicationStubFields());
+		stubsPropertyMap.put(getStubName(ProductStub.class), productParamethers);
+		final List<ReplicationStubFieldParamether> voucherParamethers = fillProductItemStubFields(fillDefaultReplicationStubFields());
+		voucherParamethers.add(new ReplicationStubFieldParamether("expiryDate", Date.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("key", String.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("contactId", Long.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("redeemedInvoiceLineId", Long.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("code", String.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("redeemedCoursesCount", Integer.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("redemptionValue", BigDecimal.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("status", Integer.class));
+		voucherParamethers.add(new ReplicationStubFieldParamether("source", String.class));
+		stubsPropertyMap.put(getStubName(VoucherStub.class), voucherParamethers);
+		final List<ReplicationStubFieldParamether> voucherProductParamethers = fillProductStubFields(fillDefaultReplicationStubFields());
+		voucherProductParamethers.add(new ReplicationStubFieldParamether("expiryDays", Integer.class));
+		voucherProductParamethers.add(new ReplicationStubFieldParamether("expiryType", Integer.class));
+		voucherProductParamethers.add(new ReplicationStubFieldParamether("value", BigDecimal.class));
+		voucherProductParamethers.add(new ReplicationStubFieldParamether("maxCoursesRedemption", Integer.class));
+		stubsPropertyMap.put(getStubName(VoucherProductStub.class), voucherProductParamethers);
+		final List<ReplicationStubFieldParamether> membershipParamethers = fillProductItemStubFields(fillDefaultReplicationStubFields());
+		membershipParamethers.add(new ReplicationStubFieldParamether("expiryDate", Date.class));
+		membershipParamethers.add(new ReplicationStubFieldParamether("contactId", Long.class));
+		stubsPropertyMap.put(getStubName(MembershipStub.class), membershipParamethers);
+		//TODO: fill me
+		final List<ReplicationStubFieldParamether> membershipProductParamethers = fillProductStubFields(fillDefaultReplicationStubFields());
+		membershipProductParamethers.add(new ReplicationStubFieldParamether("expiryDays", Integer.class));
+		membershipProductParamethers.add(new ReplicationStubFieldParamether("expiryType", Integer.class));
+		stubsPropertyMap.put(getStubName(MembershipProductStub.class), membershipProductParamethers);
+		//TODO: fill me
 		final List<ReplicationStubFieldParamether> replicationStubParamethers = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParamethers);
 		final List<ReplicationStubFieldParamether> replicationResultParamethers = new ArrayList<ReplicationStubFieldParamether>();
@@ -481,14 +520,63 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(CourseStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountCourseClassStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TutorAttendanceStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherProductCourseStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherPaymentInStub.class);
 		attendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
 		transactionGroupParamethers.add(attendanceOrBinaryDataOrBinaryInfo);
-		
 		final ReplicationStubFieldParamether genericAttendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParamether(
 			"genericAttendanceOrBinaryDataOrBinaryInfo", "attendanceOrBinaryDataOrBinaryInfo", List.class, false, null);
 		genericAttendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
 		transactionGroupParamethers.add(genericAttendanceOrBinaryDataOrBinaryInfo);
 		stubsPropertyMap.put(getName(TransactionGroup.class), transactionGroupParamethers);
+	}
+	
+	@Test
+	public void testMembershipStub() {
+		final GenericReplicationStub stub = new MembershipStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testMembershipProductStub() {
+		final GenericReplicationStub stub = new MembershipProductStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testProductStub() {
+		final GenericReplicationStub stub = new ProductStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testProductItemStub() {
+		final GenericReplicationStub stub = new ProductItemStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testVoucherProductCourseStub() {
+		final GenericReplicationStub stub = new VoucherProductCourseStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testVoucherPaymentInStub() {
+		final GenericReplicationStub stub = new VoucherPaymentInStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testVoucherStub() {
+		final GenericReplicationStub stub = new VoucherStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testVoucherProductStub() {
+		final GenericReplicationStub stub = new VoucherProductStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
@@ -753,6 +841,28 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		paramethers.add(new ReplicationStubFieldParamether("created", Date.class));
 		paramethers.add(new ReplicationStubFieldParamether("modified", Date.class));
 		return paramethers;
+	}
+	
+	private List<ReplicationStubFieldParamether> fillProductItemStubFields(final List<ReplicationStubFieldParamether> preparedParamethers) {
+		preparedParamethers.add(new ReplicationStubFieldParamether("type", Integer.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("invoiceLineId", Long.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("productId", Long.class));
+		return preparedParamethers;
+	}
+	
+	private List<ReplicationStubFieldParamether> fillProductStubFields(final List<ReplicationStubFieldParamether> preparedParamethers) {
+		preparedParamethers.add(new ReplicationStubFieldParamether("sku", String.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("description", String.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("incomeAccountId", Long.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("isOnSale", Boolean.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("isWebVisible", Boolean.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("name", String.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("notes", String.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("priceExTax", BigDecimal.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("taxAdjustment", BigDecimal.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("taxId", Long.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("type", Integer.class));		
+		return preparedParamethers;
 	}
 		
 	private ReplicationStubFieldParamether getReplicationParametherForReplacement(final List<ReplicationStubFieldParamether> paramethers, 
