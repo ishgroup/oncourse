@@ -23,14 +23,11 @@
 		<!-- textarea -->
 		<div class="textarea-text">I have feedback for this class details as follows:</div>
 
-		<div class="textarea mb10">
-			<div class="textarea-l"></div>
-			<span><t:textarea t:id="whyDeclined" t:value="whyDeclined" style="width:592px;"></t:textarea></span>
-			<div class="textarea-r"></div>
-			<div class="cl"></div>
+		<t:textarea t:id="whyDeclined" t:value="whyDeclined" style="width:592px;" row="3"></t:textarea>
+		<div class="cl"></div>
 		</div>
 	
-		<t:linksubmit t:id="decline" class="btn1">${declineLabel}</t:linksubmit>
+		<t:linksubmit t:id="decline" class="btn">${declineLabel}</t:linksubmit>
 	
 	</t:form>
 	
