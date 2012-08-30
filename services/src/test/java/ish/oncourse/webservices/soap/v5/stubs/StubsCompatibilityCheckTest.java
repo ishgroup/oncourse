@@ -163,6 +163,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		discountParameters.add(new ReplicationStubFieldParamether("validTo", Date.class));
 		discountParameters.add(new ReplicationStubFieldParamether("discountType", Integer.class));
 		discountParameters.add(new ReplicationStubFieldParamether("hideOnWeb", Boolean.class));
+		discountParameters.add(new ReplicationStubFieldParamether("availableOnWeb", Boolean.class));
 		stubsPropertyMap.put(getStubName(DiscountStub.class), discountParameters);
 		final List<ReplicationStubFieldParamether> enrolmentParamethers = fillDefaultReplicationStubFields();
 		enrolmentParamethers.add(new ReplicationStubFieldParamether("reasonForStudy", Integer.class));
