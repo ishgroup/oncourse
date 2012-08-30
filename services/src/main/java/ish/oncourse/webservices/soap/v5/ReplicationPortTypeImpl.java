@@ -17,7 +17,10 @@ import ish.oncourse.webservices.v5.stubs.replication.FaultReason;
 import ish.oncourse.webservices.v5.stubs.replication.InstructionStub;
 import ish.oncourse.webservices.v5.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v5.stubs.replication.ReplicationResult;
+import ish.oncourse.webservices.v5.stubs.replication.UnreplicatedEntitiesStub;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -168,6 +171,15 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		}
 	}
 	
+	@Override
+	@WebMethod(operationName = "getUnreplicatedEntities")
+	public List<UnreplicatedEntitiesStub> getUnreplicatedEntities() {
+		List<UnreplicatedEntitiesStub> result = new ArrayList<UnreplicatedEntitiesStub>();
+		//result.add(new UnreplicatedEntitiesStub());
+		// TODO: Auto-generated method stub
+		return result;
+	}
+
 	static ReplicationFault createReplicationFaultForException(final InternalReplicationFault exception) {
 		FaultReason faultReason = new FaultReason();
 		faultReason.setDetailMessage(exception.getFaultReasonMessage());

@@ -22,7 +22,7 @@
 		<tomcat-test.port>10201</tomcat-test.port>
 		<tomcat-staging.port>10201</tomcat-staging.port>
 		<tomcat.path>/services</tomcat.path>
-		<angel.artifact.version>4.0M3</angel.artifact.version>
+		<angel.artifact.version>4.0M4.b1</angel.artifact.version>
 	</properties>
 
 	<dependencies>
