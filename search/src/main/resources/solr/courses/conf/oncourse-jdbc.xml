@@ -24,7 +24,8 @@
 							where cc.isWebVisible=1 
 									and cc.courseid='${course.id}'
                        				and cc.isCancelled=0 and cc.endDate &gt; CURDATE()"
-				deltaImportQuery="select cc.id as id, cc.feeExGst as pr from CourseClass cc where cc.id='${dataimporter.delta.id}'"
+				deltaImportQuery="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end, cc.startDate as start from CourseClass cc
+				            where cc.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}' or endDate &lt; CURDATE()"
 				parentDeltaQuery="select id from Course where id='{courseClass.courseId}'"
 				deletedPkQuery="select id from CourseClass where endDate &lt; CURDATE()">
@@ -36,11 +37,12 @@
 
                 <entity name="contact" dataSource="onCourseDS" pk="id"
 					transformer="RegexTransformer"
-					query="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct
+					query="select ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct
                 	    inner join Tutor t on ct.tutorId = t.id
            				inner join TutorRole tr on t.id = tr.tutorId
            				where tr.courseClassId='${courseClass.id}'"
-					deltaImportQuery="select  ct.id as id, ct.givenName as gvName, ct.familyName as fmName from Contact ct where ct.id='${dataimporter.delta.id}'"
+					deltaImportQuery="select ct.id as id, ct.givenName as gvName, ct.familyName as fmName from
+					    Contact ct where ct.id='${dataimporter.delta.id}'"
 					deltaQuery="select ct.id from Contact ct where ct.modified &gt; '${dataimporter.last_index_time}'" 
 					parentDeltaQuery="select cc.id from Contact ct 
 						inner join Tutor t on ct.tutorId = t.id
@@ -54,12 +56,12 @@
 				</entity>
 			
 				<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
-					query="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, 
+					query="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType,
 							IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'daytime', 'evening') as time from Session s
                 				where s.courseClassId='${courseClass.id}'"
-                	deltaImportQuery="select s.id as id, lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType, 
-                					IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'day', 'evening') as time,
-                					 s.endDate as end from Session s where s.id='${dataimporter.delta.id}'"
+                	deltaImportQuery="select distinct lower(dayname(s.startDate)) as dayName, IF(DAYOFWEEK(s.startDate) in (1,7), 'weekend', 'weekday') as dayType,
+							IF(HOUR(s.startDate) &gt; 6 and HOUR(s.startDate) &lt; 17, 'daytime', 'evening') as time from Session s
+							    where s.id='${dataimporter.delta.id}'"
 					deltaQuery="select id from Session where modified &gt; '${dataimporter.last_index_time}'" 
 					parentDeltaQuery="select cc.id as id from Session s inner join CourseClass cc on s.courseClassId = cc.id where s.id='${course_session.id}'">
 					<field name="id" column="id"/>
@@ -82,7 +84,8 @@
 			            inner join CourseClass cc on cc.id=ss.courseClassId
 			            where s.isWebVisible=1 and cc.id='${courseClass.id}'
 		    	        group by s.suburb, s.postcode"
-					deltaImportQuery="select s.id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s where s.id='${dataimporter.delta.id}'"
+					deltaImportQuery="select s.id as id, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+					    where s.id='${dataimporter.delta.id}'"
 					deltaQuery="select id from Site where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'" 
 					parentDeltaQuery="select cc.id from Site s 
 						inner join Room r on r.siteId=s.id 
@@ -103,7 +106,10 @@
 			</entity>
 
 			<entity name="coursetag" dataSource="onCourseDS" pk="id"
-				query="select distinct t.id as id, t.id as tagId from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and tg.entityWillowId = '${course.id}'"
+				query="select distinct t.id as id, t.id as tagId from Tag t
+				    inner join TaggableTag tgt on tgt.tagId=t.id
+				    inner join Taggable tg on tgt.taggableId = tg.id
+				    where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and tg.entityWillowId = '${course.id}'"
 				deltaImportQuery="select distinct t.id as id, t.id as tagId from Tag t where t.id='${dataimporter.delta.id}'"
 				deltaQuery="select distinct t.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and t.modified &gt; '${dataimporter.last_index_time}' or tgt.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}'" 
 				parentDeltaQuery="select distinct tg.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${coursetag.id}" processor="CachedSqlEntityProcessor">
@@ -111,6 +117,5 @@
 				<field name="tagId" column="tagId"/>
 			</entity>
 		</entity>
-		
 	</document>
 </dataConfig>
