@@ -41,8 +41,8 @@
 							<t:loop source="currentSession.attendances" value="attendance" >
 								<div class="mark-item">
 									<div class="mark-yn">
-										<a href="javascript:void(0);" value="${attended}" class="mark-y attended" id="attended_${attendance.angelId}" date-attendanceId="${attendance.angelId}"></a>
-										<a href="javascript:void(0);" value="${absent}" class="mark-n absent" id="absent_${attendance.angelId}" date-attendanceId="${attendance.angelId}"></a> 
+										<a href="javascript:void(0);" value="${attended}" class="mark-y attended btn" id="attended_${attendance.angelId}" date-attendanceId="${attendance.angelId}"><i class="icon-ok"></i></a>
+										<a href="javascript:void(0);" value="${absent}" class="mark-n absent btn" id="absent_${attendance.angelId}" date-attendanceId="${attendance.angelId}"><i class=" icon-remove"></i></a> 
 										
 										<t:actionLink href="#" t:id="attendance" style="display: none;"/>
 									</div>
