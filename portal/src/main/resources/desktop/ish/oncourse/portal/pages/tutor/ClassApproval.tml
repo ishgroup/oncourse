@@ -25,7 +25,6 @@
 
 		<t:textarea t:id="whyDeclined" t:value="whyDeclined" style="width:592px;" row="3"></t:textarea>
 		<div class="cl"></div>
-		</div>
 	
 		<t:linksubmit t:id="decline" class="btn">${declineLabel}</t:linksubmit>
 	
