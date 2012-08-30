@@ -16,7 +16,7 @@
 	<name>Willow - Common Framework</name>
 	
 	<properties>
-		<angel.artifact.version>4.0M3</angel.artifact.version>
+		<angel.artifact.version>4.0M4.b1</angel.artifact.version>
 	</properties>
 	
 	<modules>

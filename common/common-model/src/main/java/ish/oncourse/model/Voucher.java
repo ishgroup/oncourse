@@ -11,6 +11,7 @@ import ish.oncourse.utils.QueueableObjectUtils;
 
 public class Voucher extends _Voucher implements Queueable {
 	private static final long serialVersionUID = -836996096054884238L;
+	public static final int VOUCHER_CODE_LENGTH = 8;
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
