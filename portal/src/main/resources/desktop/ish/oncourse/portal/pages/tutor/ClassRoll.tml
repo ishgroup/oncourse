@@ -64,7 +64,7 @@
 		<div class="bord mb15"></div>
 
 		<div class="enrolment">
-			<strong>${enrolmentsCount}</strong> enrolments | <strong>${availableEnrolmentPlaces}</strong> places available
+			<i class="icon-user"></i><strong>${enrolmentsCount}</strong> enrolments | <strong>${availableEnrolmentPlaces}</strong> places available
 		</div>
 	</div>
 </t:if>
