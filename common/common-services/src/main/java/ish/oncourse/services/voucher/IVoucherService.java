@@ -1,6 +1,9 @@
 package ish.oncourse.services.voucher;
 
+import ish.math.Money;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.Student;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 
@@ -12,5 +15,7 @@ public interface IVoucherService {
 	List<Voucher> getAvailableVoucherProductsForUser(final Contact contact);
 	
 	Voucher getVoucherByCode(final String code);
+	
+	//PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Student payer, final Student owner);
 
 }

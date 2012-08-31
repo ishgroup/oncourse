@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ish.common.types.VoucherStatus;
+import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.Student;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.util.ProductUtil;
-import ish.util.SecurityUtil;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -26,7 +27,9 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class VoucherService implements IVoucherService {
-private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
+	private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
+	private final String VOUCHER_OWNER_RELATION = Voucher.INVOICE_LINE_PROPERTY + "." + InvoiceLine.INVOICE_PROPERTY + "." + 
+		Invoice.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.PAYMENT_IN_PROPERTY + "." + PaymentIn.STUDENT_PROPERTY + "." + Student.CONTACT_PROPERTY;
 	
 	@Inject
 	private IWebSiteService webSiteService;
@@ -34,9 +37,20 @@ private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
 	@Inject
 	private ICayenneService cayenneService;
 	
+	public VoucherService() {}
+	
+	public VoucherService(IWebSiteService webSiteService, ICayenneService cayenneService) {
+		this.webSiteService = webSiteService;
+		this.cayenneService = cayenneService;
+	}
+	
+	protected IWebSiteService getWebSiteService() {
+		return webSiteService;
+	}
+
 	@Override
 	public List<VoucherProduct> getAvailableVoucherProducts() {
-		final College currentCollege = webSiteService.getCurrentCollege();
+		final College currentCollege = getWebSiteService().getCurrentCollege();
 		final Expression qualifier = ExpressionFactory.matchExp(VoucherProduct.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
 			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_ON_SALE_PROPERTY, Boolean.TRUE));
@@ -51,7 +65,7 @@ private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
 	
 	@Override
 	public Voucher getVoucherByCode(final String code) {
-		final College currentCollege = webSiteService.getCurrentCollege();
+		final College currentCollege = getWebSiteService().getCurrentCollege();
 		final Expression qualifier = ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code)
 			.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
@@ -68,31 +82,22 @@ private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
 	
 	@Override
 	public List<Voucher> getAvailableVoucherProductsForUser(final Contact contact) {
-		final College currentCollege = webSiteService.getCurrentCollege();
-		final Expression qualifier = ExpressionFactory.matchExp(Voucher.CONTACT_PROPERTY, contact)
-			.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
+		final College currentCollege = getWebSiteService().getCurrentCollege();
+		final Expression qualifier = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
 			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO))
-			.andExp(ExpressionFactory.greaterExp(Voucher.PRODUCT_PROPERTY + "." + VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE));
+			.andExp(ExpressionFactory.matchExp(Voucher.PRODUCT_PROPERTY + "." + VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchExp(Voucher.CONTACT_PROPERTY, contact).orExp(ExpressionFactory.matchExp(VOUCHER_OWNER_RELATION, contact)));
 		@SuppressWarnings("unchecked")
 		List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, qualifier));
 		return results;
 	}
 	
-	public Voucher purchaseVoucher(final PaymentIn payment, final InvoiceLine invoiceLine, final VoucherProduct voucherProduct) {
-		final Voucher voucher = cayenneService.newContext().newObject(Voucher.class);
-		voucher.setCode(SecurityUtil.generateRandomPassword(Voucher.VOUCHER_CODE_LENGTH));
-		voucher.setCollege(voucherProduct.getCollege());
-		voucher.setContact(payment.getStudent().getContact());
-		voucher.setCreated(new Date());
-		voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucherProduct.getExpiryType(), voucherProduct.getExpiryDays()));
-		voucher.setInvoiceLine(invoiceLine);
-		voucher.setRedemptionValue(Money.valueOf(payment.getAmount()));
-		voucher.setSource(payment.getSource());
-		voucher.setStatus(VoucherStatus.ACTIVE);
-		voucher.setProduct(voucherProduct);
-		voucher.setRedeemedCoursesCount(0);
-		//TODO: implement me
-		return voucher;
+	//@Override
+	public PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Student payer, 
+		final Student owner) {
+		final PaymentIn payment = new PurchaseVoucherBuilder(voucherProduct, voucherPrice, payer, PaymentType.CREDIT_CARD, owner)
+			.prepareVoucherPurchase();
+		return payment;
 	}
 }
