@@ -1,0 +1,39 @@
+dependencies {
+	compile project(':common')
+
+	compile 'javax.jmdns:jmdns:3.4.1'
+
+	compile 'org.apache.cayenne:cayenne-server:3.1B1'
+	compile 'org.apache.cayenne:cayenne-lifecycle:3.1B1'
+	compile 'foxtrot:foxtrot-core:4.0'
+	compile 'org.apache.cxf:cxf-bundle:2.4.2'
+
+	compile 'org.eclipse.jetty:jetty-server:8.1.5.v20120716'
+	compile 'org.eclipse.jetty:jetty-servlet:8.1.5.v20120716'
+	compile 'org.eclipse.jetty:jetty-security:8.1.5.v20120716'
+	compile 'org.eclipse.jetty:jetty-http:8.1.5.v20120716'
+	compile 'org.eclipse.jetty:jetty-util:8.1.5.v20120716'
+	compile 'org.eclipse.jetty:jetty-io:8.1.5.v20120716'
+
+	compile 'org.apache.derby:derby:10.9.1.0'
+	compile 'org.apache.derby:derbyclient:10.9.1.0'
+	compile 'org.apache.derby:derbynet:10.9.1.0'
+	compile 'org.liquibase:liquibase-core:2.0.5'
+
+	compile ('net.sf.jasperreports:jasperreports:4.6.0') {
+		exclude group: 'org.apache.poi', module: 'poi-ooxml'
+	}
+
+	compile 'net.sourceforge.jtds:jtds:1.2.4'
+	compile 'mysql:mysql-connector-java:5.1.21'
+	compile 'net.sourceforge.saxon:saxon:9.1.7'
+	compile 'com.google.inject:guice:3.0'
+	compile 'org.quartz-scheduler:quartz:2.1.5'
+	compile 'org.slf4j:slf4j-api:1.6.6'
+	compile 'org.slf4j:slf4j-log4j12:1.6.4'
+	compile 'commons-dbcp:commons-dbcp:1.4'
+
+  	testCompile 'org.mockito:mockito-core:1.9.0'
+  	testCompile 'org.apache.derby:derbytools:10.9.1.0'
+  	testCompile 'org.eclipse.jetty:test-jetty-servlet'
+}
