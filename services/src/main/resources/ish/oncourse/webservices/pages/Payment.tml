@@ -65,7 +65,6 @@
 		</t:block>
 		
 		<t:block id="paymentResultBlock">
-			<span t:type="PaymentResult" payment="payment"/>
 		</t:block>
 		
 	</div>
