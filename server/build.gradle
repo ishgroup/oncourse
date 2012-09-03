@@ -1,5 +1,6 @@
 dependencies {
 	compile project(':common')
+	compile project(':webservices-client')
 
 	compile 'javax.jmdns:jmdns:3.4.1'
 
