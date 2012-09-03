@@ -9,19 +9,11 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.Queueable;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericPaymentOutStub;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
+import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.map.ObjEntity;
+
+import java.util.*;
 
 /**
  * Supplimentary replication methods.
@@ -36,7 +28,9 @@ public class ReplicationUtils {
 	}
 
 	public static Class<? extends Queueable> getEntityClass(ObjectContext objectContext, String entityIdentifier) {
-		@SuppressWarnings("unchecked")
+        ObjEntity entity = objectContext.getEntityResolver().getObjEntity(entityIdentifier);
+        if (entity == null)
+            throw new IllegalArgumentException(String.format("CayenneRuntime does not contain entity with name: %s",entityIdentifier));
 		Class<? extends Queueable> entityClass = (Class<? extends Queueable>) objectContext.getEntityResolver()
 				.getObjEntity(entityIdentifier).getJavaClass();
 		return entityClass;
