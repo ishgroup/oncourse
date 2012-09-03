@@ -8,7 +8,6 @@ import ish.oncourse.services.courseclass.CourseClassPeriod;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -29,7 +28,6 @@ public class Classes {
     @Property
     private CourseClass courseClass;
 
-    @Persist
     private List<CourseClass> classes;
 
     @Parameter

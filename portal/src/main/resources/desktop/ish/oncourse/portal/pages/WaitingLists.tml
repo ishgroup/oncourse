@@ -1,0 +1,12 @@
+<html t:type="pagestructure" title="literal:Timetable List"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
+    <div class="waiting_list">
+    <h1>Waiting Lists</h1>
+        <t:if test="waitingLists">
+            <t:loop  source="waitingLists" value="waitingList">
+                <div t:type="WaitingListInfo" waitingList="waitingList"/>
+            </t:loop>
+        </t:if>
+    </div>
+
+</html>

@@ -1,5 +1,5 @@
 <t:container
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+        xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="menu-bg">
 		<div class="menu-b">
@@ -11,7 +11,8 @@
                 <!--  <t:pagelink id="m_surveys" page="prop:surveysPageName">Surveys</t:pagelink><div></div> -->
 				<li><t:pagelink id="m_profile" page="prop:profilePageName">My Profile<i class="icon-chevron-right"></i></t:pagelink></li>
 				<li><t:pagelink id="m_mailinglists" page="prop:mailinglistsPageName">Mailing Lists<i class="icon-chevron-right"></i></t:pagelink></li>
-			</ul>
+                <li><t:pagelink id="m_WaitingLists" page="prop:waitingListsPageName">Waiting Lists<i class="icon-chevron-right"></i></t:pagelink></li>
+            </ul>
 		</div>
 	</div>
 

@@ -1,12 +1,11 @@
 package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.util.ValidationErrors;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -15,7 +14,6 @@ import java.util.List;
 
 public class ClassDetails {
 	
-	private static final int CLASS_DETAILS_LENGTH = 490;
     private static final String URL_TEMPLATE = "http://%s/class/%s-%s";
 
 	@Property
@@ -48,28 +46,13 @@ public class ClassDetails {
 		}
 		
 		if (courseClass != null) {
-			StringBuffer textileDetails = new StringBuffer();
-			if(courseClass.getDetail() != null && courseClass.getDetail().length() > 0) {
-				textileDetails.append(courseClass.getDetail());
-			}
-			
-			if (courseClass.getCourse().getDetail() != null &&  courseClass.getCourse().getDetail().length() > 0) {
-				if(textileDetails.toString().length() < 0) {
-					textileDetails.append("\n");
-				}
-				textileDetails.append(courseClass.getCourse().getDetail());
-			}
-			
-			details = textileConverter.convertCustomTextile(textileDetails.toString(), new ValidationErrors());
-			details = extractor.extractFromHtml(details);
-			details = StringUtils.abbreviate(details, CLASS_DETAILS_LENGTH);
+			details = PortalUtils.getClassDetailsBy(courseClass,textileConverter,extractor);
 		}
 		return null;
 	}
 
 	public String getClassDetailsLink() {
-		return courseClass != null ? String.format(URL_TEMPLATE,webSiteService.getCurrentDomain().getName(),
-				courseClass.getCourse().getCode(),courseClass.getCode()) : "";
+		return PortalUtils.getClassDetailsURLBy(courseClass, webSiteService);
 	}
 	
 	public boolean isHidden() {

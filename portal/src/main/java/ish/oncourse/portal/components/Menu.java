@@ -1,8 +1,8 @@
 package ish.oncourse.portal.components;
 
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.pages.WaitingLists;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
-
 import ish.oncourse.services.courseclass.CourseClassPeriod;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -59,5 +59,11 @@ public class Menu {
     {
         return CourseClassPeriod.PAST.name();
     }
+
+    public String getWaitingListsPageName()
+    {
+        return WaitingLists.class.getSimpleName();
+    }
+
 
 }
