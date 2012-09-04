@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<Language id="1" name="English" isActive="1" ishVersion="1"/>
+
+    <College id="1" name="Sydney Community College" webServicesSecurityCode="345ttn44$%9"
+             communication_key="7059522699886202880" communication_key_status="VALID"
+             firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+    <Tutor id="1" collegeId="1" angelId="1" created="2011-09-12 00:47:26.0"
+           modified="2011-09-12 01:02:00.0" resume="&lt;p&gt;This is mister Putin resume.&lt;/p&gt;"
+           resume_textile="This is mister Putin resume." startDate="2011-09-12 01:02:00.0"
+           finishDate="2011-09-12 01:02:00.0"/>
+
+    <Contact id="1"
+             collegeId="1"
+             angelId="1"
+             cookieHash="cookieHash"
+             isMarketingViaSMSAllowed="1"
+             isMarketingViaPostAllowed="1"
+             isMarketingViaEmailAllowed="1"
+             isMale="1"
+             isCompany="0"
+             created="2010-02-03 09:18:09"
+             modified="2010-02-03 09:18:09"
+             password="password"
+             passwordHash="passwordHash"
+             postcode="postcode"
+             state="state"
+             street="street"
+             taxFileNumber="taxFileNumber"
+             mobilePhoneNumber="234-456-789"
+             homePhoneNumber="234-456-789"
+             businessPhoneNumber="234-456-789"
+             countryId="1"
+             tutorId="1"
+             uniqueCode="uniqueCode"
+             dateOfBirth="1952-10-07"
+             emailAddress="putin@kremlin.ru"
+             familyName="StubTest"
+             givenName="StubTest"
+             faxNumber="1234-567"
+             suburb="Moscow"/>
+
+
+    <Contact id="2"
+             collegeId="1"
+             angelId="2"
+             cookieHash="cookieHash"
+             isMarketingViaSMSAllowed="1"
+             isMarketingViaPostAllowed="1"
+             isMarketingViaEmailAllowed="1"
+             isMale="1"
+             isCompany="0"
+             created="2010-02-03 09:18:09"
+             modified="2010-02-03 09:18:09"
+             password="password"
+             passwordHash="passwordHash"
+             postcode="postcode"
+             state="state"
+             street="street"
+             taxFileNumber="taxFileNumber"
+             mobilePhoneNumber="234-456-789"
+             homePhoneNumber="234-456-789"
+             businessPhoneNumber="234-456-789"
+             countryId="1"
+             uniqueCode="uniqueCode"
+             dateOfBirth="1952-10-07"
+             emailAddress="putin@kremlin.ru"
+             familyName="StubTest"
+             givenName="StubTest"
+             faxNumber="1234-567"
+             suburb="Moscow"/>
+</dataset>

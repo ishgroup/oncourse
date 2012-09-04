@@ -35,5 +35,6 @@ public class DiscountUpdater extends AbstractWillowUpdater<DiscountStub, Discoun
 		
 		// not used in v4 stubs, setting to default value
 		entity.setHideOnWeb(Boolean.FALSE);
-	}
+        entity.setIsAvailableOnWeb(Boolean.TRUE);
+    }
 }
