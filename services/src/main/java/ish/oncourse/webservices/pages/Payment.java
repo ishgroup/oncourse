@@ -204,6 +204,11 @@ public class Payment {
 		}
 	}
 	
+	public String getRefreshLink() {
+		return HTTPS_PROTOCOL  + request.getServerName() + request.getContextPath() + PAYMENT_PAGE_NAME 
+			+ request.getSession(false).getAttribute(Payment.SESSION_ID_ATTRIBUTE);
+	}
+	
 	public void processPayment() {
 		synchronized (context) {
 			if (PaymentResult.isNewPayment(payment)) {
