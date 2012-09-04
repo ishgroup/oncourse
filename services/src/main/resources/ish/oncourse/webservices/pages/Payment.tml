@@ -44,7 +44,7 @@
 			<div class="pay-form">
 				<div class="pay-process">
 					<h2 class="page-title">Payment is now being processed against the bank. Please wait...</h2>
-					<p>This page will update automatically, or <a href="${refreshLink}">click here</a> to check the payment status now.</p>
+					<p>This page will update automatically, or <a href="#">click here</a> to check the payment status now.</p>
 					<t:if test="processigComplete"/>
 				</div>
 			</div>
