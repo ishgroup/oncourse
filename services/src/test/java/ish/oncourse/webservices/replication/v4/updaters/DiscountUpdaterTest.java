@@ -30,7 +30,7 @@ public class DiscountUpdaterTest extends ServiceTest {
     @Before
     public void setupDataSet() throws Exception {
         initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-        InputStream st = TutorUpdaterTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v4/updaters/oncourseDataSet.xml");
+        InputStream st = DiscountUpdaterTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v4/updaters/oncourseDataSet.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
         DataSource onDataSource = getDataSource("jdbc/oncourse");
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
