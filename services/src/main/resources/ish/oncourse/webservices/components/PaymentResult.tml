@@ -13,7 +13,7 @@
 			</t:if>	
 			<div class="pay-message">
 					<div class="submit-wrapper">
-						<t:form t:id="paymentResultForm" zone="paymentZone">
+						<t:form t:id="paymentResultForm">
 							<p>
 								<span class="btn-next-wr"><t:submit t:id="tryOtherCard" type="button" value="Try another card" class="btn btn-next"/></span>
 								<strong>Try a different credit card.</strong>					
@@ -43,7 +43,6 @@
 					</div>
 				</p:else>
 			</t:if>
-			<script type="text/javascript">showWarning = false;</script>
 		</p:else>
 	</t:if>
 	</p:else>
