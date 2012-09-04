@@ -1,5 +1,5 @@
-<html t:type="pagestructure" title="literal:Timetable List"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
+<html t:type="pagestructure" title="literal: Waiting Lists"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_waitinglists">
     <div class="waiting_list">
     <h1>Waiting Lists</h1>
         <t:if test="waitingLists">

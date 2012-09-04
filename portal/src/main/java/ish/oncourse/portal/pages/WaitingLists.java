@@ -4,6 +4,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.persistence.ICayenneService;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -39,4 +40,13 @@ public class WaitingLists {
             waitingLists = objectContext.performQuery(selectQuery);
         }
     }
+
+    public void deleteWaitingListBy(int id)
+    {
+        ObjectContext objectContext = cayenneService.newContext();
+        WaitingList waitingList = Cayenne.objectForPK(objectContext, WaitingList.class, id);
+        objectContext.deleteObject(waitingList);
+        objectContext.commitChanges();
+    }
+
 }

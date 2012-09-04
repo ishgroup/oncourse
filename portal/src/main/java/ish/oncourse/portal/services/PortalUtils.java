@@ -8,6 +8,13 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static ish.oncourse.util.FormatUtils.*;
+
 public class PortalUtils {
 
     public static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
@@ -19,6 +26,12 @@ public class PortalUtils {
 
     private static final int CLASS_DETAILS_LENGTH = 490;
     private static final int COURSE_DETAILS_LENGTH = 245;
+
+    private static final String CLASS_INTERVAL_INFO_TEMPLATE = "%s - %s ";
+
+    private static final String CLASS_SESSION_INFO_TEMPLATE = " %s session, %s hours";
+
+    private static final String CLASS_SESSIONS_INFO_TEMPLATE = " %s sessions, %s hours";
 
 
 
@@ -72,6 +85,48 @@ public class PortalUtils {
         details = StringUtils.abbreviate(details, COURSE_DETAILS_LENGTH);
         return details;
     }
+
+
+    public static String getClassIntervalInfoBy(CourseClass courseClass)
+    {
+        Date start = courseClass.getStartDate();
+        Date end = courseClass.getEndDate();
+        DateFormat startDateFormatter = getDateFormat(DATE_FORMAT_dd_MMM ,courseClass.getTimeZone());
+        DateFormat endDateFormatter = getDateFormat(shortDateFormatString ,courseClass.getTimeZone());
+        if (start == null && end == null) {
+            return EMPTY_STRING;
+        }
+
+        return String.format(CLASS_INTERVAL_INFO_TEMPLATE, startDateFormatter.format(start),
+                endDateFormatter.format(end));
+
+    }
+
+
+    public static String getClassSessionsInfoBy(CourseClass courseClass) {
+        DecimalFormat hoursFormat = new DecimalFormat("0.#");
+        int numberOfSession = courseClass.getSessions().size();
+        String key = (numberOfSession > 1) ? CLASS_SESSIONS_INFO_TEMPLATE
+                : CLASS_SESSION_INFO_TEMPLATE;
+        return String.format(key, numberOfSession, hoursFormat
+                .format(courseClass.getTotalDurationHours().doubleValue()));
+    }
+
+    public static String getClassPlaceBy(CourseClass courseClass)
+    {
+        String room = courseClass.getRoom() != null ? courseClass.getRoom().getName() : null;
+        String site = courseClass.getRoom() != null ?
+                courseClass.getRoom().getSite() != null ?
+                        courseClass.getRoom().getSite().getName() : null : null;
+        ArrayList<String> values = new ArrayList<String>();
+
+        if (site != null)
+            values.add(site);
+        if (room != null)
+            values.add(room);
+        return StringUtils.join(values,", ");
+    }
+
 
 
 }
