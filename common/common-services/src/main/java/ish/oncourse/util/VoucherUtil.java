@@ -29,7 +29,6 @@ public class VoucherUtil {
 		if (contact != null) {
 			voucher.setContact((Contact) voucherProduct.getObjectContext().localObject(contact.getObjectId(), null));
 		}
-		voucher.setContact(contact);
 		voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucherProduct.getExpiryType(), voucherProduct.getExpiryDays()));
 		if (voucherProduct.getPriceExTax() != null) {
 			voucher.setRedemptionValue(voucherProduct.getPriceExTax());

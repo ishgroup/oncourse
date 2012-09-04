@@ -24,7 +24,12 @@ import org.junit.Test;
 
 import ish.math.Money;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Voucher;
+import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.WebSiteService;
@@ -46,13 +51,13 @@ public class VoucherServiceTest extends ServiceTest {
 		this.cayenneService = getService(ICayenneService.class);
 	}
 	
-	//@Test
+	@Test
 	public void testGetAvailableVoucherProducts() {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
 		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
-		assertEquals("SCC shoudl contain one defined Voucher Products", 2, service.getAvailableVoucherProducts().size());
+		assertEquals("SCC should contain three defined Voucher Products", 3, service.getAvailableVoucherProducts().size());
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
@@ -61,7 +66,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("Tae have no defined Voucher Products", 1, service2.getAvailableVoucherProducts().size());
 	}
 	
-	//@Test
+	@Test
 	public void testGetVoucherByCode() {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
@@ -76,7 +81,7 @@ public class VoucherServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testgetAvailableVoucherProductsForUser() {
+	public void testGetAvailableVoucherProductsForUser() {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
@@ -102,7 +107,46 @@ public class VoucherServiceTest extends ServiceTest {
 		assertFalse("Available vouchers list should not be empty", availableVouchers.isEmpty());
 		assertEquals("Available vouchers list should contain 2 vouchers", 2, availableVouchers.size());
 		assertEquals("Available vouchers list should contain selected voucher", voucher, availableVouchers.get(1));
-
+	}
+	
+	@Test
+	public void testPreparePaymentInForVoucherPurchase() {
+		VoucherProduct product = (VoucherProduct) cayenneService.newNonReplicatingContext().performQuery(new SelectQuery(VoucherProduct.class, 
+			ExpressionFactory.matchDbExp(VoucherProduct.ID_PK_COLUMN, 5L))).get(0);
+		assertNotNull("Voucher product with id=3 should exist", product);
+		Contact contact = (Contact) product.getObjectContext().performQuery(new SelectQuery(Contact.class, 
+			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
+		assertNotNull("Contact with id=1 should exist", contact);
+		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
+		//cleanup data
+		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(Voucher.class)));
+		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(InvoiceLine.class)));
+		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(PaymentInLine.class)));
+		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(PaymentIn.class)));
+		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(Invoice.class)));
+		product.getObjectContext().commitChanges();
+		//test service
+		Request request = mock(Request.class);
+		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
+		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		final Money voucherPrice = new Money("110.00");
+		final PaymentIn payment = service.preparePaymentInForVoucherPurchase(product, voucherPrice, contact.getStudent(), contact.getStudent());
+		payment.getObjectContext().commitChanges();
+		assertNotNull("Payment should be created", payment);
+		assertEquals("Payment amount should be the voucher price because the voucher product have no price", voucherPrice.toBigDecimal(), 
+			payment.getAmount());
+		assertEquals("Payment should have only 1 paymentinline", 1, payment.getPaymentInLines().size());
+		Invoice invoice = payment.getPaymentInLines().get(0).getInvoice();
+		assertEquals("Invoice price should be equal to payment amount", payment.getAmount(), invoice.getTotalGst());
+		assertEquals("Invoice should have only 1 invoiceline", 1, invoice.getInvoiceLines().size());
+		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
+		assertEquals("Invoiceline should have only 1 linked voucher", 1, invoiceLine.getProductItem().size());
+		Voucher voucher = (Voucher) invoiceLine.getProductItem().get(0);
+		assertNotNull("Voucher should be created", voucher);
+		assertEquals("Payment amount should be the voucher price because the voucher product have no price", 
+			voucher.getRedemptionValue().toBigDecimal(), payment.getAmount());
+		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher.getContact());
 	}
 
 }

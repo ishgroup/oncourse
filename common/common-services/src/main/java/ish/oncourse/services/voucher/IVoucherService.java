@@ -16,6 +16,6 @@ public interface IVoucherService {
 	
 	Voucher getVoucherByCode(final String code);
 	
-	//PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Student payer, final Student owner);
+	PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Student payer, final Student owner);
 
 }

@@ -27,9 +27,12 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class VoucherService implements IVoucherService {
+	private static final String OBJECT_RELATIONSHIP_SEPARATOR_STRING = ".";
 	private static final Logger LOGGER = Logger.getLogger(VoucherService.class);
-	private final String VOUCHER_OWNER_RELATION = Voucher.INVOICE_LINE_PROPERTY + "." + InvoiceLine.INVOICE_PROPERTY + "." + 
-		Invoice.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.PAYMENT_IN_PROPERTY + "." + PaymentIn.STUDENT_PROPERTY + "." + Student.CONTACT_PROPERTY;
+	private final String VOUCHER_OWNER_RELATION = Voucher.INVOICE_LINE_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + InvoiceLine.INVOICE_PROPERTY 
+		+ OBJECT_RELATIONSHIP_SEPARATOR_STRING + Invoice.PAYMENT_IN_LINES_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING 
+		+ PaymentInLine.PAYMENT_IN_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING + PaymentIn.STUDENT_PROPERTY 
+		+ OBJECT_RELATIONSHIP_SEPARATOR_STRING + Student.CONTACT_PROPERTY;
 	
 	@Inject
 	private IWebSiteService webSiteService;
@@ -86,14 +89,15 @@ public class VoucherService implements IVoucherService {
 		final Expression qualifier = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
 			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO))
-			.andExp(ExpressionFactory.matchExp(Voucher.PRODUCT_PROPERTY + "." + VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchExp(Voucher.PRODUCT_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING 
+				+ VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
 			.andExp(ExpressionFactory.matchExp(Voucher.CONTACT_PROPERTY, contact).orExp(ExpressionFactory.matchExp(VOUCHER_OWNER_RELATION, contact)));
 		@SuppressWarnings("unchecked")
 		List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, qualifier));
 		return results;
 	}
 	
-	//@Override
+	@Override
 	public PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Student payer, 
 		final Student owner) {
 		final PaymentIn payment = new PurchaseVoucherBuilder(voucherProduct, voucherPrice, payer, PaymentType.CREDIT_CARD, owner)
