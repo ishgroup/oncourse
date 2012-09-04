@@ -82,6 +82,6 @@ public class PaymentInLine extends _PaymentInLine implements Queueable {
 	 * @return
 	 */
 	public boolean isAsyncReplicationAllowed() {
-		return getPaymentIn().isAsyncReplicationAllowed();
+		return getPaymentIn() != null && getPaymentIn().isAsyncReplicationAllowed();
 	}
 }
