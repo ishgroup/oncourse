@@ -4,13 +4,9 @@ import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.pages.Payment;
 import ish.persistence.CommonPreferenceController;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
@@ -28,6 +24,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 public class PaymentForm {
+	
 	/**
 	 * Credit card expire date interval
 	 */
@@ -90,6 +87,7 @@ public class PaymentForm {
 	 */
 	private boolean isSubmitted;
 	
+	@SuppressWarnings("all")
 	@Inject
 	private Request request;
 	
@@ -113,6 +111,7 @@ public class PaymentForm {
 	/**
 	 * Invokes when the {@link #paymentDetailsForm} is attempted to submit.
 	 */
+	@OnEvent(component = "paymentDetailsForm", value = "validate")
 	void validate() {
 		if (!isSubmitted) {
 			return;
@@ -134,8 +133,8 @@ public class PaymentForm {
 		if (cardNumberErrorMessage != null) {
 			paymentDetailsForm.recordError(cardNumber, cardNumberErrorMessage);
 		}
-		//we also we need to check that CVV not empty here
-		if (payment.getCreditCardCVV() == null || !payment.validateCVV()) {
+
+		if (!payment.validateCVV()) {
 			paymentDetailsForm.recordError(cardcvv, messages.get("cardcvv"));
 		}
 
@@ -180,28 +179,17 @@ public class PaymentForm {
 
 	@OnEvent(component = "paymentDetailsForm", value = "success")
 	Object submitted() {
-		paymentDetailsForm.clearErrors();
-		validate();
 		Payment paymentPage = getPaymentPage();
-		if (!paymentDetailsForm.getHasErrors()) {
-			synchronized (paymentPage.getContext()) {
-				if (isSubmitted) {
-					paymentPage.processPayment();
-				} else {
-					paymentPage.cancelPayment();
+		synchronized (paymentPage.getContext()) {
+			if (isSubmitted) {
+				return paymentPage.submitToGateway();
+			} else {
+				if (paymentPage.isPaymentProcessed() && !paymentPage.isCheckoutResult()) {
+					return paymentPage.submitToGateway();
 				}
-				try {
-					return new URL(Payment.HTTPS_PROTOCOL  + request.getServerName() + request.getContextPath() + Payment.PAYMENT_PAGE_NAME + request.getSession(false).getAttribute(Payment.SESSION_ID_ATTRIBUTE));
-				} catch (MalformedURLException e) {
-					return null;
-				}
+				return paymentPage.cancelPayment();
 			}
-		}
-		try {
-			return new URL(Payment.HTTPS_PROTOCOL  + request.getServerName() + request.getContextPath() + Payment.PAYMENT_PAGE_NAME + request.getSession(false).getAttribute(Payment.SESSION_ID_ATTRIBUTE));
-		} catch (MalformedURLException e) {
-			return null;
-		}
+		}	
 	}
 
 	public CreditCardType getMasterCard() {
@@ -237,7 +225,13 @@ public class PaymentForm {
 	}
 
 	private String getInputSectionClass(Field field) {
-		ValidationTracker defaultTracker = paymentDetailsForm.getDefaultTracker();
-		return defaultTracker == null || !defaultTracker.inError(field) ? "pay-form-line" : "pay-form-line error";
+		ValidationTracker defaultTracker = paymentDetailsForm
+				.getDefaultTracker();
+		return defaultTracker == null || !defaultTracker.inError(field) ? "pay-form-line"
+				: "pay-form-line error";
+	}
+
+	public PaymentIn getPaymentIn() {
+		return payment;
 	}
 }

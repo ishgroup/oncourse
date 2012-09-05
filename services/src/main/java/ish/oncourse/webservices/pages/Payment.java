@@ -13,27 +13,26 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.components.PaymentForm;
+import ish.oncourse.webservices.components.PaymentProcessing;
 import ish.oncourse.webservices.components.PaymentResult;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.utils.PaymentInAbandonUtil;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -41,82 +40,137 @@ import org.apache.tapestry5.services.Session;
 
 @Import(stylesheet = "css/screen.css")
 public class Payment {
-	public static final String PAYMENT_PAGE_NAME = "/Payment/";
-	public static final String SESSION_ID_ATTRIBUTE = "sessionId";
-	private static final Logger LOGGER = Logger.getLogger(Payment.class);
+	 private static final Logger LOGGER = Logger.getLogger(Payment.class);
 	private static final String PAYMENT_AMOUNT_FORMAT = "###,##0.00";
-	public static final String HTTPS_PROTOCOL = "https://";
-	
+
+	@Inject
+	private IPaymentService paymentService;
+
 	@Inject
 	private Messages messages;
 
 	@Inject
 	private Request request;
-	
+
 	@Property
 	@Persist
 	private PaymentIn payment;
-	
+
+	@SuppressWarnings("all")
+	@Property
+	private Money totalIncGst;
+
+	@SuppressWarnings("all")
+	@Property
+	private String enrolmentDisclosure;
+
 	@Property
 	private Contact payer;
+
+	@SuppressWarnings("all")
+	@Property
+	private Format moneyFormat;
+
+	@SuppressWarnings("all")
+	@InjectComponent
+	private Zone paymentZone;
+
+	@Property
+	private List<Invoice> invoices;
+
+	@Property
+	private Invoice invoice;
+
+	@Inject
+	private Block cancelledMessageBlock;
+
+	@SuppressWarnings("all")
+	@Property
+	@Inject
+	private Block paymentResultBlock;
+
+	@Property
+	@Inject
+	private Block progressDisplayBlock;
+
+	@InjectComponent
+	private PaymentForm paymentForm;
 	
 	@Persist
     private ObjectContext context;
 	
-	@Inject
+    @Inject
     private ICayenneService cayenneService;
-	
-	@Inject
-	private IPaymentService paymentService;
-	
-	@Inject
+    
+    @Inject
     private ComponentResources componentResources;
-	
-	@SuppressWarnings("all")
-	@Property
-	private Money totalIncGst;
-	
-	@SuppressWarnings("all")
-	@Property
-	private Format moneyFormat;
-	
-	@Property
-	private List<Invoice> invoices;
-
-	@SuppressWarnings("all")
-	@Property
-	private Invoice invoice;
-	
-	@SuppressWarnings("all")
+    
+    @SuppressWarnings("all")
 	@InjectComponent
-	private PaymentForm paymentForm;
-	
-	@Inject
+    @Property
+    private PaymentProcessing resultComponent;
+    
+    @Inject
 	private IPaymentGatewayService paymentGatewayService;
-	
-	@Property
-	@Persist
-	private PaymentStates currentState;
-	
-	private synchronized void changeCurrentState(final PaymentStates currentState) {
-		this.currentState = currentState;
-	}
-
-	private void checkContext() {
-    	synchronized (this) {
-            if (getContext() == null) {
-                context = cayenneService.newContext();
-            }
-        }
+    
+    @SuppressWarnings("all")
+	@InjectComponent
+    private PaymentResult result;
+    
+    /**
+     * Indicates if this page is used for displaying the payment checkout(if
+     * false), and the result of previous checkout otherwise.
+     */
+    @Persist
+    private boolean checkoutResult;
+    
+    /*public PaymentProcessing getResultingElement() {
+        return resultComponent;
+    }*/
+    
+    /**
+     * Sets value to the {@link #checkoutResult}.
+     *
+     * @param checkoutResult .
+     */
+    public void setCheckoutResult(boolean checkoutResult) {
+        this.checkoutResult = checkoutResult;
     }
-	
-	/**
+
+    /**
+     * @return the checkoutResult
+     */
+    public boolean isCheckoutResult() {
+        return checkoutResult;
+    }
+        
+    /**
      * Clears all the properties with the @Persist annotation.
      */
     public void clearPersistedProperties() {
         componentResources.discardPersistentFieldChanges();
     }
 	
+	public ObjectContext getContext() {
+        return context;
+    }
+
+    /**
+     * Method returns true if by some reason persist properties have been cleared.
+     * For example: the payment has been processed from other tab of the browser.
+     */
+    public boolean isPersistCleared() {
+        return context == null;
+    }
+    
+    private void checkContext() {
+    	synchronized (this) {
+            if (context == null) {
+                context = cayenneService.newContext();
+            }
+        }
+    }
+					
 	/**
 	 * Finds and init payment and payment transaciton by referenceId.
 	 * 
@@ -125,26 +179,16 @@ public class Payment {
 	void onActivate(String sessionId) {
 		checkContext();
 		synchronized (context) {
-			Session session = request.getSession(true);
-			if (sessionId != null && !sessionId.equals(session.getAttribute(SESSION_ID_ATTRIBUTE))) {
-				//reset the state for new QE if required
-				changeCurrentState(PaymentStates.NOT_PROCESSED);
-			}
-			if (currentState == null) {
-				changeCurrentState(PaymentStates.NOT_PROCESSED);
-			}
-			if (isShowPaymentForm()) {
-				this.payment = paymentService.currentPaymentInBySessionId(sessionId);
-				if (payment == null) {
-					clearPersistedProperties();
-					throw new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
-				} else {
-					payment = (PaymentIn) getContext().localObject(payment.getObjectId(), null);
-				}
+			this.payment = paymentService.currentPaymentInBySessionId(sessionId);
+			if (payment == null) {
+				clearPersistedProperties();
+				throw new PaymentNotFoundException(messages.format("payment.not.found", sessionId));
+			} else {
+				payment = (PaymentIn) context.localObject(payment.getObjectId(), null);
 			}
 			this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
+			Session session = request.getSession(true);
 			session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, payment.getCollege().getId());
-			session.setAttribute(SESSION_ID_ATTRIBUTE, sessionId);
 			this.totalIncGst = new Money(payment.getAmount());
 			this.payer = this.payment.getContact();
 			initInvoices();
@@ -159,137 +203,132 @@ public class Payment {
 		Ordering ordering = new Ordering(Invoice.INVOICE_NUMBER_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(this.invoices);
 	}
-	
+
+	/*public boolean isPaymentBeingProcessed() {
+		Session session = request.getSession(false);
+		if (session == null) {
+			return false;
+		} else {
+			Boolean processed = (Boolean) session.getAttribute(PaymentIn.PAYMENT_PROCESSED_PARAM);
+			return processed != null && processed;
+		}
+	}*/
+
+	public boolean isShowPaymentResult() {
+		return !PaymentResult.isNewPayment(payment);
+	}
+
 	public String getPaymentTitle() {
 		return messages.format("payment.title", payer.getGivenName(), payer.getFamilyName());
 	}
-	
+
 	public String getInvoiceDescription() {
 		return messages.format("invoice.desc", invoice.getInvoiceNumber());
 	}
 	
-	/**
-     * Method returns true if by some reason persist properties have been cleared.
-     * For example: the payment has been processed from other tab of the browser.
-     */
-    public boolean isPersistCleared() {
-        return getContext() == null;
-    }
-    
-    public ObjectContext getContext() {
-        return context;
-    }
-	
-	public Object handleUnexpectedException(final Throwable cause) {
-    	if (isPersistCleared()) {
-			LOGGER.warn("Payment were processed. User used two or more tabs", cause);
-			return this;
-		} else {
-			throw new IllegalArgumentException(cause);
-		}
-    }
-	
-	/**
-	 * Cancels payment, sends notification, displays cancelled message.
-	 * 
-	 * @return cancelled message block
-	 */
-	public Object cancelPayment() {
-		abandonPaymentReverseInvoice();
-		try {
-			return new URL(HTTPS_PROTOCOL  + request.getServerName() + request.getContextPath() + PAYMENT_PAGE_NAME 
-				+ request.getSession(false).getAttribute(Payment.SESSION_ID_ATTRIBUTE));
-		} catch (MalformedURLException e) {
-			return null;
-		}
-	}
-	
-	public String getRefreshLink() {
-		return HTTPS_PROTOCOL  + request.getServerName() + request.getContextPath() + PAYMENT_PAGE_NAME 
-			+ request.getSession(false).getAttribute(Payment.SESSION_ID_ATTRIBUTE);
-	}
-	
 	public void processPayment() {
 		synchronized (context) {
-			if (PaymentResult.isNewPayment(payment)) {
-				// additional check for card details required added to avoid #13172
-				changeCurrentState(PaymentStates.IN_PROCESSING);
-				Executors.newScheduledThreadPool(1).execute(new ProcessPaymentThread(payment, paymentGatewayService));
-			}
-		}
-	}
-	
-	/**
-	 * Abandon payment, reverses invoices
-	 * 
-	 * @return abandon payment message block
-	 * @throws MalformedURLException 
-	 */
-	public void abandonPaymentReverseInvoice() {
-		if (!isProcessingPayment() && !isPaymentProcessed() && !isPaymentCanceled(payment)) {
-			synchronized (context) {
-				try {
-					changeCurrentState(PaymentStates.IN_PROCESSING);
-					PaymentInAbandonUtil.abandonPaymentReverseInvoice(payment);
-				} finally {
-					changeCurrentState(PaymentStates.PROCESSED);
+			if (isCheckoutResult()) {
+				if (PaymentResult.isNewPayment(payment)) {
+					// additional check for card details required added to avoid #13172
+					paymentGatewayService.performGatewayOperation(payment);
+					if (PaymentResult.isSuccessPayment(payment)) {
+						payment.getObjectContext().commitChanges();
+					}
 				}
+			
 			}
-		} else {
-			changeCurrentState(PaymentStates.IN_PROCESSING);
 		}
 	}
-	
+
 	/**
-	 * Abandon payment, but keeps invoices for later processing.
-	 * 
-	 * @return abandon payment message block
+	 * Submits task for for calling payment gateway to transaction executor.
 	 */
-	public void abandonPaymentKeepInvoice() {
-		if (!isPaymentProcessed() && !isProcessingPayment() && !isPaymentCanceled(payment)) {
-			synchronized (context) {
-				try {
-					changeCurrentState(PaymentStates.IN_PROCESSING);
-					payment.abandonPaymentKeepInvoice();
-					payment.getObjectContext().commitChanges();
-				} finally {
-					changeCurrentState(PaymentStates.PROCESSED);
-				}
-			}
-		} else {
-			changeCurrentState(PaymentStates.IN_PROCESSING);
-		}
+	public Object submitToGateway() {
+		return progressDisplayBlock;
 	}
-	
+
 	/**
 	 * Marks current trasaction as finalized, creates a new one for other credit
 	 * card details.
 	 * 
 	 * @return payment form component
 	 */
-	public void tryOtherCard() {
+	public Object tryOtherCard() {
 		synchronized (context) {
-			if (!isPaymentProcessed() && !isProcessingPayment() && !isPaymentCanceled(payment) && !PaymentResult.isNewPayment(payment)) {
+			if (!isPaymentProcessed() && !isCheckoutResult() && !isPaymentCanceled(payment) && !PaymentResult.isNewPayment(payment)) {
 				this.payment = payment.makeCopy();
 				this.payment.setStatus(PaymentStatus.IN_TRANSACTION);
 				this.payment.getObjectContext().commitChanges();
-				changeCurrentState(PaymentStates.NOT_PROCESSED);
+				return paymentForm;
 			} else {
 				if (PaymentResult.isNewPayment(payment)) {
-					changeCurrentState(PaymentStates.NOT_PROCESSED);
+					return paymentForm;
 				} else {
-					changeCurrentState(PaymentStates.IN_PROCESSING);
+					return progressDisplayBlock;
 				}
 			}
 		}
 	}
-	
+
+	/**
+	 * Abandon payment, reverses invoices
+	 * 
+	 * @return abandon payment message block
+	 */
+	public Object abandonPaymentReverseInvoice() {
+		if (!isCheckoutResult() && !isPaymentProcessed() && !isPaymentCanceled(payment)) {
+			synchronized (context) {
+				try {
+					setCheckoutResult(true);
+					PaymentInAbandonUtil.abandonPaymentReverseInvoice(payment);
+				} finally {
+					setCheckoutResult(false);
+				}
+			}
+			return cancelledMessageBlock;
+		} else {
+			return progressDisplayBlock;
+		}
+	}
+
+	/**
+	 * Abandon payment, but keeps invoices for later processing.
+	 * 
+	 * @return abandon payment message block
+	 */
+	public Object abandonPaymentKeepInvoice() {
+		if (!isPaymentProcessed() && !isCheckoutResult() && !isPaymentCanceled(payment)) {
+			synchronized (context) {
+				try {
+					setCheckoutResult(true);
+					payment.abandonPaymentKeepInvoice();
+					payment.getObjectContext().commitChanges();
+				} finally {
+					setCheckoutResult(false);
+				}
+			}
+			return cancelledMessageBlock;
+		} else {
+			return progressDisplayBlock;
+		}
+	}
+
+	/**
+	 * Cancels payment, sends notification, displays cancelled message.
+	 * 
+	 * @return cancelled message block
+	 */
+	public Object cancelPayment() {
+		return abandonPaymentReverseInvoice();
+	}
+    
 	public boolean isPaymentProcessed() {
     	return PaymentResult.isSuccessPayment(payment);
     }
 	
 	public static boolean isPaymentCanceled(final PaymentIn paymentIn) {
-		if (!PaymentStatus.STATUSES_FAILED.contains(paymentIn.getStatus())) {
+		if (!PaymentStatus.FAILED.equals(paymentIn.getStatus())) {
 			return false;
 		} else {
 			for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
@@ -307,62 +346,15 @@ public class Payment {
 			return true;
 		}
 	}
-	
-	public boolean isShowResult() {
-		Session session = request.getSession(false);
-		if (session != null) {
-			return PaymentStates.PROCESSED.equals(currentState);
+    
+    public Object handleUnexpectedException(final Throwable cause) {
+    	if (isPersistCleared()) {
+			LOGGER.warn("Payment were processed. User used two or more tabs", cause);
+			return this;
+		} else {
+			throw new IllegalArgumentException(cause);
 		}
-		return false;
-	}
+    }
 	
-	public boolean isProcessingPayment() {
-		Session session = request.getSession(false);
-		if (session != null) {
-			return PaymentStates.IN_PROCESSING.equals(currentState);
-		}
-		return false;
-	}
 	
-	public boolean isProcessigComplete() {
-		boolean result = !PaymentResult.isNewPayment(payment);
-		if (result) {
-			changeCurrentState(PaymentStates.PROCESSED);
-		}
-		return result;
-	}
-	
-	public boolean isShowPaymentForm() {
-		Session session = request.getSession(false);
-		if (session != null) {
-			return PaymentStates.NOT_PROCESSED.equals(currentState);
-		}
-		return false;
-	}
-	
-	private class ProcessPaymentThread implements Runnable {
-		private final PaymentIn payment;
-		private final IPaymentGatewayService paymentGatewayService;
-		
-		public ProcessPaymentThread(final PaymentIn payment, final IPaymentGatewayService paymentGatewayService) {
-			this.payment = payment;
-			this.paymentGatewayService = paymentGatewayService;
-		}
-
-		@Override
-		public void run() {
-			synchronized (payment.getObjectContext()) {
-				if (PaymentResult.isNewPayment(payment)) {
-					paymentGatewayService.performGatewayOperation(payment);
-					if (PaymentResult.isSuccessPayment(payment)) {
-						payment.getObjectContext().commitChanges();
-					}
-				}
-			}
-		}
-	}
-	
-	private enum PaymentStates {
-		NOT_PROCESSED,IN_PROCESSING, PROCESSED;
-	}
 }

@@ -1,16 +1,13 @@
 package ish.oncourse.webservices.components;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.pages.Payment;
+
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 public class PaymentResult {
 
@@ -23,9 +20,6 @@ public class PaymentResult {
 
 	@Inject
 	private ComponentResources componentResources;
-	
-	@Inject
-	private Request request;
 	
 	public boolean isPaymentFailed() {
 		return isFailedPayment(payment) && !Payment.isPaymentCanceled(payment);
@@ -75,17 +69,11 @@ public class PaymentResult {
 	Object submitted() {
 		Payment paymentPage = (Payment) componentResources.getPage();
 		if (isTryOtherCard) {
-			paymentPage.tryOtherCard();
+			return paymentPage.tryOtherCard();
 		} else if (isAbandonReverse) {
-			paymentPage.abandonPaymentReverseInvoice();
+			return paymentPage.abandonPaymentReverseInvoice();
 		} else {
-			paymentPage.abandonPaymentKeepInvoice();
-		}
-		try {
-			return new URL(Payment.HTTPS_PROTOCOL  + request.getServerName() + request.getContextPath() + Payment.PAYMENT_PAGE_NAME 
-				+ request.getSession(false).getAttribute(Payment.SESSION_ID_ATTRIBUTE));
-		} catch (MalformedURLException e) {
-			return null;
+			return paymentPage.abandonPaymentKeepInvoice();
 		}
 	}
 

@@ -4,9 +4,6 @@
 <head>
     <meta charset="utf-8"/>
     <title>${message:headerTitle}</title>
-    <t:if test="processingPayment">
-    	<meta http-equiv="refresh" content="3"/>
-    </t:if>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge; chrome=1"/>
@@ -34,21 +31,54 @@
 	        </div>
 	        
 	    </div>
-	    <t:if test="showPaymentForm">
-			<span t:id="paymentForm" t:type="PaymentForm" payment="payment"/>
-    	</t:if>
-    	<t:if test="showResult">
-			<t:PaymentResult t:id="result" payment="payment"/>
-    	</t:if>
-    	<t:if test="processingPayment">
+	
+		<t:zone t:id="paymentZone">
+		   <t:if test="showPaymentResult">
+		   		<t:delegate to="paymentResultBlock"/>
+		   		<p:else>
+		   			<t:if test="checkoutResult">
+		   				<t:delegate to="progressDisplayBlock" />
+		   				<p:else>
+		   					<span t:id="paymentForm" t:type="PaymentForm" payment="payment"/>
+		   				</p:else>
+		   			</t:if>			
+		   		</p:else>
+		   </t:if>
+		</t:zone>
+		<t:if test="checkoutResult">
+			<t:PaymentProcessing t:id="resultComponent"/>
+			<p:else>
+				<t:PaymentResult t:id="result" payment="payment"/>
+			</p:else>
+		</t:if>
+		<t:block id="progressDisplayBlock">
+			<span t:type="PaymentProcessing" payment="payment" />
+		</t:block>
+		
+		<t:block id="cancelledMessageBlock">
 			<div class="pay-form">
-				<div class="pay-process">
-					<h2 class="page-title">Payment is now being processed against the bank. Please wait...</h2>
-					<p>This page will update automatically, or <a href="${refreshLink}">click here</a> to check the payment status now.</p>
-					<t:if test="processigComplete"/>
+				<div class="pay-fail">
+					<h2 class="page-title">This payment was cancelled.</h2>
 				</div>
 			</div>
-		</t:if>
+			<script type="text/javascript">showWarning = false;</script>
+		</t:block>
+		
+		<t:block id="paymentResultBlock">
+			<span t:type="PaymentResult" payment="payment"/>
+		</t:block>
+		
 	</div>
+	<script type="text/javascript">
+		var showWarning = true;
+		window.onbeforeunload = function() {
+			if (showWarning) {
+				var e = e || window.event;
+				var message = "If you close this window, you will not be able to complete this payment. Instead choose 'save' or 'cancel' in the window.";
+				if (e) { e.returnValue = message;}
+				return message; 
+			}
+		};
+	</script>
 </body>
 </html>
