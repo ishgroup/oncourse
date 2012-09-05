@@ -1,20 +1,19 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <div class="waiting_list_info_block">
-    <t:actionlink t:id="delete" class="btn" context="${waitingList.id}"><i class="icon-trash"/></t:actionlink>
     <h2><a href="${courseDetailsURL}">${courseName}</a></h2>
+    <t:actionlink t:id="delete" class="waiting_list_btn" context="${waitingList.id}"><i class="icon-trash"/></t:actionlink>
     <div class="description courseShortDescription">${courseDetail}<strong class="more">[<a href="${courseDetailsURL}">More</a>]</strong></div>
-
-    <t:if test="classes">
-        <t:loop  source="classes" value="courseClass">
-            <div class="class-details-container">
-                <div class="class-detail">
-                    <div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
-                    <div class="class-place">${classPlace}</div>
+        <t:if test="classes">
+            <t:loop  source="classes" value="courseClass">
+                <div class="class-details-container">
+                    <div class="class-detail">
+                        <div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
+                        <div class="class-place">${classPlace}</div>
+                    </div>
+                    <div t:type="classweek" courseClass="courseClass"/>
                 </div>
-                <div t:type="classweek" courseClass="courseClass"/>
-            </div>
 
-        </t:loop>
-    </t:if>
+            </t:loop>
+        </t:if>
 </div>
 </t:container>
