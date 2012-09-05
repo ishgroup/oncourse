@@ -12,6 +12,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
@@ -29,6 +30,7 @@ import static ish.oncourse.util.FormatUtils.getShortDateFormat;
 @UserRole("tutor")
 public class ClassRoll {
 
+    private static final Logger LOGGER = Logger.getLogger(ClassRoll.class);
 
     private static final String DATE_FORMAT_E = "E ";
     private static final String DATE_FORMAT_HH_mm_a = "HH:mm a";
@@ -155,44 +157,47 @@ public class ClassRoll {
 	}
 
 	StreamResponse onActionFromAttendance(){
-	
-		Contact contact = authenticationService.getUser();
-		if (contact != null && contact.getTutor() != null) {
-			String id = request.getParameter("attendanceId");
-			String action = request.getParameter("action");
-			
-			Attendance attandance = courseClassService.loadAttendanceById(id);
-			boolean isInCourseClassOrSessions = false;
+        try {
+            Contact contact = authenticationService.getUser();
+            if (contact != null && contact.getTutor() != null) {
+                String id = request.getParameter("attendanceId");
+                String action = request.getParameter("action");
 
-			for (SessionTutor tutor: attandance.getSession().getSessionTutors()) {
-				isInCourseClassOrSessions = (contact.getTutor().getId().equals(tutor.getTutor().getId()));
-				if(isInCourseClassOrSessions){
-					break;
-				}
-			}
-			for (TutorRole tutor: attandance.getSession().getCourseClass().getTutorRoles()) {
-				isInCourseClassOrSessions = (contact.getTutor().getId().equals(tutor.getTutor().getId()));
-				if(isInCourseClassOrSessions){
-					break;
-				}
-				
-			}
-			
-			if (isInCourseClassOrSessions) {
-				
-				if ("attended".equals(action)){ 
-					attandance.setAttendanceType(1);
-					attandance.getObjectContext().commitChanges();
-					return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
-				} else if ("absent".equals(action)) {
-					attandance.setAttendanceType(2);
-					attandance.getObjectContext().commitChanges();
-					return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
-				} 
-			}
-		} 
-		
-		return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "NOT SUCCESS");
+                Attendance attandance = courseClassService.loadAttendanceById(id);
+                boolean isInCourseClassOrSessions = false;
+
+                for (SessionTutor tutor
+                        : attandance.getSession().getSessionTutors()) {
+                    isInCourseClassOrSessions = (contact.getTutor().getId().equals(tutor.getTutor().getId()));
+                    if(isInCourseClassOrSessions){
+                        break;
+                    }
+                }
+                for (TutorRole tutor: attandance.getSession().getCourseClass().getTutorRoles()) {
+                    isInCourseClassOrSessions = (contact.getTutor().getId().equals(tutor.getTutor().getId()));
+                    if(isInCourseClassOrSessions){
+                        break;
+                    }
+
+                }
+
+                if (isInCourseClassOrSessions) {
+
+                    if ("attended".equals(action)){
+                        attandance.setAttendanceType(1);
+                        attandance.getObjectContext().commitChanges();
+                        return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
+                    } else if ("absent".equals(action)) {
+                        attandance.setAttendanceType(2);
+                        attandance.getObjectContext().commitChanges();
+                        return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.warn("Cannot handle the action", e);
+        }
+        return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "NOT SUCCESS");
 		
 	}
 }
