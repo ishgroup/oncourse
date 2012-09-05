@@ -1,23 +1,11 @@
 package ish.oncourse.portal.components;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.tapestry5.Binding;
-import org.apache.tapestry5.BindingConstants;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.FieldValidationSupport;
-import org.apache.tapestry5.FieldValidator;
-import org.apache.tapestry5.MarkupWriter;
-import org.apache.tapestry5.OptionGroupModel;
-import org.apache.tapestry5.OptionModel;
-import org.apache.tapestry5.Renderable;
-import org.apache.tapestry5.SelectModel;
-import org.apache.tapestry5.SelectModelVisitor;
-import org.apache.tapestry5.ValidationException;
-import org.apache.tapestry5.ValidationTracker;
-import org.apache.tapestry5.ValueEncoder;
+import ish.oncourse.portal.pages.MailingLists;
+import ish.oncourse.portal.services.PortalUtils;
+import ish.oncourse.services.html.IPlainTextExtractor;
+import ish.oncourse.services.textile.ITextileConverter;
+import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -27,6 +15,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
 import org.apache.tapestry5.services.ComponentDefaultProvider;
 import org.apache.tapestry5.services.Request;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class CheckBoxList extends AbstractField {
 
@@ -78,6 +70,12 @@ public class CheckBoxList extends AbstractField {
 
 	private MarkupWriter markupWriter;
 
+    @Inject
+    private ITextileConverter textileConverter;
+
+    @Inject
+    private IPlainTextExtractor plainTextExtractor;
+
 	private final class RenderCheckBox implements Renderable {
 		private final OptionModel model;
 
@@ -93,7 +91,7 @@ public class CheckBoxList extends AbstractField {
 			writer.write(model.getLabel());
 			writer.end();
 
-			final Element checkbox = writer.element("input", "type", "checkbox", "name", getControlName(), "value", clientValue);
+            final Element checkbox = writer.element("input", "type", "checkbox", "name", getControlName(), "value", clientValue);
 			
 			writer.attributes("id", clientValue);
 			
@@ -102,7 +100,22 @@ public class CheckBoxList extends AbstractField {
 			}
 
 			writer.end();
-		}
+
+            if (model instanceof MailingLists.MailingListOptionModel)
+            {
+                String details = PortalUtils.getTagDetailsBy(
+                        ((MailingLists.MailingListOptionModel) model).getTag(),textileConverter,
+                        plainTextExtractor
+                );
+                if (StringUtils.trimToNull(details) != null)
+                {
+                    writer.element("div");
+                    writer.attributes("class", "mailing_list_details");
+                    writer.write(details);
+                    writer.end();
+                }
+            }
+        }
 	}
 
 	void setupRender(final MarkupWriter writer) {

@@ -2,6 +2,7 @@ package ish.oncourse.portal.services;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
@@ -26,6 +27,7 @@ public class PortalUtils {
 
     private static final int CLASS_DETAILS_LENGTH = 490;
     private static final int COURSE_DETAILS_LENGTH = 245;
+    private static final int TAG_DETAILS_LENGTH = 245;
 
     private static final String CLASS_INTERVAL_INFO_TEMPLATE = "%s - %s ";
 
@@ -65,10 +67,7 @@ public class PortalUtils {
             textileDetails.append(courseClass.getCourse().getDetail());
         }
 
-        String details = textileConverter.convertCustomTextile(textileDetails.toString(), new ValidationErrors());
-        details = extractor.extractFromHtml(details);
-        details = StringUtils.abbreviate(details, CLASS_DETAILS_LENGTH);
-        return details;
+        return stringToTextileStringBy(textileDetails.toString(),CLASS_DETAILS_LENGTH, textileConverter,extractor);
     }
 
     public static String getCourseDetailsBy(Course course,
@@ -80,10 +79,33 @@ public class PortalUtils {
             textileDetails.append(course.getDetail());
         }
 
-        String details = textileConverter.convertCustomTextile(textileDetails.toString(), new ValidationErrors());
-        details = extractor.extractFromHtml(details);
-        details = StringUtils.abbreviate(details, COURSE_DETAILS_LENGTH);
-        return details;
+        return stringToTextileStringBy(textileDetails.toString(),COURSE_DETAILS_LENGTH, textileConverter,extractor);
+    }
+
+    public static String getTagDetailsBy(Tag tag,
+                                     ITextileConverter textileConverter,
+                                     IPlainTextExtractor extractor)
+    {
+        return stringToTextileStringBy(tag.getDetail(), TAG_DETAILS_LENGTH, textileConverter,extractor);
+
+    }
+
+    public static String stringToTextileStringBy(String textileString, int resultStringLength,
+                                            ITextileConverter textileConverter,
+                                            IPlainTextExtractor extractor)
+    {
+
+        if (StringUtils.trimToNull(textileString) != null)
+        {
+            String details = textileConverter.convertCustomTextile(textileString, new ValidationErrors());
+            details = extractor.extractFromHtml(details);
+            details = StringUtils.abbreviate(details, resultStringLength);
+            return details;
+        }
+        else
+        {
+            return EMPTY_STRING;
+        }
     }
 
 

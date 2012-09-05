@@ -1,30 +1,15 @@
 package ish.oncourse.portal.pages;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.Taggable;
-import ish.oncourse.model.TaggableTag;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.AbstractOptionModel;
-import org.apache.tapestry5.OptionGroupModel;
-import org.apache.tapestry5.OptionModel;
-import org.apache.tapestry5.SelectModel;
-import org.apache.tapestry5.ValueEncoder;
+import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -32,6 +17,8 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.internal.services.StringValueEncoder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.util.AbstractSelectModel;
+
+import java.util.*;
 
 public class MailingLists {
 
@@ -167,18 +154,7 @@ public class MailingLists {
 			List<OptionModel> options = new ArrayList<OptionModel>(mailingLists.size());
 
 			for (Tag t : mailingLists) {
-				final Tag mailingList = t;
-				OptionModel option = new AbstractOptionModel() {
-					@Override
-					public String getLabel() {
-						return mailingList.getName();
-					}
-
-					@Override
-					public Object getValue() {
-						return mailingList.getId().toString();
-					}
-				};
+				OptionModel option = new MailingListOptionModel(t);
 				options.add(option);
 			}
 
@@ -198,4 +174,28 @@ public class MailingLists {
 	public boolean getHaveMailingLists() {
 		return !mailingLists.isEmpty();
 	}
+
+
+    public static class  MailingListOptionModel extends  AbstractOptionModel
+    {
+        private Tag mailingList;
+        public MailingListOptionModel(Tag mailingList) {
+            this.mailingList = mailingList;
+        }
+
+        @Override
+        public String getLabel() {
+            return mailingList.getName();
+        }
+
+        public Tag getTag()
+        {
+            return mailingList;
+        }
+
+        @Override
+        public Object getValue() {
+            return mailingList.getId().toString();
+        }
+    }
 }
