@@ -47,14 +47,8 @@
 						</p>
 					</fieldset>
 					<p class="note">
-						<strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.
-					</p>
-					<p class="note">
 						<strong class="alert">Note</strong>: ${message:noteSameEmail}
 					</p>
-					<t:if test="showConcessionsArea">
-						<p class="note"><strong class="alert">Note</strong>: Only concessions entered in your <a href="/portal/profile">profile</a> will be used for discounts.</p>
-					</t:if>
 					<div class="form-controls" xml:space="preserve">
 						<t:submit t:id="addStudentAction" value="Enrol" class="btn enrolSubmit" clientId="add-student-enrol"/> <t:submit  t:id="resetAll" value="Reset" class="btn" clientId="reset-student-enrol"/>
 					</div>
