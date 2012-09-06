@@ -19,7 +19,7 @@
 		            	
 		                <div class="class-info">${classIntervalInfo}<span>${classSessionsInfo}</span></div>
 		               	
-		               	<i class="icon-map-marker"></i><div class="class-place light">${room}</div>
+		               	<div class="class-place light"><i class="icon-map-marker"></i> ${room}</div>
 		               
 		                <t:if test="${currentContactStudent}">
 		                	<t:loop  source="tutorRoles" value="tutorRole">
