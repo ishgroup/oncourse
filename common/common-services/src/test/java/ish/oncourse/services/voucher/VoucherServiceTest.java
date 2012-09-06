@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.services.Request;
@@ -57,7 +59,7 @@ public class VoucherServiceTest extends ServiceTest {
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
 		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
-		assertEquals("SCC should contain three defined Voucher Products", 3, service.getAvailableVoucherProducts().size());
+		assertEquals("SCC should contain four defined Voucher Products", 4, service.getAvailableVoucherProducts().size());
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
@@ -110,28 +112,23 @@ public class VoucherServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testPreparePaymentInForVoucherPurchase() {
+	public void testPreparePaymentInForVoucherPurchaseForVoucherProductWithoutPrice() {
 		VoucherProduct product = (VoucherProduct) cayenneService.newNonReplicatingContext().performQuery(new SelectQuery(VoucherProduct.class, 
 			ExpressionFactory.matchDbExp(VoucherProduct.ID_PK_COLUMN, 5L))).get(0);
-		assertNotNull("Voucher product with id=3 should exist", product);
+		assertNotNull("Voucher product with id=5 should exist", product);
 		Contact contact = (Contact) product.getObjectContext().performQuery(new SelectQuery(Contact.class, 
 			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
 		assertNotNull("Contact with id=1 should exist", contact);
 		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
 		//cleanup data
-		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(Voucher.class)));
-		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(InvoiceLine.class)));
-		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(PaymentInLine.class)));
-		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(PaymentIn.class)));
-		product.getObjectContext().deleteObjects(product.getObjectContext().performQuery(new SelectQuery(Invoice.class)));
-		product.getObjectContext().commitChanges();
+		cleanupVoucherDependentObjects(product.getObjectContext());
 		//test service
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
 		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
 		final Money voucherPrice = new Money("110.00");
-		final PaymentIn payment = service.preparePaymentInForVoucherPurchase(product, voucherPrice, contact.getStudent(), contact.getStudent());
+		final PaymentIn payment = service.preparePaymentInForVoucherPurchase(product, voucherPrice, contact, null);
 		payment.getObjectContext().commitChanges();
 		assertNotNull("Payment should be created", payment);
 		assertEquals("Payment amount should be the voucher price because the voucher product have no price", voucherPrice.toBigDecimal(), 
@@ -147,6 +144,113 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("Payment amount should be the voucher price because the voucher product have no price", 
 			voucher.getRedemptionValue().toBigDecimal(), payment.getAmount());
 		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher.getContact());
+	}
+	
+	@Test
+	public void testPreparePaymentInForVoucherPurchaseForWithIncorrectData() {
+		VoucherProduct product = (VoucherProduct) cayenneService.newNonReplicatingContext().performQuery(new SelectQuery(VoucherProduct.class, 
+			ExpressionFactory.matchDbExp(VoucherProduct.ID_PK_COLUMN, 5L))).get(0);
+		assertNotNull("Voucher product with id=5 should exist", product);
+		Contact contact = (Contact) product.getObjectContext().performQuery(new SelectQuery(Contact.class, 
+			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
+		assertNotNull("Contact with id=1 should exist", contact);
+		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
+		//cleanup data
+		cleanupVoucherDependentObjects(product.getObjectContext());
+		//test service
+		Request request = mock(Request.class);
+		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
+		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		boolean failOnPrepare = false;
+		try {
+			service.preparePaymentInForVoucherPurchase(product, Money.ZERO, contact, null);
+		} catch (Exception e) {
+			if ("Voucher price can't be null, zero or negative when we purchase voucher.".equals(e.getMessage())) {
+				failOnPrepare = true;
+			}
+		}
+		assertTrue("Voucher may not have 0 price", failOnPrepare);
+		failOnPrepare = false;
+		try {
+			service.preparePaymentInForVoucherPurchase(product, null, contact, null);
+		} catch (Exception e) {
+			if ("Voucher price can't be null, zero or negative when we purchase voucher.".equals(e.getMessage())) {
+				failOnPrepare = true;
+			}
+		}
+		assertTrue("Voucher may not have null price", failOnPrepare);
+		failOnPrepare = false;
+		try {
+			service.preparePaymentInForVoucherPurchase(product, new Money("-1.00"), contact, null);
+		} catch (Exception e) {
+			if ("Voucher price can't be null, zero or negative when we purchase voucher.".equals(e.getMessage())) {
+				failOnPrepare = true;
+			}
+		}
+		assertTrue("Voucher may not have negative price", failOnPrepare);
+		failOnPrepare = false;
+		try {
+			service.preparePaymentInForVoucherPurchase(product, Money.ONE, null, null);
+		} catch (Exception e) {
+			if ("Payer or product objects required to be not null".equals(e.getMessage())) {
+				failOnPrepare = true;
+			}
+		}
+		assertTrue("Voucher could not be created without the payer contact", failOnPrepare);
+		failOnPrepare = false;
+		try {
+			service.preparePaymentInForVoucherPurchase(null, Money.ONE, contact, null);
+		} catch (Exception e) {
+			if ("Payer or product objects required to be not null".equals(e.getMessage())) {
+				failOnPrepare = true;
+			}
+		}
+		assertTrue("Voucher could not be created without the product object", failOnPrepare);
+	}
+	
+	@Test
+	public void testPreparePaymentInForVoucherPurchaseForVoucherProductWithPrice() {
+		VoucherProduct product = (VoucherProduct) cayenneService.newNonReplicatingContext().performQuery(new SelectQuery(VoucherProduct.class, 
+			ExpressionFactory.matchDbExp(VoucherProduct.ID_PK_COLUMN, 6L))).get(0);
+		assertNotNull("Voucher product with id=6 should exist", product);
+		Contact contact = (Contact) product.getObjectContext().performQuery(new SelectQuery(Contact.class, 
+			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
+		assertNotNull("Contact with id=1 should exist", contact);
+		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
+		//cleanup data
+		cleanupVoucherDependentObjects(product.getObjectContext());
+		//test service
+		Request request = mock(Request.class);
+		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
+		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		final Money voucherPrice = new Money("110.00");
+		final PaymentIn payment = service.preparePaymentInForVoucherPurchase(product, voucherPrice, contact, null);
+		payment.getObjectContext().commitChanges();
+		assertNotNull("Payment should be created", payment);
+		assertEquals("Payment amount should be the voucher product price because the voucher product have price", 
+			product.getPriceExTax().toBigDecimal(), payment.getAmount());
+		assertEquals("Payment should have only 1 paymentinline", 1, payment.getPaymentInLines().size());
+		Invoice invoice = payment.getPaymentInLines().get(0).getInvoice();
+		assertEquals("Invoice price should be equal to payment amount", payment.getAmount(), invoice.getTotalGst());
+		assertEquals("Invoice should have only 1 invoiceline", 1, invoice.getInvoiceLines().size());
+		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
+		assertEquals("Invoiceline should have only 1 linked voucher", 1, invoiceLine.getProductItem().size());
+		Voucher voucher = (Voucher) invoiceLine.getProductItem().get(0);
+		assertNotNull("Voucher should be created", voucher);
+		assertEquals("Payment amount should be the voucher price because the voucher product have no price", 
+			voucher.getRedemptionValue().toBigDecimal(), payment.getAmount());
+		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher.getContact());
+	}
+	
+	private void cleanupVoucherDependentObjects(ObjectContext context) {
+		context.deleteObjects(context.performQuery(new SelectQuery(Voucher.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(InvoiceLine.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(PaymentInLine.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(PaymentIn.class)));
+		context.deleteObjects(context.performQuery(new SelectQuery(Invoice.class)));
+		context.commitChanges();
 	}
 
 }

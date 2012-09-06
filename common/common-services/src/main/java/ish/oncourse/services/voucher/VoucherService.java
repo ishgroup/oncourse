@@ -3,8 +3,6 @@ package ish.oncourse.services.voucher;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -53,13 +51,13 @@ public class VoucherService implements IVoucherService {
 
 	@Override
 	public List<VoucherProduct> getAvailableVoucherProducts() {
-		final College currentCollege = getWebSiteService().getCurrentCollege();
-		final Expression qualifier = ExpressionFactory.matchExp(VoucherProduct.COLLEGE_PROPERTY, currentCollege)
+		College currentCollege = getWebSiteService().getCurrentCollege();
+		Expression qualifier = ExpressionFactory.matchExp(VoucherProduct.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
 			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_ON_SALE_PROPERTY, Boolean.TRUE));
 		@SuppressWarnings("unchecked")
-		final List<VoucherProduct> results = cayenneService.sharedContext().performQuery(new SelectQuery(VoucherProduct.class, qualifier));
-		final List<Ordering> orderings = new ArrayList<Ordering>();
+		List<VoucherProduct> results = cayenneService.sharedContext().performQuery(new SelectQuery(VoucherProduct.class, qualifier));
+		List<Ordering> orderings = new ArrayList<Ordering>();
 		orderings.add(new Ordering(VoucherProduct.NAME_PROPERTY, SortOrder.ASCENDING));
 		orderings.add(new Ordering(VoucherProduct.PRICE_EX_TAX_PROPERTY, SortOrder.DESCENDING));
 		Ordering.orderList(results, orderings);
@@ -67,9 +65,9 @@ public class VoucherService implements IVoucherService {
 	}
 	
 	@Override
-	public Voucher getVoucherByCode(final String code) {
-		final College currentCollege = getWebSiteService().getCurrentCollege();
-		final Expression qualifier = ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code)
+	public Voucher getVoucherByCode(String code) {
+		College currentCollege = getWebSiteService().getCurrentCollege();
+		Expression qualifier = ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code)
 			.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
 			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO));
@@ -84,9 +82,9 @@ public class VoucherService implements IVoucherService {
 	}
 	
 	@Override
-	public List<Voucher> getAvailableVoucherProductsForUser(final Contact contact) {
-		final College currentCollege = getWebSiteService().getCurrentCollege();
-		final Expression qualifier = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege)
+	public List<Voucher> getAvailableVoucherProductsForUser(Contact contact) {
+		College currentCollege = getWebSiteService().getCurrentCollege();
+		Expression qualifier = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
 			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO))
 			.andExp(ExpressionFactory.matchExp(Voucher.PRODUCT_PROPERTY + OBJECT_RELATIONSHIP_SEPARATOR_STRING 
@@ -98,10 +96,8 @@ public class VoucherService implements IVoucherService {
 	}
 	
 	@Override
-	public PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Student payer, 
-		final Student owner) {
-		final PaymentIn payment = new PurchaseVoucherBuilder(voucherProduct, voucherPrice, payer, PaymentType.CREDIT_CARD, owner)
-			.prepareVoucherPurchase();
+	public PaymentIn preparePaymentInForVoucherPurchase(VoucherProduct voucherProduct, Money voucherPrice, Contact payer, Contact owner) {
+		PaymentIn payment = new PurchaseVoucherBuilder(voucherProduct, voucherPrice, payer, owner).prepareVoucherPurchase();
 		return payment;
 	}
 }
