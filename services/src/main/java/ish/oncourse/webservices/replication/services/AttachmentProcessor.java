@@ -5,7 +5,6 @@ import ish.oncourse.model.Queueable;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.util.GenericBinaryDataStub;
-import ish.oncourse.webservices.v4.stubs.replication.BinaryDataStub;
 import org.apache.log4j.Logger;
 
 public class AttachmentProcessor {
@@ -20,12 +19,7 @@ public class AttachmentProcessor {
 
     public Long getBinaryInfoId(GenericBinaryDataStub currentStub)
     {
-        if (currentStub instanceof BinaryDataStub)
-            return ((BinaryDataStub)currentStub).getBinaryInfoId();
-        else if (currentStub instanceof ish.oncourse.webservices.v5.stubs.replication.BinaryDataStub)
-            return ((ish.oncourse.webservices.v5.stubs.replication.BinaryDataStub)currentStub).getBinaryInfoId();
-        else
-            throw new IllegalArgumentException();
+        return currentStub.getBinaryInfoId();
     }
 
     public Queueable processBinaryDataStub(GenericBinaryDataStub currentStub, RelationShipCallback callback) {

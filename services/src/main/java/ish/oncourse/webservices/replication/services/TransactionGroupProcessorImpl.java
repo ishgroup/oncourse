@@ -56,7 +56,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 * WillowUpdater
 	 */
 	private final IWillowUpdater willowUpdater;
-    private IFileStorageAssetService fileStorageAssetService;
 
     /**
 	 * Atomic context
@@ -87,10 +86,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		super();
 		this.webSiteService = webSiteService;
 		this.willowUpdater = willowUpdater;
-        this.fileStorageAssetService = fileStorageAssetService;
         this.atomicContext = cayenneService.newNonReplicatingContext();
         this.queuedStatisticProcessor = new QueuedStatisticProcessor(this.atomicContext,webSiteService,willowUpdater,this);
-        this.attachmentProcessor = new AttachmentProcessor(this.fileStorageAssetService);
+        this.attachmentProcessor = new AttachmentProcessor(fileStorageAssetService);
 	}
 
 	/**
@@ -115,17 +113,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 			atomicContext.commitChanges();
             queuedStatisticProcessor.cleanupStatistic();
+            fillWillowIds();
 
-			for (GenericReplicatedRecord r : result) {
-				String willowIdentifier = EntityMapping.getWillowEntityIdentifer(r.getStub().getEntityIdentifier());
-				//no reason in upgrade generated data
-				if (!QueuedStatistic.class.getSimpleName().equals(willowIdentifier)) {
-					List<Queueable> savedObjects = objectsByAngelId(r.getStub().getAngelId(), willowIdentifier);
-					if (!savedObjects.isEmpty()) {
-						r.getStub().setWillowId(savedObjects.get(0).getId());
-					}
-				}
-			}
 
 		} catch (Exception e) {
             String message = getErrorMessageBy(e);
@@ -135,6 +124,22 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 		return result;
 	}
+
+    private void fillWillowIds() {
+        for (GenericReplicatedRecord r : result) {
+            String willowIdentifier = EntityMapping.getWillowEntityIdentifer(r.getStub().getEntityIdentifier());
+
+            if (QueuedStatistic.class.getSimpleName().equals(willowIdentifier))
+                continue;
+            if (willowIdentifier.equals("BinaryData"))
+                continue;
+
+            List<Queueable> savedObjects = objectsByAngelId(r.getStub().getAngelId(), willowIdentifier);
+            if (!savedObjects.isEmpty()) {
+                r.getStub().setWillowId(savedObjects.get(0).getId());
+            }
+        }
+    }
 
 
     private String getErrorMessageBy(Exception e)

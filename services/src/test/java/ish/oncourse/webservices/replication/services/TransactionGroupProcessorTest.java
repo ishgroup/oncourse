@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.services;
 
+import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.QueuedTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -10,6 +11,10 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.replication.v4.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v4.stubs.replication.BinaryDataStub;
+import ish.oncourse.webservices.v4.stubs.replication.BinaryInfoStub;
+import ish.oncourse.webservices.v4.stubs.replication.DeletedStub;
+import org.apache.cayenne.Cayenne;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -22,7 +27,7 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TransactionGroupProcessorTest extends ServiceTest {
 	WillowQueueService willowQueueService;
@@ -137,7 +142,66 @@ public class TransactionGroupProcessorTest extends ServiceTest {
             assertEquals("Expecting success record, status test", true, replicatedRecord.isSuccessStatus());
         }
     }
-    
+
+
+    @Test
+    public void testBinaryDataProcessing() {
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
+        transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
+        BinaryInfoStub binaryInfoStub = new BinaryInfoStub();
+        binaryInfoStub.setEntityIdentifier("AttachmentInfo");
+        binaryInfoStub.setAngelId(422l);
+        binaryInfoStub.setWebVisible(true);
+        binaryInfoStub.setByteSize(464609L);
+        binaryInfoStub.setMimeType("application/pdf");
+        binaryInfoStub.setName("Presenter's Guide");
+
+        BinaryDataStub binaryDataStub = new BinaryDataStub();
+        binaryDataStub.setEntityIdentifier("AttachmentData");
+        binaryDataStub.setAngelId(422l);
+        binaryDataStub.setContent("AttachmentData".getBytes());
+        binaryDataStub.setBinaryInfoId(422l);
+
+        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryInfoStub);
+        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryDataStub);
+        java.util.List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
+
+        Long willowId = null;
+        for (GenericReplicatedRecord record : records) {
+            assertTrue("GenericReplicatedRecord success", record.isSuccessStatus());
+            if (record.getStub().getEntityIdentifier().equals("AttachmentInfo")) {
+                willowId = record.getStub().getWillowId();
+                assertNotNull("Willow id for AttachmentInfo", willowId);
+            }
+            BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.sharedContext(), BinaryInfo.class, 1L);
+            assertNotNull("BinaryInfo form db", binaryInfo);
+            assertNotNull("BinaryInfo filePath", binaryInfo.getFilePath());
+        }
+
+        transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
+
+        DeletedStub deletedStubBI = new DeletedStub();
+        deletedStubBI.setAngelId(422l);
+        deletedStubBI.setEntityIdentifier("AttachmentInfo");
+
+        DeletedStub deletedStubBD = new DeletedStub();
+        deletedStubBD.setAngelId(422l);
+        deletedStubBD.setEntityIdentifier("AttachmentData");
+
+
+        transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V4);
+        transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
+        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBI);
+        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBD);
+        records = transactionGroupProcessor.processGroup(transactionGroup);
+        for (GenericReplicatedRecord record : records) {
+            assertTrue("GenericReplicatedRecord success", record.isSuccessStatus());
+        }
+        BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.sharedContext(), BinaryInfo.class, willowId);
+        assertNull("BinaryInfo is null", binaryInfo);
+    }
+
+
     private GenericTransactionGroup getTransactionGroup(int fromTransaction, final SupportedVersions version) {
         List<QueuedTransaction> transactions = willowQueueService.getReplicationQueue(fromTransaction, 1);
         GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(version);
