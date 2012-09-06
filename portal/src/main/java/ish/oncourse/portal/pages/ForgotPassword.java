@@ -5,16 +5,19 @@ import ish.oncourse.portal.services.mail.EmailBuilder;
 import ish.oncourse.portal.services.mail.IMailService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.SessionIdGenerator;
-
-import java.util.Calendar;
-
 import org.apache.cayenne.ObjectContext;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.Calendar;
+
 public class ForgotPassword {
+
+    private static final Logger LOGGER = Logger.getLogger(ForgotPassword.class);
 
 	/**
 	 * Recover link live time 24 hours.
@@ -37,6 +40,9 @@ public class ForgotPassword {
 
 	@Inject
 	private Request request;
+
+    @InjectPage
+    private Login login;
 
 	public void setUser(Contact user) {
 		this.user = user;
@@ -79,4 +85,16 @@ public class ForgotPassword {
 		
 		mailService.sendEmail(email, true);
 	}
+
+    /**
+     * The method has been introduced to redirect users to login page when session expired
+     */
+    public Object onException(Throwable cause){
+        if (user == null) {
+            LOGGER.warn("Persist properties have been cleared.", cause);
+        } else {
+            throw new IllegalArgumentException(cause);
+        }
+        return login;
+    }
 }
