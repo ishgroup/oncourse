@@ -5,23 +5,20 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
+import org.apache.cayenne.Cayenne;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.cayenne.Cayenne;
-import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.ioc.annotations.Inject;
-
 public class SelectCollege {
+
+    private static final Logger LOGGER = Logger.getLogger(SelectCollege.class);
 
 	@Property
 	@Persist
@@ -59,6 +56,9 @@ public class SelectCollege {
 
 	@Persist
 	private boolean passwordRecover;
+
+    @InjectPage
+    private Login login;
 
 	public void setPasswordRecover(boolean passwordRecover) {
 		this.passwordRecover = passwordRecover;
@@ -117,4 +117,16 @@ public class SelectCollege {
 		Contact c = Cayenne.objectForPK(cayenneService.sharedContext(), Contact.class, user);
 		return c.getCollege().getName();
 	}
+
+    /**
+     * The method has been introduced to redirect users to login page when session expired
+     */
+    public Object onException(Throwable cause){
+        if (collegesWithDuplicates == null || users == null) {
+            LOGGER.warn("Persist properties have been cleared.", cause);
+        } else {
+            throw new IllegalArgumentException(cause);
+        }
+        return login;
+    }
 }
