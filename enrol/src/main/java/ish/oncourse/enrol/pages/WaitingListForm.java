@@ -8,20 +8,15 @@ import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.List;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.Field;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 /**
  * Java class for WaitingListForm.tml.
@@ -30,7 +25,6 @@ import org.apache.tapestry5.services.Request;
  * 
  */
 public class WaitingListForm {
-
 	@Inject
 	private Request request;
 
@@ -113,6 +107,8 @@ public class WaitingListForm {
 		if (emailErrorMessage != null) {
 			waitingListForm.recordError(waitlistEmail, emailErrorMessage);
 		}
+        if (course == null || contact == null || waitingList == null)
+            waitingListForm.recordError("Session has been expired. Please reload the form.");
 	}
 
 	@OnEvent(component = "waitingListForm", value = "submit")
@@ -162,6 +158,5 @@ public class WaitingListForm {
 			return waitingListFormZone.getBody();
 		}
 		return this;
-
 	}
 }
