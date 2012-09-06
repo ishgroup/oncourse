@@ -13,7 +13,7 @@
 			<t:linksubmit t:id="accept" class="btn1 mb20">Accept</t:linksubmit>
 			<div class="bord mb20"></div>
 			<p:else>
-				<span class="fl" style="width:729px;">The class has already been approved.</span>
+				<span>The class has already been approved.</span>
 				<div class="cl mb15"></div>
 				<div class="bord mb20"></div>
 			</p:else>
