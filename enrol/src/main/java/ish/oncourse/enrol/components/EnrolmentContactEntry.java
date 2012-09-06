@@ -8,27 +8,24 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.ValidationTracker;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.List;
 
 public class EnrolmentContactEntry {
 
@@ -167,7 +164,9 @@ public class EnrolmentContactEntry {
 	}
 
 	@OnEvent(component = "shortDetailsForm", value = "success")
-	Object submittedSuccessfully() {
+	Object submittedSuccessfully() throws MalformedURLException {
+        if (!request.isXHR())
+            return new URL(request.getServerName());
 		Object nextPage = addStudentBlock.getBody();
 
 		if (reset) {
