@@ -10,7 +10,7 @@
 			<h1>Log In</h1>
 	
 			<div class="login-container">
-					 <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
+					 <t:errors banner="literal:Please correct the following mistakes:" class="literal:validation alert alert-block alert-error"/>
 					<div class="login-table">
 						<div style="width:100%;">
 							<p class="ascompany clearfix"><t:label for="iscompany">As company</t:label>
