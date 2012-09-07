@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-<t:if test="haveMailingLists">
+<t:if test="haveWaitingLists">
 
 	<div class="waiting_list_info_block">
 		<h2><a href="${courseDetailsURL}">${courseName}</a></h2>
