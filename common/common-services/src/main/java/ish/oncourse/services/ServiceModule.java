@@ -80,6 +80,8 @@ import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
+import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.ContextUtil;
 import ish.oncourse.util.IComponentPageResponseRenderer;
@@ -180,6 +182,7 @@ public class ServiceModule {
 			binder.bind(ISMSService.class, DefaultSMSService.class);
 		}
         binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+        binder.bind(IVoucherService.class, VoucherService.class);
 	}
 
 	@Scope("perthread")

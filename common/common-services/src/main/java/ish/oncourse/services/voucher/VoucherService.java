@@ -3,6 +3,8 @@ package ish.oncourse.services.voucher;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -70,19 +72,20 @@ public class VoucherService implements IVoucherService {
 		Expression qualifier = ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code)
 			.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
-			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO));
+			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO)
+			.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, VoucherStatus.ACTIVE)));
 		@SuppressWarnings("unchecked")
 		List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, qualifier));
 		LOGGER.info(String.format("%s found for code %s for college %s", results.size(), code, currentCollege.getId()));
 		if (results.size() > 1) {
-			LOGGER.error(String.format("%s vouchers found for code %s for college %s. Maybe we need to enlarge the code size?", results.size(), code, 
+			LOGGER.warn(String.format("%s vouchers found for code %s for college %s. Maybe we need to enlarge the code size?", results.size(), code, 
 				currentCollege.getId()));
 		}
 		return !results.isEmpty() ? results.get(0) : null;
 	}
 	
 	@Override
-	public List<Voucher> getAvailableVoucherProductsForUser(Contact contact) {
+	public List<Voucher> getAvailableVouchersForUser(Contact contact) {
 		College currentCollege = getWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))

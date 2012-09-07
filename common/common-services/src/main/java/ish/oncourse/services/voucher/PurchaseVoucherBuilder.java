@@ -13,7 +13,6 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Student;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 import ish.util.ProductUtil;
@@ -141,9 +140,6 @@ public class PurchaseVoucherBuilder {
 		paymentIn.setCollege(invoice.getCollege());
 		paymentIn.setAmount(invoice.getTotalGst());
 		paymentIn.setContact(invoice.getContact());
-		if (owner.getStudent() != null) {
-			paymentIn.setStudent((Student) invoice.getObjectContext().localObject(owner.getStudent().getObjectId(), null));
-		}
 		paymentIn.setType(paymentType);
 		//fill paymentInLine
 		PaymentInLine paymentInLine = paymentIn.getObjectContext().newObject(PaymentInLine.class);

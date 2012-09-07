@@ -11,7 +11,7 @@ import java.util.List;
 public interface IVoucherService {
 	List<VoucherProduct> getAvailableVoucherProducts();
 	
-	List<Voucher> getAvailableVoucherProductsForUser(final Contact contact);
+	List<Voucher> getAvailableVouchersForUser(final Contact contact);
 	
 	Voucher getVoucherByCode(final String code);
 	
