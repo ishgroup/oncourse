@@ -6,8 +6,9 @@ import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Product;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Voucher;
+import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v5.stubs.replication.VoucherStub;
@@ -26,7 +27,7 @@ public class VoucherUpdater extends AbstractWillowUpdater<VoucherStub, Voucher> 
 		InvoiceLine invoiceLine = callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
 		entity.setInvoiceLine(invoiceLine);
 		entity.setModified(stub.getModified());
-		Product product = callback.updateRelationShip(stub.getProductId(), Product.class);
+		VoucherProduct product = callback.updateRelationShip(stub.getProductId(), VoucherProduct.class);
 		entity.setProduct(product);
 		entity.setType(stub.getType());
 		entity.setCode(stub.getCode());
@@ -38,6 +39,9 @@ public class VoucherUpdater extends AbstractWillowUpdater<VoucherStub, Voucher> 
 		}
 		PaymentSource source = TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class);
 		entity.setSource(source);
+		if (stub.getPaymentInId() != null) {
+			entity.setRedemptionPayment(callback.updateRelationShip(stub.getPaymentInId(), PaymentIn.class));
+		}
 	}
 
 }

@@ -265,8 +265,8 @@ public class ReplicationServiceImpl implements IReplicationService {
 									ctx.commitChanges();
 								} catch (CayenneRuntimeException ce) {
 									ctx.rollbackChanges();
-									String message = String.format("Failed to update entity:%s with angelId:%s and willowId:%s for college:%s after replication to angel.", record.getStub()
-											.getAngelId(), record.getStub().getEntityIdentifier(), record.getStub().getWillowId(), collegeid); 
+									String message = String.format("Failed to update entity:%s with angelId:%s and willowId:%s for college:%s after replication to angel.", 
+											record.getStub().getEntityIdentifier(),record.getStub().getAngelId(), record.getStub().getWillowId(), collegeid); 
 									logger.error(message, ce);
 									queuedRecord.setErrorMessage(message);									
 								}

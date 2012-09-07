@@ -386,10 +386,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		voucherProductCourseParamethers.add(new ReplicationStubFieldParamether("courseId", Long.class));
 		voucherProductCourseParamethers.add(new ReplicationStubFieldParamether("voucherProductId", Long.class));
 		stubsPropertyMap.put(getStubName(VoucherProductCourseStub.class), voucherProductCourseParamethers);
-		final List<ReplicationStubFieldParamether> voucherPaymentInParamethers = fillDefaultReplicationStubFields();
-		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("paymentInId", Long.class));
-		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("voucherId", Long.class));
-		stubsPropertyMap.put(getStubName(VoucherPaymentInStub.class), voucherPaymentInParamethers);
 		final List<ReplicationStubFieldParamether> productItemParamethers = fillProductItemStubFields(fillDefaultReplicationStubFields());
 		stubsPropertyMap.put(getStubName(ProductItemStub.class), productItemParamethers);
 		final List<ReplicationStubFieldParamether> productParamethers = fillProductStubFields(fillDefaultReplicationStubFields());
@@ -522,7 +518,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountCourseClassStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TutorAttendanceStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherProductCourseStub.class);
-		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherPaymentInStub.class);
 		attendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
 		transactionGroupParamethers.add(attendanceOrBinaryDataOrBinaryInfo);
 		final ReplicationStubFieldParamether genericAttendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParamether(
@@ -561,13 +556,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		final GenericReplicationStub stub = new VoucherProductCourseStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
-	
-	@Test
-	public void testVoucherPaymentInStub() {
-		final GenericReplicationStub stub = new VoucherPaymentInStub();
-		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
-	}
-	
+		
 	@Test
 	public void testVoucherStub() {
 		final GenericReplicationStub stub = new VoucherStub();
@@ -848,6 +837,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		preparedParamethers.add(new ReplicationStubFieldParamether("type", Integer.class));
 		preparedParamethers.add(new ReplicationStubFieldParamether("invoiceLineId", Long.class));
 		preparedParamethers.add(new ReplicationStubFieldParamether("productId", Long.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("paymentInId", Long.class));
 		return preparedParamethers;
 	}
 	
