@@ -1,5 +1,4 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-<t:if test="classes">
 <div class="waiting_list_info_block">
     <h2><a href="${courseDetailsURL}">${courseName}</a></h2>
     <t:actionlink t:id="delete" class="waiting_list_btn" context="${waitingList.id}"><i class="icon-trash"/></t:actionlink>
@@ -17,9 +16,4 @@
             </t:loop>
         </t:if>
 </div>
-<p:else>
-	<p>You are not currently on the waiting list for any courses.</p>
-</p:else>
-</t:if>
 </t:container>
-
