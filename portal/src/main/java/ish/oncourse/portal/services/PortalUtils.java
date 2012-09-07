@@ -27,7 +27,7 @@ public class PortalUtils {
 
     private static final int CLASS_DETAILS_LENGTH = 490;
     private static final int COURSE_DETAILS_LENGTH = 245;
-    private static final int TAG_DETAILS_LENGTH = 245;
+    private static final int TAG_DETAILS_LENGTH = -1;
 
     private static final String CLASS_INTERVAL_INFO_TEMPLATE = "%s - %s ";
 
@@ -99,7 +99,7 @@ public class PortalUtils {
         {
             String details = textileConverter.convertCustomTextile(textileString, new ValidationErrors());
             details = extractor.extractFromHtml(details);
-            details = StringUtils.abbreviate(details, resultStringLength);
+            details = resultStringLength == -1 ? details : StringUtils.abbreviate(details, resultStringLength);
             return details;
         }
         else
