@@ -1,8 +1,11 @@
 package ish.oncourse.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import ish.common.payable.TaxInterface;
+import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._InvoiceLine;
 import ish.oncourse.utils.QueueableObjectUtils;
@@ -47,5 +50,15 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 	 */
 	public boolean isAsyncReplicationAllowed() {
 		return getInvoice() != null && getInvoice().isAsyncReplicationAllowed();
+	}
+	
+	public List<Voucher> getVouchers() {
+		List<Voucher> vouchers = new ArrayList<Voucher>();
+		for (ProductItem productItem : getProductItem()) {
+			if (productItem instanceof Voucher) {
+				vouchers.add((Voucher) productItem);
+			}
+		}
+		return vouchers;
 	}
 }

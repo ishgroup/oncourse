@@ -43,7 +43,11 @@ public class Voucher extends _Voucher implements Queueable {
 	@Override
 	public void setStatus(VoucherStatus status) {
 		if (!isNewRecord() && !VoucherStatus.ACTIVE.equals(getStatus())) {
-			throw new IllegalStateException("Cannot change status for already persisted voucher in non active status.");
+			if (VoucherStatus.REDEEMED.equals(getStatus()) && VoucherStatus.ACTIVE.equals(status)) {
+				//this can be the discard changes action
+			} else {
+				throw new IllegalStateException("Cannot change status for already persisted voucher in non active status.");
+			}
 		}
 		super.setStatus(status);
 	}
@@ -64,4 +68,53 @@ public class Voucher extends _Voucher implements Queueable {
 			result.addFailure(ValidationFailure.validationFailure(this, SOURCE_PROPERTY, "Source cannot be null."));
 		}
 	}
+	
+	public VoucherProduct getVoucherProduct() {
+		return (VoucherProduct) getProduct();
+	}
+	
+	public Voucher makeShallowCopy() {
+		Voucher voucherCopy = getObjectContext().newObject(Voucher.class);
+		voucherCopy.setCode(getCode());
+		voucherCopy.setCollege(getCollege());
+		voucherCopy.setSource(getSource());
+		voucherCopy.setExpiryDate(getExpiryDate());
+		voucherCopy.setProduct(getVoucherProduct());
+		voucherCopy.setInvoiceLine(getInvoiceLine());
+		voucherCopy.setRedemptionValue(getRedemptionValue());
+		voucherCopy.setRedeemedCoursesCount(getRedeemedCoursesCount());
+		voucherCopy.setStatus(getStatus());
+		return voucherCopy;
+	}
+	
+	public boolean isFullyRedeemed() {
+		VoucherProduct product = getVoucherProduct();
+		if (product.getMaxCoursesRedemption() != null && product.getMaxCoursesRedemption() > 0) {
+			return getClassesRemaining() == 0;
+		} else {
+			return getValueRemaining().isZero();
+		}
+	}
+	
+	/**
+	 * Calculate remaining value for voucher
+	 * 
+	 * @return remaining value
+	 */
+	public Money getValueRemaining() {
+		return getRedemptionValue();
+	}
+	
+	/**
+	 * Get number of classes left to redeem
+	 * 
+	 * @return remaining classes count
+	 */
+	public Integer getClassesRemaining() {
+		if (getVoucherProduct().getMaxCoursesRedemption() == null || getRedeemedCoursesCount() == null) {
+			throw new IllegalStateException("This voucher is for money redemption only");
+		}
+		return getVoucherProduct().getMaxCoursesRedemption() - getRedeemedCoursesCount();
+	}
+	
 }

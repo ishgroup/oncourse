@@ -1,7 +1,10 @@
 package ish.oncourse.model.auto;
 
+import java.util.List;
+
 import ish.common.types.ExpiryType;
 import ish.math.Money;
+import ish.oncourse.model.Course;
 import ish.oncourse.model.Product;
 
 /**
@@ -16,6 +19,7 @@ public abstract class _VoucherProduct extends Product {
     public static final String EXPIRY_TYPE_PROPERTY = "expiryType";
     public static final String MAX_COURSES_REDEMPTION_PROPERTY = "maxCoursesRedemption";
     public static final String VALUE_PROPERTY = "value";
+    public static final String REDEMPTION_COURSES_PROPERTY = "redemptionCourses";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -46,5 +50,17 @@ public abstract class _VoucherProduct extends Product {
     public Money getValue() {
         return (Money)readProperty("value");
     }
+
+    public void addToRedemptionCourses(Course obj) {
+        addToManyTarget("redemptionCourses", obj, true);
+    }
+    public void removeFromRedemptionCourses(Course obj) {
+        removeToManyTarget("redemptionCourses", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Course> getRedemptionCourses() {
+        return (List<Course>)readProperty("redemptionCourses");
+    }
+
 
 }

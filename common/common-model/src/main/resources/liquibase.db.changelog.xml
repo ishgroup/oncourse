@@ -1171,40 +1171,6 @@
     	</createIndex>
     </changeSet>
     
-    <changeSet id="77" author="viacheslav" context="production" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-    		<not>
-    			<tableExists tableName="VoucherPaymentIn"/>
-    		</not>
-    	</preConditions>
-    	<createTable tableName="VoucherPaymentIn">
-    		<column name="id" type="BIGINT">
-    			<constraints nullable="false" primaryKey="true"/>
-    		</column>
-    		<column name="angelId" type="BIGINT"/>
-    		<column name="collegeId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="created" type="DATETIME"/>
-    		<column name="modified" type="DATETIME"/>
-    		<column name="paymentInId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    		<column name="voucherId" type="BIGINT">
-    			<constraints nullable="false"/>
-    		</column>
-    	</createTable>
-    	
-    	<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_PaymentIn" referencedTableName="PaymentIn" baseColumnNames="paymentInId" 
-    		baseTableName="VoucherPaymentIn" referencedColumnNames="id"/>
-    	<addForeignKeyConstraint constraintName="fk_VoucherPaymentIn_ProductItem" referencedTableName="ProductItem" baseColumnNames="voucherId" 
-    		baseTableName="VoucherPaymentIn" referencedColumnNames="id"/>
-    	<createIndex tableName="VoucherPaymentIn" indexName="collegeId_angelId_uniq_idx" unique="true">
-    		<column name="angelId"/>
-    		<column name="collegeId"/>
-    	</createIndex>
-    </changeSet>
-    
     <changeSet id="78" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<not>
@@ -1216,6 +1182,26 @@
     			<constraints nullable="false"/>
     		</column>
     	</addColumn>
+    </changeSet>
+    
+    <changeSet id="79" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<tableExists tableName="VoucherPaymentIn"/>
+    	</preConditions>
+    	<dropTable tableName="VoucherPaymentIn"/>
+    </changeSet>
+    
+    <changeSet id="80" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<columnExists tableName="ProductItem" columnName="paymentInId"/>
+    		</not>
+    	</preConditions>
+    	<addColumn tableName="ProductItem">
+    		<column name="paymentInId" type="BIGINT"/>
+    	</addColumn>
+    	<addForeignKeyConstraint constraintName="fk_Voucher_PaymentIn" referencedTableName="PaymentIn" baseColumnNames="paymentInId" 
+    		baseTableName="ProductItem" referencedColumnNames="id"/>
     </changeSet>
     
     <!--changeSet id="XX1" author="viacheslav" context="production" runOnChange="true">

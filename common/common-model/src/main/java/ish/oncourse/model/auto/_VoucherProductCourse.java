@@ -17,7 +17,6 @@ import ish.oncourse.model.VoucherProduct;
 public abstract class _VoucherProductCourse extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    public static final String COLLEGE_ID_PROPERTY = "collegeId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String COLLEGE_PROPERTY = "college";
@@ -31,13 +30,6 @@ public abstract class _VoucherProductCourse extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
-    }
-
-    public void setCollegeId(Long collegeId) {
-        writeProperty("collegeId", collegeId);
-    }
-    public Long getCollegeId() {
-        return (Long)readProperty("collegeId");
     }
 
     public void setCreated(Date created) {

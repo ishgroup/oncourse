@@ -7,6 +7,7 @@ import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.ProductItem;
 
 /**
@@ -26,6 +27,7 @@ public abstract class _Voucher extends ProductItem {
     public static final String STATUS_PROPERTY = "status";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String REDEEMED_INVOICE_LINE_PROPERTY = "redeemedInvoiceLine";
+    public static final String REDEMPTION_PAYMENT_PROPERTY = "redemptionPayment";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -93,6 +95,15 @@ public abstract class _Voucher extends ProductItem {
 
     public InvoiceLine getRedeemedInvoiceLine() {
         return (InvoiceLine)readProperty("redeemedInvoiceLine");
+    }
+
+
+    public void setRedemptionPayment(PaymentIn redemptionPayment) {
+        setToOneTarget("redemptionPayment", redemptionPayment, true);
+    }
+
+    public PaymentIn getRedemptionPayment() {
+        return (PaymentIn)readProperty("redemptionPayment");
     }
 
 
