@@ -36,18 +36,22 @@ public class ApplicationData extends NotificationBroadcasterSupport implements A
 	private synchronized String getCiVersion() {
 		String ciVersion = StringUtils.EMPTY;
 		Manifest manifest = null;
-		try {
-			InputStream is = applicationGlobals.getServletContext().getResourceAsStream(MANIFEST_FILE_PATH);
-			if (is != null) {
-				try {
-					manifest = new Manifest(is);
-					ciVersion = manifest.getMainAttributes().getValue(HUDSON_RELEASE_VERSION);
-				} finally {
-					is.close();
+		if (applicationGlobals != null && applicationGlobals.getServletContext() != null) {
+			try {
+				InputStream is = applicationGlobals.getServletContext().getResourceAsStream(MANIFEST_FILE_PATH);
+				if (is != null) {
+					try {
+						manifest = new Manifest(is);
+						ciVersion = manifest.getMainAttributes().getValue(HUDSON_RELEASE_VERSION);
+					} finally {
+						is.close();
+					}
 				}
+			} catch (Exception e) {
+				LOGGER.error("Failed to load build version", e);
 			}
-		} catch (Exception e) {
-			LOGGER.error("Failed to load build version", e);
+		} else {
+			LOGGER.error("No application globals or servlet context available to get the Ci version.");
 		}
 		return ciVersion;
 	}
