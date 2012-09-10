@@ -7,7 +7,7 @@
                 <div t:type="WaitingListInfo" waitingList="waitingList"/>
             </t:loop>
 			<p:else>
-				<h3>You are not currently on the waiting list for any courses.</h3>
+				<div>You are not currently on the waiting list for any courses.</div>
 			</p:else>
         </t:if>
     </div>
