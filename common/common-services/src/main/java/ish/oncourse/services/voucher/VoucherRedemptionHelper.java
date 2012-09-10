@@ -175,7 +175,7 @@ public class VoucherRedemptionHelper {
 						if (activeVoucher != null) {
 							PaymentIn payment = redeemVoucherForMoney(activeVoucher, invoiceLine);
 							getPayments().add(payment);
-							if (payment.getAmount().equals(invoiceLine.getPriceTotalIncTax().toBigDecimal())) {
+							if (payment.getAmount().equals(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal())) {
 								redeemedInvoiceLines.add(invoiceLine);
 							} else {
 								partiallyRedeemedInvoiceLines.add(new PartiallyRedeemedInvoiceLine(invoiceLine, payment.getAmount()));
@@ -198,7 +198,7 @@ public class VoucherRedemptionHelper {
 									partiallyRedeemedInvoiceLine.getAlreadyRedeemedAmount());
 								getPayments().add(payment);
 								boolean fullyRedeemed = isFullyRedeemed(payment.getAmount(), partiallyRedeemedInvoiceLine.getAlreadyRedeemedAmount(), 
-									invoiceLine.getPriceTotalIncTax().toBigDecimal());
+									invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
 								if (fullyRedeemed) {
 									partiallyRedeemedInvoiceLines.remove(partiallyRedeemedInvoiceLine);
 									redeemedInvoiceLines.add(invoiceLine);
@@ -276,7 +276,7 @@ public class VoucherRedemptionHelper {
 		paymentIn.setType(PaymentType.VOUCHER);
 		paymentIn.setContact(getInvoice().getContact());
 		//evaluate amount for the payment
-		Money leftToPay = new Money(invoiceLine.getPriceTotalIncTax().toBigDecimal().subtract(alreadyRedeemedAmount));
+		Money leftToPay = new Money(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal().subtract(alreadyRedeemedAmount));
 		Money amount = moneyVoucher.getRedemptionValue().isLessThan(leftToPay) ? moneyVoucher.getRedemptionValue() : leftToPay;
 		paymentIn.setAmount(amount.toBigDecimal());
 		paymentIn.setSource(getInvoice().getSource());
@@ -311,7 +311,7 @@ public class VoucherRedemptionHelper {
 		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
 		paymentIn.setType(PaymentType.VOUCHER);
 		paymentIn.setContact(getInvoice().getContact());
-		paymentIn.setAmount(invoiceLine.getPriceTotalIncTax().toBigDecimal());
+		paymentIn.setAmount(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
 		paymentIn.setSource(getInvoice().getSource());
 		paymentIn.setCollege(getInvoice().getCollege());
 		//fill paymentInLine
