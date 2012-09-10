@@ -17,17 +17,6 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 		entity.setBusinessPhoneNumber(stub.getBusinessPhoneNumber());
 		entity.setCookieHash(stub.getCookieHash());
 		
-		if (stub.getStudentId() != null) {
-			Student student = callback.updateRelationShip(stub.getStudentId(), Student.class);
-			entity.setStudent(student);
-		}
-		
-		if (stub.getTutorId() != null) {
-			Tutor tutor = callback.updateRelationShip(stub.getTutorId(), Tutor.class);
-			entity.setTutor(tutor);
-		}
-		
-		
 		Long countryId = stub.getCountryId();
 		if (countryId != null) {
 			Country c = Cayenne.objectForPK(entity.getObjectContext(), Country.class, countryId);
