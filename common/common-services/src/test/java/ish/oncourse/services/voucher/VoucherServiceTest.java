@@ -338,7 +338,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine.setPriceEachExTax(new Money("90.00"));
 		invoiceLine.setTaxEach(new Money("10.00"));
 		invoiceLine.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment = context.newObject(Enrolment.class);
@@ -426,7 +426,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine.setPriceEachExTax(new Money("180.00"));
 		invoiceLine.setTaxEach(new Money("20.00"));
 		invoiceLine.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment = context.newObject(Enrolment.class);
@@ -452,7 +452,7 @@ public class VoucherServiceTest extends ServiceTest {
 			vouchers.get(0).getRedemptionValue());
 
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0", invoiceLine.getPriceTotalIncTax().subtract(voucher.getRedemptionValue()).toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be 0", invoiceLine.getDiscountedPriceTotalIncTax().subtract(voucher.getRedemptionValue()).toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
@@ -465,7 +465,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and redemption should be 101 $ value", new Money("101.00"), 
 			vouchers.get(0).getRedemptionValue());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0", invoiceLine.getPriceTotalIncTax().subtract(voucher.getRedemptionValue()).toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be 0", invoiceLine.getDiscountedPriceTotalIncTax().subtract(voucher.getRedemptionValue()).toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
 	
@@ -534,7 +534,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("90.00"));
 		invoiceLine2.setTaxEach(new Money("10.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
@@ -546,7 +546,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().add(invoiceLine2.getPriceTotalIncTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
 		
 		//start helper
@@ -672,7 +672,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
@@ -684,7 +684,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().add(invoiceLine2.getPriceTotalIncTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
 		
 		//start helper
@@ -793,7 +793,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine.setPriceEachExTax(new Money("90.00"));
 		invoiceLine.setTaxEach(new Money("10.00"));
 		invoiceLine.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment = context.newObject(Enrolment.class);
@@ -912,7 +912,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
@@ -924,7 +924,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().add(invoiceLine2.getPriceTotalIncTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
 		
 		//context.commitChanges();
@@ -1052,7 +1052,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
@@ -1064,7 +1064,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().add(invoiceLine2.getPriceTotalIncTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
 		
 		//context.commitChanges();
@@ -1202,7 +1202,7 @@ public class VoucherServiceTest extends ServiceTest {
 		invoiceLine2.setPriceEachExTax(new Money("45.00"));
 		invoiceLine2.setTaxEach(new Money("5.00"));
 		invoiceLine2.setQuantity(BigDecimal.ONE);
-		invoice.setTotalGst(invoiceLine2.getPriceTotalIncTax().toBigDecimal());
+		invoice.setTotalGst(invoiceLine2.getDiscountedPriceTotalIncTax().toBigDecimal());
 		invoice.setTotalExGst(invoiceLine2.getPriceTotalExTax().toBigDecimal());
 		
 		Enrolment enrolment2 = context.newObject(Enrolment.class);
@@ -1214,7 +1214,7 @@ public class VoucherServiceTest extends ServiceTest {
 		enrolment2.setStudent(contact2.getStudent());
 		enrolment2.setReasonForStudy(1);
 		
-		invoice.setTotalGst(invoiceLine.getPriceTotalIncTax().add(invoiceLine2.getPriceTotalIncTax()).toBigDecimal());
+		invoice.setTotalGst(invoiceLine.getDiscountedPriceTotalIncTax().add(invoiceLine2.getDiscountedPriceTotalIncTax()).toBigDecimal());
 		invoice.setTotalExGst(invoiceLine.getPriceTotalExTax().add(invoiceLine2.getPriceTotalExTax()).toBigDecimal());
 
 		//start helper
