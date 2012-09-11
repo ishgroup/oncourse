@@ -30,11 +30,14 @@ import ish.oncourse.webservices.replication.v4.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.soap.v4.ReferencePortType;
 import ish.oncourse.webservices.soap.v4.ReferencePortTypeImpl;
+
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.internal.OperationException;
+import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.runtime.ComponentEventException;
 import org.apache.tapestry5.services.ApplicationGlobals;
@@ -75,6 +78,17 @@ public class AppModule {
 
 		binder.bind(PaymentInExpireJob.class);
 		binder.bind(SMSJob.class);
+	}
+	
+	/**
+	 * Add initial values for ParallelExecutor
+	 * @param configuration
+	 */
+	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
+		configuration.add(IOCSymbols.THREAD_POOL_CORE_SIZE, "3");
+        configuration.add(IOCSymbols.THREAD_POOL_MAX_SIZE, "50");
+        configuration.add(IOCSymbols.THREAD_POOL_KEEP_ALIVE, "1 m");
+        configuration.add(IOCSymbols.THREAD_POOL_ENABLED, "true");
 	}
 	
 	@EagerLoad
