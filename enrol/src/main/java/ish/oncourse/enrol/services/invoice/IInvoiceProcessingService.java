@@ -1,5 +1,8 @@
 package ish.oncourse.enrol.services.invoice;
 
+import java.util.List;
+
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 
@@ -32,14 +35,16 @@ public interface IInvoiceProcessingService {
 	 * 		</ul>	
 	 *   
 	 * @param enrolment the given enrolment
+	 * @param actualPromotions the actual promotions list
 	 * @return invoiceLine object created
 	 */
-	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment);
+	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, List<Discount> actualPromotions);
 	
 	/**
 	 * Sets the discounted values to the given invoiceLine for the given enrolment.
 	 * @param enrolment
 	 * @param invoiceLine
+	 * @param actualPromotions 
 	 */
-	void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine);
+	void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine, List<Discount> actualPromotions);
 }

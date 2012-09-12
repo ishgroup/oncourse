@@ -30,13 +30,27 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 
 	@Inject
 	private IDiscountService discountService;
+	
+	public InvoiceProcessingService() {}
+
+	public InvoiceProcessingService(IDiscountService discountService) {
+		super();
+		this.discountService = discountService;
+	}
+	
+	/**
+	 * @return the discountService
+	 */
+	public IDiscountService takeDiscountService() {
+		return discountService;
+	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(ish.oncourse.model.Enrolment)
 	 */
-	public InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment) {
+	public InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, List<Discount> actualPromotions) {
 		ObjectContext context = enrolment.getObjectContext();
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 
@@ -52,7 +66,7 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		Money fee = courseClass.getFeeExGst();
 		invoiceLine.setPriceEachExTax(fee);
 
-		setupDiscounts(enrolment, invoiceLine);
+		setupDiscounts(enrolment, invoiceLine, actualPromotions);
 
 		invoiceLine.setCollege(college);
 
@@ -66,10 +80,10 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#setupDiscounts(ish.oncourse.model.Enrolment,
 	 *      ish.oncourse.model.InvoiceLine)
 	 */
-	public void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine) {
+	public void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine, List<Discount> actualPromotions) {
 		CourseClass courseClass = enrolment.getCourseClass();
 		List<Discount> enrolmentDiscounts = enrolment.getCourseClass().getDiscountsToApply(
-				new RealDiscountsPolicy(discountService.getPromotions(), enrolment.getStudent()));
+				new RealDiscountsPolicy(actualPromotions, enrolment.getStudent()));
 		InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), courseClass.getDiscountAmountExTax(enrolmentDiscounts), 
 			courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
 	}

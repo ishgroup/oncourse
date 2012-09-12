@@ -423,7 +423,7 @@ public class EnrolCourses {
                     invoiceLineToAdd = this.invoiceLines[Integer.parseInt(index[0])][Integer.parseInt(index[1])];
                     if (invoiceLineToAdd != null) {
                         // recalculate discounts that possibly have changed
-                        invoiceProcessingService.setupDiscounts(enrolmentToAdd, invoiceLineToAdd);
+                        invoiceProcessingService.setupDiscounts(enrolmentToAdd, invoiceLineToAdd, discountService.getPromotions());
                     }
                 }
 
@@ -454,7 +454,7 @@ public class EnrolCourses {
         enrolment.setCourseClass(courseClass);
 
         if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
-            InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment);
+            InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, discountService.getPromotions());
             invoiceLine.setInvoice(invoice);
 
             enrolment.setInvoiceLine(invoiceLine);

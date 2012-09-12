@@ -11,6 +11,8 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.ui.pages.Courses;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -248,7 +250,7 @@ public class EnrolmentPaymentResult {
 	}
 
 	public String getCoursesLink() {
-		return EnrolCourses.HTTP_PROTOCOL + request.getServerName() + "/courses";
+		return EnrolCourses.HTTP_PROTOCOL + request.getServerName() + "/"+ Courses.class.getSimpleName();
 	}
 
 	public String getSuccessUrl() {
@@ -266,6 +268,7 @@ public class EnrolmentPaymentResult {
     @OnEvent(component = "successEnrolmentContinueForm", value = "success")
 	Object submitted() {
     	Object resultPage = getSuccessUrl();
+    	clearPersistedValues();//It will be good if we clear persisted values before leave the page
     	try {
     		if (resultPage != null) {
     			return new URL(getSuccessUrl());
