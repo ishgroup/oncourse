@@ -4,7 +4,6 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.enrol.components.EnrolmentPaymentProcessing;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -22,7 +21,6 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.util.FormatUtils;
 import ish.util.InvoiceUtil;
@@ -69,15 +67,11 @@ public class EnrolCoursesController {
     private final IInvoiceProcessingService invoiceProcessingService;
     
     private final IPaymentGatewayService paymentGatewayService;
-    
-    private final IDiscountService discountService;
 	
-	public EnrolCoursesController(IInvoiceProcessingService invoiceProcessingService, IPaymentGatewayService paymentGatewayService, 
-		IDiscountService discountService) {
+	public EnrolCoursesController(IInvoiceProcessingService invoiceProcessingService, IPaymentGatewayService paymentGatewayService) {
 		super();
 		this.invoiceProcessingService = invoiceProcessingService;
 		this.paymentGatewayService = paymentGatewayService;
-		this.discountService = discountService;
 	}
 	
 	/**
@@ -151,6 +145,8 @@ public class EnrolCoursesController {
                 }
             }
         }
+        //this is the optimization which allow us not pass this data to EnrolmentPaymentEntry
+        getModel().setEnrolmentsList(result);
         return result;
     }
 	
@@ -249,7 +245,7 @@ public class EnrolCoursesController {
         enrolment.setStudent(student);
         enrolment.setCourseClass(courseClass);
         if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
-            InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, discountService.getPromotions());
+            InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, actualPromotions);
             invoiceLine.setInvoice(getModel().getInvoice());
             enrolment.setInvoiceLine(invoiceLine);
         }
@@ -412,6 +408,8 @@ public class EnrolCoursesController {
             }
         }
         getModel().setMoneyFormat(FormatUtils.chooseMoneyFormat(result));
+        //this is the optimization which allow us not pass this data to EnrolmentPaymentEntry
+        getModel().setTotalIncGst(result);
         return result;
     }
     
