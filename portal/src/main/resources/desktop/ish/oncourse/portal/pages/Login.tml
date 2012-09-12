@@ -14,7 +14,9 @@
 					<div class="login-table">
 						<div style="width:100%;">
 							<p class="ascompany clearfix"><t:label for="iscompany">As company</t:label>
-								<t:checkbox onclick="set_is_company(document.getElementsByName('iscompany')[0].checked)" t:id="iscompany" value="iscompany"  style="float: right;" />
+								<span class="textField">
+									<t:checkbox onclick="set_is_company(document.getElementsByName('iscompany')[0].checked)" t:id="iscompany" value="iscompany" />
+								</span>
 							</p>
 						</div>
 
