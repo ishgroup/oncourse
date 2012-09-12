@@ -26,8 +26,15 @@ public class CourseClassService implements ICourseClassService {
 
     @Inject
     private IWebSiteService webSiteService;
+    
+    public CourseClassService() {}
 
-    public CourseClass getCourseClassByFullCode(String code) {
+	public CourseClassService(ICayenneService cayenneService, IWebSiteService webSiteService) {
+		this.cayenneService = cayenneService;
+		this.webSiteService = webSiteService;
+	}
+
+	public CourseClass getCourseClassByFullCode(String code) {
         String[] parts = code.split("-");
         // courseClass code has format "course.code-courseClass.code"
         if (parts.length < 2) {
