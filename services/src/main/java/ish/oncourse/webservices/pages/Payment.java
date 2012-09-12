@@ -3,12 +3,7 @@ package ish.oncourse.webservices.pages;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.*;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -16,16 +11,6 @@ import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.components.PaymentResult;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.utils.PaymentInAbandonUtil;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Future;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
@@ -41,6 +26,15 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Future;
 
 @Import(stylesheet = "css/screen.css")
 public class Payment {
@@ -399,7 +393,7 @@ public class Payment {
 	
 	public class AbandonStackedPaymentInvokable implements Invokable<Boolean> {
 		public static final long SLEEP_TIME = 3 * 1000;//3 second
-		public static final long TIMEOUT = 5 * 60 * 1000;//5 minutes
+		public static final long TIMEOUT = 10 * 60 * 1000;//10 minutes
 		private boolean isCanceled;
 		private long invokedTime;
 		private boolean isProcessed;
