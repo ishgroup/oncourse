@@ -6,7 +6,7 @@
         <script type="text/javascript">
             refreshShortList();
             <t:if test="coursesLink">
-                    setTimeout("window.location.href='${coursesLink}'", 10000);
+            	setTimeout("window.location.href='${coursesLink}'", 10000);
             </t:if>
         </script>
         <p:else>
@@ -28,7 +28,7 @@
                         </p>
                     </t:if>
                     <t:zone t:id="successEnrolmentContinueZone" t:update="show">
-                    	<t:form t:id="successEnrolmentContinueForm" zone="successEnrolmentContinueZone">
+                    	<t:form t:id="successEnrolmentContinueForm">
                     		<div class="successEnrolmentContinueButton">
                     			<t:submit t:id="continueEnrolmentSubmit" value="${continueButtonText}" class="btn"  
     								clientId="continueEnrolment"/>

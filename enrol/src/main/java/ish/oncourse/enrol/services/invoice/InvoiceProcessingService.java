@@ -28,11 +28,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  */
 public class InvoiceProcessingService implements IInvoiceProcessingService {
 
-	@Inject
-	private IDiscountService discountService;
+	private final IDiscountService discountService;
 	
-	public InvoiceProcessingService() {}
-
+	@Inject
 	public InvoiceProcessingService(IDiscountService discountService) {
 		super();
 		this.discountService = discountService;
