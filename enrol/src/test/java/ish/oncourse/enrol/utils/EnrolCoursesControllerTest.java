@@ -27,6 +27,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.math.MoneyRounding;
+import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
@@ -39,7 +40,6 @@ import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Student;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.courseclass.CourseClassService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
@@ -62,7 +62,7 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 	
 	@Before
 	public void setup() throws Exception {
-		initTest("ish.oncourse.services", "service", ServiceModule.class);
+		initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
 		InputStream st = EnrolCoursesControllerTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/utils/enrolCoursesControllerDataSet.xml");
 
