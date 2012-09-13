@@ -4,6 +4,8 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
+import ish.oncourse.enrol.components.AnalyticsTransaction.Item;
+import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -21,6 +23,7 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.util.FormatUtils;
 import ish.util.InvoiceUtil;
@@ -39,6 +42,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Persist;
@@ -49,6 +53,7 @@ import org.apache.tapestry5.util.TextStreamResponse;
 public class EnrolCoursesController {
 	private static final Logger LOGGER = Logger.getLogger(EnrolCoursesController.class);
 	private static final String INDEX_SEPARATOR = "_";
+	public static final String HTTP_PROTOCOL = "http://";
 	
 	private EnrolCoursesModel model;
 	
@@ -638,5 +643,92 @@ public class EnrolCoursesController {
 			throw new IllegalArgumentException(cause);
 		}
     }
+    
+    /**
+	 * Returns true if the enrol operation was successful and false otherwise.
+	 * 
+	 * @return
+	 */
+	public boolean isEnrolmentSuccessful() {
+		return PaymentStatus.SUCCESS.equals(getModel().getPayment().getStatus());
+	}
+	
+	/**
+	 * Returns true if the enrol operation was failed and false otherwise.
+	 * 
+	 * @return
+	 */
+	public boolean isEnrolmentFailed() {
+		PaymentStatus status = getModel().getPayment().getStatus();
+		return PaymentStatus.FAILED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status)
+			|| PaymentStatus.FAILED_CARD_DECLINED.equals(status) || PaymentStatus.FAILED_NO_PLACES.equals(status);
+	}
+	
+	/**
+	 * Returns true if payment was failed because of insufficient places for one of enrollments.
+	 * 
+	 * @return
+	 */
+	public boolean isEnrolmentFailedNoPlaces() {
+		return PaymentStatus.FAILED_NO_PLACES.equals(getModel().getPayment().getStatus());
+	}
+    
+    /**
+	 * Fills in the record for google analytics component {@see
+	 * AnalyticsTransaction}.
+	 * @param googleAnalyticsAccount - current college googleAnalyticsAccount value
+	 * @param tags - tags for enrollments course classes
+	 */
+	public void initAnalyticTransaction(String googleAnalyticsAccount, List<Tag> tags) {
+		if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
+			if (getModel().getPayment() != null && isEnrolmentSuccessful() && !getModel().getEnrolmentsList().isEmpty()) {
+				List<Item> transactionItems = new ArrayList<Item>(getModel().getEnrolmentsList().size());
+				for (Enrolment enrolment : getModel().getEnrolmentsList()) {
+					Item item = new Item();
+
+					for (Tag tag : tags) {
+						if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
+							item.setCategoryName(tag.getDefaultPath().replace('/', '.').substring(1));
+							break;
+						}
+					}
+					item.setProductName(enrolment.getCourseClass().getCourse().getName());
+					item.setQuantity(1);
+					item.setSkuCode(enrolment.getCourseClass().getCourse().getCode());
+					item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax().toBigDecimal());
+					transactionItems.add(item);
+				}
+				
+				getModel().setTransaction(new Transaction());
+				getModel().getTransaction().setAffiliation(null);
+				getModel().getTransaction().setCity(getModel().getPayment().getContact().getSuburb());
+				// TODO only Australia?
+				getModel().getTransaction().setCountry("Australia");
+				getModel().getTransaction().setItems(transactionItems);
+				getModel().getTransaction().setOrderNumber("W" + getModel().getPayment().getId());
+				getModel().getTransaction().setShippingAmount(null);
+				getModel().getTransaction().setState(getModel().getPayment().getContact().getState());
+				BigDecimal tax = new BigDecimal(0);
+				for (PaymentInLine pil : getModel().getPayment().getPaymentInLines()) {
+					for (InvoiceLine invoiceLine : pil.getInvoice().getInvoiceLines()) {
+						tax = tax.add(invoiceLine.getTotalTax().toBigDecimal());
+					}
+					//tax = tax.add(pil.getInvoice().getTotalGst());
+				}
+				getModel().getTransaction().setTax(tax);
+				getModel().getTransaction().setTotal(getModel().getPayment().getAmount());
+			}
+		}
+	}
+	
+	/**
+	 * Action which need to be called when abandon payment request.
+	 */
+	public void actionOnAbandon() {
+        synchronized (getContext()) {
+        	getModel().getPayment().abandonPayment();
+        	getModel().getPayment().getObjectContext().commitChanges();
+        }
+	}
 
 }
