@@ -3,10 +3,14 @@
 		<div class="shortlistInfo" id="info">
 			<span>${itemCount}</span>
 			<p>courses selected</p>
+			<t:if test="hasVoucherProductItems">
+				<span>${voucherProductItemCount}</span>
+				<p>voucher products selected</p>
+			</t:if>
 		</div>
 		<t:if test="hasItems">
 			<h3 class="title-block">
-				<span>My Order</span>
+				<span>My Courses Order</span>
 			</h3>
 			<div class="${classForList}">
 				<ul class="shortListOrder shortlistChoices">
@@ -48,6 +52,45 @@
 					</t:if>
 					<li class="shortlistActionEnrol">
 						<a href="/enrol/enrolCourses">Enrol</a>
+					</li>
+				</ul>
+			</div>
+		</t:if>
+		
+		<t:if test="hasVoucherProductItems">
+			<h3 class="title-block">
+				<span>My Voucher Products Order</span>
+			</h3>
+			<div class="${classForList}">
+				<ul class="shortListOrder shortlistChoices">
+					<t:loop source="voucherProductItems" value="voucherProduct">
+						<li data-classid="${voucherProduct.id}">
+							<a href="/class/${voucherProduct.sku}">${voucherProduct.name}</a>
+							<span class="deleteItem" title="Remove item">
+								<a href="/removeFromCookies?key=voucherProductShortList&amp;removeItemId=${voucherProduct.id}">X</a>
+							</span>
+						</li>
+					</t:loop>
+					<li class="shortListOrderEnrol">
+						<a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Purchase</a>
+					</li>
+				</ul>
+				<t:if test="expandComponent" negate="true">
+					<div class="closeButton">X</div>
+				</t:if>
+			</div>
+			<div class="shortlistAction">
+				<ul class="shortlistControls">
+					<t:if test="expandComponent" negate="true">
+						<li class="shortlistActionShow">
+							<a href="#">Show Shortlist</a>
+						</li>
+						<li class="shortlistActionHide">
+							<a href="#">Hide Shortlist</a>
+						</li>
+					</t:if>
+					<li class="shortlistActionEnrol">
+						<a href="/enrol/enrolCourses">Purchase</a>
 					</li>
 				</ul>
 			</div>
