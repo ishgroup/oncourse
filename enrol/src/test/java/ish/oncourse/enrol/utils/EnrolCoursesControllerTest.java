@@ -83,9 +83,6 @@ public class EnrolCoursesControllerTest extends ServiceTest{
 	private EnrolCoursesController prepareNewController() {
 		EnrolCoursesController controller = new EnrolCoursesController(invoiceProcessingService, gatewayService);
 		controller.setContext(cayenneService.newContext());
-		controller.setCheckoutResult(false);
-		controller.setHadPreviousPaymentFailure(false);
-		controller.setModel(new EnrolCoursesModel());
 		return controller;
 	}
 	

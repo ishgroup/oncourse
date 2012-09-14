@@ -11,7 +11,6 @@ import ish.oncourse.model.PaymentIn;
 import java.text.Format;
 import java.util.List;
 
-import org.apache.tapestry5.annotations.Persist;
 
 /**
  * The data model which contain all the data required for web enrolment.
@@ -20,30 +19,22 @@ import org.apache.tapestry5.annotations.Persist;
  */
 public class EnrolCoursesModel {
 	//EnrolCourses properties
-    @Persist
     private List<CourseClass> classesToEnrol;
 	
-	@Persist
     private List<Contact> contacts;
 	
     private Contact contact;
 	
-    @Persist
     private Enrolment[][] enrolments;
 
-    @Persist
     private InvoiceLine[][] invoiceLines;
 
-    @Persist
     private PaymentIn payment;
 
-    @Persist
     private Invoice invoice;
     
-    @Persist
     private Format moneyFormat;
     
-    @Persist
     private PaymentIn failedPayment;
     
     //EnrolmentPaymentEntry properties
@@ -57,170 +48,169 @@ public class EnrolCoursesModel {
 	/**
 	 * @return the classesToEnrol
 	 */
-	public List<CourseClass> getClassesToEnrol() {
+	public synchronized List<CourseClass> getClassesToEnrol() {
 		return classesToEnrol;
 	}
 
 	/**
 	 * @param classesToEnrol the classesToEnrol to set
 	 */
-	public void setClassesToEnrol(List<CourseClass> classesToEnrol) {
+	public synchronized void setClassesToEnrol(List<CourseClass> classesToEnrol) {
 		this.classesToEnrol = classesToEnrol;
 	}
 
 	/**
 	 * @return the contacts
 	 */
-	public List<Contact> getContacts() {
+	public synchronized List<Contact> getContacts() {
 		return contacts;
 	}
 
 	/**
 	 * @param contacts the contacts to set
 	 */
-	public void setContacts(List<Contact> contacts) {
+	public synchronized void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
 	}
 
 	/**
 	 * @return the contact
 	 */
-	public Contact getContact() {
+	public synchronized Contact getContact() {
 		return contact;
 	}
 
 	/**
 	 * @param contact the contact to set
 	 */
-	public void setContact(Contact contact) {
+	public synchronized void setContact(Contact contact) {
 		this.contact = contact;
 	}
 
 	/**
 	 * @return the enrolments
 	 */
-	public Enrolment[][] getEnrolments() {
+	public synchronized Enrolment[][] getEnrolments() {
 		return enrolments;
 	}
 
 	/**
 	 * @param enrolments the enrolments to set
 	 */
-	public void setEnrolments(Enrolment[][] enrolments) {
+	public synchronized void setEnrolments(Enrolment[][] enrolments) {
 		this.enrolments = enrolments;
 	}
 
 	/**
 	 * @return the invoiceLines
 	 */
-	public InvoiceLine[][] getInvoiceLines() {
+	public synchronized InvoiceLine[][] getInvoiceLines() {
 		return invoiceLines;
 	}
 
 	/**
 	 * @param invoiceLines the invoiceLines to set
 	 */
-	public void setInvoiceLines(InvoiceLine[][] invoiceLines) {
+	public synchronized void setInvoiceLines(InvoiceLine[][] invoiceLines) {
 		this.invoiceLines = invoiceLines;
 	}
 
 	/**
 	 * @return the payment
 	 */
-	public PaymentIn getPayment() {
+	public synchronized PaymentIn getPayment() {
 		return payment;
 	}
 
 	/**
 	 * @param payment the payment to set
 	 */
-	public void setPayment(PaymentIn payment) {
+	public synchronized void setPayment(PaymentIn payment) {
 		this.payment = payment;
 	}
 
 	/**
 	 * @return the invoice
 	 */
-	public Invoice getInvoice() {
+	public synchronized Invoice getInvoice() {
 		return invoice;
 	}
 
 	/**
 	 * @param invoice the invoice to set
 	 */
-	public void setInvoice(Invoice invoice) {
+	public synchronized void setInvoice(Invoice invoice) {
 		this.invoice = invoice;
 	}
 
 	/**
 	 * @return the moneyFormat
 	 */
-	public Format getMoneyFormat() {
+	public synchronized Format getMoneyFormat() {
 		return moneyFormat;
 	}
 
 	/**
 	 * @param moneyFormat the moneyFormat to set
 	 */
-	public void setMoneyFormat(Format moneyFormat) {
+	public synchronized void setMoneyFormat(Format moneyFormat) {
 		this.moneyFormat = moneyFormat;
 	}
 
 	/**
 	 * @return the failedPayment
 	 */
-	public PaymentIn getFailedPayment() {
+	public synchronized PaymentIn getFailedPayment() {
 		return failedPayment;
 	}
 
 	/**
 	 * @param failedPayment the failedPayment to set
 	 */
-	public void setFailedPayment(PaymentIn failedPayment) {
+	public synchronized void setFailedPayment(PaymentIn failedPayment) {
 		this.failedPayment = failedPayment;
 	}
 
 	/**
 	 * @return the totalIncGst
 	 */
-	public Money getTotalIncGst() {
+	public synchronized Money getTotalIncGst() {
 		return totalIncGst;
 	}
 
 	/**
 	 * @param totalIncGst the totalIncGst to set
 	 */
-	public void setTotalIncGst(Money totalIncGst) {
+	public synchronized void setTotalIncGst(Money totalIncGst) {
 		this.totalIncGst = totalIncGst;
 	}
 
 	/**
 	 * @return the enrolmentsList
 	 */
-	public List<Enrolment> getEnrolmentsList() {
+	public synchronized List<Enrolment> getEnrolmentsList() {
 		return enrolmentsList;
 	}
 
 	/**
 	 * @param enrolmentsList the enrolmentsList to set
 	 */
-	public void setEnrolmentsList(List<Enrolment> enrolmentsList) {
+	public synchronized void setEnrolmentsList(List<Enrolment> enrolmentsList) {
 		this.enrolmentsList = enrolmentsList;
 	}
 
 	/**
 	 * @return the transaction
 	 */
-	public Transaction getTransaction() {
+	public synchronized Transaction getTransaction() {
 		return transaction;
 	}
 
 	/**
 	 * @param transaction the transaction to set
 	 */
-	public void setTransaction(Transaction transaction) {
+	public synchronized void setTransaction(Transaction transaction) {
 		this.transaction = transaction;
 	}
-	
 	
 }

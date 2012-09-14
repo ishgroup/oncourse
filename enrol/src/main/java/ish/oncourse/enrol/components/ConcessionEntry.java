@@ -78,7 +78,7 @@ public class ConcessionEntry {
     }
     
     /**
-     * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
+     * @see ish.oncourse.enrol.pages.EnrolCourses#handleUnexpectedException(Throwable)
      */
 	Object onException(Throwable cause) {
 		return enrolCourses.handleUnexpectedException(cause);
@@ -100,7 +100,7 @@ public class ConcessionEntry {
             studentConcession.setStudent(localStudent);
             localStudent.setModified(new Date());//this peace of code is just for sure that student will be enqueued on student concession create
             localStudent.getObjectContext().commitChanges();
-            if (enrolCourses.hasSuitableClasses(studentConcession)) {
+            if (enrolCourses.getController().hasSuitableClasses(studentConcession)) {
                 return enrolCourses;
             }
         }
@@ -113,7 +113,7 @@ public class ConcessionEntry {
         boolean shouldReload = false;
         for (StudentConcession sc : getStudent().getStudentConcessions()) {
             if (sc.getId().equals(id)) {
-                shouldReload = enrolCourses.hasSuitableClasses(sc);
+                shouldReload = enrolCourses.getController().hasSuitableClasses(sc);
                 getStudent().removeFromStudentConcessions(sc);
                 context.deleteObject(sc);
                 context.commitChanges();
@@ -133,7 +133,7 @@ public class ConcessionEntry {
     }
 
     private Student getCurrentStudent() {
-        return ((EnrolCourses) componentResources.getPage()).getContacts().get(index).getStudent();
+        return ((EnrolCourses) componentResources.getPage()).getController().getModel().getContacts().get(index).getStudent();
     }
 
     public Object[] getDeleteConcessionContext() {

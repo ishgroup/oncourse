@@ -1,10 +1,11 @@
 package ish.oncourse.enrol.components;
 
-import ish.common.types.PaymentStatus;
 import ish.oncourse.enrol.components.AnalyticsTransaction.Item;
 import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.enrol.utils.EnrolCoursesController;
+import ish.oncourse.enrol.utils.EnrolCoursesModel;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.payment.IPaymentService;
@@ -17,7 +18,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.corelib.components.Form;
@@ -68,16 +68,6 @@ public class EnrolmentPaymentResult {
 	@InjectPage
 	private EnrolCourses enrolCourses;
 
-	@Parameter
-	private PaymentIn payment;
-
-	@Parameter
-	@Property
-	private Invoice invoice;
-
-	@Parameter
-	private List<Enrolment> enrolments;
-
 	@SuppressWarnings("all")
 	@Property
 	private String thxMsg;
@@ -92,9 +82,6 @@ public class EnrolmentPaymentResult {
 
 	private String collegeName;
 
-	@Property
-	private Transaction transaction;
-
     private Exception unexpectedException;
     
     @SuppressWarnings("all")
@@ -105,14 +92,28 @@ public class EnrolmentPaymentResult {
 	@InjectComponent
 	@Property
 	private Form successEnrolmentContinueForm;
+    
+    @Property
+	private Transaction transaction;
+    
+    /**
+	 * @return the controller
+	 */
+	public EnrolCoursesController getController() {
+		return enrolCourses.getController();
+	}
+	
+	public EnrolCoursesModel getModel() {
+		return getController().getModel();
+	}
 
 	@SetupRender
 	Object beforeRender() {
-		if (invoice == null || unexpectedException != null) {
+		if (getModel().getInvoice() == null || unexpectedException != null) {
 			clearPersistedValues();
 			return null;
 		}
-		if (isEnrolmentSuccessful()) {
+		if (getController().isEnrolmentSuccessful()) {
 			clearPersistedValues();
 		}
 		collegeName = webSiteService.getCurrentCollege().getName();
@@ -140,14 +141,13 @@ public class EnrolmentPaymentResult {
 		String googleAnalyticsAccount = webSiteService.getCurrentWebSite().getGoogleAnalyticsAccount();
 
 		if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
-			if (payment != null && isEnrolmentSuccessful() && !enrolments.isEmpty()) {
-				List<Item> transactionItems = new ArrayList<Item>(enrolments.size());
-				for (Enrolment enrolment : enrolments) {
+			if (isPayment() && getController().isEnrolmentSuccessful() && !getModel().getEnrolmentsList().isEmpty()) {
+				List<Item> transactionItems = new ArrayList<Item>(getModel().getEnrolmentsList().size());
+				for (Enrolment enrolment : getModel().getEnrolmentsList()) {
 					Item item = new Item();
 
-					for (Tag tag : tagService
-							.getTagsForEntity(Course.class.getSimpleName(), enrolment.getCourseClass().getCourse().getId())) {
-						if ("Subjects".equalsIgnoreCase(tag.getRoot().getName())) {
+					for (Tag tag : tagService.getTagsForEntity(Course.class.getSimpleName(), enrolment.getCourseClass().getCourse().getId())) {
+						if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
 							item.setCategoryName(tag.getDefaultPath().replace('/', '.').substring(1));
 							break;
 						}
@@ -158,57 +158,28 @@ public class EnrolmentPaymentResult {
 					item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax().toBigDecimal());
 					transactionItems.add(item);
 				}
-
 				transaction = new Transaction();
+				//getModel().setTransaction(new Transaction());
 				transaction.setAffiliation(null);
-				transaction.setCity(payment.getContact().getSuburb());
+				transaction.setCity(getModel().getPayment().getContact().getSuburb());
 				// TODO only Australia?
 				transaction.setCountry("Australia");
 				transaction.setItems(transactionItems);
-				transaction.setOrderNumber("W" + payment.getId());
+				transaction.setOrderNumber("W" + getModel().getPayment().getId());
 				transaction.setShippingAmount(null);
-				transaction.setState(payment.getContact().getState());
+				transaction.setState(getModel().getPayment().getContact().getState());
 				BigDecimal tax = new BigDecimal(0);
-				for (PaymentInLine pil : payment.getPaymentInLines()) {
+				for (PaymentInLine pil : getModel().getPayment().getPaymentInLines()) {
 					for (InvoiceLine invoiceLine : pil.getInvoice().getInvoiceLines()) {
 						tax = tax.add(invoiceLine.getTotalTax().toBigDecimal());
 					}
 					//tax = tax.add(pil.getInvoice().getTotalGst());
 				}
 				transaction.setTax(tax);
-				transaction.setTotal(payment.getAmount());
+				transaction.setTotal(getModel().getPayment().getAmount());
 			}
 
 		}
-	}
-
-	/**
-	 * Returns true if the enrol operation was successful and false otherwise.
-	 * 
-	 * @return
-	 */
-	public boolean isEnrolmentSuccessful() {
-		return PaymentStatus.SUCCESS.equals(payment.getStatus());
-	}
-
-	/**
-	 * Returns true if the enrol operation was failed and false otherwise.
-	 * 
-	 * @return
-	 */
-	public boolean isEnrolmentFailed() {
-		PaymentStatus status = payment.getStatus();
-		return PaymentStatus.FAILED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status)
-				|| PaymentStatus.FAILED_CARD_DECLINED.equals(status) || PaymentStatus.FAILED_NO_PLACES.equals(status);
-	}
-	
-	/**
-	 * Returns true if payment was failed because of insufficient places for one of enrolments.
-	 * 
-	 * @return
-	 */
-	public boolean isEnrolmentFailedNoPlaces() {
-		return PaymentStatus.FAILED_NO_PLACES.equals(payment.getStatus());
 	}
 
 	/**
@@ -217,15 +188,12 @@ public class EnrolmentPaymentResult {
 	 * 
 	 * @return
 	 */
-	public boolean isPayment() {
-		return payment != null;
+	private boolean isPayment() {
+		return getModel().getPayment() != null;
 	}
 
 	public URL onActionFromAbandon() {
-        synchronized (enrolCourses.getContext())
-        {
-            payment.abandonPayment();
-            payment.getObjectContext().commitChanges();
+        	getController().actionOnAbandon();
 
             clearPersistedValues();
 
@@ -235,22 +203,21 @@ public class EnrolmentPaymentResult {
             }
 
             try {
-                return new URL(EnrolCourses.HTTP_PROTOCOL + request.getServerName());
+                return new URL(EnrolCoursesController.HTTP_PROTOCOL + request.getServerName());
             } catch (MalformedURLException e) {
             }
             return null;
-        }
 	}
 
 	public String getPaymentId() {
 		if (isPayment()) {
-			return payment.getId().toString();
+			return getModel().getPayment().getId().toString();
 		}
-		return invoice.getId().toString();
+		return getModel().getInvoice().getId().toString();
 	}
 
 	public String getCoursesLink() {
-		return EnrolCourses.HTTP_PROTOCOL + request.getServerName() + "/"+ Courses.class.getSimpleName();
+		return EnrolCoursesController.HTTP_PROTOCOL + request.getServerName() + "/"+ Courses.class.getSimpleName();
 	}
 
 	public String getSuccessUrl() {

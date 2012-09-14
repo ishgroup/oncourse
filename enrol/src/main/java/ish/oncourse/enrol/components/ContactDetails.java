@@ -213,7 +213,7 @@ public class ContactDetails {
     private EnrolCourses enrolCourses;
     
     /**
-     * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
+     * @see ish.oncourse.enrol.pages.EnrolCourses#handleUnexpectedException(Throwable)
      */
 	Object onException(Throwable cause) {
 		return enrolCourses.handleUnexpectedException(cause);

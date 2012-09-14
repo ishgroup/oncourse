@@ -80,7 +80,7 @@ public class ContactEnrolmentList {
     }
     
     /**
-     * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
+     * @see ish.oncourse.enrol.pages.EnrolCourses#handleUnexpectedException(Throwable)
      */
 	Object onException(Throwable cause) {
 		return enrolCourses.handleUnexpectedException(cause);
@@ -99,11 +99,11 @@ public class ContactEnrolmentList {
     }
 
     public Enrolment getEnrolment() {
-        return enrolCourses.getEnrolments()[sIndex][cCIndex];
+        return enrolCourses.getController().getModel().getEnrolments()[sIndex][cCIndex];
     }
 
     public InvoiceLine getInvoiceLine() {
-        return enrolCourses.getInvoiceLines()[sIndex][cCIndex];
+        return enrolCourses.getController().getModel().getInvoiceLines()[sIndex][cCIndex];
     }
 
 }

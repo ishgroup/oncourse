@@ -4,8 +4,6 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
-import ish.oncourse.enrol.components.AnalyticsTransaction.Item;
-import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -23,7 +21,6 @@ import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.Tag;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.util.FormatUtils;
 import ish.util.InvoiceUtil;
@@ -42,10 +39,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.util.TextStreamResponse;
@@ -57,14 +52,12 @@ public class EnrolCoursesController {
 	
 	private EnrolCoursesModel model;
 	
-	@Persist
 	private ObjectContext context;
 	
 	/**
      * Indicates if this page is used for displaying the enrollment checkout(if
      * false), and the result of previous checkout otherwise.
      */
-    @Persist
 	private boolean checkoutResult;
     
     private boolean hadPreviousPaymentFailure;
@@ -77,54 +70,57 @@ public class EnrolCoursesController {
 		super();
 		this.invoiceProcessingService = invoiceProcessingService;
 		this.paymentGatewayService = paymentGatewayService;
+		setModel(new EnrolCoursesModel());
+		setCheckoutResult(false);
+		setHadPreviousPaymentFailure(false);
 	}
 	
 	/**
 	 * @return the hadPreviousPaymentFailure
 	 */
-	public boolean isHadPreviousPaymentFailure() {
+	public synchronized boolean isHadPreviousPaymentFailure() {
 		return hadPreviousPaymentFailure;
 	}
 
 	/**
 	 * @param hadPreviousPaymentFailure the hadPreviousPaymentFailure to set
 	 */
-	public void setHadPreviousPaymentFailure(boolean hadPreviousPaymentFailure) {
+	protected void setHadPreviousPaymentFailure(boolean hadPreviousPaymentFailure) {
 		this.hadPreviousPaymentFailure = hadPreviousPaymentFailure;
 	}
 
 	/**
 	 * @return the model
 	 */
-	public EnrolCoursesModel getModel() {
+	public synchronized EnrolCoursesModel getModel() {
 		return model;
 	}
 
 	/**
 	 * @param model the model to set
 	 */
-	public void setModel(EnrolCoursesModel model) {
+	void setModel(EnrolCoursesModel model) {
 		this.model = model;
 	}
 
 	/**
 	 * @return the context
 	 */
-	public ObjectContext getContext() {
+	public synchronized ObjectContext getContext() {
 		return context;
 	}
 
 	/**
 	 * @param context the context to set
 	 */
-	public void setContext(ObjectContext context) {
+	public synchronized void setContext(ObjectContext context) {
 		this.context = context;
 	}
 
 	/**
 	 * @return the checkoutResult
 	 */
-	public boolean isCheckoutResult() {
+	public synchronized boolean isCheckoutResult() {
 		return checkoutResult;
 	}
 
@@ -133,7 +129,7 @@ public class EnrolCoursesController {
      *
      * @param checkoutResult .
      */
-	public void setCheckoutResult(boolean checkoutResult) {
+	public synchronized void setCheckoutResult(boolean checkoutResult) {
 		this.checkoutResult = checkoutResult;
 	}
     
@@ -141,7 +137,7 @@ public class EnrolCoursesController {
 	 * Fill the list of the enrollments from the vector of enrollments and students
 	 * @return the list of actual enrollments.
 	 */
-	public List<Enrolment> getEnrolmentsList() {
+	public synchronized List<Enrolment> getEnrolmentsList() {
         List<Enrolment> result = new ArrayList<Enrolment>();
         if (getModel().getEnrolments() != null) {
             for (Enrolment[] e : getModel().getEnrolments()) {
@@ -160,7 +156,7 @@ public class EnrolCoursesController {
      * @param enrolments - enrollments list for check.
      * @param orderedClassesIds - actual ordered classes ids.
      */
-	public void deleteNotUsedEnrolments(List<Enrolment> enrolments, List<Long> orderedClassesIds) {
+	public synchronized void deleteNotUsedEnrolments(List<Enrolment> enrolments, List<Long> orderedClassesIds) {
         List<Enrolment> enrolmentsToDelete = new ArrayList<Enrolment>();
         List<InvoiceLine> invoiceLinesToDelete = new ArrayList<InvoiceLine>();
         if (enrolments != null && !enrolments.isEmpty()) {
@@ -193,7 +189,7 @@ public class EnrolCoursesController {
      * @param orderedClassesIds - actual ordered classes ids.
      * @return true if model's classesToEnrol doesn't contain required classes.
      */
-	public boolean shouldReloadClassesToEnrol(List<Long> orderedClassesIds) {
+	public synchronized boolean shouldReloadClassesToEnrol(List<Long> orderedClassesIds) {
         if (getModel().getClassesToEnrol() == null) {
             return true;
         }
@@ -211,7 +207,7 @@ public class EnrolCoursesController {
 	/**
 	 * Order actual classes to enrol.
 	 */
-	public void orderClassesToEnrol() {
+	public synchronized void orderClassesToEnrol() {
 		List<Ordering> orderings = new ArrayList<Ordering>();
         orderings.add(new Ordering(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, SortOrder.ASCENDING));
         orderings.add(new Ordering(CourseClass.CODE_PROPERTY, SortOrder.ASCENDING));
@@ -222,11 +218,11 @@ public class EnrolCoursesController {
 	 * Prepare enrollments indexes map.
 	 * @return map with the enrollments indexes.
 	 */
-	public Map<Enrolment, String> getEnrolmentsIndexesMap() {
+	protected Map<Enrolment, String> getEnrolmentsIndexesMap() {
         Map<Enrolment, String> result = new HashMap<Enrolment, String>();
         if (getModel().getEnrolments() != null) {
             for (int i = 0; i < getModel().getEnrolments().length; i++) {
-                for (int j = 0; j < getModel().getEnrolments()[0].length; j++) { //TODO: check should we use 0 instead of i here
+                for (int j = 0; j < getModel().getEnrolments()[0].length; j++) {
                     result.put(getModel().getEnrolments()[i][j], i + INDEX_SEPARATOR + j);
                 }
             }
@@ -242,7 +238,7 @@ public class EnrolCoursesController {
      * @param student
      * @return
      */
-    public Enrolment createEnrolment(CourseClass courseClass, Student student, List<Discount> actualPromotions) {
+	protected Enrolment createEnrolment(CourseClass courseClass, Student student, List<Discount> actualPromotions) {
         Enrolment enrolment = getContext().newObject(Enrolment.class);
         enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
         enrolment.setSource(PaymentSource.SOURCE_WEB);
@@ -261,7 +257,7 @@ public class EnrolCoursesController {
      * Checks the newly inited classes and contacts, init {@link #enrollments}
      * properly: create new ones or use created previously if they are correct.
      */
-    public void initEnrolments(List<Discount> actualPromotions) {
+	protected void initEnrolments(List<Discount> actualPromotions) {
         Enrolment[][] enrolments = new Enrolment[getModel().getContacts().size()][getModel().getClassesToEnrol().size()];
         InvoiceLine[][] invoiceLines = new InvoiceLine[getModel().getContacts().size()][getModel().getClassesToEnrol().size()];
         Map<Enrolment, String> currentEnrolmentsMap = getEnrolmentsIndexesMap();
@@ -326,7 +322,7 @@ public class EnrolCoursesController {
      * @param session - tapestry request session
      * @param currentCollege - current college object returned from webSiteService.getCurrentCollege() call
      */
-    public void initPayment(Session session, College currentCollege, List<Discount> actualPromotions) {
+    public synchronized void initPayment(Session session, College currentCollege, List<Discount> actualPromotions) {
     	College college = (College) getContext().localObject(currentCollege.getObjectId(), currentCollege);
     	if (getModel().getPayment() == null || PaymentStatus.FAILED.equals(getModel().getPayment().getStatus()) 
         	|| PaymentStatus.FAILED_CARD_DECLINED.equals(getModel().getPayment().getStatus()) 
@@ -366,7 +362,7 @@ public class EnrolCoursesController {
      * Check that invoice lines linked with the enrollments list applied some discounts
      * @return true if any discount applied.
      */
-    public boolean isHasDiscount() {
+    public synchronized boolean isHasDiscount() {
         Money result = Money.ZERO;
         for (int i = 0; i < getModel().getContacts().size(); i++) {
             for (int j = 0; j < getModel().getClassesToEnrol().size(); j++) {
@@ -383,7 +379,7 @@ public class EnrolCoursesController {
      * Calculate total discount amount for all actual enrollments.
      * @return total discount amount for all actual enrollments.
      */
-    public Money getTotalDiscountAmountIncTax() {
+    public synchronized Money getTotalDiscountAmountIncTax() {
         Money result = Money.ZERO;
         for (int i = 0; i < getModel().getContacts().size(); i++) {
             for (int j = 0; j < getModel().getClassesToEnrol().size(); j++) {
@@ -401,7 +397,7 @@ public class EnrolCoursesController {
      * Calculate total (include GST) invoice amount for all actual enrollments.
      * @return total invoice amount for all actual enrollments.
      */
-    public Money getTotalIncGst() {
+    public synchronized Money getTotalIncGst() {
         Money result = Money.ZERO;
         for (int i = 0; i < getModel().getContacts().size(); i++) {
             for (int j = 0; j < getModel().getClassesToEnrol().size(); j++) {
@@ -423,7 +419,7 @@ public class EnrolCoursesController {
      * Check that any discounts potentially can be applied for actual enrollments.
      * @return true if some discounts can be applied for actual enrollments.
      */
-    public boolean hasSuitableClasses(StudentConcession studentConcession) {
+    public synchronized boolean hasSuitableClasses(StudentConcession studentConcession) {
         for (CourseClass cc : getModel().getClassesToEnrol()) {
             for (DiscountCourseClass dcc : cc.getDiscountCourseClasses()) {
                 for (DiscountConcessionType dct : dcc.getDiscount().getDiscountConcessionTypes()) {
@@ -469,7 +465,7 @@ public class EnrolCoursesController {
      *         EnrolmentPaymentProcessing}.
      */
 
-    public void processPayment(List<Discount> actualPromotions) {
+    public synchronized void processPayment(List<Discount> actualPromotions) {
     	synchronized (getContext()) {
             List<Enrolment> enrolments = getEnrolmentsList();
             // enrollments to be persisted
@@ -482,11 +478,6 @@ public class EnrolCoursesController {
             if (validEnrolments.isEmpty() || validInvoiceLines.isEmpty()) {
                 throw new IllegalStateException("Course is not selected. Perhaps, two or more tabs are used to pay for the courses.");
             }
-            //TODO: after refactoring finished this will be automatically
-            // fill the processing result component with proper values
-            //EnrolmentPaymentProcessing enrolmentPaymentProcessing = getResultingElement();
-            //enrolmentPaymentProcessing.setInvoice(invoice);
-
             // even if the payment amount is zero, the contact for it is
             // selected(the first in list by default)
             getModel().getInvoice().setContact(getModel().getPayment().getContact());
@@ -505,15 +496,11 @@ public class EnrolCoursesController {
             paymentInLine.setAmount(getModel().getPayment().getAmount());
             paymentInLine.setCollege(getModel().getPayment().getCollege());
 
-          //TODO: after refactoring finished this will be automatically
-            //enrolmentPaymentProcessing.setPayment(getModel().getPayment());
             getModel().getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
 
             for (Enrolment e : validEnrolments) {
             	e.setStatus(EnrolmentStatus.IN_TRANSACTION);
             }
-            //TODO: after refactoring finished this will be automatically
-            //enrolmentPaymentProcessing.setEnrolments(validEnrolments);
                 
             // commit enrollments in IN_TRANSACTION state and then run validation for places
             context.commitChanges();
@@ -531,7 +518,7 @@ public class EnrolCoursesController {
         }
     }
     
-    public void performGatewayOperation() {
+    protected void performGatewayOperation() {
         paymentGatewayService.performGatewayOperation(getModel().getPayment());
         if (PaymentStatus.SUCCESS.equals(getModel().getPayment().getStatus())) {
             //PaymentIn success so commit.
@@ -546,7 +533,7 @@ public class EnrolCoursesController {
      * processing and deletes the non-checked. Invoked on submit the checkout.
      * @return list of actual enrollments.
      */
-    public List<Enrolment> getEnrolmentsToPersist(List<Enrolment> enrolments) {
+    public synchronized List<Enrolment> getEnrolmentsToPersist(List<Enrolment> enrolments) {
         List<Enrolment> validEnrolments = new ArrayList<Enrolment>();
         ObjectContext context = getModel().getPayment().getObjectContext();
         // define which enrollments are "checked" and should be included into the processing
@@ -557,6 +544,8 @@ public class EnrolCoursesController {
                 validEnrolments.add(e);
             }
         }
+      //this is the optimization which allow us not pass this data to EnrolmentPaymentEntry
+        getModel().setEnrolmentsList(validEnrolments);
         return validEnrolments;
     }
     
@@ -567,7 +556,7 @@ public class EnrolCoursesController {
      * Also apply the discounts for invoiceLines.
      * @return list of actual invoice lines linked with the actual enrollments.
      */
-    public List<InvoiceLine> getInvoiceLinesToPersist(List<Discount> actualPromotions) {
+    List<InvoiceLine> getInvoiceLinesToPersist(List<Discount> actualPromotions) {
         ObjectContext context = getModel().getPayment().getObjectContext();
         List<InvoiceLine> validInvoiceLines = new ArrayList<InvoiceLine>();
         List<InvoiceLine> invoiceLinesToDelete = new ArrayList<InvoiceLine>();
@@ -607,7 +596,7 @@ public class EnrolCoursesController {
      *
      * @return true if all the selected classes are available for enrolling.
      */
-    public boolean isAllEnrolmentsAvailable(List<Enrolment> enrolments) {
+    public synchronized boolean isAllEnrolmentsAvailable(List<Enrolment> enrolments) {
         for (Enrolment enrolment : enrolments) {
             if (enrolment.getInvoiceLine() != null
                     && (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces() || enrolment.getCourseClass().hasEnded())) {
@@ -623,7 +612,7 @@ public class EnrolCoursesController {
      * and an user stays on the result page and there is other opened tab where make payment button is available.
      * @return true when we can.
      */
-    public boolean canStartPaymentProcess() {
+    public synchronized boolean canStartPaymentProcess() {
         return PaymentStatus.NEW.equals(getModel().getPayment().getStatus()) && !isCheckoutResult();
     }
     
@@ -631,11 +620,11 @@ public class EnrolCoursesController {
      * Method returns true if by some reason persist properties have been cleared.
      * For example: the payment has been processed from other tab of the browser.
      */
-    public boolean isPersistCleared() {
+    boolean isPersistCleared() {
         return getContext() == null;
     }
     
-    public Object handleUnexpectedException(final Throwable cause) {
+    public synchronized Object handleUnexpectedException(final Throwable cause) {
     	if (isPersistCleared()) {
 			LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
 			return this;
@@ -649,7 +638,7 @@ public class EnrolCoursesController {
 	 * 
 	 * @return
 	 */
-	public boolean isEnrolmentSuccessful() {
+	public synchronized boolean isEnrolmentSuccessful() {
 		return PaymentStatus.SUCCESS.equals(getModel().getPayment().getStatus());
 	}
 	
@@ -658,7 +647,7 @@ public class EnrolCoursesController {
 	 * 
 	 * @return
 	 */
-	public boolean isEnrolmentFailed() {
+	public synchronized boolean isEnrolmentFailed() {
 		PaymentStatus status = getModel().getPayment().getStatus();
 		return PaymentStatus.FAILED.equals(status) || PaymentStatus.STATUS_REFUNDED.equals(status)
 			|| PaymentStatus.FAILED_CARD_DECLINED.equals(status) || PaymentStatus.FAILED_NO_PLACES.equals(status);
@@ -669,62 +658,14 @@ public class EnrolCoursesController {
 	 * 
 	 * @return
 	 */
-	public boolean isEnrolmentFailedNoPlaces() {
+	public synchronized boolean isEnrolmentFailedNoPlaces() {
 		return PaymentStatus.FAILED_NO_PLACES.equals(getModel().getPayment().getStatus());
 	}
     
-    /**
-	 * Fills in the record for google analytics component {@see
-	 * AnalyticsTransaction}.
-	 * @param googleAnalyticsAccount - current college googleAnalyticsAccount value
-	 * @param tags - tags for enrollments course classes
-	 */
-	public void initAnalyticTransaction(String googleAnalyticsAccount, List<Tag> tags) {
-		if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
-			if (getModel().getPayment() != null && isEnrolmentSuccessful() && !getModel().getEnrolmentsList().isEmpty()) {
-				List<Item> transactionItems = new ArrayList<Item>(getModel().getEnrolmentsList().size());
-				for (Enrolment enrolment : getModel().getEnrolmentsList()) {
-					Item item = new Item();
-
-					for (Tag tag : tags) {
-						if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
-							item.setCategoryName(tag.getDefaultPath().replace('/', '.').substring(1));
-							break;
-						}
-					}
-					item.setProductName(enrolment.getCourseClass().getCourse().getName());
-					item.setQuantity(1);
-					item.setSkuCode(enrolment.getCourseClass().getCourse().getCode());
-					item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax().toBigDecimal());
-					transactionItems.add(item);
-				}
-				
-				getModel().setTransaction(new Transaction());
-				getModel().getTransaction().setAffiliation(null);
-				getModel().getTransaction().setCity(getModel().getPayment().getContact().getSuburb());
-				// TODO only Australia?
-				getModel().getTransaction().setCountry("Australia");
-				getModel().getTransaction().setItems(transactionItems);
-				getModel().getTransaction().setOrderNumber("W" + getModel().getPayment().getId());
-				getModel().getTransaction().setShippingAmount(null);
-				getModel().getTransaction().setState(getModel().getPayment().getContact().getState());
-				BigDecimal tax = new BigDecimal(0);
-				for (PaymentInLine pil : getModel().getPayment().getPaymentInLines()) {
-					for (InvoiceLine invoiceLine : pil.getInvoice().getInvoiceLines()) {
-						tax = tax.add(invoiceLine.getTotalTax().toBigDecimal());
-					}
-					//tax = tax.add(pil.getInvoice().getTotalGst());
-				}
-				getModel().getTransaction().setTax(tax);
-				getModel().getTransaction().setTotal(getModel().getPayment().getAmount());
-			}
-		}
-	}
-	
 	/**
 	 * Action which need to be called when abandon payment request.
 	 */
-	public void actionOnAbandon() {
+	public synchronized void actionOnAbandon() {
         synchronized (getContext()) {
         	getModel().getPayment().abandonPayment();
         	getModel().getPayment().getObjectContext().commitChanges();

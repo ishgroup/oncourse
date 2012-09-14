@@ -3,11 +3,11 @@ package ish.oncourse.enrol.components;
 import ish.common.types.CreditCardType;
 import ish.math.Money;
 import ish.oncourse.enrol.pages.EnrolCourses;
+import ish.oncourse.enrol.utils.EnrolCoursesController;
+import ish.oncourse.enrol.utils.EnrolCoursesModel;
 import ish.oncourse.enrol.utils.EnrolmentValidationUtil;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.PaymentIn;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
@@ -25,16 +25,13 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.services.Request;
-
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class EnrolmentPaymentEntry {
-    private static final Logger LOGGER = Logger.getLogger(EnrolmentPaymentEntry.class);
+	public static final Logger LOGGER = Logger.getLogger(EnrolmentPaymentEntry.class);
 	/**
 	 * Credit card expire date interval
 	 */
@@ -60,26 +57,9 @@ public class EnrolmentPaymentEntry {
 	/**
 	 * Parameters
 	 */
-	@Parameter
-	private Money totalIncGst;
-
-	@Parameter
-	@Property
-	private List<Contact> payers;
-
-	@Parameter
-	@Property
-	private PaymentIn payment;
-
-	@Parameter
-	private Invoice invoice;
 	/**
 	 * Auxiliary properties
 	 */
-	@SuppressWarnings("all")
-	@Property
-	@Persist
-	private Format moneyFormat;
 
 	@SuppressWarnings("all")
 	@Property
@@ -142,8 +122,8 @@ public class EnrolmentPaymentEntry {
 	@InjectPage
 	private EnrolCourses enrolCourses;
 
-	@Parameter
-	private List<Enrolment> enrolments;
+	//@Parameter
+	//private List<Enrolment> enrolments;
 
 	@SuppressWarnings("all")
 	private final ReentrantLock lock = new ReentrantLock();
@@ -152,20 +132,32 @@ public class EnrolmentPaymentEntry {
 	 * Indicates if the submit was because of pressing the submit button.
 	 */
 	private boolean isSubmitted;
-
-	@Inject
-	private Request request;
+	
+	/**
+	 * @return the controller
+	 */
+	public EnrolCoursesController getController() {
+		return enrolCourses.getController();
+	}
+	
+	public EnrolCoursesModel getModel() {
+		return getController().getModel();
+	}
 
 	@SetupRender
 	void beforeRender() {
+		//initial fill the data
+		getController().getEnrolmentsList();
+		getController().getTotalIncGst();
+		
 		initYears();
 		initEnrolmentDisclosure();
 
 		initPayers();
 
-		payersModel = new ListSelectModel<Contact>(payers, "fullName", propertyAccess);
+		payersModel = new ListSelectModel<Contact>(getModel().getContacts(), "fullName", propertyAccess);
 
-		payersEncoder = new ListValueEncoder<Contact>(payers, "id", propertyAccess);
+		payersEncoder = new ListValueEncoder<Contact>(getModel().getContacts(), "id", propertyAccess);
 
 		cardTypeModel = new ISHEnumSelectModel(CreditCardType.class, messages, CommonPreferenceController
 				.getCCAvailableTypes(preferenceService).values().toArray(new CreditCardType[] {}));
@@ -192,17 +184,16 @@ public class EnrolmentPaymentEntry {
 	}
 
 	private void initPayers() {
-		List<Contact> localPayers = new ArrayList<Contact>(payers.size());
-		for (Contact payer : payers) {
-			localPayers.add((Contact) payment.getObjectContext().localObject(payer.getObjectId(), payer));
+		List<Contact> localPayers = new ArrayList<Contact>(getModel().getContacts().size());
+		for (Contact payer : getModel().getContacts()) {
+			localPayers.add((Contact) getModel().getPayment().getObjectContext().localObject(payer.getObjectId(), payer));
 		}
-
-		payers = localPayers;
-		payment.setContact(payers.get(0));
+		getModel().setContacts(localPayers);
+		getModel().getPayment().setContact(getModel().getContacts().get(0));
 	}
 
 	public boolean isZeroPayment() {
-		return totalIncGst.isZero();
+		return getModel().getTotalIncGst().isZero();
 	}
 
 	public boolean isHasConcessionsCollege() {
@@ -210,7 +201,7 @@ public class EnrolmentPaymentEntry {
 	}
 
 	public boolean isHasConcessionsEnrolment() {
-		for (Enrolment enrolment : enrolments) {
+		for (Enrolment enrolment : getModel().getEnrolmentsList()) {
 			if (!enrolment.getCourseClass().getConcessionDiscounts().isEmpty()) {
 				return true;
 			}
@@ -219,7 +210,7 @@ public class EnrolmentPaymentEntry {
 	}
 
 	public boolean isHasStudentWithoutConcessions() {
-		for (Enrolment enrolment : enrolments) {
+		for (Enrolment enrolment : getModel().getEnrolmentsList()) {
 			if (enrolment.getStudent().getStudentConcessions().isEmpty()) {
 				return true;
 			}
@@ -253,7 +244,7 @@ public class EnrolmentPaymentEntry {
 	}
 
     /**
-     * @see ish.oncourse.enrol.pages.EnrolCourses#isPersistCleared()
+     * @see ish.oncourse.enrol.pages.EnrolCourses#handleUnexpectedException(Throwable)
      */
 	Object onException(Throwable cause) {
 		return enrolCourses.handleUnexpectedException(cause);
@@ -266,15 +257,16 @@ public class EnrolmentPaymentEntry {
 
 		if (isSubmitted)
         {
-            synchronized (enrolCourses.getContext())
+            synchronized (getController().getContext())
             {
 
-                if (enrolCourses.canStartPaymentProcess())
+                if (getController().canStartPaymentProcess())
                 {
                     /**
                      * after we set the property to true EnrolmentPaymentProcessing.performGateway method is called.
                      */
-                    enrolCourses.setCheckoutResult(true);
+                	getController().setCheckoutResult(true);
+                    //enrolCourses.setCheckoutResult(true);
                 }
                 else
                 {
@@ -302,7 +294,7 @@ public class EnrolmentPaymentEntry {
 	}
 
 	public boolean isNotEmptyPayer() {
-		return !payers.isEmpty() && payment.getContact() != null;
+		return !getModel().getContacts().isEmpty() && getModel().getPayment().getContact() != null;
 	}
 
 	/**
@@ -316,9 +308,9 @@ public class EnrolmentPaymentEntry {
         /**
          * The test shows error message for an user if he try to make a payment from several tabs
          */
-        synchronized (enrolCourses.getContext())
+        synchronized (getController().getContext())
         {
-            if (!enrolCourses.canStartPaymentProcess())
+            if (!getController().canStartPaymentProcess())
             {
                 paymentDetailsForm.recordError(cardTypeSelect, messages.get("twoOrMoreOpenedPaymentPagesErrorMessage"));
             }
@@ -328,19 +320,18 @@ public class EnrolmentPaymentEntry {
 			if (!isNotEmptyPayer()) {
 				paymentDetailsForm.recordError(messages.get("emptyPayerErrorMessage"));
 			}
-			if (!payment.validateCCType()) {
+			if (!getModel().getPayment().validateCCType()) {
 				paymentDetailsForm.recordError(cardTypeSelect, messages.get("cardTypeErrorMessage"));
 			}
-			if (!payment.validateCCName()) {
+			if (!getModel().getPayment().validateCCName()) {
 				paymentDetailsForm.recordError(cardName, messages.get("cardNameErrorMessage"));
 			}
-
-			cardNumberErrorMessage = payment.validateCCNumber();
+			cardNumberErrorMessage = getModel().getPayment().validateCCNumber();
 			if (cardNumberErrorMessage != null) {
 				paymentDetailsForm.recordError(cardNumber, cardNumberErrorMessage);
 			}
 
-			String creditCardCVV = payment.getCreditCardCVV();
+			String creditCardCVV = getModel().getPayment().getCreditCardCVV();
 			if (creditCardCVV == null || creditCardCVV.equals("")) {
 				paymentDetailsForm.recordError(cardcvv, messages.get("cardcvv"));
 			}
@@ -353,10 +344,10 @@ public class EnrolmentPaymentEntry {
 				// because
 				// they are filled with dropdown lists with predefined
 				// values
-				payment.setCreditCardExpiry(ccExpiryMonth + "/" + ccExpiryYear);
+				getModel().getPayment().setCreditCardExpiry(ccExpiryMonth + "/" + ccExpiryYear);
 			}
 
-			hasErrorInDate = !payment.validateCCExpiry();
+			hasErrorInDate = !getModel().getPayment().validateCCExpiry();
 			if (hasErrorInDate) {
 				paymentDetailsForm.recordError(messages.get("expiryDateError"));
 			}
@@ -367,7 +358,7 @@ public class EnrolmentPaymentEntry {
 			paymentDetailsForm.recordError(messages.get("agreeErrorMessage"));
 		}
 		
-		if (!EnrolmentValidationUtil.isPlacesLimitExceeded(enrolCourses.getEnrolmentsToPersist(enrolments))) {
+		if (!EnrolmentValidationUtil.isPlacesLimitExceeded(getController().getEnrolmentsToPersist(getModel().getEnrolmentsList()))) {
 			paymentDetailsForm.recordError(messages.get(MESSAGE_NO_PLACES));
 		}
 
@@ -385,7 +376,7 @@ public class EnrolmentPaymentEntry {
 	 *         button).
 	 */
 	public boolean isHasAnyEnrolmentsSelected() {
-		for (Enrolment enrolment : enrolments) {
+		for (Enrolment enrolment : getModel().getEnrolmentsList()) { 
 			if (enrolment.getInvoiceLine() != null) {
 				return true;
 			}
@@ -394,8 +385,8 @@ public class EnrolmentPaymentEntry {
 	}
 
 	public Money getTotalIncGst() {
-		moneyFormat = FormatUtils.chooseMoneyFormat(totalIncGst);
-		return totalIncGst;
+		getModel().setMoneyFormat(FormatUtils.chooseMoneyFormat(getModel().getTotalIncGst()));
+		return getModel().getTotalIncGst();
 	}
 
     /**
@@ -406,8 +397,7 @@ public class EnrolmentPaymentEntry {
      * @return true if all the selected classes are available for enrolling.
      */
     public boolean isAllEnrolmentsAvailable() {
-        enrolCourses.isAllEnrolmentsAvailable(enrolments);
-        return true;
+        return getController().isAllEnrolmentsAvailable(getModel().getEnrolmentsList());
     }
 
 

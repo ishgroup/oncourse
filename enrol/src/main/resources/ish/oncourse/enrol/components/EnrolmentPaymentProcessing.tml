@@ -10,6 +10,6 @@
     	<p><strong>Do not close this window.</strong></p>
     </t:block>
     <t:block>
-    	<span t:type="EnrolmentPaymentResult" t:id="result"  payment="payment" invoice="invoice" enrolments="enrolments" />
+    	<span t:type="EnrolmentPaymentResult" t:id="result"/>
     </t:block>
 </t:container>	

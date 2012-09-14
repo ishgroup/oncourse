@@ -10,10 +10,10 @@
             </t:if>
         </script>
         <p:else>
-        <t:if test="invoice" negate="true">
+        <t:if test="model.invoice" negate="true">
             <script type="text/javascript">window.parent.location.reload(true);</script>
             <p:else>
-                <t:if test="enrolmentSuccessful">
+                <t:if test="controller.enrolmentSuccessful">
                     <script type="text/javascript">
                         refreshShortList();
                     </script>
@@ -37,8 +37,8 @@
                     </t:zone>
                     <t:AnalyticsTransaction transaction="transaction"/>
                     <p:else>
-                        <t:if test="enrolmentFailed">
-                            <t:if test="enrolmentFailedNoPlaces" negate="true">
+                        <t:if test="controller.enrolmentFailed">
+                            <t:if test="controller.enrolmentFailedNoPlaces" negate="true">
                                 <h2>Enrolment <span>&#187;</span> Payment rejected</h2>
                                 <p>${paymentFailedMsg}</p>
                                 <p>${message:checkCreditCard} <a href="/enrol/enrolCourses" title="Proceed with this enrolment">Try again with another card or reenter details</a>.</p>

@@ -1,16 +1,18 @@
 package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.EnrolCourses;
+import ish.oncourse.enrol.utils.EnrolCoursesController;
+import ish.oncourse.enrol.utils.EnrolCoursesModel;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.discount.IDiscountService;
+
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
@@ -25,20 +27,11 @@ public class EnrolmentPaymentProcessing {
 	@InjectComponent
 	private EnrolmentPaymentResult result;
 
-	@Persist
-	private PaymentIn payment;
-
-	@Persist
-	private Invoice invoice;
-
-	@Persist
-	private List<Enrolment> enrolments;
-
-	@Inject
-	private Request request;
-
     @InjectPage
     private EnrolCourses enrolCourses;
+    
+    @Inject
+    private IDiscountService discountService;
 
 	/**
 	 * The processHolder displays its content while this method is being
@@ -51,41 +44,51 @@ public class EnrolmentPaymentProcessing {
 	 */
 	@OnEvent(component = "processHolder", value = "progressiveDisplay")
 	Object performGateway() throws Exception {
-
         /**
          *  Workaround to exclude NullPointerException on context synchronize block. Unknown reason. (possible reason is expired session).
          */
         try {
-            enrolCourses.processPayment();
+            getController().processPayment(discountService.getPromotions());
         } catch (Exception e) {
             LOGGER.warn("Unexpected Exception", e);
             result.setUnexpectedException(e);
         }
         return result;
     }
+	
+	/**
+	 * @return the controller
+	 */
+	public EnrolCoursesController getController() {
+		return enrolCourses.getController();
+	}
+	
+	/*public EnrolCoursesModel getModel() {
+		return getController().getModel();
+	}
 
 	public void setEnrolments(List<Enrolment> enrolments) {
-		this.enrolments = enrolments;
+		getModel().setEnrolmentsList(enrolments);
 	}
 
 	public void setPayment(PaymentIn payment) {
-		this.payment = payment;
+		getModel().setPayment(payment);
 	}
 
 	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
+		getModel().setInvoice(invoice);
 	}
 
 	public PaymentIn getPayment() {
-		return payment;
+		return getModel().getPayment();
 	}
 
 	public Invoice getInvoice() {
-		return invoice;
+		return getModel().getInvoice();
 	}
 
 	public List<Enrolment> getEnrolments() {
-		return enrolments;
-	}
+		return getModel().getEnrolmentsList();
+	}*/
 
 }

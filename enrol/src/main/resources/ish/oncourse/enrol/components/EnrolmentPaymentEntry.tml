@@ -18,27 +18,27 @@
   					<div class="form-details">
     					<p>
       						<label>Amount</label>
-      						<span id="cardtotalstring"><t:output value="totalIncGst" format="moneyFormat"/></span>
+      						<span id="cardtotalstring"><t:output value="model.totalIncGst" format="model.moneyFormat"/></span>
     					</p>
     					<p>
     						<t:if test="notEmptyPayer">
       						<label for="cardpayer">Payer<em title="${message:required}">*</em></label>
       						<span class="valid">
-								<t:select value="payment.contact" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
+								<t:select value="model.payment.contact" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
 							</span>
 							</t:if>
   						</p>
     					<p>
       						<label for="cardtype">Card Type<em title="${message:required}">*</em></label>
       						<span class="${cardTypeClass}">
-								<t:select t:id="cardTypeSelect" value="payment.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"/>
+								<t:select t:id="cardTypeSelect" value="model.payment.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"/>
 								<span t:type="ui/HintComponent" validationMessage="${message:cardTypeErrorMessage}"/>
 							</span>
      					</p>
       					<p>
         					<label for="cardname">Name on Card<em title="${message:required}">*</em></label>
         						<span class="${cardNameInputClass}">
-									<t:textfield value="payment.creditCardName" class ="input-fixed" 
+									<t:textfield value="model.payment.creditCardName" class ="input-fixed" 
 										clientId="cardname" t:id="cardName" maxlength="80" />
 									<span t:type="ui/HintComponent" validationMessage="${message:cardNameErrorMessage}"/>
 								</span>
@@ -46,7 +46,7 @@
       					<p>
         					<label for="cardnumber">Number<em title="${message:required}">*</em></label>
         					<span class="${cardNumberInputClass}">
-								<t:textfield value="payment.creditCardNumber" class ="input-fixed" 
+								<t:textfield value="model.payment.creditCardNumber" class ="input-fixed" 
 										clientId="cardnumber" t:id="cardNumber" maxlength="20" />
 								<span t:type="ui/HintComponent" validationMessage="cardNumberErrorMessage"/>
 							</span>
@@ -54,7 +54,7 @@
       					<p>
         					<label for="cardcvv">CVV<em title="${message:required}">*</em></label>
         					<span class="${cardcvvInputClass}">
-								<t:textfield value="payment.creditCardCVV" class ="input-fixed" 
+								<t:textfield value="model.payment.creditCardCVV" class ="input-fixed" 
 										clientId="cardcvv" t:id="cardcvv" maxlength="4" />
 								<span t:type="ui/HintComponent" validationMessage="${message:cardcvv}"/>
 							</span>

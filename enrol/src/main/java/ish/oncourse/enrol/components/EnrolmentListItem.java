@@ -41,8 +41,9 @@ public class EnrolmentListItem {
 
 	@SetupRender
 	void beforeRender() {
-		courseClass = enrolCourses.getCourseClasses().get(courseClassIndex);
-		enrolment = enrolCourses.getEnrolments()[studentIndex][courseClassIndex];
+		courseClass = enrolCourses.getController().getModel().getClassesToEnrol().get(courseClassIndex);
+		//courseClass = enrolCourses.getCourseClasses().get(courseClassIndex);
+		enrolment = enrolCourses.getController().getModel().getEnrolments()[studentIndex][courseClassIndex];
 		dateFormat = new SimpleDateFormat("EEE d MMM yy h:mm a");
 
 		TimeZone classTimeZone = courseClass.getClassTimeZone();
