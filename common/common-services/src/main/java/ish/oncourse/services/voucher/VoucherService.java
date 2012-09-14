@@ -14,6 +14,7 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.Product;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
@@ -49,18 +50,41 @@ public class VoucherService implements IVoucherService {
 		this.cayenneService = cayenneService;
 	}
 	
-	protected IWebSiteService getWebSiteService() {
+	protected IWebSiteService takeWebSiteService() {
 		return webSiteService;
 	}
 
 	@Override
 	public List<VoucherProduct> getAvailableVoucherProducts() {
-		College currentCollege = getWebSiteService().getCurrentCollege();
+		return getAvailableVoucherProducts(null, null);
+	}
+	
+	@Override
+	public VoucherProduct loadAvailableVoucherProductById(Long id) {
+		College currentCollege = takeWebSiteService().getCurrentCollege();
+		Expression qualifier = ExpressionFactory.matchExp(VoucherProduct.COLLEGE_PROPERTY, currentCollege)
+			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_ON_SALE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchDbExp(VoucherProduct.ID_PK_COLUMN, id));
+		SelectQuery query = new SelectQuery(VoucherProduct.class, qualifier);
+		@SuppressWarnings("unchecked")
+		List<VoucherProduct> results = cayenneService.sharedContext().performQuery(query);
+		return !results.isEmpty()? results.get(0) : null;
+	}
+	
+	@Override
+	public List<VoucherProduct> getAvailableVoucherProducts(Integer startDefault, Integer rowsDefault) {
+		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(VoucherProduct.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
 			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_ON_SALE_PROPERTY, Boolean.TRUE));
+		SelectQuery query = new SelectQuery(VoucherProduct.class, qualifier);
+		if (startDefault != null && rowsDefault != null) {
+			query.setFetchOffset(startDefault);
+			query.setFetchLimit(rowsDefault);
+		}
 		@SuppressWarnings("unchecked")
-		List<VoucherProduct> results = cayenneService.sharedContext().performQuery(new SelectQuery(VoucherProduct.class, qualifier));
+		List<VoucherProduct> results = cayenneService.sharedContext().performQuery(query);
 		List<Ordering> orderings = new ArrayList<Ordering>();
 		orderings.add(new Ordering(VoucherProduct.NAME_PROPERTY, SortOrder.ASCENDING));
 		orderings.add(new Ordering(VoucherProduct.PRICE_EX_TAX_PROPERTY, SortOrder.DESCENDING));
@@ -70,7 +94,7 @@ public class VoucherService implements IVoucherService {
 	
 	@Override
 	public Voucher getVoucherByCode(String code) {
-		College currentCollege = getWebSiteService().getCurrentCollege();
+		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Voucher.CODE_PROPERTY, code)
 			.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
@@ -88,7 +112,7 @@ public class VoucherService implements IVoucherService {
 	
 	@Override
 	public List<Voucher> getAvailableVouchersForUser(Contact contact) {
-		College currentCollege = getWebSiteService().getCurrentCollege();
+		College currentCollege = takeWebSiteService().getCurrentCollege();
 		Expression qualifier = ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege)
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
 			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO))
@@ -122,7 +146,7 @@ public class VoucherService implements IVoucherService {
          **/
 
         q.addPrefetch(VoucherProduct.REDEMPTION_COURSES_PROPERTY);
-        q.addPrefetch(VoucherProduct.PRICE_EX_TAX_PROPERTY);
+        //q.addPrefetch(VoucherProduct.PRICE_EX_TAX_PROPERTY);
         q.addPrefetch(VoucherProduct.PRODUCT_ITEMS_PROPERTY);
     }
 	

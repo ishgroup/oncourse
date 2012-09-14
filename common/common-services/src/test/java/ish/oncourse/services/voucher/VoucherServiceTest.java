@@ -67,13 +67,13 @@ public class VoucherServiceTest extends ServiceTest {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		assertEquals("SCC should contain six defined Voucher Products", 6, service.getAvailableVoucherProducts().size());
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
 		final VoucherService service2 = new VoucherService(new WebSiteService(request2, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "tae", service2.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "tae", service2.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		assertEquals("Tae have no defined Voucher Products", 1, service2.getAvailableVoucherProducts().size());
 	}
 	
@@ -82,7 +82,7 @@ public class VoucherServiceTest extends ServiceTest {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		Voucher voucher = service.getVoucherByCode("qwerty");
 		assertNotNull("Voucher for code qwerty should be founded", voucher);
 		assertEquals("Voucher value should be 100$", new Money("100.00"), voucher.getRedemptionValue());
@@ -96,7 +96,7 @@ public class VoucherServiceTest extends ServiceTest {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		Voucher voucher = service.getVoucherByCode("qwerty_2");
 		assertNotNull("Voucher for code qwerty_2 should be founded", voucher);
 		assertEquals("Voucher value should be 101$", new Money("101.00"), voucher.getRedemptionValue());
@@ -135,7 +135,7 @@ public class VoucherServiceTest extends ServiceTest {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		final Money voucherPrice = new Money("110.00");
 		final PaymentIn payment = service.preparePaymentInForVoucherPurchase(product, voucherPrice, contact, null);
 		payment.getObjectContext().commitChanges();
@@ -174,7 +174,7 @@ public class VoucherServiceTest extends ServiceTest {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		final Money voucherPrice = new Money("110.00");
 		final PaymentIn payment = service.preparePaymentInForVoucherPurchase(product, voucherPrice, contact, owner);
 		payment.getObjectContext().commitChanges();
@@ -210,7 +210,7 @@ public class VoucherServiceTest extends ServiceTest {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		boolean failOnPrepare = false;
 		try {
 			service.preparePaymentInForVoucherPurchase(product, Money.ZERO, contact, null);
@@ -273,7 +273,7 @@ public class VoucherServiceTest extends ServiceTest {
 		Request request = mock(Request.class);
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.getWebSiteService().getCurrentWebSite().getSiteKey());
+		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
 		final Money voucherPrice = new Money("110.00");
 		final PaymentIn payment = service.preparePaymentInForVoucherPurchase(product, voucherPrice, contact, null);
 		payment.getObjectContext().commitChanges();

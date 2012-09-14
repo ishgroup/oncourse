@@ -119,7 +119,7 @@ public class ShortList {
 		}
 
 		if ((voucherProductIds != null) && !(voucherProductIds.isEmpty())) {
-			voucherProductItems = voucherService.loadByIds(voucherProductIds);
+			voucherProductItems = voucherService.loadByIds(voucherProductIds.toArray());
 		} else {
 			voucherProductItems = Collections.emptyList();
 		}

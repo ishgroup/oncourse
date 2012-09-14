@@ -193,7 +193,7 @@ public class CookiesService implements ICookiesService {
 			return false;
 		}
 		if (cookieKey.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)
-				&& (!cookieValue.matches("\\d+") || courseClassService.loadByIds(cookieValue).isEmpty())) {
+				&& (!cookieValue.matches("\\d+") || courseClassService.loadByIds(Long.parseLong(cookieValue)).isEmpty())) {
 			return false;
 		}
 		

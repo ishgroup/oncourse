@@ -14,6 +14,8 @@ import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.voucher.IVoucherService;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Link;
@@ -85,6 +87,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 
 	@Inject
 	ICourseService courseService;
+	
+	@Inject
+	IVoucherService voucherService;
 
 	@Inject
 	ISitesService sitesService;
@@ -117,6 +122,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
 			break;
+		case VoucherProducts:
+			break;
 		case Courses:
 			final boolean isCMSCoursesSearch = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
 					.startsWith(CMS_PATH + COURSES_PATH);
@@ -141,6 +148,18 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 					}
 					request.setAttribute(Course.COURSE_TAG, tag);
 				}
+			}
+			break;
+		case VoucherProduct:
+			VoucherProduct product = null;
+			String productId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+			if (productId != null && productId.matches("\\d+")) {
+				product = voucherService.loadAvailableVoucherProductById(Long.parseLong(productId));
+			}
+			if (product != null) {
+				request.setAttribute(VoucherProduct.class.getSimpleName(), product);
+			} else {
+				pageIdentifier = PageIdentifier.PageNotFound;
 			}
 			break;
 		case Course:

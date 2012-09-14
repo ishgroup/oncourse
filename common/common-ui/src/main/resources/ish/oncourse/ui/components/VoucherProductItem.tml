@@ -1,0 +1,43 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<div class="vevent classItem">
+		<t:if t:test="isList" negate="true">
+			<h1 class="summary page-title">${voucherProduct.name}</h1>
+			<div class="clearboth"></div>
+		<p:else>
+			<div class="description courseShortDescription">
+				<t:outputraw value="${voucherProduct.description}" />
+				
+				<div class="classAction">
+					<t:if t:test="paymentGatewayEnabled">
+						<t:if test="addedVoucherProduct">
+							<a class="enrolAction enrol-added-class" href="/addToCookies?key=voucherProductShortList&amp;addItemId=${voucherProduct.id}">Added</a>
+							<p:else>
+								<a class="enrolAction" href="/addToCookies?key=voucherProductShortList&amp;addItemId=${voucherProduct.id}" title="${purchaseHoverTitle}">Purchase Now</a>
+							</p:else>
+						</t:if>
+					</t:if>
+				</div>
+				
+			</div>
+		</p:else>
+		</t:if>
+		
+		<t:if t:test="isList" negate="true">
+			<div class="courseDescription">
+				<t:outputraw value="${voucherProduct.description}" />
+				
+				<div class="classAction">
+					<t:if t:test="paymentGatewayEnabled">
+						<t:if test="addedVoucherProduct">
+							<a class="enrolAction enrol-added-class" href="/addToCookies?key=voucherProductShortList&amp;addItemId=${voucherProduct.id}">Added</a>
+							<p:else>
+								<a class="enrolAction" href="/addToCookies?key=voucherProductShortList&amp;addItemId=${voucherProduct.id}" title="${purchaseHoverTitle}">Purchase Now</a>
+							</p:else>
+						</t:if>
+					</t:if>
+				</div>
+				
+			</div>
+		</t:if>
+	</div>
+</t:container>

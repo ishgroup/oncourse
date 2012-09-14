@@ -2920,7 +2920,7 @@
 	<obj-relationship name="payment" source="PaymentTransaction" target="PaymentIn" deleteRule="Nullify" db-relationship-path="payment"/>
 	<obj-relationship name="college" source="Preference" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="Product" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="productItems" source="Product" target="Voucher" deleteRule="Deny" db-relationship-path="productItems"/>
+	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="college" source="ProductItem" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="product" source="ProductItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>

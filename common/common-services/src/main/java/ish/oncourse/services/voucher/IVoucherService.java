@@ -11,6 +11,8 @@ import java.util.List;
 public interface IVoucherService {
 	List<VoucherProduct> getAvailableVoucherProducts();
 	
+	List<VoucherProduct> getAvailableVoucherProducts(Integer startDefault, Integer rowsDefault);
+	
 	List<Voucher> getAvailableVouchersForUser(final Contact contact);
 	
 	Voucher getVoucherByCode(final String code);
@@ -18,5 +20,7 @@ public interface IVoucherService {
 	PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Contact payer, final Contact owner);
 	
 	List<VoucherProduct> loadByIds(Object... ids);
+	
+	VoucherProduct loadAvailableVoucherProductById(Long id);
 
 }

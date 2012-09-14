@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.EnrolCourses;
+import ish.oncourse.enrol.utils.EnrolCoursesModel;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 
@@ -17,7 +18,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 
 public class EnrolmentListItem {
 
-    private static final Logger LOGGER = Logger.getLogger(EnrolmentListItem.class);
+    static final Logger LOGGER = Logger.getLogger(EnrolmentListItem.class);
 	@InjectPage
 	private EnrolCourses enrolCourses;
 
@@ -38,12 +39,15 @@ public class EnrolmentListItem {
 
 	@Property
 	private Enrolment enrolment;
+	
+	private EnrolCoursesModel getModel() {
+		return enrolCourses.getController().getModel();
+	}
 
 	@SetupRender
 	void beforeRender() {
-		courseClass = enrolCourses.getController().getModel().getClassesToEnrol().get(courseClassIndex);
-		//courseClass = enrolCourses.getCourseClasses().get(courseClassIndex);
-		enrolment = enrolCourses.getController().getModel().getEnrolments()[studentIndex][courseClassIndex];
+		courseClass = getModel().getClassesToEnrol().get(courseClassIndex);
+		enrolment = getModel().getEnrolments()[studentIndex][courseClassIndex];
 		dateFormat = new SimpleDateFormat("EEE d MMM yy h:mm a");
 
 		TimeZone classTimeZone = courseClass.getClassTimeZone();

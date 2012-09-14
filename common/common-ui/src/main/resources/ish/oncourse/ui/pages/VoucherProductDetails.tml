@@ -1,0 +1,7 @@
+<html t:type="ui/internal/pagestructure" title="${voucherProductDetailsTitle}" bodyId="literal:DetailsPage" bodyClass="literal:internal-page"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if t:test="voucherProduct">
+		<span t:type="ui/voucherproductitem" voucherProduct="voucherProduct" isList="false"></span>
+	<p:else>The requested voucher product is not found.</p:else>
+	</t:if>
+</html>

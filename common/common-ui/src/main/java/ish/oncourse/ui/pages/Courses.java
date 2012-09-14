@@ -235,7 +235,6 @@ public class Courses {
 	}
 
 	private static int getIntParam(String s, int def) {
-
 		return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
 	}
 

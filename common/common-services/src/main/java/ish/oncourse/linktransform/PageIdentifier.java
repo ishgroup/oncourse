@@ -11,9 +11,17 @@ public enum PageIdentifier {
 	 */
 	Courses("/courses(/(.+)*)*", "ui/Courses"),
 	/**
-	 * course/ABC Show course detail for the cource with code ABC
+	 * Show voucher products list page, no filtering available, only pagination
+	 */
+	VoucherProducts("/voucherproducts(/(.+)*)*", "ui/VoucherProducts"),
+	/**
+	 * course/ABC Show course detail for the course with code ABC
 	 */
 	Course("/course/((\\w|\\s)+)(/)?", "ui/CourseDetails"),
+	/**
+	 * Voucher product detail for voucher product with provided id
+	 */
+	VoucherProduct("/voucherproduct/(\\d+)(/)?", "ui/VoucherProductDetails"),
 	/**
 	 * class/ABC-123 Show the class detail for the CourseClass with code ABC-123
 	 */
