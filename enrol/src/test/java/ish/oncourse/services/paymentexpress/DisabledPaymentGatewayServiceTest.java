@@ -1,5 +1,6 @@
 package ish.oncourse.services.paymentexpress;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
@@ -46,7 +47,14 @@ public class DisabledPaymentGatewayServiceTest {
 	 */
 	@Test
 	public void performGatewayOperationTest() {
-		gatewayService.performGatewayOperation(payment);
+		boolean illegalThrown = false;
+		try {
+			gatewayService.performGatewayOperation(payment);
+		}
+		 catch (IllegalArgumentException e) {
+			illegalThrown=true;
+		}
+		assertTrue("DisabledPaymentGatewayService should throw an exception for this call", illegalThrown);
 		verify(payment, never()).succeed();
 		verify(payment, never()).failPayment();
 	}
