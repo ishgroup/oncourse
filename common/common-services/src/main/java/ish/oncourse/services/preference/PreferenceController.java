@@ -523,7 +523,8 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));
 		} catch (Exception e) {
-			return false;
+            LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
+            return false;
 		}
 	}
 	
@@ -543,7 +544,8 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS, false));
 		} catch (Exception e) {
-			return false;
+            LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS), e);
+            return false;
 		}
 	}
 	
@@ -555,7 +557,8 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false));
 		} catch (Exception e) {
-			return false;
+            LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_COURSE), e);
+            return false;
 		}
 	}
 	
@@ -567,7 +570,8 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false));
 		} catch (Exception e) {
-			return false;
+            LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE), e);
+            return false;
 		}
 	}
 	
@@ -587,6 +591,7 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return PaymentGatewayType.valueOf(getValue(PAYMENT_GATEWAY_TYPE, false));
 		} catch(Exception e) {
+            LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
 			return PaymentGatewayType.DISABLED;
 		}
 	}

@@ -6,16 +6,13 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.utils.PaymentInAbandonUtil;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
+
+import java.util.*;
 
 /**
  * Job to abandon (means fail enrolments and creating refunds) not
@@ -64,7 +61,8 @@ public class PaymentInExpireJob implements Job {
 
 			for (PaymentIn p : expiredPayments) {
 				PaymentInAbandonUtil.abandonPaymentReverseInvoice(p);
-			}
+                p.setStatusNotes("Payment was expired.");
+            }
 			logger.debug("PaymentInExpireJob finished.");
 
 		} catch (Exception e) {

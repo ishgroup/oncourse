@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
+        >
 <head>
     <meta charset="utf-8"/>
     <title>${message:headerTitle}</title>
-    <t:if test="processingPayment">
+    <t:if test="showProcessing">
     	<meta http-equiv="refresh" content="3"/>
     </t:if>
     <meta name="keywords" content=""/>
@@ -34,18 +34,22 @@
 	        </div>
 	        
 	    </div>
-	    <t:if test="showPaymentForm">
+        <t:if test="illegalState">
+            <div class="pay-fail">
+                <h2 class="page-title">You try to use a few browser tabs to process the payment.</h2>
+            </div>
+        </t:if>
+	    <t:if test="showForm">
 			<span t:id="paymentForm" t:type="PaymentForm" payment="payment"/>
     	</t:if>
     	<t:if test="showResult">
 			<t:PaymentResult t:id="result" payment="payment"/>
     	</t:if>
-    	<t:if test="processingPayment">
+    	<t:if test="showProcessing">
 			<div class="pay-form">
 				<div class="pay-process">
 					<h2 class="page-title">Payment is now being processed against the bank. Please wait...</h2>
 					<p>This page will update automatically, or <a href="${refreshLink}">click here</a> to check the payment status now.</p>
-					<t:if test="processigComplete"/>
 				</div>
 			</div>
 		</t:if>

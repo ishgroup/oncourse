@@ -20,12 +20,11 @@ public class DisabledPaymentGatewayService implements IPaymentGatewayService {
 	 */
 	@Override
 	public void performGatewayOperation(PaymentIn payment) {
-		// TODO may be throw some exception here?
+		throw new IllegalArgumentException();
 	}
 
 	@Override
 	public void performGatewayOperation(PaymentOut paymentOut) {
-		// TODO Auto-generated method stub
-		
-	}
+        throw new IllegalArgumentException();
+    }
 }

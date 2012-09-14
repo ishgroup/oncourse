@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	 <div class="pay-form">
         <t:form t:id="paymentDetailsForm">
         
             <div class="${cardTypeClass}">
                 <label>Card Type<sup>*</sup></label>
                    <span class="pay-form-cardtype">
-                   	<t:radiogroup t:id="cardTypeField" value="payment.creditCardType">
+                   	<t:radiogroup t:id="cardTypeField" value="paymentIn.creditCardType">
                    	    <t:radio t:id="masterCard" class="radio"/><t:label for="masterCard"/>
                    	    <t:radio t:id="visa" class="radio"/><t:label for="visa"/>
                    	    <t:if test="preferenceService.servicesAmexEnabled">
@@ -21,7 +21,7 @@
             <div class="${cardNameInputClass}">
                 <label>${message:nameOnCard}<sup>*</sup></label>
                    <span class="pay-form-control">
-                       <t:textfield t:id="cardName" type="text" maxlength="500" class="field" value="payment.creditCardName"/>
+                       <t:textfield t:id="cardName" type="text" maxlength="500" class="field" value="paymentIn.creditCardName"/>
                    </span>
                    <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardName"/>
             </div>
@@ -29,7 +29,7 @@
             <div class="${cardNumberInputClass}">
                 <label>${message:cardNumber}<sup>*</sup></label>
                    <span class="pay-form-control">
-                   	<t:textfield value="payment.creditCardNumber" class ="field" clientId="cardnumber" t:id="cardNumber" maxlength="20" />
+                   	<t:textfield value="paymentIn.creditCardNumber" class ="field" clientId="cardnumber" t:id="cardNumber" maxlength="20" />
                    </span>
                    <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardNumber"/>
             </div>
@@ -45,7 +45,7 @@
             <div class="${cardcvvInputClass}">
                 <label>${message:cvv}<sup>*</sup></label>
                    <span class="pay-form-control">
-                   	<t:textfield value="payment.creditCardCVV" class ="field small" 
+                   	<t:textfield value="paymentIn.creditCardCVV" class ="field small"
 									clientId="cardcvv" t:id="cardcvv" maxlength="4" />
                    </span>
                    <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardcvv"/>

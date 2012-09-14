@@ -1,105 +1,82 @@
 package ish.oncourse.webservices.components;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import ish.common.types.PaymentStatus;
-import ish.oncourse.model.PaymentIn;
 import ish.oncourse.webservices.pages.Payment;
+import ish.oncourse.webservices.utils.PaymentProcessController;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction.*;
+
 public class PaymentResult {
 
-	@Parameter
-	private PaymentIn payment;
 
-	private boolean isTryOtherCard;
-	private boolean isAbandonReverse;
-	private Exception unexpectedException;
+    private PaymentProcessController.PaymentAction paymentAction;
 
 	@Inject
 	private ComponentResources componentResources;
-	
+
 	@Inject
 	private Request request;
-	
-	public boolean isPaymentFailed() {
-		return isFailedPayment(payment) && !Payment.isPaymentCanceled(payment);
-	}
-	
-	public static boolean isFailedPayment(final PaymentIn paymentIn) {
-		return PaymentStatus.STATUSES_FAILED.contains(paymentIn.getStatus());
-	}
-	
-	public static boolean isNewPayment(final PaymentIn paymentIn) {
-		return PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus()) || PaymentStatus.CARD_DETAILS_REQUIRED.equals(paymentIn.getStatus());
-	}
-	
-	public static boolean isSuccessPayment(final PaymentIn paymentIn) {
-		return PaymentStatus.SUCCESS.equals(paymentIn.getStatus());
-	}
+
+    @InjectPage
+    private Payment paymentPage;
+
+
+    public boolean isError() {
+        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.ERROR);
+    }
+
+    public boolean isPaymentFailed() {
+        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.FAILED);
+ 	}
 	
 	public boolean isNotProcessed() {
-		return isNewPayment(payment);
-	}
+        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.NOT_PROCESSED);
+    }
 	
 	public boolean isPaymentSuccess() {
-		return isSuccessPayment(payment);
-	}
+        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.SUCCESS);
+    }
 
-	public boolean isPaymentStatusNodeNullTransactionResponse() {
-		return "Null transaction response".equals(payment.getStatusNotes());
-	}
-
-	private void cleanSelections() {
-		this.isTryOtherCard = this.isAbandonReverse = false;
+   public boolean isPaymentStatusNodeNullTransactionResponse() {
+		return "Null transaction response".equals(paymentPage.getPaymentProcessController().getPaymentIn().getStatusNotes());
 	}
 
 	@OnEvent(component = "tryOtherCard", value = "selected")
 	void submitTryOtherCard() {
-		cleanSelections();
-		this.isTryOtherCard = true;
+        paymentAction = TRY_ANOTHER_CARD;
 	}
 
 	@OnEvent(component = "abandonReverse", value = "selected")
 	void submitAbandonAndReverse() {
-		cleanSelections();
-		this.isAbandonReverse = true;
-	}
+        paymentAction = ABANDON_PAYMENT;
+    }
+
+    @OnEvent(component = "abandonAndKeep", value = "selected")
+    void  submitAbandonAndKeep()
+    {
+        paymentAction = ABANDON_PAYMENT_KEEP_INVOICE;
+    }
 
 	@OnEvent(component = "paymentResultForm", value = "success")
 	Object submitted() {
 		Payment paymentPage = (Payment) componentResources.getPage();
-		if (isTryOtherCard) {
-			paymentPage.tryOtherCard();
-		} else if (isAbandonReverse) {
-			paymentPage.abandonPaymentReverseInvoice();
-		} else {
-			paymentPage.abandonPaymentKeepInvoice();
-		}
-		try {
-			return new URL(Payment.HTTPS_PROTOCOL  + request.getServerName() + request.getContextPath() + Payment.PAYMENT_PAGE_NAME 
-				+ request.getSession(false).getAttribute(Payment.SESSION_ID_ATTRIBUTE));
-		} catch (MalformedURLException e) {
-			return null;
-		}
-	}
-
-	/**
-	 * @return the unexpectedException
-	 */
-	public Exception getUnexpectedException() {
-		return unexpectedException;
-	}
-
-	/**
-	 * @param unexpectedException the unexpectedException to set
-	 */
-	public void setUnexpectedException(Exception unexpectedException) {
-		this.unexpectedException = unexpectedException;
+        switch (paymentAction)
+        {
+            case TRY_ANOTHER_CARD:
+                paymentPage.getPaymentProcessController().processAction(TRY_ANOTHER_CARD);
+                break;
+            case ABANDON_PAYMENT:
+                paymentPage.getPaymentProcessController().processAction(ABANDON_PAYMENT);
+            case ABANDON_PAYMENT_KEEP_INVOICE:
+                this.paymentPage.getPaymentProcessController().processAction(ABANDON_PAYMENT_KEEP_INVOICE);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        return this.paymentPage.getPageURL();
 	}
 }
