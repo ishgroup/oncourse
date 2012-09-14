@@ -2,10 +2,6 @@ package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.utils.EnrolCoursesController;
-import ish.oncourse.enrol.utils.EnrolCoursesModel;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.discount.IDiscountService;
 
 import org.apache.log4j.Logger;
@@ -13,8 +9,6 @@ import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-import java.util.List;
 
 public class EnrolmentPaymentProcessing {
 
@@ -59,36 +53,8 @@ public class EnrolmentPaymentProcessing {
 	/**
 	 * @return the controller
 	 */
-	public EnrolCoursesController getController() {
+	EnrolCoursesController getController() {
 		return enrolCourses.getController();
 	}
-	
-	/*public EnrolCoursesModel getModel() {
-		return getController().getModel();
-	}
-
-	public void setEnrolments(List<Enrolment> enrolments) {
-		getModel().setEnrolmentsList(enrolments);
-	}
-
-	public void setPayment(PaymentIn payment) {
-		getModel().setPayment(payment);
-	}
-
-	public void setInvoice(Invoice invoice) {
-		getModel().setInvoice(invoice);
-	}
-
-	public PaymentIn getPayment() {
-		return getModel().getPayment();
-	}
-
-	public Invoice getInvoice() {
-		return getModel().getInvoice();
-	}
-
-	public List<Enrolment> getEnrolments() {
-		return getModel().getEnrolmentsList();
-	}*/
 
 }
