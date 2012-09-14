@@ -1,6 +1,8 @@
 package ish.oncourse.services.voucher;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -102,5 +104,37 @@ public class VoucherService implements IVoucherService {
 	public PaymentIn preparePaymentInForVoucherPurchase(VoucherProduct voucherProduct, Money voucherPrice, Contact payer, Contact owner) {
 		PaymentIn payment = new PurchaseVoucherBuilder(voucherProduct, voucherPrice, payer, owner).prepareVoucherPurchase();
 		return payment;
+	}
+	
+	/**
+     * Add necessary prefetches and assign cache group for course query;
+     *
+     * @param q course query
+     */
+    private static void appyCourseClassCacheSettings(SelectQuery q) {
+
+        // TODO: uncomment when after upgrading to newer cayenne where
+        // https://issues.apache.org/jira/browse/CAY-1585 is fixed.
+
+        /**
+         * q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+         * q.setCacheGroups(CacheGroup.COURSES.name());
+         **/
+
+        q.addPrefetch(VoucherProduct.REDEMPTION_COURSES_PROPERTY);
+        q.addPrefetch(VoucherProduct.PRICE_EX_TAX_PROPERTY);
+        q.addPrefetch(VoucherProduct.PRODUCT_ITEMS_PROPERTY);
+    }
+	
+    @Override
+	@SuppressWarnings("unchecked")
+	public List<VoucherProduct> loadByIds(Object... ids) {
+		if (ids.length == 0) {
+            return Collections.emptyList();
+        }
+        List<Object> params = Arrays.asList(ids);
+        SelectQuery q = new SelectQuery(VoucherProduct.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, params));
+        appyCourseClassCacheSettings(q);
+        return cayenneService.sharedContext().performQuery(q);
 	}
 }

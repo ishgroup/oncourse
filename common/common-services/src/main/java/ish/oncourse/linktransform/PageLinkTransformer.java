@@ -244,7 +244,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 						cookiesService.removeValueFromCookieCollection(key, value);
 					}
 				}
-				if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY)) {
+				if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY) || key.equalsIgnoreCase(VoucherProduct.SHORTLIST_COOKIE_KEY)) {
 					return new PageRenderRequestParameters(PageIdentifier.Shortlist.getPageName(), new EmptyEventContext(), false);
 				}
 				if (key.equalsIgnoreCase(Discount.PROMOTIONS_KEY)) {

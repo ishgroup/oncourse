@@ -16,5 +16,7 @@ public interface IVoucherService {
 	Voucher getVoucherByCode(final String code);
 	
 	PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Contact payer, final Contact owner);
+	
+	List<VoucherProduct> loadByIds(Object... ids);
 
 }

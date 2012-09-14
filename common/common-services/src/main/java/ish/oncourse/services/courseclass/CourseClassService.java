@@ -21,14 +21,11 @@ public class CourseClassService implements ICourseClassService {
 
     private static final Logger logger = Logger.getLogger(CourseClassService.class);
 
-    @Inject
-    private ICayenneService cayenneService;
+    private final ICayenneService cayenneService;
 
-    @Inject
-    private IWebSiteService webSiteService;
+    private final IWebSiteService webSiteService;
     
-    public CourseClassService() {}
-
+    @Inject
 	public CourseClassService(ICayenneService cayenneService, IWebSiteService webSiteService) {
 		this.cayenneService = cayenneService;
 		this.webSiteService = webSiteService;
