@@ -5,6 +5,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.common.types.VoucherStatus;
 import ish.common.util.ExternalValidation;
 import ish.math.Money;
 import ish.oncourse.model.auto._PaymentIn;
@@ -379,8 +380,27 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		} else {
 			LOG.error(String.format("Can not abandon paymentIn:%s, since it doesn't have paymentInLines.", getId()));
 		}
+		
+		revertTheVoucherRedemption();
 
 		return null;
+	}
+	
+	private void revertTheVoucherRedemption() {
+		//also check that vouchers linked with the payment to avoid the state when vouchers will be partially used with abandoned payment. 
+		Voucher voucherForRolback = getRedeemedVoucher();
+		if (voucherForRolback != null && VoucherStatus.REDEEMED.equals(voucherForRolback.getStatus())) {
+			List<Voucher> linkedVouchers = voucherForRolback.getInvoiceLine().getVouchers();
+			for (Voucher voucher : linkedVouchers) {
+				//we need to change the status of active voucher to canceled and return active status for linked voucher
+				if (VoucherStatus.ACTIVE.equals(voucher)) {
+					voucher.setStatus(VoucherStatus.CANCELLED);
+				}
+				//if (VoucherStatus.REDEEMED)
+			}
+			//and change the status of voucher used for redemption to active
+			voucherForRolback.setStatus(VoucherStatus.ACTIVE);
+		}
 	}
 
 	/**
@@ -419,6 +439,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				}
 			}
 		}
+		
+		revertTheVoucherRedemption();
 	}
 
 	/**
