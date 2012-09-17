@@ -345,7 +345,10 @@ public class EnrolCoursesController {
         		}
             }
         }
-
+    	//initially set the first contact as default payer
+    	if (getModel().getContact() == null) {
+    		getModel().setContact(getModel().getContacts().get(0));
+    	}
         if (getModel().getInvoice() == null) {
             getModel().setInvoice(getContext().newObject(Invoice.class));
             // fill the invoice with default values

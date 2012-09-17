@@ -122,9 +122,6 @@ public class EnrolmentPaymentEntry {
 	@InjectPage
 	private EnrolCourses enrolCourses;
 
-	//@Parameter
-	//private List<Enrolment> enrolments;
-
 	@SuppressWarnings("all")
 	private final ReentrantLock lock = new ReentrantLock();
 
@@ -189,7 +186,17 @@ public class EnrolmentPaymentEntry {
 			localPayers.add((Contact) getModel().getPayment().getObjectContext().localObject(payer.getObjectId(), payer));
 		}
 		getModel().setContacts(localPayers);
-		getModel().getPayment().setContact(getModel().getContacts().get(0));
+		if (!getModel().getContacts().isEmpty()) {
+			if (getModel().getContact() == null) {
+				getModel().setContact(getModel().getContacts().get(0));//old payer implementation
+			}
+		} else {
+			LOGGER.error("No payers for some reason exist for payment!");
+			getModel().setContact(null);
+		}
+		Contact payer = (Contact) getModel().getPayment().getObjectContext().localObject(getModel().getContact().getObjectId(), 
+			getModel().getContact());
+		getModel().getPayment().setContact(payer);
 	}
 
 	public boolean isZeroPayment() {

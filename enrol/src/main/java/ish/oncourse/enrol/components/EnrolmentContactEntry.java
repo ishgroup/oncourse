@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.PaymentStatus;
+import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
@@ -186,7 +187,7 @@ public class EnrolmentContactEntry {
 				}
 				completeInTransactionPayments(contact);
 				studentService.addStudentToShortlist(contact);
-				nextPage = "EnrolCourses";
+				nextPage = EnrolCourses.class.getSimpleName();
 			} else {
 				this.contact = context.newObject(Contact.class);
 

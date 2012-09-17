@@ -22,6 +22,8 @@ public class EnrolCoursesModel {
     private List<CourseClass> classesToEnrol;
 	
     private List<Contact> contacts;
+    
+    private List<Contact> actualContacts;
 	
     private Contact contact;
 	
@@ -44,6 +46,22 @@ public class EnrolCoursesModel {
 	
 	//EnrolmentPaymentResult property
 	private Transaction transaction;
+	
+	
+
+	/**
+	 * @return the actualContacts
+	 */
+	public synchronized List<Contact> getActualContacts() {
+		return actualContacts;
+	}
+
+	/**
+	 * @param actualContacts the actualContacts to set
+	 */
+	public synchronized void setActualContacts(List<Contact> actualContacts) {
+		this.actualContacts = actualContacts;
+	}
 
 	/**
 	 * @return the classesToEnrol
