@@ -23,6 +23,9 @@ public class PaymentProcessController {
 
     private static final Logger LOGGER = Logger.getLogger(PaymentProcessController.class);
 
+    /**
+     * Can be null. in this way payment gateway processing will be run form the same thread.
+     */
     private ParallelExecutor parallelExecutor;
     private IPaymentGatewayService paymentGatewayService;
     private PaymentIn paymentIn;
@@ -95,9 +98,9 @@ public class PaymentProcessController {
         //reset illegalState for every correct state changing
         illegalState = false;
         currentState = state;
-        if (state.equals(PROCESSING_PAYMENT)) {
+        if (state.equals(PROCESSING_PAYMENT) && parallelExecutor != null) {
             stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
-        } else if (stackedPaymentMonitorFuture != null) {
+        } else if (stackedPaymentMonitorFuture != null && parallelExecutor != null) {
             stackedPaymentMonitorFuture.cancel(true);
             stackedPaymentMonitorFuture = null;
         }
@@ -130,12 +133,23 @@ public class PaymentProcessController {
 
     private void processPayment() {
         changeProcessState(PROCESSING_PAYMENT);
-        paymentProcessFuture = parallelExecutor.invoke(new ProcessPaymentInvokable(this));
+        if (parallelExecutor != null)
+        {
+            paymentProcessFuture = parallelExecutor.invoke(new ProcessPaymentInvokable(this));
+        }
+        else
+        {
+            performGatewayOperation();
+        }
+
     }
 
     private void updatePaymentGatewayStatus() {
         try {
-            PaymentIn paymentIn = paymentProcessFuture.get(100, TimeUnit.MILLISECONDS);
+            if (parallelExecutor != null)
+            {
+                paymentProcessFuture.get(100, TimeUnit.MILLISECONDS);
+            }
             if (paymentIn.getStatus().equals(PaymentStatus.SUCCESS)) {
                 changeProcessState(SUCCESS);
             } else {

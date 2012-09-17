@@ -28,7 +28,11 @@ public class ServiceTest {
 		tester = new PageTester(appPackage, appName, contextPath, moduleClasses);
 	}
 
-	protected <T> T getService(Class<T> serviceInterface) {
+    protected <T> T getService(String serviceId, Class<T> serviceInterface) {
+        return tester.getRegistry().getService(serviceId, serviceInterface);
+    }
+
+    protected <T> T getService(Class<T> serviceInterface) {
 		return tester.getRegistry().getService(serviceInterface);
 	}
 	
