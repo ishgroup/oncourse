@@ -13,12 +13,12 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-public class VoucherProducts {
+public class Products {
 	@Inject
 	@Property
 	private Request request;
 	
-	static final Logger LOGGER = Logger.getLogger(VoucherProducts.class);
+	static final Logger LOGGER = Logger.getLogger(Products.class);
 	private static final int START_DEFAULT = 0;
 	private static final int ROWS_DEFAULT = 10;
 	

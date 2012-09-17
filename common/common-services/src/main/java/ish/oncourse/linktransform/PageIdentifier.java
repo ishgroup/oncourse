@@ -13,7 +13,7 @@ public enum PageIdentifier {
 	/**
 	 * Show voucher products list page, no filtering available, only pagination
 	 */
-	VoucherProducts("/voucherproducts(/(.+)*)*", "ui/VoucherProducts"),
+	VoucherProducts("/products(/(.+)*)*", "ui/Products"),
 	/**
 	 * course/ABC Show course detail for the course with code ABC
 	 */
