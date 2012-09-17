@@ -1,0 +1,38 @@
+dependencies {
+	compile project(':common')
+	compile project(':waCommon')
+
+	compile 'commons-lang:commons-lang:2.6'
+	compile 'org.apache.cayenne:cayenne-client:3.1B1'
+	compile 'org.apache.cayenne:cayenne-tools:3.1B1'
+	compile 'foxtrot:foxtrot-core:4.0'
+	compile 'com.miglayout:miglayout:4.0'
+	compile 'com.migcalendar:migcalendar:6.9.1'
+	compile 'org.swinglabs:swing-layout:1.0.3'
+	compile ('net.sf.jasperreports:jasperreports:4.6.0') {
+		exclude group: 'org.apache.poi', module: 'poi-ooxml'
+	}
+}
+
+jar {
+	manifest {
+		from sharedManifest
+		attributes 'mainClass': 'ish.oncourse.AngelApp'
+	}
+}
+
+compileJava {
+	doFirst {
+		ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.compile.asPath) 
+
+		//client-side classes
+		ant.cgen(	map:"${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml", 
+					destDir:"${projectDir}/src/main/java", 
+					superPkg:"ish.oncourse.cayenne.glue",
+					template:"${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-subclass.vm",
+					superTemplate:"${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-superclass.vm",
+					makepairs:"true",
+					client:"true",
+					mode:"all")
+	}
+}
