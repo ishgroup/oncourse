@@ -4,12 +4,14 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.Voucher;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.utils.PaymentInAbandonUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -96,6 +98,9 @@ public class PaymentInExpireJob implements Job {
 		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, expr);
 		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);
 		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.INVOICE_PROPERTY);
+		notCompletedQuery.addPrefetch(PaymentIn.REDEEMED_VOUCHER_PROPERTY);
+		
+		notCompletedQuery.addOrdering(PaymentIn.REDEEMED_VOUCHER_PROPERTY + "." + Voucher.ID_KEY_PROPERTY, SortOrder.DESCENDING);
 		
 		notCompletedQuery.setFetchLimit(FETCH_LIMIT);
 
