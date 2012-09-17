@@ -1,0 +1,53 @@
+buildscript {
+	repositories {
+		maven {
+			url 'http://repo.ish.com.au/content/groups/public'
+		}
+	}
+	dependencies {
+		classpath 'org.jboss.jdocbook:gradle-jdocbook:1.2.1'
+	}
+}
+
+apply plugin: "base"
+
+apply plugin: "jdocbook"
+
+jdocbook {
+
+	format('html') {
+		finalName = "index.html"
+		// stylesheet = "file:stylesheets/html.xsl"
+		stylesheet = "classpath:/xslt/org/hibernate/jdocbook/xslt/xhtml.xsl"
+	}
+	format('pdf') {
+		//stylesheet = "file:stylesheets/pdf.xsl"
+		stylesheet = "classpath:/xslt/org/hibernate/jdocbook/xslt/pdf.xsl"
+	}
+
+		masterLanguage = ""
+		masterSourceDocumentName = "index.xml"
+		baseDirName = "design/src"
+		translations = []
+
+//	manual {
+//		masterLanguage = "" // disable translations
+//		masterSourceDocumentName = "index.xml"
+//		baseDirName = "manual/src"
+//		translations = []
+//	}
+
+//	design {
+//		masterLanguage = ""
+//		masterSourceDocumentName = "index.xml"
+//		baseDirName = "design/src"
+//		translations = []
+//	}
+
+//	web {
+//		masterLanguage = ""
+//		masterSourceDocumentName = "index.xml"
+//		baseDirName = "web/src"
+//		translations = []
+//	}
+}
