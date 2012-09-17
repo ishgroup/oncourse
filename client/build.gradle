@@ -12,6 +12,10 @@ dependencies {
 	compile ('net.sf.jasperreports:jasperreports:4.6.0') {
 		exclude group: 'org.apache.poi', module: 'poi-ooxml'
 	}
+	
+	testCompile project(':server')
+	
+	testCompile 'dbunit:dbunit:2.4.8'
 }
 
 jar {
