@@ -339,7 +339,7 @@ public class VoucherRedemptionHelper {
 	 * @author vdavidovich
 	 *
 	 */
-	class VoucherComparator implements Comparator<Voucher> {
+	public static class VoucherComparator implements Comparator<Voucher> {
 
 		@Override
 		public int compare(Voucher voucher1, Voucher voucher2) {
