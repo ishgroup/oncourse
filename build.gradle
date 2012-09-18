@@ -1,7 +1,3 @@
-project.ext {
-	svnversion = svnVersion()
-}
-
 buildscript {
 	repositories {
 		maven {
@@ -18,6 +14,7 @@ buildscript {
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
+	apply plugin: 'release'
 
 	repositories {
 		maven {
@@ -40,19 +37,13 @@ allprojects {
 		compile 'log4j:log4j:1.2.17'
 	}
 
+	release {
+		failOnSnapshotDependencies = true
+	}
+
 	ext.sharedManifest = manifest {
-		attributes('SCM-Revision': project.svnversion, 'Release-Version': version)
+		attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
 	}
-
-	version = 4.0
-
-	if(!System.properties.'release') {
-		version = version + '-SNAPSHOT'
-		logger.lifecycle("Building ${project.name} ${version} (build: ${svnversion})")
-	} else {
-		logger.lifecycle("Building ${project.name} release ${version} (build: ${svnversion})")
-	}
-
 
 	test {
 		systemProperties 'java.awt.headless': 'true'
@@ -60,29 +51,12 @@ allprojects {
 		jvmArgs "-XX:MaxPermSize=256m"
 	}
 }
-
-String svnVersion() {
-	try {
-		new ByteArrayOutputStream().withStream { os ->
-				def result = exec {
-					executable = 'svnversion'
-					standardOutput = os
-				}
-				return os.toString().trim()
-			}
-	} catch (Exception e) {
-		return "unavailable"
-	}
-}
 	
 configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) { 
-	apply plugin: 'svnrelease'
-	release.failOnSnapshotDependencies = true
+
 	project.ext {
 		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
 	}
-
-	version = 4.0 //TODO: don't know why this needs to be here as well as in allProjects
 
 	task jarAll(dependsOn: configurations.default.allArtifacts.buildDependencies, type: Jar) {
 		description = 'Creates a shaded/uberjar/fatjar of the application.'

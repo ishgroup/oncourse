@@ -49,22 +49,22 @@ jar {
 	}
 }
 
-task test_mssql(type: Test){
-	systemProperty 'testDatabaseUri', 'testDatabaseUriMssql'
+task test_mssql(type: Test) {
+	systemProperty 'testDatabaseUri', testDatabaseUriMssql
 	exclude '**/Derby*'
 	exclude '**/Mysql*'
 	include '**/Mssql*'
 }
 
 task test_mysql(type: Test) {
-	systemProperty 'testDatabaseUri', 'testDatabaseUriMysql'
+	systemProperty 'testDatabaseUri', testDatabaseUriMysql
 	exclude '**/Derby*'
 	include '**/Mysql*'
 	exclude '**/Mssql*'
 }
 
 test {
-	systemProperty 'testDatabaseUri', 'jdbc:derby:memory:onCourse;create=true'
+	systemProperty 'testDatabaseUri', testDatabaseUriDerby
 	exclude '**/Mysql*'
 	exclude '**/Mssql*'
 	include '**/Derby*'
