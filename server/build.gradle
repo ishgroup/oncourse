@@ -57,19 +57,16 @@ test {
 			systemProperty 'testDatabaseUri', testDatabaseUriDerby
 			exclude '**/db/Mysql*'
 			exclude '**/db/Mssql*'
-			include '**/db/Derby*'
 			break
 
 		case "mssql-test":
 			systemProperty 'testDatabaseUri', testDatabaseUriMssql
 			exclude '**/db/Mysql*'
-			include '**/db/Mssql*'
 			exclude '**/db/Derby*'
 			break
 
 		case "mysql-test":
 			systemProperty 'testDatabaseUri', testDatabaseUriMysql
-			include '**/db/Mysql*'
 			exclude '**/db/Mssql*'
 			exclude '**/db/Derby*'
 			break
