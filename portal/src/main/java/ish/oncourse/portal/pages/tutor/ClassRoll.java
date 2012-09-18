@@ -1,5 +1,6 @@
 package ish.oncourse.portal.pages.tutor;
 
+import ish.common.types.AttendanceType;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.annotations.UserRole;
@@ -138,11 +139,12 @@ public class ClassRoll {
 	}
 	
 	public boolean isAttended() {
-		return attendance.getAttendanceType() == 1;
+		return AttendanceType.ATTENDED.getDatabaseValue().equals(attendance.getAttendanceType());
 	}
 	
 	public boolean isAbsent() {
-		return (attendance.getAttendanceType() == 2 || attendance.getAttendanceType() == 3);
+		return (AttendanceType.DID_NOT_ATTEND_WITH_REASON.getDatabaseValue().equals(attendance.getAttendanceType())
+                || AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON.getDatabaseValue().equals(attendance.getAttendanceType()));
 	}
 	
 	public boolean getHideDetails() {
@@ -184,11 +186,11 @@ public class ClassRoll {
                 if (isInCourseClassOrSessions) {
 
                     if ("attended".equals(action)){
-                        attandance.setAttendanceType(1);
+                        attandance.setAttendanceType(AttendanceType.ATTENDED.getDatabaseValue());
                         attandance.getObjectContext().commitChanges();
                         return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
                     } else if ("absent".equals(action)) {
-                        attandance.setAttendanceType(2);
+                        attandance.setAttendanceType(AttendanceType.DID_NOT_ATTEND_WITH_REASON.getDatabaseValue());
                         attandance.getObjectContext().commitChanges();
                         return new TextStreamResponse(PortalUtils.CONTENT_TYPE, "SUCCESS");
                     }
