@@ -17,7 +17,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = '1.14'
+version = '2.0'
 group = 'no.entitas.gradle'
 
 repositories {
@@ -104,6 +104,15 @@ defaultProject = {
                 role 'Developer'
             }
             timezone '+1'
+        }
+        developer {
+            id 'ari'
+            name 'Ari Maniatis'
+            email 'ari@ish.com.au'
+            roles {
+                role 'Developer'
+            }
+            timezone '+10'
         }
     }
 }
