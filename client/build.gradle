@@ -27,6 +27,7 @@ jar {
 
 compileJava {
 	doFirst {
+		logger.lifecycle("Running cgen to create Cayenne entity files.")
 		ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.compile.asPath) 
 
 		//client-side classes
