@@ -49,25 +49,31 @@ jar {
 	}
 }
 
-task test_mssql(type: Test) {
-	systemProperty 'testDatabaseUri', testDatabaseUriMssql
-	exclude '**/Derby*'
-	exclude '**/Mysql*'
-	include '**/Mssql*'
-}
-
-task test_mysql(type: Test) {
-	systemProperty 'testDatabaseUri', testDatabaseUriMysql
-	exclude '**/Derby*'
-	include '**/Mysql*'
-	exclude '**/Mssql*'
-}
-
 test {
-	systemProperty 'testDatabaseUri', testDatabaseUriDerby
-	exclude '**/Mysql*'
-	exclude '**/Mssql*'
-	include '**/Derby*'
+	dbTests = hasProperty('database') ? database : "derby-test"
+
+	switch (dbTests) {
+		case "derby-test":
+			systemProperty 'testDatabaseUri', testDatabaseUriDerby
+			exclude '**/db/Mysql*'
+			exclude '**/db/Mssql*'
+			include '**/db/Derby*'
+			break
+
+		case "mssql-test":
+			systemProperty 'testDatabaseUri', testDatabaseUriMssql
+			exclude '**/db/Mysql*'
+			include '**/db/Mssql*'
+			exclude '**/db/Derby*'
+			break
+
+		case "mysql-test":
+			systemProperty 'testDatabaseUri', testDatabaseUriMysql
+			include '**/db/Mysql*'
+			exclude '**/db/Mssql*'
+			exclude '**/db/Derby*'
+			break
+	}
 }
 
 compileJava () {
