@@ -6,13 +6,7 @@ import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.courseclass.ICourseClassService;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import ish.oncourse.util.FormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -21,6 +15,12 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import static ish.oncourse.util.FormatUtils.*;
 
@@ -55,7 +55,7 @@ public class TimetableJson {
 		int currentDay = -1;
 		
 		for (Session s : sessions) {
-            DateFormat timeFormatter = getDateFormat(DATE_FORMAT_MM_yyyy, s.getTimeZone());
+            DateFormat timeFormatter = FormatUtils.getTimeFormat_h_mm_a(s.getTimeZone());
             DateFormat monthFormatter = getDateFormat(DATE_FORMAT_MMM, s.getTimeZone());
             cal.setTime(s.getStartDate());
 			int day = cal.get(Calendar.DAY_OF_MONTH);
