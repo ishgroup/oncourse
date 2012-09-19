@@ -50,6 +50,14 @@ jar {
 }
 
 test {
+	
+	doFirst {
+		copy {
+			from '$projectDir/build/resources/main/resources/liquibase'
+			into '$workingDir/resources/liquibase'
+		}
+	}
+	
 	dbTests = hasProperty('database') ? database : "derby-test"
 
 	switch (dbTests) {
@@ -70,6 +78,10 @@ test {
 			exclude '**/db/Mssql*'
 			exclude '**/db/Derby*'
 			break
+	}
+	
+	doLast {
+		delete '$workingDir/resources/liquibase'
 	}
 }
 
