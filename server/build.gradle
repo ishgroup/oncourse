@@ -53,8 +53,8 @@ test {
 	
 	doFirst {
 		copy {
-			from '$projectDir/build/resources/main/resources/liquibase'
-			into '$workingDir/resources/liquibase'
+			from "$projectDir/build/resources/main/resources/liquibase"
+			into "$workingDir/resources/liquibase"
 		}
 	}
 	
@@ -81,7 +81,7 @@ test {
 	}
 	
 	doLast {
-		delete '$workingDir/resources/liquibase'
+		delete "$workingDir/resources/liquibase"
 	}
 }
 
