@@ -97,6 +97,8 @@ public class ClassRoll {
         Expression exp = ExpressionFactory.matchDbExp(Session.COURSE_CLASS_PROPERTY, courseClass);
         SelectQuery selectQuery = new SelectQuery(Session.class, exp);
         selectQuery.addOrdering(Session.START_DATE_PROPERTY, SortOrder.ASCENDING);
+        //the prefetch has been added to reload ATTENDANCES every time when we reload the page.
+        selectQuery.addPrefetch(Session.ATTENDANCES_PROPERTY);
         return  (List<Session>) courseClass.getObjectContext().performQuery(selectQuery);
     }
 
