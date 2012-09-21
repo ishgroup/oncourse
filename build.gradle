@@ -360,21 +360,24 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			logger.lifecycle("Creating the Windows installer for $project.name")
 		}
 
-		into file("${buildDir}/packaging/windows")
-		from("${projectDir}/src/packaging/windows/*.nsi")
-
+		from "${projectDir}/src/packaging/windows"
+		include '*.nsi' 
+		include '*.bmp'
+		into "${distsDir}/windows"
+		
 		doLast {
+			logger.lifecycle("Executing makensis for $project.name")
 			exec {
 				executable = "makensis"
-				args = "${distsDir}/windows/server-mui.nsi"
+				args = ["${distsDir}/windows/server-mui.nsi"]
 			}
 			exec {
 				executable = "makensis"
-				args = "${distsDir}/windows/service-mui.nsi"
+				args = ["${distsDir}/windows/service-mui.nsi"]
 			}
 			exec {
 				executable = "makensis"
-				args = "${distsDir}/windows/service64-mui.nsi"
+				args = ["${distsDir}/windows/service64-mui.nsi"]
 			}
 		}
 	}
