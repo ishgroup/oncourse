@@ -210,11 +210,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			from("${projectDir}/src/packaging/unix/")
 			include ("*")
 
-			ant.property(name: '@maxmemoryServer64@', value: project.maxmemoryServer64)
-			ant.property(name: '@project.name@', value: project.name)
-			ant.property(name: '@version@', value: project.version)
-			filter(org.apache.tools.ant.filters.ReplaceTokens, project: ant.antProject)
-
 			from("${libsDir}/${project.name}-${version}-all.jar")
 		}
 	}
@@ -329,6 +324,11 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 		with unixAppFiles
 		into file("${distsDir}/unix")
+		doLast {
+			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@version@", 			value: "${project.version}")
+			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@project.name@", 		value: "${project.name}")
+			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+		}
 	}
 
 	task installer_osx(dependsOn: bundle_osx, type: Copy) {
