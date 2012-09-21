@@ -41,3 +41,54 @@ compileJava {
 					mode:"all")
 	}
 }
+
+project.ext.webstartFiles = copySpec {
+	into('.') {
+		from("${projectDir}/src/packaging/webstart/onCourse.jnlp")
+
+		expand([
+			webstartCodebase: project.webstartCodebase,
+			webstartOncourseServerUri: project.webstartOncourseServerUri,
+			webstartOncourseServerPort: project.webstartOncourseServerPort,
+			webstartOncourseServerUseSSL: project.webstartOncourseServerUseSSL,
+			sourceCompatibility: project.sourceCompatibility,
+			classpath: project.configurations.default.collect{it.name}.sort(),
+			mainJarClasspath : configurations.default.allArtifacts.files.singleFile.name,
+			version: version
+		])
+		
+		from("${projectDir}/src/main/resources/resources") {
+			include '*.ico'
+			include '*.icns'
+		}
+	}
+
+	into('Libraries') {
+		from configurations.default
+		from configurations.default.allArtifacts.files
+		exclude '*-sources.jar'
+		exclude '*-javadoc.jar'
+	}
+}
+
+task installer_webstart(dependsOn: jar, type: Copy) {
+	description "Create the webstart application executable."
+	doFirst {
+		logger.lifecycle("Creating the webstart application executable for $project.name")
+	}
+	with webstartFiles
+	into file("${distsDir}/webstart")
+	doLast {
+			ant.signjar(
+				keystore:				project.jarSigningKeystore, 
+				storepass:				project.jarSigningKeystorePassword,
+				alias:					project.jarSigningAlias, 
+				keypass:				project.jarSigningPassword,
+				lazy: 					"true",
+				preservelastmodified:	"true") {
+					fileset(dir: "${distsDir}/webstart/Libraries/") {
+						include(name: '*.jar')
+					}
+				}
+	}
+}

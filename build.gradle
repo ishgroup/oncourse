@@ -83,37 +83,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	project.ext.webstartFiles = copySpec {
-		into('.') {
-			from("${projectDir}/src/packaging/webstart/onCourse.jnlp")
-
-			evaluationDependsOn(':'+getProject().name)
-
-			expand([
-				webstartCodebase: project.webstartCodebase,
-				webstartOncourseServerUri: project.webstartOncourseServerUri,
-				webstartOncourseServerPort: project.webstartOncourseServerPort,
-				webstartOncourseServerUseSSL: project.webstartOncourseServerUseSSL,
-				sourceCompatibility: project.sourceCompatibility,
-				classpath: project.configurations.default.collect{it.name}.sort(),
-				mainJarClasspath : configurations.default.allArtifacts.files.singleFile.name,
-				version: version
-			])
-			
-			from("${projectDir}/src/main/resources/resources") {
-				include '*.ico'
-				include '*.icns'
-			}
-		}
-
-		into('Libraries') {
-			from configurations.default
-			from configurations.default.allArtifacts.files
-			exclude '*-sources.jar'
-			exclude '*-javadoc.jar'
-		}
-	}
-
 	project.ext.osxAppFiles = copySpec {
 		into("${project.appName}.app") {
 
@@ -196,47 +165,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	project.ext.freebsdAppFiles = copySpec {
-		into('.') {
-			from("${projectDir}/src/packaging/freebsd/")
-			include ("*")
-
-			from("${libsDir}/${project.name}-${version}-all.jar")
-		}
-	}
-
-	project.ext.unixAppFiles = copySpec {
-		into('.') {
-			from("${projectDir}/src/packaging/unix/")
-			include ("*")
-
-			from("${libsDir}/${project.name}-${version}-all.jar")
-		}
-	}
-
-
-	task bundle_webstart(dependsOn: jar, type: Copy) {
-		description "Create the webstart application executable."
-		doFirst {
-			logger.lifecycle("Creating the webstart application executable for $project.name")
-		}
-		with webstartFiles
-		into file("${distsDir}/webstart")
-		doLast {
-  			ant.signjar(
-  				keystore:				project.jarSigningKeystore, 
-  				storepass:				project.jarSigningKeystorePassword,
-  				alias:					project.jarSigningAlias, 
-  				keypass:				project.jarSigningPassword,
-  				lazy: 					"true",
-  				preservelastmodified:	"true") {
-  					fileset(dir: "${distsDir}/webstart/Libraries/") {
-  						include(name: '*.jar')
-  					}
-  				}
-		}
-	}
-
 	task bundle_osx(dependsOn: jar, type: Copy) {
 		description "Create the OSX application executable."
 		doFirst {
@@ -280,67 +208,8 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	task bundle(dependsOn: [bundle_win, bundle_osx, bundle_webstart]) {
+	task bundle(dependsOn: [bundle_win, bundle_osx]) {
 		description "Create all application executables."
-	}
-
-	task installer_freebsd(dependsOn: jarAll, type: Copy) {
-		description "Create the FreeBSD package (installer)."
-		doFirst {
-			logger.lifecycle("Creating the freebsd application executable for $project.name")
-		}
-		
-		with freebsdAppFiles
-		into file("${distsDir}/freebsd")
-
-		doLast {
-			ant.replace(file: "${distsDir}/freebsd/+COMMENT", 		token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@project.name@", 		value: "${project.name}")
-			ant.replace(file: "${distsDir}/freebsd/+DISPLAY", 		token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
-			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@project.name@", 		value: "${project.name}")
-			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
-	
-			logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
-			ant.checksum(file:"${distsDir}/freebsd/+COMMENT", 										property: "hash_comment")
-			ant.checksum(file:"${distsDir}/freebsd/+DESC", 											property: "hash_desc")
-			ant.checksum(file:"${distsDir}/freebsd/+DISPLAY", 										property: "hash_display")
-			ant.checksum(file:"${distsDir}/freebsd/${project.name}-${project.version}-all.jar", 	property: "hash_onCourseServerJar")
-			ant.checksum(file:"${distsDir}/freebsd/onCourseServer", 								property: "hash_onCourseServer")
-
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServerJar@", 	value: "${ant.hash_onCourseServerJar}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServer@", 		value: "${ant.hash_onCourseServer}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_comment@", 			value: "${ant.hash_comment}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_desc@", 				value: "${ant.hash_desc}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_display@", 			value: "${ant.hash_display}")
-
-			ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/freebsd/onCourseServer.tar")
-			ant.gzip(zipfile: "${distsDir}/freebsd/onCourseServer.tgz", src:"${distsDir}/freebsd/onCourseServer.tar")
-
-			delete freebsdAppFiles
-			delete "${distsDir}/freebsd/onCourseServer.tar"
-		}	
-	} 
-
-	task installer_unix(dependsOn: jarAll, type: Copy) {
-		description "Create the Unix/Linux package (zip)."
-		doFirst {
-			logger.lifecycle("Creating the unix application executable for $project.name")
-		}
-		with unixAppFiles
-		into file("${distsDir}/unix")
-		doLast {
-			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@project.name@", 		value: "${project.name}")
-			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
-
-			ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar")
-			ant.gzip(zipfile: "${distsDir}/unix/onCourseServer.tar.gz", src:"${distsDir}/unix/onCourseServer.tar")
-
-			delete unixAppFiles
-			delete "${distsDir}/unix/onCourseServer.tar"
-		}
 	}
 
 	task installer_osx(dependsOn: bundle_osx, type: Copy) {
@@ -381,23 +250,19 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		into "${distsDir}/windows"
 		
 		doLast {
-			logger.lifecycle("Executing makensis for $project.name")
-			exec {
-				executable = "makensis"
-				args = ["${distsDir}/windows/server-mui.nsi"]
-			}
-			exec {
-				executable = "makensis"
-				args = ["${distsDir}/windows/service-mui.nsi"]
-			}
-			exec {
-				executable = "makensis"
-				args = ["${distsDir}/windows/service64-mui.nsi"]
+			def nsisFiles = fileTree("${distsDir}/windows/").include('**/*.nsi')
+
+			nsisFiles.each {File file ->
+				logger.lifecycle("Executing makensis for "+file.getAbsolutePath())
+    			exec {
+					executable = "makensis"
+					args = [file.getAbsolutePath()]
+				}
 			}
 		}
 	}
 
-	task installer(dependsOn: [installer_win, installer_osx, bundle_webstart, installer_freebsd, installer_unix]) {
+	task installer(dependsOn: [installer_win, installer_osx, ':client:installer_webstart', ':server:installer_freebsd', ':server:installer_unix']) {
 		description "Create all application installers."
 	}
 }
