@@ -284,7 +284,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		description "Create all application executables."
 	}
 
-	task install_freebsd(dependsOn: jarAll, type: Copy) {
+	task installer_freebsd(dependsOn: jarAll, type: Copy) {
 		description "Create the FreeBSD package (installer)."
 		doFirst {
 			logger.lifecycle("Creating the freebsd application executable for $project.name")
@@ -323,7 +323,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}	
 	} 
 
-	task install_unix(dependsOn: jarAll, type: Copy) {
+	task installer_unix(dependsOn: jarAll, type: Copy) {
 		description "Create the Unix/Linux package (zip)."
 		doFirst {
 			logger.lifecycle("Creating the unix application executable for $project.name")
@@ -397,7 +397,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	task installer(dependsOn: [installer_win, installer_osx, bundle_webstart]) {
+	task installer(dependsOn: [installer_win, installer_osx, bundle_webstart, installer_freebsd, installer_unix]) {
 		description "Create all application installers."
 	}
 }
