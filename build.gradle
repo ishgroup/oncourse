@@ -314,6 +314,12 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_comment@", 			value: "${ant.hash_comment}")
 			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_desc@", 				value: "${ant.hash_desc}")
 			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_display@", 			value: "${ant.hash_display}")
+
+			ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/freebsd/onCourseServer.tar")
+			ant.gzip(zipfile: "${distsDir}/freebsd/onCourseServer.tgz", src:"${distsDir}/freebsd/onCourseServer.tar")
+
+			delete freebsdAppFiles
+			delete "${distsDir}/freebsd/onCourseServer.tar"
 		}	
 	} 
 
@@ -328,6 +334,12 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@version@", 			value: "${project.version}")
 			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@project.name@", 		value: "${project.name}")
 			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+
+			ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar")
+			ant.gzip(zipfile: "${distsDir}/unix/onCourseServer.tar.gz", src:"${distsDir}/unix/onCourseServer.tar")
+
+			delete unixAppFiles
+			delete "${distsDir}/unix/onCourseServer.tar"
 		}
 	}
 
