@@ -201,11 +201,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			from("${projectDir}/src/packaging/freebsd/")
 			include ("*")
 
-			ant.property(name: '@maxmemoryServer64@', value: project.maxmemoryServer64)
-			ant.property(name: '@project.name@', value: project.name)
-			ant.property(name: '@version@', value: project.version)
-			filter(org.apache.tools.ant.filters.ReplaceTokens, project: ant.antProject)
-
 			from("${libsDir}/${project.name}-${version}-all.jar")
 		}
 	}
@@ -304,6 +299,14 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		into file("${distsDir}/freebsd")
 
 		doLast {
+			ant.replace(file: "${distsDir}/freebsd/+COMMENT", 		token: "@version@", 			value: "${project.version}")
+			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@version@", 			value: "${project.version}")
+			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@project.name@", 		value: "${project.name}")
+			ant.replace(file: "${distsDir}/freebsd/+DISPLAY", 		token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@version@", 			value: "${project.version}")
+			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@project.name@", 		value: "${project.name}")
+			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+	
 			logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
 			ant.checksum(file:"${distsDir}/freebsd/+COMMENT", 										property: "hash_comment")
 			ant.checksum(file:"${distsDir}/freebsd/+DESC", 											property: "hash_desc")
