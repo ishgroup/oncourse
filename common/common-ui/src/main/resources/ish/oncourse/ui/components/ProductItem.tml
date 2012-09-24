@@ -1,45 +1,96 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div class="vevent classItem">
+	<div class="vevent courseItem">
 		<t:if t:test="isList" negate="true">
+			<h2>
+				<a href="/product/${product.sku}" class="url">${product.name}</a>
+			</h2>
+			
+			<div class="description courseShortDescription">
+				<t:outputraw value="${detailText}" />
+				<strong class="more">[<a href="/product/${product.sku}">More</a>]</strong>
+			</div>
+				<div class="classItem vevent" data-classid="${product.id}">
+					<div class="class-item-info">
+						<div class="class-item-info-l">
+							<div class="info" itemtype="http://schema.org/Offer" itemscope="" itemprop="offers">
+								<dt class="label">Price</dt>
+								<dd itemprop="price">${price}</dd>
+								<t:if t:test="courseVoucherProduct">
+									<dt class="label">Valid for</dt>
+									<dd>
+										${courseVoucherDescription}
+										<ul class="class-listing">
+										<t:loop source="redemptionCourses" value="course">
+											<li>${course.name}</li>
+										</t:loop>
+										</ul>
+									</dd>
+									<p:else>
+									<dt class="label">Value</dt>
+									<dd>XXX$</dd>
+									</p:else>
+								</t:if>
+							</div>
+						</div>
+					</div>
+					<div class="classAction">
+						<t:if t:test="paymentGatewayEnabled">
+							<t:if test="addedProduct">
+								<a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
+								<p:else>
+									<a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}" 
+										title="${purchaseHoverTitle}">BUY NOW</a>
+								</p:else>
+							</t:if>
+						</t:if>
+					</div>
+				</div>
+
+		
+		<p:else>
 			<h1 class="summary page-title">${product.name}</h1>
 			<div class="clearboth"></div>
-		<p:else>
-			<div class="description courseShortDescription">
-				<t:outputraw value="${product.description}" />
-				
-				<div class="classAction">
-					<t:if t:test="paymentGatewayEnabled">
-						<t:if test="addedProduct">
-							<a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
-							<p:else>
-								<a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}" 
-									title="${purchaseHoverTitle}">BUY NOW</a>
-							</p:else>
+			
+			<div class="courseDescription">
+				<t:outputraw value="${detailText}" />
+				<div class="classItem vevent" data-classid="${product.id}">
+					<div class="class-item-info">
+						<div class="class-item-info-l">
+							<div class="info" itemtype="http://schema.org/Offer" itemscope="" itemprop="offers">
+								<dt class="label">Price</dt>
+								<dd itemprop="price">${price}</dd>
+								<t:if t:test="courseVoucherProduct">
+									<dt class="label">Valid for</dt>
+									<dd>
+										${courseVoucherDescription}
+										<ul class="class-listing">
+										<t:loop source="redemptionCourses" value="course">
+											<li>${course.name}</li>
+										</t:loop>
+										</ul>
+									</dd>
+									<p:else>
+									<dt class="label">Value</dt>
+									<dd>XXX$</dd>
+									</p:else>
+								</t:if>
+							</div>
+						</div>
+					</div>
+					<div class="classAction">
+						<t:if t:test="paymentGatewayEnabled">
+							<t:if test="addedProduct">
+								<a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
+								<p:else>
+									<a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}" 
+										title="${purchaseHoverTitle}">BUY NOW</a>
+								</p:else>
+							</t:if>
 						</t:if>
-					</t:if>
+					</div>
 				</div>
-				
 			</div>
 		</p:else>
-		</t:if>
-		
-		<t:if t:test="isList" negate="true">
-			<div class="courseDescription">
-				<t:outputraw value="${product.description}" />
-				
-				<div class="classAction">
-					<t:if t:test="paymentGatewayEnabled">
-						<t:if test="addedProduct">
-							<a class="enrolAction enrol-added-class" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}">Added</a>
-							<p:else>
-								<a class="enrolAction" href="/addToCookies?key=productShortList&amp;addItemId=${product.id}" 
-									title="${purchaseHoverTitle}">BUY NOW</a>
-							</p:else>
-						</t:if>
-					</t:if>
-				</div>
-				
-			</div>
 		</t:if>
 	</div>
 </t:container>

@@ -21,7 +21,7 @@ public enum PageIdentifier {
 	/**
 	 * Voucher product detail for voucher product with provided id
 	 */
-	Product("/product/(\\d+)(/)?", "ui/ProductDetails"),
+	Product("/product/((\\w|\\s)+)(/)?", "ui/ProductDetails"),
 	/**
 	 * class/ABC-123 Show the class detail for the CourseClass with code ABC-123
 	 */

@@ -22,6 +22,8 @@ public interface IVoucherService {
 	
 	List<Product> loadByIds(Object... ids);
 	
+	Product loadAvailableVoucherProductBySKU(String sku);
+	
 	Product loadAvailableVoucherProductById(Long id);
 
 }

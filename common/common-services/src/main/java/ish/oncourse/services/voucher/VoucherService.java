@@ -60,15 +60,28 @@ public class VoucherService implements IVoucherService {
 	}
 	
 	@Override
-	public VoucherProduct loadAvailableVoucherProductById(Long id) {
+	public Product loadAvailableVoucherProductBySKU(String sku) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
-		Expression qualifier = ExpressionFactory.matchExp(VoucherProduct.COLLEGE_PROPERTY, currentCollege)
-			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_ON_SALE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchDbExp(VoucherProduct.ID_PK_COLUMN, id));
-		SelectQuery query = new SelectQuery(VoucherProduct.class, qualifier);
+		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
+			.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchExp(Product.SKU_PROPERTY, sku));
+		SelectQuery query = new SelectQuery(Product.class, qualifier);
 		@SuppressWarnings("unchecked")
-		List<VoucherProduct> results = cayenneService.sharedContext().performQuery(query);
+		List<Product> results = cayenneService.sharedContext().performQuery(query);
+		return !results.isEmpty()? results.get(0) : null;
+	}
+	
+	@Override
+	public Product loadAvailableVoucherProductById(Long id) {
+		College currentCollege = takeWebSiteService().getCurrentCollege();
+		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
+			.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchDbExp(Product.ID_PK_COLUMN, id));
+		SelectQuery query = new SelectQuery(Product.class, qualifier);
+		@SuppressWarnings("unchecked")
+		List<Product> results = cayenneService.sharedContext().performQuery(query);
 		return !results.isEmpty()? results.get(0) : null;
 	}
 	
