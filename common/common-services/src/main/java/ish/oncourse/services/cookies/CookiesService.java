@@ -2,7 +2,7 @@ package ish.oncourse.services.cookies;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.Product;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.voucher.IVoucherService;
@@ -197,7 +197,7 @@ public class CookiesService implements ICookiesService {
 			return false;
 		}
 		
-		if (cookieKey.equalsIgnoreCase(VoucherProduct.SHORTLIST_COOKIE_KEY)
+		if (cookieKey.equalsIgnoreCase(Product.SHORTLIST_COOKIE_KEY)
 				&& (!cookieValue.matches("\\d+") || voucherService.loadByIds(cookieValue).isEmpty())) {
 			return false;
 		}

@@ -1,7 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -52,13 +52,13 @@ public class ShortList {
 	private List<CourseClass> items;
 	
 	@Property
-	private List<VoucherProduct> voucherProductItems;
+	private List<Product> productItems;
 
 	@Property
 	private CourseClass courseClass;
 	
 	@Property
-	private VoucherProduct voucherProduct;
+	private Product product;
 
 	@Inject
 	private Request request;
@@ -71,8 +71,8 @@ public class ShortList {
 	@SetupRender
 	void beforeRender() {
 		List<Long> classIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
-		//also load the vouchers
-		List<Long> voucherProductIds = cookiesService.getCookieCollectionValue(VoucherProduct.SHORTLIST_COOKIE_KEY, Long.class);
+		//also load the products
+		List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
 
 		String key = request.getParameter("key");
 
@@ -94,19 +94,19 @@ public class ShortList {
 			}
 		}
 		
-		if (VoucherProduct.SHORTLIST_COOKIE_KEY.equalsIgnoreCase(key)) {
+		if (Product.SHORTLIST_COOKIE_KEY.equalsIgnoreCase(key)) {
 			String addItem = request.getParameter("addItemId");
 			String removeItem = request.getParameter("removeItemId");
 			if (addItem != null && addItem.matches("\\d+")) {
 
-				if (!voucherProductIds.contains(Long.valueOf(addItem))) {
-					voucherProductIds.add(Long.valueOf(addItem));
+				if (!productIds.contains(Long.valueOf(addItem))) {
+					productIds.add(Long.valueOf(addItem));
 				}
 
 			}
 			if (removeItem != null && removeItem.matches("\\d+")) {
-				if (voucherProductIds.contains(Long.valueOf(removeItem))) {
-					voucherProductIds.remove(Long.valueOf(removeItem));
+				if (productIds.contains(Long.valueOf(removeItem))) {
+					productIds.remove(Long.valueOf(removeItem));
 				}
 
 			}
@@ -118,10 +118,10 @@ public class ShortList {
 			items = Collections.emptyList();
 		}
 
-		if ((voucherProductIds != null) && !(voucherProductIds.isEmpty())) {
-			voucherProductItems = voucherService.loadByIds(voucherProductIds.toArray());
+		if ((productIds != null) && !(productIds.isEmpty())) {
+			productItems = voucherService.loadByIds(productIds.toArray());
 		} else {
-			voucherProductItems = Collections.emptyList();
+			productItems = Collections.emptyList();
 		}
 		
 	}
@@ -158,8 +158,8 @@ public class ShortList {
 	 * 
 	 * @return a count of items
 	 */
-	public Integer getVoucherProductItemCount() {
-		return (voucherProductItems == null) ? 0 : voucherProductItems.size();
+	public Integer getProductItemCount() {
+		return (productItems == null) ? 0 : productItems.size();
 	}
 
 	/**
@@ -167,8 +167,8 @@ public class ShortList {
 	 * 
 	 * @return true if shortlist has ANY items
 	 */
-	public boolean isHasVoucherProductItems() {
-		return getVoucherProductItemCount() > 0;
+	public boolean isHasProductItems() {
+		return getProductItemCount() > 0;
 	}
 
 	/**
@@ -176,8 +176,8 @@ public class ShortList {
 	 * 
 	 * @return true if the shortlist contains more than one item
 	 */
-	public boolean isHasMultipleVoucherProductItems() {
-		return getVoucherProductItemCount() > 1;
+	public boolean isHasMultipleProductItems() {
+		return getProductItemCount() > 1;
 	}
 
 	/**
@@ -201,8 +201,8 @@ public class ShortList {
 		return FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
 	}
 	
-	public Format getVoucherProductDateFormat() {
-		return FormatUtils.getShortDateFormat(voucherProduct.getCollege().getTimeZone());
+	public Format getProductDateFormat() {
+		return FormatUtils.getShortDateFormat(product.getCollege().getTimeZone());
 	}
 
 }

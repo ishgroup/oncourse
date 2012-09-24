@@ -3,7 +3,7 @@ package ish.oncourse.ui.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.Product;
 import ish.oncourse.services.voucher.IVoucherService;
 
 import org.apache.log4j.Logger;
@@ -26,21 +26,21 @@ public class Products {
 	private IVoucherService voucherService;
 	
 	@Property
-	private List<VoucherProduct> voucherProducts;
+	private List<Product> products;
 	
 	@Property
 	private Integer itemIndex;
 	
 	@SuppressWarnings("all")
 	@Property
-	private Integer voucherProductsCount;
+	private Integer productsCount;
 	
 	@SuppressWarnings("all")
 	@Property
 	private Boolean isException;
 	
 	@Persist("client")
-	private List<Long> voucherProductsIds;
+	private List<Long> productsIds;
 	
 	public boolean isXHR() {
 		return request.isXHR();
@@ -57,22 +57,22 @@ public class Products {
 
 		this.itemIndex = start;
 		this.isException = false;
-		this.voucherProducts = voucherService.getAvailableVoucherProducts(start, rows);
-		this.voucherProductsCount = voucherService.getAvailableVoucherProducts().size();
+		this.products = voucherService.getAvailableProducts(start, rows);
+		this.productsCount = voucherService.getAvailableProducts().size();
 
-		voucherProductsIds = new ArrayList<Long>();
+		productsIds = new ArrayList<Long>();
 		updateIdsAndIndexes();
 	}
 	
 	private void updateIdsAndIndexes() {
-		itemIndex = itemIndex + voucherProducts.size();
-		for (VoucherProduct product : voucherProducts) {
-			if (!voucherProductsIds.contains(product.getId()))
-				voucherProductsIds.add(product.getId());
+		itemIndex = itemIndex + products.size();
+		for (Product product : products) {
+			if (!productsIds.contains(product.getId()))
+				productsIds.add(product.getId());
 		}
 	}
 	
 	public boolean isHasAnyItems() {
-		return !voucherProducts.isEmpty();
+		return !products.isEmpty();
 	}
 }

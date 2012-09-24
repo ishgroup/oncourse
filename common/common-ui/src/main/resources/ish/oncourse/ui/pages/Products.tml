@@ -1,13 +1,13 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="XHR">
-		<span t:type="ui/VoucherProductsList" voucherProducts="voucherProducts" voucherProductsCount="voucherProductsCount" itemIndex="itemIndex"/>
+		<span t:type="ui/ProductsList" products="products" productsCount="productsCount" itemIndex="itemIndex"/>
 		<p:else>
 			<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage" bodyClass="literal:internal-page">
 				<t:if t:test="hasAnyItems" negate="true">
-					<h2>No voucher products available</h2>
+					<h2>No products available</h2>
 					<p:else>
-						<span t:type="ui/VoucherProductsList" voucherProducts="voucherProducts" voucherProductsCount="voucherProductsCount"
+						<span t:type="ui/ProductsList" products="products" productsCount="productsCount"
 							itemIndex="itemIndex"/>
 					</p:else>
 				</t:if>

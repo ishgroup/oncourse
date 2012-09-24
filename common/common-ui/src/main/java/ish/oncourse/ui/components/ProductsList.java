@@ -1,6 +1,6 @@
 package ish.oncourse.ui.components;
 
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.Product;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-public class VoucherProductsList {
+public class ProductsList {
 	@Inject
 	@Property
 	private Request request;
 	
 	@Parameter
-	private Integer voucherProductsCount;
+	private Integer productsCount;
 	
 	@Parameter
 	private Integer itemIndex;
@@ -23,14 +23,14 @@ public class VoucherProductsList {
 	@SuppressWarnings("all")
 	@Parameter
 	@Property
-	private List<VoucherProduct> voucherProducts;
+	private List<Product> products;
 	
 	@SuppressWarnings("all")
 	@Property
-	private VoucherProduct voucherProduct;
+	private Product product;
 	
 	public boolean isHasMoreItems() {
-        return itemIndex < voucherProductsCount;
+        return itemIndex < productsCount;
     }
 	
 	public String getSearchParamsStr() {

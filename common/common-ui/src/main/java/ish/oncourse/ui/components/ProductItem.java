@@ -2,7 +2,7 @@ package ish.oncourse.ui.components;
 
 import java.util.List;
 
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.preference.PreferenceController;
 
@@ -11,11 +11,11 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class VoucherProductItem {
+public class ProductItem {
 	
 	@Parameter
 	@Property
-	private VoucherProduct voucherProduct;
+	private Product product;
 
 	@Parameter
 	@Property
@@ -31,15 +31,15 @@ public class VoucherProductItem {
 	private Messages messages;
 	
 	public boolean isPaymentGatewayEnabled() {
-		return voucherProduct != null && preferenceController.isPaymentGatewayEnabled();
+		return product != null && preferenceController.isPaymentGatewayEnabled();
 	}
 	
-	public boolean isAddedVoucherProduct() {
-		List<Long> voucherProductIds = cookiesService.getCookieCollectionValue(VoucherProduct.SHORTLIST_COOKIE_KEY, Long.class);
-		return voucherProductIds.contains(voucherProduct.getId());
+	public boolean isAddedProduct() {
+		List<Long> voucherProductIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
+		return voucherProductIds.contains(product.getId());
 	}
 	
-	public String getVoucherProductItemClass() {
+	public String getProductItemClass() {
 		if (isList) {
 			return "new_course_item small_class_detail clearfix";
 		} else {

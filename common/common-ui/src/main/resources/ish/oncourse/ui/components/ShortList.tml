@@ -3,9 +3,9 @@
 		<div class="shortlistInfo" id="info">
 			<span>${itemCount}</span>
 			<p>courses selected</p>
-			<t:if test="hasVoucherProductItems">
-				<span>${voucherProductItemCount}</span>
-				<p>voucher products selected</p>
+			<t:if test="hasProductItems">
+				<span>${productItemCount}</span>
+				<p>products selected</p>
 			</t:if>
 		</div>
 		<t:if test="hasItems">
@@ -57,26 +57,26 @@
 			</div>
 		</t:if>
 		
-		<t:if test="hasVoucherProductItems">
+		<t:if test="hasProductItems">
 			<h3 class="title-block">
-				<span>My Voucher Products Order</span>
+				<span>My Products Order</span>
 			</h3>
 			<div class="${classForList}">
 				<ul class="shortListOrder shortlistChoices">
-					<t:loop source="voucherProductItems" value="voucherProduct">
-						<li data-classid="${voucherProduct.id}">
-							<a href="/voucherproduct/${voucherProduct.id}">${voucherProduct.name}</a>
+					<t:loop source="productItems" value="product">
+						<li data-classid="${product.id}">
+							<a href="/product/${product.id}">${product.name}</a>
 							<span class="deleteItem" title="Remove item">
-								<a href="/removeFromCookies?key=voucherProductShortList&amp;removeItemId=${voucherProduct.id}">X</a>
+								<a href="/removeFromCookies?key=productShortList&amp;removeItemId=${product.id}">X</a>
 							</span>
 							<div class="shortListOrderClasses">
-								<t:if t:test="voucherProduct.created">
+								<t:if t:test="product.created">
 									<abbr class="dtstart" title="">
-										<t:output format="voucherProductDateFormat" value="voucherProduct.created" />
+										<t:output format="productDateFormat" value="product.created" />
 									</abbr>
 								</t:if>
-								<t:if t:test="voucherProduct.modified"> - <abbr class="dtend" title=""><t:output format="voucherProductDateFormat"
-											value="voucherProduct.modified" /></abbr>
+								<t:if t:test="product.modified"> - <abbr class="dtend" title=""><t:output format="productDateFormat"
+											value="product.modified" /></abbr>
 								</t:if>
 							</div>
 						</li>

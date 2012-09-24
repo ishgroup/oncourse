@@ -55,8 +55,8 @@ public class VoucherService implements IVoucherService {
 	}
 
 	@Override
-	public List<VoucherProduct> getAvailableVoucherProducts() {
-		return getAvailableVoucherProducts(null, null);
+	public List<Product> getAvailableProducts() {
+		return getAvailableProducts(null, null);
 	}
 	
 	@Override
@@ -73,21 +73,21 @@ public class VoucherService implements IVoucherService {
 	}
 	
 	@Override
-	public List<VoucherProduct> getAvailableVoucherProducts(Integer startDefault, Integer rowsDefault) {
+	public List<Product> getAvailableProducts(Integer startDefault, Integer rowsDefault) {
 		College currentCollege = takeWebSiteService().getCurrentCollege();
-		Expression qualifier = ExpressionFactory.matchExp(VoucherProduct.COLLEGE_PROPERTY, currentCollege)
-			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
-			.andExp(ExpressionFactory.matchExp(VoucherProduct.IS_ON_SALE_PROPERTY, Boolean.TRUE));
-		SelectQuery query = new SelectQuery(VoucherProduct.class, qualifier);
+		Expression qualifier = ExpressionFactory.matchExp(Product.COLLEGE_PROPERTY, currentCollege)
+			.andExp(ExpressionFactory.matchExp(Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE))
+			.andExp(ExpressionFactory.matchExp(Product.IS_ON_SALE_PROPERTY, Boolean.TRUE));
+		SelectQuery query = new SelectQuery(Product.class, qualifier);
 		if (startDefault != null && rowsDefault != null) {
 			query.setFetchOffset(startDefault);
 			query.setFetchLimit(rowsDefault);
 		}
 		@SuppressWarnings("unchecked")
-		List<VoucherProduct> results = cayenneService.sharedContext().performQuery(query);
+		List<Product> results = cayenneService.sharedContext().performQuery(query);
 		List<Ordering> orderings = new ArrayList<Ordering>();
-		orderings.add(new Ordering(VoucherProduct.NAME_PROPERTY, SortOrder.ASCENDING));
-		orderings.add(new Ordering(VoucherProduct.PRICE_EX_TAX_PROPERTY, SortOrder.DESCENDING));
+		orderings.add(new Ordering(Product.NAME_PROPERTY, SortOrder.ASCENDING));
+		orderings.add(new Ordering(Product.PRICE_EX_TAX_PROPERTY, SortOrder.DESCENDING));
 		Ordering.orderList(results, orderings);
 		return results;
 	}
@@ -135,7 +135,8 @@ public class VoucherService implements IVoucherService {
      *
      * @param q course query
      */
-    private static void appyCourseClassCacheSettings(SelectQuery q) {
+    @SuppressWarnings("unused")
+	private static void appyCourseClassCacheSettings(SelectQuery q) {
 
         // TODO: uncomment when after upgrading to newer cayenne where
         // https://issues.apache.org/jira/browse/CAY-1585 is fixed.
@@ -152,13 +153,13 @@ public class VoucherService implements IVoucherService {
 	
     @Override
 	@SuppressWarnings("unchecked")
-	public List<VoucherProduct> loadByIds(Object... ids) {
+	public List<Product> loadByIds(Object... ids) {
 		if (ids.length == 0) {
             return Collections.emptyList();
         }
         List<Object> params = Arrays.asList(ids);
-        SelectQuery q = new SelectQuery(VoucherProduct.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, params));
-        appyCourseClassCacheSettings(q);
+        SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, params));
+        //appyCourseClassCacheSettings(q);
         return cayenneService.sharedContext().performQuery(q);
 	}
 }

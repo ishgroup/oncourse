@@ -122,7 +122,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
 			break;
-		case VoucherProducts:
+		case Products:
 			break;
 		case Courses:
 			final boolean isCMSCoursesSearch = requestGlobals.getHTTPServletRequest().getRequestURI().toLowerCase()
@@ -150,14 +150,14 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 				}
 			}
 			break;
-		case VoucherProduct:
-			VoucherProduct product = null;
+		case Product:
+			Product product = null;
 			String productId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			if (productId != null && productId.matches("\\d+")) {
 				product = voucherService.loadAvailableVoucherProductById(Long.parseLong(productId));
 			}
 			if (product != null) {
-				request.setAttribute(VoucherProduct.class.getSimpleName(), product);
+				request.setAttribute(Product.class.getSimpleName(), product);
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
@@ -263,7 +263,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 						cookiesService.removeValueFromCookieCollection(key, value);
 					}
 				}
-				if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY) || key.equalsIgnoreCase(VoucherProduct.SHORTLIST_COOKIE_KEY)) {
+				if (key.equalsIgnoreCase(CourseClass.SHORTLIST_COOKIE_KEY) || key.equalsIgnoreCase(Product.SHORTLIST_COOKIE_KEY)) {
 					return new PageRenderRequestParameters(PageIdentifier.Shortlist.getPageName(), new EmptyEventContext(), false);
 				}
 				if (key.equalsIgnoreCase(Discount.PROMOTIONS_KEY)) {

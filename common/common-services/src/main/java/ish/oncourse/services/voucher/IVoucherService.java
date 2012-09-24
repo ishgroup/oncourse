@@ -3,15 +3,16 @@ package ish.oncourse.services.voucher;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.Product;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 
 import java.util.List;
 
 public interface IVoucherService {
-	List<VoucherProduct> getAvailableVoucherProducts();
+	List<Product> getAvailableProducts();
 	
-	List<VoucherProduct> getAvailableVoucherProducts(Integer startDefault, Integer rowsDefault);
+	List<Product> getAvailableProducts(Integer startDefault, Integer rowsDefault);
 	
 	List<Voucher> getAvailableVouchersForUser(final Contact contact);
 	
@@ -19,8 +20,8 @@ public interface IVoucherService {
 	
 	PaymentIn preparePaymentInForVoucherPurchase(final VoucherProduct voucherProduct, final Money voucherPrice, final Contact payer, final Contact owner);
 	
-	List<VoucherProduct> loadByIds(Object... ids);
+	List<Product> loadByIds(Object... ids);
 	
-	VoucherProduct loadAvailableVoucherProductById(Long id);
+	Product loadAvailableVoucherProductById(Long id);
 
 }
