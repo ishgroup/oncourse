@@ -177,7 +177,8 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 				exec {
 					executable = "codesign"
 					args = [	
-						"-s", "ish group testing certificate",
+						"-s", "onCourse",
+						"--keychain", "jenkins",
 						"-f", "${distsDir}/macosx/${project.appName}.app"]
 				}
 				logger.lifecycle("${project.appName}.app successfully codesigned")
