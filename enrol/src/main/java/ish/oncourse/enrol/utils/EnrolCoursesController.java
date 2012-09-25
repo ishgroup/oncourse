@@ -442,7 +442,7 @@ public class EnrolCoursesController {
      * @param session - session for check.
      * @return Text stream response.
      */
-    public StreamResponse createCheckSessionResponse(Session session) {
+    public static StreamResponse createCheckSessionResponse(Session session) {
         JSONObject obj = new JSONObject();
         if (session == null) {
             obj.put("status", "session timeout");

@@ -302,8 +302,8 @@ public class EnrolCourses {
         return resultComponent;
     }
 
-    public synchronized StreamResponse onActionFromCheckSession() {
-    	return getController().createCheckSessionResponse(request.getSession(false));
+    public StreamResponse onActionFromCheckSession() {
+    	return EnrolCoursesController.createCheckSessionResponse(request.getSession(false));
     }
 
     public Object handleUnexpectedException(final Throwable cause) {
