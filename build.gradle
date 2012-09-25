@@ -134,8 +134,8 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	}
 
 	project.ext.osxDmgFiles = copySpec {
-		into ('onCourseServer.app') {
-			from("${distsDir}/macosx/onCourseServer.app")
+		into ("${project.appName}.app") {
+			from("${distsDir}/macosx/${project.appName}.app")
 		}
 
 		into('.background') {
@@ -225,7 +225,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
 		}
 
-		def dmgSource = "${distsDir}/macosx/${project.appName}-${version}"
+		def dmgSource = "${distsDir}/macosx/${project.appName}"
 
 		with osxDmgFiles
 		into file(dmgSource)
