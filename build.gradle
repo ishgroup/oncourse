@@ -10,6 +10,8 @@ buildscript {
 	}
 }
 
+version = "trunk" //TODO temporary hack while release plugin is fixed
+
 apply plugin: 'release'
 
 release {
@@ -44,7 +46,7 @@ allprojects {
 
 	ext.sharedManifest = manifest {
 		// attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
-		attributes('SCM-Revision': '123', 'Release-Version': version)
+		attributes('SCM-Revision': '123', 'Release-Version': version) //TODO temporary hack while release plugin is fixed
 	}
 
 	test {
