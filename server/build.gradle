@@ -116,78 +116,78 @@ compileJava () {
 }
 
 project.ext.freebsdAppFiles = copySpec {
-		into('.') {
-			from("${projectDir}/src/packaging/freebsd/")
-			include ("*")
+	into('.') {
+		from("${projectDir}/src/packaging/freebsd/")
+		include ("*")
 
-			from("${libsDir}/${project.name}-${version}-all.jar")
-		}
+		from("${libsDir}/${project.name}-${version}-all.jar")
 	}
+}
 
-	project.ext.unixAppFiles = copySpec {
-		into('.') {
-			from("${projectDir}/src/packaging/unix/")
-			include ("*")
+project.ext.unixAppFiles = copySpec {
+	into('.') {
+		from("${projectDir}/src/packaging/unix/")
+		include ("*")
 
-			from("${libsDir}/${project.name}-${version}-all.jar")
-		}
+		from("${libsDir}/${project.name}-${version}-all.jar")
 	}
+}
 
 task installer_freebsd(dependsOn: jarAll, type: Copy) {
-		description "Create the FreeBSD package (installer)."
-		doFirst {
-			logger.lifecycle("Creating the freebsd application executable for $project.name")
-		}
-		
-		with freebsdAppFiles
-		into file("${distsDir}/freebsd")
-
-		doLast {
-			ant.replace(file: "${distsDir}/freebsd/+COMMENT", 		token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@project.name@", 		value: "${project.name}")
-			ant.replace(file: "${distsDir}/freebsd/+DISPLAY", 		token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
-			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@project.name@", 		value: "${project.name}")
-			ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
-	
-			logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
-			ant.checksum(file:"${distsDir}/freebsd/+COMMENT", 										property: "hash_comment")
-			ant.checksum(file:"${distsDir}/freebsd/+DESC", 											property: "hash_desc")
-			ant.checksum(file:"${distsDir}/freebsd/+DISPLAY", 										property: "hash_display")
-			ant.checksum(file:"${distsDir}/freebsd/${project.name}-${project.version}-all.jar", 	property: "hash_onCourseServerJar")
-			ant.checksum(file:"${distsDir}/freebsd/onCourseServer", 								property: "hash_onCourseServer")
-
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServerJar@", 	value: "${ant.hash_onCourseServerJar}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServer@", 		value: "${ant.hash_onCourseServer}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_comment@", 			value: "${ant.hash_comment}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_desc@", 				value: "${ant.hash_desc}")
-			ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_display@", 			value: "${ant.hash_display}")
-
-			ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/freebsd/onCourseServer.tar")
-			ant.gzip(zipfile: "${distsDir}/freebsd/onCourseServer.tgz", src:"${distsDir}/freebsd/onCourseServer.tar")
-
-			delete freebsdAppFiles
-			delete "${distsDir}/freebsd/onCourseServer.tar"
-		}	
-	} 
-
-	task installer_unix(dependsOn: jarAll, type: Copy) {
-		description "Create the Unix/Linux package (zip)."
-		doFirst {
-			logger.lifecycle("Creating the unix application executable for $project.name")
-		}
-		with unixAppFiles
-		into file("${distsDir}/unix")
-		doLast {
-			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@version@", 			value: "${project.version}")
-			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@project.name@", 		value: "${project.name}")
-			ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
-
-			ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar")
-			ant.gzip(zipfile: "${distsDir}/unix/onCourseServer.tar.gz", src:"${distsDir}/unix/onCourseServer.tar")
-
-			delete unixAppFiles
-			delete "${distsDir}/unix/onCourseServer.tar"
-		}
+	description "Create the FreeBSD package (installer)."
+	doFirst {
+		logger.lifecycle("Creating the freebsd application executable for $project.name")
 	}
+	
+	with freebsdAppFiles
+	into file("${distsDir}/freebsd")
+
+	doLast {
+		ant.replace(file: "${distsDir}/freebsd/+COMMENT", 		token: "@version@", 			value: "${project.version}")
+		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@version@", 			value: "${project.version}")
+		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", 		token: "@project.name@", 		value: "${project.name}")
+		ant.replace(file: "${distsDir}/freebsd/+DISPLAY", 		token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@version@", 			value: "${project.version}")
+		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@project.name@", 		value: "${project.name}")
+		ant.replace(file: "${distsDir}/freebsd/onCourseServer", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+
+		logger.lifecycle("Calculating checksums for the $project.name freebsd application executable")
+		ant.checksum(file:"${distsDir}/freebsd/+COMMENT", 										property: "hash_comment")
+		ant.checksum(file:"${distsDir}/freebsd/+DESC", 											property: "hash_desc")
+		ant.checksum(file:"${distsDir}/freebsd/+DISPLAY", 										property: "hash_display")
+		ant.checksum(file:"${distsDir}/freebsd/${project.name}-${project.version}-all.jar", 	property: "hash_onCourseServerJar")
+		ant.checksum(file:"${distsDir}/freebsd/onCourseServer", 								property: "hash_onCourseServer")
+
+		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServerJar@", 	value: "${ant.hash_onCourseServerJar}")
+		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServer@", 		value: "${ant.hash_onCourseServer}")
+		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_comment@", 			value: "${ant.hash_comment}")
+		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_desc@", 				value: "${ant.hash_desc}")
+		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_display@", 			value: "${ant.hash_display}")
+
+		ant.tar(basedir:"${distsDir}/freebsd/", destfile:"${distsDir}/freebsd/onCourseServer.tar")
+		ant.gzip(zipfile: "${distsDir}/freebsd/onCourseServer.tgz", src:"${distsDir}/freebsd/onCourseServer.tar")
+
+		delete freebsdAppFiles
+		delete "${distsDir}/freebsd/onCourseServer.tar"
+	}	
+} 
+
+task installer_unix(dependsOn: jarAll, type: Copy) {
+	description "Create the Unix/Linux package (zip)."
+	doFirst {
+		logger.lifecycle("Creating the unix application executable for $project.name")
+	}
+	with unixAppFiles
+	into file("${distsDir}/unix")
+	doLast {
+		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@version@", 			value: "${project.version}")
+		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@project.name@", 		value: "${project.name}")
+		ant.replace(file: "${distsDir}/unix/onCourseServer.sh", token: "@maxmemoryServer64@", 	value: "${project.maxmemoryServer64}")
+
+		ant.tar(basedir: "${distsDir}/unix/", destfile: "${distsDir}/unix/onCourseServer.tar")
+		ant.gzip(zipfile: "${distsDir}/unix/onCourseServer.tar.gz", src:"${distsDir}/unix/onCourseServer.tar")
+
+		delete unixAppFiles
+		delete "${distsDir}/unix/onCourseServer.tar"
+	}
+}
