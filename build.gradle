@@ -10,10 +10,16 @@ buildscript {
 	}
 }
 
+apply plugin: 'release'
+
+release {
+	scm = 'svn'
+	failOnSnapshotDependencies = true
+}
+
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	//apply plugin: 'release'
 
 	repositories {
 		maven {
@@ -36,12 +42,9 @@ allprojects {
 		compile 'log4j:log4j:1.2.17'
 	}
 
-	//release {
-	//	failOnSnapshotDependencies = true
-	//}
-
 	ext.sharedManifest = manifest {
-		//attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
+		// attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
+		attributes('SCM-Revision': '123', 'Release-Version': version)
 	}
 
 	test {
