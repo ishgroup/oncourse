@@ -66,6 +66,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	task jarAll(dependsOn: configurations.default.allArtifacts.buildDependencies, type: Jar) {
 		description = 'Creates a shaded/uberjar/fatjar of the application.'
 		classifier = 'all'
+		version = project.version
 
 		manifest {
 			from project.jar.manifest
