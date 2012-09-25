@@ -23,6 +23,8 @@ allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 
+	version = "trunk" 
+
 	repositories {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/public'
@@ -176,6 +178,10 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		doFirst {
 			logger.lifecycle("Creating the OSX application executable for $project.name")
 		}
+
+		inputs.files osxAppFiles.getSource()
+		outputs.files "${distsDir}/macosx/*.app"
+
 		with osxAppFiles
 		into file("${distsDir}/macosx")
 		doLast {
@@ -199,19 +205,23 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		doFirst {
 			logger.lifecycle("Creating the Windows application executable for $project.name")
 		}
+
+		inputs.files winAppFiles.getSource()
+		outputs.files "${distsDir}/windows/*.exe"
+
 		with winAppFiles
-		into file("${distsDir}/windows")
+		into file("${buildDir}/tmp/exe4j")
 
 		doLast {
 			ant.taskdef(name: 'exe4j', classname: 'com.exe4j.Exe4JTask', classpath: "${projectDir}/../lib/exe4j/bin/ant.jar")
 			
-			def exe4jCollection = file("${distsDir}/windows").listFiles().findAll {it.name.endsWith('.exe4j.xml')}
-			for (File file : exe4jCollection) {
-				logger.lifecycle("executing exe4j with "+file.getAbsolutePath())
-				ant.exe4j(projectfile: file, release: version, requirelicense: 'true')
+			def exe4jCollection = file("${distsDir}/tmp/exe4j").listFiles().findAll {it.name.endsWith('.exe4j.xml')}
+			for (File f : exe4jCollection) {
+				logger.lifecycle("Executing exe4j with " + f.getAbsolutePath())
+				ant.exe4j(projectfile: f, release: version, requirelicense: 'true', destination: "${distsDir}/windows/")
 			}
 			logger.info("Deleting windows work files");
-			delete winAppFiles
+			delete "${buildDir}/tmp/exe4j"
 		}
 	}
 
@@ -226,6 +236,8 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 
 		def dmgSource = "${distsDir}/macosx/${project.appName}"
+		inputs.files osxDmgFiles.getSource()
+		outputs.files "${dmgSource}.dmg"
 
 		with osxDmgFiles
 		into file(dmgSource)
