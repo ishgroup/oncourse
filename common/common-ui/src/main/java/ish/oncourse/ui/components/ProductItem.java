@@ -142,7 +142,8 @@ public class ProductItem {
 				priceExTax = Money.ZERO;
 			} else {
 				LOGGER.error(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
-				priceExTax = Money.ZERO;
+				throw new IllegalStateException(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
+				//priceExTax = Money.ZERO;
 				//TODO: here we should throw the exception but till the data replication not finished we need only log the error.
 			}
 		}
