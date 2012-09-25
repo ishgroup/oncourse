@@ -13,7 +13,7 @@ buildscript {
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	apply plugin: 'release'
+	//apply plugin: 'release'
 
 	repositories {
 		maven {
@@ -36,12 +36,12 @@ allprojects {
 		compile 'log4j:log4j:1.2.17'
 	}
 
-	release {
-		failOnSnapshotDependencies = true
-	}
+	//release {
+	//	failOnSnapshotDependencies = true
+	//}
 
 	ext.sharedManifest = manifest {
-		attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
+		//attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
 	}
 
 	test {
@@ -218,7 +218,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
 		}
 
-		def dmgSource = "${distsDir}/macosx/onCourseServer-${version}"
+		def dmgSource = "${distsDir}/macosx/${project.appName}-${version}"
 
 		with osxDmgFiles
 		into file(dmgSource)
@@ -230,7 +230,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 				executable = "hdiutil"
 				args = ["create", 
 				"-srcfolder", dmgSource,
-				"-volname", "onCourseServer",
+				"-volname", "${project.appName}",
 				"${dmgSource}.dmg"]
 			}
 			logger.info("Deleting dmg work files");
