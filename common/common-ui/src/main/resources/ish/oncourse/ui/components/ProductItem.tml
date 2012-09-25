@@ -14,7 +14,12 @@
 						<div class="class-item-info-l">
 							<div class="info" itemtype="http://schema.org/Offer" itemscope="" itemprop="offers">
 								<dt class="label">Price</dt>
-								<dd itemprop="price">${price}</dd>
+								<t:if t:test="voucherProductWithoutPrice">
+									<dd itemprop="price">This voucher have no specified price</dd>
+									<p:else>
+										<dd itemprop="price">${price}</dd>
+									</p:else>
+								</t:if>
 								<t:if t:test="courseVoucherProduct">
 									<dt class="label">Valid for</dt>
 									<dd>
@@ -26,8 +31,10 @@
 										</ul>
 									</dd>
 									<p:else>
-									<dt class="label">Value</dt>
-									<dd>XXX$</dd>
+										<t:if t:test="voucherProductWithValue">
+											<dt class="label">Value</dt>
+											<dd>${value}</dd>
+										</t:if>
 									</p:else>
 								</t:if>
 							</div>
@@ -58,7 +65,12 @@
 						<div class="class-item-info-l">
 							<div class="info" itemtype="http://schema.org/Offer" itemscope="" itemprop="offers">
 								<dt class="label">Price</dt>
-								<dd itemprop="price">${price}</dd>
+								<t:if t:test="voucherProductWithoutPrice">
+									<dd itemprop="price">This voucher have no specified price</dd>
+									<p:else>
+										<dd itemprop="price">${price}</dd>
+									</p:else>
+								</t:if>
 								<t:if t:test="courseVoucherProduct">
 									<dt class="label">Valid for</dt>
 									<dd>
@@ -70,8 +82,10 @@
 										</ul>
 									</dd>
 									<p:else>
-									<dt class="label">Value</dt>
-									<dd>XXX$</dd>
+										<t:if t:test="voucherProductWithValue">
+											<dt class="label">Value</dt>
+											<dd>${value}</dd>
+										</t:if>
 									</p:else>
 								</t:if>
 							</div>

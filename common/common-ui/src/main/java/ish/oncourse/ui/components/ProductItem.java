@@ -17,6 +17,7 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
@@ -24,6 +25,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class ProductItem {
 	private static final int DETAILS_LENGTH = 490;
+	private static final Logger LOGGER = Logger.getLogger(ProductItem.class);
 	
 	@Parameter
 	@Property
@@ -95,9 +97,13 @@ public class ProductItem {
 		return !getRedemptionCourses().isEmpty();
 	}
 	
+	public boolean isVoucherProduct() {
+		return product instanceof VoucherProduct;
+	}
+	
 	public List<Course> getRedemptionCourses() {
 		final List<Course> result = new ArrayList<Course>();
-		if (product instanceof VoucherProduct) {
+		if (isVoucherProduct()) {
 			VoucherProduct vproduct = (VoucherProduct) product;
 			return Collections.unmodifiableList(vproduct.getRedemptionCourses());
 		}
@@ -111,15 +117,33 @@ public class ProductItem {
 		return String.format("%s Classes from the following", ((VoucherProduct) product).getRedemptionCourses().size());
 	}
 	
+	public boolean isVoucherProductWithValue() {
+		return isVoucherProduct() && !isCourseVoucherProduct() && !Money.isZeroOrEmpty(getPrice());
+	}
+	
+	public boolean isVoucherProductWithoutPrice() {
+		return isVoucherProduct() && !isCourseVoucherProduct() && Money.isZeroOrEmpty(getPrice());
+	}
+	
+	public Money getValue() {
+		//this product is a voucher for money with specified price
+		if (isVoucherProductWithValue()) {
+			VoucherProduct vproduct = (VoucherProduct) product;
+			Money value = vproduct.getValue();
+			return value;
+		}
+		return null;
+	}
+	
 	public Money getPrice() {
 		Money priceExTax = product.getPriceExTax();
 		if (priceExTax == null) {
-			//product or membership product
-			if (!isCourseVoucherProduct()) {
-				//TODO: ask here
+			if (isVoucherProduct()) {
 				priceExTax = Money.ZERO;
 			} else {
+				LOGGER.error(String.format("Empty price for product with name %s and sku %s", product.getName(), product.getSku()));
 				priceExTax = Money.ZERO;
+				//TODO: here we should throw the exception but till the data replication not finished we need only log the error.
 			}
 		}
 		this.feeFormat = FormatUtils.chooseMoneyFormat(priceExTax);
