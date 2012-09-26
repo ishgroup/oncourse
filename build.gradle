@@ -198,24 +198,24 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		description "Create the Windows application executable."
 		doFirst {
 			logger.lifecycle("Creating the Windows application executable for $project.name")
+		    new File("${distsDir}/windows").mkdirs()
 		}
 
 		inputs.files winAppFiles.getSource()
-		outputs.files "${distsDir}/windows/*.exe"
+		outputs.file "${distsDir}/windows/onCourse.exe"
 
 		with winAppFiles
-		into file("${buildDir}/tmp/exe4j")
+		into temporaryDir
 
 		doLast {
 			ant.taskdef(name: 'exe4j', classname: 'com.exe4j.Exe4JTask', classpath: "${projectDir}/../lib/exe4j/bin/ant.jar")
 			
-			def exe4jCollection = file("${distsDir}/tmp/exe4j").listFiles().findAll {it.name.endsWith('.exe4j.xml')}
+			def exe4jCollection = temporaryDir.listFiles().findAll {it.name.endsWith('.exe4j.xml')}
 			for (File f : exe4jCollection) {
 				logger.lifecycle("Executing exe4j with " + f.getAbsolutePath())
 				ant.exe4j(projectfile: f, release: version, requirelicense: 'true', destination: "${distsDir}/windows/")
 			}
 			logger.info("Deleting windows work files");
-			delete "${buildDir}/tmp/exe4j"
 		}
 	}
 
@@ -227,52 +227,33 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		description "Create the OSX installer (which is just a dmg file)."
 		doFirst {
 			logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
+			new File("${distsDir}/macosx").mkdirs()  
 		}
 
-		def dmgSource = "${distsDir}/macosx/${project.appName}"
+		def output = file("${distsDir}/macosx/${project.appName}.dmg")
 		inputs.files osxDmgFiles.getSource()
-		outputs.files "${dmgSource}.dmg"
+		outputs.file output
 
 		with osxDmgFiles
-		into file(dmgSource)
+		into temporaryDir
 
 		doLast {
-			if (file("${dmgSource}.dmg").exists()) delete "${dmgSource}.dmg"
+			if (output.exists()) delete output
 
 			exec {
 				executable = "hdiutil"
 				args = ["create", 
-				"-srcfolder", dmgSource,
+				"-srcfolder", temporaryDir,
 				"-volname", "${project.appName}",
-				"${dmgSource}.dmg"]
+				output]
 			}
 			logger.info("Deleting dmg work files");
-			delete dmgSource
 		}
 	}
 
-	task installer_win(dependsOn: bundle_win, type: Copy) {
-		description "Create the Windows installer."
-		doFirst {
-			logger.lifecycle("Creating the Windows installer for $project.name")
-		}
-
-		from "${projectDir}/src/packaging/windows"
-		include '*.nsi' 
-		include '*.bmp'
-		into "${distsDir}/windows"
-		
-		doLast {
-			def nsisFiles = fileTree("${distsDir}/windows/").include('**/*.nsi')
-
-			nsisFiles.each {File file ->
-				logger.lifecycle("Executing makensis for "+file.getAbsolutePath())
-    			exec {
-					executable = "makensis"
-					args = [file.getAbsolutePath()]
-				}
-			}
-		}
+	task installer_win(dependsOn: bundle_win, type: Nsis) {
+		inputFile = file("${distsDir}/windows/onCourse.exe")
+		outputFileName = "onCourse-installer.exe"
 	}
 
 	task installer(dependsOn: [installer_win, installer_osx, ':client:installer_webstart', ':server:installer_freebsd', ':server:installer_unix']) {
@@ -287,7 +268,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 */
 
 task aggregateTestReports(type: TestReportAggregator) {
-    testReportDir = file("${reportsDir}/tests")
+    testReportDir = file("${reporting.baseDir}/tests")
     testResultsDir = file("${buildDir}/test-results")
     projects = subprojects
 }
@@ -313,4 +294,49 @@ class TestReportAggregator extends Copy {
     def getInputTestResultDirs() {
         testTasks*.testResultsDir
     }
+}
+
+class Nsis extends Copy {
+
+	@InputFile
+	def inputFile
+
+	def String outputFileName
+
+	def Nsis() {
+		description "Create the Windows installer."
+		logger.lifecycle("Creating the Windows installer for $project.name")
+	}
+
+	@TaskAction
+	def build() {
+		def outputFile = file("${distsDir}/windows/${outputFileName}")
+		outputs.files outputFile
+
+		with copySpec {
+			into('.') {
+				from "${projectDir}/src/packaging/windows"
+				include '*.nsi' 
+				include '*.bmp'
+			}
+
+			into('.') {
+				from inputFile
+			}
+		}
+		into temporaryDir
+
+		doLast {
+			def nsisFiles = fileTree(temporaryDir).include('**/*.nsi')
+
+			nsisFiles.each {File file ->
+				logger.lifecycle("Executing makensis for " + file.getAbsolutePath())
+				exec {
+					executable = "makensis"
+					args = [file.getAbsolutePath()]
+				}
+			}
+			file(temporaryDir + outputFileName).renameTo(outputFile)
+		}
+	}
 }
