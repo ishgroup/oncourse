@@ -91,6 +91,7 @@ task bundle_webstart(dependsOn: jar, type: Copy) {
 					}
 				}
 	}
+}
 
 task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	
@@ -104,4 +105,7 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 	extension='zip'
 }
 
+task installer_win(dependsOn: bundle_win, type: Nsis) {
+	inputFile = file("${distsDir}/windows/onCourse.exe")
+	outputFileName = "onCourse-installer.exe"
 }

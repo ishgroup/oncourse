@@ -251,11 +251,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	task installer_win(dependsOn: bundle_win, type: Nsis) {
-		inputFile = file("${distsDir}/windows/onCourse.exe")
-		outputFileName = "onCourse-installer.exe"
-	}
-
 	task installer(dependsOn: [installer_win, installer_osx, ':client:installer_webstart', ':server:installer_freebsd', ':server:installer_unix']) {
 		description "Create all application installers."
 	}

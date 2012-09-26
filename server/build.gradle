@@ -191,3 +191,8 @@ task installer_unix(dependsOn: jarAll, type: Copy) {
 		delete "${distsDir}/unix/onCourseServer.tar"
 	}
 }
+
+task installer_win(dependsOn: bundle_win, type: Nsis) {
+	inputFile = file("${distsDir}/windows/onCourseServer.exe")
+	outputFileName = "onCourseServer-installer.exe"
+}
