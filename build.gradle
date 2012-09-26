@@ -16,8 +16,8 @@ allprojects {
 
 	apply plugin: 'release'
 	release {
-		scm 'svn'
-		failOnSnapshotDependencies true
+		scm = 'svn'
+		failOnSnapshotDependencies = true
 	}
 
 	repositories {
