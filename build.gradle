@@ -15,10 +15,9 @@ allprojects {
 	apply plugin: 'maven'
 
 	apply plugin: 'release'
-
 	release {
-		scm = 'svn'
-		failOnSnapshotDependencies = true
+		scm 'svn'
+		failOnSnapshotDependencies true
 	}
 
 	repositories {
@@ -44,7 +43,7 @@ allprojects {
 
 	ext.sharedManifest = manifest {
 		// attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
-		attributes('SCM-Revision': '123', 'Release-Version': 'trunk') //TODO temporary hack because this runs before the release plugin
+		attributes('SCM-Revision': '123', 'Release-Version': version) //TODO temporary hack because this runs before the release plugin
 	}
 
 	test {

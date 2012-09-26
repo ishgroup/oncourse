@@ -1,14 +1,13 @@
 dependencies {
-        compile 'org.apache.cayenne:cayenne-server:3.1B1'
+	compile 'org.apache.cayenne:cayenne-server:3.1B1'
 }
 
 jar {
-        manifest {
-                from sharedManifest
-        }
+	manifest {
+		from sharedManifest
+	}
 }
 
 artifacts {
-    archives jar
+	archives jar
 }
-
