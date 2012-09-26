@@ -10,20 +10,16 @@ buildscript {
 	}
 }
 
-version = "trunk" //TODO temporary hack while release plugin is fixed
-
-apply plugin: 'release'
-
-release {
-	scm = 'svn'
-	failOnSnapshotDependencies = true
-}
-
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 
-	version = "trunk" 
+	apply plugin: 'release'
+
+	release {
+		scm = 'svn'
+		failOnSnapshotDependencies = true
+	}
 
 	repositories {
 		maven {
@@ -48,7 +44,7 @@ allprojects {
 
 	ext.sharedManifest = manifest {
 		// attributes('SCM-Revision': release.scmVersion, 'Release-Version': version)
-		attributes('SCM-Revision': '123', 'Release-Version': version) //TODO temporary hack while release plugin is fixed
+		attributes('SCM-Revision': '123', 'Release-Version': 'trunk') //TODO temporary hack because this runs before the release plugin
 	}
 
 	test {
