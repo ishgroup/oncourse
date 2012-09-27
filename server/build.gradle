@@ -192,7 +192,7 @@ task installer_unix(dependsOn: jarAll, type: Copy) {
 	}
 }
 
-task installer_win(dependsOn: bundle_win, type: Nsis) {
+task installer_win(dependsOn: bundle_win, type: au.com.ish.NsisTask) {
 	inputFile = file("${distsDir}/windows/onCourseServer.exe")
 	outputFileName = "onCourseServer-installer.exe"
 }

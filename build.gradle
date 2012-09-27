@@ -7,7 +7,7 @@ buildscript {
 
 	dependencies {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
-		classpath group: 'au.com.ish', name: 'Nsis'
+		//classpath group: 'au.com.ish', name: 'NsisTask'
 	}
 }
 
