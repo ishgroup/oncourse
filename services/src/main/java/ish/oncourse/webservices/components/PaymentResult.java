@@ -67,13 +67,9 @@ public class PaymentResult {
         switch (paymentAction)
         {
             case TRY_ANOTHER_CARD:
-                paymentPage.getPaymentProcessController().processAction(TRY_ANOTHER_CARD);
-                break;
             case ABANDON_PAYMENT:
-                paymentPage.getPaymentProcessController().processAction(ABANDON_PAYMENT);
-                break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
-                this.paymentPage.getPaymentProcessController().processAction(ABANDON_PAYMENT_KEEP_INVOICE);
+                paymentPage.getPaymentProcessController().processAction(paymentAction);
                 break;
             default:
                 throw new IllegalArgumentException();
