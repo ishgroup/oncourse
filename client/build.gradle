@@ -106,6 +106,8 @@ task installer_webstart(dependsOn: bundle_webstart, type: Zip) {
 }
 
 task installer_win(dependsOn: bundle_win, type: au.com.ish.NsisTask) {
-	inputFile = file("${distsDir}/windows/onCourse.exe")
+	inputExeFile = file("${distsDir}/windows/onCourse.exe")
+	inputFolder = file("${projectDir}/src/packaging/windows")
 	outputFileName = "onCourse-installer.exe"
+	outputDirectory = file("${distsDir}/windows")
 }
