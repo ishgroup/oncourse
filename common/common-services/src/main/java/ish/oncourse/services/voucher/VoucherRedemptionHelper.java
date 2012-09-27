@@ -4,19 +4,20 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.common.types.VoucherStatus;
 import ish.math.Money;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.Voucher;
+import ish.oncourse.model.VoucherPaymentIn;
 import ish.oncourse.model.VoucherProduct;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -86,15 +87,66 @@ public class VoucherRedemptionHelper {
 	}
 	
 	public boolean addVoucher(Voucher voucher) {
-		if (voucher != null) {
-			return vouchers.add(voucher);
+		if (voucher != null && !voucher.isInUse() && !vouchers.contains(voucher)) {
+			vouchers.add(voucher);
+			return true;
 		}
 		return false;
 	}
 	
 	public boolean removeVoucher(Voucher voucher) {
-		if (voucher != null && getVouchers().contains(voucher)) {
-			return vouchers.remove(voucher);
+		return vouchers.remove(voucher);
+	}
+	
+	private VoucherPaymentIn getActiveVoucherPayment(Voucher voucher) {
+		for (VoucherPaymentIn voucherPaymentIn : voucher.getVoucherPaymentIns()) {
+			PaymentStatus status = voucherPaymentIn.getPayment().getStatus();
+			//for the helper execution we need to check the new status is equal, but in final integration also this statuses can be available
+			if (PaymentStatus.NEW.equals(status) || PaymentStatus.IN_TRANSACTION.equals(status) || PaymentStatus.FAILED_CARD_DECLINED.equals(status)) {
+				return voucherPaymentIn;
+			}
+		}
+		return null;
+	}
+	
+	private VoucherPaymentIn createVoucherPaymentIn(Voucher voucher, Contact payer) {
+		ObjectContext context = getInvoice().getObjectContext();
+		VoucherPaymentIn voucherPaymentIn = context.newObject(VoucherPaymentIn.class);
+		PaymentIn payment = context.newObject(PaymentIn.class);
+		payment.setType(PaymentType.VOUCHER);
+		payment.setContact((Contact) context.localObject(payer.getObjectId(), payer));
+		payment.setAmount(Money.ZERO.toBigDecimal());
+		//payment.setStatus(PaymentStatus.NEW);
+		payment.setCollege(getInvoice().getCollege());
+		payment.setSource(getInvoice().getSource());
+		voucherPaymentIn.setCollege(getInvoice().getCollege());
+		voucherPaymentIn.setPayment(payment);
+		voucherPaymentIn.setVoucher((Voucher) context.localObject(voucher.getObjectId(), voucher));
+		if (voucherPaymentIn.getEnrolmentsCount() == null && voucher.getVoucherProduct().getMaxCoursesRedemption() != null) {
+			voucherPaymentIn.setEnrolmentsCount(0);
+		}
+		getPayments().add(payment);
+		return voucherPaymentIn;
+	}
+	
+	private PaymentInLine paymentLineForInvoiceAndPayment(PaymentIn paymentIn) {
+		for (PaymentInLine paymentInLine : paymentIn.getPaymentInLines()) {
+			if (isEqualIgnoreContext(paymentInLine.getInvoice(), getInvoice())) {
+				return paymentInLine;
+			}
+		}
+		ObjectContext context = getInvoice().getObjectContext();
+		PaymentInLine paymentInLine = context.newObject(PaymentInLine.class);
+		paymentInLine.setCollege(getInvoice().getCollege());
+		paymentInLine.setPaymentIn(paymentIn);
+		paymentInLine.setInvoice(getInvoice());
+		paymentInLine.setAmount(Money.ZERO.toBigDecimal());
+		return paymentInLine;
+	}
+	
+	private boolean isEqualIgnoreContext(CayenneDataObject objectForCheck, CayenneDataObject dataObject) {
+		if (objectForCheck instanceof CayenneDataObject && dataObject instanceof CayenneDataObject) {
+			return objectForCheck.equals(dataObject) || objectForCheck.getObjectId().equals(dataObject.getObjectId());
 		}
 		return false;
 	}
@@ -103,43 +155,27 @@ public class VoucherRedemptionHelper {
 	 * Discard the changes made from previous VoucherRedemptionHelper#calculateVouchersRedeemPayment() execution.
 	 */
 	public void discardChanges() {
-		for (PaymentIn paymentIn : getPayments()) {
-			ObjectContext context = paymentIn.getObjectContext();
-			context.deleteObjects(paymentIn.getPaymentInLines());
-			Voucher voucher = paymentIn.getRedeemedVoucher();
-			context.deleteObject(paymentIn);
-			if (checkIsOriginalVoucher(getVouchers(), voucher)) {
-				voucher.setStatus(VoucherStatus.ACTIVE);
-				for (Voucher relatedVouchers : voucher.getInvoiceLine().getVouchers()) {
-					if (!checkIsOriginalVoucher(getVouchers(), relatedVouchers)) {
-						if (relatedVouchers.getRedemptionPayment() != null) {
-							//we cancel the cloned voucher which not linked with this payment, but should be canceled
-							relatedVouchers.setRedemptionPayment(null);
-						}
-						relatedVouchers.setStatus(VoucherStatus.CANCELLED);
-						context.deleteObject(relatedVouchers);
-					}
+		for (Voucher voucher : getVouchers()) {
+			VoucherPaymentIn voucherPaymentIn = getActiveVoucherPayment(voucher);
+			if (voucherPaymentIn != null) {
+				PaymentIn paymentIn = voucherPaymentIn.getPayment();
+				if (voucher.getVoucherProduct().getMaxCoursesRedemption() == null || 0 == voucher.getVoucherProduct().getMaxCoursesRedemption()) {
+					voucher.setRedemptionValue(voucher.getRedemptionValue().add(paymentIn.getAmount()));
+				} else {
+					voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() - voucherPaymentIn.getEnrolmentsCount());
 				}
-			} else {
-				if (voucher != null) {
-					//delete the cloned voucher if already linked
-					voucher.setStatus(VoucherStatus.CANCELLED);
-					//voucher.setInvoiceLine(null);
-					context.deleteObject(voucher);
+				if (!voucher.isFullyRedeemed()) {
+					voucher.setStatus(VoucherStatus.ACTIVE);
 				}
+				ObjectContext context = paymentIn.getObjectContext();
+				context.deleteObject(voucherPaymentIn);
+				context.deleteObjects(paymentIn.getPaymentInLines());
+				context.deleteObject(paymentIn);
 			}
 		}
 		getPayments().clear();
 	}
 	
-	private boolean checkIsOriginalVoucher(List<Voucher> originalVouchers, Voucher voucherForCheck) {
-		for (Voucher voucher : originalVouchers) {
-			if (voucher.equals(voucherForCheck)) {
-				return true;
-			}
-		}
-		return false;
-	}
 	/**
 	 * Calculate the voucher redemption and create the in transaction payments for vouchers which can be applied for.
 	 */
@@ -152,185 +188,105 @@ public class VoucherRedemptionHelper {
 			for (Voucher courseVoucher : courseVouchers) {
 				for (InvoiceLine invoiceLine : getInvoice().getInvoiceLines()) {
 					if (!redeemedInvoiceLines.contains(invoiceLine) && invoiceLine.getEnrolment() != null 
-						&& courseVoucher.getVoucherProduct().getRedemptionCourses().contains(invoiceLine.getEnrolment().getCourseClass().getCourse())) {
-						//we need to check that this voucher not fully redeemed 
-						Voucher activeVoucher = takeFirstActiveVoucher(courseVoucher);
-						if (activeVoucher != null) {
-							getPayments().add(redeemVoucherForCourse(activeVoucher, invoiceLine));
-							redeemedInvoiceLines.add(invoiceLine);
+						&& courseVoucher.isApplicableTo(invoiceLine.getEnrolment())) {
+						redeemVoucherForCourse(courseVoucher, invoiceLine);
+						redeemedInvoiceLines.add(invoiceLine);
+						if (VoucherStatus.REDEEMED.equals(courseVoucher.getStatus())) {
+							//if the voucher already redeemed we need to switch to another available voucher
+							break;
 						}
 					}
 				}
 			}
 			//check available vouchers with money
-			List<PartiallyRedeemedInvoiceLine> partiallyRedeemedInvoiceLines = new ArrayList<PartiallyRedeemedInvoiceLine>();
+			List<RedeemedInvoiceLine> partiallyRedeemedInvoiceLines = new ArrayList<RedeemedInvoiceLine>();
+			//fill amount which need to be redeemed
+			for (InvoiceLine invoiceLine : getInvoice().getInvoiceLines()) {
+				if (!redeemedInvoiceLines.contains(invoiceLine)) {
+					partiallyRedeemedInvoiceLines.add(new RedeemedInvoiceLine(invoiceLine, 
+						invoiceLine.getDiscountedPriceTotalIncTax()));
+				}
+			}
 			List<Voucher> moneyVouchers = ACTIVE_VOUCHER_QUALIFIER.filterObjects(MONEY_VOUCHER_QUALIFIER.filterObjects(getVouchers()));
 			for (Voucher moneyVoucher : moneyVouchers) {
 				for (InvoiceLine invoiceLine : getInvoice().getInvoiceLines()) {
-					if (takePartiallyRedeemedInvoiceLine(partiallyRedeemedInvoiceLines, invoiceLine) == null 
-						&& !redeemedInvoiceLines.contains(invoiceLine) 
-						&& invoiceLine.getEnrolment() != null) {
-						//we need to check that this voucher not fully redeemed 
-						Voucher activeVoucher = takeFirstActiveVoucher(moneyVoucher);
-						if (activeVoucher != null) {
-							PaymentIn payment = redeemVoucherForMoney(activeVoucher, invoiceLine);
-							getPayments().add(payment);
-							if (payment.getAmount().equals(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal())) {
-								redeemedInvoiceLines.add(invoiceLine);
-							} else {
-								partiallyRedeemedInvoiceLines.add(new PartiallyRedeemedInvoiceLine(invoiceLine, payment.getAmount()));
-							}
+					RedeemedInvoiceLine redeemedInvoiceLine = takeRedeemedInvoiceLine(partiallyRedeemedInvoiceLines, 
+						invoiceLine);
+					if (redeemedInvoiceLine != null && !redeemedInvoiceLines.contains(invoiceLine) && invoiceLine.getEnrolment() != null) {
+						Money amount = redeemVoucherForMoney(moneyVoucher, invoiceLine, redeemedInvoiceLine.getAmount());
+						if (amount.equals(redeemedInvoiceLine.getAmount())) {
+							redeemedInvoiceLines.add(invoiceLine);
+							partiallyRedeemedInvoiceLines.remove(redeemedInvoiceLine);
+						} else {
+							redeemedInvoiceLine.setAmount(redeemedInvoiceLine.getAmount().subtract(amount));
 						}
-					}
-				}
-			}
-			//now we need to check is any partially payed invoiceLines linked with money vouchers
-			if (!partiallyRedeemedInvoiceLines.isEmpty()) {
-				for (Voucher moneyVoucher : moneyVouchers) {
-					for (InvoiceLine invoiceLine : getInvoice().getInvoiceLines()) {
-						PartiallyRedeemedInvoiceLine partiallyRedeemedInvoiceLine = takePartiallyRedeemedInvoiceLine(partiallyRedeemedInvoiceLines, 
-							invoiceLine);
-						if (partiallyRedeemedInvoiceLine != null) {
-							//we need to check that this voucher not fully redeemed 
-							Voucher activeVoucher = takeFirstActiveVoucher(moneyVoucher);
-							if (activeVoucher != null) {
-								PaymentIn payment = redeemVoucherForMoney(activeVoucher, invoiceLine, 
-									partiallyRedeemedInvoiceLine.getAlreadyRedeemedAmount());
-								getPayments().add(payment);
-								boolean fullyRedeemed = isFullyRedeemed(payment.getAmount(), partiallyRedeemedInvoiceLine.getAlreadyRedeemedAmount(), 
-									invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
-								if (fullyRedeemed) {
-									partiallyRedeemedInvoiceLines.remove(partiallyRedeemedInvoiceLine);
-									redeemedInvoiceLines.add(invoiceLine);
-								} else {
-									partiallyRedeemedInvoiceLine.setAlreadyRedeemedAmount(
-										partiallyRedeemedInvoiceLine.getAlreadyRedeemedAmount().add(payment.getAmount()));
-								}
-							}
+						if (VoucherStatus.REDEEMED.equals(moneyVoucher.getStatus())) {
+							//if the voucher already redeemed we need to switch to another available voucher
+							break;
 						}
 					}
 				}
 			}
 		}
 	}
-	
-	private boolean isFullyRedeemed(BigDecimal lastPaymentAmount, BigDecimal previousPaymentsAmount, BigDecimal fullPrice) {
-		return fullPrice.subtract(previousPaymentsAmount).subtract(lastPaymentAmount).compareTo(BigDecimal.ZERO) == 0;
-	}
-	
-	private PartiallyRedeemedInvoiceLine takePartiallyRedeemedInvoiceLine(List<PartiallyRedeemedInvoiceLine> partiallyRedeemedInvoiceLines, 
-		InvoiceLine invoiceLine) {
-		if (invoiceLine != null && partiallyRedeemedInvoiceLines != null && !partiallyRedeemedInvoiceLines.isEmpty()) {
-			for (PartiallyRedeemedInvoiceLine partiallyRedeemedInvoiceLine : partiallyRedeemedInvoiceLines) {
-				if (partiallyRedeemedInvoiceLine.getInvoiceLine().equals(invoiceLine)) {
-					return partiallyRedeemedInvoiceLine;
+		
+	private RedeemedInvoiceLine takeRedeemedInvoiceLine(List<RedeemedInvoiceLine> redeemedInvoiceLines, InvoiceLine invoiceLine) {
+		if (invoiceLine != null && redeemedInvoiceLines != null && !redeemedInvoiceLines.isEmpty()) {
+			for (RedeemedInvoiceLine redeemedInvoiceLine : redeemedInvoiceLines) {
+				if (redeemedInvoiceLine.getInvoiceLine().equals(invoiceLine)) {
+					return redeemedInvoiceLine;
 				}
 			}
 		}
 		return null;
 	}
-	
-	/**
-	 * Take the first active voucher linked with the same invoiceline as the original voucher.
-	 * @param originalVoucher
-	 * @return
-	 */
-	Voucher takeFirstActiveVoucher(Voucher originalVoucher) {
-		if (originalVoucher == null) {
-			return null;
-		}
-		if (VoucherStatus.ACTIVE.equals(originalVoucher.getStatus())) {
-			return originalVoucher;
-		} else {
-			List<Voucher> invoiceLineVouchers = originalVoucher.getInvoiceLine().getVouchers();
-			Collections.sort(invoiceLineVouchers, new VoucherComparator());
-			for (Voucher voucher : invoiceLineVouchers) {
-				if (VoucherStatus.ACTIVE.equals(voucher.getStatus())) {
-					return voucher;
-				}
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Redeem money voucher for invoiceline if no additional payments exist for them.
-	 * @param moneyVoucher - money voucher for use
-	 * @param invoiceLine - invoiceline for payment generation.
-	 * @return payment linked with voucher.
-	 */
-	PaymentIn redeemVoucherForMoney(Voucher moneyVoucher, InvoiceLine invoiceLine) {
-		return redeemVoucherForMoney(moneyVoucher, invoiceLine, BigDecimal.ZERO);
-	}
-	
+			
 	/**
 	 * Redeem money voucher for invoiceline if any additional payments exist for them.
 	 * @param moneyVoucher - money voucher for use.
 	 * @param invoiceLine - invoiceline for payment generation.
-	 * @param alreadyRedeemedAmount - already redeemed amount of invoiceline
-	 * @return payment linked with voucher.
+	 * @param leftToPay - amount left to pay for invoiceline
+	 * @return money allocated from voucher for this invoiceline.
 	 */
-	PaymentIn redeemVoucherForMoney(Voucher moneyVoucher, InvoiceLine invoiceLine, BigDecimal alreadyRedeemedAmount) {
-		PaymentIn paymentIn = getInvoice().getObjectContext().newObject(PaymentIn.class);
-		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
-		paymentIn.setType(PaymentType.VOUCHER);
-		paymentIn.setContact(getInvoice().getContact());
+	Money redeemVoucherForMoney(Voucher moneyVoucher, InvoiceLine invoiceLine, Money leftToPay) {
 		//evaluate amount for the payment
-		Money leftToPay = new Money(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal().subtract(alreadyRedeemedAmount));
 		Money amount = moneyVoucher.getRedemptionValue().isLessThan(leftToPay) ? moneyVoucher.getRedemptionValue() : leftToPay;
-		paymentIn.setAmount(amount.toBigDecimal());
-		paymentIn.setSource(getInvoice().getSource());
-		paymentIn.setCollege(getInvoice().getCollege());
-		//fill paymentInLine
-		PaymentInLine paymentInLine  = paymentIn.getObjectContext().newObject(PaymentInLine.class);
-		paymentInLine.setAmount(paymentIn.getAmount());
-		paymentInLine.setCollege(paymentIn.getCollege());
-		paymentInLine.setInvoice(getInvoice());
-		paymentInLine.setPaymentIn(paymentIn);
-		//check is voucher fully redeemed
-		moneyVoucher = (Voucher) getInvoice().getObjectContext().localObject(moneyVoucher.getObjectId(), null);
-		Voucher newVoucher = moneyVoucher.makeShallowCopy();
-		newVoucher.setRedemptionValue(moneyVoucher.getRedemptionValue().subtract(amount));
-		if (newVoucher.isFullyRedeemed()) {
-			getInvoice().getObjectContext().deleteObject(newVoucher);
+		VoucherPaymentIn voucherPaymentIn = getActiveVoucherPayment(moneyVoucher);
+		if (voucherPaymentIn == null) {
+			//no new payment linked to the voucher yet, need to create
+			voucherPaymentIn = createVoucherPaymentIn(moneyVoucher, getInvoice().getContact());
 		}
-		moneyVoucher.setStatus(VoucherStatus.REDEEMED);
-		moneyVoucher.setRedeemedInvoiceLine(invoiceLine);
-		moneyVoucher.setRedemptionPayment(paymentIn);
-		return paymentIn;
+		PaymentIn paymentIn = voucherPaymentIn.getPayment();
+		paymentIn.setAmount(new Money(paymentIn.getAmount()).add(amount).toBigDecimal());
+		PaymentInLine paymentInLine = paymentLineForInvoiceAndPayment(paymentIn);
+		paymentInLine.setAmount(new Money(paymentInLine.getAmount()).add(amount).toBigDecimal());
+		moneyVoucher.setRedemptionValue(moneyVoucher.getRedemptionValue().subtract(amount));
+		if (moneyVoucher.isFullyRedeemed()) {
+			moneyVoucher.setStatus(VoucherStatus.REDEEMED);
+		}
+		return amount;
 	}
 	
 	/**
 	 * Redeem course voucher for invoiceline.
 	 * @param courseVoucher - course voucher for use
 	 * @param invoiceLine - invoiceline for payment generation.
-	 * @return payment linked with voucher.
 	 */
-	PaymentIn redeemVoucherForCourse(Voucher courseVoucher, InvoiceLine invoiceLine) {
-		PaymentIn paymentIn = getInvoice().getObjectContext().newObject(PaymentIn.class);
-		paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
-		paymentIn.setType(PaymentType.VOUCHER);
-		paymentIn.setContact(getInvoice().getContact());
-		paymentIn.setAmount(invoiceLine.getDiscountedPriceTotalIncTax().toBigDecimal());
-		paymentIn.setSource(getInvoice().getSource());
-		paymentIn.setCollege(getInvoice().getCollege());
-		//fill paymentInLine
-		PaymentInLine paymentInLine  = paymentIn.getObjectContext().newObject(PaymentInLine.class);
-		paymentInLine.setAmount(paymentIn.getAmount());
-		paymentInLine.setCollege(paymentIn.getCollege());
-		paymentInLine.setInvoice(getInvoice());
-		paymentInLine.setPaymentIn(paymentIn);
-		//check is voucher fully redeemed
-		courseVoucher = (Voucher) getInvoice().getObjectContext().localObject(courseVoucher.getObjectId(), null);
-		Voucher newVoucher = courseVoucher.makeShallowCopy();
-		newVoucher.setRedeemedCoursesCount(courseVoucher.getRedeemedCoursesCount() + 1);
-		if (newVoucher.isFullyRedeemed()) {
-			getInvoice().getObjectContext().deleteObject(newVoucher);
+	void redeemVoucherForCourse(Voucher courseVoucher, InvoiceLine invoiceLine) {
+		VoucherPaymentIn voucherPaymentIn = getActiveVoucherPayment(courseVoucher);
+		if (voucherPaymentIn == null) {
+			//no new payment linked to the voucher yet, need to create
+			voucherPaymentIn = createVoucherPaymentIn(courseVoucher, getInvoice().getContact());
 		}
-		courseVoucher.setStatus(VoucherStatus.REDEEMED);
-		courseVoucher.setRedeemedInvoiceLine(invoiceLine);
-		courseVoucher.setRedemptionPayment(paymentIn);
-		return paymentIn;
+		PaymentIn paymentIn = voucherPaymentIn.getPayment();
+		paymentIn.setAmount(new Money(paymentIn.getAmount()).add(invoiceLine.getPriceTotalIncTax()).toBigDecimal());
+		PaymentInLine paymentInLine = paymentLineForInvoiceAndPayment(paymentIn);
+		paymentInLine.setAmount(new Money(paymentInLine.getAmount()).add(invoiceLine.getPriceTotalIncTax()).toBigDecimal());
+		courseVoucher.setRedeemedCoursesCount(courseVoucher.getRedeemedCoursesCount() + 1);
+		voucherPaymentIn.setEnrolmentsCount(voucherPaymentIn.getEnrolmentsCount() + 1);
+		if (courseVoucher.isFullyRedeemed()) {
+			courseVoucher.setStatus(VoucherStatus.REDEEMED);
+		}
 	}
 	
 	/**
@@ -349,9 +305,9 @@ public class VoucherRedemptionHelper {
 				if (voucher1.getRedeemedCoursesCount() != null) {
 					int courseCountResult = voucher1.getRedeemedCoursesCount().compareTo(voucher2.getRedeemedCoursesCount());
 					if (courseCountResult == 0) {
-						if (voucher1.getRedemptionValue() != null) {
-							if (voucher2.getRedemptionValue() != null) {
-								return voucher1.getRedemptionValue().compareTo(voucher2.getRedemptionValue());
+						if (voucher1.getValueRemaining() != null) {
+							if (voucher2.getValueRemaining() != null) {
+								return voucher1.getValueRemaining().compareTo(voucher2.getValueRemaining());
 							} else {
 								return 1;
 							}
@@ -359,9 +315,9 @@ public class VoucherRedemptionHelper {
 					} else {
 						return courseCountResult;
 					}
-				} else if (voucher1.getRedemptionValue() != null) {
-					if (voucher2.getRedemptionValue() != null) {
-						return voucher1.getRedemptionValue().compareTo(voucher2.getRedemptionValue());
+				} else if (voucher1.getValueRemaining() != null) {
+					if (voucher2.getValueRemaining() != null) {
+						return voucher1.getValueRemaining().compareTo(voucher2.getValueRemaining());
 					} else {
 						return 1;
 					}
@@ -376,27 +332,27 @@ public class VoucherRedemptionHelper {
 	 * @author vdavidovich
 	 *
 	 */
-	private class PartiallyRedeemedInvoiceLine {
+	private class RedeemedInvoiceLine {
 		private final InvoiceLine invoiceLine;
-		private BigDecimal alreadyRedeemedAmount;
+		private Money amount;
 		
-		protected PartiallyRedeemedInvoiceLine(InvoiceLine invoiceLine, BigDecimal alreadyRedeemedAmount) {
+		protected RedeemedInvoiceLine(InvoiceLine invoiceLine, Money amount) {
 			this.invoiceLine = invoiceLine;
-			this.alreadyRedeemedAmount = alreadyRedeemedAmount;
+			this.amount = amount;
 		}
 
 		/**
-		 * @return the alreadyRedeemedAmount
+		 * @return the amount
 		 */
-		BigDecimal getAlreadyRedeemedAmount() {
-			return alreadyRedeemedAmount;
+		Money getAmount() {
+			return amount;
 		}
 
 		/**
-		 * @param alreadyRedeemedAmount the alreadyRedeemedAmount to set
+		 * @param amount the amount to set
 		 */
-		private void setAlreadyRedeemedAmount(BigDecimal alreadyRedeemedAmount) {
-			this.alreadyRedeemedAmount = alreadyRedeemedAmount;
+		private void setAmount(Money amount) {
+			this.amount = amount;
 		}
 
 		/**

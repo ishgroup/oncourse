@@ -387,8 +387,9 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	}
 	
 	private void revertTheVoucherRedemption() {
+		//TODO: update me
 		//also check that vouchers linked with the payment to avoid the state when vouchers will be partially used with abandoned payment. 
-		Voucher voucherForRolback = getRedeemedVoucher();
+		/*Voucher voucherForRolback = null;//getRedeemedVoucher();
 		if (voucherForRolback != null && VoucherStatus.REDEEMED.equals(voucherForRolback.getStatus())) {
 			List<Voucher> linkedVouchers = voucherForRolback.getInvoiceLine().getVouchers();
 			for (Voucher voucher : linkedVouchers) {
@@ -400,7 +401,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			}
 			//and change the status of voucher used for redemption to active
 			voucherForRolback.setStatus(VoucherStatus.ACTIVE);
-		}
+		}*/
 	}
 
 	/**

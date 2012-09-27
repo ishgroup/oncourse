@@ -40,7 +40,6 @@ public abstract class _Qualification extends CayenneDataObject {
     public void setAnzsco(String anzsco) {
         writeProperty("anzsco", anzsco);
     }
-    
     public String getAnzsco() {
         return (String)readProperty("anzsco");
     }
@@ -48,6 +47,7 @@ public abstract class _Qualification extends CayenneDataObject {
     public void setAsco(String asco) {
         writeProperty("asco", asco);
     }
+    
     public String getAsco() {
         return (String)readProperty("asco");
     }

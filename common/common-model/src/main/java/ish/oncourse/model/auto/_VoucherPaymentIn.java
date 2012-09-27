@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.VoucherPaymentStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Voucher;
@@ -18,9 +19,11 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
+    public static final String ENROLMENTS_COUNT_PROPERTY = "enrolmentsCount";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String STATUS_PROPERTY = "status";
     public static final String COLLEGE_PROPERTY = "college";
-    public static final String PAYMENT_IN_PROPERTY = "paymentIn";
+    public static final String PAYMENT_PROPERTY = "payment";
     public static final String VOUCHER_PROPERTY = "voucher";
 
     public static final String ID_PK_COLUMN = "id";
@@ -39,11 +42,25 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
         return (Date)readProperty("created");
     }
 
+    public void setEnrolmentsCount(Integer enrolmentsCount) {
+        writeProperty("enrolmentsCount", enrolmentsCount);
+    }
+    public Integer getEnrolmentsCount() {
+        return (Integer)readProperty("enrolmentsCount");
+    }
+
     public void setModified(Date modified) {
         writeProperty("modified", modified);
     }
     public Date getModified() {
         return (Date)readProperty("modified");
+    }
+
+    public void setStatus(VoucherPaymentStatus status) {
+        writeProperty("status", status);
+    }
+    public VoucherPaymentStatus getStatus() {
+        return (VoucherPaymentStatus)readProperty("status");
     }
 
     public void setCollege(College college) {
@@ -55,12 +72,12 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
     }
 
 
-    public void setPaymentIn(PaymentIn paymentIn) {
-        setToOneTarget("paymentIn", paymentIn, true);
+    public void setPayment(PaymentIn payment) {
+        setToOneTarget("payment", payment, true);
     }
 
-    public PaymentIn getPaymentIn() {
-        return (PaymentIn)readProperty("paymentIn");
+    public PaymentIn getPayment() {
+        return (PaymentIn)readProperty("payment");
     }
 
 

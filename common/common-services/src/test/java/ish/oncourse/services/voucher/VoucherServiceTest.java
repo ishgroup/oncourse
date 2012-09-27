@@ -356,16 +356,8 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("One payment should be created", helper.getPayments());
 		assertEquals("One payment should be created", 1, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
-				vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 $ value", Money.ONE, 
-			vouchers.get(1).getRedemptionValue());
-		Money moneyActive = vouchers.get(0).getRedemptionValue().subtract(new Money(invoice.getTotalGst()));
-		assertEquals("1$ should be active for a voucher", vouchers.get(1).getRedemptionValue(), moneyActive);
+		assertEquals("After calculation voucher should be still active", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("After calculation voucher should contain 1 $ value", Money.ONE, voucher.getRedemptionValue());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing for invoice should be 0", Money.ZERO.toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
@@ -373,18 +365,8 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("One payment should be created", helper.getPayments());
 		assertEquals("One payment should be created", 1, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After re-calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After re-calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should have 101 $ value", new Money("101.00"), 
-				vouchers.get(0).getRedemptionValue());
-		assertEquals("After re-calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
-				vouchers.get(1).getStatus());
-		assertEquals("After re-calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 $ value", Money.ONE, 
-			vouchers.get(1).getRedemptionValue());
-		moneyActive = vouchers.get(0).getRedemptionValue().subtract(new Money(invoice.getTotalGst()));
-		assertEquals("1$ should be active for a voucher", vouchers.get(1).getRedemptionValue(), moneyActive);
+		assertEquals("After re-calculation voucher should be still active", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("After re-calculation voucher should contain 1 $ value", Money.ONE, voucher.getRedemptionValue());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing for invoice should be 0", Money.ZERO.toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
@@ -444,28 +426,20 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("One payment should be created", helper.getPayments());
 		assertEquals("One payment should be created", 1, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and redemption should be 101 $ value", new Money("101.00"), 
-			vouchers.get(0).getRedemptionValue());
+		assertEquals("After calculation voucher should be redeemed", VoucherStatus.REDEEMED, voucher.getStatus());
+		assertEquals("After calculation voucher should have no money left", Money.ZERO, voucher.getRedemptionValue());
 
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0", invoiceLine.getDiscountedPriceTotalIncTax().subtract(voucher.getRedemptionValue()).toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be correct", new Money("99.00").toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("One payment should be created", helper.getPayments());
 		assertEquals("One payment should be created", 1, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and redemption should be 101 $ value", new Money("101.00"), 
-			vouchers.get(0).getRedemptionValue());
+		assertEquals("After re-calculation voucher should be redeemed", VoucherStatus.REDEEMED, voucher.getStatus());
+		assertEquals("After re-calculation voucher should have no money left", Money.ZERO, voucher.getRedemptionValue());
 		invoice.updateAmountOwing();
-		assertEquals("Amount owing for invoice should be 0", invoiceLine.getDiscountedPriceTotalIncTax().subtract(voucher.getRedemptionValue()).toBigDecimal(), 
+		assertEquals("Amount owing for invoice should be correct", new Money("99.00").toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
 	
@@ -554,23 +528,14 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("Two payments should be created", helper.getPayments());
 		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		List<Voucher> vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be redeemed", VoucherStatus.REDEEMED, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
+		assertEquals("After calculation 2 vouchers should be used and second should be active", VoucherStatus.ACTIVE, 
 				vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 $ value", Money.ONE, 
+		assertEquals("After calculation 2 vouchers should be used and second should have 1 $ value", Money.ONE, 
 			vouchers.get(1).getRedemptionValue());
-		Money moneyRedeemed = vouchers.get(0).getRedemptionValue().subtract(vouchers.get(1).getRedemptionValue());
-		assertEquals("First voucher should be redeemed for 100$", new Money("100.00"), moneyRedeemed);
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-
-		moneyRedeemed = vouchers.get(0).getRedemptionValue();
-		assertEquals("Second voucher should be redeemed for 100$", new Money("100.00"), moneyRedeemed);
 		assertEquals("Invoice and redeemed shoudl be equal", invoice.getTotalGst(), new Money("200.00").toBigDecimal());
 		invoice.updateAmountOwing();
 		Money paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
@@ -581,25 +546,14 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("Two payments should be created", helper.getPayments());
 		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be redeemed", VoucherStatus.REDEEMED, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
+		assertEquals("After calculation 2 vouchers should be used and second should be active", VoucherStatus.ACTIVE, 
 				vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 $ value", Money.ONE, 
+		assertEquals("After calculation 2 vouchers should be used and second should have 1 $ value", Money.ONE, 
 			vouchers.get(1).getRedemptionValue());
-		moneyRedeemed = vouchers.get(0).getRedemptionValue().subtract(vouchers.get(1).getRedemptionValue());
-		assertEquals("First voucher should be redeemed for 100$", new Money("100.00"), moneyRedeemed);
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 vouchers should be linked with the same invoiceLine and should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and should have 100 $ value", new Money("100.00"), 
-			vouchers.get(0).getRedemptionValue());
-		moneyRedeemed = vouchers.get(0).getRedemptionValue();
-		assertEquals("Second voucher should be redeemed for 100$", new Money("100.00"), moneyRedeemed);
-		
 		assertEquals("Invoice and redeemed shoudl be equal", invoice.getTotalGst(), new Money("200.00").toBigDecimal());
 		invoice.updateAmountOwing();
 		paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
@@ -690,57 +644,41 @@ public class VoucherServiceTest extends ServiceTest {
 		//start helper
 		VoucherRedemptionHelper helper = new VoucherRedemptionHelper(invoice, Arrays.asList(voucher,voucher2));
 		helper.calculateVouchersRedeemPayment();
-		assertNotNull("Three payments should be created", helper.getPayments());
-		assertEquals("Three payments should be created", 3, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		assertNotNull("Two payments should be created", helper.getPayments());
+		assertEquals("Two payments should be created", 2, helper.getPayments().size());
+		List<Voucher> vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be redeemed", VoucherStatus.REDEEMED, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should have 101 $ value", new Money("101.00"), 
+		assertEquals("After calculation 2 vouchers should be used and first should have 0 $ value", Money.ZERO, 
 			vouchers.get(0).getRedemptionValue());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.REDEEMED, 
+		assertEquals("After calculation 2 vouchers should be used and second should be active", VoucherStatus.REDEEMED, 
 				vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 51 $ value", new Money("51.00"), 
+		assertEquals("After calculation 2 vouchers should be used and second should have 0 $ value", Money.ZERO, 
 			vouchers.get(1).getRedemptionValue());
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and should have 100 $ value", new Money("100.00"), 
-			vouchers.get(0).getRedemptionValue());
 		
 		invoice.updateAmountOwing();
-		Money paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount())
-			.add(helper.getPayments().get(2).getAmount());
-		assertEquals("Amount owing for invoice should be 49 $", invoice.getTotalGst().subtract(voucher.getRedemptionValue().toBigDecimal())
-			.subtract(voucher2.getRedemptionValue().toBigDecimal()),
+		Money paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
+		assertEquals("Amount owing for invoice should be 49 $", new Money("49.00").toBigDecimal(),
 			invoice.getAmountOwing().subtract(paymentAmounts.toBigDecimal()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
-		assertNotNull("Three payments should be created", helper.getPayments());
-		assertEquals("Three payments should be created", 3, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		assertNotNull("Two payments should be created", helper.getPayments());
+		assertEquals("Two payments should be created", 2, helper.getPayments().size());
+		vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be redeemed", VoucherStatus.REDEEMED, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should have 101 $ value", new Money("101.00"), 
+		assertEquals("After calculation 2 vouchers should be used and first should have 0 $ value", Money.ZERO, 
 			vouchers.get(0).getRedemptionValue());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.REDEEMED, 
+		assertEquals("After calculation 2 vouchers should be used and second should be active", VoucherStatus.REDEEMED, 
 				vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 51 $ value", new Money("51.00"), 
+		assertEquals("After calculation 2 vouchers should be used and second should have 0 $ value", Money.ZERO, 
 			vouchers.get(1).getRedemptionValue());
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and should have 100 $ value", new Money("100.00"), 
-			vouchers.get(0).getRedemptionValue());
 		
 		invoice.updateAmountOwing();
-		paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount())
-			.add(helper.getPayments().get(2).getAmount());
-		assertEquals("Amount owing for invoice should be 49 $", invoice.getTotalGst().subtract(voucher.getRedemptionValue().toBigDecimal())
-			.subtract(voucher2.getRedemptionValue().toBigDecimal()),
+		paymentAmounts = new Money(helper.getPayments().get(0).getAmount()).add(helper.getPayments().get(1).getAmount());
+		assertEquals("Amount owing for invoice should be 49 $", new Money("49.00").toBigDecimal(),
 			invoice.getAmountOwing().subtract(paymentAmounts.toBigDecimal()));
 	}
 	
@@ -811,14 +749,12 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("One payment should be created", helper.getPayments());
 		assertEquals("One payment should be created", 1, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
-				vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 extra course place", 1, 
-			vouchers.get(1).getClassesRemaining().intValue());
+		List<Voucher> vouchers = helper.getVouchers();
+		assertEquals("After calculation 1 voucher should be used", 1, vouchers.size());
+		assertEquals("After calculation 1 voucher should be used and should be active", VoucherStatus.ACTIVE, 
+			voucher.getStatus());
+		assertEquals("After calculation 1 voucher should be used and should have 1 extra course place", 1, 
+			voucher.getClassesRemaining().intValue());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
@@ -826,15 +762,12 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("One payment should be created", helper.getPayments());
 		assertEquals("One payment should be created", 1, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
-			vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 extra course place", 1, 
-			vouchers.get(1).getClassesRemaining().intValue());
-		
+		vouchers = helper.getVouchers();
+		assertEquals("After calculation 1 voucher should be used", 1, vouchers.size());
+		assertEquals("After calculation 1 voucher should be used and should be active", VoucherStatus.ACTIVE, 
+			voucher.getStatus());
+		assertEquals("After calculation 1 voucher should be used and should have 1 extra course place", 1, 
+			voucher.getClassesRemaining().intValue());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
@@ -931,32 +864,28 @@ public class VoucherServiceTest extends ServiceTest {
 		//start helper
 		VoucherRedemptionHelper helper = new VoucherRedemptionHelper(invoice, Arrays.asList(voucher));
 		helper.calculateVouchersRedeemPayment();
-		assertNotNull("Two payments should be created", helper.getPayments());
-		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be redeemed", VoucherStatus.REDEEMED, 
-				vouchers.get(1).getStatus());
+		assertNotNull("One payment should be created", helper.getPayments());
+		assertEquals("One payment should be created", 1, helper.getPayments().size());
+		List<Voucher> vouchers = helper.getVouchers();
+		assertEquals("After calculation 1 voucher should be used", 1, vouchers.size());
+		assertEquals("After calculation 1 voucher should be used and should be redeemed", VoucherStatus.REDEEMED, 
+				voucher.getStatus());
 		
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
-			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()).subtract(helper.getPayments().get(1).getAmount()));
+			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 		//call re-calculate to check that the result will be the same
 		helper.calculateVouchersRedeemPayment();
-		assertNotNull("Two payments should be created", helper.getPayments());
-		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(1).getStatus());
+		assertNotNull("One payment should be created", helper.getPayments());
+		assertEquals("One payment should be created", 1, helper.getPayments().size());
+		vouchers = helper.getVouchers();
+		assertEquals("After calculation 1 voucher should be used", 1, vouchers.size());
+		assertEquals("After calculation 1 voucher should be used and should be redeemed", VoucherStatus.REDEEMED, 
+				voucher.getStatus());
 		
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
-			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()).subtract(helper.getPayments().get(1).getAmount()));
+			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
 	
 	@Test
@@ -1073,18 +1002,14 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("Two payments should be created", helper.getPayments());
 		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		List<Voucher> vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be active", VoucherStatus.ACTIVE, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
+		assertEquals("After calculation 2 vouchers should be used and second should be redemed", VoucherStatus.REDEEMED, 
 			vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 extra course place", 1, 
-			vouchers.get(1).getClassesRemaining().intValue());
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
+		assertEquals("After calculation 2 vouchers should be used and first should have 1 extra course place", 1, 
+			vouchers.get(0).getClassesRemaining().intValue());
 		
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
@@ -1094,18 +1019,14 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("Two payments should be created", helper.getPayments());
 		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be active", VoucherStatus.ACTIVE, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
+		assertEquals("After calculation 2 vouchers should be used and second should be redemed", VoucherStatus.REDEEMED, 
 			vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 extra course place", 1, 
-			vouchers.get(1).getClassesRemaining().intValue());
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
+		assertEquals("After calculation 2 vouchers should be used and first should have 1 extra course place", 1, 
+			vouchers.get(0).getClassesRemaining().intValue());
 		
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
@@ -1222,18 +1143,14 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("Two payments should be created", helper.getPayments());
 		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		List<Voucher> vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		List<Voucher> vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be redeemed", VoucherStatus.REDEEMED, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
+		assertEquals("After calculation 2 vouchers should be used and second should be active", VoucherStatus.ACTIVE, 
 			vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 $ value", Money.ONE, 
+		assertEquals("After calculation 2 vouchers should be used and second should have 1 $ value", Money.ONE, 
 			vouchers.get(1).getRedemptionValue());
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
 		
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
@@ -1243,18 +1160,14 @@ public class VoucherServiceTest extends ServiceTest {
 		helper.calculateVouchersRedeemPayment();
 		assertNotNull("Two payments should be created", helper.getPayments());
 		assertEquals("Two payments should be created", 2, helper.getPayments().size());
-		vouchers = voucher.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine", 2, vouchers.size());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
+		vouchers = helper.getVouchers();
+		assertEquals("After calculation 2 vouchers should be used", 2, vouchers.size());
+		assertEquals("After calculation 2 vouchers should be used and first should be redeemed", VoucherStatus.REDEEMED, 
 			vouchers.get(0).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should be active", VoucherStatus.ACTIVE, 
+		assertEquals("After calculation 2 vouchers should be used and second should be active", VoucherStatus.ACTIVE, 
 			vouchers.get(1).getStatus());
-		assertEquals("After calculation 2 vouchers should be linked with the same invoiceLine and second should have 1 $ value", Money.ONE, 
+		assertEquals("After calculation 2 vouchers should be used and second should have 1 $ value", Money.ONE, 
 			vouchers.get(1).getRedemptionValue());
-		vouchers = voucher2.getInvoiceLine().getVouchers();
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine", 1, vouchers.size());
-		assertEquals("After calculation 1 voucher should be linked with the same invoiceLine and first should be redeemed", VoucherStatus.REDEEMED, 
-			vouchers.get(0).getStatus());
 		
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 

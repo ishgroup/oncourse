@@ -4,6 +4,7 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 
+import ish.common.types.PaymentStatus;
 import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Voucher;
@@ -32,14 +33,6 @@ public class Voucher extends _Voucher implements Queueable {
 		return getPersistenceState() == PersistenceState.NEW;
 	}
 	
-	@Override
-	public void setRedemptionValue(Money value) {
-		if (!isNewRecord() && getRedemptionValue() != null) {
-			throw new IllegalStateException("Cannot change redemption value for already persisted voucher.");
-		}
-		super.setRedemptionValue(value);
-	}
-
 	@Override
 	public void setStatus(VoucherStatus status) {
 		if (!isNewRecord() && !VoucherStatus.ACTIVE.equals(getStatus())) {
@@ -90,7 +83,7 @@ public class Voucher extends _Voucher implements Queueable {
 	public boolean isFullyRedeemed() {
 		VoucherProduct product = getVoucherProduct();
 		if (product.getMaxCoursesRedemption() != null && product.getMaxCoursesRedemption() > 0) {
-			return getClassesRemaining() == 0;
+			return getClassesRemaining() <= 0;
 		} else {
 			return getValueRemaining().isZero();
 		}
@@ -115,6 +108,33 @@ public class Voucher extends _Voucher implements Queueable {
 			throw new IllegalStateException("This voucher is for money redemption only");
 		}
 		return getVoucherProduct().getMaxCoursesRedemption() - getRedeemedCoursesCount();
+	}
+	
+	/**
+	 * Determines whether voucher has not finished redemption payments.
+	 * 
+	 * @return if voucher is in use
+	 */
+	public boolean isInUse() {
+		for (PaymentIn p : getPayments()) {
+			if (!PaymentStatus.STATUSES_FINAL.contains(p.getStatus())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Determines whether voucher is applicable to specified enrolment.
+	 * 
+	 * @param enrolment
+	 * @return if voucher is applicable to enrolment
+	 */
+	public boolean isApplicableTo(Enrolment enrolment) {
+		if (getVoucherProduct().getRedemptionCourses().isEmpty()) {
+			return true;
+		}
+		return getVoucherProduct().getRedemptionCourses().contains(enrolment.getCourseClass().getCourse());
 	}
 	
 }
