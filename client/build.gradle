@@ -1,3 +1,5 @@
+apply plugin: 'macAppBundle'
+
 dependencies {
 	compile project(':common')
 	compile project(':waCommon')
@@ -39,6 +41,35 @@ compileJava {
 					makepairs:"true",
 					client:"true",
 					mode:"all")
+	}
+}
+
+macAppBundle {
+	outputDir = 'distributions/macosx'
+	creatorCode = "ishS"
+	backgroundImage = "${projectDir}/src/packaging/macosx/dmg.background.png"
+    mainClassName = "ish.oncourse.AngelApp"
+    appName = "onCourse"
+    volumeName = "onCourse"
+    dmgName = "onCourse"
+    bundleExecutable = 'onCourse'
+    bundleAllowMixedLocalizations = false
+    icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
+    //certIdentity = "onCourse" //this value is wrong + we need to specify keychain file with --keychain
+}
+
+
+task bundle_osx(dependsOn: createApp) {
+	description "Create the OSX application executable."
+	doFirst {
+		logger.lifecycle("Creating the OSX application executable for $project.name")
+	}
+}
+
+task installer_osx(dependsOn: createDmg) {
+	description "Create the OSX installer (which is just a dmg file)."
+	doFirst {
+		logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
 	}
 }
 

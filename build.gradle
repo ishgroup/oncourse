@@ -7,7 +7,6 @@ buildscript {
 
 	dependencies {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
-		//classpath group: 'au.com.ish', name: 'NsisTask'
 	}
 }
 
@@ -86,127 +85,12 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	project.ext.osxAppFiles = copySpec {
-		into("${project.appName}.app") {
-
-			into('Contents') {
-				from "${projectDir}/src/packaging/macosx/Info.plist"
-
-
-				expand([
-					maxmemoryServer: project.maxmemoryServer,
-					maxpermgenServer: project.maxpermgenServer,
-					maxmemoryClient: project.maxmemoryClient,
-					sourceCompatibility: project.sourceCompatibility,
-					classpath: project.configurations.default.resolve().collect{it.name}.sort(),
-					mainJarClasspath : configurations.default.allArtifacts.files.singleFile.name,
-					version: version,
-					JAVAROOT: '$JAVAROOT' // just a hack to ignore this variable
-				])
-
-				from("${projectDir}/src/packaging/macosx/PkgInfo")
-			}
-
-			into('Contents/Resources') {
-				from("${projectDir}/src/packaging/macosx") {
-					include "*.ico"
-					include "*.icns"
-				}
-			}
-
-			into('Contents/MacOS') {
-				from("${projectDir}/../common/resources/JavaApplicationStub")
-				rename 'JavaApplicationStub', project.appName
-				fileMode = 0755
-			}
-
-			into('Contents/Resources/Java') {
-				from configurations.default
-				from configurations.default.allArtifacts.files
-				exclude '*-sources.jar'
-				exclude '*-javadoc.jar'
-			}
-		}
-	}
-
-	project.ext.osxDmgFiles = copySpec {
-		into ("${project.appName}.app") {
-			from("${distsDir}/macosx/${project.appName}.app")
-		}
-
-		into('.background') {
-			from('${projectDir}/src/packaging/macosx')
-			include 'background.png'
-		}
-
-		into ('.') {
-			from("${projectDir}/src/packaging/macosx")
-			include 'dmg.DS_Store'
-			rename 'dmg.DS_Store', '.DS_Store'
-		}
-	}
-
-	task bundle_osx(dependsOn: jar, type: Copy) {
-		description "Create the OSX application executable."
-		doFirst {
-			logger.lifecycle("Creating the OSX application executable for $project.name")
-		}
-
-		inputs.files osxAppFiles.getSource()
-		outputs.files "${distsDir}/macosx/*.app"
-
-		with osxAppFiles
-		into file("${distsDir}/macosx")
-		doLast {
-			try {
-				exec {
-					executable = "codesign"
-					args = [	
-						"-s", "onCourse",
-						"--keychain", "jenkins",
-						"-f", "${distsDir}/macosx/${project.appName}.app"]
-				}
-				logger.lifecycle("${project.appName}.app successfully codesigned")
-			} catch (Exception e) {
-				logger.lifecycle("${project.appName}.app was not codesigned")
-			}
-		}
-	}
-
 	task bundle(dependsOn: tasks.findAll { task -> task.name.startsWith('bundle_') }) {
 		description "Create all application executables."
 	}
 
 	bundle.dependsOn {
 		project.tasks.findAll { it.name.startsWith('bundle_') }
-	}
-
-	task installer_osx(dependsOn: bundle_osx, type: Copy) {
-		description "Create the OSX installer (which is just a dmg file)."
-		doFirst {
-			logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
-			new File("${distsDir}/macosx").mkdirs()  
-		}
-
-		def output = file("${distsDir}/macosx/${project.appName}.dmg")
-		inputs.files osxDmgFiles.getSource()
-		outputs.file output
-
-		with osxDmgFiles
-		into temporaryDir
-
-		doLast {
-			if (output.exists()) delete output
-
-			exec {
-				executable = "hdiutil"
-				args = ["create", 
-				"-srcfolder", temporaryDir,
-				"-volname", "${project.appName}",
-				output]
-			}
-			logger.info("Deleting dmg work files");
-		}
 	}
 
 	task installer(){
