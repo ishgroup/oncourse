@@ -219,7 +219,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	task bundle(dependsOn: [bundle_win, bundle_osx]) {
+	task bundle(dependsOn: tasks.findAll { task -> task.name.startsWith('bundle_')) {
 		description "Create all application executables."
 	}
 
