@@ -146,27 +146,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	project.ext.winAppFiles = copySpec {
-		into('.') {
-			from("${projectDir}/src/packaging/windows/")
-			include '*.exe4j.xml'
-			expand([
-				maxmemoryServer: project.maxmemoryServer,
-				maxmemoryServer64: project.maxmemoryServer64,
-				maxpermgenServer: project.maxpermgenServer,
-				maxmemoryClient: project.maxmemoryClient,
-				sourceCompatibility: sourceCompatibility,
-				version: version,
-				jarAll: "${libsDir}/${project.name}-${version}-all.jar"
-			])
-		}
-
-		into('.') {
-			from("${projectDir}/src/packaging/windows/")
-			include '*.ico'
-		}
-	}
-
 	task bundle_osx(dependsOn: jar, type: Copy) {
 		description "Create the OSX application executable."
 		doFirst {
@@ -191,31 +170,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			} catch (Exception e) {
 				logger.lifecycle("${project.appName}.app was not codesigned")
 			}
-		}
-	}
-
-	task bundle_win(dependsOn: jarAll, type: Copy) {
-		description "Create the Windows application executable."
-		doFirst {
-			logger.lifecycle("Creating the Windows application executable for $project.name")
-		    new File("${distsDir}/windows").mkdirs()
-		}
-
-		inputs.files winAppFiles.getSource()
-		outputs.file "${distsDir}/windows/onCourse.exe"
-
-		with winAppFiles
-		into temporaryDir
-
-		doLast {
-			ant.taskdef(name: 'exe4j', classname: 'com.exe4j.Exe4JTask', classpath: "${projectDir}/../lib/exe4j/bin/ant.jar")
-			
-			def exe4jCollection = temporaryDir.listFiles().findAll {it.name.endsWith('.exe4j.xml')}
-			for (File f : exe4jCollection) {
-				logger.lifecycle("Executing exe4j with " + f.getAbsolutePath())
-				ant.exe4j(projectfile: f, release: version, requirelicense: 'true', destination: "${distsDir}/windows/")
-			}
-			logger.info("Deleting windows work files");
 		}
 	}
 

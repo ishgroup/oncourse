@@ -133,6 +133,27 @@ project.ext.unixAppFiles = copySpec {
 	}
 }
 
+task bundle_win(dependsOn: jarAll, type: au.com.ish.Exe4JTask) {
+	configFile = file("${projectDir}/src/packaging/windows/server.exe4j.xml")
+	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
+	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
+	exeFile = file("${distsDir}/windows/onCourseServer.exe")
+}
+
+task bundle_winService(dependsOn: jarAll, type: au.com.ish.Exe4JTask) {
+	configFile = file("${projectDir}/src/packaging/windows/service.exe4j.xml")
+	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
+	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
+	exeFile = file("${distsDir}/windows/onCourseService.exe")
+}
+
+task bundle_winService64(dependsOn: jarAll, type: au.com.ish.Exe4JTask) {
+	configFile = file("${projectDir}/src/packaging/windows/service64.exe4j.xml")
+	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
+	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
+	exeFile = file("${distsDir}/windows/onCourseService64.exe")
+}
+
 task installer_freebsd(dependsOn: jarAll, type: Copy) {
 	description "Create the FreeBSD package (installer)."
 	doFirst {
