@@ -1253,7 +1253,8 @@
     	<dropColumn tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
     </changeSet>
     
-    <changeSet id="82" author="viacheslav" context="production" runOnChange="true">
+    <!--changeSet id="82" author="viacheslav" context="production" runOnChange="true">
+    	uncomment this changesets after all application redeployment
     	<preConditions onFail="MARK_RAN">
     		<indexExists tableName="College" columnNames="webServicesLogin,webServicesPass"/>
     	</preConditions>
@@ -1276,7 +1277,7 @@
     	<dropColumn tableName="College" columnName="paymentGatewayType"/>
     </changeSet>
     
-    <!--changeSet id="85" author="viacheslav" context="production" runOnChange="true">
+    <changeSet id="85" author="viacheslav" context="production" runOnChange="true">
     	<preConditions onFail="MARK_RAN">
     		<columnExists tableName="Qualification" columnName="anzsic"/>
     	</preConditions>
