@@ -251,7 +251,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	task installer(dependsOn: tasks*.name*.startsWith("installer_")){
+	task installer(dependsOn: tasks.findAll { task -> task.name.startsWith('installer_') }){
 		description "Create all application installers."
 	}
 }
