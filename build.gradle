@@ -91,7 +91,6 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 			into('Contents') {
 				from "${projectDir}/src/packaging/macosx/Info.plist"
 
-				evaluationDependsOn(':' + getProject().name)
 
 				expand([
 					maxmemoryServer: project.maxmemoryServer,
@@ -251,7 +250,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	task installer(dependsOn: [installer_win, installer_osx, ':client:installer_webstart', ':server:installer_freebsd', ':server:installer_unix']) {
+	task installer(dependsOn: tasks*.name*.startsWith("installer_")){
 		description "Create all application installers."
 	}
 }
