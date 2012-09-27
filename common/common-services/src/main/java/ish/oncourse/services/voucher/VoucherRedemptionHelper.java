@@ -2,6 +2,7 @@ package ish.oncourse.services.voucher;
 
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.common.types.VoucherPaymentStatus;
 import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
@@ -122,6 +123,7 @@ public class VoucherRedemptionHelper {
 		voucherPaymentIn.setCollege(getInvoice().getCollege());
 		voucherPaymentIn.setPayment(payment);
 		voucherPaymentIn.setVoucher((Voucher) context.localObject(voucher.getObjectId(), voucher));
+		voucherPaymentIn.setStatus(VoucherPaymentStatus.BUSY);
 		if (voucherPaymentIn.getEnrolmentsCount() == null && voucher.getVoucherProduct().getMaxCoursesRedemption() != null) {
 			voucherPaymentIn.setEnrolmentsCount(0);
 		}

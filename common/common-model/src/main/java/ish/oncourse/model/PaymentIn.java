@@ -5,6 +5,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.common.types.VoucherPaymentStatus;
 import ish.common.types.VoucherStatus;
 import ish.common.util.ExternalValidation;
 import ish.math.Money;
@@ -13,6 +14,7 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.CreditCardUtil;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -333,6 +335,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 			}
 
 			if (invoiceToRefund != null) {
+				revertTheVoucherRedemption();
 				// Creating internal payment, with zero amount which will be
 				// linked to invoiceToRefund, and refundInvoice.
 				PaymentIn internalPayment = makeShallowCopy();
@@ -380,28 +383,35 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		} else {
 			LOG.error(String.format("Can not abandon paymentIn:%s, since it doesn't have paymentInLines.", getId()));
 		}
-		
-		revertTheVoucherRedemption();
-
 		return null;
 	}
 	
 	private void revertTheVoucherRedemption() {
-		//TODO: update me
-		//also check that vouchers linked with the payment to avoid the state when vouchers will be partially used with abandoned payment. 
-		/*Voucher voucherForRolback = null;//getRedeemedVoucher();
-		if (voucherForRolback != null && VoucherStatus.REDEEMED.equals(voucherForRolback.getStatus())) {
-			List<Voucher> linkedVouchers = voucherForRolback.getInvoiceLine().getVouchers();
-			for (Voucher voucher : linkedVouchers) {
-				//we need to change the status of active voucher to canceled and return active status for linked voucher
-				if (VoucherStatus.ACTIVE.equals(voucher)) {
-					voucher.setStatus(VoucherStatus.CANCELLED);
-				}
-				//if (VoucherStatus.REDEEMED)
+		//also check that vouchers linked with the payment to avoid the state when vouchers will be partially used with abandoned payment.
+		final List<VoucherPaymentIn> objectsForDelete = new ArrayList<VoucherPaymentIn>();
+		for (VoucherPaymentIn voucherPaymentIn : getVoucherPaymentIns()) {
+			if (!PaymentType.VOUCHER.equals(getType())) {
+				LOG.error(String.format("Not voucher paymentIn with id %s have linked vouchers!", getId()));
 			}
-			//and change the status of voucher used for redemption to active
-			voucherForRolback.setStatus(VoucherStatus.ACTIVE);
-		}*/
+			if (VoucherPaymentStatus.APPROVED.equals(voucherPaymentIn.getStatus())) {
+				LOG.error(String.format("We request abandon of paymentIn with id %s which contain the VoucherPaymentIn with id %s in %s status!", 
+					getId(), voucherPaymentIn.getId(), voucherPaymentIn.getStatus()));
+			}
+			Voucher voucher = voucherPaymentIn.getVoucher();
+			if (voucher.getVoucherProduct().getMaxCoursesRedemption() == null || 0 == voucher.getVoucherProduct().getMaxCoursesRedemption()) {
+				voucher.setRedemptionValue(voucher.getRedemptionValue().add(this.getAmount()));
+			} else {
+				voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() - voucherPaymentIn.getEnrolmentsCount());
+			}
+			if (!voucher.isFullyRedeemed()) {
+				voucher.setStatus(VoucherStatus.ACTIVE);
+			}
+			objectsForDelete.add(voucherPaymentIn);
+		}
+		if (!objectsForDelete.isEmpty()) {
+			//delete the relation after we successfully revert the voucher 
+			getObjectContext().deleteObjects(objectsForDelete);
+		}
 	}
 
 	/**
@@ -425,6 +435,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Date today = new Date();
 
 		if (activeInvoice != null) {
+			revertTheVoucherRedemption();
 			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				il.setModified(today);
@@ -440,8 +451,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				}
 			}
 		}
-		
-		revertTheVoucherRedemption();
 	}
 
 	/**
