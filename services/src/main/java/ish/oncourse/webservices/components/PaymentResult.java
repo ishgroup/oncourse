@@ -71,6 +71,7 @@ public class PaymentResult {
                 break;
             case ABANDON_PAYMENT:
                 paymentPage.getPaymentProcessController().processAction(ABANDON_PAYMENT);
+                break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
                 this.paymentPage.getPaymentProcessController().processAction(ABANDON_PAYMENT_KEEP_INVOICE);
                 break;
