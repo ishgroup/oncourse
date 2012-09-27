@@ -8,7 +8,7 @@
 				<p>products selected</p>
 			</t:if>
 		</div>
-		<t:if test="hasItems">
+		<t:if test="hasAnyItems">
 			<h3 class="title-block">
 				<span>My Courses Order</span>
 			</h3>
@@ -32,40 +32,9 @@
 							</div>
 						</li>
 					</t:loop>
-					<li class="shortListOrderEnrol">
-						<a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Enrol</a>
-					</li>
-				</ul>
-				<t:if test="expandComponent" negate="true">
-					<div class="closeButton">X</div>
-				</t:if>
-			</div>
-			<div class="shortlistAction">
-				<ul class="shortlistControls">
-					<t:if test="expandComponent" negate="true">
-						<li class="shortlistActionShow">
-							<a href="#">Show Shortlist</a>
-						</li>
-						<li class="shortlistActionHide">
-							<a href="#">Hide Shortlist</a>
-						</li>
-					</t:if>
-					<li class="shortlistActionEnrol">
-						<a href="/enrol/enrolCourses">Enrol</a>
-					</li>
-				</ul>
-			</div>
-		</t:if>
-		
-		<t:if test="hasProductItems">
-			<h3 class="title-block">
-				<span>My Products Order</span>
-			</h3>
-			<div class="${classForList}">
-				<ul class="shortListOrder shortlistChoices">
 					<t:loop source="productItems" value="product">
 						<li data-classid="${product.id}">
-							<a href="/product/${product.id}">${product.name}</a>
+							<a href="/product/${product.sku}">${product.name}</a>
 							<span class="deleteItem" title="Remove item">
 								<a href="/removeFromCookies?key=productShortList&amp;removeItemId=${product.id}">X</a>
 							</span>
@@ -80,11 +49,15 @@
 								</t:if>
 							</div>
 						</li>
-						
-						
 					</t:loop>
 					<li class="shortListOrderEnrol">
-						<a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Purchase</a>
+						<t:if test="hasItems">
+							<a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Enrol</a>
+							<p:else>
+								<a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Purchase</a>
+								<a href="/enrol/enrolCourses">Purchase</a>
+							</p:else>
+						</t:if>
 					</li>
 				</ul>
 				<t:if test="expandComponent" negate="true">
@@ -102,7 +75,12 @@
 						</li>
 					</t:if>
 					<li class="shortlistActionEnrol">
-						<a href="/enrol/enrolCourses">Purchase</a>
+						<t:if test="hasItems">
+							<a href="/enrol/enrolCourses">Enrol</a>
+							<p:else>
+								<a href="/enrol/enrolCourses">Purchase</a>
+							</p:else>
+						</t:if>
 					</li>
 				</ul>
 			</div>

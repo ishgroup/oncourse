@@ -134,6 +134,10 @@ public class ShortList {
 	public Integer getItemCount() {
 		return (items == null) ? 0 : items.size();
 	}
+	
+	public boolean isHasAnyItems() {
+		return isHasItems() || isHasProductItems();
+	}
 
 	/**
 	 * Test to see if there are any items in shortlist

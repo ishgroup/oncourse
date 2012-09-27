@@ -99,6 +99,7 @@ public class VoucherService implements IVoucherService {
 		@SuppressWarnings("unchecked")
 		List<Product> results = cayenneService.sharedContext().performQuery(query);
 		List<Ordering> orderings = new ArrayList<Ordering>();
+		orderings.add(new Ordering(Product.TYPE_PROPERTY, SortOrder.DESCENDING));
 		orderings.add(new Ordering(Product.NAME_PROPERTY, SortOrder.ASCENDING));
 		orderings.add(new Ordering(Product.PRICE_EX_TAX_PROPERTY, SortOrder.DESCENDING));
 		Ordering.orderList(results, orderings);
