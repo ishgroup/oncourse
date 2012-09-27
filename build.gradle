@@ -7,6 +7,7 @@ buildscript {
 
 	dependencies {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
+		classpath group: 'au.com.ish', name: 'Nsis'
 	}
 }
 
@@ -288,49 +289,4 @@ class TestReportAggregator extends Copy {
     def getInputTestResultDirs() {
         testTasks*.testResultsDir
     }
-}
-
-class Nsis extends Copy {
-
-	@InputFile
-	def inputFile
-
-	def String outputFileName
-
-	def Nsis() {
-		description "Create the Windows installer."
-		logger.lifecycle("Creating the Windows installer for $project.name")
-	}
-
-	@TaskAction
-	def build() {
-		def outputFile = file("${distsDir}/windows/${outputFileName}")
-		outputs.files outputFile
-
-		with copySpec {
-			into('.') {
-				from "${projectDir}/src/packaging/windows"
-				include '*.nsi' 
-				include '*.bmp'
-			}
-
-			into('.') {
-				from inputFile
-			}
-		}
-		into temporaryDir
-
-		doLast {
-			def nsisFiles = fileTree(temporaryDir).include('**/*.nsi')
-
-			nsisFiles.each {File file ->
-				logger.lifecycle("Executing makensis for " + file.getAbsolutePath())
-				exec {
-					executable = "makensis"
-					args = [file.getAbsolutePath()]
-				}
-			}
-			file(temporaryDir + outputFileName).renameTo(outputFile)
-		}
-	}
 }
