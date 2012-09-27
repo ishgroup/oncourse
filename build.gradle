@@ -223,6 +223,10 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		description "Create all application executables."
 	}
 
+	bundle.dependsOn {
+		project.tasks.findAll { it.name.startsWith('bundle_') }
+	}
+
 	task installer_osx(dependsOn: bundle_osx, type: Copy) {
 		description "Create the OSX installer (which is just a dmg file)."
 		doFirst {
@@ -251,8 +255,11 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		}
 	}
 
-	task installer(dependsOn: tasks.findAll { task -> task.name.startsWith('installer_') }){
+	task installer(){
 		description "Create all application installers."
+	}
+	installer.dependsOn {
+		project.tasks.findAll { it.name.startsWith('installer_') }
 	}
 }
 
