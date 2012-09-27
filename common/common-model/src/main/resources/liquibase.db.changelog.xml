@@ -1242,7 +1242,8 @@
     	</createIndex>
     </changeSet>
     
-    <changeSet id="81" author="viacheslav" context="production" runOnChange="true">
+    <!--changeSet id="81" author="viacheslav" context="production" runOnChange="true">
+    	uncomment this changeset after all applications re-deployment. Especially the services and enrol.
     	<preConditions>
     		<columnExists tableName="ProductItem" columnName="paymentInId"/>
     		<columnExists tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
@@ -1251,7 +1252,7 @@
     	<dropForeignKeyConstraint baseTableName="ProductItem" constraintName="fk_Voucher_PaymentIn"/>
     	<dropColumn tableName="ProductItem" columnName="paymentInId"/>
     	<dropColumn tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
-    </changeSet>
+    </changeSet-->
     
     <!--changeSet id="82" author="viacheslav" context="production" runOnChange="true">
     	uncomment this changesets after all application redeployment
