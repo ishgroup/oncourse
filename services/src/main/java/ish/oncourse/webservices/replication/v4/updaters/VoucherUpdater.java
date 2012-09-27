@@ -15,8 +15,6 @@ public class VoucherUpdater extends AbstractWillowUpdater<VoucherStub, Voucher> 
 		entity.setIdKey(stub.getKey());
 		Contact contact = callback.updateRelationShip(stub.getContactId(), Contact.class);
 		entity.setContact(contact);
-		InvoiceLine redeemedInvoiceLine = callback.updateRelationShip(stub.getRedeemedInvoiceLineId(), InvoiceLine.class);
-		entity.setRedeemedInvoiceLine(redeemedInvoiceLine);
 		InvoiceLine invoiceLine = callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
 		entity.setInvoiceLine(invoiceLine);
 		entity.setModified(stub.getModified());

@@ -22,8 +22,6 @@ public class VoucherUpdater extends AbstractWillowUpdater<VoucherStub, Voucher> 
 		entity.setIdKey(stub.getKey());
 		Contact contact = callback.updateRelationShip(stub.getContactId(), Contact.class);
 		entity.setContact(contact);
-		InvoiceLine redeemedInvoiceLine = callback.updateRelationShip(stub.getRedeemedInvoiceLineId(), InvoiceLine.class);
-		entity.setRedeemedInvoiceLine(redeemedInvoiceLine);
 		InvoiceLine invoiceLine = callback.updateRelationShip(stub.getInvoiceLineId(), InvoiceLine.class);
 		entity.setInvoiceLine(invoiceLine);
 		entity.setModified(stub.getModified());
@@ -39,9 +37,10 @@ public class VoucherUpdater extends AbstractWillowUpdater<VoucherStub, Voucher> 
 		}
 		PaymentSource source = TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class);
 		entity.setSource(source);
-		if (stub.getPaymentInId() != null) {
+		//TODO: add me in VoucherPaymentInStubBuilder 
+		/*if (stub.getPaymentInId() != null) {
 			entity.setRedemptionPayment(callback.updateRelationShip(stub.getPaymentInId(), PaymentIn.class));
-		}
+		}*/
 	}
 
 }

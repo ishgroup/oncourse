@@ -18,14 +18,14 @@ public class VoucherStubBuilder extends AbstractWillowStubBuilder<Voucher, Vouch
 		stub.setKey(entity.getIdKey());
 		stub.setProductId(entity.getProduct().getId());
 		stub.setRedeemedCoursesCount(entity.getRedeemedCoursesCount());
-		stub.setRedeemedInvoiceLineId(entity.getRedeemedInvoiceLine().getId());
 		stub.setRedemptionValue(entity.getRedemptionValue().toBigDecimal());
 		stub.setSource(entity.getSource().getDatabaseValue());
 		stub.setStatus(entity.getStatus().getDatabaseValue());
 		stub.setType(entity.getType());
-		if (entity.getRedemptionPayment() != null) {
+		//TODO: add me in VoucherPaymentInStubBuilder 
+		/*if (entity.getRedemptionPayment() != null) {
 			stub.setPaymentInId(entity.getRedemptionPayment().getId());
-		}
+		}*/
 		return stub;
 	}
 
