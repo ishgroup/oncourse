@@ -150,7 +150,8 @@ public class ContactEntrySettings {
 	void beforeRender() {
 		this.stateSelectModel = new StringSelectModel(new String[] {"Show", "Hide", "Required"});
 		
-		this.avetmissQuestionsEnabled = webSiteService.getCurrentCollege().getRequiresAvetmiss();
+		this.avetmissQuestionsEnabled = webSiteService.getCurrentCollege().getRequiresAvetmiss() != null ? 
+				webSiteService.getCurrentCollege().getRequiresAvetmiss() : false;
 		
 		this.enrolmentAddressState = preferenceController.getRequireContactAddressEnrolment();
 		this.enrolmentSuburbState = preferenceController.getRequireContactSuburbEnrolment();
@@ -162,17 +163,15 @@ public class ContactEntrySettings {
 		this.enrolmentMobileState = preferenceController.getRequireContactMobileEnrolment();
 		this.enrolmentDateOfBirthState = preferenceController.getRequireContactDateOfBirthEnrolment();
 		
-		// commented out until we decide how to use it for waiting lists 
-		
-		//this.waitingListAddressState = preferenceController.getRequireContactAddressWaitingList();
-		//this.waitingListSuburbState = preferenceController.getRequireContactSuburbWaitingList();
-		//this.waitingListStateState = preferenceController.getRequireContactStateWaitingList();
-		//this.waitingListPostcodeState = preferenceController.getRequireContactPostcodeWaitingList();
-		//this.waitingListHomePhoneState = preferenceController.getRequireContactHomePhoneWaitingList();
-		//this.waitingListBusinessPhoneState = preferenceController.getRequireContactBusinessPhoneWaitingList();
-		//this.waitingListFaxState = preferenceController.getRequireContactFaxWaitingList();
-		//this.waitingListMobileState = preferenceController.getRequireContactMobileWaitingList();
-		//this.waitingListDateOfBirthState = preferenceController.getRequireContactDateOfBirthWaitingList();
+		this.waitingListAddressState = preferenceController.getRequireContactAddressWaitingList();
+		this.waitingListSuburbState = preferenceController.getRequireContactSuburbWaitingList();
+		this.waitingListStateState = preferenceController.getRequireContactStateWaitingList();
+		this.waitingListPostcodeState = preferenceController.getRequireContactPostcodeWaitingList();
+		this.waitingListHomePhoneState = preferenceController.getRequireContactHomePhoneWaitingList();
+		this.waitingListBusinessPhoneState = preferenceController.getRequireContactBusinessPhoneWaitingList();
+		this.waitingListFaxState = preferenceController.getRequireContactFaxWaitingList();
+		this.waitingListMobileState = preferenceController.getRequireContactMobileWaitingList();
+		this.waitingListDateOfBirthState = preferenceController.getRequireContactDateOfBirthWaitingList();
 		
 		this.mailingListAddressState = preferenceController.getRequireContactAddressMailingList();
 		this.mailingListSuburbState = preferenceController.getRequireContactSuburbMailingList();
@@ -225,17 +224,15 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactMobileEnrolment(this.enrolmentMobileState);
 		preferenceController.setRequireContactDateOfBirthEnrolment(this.enrolmentDateOfBirthState);
 		
-		// commented out until we decide how to use it for waiting lists 
-		
-		//preferenceController.setRequireContactAddressWaitingList(this.waitingListAddressState);
-		//preferenceController.setRequireContactSuburbWaitingList(this.waitingListSuburbState);
-		//preferenceController.setRequireContactStateWaitingList(this.waitingListStateState);
-		//preferenceController.setRequireContactPostcodeWaitingList(this.waitingListPostcodeState);
-		//preferenceController.setRequireContactHomePhoneWaitingList(this.waitingListHomePhoneState);
-		//preferenceController.setRequireContactBusinessPhoneWaitingList(this.waitingListBusinessPhoneState);
-		//preferenceController.setRequireContactFaxWaitingList(this.waitingListFaxState);
-		//preferenceController.setRequireContactMobileWaitingList(this.waitingListMobileState);
-		//preferenceController.setRequireContactDateOfBirthWaitingList(this.waitingListDateOfBirthState);
+		preferenceController.setRequireContactAddressWaitingList(this.waitingListAddressState);
+		preferenceController.setRequireContactSuburbWaitingList(this.waitingListSuburbState);
+		preferenceController.setRequireContactStateWaitingList(this.waitingListStateState);
+		preferenceController.setRequireContactPostcodeWaitingList(this.waitingListPostcodeState);
+		preferenceController.setRequireContactHomePhoneWaitingList(this.waitingListHomePhoneState);
+		preferenceController.setRequireContactBusinessPhoneWaitingList(this.waitingListBusinessPhoneState);
+		preferenceController.setRequireContactFaxWaitingList(this.waitingListFaxState);
+		preferenceController.setRequireContactMobileWaitingList(this.waitingListMobileState);
+		preferenceController.setRequireContactDateOfBirthWaitingList(this.waitingListDateOfBirthState);
 		
 		preferenceController.setRequireContactAddressMailingList(this.mailingListAddressState);
 		preferenceController.setRequireContactSuburbMailingList(this.mailingListSuburbState);
