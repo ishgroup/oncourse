@@ -2,7 +2,6 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="course">
-		<t:zone id="waitingListFormZone" t:id="waitingListFormZone">
 			<t:if test="submittedSuccessfully">
 				<div class="message">
 					<p class="feedback">
@@ -15,7 +14,7 @@
 				</div>
 				<p:else>
 					<p>To join the waiting list, please complete the following form:</p>
-					<t:form t:id="waitingListForm" zone="waitingListFormZone" >
+					<t:form t:id="waitingListForm">
 						<t:errors/>
 						<dl>
 							<dt>First Name:</dt>
@@ -33,6 +32,90 @@
 								<t:textfield t:id="waitlistEmail" validate="required"
 										t:value="newContact.emailAddress" />
 							</dd>
+							<t:if test="showAdditionalDetails">
+								<t:if test="showAddress">
+									<dt>Address<t:if test="requireAddress"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<t:textfield value="contact.street" class="input-fixed"
+											clientId="street" t:id="street" />
+									</dd>
+								</t:if>
+								<t:if test="showSuburb">
+									<dt>Suburb<t:if test="requireSuburb"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<script type="text/javascript">
+											initSuburbAutoComplete();
+										</script>
+										<t:textfield value="contact.suburb" class="suburb-autocomplete input-fixed"
+												clientId="suburb" t:id="suburb" default="postcode or suburb" size="18"
+												autocomplete="off" />
+										<span t:type="ui/HintComponent" validationMessage="suburbErrorMessage" />
+									</dd>
+								</t:if>
+								<t:if test="showPostcode">
+									<dt>Postcode<t:if test="requirePostcode"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<t:textfield value="contact.postcode" class="input-fixed"
+											clientId="postcode" t:id="postcode" />
+										<span t:type="ui/HintComponent" validationMessage="postcodeErrorMessage"
+											hint="message:postcode-hint" />
+									</dd>
+								</t:if>
+								<t:if test="showState">
+									<dt>State<t:if test="requireState"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<t:textfield value="contact.state" class="input-fixed"
+											clientId="state" t:id="state" />
+										<span t:type="ui/HintComponent" validationMessage="stateErrorMessage"
+											hint="message:state-hint" />
+									</dd>
+								</t:if>
+								<t:if test="showHomePhone">
+									<dt>Home Phone<t:if test="requireHomePhone"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<t:textfield value="contact.homePhoneNumber" class="input-fixed"
+											clientId="homephone" t:id="homePhone" />
+										<span t:type="ui/HintComponent" validationMessage="homePhoneErrorMessage"
+											hint="message:home-phone-hint" />
+									</dd>
+								</t:if>
+								<t:if test="showMobile">
+									<dt>Mobile Phone<t:if test="requireMobile"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<t:textfield value="contact.mobilePhoneNumber" class="input-fixed"
+											clientId="mobilephone" t:id="mobilePhone" />
+										<span t:type="ui/HintComponent" validationMessage="mobilePhoneErrorMessage"
+											hint="message:mobile-phone-hint" />
+									</dd>
+								</t:if>
+								<t:if test="showBusinessPhone">
+									<dt>Work Phone<t:if test="requireBusinessPhone"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<t:textfield value="contact.businessPhoneNumber" class="input-fixed"
+											clientId="businessphone" t:id="businessPhone" />
+										<span t:type="ui/HintComponent" validationMessage="businessPhoneErrorMessage"
+											hint="message:business-phone-hint" />
+									</dd>
+								</t:if>
+								<t:if test="showFax">
+									<dt>Fax<t:if test="requireFax"><em title="${message:required}">*</em>:</t:if></dt>
+									<dd>
+										<t:textfield value="contact.faxNumber" class="input-fixed"
+											clientId="facsimile" t:id="fax" />
+										<span t:type="ui/HintComponent" validationMessage="faxErrorMessage"
+											hint="message:fax-hint" />
+									</dd>
+								</t:if>
+								<t:if test="showDateOfBirth">
+									<dt>Date of birth<t:if test="requireDateOfBirth"><em title="${message:required}">*</em></t:if>:</dt>
+									<dd>
+										<t:textField value="birthDateProperty" class="input-fixed"
+											clientId="birthdate" t:id="birthDate" />
+										<span t:type="ui/HintComponent" validationMessage="birthDateErrorMessage"
+											hint="message:birthdate-hint" />
+									</dd>
+								</t:if>
+							</t:if>
 							<dt>
 								What you'd like:
 								<span class="description">
@@ -53,7 +136,6 @@
 					</t:form>
 				</p:else>
 			</t:if>
-		</t:zone>
 		<p:else>Sorry, the course is not defined.</p:else>
 	</t:if>	
 </html>	
