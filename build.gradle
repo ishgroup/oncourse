@@ -7,6 +7,7 @@ buildscript {
 
 	dependencies {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
+		classpath 'org.apache.maven.wagon:wagon-http:2.2'
 	}
 }
 
@@ -20,6 +21,12 @@ allprojects {
 		failOnSnapshotDependencies = true
 	}
 
+	configurations {
+		deployerJars {
+			description = 'Jars needed for doing deployment to JBoss Nexus repo'
+		}
+	}
+
 	repositories {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/public'
@@ -29,20 +36,33 @@ allprojects {
 		}
 	}
 
-	uploadArchives {
-		repositories.mavenDeployer {
-			repository(url: 'http://repo.ish.com.au/content/repositories/ish-releases')
-			snapshotRepository(url: 'http://repo.ish.com.au/content/repositories/ish-snapshots')
-		}
-	}
-
 	dependencies {
 		testCompile 'junit:junit:4.8.2'
 		compile 'log4j:log4j:1.2.17'
+		deployerJars 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+	}
+
+	uploadArchives.dependsOn install
+	group = 'ish.oncourse.angel'
+	uploadArchives {
+		repositories.mavenDeployer {
+			name = 'ishRepo'
+			configuration = configurations.deployerJars
+			repository(id:'internal-releases', url: 'http://repo.ish.com.au/content/repositories/ish-releases') {
+				authentication(userName: nexusUsername, password: nexusPassword)
+			}
+			snapshotRepository(id:'internal-snapshots', url: 'http://repo.ish.com.au/content/repositories/ish-snapshots') {
+				authentication(userName: nexusUsername, password: nexusPassword)
+			}
+		}
 	}
 
 	ext.sharedManifest = manifest {
-		attributes('SCM-Revision': project.release.scmVersion, 'Release-Version': version)
+		attributes 'SCM-Revision': project.release.scmVersion,
+			'Release-Version': version,
+			'Built-Date': new Date(),
+			'Built-JDK': System.getProperty('java.version'),
+			'Built-Gradle': gradle.gradleVersion
 	}
 
 	test {
