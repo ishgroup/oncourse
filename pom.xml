@@ -16,7 +16,6 @@
 
 	<modules>
 		<module>admin</module>
-		<module>asset</module>
 		<module>common</module>
 		<module>cms</module>
 		<module>enrol</module>
