@@ -66,7 +66,8 @@ public class DiscountService implements IDiscountService {
 		SelectQuery q = new SelectQuery(Discount.class);
 		q.andQualifier(ExpressionFactory.inDbExp(Discount.ID_PK_COLUMN, ids)
 				.andExp(getCurrentCollegeFilter())
-				.andExp(Discount.getCurrentDateFilter()));
+				.andExp(Discount.getCurrentDateFilter())
+				.andExp(getAvailableOnWebFilter()));
 
 		return cayenneService.sharedContext().performQuery(q);
 	}
@@ -83,7 +84,7 @@ public class DiscountService implements IDiscountService {
 			return null;
 		}
 		Expression qualifier = ExpressionFactory.matchExp(Discount.CODE_PROPERTY, code).andExp(
-				Discount.getCurrentDateFilter()).andExp(getCurrentCollegeFilter());
+				Discount.getCurrentDateFilter()).andExp(getCurrentCollegeFilter()).andExp(getAvailableOnWebFilter());
 		SelectQuery query = new SelectQuery(Discount.class, qualifier);
 		@SuppressWarnings("unchecked")
 		List<Discount> result = cayenneService.sharedContext().performQuery(query);
@@ -92,6 +93,10 @@ public class DiscountService implements IDiscountService {
 
 	private Expression getCurrentCollegeFilter() {
 		return ExpressionFactory.matchExp(Discount.COLLEGE_PROPERTY, webSiteService.getCurrentCollege());
+	}
+	
+	private Expression getAvailableOnWebFilter() {
+		return ExpressionFactory.matchExp(Discount.IS_AVAILABLE_ON_WEB_PROPERTY, true);
 	}
 
 }

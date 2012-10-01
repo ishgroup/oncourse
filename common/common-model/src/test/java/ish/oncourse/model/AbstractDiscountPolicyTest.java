@@ -1,10 +1,12 @@
 package ish.oncourse.model;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import ish.math.Money;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,9 +37,13 @@ public abstract class AbstractDiscountPolicyTest {
 	 */
 	public static Discount singleDiscountWithRateMin;
 	/**
-	 * Combinable discount which for $10 amount which has hideOnWeb property set to true
+	 * Combinable discount for $10 amount which has hideOnWeb property set to true
 	 */
 	public static Discount hiddenDiscountWithAmount;
+	/**
+	 * Combinable discount for $10 amount which has isAvailableOnWeb property set to false
+	 */
+	public static Discount nonAvailableDiscountWithAmount;
 
 	public static List<Discount> promotions;
 	public static DiscountPolicy discountPolicy;
@@ -80,6 +86,13 @@ public abstract class AbstractDiscountPolicyTest {
 		hiddenDiscountWithAmount.setCombinationType(true);
 		hiddenDiscountWithAmount.setHideOnWeb(true);
 		
+		nonAvailableDiscountWithAmount = new Discount();
+		nonAvailableDiscountWithAmount.setDiscountAmount(new Money(BigDecimal.TEN));
+		nonAvailableDiscountWithAmount.setCombinationType(true);
+		nonAvailableDiscountWithAmount.setCode("unavail_code");
+		nonAvailableDiscountWithAmount.setHideOnWeb(false);
+		nonAvailableDiscountWithAmount.setIsAvailableOnWeb(false);
+		
 		promotions = new ArrayList<Discount>();
 		promotions.add(combDiscountWithAmount);
 		promotions.add(singleDiscountWithRateMin);
@@ -98,6 +111,12 @@ public abstract class AbstractDiscountPolicyTest {
 		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(null, FEE_EX_GST);
 		assertTrue(filteredDiscounts.isEmpty());
 		filteredDiscounts = discountPolicy.filterDiscounts(Collections.EMPTY_LIST, FEE_EX_GST);
+		assertTrue(filteredDiscounts.isEmpty());
+	}
+	
+	@Test
+	public void testNonAvailableDiscounts() {
+		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(nonAvailableDiscountWithAmount), FEE_EX_GST);
 		assertTrue(filteredDiscounts.isEmpty());
 	}
 
