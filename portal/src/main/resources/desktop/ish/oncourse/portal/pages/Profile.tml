@@ -2,175 +2,188 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_profile">
 	<h1> ${contact.givenName} ${contact.familyName}'s Profile  </h1>
 	
-	<t:form t:id="profileForm">
-		<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
-		
-		<fieldset>	
-		
-			<p>
-					<label for="email">Email<em title="${message:required}">*</em></label>
-					<span class="${emailInputClass}">
-								<t:textfield value="contact.emailAddress" class ="input-fixed" 
-									clientId="emailaddress" t:id="email" />
+	<div id="profile-form">
+		<t:form t:id="profileForm">
+			<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
+			
+			<fieldset>	
+			
+				<p>
+						<label for="email">Email<em title="${message:required}">*</em></label>
+						<span class="${emailInputClass}">
+									<t:textfield value="contact.emailAddress" class ="input-fixed" 
+										clientId="emailaddress" t:id="email" />
+						</span>
+				</p>
+				<p>
+					<label for="street">Address<t:if test="contactFieldHelper.requireAddress"><em title="${message:required}">*</em></t:if></label>
+					<span class="valid">
+						<t:textfield value="contact.street" class ="input-fixed" 
+										clientId="street" t:id="street"/>
 					</span>
-			</p>
-			<p>
-				<label for="street">Address<t:if test="contactFieldHelper.requireAddress"><em title="${message:required}">*</em></t:if></label>
-				<span class="valid">
-					<t:textfield value="contact.street" class ="input-fixed" 
-									clientId="street" t:id="street"/>
-				</span>
-			</p>
-			
-			<p>
-				<label for="suburb">Suburb<t:if test="contactFieldHelper.requireSuburb"><em title="${message:required}">*</em></t:if></label>
-				<span class="${suburbInputClass}">
-					<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
-						clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
-				</span>
-			</p>
-			<p>
-				<label for="postcode">Postcode<t:if test="contactFieldHelper.requirePostcode"><em title="${message:required}">*</em></t:if></label>
-				<span class="${postcodeInputClass}">
-					<t:textfield value="contact.postcode" class ="input-fixed" 
-							clientId="postcode" t:id="postcode" />
-				</span>
-			</p>
-			<p>
-				<label for="state">State<t:if test="contactFieldHelper.requireState"><em title="${message:required}">*</em></t:if></label>
-				<span class="${stateInputClass}">
-					<t:textfield value="contact.state" class ="input-fixed" 
-							clientId="state" t:id="state" />
-				</span>
-			</p>
-			
-			<p>
-				<label for="homephone">Home Phone<t:if test="contactFieldHelper.requireHomePhone"><em title="${message:required}">*</em></t:if></label>
-				<span class="${homePhoneInputClass}">
-					<t:textfield value="contact.homePhoneNumber" class ="input-fixed" 
-							clientId="homephone" t:id="homePhone" />
-					
-				</span>
-			</p>
-			<p>
-				<label for="mobilephone">Mobile Phone<t:if test="contactFieldHelper.requireMobile"><em title="${message:required}">*</em></t:if></label>
-				<span class="${mobilePhoneInputClass}">
-					<t:textfield value="contact.mobilePhoneNumber" class ="input-fixed" 
-							clientId="mobilephone" t:id="mobilePhone" />
-					
-				</span>
-			</p>
-			
-			<p>
-				<label for="businessphone">Work Phone<t:if test="contactFieldHelper.requireBusinessPhone"><em title="${message:required}">*</em></t:if></label>
-				<span class="${businessPhoneInputClass}">
-					<t:textfield value="contact.businessPhoneNumber" class ="input-fixed" 
-							clientId="businessphone" t:id="businessPhone" />
-				</span>
-			</p>
-			<p>
-				<label for="facsimile">Fax<t:if test="contactFieldHelper.requireFax"><em title="${message:required}">*</em></t:if></label>
-				<span class="${faxInputClass}">
-					<t:textfield value="contact.faxNumber" class ="input-fixed" 
-							clientId="facsimile" t:id="fax" />
-				</span>
-			</p>
-			
-			<p>
-					<label for="password">Password <em title="${message:required}">*</em></label>
-					<input t:type="PasswordField" t:id="password" />
-			</p>
-			<p>
-					<label for="confirmPassword">Confirm password <em title="${message:required}">*</em></label>
-					<input t:type="PasswordField" t:id="confirmpassword" />
-			</p>
-			
-			<p>
-				<label for="birthdate">Date of birth<t:if test="contactFieldHelper.requireDateOfBirth"><em title="${message:required}">*</em></t:if></label>
-				<span class="${birthDateInputClass}">
-					<t:textField value="birthDateProperty" class ="input-fixed" 
-							clientId="birthdate" t:id="birthDate"/>
-					
-				</span>
-			</p>
-			<div class="radio-list">
-				<label>Gender</label>
-				<t:radiogroup t:value="contact.isMale"> 
-					<label for="male" class="radio"><input type="radio" t:type="radio" t:value="true"/>Male</label>
-					<label for="female" class="radio"><input type="radio" t:type="radio" t:value="false"/>Female</label>
-				</t:radiogroup>
-			</div>
-			<p>	
-				<label>I would like to receive marketing material via: </label>
-				<t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> <label for="allowEmail">E-Mail</label>
-				<t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> <label for="allowSms">SMS</label>
-				<t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> <label for="allowPost">Post</label> 
-			</p>
-		</fieldset>	
-		
-		<t:if test = "isStudent">
-			<t:if test = "contact.college.requiresAvetmiss">
-			
-				<div>
-					<fieldset id="questionnaire-block">
-						<p>
-							<label for="countrybirth">Country of Birth</label>
-							<span class="${countryOfBirthInputClass}">
-								<t:textfield value="countryOfBirthName" class ="input-fixed" 
-									clientId="countrybirth" t:id="countryOfBirth" />
-								
-							</span>	
-						</p>
-						<p>
-							<label for="indigenous">Indigenous Status</label>
-							<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
-						</p>
-						<p>
-							<label for="englishproficiency">Proficiency spoken English</label>
-							<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
-						</p>
-						<p>
-							<label for="languagehome">Language spoken at home?</label>
-							<span class="${languageHomeInputClass}">
-								<t:textfield value="languageHomeName" class ="input-fixed" 
-									clientId="languagehome" t:id="languageHome" />
-								
-							</span>	
-						</p>
-					
-						<p>
-							<label for="prioreducation">Prior Education Achievement</label>
-							<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
-						</p>
-						<p>
-							<label for="schoollevel">Highest school level</label>
-							<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
+				</p>
+				
+				<p>
+					<label for="suburb">Suburb<t:if test="contactFieldHelper.requireSuburb"><em title="${message:required}">*</em></t:if></label>
+					<span class="${suburbInputClass}">
+						<t:textfield value="contact.suburb" class ="suburb-autocomplete input-fixed" 
+							clientId="suburb" t:id="suburb" default="postcode or suburb" size="18" autocomplete="off"/>
+					</span>
+				</p>
+				<p>
+					<label for="postcode">Postcode<t:if test="contactFieldHelper.requirePostcode"><em title="${message:required}">*</em></t:if></label>
+					<span class="${postcodeInputClass}">
+						<t:textfield value="contact.postcode" class ="input-fixed" 
+								clientId="postcode" t:id="postcode" />
+					</span>
+				</p>
+				<p>
+					<label for="state">State<t:if test="contactFieldHelper.requireState"><em title="${message:required}">*</em></t:if></label>
+					<span class="${stateInputClass}">
+						<t:textfield value="contact.state" class ="input-fixed" 
+								clientId="state" t:id="state" />
+					</span>
+				</p>
+				
+				<p>
+					<label for="homephone">Home Phone<t:if test="contactFieldHelper.requireHomePhone"><em title="${message:required}">*</em></t:if></label>
+					<span class="${homePhoneInputClass}">
+						<t:textfield value="contact.homePhoneNumber" class ="input-fixed" 
+								clientId="homephone" t:id="homePhone" />
 						
-							<span class="${schoolYearInputClass}">
-								<t:textfield value="schoolYearStr" class ="input-fixed" 
-									clientId="schoolyear" t:id="schoolYear" />
-							</span>	
-						</p>
+					</span>
+				</p>
+				<p>
+					<label for="mobilephone">Mobile Phone<t:if test="contactFieldHelper.requireMobile"><em title="${message:required}">*</em></t:if></label>
+					<span class="${mobilePhoneInputClass}">
+						<t:textfield value="contact.mobilePhoneNumber" class ="input-fixed" 
+								clientId="mobilephone" t:id="mobilePhone" />
 						
-						<p>
-							<label>
-								Disability type
-							 </label>
-							<div class="radio-list">
-								<t:radiogroup t:value="hasDisability"> 
-									<input type="radio" t:type="radio" t:value="true"/> Yes 
-									<input type="radio" t:type="radio" t:value="false"/> No 
-								</t:radiogroup>
-							</div>
-						</p>
+					</span>
+				</p>
+				
+				<p>
+					<label for="businessphone">Work Phone<t:if test="contactFieldHelper.requireBusinessPhone"><em title="${message:required}">*</em></t:if></label>
+					<span class="${businessPhoneInputClass}">
+						<t:textfield value="contact.businessPhoneNumber" class ="input-fixed" 
+								clientId="businessphone" t:id="businessPhone" />
+					</span>
+				</p>
+				<p>
+					<label for="facsimile">Fax<t:if test="contactFieldHelper.requireFax"><em title="${message:required}">*</em></t:if></label>
+					<span class="${faxInputClass}">
+						<t:textfield value="contact.faxNumber" class ="input-fixed" 
+								clientId="facsimile" t:id="fax" />
+					</span>
+				</p>
+				
+				<p>
+					<label for="birthdate">Date of birth<t:if test="contactFieldHelper.requireDateOfBirth"><em title="${message:required}">*</em></t:if></label>
+					<span class="${birthDateInputClass}">
+						<t:textField value="birthDateProperty" class ="input-fixed" 
+								clientId="birthdate" t:id="birthDate"/>
 						
-					</fieldset>
+					</span>
+				</p>
+				<div class="radio-list">
+					<label>Gender</label>
+					<t:radiogroup t:value="contact.isMale"> 
+						<label for="male" class="radio"><input type="radio" t:type="radio" t:value="true"/>Male</label>
+						<label for="female" class="radio"><input type="radio" t:type="radio" t:value="false"/>Female</label>
+					</t:radiogroup>
 				</div>
+				<p>	
+					<label>I would like to receive marketing material via: </label>
+					<t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> <label for="allowEmail">E-Mail</label>
+					<t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> <label for="allowSms">SMS</label>
+					<t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> <label for="allowPost">Post</label> 
+				</p>
+			</fieldset>	
+			<t:if test = "isStudent">
+				<t:if test = "contact.college.requiresAvetmiss">
+				
+					<div>
+						<fieldset id="questionnaire-block">
+							<p>
+								<label for="countrybirth">Country of Birth</label>
+								<span class="${countryOfBirthInputClass}">
+									<t:textfield value="countryOfBirthName" class ="input-fixed" 
+										clientId="countrybirth" t:id="countryOfBirth" />
+									
+								</span>	
+							</p>
+							<p>
+								<label for="indigenous">Indigenous Status</label>
+								<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
+							</p>
+							<p>
+								<label for="englishproficiency">Proficiency spoken English</label>
+								<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
+							</p>
+							<p>
+								<label for="languagehome">Language spoken at home?</label>
+								<span class="${languageHomeInputClass}">
+									<t:textfield value="languageHomeName" class ="input-fixed" 
+										clientId="languagehome" t:id="languageHome" />
+									
+								</span>	
+							</p>
+						
+							<p>
+								<label for="prioreducation">Prior Education Achievement</label>
+								<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
+							</p>
+							<p>
+								<label for="schoollevel">Highest school level</label>
+								<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
+							
+								<span class="${schoolYearInputClass}">
+									<t:textfield value="schoolYearStr" class ="input-fixed" 
+										clientId="schoolyear" t:id="schoolYear" />
+								</span>	
+							</p>
+							
+							<p>
+								<label>
+									Disability type
+								 </label>
+								<div class="radio-list">
+									<t:radiogroup t:value="hasDisability"> 
+										<input type="radio" t:type="radio" t:value="true"/> Yes 
+										<input type="radio" t:type="radio" t:value="false"/> No 
+									</t:radiogroup>
+								</div>
+							</p>
+							
+						</fieldset>
+					</div>
+				</t:if>
 			</t:if>
-		</t:if>
-		
-		<div class="actions" xml:space="preserve">
-			<t:submit  t:id="saveProfileAction" value="Save" class="btn btn-primary" clientId="save-student-profile"/> 
-		</div>	
-	</t:form>
+			
+			<div class="actions" xml:space="preserve">
+				<t:submit  t:id="saveProfileAction" value="Save" class="btn btn-primary" clientId="save-student-profile"/> 
+			</div>	
+		</t:form>
+	</div>
+	
+	<div id="password-form">
+		<t:form t:id="passwordForm">
+			<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
+	
+			<fieldset id="passwordBlock">
+				<p>
+						<label for="password">Password <em title="${message:required}">*</em></label>
+						<input t:type="PasswordField" t:id="password" />
+				</p>
+				<p>
+						<label for="confirmPassword">Confirm password <em title="${message:required}">*</em></label>
+						<input t:type="PasswordField" t:id="confirmpassword" />
+				</p>
+			</fieldset>
+	
+			<div class="actions" xml:space="preserve">
+				<t:submit t:id="savePasswordAction" value="Save" class="btn btn-primary" clientId="save-password"/>
+			</div>
+		</t:form>
+	</div>
 </html>

@@ -82,6 +82,10 @@ public class Profile {
 	@Property
 	private Form profileForm;
 
+	@InjectComponent
+	@Property
+	private Form passwordForm;
+
 	@Property
 	private String password;
 
@@ -395,6 +399,11 @@ public class Profile {
 	Object submitFailed() {
 		return "profile";
 	}
+	
+	@OnEvent(component = "passwordForm", value = "failure")
+	Object passwordSubmitFailed() {
+		return "profile";
+	}
 
 	@OnEvent(component = "saveProfileAction", value = "selected")
 	void onSelectedFromSaveStudentAction() {
@@ -408,6 +417,15 @@ public class Profile {
             return this;
         }
         throw cause;
+    }
+    
+    @OnEvent(component = "passwordForm", value = "success")
+    Object passwordSubmitted() {
+		if (password != null) {
+			contact.setPassword(password);
+		}
+		contact.getObjectContext().commitChanges();
+		return timetable;
     }
 
 	@OnEvent(component = "profileForm", value = "success")
@@ -450,6 +468,18 @@ public class Profile {
 			contact.getObjectContext().commitChanges();
 			requireAdditionalInfo = true;
 			return timetable;
+		}
+	}
+	
+	@OnEvent(component = "passwordForm", value = "validate")
+	void validatePassword() {
+		if (password != null && password.length() > 0) {
+			passwordErrorMessage = validatedPassword(password, false);
+			confirmPasswordErrorMessage = validatedPassword(
+					confirmPassword, true);
+			passwordForm.recordError(confirmPasswordField,
+					confirmPasswordErrorMessage);
+			passwordForm.recordError(passwordField, passwordErrorMessage);
 		}
 	}
 
@@ -518,14 +548,6 @@ public class Profile {
 				profileForm.recordError(schoolYear, schoolYearErrorMessage);
 			}
 
-			if (password != null && password.length() > 0) {
-				passwordErrorMessage = validatedPassword(password, false);
-				confirmPasswordErrorMessage = validatedPassword(
-						confirmPassword, true);
-				profileForm.recordError(confirmPasswordField,
-						confirmPasswordErrorMessage);
-				profileForm.recordError(passwordField, passwordErrorMessage);
-			}
 		}
 	}
 
