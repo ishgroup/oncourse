@@ -119,6 +119,9 @@ public class WaitingListForm {
 	@InjectComponent
 	private Field waitlistEmail;
 	
+	@InjectComponent
+	private Field numberOfStudents;
+	
     @InjectComponent
     private TextField street;
 
@@ -188,16 +191,28 @@ public class WaitingListForm {
 		if (firstNameErrorMessage != null) {
 			waitingListForm.recordError(waitlistFirstName, firstNameErrorMessage);
 		}
+		
 		String lastNameErrorMessage = getNewContact().validateFamilyName();
 		if (lastNameErrorMessage != null) {
 			waitingListForm.recordError(waitlistLastName, lastNameErrorMessage);
 		}
+		
 		String emailErrorMessage = getNewContact().validateEmail();
 		if (emailErrorMessage != null) {
 			waitingListForm.recordError(waitlistEmail, emailErrorMessage);
 		}
-        if (course == null || contact == null || waitingList == null)
+		
+		if (waitingList != null && waitingList.getPotentialStudents() != null) {
+			if (!(waitingList.getPotentialStudents() > 0 && waitingList.getPotentialStudents() <= 30)) {
+				waitingListForm.recordError(numberOfStudents, 
+						"You can only enter numbers from 1 to 30. If you have larger groups please add the details in the notes.");
+			}
+		}
+		
+        if (course == null || contact == null || waitingList == null) {
             waitingListForm.recordError("Session has been expired. Please reload the form.");
+        }
+        
         
         if (showAdditionalDetails) {
         	
