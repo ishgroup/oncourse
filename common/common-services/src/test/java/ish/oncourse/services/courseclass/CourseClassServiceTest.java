@@ -46,17 +46,20 @@ public class CourseClassServiceTest extends ServiceTest {
         //tutor test
         Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 1);
 
-        List<CourseClass>  courseClasses = service.getContactCourseClasses(contact, CourseClassPeriod.ALL);
+        List<CourseClass>  courseClasses = service.getContactCourseClasses(contact, CourseClassFilter.ALL);
 
-        assertEquals("All courses count",5, courseClasses.size());
-        courseClasses = service.getContactCourseClasses(contact, CourseClassPeriod.CURRENT);
-        assertEquals("Test Current courses count",3, courseClasses.size());
-        assertEquals("Test order Current course 3",3L, courseClasses.get(0).getId().longValue());
-        assertEquals("Test order Current course 4",4L, courseClasses.get(1).getId().longValue());
-        assertEquals("Test order Current course 5",5L, courseClasses.get(2).getId().longValue());
+        assertEquals("All courses count", 5, courseClasses.size());
+        
+        courseClasses = service.getContactCourseClasses(contact, CourseClassFilter.CURRENT);
+        assertEquals("Test Current courses count", 2, courseClasses.size());
+        assertEquals("Test order Current course 3", 3L, courseClasses.get(0).getId().longValue());
+        assertEquals("Test order Current course 4", 4L, courseClasses.get(1).getId().longValue());
 
+        courseClasses = service.getContactCourseClasses(contact, CourseClassFilter.UNCONFIRMED);
+        assertEquals("Test Unconfirmed classes count", 1, courseClasses.size());
+        assertEquals("Test order Current course 5", 5L, courseClasses.get(0).getId().longValue());
 
-        courseClasses = service.getContactCourseClasses(contact, CourseClassPeriod.PAST);
+        courseClasses = service.getContactCourseClasses(contact, CourseClassFilter.PAST);
         assertEquals("Past courses count",2, courseClasses.size());
         assertEquals("Test order Past course 2",2L, courseClasses.get(0).getId().longValue());
         assertEquals("Test order Past course 1",1L, courseClasses.get(1).getId().longValue());
@@ -64,7 +67,7 @@ public class CourseClassServiceTest extends ServiceTest {
 
         //student test
         contact = Cayenne.objectForPK(objectContext, Contact.class, 3);
-        courseClasses = service.getContactCourseClasses(contact, CourseClassPeriod.ALL);
+        courseClasses = service.getContactCourseClasses(contact, CourseClassFilter.ALL);
         assertEquals("Past courses count",4, courseClasses.size());
         assertEquals("Test order Past course 4",4L, courseClasses.get(0).getId().longValue());
         assertEquals("Test order Past course 3",3L, courseClasses.get(1).getId().longValue());

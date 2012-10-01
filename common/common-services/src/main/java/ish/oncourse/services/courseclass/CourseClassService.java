@@ -184,7 +184,7 @@ public class CourseClassService implements ICourseClassService {
     }
 
 
-    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassPeriod period) {
+    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter filter) {
 
         /*
            * get classes for classes item
@@ -196,13 +196,13 @@ public class CourseClassService implements ICourseClassService {
         }
 
         List<CourseClass> courses = new ArrayList<CourseClass>();
-        Ordering ordering = getOrderingBy(period);
+        Ordering ordering = getOrderingBy(filter);
         if (contact.getTutor() != null) {
-            courses.addAll(getCourseClassesBy(contact,period,true));
+            courses.addAll(getCourseClassesBy(contact,filter,true));
         }
 
         if (contact.getStudent() != null) {
-            List<CourseClass> sClasses = getCourseClassesBy(contact, period, false);
+            List<CourseClass> sClasses = getCourseClassesBy(contact, filter, false);
             courses = ListUtils.sum(courses, sClasses);
 
         }
@@ -211,8 +211,9 @@ public class CourseClassService implements ICourseClassService {
         return courses;
     }
 
-    Ordering getOrderingBy(CourseClassPeriod period) {
-        switch (period) {
+    Ordering getOrderingBy(CourseClassFilter filter) {
+        switch (filter) {
+        	case UNCONFIRMED:
             case CURRENT:
                 return new Ordering(CourseClass.START_DATE_PROPERTY, SortOrder.ASCENDING);
             case PAST:
@@ -223,16 +224,16 @@ public class CourseClassService implements ICourseClassService {
         }
     }
 
-    private  List<CourseClass> getCourseClassesBy(Contact contact, CourseClassPeriod period, boolean forTutor)
+    private  List<CourseClass> getCourseClassesBy(Contact contact, CourseClassFilter filter, boolean forTutor)
     {
-        Expression expr = getExpressionBy(contact,period,forTutor);
+        Expression expr = getExpressionBy(contact, filter, forTutor);
         SelectQuery q = new SelectQuery(CourseClass.class, expr);
         appyCourseClassCacheSettings(q);
 
         return cayenneService.sharedContext().performQuery(q);
     }
 
-    private Expression getExpressionBy(Contact contact, CourseClassPeriod period, boolean forTutor) {
+    private Expression getExpressionBy(Contact contact, CourseClassFilter filter, boolean forTutor) {
         Expression expr;
         if (forTutor)
         {
@@ -249,9 +250,13 @@ public class CourseClassService implements ICourseClassService {
 
         Date today = new Date(System.currentTimeMillis());
 
-        switch (period) {
+        switch (filter) {
+        	case UNCONFIRMED:
+        		return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
+        				.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, false));
             case CURRENT:
-                return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today));
+                return expr.andExp(ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_PROPERTY, today))
+                		.andExp(ExpressionFactory.matchExp(CourseClass.TUTOR_ROLES_PROPERTY + "." + TutorRole.IS_CONFIRMED_PROPERTY, true));
             case PAST:
                 return expr.andExp(ExpressionFactory.lessExp(CourseClass.END_DATE_PROPERTY, today));
             case ALL:
@@ -296,6 +301,6 @@ public class CourseClassService implements ICourseClassService {
 
     @Override
     public List<CourseClass> getContactCourseClasses(Contact contact) {
-        return getContactCourseClasses(contact, CourseClassPeriod.ALL);
+        return getContactCourseClasses(contact, CourseClassFilter.ALL);
     }
 }

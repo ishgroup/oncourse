@@ -13,7 +13,12 @@
 		              <td>
 		            	
 		            	<div class="class-name">
-		            		<t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink>
+		            		<t:if test="filterUnconfirmed" negate="true">
+		            			<t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink>
+		            			<p:else>
+		            				<span>${courseName}</span>
+		            			</p:else>
+		            		</t:if>
 		            		<span id="class-code" style="margin-left:10px;font-size:9px;">${courseClassCode}</span>
 		            	</div>
 		            	
@@ -34,11 +39,18 @@
 	      	</t:loop>
    		</table>
    		<p:else>
-               <t:if test="currentPeriod">
-                       You have no currently scheduled classes.
-                   <p:else>
-                       You have no scheduled classes in past.
-                   </p:else>
+               <t:if test="filterCurrent">
+                   You have no currently scheduled classes.
+                   	<p:else>
+                   		<t:if test="filterPast">
+                       		You have no scheduled classes in past.
+                       		<p:else>
+                       			<t:if test="filterUnconfirmed">
+                       				You have no unconfirmed classes.
+                       			</t:if>
+                       		</p:else>
+                       	</t:if>
+                   	</p:else>
                </t:if>
         </p:else>
  	</t:if>

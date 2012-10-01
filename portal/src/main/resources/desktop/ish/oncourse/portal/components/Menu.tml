@@ -6,6 +6,9 @@
 			<ul class="menu">
 				<li><t:pagelink id="m_timetable" page="prop:timetablePageName">Timetable<i class="icon-chevron-right"></i></t:pagelink></li>
 				<!--  <t:pagelink id="m_messages" page="prop:discussionsPageName">Messages <t:if test="hasNewMessages"><span class="new">${numberOfNewMessages} new</span></t:if></t:pagelink><div></div> -->
+				<t:if test="isTutor">
+					<li><t:pagelink id="m_UnconfirmedClasses" page="prop:classesPageName" context="unconfirmed">To confirm<i class="icon-chevron-right"></i></t:pagelink></li>
+				</t:if>
 				<li><t:pagelink id="m_CurrentClasses" page="prop:classesPageName" context="current">Current classes<i class="icon-chevron-right"></i></t:pagelink></li>
                 <li><t:pagelink id="m_PastClasses" page="prop:classesPageName" context="past">Past classes<i class="icon-chevron-right"></i></t:pagelink></li>
                 <!--  <t:pagelink id="m_surveys" page="prop:surveysPageName">Surveys</t:pagelink><div></div> -->

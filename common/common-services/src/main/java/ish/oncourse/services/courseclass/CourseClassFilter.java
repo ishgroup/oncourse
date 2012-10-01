@@ -1,6 +1,7 @@
 package ish.oncourse.services.courseclass;
 
-public enum CourseClassPeriod {
+public enum CourseClassFilter {
+	UNCONFIRMED,
     CURRENT,
     PAST,
     ALL

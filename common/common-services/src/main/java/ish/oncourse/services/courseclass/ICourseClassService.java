@@ -64,7 +64,7 @@ public interface ICourseClassService {
 	 */
 	public List<CourseClass> getContactCourseClasses(Contact contact);
 
-    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassPeriod period);
+    public List<CourseClass> getContactCourseClasses(Contact contact, CourseClassFilter period);
 
     Attendance loadAttendanceById(Object ids);
 }

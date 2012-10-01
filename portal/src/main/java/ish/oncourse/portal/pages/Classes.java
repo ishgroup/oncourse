@@ -5,7 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.PortalUtils;
-import ish.oncourse.services.courseclass.CourseClassPeriod;
+import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
@@ -43,7 +43,7 @@ public class Classes {
     private Request request;
 
     @Parameter
-    private CourseClassPeriod courseClassPeriod = CourseClassPeriod.CURRENT;
+    private CourseClassFilter courseClassFilter = CourseClassFilter.CURRENT;
 
     public String getContextPath() {
         return request.getContextPath();
@@ -51,26 +51,26 @@ public class Classes {
 
     void onActivate(String period) {
         try {
-            courseClassPeriod = CourseClassPeriod.valueOf(period);
+            courseClassFilter = CourseClassFilter.valueOf(period);
         } catch (Throwable e) {
-            courseClassPeriod = CourseClassPeriod.CURRENT;
+            courseClassFilter = CourseClassFilter.CURRENT;
             LOGGER.warn(String.format("Undefined period \"%s\"", period),e);
         }
     }
 
     String onPassivate() {
-        return courseClassPeriod.name();
+        return courseClassFilter.name();
     }
 
     @SetupRender
     void beforeRender() {
-        if (courseClassPeriod == null) {
-            courseClassPeriod = CourseClassPeriod.CURRENT;
+        if (courseClassFilter == null) {
+            courseClassFilter = CourseClassFilter.CURRENT;
         }
         Contact contact = authenticationService.getUser();
         if (contact != null) {
 
-            this.classes = courseClassService.getContactCourseClasses(contact, courseClassPeriod);
+            this.classes = courseClassService.getContactCourseClasses(contact, courseClassFilter);
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info(String.format("Number of found classes is %s.",
                         this.classes.size()));
@@ -123,7 +123,9 @@ public class Classes {
     }
 
     public String getActiveMenu() {
-        switch (courseClassPeriod) {
+        switch (courseClassFilter) {
+        	case UNCONFIRMED:
+        		return "m_UnconfirmedClasses";
             case PAST:
                 return "m_PastClasses";
             default:
@@ -131,9 +133,16 @@ public class Classes {
         }
     }
 
-    public boolean getCurrentPeriod()
-    {
-        return courseClassPeriod == CourseClassPeriod.CURRENT;
+    public boolean getFilterCurrent() {
+        return courseClassFilter == CourseClassFilter.CURRENT;
+    }
+    
+    public boolean getFilterPast() {
+    	return courseClassFilter == CourseClassFilter.PAST;
+    }
+    
+    public boolean getFilterUnconfirmed() {
+    	return courseClassFilter == CourseClassFilter.UNCONFIRMED;
     }
 
 }

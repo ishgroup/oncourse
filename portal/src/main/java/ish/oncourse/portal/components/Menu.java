@@ -3,7 +3,7 @@ package ish.oncourse.portal.components;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.pages.WaitingLists;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
-import ish.oncourse.services.courseclass.CourseClassPeriod;
+import ish.oncourse.services.courseclass.CourseClassFilter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class Menu {
@@ -22,7 +22,7 @@ public class Menu {
 		return discussionService.getNumberOfNewMessages(authenticationService.getUser());
 	}
 
-	private boolean isTutor() {
+	public boolean getIsTutor() {
 		return authenticationService.isTutor();
 	}
 
@@ -31,7 +31,7 @@ public class Menu {
 	}
 
 	public String getDiscussionsPageName() {
-		return isTutor() ? "tutor/messages" : "student/messages";
+		return getIsTutor() ? "tutor/messages" : "student/messages";
 	}
 
 	public String getClassesPageName() {
@@ -47,21 +47,22 @@ public class Menu {
 	}
 	
 	public String getSurveysPageName() {
-		return isTutor() ? "tutor/surveys" : "student/surveys";
+		return getIsTutor() ? "tutor/surveys" : "student/surveys";
+	}
+	
+	public String getUnconfirmed() {
+		return CourseClassFilter.UNCONFIRMED.name();
 	}
 
-    public String getCurrent()
-    {
-        return CourseClassPeriod.CURRENT.name();
+    public String getCurrent() {
+        return CourseClassFilter.CURRENT.name();
     }
 
-    public String getPast()
-    {
-        return CourseClassPeriod.PAST.name();
+    public String getPast() {
+        return CourseClassFilter.PAST.name();
     }
 
-    public String getWaitingListsPageName()
-    {
+    public String getWaitingListsPageName() {
         return WaitingLists.class.getSimpleName();
     }
 
