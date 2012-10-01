@@ -280,6 +280,51 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Invoice activeInvoice = invoices.first();
 		return activeInvoice;
 	}
+	
+	public static PaymentIn createRefundInvoice(PaymentInLine paymentInLineToRefund, Date modifiedTime) {
+		// Creating internal payment, with zero amount which will be
+		// linked to invoiceToRefund, and refundInvoice.
+		Invoice invoiceToRefund = paymentInLineToRefund.getInvoice();
+		PaymentIn internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
+		internalPayment.setAmount(BigDecimal.ZERO);
+		internalPayment.setType(PaymentType.INTERNAL);
+		internalPayment.setStatus(PaymentStatus.SUCCESS);
+
+		// Creating refund invoice
+		Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
+		LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
+				invoiceToRefund.getId()));
+
+		PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
+		refundPL.setAmount(BigDecimal.ZERO.subtract(paymentInLineToRefund.getAmount()));
+		refundPL.setCollege(paymentInLineToRefund.getCollege());
+		refundPL.setInvoice(refundInvoice);
+		refundPL.setPaymentIn(internalPayment);
+
+		PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
+		paymentInLineToRefundCopy.setPaymentIn(internalPayment);
+
+		invoiceToRefund.setModified(modifiedTime);
+		paymentInLineToRefund.setModified(modifiedTime);
+		
+		// Fail enrollments on invoiceToRefund
+		for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
+			il.setModified(modifiedTime);
+			for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
+				ilDiscount.setModified(modifiedTime);
+			}
+			Enrolment enrol = il.getEnrolment();
+			if (enrol != null) {
+				enrol.setModified(modifiedTime);
+				boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
+				if (shouldFailEnrolment) {
+					enrol.setStatus(EnrolmentStatus.FAILED);
+				}
+			}
+		}
+		
+		return internalPayment;
+	}
 
 	/**
 	 * Fails payment, but does not override state if already FAILED.Sets the
@@ -309,73 +354,35 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 			for (PaymentInLine line : getPaymentInLines()) {
 				Invoice invoice = line.getInvoice();
-
+				invoice.updateAmountOwing();
 				if (invoiceToRefund == null) {
-					paymentInLineToRefund = line;
-					invoiceToRefund = invoice;
+					if (!(new Money(invoice.getAmountOwing()).isZero())) {
+						paymentInLineToRefund = line;
+						invoiceToRefund = invoice;
+					}
 				} else {
 					// For angel payments use invoiceNumber to determine the
 					// last
 					// invoice, since createdDate is very often the same
-					// accross several invoices
+					// across several invoices
 					if (getSource() == PaymentSource.SOURCE_ONCOURSE) {
-						if (invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber()) {
+						if (invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber() && !(new Money(invoice.getAmountOwing()).isZero())) {
 							paymentInLineToRefund = line;
 							invoiceToRefund = invoice;
 						}
 					} else {
 						// For willow payments, use willowId to determine
 						// the newest invoice.
-						if (invoice.getId() > invoiceToRefund.getId()) {
+						if (invoice.getId() > invoiceToRefund.getId() && !(new Money(invoice.getAmountOwing()).isZero())) {
 							paymentInLineToRefund = line;
 							invoiceToRefund = invoice;
 						}
 					}
 				}
 			}
-
 			if (invoiceToRefund != null) {
 				revertTheVoucherRedemption();
-				// Creating internal payment, with zero amount which will be
-				// linked to invoiceToRefund, and refundInvoice.
-				PaymentIn internalPayment = makeShallowCopy();
-				internalPayment.setAmount(BigDecimal.ZERO);
-				internalPayment.setType(PaymentType.INTERNAL);
-				internalPayment.setStatus(PaymentStatus.SUCCESS);
-
-				// Creating refund invoice
-				Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
-				LOG.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
-						invoiceToRefund.getId()));
-
-				PaymentInLine refundPL = getObjectContext().newObject(PaymentInLine.class);
-				refundPL.setAmount(BigDecimal.ZERO.subtract(paymentInLineToRefund.getAmount()));
-				refundPL.setCollege(getCollege());
-				refundPL.setInvoice(refundInvoice);
-				refundPL.setPaymentIn(internalPayment);
-
-				PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
-				paymentInLineToRefundCopy.setPaymentIn(internalPayment);
-
-				invoiceToRefund.setModified(today);
-				paymentInLineToRefund.setModified(today);
-
-				// Fail enrolments on invoiceToRefund
-				for (InvoiceLine il : invoiceToRefund.getInvoiceLines()) {
-					il.setModified(today);
-					for (InvoiceLineDiscount ilDiscount : il.getInvoiceLineDiscounts()) {
-						ilDiscount.setModified(today);
-					}
-					Enrolment enrol = il.getEnrolment();
-					if (enrol != null) {
-						enrol.setModified(today);
-						boolean shouldFailEnrolment = enrol.getStatus() == null || enrol.getStatus() == EnrolmentStatus.IN_TRANSACTION;
-						if (shouldFailEnrolment) {
-							enrol.setStatus(EnrolmentStatus.FAILED);
-						}
-					}
-				}
-
+				PaymentIn internalPayment = createRefundInvoice(paymentInLineToRefund, today);
 				return internalPayment;
 			} else {
 				LOG.error(String.format("Can not find invoice to refund on paymentIn:%s.", getId()));
