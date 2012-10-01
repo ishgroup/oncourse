@@ -4,7 +4,10 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.payment.IPaymentService;
@@ -27,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.ObjectId;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -139,35 +143,39 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			List<PaymentIn> updatedPayments = new LinkedList<PaymentIn>();
 			updatedPayments.add(paymentIn);
 			
-			// check places
-			boolean isPlacesAvailable = true;
+			//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
+			boolean isConflictPayment = resolveConflictedPaymentInInvoices(paymentIn, updatedPayments);
+			if (!isConflictPayment) {
+				// check places
+				boolean isPlacesAvailable = true;
 
-			for (Enrolment enrolment : enrolments) {
-				CourseClass clazz = enrolment.getCourseClass();
-				int availPlaces = clazz.getMaximumPlaces() - clazz.getValidEnrolments().size();
-				if (availPlaces < 0) {
-					logger.info(String.format("No places available for courseClass:%s.", clazz.getId()));
-					isPlacesAvailable = false;
-					break;
+				for (Enrolment enrolment : enrolments) {
+					CourseClass clazz = enrolment.getCourseClass();
+					int availPlaces = clazz.getMaximumPlaces() - clazz.getValidEnrolments().size();
+					if (availPlaces < 0) {
+						logger.info(String.format("No places available for courseClass:%s.", clazz.getId()));
+						isPlacesAvailable = false;
+						break;
+					}
 				}
-			}
 			
-			PreferenceController prefsController = prefsFactory.getPreferenceController(paymentIn.getCollege());
+				PreferenceController prefsController = prefsFactory.getPreferenceController(paymentIn.getCollege());
 			
-			if (isCreditCardPayment && !prefsController.getLicenseCCProcessing()) {
-				updatedPayments.add(paymentIn.abandonPayment());
-			} else if (!isPlacesAvailable) {
-				paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
-				updatedPayments.add(paymentIn.abandonPayment());
-			} else {
-				// if credit card and not-zero payment, generate sessionId.
-				if (isCreditCardPayment && paymentIn.getAmount().compareTo(BigDecimal.ZERO) != 0) {
-					paymentIn.setSessionId(idGenerator.generateSessionId());
+				if (isCreditCardPayment && !prefsController.getLicenseCCProcessing()) {
+					updatedPayments.add(paymentIn.abandonPayment());
+				} else if (!isPlacesAvailable) {
+					paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
+					updatedPayments.add(paymentIn.abandonPayment());
 				} else {
-					paymentIn.succeed();
+					// if credit card and not-zero payment, generate sessionId.
+					if (isCreditCardPayment && paymentIn.getAmount().compareTo(BigDecimal.ZERO) != 0) {
+						paymentIn.setSessionId(idGenerator.generateSessionId());
+					} else {
+						paymentIn.succeed();
+					}
 				}
 			}
-
+			
 			newContext.commitChanges();
 			
 			//Set<ReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments);
@@ -180,6 +188,53 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			logger.error(String.format("Exception happened after paymentIn:%s was saved. ", paymentIn.getId()), e);
 			return plainPaymentEnrolmentResponse(paymentIn, enrolments, PortHelper.getVersionByTransactionGroup(transaction));
 		}
+	}
+	
+	boolean resolveConflictedPaymentInInvoices(PaymentIn paymentIn, List<PaymentIn> updatedPayments) {
+		//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
+		boolean isConflictPayment = isHaveConflictInvoices(paymentIn);
+		if (isConflictPayment) {
+			//we should fail this payment and also create create revert invoices for "in transaction" enrollment not-conflict invoices
+			paymentIn.failPayment();
+			List<ObjectId> conflictedInvoicesObjectIds = getLinesForConflictedInvoices(paymentIn);
+			for (PaymentInLine paymentInLine : paymentIn.getPaymentInLines()) {
+				Invoice invoice = paymentInLine.getInvoice();
+				boolean isEnrollmentInvoice = false;
+				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+					//currently we should not create reverse invoice and payments in case if this isn't a enrollment invoice or this invoice 
+					//previously have been processed with keep invoice.
+					if (invoiceLine.getEnrolment() != null && !EnrolmentStatus.SUCCESS.equals(invoiceLine.getEnrolment().getStatus())) {
+						isEnrollmentInvoice = true;
+						break;
+					}
+				}
+				if (!conflictedInvoicesObjectIds.contains(invoice.getObjectId()) && isEnrollmentInvoice) {
+					//we should create reverse payments and invoices
+					updatedPayments.add(PaymentIn.createRefundInvoice(paymentInLine, paymentIn.getModified()));
+				}
+			}
+			updatedPayments.add(paymentIn);
+		}
+		return isConflictPayment;
+	}
+	
+	private boolean isHaveConflictInvoices(PaymentIn paymentForCheck) {
+		List<ObjectId> result = getLinesForConflictedInvoices(paymentForCheck);
+		return !result.isEmpty();
+	}
+	
+	private List<ObjectId> getLinesForConflictedInvoices(PaymentIn paymentForCheck) {
+		List<ObjectId> result = new ArrayList<ObjectId>();
+		for (PaymentInLine paymentInLine : paymentForCheck.getPaymentInLines()) {
+			Invoice invoice = paymentInLine.getInvoice();
+			for (PaymentInLine paymentInLineForCheck : invoice.getPaymentInLines()) {
+				PaymentIn paymentIn = paymentInLineForCheck.getPaymentIn();
+				if (!paymentIn.getObjectId().equals(paymentForCheck.getObjectId()) && PaymentStatus.IN_TRANSACTION.equals(paymentIn.getStatus())) {
+					result.add(paymentInLineForCheck.getInvoice().getObjectId());
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
