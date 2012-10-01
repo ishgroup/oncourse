@@ -35,7 +35,7 @@ public class PaymentProcessController {
 
     private boolean illegalState = false;
 
-    private PaymentProcessState currentState = NOT_PROCESSED;
+    private PaymentProcessState currentState = null;
 
     private Future<PaymentIn> paymentProcessFuture;
 
@@ -57,8 +57,8 @@ public class PaymentProcessController {
     }
 
     public void setPaymentIn(PaymentIn paymentIn) {
-
         this.paymentIn = (PaymentIn) objectContext.localObject(paymentIn.getObjectId(), null);
+        processAction(PaymentAction.INIT_PAYMENT);
     }
 
     public void setObjectContext(ObjectContext objectContext) {
@@ -73,6 +73,9 @@ public class PaymentProcessController {
         if (currentState == ERROR)
             return;
         switch (action) {
+        	case INIT_PAYMENT:
+        		changeProcessState(NOT_PROCESSED);
+        		break;
             case MAKE_PAYMENT:
                 processPayment();
                 break;
@@ -102,7 +105,7 @@ public class PaymentProcessController {
             stackedPaymentMonitorFuture.cancel(true);
             stackedPaymentMonitorFuture = null;
         }
-        if (!SUCCESS.equals(currentState) && CANCEL.equals(currentState)) {
+        if (!SUCCESS.equals(currentState) && !CANCEL.equals(currentState)) {
         	//we should not fire watchdog in case if payment already success or canceled for any reasons.
         	stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
         }
@@ -112,6 +115,8 @@ public class PaymentProcessController {
         if (currentState == ERROR)
             return true;
         switch (action) {
+        	case INIT_PAYMENT:
+        		return currentState == null;
             case MAKE_PAYMENT:
             case CANCEL_PAYMENT:
                 if (currentState != NOT_PROCESSED)
@@ -288,6 +293,7 @@ public class PaymentProcessController {
     }
 
     public static enum PaymentAction {
+    	INIT_PAYMENT,//initial action, should be called only once when paymentIn  setted to controller
         MAKE_PAYMENT,
         CANCEL_PAYMENT,
         TRY_ANOTHER_CARD,
