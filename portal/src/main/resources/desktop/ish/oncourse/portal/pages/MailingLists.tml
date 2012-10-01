@@ -9,13 +9,12 @@
 			<h4>Mailing lists subscription was updated</h4>
 		</t:if>
 		
-		<form t:type="form" t:id="mailingListForm"> 
+		<form t:type="form" t:id="mailingListForm" target="mailingLists">
 	    	<fieldset>
-		    	<p>
-		    		<span t:type="checkBoxList" t:id="selectedMailingLists" label="mailingLists" encoder="mailingListEncoder" model="mailingListModel"/>
-		    	</p>
+				<t:loop source="mailingLists" index="index">
+					<span t:type="mailingListItem" mailingList="mailingList" tagSelected="${selected}"/>
+				</t:loop>
 	    	</fieldset>
-	   
 	    	<br/>
 	    		
 			<div class="form-controls" xml:space="preserve">

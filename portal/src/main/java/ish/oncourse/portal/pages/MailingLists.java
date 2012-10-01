@@ -9,18 +9,37 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.internal.services.StringValueEncoder;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.util.AbstractSelectModel;
 
 import java.util.*;
 
 public class MailingLists {
+
+	@Property
+	@Persist
+	private Contact currentUser;
+
+	@Property
+	@Persist
+	private List<Long> selectedMailingLists;
+
+	@Property
+	@Persist
+	private List<Tag> mailingLists;
+
+	@Property
+	private int index;
+
+
+	@Inject
+	private ICayenneService cayenneService;
+
+	@Inject
+	private IWebSiteService webSiteService;
 
 	@Inject
 	private IAuthenticationService authService;
@@ -30,40 +49,13 @@ public class MailingLists {
 
 	@Property
 	@Persist
-	private Contact currentUser;
-
-	@Persist
-	@Property
-	private List<String> selectedMailingLists;
-
-	@Persist
-	private List<Tag> mailingLists;
-
-	@Persist
-	@Property
-	private SelectModel mailingListModel;
-
-	@Persist
-	@Property
-	private ValueEncoder<String> mailingListEncoder;
-
-	@Inject
-	private ICayenneService cayenneService;
-
-	@Inject
-	private IWebSiteService webSiteService;
-
-	@Property
-	@Persist
 	private boolean isSaved;
 
 	@SetupRender
 	void beforeRender() {
 		this.currentUser = authService.getUser();
 		this.mailingLists = tagService.getMailingLists();
-		this.selectedMailingLists = new ArrayList<String>();
-		this.mailingListModel = new MailingListSelectModel(this.mailingLists);
-		this.mailingListEncoder = new StringValueEncoder();
+		this.selectedMailingLists = new ArrayList<Long>();
 		initSelectedLists();
 	}
 	
@@ -74,12 +66,36 @@ public class MailingLists {
 		}
 	}
 
+	public Tag getMailingList()
+	{
+		return mailingLists.get(index);
+	}
+
+	public boolean isSelected()
+	{
+		Tag tag =  mailingLists.get(index);
+		return selectedMailingLists.contains(tag.getId());
+	}
+
+
 	private void initSelectedLists() {
 		List<Tag> listOfUser = tagService.getMailingListsContactSubscribed(currentUser);
 		for (Tag t : listOfUser) {
-			selectedMailingLists.add(t.getId().toString());
+			selectedMailingLists.add(t.getId());
 		}
 	}
+
+	public void addSelectedTag(Tag tag)
+	{
+		if (!selectedMailingLists.contains(tag.getId()))
+			selectedMailingLists.add(tag.getId());
+	}
+
+	public void removeSelectedTag(Tag tag)
+	{
+		selectedMailingLists.remove(tag.getId());
+	}
+
 
 	public void onSubmitFromMailingListForm() {
 		this.isSaved = true;
@@ -87,7 +103,7 @@ public class MailingLists {
 		Set<Tag> listOfUser = new HashSet<Tag>(tagService.getMailingListsContactSubscribed(currentUser));
 		ObjectContext objectContext = cayenneService.newContext();
 
-		for (String id : selectedMailingLists) {
+		for (Long id : selectedMailingLists) {
 			List<Tag> tagList = tagService.loadByIds(id);
 			if (!tagList.isEmpty()) {
 				Tag tag = tagList.get(0);
@@ -135,38 +151,6 @@ public class MailingLists {
 		objectContext.commitChanges();
 	}
 
-	/**
-	 * Select model for mailing lists
-	 * 
-	 * @author anton
-	 */
-	private static class MailingListSelectModel extends AbstractSelectModel {
-
-		private List<Tag> mailingLists;
-
-		public MailingListSelectModel(List<Tag> mailingLists) {
-			super();
-			this.mailingLists = mailingLists;
-		}
-
-		@Override
-		public List<OptionModel> getOptions() {
-			List<OptionModel> options = new ArrayList<OptionModel>(mailingLists.size());
-
-			for (Tag t : mailingLists) {
-				OptionModel option = new MailingListOptionModel(t);
-				options.add(option);
-			}
-
-			return options;
-		}
-
-		@Override
-		public List<OptionGroupModel> getOptionGroups() {
-			return null;
-		}
-	}
-
 	public String getCollegeName() {
 		return currentUser.getCollege().getName();
 	}
@@ -174,28 +158,4 @@ public class MailingLists {
 	public boolean getHaveMailingLists() {
 		return !mailingLists.isEmpty();
 	}
-
-
-    public static class  MailingListOptionModel extends  AbstractOptionModel
-    {
-        private Tag mailingList;
-        public MailingListOptionModel(Tag mailingList) {
-            this.mailingList = mailingList;
-        }
-
-        @Override
-        public String getLabel() {
-            return mailingList.getName();
-        }
-
-        public Tag getTag()
-        {
-            return mailingList;
-        }
-
-        @Override
-        public Object getValue() {
-            return mailingList.getId().toString();
-        }
-    }
 }
