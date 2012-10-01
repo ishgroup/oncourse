@@ -98,11 +98,13 @@ public class PaymentProcessController {
         //reset illegalState for every correct state changing
         illegalState = false;
         currentState = state;
-        if (state.equals(PROCESSING_PAYMENT) && parallelExecutor != null) {
-            stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
-        } else if (stackedPaymentMonitorFuture != null && parallelExecutor != null) {
+        if (stackedPaymentMonitorFuture != null) {
             stackedPaymentMonitorFuture.cancel(true);
             stackedPaymentMonitorFuture = null;
+        }
+        if (!SUCCESS.equals(currentState) && CANCEL.equals(currentState)) {
+        	//we should not fire watchdog in case if payment already success or canceled for any reasons.
+        	stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
         }
     }
 
@@ -115,8 +117,12 @@ public class PaymentProcessController {
                 if (currentState != NOT_PROCESSED)
                     return false;
                 break;
-            case TRY_ANOTHER_CARD:
             case ABANDON_PAYMENT:
+            	if (NOT_PROCESSED.equals(currentState)) {
+            		//this may mean only the one case (payment expired without user activity with StackedPaymentMonitor)
+            		return true;
+            	}   
+            case TRY_ANOTHER_CARD:
             case ABANDON_PAYMENT_KEEP_INVOICE:
                 if (currentState != FAILED)
                     return false;
@@ -133,23 +139,13 @@ public class PaymentProcessController {
 
     private void processPayment() {
         changeProcessState(PROCESSING_PAYMENT);
-        if (parallelExecutor != null)
-        {
-            paymentProcessFuture = parallelExecutor.invoke(new ProcessPaymentInvokable(this));
-        }
-        else
-        {
-            performGatewayOperation();
-        }
-
+        paymentProcessFuture = parallelExecutor.invoke(new ProcessPaymentInvokable(this));
     }
 
     private void updatePaymentGatewayStatus() {
         try {
-            if (parallelExecutor != null)
-            {
-                paymentProcessFuture.get(100, TimeUnit.MILLISECONDS);
-            }
+        	if(paymentProcessFuture != null)
+        		paymentProcessFuture.get(100, TimeUnit.MILLISECONDS);
             if (paymentIn.getStatus().equals(PaymentStatus.SUCCESS)) {
                 changeProcessState(SUCCESS);
             } else {

@@ -36,7 +36,7 @@
 	    </div>
         <t:if test="illegalState">
             <div class="pay-fail">
-                <h2 class="page-title">You try to use a few browser tabs to process the payment.</h2>
+                <h2 class="page-title">You try to use a few browser tabs to process the payment or payment already expired without user activity.</h2>
             </div>
         </t:if>
 	    <t:if test="showForm">

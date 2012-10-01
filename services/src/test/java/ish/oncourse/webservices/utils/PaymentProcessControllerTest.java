@@ -9,6 +9,8 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.ioc.Invokable;
+import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -21,6 +23,7 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.concurrent.Future;
 
 import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction.*;
 import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentProcessState.*;
@@ -211,6 +214,19 @@ public class PaymentProcessControllerTest extends ServiceTest {
         paymentProcessController.setObjectContext(context);
         paymentProcessController.setPaymentGatewayService(paymentGatewayService);
         paymentProcessController.setPaymentIn(paymentService.currentPaymentInBySessionId(sessionId));
+        paymentProcessController.setParallelExecutor(new ParallelExecutor() {
+			@Override
+			public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
+				return null;
+			}
+			@Override
+			public <T> Future<T> invoke(Invokable<T> invocable) {
+				if (invocable instanceof ProcessPaymentInvokable) {
+					invocable.invoke();
+				}
+				return null;
+			}
+		});
         Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
         assertEquals("paymentProcessController.getCurrentState()", NOT_PROCESSED, paymentProcessController.getCurrentState());
         return paymentProcessController;
