@@ -202,7 +202,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 
     private void assertInvalidActionsForNO_PROCESSED(PaymentProcessController paymentProcessController) {
         assertInvalidAction(TRY_ANOTHER_CARD, NOT_PROCESSED, paymentProcessController);
-        assertInvalidAction(ABANDON_PAYMENT, NOT_PROCESSED, paymentProcessController);
+        //assertInvalidAction(ABANDON_PAYMENT, NOT_PROCESSED, paymentProcessController);
         assertInvalidAction(ABANDON_PAYMENT_KEEP_INVOICE, NOT_PROCESSED, paymentProcessController);
         assertInvalidAction(UPDATE_PAYMENT_GATEWAY_STATUS, NOT_PROCESSED, paymentProcessController);
     }
