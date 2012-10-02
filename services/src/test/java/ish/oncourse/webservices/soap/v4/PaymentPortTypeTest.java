@@ -593,33 +593,27 @@ public class PaymentPortTypeTest extends ServiceTest {
 				if (invoice.getPaymentInLines().size() == 1) {
 					assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getPaymentInLines().size()).toBigDecimal(),invoice.getAmountOwing());//(110+10 of tax)
 				} else {
-					assertEquals("In any case invoice should have only 1 invoiceLine", 1, invoice.getInvoiceLines().size());
-					Enrolment enrol = invoice.getInvoiceLines().get(0).getEnrolment();
-					if (enrol != null) {
-						assertEquals("Amount owing should be default", Money.ZERO.multiply(invoice.getPaymentInLines().size()).toBigDecimal(),invoice.getAmountOwing());
-						assertEquals("This enrollment should be failed", EnrolmentStatus.FAILED, enrol.getStatus());
-					} else {
-						switch (invoice.getInvoiceLines().size()) {
-						case 1:
-							enrol = invoice.getInvoiceLines().get(0).getEnrolment();
-							if (enrol != null) {
-								assertEquals("Amount owing should be default", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
-							} else {
-								assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(),invoice.getAmountOwing());
-							}
-							break;
-						case 2:
+					switch (invoice.getInvoiceLines().size()) {
+					case 1:
+						Enrolment enrol = invoice.getInvoiceLines().get(0).getEnrolment();
+						if (enrol != null) {
+							assertEquals("Amount owing should be default", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
+							assertEquals("This enrollment should be failed", EnrolmentStatus.FAILED, enrol.getStatus());
+						} else {
 							assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(),invoice.getAmountOwing());
-							enrol = invoice.getInvoiceLines().get(0).getEnrolment();
-							if (enrol == null) {
-								enrol = invoice.getInvoiceLines().get(1).getEnrolment();
-							}
-							assertEquals("This enrollment should be not processed", EnrolmentStatus.IN_TRANSACTION, enrol.getStatus());
-							break;
-						default:
-							assertTrue("Incorrect invoice lines for invoice received in test", false);
-							break;
 						}
+						break;
+					case 2:
+						assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(),invoice.getAmountOwing());
+						enrol = invoice.getInvoiceLines().get(0).getEnrolment();
+						if (enrol == null) {
+							enrol = invoice.getInvoiceLines().get(1).getEnrolment();
+						}
+						assertEquals("This enrollment should be not processed", EnrolmentStatus.IN_TRANSACTION, enrol.getStatus());
+						break;
+					default:
+						assertTrue("Incorrect invoice lines for invoice received in test", false);
+						break;
 					}
 				}
 			} else if (paymentIn.getAngelId().equals(2l)) {
