@@ -465,10 +465,10 @@ public class PaymentPortTypeTest extends ServiceTest {
 				assertEquals("Only 1 paymentin line for failed payment should exist", 2, paymentIn.getPaymentInLines().size());
 				Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
 				invoice.updateAmountOwing();
-				assertEquals("Amount owing should be default", new Money("240.00").toBigDecimal(),invoice.getAmountOwing());//240=(110+10 of tax)*2
+				assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(),invoice.getAmountOwing());//240=(110+10 of tax)*2
 				invoice = paymentIn.getPaymentInLines().get(1).getInvoice();
 				invoice.updateAmountOwing();
-				assertEquals("Amount owing should be default", new Money("120.00").toBigDecimal(),invoice.getAmountOwing());//(110+10 of tax)
+				assertEquals("Amount owing should be default", new Money("120.00").multiply(invoice.getInvoiceLines().size()).toBigDecimal(),invoice.getAmountOwing());//(110+10 of tax)
 			} else if (paymentIn.getAngelId().equals(2l)) {
 				assertEquals("Check payment status. ", Integer.valueOf(2), paymentIn.getStatus().getDatabaseValue());
 			}
