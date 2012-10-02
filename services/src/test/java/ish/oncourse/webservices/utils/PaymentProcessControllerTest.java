@@ -213,7 +213,6 @@ public class PaymentProcessControllerTest extends ServiceTest {
         ObjectContext context = cayenneService.newContext();
         paymentProcessController.setObjectContext(context);
         paymentProcessController.setPaymentGatewayService(paymentGatewayService);
-        paymentProcessController.setPaymentIn(paymentService.currentPaymentInBySessionId(sessionId));
         paymentProcessController.setParallelExecutor(new ParallelExecutor() {
 			@Override
 			public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
@@ -227,6 +226,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 				return null;
 			}
 		});
+        paymentProcessController.setPaymentIn(paymentService.currentPaymentInBySessionId(sessionId));
         Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
         assertEquals("paymentProcessController.getCurrentState()", NOT_PROCESSED, paymentProcessController.getCurrentState());
         return paymentProcessController;
