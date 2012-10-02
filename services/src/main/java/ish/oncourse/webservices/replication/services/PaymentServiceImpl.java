@@ -144,7 +144,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			updatedPayments.add(paymentIn);
 			
 			//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
-			boolean isConflictPayment = resolveConflictedPaymentInInvoices(paymentIn, updatedPayments);
+			boolean isConflictPayment = isHaveConflictedInInvoices(paymentIn, updatedPayments);
 			if (!isConflictPayment) {
 				// check places
 				boolean isPlacesAvailable = true;
@@ -190,20 +190,20 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		}
 	}
 	
-	boolean resolveConflictedPaymentInInvoices(PaymentIn paymentIn, List<PaymentIn> updatedPayments) {
+	public boolean isHaveConflictedInInvoices(PaymentIn paymentIn, List<PaymentIn> updatedPayments) {
 		//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
-		boolean isConflictPayment = isHaveConflictInvoices(paymentIn);
+		List<ObjectId> conflictedInvoicesObjectIds = getLinesForConflictedInvoices(paymentIn);
+		boolean isConflictPayment = !conflictedInvoicesObjectIds.isEmpty();
 		if (isConflictPayment) {
 			//we should fail this payment and also create create revert invoices for "in transaction" enrollment not-conflict invoices
 			paymentIn.failPayment();
-			List<ObjectId> conflictedInvoicesObjectIds = getLinesForConflictedInvoices(paymentIn);
 			for (PaymentInLine paymentInLine : paymentIn.getPaymentInLines()) {
 				Invoice invoice = paymentInLine.getInvoice();
 				boolean isEnrollmentInvoice = false;
 				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
 					//currently we should not create reverse invoice and payments in case if this isn't a enrollment invoice or this invoice 
 					//previously have been processed with keep invoice.
-					if (invoiceLine.getEnrolment() != null && !EnrolmentStatus.SUCCESS.equals(invoiceLine.getEnrolment().getStatus())) {
+					if (invoiceLine.getEnrolment() != null && EnrolmentStatus.IN_TRANSACTION.equals(invoiceLine.getEnrolment().getStatus())) {
 						isEnrollmentInvoice = true;
 						break;
 					}
@@ -218,12 +218,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 		return isConflictPayment;
 	}
 	
-	private boolean isHaveConflictInvoices(PaymentIn paymentForCheck) {
-		List<ObjectId> result = getLinesForConflictedInvoices(paymentForCheck);
-		return !result.isEmpty();
-	}
-	
-	private List<ObjectId> getLinesForConflictedInvoices(PaymentIn paymentForCheck) {
+	public List<ObjectId> getLinesForConflictedInvoices(PaymentIn paymentForCheck) {
 		List<ObjectId> result = new ArrayList<ObjectId>();
 		for (PaymentInLine paymentInLine : paymentForCheck.getPaymentInLines()) {
 			Invoice invoice = paymentInLine.getInvoice();
