@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div class="classItem vevent" data-classid="${courseClass.id}">
+	<div class="classItem vevent" data-classid="${courseClass.id}" itemtype="http://schema.org/EducationEvent" itemscope="itemscope" >
 
 		<!--hcalendar implementation-->
 		<div class="class-item-info">
@@ -7,26 +7,26 @@
 				<t:if t:test="courseClass.firstSession">
 					<div class="date">
 						<a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline">
-							<abbr class="dtstart" title="">
+							<abbr itemprop="startDate" class="dtstart" title="">
 								<t:output format="dateFormat" value="courseClass.firstSession.startDate" />
 							</abbr>
 
-							<t:if t:test="showDateEnd"> - <abbr class="dtend" title="">
+							<t:if t:test="showDateEnd"> - <abbr class="dtend" itemprop="endDate" title="">
 									<t:output format="dateFormat" value="courseClass.endDate" />
 								</abbr>
 							</t:if>
 						</a>
 						<br />
 						<a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">
-							<abbr class="dtstart" title="">
+							<abbr itemprop="startDate" class="dtstart" title="">
 								<t:output format="timeFormat" value="courseClass.firstSession.startDate" />
-							</abbr> - <abbr class="dtend" title="">
+							</abbr> - <abbr itemprop="endDate" class="dtend" title="">
 								<t:output format="timeFormat" value="courseClass.firstSession.endDate" />
 							</abbr>
 							<t:if t:test="hasManySessions"> (first session)</t:if> 
 						</a>
 						<br />
-						<a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
+						<a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" itemprop="duration" class="timeline" rel="session">${classSessions}</a>
 					</div>
 					<p:else>
 						<t:if t:test="selfPacedClass">
@@ -37,11 +37,11 @@
 						</t:if>
 					</p:else>
 				</t:if>
-				<div class="summary">${courseClass.course.name}</div>
+				<div itemprop="name" class="summary">${courseClass.course.name}</div>
 			</div>
 			<div class="class-item-info-r">
 				<t:if test="hasLinkToLocation">
-					<div class="location">
+					<div itemprop="location" class="location">
 						<t:if test="courseClass.hasRoom">
 							<span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false" disabledLink="notExistsOnMap" isList="isList"/>
 							<p:else>Venue TBA</p:else>
@@ -51,7 +51,7 @@
 				<t:if test="hasTutorRoles">
 					<div class="tutor">
 						<t:loop source="visibleTutorRoles" value="tutorRole" index="index">
-							<a class="nyromodal" href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">${tutorRole.tutor.fullName}
+							<a class="nyromodal" itemprop="performers" href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">${tutorRole.tutor.fullName}
 							</a>
 							<t:if test="lastIndex" negate="true">
 								,
@@ -126,7 +126,7 @@
 				</div>
 				<div class="bubble_middle bubble_content">
 					<div class="class-link">
-						<a href="/class/${courseClass.course.code}-${courseClass.code}"> View this class... </a>
+						<a href="/class/${courseClass.course.code}-${courseClass.code}" itemprop="url" > View this class... </a>
 					</div>
 					<div class="course-link">
 						<a href="/course/${courseClass.course.code}"> More about <em>${courseClass.course.name}</em>... </a>
