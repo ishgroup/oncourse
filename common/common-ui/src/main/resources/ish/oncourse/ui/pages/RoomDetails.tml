@@ -4,7 +4,7 @@
     <t:if test="room">
         <h1 class="roomname">${room.name}</h1>
         <t:if test="directions">
-            <h4 class="room_directions">Directions</h4>
+            <h4 class="room_directions">Room Directions</h4>
             <p>
                 <t:outputRaw value="directions" />
             </p>
