@@ -55,6 +55,7 @@ macAppBundle {
     bundleExecutable = 'onCourse'
     bundleAllowMixedLocalizations = false
     icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
+    jvmVersion = "${sourceCompatibility}+"
     //certIdentity = "onCourse" //this value is wrong + we need to specify keychain file with --keychain
     extras = """
 			<key>CFBundleDocumentTypes</key>
@@ -81,6 +82,9 @@ macAppBundle {
 			 """
 }
 
+task chin (dependsOn:copyStub) {
+	
+}
 
 task bundle_osx(dependsOn: createApp) {
 	description "Create the OSX application executable."
