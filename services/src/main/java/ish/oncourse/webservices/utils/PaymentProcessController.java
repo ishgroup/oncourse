@@ -58,7 +58,6 @@ public class PaymentProcessController {
 
     public void setPaymentIn(PaymentIn paymentIn) {
         this.paymentIn = (PaymentIn) objectContext.localObject(paymentIn.getObjectId(), null);
-        processAction(PaymentAction.INIT_PAYMENT);
     }
 
     public void setObjectContext(ObjectContext objectContext) {
@@ -293,7 +292,7 @@ public class PaymentProcessController {
     }
 
     public static enum PaymentAction {
-    	INIT_PAYMENT,//initial action, should be called only once when paymentIn  setted to controller
+    	INIT_PAYMENT,//initial action, should be called only once when paymentIn is set to controller
         MAKE_PAYMENT,
         CANCEL_PAYMENT,
         TRY_ANOTHER_CARD,

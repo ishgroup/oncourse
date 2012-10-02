@@ -11,6 +11,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.utils.PaymentProcessController;
+import ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction;
+
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
@@ -116,6 +118,7 @@ public class Payment {
                 paymentProcessController.setParallelExecutor(parallelExecutor);
                 paymentProcessController.setPaymentGatewayService(paymentGatewayServiceBuilder.buildService());
                 paymentProcessController.setPaymentIn(paymentIn);
+                paymentProcessController.processAction(PaymentAction.INIT_PAYMENT);
             }
 
             this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);

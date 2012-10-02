@@ -8,6 +8,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction;
+
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -227,6 +229,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 			}
 		});
         paymentProcessController.setPaymentIn(paymentService.currentPaymentInBySessionId(sessionId));
+        paymentProcessController.processAction(PaymentAction.INIT_PAYMENT);
         Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
         assertEquals("paymentProcessController.getCurrentState()", NOT_PROCESSED, paymentProcessController.getCurrentState());
         return paymentProcessController;
