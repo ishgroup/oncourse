@@ -129,6 +129,29 @@ macAppBundle {
     bundleAllowMixedLocalizations = false
     icon = "${projectDir}/src/packaging/macosx/onCourseServer.icns"
     //certIdentity = "onCourse" //this value is wrong + we need to specify keychain file with --keychain
+	extras = """
+			<key>CFBundleDocumentTypes</key>
+		    <array>
+		      <dict>
+		        <key>CFBundleTypeName</key>
+		        <string>onCourse server data file</string>
+		        <key>CFBundleTypeRole</key>
+		        <string>Editor</string>
+		        <key>CFBundleTypeIconFile</key>
+		        <string>onCourseDocument.icns</string>
+		        <key>CFBundleTypeExtensions</key>
+		        <array>
+		        	<string>iocdata</string>
+		        </array>
+		        <key>CFBundleTypeOSTypes</key>
+		        <array>
+		        	<string>ishS</string>
+		        </array>
+		        <key>LSTypeIsPackage</key>
+		        <string>true</string>
+		      </dict>
+		    </array>
+			 """
 }
 
 

@@ -3,11 +3,17 @@ buildscript {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/public'
 		}
+
+		ivy {
+            url "http://gradle-macappbundle.googlecode.com"
+            artifactPattern 'http://gradle-macappbundle.googlecode.com/files/[module]-[revision].[ext]'
+        }
 	}
 
 	dependencies {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
 		classpath 'org.apache.maven.wagon:wagon-http:2.2'
+		classpath 'edu.sc.seis:gradle-macappbundle:1.0.7'
 	}
 }
 
