@@ -11,7 +11,6 @@ dependencies {
 	compile 'org.apache.cayenne:cayenne-lifecycle:3.1B1'
 	compile 'org.apache.cayenne:cayenne-tools:3.1B1'
 	compile 'foxtrot:foxtrot-core:4.0'
-	compile 'org.apache.cxf:cxf-bundle:2.6.1'
 
 	compile module("org.eclipse.jetty:jetty-server:8.1.5.v20120716") {
     	dependencies(
