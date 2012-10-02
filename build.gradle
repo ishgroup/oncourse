@@ -68,7 +68,8 @@ allprojects {
 			'Release-Version': version,
 			'Built-Date': new Date(),
 			'Built-JDK': System.getProperty('java.version'),
-			'Built-Gradle': gradle.gradleVersion
+			'Built-Gradle': gradle.gradleVersion,
+			'Implementation-Version': System.getProperty('build_number') ?: 'local'
 	}
 
 	test {
