@@ -23,7 +23,7 @@ dependencies {
 jar {
 	manifest {
 		from sharedManifest
-		attributes 'mainClass': 'ish.oncourse.AngelApp'
+		attributes 'Main-Class': 'ish.oncourse.AngelApp'
 	}
 }
 
