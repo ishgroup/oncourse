@@ -65,7 +65,8 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(getEntityName(Voucher.class), new VoucherUpdater());
 		updaterMap.put(getEntityName(QueuedStatistic.class), new QueuedStatisticUpdater());
 		updaterMap.put(getEntityName(VoucherProductCourse.class), new VoucherProductCourseUpdater());
-	}
+        updaterMap.put(getEntityName(Survey.class), new SurveyUpdater());
+    }
 
 	/**
 	 * @return the updaterMap

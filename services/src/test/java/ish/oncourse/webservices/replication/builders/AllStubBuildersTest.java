@@ -4,6 +4,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.v4.builders.*;
+import ish.oncourse.webservices.replication.v5.builders.SurveyStubBuilder;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.Cayenne;
@@ -373,4 +374,10 @@ public class AllStubBuildersTest extends ServiceTest {
     public void testCertificateOutcome() {
         this.testStubBuilder(CertificateOutcome.class, new CertificateOutcomeStubBuilder());
     }
+
+    @Test
+    public void testSurvey() {
+        this.testStubBuilder(Survey.class, new SurveyStubBuilder());
+    }
+
 }

@@ -19,6 +19,7 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -341,6 +342,33 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
             context.deleteObject(paymentIn);
         }
 
+    }
+
+    @Test
+    public void testQueuedRecordForSurvey() throws Exception {
+        ICayenneService cayenneService = getService(ICayenneService.class);
+        ObjectContext context = cayenneService.newContext();
+
+        Survey survey = context.newObject(Survey.class);
+        survey.setCourseScore(1);
+        survey.setVenueScore(2);
+        survey.setTutorScore(3);
+        survey.setCollege(Cayenne.objectForPK(context, College.class, 1));
+        survey.setComment("comment");
+        survey.setUniqueCode("12345678");
+        survey.setEnrolment(Cayenne.objectForPK(context, Enrolment.class, 1));
+        context.commitChanges();
+
+        DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
+
+        ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
+                String.format("select * from QueuedRecord where entityIdentifier='Survey'"));
+
+        assertEquals("Expecting one queued records.", 1, actualData.getRowCount());
+        assertEquals("Test entityWillowId", survey.getId().longValue(), ((BigInteger) actualData.getValue(0, "entityWillowId")).longValue());
+
+        context.deleteObject(survey);
+        context.commitChanges();
     }
 
 }
