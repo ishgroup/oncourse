@@ -116,6 +116,13 @@ compileJava () {
 	}
 }
 
+cayenne {
+	cayenneMap = file ("${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml")
+	superPkg = "ish.oncourse.server.cayenne.glue"
+	template = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
+	rop = 'both'
+}
+
 macAppBundle {
 	outputDir = 'distributions/macosx'
 	creatorCode = "ishS"
