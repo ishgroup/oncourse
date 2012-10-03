@@ -56,7 +56,7 @@ macAppBundle {
     bundleAllowMixedLocalizations = false
     icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
     jvmVersion = "${sourceCompatibility}+"
-    certIdentity = "onCourse"
+    certIdentity = "Developer ID Application: ish group pty ltd"
     extras = """
 			<key>CFBundleDocumentTypes</key>
 		    <array>
