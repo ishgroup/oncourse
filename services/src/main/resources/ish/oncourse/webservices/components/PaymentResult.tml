@@ -40,7 +40,7 @@
 				<p:else>
                     <t:if test="error">
 					<div class="pay-fail">
-						<h2 class="page-title">Unexpected exception</h2>
+						<h2 class="page-title">Unexpected exception.</h2>
 					</div>
                     <p:else>
                         <div class="pay-fail">

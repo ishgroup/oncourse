@@ -9,7 +9,6 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -86,7 +85,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
         assertInvalidActionsForFAILED(paymentProcessController);
 
         paymentProcessController.processAction(TRY_ANOTHER_CARD);
-        assertEquals("paymentProcessController.getCurrentState()", NOT_PROCESSED, paymentProcessController.getCurrentState());
+        assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
         assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.IN_TRANSACTION, paymentProcessController.getPaymentIn().getStatus());
         assertInvalidActionsForNO_PROCESSED(paymentProcessController);
@@ -107,7 +106,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 
     @Test
     public void testCANCEL_PAYMENT() {
-        PaymentProcessController paymentProcessController = createPaymentProcessController();
+		PaymentProcessController paymentProcessController = createPaymentProcessController();
         paymentProcessController.processAction(CANCEL_PAYMENT);
         assertEquals("paymentProcessController.getCurrentState()", CANCEL, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
@@ -122,7 +121,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
         paymentProcessController.processAction(MAKE_PAYMENT);
         paymentProcessController.processAction(UPDATE_PAYMENT_GATEWAY_STATUS);
         paymentProcessController.processAction(TRY_ANOTHER_CARD);
-        assertEquals("paymentProcessController.getCurrentState()", NOT_PROCESSED, paymentProcessController.getCurrentState());
+        assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
         assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.IN_TRANSACTION, paymentProcessController.getPaymentIn().getStatus());
         assertInvalidActionsForNO_PROCESSED(paymentProcessController);
@@ -141,7 +140,21 @@ public class PaymentProcessControllerTest extends ServiceTest {
         assertInvalidActionsForCANCEL(paymentProcessController);
     }
 
-    @Test
+	@Test
+	public void testEXPIRE_PAYMENT() {
+		PaymentProcessController paymentProcessController = createPaymentProcessController();
+		fillInvalidCard(paymentProcessController);
+		paymentProcessController.processAction(MAKE_PAYMENT);
+		paymentProcessController.processAction(UPDATE_PAYMENT_GATEWAY_STATUS);
+		paymentProcessController.processAction(EXPIRE_PAYMENT);
+		assertEquals("paymentProcessController.getCurrentState()", EXPIRED, paymentProcessController.getCurrentState());
+		assertFalse("paymentProcessController.isIllegalState()", paymentProcessController.isIllegalState());
+		assertEquals("paymentProcessController.getPaymentIn().getStatus()", PaymentStatus.FAILED_CARD_DECLINED, paymentProcessController.getPaymentIn().getStatus());
+		assertInvalidActionsForEXPIRED(paymentProcessController);
+	}
+
+
+	@Test
     public void testABANDON_PAYMENT_KEEP_INVOICE() {
         PaymentProcessController paymentProcessController = createPaymentProcessController();
         fillInvalidCard(paymentProcessController);
@@ -155,7 +168,8 @@ public class PaymentProcessControllerTest extends ServiceTest {
     }
 
     private void assertInvalidActionsForCANCEL(PaymentProcessController paymentProcessController) {
-        assertInvalidAction(ABANDON_PAYMENT, CANCEL, paymentProcessController);
+		assertInvalidAction(INIT_PAYMENT, CANCEL, paymentProcessController);
+		assertInvalidAction(ABANDON_PAYMENT, CANCEL, paymentProcessController);
         assertInvalidAction(ABANDON_PAYMENT_KEEP_INVOICE, CANCEL, paymentProcessController);
         assertInvalidAction(TRY_ANOTHER_CARD, CANCEL, paymentProcessController);
         assertInvalidAction(CANCEL_PAYMENT, CANCEL, paymentProcessController);
@@ -163,14 +177,26 @@ public class PaymentProcessControllerTest extends ServiceTest {
         assertInvalidAction(UPDATE_PAYMENT_GATEWAY_STATUS, CANCEL, paymentProcessController);
     }
 
-    private void assertInvalidActionsForFAILED(PaymentProcessController paymentProcessController) {
-        assertInvalidAction(MAKE_PAYMENT, FAILED, paymentProcessController);
+	private void assertInvalidActionsForEXPIRED(PaymentProcessController paymentProcessController) {
+		assertInvalidAction(INIT_PAYMENT, EXPIRED, paymentProcessController);
+		assertInvalidAction(ABANDON_PAYMENT, EXPIRED, paymentProcessController);
+		assertInvalidAction(ABANDON_PAYMENT_KEEP_INVOICE, EXPIRED, paymentProcessController);
+		assertInvalidAction(TRY_ANOTHER_CARD, EXPIRED, paymentProcessController);
+		assertInvalidAction(CANCEL_PAYMENT, EXPIRED, paymentProcessController);
+		assertInvalidAction(MAKE_PAYMENT, EXPIRED, paymentProcessController);
+		assertInvalidAction(UPDATE_PAYMENT_GATEWAY_STATUS, EXPIRED, paymentProcessController);
+	}
+
+	private void assertInvalidActionsForFAILED(PaymentProcessController paymentProcessController) {
+		assertInvalidAction(INIT_PAYMENT, FAILED, paymentProcessController);
+		assertInvalidAction(MAKE_PAYMENT, FAILED, paymentProcessController);
         assertInvalidAction(CANCEL_PAYMENT, FAILED, paymentProcessController);
         assertInvalidAction(UPDATE_PAYMENT_GATEWAY_STATUS, FAILED, paymentProcessController);
     }
 
     private void assertInvalidActionsForPROCESSING_PAYMENT(PaymentProcessController paymentProcessController) {
-        assertInvalidAction(ABANDON_PAYMENT, PROCESSING_PAYMENT, paymentProcessController);
+		assertInvalidAction(INIT_PAYMENT, PROCESSING_PAYMENT, paymentProcessController);
+		assertInvalidAction(ABANDON_PAYMENT, PROCESSING_PAYMENT, paymentProcessController);
         assertInvalidAction(ABANDON_PAYMENT_KEEP_INVOICE, PROCESSING_PAYMENT, paymentProcessController);
         assertInvalidAction(TRY_ANOTHER_CARD, PROCESSING_PAYMENT, paymentProcessController);
         assertInvalidAction(CANCEL_PAYMENT, PROCESSING_PAYMENT, paymentProcessController);
@@ -203,10 +229,11 @@ public class PaymentProcessControllerTest extends ServiceTest {
     }
 
     private void assertInvalidActionsForNO_PROCESSED(PaymentProcessController paymentProcessController) {
-        assertInvalidAction(TRY_ANOTHER_CARD, NOT_PROCESSED, paymentProcessController);
-        //assertInvalidAction(ABANDON_PAYMENT, NOT_PROCESSED, paymentProcessController);
-        assertInvalidAction(ABANDON_PAYMENT_KEEP_INVOICE, NOT_PROCESSED, paymentProcessController);
-        assertInvalidAction(UPDATE_PAYMENT_GATEWAY_STATUS, NOT_PROCESSED, paymentProcessController);
+		assertInvalidAction(INIT_PAYMENT, FILL_PAYMENT_DETAILS, paymentProcessController);
+		assertInvalidAction(TRY_ANOTHER_CARD, FILL_PAYMENT_DETAILS, paymentProcessController);
+        assertInvalidAction(ABANDON_PAYMENT, FILL_PAYMENT_DETAILS, paymentProcessController);
+        assertInvalidAction(ABANDON_PAYMENT_KEEP_INVOICE, FILL_PAYMENT_DETAILS, paymentProcessController);
+        assertInvalidAction(UPDATE_PAYMENT_GATEWAY_STATUS, FILL_PAYMENT_DETAILS, paymentProcessController);
     }
 
     private PaymentProcessController createPaymentProcessController() {
@@ -215,11 +242,13 @@ public class PaymentProcessControllerTest extends ServiceTest {
         ObjectContext context = cayenneService.newContext();
         paymentProcessController.setObjectContext(context);
         paymentProcessController.setPaymentGatewayService(paymentGatewayService);
+		paymentProcessController.setCayenneService(cayenneService);
         paymentProcessController.setParallelExecutor(new ParallelExecutor() {
 			@Override
 			public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
 				return null;
 			}
+
 			@Override
 			public <T> Future<T> invoke(Invokable<T> invocable) {
 				if (invocable instanceof ProcessPaymentInvokable) {
@@ -229,9 +258,10 @@ public class PaymentProcessControllerTest extends ServiceTest {
 			}
 		});
         paymentProcessController.setPaymentIn(paymentService.currentPaymentInBySessionId(sessionId));
-        paymentProcessController.processAction(PaymentAction.INIT_PAYMENT);
+		assertEquals("paymentProcessController.getCurrentState()", INIT, paymentProcessController.getCurrentState());
+		paymentProcessController.processAction(PaymentAction.INIT_PAYMENT);
         Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
-        assertEquals("paymentProcessController.getCurrentState()", NOT_PROCESSED, paymentProcessController.getCurrentState());
+        assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         return paymentProcessController;
     }
 

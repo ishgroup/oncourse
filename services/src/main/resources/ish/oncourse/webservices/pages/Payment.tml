@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-        >
+<html lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 <head>
     <meta charset="utf-8"/>
     <title>${message:headerTitle}</title>
@@ -36,7 +35,12 @@
 	    </div>
         <t:if test="illegalState">
             <div class="pay-fail">
-                <h2 class="page-title">You try to use a few browser tabs to process the payment or payment already expired without user activity.</h2>
+				<t:if test="expired">
+					<h2 class="page-title">You may have used the back button, or the payment expired due to inactivity. You can see the correct status below.</h2>
+				<p:else>
+					<h2 class="page-title">You cannot use the back button in this payment process. You can see correct status below.</h2>
+				</p:else>
+				</t:if>
             </div>
         </t:if>
 	    <t:if test="showForm">

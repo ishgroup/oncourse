@@ -3,6 +3,8 @@ package ish.oncourse.webservices.utils;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
+import ish.oncourse.services.persistence.ICayenneService;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
@@ -28,6 +30,7 @@ public class PaymentProcessController {
      */
     private ParallelExecutor parallelExecutor;
     private IPaymentGatewayService paymentGatewayService;
+	private ICayenneService cayenneService;
     private PaymentIn paymentIn;
     private ObjectContext objectContext;
 
@@ -35,7 +38,7 @@ public class PaymentProcessController {
 
     private boolean illegalState = false;
 
-    private PaymentProcessState currentState = null;
+    private PaymentProcessState currentState = INIT;
 
     private Future<PaymentIn> paymentProcessFuture;
 
@@ -66,14 +69,22 @@ public class PaymentProcessController {
 
 
     public synchronized void processAction(PaymentAction action) {
-        illegalState = !validateAction(action);
+		if (currentState == ERROR)
+			return;
+
+		illegalState = !validateState(action);
         if (illegalState)
             return;
-        if (currentState == ERROR)
-            return;
-        switch (action) {
+
+		if (!validateDatabaseState(action))
+		{
+			setThrowable(new IllegalStateException(String.format("paymentIn with sessionId %s has been changed by another process.",
+					paymentIn.getSessionId())));
+			return;
+		}
+		switch (action) {
         	case INIT_PAYMENT:
-        		changeProcessState(NOT_PROCESSED);
+        		changeProcessState(FILL_PAYMENT_DETAILS);
         		break;
             case MAKE_PAYMENT:
                 processPayment();
@@ -83,7 +94,8 @@ public class PaymentProcessController {
                 break;
             case ABANDON_PAYMENT:
             case CANCEL_PAYMENT:
-                abandonPaymentReverseInvoice();
+		    case EXPIRE_PAYMENT:
+                abandonPaymentReverseInvoice(action);
                 break;
             case ABANDON_PAYMENT_KEEP_INVOICE:
                 abandonPaymentKeepInvoice();
@@ -104,44 +116,55 @@ public class PaymentProcessController {
             stackedPaymentMonitorFuture.cancel(true);
             stackedPaymentMonitorFuture = null;
         }
-        if (!SUCCESS.equals(currentState) && !CANCEL.equals(currentState)) {
+        if (!SUCCESS.equals(currentState) && !CANCEL.equals(currentState) ) {
         	//we should not fire watchdog in case if payment already success or canceled for any reasons.
         	stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
         }
     }
 
-    private boolean validateAction(PaymentAction action) {
-        if (currentState == ERROR)
-            return true;
+    private boolean validateState(PaymentAction action) {
         switch (action) {
         	case INIT_PAYMENT:
-        		return currentState == null;
             case MAKE_PAYMENT:
             case CANCEL_PAYMENT:
-                if (currentState != NOT_PROCESSED)
-                    return false;
-                break;
             case ABANDON_PAYMENT:
-            	if (NOT_PROCESSED.equals(currentState)) {
-            		//this may mean only the one case (payment expired without user activity with StackedPaymentMonitor)
-            		return true;
-            	}   
             case TRY_ANOTHER_CARD:
             case ABANDON_PAYMENT_KEEP_INVOICE:
-                if (currentState != FAILED)
-                    return false;
-                break;
             case UPDATE_PAYMENT_GATEWAY_STATUS:
-                if (currentState != PROCESSING_PAYMENT)
-                    return false;
-                break;
+			case EXPIRE_PAYMENT:
+				return action.validateState(currentState);
             default:
                 throw new IllegalArgumentException();
         }
-        return true;
     }
 
-    private void processPayment() {
+	private  boolean validateDatabaseState(PaymentAction action) {
+
+		ObjectContext tempContext = cayenneService.newNonReplicatingContext();
+		PaymentIn paymentIn = Cayenne.objectForPK(tempContext, PaymentIn.class, this.paymentIn.getId());
+
+
+		LOGGER.info(String.format("PaymentAction = %s, PaymentProcessController.state = %s; PaymentIn.status = %s; DB.PaymentIn.status = %s",action, currentState, this.paymentIn.getStatus(), paymentIn.getStatus()));
+
+		switch (action) {
+			case INIT_PAYMENT:
+			case MAKE_PAYMENT:
+			case CANCEL_PAYMENT:
+			case TRY_ANOTHER_CARD:
+			case ABANDON_PAYMENT:
+			case ABANDON_PAYMENT_KEEP_INVOICE:
+			case EXPIRE_PAYMENT:
+				return (paymentIn.getStatus() == PaymentStatus.IN_TRANSACTION);
+			case UPDATE_PAYMENT_GATEWAY_STATUS:
+				return (paymentIn.getStatus() == PaymentStatus.IN_TRANSACTION ||
+						paymentIn.getStatus() == PaymentStatus.SUCCESS);
+			default:
+				throw new IllegalArgumentException();
+
+		}
+	}
+
+	private void processPayment() {
         changeProcessState(PROCESSING_PAYMENT);
         paymentProcessFuture = parallelExecutor.invoke(new ProcessPaymentInvokable(this));
     }
@@ -173,10 +196,21 @@ public class PaymentProcessController {
      * @return abandon payment message block
      * @throws java.net.MalformedURLException
      */
-    private void abandonPaymentReverseInvoice() {
+    private void abandonPaymentReverseInvoice(PaymentAction action) {
         changeProcessState(PROCESSING_ABANDON);
         PaymentInAbandonUtil.abandonPaymentReverseInvoice(paymentIn);
-        changeProcessState(CANCEL);
+		switch (action)
+		{
+			case ABANDON_PAYMENT:
+			case CANCEL_PAYMENT:
+				changeProcessState(CANCEL);
+				break;
+			case EXPIRE_PAYMENT:
+				changeProcessState(EXPIRED);
+				break;
+			default:
+				throw new IllegalArgumentException();
+		}
     }
 
     /**
@@ -202,7 +236,7 @@ public class PaymentProcessController {
         this.paymentIn = paymentIn.makeCopy();
         this.paymentIn.setStatus(PaymentStatus.IN_TRANSACTION);
         objectContext.commitChanges();
-        changeProcessState(NOT_PROCESSED);
+        changeProcessState(FILL_PAYMENT_DETAILS);
     }
 
     public synchronized PaymentProcessState getCurrentState() {
@@ -245,7 +279,8 @@ public class PaymentProcessController {
     public synchronized boolean isProcessFinished() {
         return currentState.equals(CANCEL) ||
                 currentState.equals(SUCCESS) ||
-                currentState.equals(ERROR);
+                currentState.equals(ERROR) ||
+				currentState.equals(EXPIRED);
     }
 
     public synchronized Throwable geThrowable() {
@@ -262,24 +297,71 @@ public class PaymentProcessController {
         return illegalState;
     }
 
-    public static enum PaymentProcessState {
-        NOT_PROCESSED,   //initial state of the controller
+	public synchronized boolean isExpired() {
+		return currentState == EXPIRED;
+	}
+
+
+	public synchronized boolean isFinalState()
+	{
+		return PaymentProcessState.isFinalState(currentState);
+	}
+
+	public synchronized boolean isProcessingState()
+	{
+		return PaymentProcessState.isProcessingState(currentState);
+	}
+
+	public ICayenneService getCayenneService() {
+		return cayenneService;
+	}
+
+	public void setCayenneService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService;
+	}
+
+	public static enum PaymentProcessState {
+		INIT, //initial state of the controller
+		FILL_PAYMENT_DETAILS, //payment form is opened
         PROCESSING_PAYMENT, //payment gateway is processing the payment
         PROCESSING_ABANDON, //payment abandon processing
         PROCESSING_TRY_OTHER_CARD, //try other card processing
         SUCCESS, //finished status when payment was processed successfully
         FAILED, //finished status when payment was failed.
         CANCEL, //finished status when user canceled processing
-        ERROR;  //finished status when unexpected error
+        ERROR, //finished status when unexpected error
+		EXPIRED;
 
-        public static boolean isProcessingState(PaymentProcessState state) {
+
+		public static boolean isFinalState(PaymentProcessState state) {
+			switch (state) {
+				case SUCCESS:
+				case FAILED:
+				case CANCEL:
+				case ERROR:
+				case EXPIRED:
+					return true;
+				case PROCESSING_PAYMENT:
+				case PROCESSING_ABANDON:
+				case PROCESSING_TRY_OTHER_CARD:
+				case FILL_PAYMENT_DETAILS:
+				case INIT:
+					return false;
+				default:
+					throw new IllegalArgumentException(String.format("State %s is not supported", state));
+			}
+		}
+
+
+		public static boolean isProcessingState(PaymentProcessState state) {
             switch (state) {
 
-                case NOT_PROCESSED:
+                case FILL_PAYMENT_DETAILS:
                 case SUCCESS:
                 case FAILED:
                 case CANCEL:
                 case ERROR:
+				case EXPIRED:
                     return false;
                 case PROCESSING_PAYMENT:
                 case PROCESSING_ABANDON:
@@ -292,13 +374,29 @@ public class PaymentProcessController {
     }
 
     public static enum PaymentAction {
-    	INIT_PAYMENT,//initial action, should be called only once when paymentIn is set to controller
-        MAKE_PAYMENT,
-        CANCEL_PAYMENT,
-        TRY_ANOTHER_CARD,
-        ABANDON_PAYMENT,
-        ABANDON_PAYMENT_KEEP_INVOICE,
-        UPDATE_PAYMENT_GATEWAY_STATUS
-    }
+
+		INIT_PAYMENT(INIT), //initial action, should be called only once when paymentIn is set to controller
+        MAKE_PAYMENT(FILL_PAYMENT_DETAILS),
+        CANCEL_PAYMENT(FILL_PAYMENT_DETAILS),
+		TRY_ANOTHER_CARD(FAILED),
+        ABANDON_PAYMENT(FAILED),
+        ABANDON_PAYMENT_KEEP_INVOICE(FAILED),
+        UPDATE_PAYMENT_GATEWAY_STATUS(PROCESSING_PAYMENT),
+		EXPIRE_PAYMENT(FILL_PAYMENT_DETAILS, PROCESSING_PAYMENT, PROCESSING_ABANDON, PROCESSING_TRY_OTHER_CARD, FAILED);
+
+		private PaymentProcessState[] allowedPaymentProcessStates;
+		private PaymentAction(PaymentProcessState... allowedPaymentProcessStates) {
+			this.allowedPaymentProcessStates = allowedPaymentProcessStates;
+		}
+
+		public boolean validateState(PaymentProcessState currentState)
+		{
+			for (PaymentProcessState allowedPaymentProcessState : allowedPaymentProcessStates) {
+				if (currentState == allowedPaymentProcessState)
+					return true;
+			}
+			return false;
+		}
+	}
 
 }

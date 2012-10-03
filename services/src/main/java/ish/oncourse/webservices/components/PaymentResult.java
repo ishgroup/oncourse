@@ -34,7 +34,7 @@ public class PaymentResult {
  	}
 	
 	public boolean isNotProcessed() {
-        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.NOT_PROCESSED);
+        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.FILL_PAYMENT_DETAILS);
     }
 	
 	public boolean isPaymentSuccess() {

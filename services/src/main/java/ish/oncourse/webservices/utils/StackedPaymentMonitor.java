@@ -7,7 +7,7 @@ public class StackedPaymentMonitor implements Invokable<Boolean> {
     private static final Logger LOGGER = Logger.getLogger(StackedPaymentMonitor.class);
     public static final long TIMEOUT = 10 * 60 * 1000;//10 minutes
 
-    private PaymentProcessController paymentProcessController;
+    private final PaymentProcessController paymentProcessController;
 
     public StackedPaymentMonitor(PaymentProcessController paymentProcessController) {
         this.paymentProcessController = paymentProcessController;
@@ -23,7 +23,7 @@ public class StackedPaymentMonitor implements Invokable<Boolean> {
             Thread.sleep(TIMEOUT);
             synchronized (paymentProcessController)
             {
-                paymentProcessController.processAction(PaymentProcessController.PaymentAction.ABANDON_PAYMENT);
+                paymentProcessController.processAction(PaymentProcessController.PaymentAction.EXPIRE_PAYMENT);
             }
             return Boolean.TRUE;
         } catch (InterruptedException e) {

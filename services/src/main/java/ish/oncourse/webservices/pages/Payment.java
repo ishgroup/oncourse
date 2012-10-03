@@ -12,7 +12,6 @@ import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
 import ish.oncourse.webservices.utils.PaymentProcessController;
 import ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
@@ -45,13 +44,13 @@ public class Payment {
     private Request request;
 
     @Inject
-    private ICayenneService cayenneService;
-
-    @Inject
     private IPaymentService paymentService;
 
     @Inject
     private ComponentResources componentResources;
+
+	@Inject
+	private ICayenneService cayenneService;
 
     @InjectComponent
     private PaymentForm paymentForm;
@@ -117,6 +116,7 @@ public class Payment {
                 paymentProcessController.setObjectContext(cayenneService.newContext());
                 paymentProcessController.setParallelExecutor(parallelExecutor);
                 paymentProcessController.setPaymentGatewayService(paymentGatewayServiceBuilder.buildService());
+				paymentProcessController.setCayenneService(cayenneService);
                 paymentProcessController.setPaymentIn(paymentIn);
                 paymentProcessController.processAction(PaymentAction.INIT_PAYMENT);
             }
@@ -126,8 +126,7 @@ public class Payment {
             this.payer = paymentProcessController.getContact();
             this.invoices = paymentProcessController.getInvoices();
         }
-
-        if (paymentProcessController.getCurrentState().equals(PaymentProcessController.PaymentProcessState.PROCESSING_PAYMENT))
+        if (paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.PROCESSING_PAYMENT)
         {
             paymentProcessController.processAction(UPDATE_PAYMENT_GATEWAY_STATUS);
         }
@@ -142,8 +141,13 @@ public class Payment {
         return paymentProcessController.isIllegalState();
     }
 
+	public boolean isExpired()
+	{
+		return paymentProcessController.isExpired();
+	}
 
-    @AfterRender
+
+	@AfterRender
     public void afterRender()
     {
         if (paymentProcessController.isProcessFinished())
@@ -160,14 +164,6 @@ public class Payment {
         return messages.format("invoice.desc", invoice.getInvoiceNumber());
     }
 
-    /**
-     * Method returns true if by some reason persist properties have been cleared.
-     * For example: the payment has been processed from other tab of the browser.
-     */
-    public boolean isPersistCleared() {
-        return paymentProcessController == null;
-    }
-
     public Object handleThrowable(Throwable cause) {
         paymentProcessController.setThrowable(cause);
         return getPageURL();
@@ -182,17 +178,14 @@ public class Payment {
     }
 
     public boolean isShowForm() {
-        return paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.NOT_PROCESSED;
+        return paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.FILL_PAYMENT_DETAILS;
     }
 
     public boolean isShowResult() {
-        return paymentProcessController.getCurrentState().equals(PaymentProcessController.PaymentProcessState.SUCCESS)
-                || paymentProcessController.getCurrentState().equals(PaymentProcessController.PaymentProcessState.FAILED)
-                || paymentProcessController.getCurrentState().equals(PaymentProcessController.PaymentProcessState.CANCEL)
-                ||  paymentProcessController.getCurrentState().equals(PaymentProcessController.PaymentProcessState.ERROR);
+        return   paymentProcessController.isFinalState();
     }
 
     public boolean isShowProcessing() {
-        return PaymentProcessController.PaymentProcessState.isProcessingState(paymentProcessController.getCurrentState());
+        return paymentProcessController.isProcessingState();
     }
 }
