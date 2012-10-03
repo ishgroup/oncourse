@@ -1,8 +1,9 @@
 package ish.oncourse.ui.components;
 
+import ish.oncourse.model.Tag;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.site.IWebSiteService;
-
+import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -14,6 +15,9 @@ public class PageHead {
 
 	@Inject
 	private IWebSiteService siteService;
+
+	@Inject
+	private ITagService tagService;
 	
 	@Parameter
 	private String title;
@@ -51,5 +55,13 @@ public class PageHead {
 			buff.append(ciVersion);
 		}
 		return buff.toString();
+	}
+
+	/**
+	 * @return current tag, can be null
+	 */
+	public Tag getTag()
+	{
+		return tagService.getBrowseTag();
 	}
 }
