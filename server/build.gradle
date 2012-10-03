@@ -169,7 +169,7 @@ task bundle_osx(dependsOn: createApp) {
 	}
 }
 
-task installer_osx(dependsOn: [codeSign, createDmg]) {
+task installer_osx(dependsOn: createDmg ) { 
 	description "Create the OSX installer (which is just a dmg file)."
 	doFirst {
 		logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
