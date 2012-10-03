@@ -347,16 +347,26 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
     @Test
     public void testQueuedRecordForSurvey() throws Exception {
         ICayenneService cayenneService = getService(ICayenneService.class);
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext nrContext = cayenneService.newNonReplicatingContext();
 
-        Survey survey = context.newObject(Survey.class);
+		final SampleEntityBuilder builder = SampleEntityBuilder.newBuilder(nrContext);
+
+		Contact contact = builder.createContact();
+		Student student = builder.createStudent(contact);
+		Invoice invoice = builder.createInvoice(contact);
+		InvoiceLine invoiceLine =  builder.createInvoiceLine(invoice);
+		Enrolment enrolment = builder.createEnrolment(invoiceLine,student,Cayenne.objectForPK(nrContext, CourseClass.class, 10));
+		nrContext.commitChanges();
+
+		ObjectContext context = cayenneService.newContext();
+		Survey survey = context.newObject(Survey.class);
         survey.setCourseScore(1);
         survey.setVenueScore(2);
         survey.setTutorScore(3);
         survey.setCollege(Cayenne.objectForPK(context, College.class, 1));
         survey.setComment("comment");
         survey.setUniqueCode("12345678");
-        survey.setEnrolment(Cayenne.objectForPK(context, Enrolment.class, 1));
+        survey.setEnrolment(Cayenne.objectForPK(context, Enrolment.class, enrolment.getId()));
         context.commitChanges();
 
         DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
