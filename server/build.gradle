@@ -162,14 +162,14 @@ macAppBundle {
 }
 
 
-task bundle_osx(dependsOn: [createApp, codeSign]) {
+task bundle_osx(dependsOn: createApp) {
 	description "Create the OSX application executable."
 	doFirst {
 		logger.lifecycle("Creating the OSX application executable for $project.name")
 	}
 }
 
-task installer_osx(dependsOn: createDmg) {
+task installer_osx(dependsOn: [codeSign, createDmg]) {
 	description "Create the OSX installer (which is just a dmg file)."
 	doFirst {
 		logger.lifecycle("Creating the OSX installer (which is just a dmg file) for $project.name")
