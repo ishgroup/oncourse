@@ -128,7 +128,7 @@ macAppBundle {
     bundleAllowMixedLocalizations = false
     icon = "${projectDir}/src/packaging/macosx/onCourseServer.icns"
     jvmVersion = "${sourceCompatibility}+"
-    //certIdentity = "onCourse" //this value is wrong + we need to specify keychain file with --keychain
+    certIdentity = "onCourse"
 	extras = """
 			<key>CFBundleDocumentTypes</key>
 		    <array>
