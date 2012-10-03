@@ -82,10 +82,6 @@ macAppBundle {
 			 """
 }
 
-task chin (dependsOn:copyStub) {
-	
-}
-
 task bundle_osx(dependsOn: createApp) {
 	description "Create the OSX application executable."
 	doFirst {
