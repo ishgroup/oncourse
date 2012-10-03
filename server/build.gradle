@@ -155,7 +155,7 @@ macAppBundle {
 }
 
 
-task bundle_osx(dependsOn: createApp) {
+task bundle_osx(dependsOn: [createApp, codeSign]) {
 	description "Create the OSX application executable."
 	doFirst {
 		logger.lifecycle("Creating the OSX application executable for $project.name")
