@@ -2,9 +2,11 @@ package ish.oncourse.enrol.services.invoice;
 
 import java.util.List;
 
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.Voucher;
 
 /**
  * The service for manipulating with invoice-related services: Invoice, InvoiceLine
@@ -39,6 +41,15 @@ public interface IInvoiceProcessingService {
 	 * @return invoiceLine object created
 	 */
 	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, List<Discount> actualPromotions);
+	
+	/**
+	 * Creates the {@link InvoiceLine} object for the given voucher.
+	 * 
+	 * @param voucher
+	 * @param payer
+	 * @return invoiceLine object created
+	 */
+	InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer);
 	
 	/**
 	 * Sets the discounted values to the given invoiceLine for the given enrolment.

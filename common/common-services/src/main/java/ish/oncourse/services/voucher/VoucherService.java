@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import ish.common.types.PaymentSource;
 import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.College;
@@ -20,6 +21,8 @@ import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.util.ProductUtil;
+import ish.util.SecurityUtil;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -139,9 +142,27 @@ public class VoucherService implements IVoucherService {
 	}
 	
 	@Override
-	public PaymentIn preparePaymentInForVoucherPurchase(VoucherProduct voucherProduct, Money voucherPrice, Contact payer, Contact owner) {
-		PaymentIn payment = new PurchaseVoucherBuilder(voucherProduct, voucherPrice, payer, owner).prepareVoucherPurchase();
-		return payment;
+	public Voucher createVoucher(VoucherProduct voucherProduct, Contact contact, Money voucherPrice) {
+		Voucher voucher = voucherProduct.getObjectContext().newObject(Voucher.class);
+		voucher.setCode(SecurityUtil.generateRandomPassword(Voucher.VOUCHER_CODE_LENGTH));
+		voucher.setCollege(voucherProduct.getCollege());
+		if (contact != null) {
+			voucher.setContact((Contact) voucherProduct.getObjectContext().localObject(contact.getObjectId(), null));
+		}
+		voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucherProduct.getExpiryType(), voucherProduct.getExpiryDays()));
+		if (!Money.isZeroOrEmpty(voucherProduct.getPriceExTax()) && Money.ZERO.isLessThan(voucherProduct.getPriceExTax())) {
+			voucher.setRedemptionValue(voucherProduct.getPriceExTax());
+		} else if (!Money.isZeroOrEmpty(voucherPrice) && Money.ZERO.isLessThan(voucherPrice)){
+			voucher.setRedemptionValue(voucherPrice);
+		} else {
+			throw new IllegalArgumentException("Voucher price can't be null, zero or negative when we purchase voucher.");
+		}
+		voucher.setSource(PaymentSource.SOURCE_WEB);
+		voucher.setStatus(VoucherStatus.NEW);
+		voucher.setProduct(voucherProduct);
+		voucher.setRedeemedCoursesCount(0);
+		
+		return voucher;
 	}
 	
 	/**

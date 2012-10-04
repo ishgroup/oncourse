@@ -10,6 +10,7 @@ import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.VoucherPaymentIn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,11 +29,11 @@ public class PurchaseModel {
 	private Invoice invoice;
 	
 	private PaymentIn payment;
-	private List<VoucherPaymentIn> voucherPayments;
+	private List<PaymentIn> voucherPayments;
 	
 	public PurchaseModel() {
 		this.contacts = new HashMap<Contact, PurchaseModel.ContactNode>();
-		this.voucherPayments = new ArrayList<VoucherPaymentIn>();
+		this.voucherPayments = new ArrayList<PaymentIn>();
 	}
 	
 	public void addContact(Contact contact) {
@@ -87,11 +88,15 @@ public class PurchaseModel {
 		getContactNode(payer).removeProduct(p);
 	}
 	
-	public void addVoucherPayment(VoucherPaymentIn vp) {
-		this.voucherPayments.add(vp);
+	public void addVoucherPayments(Collection<PaymentIn> vps) {
+		this.voucherPayments.addAll(vps);
 	}
 	
-	public Collection<VoucherPaymentIn> getVoucherPayments() {
+	public void clearVoucherPayments() {
+		this.voucherPayments.clear();
+	}
+	
+	public Collection<PaymentIn> getVoucherPayments() {
 		return Collections.unmodifiableCollection(voucherPayments);
 	}
 	

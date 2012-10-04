@@ -5,12 +5,14 @@ package ish.oncourse.enrol.services.invoice;
 
 import ish.math.Money;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.RealDiscountsPolicy;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.Voucher;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.util.InvoiceUtil;
 
@@ -69,6 +71,26 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		invoiceLine.setCollege(college);
 
 		return invoiceLine;
+	}
+	
+	@Override
+	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact payer) {
+		ObjectContext context = voucher.getObjectContext();
+		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
+		
+		College college = voucher.getCollege();
+		
+		invoiceLine.setDescription(String.format("Voucher %s", voucher.getProduct().getDescription()));
+        invoiceLine.setTitle(String.format("%s %s", payer.getFullName(), voucher.getProduct().getName()));
+        invoiceLine.setPriceEachExTax(voucher.getRedemptionValue());
+        invoiceLine.setDiscountEachExTax(Money.ZERO);
+        invoiceLine.setTaxEach(Money.ZERO);
+        invoiceLine.setQuantity(BigDecimal.ONE);
+        voucher.setInvoiceLine(invoiceLine);
+        
+        invoiceLine.setCollege(college);
+        
+        return invoiceLine;
 	}
 
 	/**
