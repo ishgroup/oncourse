@@ -105,7 +105,10 @@ public class PreferenceController extends CommonPreferenceController {
 		return (pref != null) ? pref.getValueString() : null;
 	}
 
-	@Override
+	/**
+	 * Deprecated now should use {@link PreferenceController#getValue(String, boolean)} instead 
+	 */
+	@Deprecated
 	protected Object getBinaryValue(String key, boolean isUserPref) {
 
 		if (isUserPref) {
@@ -157,7 +160,13 @@ public class PreferenceController extends CommonPreferenceController {
 
 	}
 
-	@Override
+	/**
+	 * Deprecated now should use {@link PreferenceController#setValue(String, boolean, String)} instead
+	 * @param key
+	 * @param isUserPref
+	 * @param value
+	 */
+	@Deprecated
 	protected void setBinaryValue(String key, boolean isUserPref, Object value) {
 
 		if (isUserPref) {

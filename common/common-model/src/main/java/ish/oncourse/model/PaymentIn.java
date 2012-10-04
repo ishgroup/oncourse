@@ -401,7 +401,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				LOG.error(String.format("Not voucher paymentIn with id %s have linked vouchers!", getId()));
 			}
 			if (VoucherPaymentStatus.APPROVED.equals(voucherPaymentIn.getStatus())) {
-				LOG.error(String.format("We request abandon of paymentIn with id %s which contain the VoucherPaymentIn with id %s in %s status!", 
+				LOG.debug(String.format("We request abandon of paymentIn with id %s which contain the VoucherPaymentIn with id %s in %s status!", 
 					getId(), voucherPaymentIn.getId(), voucherPaymentIn.getStatus()));
 			}
 			Voucher voucher = voucherPaymentIn.getVoucher();

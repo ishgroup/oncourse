@@ -123,7 +123,7 @@ public class VoucherRedemptionHelper {
 		voucherPaymentIn.setCollege(getInvoice().getCollege());
 		voucherPaymentIn.setPayment(payment);
 		voucherPaymentIn.setVoucher((Voucher) context.localObject(voucher.getObjectId(), voucher));
-		voucherPaymentIn.setStatus(VoucherPaymentStatus.BUSY);
+		voucherPaymentIn.setStatus(VoucherPaymentStatus.APPROVED);
 		if (voucherPaymentIn.getEnrolmentsCount() == null && voucher.getVoucherProduct().getMaxCoursesRedemption() != null) {
 			voucherPaymentIn.setEnrolmentsCount(0);
 		}

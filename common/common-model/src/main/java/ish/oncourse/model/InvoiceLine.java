@@ -60,4 +60,14 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 		}
 		return vouchers;
 	}
+	
+	public List<Membership> getMemberShips() {
+		List<Membership> memberships = new ArrayList<Membership>();
+		for (ProductItem productItem : getProductItem()) {
+			if (productItem instanceof Membership) {
+				memberships.add((Membership) productItem);
+			}
+		}
+		return memberships;
+	}
 }

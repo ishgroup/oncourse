@@ -97,7 +97,7 @@ public class PurchaseVoucherBuilder {
 			throw new IllegalArgumentException("Voucher price can't be null, zero or negative when we purchase voucher.");
 		}
 		voucher.setSource(source);
-		voucher.setStatus(VoucherStatus.ACTIVE);
+		voucher.setStatus(VoucherStatus.NEW);
 		voucher.setProduct(voucherProduct);
 		voucher.setRedeemedCoursesCount(0);
 		
