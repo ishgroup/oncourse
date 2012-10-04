@@ -94,7 +94,8 @@ test {
 
 cayenne {
 	cayenneMap = file ("${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml")
-	superPkg = "ish.oncourse.server.cayenne.glue"
+	superPkg = "ish.oncourse.cayenne.glue"
+	serverSuperPkg = "ish.oncourse.server.cayenne.glue"
 	templateDir = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
 	type = 'server'
 	destDir = file ("${projectDir}/src/main/java")
