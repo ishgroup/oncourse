@@ -11,7 +11,6 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
 		classpath 'org.apache.maven.wagon:wagon-http:2.2'
 		classpath 'edu.sc.seis:gradle-macappbundle:1.0.7'
 	}
