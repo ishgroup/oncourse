@@ -1,4 +1,5 @@
 apply plugin: 'macAppBundle'
+apply plugin: 'cayenne'
 
 dependencies {
 	compile project(':common')
@@ -91,36 +92,12 @@ test {
 	}
 }
 
-compileJava () {
-	doFirst {
-		logger.lifecycle("Running cgen to create Cayenne entity files.")
-		ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.compile.asPath) 
-			
-		//classes for server
-		ant.cgen(	map:"${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml", 
-					destDir:"${projectDir}/src/main/java", 
-					superPkg:"ish.oncourse.server.cayenne.glue",
-					template:"${projectDir}/../common/src/main/resources/cayenne/dotemplates/subclass.vm",
-					superTemplate:"${projectDir}/../common/src/main/resources/cayenne/dotemplates/superclass.vm",
-					makepairs:"true")
-
-		//client-side classes for server
-		ant.cgen(	map:"${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml", 
-					destDir:"${projectDir}/src/main/java", 
-					superPkg:"ish.oncourse.cayenne.glue",
-					template:"${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-subclass-serverside.vm",
-					superTemplate:"${projectDir}/../common/src/main/resources/cayenne/dotemplates/client-superclass-serverside.vm",
-					makepairs:"true",
-					client:"true",
-					mode:"all")
-	}
-}
-
 cayenne {
 	cayenneMap = file ("${projectDir}/../common/src/main/resources/cayenne/AngelMap.map.xml")
 	superPkg = "ish.oncourse.server.cayenne.glue"
-	template = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
+	templateDir = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
 	type = 'server'
+	destDir = file ("${projectDir}/src/main/java")
 }
 
 macAppBundle {
