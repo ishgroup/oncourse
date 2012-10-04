@@ -20,10 +20,6 @@ apply plugin: 'maven'
 
 version = '1.0'
 
-configurations {
-	cayenne
-}
-
 repositories {
 	mavenCentral()
 	maven {
@@ -33,6 +29,6 @@ repositories {
 
 dependencies {
 	compile gradleApi()
-	cayenne 'org.apache.cayenne:cayenne-tools:3.1B1'
 	groovy localGroovy()
+	runtime 'org.apache.cayenne:cayenne-tools:3.1B1'
 }
