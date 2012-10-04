@@ -71,12 +71,20 @@ public class PurchaseModel {
 		getContactNode(e.getStudent().getContact()).addEnrolment(e);
 	}
 	
+	public void removeEnrolment(Enrolment e) {
+		getContactNode(e.getStudent().getContact()).removeEnrolment(e);
+	}
+	
 	public void addConcession(StudentConcession concession) {
 		getContactNode(concession.getStudent().getContact()).addConcession(concession.getConcessionType());
 	}
 	
 	public void addProduct(ProductItem p) {
 		getContactNode(payer).addProduct(p);
+	}
+	
+	public void removeProduct(ProductItem p) {
+		getContactNode(payer).removeProduct(p);
 	}
 	
 	public void addVoucherPayment(VoucherPaymentIn vp) {
@@ -87,36 +95,36 @@ public class PurchaseModel {
 		return Collections.unmodifiableCollection(voucherPayments);
 	}
 	
-	public void toggleEnrolment(Enrolment e) {
-		getContactNode(e.getStudent().getContact()).toggleEnrolment(e);
+	public void enableEnrolment(Enrolment e) {
+		getContactNode(e.getStudent().getContact()).enableEnrolment(e);
 	}
 	
-	public void untoggleEnrolment(Enrolment e) {
-		getContactNode(e.getStudent().getContact()).untoggleEnrolment(e);
+	public void disableEnrolment(Enrolment e) {
+		getContactNode(e.getStudent().getContact()).disableEnrolment(e);
 	}
 	
-	public void toggleProduct(ProductItem p) {
-		getContactNode(payer).toggleProduct(p);
+	public void enableProduct(ProductItem p) {
+		getContactNode(payer).enableProduct(p);
 	}
 	
-	public void utoggleProduct(ProductItem p) {
-		getContactNode(payer).untoggleProduct(p);
+	public void disableProduct(ProductItem p) {
+		getContactNode(payer).disableProduct(p);
 	}
 	
-	public Collection<Enrolment> getToggledEnrolments(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).toggledEnrolments);
+	public Collection<Enrolment> getEnabledEnrolments(Contact contact) {
+		return Collections.unmodifiableCollection(getContactNode(contact).enabledEnrolments);
 	}
 	
-	public Collection<Enrolment> getUntoggledEnrolments(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).untoggledEnrolments);
+	public Collection<Enrolment> getDisabledEnrolments(Contact contact) {
+		return Collections.unmodifiableCollection(getContactNode(contact).disabledEnrolments);
 	}
 	
-	public Collection<ProductItem> getToggledProducts(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).toggledProducts);
+	public Collection<ProductItem> getEnabledProducts(Contact contact) {
+		return Collections.unmodifiableCollection(getContactNode(contact).enabledProducts);
 	}
 	
-	public Collection<ProductItem> getUntoggledProducts(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).untoggledProducts);
+	public Collection<ProductItem> getDisabledProducts(Contact contact) {
+		return Collections.unmodifiableCollection(getContactNode(contact).disabledProducts);
 	}
 	
 	/**
@@ -138,20 +146,20 @@ public class PurchaseModel {
 		
 		private List<ConcessionType> concessions;
 
-		private List<Enrolment> toggledEnrolments;
-		private List<Enrolment> untoggledEnrolments;
+		private List<Enrolment> enabledEnrolments;
+		private List<Enrolment> disabledEnrolments;
 		
-		private List<ProductItem> toggledProducts;
-		private List<ProductItem> untoggledProducts;
+		private List<ProductItem> enabledProducts;
+		private List<ProductItem> disabledProducts;
 		
 		public ContactNode() {
 			this.concessions = new ArrayList<ConcessionType>();
 			
-			this.toggledEnrolments = new ArrayList<Enrolment>();
-			this.untoggledEnrolments = new ArrayList<Enrolment>();
+			this.enabledEnrolments = new ArrayList<Enrolment>();
+			this.disabledEnrolments = new ArrayList<Enrolment>();
 			
-			this.toggledProducts = new ArrayList<ProductItem>();
-			this.untoggledProducts = new ArrayList<ProductItem>();
+			this.enabledProducts = new ArrayList<ProductItem>();
+			this.disabledProducts = new ArrayList<ProductItem>();
 		}
 		
 		public void addConcession(ConcessionType c) {
@@ -159,38 +167,50 @@ public class PurchaseModel {
 		}
 		
 		public void addEnrolment(Enrolment e) {
-			this.toggledEnrolments.add(e);
+			this.enabledEnrolments.add(e);
+		}
+		
+		public void removeEnrolment(Enrolment e) {
+			if (!this.enabledEnrolments.remove(e)) {
+				this.disabledEnrolments.remove(e);
+			}
 		}
 		
 		public void addProduct(ProductItem p) {
-			this.toggledProducts.add(p);
+			this.enabledProducts.add(p);
 		}
 		
-		public void toggleEnrolment(Enrolment e) {
-			if (untoggledEnrolments.contains(e)) {
-				untoggledEnrolments.remove(e);
-				toggledEnrolments.add(e);
+		public void removeProduct(ProductItem p) {
+			if (!this.enabledProducts.remove(p)) {
+				this.disabledProducts.remove(p);
 			}
 		}
 		
-		public void untoggleEnrolment(Enrolment e) {
-			if (toggledEnrolments.contains(e)) {
-				toggledEnrolments.remove(e);
-				untoggledEnrolments.add(e);
+		public void enableEnrolment(Enrolment e) {
+			if (disabledEnrolments.contains(e)) {
+				disabledEnrolments.remove(e);
+				enabledEnrolments.add(e);
 			}
 		}
 		
-		public void toggleProduct(ProductItem p) {
-			if (untoggledProducts.contains(p)) {
-				untoggledProducts.remove(p);
-				toggledProducts.add(p);
+		public void disableEnrolment(Enrolment e) {
+			if (enabledEnrolments.contains(e)) {
+				enabledEnrolments.remove(e);
+				disabledEnrolments.add(e);
 			}
 		}
 		
-		public void untoggleProduct(ProductItem p) {
-			if (toggledProducts.contains(p)) {
-				toggledProducts.remove(p);
-				untoggledProducts.add(p);
+		public void enableProduct(ProductItem p) {
+			if (disabledProducts.contains(p)) {
+				disabledProducts.remove(p);
+				enabledProducts.add(p);
+			}
+		}
+		
+		public void disableProduct(ProductItem p) {
+			if (enabledProducts.contains(p)) {
+				enabledProducts.remove(p);
+				disabledProducts.add(p);
 			}
 		}
 	}
