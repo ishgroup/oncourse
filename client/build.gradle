@@ -48,8 +48,9 @@ macAppBundle {
     bundleAllowMixedLocalizations = false
     icon = "${projectDir}/src/packaging/macosx/onCourse.icns"
     jvmVersion = "${sourceCompatibility}+"
-    certIdentity = "Developer ID Application: ish group pty ltd"
-    keyChain = "/Users/marcin/Library/Keychains/login.keychain"
+    //commented out the codesigning, will re-enable once the new release of the plugin is available
+    //certIdentity = "Developer ID Application: ish group pty ltd"
+    //keyChain = "/Users/marcin/Library/Keychains/login.keychain"
     extras = """
 			<key>CFBundleDocumentTypes</key>
 		    <array>
