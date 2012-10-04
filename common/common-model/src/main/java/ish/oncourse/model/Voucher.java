@@ -5,7 +5,6 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 
 import ish.common.types.PaymentStatus;
-import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Voucher;
 import ish.oncourse.utils.QueueableObjectUtils;
@@ -31,18 +30,6 @@ public class Voucher extends _Voucher implements Queueable {
 	 */
 	private boolean isNewRecord() {
 		return getPersistenceState() == PersistenceState.NEW;
-	}
-	
-	@Override
-	public void setStatus(VoucherStatus status) {
-		if (!isNewRecord() && !VoucherStatus.ACTIVE.equals(getStatus())) {
-			if (VoucherStatus.REDEEMED.equals(getStatus()) && VoucherStatus.ACTIVE.equals(status)) {
-				//this can be the discard changes action
-			} else {
-				throw new IllegalStateException("Cannot change status for already persisted voucher in non active status.");
-			}
-		}
-		super.setStatus(status);
 	}
 	
 	@Override
