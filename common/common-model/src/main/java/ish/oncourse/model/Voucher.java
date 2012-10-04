@@ -124,4 +124,13 @@ public class Voucher extends _Voucher implements Queueable {
 		return getVoucherProduct().getRedemptionCourses().contains(enrolment.getCourseClass().getCourse());
 	}
 	
+	/**
+	 * Determines whether voucher can be used by specific contact.
+	 * 
+	 * @return if voucher can be used by contact
+	 */
+	public boolean canBeUsedBy(Contact contact) {
+		return getContact() == null || getContact().equals(contact);
+	}
+	
 }
