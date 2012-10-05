@@ -45,6 +45,12 @@ public class PaymentInAbandonHelper {
 	
 	private PaymentIn reversePaymentIn;
 
+	/**
+	 * Constructor which check that paymentIn object set.
+	 * @param paymentIn - entity which we want to abandon
+	 * @param shouldKeepInvoice - proffered abandon action flag. If false abandon action will be requested if available, 
+	 * if true - abandon keep invoice will be requested.
+	 */
 	public PaymentInAbandonHelper(PaymentIn paymentIn, boolean shouldKeepInvoice) {
 		if (paymentIn == null) {
 			String message = "PaymentIn object for helper should not be empty!";
@@ -57,7 +63,8 @@ public class PaymentInAbandonHelper {
 	
 	/**
 	 * Validate can we abandon this payment.
-	 * @return true if we can, false if current payment not able for abandon.
+	 * This action should be called before {@link PaymentInAbandonHelper#makeAbandon()} call.
+	 * @return true if we can, false if current payment not able for any abandon actions.
 	 */
 	public boolean validatePaymentInForAbandon() {
 		if (PaymentStatus.SUCCESS.equals(paymentIn.getStatus())) {
@@ -89,6 +96,10 @@ public class PaymentInAbandonHelper {
 		return true;
 	}
 	
+	/**
+	 * Check is any in transaction enrollments linked with current payment.This check shows us can we abandon this payment or not.
+	 * @return true if current payment have linked enrollments with in transaction status.
+	 */
 	boolean containEnrollmentsInTransactionStatus() {
 		Expression paymentIdMatchExpression = ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, paymentIn.getId());
 		Expression enrollmentExpression = ExpressionFactory.matchExp(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.INVOICE_PROPERTY + "." + 
@@ -99,6 +110,10 @@ public class PaymentInAbandonHelper {
 		return !result.isEmpty();
 	}
 	
+	/**
+	 * Check is any new productitems (currently only vouchers) linked with current payment.This check shows us can we abandon this payment or not.
+	 * @return true if current payment have linked product items in corresponding statuses.
+	 */
 	boolean containNewProductItems() {
 		Expression paymentProductItemsExpression = ExpressionFactory.matchDbExp(ProductItem.INVOICE_LINE_PROPERTY + "." + InvoiceLine.INVOICE_PROPERTY 
 			+ "." + Invoice.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.PAYMENT_IN_PROPERTY + "." + PaymentIn.ID_PK_COLUMN, paymentIn.getId());
@@ -117,13 +132,19 @@ public class PaymentInAbandonHelper {
 	}
 	
 	/**
-	 * Check is this payment have linked invoices with enrollments in transaction status so we may apply abandon payment.
+	 * Check is this payment have linked invoices with linked entities and we need to apply abandon payment action.
 	 * @return false if should apply keep invoice, true if abandon should be used.
 	 */
 	boolean canMakeRevertInvoice() {
 		return containEnrollmentsInTransactionStatus() || containNewProductItems();
 	}
 	
+	/**
+	 * Process abandon action depends to passed shouldKeepInvoice param and valid for current payment object action.
+	 * This mean that we can't process abandon action for payment which previously was abandoned with keep invoice property 
+	 * and payments created with angel's PaymentIn window (this mean that if invoicelines haven't links to enrollments or productitems) 
+	 * @return reverse paymentIn entity in the same context as the original after abandon payment and null if abandon payment keep invoice requested. 
+	 */
 	public PaymentIn makeAbandon() {
 		try {
 			logger.info(String.format("Abandon paymentIn with id: %s, created: %s and status: %s.", paymentIn.getId(), paymentIn.getCreated(),
@@ -136,7 +157,6 @@ public class PaymentInAbandonHelper {
 				//we should not fail enrollments when college allow them to enroll with owing.
 				reversePaymentIn = abandonPaymentKeepInvoice();
 			}
-			paymentIn.getObjectContext().commitChanges();
 			return reversePaymentIn;
 		} catch (final CayenneRuntimeException ce) {
 			logger.error(String.format("Unable to cancel payment with id: %s and status: %s.", paymentIn.getId(), paymentIn.getStatus()), ce);
@@ -192,7 +212,7 @@ public class PaymentInAbandonHelper {
 				}
 			}
 			if (invoiceToRefund != null) {
-				PaymentIn internalPayment = createRefundInvoice(paymentInLineToRefund, today);
+				PaymentIn internalPayment = createRefundPaymentIn(paymentInLineToRefund, today);
 				return internalPayment;
 			} else {
 				logger.error(String.format("Can not find invoice to refund on paymentIn:%s.", paymentIn.getId()));
@@ -245,6 +265,10 @@ public class PaymentInAbandonHelper {
 		return null;
 	}
 	
+	/**
+	 * Revert the voucher redemption attempts.
+	 * Money vouchers and course vouchers linked with this paymentIn will be reverted to the state before the redemption attempt.
+	 */
 	void revertTheVoucherRedemption() {
 		for (VoucherPaymentIn voucherPaymentIn : paymentIn.getVoucherPaymentIns()) {
 			Voucher voucher = voucherPaymentIn.getVoucher();
@@ -280,7 +304,13 @@ public class PaymentInAbandonHelper {
 		return activeInvoice;
 	}
 	
-	public static PaymentIn createRefundInvoice(PaymentInLine paymentInLineToRefund, Date modifiedTime) {
+	/**
+	 * Create refund paymentIn and refund invoice to balance the amount owing for invoice to 0.
+	 * @param paymentInLineToRefund - paymentInLine object which is a relation between paymentIn and invoice objects which need to be balanced.
+	 * @param modifiedTime - date of modification which need to be set for this action.
+	 * @return reverse paymentIn entity in the same context as the original after.
+	 */
+	public static PaymentIn createRefundPaymentIn(PaymentInLine paymentInLineToRefund, Date modifiedTime) {
 		// Creating internal payment, with zero amount which will be
 		// linked to invoiceToRefund, and refundInvoice.
 		Invoice invoiceToRefund = paymentInLineToRefund.getInvoice();
