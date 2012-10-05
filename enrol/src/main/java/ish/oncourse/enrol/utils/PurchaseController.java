@@ -33,6 +33,7 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 
+import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 
 /**
@@ -63,7 +64,7 @@ public class PurchaseController {
 			IVoucherService voucherService, ObjectContext context, College college, Contact contact, List<CourseClass> classes, 
 			List<Discount> discounts, List<Product> products) {
 		this.context = context;
-		this.college = college;
+		this.college = (College) localizeObject(context, college);
 		this.classesToEnrol = new ArrayList<CourseClass>(classes);
 		this.discounts = new ArrayList<Discount>(discounts);
 		this.products = new ArrayList<Product>(products);
@@ -75,7 +76,15 @@ public class PurchaseController {
 		this.voucherRedemptionHelper = new VoucherRedemptionHelper();
 		
 		state = State.INIT;
-		init(contact);
+		init((Contact) localizeObject(context, contact));
+	}
+	
+	private CayenneDataObject localizeObject(ObjectContext context, CayenneDataObject objectForLocalize) {
+		if (objectForLocalize.getObjectContext().equals(context)) {
+			return objectForLocalize;
+		} else {
+			return (CayenneDataObject) context.localObject(objectForLocalize.getObjectId(), null);
+		}
 	}
 	
 	private void init(Contact contact) {
