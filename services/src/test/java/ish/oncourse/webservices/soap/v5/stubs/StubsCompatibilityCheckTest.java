@@ -394,7 +394,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		voucherParamethers.add(new ReplicationStubFieldParamether("expiryDate", Date.class));
 		voucherParamethers.add(new ReplicationStubFieldParamether("key", String.class));
 		voucherParamethers.add(new ReplicationStubFieldParamether("contactId", Long.class));
-		voucherParamethers.add(new ReplicationStubFieldParamether("redeemedInvoiceLineId", Long.class));
 		voucherParamethers.add(new ReplicationStubFieldParamether("code", String.class));
 		voucherParamethers.add(new ReplicationStubFieldParamether("redeemedCoursesCount", Integer.class));
 		voucherParamethers.add(new ReplicationStubFieldParamether("redemptionValue", BigDecimal.class));
@@ -518,6 +517,9 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(DiscountCourseClassStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(TutorAttendanceStub.class);
 		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherProductCourseStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(VoucherPaymentInStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SurveyStub.class);
+		attendanceOrBinaryDataOrBinaryInfoAvailableClasses.add(SessionModuleStub.class);
 		attendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
 		transactionGroupParamethers.add(attendanceOrBinaryDataOrBinaryInfo);
 		final ReplicationStubFieldParamether genericAttendanceOrBinaryDataOrBinaryInfo = new ReplicationStubFieldParamether(
@@ -525,6 +527,21 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		genericAttendanceOrBinaryDataOrBinaryInfo.getAvailableClasses().addAll(attendanceOrBinaryDataOrBinaryInfoAvailableClasses);
 		transactionGroupParamethers.add(genericAttendanceOrBinaryDataOrBinaryInfo);
 		stubsPropertyMap.put(getName(TransactionGroup.class), transactionGroupParamethers);
+	}
+	
+	@Test
+	public void testSurveyStub() {
+		fail("Not implemented yet!");
+	}
+	
+	@Test
+	public void testVoucherPaymentInStub() {
+		fail("Not implemented yet!");
+	}
+	
+	@Test
+	public void testSessionModuleStub() {
+		fail("Not implemented yet!");
 	}
 	
 	@Test
@@ -837,7 +854,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		preparedParamethers.add(new ReplicationStubFieldParamether("type", Integer.class));
 		preparedParamethers.add(new ReplicationStubFieldParamether("invoiceLineId", Long.class));
 		preparedParamethers.add(new ReplicationStubFieldParamether("productId", Long.class));
-		preparedParamethers.add(new ReplicationStubFieldParamether("paymentInId", Long.class));
 		return preparedParamethers;
 	}
 	
