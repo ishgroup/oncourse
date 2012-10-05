@@ -121,17 +121,17 @@ public class PurchaseController {
 		case ADD_STUDENT:
 			addStudent(param.getValue(Contact.class));
 			break;
-		case TOGGLE_ENROLMENT:
-			toggleEnrolment(param.getValue(Enrolment.class));
+		case ENABLE_ENROLMENT:
+			enableEnrolment(param.getValue(Enrolment.class));
 			break;
-		case UNTOGGLE_ENROLMENT:
-			untoggleEnrolment(param.getValue(Enrolment.class));
+		case DISABLE_ENROLMENT:
+			disableEnrolment(param.getValue(Enrolment.class));
 			break;
-		case TOGGLE_PRODUCT:
-			toggleProduct(param.getValue(ProductItem.class));
+		case ENABLE_PRODUCT:
+			enableProduct(param.getValue(ProductItem.class));
 			break;
-		case UNTOGGLE_PRODUCT:
-			untoggleProduct(param.getValue(ProductItem.class));
+		case DISABLE_PRODUCT:
+			disableProduct(param.getValue(ProductItem.class));
 			break;
 		case ADD_CONCESSION:
 			concessionAdded();
@@ -179,7 +179,7 @@ public class PurchaseController {
 		}
 	}
 	
-	private void toggleEnrolment(Enrolment enrolment) {
+	private void enableEnrolment(Enrolment enrolment) {
 		model.enableEnrolment(enrolment);
 		if (enrolment.getInvoiceLine() == null) {
 			InvoiceLine il = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, discounts);
@@ -188,7 +188,7 @@ public class PurchaseController {
 		}
 	}
 	
-	private void untoggleEnrolment(Enrolment enrolment) {
+	private void disableEnrolment(Enrolment enrolment) {
 		model.disableEnrolment(enrolment);
 		
 		if (enrolment.getInvoiceLine() != null) {
@@ -198,7 +198,7 @@ public class PurchaseController {
 		}
 	}
 	
-	private void toggleProduct(ProductItem product) {
+	private void enableProduct(ProductItem product) {
 		model.enableProduct(product);
 		if (product instanceof Voucher) {
 			Voucher voucher = (Voucher) product;
@@ -212,7 +212,7 @@ public class PurchaseController {
 		}
 	}
 	
-	private void untoggleProduct(ProductItem product) {
+	private void disableProduct(ProductItem product) {
 		model.disableProduct(product);
 		
 		if (product instanceof Voucher) {
@@ -361,10 +361,10 @@ public class PurchaseController {
 		CHANGE_PAYER(Contact.class),
 		SET_VOUCHER_PRICE(Money.class),
 		ADD_STUDENT(Contact.class),
-		TOGGLE_ENROLMENT(Enrolment.class),
-		UNTOGGLE_ENROLMENT(Enrolment.class),
-		TOGGLE_PRODUCT(ProductItem.class),
-		UNTOGGLE_PRODUCT(ProductItem.class),
+		ENABLE_ENROLMENT(Enrolment.class),
+		DISABLE_ENROLMENT(Enrolment.class),
+		ENABLE_PRODUCT(ProductItem.class),
+		DISABLE_PRODUCT(ProductItem.class),
 		ADD_CONCESSION(),
 		REMOVE_CONCESSION(ConcessionType.class, Contact.class),
 		ADD_PROMOCODE(String.class),
