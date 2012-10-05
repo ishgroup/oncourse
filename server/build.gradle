@@ -123,7 +123,18 @@ macAppBundle {
     javaProperties.put("apple.awt.antialiasing", "true")    
     javaProperties.put("apple.awt.showGrowBox", "true") 
 
-    javaExtras.put("VMOptions", "-Xmx${project.maxmemoryServer}")
+    javaExtras.put("VMOptions", "-Xmx"+"${project.maxmemoryServer}")
+
+    def Map dict = new HashMap();
+    dict.put ("CFBundleTypeName", "onCourse server data file")
+    dict.put ("CFBundleTypeRole", "Editor")
+    dict.put ("CFBundleTypeIconFile", "onCourseDocument.icns")
+    dict.put ("CFBundleTypeExtensions", ["iocdata"])
+    dict.put ("CFBundleTypeOSTypes", ["ishS"])
+    dict.put ("LSTypeIsPackage", "true")
+
+    bundleExtras.put("CFBundleDocumentTypes", [dict])
+
 }
 
 
