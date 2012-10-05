@@ -113,12 +113,12 @@ public class PurchaseController {
 	 * @param action
 	 * @param param
 	 */
-	public void performAction(Action action, ActionParameter param) {
+	public void performAction(ActionParameter param) {
 		if (state != State.ACTIVE) {
 			throw new IllegalArgumentException("Controller is " + ((state == State.INIT) ? "not ready yet." : "already finalized."));
 		}
 		
-		switch (action) {
+		switch (param.action) {
 		case CHANGE_PAYER:
 			changePayer(param.getValue(Contact.class));
 			break;
@@ -164,8 +164,9 @@ public class PurchaseController {
 			List<ProductItem> newProductItems = new ArrayList<ProductItem>();
 			
 			for (ProductItem item : model.getEnabledProducts(model.getPayer())) {
+				Product product = item.getProduct();
 				removeProductItem(item);
-				newProductItems.add(createProduct(contact, item.getProduct()));
+				newProductItems.add(createProduct(contact, product));
 			}
 			
 			model.setPayer(contact);
@@ -268,8 +269,10 @@ public class PurchaseController {
 	}
 	
 	private void removeProductItem(ProductItem item) {
+		InvoiceLine invoiceLineToDelete = item.getInvoiceLine();
+		
 		context.deleteObject(item);
-		context.deleteObject(item.getInvoiceLine());
+		context.deleteObject(invoiceLineToDelete);
 		
 		model.removeProduct(item);
 	}
@@ -403,19 +406,24 @@ public class PurchaseController {
 		}
 		
 		public <T> void setValue(T value) {
-			if (action.getActionParamType().contains(value.getClass())) {
-				values.put(value.getClass(), value);
-			} else {
-				throw new IllegalArgumentException("Value type doesn't match action type.");
+			for (Class<?> clazz : action.paramTypes) {
+				if (clazz.isAssignableFrom(value.getClass())) {
+					values.put(value.getClass(), value);
+					return;
+				}
 			}
+			
+			throw new IllegalArgumentException("Value type doesn't match action type.");
 		}
 		
 		public <T> T getValue(Class<T> valueType) {
-			if (values.containsKey(valueType)) {
-				return (T) values.get(valueType);
-			} else {
-				throw new IllegalArgumentException("Requested value type doesn't match existing value.");
-			}
+			for (Class<?> clazz : values.keySet()) {
+				if (valueType.isAssignableFrom(clazz)) {
+					return (T) values.get(clazz);
+				}
+			} 
+			
+			throw new IllegalArgumentException("Requested value type doesn't match existing value.");
 		}		
 	}
 
