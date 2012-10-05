@@ -410,12 +410,21 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		membershipParamethers.add(new ReplicationStubFieldParamether("expiryDate", Date.class));
 		membershipParamethers.add(new ReplicationStubFieldParamether("contactId", Long.class));
 		stubsPropertyMap.put(getStubName(MembershipStub.class), membershipParamethers);
-		//TODO: fill me
+		final List<ReplicationStubFieldParamether> voucherPaymentInParamethers = fillDefaultReplicationStubFields();
+		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("paymentInId", Long.class));
+		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("voucherId", Long.class));
+		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("enrolmentsCount", Integer.class));
+		voucherPaymentInParamethers.add(new ReplicationStubFieldParamether("status", Integer.class));
+		stubsPropertyMap.put(getStubName(VoucherPaymentInStub.class), voucherPaymentInParamethers);
+		final List<ReplicationStubFieldParamether> sessionModuleParamethers = fillDefaultReplicationStubFields();
+		sessionModuleParamethers.add(new ReplicationStubFieldParamether("moduleId", Long.class));
+		sessionModuleParamethers.add(new ReplicationStubFieldParamether("sessionId", Long.class));
+		stubsPropertyMap.put(getStubName(SessionModuleStub.class), sessionModuleParamethers);
 		final List<ReplicationStubFieldParamether> membershipProductParamethers = fillProductStubFields(fillDefaultReplicationStubFields());
 		membershipProductParamethers.add(new ReplicationStubFieldParamether("expiryDays", Integer.class));
 		membershipProductParamethers.add(new ReplicationStubFieldParamether("expiryType", Integer.class));
 		stubsPropertyMap.put(getStubName(MembershipProductStub.class), membershipProductParamethers);
-		//TODO: fill me
+		//TODO: add new stubs here
 		final List<ReplicationStubFieldParamether> replicationStubParamethers = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParamethers);
 		final List<ReplicationStubFieldParamether> replicationResultParamethers = new ArrayList<ReplicationStubFieldParamether>();
@@ -536,12 +545,14 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	
 	@Test
 	public void testVoucherPaymentInStub() {
-		fail("Not implemented yet!");
+		final GenericReplicationStub stub = new VoucherPaymentInStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
 	public void testSessionModuleStub() {
-		fail("Not implemented yet!");
+		final GenericReplicationStub stub = new SessionModuleStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
