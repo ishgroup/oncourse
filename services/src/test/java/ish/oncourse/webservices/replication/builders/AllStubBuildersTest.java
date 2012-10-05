@@ -70,6 +70,11 @@ public class AllStubBuildersTest extends ServiceTest {
     }
     
     //@Test
+    public void testV5VoucherPaymentInStubBuilder() {
+    	this.testStubBuilder(VoucherPaymentIn.class, new ish.oncourse.webservices.replication.v5.builders.VoucherPaymentInStubBuilder());
+    }
+    
+    //@Test
     public void testV5VoucherProductCourseStubBuilder() {
         this.testStubBuilder(VoucherProductCourse.class, new ish.oncourse.webservices.replication.v5.builders.VoucherProductCourseStubBuilder());
     }

@@ -6,7 +6,6 @@ import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
@@ -37,10 +36,6 @@ public class VoucherUpdater extends AbstractWillowUpdater<VoucherStub, Voucher> 
 		}
 		PaymentSource source = TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class);
 		entity.setSource(source);
-		//TODO: add me in VoucherPaymentInStubBuilder 
-		/*if (stub.getPaymentInId() != null) {
-			entity.setRedemptionPayment(callback.updateRelationShip(stub.getPaymentInId(), PaymentIn.class));
-		}*/
 	}
 
 }
