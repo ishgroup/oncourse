@@ -38,7 +38,7 @@ cayenne {
 
 macAppBundle {
 	appOutputDir = 'distributions/macosx'
-	dmgOutputDir = 'distributions/macosx'
+	//dmgOutputDir = 'distributions/macosx'
 	creatorCode = "ishS"
 	backgroundImage = "${projectDir}/src/packaging/macosx/dmg.background.png"
     mainClassName = "ish.oncourse.AngelApp"
@@ -164,8 +164,7 @@ task installer_win(dependsOn: bundle_win, type: au.com.ish.NsisTask) {
 	nsiFileName = "client-mui.nsi"
 	outputFile = file("${distsDir}/windows/onCourse-installer.exe")
 
-	//change the following to true if you wish to sign the exe files
-	runSigncode = false
-	certificateFile = file("${projectDir}/../lib/codesigning/codesignWindows.p12")
-	certificateFilePassword='ishish'
+	runSigncode = project.winSigningEnabled
+	certificateFile = file (project.winSigningCertificateFile)
+	certificateFilePassword= project.winSigningCertificateFilePassword
 }
