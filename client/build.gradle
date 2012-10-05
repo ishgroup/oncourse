@@ -163,6 +163,9 @@ task installer_win(dependsOn: bundle_win, type: au.com.ish.NsisTask) {
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "client-mui.nsi"
 	outputFile = file("${distsDir}/windows/onCourse-installer.exe")
+
+	//change the following to true if you wish to sign the exe files
+	runSigncode = false
 	certificateFile = file("${projectDir}/../lib/codesigning/codesignWindows.p12")
 	certificateFilePassword='ishish'
 }
