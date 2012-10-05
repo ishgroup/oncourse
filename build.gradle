@@ -3,6 +3,9 @@ buildscript {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/public'
 		}
+		maven {
+			url 'http://repo.ish.com.au/content/groups/ish'
+		}
 
 		ivy {
             url "http://gradle-macappbundle.googlecode.com"
@@ -12,7 +15,7 @@ buildscript {
 
 	dependencies {
 		classpath 'org.apache.maven.wagon:wagon-http:2.2'
-		classpath 'edu.sc.seis:gradle-macappbundle:1.0.7'
+		classpath 'edu.sc.seis:gradle-macappbundle:1.0.8-b1'
 	}
 }
 

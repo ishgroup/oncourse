@@ -37,7 +37,8 @@ cayenne {
 }
 
 macAppBundle {
-	outputDir = 'distributions/macosx'
+	appOutputDir = 'distributions/macosx'
+	dmgOutputDir = 'distributions/macosx'
 	creatorCode = "ishS"
 	backgroundImage = "${projectDir}/src/packaging/macosx/dmg.background.png"
     mainClassName = "ish.oncourse.AngelApp"
@@ -51,37 +52,17 @@ macAppBundle {
     //commented out the codesigning, will re-enable once the new release of the plugin is available
     //certIdentity = "Developer ID Application: ish group pty ltd"
     //keyChain = "/Users/marcin/Library/Keychains/login.keychain"
-    extras = """
-			<key>CFBundleDocumentTypes</key>
-		    <array>
-		      <dict>
-		        <key>CFBundleTypeName</key>
-		        <string>onCourse server data file</string>
-		        <key>CFBundleTypeRole</key>
-		        <string>Editor</string>
-		        <key>CFBundleTypeIconFile</key>
-		        <string>onCourseDocument.icns</string>
-		        <key>CFBundleTypeExtensions</key>
-		        <array>
-		        	<string>iocdata</string>
-		        </array>
-		        <key>CFBundleTypeOSTypes</key>
-		        <array>
-		        	<string>ishS</string>
-		        </array>
-		        <key>LSTypeIsPackage</key>
-		        <string>true</string>
-		      </dict>
-		    </array>
-			 """
-}
 
-createApp.doFirst{
-	logger.lifecycle("unlocking keychain "+macAppBundle.keyChain)
-	exec {
-		executable "security"
-		args = ["unlock-keychain", "-p", "forestdragon", macAppBundle.keyChain]
-	}
+    //java properties
+    javaProperties.put("apple.awt.textantialiasing", "true")
+    javaProperties.put("JFileChooser.appBundleIsTraversable", "true")
+    javaProperties.put("JFileChooser.packageIsTraversable", "true")    
+    javaProperties.put("apple.awt.antialiasing", "true")    
+    javaProperties.put("apple.awt.showGrowBox", "true") 
+
+    javaExtras.put("VMOptions", "-Xmx${project.maxmemoryClient}")
+
+   
 }
 
 task bundle_osx(dependsOn: createApp) {
