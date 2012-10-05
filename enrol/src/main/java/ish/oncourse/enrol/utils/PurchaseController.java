@@ -68,6 +68,10 @@ public class PurchaseController {
 		this.discounts = new ArrayList<Discount>(discounts);
 		this.products = new ArrayList<Product>(products);
 		
+		this.invoiceProcessingService = invoiceProcessingService;
+		this.discountService = discountService;
+		this.voucherService = voucherService;
+		
 		this.voucherRedemptionHelper = new VoucherRedemptionHelper();
 		
 		state = State.INIT;

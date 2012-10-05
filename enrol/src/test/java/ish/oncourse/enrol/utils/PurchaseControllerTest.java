@@ -16,6 +16,7 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
+import ish.math.Money;
 import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
@@ -23,10 +24,12 @@ import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.test.ServiceTest;
+import ish.util.InvoiceUtil;
 
 public class PurchaseControllerTest extends ServiceTest {
 	
@@ -132,6 +135,66 @@ public class PurchaseControllerTest extends ServiceTest {
 		
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(3, model.getEnabledEnrolments(newContact).size());
+	}
+	
+	@Test
+	public void testEnableEnrolment() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		PurchaseModel model = controller.getModel();
+		
+		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(new Money("830.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		Enrolment enrolmentToDisable = model.getEnabledEnrolments(model.getPayer()).iterator().next();
+		
+		ActionParameter param = new ActionParameter(Action.DISABLE_ENROLMENT);
+		param.setValue(enrolmentToDisable);
+		
+		controller.performAction(Action.DISABLE_ENROLMENT, param);
+		
+		assertEquals(2, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(1, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(enrolmentToDisable, model.getDisabledEnrolments(model.getPayer()).iterator().next());
+		assertEquals(new Money("330.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		param = new ActionParameter(Action.ENABLE_ENROLMENT);
+		param.setValue(enrolmentToDisable);
+		
+		controller.performAction(Action.ENABLE_ENROLMENT, param);
+		
+		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(new Money("830.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+	}
+	
+	@Test
+	public void testDisableEnrolment() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		PurchaseModel model = controller.getModel();
+		
+		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(new Money("830.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		Enrolment enrolmentToDisable = model.getEnabledEnrolments(model.getPayer()).iterator().next();
+		
+		ActionParameter param = new ActionParameter(Action.DISABLE_ENROLMENT);
+		param.setValue(enrolmentToDisable);
+		
+		controller.performAction(Action.DISABLE_ENROLMENT, param);
+		
+		assertEquals(2, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(1, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(enrolmentToDisable, model.getDisabledEnrolments(model.getPayer()).iterator().next());
+		assertEquals(new Money("330.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 	}
 
 }
