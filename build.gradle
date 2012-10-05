@@ -14,7 +14,6 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'org.apache.maven.wagon:wagon-http:2.2'
 		classpath 'edu.sc.seis:gradle-macappbundle:1.0.8-b1'
 	}
 }
@@ -45,9 +44,9 @@ allprojects {
 	}
 
 	dependencies {
-		testCompile 'junit:junit:4.8.2'
+		testCompile 'junit:junit:4.10'
 		compile 'log4j:log4j:1.2.17'
-		deployerJars 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+		deployerJars 'org.apache.maven.wagon:wagon-http:2.2'
 	}
 
 	uploadArchives.dependsOn install

@@ -2,6 +2,8 @@ apply plugin: 'macAppBundle'
 apply plugin: 'cayenne'
 
 dependencies {
+	def jettyVersion = '8.1.7.v20120910'
+
 	compile project(':common')
 	compile project(':waCommon')
 	compile project(':webservices-client')
@@ -13,24 +15,24 @@ dependencies {
 	compile 'org.apache.cayenne:cayenne-tools:3.1B1'
 	compile 'foxtrot:foxtrot-core:4.0'
 
-	compile module("org.eclipse.jetty:jetty-server:8.1.5.v20120716") {
+	compile module("org.eclipse.jetty:jetty-server:$jettyVersion") {
     	dependencies(
         	"org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016@jar"
     	)
 	}
-	compile 'org.eclipse.jetty:jetty-servlet:8.1.5.v20120716'
-	compile 'org.eclipse.jetty:jetty-security:8.1.5.v20120716'
-	compile 'org.eclipse.jetty:jetty-http:8.1.5.v20120716'
-	compile 'org.eclipse.jetty:jetty-util:8.1.5.v20120716'
-	compile 'org.eclipse.jetty:jetty-io:8.1.5.v20120716'
-	compile 'org.eclipse.jetty:jetty-continuation:8.1.5.v20120716'
+	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
+	compile "org.eclipse.jetty:jetty-security:$jettyVersion"
+	compile "org.eclipse.jetty:jetty-http:$jettyVersion"
+	compile "org.eclipse.jetty:jetty-util:$jettyVersion"
+	compile "org.eclipse.jetty:jetty-io:$jettyVersion"
+	compile "org.eclipse.jetty:jetty-continuation:$jettyVersion"
 
 	compile 'org.apache.derby:derby:10.9.1.0'
 	compile 'org.apache.derby:derbyclient:10.9.1.0'
 	compile 'org.apache.derby:derbynet:10.9.1.0'
 	compile 'org.liquibase:liquibase-core:2.0.5'
 
-	compile ('net.sf.jasperreports:jasperreports:4.6.0') {
+	compile ('net.sf.jasperreports:jasperreports:4.7.0') {
 		exclude group: 'org.apache.poi', module: 'poi-ooxml'
 	}
 
@@ -38,7 +40,7 @@ dependencies {
 	compile 'mysql:mysql-connector-java:5.1.21'
 	compile 'net.sourceforge.saxon:saxon:9.1.7'
 	compile 'com.google.inject:guice:3.0'
-	compile 'org.quartz-scheduler:quartz:2.1.5'
+	compile 'org.quartz-scheduler:quartz:2.1.6'
 	compile 'org.slf4j:slf4j-api:1.6.6'
 	compile 'org.slf4j:slf4j-log4j12:1.6.4'
 	compile 'commons-dbcp:commons-dbcp:1.4'
