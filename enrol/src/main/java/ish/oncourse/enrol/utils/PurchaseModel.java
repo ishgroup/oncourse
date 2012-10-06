@@ -2,15 +2,14 @@ package ish.oncourse.enrol.utils;
 
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.model.VoucherPaymentIn;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,8 +39,8 @@ public class PurchaseModel {
 		this.contacts.put(contact, new ContactNode());
 	}
 	
-	public Collection<Contact> getContacts() {
-		return Collections.unmodifiableCollection(contacts.keySet());
+	public List<Contact> getContacts() {
+		return Collections.unmodifiableList(new ArrayList<Contact>(contacts.keySet()));
 	}
 	
 	public void setPayer(Contact payer) {
@@ -80,6 +79,10 @@ public class PurchaseModel {
 		getContactNode(concession.getStudent().getContact()).addConcession(concession.getConcessionType());
 	}
 	
+	public void removeConcession(Contact contact, ConcessionType concession) {
+		getContactNode(contact).removeConcession(concession);
+	}
+	
 	public void addProduct(ProductItem p) {
 		getContactNode(payer).addProduct(p);
 	}
@@ -96,8 +99,8 @@ public class PurchaseModel {
 		this.voucherPayments.clear();
 	}
 	
-	public Collection<PaymentIn> getVoucherPayments() {
-		return Collections.unmodifiableCollection(voucherPayments);
+	public List<PaymentIn> getVoucherPayments() {
+		return Collections.unmodifiableList(voucherPayments);
 	}
 	
 	public void enableEnrolment(Enrolment e) {
@@ -116,20 +119,52 @@ public class PurchaseModel {
 		getContactNode(payer).disableProduct(p);
 	}
 	
-	public Collection<Enrolment> getEnabledEnrolments(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).enabledEnrolments);
+	public List<Enrolment> getEnabledEnrolments(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).enabledEnrolments);
 	}
 	
-	public Collection<Enrolment> getDisabledEnrolments(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).disabledEnrolments);
+	public List<Enrolment> getDisabledEnrolments(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).disabledEnrolments);
 	}
 	
-	public Collection<ProductItem> getEnabledProducts(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).enabledProducts);
+	public List<Enrolment> getAllEnrolments(Contact contact) {
+		return getContactNode(contact).getAllEnrolments();
 	}
 	
-	public Collection<ProductItem> getDisabledProducts(Contact contact) {
-		return Collections.unmodifiableCollection(getContactNode(contact).disabledProducts);
+	public Enrolment getEnrolmentByCourseClass(Contact contact, CourseClass courseClass) {
+		List<Enrolment> allEnrolments = getAllEnrolments(contact);
+		for (Enrolment enrolment : allEnrolments) {
+			if (courseClass.getId().equals(enrolment.getCourseClass().getId())) {
+				return enrolment;
+			}
+		}
+		return null;
+	}
+	
+	public boolean isEnrolmentEnabled(Enrolment enrolment) {
+		return getEnabledEnrolments(enrolment.getStudent().getContact()).contains(enrolment);
+	}
+	
+	public List<ProductItem> getAllProducts(Contact contact) {
+		return getContactNode(contact).getAllProducts();
+	}
+	
+	public ProductItem getProductItemByProduct(Contact contact, Product product) {
+		List<ProductItem> allProductItems = getAllProducts(contact);
+		for (ProductItem productItem : allProductItems) {
+			if (product.getId().equals(productItem.getProduct().getId())) {
+				return productItem;
+			}
+		}
+		return null;
+	}
+	
+	public List<ProductItem> getEnabledProducts(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).enabledProducts);
+	}
+	
+	public List<ProductItem> getDisabledProducts(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).disabledProducts);
 	}
 	
 	/**
@@ -167,8 +202,26 @@ public class PurchaseModel {
 			this.disabledProducts = new ArrayList<ProductItem>();
 		}
 		
+		private List<Enrolment> getAllEnrolments() {
+			List<Enrolment> result = new ArrayList<Enrolment>(enabledEnrolments);
+			result.addAll(disabledEnrolments);
+			return Collections.unmodifiableList(result);
+		}
+		
+		private List<ProductItem> getAllProducts() {
+			List<ProductItem> result = new ArrayList<ProductItem>(enabledProducts);
+			result.addAll(disabledProducts);
+			return Collections.unmodifiableList(result);
+		}
+		
 		public void addConcession(ConcessionType c) {
 			this.concessions.add(c);
+		}
+		
+		public void removeConcession(ConcessionType c) {
+			if (this.concessions.contains(c)) {
+				concessions.remove(c);
+			}
 		}
 		
 		public void addEnrolment(Enrolment e) {

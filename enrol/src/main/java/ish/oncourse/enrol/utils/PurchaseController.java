@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.utils;
 
 import java.math.BigDecimal;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +21,8 @@ import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
@@ -33,9 +36,11 @@ import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
+import ish.oncourse.util.FormatUtils;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.Persistent;
+import org.apache.log4j.Logger;
 
 /**
  * Controller class for purchase page in enrol.
@@ -43,6 +48,7 @@ import org.apache.cayenne.ObjectContext;
  * @author dzmitry
  */
 public class PurchaseController {
+	public static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
 	
 	private ObjectContext context;
 	private PurchaseModel model;
@@ -59,17 +65,24 @@ public class PurchaseController {
 	private List<Discount> discounts;
 	private List<Product> products;
 	
+	private Format moneyFormat;
+	
 	private State state;
+	
 	
 	public PurchaseController(IInvoiceProcessingService invoiceProcessingService, IDiscountService discountService, 
 			IVoucherService voucherService, ObjectContext context, College college, Contact contact, List<CourseClass> classes, 
 			List<Discount> discounts, List<Product> products) {
 		this.context = context;
-		this.college = (College) localizeObject(context, college);
+		this.college = localizeObject(context, college);
 		this.classesToEnrol = new ArrayList<CourseClass>(classes);
 		this.discounts = new ArrayList<Discount>(discounts);
 		this.products = new ArrayList<Product>(products);
-		
+		if (classesToEnrol.isEmpty() && products.isEmpty()) {
+			LOGGER.debug("Nothing to purchase!");
+			state = State.ERROR_EMPTY_LIST;
+			return;
+		}
 		this.invoiceProcessingService = invoiceProcessingService;
 		this.discountService = discountService;
 		this.voucherService = voucherService;
@@ -77,17 +90,110 @@ public class PurchaseController {
 		this.voucherRedemptionHelper = new VoucherRedemptionHelper();
 		
 		state = State.INIT;
-		init((Contact) localizeObject(context, contact));
+		init(localizeObject(context, contact));
+		moneyFormat = FormatUtils.chooseMoneyFormat(Money.ZERO);
 	}
 	
-	private CayenneDataObject localizeObject(ObjectContext context, CayenneDataObject objectForLocalize) {
+	@SuppressWarnings("unchecked")
+	private <T extends Persistent> T localizeObject(ObjectContext context, T objectForLocalize) {
 		if (objectForLocalize.getObjectContext().equals(context)) {
 			return objectForLocalize;
 		} else {
-			return (CayenneDataObject) context.localObject(objectForLocalize.getObjectId(), null);
+			return (T) context.localObject(objectForLocalize.getObjectId(), null);
 		}
 	}
 	
+	/**
+	 * @return the current state
+	 */
+	public synchronized State getState() {
+		return state;
+	}
+	
+	public boolean isErrorEmptyState() {
+		return State.ERROR_EMPTY_LIST.equals(getState());
+	}
+	
+	/**
+     * Check that invoice lines linked with the enrollments or productitems list applied some discounts
+     * @return true if any discount applied.
+     */
+	public boolean isHasDiscount() {
+		return !getTotalDiscountAmountIncTax().isZero();
+	}
+	
+	/**
+	 * @return the moneyFormat
+	 */
+	public Format getMoneyFormat() {
+		return moneyFormat;
+	}
+
+	/**
+     * Calculate total discount amount for all actual enrollments.
+     * @return total discount amount for all actual enrollments.
+     */
+	public Money getTotalDiscountAmountIncTax() {
+		Money result = Money.ZERO;
+		for (Contact contact : getModel().getContacts()) {
+			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
+				result = result.add(enabledEnrolment.getInvoiceLine().getDiscountTotalIncTax());
+			}
+			for (ProductItem enabledProductItem : getModel().getEnabledProducts(contact)) {
+				result = result.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
+			}
+		}
+		moneyFormat = FormatUtils.chooseMoneyFormat(result);
+		return result;
+	}
+	
+	/**
+     * Calculate total (include GST) invoice amount for all actual enrollments.
+     * @return total invoice amount for all actual enrollments.
+     */
+	public Money getTotalIncGst() {
+		Money result = Money.ZERO;
+		for (Contact contact : getModel().getContacts()) {
+			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
+				InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
+				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+			}
+			for (ProductItem enabledProductItem : getModel().getEnabledProducts(contact)) {
+				InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
+				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+			}
+		}
+		moneyFormat = FormatUtils.chooseMoneyFormat(result);
+		return result;
+	}
+	
+	/**
+	 * @return the classesToEnrol
+	 */
+	public List<CourseClass> getClassesToEnrol() {
+		return Collections.unmodifiableList(classesToEnrol);
+	}
+	
+    /**
+     * Check that any discounts potentially can be applied for actual enrollments.
+     * @return true if some discounts can be applied for actual enrollments.
+     */
+    public boolean hasSuitableClasses(StudentConcession studentConcession) {
+    	// TODO: port this method to some service(it is a part of DiscountService#isStudentElifible)
+        for (CourseClass cc : getClassesToEnrol()) {
+            for (DiscountCourseClass dcc : cc.getDiscountCourseClasses()) {
+                for (DiscountConcessionType dct : dcc.getDiscount().getDiscountConcessionTypes()) {
+                    if (studentConcession.getConcessionType().getId().equals(dct.getConcessionType().getId()) 
+                    	&& (!Boolean.TRUE.equals(studentConcession.getConcessionType().getHasExpiryDate())
+                        	|| (studentConcession.getExpiresOn() != null && studentConcession.getExpiresOn().after(new Date()))) ) {
+                    	return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 	private void init(Contact contact) {
 		if (state != State.INIT) {
 			throw new IllegalStateException("Controller already initialized.");
@@ -147,11 +253,11 @@ public class PurchaseController {
 		case DISABLE_PRODUCT:
 			disableProduct(param.getValue(ProductItem.class));
 			break;
-		case ADD_CONCESSION:
-			concessionAdded();
-			break;
 		case REMOVE_CONCESSION:
-			removeConcession(param.getValue(ConcessionType.class), param.getValue(Contact.class));
+			concessionRemoved(param.getValue(Contact.class), param.getValue(ConcessionType.class));
+			break;
+		case ADD_CONCESSION:
+			concessionAdded(param.getValue(StudentConcession.class));
 			break;
 		case ADD_PROMOCODE:
 			addPromoCode(param.getValue(String.class));
@@ -183,7 +289,6 @@ public class PurchaseController {
 			}
 			
 			model.setPayer(contact);
-			model.getInvoice().setContact(contact);
 			
 			for (ProductItem item : newProductItems) {
 				model.addProduct(item);
@@ -244,7 +349,13 @@ public class PurchaseController {
 		}
 	}
 	
-	private void concessionAdded() {
+	private void concessionAdded(StudentConcession studentConcession) {
+		getModel().addConcession(studentConcession);
+		recalculateEnrolmentInvoiceLines();
+	}
+	
+	private void concessionRemoved(Contact contact, ConcessionType concessionType) {
+		getModel().removeConcession(contact, concessionType);
 		recalculateEnrolmentInvoiceLines();
 	}
 	
@@ -255,7 +366,6 @@ public class PurchaseController {
 				break;
 			}
 		}
-		
 		recalculateEnrolmentInvoiceLines();
 	}
 	
@@ -315,19 +425,13 @@ public class PurchaseController {
      * the class is enrolable, linked to the invoice entity.</li>
      * </ul>
      */
-    private void initPayment(Contact payer) {
-        // College college = (College) context.localObject(currentCollege.getObjectId(), currentCollege);
-
-    	PaymentIn payment;
-    	
-	    payment = context.newObject(PaymentIn.class);
+	private void initPayment(Contact payer) {
+    	PaymentIn payment = context.newObject(PaymentIn.class);
 	    payment.setStatus(PaymentStatus.NEW);
 	    payment.setSource(PaymentSource.SOURCE_WEB);
 	    payment.setCollege(college);
 	    
-	    Invoice invoice;
-	
-	    invoice = context.newObject(Invoice.class);
+	    Invoice invoice = context.newObject(Invoice.class);
 	    // fill the invoice with default values
 	    invoice.setInvoiceDate(new Date());
 	    invoice.setAmountOwing(BigDecimal.ZERO);
@@ -355,7 +459,7 @@ public class PurchaseController {
 
         enrolment.setCollege(student.getCollege());
         enrolment.setStudent(student);
-        enrolment.setCourseClass(courseClass);
+        enrolment.setCourseClass(localizeObject(context, courseClass));
 
         if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
             InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, discounts);
@@ -368,7 +472,7 @@ public class PurchaseController {
     
     private ProductItem createProduct(Contact contact, Product product) {
     	if (product instanceof VoucherProduct) {
-    		VoucherProduct vp = (VoucherProduct) product;
+    		VoucherProduct vp = (VoucherProduct) localizeObject(context, product);
     		Voucher voucher = voucherService.createVoucher(vp, contact, vp.getPriceExTax());
     		InvoiceLine il = invoiceProcessingService.createInvoiceLineForVoucher(voucher, contact);
     		
@@ -382,7 +486,7 @@ public class PurchaseController {
     }
     
 	private static enum State {
-		INIT, ACTIVE, FINALIZED
+		INIT, ACTIVE, FINALIZED, ERROR_EMPTY_LIST;
 	}
 	
 	/**
@@ -398,7 +502,7 @@ public class PurchaseController {
 		DISABLE_ENROLMENT(Enrolment.class),
 		ENABLE_PRODUCT(ProductItem.class),
 		DISABLE_PRODUCT(ProductItem.class),
-		ADD_CONCESSION(),
+		ADD_CONCESSION(StudentConcession.class),
 		REMOVE_CONCESSION(ConcessionType.class, Contact.class),
 		ADD_PROMOCODE(String.class),
 		ADD_VOUCHER_CODE(String.class),
