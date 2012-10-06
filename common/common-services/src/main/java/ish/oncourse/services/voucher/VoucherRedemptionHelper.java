@@ -40,7 +40,9 @@ public class VoucherRedemptionHelper {
 	/**
 	 * Default constructor.
 	 */
-	public VoucherRedemptionHelper() {}
+	public VoucherRedemptionHelper() {
+		this.vouchers = new ArrayList<Voucher>();
+	}
 
 	/**
 	 * Constructor with data prepared for calculation.
