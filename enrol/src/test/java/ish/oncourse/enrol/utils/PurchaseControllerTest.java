@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import javax.sql.DataSource;
 
@@ -23,11 +22,16 @@ import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
 import ish.oncourse.model.College;
+import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.Student;
+import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -46,7 +50,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
 		InputStream st = EnrolCoursesControllerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/utils/enrolCoursesControllerDataSet.xml");
+				"ish/oncourse/utils/purchaseControllerDataSet.xml");
 
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 		builder.setColumnSensing(true);
@@ -73,8 +77,21 @@ public class PurchaseControllerTest extends ServiceTest {
 		VoucherProduct p1 = Cayenne.objectForPK(context, VoucherProduct.class, 7);
 		VoucherProduct p2 = Cayenne.objectForPK(context, VoucherProduct.class, 8);
 		
+		Discount d = Cayenne.objectForPK(context, Discount.class, 2);
+		
 		return new PurchaseController(invoiceProcessingService, discountService, voucherService, context, college, contact, 
-				Arrays.asList(cc1, cc2, cc3), Collections.EMPTY_LIST, new ArrayList<Product>(Arrays.asList(p1, p2)));
+				Arrays.asList(cc1, cc2, cc3), Arrays.asList(d), new ArrayList<Product>(Arrays.asList(p1, p2)));
+	}
+	
+	private StudentConcession createStudentConcession(ObjectContext context, Student student, ConcessionType ct, College college) {
+		StudentConcession sc = context.newObject(StudentConcession.class);
+		
+		sc.setCollege(college);
+		sc.setConcessionType(ct);
+		sc.setStudent(student);
+		sc.setConcessionNumber("1");
+		
+		return sc;
 	}
 	
 	@Test
@@ -275,6 +292,136 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(1, model.getDisabledProducts(model.getPayer()).size());
 		
 		assertEquals(new Money("840.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+	}
+	
+	@Test
+	public void testAddPromocode() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		PurchaseModel model = controller.getModel();
+		
+		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		
+		String promocode = "code";
+		
+		ActionParameter param = new ActionParameter(Action.ADD_PROMOCODE);
+		param.setValue(promocode);
+		
+		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		controller.performAction(param);
+		
+		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		
+		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+	}
+	
+	@Test
+	public void testAddVoucherCode() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		PurchaseModel model = controller.getModel();
+		
+		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
+		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
+		
+		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		
+		String voucherCode = "test";
+		
+		ActionParameter param = new ActionParameter(Action.ADD_VOUCHER_CODE);
+		param.setValue(voucherCode);
+		
+		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		Money paidByVoucher = Money.ZERO;
+		for (PaymentIn p : model.getVoucherPayments()) {
+			paidByVoucher = paidByVoucher.add(p.getAmount());
+		}
+		
+		assertEquals(Money.ZERO, paidByVoucher);
+		
+		controller.performAction(param);
+		
+		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		paidByVoucher = Money.ZERO;
+		for (PaymentIn p : model.getVoucherPayments()) {
+			paidByVoucher = paidByVoucher.add(p.getAmount());
+		}
+		assertEquals(new Money("100.0"), paidByVoucher);
+	}
+	
+	@Test
+	public void testAddConcession() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		PurchaseModel model = controller.getModel();
+		
+		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
+		createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
+		
+		ActionParameter param = new ActionParameter(Action.ADD_CONCESSION);
+		controller.performAction(param);
+		
+		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+	}
+	
+	@Test
+	public void testRemoveConcession() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		PurchaseModel model = controller.getModel();
+		
+		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
+		createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
+		
+		ActionParameter param = new ActionParameter(Action.ADD_CONCESSION);
+		controller.performAction(param);
+		
+		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+		
+		param = new ActionParameter(Action.REMOVE_CONCESSION);
+		param.setValue(ct);
+		param.setValue(model.getPayer());
+		
+		controller.performAction(param);
+		
+		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+	}
+	
+	@Test
+	public void testProceedToPayment() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		
+		ActionParameter param = new ActionParameter(Action.PROCEED_TO_PAYMENT);
+		controller.performAction(param);
+		
+		Contact newContact = Cayenne.objectForPK(context, Contact.class, 1189158);
+		
+		param = new ActionParameter(Action.ADD_STUDENT);
+		param.setValue(newContact);
+		
+		try {
+			controller.performAction(param);
+			fail("No actions should be allowed when controller is in finalized state.");
+		} catch (Exception e) {
+			// expected
+		}
 	}
 
 }

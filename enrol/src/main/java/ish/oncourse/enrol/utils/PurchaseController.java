@@ -27,6 +27,7 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.discount.IDiscountService;
@@ -97,7 +98,7 @@ public class PurchaseController {
 		
 		this.model = new PurchaseModel();
 		
-		initPayment();
+		initPayment(contact);
 		voucherRedemptionHelper.setInvoice(model.getInvoice());
 
 		model.addContact(contact);
@@ -149,6 +150,9 @@ public class PurchaseController {
 		case ADD_CONCESSION:
 			concessionAdded();
 			break;
+		case REMOVE_CONCESSION:
+			removeConcession(param.getValue(ConcessionType.class), param.getValue(Contact.class));
+			break;
 		case ADD_PROMOCODE:
 			addPromoCode(param.getValue(String.class));
 			break;
@@ -179,6 +183,7 @@ public class PurchaseController {
 			}
 			
 			model.setPayer(contact);
+			model.getInvoice().setContact(contact);
 			
 			for (ProductItem item : newProductItems) {
 				model.addProduct(item);
@@ -243,6 +248,17 @@ public class PurchaseController {
 		recalculateEnrolmentInvoiceLines();
 	}
 	
+	private void removeConcession(ConcessionType concession, Contact contact) {
+		for (StudentConcession sc : contact.getStudent().getStudentConcessions()) {
+			if (sc.getConcessionType().equals(concession)) {
+				context.deleteObject(sc);
+				break;
+			}
+		}
+		
+		recalculateEnrolmentInvoiceLines();
+	}
+	
 	private void addPromoCode(String promocode) {
 		Discount discount = discountService.getByCode(promocode);
 		if (discount != null) {
@@ -299,7 +315,7 @@ public class PurchaseController {
      * the class is enrolable, linked to the invoice entity.</li>
      * </ul>
      */
-    private void initPayment() {
+    private void initPayment(Contact payer) {
         // College college = (College) context.localObject(currentCollege.getObjectId(), currentCollege);
 
     	PaymentIn payment;
@@ -318,6 +334,7 @@ public class PurchaseController {
 	    invoice.setDateDue(new Date());
 	    invoice.setSource(PaymentSource.SOURCE_WEB);
 	    invoice.setCollege(college);
+	    invoice.setContact(payer);
 	    
 	    model.setInvoice(invoice);
 	    model.setPayment(payment);
