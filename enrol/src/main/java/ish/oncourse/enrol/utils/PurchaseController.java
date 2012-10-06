@@ -355,17 +355,13 @@ public class PurchaseController {
 	}
 	
 	private void concessionRemoved(Contact contact, ConcessionType concessionType) {
-		getModel().removeConcession(contact, concessionType);
-		recalculateEnrolmentInvoiceLines();
-	}
-	
-	private void removeConcession(ConcessionType concession, Contact contact) {
 		for (StudentConcession sc : contact.getStudent().getStudentConcessions()) {
-			if (sc.getConcessionType().equals(concession)) {
+			if (sc.getConcessionType().equals(concessionType)) {
 				context.deleteObject(sc);
 				break;
 			}
 		}
+		getModel().removeConcession(contact, concessionType);
 		recalculateEnrolmentInvoiceLines();
 	}
 	
