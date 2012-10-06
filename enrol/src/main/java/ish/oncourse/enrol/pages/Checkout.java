@@ -103,12 +103,22 @@ public class Checkout {
 	@Inject
 	private PropertyAccess propertyAccess;
 	
+	//@Property
+	@Persist
     private Contact currentPayerContact;
     
     @SuppressWarnings("unused")
     @Property
     private int studentIndex;
-	
+    
+	public Contact getCurrentPayerContact() {
+		return currentPayerContact;
+	}
+
+	public void setCurrentPayerContact(Contact currentPayerContact) {
+		this.currentPayerContact = currentPayerContact;
+	}
+
 	/**
 	 * @return the controller
 	 */
@@ -155,14 +165,14 @@ public class Checkout {
 		return getNextPage();
     }
 	
-	public Contact getCurrentPayerContact() {
+	/*public Contact getCurrentPayerContact() {
 		currentPayerContact = getController().getModel().getPayer();
 		return currentPayerContact;
 	}
 	
 	public void setCurrentPayerContact(Contact payer) {
 		currentPayerContact = payer;
-	}
+	}*/
 	
 	public boolean isShowConcessionsArea() {
         return concessionsService.hasActiveConcessionTypes();
@@ -191,6 +201,7 @@ public class Checkout {
 			if (isSomethingToCheckout()) {
 				payersModel = new ListSelectModel<Contact>(getController().getModel().getContacts(), "fullName", propertyAccess);
 				payersEncoder = new ListValueEncoder<Contact>(getController().getModel().getContacts(), "id", propertyAccess);
+				currentPayerContact = getController().getModel().getPayer();
 			}
 		}
 	}

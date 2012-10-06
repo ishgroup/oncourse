@@ -88,7 +88,7 @@
 				</p:else>	
 				</t:if>
 			</t:if>
-			<span t:type="EnrolmentContactEntry" nextPageName="nextPage"/>
+			<span t:type="CheckoutContactEntry" nextPageName="nextPage"/>
 			<script type="text/javascript">
 			Event.observe('totals', Tapestry.ZONE_UPDATED_EVENT, function(){
 				initAddStudentButton();

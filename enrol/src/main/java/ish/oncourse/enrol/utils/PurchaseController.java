@@ -69,12 +69,11 @@ public class PurchaseController {
 	
 	private State state;
 	
-	
 	public PurchaseController(IInvoiceProcessingService invoiceProcessingService, IDiscountService discountService, 
 			IVoucherService voucherService, ObjectContext context, College college, Contact contact, List<CourseClass> classes, 
 			List<Discount> discounts, List<Product> products) {
 		this.context = context;
-		this.college = localizeObject(context, college);
+		this.college = localizeObject(college);
 		this.classesToEnrol = new ArrayList<CourseClass>(classes);
 		this.discounts = new ArrayList<Discount>(discounts);
 		this.products = new ArrayList<Product>(products);
@@ -90,12 +89,12 @@ public class PurchaseController {
 		this.voucherRedemptionHelper = new VoucherRedemptionHelper();
 		
 		state = State.INIT;
-		init(localizeObject(context, contact));
+		init(localizeObject(contact));
 		moneyFormat = FormatUtils.chooseMoneyFormat(Money.ZERO);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends Persistent> T localizeObject(ObjectContext context, T objectForLocalize) {
+	public <T extends Persistent> T localizeObject(T objectForLocalize) {
 		if (objectForLocalize.getObjectContext().equals(context)) {
 			return objectForLocalize;
 		} else {
@@ -455,7 +454,7 @@ public class PurchaseController {
 
         enrolment.setCollege(student.getCollege());
         enrolment.setStudent(student);
-        enrolment.setCourseClass(localizeObject(context, courseClass));
+        enrolment.setCourseClass(localizeObject(courseClass));
 
         if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
             InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, discounts);
@@ -468,7 +467,7 @@ public class PurchaseController {
     
     private ProductItem createProduct(Contact contact, Product product) {
     	if (product instanceof VoucherProduct) {
-    		VoucherProduct vp = (VoucherProduct) localizeObject(context, product);
+    		VoucherProduct vp = (VoucherProduct) localizeObject(product);
     		Voucher voucher = voucherService.createVoucher(vp, contact, vp.getPriceExTax());
     		InvoiceLine il = invoiceProcessingService.createInvoiceLineForVoucher(voucher, contact);
     		
