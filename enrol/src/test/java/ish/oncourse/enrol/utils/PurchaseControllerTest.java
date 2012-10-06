@@ -370,9 +370,10 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 		
 		ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
-		createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
+		StudentConcession sc = createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
 		
 		ActionParameter param = new ActionParameter(Action.ADD_CONCESSION);
+		param.setValue(sc);
 		controller.performAction(param);
 		
 		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
@@ -387,9 +388,10 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 		
 		ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
-		createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
+		StudentConcession sc = createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
 		
 		ActionParameter param = new ActionParameter(Action.ADD_CONCESSION);
+		param.setValue(sc);
 		controller.performAction(param);
 		
 		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
