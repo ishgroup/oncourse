@@ -132,13 +132,9 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 		}
 		if (discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) {
 			boolean notEligibile = true;
-			SelectQuery studentConcessionQuery = new SelectQuery(StudentConcession.class, ExpressionFactory.matchExp(
-					StudentConcession.STUDENT_PROPERTY, student));
-			@SuppressWarnings("unchecked")
-			List<StudentConcession> studentConcessions = (List<StudentConcession>) student.getObjectContext()
-					.performQuery(studentConcessionQuery);
+			
 			for (DiscountConcessionType dct : discount.getDiscountConcessionTypes()) {
-				for (StudentConcession concession : studentConcessions) {
+				for (StudentConcession concession : student.getStudentConcessions()) {
 					if (concession.getConcessionType().getId().equals(dct.getConcessionType().getId())) {
 						if (!Boolean.TRUE.equals(concession.getConcessionType().getHasExpiryDate())
 								|| (concession.getExpiresOn() != null && concession.getExpiresOn().after(new Date()))) {
