@@ -1195,7 +1195,7 @@
 			</column>
 			<column name="enrolmentsCount" type="INTEGER"/>
 			<column name="status" type="INTEGER">
-				<constraints nullable="false"/>
+				<constraints nullable="true"/>
 			</column>
 		</createTable>
 
@@ -1287,6 +1287,13 @@
 			<column name="collegeId"/>
 		</createIndex>
 	</changeSet>
+	
+	<changeSet id="82" author="viacheslav" context="production" runOnChange="true">
+    	<preConditions onFail="MARK_RAN">
+ 			<columnExists tableName="VoucherPaymentIn" columnName="status"/>
+    	</preConditions>
+    	<sql>ALTER TABLE VoucherPaymentIn CHANGE COLUMN status status INT(11) NULL  ;</sql>
+     </changeSet>
     
     <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
     	uncomment this changeset after all applications re-deployment. Especially the services and enrol.
