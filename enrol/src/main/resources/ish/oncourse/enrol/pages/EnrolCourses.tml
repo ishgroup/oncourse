@@ -82,7 +82,7 @@
 					</t:zone>
 				</t:if>
 
-				<span t:type="EnrolmentContactEntry" />
+				<span t:type="EnrolmentContactEntry" nextPageName="enrolcourses"/>
 
 				<!-- end enrolments summary -->
 				<t:if test="model.contacts">

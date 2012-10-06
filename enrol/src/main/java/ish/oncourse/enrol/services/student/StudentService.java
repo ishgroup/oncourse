@@ -52,11 +52,13 @@ public class StudentService implements IStudentService {
 	public void addStudentToShortlist(Contact student) {
 		List<Long> studentIds = getContactsIdsFromShortList();
 		studentIds.add(student.getId());
-		request.getSession(false).setAttribute(SHORTLIST_STUDENTS_KEY, studentIds);
+		//we should always set the attribute only into active session to avoid NPE, even if this session will be expired without activity
+		request.getSession(true).setAttribute(SHORTLIST_STUDENTS_KEY, studentIds);
 	}
 
 	public List<Long> getContactsIdsFromShortList() {
-		Session session = request.getSession(false);
+		//we should always read the attribute only into active session to avoid NPE, even if previous session was expired without activity
+		Session session = request.getSession(true);
 		@SuppressWarnings("unchecked")
 		List<Long> studentIds = (List<Long>) session.getAttribute(SHORTLIST_STUDENTS_KEY);
 		if (studentIds == null) {
