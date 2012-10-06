@@ -50,7 +50,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
 		InputStream st = EnrolCoursesControllerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/utils/purchaseControllerDataSet.xml");
+				"ish/oncourse/utils/purchaseControllerTestDataSet.xml");
 
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 		builder.setColumnSensing(true);
