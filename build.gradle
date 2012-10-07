@@ -11,10 +11,14 @@ buildscript {
             url "http://gradle-macappbundle.googlecode.com"
             artifactPattern 'http://gradle-macappbundle.googlecode.com/files/[module]-[revision].[ext]'
         }
+		maven {
+			url 'https://raw.github.com/valkolovos/gradle_cobertura/master/repo'
+		}
 	}
 
 	dependencies {
 		classpath 'edu.sc.seis:gradle-macappbundle:1.0.8-b1'
+		classpath 'gradle_cobertura:gradle_cobertura:1.2'
 	}
 }
 
@@ -79,6 +83,11 @@ allprojects {
 		jvmArgs "-XX:MaxPermSize=256m"
 		ignoreFailures = true  // ignore test failures so that the test aggregate still works
 	}
+
+	apply plugin: 'cobertura'
+	cobertura {
+		coverageFormat = 'xml'
+	}
 }
 	
 configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) { 
@@ -129,7 +138,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	}
 }
 
-apply plugin: "sonar"
+apply plugin: 'sonar'
 
 sonar {
     server {
@@ -141,7 +150,11 @@ sonar {
         username = "sonar"
         password = sonarPassword
     }
+	project {
+		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
+	}
 }
+
 /*
 
 	Additional functionality which might later be turned into plugins
