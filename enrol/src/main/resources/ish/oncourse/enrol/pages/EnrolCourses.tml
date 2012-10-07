@@ -21,7 +21,6 @@
 
 				<!-- start has students -->
 				<t:if test="model.contacts">
-					<t:zone t:id="payersZone" t:update="show">
 					<!-- start enrolments summary -->
 					<table class="payments">
 						<colgroup>
@@ -34,17 +33,7 @@
 								<tr>
 									<th colspan="3">
 									<div class="left">${contact.fullName} <span>-
-									${contact.emailAddress}</span>
-									</div>
-									<t:if test="payer">
-										<span class="payer" style="padding-right:5px;">Payer</span>
-										<t:form t:id="payerForm" zone="payersZone">
-										<span class="valid">
-											<t:select t:id="currentPayer" value="model.contact" model="payersModel" encoder="payersEncoder" 
-												blankOption="NEVER" zone="payersZone"/>
-										</span>
-										</t:form>
-									</t:if>
+									${contact.emailAddress}</span></div>
 									<div class="right"><t:if test="showConcessionsArea">
 										<a id="add-concession_${studentIndex}" class="add-concession">
 										<span>Add Concession</span> </a>
@@ -79,10 +68,9 @@
 							</tr>
 						</t:zone>
 					</table>
-					</t:zone>
 				</t:if>
 
-				<span t:type="EnrolmentContactEntry" nextPageName="enrolcourses"/>
+				<span t:type="EnrolmentContactEntry" />
 
 				<!-- end enrolments summary -->
 				<t:if test="model.contacts">

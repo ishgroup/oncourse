@@ -1,8 +1,6 @@
 package ish.oncourse.enrol.components;
 
 import ish.common.types.PaymentStatus;
-import ish.oncourse.enrol.pages.Checkout;
-import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
@@ -108,9 +106,6 @@ public class EnrolmentContactEntry {
 
 	@Property
 	private String emailErrorMessage;
-	
-	@Parameter
-	private String nextPageName;
 
 	@Inject
 	private Request request;
@@ -121,11 +116,7 @@ public class EnrolmentContactEntry {
 		this.hasContact = false;
 		this.contact = null;
 		shortDetailsForm.clearErrors();
-		if (nextPageName == null) {
-			//if param not passed use the default enrol courses page value
-			nextPageName = EnrolCourses.class.getSimpleName();
 		}
-	}
 
 	public String getAddStudentBlockClass() {
 		List<Long> shortlistStudents = studentService.getContactsIdsFromShortList();
@@ -195,7 +186,7 @@ public class EnrolmentContactEntry {
 				}
 				completeInTransactionPayments(contact);
 				studentService.addStudentToShortlist(contact);
-				nextPage = nextPageName;
+				nextPage = "EnrolCourses";
 			} else {
 				this.contact = context.newObject(Contact.class);
 
