@@ -1,47 +1,32 @@
 package ish.oncourse.enrol.components;
 
-import ish.common.types.AvetmissStudentDisabilityType;
-import ish.common.types.AvetmissStudentEnglishProficiency;
-import ish.common.types.AvetmissStudentIndigenousStatus;
-import ish.common.types.AvetmissStudentPriorEducation;
-import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.common.types.*;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.utils.PurchaseController;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
-import ish.oncourse.model.ConcessionType;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Country;
-import ish.oncourse.model.Language;
-import ish.oncourse.model.StudentConcession;
+import ish.oncourse.model.*;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CheckoutContactDetails {
 	
@@ -295,7 +280,7 @@ public class CheckoutContactDetails {
                 contact.getObjectContext().commitChanges();
                 if (getController() != null) {
                 	ActionParameter actionParameter = new ActionParameter(Action.ADD_STUDENT);
-					actionParameter.setValue(getController().localizeObject(contact));
+					actionParameter.setValue(getController().getModel().localizeObject(contact));
 					getController().performAction(actionParameter);
                 }
                 return Checkout.class.getSimpleName().toLowerCase();

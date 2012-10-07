@@ -2,15 +2,12 @@ package ish.oncourse.enrol.components;
 
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.utils.PurchaseController;
-import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
-
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -19,6 +16,8 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.util.List;
 
 public class CheckoutContactEnrolmentList {
 	@Inject
@@ -102,8 +101,7 @@ public class CheckoutContactEnrolmentList {
 	
 	private Enrolment getCurrentEnrolment() {
 		Contact currentStudent = getModel().getContacts().get(sIndex);
-		CourseClass courseClass = getController().getClassesToEnrol().get(cCIndex);
-		Enrolment enrolment = getModel().getEnrolmentByCourseClass(currentStudent, courseClass);
-		return enrolment;
+		CourseClass courseClass = getModel().getClasses().get(cCIndex);
+		return getModel().getEnrolmentByCourseClass(currentStudent, courseClass);
 	}
 }

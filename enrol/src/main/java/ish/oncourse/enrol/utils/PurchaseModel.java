@@ -1,20 +1,13 @@
 package ish.oncourse.enrol.utils;
 
-import ish.oncourse.model.ConcessionType;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.Product;
-import ish.oncourse.model.ProductItem;
-import ish.oncourse.model.StudentConcession;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ish.common.types.PaymentSource;
+import ish.common.types.PaymentStatus;
+import ish.oncourse.model.*;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.Persistent;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Model class for purchase controllers.
@@ -22,7 +15,16 @@ import java.util.Map;
  * @author dzmitry
  */
 public class PurchaseModel {
-	
+
+	//input data for model
+	private College college;
+	private List<CourseClass> classes;
+	private List<Discount> discounts = new ArrayList<Discount>();
+	private List<Product> products;
+
+	private ObjectContext objectContext;
+
+
 	private Map<Contact, ContactNode> contacts;
 	private Contact payer;
 	private Invoice invoice;
@@ -34,7 +36,21 @@ public class PurchaseModel {
 		this.contacts = new HashMap<Contact, PurchaseModel.ContactNode>();
 		this.voucherPayments = new ArrayList<PaymentIn>();
 	}
-	
+
+	public <T extends Persistent> T localizeObject(T objectForLocalize) {
+		if (objectForLocalize.getObjectContext().equals(objectContext)) {
+			return objectForLocalize;
+		} else {
+			return (T) objectContext.localObject(objectForLocalize.getObjectId(), null);
+		}
+	}
+
+	public void addDiscount(Discount discount)
+	{
+		discounts.add(discount);
+	}
+
+
 	public void addContact(Contact contact) {
 		this.contacts.put(contact, new ContactNode());
 	}
@@ -44,26 +60,40 @@ public class PurchaseModel {
 	}
 	
 	public void setPayer(Contact payer) {
+		payer = localizeObject(payer);
 		this.payer = payer;
 	}
 	
 	public Contact getPayer() {
 		return payer;
 	}
-	
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
-	}
-	
+
+
+
 	public Invoice getInvoice() {
+		if(invoice == null)
+		{
+			invoice = objectContext.newObject(Invoice.class);
+			// fill the invoice with default values
+			invoice.setInvoiceDate(new Date());
+			invoice.setAmountOwing(BigDecimal.ZERO);
+			invoice.setDateDue(new Date());
+			invoice.setSource(PaymentSource.SOURCE_WEB);
+			invoice.setCollege(college);
+			invoice.setContact(payer);
+		}
 		return invoice;
 	}
 	
-	public void setPayment(PaymentIn payment) {
-		this.payment = payment;
-	}
-	
+
 	public PaymentIn getPayment() {
+		if (payment == null)
+		{
+			payment = objectContext.newObject(PaymentIn.class);
+			payment.setStatus(PaymentStatus.NEW);
+			payment.setSource(PaymentSource.SOURCE_WEB);
+			payment.setCollege(college);
+		}
 		return payment;
 	}
 	
@@ -82,14 +112,20 @@ public class PurchaseModel {
 	public void removeConcession(Contact contact, ConcessionType concession) {
 		getContactNode(contact).removeConcession(concession);
 	}
-	
-	public void addProduct(ProductItem p) {
-		getContactNode(payer).addProduct(p);
+
+
+	public void addProductItem(ProductItem p) {
+		getContactNode(payer).addProductItem(p);
 	}
 	
-	public void removeProduct(ProductItem p) {
-		getContactNode(payer).removeProduct(p);
+	public void removeProductItem(ProductItem p) {
+		InvoiceLine invoiceLine = p.getInvoiceLine();
+		getContactNode(payer).removeProductItem(p);
+
+		objectContext.deleteObject(p);
+		objectContext.deleteObject(invoiceLine);
 	}
+
 	
 	public void addVoucherPayments(Collection<PaymentIn> vps) {
 		this.voucherPayments.addAll(vps);
@@ -108,21 +144,32 @@ public class PurchaseModel {
 	}
 	
 	public void disableEnrolment(Enrolment e) {
+		InvoiceLine il = e.getInvoiceLine();
+		e.setInvoiceLine(null);
+		objectContext.deleteObject(il);
 		getContactNode(e.getStudent().getContact()).disableEnrolment(e);
 	}
 	
-	public void enableProduct(ProductItem p) {
-		getContactNode(payer).enableProduct(p);
+	public void enableProductItem(ProductItem p) {
+		getContactNode(payer).enableProductItem(p);
 	}
 	
-	public void disableProduct(ProductItem p) {
-		getContactNode(payer).disableProduct(p);
+	public void disableProductItem(ProductItem p) {
+		InvoiceLine il = p.getInvoiceLine();
+		p.setInvoiceLine(null);
+		objectContext.deleteObject(il);
+		getContactNode(payer).disableProductItem(p);
 	}
 	
 	public List<Enrolment> getEnabledEnrolments(Contact contact) {
 		return Collections.unmodifiableList(getContactNode(contact).enabledEnrolments);
 	}
-	
+
+	public List<ProductItem> getEnabledProductItems(Contact contact) {
+		return Collections.unmodifiableList(getContactNode(contact).enabledProductItems);
+	}
+
+
 	public List<Enrolment> getDisabledEnrolments(Contact contact) {
 		return Collections.unmodifiableList(getContactNode(contact).disabledEnrolments);
 	}
@@ -144,7 +191,12 @@ public class PurchaseModel {
 	public boolean isEnrolmentEnabled(Enrolment enrolment) {
 		return getEnabledEnrolments(enrolment.getStudent().getContact()).contains(enrolment);
 	}
-	
+
+	public boolean isProductItemEnabled(ProductItem productItem) {
+		return getEnabledProductItems(payer).contains(productItem);
+	}
+
+
 	public List<ProductItem> getAllProducts(Contact contact) {
 		return getContactNode(contact).getAllProducts();
 	}
@@ -160,17 +212,16 @@ public class PurchaseModel {
 	}
 	
 	public List<ProductItem> getEnabledProducts(Contact contact) {
-		return Collections.unmodifiableList(getContactNode(contact).enabledProducts);
+		return Collections.unmodifiableList(getContactNode(contact).enabledProductItems);
 	}
 	
 	public List<ProductItem> getDisabledProducts(Contact contact) {
-		return Collections.unmodifiableList(getContactNode(contact).disabledProducts);
+		return Collections.unmodifiableList(getContactNode(contact).disabledProductItems);
 	}
 	
 	/**
 	 * Always returns non null {@link ContactNode} instance. If specified contact doesn't exist throws {@link IllegalArgumentException}.
 	 * 
-	 * @param contact
 	 * @return contact node structure
 	 */
 	private ContactNode getContactNode(Contact c) {
@@ -181,7 +232,47 @@ public class PurchaseModel {
 			throw new IllegalArgumentException("Requested contact is not presented in model's contact list.");
 		}
 	}
-	
+
+	public College getCollege() {
+		return college;
+	}
+
+	public void setCollege(College college) {
+		this.college = college;
+	}
+
+	public List<CourseClass> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(List<CourseClass> classes) {
+		this.classes = classes;
+	}
+
+	public List<Discount> getDiscounts() {
+		return discounts;
+	}
+
+	public void setDiscounts(List<Discount> discounts) {
+		this.discounts = discounts;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
+	public ObjectContext getObjectContext() {
+		return objectContext;
+	}
+
+	public void setObjectContext(ObjectContext objectContext) {
+		this.objectContext = objectContext;
+	}
+
 	private class ContactNode {
 		
 		private List<ConcessionType> concessions;
@@ -189,8 +280,8 @@ public class PurchaseModel {
 		private List<Enrolment> enabledEnrolments;
 		private List<Enrolment> disabledEnrolments;
 		
-		private List<ProductItem> enabledProducts;
-		private List<ProductItem> disabledProducts;
+		private List<ProductItem> enabledProductItems;
+		private List<ProductItem> disabledProductItems;
 		
 		public ContactNode() {
 			this.concessions = new ArrayList<ConcessionType>();
@@ -198,8 +289,8 @@ public class PurchaseModel {
 			this.enabledEnrolments = new ArrayList<Enrolment>();
 			this.disabledEnrolments = new ArrayList<Enrolment>();
 			
-			this.enabledProducts = new ArrayList<ProductItem>();
-			this.disabledProducts = new ArrayList<ProductItem>();
+			this.enabledProductItems = new ArrayList<ProductItem>();
+			this.disabledProductItems = new ArrayList<ProductItem>();
 		}
 		
 		private List<Enrolment> getAllEnrolments() {
@@ -209,8 +300,8 @@ public class PurchaseModel {
 		}
 		
 		private List<ProductItem> getAllProducts() {
-			List<ProductItem> result = new ArrayList<ProductItem>(enabledProducts);
-			result.addAll(disabledProducts);
+			List<ProductItem> result = new ArrayList<ProductItem>(enabledProductItems);
+			result.addAll(disabledProductItems);
 			return Collections.unmodifiableList(result);
 		}
 		
@@ -234,13 +325,13 @@ public class PurchaseModel {
 			}
 		}
 		
-		public void addProduct(ProductItem p) {
-			this.enabledProducts.add(p);
+		public void addProductItem(ProductItem p) {
+			this.enabledProductItems.add(p);
 		}
 		
-		public void removeProduct(ProductItem p) {
-			if (!this.enabledProducts.remove(p)) {
-				this.disabledProducts.remove(p);
+		public void removeProductItem(ProductItem p) {
+			if (!this.enabledProductItems.remove(p)) {
+				this.disabledProductItems.remove(p);
 			}
 		}
 		
@@ -258,17 +349,17 @@ public class PurchaseModel {
 			}
 		}
 		
-		public void enableProduct(ProductItem p) {
-			if (disabledProducts.contains(p)) {
-				disabledProducts.remove(p);
-				enabledProducts.add(p);
+		public void enableProductItem(ProductItem p) {
+			if (disabledProductItems.contains(p)) {
+				disabledProductItems.remove(p);
+				enabledProductItems.add(p);
 			}
 		}
 		
-		public void disableProduct(ProductItem p) {
-			if (enabledProducts.contains(p)) {
-				enabledProducts.remove(p);
-				disabledProducts.add(p);
+		public void disableProductItem(ProductItem p) {
+			if (enabledProductItems.contains(p)) {
+				enabledProductItems.remove(p);
+				disabledProductItems.add(p);
 			}
 		}
 	}

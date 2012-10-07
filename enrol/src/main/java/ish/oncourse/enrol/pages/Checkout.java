@@ -1,15 +1,12 @@
 package ish.oncourse.enrol.pages;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.utils.PurchaseController;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
@@ -23,15 +20,10 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.ui.pages.Courses;
-
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -41,8 +33,15 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
 public class Checkout {
 	public static final Logger LOGGER = Logger.getLogger(Checkout.class);
+
+
+	public static final String PROPERTY_CONTACT_FULL_NAME = "fullName";
 	
 	@Inject
     private IInvoiceProcessingService invoiceProcessingService;
@@ -80,11 +79,9 @@ public class Checkout {
 	@Persist
 	private PurchaseController controller;
 	
-	@SuppressWarnings("all")
 	@InjectComponent
 	private Zone payersZone;
 	
-	@SuppressWarnings("all")
 	@InjectComponent
 	@Property
 	private Form payerForm;
@@ -92,32 +89,17 @@ public class Checkout {
 	@Property
     private Contact contact;
 	
-	@SuppressWarnings("all")
-	@Property
-	private ListSelectModel<Contact> payersModel;
-	
-	@SuppressWarnings("all")
-	@Property
-	private ListValueEncoder<Contact> payersEncoder;
-	
 	@Inject
 	private PropertyAccess propertyAccess;
 	
-	//@Property
-	@Persist
-    private Contact currentPayerContact;
-    
-    @SuppressWarnings("unused")
     @Property
     private int studentIndex;
-    
-	public Contact getCurrentPayerContact() {
-		return currentPayerContact;
-	}
 
-	public void setCurrentPayerContact(Contact currentPayerContact) {
-		this.currentPayerContact = currentPayerContact;
-	}
+	/**
+	 * The property needs to get value after if payer has been changed
+	 */
+	@Property
+	private Contact selectedPayer;
 
 	/**
 	 * @return the controller
@@ -138,10 +120,7 @@ public class Checkout {
 		return !studentService.getStudentsFromShortList().isEmpty();
 	}
 	
-	public boolean isSomethingToCheckout() {
-		return getController() != null && !getController().isErrorEmptyState();
-	}
-	
+
 	public String getCoursesListLink() {
         return "http://" + request.getServerName() + "/" + Courses.class.getSimpleName().toLowerCase();
     }
@@ -160,19 +139,10 @@ public class Checkout {
 			return new URL(request.getServerName());
 		}
 		ActionParameter actionParameter = new ActionParameter(Action.CHANGE_PAYER);
-		actionParameter.setValue(currentPayerContact);//TODO: check me
+		actionParameter.setValue(selectedPayer);
 		getController().performAction(actionParameter);
 		return getNextPage();
     }
-	
-	/*public Contact getCurrentPayerContact() {
-		currentPayerContact = getController().getModel().getPayer();
-		return currentPayerContact;
-	}
-	
-	public void setCurrentPayerContact(Contact payer) {
-		currentPayerContact = payer;
-	}*/
 	
 	public boolean isShowConcessionsArea() {
         return concessionsService.hasActiveConcessionTypes();
@@ -181,34 +151,50 @@ public class Checkout {
 	@SetupRender
 	void beforeRender() {
 		synchronized (this) {
-			if (!isSomethingToCheckout()) {
-				controller = null;
-			}
-			if (getController() == null) {
-				if (isPayerSelected()) {
-					List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
-					List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
-					List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
-					List<Product> products = voucherService.loadByIds(productIds);
-					List<Contact> selectedContacts = studentService.getStudentsFromShortList();
-					if (selectedContacts.size() > 1) {
-						LOGGER.debug(String.format(" %s contacts loaded from shortlist for init the controller but should be 1!", selectedContacts.size()));
-					}
-					controller = new PurchaseController(invoiceProcessingService, discountService, voucherService, cayenneService.newContext(), 
-					webSiteService.getCurrentCollege(), selectedContacts.get(0), courseClasses, discountService.getPromotions(), products);
-				}
-			}
-			if (isSomethingToCheckout()) {
-				payersModel = new ListSelectModel<Contact>(getController().getModel().getContacts(), "fullName", propertyAccess);
-				payersEncoder = new ListValueEncoder<Contact>(getController().getModel().getContacts(), "id", propertyAccess);
-				currentPayerContact = getController().getModel().getPayer();
-			}
+			initPaymentController();
 		}
 	}
 
-	void onPassivate() {
+	private void initPaymentController() {
+		if (getController() == null) {
+			List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
+			List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
+			List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
+			List<Product> products = voucherService.loadByIds(productIds);
+			List<Contact> selectedContacts = studentService.getStudentsFromShortList();
+			Contact payer = selectedContacts.size() > 0 ? selectedContacts.get(0): null;
+			if (selectedContacts.size() > 1) {
+				LOGGER.warn(String.format(" %s contacts loaded from shortlist for init the controller but should be 1!", selectedContacts.size()));
+			}
+
+			PurchaseModel model = new PurchaseModel();
+			model.setClasses(courseClasses);
+			model.setProducts(products);
+			model.addContact(payer);
+			model.setPayer(payer);
+			model.setObjectContext(cayenneService.newContext());
+
+			controller = new PurchaseController();
+			controller.setModel(model);
+			controller.setDiscountService(discountService);
+			controller.setInvoiceProcessingService(invoiceProcessingService);
+			controller.setVoucherService(voucherService);
+			controller.setCayenneService(cayenneService);
+			controller.performAction(new ActionParameter(Action.INIT));
+		}
 	}
-	
+
+	public ListSelectModel<Contact> getPayersModel()
+	{
+		return new ListSelectModel<Contact>(getController().getModel().getContacts(), PROPERTY_CONTACT_FULL_NAME, propertyAccess);
+	}
+
+	public ListValueEncoder<Contact> getPayersEncoder()
+	{
+		return new ListValueEncoder<Contact>(getController().getModel().getContacts(), Contact.ID_PK_COLUMN, propertyAccess);
+	}
+
+
 	public String getNextPage() {
 		return Checkout.class.getSimpleName();
 	}
@@ -225,7 +211,6 @@ public class Checkout {
     
     /**
      * Create checkSession StreamResponse.
-     * @param session - session for check.
      * @return Text stream response.
      */
     public StreamResponse onActionFromCheckSession() {

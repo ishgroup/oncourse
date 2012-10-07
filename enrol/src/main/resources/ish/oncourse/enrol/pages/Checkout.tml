@@ -34,7 +34,7 @@
 												<span class="payer" style="padding-right:5px;">Payer</span>
 												<t:form t:id="payerForm" zone="payersZone">
 													<span class="valid">
-													<t:select t:id="currentPayer" value="currentPayerContact" model="payersModel" 
+													<t:select t:id="currentPayer" value="selectedPayer" model="payersModel"
 														encoder="payersEncoder" 
 														blankOption="NEVER" zone="payersZone"/>
 													</span>

@@ -6,18 +6,13 @@ import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
 
 
 public class CheckoutEnrolmentListItem {
@@ -53,7 +48,7 @@ public class CheckoutEnrolmentListItem {
 
 	@SetupRender
 	void beforeRender() {
-		courseClass = getController().getClassesToEnrol().get(courseClassIndex);
+		courseClass = getController().getModel().getClasses().get(courseClassIndex);
 		Contact currentStudent = getModel().getContacts().get(studentIndex);
 		enrolment = getModel().getEnrolmentByCourseClass(currentStudent, courseClass);
 		dateFormat = new SimpleDateFormat("EEE d MMM yy h:mm a");
