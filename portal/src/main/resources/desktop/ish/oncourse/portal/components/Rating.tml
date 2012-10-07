@@ -1,0 +1,10 @@
+<div class="rating" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:radiogroup t:id="radioGroup" >
+		<t:loop t:id="loop">
+			<div class="rating-choice">
+				<div class="rating-choice-input"/>
+			</div>
+		</t:loop>
+	</t:radiogroup>
+	<t:actionlink t:id="update"/>
+</div>

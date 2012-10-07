@@ -1,12 +1,7 @@
 package ish.oncourse.portal.components;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.SessionTutor;
-import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
-
 import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -49,7 +44,12 @@ public class ClassTabs {
 	public String getClassDetailsPageName() {
 		return "classdetails";
 	}
-	
+
+	public String getClassSurveyPageName()
+	{
+		return "student/surveys";
+	}
+
 	public boolean isShowTutorTabs() {
 		if(authService.isTutor()) {
 			Tutor tutor = authService.getUser().getTutor();
