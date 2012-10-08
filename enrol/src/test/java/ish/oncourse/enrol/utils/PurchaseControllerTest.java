@@ -114,8 +114,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
 		assertEquals(PurchaseController.State.ACTIVE, controller.getState());
 	}
@@ -237,13 +237,13 @@ public class PurchaseControllerTest extends ServiceTest {
 		PurchaseController controller = createPurchaseController(context);
 		PurchaseModel model = controller.getModel();
 
-		ProductItem productToDisable = model.getEnabledProducts(model.getPayer()).iterator().next();
+		ProductItem productToDisable = model.getEnabledProductItems(model.getPayer()).iterator().next();
 
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
@@ -256,8 +256,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(1, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(1, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(1, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(1, model.getDisabledProductItems(model.getPayer()).size());
 
 		assertEquals(new Money("840.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
@@ -270,8 +270,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 	}
@@ -282,13 +282,13 @@ public class PurchaseControllerTest extends ServiceTest {
 		PurchaseController controller = createPurchaseController(context);
 		PurchaseModel model = controller.getModel();
 
-		ProductItem productToDisable = model.getEnabledProducts(model.getPayer()).iterator().next();
+		ProductItem productToDisable = model.getEnabledProductItems(model.getPayer()).iterator().next();
 
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
@@ -301,8 +301,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(1, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(1, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(1, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(1, model.getDisabledProductItems(model.getPayer()).size());
 
 		assertEquals(new Money("840.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 	}
@@ -316,8 +316,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
 		String promocode = "code";
 
@@ -332,8 +332,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
 		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 	}
@@ -347,8 +347,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
 
-		assertEquals(2, model.getEnabledProducts(model.getPayer()).size());
-		assertEquals(0, model.getDisabledProducts(model.getPayer()).size());
+		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
+		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
 		String voucherCode = "test";
 

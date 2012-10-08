@@ -1,32 +1,26 @@
-package ish.oncourse.enrol.components;
+package ish.oncourse.enrol.components.checkout;
 
+import ish.oncourse.enrol.components.ConcessionEditor;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.utils.PurchaseController;
-import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Zone;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Zone;
-
-public class CheckoutConcessionEntry {
+public class ConcessionEntry {
 	@SuppressWarnings("all")
-	private static final Logger LOGGER = Logger.getLogger(CheckoutConcessionEntry.class);
+	private static final Logger LOGGER = Logger.getLogger(ConcessionEntry.class);
 
     @InjectComponent
     @Property
@@ -54,7 +48,7 @@ public class CheckoutConcessionEntry {
     private Format dateFormat;
     
     private PurchaseController getController() {
-		return checkoutPage.getController();
+		return checkoutPage.getPurchaseController();
 	}
     
     private PurchaseModel getModel() {

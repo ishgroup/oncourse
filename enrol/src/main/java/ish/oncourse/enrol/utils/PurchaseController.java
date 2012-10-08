@@ -6,7 +6,6 @@ import ish.math.Money;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.FormatUtils;
@@ -29,8 +28,6 @@ public class PurchaseController {
 	private IInvoiceProcessingService invoiceProcessingService;
 	private IDiscountService discountService;
 	private IVoucherService voucherService;
-	private ICayenneService cayenneService;
-
 
 	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
 
@@ -82,7 +79,7 @@ public class PurchaseController {
 			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
 				result = result.add(enabledEnrolment.getInvoiceLine().getDiscountTotalIncTax());
 			}
-			for (ProductItem enabledProductItem : getModel().getEnabledProducts(contact)) {
+			for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
 				result = result.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
 			}
 		}
@@ -102,7 +99,7 @@ public class PurchaseController {
 				InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
 				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
 			}
-			for (ProductItem enabledProductItem : getModel().getEnabledProducts(contact)) {
+			for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
 				InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
 				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
 			}
@@ -141,7 +138,7 @@ public class PurchaseController {
 		}
 
 		for (Product product : model.getProducts()) {
-			model.addProductItem(createProduct(model.getPayer(),product));
+			model.addProductItem(createProductItem(model.getPayer(), product));
 		}
 
 		state = State.ACTIVE;
@@ -176,7 +173,7 @@ public class PurchaseController {
 			case INIT:
 				if (model.getPayer() == null)
 					return false;
-				if (model.getClasses().size() < 1 || model.getProducts().size() < 1)
+				if (model.getClasses().size() < 1 && model.getProducts().size() < 1)
 					return false;
 				for (CourseClass cc : model.getClasses()) {
 					if (cc.isCancelled() || !cc.isHasAvailableEnrolmentPlaces()) {
@@ -310,10 +307,10 @@ public class PurchaseController {
 		Contact oldPayer = model.getPayer();
 		model.setPayer(contact);
 
-		for (ProductItem item : model.getEnabledProducts(oldPayer)) {
+		for (ProductItem item : model.getEnabledProductItems(oldPayer)) {
 			Product product = item.getProduct();
 			model.removeProductItem(item);
-			model.addProductItem(createProduct(contact, product));
+			model.addProductItem(createProductItem(contact, product));
 		}
 
 
@@ -420,7 +417,7 @@ public class PurchaseController {
 
 		enrolment.setCollege(student.getCollege());
 		enrolment.setStudent(student);
-		enrolment.setCourseClass(model.localizeObject(courseClass));
+		enrolment.setCourseClass(courseClass);
 
 		if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
 			InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, model.getDiscounts());
@@ -432,9 +429,9 @@ public class PurchaseController {
 	}
 
 
-	private ProductItem createProduct(Contact contact, Product product) {
+	private ProductItem createProductItem(Contact contact, Product product) {
 		if (product instanceof VoucherProduct) {
-			VoucherProduct vp = (VoucherProduct) model.localizeObject(product);
+			VoucherProduct vp = (VoucherProduct) product;
 			Voucher voucher = voucherService.createVoucher(vp, contact, vp.getPriceExTax());
 			InvoiceLine il = invoiceProcessingService.createInvoiceLineForVoucher(voucher, contact);
 
@@ -469,14 +466,6 @@ public class PurchaseController {
 
 	public void setVoucherService(IVoucherService voucherService) {
 		this.voucherService = voucherService;
-	}
-
-	public ICayenneService getCayenneService() {
-		return cayenneService;
-	}
-
-	public void setCayenneService(ICayenneService cayenneService) {
-		this.cayenneService = cayenneService;
 	}
 
 	public void setModel(PurchaseModel model) {

@@ -1,104 +1,154 @@
 <html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
-	bodyClass="literal:internal-page"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
-	<script t:type="ui/jsassetgroup" group="literal:core-enrol" />
-	
-	<t:if test="paymentGatewayEnabled">
-		<t:if test="needInitPayer">
-			<script type="text/javascript">
-				setTimeout("window.location.href='${addPayerURL}'", 100);
-			</script>
-		<p:else>
-			<t:if test="controller">
-				<t:if test="somethingToCheckout">
-					<script type="text/javascript">
-						var enrolmentEntryDisplayed = true;
-					</script>
-					<t:zone t:id="payersZone" t:update="show">
-						<!-- start enrolments summary -->
-						<table class="payments">
-							<colgroup>
-								<col />
-								<col width="80" />
-								<col width="80" />
-							</colgroup>
-							<t:loop source="controller.model.contacts" value="contact" index="studentIndex">
-								<thead>
-									<tr>
-										<th colspan="3">
-											<div class="left">${contact.fullName} <span>-
-												${contact.emailAddress}</span>
-											</div>
-											<t:if test="payer">
-												<span class="payer" style="padding-right:5px;">Payer</span>
-												<t:form t:id="payerForm" zone="payersZone">
-													<span class="valid">
-													<t:select t:id="currentPayer" value="selectedPayer" model="payersModel"
-														encoder="payersEncoder" 
-														blankOption="NEVER" zone="payersZone"/>
-													</span>
-												</t:form>
-											</t:if>
-											<div class="right">
-											<t:if test="showConcessionsArea">
-												<a id="add-concession_${studentIndex}" class="add-concession">
-												<span>Add Concession</span> </a>
-											</t:if>
-											</div>
-										</th>
-									</tr>
-								<t:if test="showConcessionsArea">
-									<tr colspan="3">
-										<th colspan="3"><span t:type="CheckoutConcessionEntry"
-											index="studentIndex" /></th>
-									</tr>
-								</t:if>
-							</thead>
-							<tbody>
-								<span t:type="CheckoutContactEnrolmentList" classes="controller.classesToEnrol" studentIndex="studentIndex"/>
-							</tbody>
-						</t:loop>
+	  bodyClass="literal:internal-page"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		>
 
-						<t:zone t:id="totals" class="t-update" elementName="tbody">
-							<t:if test="controller.hasDiscount">
-								<tr>
-									<td colspan="2" class="alignright">Discount</td>
-									<td class="alignright" id="discounttotal"><t:output
-										value="controller.totalDiscountAmountIncTax" format="controller.moneyFormat" /></td>
-								</tr>
-							</t:if>
-							<tr>
-								<td><span id="addstudent">Add another student</span></td>
-								<td class="alignright">Total</td>
-								<td class="alignright" id="total"><t:output
-									value="controller.totalIncGst" format="controller.moneyFormat" /></td>
-							</tr>
-						</t:zone>
-					</table>
-						
-					</t:zone>
-				<p:else>
-					<h3>Add a classes or products</h3>
-					<div class="error">
-					<p>You do not have any classes or products in your order as yet. Please <a
-						href="${coursesListLink}">select a class</a> from the courses
-					available.</p>
-					</div>
-				</p:else>	
-				</t:if>
-			</t:if>
-			<span t:type="CheckoutContactEntry" nextPageName="nextPage"/>
-			<script type="text/javascript">
-			Event.observe('totals', Tapestry.ZONE_UPDATED_EVENT, function(){
-				initAddStudentButton();
-			});
-		</script>
-		</p:else>
-    	</t:if>
-	<p:else>
-		Payment gateway processing is disabled for this college.
-	</p:else>
-	</t:if>
-	<t:actionLink t:id="checkSession"/>
+<table class="payments">
+	<thead><tr>
+		<td colspan="2" id="payer_0">
+			<div class="left">Aristedes Maniatis <span> ari@ish.com.au</span></div>
+			<div class="drop-down">
+				<span class="btn-primary">Payer <b class="caret"></b></span>
+				<ul class="drop-down-content"><li><a href="javascript: void(0);" rel="payer_0" class="payer"><font>Aristedes Maniatis</font> is the payer</a></li><li><a href="javascript: void(0);" rel="payer_1">Make <font>Salome Cerda-Vargas</font> the payer</a></li><li><a href="javascript: void(0);" rel="payer_2">Make <font>Test One</font> the payer</a></li><li><a href="javascript: void(0);" rel="payer_3">Make <font>Test Two</font> the payer</a></li><li><a href="javascript: void(0);" rel="payer_4">Make <font>Test Three</font> the payer</a></li></ul>
+			</div>
+		</td>
+
+		<td>
+			<a class="add-con" href="#">Add concession</a>
+		</td>
+	</tr>
+	</thead>
+
+	<span t:type="checkout/contactlist" purchaseController="purchaseController"/>
+
+	<tbody>
+	<tr class="even">
+		<td colspan="2">
+			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_0_0" type="checkbox"/><label for="enrolmentCheckbox_0_0" id="i_0_0"> A Toolkit for New Managers </label></p>
+			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
+		</td>
+
+		<td class="alignright">
+			<span id="fullPrice_0_0" class="fee-full fullPrice">$768.00</span>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2" id="payer_1">
+			<div class="left">Salome Cerda-Vargas <span> salome@ish.com.au</span></div>
+		</td>
+		<td>
+			<a class="add-con" href="#">Add concession</a>
+		</td>
+	</tr>
+
+
+	<tr class="even">
+		<td colspan="2">
+			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_1_0" type="checkbox"/><label id="i_1_0" for="enrolmentCheckbox_1_0"> A Toolkit for New Managers</label></p>
+			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
+		</td>
+
+		<td class="alignright">
+			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td colspan="2" id="payer_2">
+			<div class="left">Test One <span> salome@ish.com.au</span></div>
+		</td>
+		<td>
+			<a class="add-con" href="#">Add concession</a>
+		</td>
+	</tr>
+
+
+	<tr class="even">
+		<td colspan="2">
+			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_2_0" type="checkbox"/><label id="i_2_0" for="enrolmentCheckbox_2_0"> A Toolkit for New Managers </label></p>
+			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
+		</td>
+
+		<td class="alignright">
+			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td colspan="2" id="payer_3">
+			<div class="left">Test Two <span> salome@ish.com.au</span></div>
+		</td>
+		<td>
+			<a class="add-con" href="#">Add concession</a>
+		</td>
+	</tr>
+
+	<tr class="even">
+		<td colspan="2">
+			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_3_0" type="checkbox"/><label id="i_3_0" for="enrolmentCheckbox_3_0"> A Toolkit for New Managers </label></p>
+			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
+		</td>
+
+		<td class="alignright">
+			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td colspan="2" id="payer_4">
+			<div class="left">Test Three <span> salome@ish.com.au</span></div>
+		</td>
+		<td>
+			<a class="add-con" href="#">Add concession</a>
+		</td>
+	</tr>
+
+
+	<tr class="even">
+		<td colspan="2">
+			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_4_0" type="checkbox"/><label id="i_4_0" for="enrolmentCheckbox_4_0"> A Toolkit for New Managers </label></p>
+			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
+		</td>
+
+		<td class="alignright">
+			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
+		</td>
+	</tr>
+
+	</tbody><tbody class="t-update t-zone" id="totals">
+<tr>
+	<td>
+		<span id="addstudent">Add another student</span>
+	</td>
+	<td class="alignright">Total</td>
+	<td id="total" class="alignright">
+		<span class="totalPrice">$1536.00</span>
+	</td>
+</tr>
+</tbody>
+</table>
+
+<div class="amount-container">
+	<div class="code-info"><input type="text" name="add_code" class="code_input"/><a href="#" class="btn">Add Code</a><p>Promotional Code,Gift Certificate or Voucher</p></div>
+	<div class="amount-content">
+		<p><label class="first">Credit available</label><a href="enrolcourses.html#access-password-popup" id="access" class="nyroModal">Access</a></p>
+		<p><label>Voucher</label> <span>($180.00)</span></p>
+		<p><label>Previous Owing </label><span>$200.00</span> <a href="">(Remove)</a></p>
+		<p><label>Total</label>  <span>$875.00</span></p>
+		<p><label>Minimum Payable Now</label> <span>$800.00</span></p>
+	</div>
+
+	<div id="access-password-popup">
+		<div class="password-field">
+			<label>Password </label><input type="password" name="password"/><input type="button" class="btn-password" value="Submit" name=""/>
+		</div>
+	</div>
+	<div class="clearboth"></div>
+	<a href="enrolcourses-2.html" class="btn btn-primary">Proceed to Payment</a>
+</div>
+
 </html>

@@ -1,6 +1,7 @@
-package ish.oncourse.enrol.components;
+package ish.oncourse.enrol.components.checkout;
 
 import ish.common.types.*;
+import ish.oncourse.enrol.components.ConcessionEditor;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.utils.PurchaseController;
@@ -28,7 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CheckoutContactDetails {
+public class ContactDetails {
 	
 	/**
      * Constants
@@ -290,7 +291,7 @@ public class CheckoutContactDetails {
     }
     
     private PurchaseController getController() {
-		return checkout.getController();
+		return checkout.getPurchaseController();
 	}
 
     @OnEvent(component = "addDetailsAction", value = "selected")

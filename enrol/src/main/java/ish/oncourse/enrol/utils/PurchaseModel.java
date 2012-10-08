@@ -37,14 +37,6 @@ public class PurchaseModel {
 		this.voucherPayments = new ArrayList<PaymentIn>();
 	}
 
-	public <T extends Persistent> T localizeObject(T objectForLocalize) {
-		if (objectForLocalize.getObjectContext().equals(objectContext)) {
-			return objectForLocalize;
-		} else {
-			return (T) objectContext.localObject(objectForLocalize.getObjectId(), null);
-		}
-	}
-
 	public void addDiscount(Discount discount)
 	{
 		discounts.add(discount);
@@ -60,7 +52,6 @@ public class PurchaseModel {
 	}
 	
 	public void setPayer(Contact payer) {
-		payer = localizeObject(payer);
 		this.payer = payer;
 	}
 	
@@ -178,14 +169,8 @@ public class PurchaseModel {
 		return getContactNode(contact).getAllEnrolments();
 	}
 	
-	public Enrolment getEnrolmentByCourseClass(Contact contact, CourseClass courseClass) {
-		List<Enrolment> allEnrolments = getAllEnrolments(contact);
-		for (Enrolment enrolment : allEnrolments) {
-			if (courseClass.getId().equals(enrolment.getCourseClass().getId())) {
-				return enrolment;
-			}
-		}
-		return null;
+	public Enrolment getEnrolmentBy(Contact contact, Integer index) {
+		return getAllEnrolments(contact).get(index);
 	}
 	
 	public boolean isEnrolmentEnabled(Enrolment enrolment) {
@@ -197,25 +182,15 @@ public class PurchaseModel {
 	}
 
 
-	public List<ProductItem> getAllProducts(Contact contact) {
-		return getContactNode(contact).getAllProducts();
+	public List<ProductItem> getAllProductItems(Contact contact) {
+		return getContactNode(contact).getAllProductItems();
 	}
 	
-	public ProductItem getProductItemByProduct(Contact contact, Product product) {
-		List<ProductItem> allProductItems = getAllProducts(contact);
-		for (ProductItem productItem : allProductItems) {
-			if (product.getId().equals(productItem.getProduct().getId())) {
-				return productItem;
-			}
-		}
-		return null;
+	public ProductItem getProductItemBy(Contact contact, Integer integer) {
+		return getAllProductItems(contact).get(integer);
 	}
 	
-	public List<ProductItem> getEnabledProducts(Contact contact) {
-		return Collections.unmodifiableList(getContactNode(contact).enabledProductItems);
-	}
-	
-	public List<ProductItem> getDisabledProducts(Contact contact) {
+	public List<ProductItem> getDisabledProductItems(Contact contact) {
 		return Collections.unmodifiableList(getContactNode(contact).disabledProductItems);
 	}
 	
@@ -273,6 +248,31 @@ public class PurchaseModel {
 		this.objectContext = objectContext;
 	}
 
+	public <T extends Persistent> T localizeObject(T objectForLocalize) {
+		if (objectForLocalize == null)
+			return null;
+		if (objectForLocalize.getObjectContext().equals(objectContext)) {
+			return objectForLocalize;
+		} else {
+			return (T) objectContext.localObject(objectForLocalize.getObjectId(), null);
+		}
+	}
+
+	public <T extends Persistent> List<T> localizeObjects(List<T> objectsForLocalize) {
+		ArrayList<T> list = new ArrayList<T>();
+		for (T t : objectsForLocalize) {
+			if (t.getObjectContext().equals(objectContext)) {
+				list.add(t);
+			}
+			else
+			{
+				list.add((T) objectContext.localObject(t.getObjectId(), null));
+			}
+		}
+		return list;
+	}
+
+
 	private class ContactNode {
 		
 		private List<ConcessionType> concessions;
@@ -299,7 +299,7 @@ public class PurchaseModel {
 			return Collections.unmodifiableList(result);
 		}
 		
-		private List<ProductItem> getAllProducts() {
+		private List<ProductItem> getAllProductItems() {
 			List<ProductItem> result = new ArrayList<ProductItem>(enabledProductItems);
 			result.addAll(disabledProductItems);
 			return Collections.unmodifiableList(result);

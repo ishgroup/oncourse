@@ -1,6 +1,6 @@
 <t:container
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-	xmlns:p="tapestry:parameter">
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		>
 	<t:form t:id="contactDetailsForm" zone="addStudentBlock">
 		<t:errors banner="message:errors" class="literal:validation"/>
 		<t:if test="showAdditionalInfoMessage">

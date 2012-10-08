@@ -20,12 +20,15 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.ui.pages.Courses;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.json.JSONObject;
@@ -35,6 +38,7 @@ import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 public class Checkout {
@@ -77,14 +81,7 @@ public class Checkout {
     private Request request;
 		
 	@Persist
-	private PurchaseController controller;
-	
-	@InjectComponent
-	private Zone payersZone;
-	
-	@InjectComponent
-	@Property
-	private Form payerForm;
+	private PurchaseController purchaseController;
 	
 	@Property
     private Contact contact;
@@ -101,17 +98,6 @@ public class Checkout {
 	@Property
 	private Contact selectedPayer;
 
-	/**
-	 * @return the controller
-	 */
-	public PurchaseController getController() {
-		return controller;
-	}
-	
-	public boolean isNeedInitPayer() {
-		return getController() == null;
-	}
-	
 	public String getAddPayerURL() {
 		return "http://" + request.getServerName() + request.getContextPath() + "/" + AddPayer.class.getSimpleName().toLowerCase();
 	}
@@ -130,7 +116,7 @@ public class Checkout {
 	 * @return
 	 */
 	public boolean isPayer() {
-		return getController().getModel().getPayer().getId().equals(contact.getId());
+		return getPurchaseController().getModel().getPayer().getId().equals(contact.getId());
 	}
 	
 	@OnEvent(value = EventConstants.VALUE_CHANGED, component = "currentPayer")
@@ -140,7 +126,7 @@ public class Checkout {
 		}
 		ActionParameter actionParameter = new ActionParameter(Action.CHANGE_PAYER);
 		actionParameter.setValue(selectedPayer);
-		getController().performAction(actionParameter);
+		getPurchaseController().performAction(actionParameter);
 		return getNextPage();
     }
 	
@@ -151,12 +137,17 @@ public class Checkout {
 	@SetupRender
 	void beforeRender() {
 		synchronized (this) {
-			initPaymentController();
+			initTestPaymentController();
 		}
 	}
 
+	public PurchaseController getPurchaseController()
+	{
+		return purchaseController;
+	}
+
 	private void initPaymentController() {
-		if (getController() == null) {
+		if (purchaseController == null) {
 			List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
 			List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
 			List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
@@ -164,34 +155,71 @@ public class Checkout {
 			List<Contact> selectedContacts = studentService.getStudentsFromShortList();
 			Contact payer = selectedContacts.size() > 0 ? selectedContacts.get(0): null;
 			if (selectedContacts.size() > 1) {
-				LOGGER.warn(String.format(" %s contacts loaded from shortlist for init the controller but should be 1!", selectedContacts.size()));
+				LOGGER.warn(String.format(" %s contacts loaded from shortlist for init the purchaseController but should be 1!", selectedContacts.size()));
 			}
 
 			PurchaseModel model = new PurchaseModel();
-			model.setClasses(courseClasses);
-			model.setProducts(products);
-			model.addContact(payer);
-			model.setPayer(payer);
 			model.setObjectContext(cayenneService.newContext());
+			model.setClasses(model.localizeObjects(courseClasses));
+			model.setProducts(model.localizeObjects(products));
+			model.addContact(model.localizeObject(payer));
+			model.setPayer(model.localizeObject(payer));
 
-			controller = new PurchaseController();
-			controller.setModel(model);
-			controller.setDiscountService(discountService);
-			controller.setInvoiceProcessingService(invoiceProcessingService);
-			controller.setVoucherService(voucherService);
-			controller.setCayenneService(cayenneService);
-			controller.performAction(new ActionParameter(Action.INIT));
+			purchaseController = new PurchaseController();
+			purchaseController.setModel(model);
+			purchaseController.setDiscountService(discountService);
+			purchaseController.setInvoiceProcessingService(invoiceProcessingService);
+			purchaseController.setVoucherService(voucherService);
+			purchaseController.performAction(new ActionParameter(Action.INIT));
+		}
+	}
+
+
+	private void initTestPaymentController() {
+		if (purchaseController == null) {
+			List<Long> orderedClassesIds = Arrays.asList(5021693L,
+					5021692L,
+					5021691L,
+					5021690L);
+			List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
+			List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
+			List<Product> products = voucherService.loadByIds(productIds);
+			ObjectContext objectContext = cayenneService.newContext();
+			Contact payer = Cayenne.objectForPK(objectContext,Contact.class, 5040916);
+
+			PurchaseModel model = new PurchaseModel();
+			model.setObjectContext(cayenneService.newContext());
+			model.setClasses(model.localizeObjects(courseClasses));
+			model.setProducts(model.localizeObjects(products));
+			model.setPayer(model.localizeObject(payer));
+			model.addContact(model.getPayer());
+
+			purchaseController = new PurchaseController();
+			purchaseController.setModel(model);
+			purchaseController.setDiscountService(discountService);
+			purchaseController.setInvoiceProcessingService(invoiceProcessingService);
+			purchaseController.setVoucherService(voucherService);
+			purchaseController.performAction(new ActionParameter(Action.INIT));
+
+			ActionParameter parameter = new ActionParameter(Action.ADD_STUDENT);
+			parameter.setValue(Cayenne.objectForPK(model.getObjectContext(), Contact.class, 5040914));
+			purchaseController.performAction(parameter);
+
+			parameter = new ActionParameter(Action.ADD_STUDENT);
+			parameter.setValue(Cayenne.objectForPK(model.getObjectContext(),Contact.class, 5040913));
+			purchaseController.performAction(parameter);
+
 		}
 	}
 
 	public ListSelectModel<Contact> getPayersModel()
 	{
-		return new ListSelectModel<Contact>(getController().getModel().getContacts(), PROPERTY_CONTACT_FULL_NAME, propertyAccess);
+		return new ListSelectModel<Contact>(getPurchaseController().getModel().getContacts(), PROPERTY_CONTACT_FULL_NAME, propertyAccess);
 	}
 
 	public ListValueEncoder<Contact> getPayersEncoder()
 	{
-		return new ListValueEncoder<Contact>(getController().getModel().getContacts(), Contact.ID_PK_COLUMN, propertyAccess);
+		return new ListValueEncoder<Contact>(getPurchaseController().getModel().getContacts(), Contact.ID_PK_COLUMN, propertyAccess);
 	}
 
 
@@ -233,7 +261,7 @@ public class Checkout {
     }
     
     public Object handleUnexpectedException(final Throwable cause) {
-    	if (getController() == null) {
+    	if (getPurchaseController() == null) {
 			LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
 			return this;
 		} else {

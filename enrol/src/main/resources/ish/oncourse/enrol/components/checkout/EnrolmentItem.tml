@@ -1,0 +1,35 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	
+	<tr> 
+		<td>
+			<form>
+				<label>
+					<input type="checkbox" class="enrolmentCheckbox"/>
+					${enrolment.courseClass.course.name}
+	  			</label>
+	  		</form>
+	  		<em>
+	  			<t:if test="enrolment.courseClass.hasRoom">
+	  				<span t:type="ui/RoomLocation" room="enrolment.courseClass.room" withRoomName="false" disabledLink="true" />
+				</t:if>&#187; 
+		  		<t:if test="enrolment.courseClass.running">
+		  			<span class="started">
+	  					<t:output value="enrolment.courseClass.startDate" format="dateFormat"/>
+	  				</span>
+					<p:else>
+						<span class="ended">
+	  						<t:output value="enrolment.courseClass.endDate" format="dateFormat"/>
+		  				</span>
+		  			</p:else>
+	  			</t:if>
+	 	  	</em>
+		</td>
+		<td></td>
+		<td class="alignright">
+			<span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="enrolment.id"/>
+		</td>
+	</tr>
+ 
+</t:container>	

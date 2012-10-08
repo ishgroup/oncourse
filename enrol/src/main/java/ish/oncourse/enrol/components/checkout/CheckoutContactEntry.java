@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.components;
+package ish.oncourse.enrol.components.checkout;
 
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
@@ -116,7 +116,7 @@ public class CheckoutContactEntry {
     private Checkout checkoutPage;
 	
 	private PurchaseController getController() {
-		return checkoutPage.getController();
+		return checkoutPage.getPurchaseController();
 	}
 
 	@SetupRender
