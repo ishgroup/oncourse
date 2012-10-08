@@ -1,0 +1,10 @@
+dependencies {
+	compile project(':common:common-model')
+	compile project(':common:common-services')
+	compile 'org.apache.solr:solr:3.5.0@war'
+	compile 'org.apache.solr:solr-dataimporthandler:3.5.0'
+
+	testCompile project(':common:common-test')
+	testCompile 'org.apache.solr:solr-test-framework:3.5.0'
+	testCompile 'org.apache.lucene:lucene-test-framework:3.5.0'
+}

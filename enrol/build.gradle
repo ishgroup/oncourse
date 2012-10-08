@@ -1,0 +1,8 @@
+dependencies {
+	compile project(':common:common-services')
+	compile project(':common:common-model')
+	compile project(':common:common-ui')
+	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
+
+	testCompile project(':common:common-test')
+}

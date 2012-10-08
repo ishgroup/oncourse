@@ -1,0 +1,93 @@
+buildscript {
+	repositories {
+		maven {
+			url 'http://repo.ish.com.au/content/groups/public'
+		}
+		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+			name = 'GitHub'
+			addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
+		}
+	}
+	dependencies {
+		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
+		classpath 'org.apache.maven.wagon:wagon-http:2.2'
+		classpath 'bmuschko:gradle-cargo-plugin:0.3'
+	}
+}
+
+version = 'trunk-SNAPSHOT' //TODO implement release plugin
+
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'maven'
+
+	apply plugin: 'war'
+	apply plugin: 'cargo'
+
+	configurations {
+		deployerJars {
+			description = 'Jars needed for doing deployment to JBoss Nexus repo'
+		}
+	}
+
+	repositories {
+		maven {
+			url 'http://repo.ish.com.au/content/groups/public'
+		}
+		maven {
+			url 'http://repo.ish.com.au/content/groups/ish'
+		}
+	}
+
+	dependencies {
+		testCompile 'junit:junit:4.8.2'
+		testCompile 'dbunit:dbunit:2.4.8'
+		
+		compile 'log4j:log4j:1.2.17'
+		providedCompile 'javax.servlet:servlet-api:2.5'
+
+		deployerJars 'org.apache.maven.wagon:wagon-http:1.0-beta-2'
+
+		cargo 'org.codehaus.cargo:cargo-core-uberjar:1.1.1',
+			'org.codehaus.cargo:cargo-ant:1.1.1',
+			'jaxen:jaxen:1.1.1'
+	}
+
+	uploadArchives.dependsOn install
+	group = 'ish.oncourse.willow'
+	uploadArchives {
+		repositories.mavenDeployer {
+			name = 'ishRepo'
+			configuration = configurations.deployerJars
+			repository(id:'internal-releases', url: 'http://repo.ish.com.au/content/repositories/ish-releases') {
+				authentication(userName: nexusUsername, password: nexusPassword)
+			}
+			snapshotRepository(id:'internal-snapshots', url: 'http://repo.ish.com.au/content/repositories/ish-snapshots') {
+				authentication(userName: nexusUsername, password: nexusPassword)
+			}
+		}
+	}
+	uploadArchives.dependsOn install
+
+	ext.sharedManifest = manifest {
+		attributes 'Release-Version': version,
+			'Built-Date': new Date(),
+			'Built-JDK': System.getProperty('java.version'),
+			'Built-Gradle': gradle.gradleVersion,
+			'Implementation-Version': System.getProperty('build_number') ?: 'local'
+//			'SCM-Revision': project.release.scmVersion
+	}
+
+	jar {
+		manifest {
+			from sharedManifest
+		}
+	}
+
+	test {
+		systemProperties 'java.awt.headless': 'true'
+		maxHeapSize = '1024m'
+		jvmArgs "-XX:MaxPermSize=256m"
+		ignoreFailures = true  // ignore test failures so that the test aggregate still works
+	}
+}

@@ -1,0 +1,51 @@
+dependencies {
+	compile project(':common:common-model')
+	compile project(':common:common-services') 
+
+	compile ('org.apache.cxf:cxf-bundle:2.6.2') {
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+	}
+	compile 'wsdl4j:wsdl4j:1.6.2'
+
+	testCompile project(':common:common-test')
+}
+
+archivesBaseName = "willowAdmin"
+
+/*
+project.ext.testCargo = cargo {
+	containerId = 'tomcat7x'
+	port = 10101
+	remote {
+		hostname = 'staging.oncourse.net.au'
+		username = 'deploy'
+		password = tomcatTestPass
+	}
+}
+
+project.ext.stagingCargo = cargo {
+	containerId = 'tomcat7x'
+	port = 10101
+	remote {
+		hostname = 'staging.oncourse.net.au'
+		username = 'deploy'
+		password = tomcatStagingPass
+	}
+}
+
+task deployTest (dependsOn: war, type: org.gradle.api.plugins.cargo.RemoteContainerTask) {
+	containerId = 'tomcat7x'
+	action = 'redeploy'
+	port = 10101
+	remote {
+		hostname = 'staging.oncourse.net.au'
+		username = 'deploy'
+		password = tomcatTestPass
+	}
+}
+
+task deployStaging (dependsOn: war, type:RemoteContainerTask) {
+	with stagingCargo
+}
+*/

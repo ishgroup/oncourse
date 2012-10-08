@@ -1,0 +1,19 @@
+dependencies {
+	compile project(':common:common-model')
+	compile 'ish.oncourse.angel:webservices-client:trunk-SNAPSHOT'
+	compile ('org.apache.cxf:cxf-bundle:2.6.2') {
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+	}
+	compile 'org.apache.tapestry:tapestry-spring'
+	compile 'org.springframework:spring-core'
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-web'
+	compile 'aopalliance:aopalliance:1.0'
+	compile 'commons-logging:commons-logging:1.1.1'
+	compile 'com.google.inject:guice'
+	compile 'org.apache.tapestry:tapestry-ioc'
+
+	testCompile project(':common:common-test')
+}

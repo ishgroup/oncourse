@@ -1,0 +1,13 @@
+rootProject.name = 'Willow'
+include 'admin',
+	'cms',
+	'common:common-model',
+	'common:common-services',
+	'common:common-test',
+	'common:common-textile',
+	'common:common-ui',
+	'enrol',
+	'portal',
+	'search',
+	'services',
+	'web'
