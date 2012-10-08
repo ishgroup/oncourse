@@ -76,20 +76,20 @@ test {
 	switch (dbTests) {
 		case "derby-test":
 			systemProperty 'testDatabaseUri', testDatabaseUriDerby
-			exclude '**/db/Mysql*'
-			exclude '**/db/Mssql*'
+			exclude '**/db/Mysql*.class'
+			exclude '**/db/Mssql*.class'
 			break
 
 		case "mssql-test":
 			systemProperty 'testDatabaseUri', testDatabaseUriMssql
-			exclude '**/db/Mysql*'
-			exclude '**/db/Derby*'
+			exclude '**/db/Mysql*.class'
+			exclude '**/db/Derby*.class'
 			break
 
 		case "mysql-test":
 			systemProperty 'testDatabaseUri', testDatabaseUriMysql
-			exclude '**/db/Mssql*'
-			exclude '**/db/Derby*'
+			exclude '**/db/Mssql*.class'
+			exclude '**/db/Derby*.class'
 			break
 	}
 	
