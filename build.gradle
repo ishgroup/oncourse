@@ -22,15 +22,16 @@ buildscript {
 	}
 }
 
+apply plugin: 'release'
+release {
+	scm = 'svn'
+	failOnSnapshotDependencies = true
+}
+version = release.projectVersion
+
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	
-	apply plugin: 'release'
-	release {
-		scm = 'svn'
-		failOnSnapshotDependencies = true
-	}
 
 	configurations {
 		deployerJars {
