@@ -381,7 +381,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				}
 			}
 			if (invoiceToRefund != null) {
-				revertTheVoucherRedemption();
 				PaymentIn internalPayment = createRefundInvoice(paymentInLineToRefund, today);
 				return internalPayment;
 			} else {
@@ -393,6 +392,11 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		return null;
 	}
 	
+	/**
+	 * Deprecated functionality
+	 * We should use PaymentInAbandonHelper#makeAbandon() instead of abandon.
+	 */
+	@Deprecated
 	private void revertTheVoucherRedemption() {
 		//also check that vouchers linked with the payment to avoid the state when vouchers will be partially used with abandoned payment.
 		final List<VoucherPaymentIn> objectsForDelete = new ArrayList<VoucherPaymentIn>();
@@ -442,7 +446,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		Date today = new Date();
 
 		if (activeInvoice != null) {
-			revertTheVoucherRedemption();
 			activeInvoice.setModified(today);
 			for (InvoiceLine il : activeInvoice.getInvoiceLines()) {
 				il.setModified(today);
