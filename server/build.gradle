@@ -15,11 +15,7 @@ dependencies {
 	compile 'org.apache.cayenne:cayenne-tools:3.1B1'
 	compile 'foxtrot:foxtrot-core:4.0'
 
-	compile module("org.eclipse.jetty:jetty-server:$jettyVersion") {
-    	dependencies(
-        	"org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016@jar"
-    	)
-	}
+	compile "org.eclipse.jetty:jetty-server:$jettyVersion"
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 	compile "org.eclipse.jetty:jetty-security:$jettyVersion"
 	compile "org.eclipse.jetty:jetty-http:$jettyVersion"
@@ -34,8 +30,16 @@ dependencies {
 
 	compile ('net.sf.jasperreports:jasperreports:4.7.0') {
 		exclude group: 'org.apache.poi', module: 'poi-ooxml'
-	}
 
+		//excluding the following, because they aren't correctly defined inside dependencies, causing duplicate jars to be added to the project
+		// please re-evaluate after itext is upgraded
+		exclude group: 'bouncycastle', module: 'bcmail-jdk14'
+		exclude group: 'bouncycastle', module: 'bcprov-jdk14'
+		exclude group: 'bouncycastle', module: 'bctsp-jdk14'
+	}
+	// added the correct dependency manually, with version number properly formatted
+	compile 'org.bouncycastle:bctsp-jdk14:1.38'
+	
 	compile 'net.sourceforge.jtds:jtds:1.2.4'
 	compile 'mysql:mysql-connector-java:5.1.21'
 	compile 'net.sourceforge.saxon:saxon:9.1.7'
