@@ -156,6 +156,10 @@ sonar {
 	}
 }
 
+subprojects { 
+	version = project.parent.version
+}
+
 /*
 
 	Additional functionality which might later be turned into plugins
