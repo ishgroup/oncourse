@@ -238,7 +238,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 
     private PaymentProcessController createPaymentProcessController() {
         String sessionId = "SESSIONID";
-        PaymentProcessController paymentProcessController = new PaymentProcessController();
+        final PaymentProcessController paymentProcessController = new PaymentProcessController();
         ObjectContext context = cayenneService.newContext();
         paymentProcessController.setObjectContext(context);
         paymentProcessController.setPaymentGatewayService(paymentGatewayService);
@@ -253,6 +253,10 @@ public class PaymentProcessControllerTest extends ServiceTest {
 			public <T> Future<T> invoke(Invokable<T> invocable) {
 				if (invocable instanceof ProcessPaymentInvokable) {
 					invocable.invoke();
+				}
+				if (invocable instanceof StackedPaymentMonitor) {
+					assertFalse("We should fire and re-fire the watchdog to abandon the payments only when the processing not finished", 
+						paymentProcessController.isProcessFinished());
 				}
 				return null;
 			}

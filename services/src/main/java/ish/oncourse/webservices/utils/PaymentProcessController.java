@@ -116,7 +116,8 @@ public class PaymentProcessController {
             stackedPaymentMonitorFuture.cancel(true);
             stackedPaymentMonitorFuture = null;
         }
-        if (!SUCCESS.equals(currentState) && !CANCEL.equals(currentState) ) {
+        
+        if (!isProcessFinished()) {
         	//we should not fire watchdog in case if payment already success or canceled for any reasons.
         	stackedPaymentMonitorFuture = parallelExecutor.invoke(new StackedPaymentMonitor(this));
         }
