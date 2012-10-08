@@ -14,6 +14,6 @@ public interface IBinaryDataService {
 
 	BinaryInfo getRandomImage();
 
-	List<BinaryInfo> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean isWebVisible);
+	List<BinaryInfo> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean hidePrivateAttachments);
 
 }
