@@ -6,7 +6,7 @@
 	<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
 
 	<t:form>
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="class">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="survey-table">
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
 			<td>
@@ -23,7 +23,7 @@
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
 				<t:loop  source="tutorRoles" value="tutorRole">
-					<div class="class-man">${tutorRoleName} </div>
+					<div>${tutorRoleName} </div>
 				</t:loop>
 			</td>
 			<td>
@@ -33,7 +33,7 @@
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
-				<div class="class-place light"><i class="icon-map-marker"></i> ${room}</div>
+				<div class="light">${room}</div>
 			</td>
 			<td>
 				<span t:type="rating" id="ratingVenue"/>
@@ -47,6 +47,6 @@
 		</tr>
 
 	</table>
-	<button type="button" class="form-submit-button">Submit</button>
+	<button type="button" class="form-submit-button btn">Submit</button>
 	</t:form>
 </html>
