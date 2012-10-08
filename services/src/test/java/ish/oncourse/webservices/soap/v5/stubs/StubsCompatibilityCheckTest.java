@@ -424,6 +424,14 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		membershipProductParamethers.add(new ReplicationStubFieldParamether("expiryDays", Integer.class));
 		membershipProductParamethers.add(new ReplicationStubFieldParamether("expiryType", Integer.class));
 		stubsPropertyMap.put(getStubName(MembershipProductStub.class), membershipProductParamethers);
+		final List<ReplicationStubFieldParamether> surveyParamethers = fillDefaultReplicationStubFields();
+		surveyParamethers.add(new ReplicationStubFieldParamether("comment", String.class));
+		surveyParamethers.add(new ReplicationStubFieldParamether("courseScore", Integer.class));
+		surveyParamethers.add(new ReplicationStubFieldParamether("tutorScore", Integer.class));
+		surveyParamethers.add(new ReplicationStubFieldParamether("venueScore", Integer.class));
+		surveyParamethers.add(new ReplicationStubFieldParamether("uniqueCode", String.class));
+		surveyParamethers.add(new ReplicationStubFieldParamether("enrolmentId", Long.class));
+		stubsPropertyMap.put(getStubName(SurveyStub.class), surveyParamethers);
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParamether> replicationStubParamethers = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParamethers);
@@ -540,7 +548,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	
 	@Test
 	public void testSurveyStub() {
-		fail("Not implemented yet!");
+		final GenericReplicationStub stub = new SurveyStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
 	@Test
