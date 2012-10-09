@@ -5,10 +5,13 @@
 		<th colspan="3">
 			<div class="left">${contact.fullName} <span>-
 				${contact.emailAddress}</span></div>
-			<div class="right"><t:if test="showConcessionsArea">
-				<a id="add-concession_${contact.id}" class="add-concession">
-					<span>Add Concession</span> </a>
-			</t:if></div>
+			<span t:type="checkout/selectpayer" purchaseController="purchaseController" contact="contact"/>
+			<div class="right">
+				<t:if test="showConcessionsArea">
+					<a id="add-concession_${contact.id}" class="add-concession">
+						<span>Add Concession</span> </a>
+				</t:if>
+			</div>
 		</th>
 	</tr>
 	</thead>

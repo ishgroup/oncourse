@@ -1,0 +1,12 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<t:if test="payer">
+		<span class="payer" style="padding-left:5px;">Payer</span>
+			<t:form t:id="payerForm" zone="contactsZone">
+				<span class="valid">
+					<t:select t:id="currentPayer" value="currentSelection" model="payersModel" encoder="payersEncoder" blankOption="NEVER" 
+						zone="contactsZone"/>
+				</span>
+			</t:form>
+	</t:if>
+	
+</t:container>

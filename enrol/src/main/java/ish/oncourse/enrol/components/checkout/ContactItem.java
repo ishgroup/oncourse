@@ -13,8 +13,7 @@ public class ContactItem {
 	@Parameter(required = true)
 	@Property
 	private Contact contact;
-
-
+	
 	public boolean isShowConcessionsArea()
 	{
 		return true;
