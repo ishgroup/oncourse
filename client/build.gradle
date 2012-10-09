@@ -44,7 +44,6 @@ cayenne {
 }
 
 macAppBundle {
-	logger.lifecycle("project ... "+project.name +" "+project.version)
 	appOutputDir = 'distributions/macosx'
 	//dmgOutputDir = 'distributions/macosx'
 	creatorCode = "ishS"

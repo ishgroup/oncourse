@@ -8,22 +8,12 @@ dependencies {
 	compile project(':waCommon')
 	compile project(':webservices-client')
 
-	compile 'javax.jmdns:jmdns:3.4.1'
-
-	compile 'org.apache.cayenne:cayenne-server:3.1B1'
 	compile 'org.apache.cayenne:cayenne-lifecycle:3.1B1'
 	compile 'org.apache.cayenne:cayenne-tools:3.1B1'
 	compile 'foxtrot:foxtrot-core:4.0'
 
-	compile "org.eclipse.jetty:jetty-server:$jettyVersion"
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
-	compile "org.eclipse.jetty:jetty-security:$jettyVersion"
-	compile "org.eclipse.jetty:jetty-http:$jettyVersion"
-	compile "org.eclipse.jetty:jetty-util:$jettyVersion"
-	compile "org.eclipse.jetty:jetty-io:$jettyVersion"
-	compile "org.eclipse.jetty:jetty-continuation:$jettyVersion"
 
-	compile 'org.apache.derby:derby:10.9.1.0'
 	compile 'org.apache.derby:derbyclient:10.9.1.0'
 	compile 'org.apache.derby:derbynet:10.9.1.0'
 	compile 'org.liquibase:liquibase-core:2.0.5'
@@ -45,9 +35,7 @@ dependencies {
 	compile 'net.sourceforge.saxon:saxon:9.1.7'
 	compile 'com.google.inject:guice:3.0'
 	compile 'org.quartz-scheduler:quartz:2.1.6'
-	compile 'org.slf4j:slf4j-api:1.6.6'
 	compile 'org.slf4j:slf4j-log4j12:1.6.4'
-	compile 'commons-dbcp:commons-dbcp:1.4'
 
 	testCompile 'org.mockito:mockito-core:1.9.0'
 	testCompile 'org.apache.derby:derbytools:10.9.1.0'
