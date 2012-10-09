@@ -1,0 +1,45 @@
+<t:container
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	
+	<tr> 
+		<td>
+			<form>
+				<label>
+					<input type="checkbox" class="productItemCheckbox" value="isEnabled"/>
+					${productItem.product.name}
+	  			</label>
+	  		</form>
+	  		<em>
+	  			<t:if test="voucherWithPrice">
+	  				This is a voucher with specified price.
+	  			</t:if>
+	  			<t:if test="giftSertificate">
+	  				This voucher have no specified price. Please enter the amount below:
+	  			</t:if>
+	  			<t:if test="courseVoucher">
+	  				<dt class="label">This voucher valid for</dt>
+					<dd>
+						<ul class="class-listing">
+							<t:loop source="redemptionCourses" value="course">
+								<li>${course.name}</li>
+							</t:loop>
+						</ul>
+					</dd>
+	  			</t:if>
+	 	  	</em>
+		</td>
+		<td></td>
+		<td class="alignright">
+			<t:if test="voucherWithPrice">
+				<span class="fee-full fullPrice" id="fullPrice_${productItem.id}">
+					<t:output value="price" format="feeFormat"/>
+				</span>
+			<p:else>
+				input for price place
+			</p:else>
+			</t:if>
+		</td>
+	</tr>
+ 
+</t:container>	
