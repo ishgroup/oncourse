@@ -49,10 +49,10 @@ dependencies {
 	compile 'org.slf4j:slf4j-log4j12:1.6.4'
 	compile 'commons-dbcp:commons-dbcp:1.4'
 
-  	testCompile 'org.mockito:mockito-core:1.9.0'
-  	testCompile 'org.apache.derby:derbytools:10.9.1.0'
-  	testCompile 'org.eclipse.jetty:test-jetty-servlet:8.1.5.v20120716'
-  	testCompile 'dbunit:dbunit:2.4.8'
+	testCompile 'org.mockito:mockito-core:1.9.0'
+	testCompile 'org.apache.derby:derbytools:10.9.1.0'
+	testCompile 'org.eclipse.jetty:test-jetty-servlet:8.1.5.v20120716'
+	testCompile 'dbunit:dbunit:2.4.8'
 }
 
 jar {
@@ -62,15 +62,28 @@ jar {
 	}
 }
 
-test {
-	
-	doFirst {
-		copy {
-			from "$projectDir/build/resources/main/resources/liquibase"
-			into "$workingDir/resources/liquibase"
+sourceSets {
+  main {
+	// generate some manifest files for lists of resources to find at runtime
+	output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
+  }
+}
+
+task createResourceManifests {
+	doLast {
+		def sources = ["resources/schema/referenceData/exportTemplates", "resources/schema/referenceData/reports"]
+		sources.each { s -> 
+			def exportManifest = new File("$buildDir/generated-resources/main/$s", "manifest")
+			exportManifest.getParentFile().mkdirs()
+			exportManifest.write("")
+			file("src/main/resources/$s").eachFile { 
+				if (it.isFile()) exportManifest.append("$s/$it.name\n")
+			}
 		}
 	}
-	
+}
+
+test {
 	dbTests = hasProperty('database') ? database : "derby-test"
 
 	switch (dbTests) {
@@ -92,10 +105,6 @@ test {
 			exclude '**/db/Derby*.class'
 			break
 	}
-	
-	doLast {
-		delete "$workingDir/resources/liquibase"
-	}
 }
 
 cayenne {
@@ -112,34 +121,34 @@ macAppBundle {
 	//dmgOutputDir = 'distributions/macosx'
 	creatorCode = "ishS"
 	backgroundImage = "${projectDir}/src/packaging/macosx/dmg.background.png"
-    mainClassName = "ish.oncourse.server.AngelServer"
-    appName = "onCourseServer"
-    volumeName = "onCourseServer"
-    dmgName = "onCourseServer"
-    bundleExecutable = 'onCourseServer'
-    bundleAllowMixedLocalizations = false
-    icon = "${projectDir}/src/packaging/macosx/onCourseServer.icns"
-    jvmVersion = "${sourceCompatibility}+"
-    //certIdentity =  "Developer ID Application: ish group pty ltd"
+	mainClassName = "ish.oncourse.server.AngelServer"
+	appName = "onCourseServer"
+	volumeName = "onCourseServer"
+	dmgName = "onCourseServer"
+	bundleExecutable = 'onCourseServer'
+	bundleAllowMixedLocalizations = false
+	icon = "${projectDir}/src/packaging/macosx/onCourseServer.icns"
+	jvmVersion = "${sourceCompatibility}+"
+	//certIdentity =  "Developer ID Application: ish group pty ltd"
 
 	//java properties
-    javaProperties.put("apple.awt.textantialiasing", "true")
-    javaProperties.put("JFileChooser.appBundleIsTraversable", "true")
-    javaProperties.put("JFileChooser.packageIsTraversable", "true")    
-    javaProperties.put("apple.awt.antialiasing", "true")    
-    javaProperties.put("apple.awt.showGrowBox", "true") 
+	javaProperties.put("apple.awt.textantialiasing", "true")
+	javaProperties.put("JFileChooser.appBundleIsTraversable", "true")
+	javaProperties.put("JFileChooser.packageIsTraversable", "true")    
+	javaProperties.put("apple.awt.antialiasing", "true")    
+	javaProperties.put("apple.awt.showGrowBox", "true") 
 
-    javaExtras.put("VMOptions", "-Xmx"+"${project.maxmemoryServer}")
+	javaExtras.put("VMOptions", "-Xmx"+"${project.maxmemoryServer}")
 
-    def Map dict = new HashMap();
-    dict.put ("CFBundleTypeName", "onCourse server data file")
-    dict.put ("CFBundleTypeRole", "Editor")
-    dict.put ("CFBundleTypeIconFile", "onCourseDocument.icns")
-    dict.put ("CFBundleTypeExtensions", ["iocdata"])
-    dict.put ("CFBundleTypeOSTypes", ["ishS"])
-    dict.put ("LSTypeIsPackage", "true")
+	def Map dict = new HashMap();
+	dict.put ("CFBundleTypeName", "onCourse server data file")
+	dict.put ("CFBundleTypeRole", "Editor")
+	dict.put ("CFBundleTypeIconFile", "onCourseDocument.icns")
+	dict.put ("CFBundleTypeExtensions", ["iocdata"])
+	dict.put ("CFBundleTypeOSTypes", ["ishS"])
+	dict.put ("LSTypeIsPackage", "true")
 
-    bundleExtras.put("CFBundleDocumentTypes", [dict])
+	bundleExtras.put("CFBundleDocumentTypes", [dict])
 
 }
 
