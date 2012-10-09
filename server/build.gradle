@@ -51,7 +51,7 @@ dependencies {
 
 	testCompile 'org.mockito:mockito-core:1.9.0'
 	testCompile 'org.apache.derby:derbytools:10.9.1.0'
-	testCompile 'org.eclipse.jetty:test-jetty-servlet:8.1.5.v20120716'
+	testCompile 'org.eclipse.jetty:test-jetty-servlet:$jettyVersion'
 	testCompile 'dbunit:dbunit:2.4.8'
 }
 
