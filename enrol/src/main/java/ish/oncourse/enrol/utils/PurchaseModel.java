@@ -3,6 +3,7 @@ package ish.oncourse.enrol.utils;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.*;
+
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 
@@ -39,12 +40,12 @@ public class PurchaseModel {
 
 	public void addDiscount(Discount discount)
 	{
-		discounts.add(discount);
+		discounts.add(localizeObject(discount));
 	}
 
 
 	public void addContact(Contact contact) {
-		this.contacts.put(contact, new ContactNode());
+		this.contacts.put(localizeObject(contact), new ContactNode());
 	}
 	
 	public List<Contact> getContacts() {
@@ -58,8 +59,6 @@ public class PurchaseModel {
 	public Contact getPayer() {
 		return payer;
 	}
-
-
 
 	public Invoice getInvoice() {
 		if(invoice == null)
@@ -109,10 +108,9 @@ public class PurchaseModel {
 		getContactNode(payer).addProductItem(p);
 	}
 	
-	public void removeProductItem(ProductItem p) {
+	public void removeProductItem(Contact contact, ProductItem p) {
 		InvoiceLine invoiceLine = p.getInvoiceLine();
-		getContactNode(payer).removeProductItem(p);
-
+		getContactNode(contact).removeProductItem(p);
 		objectContext.deleteObject(p);
 		objectContext.deleteObject(invoiceLine);
 	}

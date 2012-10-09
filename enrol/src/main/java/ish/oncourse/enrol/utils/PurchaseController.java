@@ -306,13 +306,17 @@ public class PurchaseController {
 
 		Contact oldPayer = model.getPayer();
 		model.setPayer(contact);
-
+		List<ProductItem> productItemsForRemove = new ArrayList<ProductItem>();
 		for (ProductItem item : model.getEnabledProductItems(oldPayer)) {
 			Product product = item.getProduct();
-			model.removeProductItem(item);
+			productItemsForRemove.add(item);
 			model.addProductItem(createProductItem(contact, product));
 		}
-
+		while (!productItemsForRemove.isEmpty()) {
+			ProductItem item = productItemsForRemove.get(0);
+			model.removeProductItem(oldPayer, item);
+			productItemsForRemove.remove(item);
+		}
 
 	}
 
