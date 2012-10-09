@@ -3,7 +3,6 @@ package ish.oncourse.enrol.components.checkout;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.utils.PurchaseController;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
@@ -11,7 +10,9 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.EventConstants;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -27,10 +28,6 @@ public class SelectPayer {
 	@Parameter(required = true)
 	@Property
 	private PurchaseController purchaseController;
-
-	@Parameter(required = true)
-	@Property
-	private Contact contact;
 	
 	@Inject
 	private PropertyAccess propertyAccess;
@@ -40,10 +37,20 @@ public class SelectPayer {
 	
 	@Property
 	private Contact currentSelection;
+	
+	@InjectComponent
+	private Zone contactsZone;
+	
+	@Parameter(required = false)
+	@Property
+	private String componentForRerender;
 		
 	@SetupRender
 	void beforeRender() {
 		currentSelection = purchaseController.getModel().getPayer();
+		if (StringUtils.trimToNull(componentForRerender) == null) {
+			componentForRerender = null;
+		}
 	}
 	
 	@OnEvent(value = EventConstants.VALUE_CHANGED, component = "currentPayer")
@@ -54,13 +61,9 @@ public class SelectPayer {
 		ActionParameter actionParameter = new ActionParameter(Action.CHANGE_PAYER);
 		actionParameter.setValue(actualPayer);
 		purchaseController.performAction(actionParameter);
-		return Checkout.class.getSimpleName().toLowerCase();
+		return componentForRerender != null ? componentForRerender : this;
     }
-	
-	public boolean isPayer() {
-		return purchaseController.getModel().getPayer().getId().equals(contact.getId());
-	}
-	
+		
 	public ListSelectModel<Contact> getPayersModel() {
 		return new ListSelectModel<Contact>(purchaseController.getModel().getContacts(), PROPERTY_CONTACT_FULL_NAME, propertyAccess);
 	}
