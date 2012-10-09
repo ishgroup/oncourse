@@ -81,6 +81,13 @@ macAppBundle {
    
 }
 
+task run(dependsOn: [classes, processResources], type: JavaExec) {
+	main = 'ish.oncourse.AngelApp'
+	classpath = sourceSets.main.runtimeClasspath
+	args 'DEBUG=true'
+	//systemProperty 'simple.message', 'Hello '
+}
+
 task bundle_osx(dependsOn: createApp) {
 	description "Create the OSX application executable."
 	doFirst {

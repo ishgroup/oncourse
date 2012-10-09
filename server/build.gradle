@@ -70,6 +70,14 @@ task createResourceManifests {
 		}
 	}
 }
+processResources.dependsOn(createResourceManifests)
+
+task run(dependsOn: [classes, processResources], type: JavaExec) {
+	main = 'ish.oncourse.server.AngelServer'
+	classpath = sourceSets.main.runtimeClasspath
+	args 'DEBUG=true'
+	//systemProperty 'simple.message', 'Hello '
+}
 
 test {
 	dbTests = hasProperty('database') ? database : "derby-test"
