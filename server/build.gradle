@@ -65,7 +65,7 @@ task createResourceManifests {
 			exportManifest.getParentFile().mkdirs()
 			exportManifest.write("")
 			file("src/main/resources/$s").eachFile { 
-				if (it.isFile()) exportManifest.append("$s/$it.name\n")
+				if (it.isFile() && !it.name.equals(".DS_Store")) exportManifest.append("$s/$it.name\n")
 			}
 		}
 	}
