@@ -22,6 +22,7 @@ buildscript {
 	}
 }
 
+
 apply plugin: 'release'
 release {
 	scm = 'svn'
@@ -32,6 +33,7 @@ version = release.projectVersion
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
+	apply plugin: 'eclipse'
 
 	configurations {
 		deployerJars {
@@ -53,6 +55,14 @@ allprojects {
 		compile 'log4j:log4j:1.2.17'
 		deployerJars 'org.apache.maven.wagon:wagon-http:2.2'
 	}
+
+	eclipse {
+		jdt {
+    		//has to be redefined here, as there is a bug in gradle
+    		sourceCompatibility = 1.6
+    		targetCompatibility = 1.6
+    	}
+    }
 
 	uploadArchives.dependsOn install
 	group = 'ish.oncourse.angel'
