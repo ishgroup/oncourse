@@ -179,12 +179,20 @@ public class TextileForm {
 
 							for (String name : parameterNames) {
 								if (name.endsWith("_input")) {
+									//append the parameters separated with 4 spaces instead of new line as requested in #13061
 									body.append(name.split("_")[1]).append(": ").append(request.getParameter(name))
-											.append("\n");
+											.append("    ");
 								}
 							}
-							body.append("----------------");
-							if (!mailService.sendMail(null, email, "Submitted via website", body.toString())) {
+							//separate the parameters and break-line
+							body.append("\n").append("----------------");
+							StringBuffer subject = new StringBuffer();
+							formName = request.getParameter(TextileUtil.TEXTILE_FORM_PAGE_NAME_PARAM);
+							if (formName == null) {
+								formName = EMAIL_FORM_NAME;
+							}
+							subject.append(formName).append(" [submitted from website]");
+							if (!mailService.sendMail(null, email, subject.toString(), body.toString())) {
 								LOGGER.error("Failed to send mail");
 								return new TextStreamResponse(CONTENT_TYPE, ERROR_MESSAGE);
 							}
