@@ -6,7 +6,9 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class PageHead {
 
@@ -22,6 +24,17 @@ public class PageHead {
 	@Parameter
 	private String title;
 	
+	@Inject
+	private Request request;
+	
+	@Property
+	@Parameter
+	private boolean addCanonicalLink;
+	
+	public String getCanonicalLinkPath() {
+		return request.getContextPath() + request.getPath();
+	}
+
 	public String getTitle() {
 		String collegeName = siteService.getCurrentCollege().getName();
 		

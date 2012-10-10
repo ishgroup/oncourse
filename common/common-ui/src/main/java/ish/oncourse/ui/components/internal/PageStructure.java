@@ -38,6 +38,10 @@ public class PageStructure {
 	@Property
 	@Parameter
 	private String title;
+	
+	@Property
+	@Parameter
+	private boolean addCanonicalLink;
 
 	@SetupRender
 	public void beforeRender() {
