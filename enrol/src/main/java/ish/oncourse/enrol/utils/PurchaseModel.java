@@ -38,14 +38,13 @@ public class PurchaseModel {
 		this.voucherPayments = new ArrayList<PaymentIn>();
 	}
 
-	public void addDiscount(Discount discount)
-	{
-		discounts.add(localizeObject(discount));
+	public void addDiscount(Discount discount){
+		discounts.add(discount);
 	}
 
 
 	public void addContact(Contact contact) {
-		this.contacts.put(localizeObject(contact), new ContactNode());
+		this.contacts.put(contact, new ContactNode());
 	}
 	
 	public List<Contact> getContacts() {
