@@ -15,6 +15,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TextileForm {
@@ -163,15 +165,34 @@ public class TextileForm {
                     if (emailTo != null) {
                         for (String email : emailTo.split(EMAIL_DELIMITER)) {
                             if (EmailValidator.getInstance().isValid(email)) {
-
-                                List<String> parameterNames = request.getParameterNames();
-
-							String pagePath = request.getParameter("pagePath");
-							// FIXME extract js to the separate file(where "&" is
+                            List<String> parameterNames = request.getParameterNames();
+                            String pagePath = request.getParameter("pagePath");
+                            // FIXME extract js to the separate file(where "&" is
 							// allowed to be used) and remove this
 							if (pagePath == null) {
 								pagePath = request.getParameter("amp;pagePath");
 							}
+							final String pagePathProperty = pagePath;
+                            Collections.sort(parameterNames, new Comparator<String>() {
+								@Override
+								public int compare(String parameter1, String parameter2) {
+									String [] splittedParam1 = parameter1.split("_");
+									String [] splittedParam2 = parameter2.split("_");
+									if (splittedParam1.length == 3 && splittedParam2.length == 3) {
+										try {
+											Integer parameter1Index = Integer.parseInt(splittedParam1[0]),
+											parameter2Index = Integer.parseInt(splittedParam2[0]);
+											return parameter1Index.compareTo(parameter2Index);
+										} catch (Exception e) {
+											LOGGER.error(String.format("Failed to parse request parameter index on pagepath = %s", pagePathProperty),
+												e);
+											return 0;
+										}
+									} else {
+										return 0;
+									}
+								}
+                            });
 
 							StringBuffer body = new StringBuffer("----------------\nA user submitted a form at ")
 								.append(pagePath)
