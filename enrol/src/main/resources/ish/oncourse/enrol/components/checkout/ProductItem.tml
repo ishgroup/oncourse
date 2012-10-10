@@ -36,7 +36,7 @@
 					<t:output value="price" format="feeFormat"/>
 				</span>
 			<p:else>
-				input for price place
+				<input value="priceValue"/>
 			</p:else>
 			</t:if>
 		</td>

@@ -4,7 +4,7 @@
 		>
 
 <table class="payments">
-	<span t:type="checkout/selectpayer" purchaseController="purchaseController" componentForRerender="nextPage"/>
+	<!--span t:type="checkout/selectpayer" purchaseController="purchaseController" componentForRerender="nextPage"/-->
 	<thead><tr>
 		<td colspan="2" id="payer_0">
 			<div class="left">Aristedes Maniatis <span> ari@ish.com.au</span></div>

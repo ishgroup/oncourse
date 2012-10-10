@@ -7,7 +7,6 @@ import ish.oncourse.model.Product;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.util.FormatUtils;
 
-import java.text.DateFormat;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,9 +35,16 @@ public class ProductItem {
 	@Property
 	private Course course;
 	
+	@Property
+	private Money priceValue;
+	
 	@SetupRender
 	void beforeRender() {
 		isEnabled = purchaseController.getModel().isProductItemEnabled(productItem);
+		Money definedPrice = getPrice();
+		if (priceValue == null && definedPrice.isZero()) {
+			priceValue = definedPrice;
+		}
 	}
 	
 	public boolean isVoucherProduct() {
