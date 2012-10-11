@@ -22,6 +22,8 @@
 
 	<span t:type="checkout/contactlist" purchaseController="purchaseController"/>
 
+
+
 	<tbody>
 	<tr class="even">
 		<td colspan="2">

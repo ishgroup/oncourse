@@ -12,6 +12,7 @@
 	<meta name="author" content="" />
 	<!--[if lt IE 9]><script src="/s/js/html5.js"></script><![endif]-->
 	<link href="/s/stylesheets/css/site.css" media="screen, print" rel="stylesheet" />
+	<link href="/s/stylesheets/css/checkout.css" media="screen, print" rel="stylesheet" />
 	<script src="/s/js/all.js" />
 	<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 	<span t:type="ui/googleAnalytics"></span>

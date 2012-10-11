@@ -4,9 +4,6 @@ import ish.oncourse.enrol.utils.PurchaseController;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
-import ish.oncourse.selectutils.ListSelectModel;
-import ish.oncourse.selectutils.ListValueEncoder;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -33,7 +30,10 @@ public class SelectPayer {
     private Request request;
 	
 	@Property
-	private Contact selectedContact;
+	private Contact contact;
+
+	@Property
+	private Integer index;
 
 	@Parameter(required = false)
 	@Property
@@ -41,10 +41,6 @@ public class SelectPayer {
 		
 	@SetupRender
 	void beforeRender() {
-		selectedContact = purchaseController.getModel().getPayer();
-		if (StringUtils.trimToNull(componentForRerender) == null) {
-			componentForRerender = null;
-		}
 	}
 	
 	@OnEvent(value = EventConstants.VALUE_CHANGED, component = "currentPayer")
@@ -57,13 +53,9 @@ public class SelectPayer {
 		purchaseController.performAction(actionParameter);
 		return componentForRerender != null ? componentForRerender : this;
     }
-		
-	public ListSelectModel<Contact> getPayersModel() {
-		return new ListSelectModel<Contact>(purchaseController.getModel().getContacts(), PROPERTY_CONTACT_FULL_NAME, propertyAccess);
-	}
 
-	public ListValueEncoder<Contact> getPayersEncoder() {
-		return new ListValueEncoder<Contact>(purchaseController.getModel().getContacts(), Contact.ID_PK_COLUMN, propertyAccess);
+	public String getItemClass()
+	{
+		return contact.equals(purchaseController.getModel().getPayer()) ? "payer":"";
 	}
-
 }

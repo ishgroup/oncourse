@@ -1,9 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<t:zone t:id="contactsZone" t:update="show">
-		<span class="payer" style="padding-left:5px;">Payer</span>
-		<span class="valid">
-			<t:select t:id="currentPayer" value="selectedContact" model="payersModel" encoder="payersEncoder" blankOption="NEVER"
-				zone="contactsZone"/>
-		</span>
-	</t:zone>
+	<div class="drop-down">
+		<span class="btn-primary">Payer <b class="caret"></b></span>
+		<ul class="drop-down-content">
+			<t:loop source="purchaseController.model.contacts" value="contact" index="index">
+				<li><a href="javascript: void(0);" rel="payer_${index}" class="${itemClass}"><font>${contact.fullName}</font></a></li>
+			</t:loop>
+		</ul>
+	</div>
 </t:container>

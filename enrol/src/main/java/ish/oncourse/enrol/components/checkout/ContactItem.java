@@ -18,4 +18,9 @@ public class ContactItem {
 	{
 		return true;
 	}
+
+	public boolean isPayer()
+	{
+		return purchaseController.getModel().getPayer().equals(contact);
+	}
 }
