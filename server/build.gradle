@@ -166,7 +166,8 @@ project.ext.freebsdAppFiles = copySpec {
 	into('.') {
 		from("${projectDir}/src/packaging/freebsd/")
 		include ("*")
-
+	}
+	into('onCourse') {
 		from("${libsDir}/${project.name}-${version}-all.jar")
 	}
 }
@@ -223,7 +224,7 @@ task installer_freebsd(dependsOn: jarAll, type: Copy) {
 		ant.checksum(file:"${distsDir}/freebsd/+COMMENT", 										property: "hash_comment")
 		ant.checksum(file:"${distsDir}/freebsd/+DESC", 											property: "hash_desc")
 		ant.checksum(file:"${distsDir}/freebsd/+DISPLAY", 										property: "hash_display")
-		ant.checksum(file:"${distsDir}/freebsd/${project.name}-${project.version}-all.jar", 	property: "hash_onCourseServerJar")
+		ant.checksum(file:"${distsDir}/freebsd/onCourse/${project.name}-${project.version}-all.jar", 	property: "hash_onCourseServerJar")
 		ant.checksum(file:"${distsDir}/freebsd/onCourseServer", 								property: "hash_onCourseServer")
 
 		ant.replace(file: "${distsDir}/freebsd/+CONTENTS", token: "@hash_onCourseServerJar@", 	value: "${ant.hash_onCourseServerJar}")
