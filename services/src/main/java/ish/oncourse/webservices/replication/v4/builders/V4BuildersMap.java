@@ -1,7 +1,6 @@
 package ish.oncourse.webservices.replication.v4.builders;
 
 import ish.oncourse.model.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,5 +50,7 @@ public class V4BuildersMap {
 		builderMap.put(getEntityName(Outcome.class), new OutcomeStubBuilder());
         builderMap.put(getEntityName(Certificate.class), new CertificateStubBuilder());
         builderMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeStubBuilder());
+        builderMap.put(getEntityName(Membership.class), new MembershipStubBuilder());
+        builderMap.put(getEntityName(MembershipProduct.class), new MembershipProductStubBuilder());
 	}
 }
