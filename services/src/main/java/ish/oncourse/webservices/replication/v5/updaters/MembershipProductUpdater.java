@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.v5.updaters;
 
 import ish.common.types.ExpiryType;
 import ish.common.types.TypesUtil;
+import ish.math.Money;
 import ish.oncourse.model.MembershipProduct;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
@@ -25,6 +26,12 @@ public class MembershipProductUpdater extends AbstractWillowUpdater<MembershipPr
 		entity.setNotes(stub.getNotes());
 		entity.setSku(stub.getSku());
 		entity.setType(stub.getType());
+		if (stub.getPriceExTax() != null) {
+			entity.setPriceExTax(new Money(stub.getPriceExTax()));
+		}
+		if (stub.getTaxAdjustment() != null) {
+			entity.setTaxAdjustment(new Money(stub.getTaxAdjustment()));
+		}
 	}
 
 }
