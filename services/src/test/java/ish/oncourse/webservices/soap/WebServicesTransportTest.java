@@ -1,7 +1,8 @@
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.webservices.soap.v4.ReplicationPortType;
-import ish.oncourse.webservices.soap.v4.ReplicationService;
+import ish.oncourse.webservices.soap.v4.*;
+import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
+import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import ish.oncourse.webservices.v4.stubs.replication.InstructionStub;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v4.stubs.replication.ReplicationResult;
@@ -17,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  */
-public class ReplicationPortTypeTransportTest extends AbstractTransportTest {
+public class WebServicesTransportTest extends AbstractTransportTest {
 
 	@Test
 	public void testReplicationPortType_authenticate() throws Exception {
@@ -70,6 +71,55 @@ public class ReplicationPortTypeTransportTest extends AbstractTransportTest {
 		ReplicationPortType replicationPortType = getReplicationPortType();
 		List<InstructionStub> result = replicationPortType.getInstructions();
 		assertNotNull(result);
+	}
+
+	@Test
+	public void  test_getMaximumVersion() throws JAXBException {
+		assertEquals(Long.MAX_VALUE, getReferencePortType().getMaximumVersion());
+	}
+
+
+	@Test
+	public void  test_getRecords() throws JAXBException {
+		ReferenceResult referenceResult = getReferencePortType().getRecords(Long.MAX_VALUE);
+		List<ReferenceStub> resultStub = referenceResult.getCountryOrLanguageOrModule();
+		assertListStubs(resultStub,PACKAGE_NAME_REFERENCE_STUBS,ReferenceStub.class);
+	}
+
+	private ReferencePortType getReferencePortType() throws JAXBException {
+		ReferenceService referenceService = new ReferenceService(ReferencePortType.class.getClassLoader().getResource("wsdl/v4_reference.wsdl"));
+		ReferencePortType referencePortType = referenceService.getReferencePort();
+
+		initPortType((BindingProvider) referencePortType, "/services/v4/reference");
+		return referencePortType;
+	}
+
+	@Test
+	public void test_processRefund() throws Throwable {
+		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
+		TransactionGroup transactionGroupResult = getPortType().processRefund(transactionGroup);
+		assertTransactionGroup(transactionGroupResult);
+	}
+
+	@Test
+	public void test_getPaymentStatus() throws JAXBException, ReplicationFault {
+		TransactionGroup transactionGroupResult = getPortType().getPaymentStatus("PaymentStatus");
+		assertTransactionGroup(transactionGroupResult);
+	}
+
+	@Test
+	public void test_processPayment() throws Throwable {
+		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
+		TransactionGroup transactionGroupResult = getPortType().processPayment(transactionGroup);
+		assertTransactionGroup(transactionGroupResult);
+	}
+
+	private PaymentPortType getPortType() throws JAXBException {
+		ReplicationService replicationService = new ReplicationService(ReplicationPortType.class.getClassLoader().getResource("wsdl/v4_replication.wsdl"));
+		PaymentPortType paymentPortType = replicationService.getPaymentPortType();
+
+		initPortType((BindingProvider) paymentPortType, "/services/v4/payment");
+		return paymentPortType;
 	}
 
 	private ReplicationPortType getReplicationPortType() throws JAXBException {

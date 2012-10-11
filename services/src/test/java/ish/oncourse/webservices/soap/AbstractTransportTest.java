@@ -37,7 +37,7 @@ public abstract class AbstractTransportTest {
 
 	public static final long DEFAULT_TIMEOUT = 1000l * 60 * 5;
 	public static final long PAYMENT_SERVICE_TIMEOUT = 1000l * 60 * 25;
-	public static   TestServer server;
+	public static  TestServer server;
 
 	public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v4.stubs.replication";
 	public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v4.stubs.reference";
