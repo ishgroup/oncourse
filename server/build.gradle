@@ -75,7 +75,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 	main = 'ish.oncourse.server.AngelServer'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'DEBUG=true'
-	//systemProperty 'simple.message', 'Hello '
+	jvmArgs '-Xmx1024m'
 }
 
 test {
