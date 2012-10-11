@@ -183,8 +183,8 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                 final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
                 final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Post Persist entered with " + (replicatedContext ? "replication context" : "non-replication context") +
-                            (isAsyncReplicationAllowed ? "async replication allowed for this object":"async replication not allowed for this object") +
+                    LOGGER.debug("Post Persist entered with " + (replicatedContext ? "replication context " : "non-replication context ") +
+                            (isAsyncReplicationAllowed ? "async replication allowed for this object ":"async replication not allowed for this object ") +
                             q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
                 }
                 if (!replicatedContext) {
@@ -232,8 +232,8 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                 final boolean isAsyncReplicationAllowed = isAsyncReplicationAllowed(q);
                 final boolean replicatedContext = recordContext.getIsRecordQueueingEnabled();
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Post Update entered with " + (replicatedContext ? "replication context" : "non-replication context") +
-                            (isAsyncReplicationAllowed ? "async replication allowed for this object":"async replication not allowed for this object") +
+                    LOGGER.debug("Post Update entered with " + (replicatedContext ? "replication context " : "non-replication context ") +
+                            (isAsyncReplicationAllowed ? "async replication allowed for this object ":"async replication not allowed for this object ") +
                             q.getClass().getSimpleName() + " with ID : " + q.getObjectId() + traceObjectInfo(q));
                 }
                 if (!replicatedContext) {
@@ -351,7 +351,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         boolean isAsyncAllowed = true;
         if (entity instanceof Tag || entity instanceof TaggableTag || entity instanceof Session || entity instanceof DiscountMembership ||
                 entity instanceof DiscountMembershipRelationType || entity instanceof ContactRelation || entity instanceof ContactRelationType ||
-                entity instanceof Membership || entity instanceof MembershipProduct || entity instanceof Product || entity instanceof ProductItem 
+                /*entity instanceof Membership || entity instanceof MembershipProduct || */entity instanceof Product || entity instanceof ProductItem 
                 /*|| entity instanceof Voucher*/ || entity instanceof VoucherProduct) {
             isAsyncAllowed = false;
         } else if (entity instanceof PaymentIn) {
