@@ -55,7 +55,6 @@
 							<a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Enrol</a>
 							<p:else>
 								<a href="/enrol/enrolCourses" class="shortlistLinkEnrol">Purchase</a>
-								<a href="/enrol/enrolCourses">Purchase</a>
 							</p:else>
 						</t:if>
 					</li>

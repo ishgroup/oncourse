@@ -19,6 +19,7 @@ public class BodyStructure {
 	private IWebMenuService webMenuService;
 	@Inject
 	private IWebSiteService siteService;
+	
     @Inject
     private PreferenceController preferenceController;
 
@@ -42,6 +43,12 @@ public class BodyStructure {
 		return webMenuService.getRootMenu();
 	}
 
+    /**
+     * Not used after confirmation dialog move to ConfirmOrderDialog component.
+     * Should be removed after all live customizations will be cleaned.
+     * @return
+     */
+    @Deprecated
     public boolean isPaymentGatewayEnabled() {
         return preferenceController.isPaymentGatewayEnabled();
     }

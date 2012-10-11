@@ -1,4 +1,5 @@
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div t:type="ui/confirmorderdialog"/>
 	<t:loop source="products" value="product">
 		<span t:type="ui/productitem" product="product" isList="false"></span>
 	</t:loop>

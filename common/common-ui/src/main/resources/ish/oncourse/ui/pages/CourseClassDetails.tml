@@ -9,6 +9,8 @@
 			<input type="button" value="Print" />
 		</div>
 	</div>
+	
+	<div t:type="ui/confirmorderdialog"/>
 
 	<span t:type="ui/courseclassitem" courseClass="courseClass" linkToLocationsMap="true" isList="false"></span>
 	

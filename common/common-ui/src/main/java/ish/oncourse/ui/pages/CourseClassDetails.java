@@ -1,9 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
-import ish.oncourse.model.Site;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 
