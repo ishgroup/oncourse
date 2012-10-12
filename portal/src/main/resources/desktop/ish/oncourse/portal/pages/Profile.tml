@@ -5,7 +5,7 @@
 	<div class="tabbable">
 		<ul class="nav nav-nav-pills">
 			<li class="active"><a href="#profile-form" data-toggle="tab">Profile details</a></li>
-			<li><a href="#tab2" data-toggle="tab">Change password</a></li>
+			<li><a href="#password-form" data-toggle="tab">Change password</a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="profile-form">
