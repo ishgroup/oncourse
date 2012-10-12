@@ -16,7 +16,7 @@
 	<name>Willow - Common Framework</name>
 	
 	<properties>
-		<angel.artifact.version>trunk-SNAPSHOT</angel.artifact.version>
+		<angel.artifact.version>4.0b3</angel.artifact.version>
 	</properties>
 	
 	<modules>
