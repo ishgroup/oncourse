@@ -37,13 +37,13 @@ release {
 	allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
 
 }
-version = release.projectVersion
 
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'eclipse'
-
+	version = release.projectVersion
+	
 	configurations {
 		deployerJars {
 			description = 'Jars needed for doing deployment to JBoss Nexus repo'
