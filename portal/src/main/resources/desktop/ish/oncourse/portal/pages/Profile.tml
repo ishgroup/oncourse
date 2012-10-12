@@ -3,12 +3,12 @@
 	<h1> ${contact.givenName} ${contact.familyName}'s Profile  </h1>
 	
 	<div class="tabbable">
-		<ul class="nav nav-nav-pills">
+		<ul class="nav nav-pills">
 			<li class="active"><a href="#profile-form" data-toggle="tab">Profile details</a></li>
 			<li><a href="#password-form" data-toggle="tab">Change password</a></li>
 		</ul>
 		<div class="tab-content">
-			<div id="profile-form">
+			<div id="profile-form" class="tab-pane active">
 				<t:form t:id="profileForm">
 					<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
 					
@@ -172,7 +172,7 @@
 				</t:form>
 			</div>
 	
-			<div id="password-form">
+			<div id="password-form" class="tab-pane">
 				<t:form t:id="passwordForm">
 					<t:errors banner="literal:Please correct the following mistakes:" class="literal:validation"/>
 			
