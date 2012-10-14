@@ -1,7 +1,4 @@
 dependencies {
-	compile project(':common:common-services')
-	compile project(':common:common-model')
-	compile project(':common:common-ui')
-
-	testCompile project(':common:common-test')
+	compile project(':cms:cms-web')
+	compile project(':cms:cms-services')
 }

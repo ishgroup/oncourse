@@ -1,6 +1,5 @@
 rootProject.name = 'Willow'
 include 'admin',
-	'cms',
 	'common:common-model',
 	'common:common-services',
 	'common:common-test',
@@ -10,4 +9,7 @@ include 'admin',
 	'portal',
 	'search',
 	'services',
-	'web'
+	'web',
+	'cms',
+	'cms:cms-web',
+	'cms:cms-services'

@@ -13,8 +13,7 @@ dependencies {
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
 	compile 'axis:axis:1.4'
 	compile 'net.htmlparser.jericho:jericho-html:3.2'
+	compile 'javax.mail:mail:1.4'
 
 	testCompile project(':common:common-test')
-
-	providedCompile 'javax.mail:mail:1.4'
 }
