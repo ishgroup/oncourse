@@ -19,6 +19,7 @@ buildscript {
 	dependencies {
 		classpath 'edu.sc.seis:gradle-macappbundle:1.0.8-b2'
 		classpath 'gradle_cobertura:gradle_cobertura:1.2'
+		classpath 'eu.appsatori:gradle-fatjar-plugin:0.1.2'
 	}
 }
 
@@ -116,29 +117,22 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		appName = getProject().name == 'server' ? "onCourseServer" : "onCourse"
 	}
 
-	task jarAll(dependsOn: configurations.default.allArtifacts.buildDependencies, type: Jar) {
-		description = 'Creates a shaded/uberjar/fatjar of the application.'
-		classifier = 'all'
+	apply plugin: 'fatjar'
 
+	fatJar {
+		// use the same manifest as normal jar
 		manifest {
 			from project.jar.manifest
 		}
 
-		from (sourceSets.main.output.classesDir)
-		from (sourceSets.main.output.resourcesDir)
+		// add a classifier to distinguish farjar from normal jar
+		classifier = 'all'
 
-		doFirst {
-			logger.lifecycle("Creating an fatjar for $project.name ")
+		// do not include the certificate files
+		exclude 'META-INF/*.SF'
+		exclude 'META-INF/*.DSA'
+		exclude 'META-INF/*.RSA'
 
-			// the following must be executed in doFirst since the configuration
-			// has not been initialized at configuration time
-			from (configurations.runtime.resolve().collect { it.isDirectory() ? it : zipTree(it) }) {
-				exclude 'META-INF/MANIFEST.MF'
-				exclude 'META-INF/*.SF'
-				exclude 'META-INF/*.DSA'
-				exclude 'META-INF/*.RSA'
-			}
-		}
 	}
 
 	task bundle(dependsOn: tasks.findAll { task -> task.name.startsWith('bundle_') }) {
