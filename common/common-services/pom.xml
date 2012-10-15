@@ -28,6 +28,7 @@
 		<dependency>
 			<groupId>ish.oncourse.willow.frameworks</groupId>
 			<artifactId>common-test</artifactId>
+			<type>test-jar</type>
 			<scope>test</scope>
 			<version>${project.version}</version>
 		</dependency>
