@@ -13,12 +13,7 @@
 		              <td>
 		            	
 		            	<div class="class-name">
-		            		<t:if test="filterUnconfirmed" negate="true">
-		            			<t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink>
-		            			<p:else>
-		            				<span>${courseName}</span>
-		            			</p:else>
-		            		</t:if>
+		            		<t:pagelink page="prop:classPageName" context="courseClass.id">${courseName}</t:pagelink>
 		            		<span id="class-code" style="margin-left:10px;font-size:9px;">${courseClassCode}</span>
 		            	</div>
 		            	
