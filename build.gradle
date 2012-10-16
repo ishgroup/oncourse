@@ -26,7 +26,8 @@ buildscript {
 
 apply plugin: 'release'
 release {
-	scm = 'svn'
+	//use subversion scm, unless otherwise specified in with -PscmFlavour= or in users gradle properties
+	scm = project.hasProperty('scmFlavour') ? project.scmFlavour:'svn'
 	failOnSnapshotDependencies = true
 
 	//properties for svn access
