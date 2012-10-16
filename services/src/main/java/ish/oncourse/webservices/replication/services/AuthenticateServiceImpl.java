@@ -1,20 +1,18 @@
 package ish.oncourse.webservices.replication.services;
 
-import java.util.Random;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.xml.ws.WebServiceContext;
-
-import org.apache.cayenne.ObjectContext;
-import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.apache.log4j.Logger;
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.model.access.SessionToken;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.exception.StackTraceUtils;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cxf.transport.http.AbstractHTTPDestination;
+import org.apache.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.WebServiceContext;
+import java.util.Random;
 
 public class AuthenticateServiceImpl implements IAuthenticateService {
 	private final static Logger LOGGER = Logger.getLogger(AuthenticateServiceImpl.class);
@@ -117,20 +115,8 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 	}
 
 	@Override
+	@Deprecated //todo the method should be removed after all college will go to V4 version.
 	public void logout(long newCommKey) {
-		HttpServletRequest request = (HttpServletRequest) takeWebServiceContext().getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-		HttpSession session = request.getSession(false);
-		//this code should be unreachable
-		if (session != null) {
-			SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-			if (token.getCommunicationKey().equals(newCommKey)) {
-				session.invalidate();
-			} else {
-				String message = String.format("Invalid communication key:%s, for college:%s, expected:%s.", newCommKey,
-						token.getCollegeId(), token.getCommunicationKey());
-				LOGGER.warn(message, new InternalAuthenticationException(message, InternalErrorCode.INVALID_COMMUNICATION_KEY));
-			}
-		}
 	}
 
 	@Override

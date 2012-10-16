@@ -20,8 +20,9 @@ import javax.xml.namespace.QName;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
-	private static final String LOGOUT_METHOD = "logout";
-	private static final String AUTHENTICATE_METHOD = "authenticate";
+	private static final String METHOD_logout = "logout";
+	private static final String METHOD_confirmExecution = "confirmExecution";
+	private static final String METHOD_authenticate = "authenticate";
 	private static final Logger logger = Logger.getLogger(CommunicationKeyInterceptor.class);
 
 	@Inject
@@ -39,7 +40,16 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			
 			QName op = (QName) bindingInfo.getName();
 
-			if (op != null && (AUTHENTICATE_METHOD.equalsIgnoreCase(op.getLocalPart()) || LOGOUT_METHOD.equalsIgnoreCase(op.getLocalPart()))) {
+			if (op != null && (METHOD_authenticate.equalsIgnoreCase(op.getLocalPart()) ||
+					METHOD_logout.equalsIgnoreCase(op.getLocalPart()) ||
+					/**
+					 * the interceptor should not be could for confirmExecution action because the following reasons:
+					 * 1. cxf >= 2.6.1 executes the interceptor in another thread than main request. TODO we cannot use  httpRequest to setAttribute because these operations are not thread safe
+					 * 2. confirmExecution action does not need information about college or communication key.
+					 */
+					METHOD_confirmExecution.equalsIgnoreCase(op.getLocalPart())
+
+			)) {
 				return;
 			}
 
@@ -70,12 +80,10 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
 			try {
 				communicationKey = Long.parseLong(SoapUtil.getCommunicationKey(message));
-				//final HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
 				//each request should contain session token (need for #13890)
 				final SessionToken token = new SessionToken(college.getId(), communicationKey);
 				httpRequest.setAttribute(SessionToken.SESSION_TOKEN_KEY, token);
 				httpRequest.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, token.getCollegeId());
-
 			} catch (NumberFormatException ne) {
 				String m = String.format("Invalid communication key %s from ip = %s with angel server version = %s .", communicationKey, ip, version);
 				throw new InterceptorErrorHandle(message,logger).handle(m);

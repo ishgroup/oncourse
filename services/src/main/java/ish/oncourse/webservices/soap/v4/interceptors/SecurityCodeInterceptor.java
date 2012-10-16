@@ -2,6 +2,7 @@ package ish.oncourse.webservices.soap.v4.interceptors;
 
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
+import ish.oncourse.webservices.exception.AuthSoapFault;
 import ish.oncourse.webservices.util.SoapUtil;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
@@ -32,6 +33,7 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 	}
 
 	public void handleMessage(SoapMessage message) throws Fault {
+		AuthSoapFault fault = null;
 		try {
 			String securityCode = SoapUtil.getSecurityCode(message);
 			final HttpServletRequest httpRequest = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
@@ -39,17 +41,20 @@ public class SecurityCodeInterceptor extends AbstractSoapInterceptor {
 			final String version = SoapUtil.getAngelVersion(message);
 			if (securityCode == null) {
 				String m = String.format("empty.securityCode from ip = %s with angel server version = %s .", ip, version);
-				throw new InterceptorErrorHandle(message,logger).handle(m);
+				fault =  new InterceptorErrorHandle(message,logger).handle(m);
 			}
 			College college = collegeService.findBySecurityCode(securityCode);
 			if (college == null)
 			{
 				String m = String.format("Invalid security code: %s from ip = %s with angel server version = %s .", securityCode, ip, version);
-				throw new InterceptorErrorHandle(message,logger).handle(m);
+				fault =  new InterceptorErrorHandle(message,logger).handle(m);
 			}
 			request.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, college.getId());
 		} catch (Exception e) {
-			throw new InterceptorErrorHandle(message,logger).handle(e);
+			fault = new InterceptorErrorHandle(message,logger).handle(e);
 		}
+
+		if (fault != null)
+			throw fault;
 	}
 }

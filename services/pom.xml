@@ -120,7 +120,21 @@
 		<dependency>
 			<groupId>ish.oncourse.angel</groupId>
 			<artifactId>webservices-client</artifactId>
+			<!-- we exclude all dependence on cxf for the package to avoid cross dependences
+			for cxf for services application -->
 			<exclusions>
+				<exclusion>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-tools-common</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-rt-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-api</artifactId>
+				</exclusion>
 				<exclusion>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-frontend-jaxws</artifactId>
