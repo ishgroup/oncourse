@@ -95,6 +95,8 @@ task bundle_osx(dependsOn: createApp) {
 	}
 }
 
+codeSign.dependsOn(unlockKeychain)
+
 task installer_osx(dependsOn: [codeSign, createDmg]) {
 	description "Create the OSX installer (which is just a dmg file)."
 	doFirst {

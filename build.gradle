@@ -144,8 +144,19 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		exclude 'META-INF/*.SF'
 		exclude 'META-INF/*.DSA'
 		exclude 'META-INF/*.RSA'
-
 	}
+
+	task unlockKeychain {
+		doFirst{
+			if (hasProperty('osxKeychainPassword')) {
+				exec {
+					executable = 'security'
+					args = ['unlock-keychain', '-p', project.osxKeychainPassword, macAppBundle.keyChain]
+				}
+			}
+		}
+	}
+	
 
 	task bundle(dependsOn: tasks.findAll { task -> task.name.startsWith('bundle_') }) {
 		description "Create all application executables."
