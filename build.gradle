@@ -148,7 +148,7 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 
 	task unlockKeychain {
 		doLast{
-			if (hasProperty('osxKeychainPassword')) {
+			if (project.hasProperty('osxKeychainPassword')) {
 				logger.lifecycle("Attempting to unlock the keychain "+macAppBundle.keyChain)
 				exec {
 					executable = 'security'
