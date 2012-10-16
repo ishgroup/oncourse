@@ -58,7 +58,7 @@ macAppBundle {
     jvmVersion = "${sourceCompatibility}+"
     
     certIdentity = 'Developer ID Application: ish group pty ltd'
-    keyChain = '/Users/marcin/Library/Keychains/jenkins.keychain'
+    keyChain = '/Users/build/Library/Keychains/jenkins.keychain'
 
     //java properties
     javaProperties.put("apple.awt.textantialiasing", "true")
