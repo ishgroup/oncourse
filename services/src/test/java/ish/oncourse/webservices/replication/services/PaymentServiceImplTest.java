@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -24,6 +26,7 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.math.Money;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
@@ -39,6 +42,7 @@ import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 
 public class PaymentServiceImplTest extends ServiceTest {
 	private ICayenneService service;
+	private College college;
 	
 	@Before
 	public void setupDataSet() throws Exception {
@@ -51,6 +55,18 @@ public class PaymentServiceImplTest extends ServiceTest {
 
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 		service = getService(ICayenneService.class);
+		@SuppressWarnings("unchecked")
+		List<College> colleges = service.sharedContext().performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
+		service.sharedContext().performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
+		college = colleges.isEmpty() ? null : colleges.get(0);
+	}
+	
+	private College localizeCollege(ObjectContext context) {
+		if (college == null) {
+			return null;
+		} else {
+			return (College) context.localObject(college.getObjectId(), null);
+		}
 	}
 	
 	@Test
@@ -59,8 +75,10 @@ public class PaymentServiceImplTest extends ServiceTest {
 		Contact contact = context.newObject(Contact.class);
 		PaymentIn p1 = context.newObject(PaymentIn.class);
 		p1.setAmount(new BigDecimal(110));
+		p1.setCollege(localizeCollege(context));
 		p1.setAngelId(1l);
 		p1.setContact(contact);
+		contact.setCollege(p1.getCollege());
 		p1.setCreated(new Date());
 		p1.setModified(new Date());
 		p1.setSource(PaymentSource.SOURCE_WEB);
@@ -71,6 +89,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
 		pil1.setAmount(new BigDecimal(110l));
+		pil1.setCollege(p1.getCollege());
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
 		i1.setAngelId(1l);
@@ -88,6 +107,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setTotalExGst(new BigDecimal(100));
 		i1.setTotalGst(new BigDecimal(110));
 		i1.setSource(PaymentSource.SOURCE_WEB);
+		i1.setCollege(p1.getCollege());
 		InvoiceLine il1 = context.newObject(InvoiceLine.class);
 		il1.setInvoice(i1);
 		il1.setAngelId(1l);
@@ -100,6 +120,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setTaxEach(new Money("10.00"));
 		il1.setTitle("Accouting course item");
 		il1.setUnit("unit");
+		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
 		p2.setAmount(new BigDecimal(110));
@@ -110,12 +131,15 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p2.setSource(PaymentSource.SOURCE_WEB);
 		p2.setStatus(PaymentStatus.IN_TRANSACTION);
 		p2.setType(PaymentType.CREDIT_CARD);
+		p2.setCollege(p1.getCollege());
 		PaymentInLine pil2 = context.newObject(PaymentInLine.class);
 		pil2.setPaymentIn(p2);
 		pil2.setAngelId(1l);
 		pil2.setCreated(new Date());
 		pil2.setAmount(new BigDecimal(110l));
 		pil2.setInvoice(i1);
+		pil2.setCollege(p1.getCollege());
+		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		List<ObjectId> conflictInvoiceObjectIds = port.getLinesForConflictedInvoices(p1);
@@ -133,14 +157,17 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p1.setContact(contact);
 		p1.setCreated(new Date());
 		p1.setModified(new Date());
-		p1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		p1.setSource(PaymentSource.SOURCE_WEB);
 		p1.setStatus(PaymentStatus.IN_TRANSACTION);
 		p1.setType(PaymentType.CREDIT_CARD);
+		p1.setCollege(localizeCollege(context));
+		contact.setCollege(p1.getCollege());
 		PaymentInLine pil1 = context.newObject(PaymentInLine.class);
 		pil1.setPaymentIn(p1);
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
 		pil1.setAmount(new BigDecimal(110l));
+		pil1.setCollege(p1.getCollege());
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
 		i1.setAngelId(1l);
@@ -157,7 +184,8 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setModified(new Date());
 		i1.setTotalExGst(new BigDecimal(100));
 		i1.setTotalGst(new BigDecimal(110));
-		i1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		i1.setSource(PaymentSource.SOURCE_WEB);
+		i1.setCollege(p1.getCollege());
 		InvoiceLine il1 = context.newObject(InvoiceLine.class);
 		il1.setInvoice(i1);
 		il1.setAngelId(1l);
@@ -170,6 +198,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setTaxEach(new Money("10.00"));
 		il1.setTitle("Accouting course item");
 		il1.setUnit("unit");
+		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
 		p2.setAmount(new BigDecimal(110));
@@ -180,12 +209,15 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p2.setSource(PaymentSource.SOURCE_ONCOURSE);
 		p2.setStatus(PaymentStatus.IN_TRANSACTION);
 		p2.setType(PaymentType.CREDIT_CARD);
+		p2.setCollege(p1.getCollege());
 		PaymentInLine pil2 = context.newObject(PaymentInLine.class);
 		pil2.setPaymentIn(p2);
 		pil2.setAngelId(1l);
 		pil2.setCreated(new Date());
 		pil2.setAmount(new BigDecimal(110l));
 		pil2.setInvoice(i1);
+		pil2.setCollege(p1.getCollege());
+		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		List<PaymentIn> updatedPayments = new ArrayList<PaymentIn>();
@@ -209,7 +241,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		Contact contact = context.newObject(Contact.class);
 		
 		PaymentIn p1 = context.newObject(PaymentIn.class);
-		p1.setAmount(new BigDecimal(110));
+		p1.setAmount(new BigDecimal(220));
 		p1.setAngelId(1l);
 		p1.setContact(contact);
 		p1.setCreated(new Date());
@@ -217,12 +249,15 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p1.setSource(PaymentSource.SOURCE_ONCOURSE);
 		p1.setStatus(PaymentStatus.IN_TRANSACTION);
 		p1.setType(PaymentType.CREDIT_CARD);
+		p1.setCollege(localizeCollege(context));
+		contact.setCollege(p1.getCollege());
 		
 		PaymentInLine pil1 = context.newObject(PaymentInLine.class);
 		pil1.setPaymentIn(p1);
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
 		pil1.setAmount(new BigDecimal(110l));
+		pil1.setCollege(p1.getCollege());
 		
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
@@ -241,6 +276,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setTotalExGst(new BigDecimal(100));
 		i1.setTotalGst(new BigDecimal(110));
 		i1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		i1.setCollege(p1.getCollege());
 		
 		InvoiceLine il1 = context.newObject(InvoiceLine.class);
 		il1.setInvoice(i1);
@@ -254,6 +290,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setTaxEach(new Money("10.00"));
 		il1.setTitle("Accouting course item");
 		il1.setUnit("unit");
+		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
 		p2.setAmount(new BigDecimal(110));
@@ -264,6 +301,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p2.setSource(PaymentSource.SOURCE_WEB);
 		p2.setStatus(PaymentStatus.IN_TRANSACTION);
 		p2.setType(PaymentType.CREDIT_CARD);
+		p2.setCollege(p1.getCollege());
 		
 		PaymentInLine pil2 = context.newObject(PaymentInLine.class);
 		pil2.setPaymentIn(p2);
@@ -271,6 +309,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil2.setCreated(new Date());
 		pil2.setAmount(new BigDecimal(110l));
 		pil2.setInvoice(i1);
+		pil2.setCollege(p1.getCollege());
 		
 		Invoice i2 = context.newObject(Invoice.class);
 		i2.setAngelId(1l);
@@ -288,6 +327,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i2.setTotalExGst(new BigDecimal(100));
 		i2.setTotalGst(new BigDecimal(110));
 		i2.setSource(PaymentSource.SOURCE_ONCOURSE);
+		i2.setCollege(p1.getCollege());
 		
 		InvoiceLine il2 = context.newObject(InvoiceLine.class);
 		il2.setInvoice(i2);
@@ -301,17 +341,24 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il2.setTaxEach(Money.ZERO);
 		il2.setTitle("Accouting course item");
 		il2.setUnit("unit");
+		il2.setCollege(p1.getCollege());
 		
 		Enrolment e1 = context.newObject(Enrolment.class);
 		e1.setAngelId(1l);
-		e1.setCourseClass(context.newObject(CourseClass.class));
+		@SuppressWarnings("unchecked")
+		List<CourseClass> courseClasses = context.performQuery(new SelectQuery(CourseClass.class, 
+			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1186958L)));
+		e1.setCourseClass((CourseClass) context.localObject(courseClasses.get(0).getObjectId(), null));
 		e1.setCreated(new Date());
 		e1.setInvoiceLine(il2);
 		e1.setModified(new Date());
 		e1.setReasonForStudy(1);
 		e1.setSource(PaymentSource.SOURCE_WEB);
 		e1.setStatus(EnrolmentStatus.IN_TRANSACTION);
-		e1.setStudent(context.newObject(Student.class));
+		@SuppressWarnings("unchecked")
+		List<Student> students = context.performQuery(new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 1189147L)));
+		e1.setStudent((Student) context.localObject(students.get(0).getObjectId(), null));
+		e1.setCollege(p1.getCollege());
 		
 		PaymentInLine pil3 = context.newObject(PaymentInLine.class);
 		pil3.setPaymentIn(p1);
@@ -319,6 +366,9 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil3.setCreated(new Date());
 		pil3.setAmount(new BigDecimal(110l));
 		pil3.setInvoice(i2);
+		pil3.setCollege(p1.getCollege());
+		
+		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		List<PaymentIn> updatedPayments = new ArrayList<PaymentIn>();
@@ -346,7 +396,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		Contact contact = context.newObject(Contact.class);
 		
 		PaymentIn p1 = context.newObject(PaymentIn.class);
-		p1.setAmount(new BigDecimal(110));
+		p1.setAmount(new BigDecimal(220));
 		p1.setAngelId(1l);
 		p1.setContact(contact);
 		p1.setCreated(new Date());
@@ -354,12 +404,15 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p1.setSource(PaymentSource.SOURCE_ONCOURSE);
 		p1.setStatus(PaymentStatus.IN_TRANSACTION);
 		p1.setType(PaymentType.CREDIT_CARD);
+		p1.setCollege(localizeCollege(context));
+		contact.setCollege(p1.getCollege());
 		
 		PaymentInLine pil1 = context.newObject(PaymentInLine.class);
 		pil1.setPaymentIn(p1);
 		pil1.setAngelId(1l);
 		pil1.setCreated(new Date());
 		pil1.setAmount(new BigDecimal(110l));
+		pil1.setCollege(p1.getCollege());
 		
 		Invoice i1 = context.newObject(Invoice.class);
 		pil1.setInvoice(i1);
@@ -378,6 +431,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setTotalExGst(new BigDecimal(100));
 		i1.setTotalGst(new BigDecimal(110));
 		i1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		i1.setCollege(p1.getCollege());
 		
 		InvoiceLine il1 = context.newObject(InvoiceLine.class);
 		il1.setInvoice(i1);
@@ -391,6 +445,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il1.setTaxEach(new Money("10.00"));
 		il1.setTitle("Accouting course item");
 		il1.setUnit("unit");
+		il1.setCollege(p1.getCollege());
 		
 		PaymentIn p2 = context.newObject(PaymentIn.class);
 		p2.setAmount(new BigDecimal(110));
@@ -401,6 +456,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p2.setSource(PaymentSource.SOURCE_WEB);
 		p2.setStatus(PaymentStatus.IN_TRANSACTION);
 		p2.setType(PaymentType.CREDIT_CARD);
+		p2.setCollege(p1.getCollege());
 		
 		PaymentInLine pil2 = context.newObject(PaymentInLine.class);
 		pil2.setPaymentIn(p2);
@@ -408,6 +464,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil2.setCreated(new Date());
 		pil2.setAmount(new BigDecimal(110l));
 		pil2.setInvoice(i1);
+		pil2.setCollege(p1.getCollege());
 		
 		Invoice i2 = context.newObject(Invoice.class);
 		i2.setAngelId(1l);
@@ -425,6 +482,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i2.setTotalExGst(new BigDecimal(100));
 		i2.setTotalGst(new BigDecimal(110));
 		i2.setSource(PaymentSource.SOURCE_ONCOURSE);
+		i2.setCollege(p1.getCollege());
 		
 		InvoiceLine il2 = context.newObject(InvoiceLine.class);
 		il2.setInvoice(i2);
@@ -438,17 +496,24 @@ public class PaymentServiceImplTest extends ServiceTest {
 		il2.setTaxEach(Money.ZERO);
 		il2.setTitle("Accouting course item");
 		il2.setUnit("unit");
+		il2.setCollege(p1.getCollege());
 		
 		Enrolment e1 = context.newObject(Enrolment.class);
 		e1.setAngelId(1l);
-		e1.setCourseClass(context.newObject(CourseClass.class));
+		@SuppressWarnings("unchecked")
+		List<CourseClass> courseClasses = context.performQuery(new SelectQuery(CourseClass.class, 
+			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1186958L)));
+		e1.setCourseClass((CourseClass) context.localObject(courseClasses.get(0).getObjectId(), null));
 		e1.setCreated(new Date());
 		e1.setModified(new Date());
 		e1.setReasonForStudy(1);
 		e1.setSource(PaymentSource.SOURCE_WEB);
 		e1.setStatus(EnrolmentStatus.SUCCESS);
-		e1.setStudent(context.newObject(Student.class));
+		@SuppressWarnings("unchecked")
+		List<Student> students = context.performQuery(new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 1189147L)));
+		e1.setStudent((Student) context.localObject(students.get(0).getObjectId(), null));
 		e1.setInvoiceLine(il2);
+		e1.setCollege(p1.getCollege());
 		
 		PaymentInLine pil3 = context.newObject(PaymentInLine.class);
 		pil3.setPaymentIn(p1);
@@ -456,6 +521,9 @@ public class PaymentServiceImplTest extends ServiceTest {
 		pil3.setCreated(new Date());
 		pil3.setAmount(new BigDecimal(110l));
 		pil3.setInvoice(i2);
+		pil3.setCollege(p1.getCollege());
+		
+		context.commitChanges();
 		
 		InternalPaymentService port = getService(InternalPaymentService.class);
 		List<PaymentIn> updatedPayments = new ArrayList<PaymentIn>();
