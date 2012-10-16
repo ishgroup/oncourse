@@ -119,6 +119,18 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 
 	apply plugin: 'fatjar'
 
+	fatJarPrepareFiles {
+		doLast {
+			//copy few extra files, the fatjar plugin does not work with project fileset
+			// the plugin's configurable 'include' is just a filter on the default fileset
+			logger.lifecycle("copying generated sources")
+			copy {
+				into "$buildDir/tmp/fatjar-stage"
+				from "$buildDir/generated-resources/main"
+			}
+		}
+	}
+
 	fatJar {
 		// use the same manifest as normal jar
 		manifest {
