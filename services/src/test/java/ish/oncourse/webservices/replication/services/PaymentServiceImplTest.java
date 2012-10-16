@@ -133,7 +133,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p1.setContact(contact);
 		p1.setCreated(new Date());
 		p1.setModified(new Date());
-		p1.setSource(PaymentSource.SOURCE_WEB);
+		p1.setSource(PaymentSource.SOURCE_ONCOURSE);
 		p1.setStatus(PaymentStatus.IN_TRANSACTION);
 		p1.setType(PaymentType.CREDIT_CARD);
 		PaymentInLine pil1 = context.newObject(PaymentInLine.class);
@@ -157,7 +157,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		i1.setModified(new Date());
 		i1.setTotalExGst(new BigDecimal(100));
 		i1.setTotalGst(new BigDecimal(110));
-		i1.setSource(PaymentSource.SOURCE_WEB);
+		i1.setSource(PaymentSource.SOURCE_ONCOURSE);
 		InvoiceLine il1 = context.newObject(InvoiceLine.class);
 		il1.setInvoice(i1);
 		il1.setAngelId(1l);
@@ -177,7 +177,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 		p2.setContact(contact);
 		p2.setCreated(new Date());
 		p2.setModified(new Date());
-		p2.setSource(PaymentSource.SOURCE_WEB);
+		p2.setSource(PaymentSource.SOURCE_ONCOURSE);
 		p2.setStatus(PaymentStatus.IN_TRANSACTION);
 		p2.setType(PaymentType.CREDIT_CARD);
 		PaymentInLine pil2 = context.newObject(PaymentInLine.class);
