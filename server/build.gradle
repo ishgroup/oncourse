@@ -79,7 +79,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 }
 
 test {
-	dbTests = hasProperty('database') ? database : "derby-test"
+	dbTests = project.hasProperty('database') ? project.database : "derby-test"
 
 	switch (dbTests) {
 		case "derby-test":
