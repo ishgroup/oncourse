@@ -4,11 +4,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;
 import ish.oncourse.model.access.SessionToken;
 import ish.oncourse.services.system.ICollegeService;
-import ish.oncourse.webservices.exception.AuthSoapFault;
-import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.util.SoapUtil;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.namespace.QName;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;
@@ -18,6 +14,9 @@ import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.namespace.QName;
 
 public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
@@ -34,7 +33,6 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 	}
 
 	public void handleMessage(SoapMessage message) throws Fault {
-
 		try {
 			
 			BindingOperationInfo bindingInfo = message.getExchange().get(BindingOperationInfo.class);
@@ -50,10 +48,9 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			final String ip = (httpRequest != null) ? httpRequest.getRemoteAddr() : "unknown";
 			final String version = SoapUtil.getAngelVersion(message);
 			if (securityCode == null) {
-				final String m = String.format("Empty security code in replication soap message from ip = %s with angel server version = %s .", 
+				String m = String.format("Empty security code in replication soap message from ip = %s with angel server version = %s .",
 					ip, version);
-				logger.error(m);
-				throw new AuthSoapFault(m);
+				throw  new InterceptorErrorHandle(message, logger).handle(m);
 			}
 
 			College college = collegeService.findBySecurityCode(securityCode);
@@ -61,14 +58,12 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 			if (college == null) {
 				String m = String.format("College not found. Invalid security code %s from ip = %s with angel server version = %s .", securityCode, ip, 
 					version);
-				logger.error(m);
-				throw new AuthSoapFault(m);
+				throw  new InterceptorErrorHandle(message,logger).handle(m);
 			}
 
 			if (college.getCommunicationKeyStatus() == KeyStatus.HALT) {
 				String m = String.format("Communication key for college:%s in a HALT state.", college.getId());
-				logger.error(m);
-				throw new AuthSoapFault(m);
+				throw  new InterceptorErrorHandle(message,logger).handle(m);
 			}
 
 			Long communicationKey = null;
@@ -83,14 +78,12 @@ public class CommunicationKeyInterceptor extends AbstractSoapInterceptor {
 
 			} catch (NumberFormatException ne) {
 				String m = String.format("Invalid communication key %s from ip = %s with angel server version = %s .", communicationKey, ip, version);
-				logger.error(m, ne);
-				throw new AuthSoapFault(m);
+				throw new InterceptorErrorHandle(message,logger).handle(m);
+
 			}
 
 		} catch (Exception e) {
-			logger.error("Willow generic exception.", e);
-			String m = String.format("Willow generic exception:%s.", StackTraceUtils.stackTraceAsString(e));
-			throw new AuthSoapFault(m);
+			 throw  new InterceptorErrorHandle(message,logger).handle(e);
 		}
 	}
 }
