@@ -1,34 +1,67 @@
 package ish.oncourse.portal.pages.student;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Student;
 import ish.oncourse.model.Survey;
 import ish.oncourse.model.TutorRole;
+import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.annotations.UserRole;
+import ish.oncourse.portal.components.Rating;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.services.PortalUtils;
+import ish.oncourse.portal.services.ValueChangeDelegate;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.util.SecurityUtil;
+
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
-//@UserRole("student")
+@UserRole("student")
 public class Surveys {
 
 	@Property
+	@Persist
 	private CourseClass courseClass;
 
 	@Property
 	private TutorRole tutorRole;
-
+	
 	@Inject
 	private ICourseClassService courseClassService;
+	
+	@Inject
+	private ICayenneService cayenneService;
+	
+	@Inject
+	private IAuthenticationService authenticationService;
 
 	@InjectPage
 	private PageNotFound pageNotFound;
+	
+	@InjectComponent
+	private Form surveyForm;
 
+	@Persist
 	private Survey survey;
+	
+	@Persist
+	@Property
+	private ObjectContext context;
 
 	@Inject
 	private Request request;
@@ -40,10 +73,33 @@ public class Surveys {
 			if (list.isEmpty())
 				return pageNotFound;
 			this.courseClass =  list.get(0);
+			
+			if (context == null) {
+				this.context = cayenneService.newContext();
+			}
+			
+			if (survey == null) {
+				Student student = (Student) context.localObject(authenticationService.getUser().getStudent().getObjectId(), null);
+				this.survey = getSurveyForStudentAndClass(student, courseClass);
+			
+				if (survey == null) {
+					this.survey = context.newObject(Survey.class);
+					survey.setCollege(student.getCollege());
+					survey.setEnrolment(getEnrolmentForStudentAndClass(student, courseClass));
+					survey.setUniqueCode(SecurityUtil.generateRandomPassword(8));
+				}
+			}
+			
 			return null;
 		} else {
 			return pageNotFound;
 		}
+	}
+	
+	@OnEvent(component = "surveyForm", value = "success")
+	Object submitted() {
+		context.commitChanges();
+		return this;
 	}
 
 	public String getCourseName() {
@@ -84,6 +140,52 @@ public class Surveys {
 
 	public void setSurvey(Survey survey) {
 		this.survey = survey;
+	}
+	
+	public ValueChangeDelegate<Integer> getCourseRatingDelegate() {
+		return new ValueChangeDelegate<Integer>() {
+			
+			@Override
+			public void changeValue(Integer value) {
+				survey.setCourseScore(value);
+			}
+		};
+	}
+	
+	public ValueChangeDelegate<Integer> getTutorRatingDelegate() {
+		return new ValueChangeDelegate<Integer>() {
+			
+			@Override
+			public void changeValue(Integer value) {
+				survey.setTutorScore(value);
+			}
+		};
+	}
+	
+	public ValueChangeDelegate<Integer> getVenueRatingDelegate() {
+		return new ValueChangeDelegate<Integer>() {
+			
+			@Override
+			public void changeValue(Integer value) {
+				survey.setVenueScore(value);
+			}
+		};
+	}
+	
+	private Enrolment getEnrolmentForStudentAndClass(Student student, CourseClass courseClass) {
+		Expression enrolmentExp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student)
+				.andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass));
+		SelectQuery query = new SelectQuery(Enrolment.class, enrolmentExp);
+		
+		return (Enrolment) Cayenne.objectForQuery(student.getObjectContext(), query);
+	}
+	
+	private Survey getSurveyForStudentAndClass(Student student, CourseClass courseClass) {
+		Expression surveyExp = ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.STUDENT_PROPERTY, student)
+				.andExp(ExpressionFactory.matchExp(Survey.ENROLMENT_PROPERTY + "." + Enrolment.COURSE_CLASS_PROPERTY, courseClass));
+		SelectQuery query = new SelectQuery(Survey.class, surveyExp);
+		
+		return (Survey) Cayenne.objectForQuery(student.getObjectContext(), query);
 	}
 
 }

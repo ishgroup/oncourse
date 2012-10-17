@@ -3,22 +3,24 @@ package ish.oncourse.portal.components;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.Loop;
 import org.apache.tapestry5.corelib.components.RadioGroup;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import ish.oncourse.portal.services.ValueChangeDelegate;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rating extends AbstractField {
+public class Rating {
 
 	private Integer value;
-
-	@SuppressWarnings("unused")
-	@Component(parameters = { "value=prop:value" })
-	private RadioGroup radioGroup;
+	
+	@Parameter
+	private ValueChangeDelegate<Integer> delegate;
 
 	@SuppressWarnings("unused")
 	@Component(parameters = { "source=prop:source", "value=loopValue" })
@@ -30,11 +32,6 @@ public class Rating extends AbstractField {
 
 	@Inject
 	private Request request;
-
-	@Override
-	protected void processSubmission(String elementName) {
-
-	}
 
 	public Integer getValue() {
 		if (value == null)
@@ -77,6 +74,10 @@ public class Rating extends AbstractField {
 		if (request.isXHR() && StringUtils.isNumeric(value))
 		{
 			this.value = new Integer(value);
+			
+			if (delegate != null) {
+				this.delegate.changeValue(this.value);
+			}
 		}
 		return null;
 	}
