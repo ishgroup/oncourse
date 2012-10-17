@@ -5,7 +5,7 @@ import java.util.Date;
 import ish.oncourse.model.auto._Module;
 import ish.oncourse.utils.QueueableObjectUtils;
 
-public class Module extends _Module implements Queueable {
+public class Module extends _Module{
 	private static final long serialVersionUID = 4023705295199575681L;
 
 	public Long getId() {
@@ -36,23 +36,5 @@ public class Module extends _Module implements Queueable {
 		if (getModified() == null) {
 			setModified(today);
 		}
-	}
-
-	@Override
-	public College getCollege() {
-		return null;
-	}
-
-	@Override
-	public void setCollege(College college) {
-	}
-
-	@Override
-	public void setAngelId(Long angelId) {
-	}
-
-	@Override
-	public Long getAngelId() {
-		return null;
 	}
 }
