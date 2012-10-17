@@ -1,5 +1,7 @@
 dependencies {
 	compile project(':common:common-model')
+	compile project(':common:common-services')
+
 	compile 'ish.oncourse.angel:webservices-client:trunk-SNAPSHOT'
 	compile ('org.apache.cxf:cxf-bundle:2.6.2') {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
