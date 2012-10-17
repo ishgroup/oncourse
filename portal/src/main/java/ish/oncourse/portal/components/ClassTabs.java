@@ -47,7 +47,7 @@ public class ClassTabs {
 
 	public String getClassSurveyPageName()
 	{
-		return "student/surveys";
+		return authService.isTutor() ? "tutor/surveys" : "student/surveys";
 	}
 
 	public boolean isShowTutorTabs() {

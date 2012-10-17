@@ -1,0 +1,20 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="survey-table">
+		<tr>
+			<td width="64"><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
+			<td>${survey.courseScore}</td>
+			<td></td>
+			<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
+			<td>${survey.tutorScore}</td>
+			<td></td>
+			<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
+			<td>${survey.venueScore}</td>
+		</tr>
+		<tr>
+			<td colspan="10" rowspan="3">
+				<p>${survey.comment}</p>
+			</td>
+		</tr>
+
+	</table>
+</div>

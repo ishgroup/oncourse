@@ -1,0 +1,49 @@
+<html t:type="pagestructure" title="literal:Surveys"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_surveys">
+
+	<h1>${courseClass.course.name}</h1>
+
+	<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="survey-table">
+		<tr>
+			<td width="64"><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
+			<td>
+
+				<div class="class-name">
+					<span>${courseName}</span>
+				</div>
+			</td>
+			<td>
+				<span t:type="rating" id="ratingCourse"/>
+			</td>
+			<td>${courseAverage}</td>
+
+			<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
+			<td>
+				<t:loop  source="tutorRoles" value="tutorRole">
+					<div>${tutorRoleName} </div>
+				</t:loop>
+			</td>
+			<td>
+				<span t:type="rating" id="ratingTutor"/>
+			</td>
+			<td>${tutorAverage}</td>
+
+			<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
+			<td>
+				<div class="light">${room}</div>
+			</td>
+			<td>
+				<span t:type="rating" id="ratingVenue"/>
+			</td>
+			<td>${venueAverage}</td>
+		</tr>
+		
+		<t:loop source="surveys" t:value="survey">
+			<span t:type="surveyItem" survey="survey"/>
+		</t:loop>
+		
+	</table>
+
+</html>
