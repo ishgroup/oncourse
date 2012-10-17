@@ -189,22 +189,20 @@ public class PaymentInAbandonHelper {
 				Invoice invoice = line.getInvoice();
 				invoice.updateAmountOwing();
 				if (invoiceToRefund == null) {
-					if (!(new Money(invoice.getAmountOwing()).isZero())) {
-						paymentInLineToRefund = line;
-						invoiceToRefund = invoice;
-					}
+					paymentInLineToRefund = line;
+					invoiceToRefund = invoice;
 				} else {
 					// For angel payments use invoiceNumber to determine the last invoice, since createdDate is very often the same
 					// across several invoices
 					if (paymentIn.getSource() == PaymentSource.SOURCE_ONCOURSE) {
-						if (invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber() && !(new Money(invoice.getAmountOwing()).isZero())) {
+						if (invoice.getInvoiceNumber() > invoiceToRefund.getInvoiceNumber()) {
 							paymentInLineToRefund = line;
 							invoiceToRefund = invoice;
 						}
 					} else {
 						// For willow payments, use willowId to determine
 						// the newest invoice.
-						if (invoice.getId() > invoiceToRefund.getId() && !(new Money(invoice.getAmountOwing()).isZero())) {
+						if (invoice.getId() > invoiceToRefund.getId()) {
 							paymentInLineToRefund = line;
 							invoiceToRefund = invoice;
 						}
