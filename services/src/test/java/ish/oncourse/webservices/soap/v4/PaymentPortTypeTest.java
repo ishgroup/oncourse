@@ -293,22 +293,22 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 	@Test
 	public void testV4ProcessPaymentZero() throws Exception {
-		notCreditCardOrZeroPaymentV4(true);
+		notCreditCardOrZeroPaymentV4(true, false, false);
 	}
 
 	@Test
 	public void testV4ProcessNotCreditCardPayment() throws Exception {
-		notCreditCardOrZeroPaymentV4(false);
+		notCreditCardOrZeroPaymentV4(false, false, false);
 	}
 	
 	@Test
 	public void testV5ProcessPaymentZero() throws Exception {
-		notCreditCardOrZeroPaymentV5(true);
+		notCreditCardOrZeroPaymentV5(true, false, false);
 	}
 
 	@Test
 	public void testV5ProcessNotCreditCardPayment() throws Exception {
-		notCreditCardOrZeroPaymentV5(false);
+		notCreditCardOrZeroPaymentV5(false, false, false);
 	}
 	
 	@Test
@@ -621,8 +621,28 @@ public class PaymentPortTypeTest extends ServiceTest {
 			}
 		}		
 	}
+	
+	@Test
+	public void testV4ZeroPaymentForFreeInvoice() throws Exception {
+		notCreditCardOrZeroPaymentV4(true, true, false);
+	}
+	
+	@Test
+	public void testV4ZeroPaymentForFreeInvoiceWithoutPlaces() throws Exception {
+		notCreditCardOrZeroPaymentV4(true, true, true);
+	}
+	
+	@Test
+	public void testV5ZeroPaymentForFreeInvoice() throws Exception {
+		notCreditCardOrZeroPaymentV5(true, true, false);
+	}
+	
+	@Test
+	public void testV5ZeroPaymentForFreeInvoiceWithoutPlaces() throws Exception {
+		notCreditCardOrZeroPaymentV5(true, true, true);
+	}
 
-	private void notCreditCardOrZeroPaymentV4(boolean isZeroPayment) throws Exception {
+	private void notCreditCardOrZeroPaymentV4(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) throws Exception {
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V4);
 		ish.oncourse.webservices.v4.stubs.replication.EnrolmentStub enrolStub = enrolmentV4();
 		ish.oncourse.webservices.v4.stubs.replication.InvoiceStub invoiceStub = invoiceV4();
@@ -641,8 +661,17 @@ public class PaymentPortTypeTest extends ServiceTest {
 			invoiceStub.setAmountOwing(BigDecimal.ZERO);
 			pLineStub.setAmount(BigDecimal.ZERO);
 		}
-
+		if (isFreeInvoice) {
+			invLineStub.setPriceEachExTax(BigDecimal.ZERO);
+			invLineStub.setDiscountEachExTax(BigDecimal.ZERO);
+			invLineStub.setTaxEach(BigDecimal.ZERO);
+		}
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		if (withoutPlaces) {
+			ish.oncourse.webservices.v4.stubs.replication.CourseClassStub courseClassStub = courseClassV4();
+			enrolStub.setCourseClassId(courseClassStub.getAngelId());
+			stubs.add(courseClassStub);
+		}
 
 		stubs.add(enrolStub);
 		stubs.add(paymentInStub);
@@ -664,17 +693,25 @@ public class PaymentPortTypeTest extends ServiceTest {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (GenericPaymentInStub) stub;
+				if (isZeroPayment && isFreeInvoice && withoutPlaces) {
+					if (((GenericPaymentInStub) stub).getType().equals(2)) {
+						respPaymentInStub = (GenericPaymentInStub) stub;
+					}
+				} else {
+					respPaymentInStub = (GenericPaymentInStub) stub;
+				}
 			}
 		}
 		assertNotNull("Check enrolment presents in response.", respEnrolStub);
 		assertNotNull("Check payment presents in response.", respPaymentInStub);
-		assertEquals("Check enrolment status.", "SUCCESS", respEnrolStub.getStatus());
-		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
+		String expectedEnrolStatus = (isZeroPayment && isFreeInvoice && withoutPlaces) ? "FAILED": "SUCCESS";
+		assertEquals("Check enrolment status.", expectedEnrolStatus, respEnrolStub.getStatus());
+		Integer expectedPaymentStatus = (isZeroPayment && isFreeInvoice && withoutPlaces) ? Integer.valueOf(7): Integer.valueOf(3);
+		assertEquals("Check payment status. Expecting " + expectedPaymentStatus, expectedPaymentStatus, respPaymentInStub.getStatus());
 		assertNull("Check that sessionId wasn't set.", respPaymentInStub.getSessionId());
 	}
 	
-	private void notCreditCardOrZeroPaymentV5(boolean isZeroPayment) throws Exception {
+	private void notCreditCardOrZeroPaymentV5(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) throws Exception {
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V5);
 		ish.oncourse.webservices.v5.stubs.replication.EnrolmentStub enrolStub = enrolmentV5();
 		ish.oncourse.webservices.v5.stubs.replication.InvoiceStub invoiceStub = invoiceV5();
@@ -693,9 +730,20 @@ public class PaymentPortTypeTest extends ServiceTest {
 			invoiceStub.setAmountOwing(BigDecimal.ZERO);
 			pLineStub.setAmount(BigDecimal.ZERO);
 		}
+		if (isFreeInvoice) {
+			invLineStub.setPriceEachExTax(BigDecimal.ZERO);
+			invLineStub.setDiscountEachExTax(BigDecimal.ZERO);
+			invLineStub.setTaxEach(BigDecimal.ZERO);
+		}
 
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 
+		if (withoutPlaces) {
+			ish.oncourse.webservices.v5.stubs.replication.CourseClassStub courseClassStub = courseClassV5();
+			enrolStub.setCourseClassId(courseClassStub.getAngelId());
+			stubs.add(courseClassStub);
+		}
+		
 		stubs.add(enrolStub);
 		stubs.add(paymentInStub);
 		stubs.add(pLineStub);
@@ -716,13 +764,21 @@ public class PaymentPortTypeTest extends ServiceTest {
 			if ("Enrolment".equals(stub.getEntityIdentifier())) {
 				respEnrolStub = (GenericEnrolmentStub) stub;
 			} else if ("PaymentIn".equals(stub.getEntityIdentifier())) {
-				respPaymentInStub = (GenericPaymentInStub) stub;
+				if (isZeroPayment && isFreeInvoice && withoutPlaces) {
+					if (((GenericPaymentInStub) stub).getType().equals(2)) {
+						respPaymentInStub = (GenericPaymentInStub) stub;
+					}
+				} else {
+					respPaymentInStub = (GenericPaymentInStub) stub;
+				}
 			}
 		}
 		assertNotNull("Check enrolment presents in response.", respEnrolStub);
 		assertNotNull("Check payment presents in response.", respPaymentInStub);
-		assertEquals("Check enrolment status.", "SUCCESS", respEnrolStub.getStatus());
-		assertEquals("Check payment status. Expecting SUCESS.", Integer.valueOf(3), respPaymentInStub.getStatus());
+		String expectedEnrolStatus = (isZeroPayment && isFreeInvoice && withoutPlaces) ? "FAILED": "SUCCESS";
+		assertEquals("Check enrolment status.", expectedEnrolStatus, respEnrolStub.getStatus());
+		Integer expectedPaymentStatus = (isZeroPayment && isFreeInvoice && withoutPlaces) ? Integer.valueOf(7): Integer.valueOf(3);
+		assertEquals("Check payment status. Expecting " + expectedPaymentStatus, expectedPaymentStatus, respPaymentInStub.getStatus());
 		assertNull("Check that sessionId wasn't set.", respPaymentInStub.getSessionId());
 	}
 	
@@ -989,6 +1045,56 @@ public class PaymentPortTypeTest extends ServiceTest {
 		enrolStub.setStatus(EnrolmentStatus.IN_TRANSACTION.name());
 		enrolStub.setStudentId(201l);
 		return enrolStub;
+	}
+	
+	private ish.oncourse.webservices.v4.stubs.replication.CourseClassStub courseClassV4() {
+		ish.oncourse.webservices.v4.stubs.replication.CourseClassStub courseClassStub = new ish.oncourse.webservices.v4.stubs.replication.CourseClassStub();
+		courseClassStub.setWillowId(1186958L);
+		courseClassStub.setCode("1");
+		courseClassStub.setEntityIdentifier("CourseClass");
+		courseClassStub.setCourseId(200L);
+		courseClassStub.setRoomId(200L);
+		courseClassStub.setAngelId(200L);
+		courseClassStub.setStartDate(today);
+		courseClassStub.setEndDate(dueDate);
+		courseClassStub.setWebVisible(false);
+		courseClassStub.setCancelled(false);
+		courseClassStub.setCreated(today);
+		courseClassStub.setModified(today);
+		//courseClassStub.setMaximumPlaces(30);
+		//courseClassStub.setMinimumPlaces(30);
+		courseClassStub.setMaximumPlaces(0);
+		courseClassStub.setMinimumPlaces(0);
+		courseClassStub.setCountOfSessions(3);
+		courseClassStub.setDeliveryMode(1);
+		courseClassStub.setFeeGst(new BigDecimal("45.45"));
+		courseClassStub.setFeeExGst(new BigDecimal("454.55"));
+		return courseClassStub;
+	}
+	
+	private ish.oncourse.webservices.v5.stubs.replication.CourseClassStub courseClassV5() {
+		ish.oncourse.webservices.v5.stubs.replication.CourseClassStub courseClassStub = new ish.oncourse.webservices.v5.stubs.replication.CourseClassStub();
+		courseClassStub.setWillowId(1186958L);
+		courseClassStub.setCode("1");
+		courseClassStub.setEntityIdentifier("CourseClass");
+		courseClassStub.setCourseId(200L);
+		courseClassStub.setRoomId(200L);
+		courseClassStub.setAngelId(200L);
+		courseClassStub.setStartDate(today);
+		courseClassStub.setEndDate(dueDate);
+		courseClassStub.setWebVisible(false);
+		courseClassStub.setCancelled(false);
+		courseClassStub.setCreated(today);
+		courseClassStub.setModified(today);
+		//courseClassStub.setMaximumPlaces(30);
+		//courseClassStub.setMinimumPlaces(30);
+		courseClassStub.setMaximumPlaces(0);
+		courseClassStub.setMinimumPlaces(0);
+		courseClassStub.setCountOfSessions(3);
+		courseClassStub.setDeliveryMode(1);
+		courseClassStub.setFeeGst(new BigDecimal("45.45"));
+		courseClassStub.setFeeExGst(new BigDecimal("454.55"));
+		return courseClassStub;
 	}
 
 	private ish.oncourse.webservices.v4.stubs.replication.StudentStub studentV4() {
