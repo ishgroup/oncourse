@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.replication.v5.updaters;
 
+import org.apache.cayenne.Cayenne;
+
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionModule;
@@ -13,7 +15,9 @@ public class SessionModuleUpdater extends AbstractWillowUpdater<SessionModuleStu
 	protected void updateEntity(SessionModuleStub stub, SessionModule entity, RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
-		entity.setModule(callback.updateRelationShip(stub.getModuleId(), Module.class));
+		if (stub.getModuleId() != null) {
+			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
+		}
 		entity.setSession(callback.updateRelationShip(stub.getSessionId(), Session.class));
 	}
 
