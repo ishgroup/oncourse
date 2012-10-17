@@ -6,7 +6,7 @@
              communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
              timezone="Australia/Sydney"
              requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
-             paymentGatewayPass="test1234"/>
+             paymentGatewayPass="test5678"/>
 
     <Course id="1" collegeId="1" angelId="1" code="AAV"
             isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"

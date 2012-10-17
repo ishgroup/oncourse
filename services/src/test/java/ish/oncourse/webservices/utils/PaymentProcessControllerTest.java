@@ -30,7 +30,7 @@ import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentAct
 import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentProcessState.*;
 import static org.junit.Assert.*;
 
-public class PaymentProcessControllerTest extends ServiceTest {
+public class   PaymentProcessControllerTest extends ServiceTest {
 
     public static final String VALID_CARD_NUMBER = "5431111111111111";
 
