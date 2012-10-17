@@ -1,29 +1,13 @@
 package ish.oncourse.services.paymentexpress;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
+import com.paymentexpress.stubs.TransactionResult2;
 import ish.common.types.CreditCardType;
-import ish.oncourse.model.College;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentOut;
-import ish.oncourse.model.PaymentOutTransaction;
-import ish.oncourse.model.PaymentTransaction;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Collections;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -32,9 +16,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.paymentexpress.stubs.TransactionResult2;
-
 import javax.xml.rpc.ServiceException;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Collections;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 /**
  * Test for the {@link PaymentExpressGatewayService}.
@@ -50,7 +39,7 @@ public class PaymentExpressGatewayServiceTest {
 	
 	private static final String PAYMENT_REF = "W111";
 
-	private static final String GATEWAY_PASSWORD = "test1234";
+	private static final String GATEWAY_PASSWORD = "test5678";
 
 	private static final String GATEWAY_ACCOUNT = "ishGroup_Dev";
 
