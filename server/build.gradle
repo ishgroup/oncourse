@@ -81,6 +81,8 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 test {
 	dbTests = project.hasProperty('database') ? project.database : "derby-test"
 
+	logger.lifecycle("will run in "+dbTests+" mode")
+
 	switch (dbTests) {
 		case "derby-test":
 			systemProperty 'testDatabaseUri', testDatabaseUriDerby
