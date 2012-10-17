@@ -81,7 +81,7 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 test {
 	dbTests = project.hasProperty('database') ? project.database : "derby-test"
 
-	logger.lifecycle("will run in "+dbTests+" mode")
+	logger.lifecycle("will run tests in '"+dbTests+"' mode")
 
 	switch (dbTests) {
 		case "derby-test":
@@ -91,12 +91,14 @@ test {
 			break
 
 		case "mssql-test":
+			assert project.hasProperty('testDatabaseUriMssql') // Please provide the testDatabaseUriMssql in your ~/.gradle/gradle.properties file
 			systemProperty 'testDatabaseUri', testDatabaseUriMssql
 			exclude '**/db/Mysql*.class'
 			exclude '**/db/Derby*.class'
 			break
 
 		case "mysql-test":
+			assert project.hasProperty('testDatabaseUriMysql') // Please provide the testDatabaseUriMysql in your ~/.gradle/gradle.properties file
 			systemProperty 'testDatabaseUri', testDatabaseUriMysql
 			exclude '**/db/Mssql*.class'
 			exclude '**/db/Derby*.class'
