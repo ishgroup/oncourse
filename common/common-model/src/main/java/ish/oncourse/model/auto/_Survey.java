@@ -19,7 +19,6 @@ public abstract class _Survey extends CayenneDataObject {
     public static final String COMMENT_PROPERTY = "comment";
     public static final String COURSE_SCORE_PROPERTY = "courseScore";
     public static final String CREATED_PROPERTY = "created";
-    public static final String ID_PROPERTY = "id";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String TUTOR_SCORE_PROPERTY = "tutorScore";
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
@@ -55,13 +54,6 @@ public abstract class _Survey extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setId(Long id) {
-        writeProperty("id", id);
-    }
-    public Long getId() {
-        return (Long)readProperty("id");
     }
 
     public void setModified(Date modified) {

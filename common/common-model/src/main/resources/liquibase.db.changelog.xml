@@ -1325,6 +1325,13 @@
      		baseTableName="SessionModule" referencedColumnNames="id"/>
      </changeSet>
     
+    <changeSet id="84" author="dzmitry" context="production" runOnChange="true">
+		<addAutoIncrement tableName="Survey" columnName="id" columnDataType="BIGINT"/>
+		<addAutoIncrement tableName="SessionModule" columnName="id" columnDataType="BIGINT"/>
+		<addAutoIncrement tableName="VoucherPaymentIn" columnName="id" columnDataType="BIGINT"/>
+		<addAutoIncrement tableName="VoucherProductCourse" columnName="id" columnDataType="BIGINT"/>
+    </changeSet>
+    
     <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
     	uncomment this changeset after all applications re-deployment. Especially the services and enrol.
     	<preConditions>
