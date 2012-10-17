@@ -37,9 +37,9 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
+		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml");
+		InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
         DataSource onDataSource = getDataSource("jdbc/oncourse");
@@ -194,10 +194,11 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBI);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBD);
         records = transactionGroupProcessor.processGroup(transactionGroup);
+		assertEquals("records size 2", 2, records.size());
         for (GenericReplicatedRecord record : records) {
             assertTrue("GenericReplicatedRecord success", record.isSuccessStatus());
         }
-        BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.sharedContext(), BinaryInfo.class, willowId);
+        BinaryInfo binaryInfo = Cayenne.objectForPK(cayenneService.newContext(), BinaryInfo.class, willowId);
         assertNull("BinaryInfo is null", binaryInfo);
     }
 
