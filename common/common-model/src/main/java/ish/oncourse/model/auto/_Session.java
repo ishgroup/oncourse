@@ -9,6 +9,7 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
+import ish.oncourse.model.SessionModule;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.Tutor;
 
@@ -31,6 +32,7 @@ public abstract class _Session extends CayenneDataObject {
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
     public static final String MARKER_PROPERTY = "marker";
     public static final String ROOM_PROPERTY = "room";
+    public static final String SESSION_MODULES_PROPERTY = "sessionModules";
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
 
     public static final String ID_PK_COLUMN = "id";
@@ -122,6 +124,18 @@ public abstract class _Session extends CayenneDataObject {
 
     public Room getRoom() {
         return (Room)readProperty("room");
+    }
+
+
+    public void addToSessionModules(SessionModule obj) {
+        addToManyTarget("sessionModules", obj, true);
+    }
+    public void removeFromSessionModules(SessionModule obj) {
+        removeToManyTarget("sessionModules", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<SessionModule> getSessionModules() {
+        return (List<SessionModule>)readProperty("sessionModules");
     }
 
 

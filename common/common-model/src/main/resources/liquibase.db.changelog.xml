@@ -1294,6 +1294,36 @@
     	</preConditions>
     	<sql>ALTER TABLE VoucherPaymentIn CHANGE COLUMN status status INT(11) NULL  ;</sql>
      </changeSet>
+     
+     <changeSet id="83" author="viacheslav" context="production" runOnChange="true">
+     	<preConditions onFail="MARK_RAN">
+     		<not>
+     			<tableExists tableName="SessionModule"/>
+     		</not>
+     	</preConditions>
+     	<createTable tableName="SessionModule">
+     		<column name="id" type="BIGINT">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="angelId" type="BIGINT"/>
+			<column name="created" type="DATETIME"/>
+			<column name="modified" type="DATETIME"/>
+			<column name="moduleId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="sessionId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+     	</createTable>
+     	
+     	<addForeignKeyConstraint constraintName="fk_SessionModule_Module" referencedTableName="Module" baseColumnNames="moduleId" 
+     		baseTableName="SessionModule" referencedColumnNames="id"/>
+     	<addForeignKeyConstraint constraintName="fk_SessionModule_Session" referencedTableName="Session" baseColumnNames="sessionId" 
+     		baseTableName="SessionModule" referencedColumnNames="id"/>
+     </changeSet>
     
     <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
     	uncomment this changeset after all applications re-deployment. Especially the services and enrol.

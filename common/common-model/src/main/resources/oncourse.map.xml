@@ -689,6 +689,15 @@
 		<db-attribute name="startDate" type="TIMESTAMP" length="19"/>
 		<db-attribute name="timeZone" type="VARCHAR" length="64"/>
 	</db-entity>
+	<db-entity name="SessionModule">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="moduleId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="sessionId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="SessionTutor" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
@@ -766,7 +775,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="tutorScore" type="INTEGER" isMandatory="true" length="10"/>
-		<db-attribute name="uniqueCode" type="VARCHAR" isMandatory="true"  length="8"/>
+		<db-attribute name="uniqueCode" type="VARCHAR" isMandatory="true" length="8"/>
 		<db-attribute name="venueScore" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="SystemUser">
@@ -1597,6 +1606,11 @@
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 	</obj-entity>
+	<obj-entity name="SessionModule" className="ish.oncourse.model.SessionModule" dbEntityName="SessionModule">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
 	<obj-entity name="SessionTutor" className="ish.oncourse.model.SessionTutor" dbEntityName="SessionTutor">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2022,6 +2036,9 @@
 	<db-relationship name="rooms" source="College" target="Room" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="sessionModules" source="College" target="SessionModule" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="sessionTutors" source="College" target="SessionTutor" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2376,6 +2393,9 @@
 	<db-relationship name="moduleCourses" source="Module" target="CourseModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
+	<db-relationship name="sessionModules" source="Module" target="SessionModule" toMany="true">
+		<db-attribute-pair source="id" target="moduleId"/>
+	</db-relationship>
 	<db-relationship name="college" source="NotificationTemplate" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -2508,8 +2528,20 @@
 	<db-relationship name="room" source="Session" target="Room" toMany="false">
 		<db-attribute-pair source="roomId" target="id"/>
 	</db-relationship>
+	<db-relationship name="sessionModules" source="Session" target="SessionModule" toMany="true">
+		<db-attribute-pair source="id" target="sessionId"/>
+	</db-relationship>
 	<db-relationship name="sessionTutors" source="Session" target="SessionTutor" toMany="true">
 		<db-attribute-pair source="id" target="sessionId"/>
+	</db-relationship>
+	<db-relationship name="college" source="SessionModule" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="module" source="SessionModule" target="Module" toMany="false">
+		<db-attribute-pair source="moduleId" target="id"/>
+	</db-relationship>
+	<db-relationship name="session" source="SessionModule" target="Session" toMany="false">
+		<db-attribute-pair source="sessionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="SessionTutor" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -2957,6 +2989,7 @@
 	<obj-relationship name="tutor" source="MessagePerson" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
 	<obj-relationship name="college" source="MessageTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="moduleCourses" source="Module" target="CourseModule" deleteRule="Deny" db-relationship-path="moduleCourses"/>
+	<obj-relationship name="sessionModules" source="Module" target="SessionModule" deleteRule="Deny" db-relationship-path="sessionModules"/>
 	<obj-relationship name="college" source="NotificationTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="certificateOutcomes" source="Outcome" target="CertificateOutcome" deleteRule="Cascade" db-relationship-path="certificateOutcomes"/>
 	<obj-relationship name="college" source="Outcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -2998,7 +3031,11 @@
 	<obj-relationship name="courseClass" source="Session" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="marker" source="Session" target="Tutor" deleteRule="Nullify" db-relationship-path="marker"/>
 	<obj-relationship name="room" source="Session" target="Room" deleteRule="Nullify" db-relationship-path="room"/>
+	<obj-relationship name="sessionModules" source="Session" target="SessionModule" deleteRule="Deny" db-relationship-path="sessionModules"/>
 	<obj-relationship name="sessionTutors" source="Session" target="SessionTutor" deleteRule="Cascade" db-relationship-path="sessionTutors"/>
+	<obj-relationship name="college" source="SessionModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="module" source="SessionModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
+	<obj-relationship name="session" source="SessionModule" target="Session" deleteRule="Nullify" db-relationship-path="session"/>
 	<obj-relationship name="college" source="SessionTutor" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="session" source="SessionTutor" target="Session" deleteRule="Nullify" db-relationship-path="session"/>
 	<obj-relationship name="tutor" source="SessionTutor" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
