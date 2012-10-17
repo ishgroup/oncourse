@@ -1092,6 +1092,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		courseClassStub.setMinimumPlaces(0);
 		courseClassStub.setCountOfSessions(3);
 		courseClassStub.setDeliveryMode(1);
+		courseClassStub.setDistantLearningCourse(false);
 		courseClassStub.setFeeGst(new BigDecimal("45.45"));
 		courseClassStub.setFeeExGst(new BigDecimal("454.55"));
 		return courseClassStub;
