@@ -52,5 +52,6 @@ public class V4BuildersMap {
         builderMap.put(getEntityName(CertificateOutcome.class), new CertificateOutcomeStubBuilder());
         builderMap.put(getEntityName(Membership.class), new MembershipStubBuilder());
         builderMap.put(getEntityName(MembershipProduct.class), new MembershipProductStubBuilder());
+        builderMap.put(getEntityName(SessionModule.class), new SessionModuleStubBuilder());
 	}
 }
