@@ -39,7 +39,7 @@ public class PaymentExpressGatewayServiceTest {
 	
 	private static final String PAYMENT_REF = "W111";
 
-	private static final String GATEWAY_PASSWORD = "test5678";
+	private static final String GATEWAY_PASSWORD = "test1234";
 
 	private static final String GATEWAY_ACCOUNT = "ishGroup_Dev";
 
