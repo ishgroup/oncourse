@@ -3,7 +3,6 @@ package ish.oncourse.enrol.utils;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.*;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 
@@ -313,7 +312,7 @@ public class PurchaseModel {
 		}
 		
 		public void addEnrolment(Enrolment e) {
-			this.enabledEnrolments.add(e);
+			this.disabledEnrolments.add(e);
 		}
 		
 		public void removeEnrolment(Enrolment e) {

@@ -5,152 +5,23 @@
 
 <table class="payments">
 	<!--span t:type="checkout/selectpayer" purchaseController="purchaseController" componentForRerender="nextPage"/-->
-	<thead><tr>
-		<td colspan="2" id="payer_0">
-			<div class="left">Aristedes Maniatis <span> ari@ish.com.au</span></div>
-			<div class="drop-down">
-				<span class="btn-primary">Payer <b class="caret"></b></span>
-				<ul class="drop-down-content"><li><a href="javascript: void(0);" rel="payer_0" class="payer"><font>Aristedes Maniatis</font> is the payer</a></li><li><a href="javascript: void(0);" rel="payer_1">Make <font>Salome Cerda-Vargas</font> the payer</a></li><li><a href="javascript: void(0);" rel="payer_2">Make <font>Test One</font> the payer</a></li><li><a href="javascript: void(0);" rel="payer_3">Make <font>Test Two</font> the payer</a></li><li><a href="javascript: void(0);" rel="payer_4">Make <font>Test Three</font> the payer</a></li></ul>
-			</div>
-		</td>
-
-		<td>
-			<a class="add-con" href="#">Add concession</a>
-		</td>
-	</tr>
-	</thead>
-
 	<span t:type="checkout/contactlist" purchaseController="purchaseController"/>
-
-
-
-	<tbody>
-	<tr class="even">
-		<td colspan="2">
-			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_0_0" type="checkbox"/><label for="enrolmentCheckbox_0_0" id="i_0_0"> A Toolkit for New Managers </label></p>
-			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
-		</td>
-
-		<td class="alignright">
-			<span id="fullPrice_0_0" class="fee-full fullPrice">$768.00</span>
-		</td>
-	</tr>
-
-	<tr>
-		<td colspan="2" id="payer_1">
-			<div class="left">Salome Cerda-Vargas <span> salome@ish.com.au</span></div>
-		</td>
-		<td>
-			<a class="add-con" href="#">Add concession</a>
-		</td>
-	</tr>
-
-
-	<tr class="even">
-		<td colspan="2">
-			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_1_0" type="checkbox"/><label id="i_1_0" for="enrolmentCheckbox_1_0"> A Toolkit for New Managers</label></p>
-			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
-		</td>
-
-		<td class="alignright">
-			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
-		</td>
-	</tr>
-
-
-	<tr>
-		<td colspan="2" id="payer_2">
-			<div class="left">Test One <span> salome@ish.com.au</span></div>
-		</td>
-		<td>
-			<a class="add-con" href="#">Add concession</a>
-		</td>
-	</tr>
-
-
-	<tr class="even">
-		<td colspan="2">
-			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_2_0" type="checkbox"/><label id="i_2_0" for="enrolmentCheckbox_2_0"> A Toolkit for New Managers </label></p>
-			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
-		</td>
-
-		<td class="alignright">
-			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
-		</td>
-	</tr>
-
-
-	<tr>
-		<td colspan="2" id="payer_3">
-			<div class="left">Test Two <span> salome@ish.com.au</span></div>
-		</td>
-		<td>
-			<a class="add-con" href="#">Add concession</a>
-		</td>
-	</tr>
-
-	<tr class="even">
-		<td colspan="2">
-			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_3_0" type="checkbox"/><label id="i_3_0" for="enrolmentCheckbox_3_0"> A Toolkit for New Managers </label></p>
-			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
-		</td>
-
-		<td class="alignright">
-			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
-		</td>
-	</tr>
-
-
-	<tr>
-		<td colspan="2" id="payer_4">
-			<div class="left">Test Three <span> salome@ish.com.au</span></div>
-		</td>
-		<td>
-			<a class="add-con" href="#">Add concession</a>
-		</td>
-	</tr>
-
-
-	<tr class="even">
-		<td colspan="2">
-			<p><input checked="checked" class="enrolmentCheckbox" id="enrolmentCheckbox_4_0" type="checkbox"/><label id="i_4_0" for="enrolmentCheckbox_4_0"> A Toolkit for New Managers </label></p>
-			<em> Centre for Continuing Education » Wed 30 May 12 9:00 AM</em>
-		</td>
-
-		<td class="alignright">
-			<span id="fullPrice_1_0" class="fee-full fullPrice">$768.00</span>
-		</td>
-	</tr>
-
-	</tbody><tbody class="t-update t-zone" id="totals">
-<tr>
-	<td>
-		<span id="addstudent">Add another student</span>
-	</td>
-	<td class="alignright">Total</td>
-	<td id="total" class="alignright">
-		<span class="totalPrice">$1536.00</span>
-	</td>
-</tr>
-</tbody>
+	<tbody class="t-update t-zone" id="totals">
+		<tr>
+			<td>
+				<span id="addstudent">Add another student</span>
+			</td>
+			<td class="alignright">Total</td>
+			<td id="total" class="alignright">
+				<span class="totalPrice">${purchaseController.totalIncGst}</span>
+			</td>
+		</tr>
+	</tbody>
 </table>
 
 <div class="amount-container">
-	<div class="code-info"><input type="text" name="add_code" class="code_input"/><a href="#" class="btn">Add Code</a><p>Promotional Code,Gift Certificate or Voucher</p></div>
-	<div class="amount-content">
-		<p><label class="first">Credit available</label><a href="enrolcourses.html#access-password-popup" id="access" class="nyroModal">Access</a></p>
-		<p><label>Voucher</label> <span>($180.00)</span></p>
-		<p><label>Previous Owing </label><span>$200.00</span> <a href="">(Remove)</a></p>
-		<p><label>Total</label>  <span>$875.00</span></p>
-		<p><label>Minimum Payable Now</label> <span>$800.00</span></p>
-	</div>
-
-	<div id="access-password-popup">
-		<div class="password-field">
-			<label>Password </label><input type="password" name="password"/><input type="button" class="btn-password" value="Submit" name=""/>
-		</div>
-	</div>
-	<div class="clearboth"></div>
+	<span t:type="checkout/addcode" purchaseController="purchaseController"/>
+	<span t:type="checkout/amount" purchaseController="purchaseController"/>
 	<a href="enrolcourses-2.html" class="btn btn-primary">Proceed to Payment</a>
 </div>
 

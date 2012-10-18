@@ -108,6 +108,24 @@ public class PurchaseController {
 		return result;
 	}
 
+	public Money getTotalPayment()
+	{
+		return new Money(model.getPayment().getAmount());
+	}
+
+	public Money getTotalVoucherPayments()
+	{
+		//TODO need functionality to recalculate the value
+		return Money.ZERO;
+	}
+
+	public Money getPreviousOwing()
+	{
+		//TODO need functionality to recalculate the value for payer
+		return Money.ZERO;
+	}
+
+
 	/**
 	 * Check that any discounts potentially can be applied for actual enrollments.
 	 *
@@ -192,6 +210,10 @@ public class PurchaseController {
 					return false;
 				break;
 			case ENABLE_ENROLMENT:
+				/**
+				 * TODO add this check when we try to enable enrolment
+				 * if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
+				 */
 				Enrolment enrolment = param.getValue(Enrolment.class);
 				if (model.isEnrolmentEnabled(enrolment))
 					return false;
@@ -261,10 +283,10 @@ public class PurchaseController {
 				init();
 				break;
 			case CHANGE_PAYER:
-				changePayer(param.getValue(Contact.class));
+				changePayer(getModel().localizeObject(param.getValue(Contact.class)));
 				break;
 			case ADD_STUDENT:
-				addContact(param.getValue(Contact.class));
+				addContact(getModel().localizeObject(param.getValue(Contact.class)));
 				break;
 			case ENABLE_ENROLMENT:
 				enableEnrolment(param.getValue(Enrolment.class));
@@ -282,13 +304,13 @@ public class PurchaseController {
 				concessionRemoved(param.getValue(Contact.class), param.getValue(ConcessionType.class));
 				break;
 			case ADD_CONCESSION:
-				concessionAdded(param.getValue(StudentConcession.class));
+				concessionAdded(getModel().localizeObject(param.getValue(StudentConcession.class)));
 				break;
 			case ADD_DISCOUNT:
-				addDiscount(param.getValue(Discount.class));
+				addDiscount(getModel().localizeObject(param.getValue(Discount.class)));
 				break;
 			case ADD_VOUCHER:
-				addVoucher(param.getValue(Voucher.class));
+				addVoucher(getModel().localizeObject(param.getValue(Voucher.class)));
 				break;
 			case PROCEED_TO_PAYMENT:
 				state = State.FINALIZED;
@@ -415,13 +437,6 @@ public class PurchaseController {
 		enrolment.setCollege(student.getCollege());
 		enrolment.setStudent(student);
 		enrolment.setCourseClass(courseClass);
-
-		if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
-			InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, model.getDiscounts());
-			invoiceLine.setInvoice(model.getInvoice());
-
-			enrolment.setInvoiceLine(invoiceLine);
-		}
 		return enrolment;
 	}
 

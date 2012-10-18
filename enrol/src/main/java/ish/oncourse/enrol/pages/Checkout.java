@@ -20,8 +20,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.ui.pages.Courses;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.StreamResponse;
@@ -177,21 +177,32 @@ public class Checkout {
 
 	private void initTestPaymentController() {
 		if (purchaseController == null) {
+			ObjectContext objectContext = cayenneService.sharedContext();
+
 			List<Long> orderedClassesIds = Arrays.asList(5021693L,
 					5021692L,
 					5021691L,
 					5021690L);
 			List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
-			List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
+
+			SelectQuery selectQuery = new SelectQuery(CourseClass.class);
+			selectQuery.setPageSize(3);
+			selectQuery.setFetchLimit(3);
+			List<CourseClass> courseClasses = objectContext.performQuery(selectQuery);
+
 			List<Product> products = voucherService.loadByIds(productIds);
-			ObjectContext objectContext = cayenneService.newContext();
-			Contact payer = Cayenne.objectForPK(objectContext,Contact.class, 5040916);
+
+
+			selectQuery = new SelectQuery(Contact.class);
+			selectQuery.setPageSize(3);
+			selectQuery.setFetchLimit(3);
+			List<Contact> contacts = objectContext.performQuery(selectQuery);
 
 			PurchaseModel model = new PurchaseModel();
 			model.setObjectContext(cayenneService.newContext());
 			model.setClasses(model.localizeObjects(courseClasses));
 			model.setProducts(model.localizeObjects(products));
-			model.setPayer(model.localizeObject(payer));
+			model.setPayer(model.localizeObject(contacts.get(0)));
 			model.addContact(model.getPayer());
 
 			purchaseController = new PurchaseController();
@@ -202,11 +213,11 @@ public class Checkout {
 			purchaseController.performAction(new ActionParameter(Action.INIT));
 
 			ActionParameter parameter = new ActionParameter(Action.ADD_STUDENT);
-			parameter.setValue(Cayenne.objectForPK(model.getObjectContext(), Contact.class, 5040914));
+			parameter.setValue(contacts.get(1));
 			purchaseController.performAction(parameter);
 
 			parameter = new ActionParameter(Action.ADD_STUDENT);
-			parameter.setValue(Cayenne.objectForPK(model.getObjectContext(),Contact.class, 5040913));
+			parameter.setValue(contacts.get(2));
 			purchaseController.performAction(parameter);
 
 		}
