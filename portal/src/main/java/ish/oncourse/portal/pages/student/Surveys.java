@@ -101,6 +101,22 @@ public class Surveys {
 		context.commitChanges();
 		return this;
 	}
+	
+	@OnEvent(component = "surveyForm", value = "validate")
+	void validate() {
+		if (survey.getCourseScore() == null) {
+			surveyForm.recordError("You must set course score.");
+		}
+		if (survey.getTutorScore() == null) {
+			surveyForm.recordError("You must set tutor score.");
+		}
+		if (survey.getVenueScore() == null) {
+			surveyForm.recordError("You must set venue score.");
+		}
+		if (survey.getComment() == null) {
+			surveyForm.recordError("Comment is required.");
+		}
+	}
 
 	public String getCourseName() {
 		return courseClass.getCourse().getName();

@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.base.AbstractField;
 import org.apache.tapestry5.corelib.components.Loop;
 import org.apache.tapestry5.corelib.components.RadioGroup;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class Rating {
 
+	@Parameter
 	private Integer value;
 	
 	@Parameter

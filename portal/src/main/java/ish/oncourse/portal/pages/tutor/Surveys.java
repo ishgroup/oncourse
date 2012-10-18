@@ -47,14 +47,11 @@ public class Surveys {
 	@Inject
 	private Request request;
 	
-	@Property
-	private String courseAverage;
+	private double courseAverage;
 	
-	@Property
-	private String tutorAverage;
+	private double tutorAverage;
 	
-	@Property
-	private String venueAverage;
+	private double venueAverage;
 
 	Object onActivate(String id) {
 		if (id != null && id.length() > 0 && id.matches("\\d+")) {
@@ -85,9 +82,33 @@ public class Surveys {
 			venueRating += survey.getVenueScore();
 		}
 		
-		courseAverage = String.format("%.1f", courseRating);
-		tutorAverage = String.format("%.1f", tutorRating);
-		venueAverage = String.format("%.1f", venueRating);	
+		courseAverage = courseRating / surveys.size();
+		tutorAverage = tutorRating / surveys.size();
+		venueAverage = venueRating / surveys.size();	
+	}
+	
+	public String getCourseAverage() {
+		return Double.isNaN(courseAverage) ? "" : String.format("%.1f", courseAverage);
+	}
+	
+	public String getTutorAverage() {
+		return Double.isNaN(tutorAverage) ? "" : String.format("%.1f", tutorAverage);
+	}
+	
+	public String getVenueAverage() {
+		return Double.isNaN(venueAverage) ? "" : String.format("%.1f", venueAverage);
+	}
+	
+	public Long getRoundedCourseAverage() {
+		return Math.round(courseAverage);
+	}
+	
+	public Long getRoundedTutorAverage() {
+		return Math.round(tutorAverage);
+	}
+	
+	public Long getRoundedVenueAverage() {
+		return Math.round(venueAverage);
 	}
 
 	public String getCourseName() {

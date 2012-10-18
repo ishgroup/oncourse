@@ -4,5 +4,6 @@
 			<div class="rating-choice-input"/>
 		</div>
 	</t:loop>
+	<span class="rating-value" style="visibility:hidden">${value}</span>
 	<t:actionlink t:id="update"/>
 </div>

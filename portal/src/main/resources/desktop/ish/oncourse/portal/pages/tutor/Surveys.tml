@@ -15,7 +15,7 @@
 				</div>
 			</td>
 			<td>
-				<span t:type="rating" id="ratingCourse"/>
+				<span t:type="rating" id="ratingCourse" value="roundedCourseAverage"/>
 			</td>
 			<td>${courseAverage}</td>
 
@@ -26,7 +26,7 @@
 				</t:loop>
 			</td>
 			<td>
-				<span t:type="rating" id="ratingTutor"/>
+				<span t:type="rating" id="ratingTutor" value="roundedTutorAverage"/>
 			</td>
 			<td>${tutorAverage}</td>
 
@@ -35,7 +35,7 @@
 				<div class="light">${room}</div>
 			</td>
 			<td>
-				<span t:type="rating" id="ratingVenue"/>
+				<span t:type="rating" id="ratingVenue" value="roundedVenueAverage"/>
 			</td>
 			<td>${venueAverage}</td>
 		</tr>
