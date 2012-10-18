@@ -71,6 +71,10 @@ public class Rating {
 	public void setLoopValue(Integer loopValue) {
 		this.loopValue = loopValue;
 	}
+	
+	public String getDivClass() {
+		return loopValue < value ? "rating-choice-selected" : "rating-choice";
+	}
 
 	StreamResponse onActionFromUpdate(String value) {
 		if (request.isXHR() && StringUtils.isNumeric(value))

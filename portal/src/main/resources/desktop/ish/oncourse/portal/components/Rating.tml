@@ -1,9 +1,8 @@
 <div class="rating" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:loop t:id="loop">
-		<div class="rating-choice">
+		<div class="${divClass}">
 			<div class="rating-choice-input"/>
 		</div>
 	</t:loop>
-	<span class="rating-value" style="visibility:hidden">${value}</span>
 	<t:actionlink t:id="update"/>
 </div>
