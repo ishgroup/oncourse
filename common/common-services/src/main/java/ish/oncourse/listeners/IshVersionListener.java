@@ -13,6 +13,7 @@ import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.lifecycle.changeset.ChangeSet;
 import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.cayenne.lifecycle.changeset.PropertyChange;
+import org.apache.commons.lang.ObjectUtils;
 
 public class IshVersionListener {
 
@@ -103,7 +104,7 @@ public class IshVersionListener {
 
 		for (Map.Entry<String, PropertyChange> change : changes.entrySet()) {
 			PropertyChange propChange = change.getValue();
-			if (propChange.getOldValue() != null && !propChange.getOldValue().equals(propChange.getNewValue())) {
+			if (ObjectUtils.notEqual(propChange.getOldValue(), propChange.getNewValue())) {
 				shouldSetIshVersion = true;
 				break;
 			}
