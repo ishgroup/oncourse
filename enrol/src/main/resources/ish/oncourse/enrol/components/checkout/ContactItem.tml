@@ -18,7 +18,7 @@
 	</tr>
 	</thead>
 	<tbody>
-		<span t:type="checkout/enrolmentlist" purchaseController="purchaseController" contact="contact"/>
+		<span t:type="checkout/enrolmentlist" purchaseController="purchaseController" contact="contact" blockToRefresh="blockToRefresh"/>
 		<span t:type="checkout/productlist" purchaseController="purchaseController" contact="contact"/>
 	</tbody>
 </t:container>

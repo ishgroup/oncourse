@@ -5,8 +5,7 @@ import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Enrolment;
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -26,27 +25,42 @@ public class EnrolmentList {
 	@Property
 	private Enrolment enrolment;
 
+	@Property
+	private Integer index;
+
 	@Inject
 	private Request request;
 
+	@Property
+	@Parameter(required = false)
+	private Block blockToRefresh;
 
-	public List<Enrolment> getEnrolments()
+
+	public Integer getContactIndex()
 	{
+		return purchaseController.getModel().getContacts().indexOf(contact);
+	}
+
+	public Boolean getChecked()
+	{
+		return  purchaseController.getModel().isEnrolmentEnabled(enrolment);
+	}
+
+	public List<Enrolment> getEnrolments() {
 		return purchaseController.getModel().getAllEnrolments(contact);
 	}
 
-    public StreamResponse onActionFromTick(String enrolmentIndex) {
-		if (!request.isXHR())
-			return null;
-		if (!StringUtils.isNumeric(enrolmentIndex))
-			return null;
-
-		Integer index = new Integer(enrolmentIndex);
-		Enrolment enrolment = purchaseController.getModel().getEnrolmentBy(contact, index);
-		Boolean isSelected = purchaseController.getModel().isEnrolmentEnabled(enrolment);
-		ActionParameter actionParameter = new ActionParameter(isSelected ? Action.DISABLE_ENROLMENT : Action.ENABLE_ENROLMENT);
-		actionParameter.setValue(enrolment);
-		purchaseController.performAction(actionParameter);
-        return null;
-    }
+	public EnrolmentItem.EnrolmentItemDelegate getEnrolmentItemDelegate() {
+		return new EnrolmentItem.EnrolmentItemDelegate() {
+			@Override
+			public void onChange(Integer contactIndex, Integer enrolmentIndex) {
+				Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
+				Enrolment enrolment = purchaseController.getModel().getAllEnrolments(contact).get(enrolmentIndex);
+				Boolean isSelected = purchaseController.getModel().isEnrolmentEnabled(enrolment);
+				ActionParameter actionParameter = new ActionParameter(isSelected ? Action.DISABLE_ENROLMENT : Action.ENABLE_ENROLMENT);
+				actionParameter.setValue(enrolment);
+				purchaseController.performAction(actionParameter);
+			}
+		};
+	}
 }

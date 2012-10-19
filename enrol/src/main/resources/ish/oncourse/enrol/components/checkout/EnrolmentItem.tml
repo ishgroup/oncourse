@@ -1,15 +1,19 @@
 <t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	
-	<tr> 
+
+	<tr class="enrolmentItem">
 		<td>
-			<form>
-				<label>
+			<label>
+				<t:if test="checked">
+					<input type="checkbox" class="enrolmentCheckbox" checked="${checked}"/>
+				<p:else>
 					<input type="checkbox" class="enrolmentCheckbox"/>
-					${enrolment.courseClass.course.name}
-	  			</label>
-	  		</form>
+				</p:else>
+				</t:if>
+				${enrolment.courseClass.course.name}
+				<t:actionLink t:id="selectEnrolment" style="{display: none;}" class="selectEnrolmentLink" context="actionContext"/>
+			</label>
 	  		<em>
 	  			<t:if test="enrolment.courseClass.hasRoom">
 	  				<span t:type="ui/RoomLocation" room="enrolment.courseClass.room" withRoomName="false" disabledLink="true" />
@@ -31,5 +35,4 @@
 			<span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="enrolment.id"/>
 		</td>
 	</tr>
- 
-</t:container>	
+</t:container>
