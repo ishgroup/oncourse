@@ -4,8 +4,7 @@ import ish.oncourse.enrol.utils.PurchaseController;
 import ish.oncourse.enrol.utils.PurchaseController.Action;
 import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
-import org.apache.tapestry5.EventConstants;
-import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -18,11 +17,13 @@ import java.net.URL;
 
 public class SelectPayer {
 	public static final String PROPERTY_CONTACT_FULL_NAME = "fullName";
-	
+	public static final String CLASS_payer = "payer";
+	public static final String CLASS_contact = "contact";
+
 	@Parameter(required = true)
 	@Property
 	private PurchaseController purchaseController;
-	
+
 	@Inject
 	private PropertyAccess propertyAccess;
 	
@@ -36,26 +37,29 @@ public class SelectPayer {
 	private Integer index;
 
 	@Parameter(required = false)
-	@Property
-	private String componentForRerender;
+	private Block blockToRefresh;
 		
 	@SetupRender
 	void beforeRender() {
 	}
-	
-	@OnEvent(value = EventConstants.VALUE_CHANGED, component = "currentPayer")
-    public Object updatePayer(Contact actualPayer) throws MalformedURLException {
-		if (!request.isXHR()) {
+
+    public Object onActionFromUpdatePayer(Integer contactIndex) throws MalformedURLException {
+		if (!request.isXHR() ) {
 			return new URL(request.getServerName());
 		}
-		ActionParameter actionParameter = new ActionParameter(Action.CHANGE_PAYER);
-		actionParameter.setValue(actualPayer);
-		purchaseController.performAction(actionParameter);
-		return componentForRerender != null ? componentForRerender : this;
+		Contact selectedPayer = purchaseController.getModel().getContacts().get(contactIndex);
+		if (selectedPayer != purchaseController.getModel().getPayer())
+		{
+			ActionParameter actionParameter = new ActionParameter(Action.CHANGE_PAYER);
+			actionParameter.setValue(selectedPayer);
+			purchaseController.performAction(actionParameter);
+		}
+		return blockToRefresh != null ? blockToRefresh : this;
     }
 
 	public String getItemClass()
 	{
-		return contact.equals(purchaseController.getModel().getPayer()) ? "payer":"";
+		return contact.equals(purchaseController.getModel().getPayer()) ? CLASS_payer:CLASS_contact;
 	}
 }
+

@@ -1,11 +1,14 @@
 <html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
 	  bodyClass="literal:internal-page"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-		>
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
+<div id="checkout">
+	<t:delegate to="block:checkout"/>
+</div>
+
+<t:block t:id="checkout">
 <table class="payments">
-	<!--span t:type="checkout/selectpayer" purchaseController="purchaseController" componentForRerender="nextPage"/-->
-	<span t:type="checkout/contactlist" purchaseController="purchaseController"/>
+	<span t:type="checkout/contactlist" purchaseController="purchaseController" blockToRefresh="checkoutBlock"/>
 	<tbody class="t-update t-zone" id="totals">
 		<tr>
 			<td>
@@ -24,5 +27,5 @@
 	<span t:type="checkout/amount" purchaseController="purchaseController"/>
 	<a href="enrolcourses-2.html" class="btn btn-primary">Proceed to Payment</a>
 </div>
-
+</t:block>
 </html>

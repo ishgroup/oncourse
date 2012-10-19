@@ -3,7 +3,10 @@
 		<span class="btn-primary">Payer <b class="caret"></b></span>
 		<ul class="drop-down-content">
 			<t:loop source="purchaseController.model.contacts" value="contact" index="index">
-				<li><a href="javascript: void(0);" rel="payer_${index}" class="${itemClass}"><font>${contact.fullName}</font></a></li>
+				<li>
+					<div class="${itemClass}"><font>${contact.fullName}</font></div>
+					<t:actionlink class="payerSelectLink" t:id ="updatePayer" context="${index}" style="display: none"/>
+				</li>
 			</t:loop>
 		</ul>
 	</div>

@@ -23,9 +23,9 @@ import ish.oncourse.ui.pages.Courses;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.EventConstants;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.StreamResponse;
-import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Id;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -36,8 +36,6 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.util.TextStreamResponse;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,7 +86,12 @@ public class Checkout {
 	
 	@Inject
 	private PropertyAccess propertyAccess;
-	
+
+	@Inject
+	@Id("checkout")
+	@Property
+	private Block checkoutBlock;
+
     @Property
     private int studentIndex;
 
@@ -118,17 +121,6 @@ public class Checkout {
 	public boolean isPayer() {
 		return getPurchaseController().getModel().getPayer().getId().equals(contact.getId());
 	}
-	
-	@OnEvent(value = EventConstants.VALUE_CHANGED, component = "currentPayer")
-    public Object updatePayer() throws MalformedURLException {
-		if (!request.isXHR()) {
-			return new URL(request.getServerName());
-		}
-		ActionParameter actionParameter = new ActionParameter(Action.CHANGE_PAYER);
-		actionParameter.setValue(selectedPayer);
-		getPurchaseController().performAction(actionParameter);
-		return getNextPage();
-    }
 	
 	public boolean isShowConcessionsArea() {
         return concessionsService.hasActiveConcessionTypes();

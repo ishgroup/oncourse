@@ -6,7 +6,7 @@
 			<div class="left">${contact.fullName} <span>-
 				${contact.emailAddress}</span></div>
 			<t:if test="payer">
-				<span t:type="checkout/selectpayer" purchaseController="purchaseController"/>
+				<span t:type="checkout/selectpayer" purchaseController="purchaseController" blockToRefresh="blockToRefresh"/>
 			</t:if>
 			<div class="right">
 				<t:if test="showConcessionsArea">
