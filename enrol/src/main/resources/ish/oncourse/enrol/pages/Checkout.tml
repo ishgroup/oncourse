@@ -3,13 +3,22 @@
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 <div id="checkout">
-	<t:delegate to="block:checkout"/>
+		<t:delegate to="block:checkout"/>
 </div>
 
 <t:block t:id="checkout">
-<table class="payments">
-	<span t:type="checkout/contactlist" purchaseController="purchaseController" blockToRefresh="checkoutBlock"/>
-	<tbody class="t-update t-zone" id="totals">
+	<t:if test="purchaseController.editCheckout">
+		<t:delegate to="block:payments"/>
+	</t:if>
+	<t:if test="purchaseController.editConcession">
+		<t:delegate to="block:concessionEditor"/>
+	</t:if>
+</t:block>
+
+<t:block t:id="payments">
+	<table class="payments">
+		<span t:type="checkout/contactlist" purchaseController="purchaseController" blockToRefresh="checkoutBlock"/>
+		<tbody class="t-update t-zone" id="totals">
 		<tr>
 			<td>
 				<span id="addstudent">Add another student</span>
@@ -19,13 +28,18 @@
 				<span class="totalPrice">${purchaseController.totalIncGst}</span>
 			</td>
 		</tr>
-	</tbody>
-</table>
+		</tbody>
+	</table>
 
-<div class="amount-container">
-	<span t:type="checkout/addcode" purchaseController="purchaseController"/>
-	<span t:type="checkout/amount" purchaseController="purchaseController"/>
-	<a href="enrolcourses-2.html" class="btn btn-primary">Proceed to Payment</a>
-</div>
+	<div class="amount-container">
+		<span t:type="checkout/addcode" purchaseController="purchaseController"/>
+		<span t:type="checkout/amount" purchaseController="purchaseController"/>
+		<a href="enrolcourses-2.html" class="btn btn-primary">Proceed to Payment</a>
+	</div>
 </t:block>
+
+<t:block t:id="concessionEditor">
+	<span t:type="checkout/concession/concessionEditor" delegate="purchaseController.concessionDelegate"/>
+</t:block>
+
 </html>

@@ -22,6 +22,9 @@ public class ContactList {
 	@Property
 	private Contact contact;
 
+	@Property
+	private Integer index;
+
 	public List<Contact> getContacts() {
 		return purchaseController.getModel().getContacts();
 	}

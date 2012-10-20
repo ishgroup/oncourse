@@ -10,6 +10,7 @@ import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
+import ish.oncourse.model.StudentConcession;
 import ish.oncourse.selectutils.ListSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.cookies.ICookiesService;
@@ -89,10 +90,14 @@ public class Checkout {
 
 	@Inject
 	@Id("checkout")
-	@Property
 	private Block checkoutBlock;
 
-    @Property
+	@Inject
+	@Id("concession")
+	@Property
+	private Block blockConcession;
+
+	@Property
     private int studentIndex;
 
 	/**
@@ -185,16 +190,16 @@ public class Checkout {
 			List<Product> products = voucherService.loadByIds(productIds);
 
 
-			selectQuery = new SelectQuery(Contact.class);
+			selectQuery = new SelectQuery(StudentConcession.class);
 			selectQuery.setPageSize(3);
 			selectQuery.setFetchLimit(3);
-			List<Contact> contacts = objectContext.performQuery(selectQuery);
+			List<StudentConcession> concessions = objectContext.performQuery(selectQuery);
 
 			PurchaseModel model = new PurchaseModel();
 			model.setObjectContext(cayenneService.newContext());
 			model.setClasses(model.localizeObjects(courseClasses));
 			model.setProducts(model.localizeObjects(products));
-			model.setPayer(model.localizeObject(contacts.get(0)));
+			model.setPayer(model.localizeObject(concessions.get(0).getStudent().getContact()));
 			model.addContact(model.getPayer());
 
 			purchaseController = new PurchaseController();
@@ -205,11 +210,11 @@ public class Checkout {
 			purchaseController.performAction(new ActionParameter(Action.INIT));
 
 			ActionParameter parameter = new ActionParameter(Action.ADD_STUDENT);
-			parameter.setValue(contacts.get(1));
+			parameter.setValue(concessions.get(1).getStudent().getContact());
 			purchaseController.performAction(parameter);
 
 			parameter = new ActionParameter(Action.ADD_STUDENT);
-			parameter.setValue(contacts.get(2));
+			parameter.setValue(concessions.get(2).getStudent().getContact());
 			purchaseController.performAction(parameter);
 
 		}
@@ -271,5 +276,10 @@ public class Checkout {
 			throw new IllegalArgumentException(cause);
 		}
     }
+
+	public Block getCheckoutBlock()
+	{
+		return checkoutBlock;
+	}
 
 }

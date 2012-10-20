@@ -1,0 +1,16 @@
+<t:container
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		>
+
+<div class="concessionEditor">
+	<h3>Edit concession for ${student.fullName}</h3>
+	<t:delegate to="block:concessions"/>
+	<div class="cancelConcession concession-button">cancel</div>
+	<t:actionlink t:id="cancelConcessionLink" context="student.id" style="{display:none}"/>
+</div>
+
+<t:block t:id="concessions">
+	<span t:type="checkout/concession/concessionlist" student="student" />
+</t:block>
+
+</t:container>

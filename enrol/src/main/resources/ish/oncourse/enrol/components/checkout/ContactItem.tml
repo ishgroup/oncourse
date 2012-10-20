@@ -9,10 +9,8 @@
 				<span t:type="checkout/selectpayer" purchaseController="purchaseController" blockToRefresh="blockToRefresh"/>
 			</t:if>
 			<div class="right">
-				<t:if test="showConcessionsArea">
-					<a id="add-concession_${contact.id}" class="add-concession">
-						<span>Add Concession</span> </a>
-				</t:if>
+				<div class="add-concession"><span>Add Concession</span></div>
+				<t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
 			</div>
 		</th>
 	</tr>

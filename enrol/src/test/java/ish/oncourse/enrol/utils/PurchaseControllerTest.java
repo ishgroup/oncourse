@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import static ish.oncourse.enrol.utils.PurchaseController.State;
 import static org.junit.Assert.*;
 
 public class PurchaseControllerTest extends ServiceTest {
@@ -117,7 +118,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
 		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
-		assertEquals(PurchaseController.State.ACTIVE, controller.getState());
+		assertEquals(State.EDIT_CHECKOUT, controller.getState());
 	}
 
 	@Test
@@ -376,7 +377,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(new Money("100.0"), paidByVoucher);
 	}
 
-	@Test
+	@Test //TODO add/remove concession should be adjusted
 	public void testAddConcession() {
 		ObjectContext context = cayenneService.newContext();
 		PurchaseController controller = createPurchaseController(context);
@@ -445,6 +446,60 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		controller.performAction(param);
 		assertTrue("No actions should be allowed when controller is in finalized state.", controller.isIllegalState());
+	}
+
+	@Test
+	public void test_START_CONCESSION_EDITOR()
+	{
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+
+		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		param.setValue(controller.getModel().getPayer());
+		performAction(controller, param);
+
+		assertEDIT_CONCESSION(controller);
+	}
+
+	@Test
+	public void test_CANCEL_CONCESSION_EDITOR()
+	{
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+
+		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		param.setValue(controller.getModel().getPayer());
+		performAction(controller, param);
+
+		param = new ActionParameter(Action.CANCEL_CONCESSION_EDITOR);
+		param.setValue(controller.getModel().getPayer());
+		performAction(controller, param);
+
+		assertEquals(State.EDIT_CHECKOUT, controller.getState());
+		assertNull(controller.getConcessionDelegate());
+	}
+
+	private void assertEDIT_CONCESSION(PurchaseController controller) {
+		assertEquals(State.EDIT_CONCESSION, controller.getState());
+		assertNotNull(controller.getConcessionDelegate());
+		assertEquals(controller.getModel().getPayer(), controller.getConcessionDelegate().getContact());
+		assertEquals(controller.getModel().getPayer().getStudent(), controller.getConcessionDelegate().getContact().getStudent());
+
+		for(Action action: Action.values())
+		{
+			switch (action)
+			{
+				case CANCEL_CONCESSION_EDITOR:
+				case ADD_CONCESSION:
+				case REMOVE_CONCESSION:
+					assertTrue(action.name(), controller.validateState(action));
+					break;
+				default:
+					assertFalse(action.name(), controller.validateState(action));
+					break;
+			}
+		}
+
 	}
 
 }

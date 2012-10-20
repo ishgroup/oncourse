@@ -1,0 +1,41 @@
+<t:container
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		xmlns:p="tapestry:parameter">
+
+	<table class="concessionEditor">
+		<t:if test="student.studentConcessions.empty" negate="true">
+			<tr>
+				<th>Existing Concessions</th>
+				<th>Number</th>
+				<th>Expiry</th>
+				<th/>
+			</tr>
+		</t:if>
+		<t:loop source="student.studentConcessions" value="concession">
+			<tr>
+				<td class="concessionTitle">${concession.concessionType.name}</td>
+				<td class="concessionNumber">
+					<t:if test="concession.concessionType.hasConcessionNumber">
+						${concession.concessionNumber}
+						<p:else>
+							Not required
+						</p:else>
+					</t:if>
+				</td>
+				<td class="erxEditDate">
+					<t:if test="concession.concessionType.hasExpiryDate">
+						<t:output value="concession.expiresOn" format="dateFormat"/>
+						<p:else>
+							Not required
+						</p:else>
+					</t:if>
+				</td>
+				<td>
+					<t:actionLink t:id="deleteConcession" class="btn delete" context="concession.id">
+						Remove
+					</t:actionLink>
+				</td>
+			</tr>
+		</t:loop>
+	</table>
+</t:container>

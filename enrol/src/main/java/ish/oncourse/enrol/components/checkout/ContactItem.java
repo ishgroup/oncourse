@@ -5,6 +5,8 @@ import ish.oncourse.model.Contact;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 public class ContactItem {
 	@Parameter(required = true)
@@ -15,18 +17,33 @@ public class ContactItem {
 	@Property
 	private Contact contact;
 
+	@Parameter(required = true)
+	@Property
+	private Integer index;
+
+
 	@Parameter(required = false)
 	@Property
 	private Block blockToRefresh;
 
-
-	public boolean isShowConcessionsArea()
-	{
-		return true;
-	}
+	@Inject
+	private Request request;
 
 	public boolean isPayer()
 	{
 		return purchaseController.getModel().getPayer().equals(contact);
+	}
+
+	public Object onActionFromEditConcessionLink(Integer contactIndex)
+	{
+		if (!request.isXHR())
+			return null;
+		Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.START_CONCESSION_EDITOR);
+		actionParameter.setValue(contact);
+		purchaseController.performAction(actionParameter);
+		if (blockToRefresh != null)
+			return blockToRefresh;
+		return null;
 	}
 }

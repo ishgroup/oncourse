@@ -40,6 +40,8 @@ public class PurchaseController {
 
 	private boolean illegalState = false;
 
+	private ConcessionDelegate concessionDelegate;
+
 
 	/**
 	 * @return the current state
@@ -152,14 +154,19 @@ public class PurchaseController {
 		voucherRedemptionHelper.setInvoice(model.getInvoice());
 
 		for (CourseClass cc : model.getClasses()) {
-				model.addEnrolment(createEnrolment(cc, model.getPayer().getStudent()));
+				Enrolment enrolment = createEnrolment(cc, model.getPayer().getStudent());
+				model.addEnrolment(enrolment);
+				enableEnrolment(enrolment);
 		}
 
 		for (Product product : model.getProducts()) {
-			model.addProductItem(createProductItem(model.getPayer(), product));
+			ProductItem productItem = createProductItem(model.getPayer(), product);
+			model.addProductItem(productItem);
+			enableProduct(productItem);
 		}
 
-		state = State.ACTIVE;
+
+		state = State.EDIT_CHECKOUT;
 	}
 
 	public boolean validateState(Action action)
@@ -174,12 +181,15 @@ public class PurchaseController {
 			case DISABLE_ENROLMENT:
 			case ENABLE_PRODUCT_ITEM:
 			case DISABLE_PRODUCT_ITEM:
-			case ADD_CONCESSION:
-			case REMOVE_CONCESSION:
 			case ADD_DISCOUNT:
 			case ADD_VOUCHER:
 			case PROCEED_TO_PAYMENT:
-				return state == State.ACTIVE;
+			case START_CONCESSION_EDITOR:
+				return state == State.EDIT_CHECKOUT;
+			case ADD_CONCESSION:
+			case REMOVE_CONCESSION:
+			case CANCEL_CONCESSION_EDITOR:
+				return state == State.EDIT_CONCESSION;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -251,6 +261,9 @@ public class PurchaseController {
 				return voucher != null && voucher.canBeUsedBy(model.getPayer());
 			case PROCEED_TO_PAYMENT:
 				break;
+			case START_CONCESSION_EDITOR:
+			case CANCEL_CONCESSION_EDITOR:
+				break;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -315,9 +328,31 @@ public class PurchaseController {
 			case PROCEED_TO_PAYMENT:
 				state = State.FINALIZED;
 				break;
+			case START_CONCESSION_EDITOR:
+				startConcessionEditor(param.getValue(Contact.class));
+				break;
+			case CANCEL_CONCESSION_EDITOR:
+				concessionDelegate = null;
+				state = State.EDIT_CHECKOUT;
+				break;
 			default:
 				throw new IllegalArgumentException("Invalid action.");
 		}
+	}
+
+	private void startConcessionEditor(final Contact value) {
+		concessionDelegate = new ConcessionDelegate() {
+			@Override
+			public Contact getContact() {
+				return value;
+			}
+
+			@Override
+			public Student getStudent() {
+				return value.getStudent();
+			}
+		};
+		state = State.EDIT_CONCESSION;
 	}
 
 	public PurchaseModel getModel() {
@@ -338,7 +373,9 @@ public class PurchaseController {
 	private void addContact(Contact contact) {
 		model.addContact(contact);
 		for (CourseClass cc : model.getClasses()) {
-			model.addEnrolment(createEnrolment(cc, contact.getStudent()));
+			Enrolment enrolment = createEnrolment(cc, contact.getStudent());
+			model.addEnrolment(enrolment);
+			enableEnrolment(enrolment);
 		}
 	}
 
@@ -379,6 +416,7 @@ public class PurchaseController {
 	private void concessionAdded(StudentConcession studentConcession) {
 		getModel().addConcession(studentConcession);
 		recalculateEnrolmentInvoiceLines();
+		state = State.EDIT_CHECKOUT;
 	}
 
 	private void concessionRemoved(Contact contact, ConcessionType concessionType) {
@@ -390,6 +428,7 @@ public class PurchaseController {
 		}
 		getModel().removeConcession(contact, concessionType);
 		recalculateEnrolmentInvoiceLines();
+		state = State.EDIT_CHECKOUT;
 	}
 
 	private void addDiscount(Discount discount) {
@@ -492,8 +531,23 @@ public class PurchaseController {
 		return illegalState;
 	}
 
+	public boolean isEditCheckout()
+	{
+		return state == State.EDIT_CHECKOUT;
+	}
+
+	public boolean isEditConcession()
+	{
+		return state == State.EDIT_CONCESSION;
+	}
+
+	public ConcessionDelegate getConcessionDelegate()
+	{
+		return concessionDelegate;
+	}
+
 	static enum State {
-		INIT, ACTIVE, FINALIZED, ERROR_EMPTY_LIST;
+		INIT, EDIT_CHECKOUT, FINALIZED, ERROR_EMPTY_LIST, EDIT_CONCESSION;
 	}
 
 	/**
@@ -514,6 +568,8 @@ public class PurchaseController {
 		REMOVE_CONCESSION(ConcessionType.class, Contact.class),
 		ADD_DISCOUNT(String.class,Discount.class),
 		ADD_VOUCHER(String.class,Voucher.class),
+		START_CONCESSION_EDITOR(Contact.class),
+		CANCEL_CONCESSION_EDITOR(Contact.class),
 		PROCEED_TO_PAYMENT();
 
 		private List<Class<?>> paramTypes;
@@ -564,5 +620,6 @@ public class PurchaseController {
 			throw new IllegalArgumentException("Requested value type doesn't match existing value.");
 		}
 	}
+
 
 }
