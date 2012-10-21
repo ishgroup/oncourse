@@ -8,7 +8,9 @@ dependencies {
 	}
 	compile 'wsdl4j:wsdl4j:1.6.2'
 
-	testCompile project(':common:common-test')
+	// The odd next line is to work around gradle pulling in the wrong configuration
+	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
+	testCompile project(path: ':common:common-test', configuration: 'testCompile')
 }
 
 archivesBaseName = "willowAdmin"

@@ -12,5 +12,7 @@ dependencies {
 
 	providedCompile 'javax.mail:mail:1.4'
 
-	testCompile project(':common:common-test')
+	// The odd next line is to work around gradle pulling in the wrong configuration
+	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
+	testCompile project(path: ':common:common-test', configuration: 'testCompile')
 }
