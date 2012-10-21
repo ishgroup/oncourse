@@ -6,7 +6,7 @@ dependencies {
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile project(path: ':common:common-test', configuration: 'testCompile')
+	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 	
 	testCompile 'org.apache.solr:solr-test-framework:3.5.0'
 	testCompile 'org.apache.lucene:lucene-test-framework:3.5.0'
