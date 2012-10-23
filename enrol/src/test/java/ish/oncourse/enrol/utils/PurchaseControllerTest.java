@@ -449,8 +449,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	}
 
 	@Test
-	public void test_START_CONCESSION_EDITOR()
-	{
+	public void test_START_CONCESSION_EDITOR() {
 		ObjectContext context = cayenneService.newContext();
 		PurchaseController controller = createPurchaseController(context);
 
@@ -462,8 +461,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	}
 
 	@Test
-	public void test_CANCEL_CONCESSION_EDITOR()
-	{
+	public void test_CANCEL_CONCESSION_EDITOR() {
 		ObjectContext context = cayenneService.newContext();
 		PurchaseController controller = createPurchaseController(context);
 
@@ -479,16 +477,45 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertNull(controller.getConcessionDelegate());
 	}
 
+	@Test
+	public void test_ConcessionEditorController() {
+		ObjectContext context = cayenneService.newContext();
+		PurchaseController controller = createPurchaseController(context);
+		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		param.setValue(controller.getModel().getPayer());
+		performAction(controller, param);
+
+		ConcessionEditorController concessionEditorController =  (ConcessionEditorController) controller.getConcessionDelegate();
+		assertNotNull(concessionEditorController);
+		assertTrue(concessionEditorController.getObjectContext() != context);
+		assertNotNull(concessionEditorController.getContact());
+		assertNotNull(concessionEditorController.getStudent());
+		assertNull(concessionEditorController.getStudentConcession());
+		assertEquals(3, concessionEditorController.getConcessionTypes().size());
+
+		for (int i = 0; i < concessionEditorController.getConcessionTypes().size(); i++) {
+			ConcessionType concessionType = concessionEditorController.getConcessionTypes().get(i);
+			concessionEditorController.changeConcessionTypeBy(i);
+			assertNotNull(concessionEditorController.getStudentConcession());
+			assertEquals(concessionType.getId(), concessionEditorController.getStudentConcession().getConcessionType().getId());
+		}
+		concessionEditorController.changeConcessionTypeBy(-1);
+		assertNull(concessionEditorController.getStudentConcession());
+
+		concessionEditorController.cancelEditing(concessionEditorController.getContact().getId());
+		assertFalse(concessionEditorController.getObjectContext().hasChanges());
+		assertEquals(State.EDIT_CHECKOUT,controller.getState());
+	}
+
+
 	private void assertEDIT_CONCESSION(PurchaseController controller) {
 		assertEquals(State.EDIT_CONCESSION, controller.getState());
 		assertNotNull(controller.getConcessionDelegate());
 		assertEquals(controller.getModel().getPayer(), controller.getConcessionDelegate().getContact());
 		assertEquals(controller.getModel().getPayer().getStudent(), controller.getConcessionDelegate().getContact().getStudent());
 
-		for(Action action: Action.values())
-		{
-			switch (action)
-			{
+		for (Action action : Action.values()) {
+			switch (action) {
 				case CANCEL_CONCESSION_EDITOR:
 				case ADD_CONCESSION:
 				case REMOVE_CONCESSION:

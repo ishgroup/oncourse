@@ -1,16 +1,72 @@
-<t:container
-		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-		>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 <div class="concessionEditor">
 	<h3>Edit concession for ${student.fullName}</h3>
+	<t:delegate to="block:concessionEditor"/>
 	<t:delegate to="block:concessions"/>
-	<div class="cancelConcession concession-button">cancel</div>
-	<t:actionlink t:id="cancelConcessionLink" context="student.id" style="{display:none}"/>
 </div>
 
 <t:block t:id="concessions">
-	<span t:type="checkout/concession/concessionlist" student="student" />
+	<span t:type="checkout/concession/concessionlist" student="student" delegate="delegate"/>
 </t:block>
+
+<t:block t:id="concessionEditor">
+	<p>
+		<label for="concessionTypes">New Concession</label>
+		<select id="concessionTypes">
+			<t:if test="delegate.studentConcession">
+				<option value="-1">no concession</option>
+				<p:else>
+					<option value="-1" selected="">no concession</option>
+				</p:else>
+			</t:if>
+			<t:loop source="concessionTypes" value="concessionType" index="concessionTypeIndex">
+				<t:if test="selectedConcessionType">
+					<option value="${concessionTypeIndex}" selected="">${concessionType.name}</option>
+					<p:else>
+						<option value="${concessionTypeIndex}">${concessionType.name}</option>
+					</p:else>
+				</t:if>
+			</t:loop>
+		</select>
+		<t:actionLink t:id="selectConcessionTypeLink"  style="display:none"/>
+	</p>
+
+	<form id="concession-form">
+		<t:if test="delegate.studentConcession">
+			<t:if test="studentConcession.concessionType.hasConcessionNumber">
+				<p>
+					<label for="concession-number">Concession number <em title="${message:required}">*</em></label>
+					<input id="concession-number" type="text"/>
+				</p>
+			</t:if>
+			<t:if test="studentConcession.concessionType.hasExpiryDate">
+				<p>
+					<label for="concession-expiry">Expiry date <em title="${message:required}">*</em></label>
+					<input id="concession-expiry" type="text"/>
+				</p>
+			</t:if>
+			<div class="conditions">
+				<label>
+					<input class="concession-agree" type="checkbox"/>
+					${message:concessionConfirmationMessage}
+					<em title="${message:required}">*</em>
+				</label>
+			</div>
+		</t:if>
+	</form>
+
+
+
+	<p>
+		<t:if test="delegate.studentConcession">
+			<div class="saveConcession concession-button">save concession</div>
+			<t:actionlink t:id="saveConcessionLink" context="student.id" style="{display:none}"/>
+		</t:if>
+		<div class="cancelConcession concession-button">cancel</div>
+		<t:actionlink t:id="cancelConcessionLink" context="student.id" style="{display:none}"/>
+	</p>
+</t:block>
+
 
 </t:container>

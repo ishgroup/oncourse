@@ -127,10 +127,34 @@
                     hasExpiryDate="0"
                     isConcession="1"
                     isEnabled="1"
-                    name="true"
+                    name="ConcessionType1"
                     requiresCredentialCheck="1"
                     created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
-		
+
+	<ConcessionType id="2"
+					angelId="2"
+					collegeId="1"
+					credentialExpiryDays="1"
+					hasConcessionNumber="1"
+					hasExpiryDate="0"
+					isConcession="1"
+					isEnabled="1"
+					name="ConcessionType2"
+					requiresCredentialCheck="1"
+					created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
+	<ConcessionType id="3"
+					angelId="2"
+					collegeId="1"
+					credentialExpiryDays="1"
+					hasConcessionNumber="1"
+					hasExpiryDate="0"
+					isConcession="1"
+					isEnabled="1"
+					name="ConcessionType3"
+					requiresCredentialCheck="1"
+					created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+
 	<Discount
             id="1"
             angelId="2"

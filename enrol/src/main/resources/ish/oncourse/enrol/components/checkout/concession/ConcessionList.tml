@@ -31,9 +31,8 @@
 					</t:if>
 				</td>
 				<td>
-					<t:actionLink t:id="deleteConcession" class="btn delete" context="concession.id">
-						Remove
-					</t:actionLink>
+					<div class="btn deleteConcession">Remove</div>
+					<t:actionLink t:id="deleteConcessionLink"  context="concession.id" style="display:none"/>
 				</td>
 			</tr>
 		</t:loop>

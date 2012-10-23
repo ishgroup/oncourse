@@ -40,8 +40,7 @@ public class PurchaseController {
 
 	private boolean illegalState = false;
 
-	private ConcessionDelegate concessionDelegate;
-
+	private ConcessionEditorController concessionEditorController;
 
 	/**
 	 * @return the current state
@@ -332,7 +331,7 @@ public class PurchaseController {
 				startConcessionEditor(param.getValue(Contact.class));
 				break;
 			case CANCEL_CONCESSION_EDITOR:
-				concessionDelegate = null;
+				concessionEditorController = null;
 				state = State.EDIT_CHECKOUT;
 				break;
 			default:
@@ -340,18 +339,11 @@ public class PurchaseController {
 		}
 	}
 
-	private void startConcessionEditor(final Contact value) {
-		concessionDelegate = new ConcessionDelegate() {
-			@Override
-			public Contact getContact() {
-				return value;
-			}
-
-			@Override
-			public Student getStudent() {
-				return value.getStudent();
-			}
-		};
+	private void startConcessionEditor(Contact value) {
+		concessionEditorController = new ConcessionEditorController();
+		concessionEditorController.setContact(value);
+		concessionEditorController.setPurchaseController(this);
+		concessionEditorController.setObjectContext(this.getModel().getObjectContext().createChildContext());
 		state = State.EDIT_CONCESSION;
 	}
 
@@ -543,8 +535,9 @@ public class PurchaseController {
 
 	public ConcessionDelegate getConcessionDelegate()
 	{
-		return concessionDelegate;
+		return concessionEditorController;
 	}
+
 
 	static enum State {
 		INIT, EDIT_CHECKOUT, FINALIZED, ERROR_EMPTY_LIST, EDIT_CONCESSION;
