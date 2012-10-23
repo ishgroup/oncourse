@@ -3,12 +3,10 @@
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
 			<td>${survey.courseScore}</td>
-		</tr>
-		<tr>
+			<td></td>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
 			<td>${survey.tutorScore}</td>
-		</tr>
-		<tr>
+			<td></td>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
 			<td>${survey.venueScore}</td>
 		</tr>
@@ -17,5 +15,6 @@
 				<p>${survey.comment}</p>
 			</td>
 		</tr>
+
 	</table>
 </div>
