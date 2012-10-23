@@ -48,6 +48,7 @@
 				<filter class="solr.LowerCaseFilterFactory" />
 				<filter class="solr.SnowballPorterFilterFactory" language="English"
 					protected="protwords.txt" />
+				<charFilter class="solr.PatternReplaceCharFilterFactory" pattern="(\()" replacement="" replace="all"/>
 			</analyzer>
 
 			<analyzer type="query">
@@ -62,6 +63,7 @@
 				<filter class="solr.LowerCaseFilterFactory" />
 				<filter class="solr.SnowballPorterFilterFactory" language="English"
 					protected="protwords.txt" />
+				<charFilter class="solr.PatternReplaceCharFilterFactory" pattern="(\()" replacement="" replace="all"/>
 			</analyzer>
 		</fieldType>
 
@@ -79,6 +81,7 @@
 					generateWordParts="1" generateNumberParts="1" catenateWords="1"
 					catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
 				<filter class="solr.LowerCaseFilterFactory" />
+				<charFilter class="solr.PatternReplaceCharFilterFactory" pattern="(\()" replacement="" replace="all"/>
 			</analyzer>
 			<analyzer type="query">
 				<tokenizer class="solr.WhitespaceTokenizerFactory" />
@@ -90,6 +93,7 @@
 					generateWordParts="1" generateNumberParts="1" catenateWords="0"
 					catenateNumbers="0" catenateAll="0" splitOnCaseChange="0" />
 				<filter class="solr.LowerCaseFilterFactory" />
+				<charFilter class="solr.PatternReplaceCharFilterFactory" pattern="(\()" replacement="" replace="all"/>
 			</analyzer>
 		</fieldType>
 	</types>
