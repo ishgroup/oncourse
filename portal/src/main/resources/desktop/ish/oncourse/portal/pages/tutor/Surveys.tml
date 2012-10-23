@@ -18,7 +18,8 @@
 				<span t:type="rating" id="ratingCourse" value="roundedCourseAverage"/>
 			</td>
 			<td>${courseAverage}</td>
-
+		</tr>
+		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-tutor-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
 				<t:loop  source="tutorRoles" value="tutorRole">
@@ -29,7 +30,8 @@
 				<span t:type="rating" id="ratingTutor" value="roundedTutorAverage"/>
 			</td>
 			<td>${tutorAverage}</td>
-
+		</tr>
+		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
 				<div class="light">${room}</div>
