@@ -32,31 +32,31 @@
 		<t:actionLink t:id="selectConcessionTypeLink"  style="display:none"/>
 	</p>
 
-	<form id="concession-form">
-		<t:if test="delegate.studentConcession">
-			<t:if test="studentConcession.concessionType.hasConcessionNumber">
-				<p>
-					<label for="concession-number">Concession number <em title="${message:required}">*</em></label>
-					<input id="concession-number" type="text"/>
-				</p>
-			</t:if>
-			<t:if test="studentConcession.concessionType.hasExpiryDate">
-				<p>
-					<label for="concession-expiry">Expiry date <em title="${message:required}">*</em></label>
-					<input id="concession-expiry" type="text"/>
-				</p>
-			</t:if>
-			<div class="conditions">
-				<label>
-					<input class="concession-agree" type="checkbox"/>
-					${message:concessionConfirmationMessage}
-					<em title="${message:required}">*</em>
-				</label>
-			</div>
-		</t:if>
-	</form>
-
-
+	<t:if test="delegate.studentConcession">
+		<form name="concession-form" id="concession-form">
+				<fieldset>
+					<t:if test="studentConcession.concessionType.hasConcessionNumber">
+						<p>
+							<label for="concession-number">Concession number <em title="${message:required}">*</em></label>
+							<input id="concession-number" name="concession-number" type="text" class="required"/>
+						</p>
+					</t:if>
+					<t:if test="studentConcession.concessionType.hasExpiryDate">
+						<p>
+							<label for="concession-expiry">Expiry date <em title="${message:required}">*</em></label>
+							<input id="concession-expiry" name="concession-expiry"  type="text" class="required"/>
+						</p>
+					</t:if>
+					<div class="conditions">
+						<label>
+							<input id="concession-agree" type="checkbox" name="concession-agree" class="required"/>
+							${message:concessionConfirmationMessage}
+							<em title="${message:required}">*</em>
+						</label>
+					</div>
+			</fieldset>
+		</form>
+	</t:if>
 
 	<p>
 		<t:if test="delegate.studentConcession">
@@ -66,6 +66,7 @@
 		<div class="cancelConcession concession-button">cancel</div>
 		<t:actionlink t:id="cancelConcessionLink" context="student.id" style="{display:none}"/>
 	</p>
+
 </t:block>
 
 

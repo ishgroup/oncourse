@@ -4,9 +4,9 @@ import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 
+import java.util.Date;
 import java.util.List;
 
 public class ConcessionEditorController implements ConcessionDelegate {
@@ -29,20 +29,21 @@ public class ConcessionEditorController implements ConcessionDelegate {
 	}
 
 	@Override
-	public void deleteConcessionBy(Long concessionId) {
-		StudentConcession concession = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), StudentConcession.class, concessionId);
-		purchaseController.getModel().getObjectContext().deleteObject(concession);
+	public void deleteConcessionBy(Integer index) {
+		StudentConcession concession = getStudent().getStudentConcessions().get(index);
+		objectContext.deleteObject(concession);
 	}
 
 	@Override
 	public void cancelEditing(Long contactId) {
 		studentConcession = null;
-		objectContext.rollbackChanges();
+		objectContext = null;
 		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.CANCEL_CONCESSION_EDITOR));
 	}
 
 	@Override
 	public void saveConcession(Long contactId) {
+		studentConcession.setStudent(getStudent());
 		objectContext.commitChangesToParent();
 		studentConcession = null;
 	}
@@ -72,10 +73,20 @@ public class ConcessionEditorController implements ConcessionDelegate {
 			if (studentConcession == null)
 			{
 				studentConcession = objectContext.newObject(StudentConcession.class);
-				studentConcession.setStudent((Student)objectContext.localObject(getStudent().getObjectId(),getStudent()));
 			}
 			ConcessionType concessionType = getConcessionTypes().get(concessionTypeIndex);
 			studentConcession.setConcessionType((ConcessionType) objectContext.localObject(concessionType.getObjectId(),concessionType));
+		}
+	}
+
+	@Override
+	public void fieldsChanged(String number, Date expiry) {
+		ConcessionType type = studentConcession.getConcessionType();
+		if (type.getHasConcessionNumber())
+			studentConcession.setConcessionNumber(number);
+		if (type.getHasExpiryDate())
+		{
+			studentConcession.setExpiresOn(expiry);
 		}
 	}
 

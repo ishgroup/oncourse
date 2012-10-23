@@ -497,6 +497,8 @@ public class PurchaseControllerTest extends ServiceTest {
 			ConcessionType concessionType = concessionEditorController.getConcessionTypes().get(i);
 			concessionEditorController.changeConcessionTypeBy(i);
 			assertNotNull(concessionEditorController.getStudentConcession());
+			//student will be set only before commit.
+			assertNull(concessionEditorController.getStudentConcession().getStudent());
 			assertEquals(concessionType.getId(), concessionEditorController.getStudentConcession().getConcessionType().getId());
 		}
 		concessionEditorController.changeConcessionTypeBy(-1);

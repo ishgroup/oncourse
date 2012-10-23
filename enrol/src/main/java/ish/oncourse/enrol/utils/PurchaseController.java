@@ -341,9 +341,9 @@ public class PurchaseController {
 
 	private void startConcessionEditor(Contact value) {
 		concessionEditorController = new ConcessionEditorController();
-		concessionEditorController.setContact(value);
-		concessionEditorController.setPurchaseController(this);
 		concessionEditorController.setObjectContext(this.getModel().getObjectContext().createChildContext());
+		concessionEditorController.setContact((Contact) concessionEditorController.getObjectContext().localObject(value.getObjectId(), null));
+		concessionEditorController.setPurchaseController(this);
 		state = State.EDIT_CONCESSION;
 	}
 

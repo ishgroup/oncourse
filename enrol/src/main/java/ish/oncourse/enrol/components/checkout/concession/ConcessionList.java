@@ -24,6 +24,9 @@ public class ConcessionList {
 	private StudentConcession concession;
 
 	@Property
+	private Integer index;
+
+	@Property
 	private DateFormat dateFormat;
 
 	@Inject
@@ -36,16 +39,17 @@ public class ConcessionList {
 	private Checkout checkout;
 
 
+
+
 	@SetupRender
 	void beforeRender() {
 		dateFormat = FormatUtils.getDateFormat(student.getCollege().getTimeZone());
 	}
 
-
-	public Object onActionFromDeleteConcessionLink(Long concessionId) {
+	public Object onActionFromDeleteConcessionLink(Integer index) {
 		if (!request.isXHR())
 			return null;
-		delegate.deleteConcessionBy(concessionId);
+		delegate.deleteConcessionBy(index);
 		if (checkout.getCheckoutBlock() != null)
 			return checkout.getCheckoutBlock();
 		return null;

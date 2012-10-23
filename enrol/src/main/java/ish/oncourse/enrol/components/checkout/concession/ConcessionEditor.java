@@ -2,6 +2,7 @@ package ish.oncourse.enrol.components.checkout.concession;
 
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.utils.ConcessionDelegate;
+import ish.oncourse.enrol.utils.ConcessionValidator;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
@@ -11,24 +12,21 @@ import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConcessionEditor {
+	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
 	private static final Logger LOGGER = Logger.getLogger(ConcessionEditor.class);
 
 	@Parameter(required = true)
 	private ConcessionDelegate delegate;
-
-	@InjectPage
-	private Checkout checkout;
-
-	@Inject
-	private Request request;
 
 	@Property
 	private ConcessionType concessionType;
@@ -36,16 +34,24 @@ public class ConcessionEditor {
 	@Property
 	private Integer concessionTypeIndex;
 
+	@InjectPage
+	private Checkout checkout;
 
-	@Property
-	private Date expiryDateValue;
+	@Inject
+	private Request request;
+
+	@Inject
+	private Messages messages;
 
 	@Property
 	private DateFormat dateFormat;
 
+	private Map<String,String> errors;
+
 	@SetupRender
 	void beforeRender() {
-		dateFormat = FormatUtils.getDateFormat(getStudent().getCollege().getTimeZone());
+		dateFormat = FormatUtils.getDateFormat(DATE_FIELD_FORMAT,getStudent().getCollege().getTimeZone());
+		errors = new HashMap<String, String>();
 	}
 
 	public ConcessionDelegate getDelegate()
@@ -82,14 +88,32 @@ public class ConcessionEditor {
 	public Object onActionFromSaveConcessionLink(Long contactId) {
 		if (!request.isXHR())
 			return null;
-
 		if (delegate != null)
-			delegate.saveConcession(contactId);
+		{
+			ConcessionValidator validator = createValidator();
+			validator.validate();
+
+			errors = validator.getErrors();
+
+			if (errors.isEmpty())
+			{
+				delegate.fieldsChanged(validator.getNumber(), validator.getExpiry());
+				delegate.saveConcession(contactId);
+			}
+		}
 		if (checkout.getCheckoutBlock() != null)
 			return checkout.getCheckoutBlock();
 		return null;
 	}
 
+	private ConcessionValidator createValidator() {
+		ConcessionValidator validator = new ConcessionValidator();
+		validator.setConcessionType(delegate.getStudentConcession().getConcessionType());
+		validator.setMessages(messages);
+		validator.setRequest(request);
+		validator.setDateFormat(FormatUtils.getDateFormat(DATE_FIELD_FORMAT,getStudent().getCollege().getTimeZone()));
+		return validator;
+	}
 
 
 	public boolean isSelectedConcessionType()
@@ -103,7 +127,6 @@ public class ConcessionEditor {
 			return null;
 
 		delegate.changeConcessionTypeBy(concessionTypeIndex);
-
 		if (checkout.getCheckoutBlock() != null)
 			return checkout.getCheckoutBlock();
 		return null;

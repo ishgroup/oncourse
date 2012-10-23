@@ -11,7 +11,7 @@
 				<th/>
 			</tr>
 		</t:if>
-		<t:loop source="student.studentConcessions" value="concession">
+		<t:loop source="student.studentConcessions" value="concession" index="index">
 			<tr>
 				<td class="concessionTitle">${concession.concessionType.name}</td>
 				<td class="concessionNumber">
@@ -32,7 +32,7 @@
 				</td>
 				<td>
 					<div class="btn deleteConcession">Remove</div>
-					<t:actionLink t:id="deleteConcessionLink"  context="concession.id" style="display:none"/>
+					<t:actionLink t:id="deleteConcessionLink"  context="index" style="display:none"/>
 				</td>
 			</tr>
 		</t:loop>
