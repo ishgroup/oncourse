@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.utils;
+package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;

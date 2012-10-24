@@ -1,8 +1,8 @@
 package ish.oncourse.enrol.components.checkout.concession;
 
+import ish.oncourse.enrol.checkout.ConcessionDelegate;
+import ish.oncourse.enrol.checkout.ConcessionValidator;
 import ish.oncourse.enrol.pages.Checkout;
-import ish.oncourse.enrol.utils.ConcessionDelegate;
-import ish.oncourse.enrol.utils.ConcessionValidator;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;

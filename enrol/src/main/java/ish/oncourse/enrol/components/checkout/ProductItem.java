@@ -1,21 +1,20 @@
 package ish.oncourse.enrol.components.checkout;
 
 import ish.math.Money;
-import ish.oncourse.enrol.utils.PurchaseController;
+import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.util.FormatUtils;
+import org.apache.log4j.Logger;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
 
 public class ProductItem {
 	private static final Logger LOGGER = Logger.getLogger(ProductItem.class);

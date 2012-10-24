@@ -1,12 +1,12 @@
 package ish.oncourse.enrol.components.checkout;
 
 import ish.common.types.*;
+import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.enrol.checkout.PurchaseController.Action;
+import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.components.ConcessionEditor;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
-import ish.oncourse.enrol.utils.PurchaseController;
-import ish.oncourse.enrol.utils.PurchaseController.Action;
-import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
 import ish.oncourse.model.*;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -280,7 +280,7 @@ public class ContactDetails {
                 }
                 contact.getObjectContext().commitChanges();
                 if (getController() != null) {
-                	ActionParameter actionParameter = new ActionParameter(Action.ADD_STUDENT);
+                	ActionParameter actionParameter = new ActionParameter(Action.ADD_CONTACT);
 					actionParameter.setValue(getController().getModel().localizeObject(contact));
 					getController().performAction(actionParameter);
                 }

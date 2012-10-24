@@ -5,22 +5,24 @@ import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.auto._Contact;
-import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.PhoneValidator;
+import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.SecurityUtil;
-
-import java.util.Date;
-
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.validator.EmailValidator;
 
+import java.util.Date;
+
 public class Contact extends _Contact implements Queueable {
 	
 	private static final long serialVersionUID = -7158531319889954101L;
 	protected static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
+
+	public static final String FULL_NAME_PROPERTY = "fullName";
+
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);

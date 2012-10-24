@@ -1,8 +1,12 @@
-package ish.oncourse.enrol.utils;
+package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
+import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
+import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.contact.DefaultAddContactDelegate;
+import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
@@ -28,6 +32,7 @@ public class PurchaseController {
 	private IInvoiceProcessingService invoiceProcessingService;
 	private IDiscountService discountService;
 	private IVoucherService voucherService;
+	private IConcessionsService concessionsService;
 
 	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
 
@@ -41,6 +46,7 @@ public class PurchaseController {
 	private boolean illegalState = false;
 
 	private ConcessionEditorController concessionEditorController;
+	private DefaultAddContactDelegate addContactDelegate;
 
 	/**
 	 * @return the current state
@@ -109,19 +115,16 @@ public class PurchaseController {
 		return result;
 	}
 
-	public Money getTotalPayment()
-	{
+	public Money getTotalPayment() {
 		return new Money(model.getPayment().getAmount());
 	}
 
-	public Money getTotalVoucherPayments()
-	{
+	public Money getTotalVoucherPayments() {
 		//TODO need functionality to recalculate the value
 		return Money.ZERO;
 	}
 
-	public Money getPreviousOwing()
-	{
+	public Money getPreviousOwing() {
 		//TODO need functionality to recalculate the value for payer
 		return Money.ZERO;
 	}
@@ -153,9 +156,9 @@ public class PurchaseController {
 		voucherRedemptionHelper.setInvoice(model.getInvoice());
 
 		for (CourseClass cc : model.getClasses()) {
-				Enrolment enrolment = createEnrolment(cc, model.getPayer().getStudent());
-				model.addEnrolment(enrolment);
-				enableEnrolment(enrolment);
+			Enrolment enrolment = createEnrolment(cc, model.getPayer().getStudent());
+			model.addEnrolment(enrolment);
+			enableEnrolment(enrolment);
 		}
 
 		for (Product product : model.getProducts()) {
@@ -168,14 +171,12 @@ public class PurchaseController {
 		state = State.EDIT_CHECKOUT;
 	}
 
-	public boolean validateState(Action action)
-	{
+	public boolean validateState(Action action) {
 		switch (action) {
 			case INIT:
 				return state == State.INIT;
 			case CHANGE_PAYER:
 			case SET_VOUCHER_PRICE:
-			case ADD_STUDENT:
 			case ENABLE_ENROLMENT:
 			case DISABLE_ENROLMENT:
 			case ENABLE_PRODUCT_ITEM:
@@ -189,34 +190,37 @@ public class PurchaseController {
 			case REMOVE_CONCESSION:
 			case CANCEL_CONCESSION_EDITOR:
 				return state == State.EDIT_CONCESSION;
+			case START_ADD_CONTACT:
+				return state == State.INIT || state == State.EDIT_CHECKOUT;
+			case CANCEL_ADD_CONTACT:
+			case ADD_CONTACT:
+				return state == State.ADD_CONTACT;
 			default:
 				throw new IllegalArgumentException();
 		}
 	}
 
-	public boolean validate(ActionParameter param)
-	{
+	private boolean validateINIT() {
+		if (model.getPayer() == null)
+			return false;
+		if (model.getClasses().size() < 1 && model.getProducts().size() < 1)
+			return false;
+		for (CourseClass cc : model.getClasses()) {
+			if (cc.isCancelled() || !cc.isHasAvailableEnrolmentPlaces()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean validate(ActionParameter param) {
 		switch (param.action) {
 			case INIT:
-				if (model.getPayer() == null)
-					return false;
-				if (model.getClasses().size() < 1 && model.getProducts().size() < 1)
-					return false;
-				for (CourseClass cc : model.getClasses()) {
-					if (cc.isCancelled() || !cc.isHasAvailableEnrolmentPlaces()) {
-						return false;
-					}
-				}
-				break;
+				return validateINIT();
 			case CHANGE_PAYER:
 				Contact contact = param.getValue(Contact.class);
 				return model.getContacts().contains(contact);
 			case SET_VOUCHER_PRICE:
-				break;
-			case ADD_STUDENT:
-				contact = param.getValue(Contact.class);
-				if (model.getContacts().contains(contact))
-					return false;
 				break;
 			case ENABLE_ENROLMENT:
 				/**
@@ -262,6 +266,13 @@ public class PurchaseController {
 				break;
 			case START_CONCESSION_EDITOR:
 			case CANCEL_CONCESSION_EDITOR:
+			case START_ADD_CONTACT:
+			case CANCEL_ADD_CONTACT:
+				break;
+			case ADD_CONTACT:
+				ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
+
+				//todo
 				break;
 			default:
 				throw new IllegalArgumentException();
@@ -278,14 +289,12 @@ public class PurchaseController {
 
 		illegalState = false;
 		illegalModel = false;
-		if (!validateState(param.action))
-		{
+		if (!validateState(param.action)) {
 			illegalState = true;
 			return;
 		}
 
-		if (!validate(param))
-		{
+		if (!validate(param)) {
 			illegalModel = true;
 			return;
 		}
@@ -297,8 +306,8 @@ public class PurchaseController {
 			case CHANGE_PAYER:
 				changePayer(getModel().localizeObject(param.getValue(Contact.class)));
 				break;
-			case ADD_STUDENT:
-				addContact(getModel().localizeObject(param.getValue(Contact.class)));
+			case ADD_CONTACT:
+				addContact(param.getValue(Contact.class));
 				break;
 			case ENABLE_ENROLMENT:
 				enableEnrolment(param.getValue(Enrolment.class));
@@ -334,9 +343,23 @@ public class PurchaseController {
 				concessionEditorController = null;
 				state = State.EDIT_CHECKOUT;
 				break;
+			case START_ADD_CONTACT:
+				startAddContact();
+				break;
+			case CANCEL_ADD_CONTACT:
+				addContactDelegate = null;
+				state = State.EDIT_CHECKOUT;
+				break;
 			default:
 				throw new IllegalArgumentException("Invalid action.");
 		}
+	}
+
+	private void startAddContact() {
+
+		addContactDelegate = new DefaultAddContactDelegate();
+		addContactDelegate.setPurchaseController(this);
+		state = State.ADD_CONTACT;
 	}
 
 	private void startConcessionEditor(Contact value) {
@@ -363,12 +386,14 @@ public class PurchaseController {
 	}
 
 	private void addContact(Contact contact) {
+		addContactDelegate = null;
 		model.addContact(contact);
 		for (CourseClass cc : model.getClasses()) {
 			Enrolment enrolment = createEnrolment(cc, contact.getStudent());
 			model.addEnrolment(enrolment);
 			enableEnrolment(enrolment);
 		}
+		state = State.EDIT_CHECKOUT;
 	}
 
 	private void enableEnrolment(Enrolment enrolment) {
@@ -451,7 +476,6 @@ public class PurchaseController {
 	}
 
 
-
 	/**
 	 * Creates the new {@link Enrolment} entity for the given courseClass and
 	 * Student.
@@ -523,24 +547,42 @@ public class PurchaseController {
 		return illegalState;
 	}
 
-	public boolean isEditCheckout()
-	{
+	public boolean isEditCheckout() {
 		return state == State.EDIT_CHECKOUT;
 	}
 
-	public boolean isEditConcession()
-	{
+	public boolean isEditConcession() {
 		return state == State.EDIT_CONCESSION;
 	}
 
-	public ConcessionDelegate getConcessionDelegate()
-	{
+	public boolean isAddContact() {
+		return state == State.ADD_CONTACT;
+	}
+
+	public boolean isActiveConcessionTypes() {
+		return concessionsService.hasActiveConcessionTypes();
+	}
+
+
+	public ConcessionDelegate getConcessionDelegate() {
 		return concessionEditorController;
+	}
+
+	public IConcessionsService getConcessionsService() {
+		return concessionsService;
+	}
+
+	public void setConcessionsService(IConcessionsService concessionsService) {
+		this.concessionsService = concessionsService;
+	}
+
+	public AddContactDelegate getAddContactDelegate() {
+		return addContactDelegate;
 	}
 
 
 	static enum State {
-		INIT, EDIT_CHECKOUT, FINALIZED, ERROR_EMPTY_LIST, EDIT_CONCESSION;
+		INIT, EDIT_CHECKOUT, FINALIZED, ERROR_EMPTY_LIST, EDIT_CONCESSION, ADD_CONTACT, EDIT_CONTACT;
 	}
 
 	/**
@@ -552,17 +594,19 @@ public class PurchaseController {
 		INIT,
 		CHANGE_PAYER(Contact.class),
 		SET_VOUCHER_PRICE(Money.class),
-		ADD_STUDENT(Contact.class),
+		ADD_CONTACT(ContactCredentials.class),
 		ENABLE_ENROLMENT(Enrolment.class),
 		DISABLE_ENROLMENT(Enrolment.class),
 		ENABLE_PRODUCT_ITEM(ProductItem.class),
 		DISABLE_PRODUCT_ITEM(ProductItem.class),
 		ADD_CONCESSION(StudentConcession.class),
 		REMOVE_CONCESSION(ConcessionType.class, Contact.class),
-		ADD_DISCOUNT(String.class,Discount.class),
-		ADD_VOUCHER(String.class,Voucher.class),
+		ADD_DISCOUNT(String.class, Discount.class),
+		ADD_VOUCHER(String.class, Voucher.class),
 		START_CONCESSION_EDITOR(Contact.class),
 		CANCEL_CONCESSION_EDITOR(Contact.class),
+		START_ADD_CONTACT(),
+		CANCEL_ADD_CONTACT(),
 		PROCEED_TO_PAYMENT();
 
 		private List<Class<?>> paramTypes;
@@ -599,8 +643,7 @@ public class PurchaseController {
 					return;
 				}
 			}
-
-			throw new IllegalArgumentException("Value type doesn't match action type.");
+			values.put(value.getClass(),value);
 		}
 
 		public <T> T getValue(Class<T> valueType) {

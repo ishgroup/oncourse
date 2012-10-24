@@ -1,0 +1,38 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div id="addstudent-block">
+		<h2>Add a student</h2>
+		<form id="shortDetailsForm" action="">
+			<fieldset>
+				<br/>
+
+				<p>
+					<label for="firstName">
+						First Name<em title="${message:required}">*</em>
+					</label>
+					<input type="text" id="firstName" name="firstName" class="input-fixed contact-field required"/>
+				</p>
+				<p>
+					<label for="lastName">
+						Last Name<em title="${message:required}">*</em>
+					</label>
+					<input type="text" id="lastName" name="lastName" class="input-fixed contact-field required"/>
+				</p>
+				<p>
+					<label for="email">
+						Email<em title="${message:required}">*</em>
+					</label>
+					<input type="text" id="email" name="email" class="input-fixed contact-field required"/>
+				</p>
+			</fieldset>
+			<p class="note">
+				<strong class="alert">Note</strong>: ${message:noteSameEmail}
+			</p>
+			<div class="form-controls">
+				<div id="saveAddContact" class="button">Checkout</div>
+				<t:actionlink t:id="saveContactLink" style="{display:none}"/>
+				<div id="cancelAddContact" class="button">Reset</div>
+				<t:actionlink t:id="cancelContactLink" style="{display:none}"/>
+			</div>
+		</form>
+	</div>
+</t:container>

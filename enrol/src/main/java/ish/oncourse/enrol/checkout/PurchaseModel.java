@@ -1,4 +1,4 @@
-package ish.oncourse.enrol.utils;
+package ish.oncourse.enrol.checkout;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;

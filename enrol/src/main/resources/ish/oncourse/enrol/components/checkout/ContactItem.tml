@@ -1,5 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-		>
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<thead>
 	<tr>
 		<th colspan="3">
@@ -8,10 +7,12 @@
 			<t:if test="payer">
 				<span t:type="checkout/selectpayer" purchaseController="purchaseController" blockToRefresh="blockToRefresh"/>
 			</t:if>
-			<div class="right">
-				<div class="add-concession"><span>Add Concession</span></div>
-				<t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
-			</div>
+			<t:if test="purchaseController.activeConcessionTypes">
+				<div class="right">
+					<div class="add-concession"><span>Add Concession</span></div>
+					<t:actionlink t:id="editConcessionLink" context="index" style="{display:none}"/>
+				</div>
+			</t:if>
 		</th>
 	</tr>
 	</thead>

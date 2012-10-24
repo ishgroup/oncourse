@@ -13,6 +13,9 @@
 	<t:if test="purchaseController.editConcession">
 		<t:delegate to="block:concessionEditor"/>
 	</t:if>
+	<t:if test="purchaseController.addContact">
+		<t:delegate to="block:addContact"/>
+	</t:if>
 </t:block>
 
 <t:block t:id="payments">
@@ -21,7 +24,8 @@
 		<tbody class="t-update t-zone" id="totals">
 		<tr>
 			<td>
-				<span id="addstudent">Add another student</span>
+				<div id="addContact">Add another student</div>
+				<t:actionlink t:id="addContactLink" style="{display:none}"/>
 			</td>
 			<td class="alignright">Total</td>
 			<td id="total" class="alignright">
@@ -40,6 +44,10 @@
 
 <t:block t:id="concessionEditor">
 	<span t:type="checkout/concession/concessionEditor" delegate="purchaseController.concessionDelegate"/>
+</t:block>
+
+<t:block t:id="addContact">
+	<span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate" blockToRefresh="checkoutBlock"/>
 </t:block>
 
 </html>

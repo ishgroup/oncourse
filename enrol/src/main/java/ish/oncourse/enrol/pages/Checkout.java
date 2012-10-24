@@ -1,18 +1,17 @@
 package ish.oncourse.enrol.pages;
 
+import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.enrol.checkout.PurchaseController.Action;
+import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.checkout.PurchaseModel;
+import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
-import ish.oncourse.enrol.utils.PurchaseController;
-import ish.oncourse.enrol.utils.PurchaseController.Action;
-import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
-import ish.oncourse.enrol.utils.PurchaseModel;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.StudentConcession;
-import ish.oncourse.selectutils.ListSelectModel;
-import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
@@ -25,17 +24,13 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Id;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
-import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,8 +39,6 @@ public class Checkout {
 	public static final Logger LOGGER = Logger.getLogger(Checkout.class);
 
 
-	public static final String PROPERTY_CONTACT_FULL_NAME = "fullName";
-	
 	@Inject
     private IInvoiceProcessingService invoiceProcessingService;
 	
@@ -106,10 +99,6 @@ public class Checkout {
 	@Property
 	private Contact selectedPayer;
 
-	public String getAddPayerURL() {
-		return "http://" + request.getServerName() + request.getContextPath() + "/" + AddPayer.class.getSimpleName().toLowerCase();
-	}
-	
 	private boolean isPayerSelected() {
 		return !studentService.getStudentsFromShortList().isEmpty();
 	}
@@ -126,10 +115,6 @@ public class Checkout {
 	public boolean isPayer() {
 		return getPurchaseController().getModel().getPayer().getId().equals(contact.getId());
 	}
-	
-	public boolean isShowConcessionsArea() {
-        return concessionsService.hasActiveConcessionTypes();
-    }
 
 	@SetupRender
 	void beforeRender() {
@@ -167,6 +152,7 @@ public class Checkout {
 			purchaseController.setDiscountService(discountService);
 			purchaseController.setInvoiceProcessingService(invoiceProcessingService);
 			purchaseController.setVoucherService(voucherService);
+			purchaseController.setConcessionsService(concessionsService);
 			purchaseController.performAction(new ActionParameter(Action.INIT));
 		}
 	}
@@ -207,34 +193,25 @@ public class Checkout {
 			purchaseController.setDiscountService(discountService);
 			purchaseController.setInvoiceProcessingService(invoiceProcessingService);
 			purchaseController.setVoucherService(voucherService);
+			purchaseController.setConcessionsService(concessionsService);
 			purchaseController.performAction(new ActionParameter(Action.INIT));
 
-			ActionParameter parameter = new ActionParameter(Action.ADD_STUDENT);
-			parameter.setValue(concessions.get(1).getStudent().getContact());
-			purchaseController.performAction(parameter);
-
-			parameter = new ActionParameter(Action.ADD_STUDENT);
-			parameter.setValue(concessions.get(2).getStudent().getContact());
-			purchaseController.performAction(parameter);
-
+			for (int i=1; i < concessions.size(); i++)
+			{
+				Contact contact = concessions.get(i).getStudent().getContact();
+				purchaseController.performAction(new ActionParameter(Action.START_ADD_CONTACT));
+				ActionParameter parameter = new ActionParameter(Action.ADD_CONTACT);
+				ContactCredentials contactCredentials = new ContactCredentials();
+				contactCredentials.setEmail(contact.getEmailAddress());
+				contactCredentials.setFirstName(contact.getGivenName());
+				contactCredentials.setFirstName(contact.getFamilyName());
+				parameter.setValue(contactCredentials);
+				parameter.setValue(purchaseController.getModel().localizeObject(contact));
+				purchaseController.performAction(parameter);
+			}
 		}
 	}
 
-	public ListSelectModel<Contact> getPayersModel()
-	{
-		return new ListSelectModel<Contact>(getPurchaseController().getModel().getContacts(), PROPERTY_CONTACT_FULL_NAME, propertyAccess);
-	}
-
-	public ListValueEncoder<Contact> getPayersEncoder()
-	{
-		return new ListValueEncoder<Contact>(getPurchaseController().getModel().getContacts(), Contact.ID_PK_COLUMN, propertyAccess);
-	}
-
-
-	public String getNextPage() {
-		return Checkout.class.getSimpleName();
-	}
-	
 	/**
      * Checks if the payment gateway processing is enabled for the current
      * college. If not, the enrolling is impossible.
@@ -244,30 +221,10 @@ public class Checkout {
     public boolean isPaymentGatewayEnabled() {
         return preferenceController.isPaymentGatewayEnabled();
     }
-    
-    /**
-     * Create checkSession StreamResponse.
-     * @return Text stream response.
-     */
-    public StreamResponse onActionFromCheckSession() {
-    	return checkSession(request.getSession(false));
-    }
-    
-    /**
-     * Generate JSON response with result is session time outed or still alive.
-     * @param session session for check
-     * @return Text stream response.
-     */
-    public static StreamResponse checkSession(Session session) {
-    	JSONObject obj = new JSONObject();
-    	if (session == null) {
-    		obj.put("status", "session timeout");
-    	} else {
-    		obj.put("status", "session alive");
-    	}
-    	return new TextStreamResponse("text/json", obj.toString());
-    }
-    
+
+
+
+
     public Object handleUnexpectedException(final Throwable cause) {
     	if (getPurchaseController() == null) {
 			LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
@@ -279,6 +236,15 @@ public class Checkout {
 
 	public Block getCheckoutBlock()
 	{
+		return checkoutBlock;
+	}
+
+
+	public Object onActionFromAddContactLink()
+	{
+		if (!request.isXHR())
+			return null;
+		purchaseController.performAction(new ActionParameter(Action.START_ADD_CONTACT));
 		return checkoutBlock;
 	}
 

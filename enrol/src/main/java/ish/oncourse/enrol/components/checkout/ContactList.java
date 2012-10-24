@@ -1,6 +1,6 @@
 package ish.oncourse.enrol.components.checkout;
 
-import ish.oncourse.enrol.utils.PurchaseController;
+import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Contact;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;

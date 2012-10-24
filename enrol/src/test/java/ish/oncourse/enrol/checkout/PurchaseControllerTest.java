@@ -1,10 +1,11 @@
-package ish.oncourse.enrol.utils;
+package ish.oncourse.enrol.checkout;
 
 import ish.math.Money;
+import ish.oncourse.enrol.checkout.PurchaseController.Action;
+import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
-import ish.oncourse.enrol.utils.PurchaseController.Action;
-import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.utils.EnrolCoursesControllerTest;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -24,7 +25,7 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import static ish.oncourse.enrol.utils.PurchaseController.State;
+import static ish.oncourse.enrol.checkout.PurchaseController.State;
 import static org.junit.Assert.*;
 
 public class PurchaseControllerTest extends ServiceTest {
@@ -38,7 +39,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.enrol.services", "enrol", EnrolTestModule.class);
 		InputStream st = EnrolCoursesControllerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/utils/purchaseControllerTestDataSet.xml");
+				"ish/oncourse/enrol/checkout/purchaseControllerTestDataSet.xml");
 
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 		builder.setColumnSensing(true);
@@ -131,7 +132,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		Contact originalPayer = model.getPayer();
 		Contact newPayer = Cayenne.objectForPK(context, Contact.class, 1189158);
 
-		PurchaseController.ActionParameter param = new ActionParameter(Action.ADD_STUDENT);
+		PurchaseController.ActionParameter param = new ActionParameter(Action.ADD_CONTACT);
 		param.setValue(newPayer);
 		performAction(controller, param);
 		assertEquals(originalPayer, model.getPayer());
@@ -156,7 +157,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		Contact newContact = Cayenne.objectForPK(context, Contact.class, 1189158);
 
-		ActionParameter param = new ActionParameter(Action.ADD_STUDENT);
+		ActionParameter param = new ActionParameter(Action.ADD_CONTACT);
 		param.setValue(newContact);
 
 		performAction(controller, param);
@@ -441,7 +442,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		Contact newContact = Cayenne.objectForPK(context, Contact.class, 1189158);
 
-		param = new ActionParameter(Action.ADD_STUDENT);
+		param = new ActionParameter(Action.ADD_CONTACT);
 		param.setValue(newContact);
 
 		controller.performAction(param);

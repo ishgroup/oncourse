@@ -1,19 +1,18 @@
 package ish.oncourse.enrol.components.checkout;
 
-import java.util.List;
-
-import ish.oncourse.enrol.utils.PurchaseController;
-import ish.oncourse.enrol.utils.PurchaseController.Action;
-import ish.oncourse.enrol.utils.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.checkout.PurchaseController;
+import ish.oncourse.enrol.checkout.PurchaseController.Action;
+import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.ProductItem;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.util.List;
 
 public class ProductList {
 
