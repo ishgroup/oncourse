@@ -147,14 +147,20 @@ public class Checkout {
 			model.addContact(model.localizeObject(payer));
 			model.setPayer(model.localizeObject(payer));
 
-			purchaseController = new PurchaseController();
-			purchaseController.setModel(model);
-			purchaseController.setDiscountService(discountService);
-			purchaseController.setInvoiceProcessingService(invoiceProcessingService);
-			purchaseController.setVoucherService(voucherService);
-			purchaseController.setConcessionsService(concessionsService);
+			purchaseController = createPurchaseConroller(model);
 			purchaseController.performAction(new ActionParameter(Action.INIT));
 		}
+	}
+
+	private PurchaseController createPurchaseConroller(PurchaseModel model) {
+		PurchaseController purchaseController = new PurchaseController();
+		purchaseController.setModel(model);
+		purchaseController.setDiscountService(discountService);
+		purchaseController.setInvoiceProcessingService(invoiceProcessingService);
+		purchaseController.setVoucherService(voucherService);
+		purchaseController.setConcessionsService(concessionsService);
+		purchaseController.setStudentService(studentService);
+		return purchaseController;
 	}
 
 
@@ -188,12 +194,7 @@ public class Checkout {
 			model.setPayer(model.localizeObject(concessions.get(0).getStudent().getContact()));
 			model.addContact(model.getPayer());
 
-			purchaseController = new PurchaseController();
-			purchaseController.setModel(model);
-			purchaseController.setDiscountService(discountService);
-			purchaseController.setInvoiceProcessingService(invoiceProcessingService);
-			purchaseController.setVoucherService(voucherService);
-			purchaseController.setConcessionsService(concessionsService);
+			purchaseController = createPurchaseConroller(model);
 			purchaseController.performAction(new ActionParameter(Action.INIT));
 
 			for (int i=1; i < concessions.size(); i++)

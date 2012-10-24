@@ -8,6 +8,7 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.DefaultAddContactDelegate;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
+import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.voucher.IVoucherService;
@@ -33,6 +34,7 @@ public class PurchaseController {
 	private IDiscountService discountService;
 	private IVoucherService voucherService;
 	private IConcessionsService concessionsService;
+	private IStudentService studentService;
 
 	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
 
@@ -200,6 +202,19 @@ public class PurchaseController {
 		}
 	}
 
+
+	private boolean validateADD_CONTACT(ActionParameter param)
+	{
+		ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
+		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
+		contactCredentialsEncoder.setContactCredentials(contactCredentials);
+		contactCredentialsEncoder.setPurchaseController(this);
+		contactCredentialsEncoder.encode();
+		Contact contact = contactCredentialsEncoder.getContact();
+		param.setValue(contact);
+		return true;
+	}
+
 	private boolean validateINIT() {
 		if (model.getPayer() == null)
 			return false;
@@ -270,10 +285,7 @@ public class PurchaseController {
 			case CANCEL_ADD_CONTACT:
 				break;
 			case ADD_CONTACT:
-				ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
-
-				//todo
-				break;
+				return validateADD_CONTACT(param);
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -387,13 +399,20 @@ public class PurchaseController {
 
 	private void addContact(Contact contact) {
 		addContactDelegate = null;
-		model.addContact(contact);
-		for (CourseClass cc : model.getClasses()) {
-			Enrolment enrolment = createEnrolment(cc, contact.getStudent());
-			model.addEnrolment(enrolment);
-			enableEnrolment(enrolment);
+		if (contact.getObjectId().isTemporary() && getModel().getContacts().contains(contact))
+		{
+			state = State.EDIT_CONTACT;
 		}
-		state = State.EDIT_CHECKOUT;
+		else
+		{
+			model.addContact(contact);
+			for (CourseClass cc : model.getClasses()) {
+				Enrolment enrolment = createEnrolment(cc, contact.getStudent());
+				model.addEnrolment(enrolment);
+				enableEnrolment(enrolment);
+			}
+			state = State.EDIT_CHECKOUT;
+		}
 	}
 
 	private void enableEnrolment(Enrolment enrolment) {
@@ -578,6 +597,14 @@ public class PurchaseController {
 
 	public AddContactDelegate getAddContactDelegate() {
 		return addContactDelegate;
+	}
+
+	public void setStudentService(IStudentService studentService) {
+		this.studentService = studentService;
+	}
+
+	public IStudentService getStudentService() {
+		return studentService;
 	}
 
 

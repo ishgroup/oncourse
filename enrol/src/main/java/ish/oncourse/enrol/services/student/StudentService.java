@@ -5,11 +5,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -19,6 +14,10 @@ import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class StudentService implements IStudentService {
 
@@ -43,8 +42,8 @@ public class StudentService implements IStudentService {
 		@SuppressWarnings("unchecked")
 		List<Contact> results = cayenneService.sharedContext().performQuery(query);
 		if (results.size() > 1) {
-			LOGGER.warn("Duplicate student contact exists for name = " + firstName + " with lastname = " + lastName + " and email = " + email + 
-				" contact with id = " + results.get(0).getId() + " used for this query.");
+			LOGGER.error("Duplicate student contact exists for name = " + firstName + " with lastname = " + lastName + " and email = " + email +
+					" contact with id = " + results.get(0).getId() + " used for this query.");
 		}
 		return results.isEmpty() ? null : results.get(0);
 	}

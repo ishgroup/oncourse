@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div id="addstudent-block">
 		<h2>Add a student</h2>
-		<form id="shortDetailsForm" action="">
+		<form id="addContact-form" action="">
 			<fieldset>
 				<br/>
 
@@ -9,19 +9,19 @@
 					<label for="firstName">
 						First Name<em title="${message:required}">*</em>
 					</label>
-					<input type="text" id="firstName" name="firstName" class="input-fixed contact-field required"/>
+					<input type="text" id="firstName" name="firstName" class="required input-fixed contact-field"/>
 				</p>
 				<p>
 					<label for="lastName">
 						Last Name<em title="${message:required}">*</em>
 					</label>
-					<input type="text" id="lastName" name="lastName" class="input-fixed contact-field required"/>
+					<input type="text" id="lastName" name="lastName" class="required input-fixed contact-field"/>
 				</p>
 				<p>
 					<label for="email">
 						Email<em title="${message:required}">*</em>
 					</label>
-					<input type="text" id="email" name="email" class="input-fixed contact-field required"/>
+					<input type="text" id="email" name="email" class="required input-fixed contact-field"/>
 				</p>
 			</fieldset>
 			<p class="note">
