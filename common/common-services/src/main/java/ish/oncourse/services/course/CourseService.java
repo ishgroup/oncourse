@@ -1,5 +1,6 @@
 package ish.oncourse.services.course;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -57,61 +58,50 @@ public class CourseService implements ICourseService {
 	@Override
 	public List<Course> getCourses(String tagName, CourseListSortValue sort, Boolean isAscending, Integer limit) {
 		List<Course> result = new ArrayList<Course>();
-
-		String defaultTemplate = "select * from Course c where c.collegeId=#bind($collegeId) and c.isWebVisible=true";
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("collegeId", webSiteService.getCurrentCollege().getId());
-
+		Long collegeId = webSiteService.getCurrentCollege().getId();
+		Expression expression = ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true)
+			.andExp(ExpressionFactory.matchDbExp(Course.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, collegeId));
 		if (tagName != null) {
 			List<Long> taggedIds = tagService.getEntityIdsByTagPath(tagName, Course.class.getSimpleName());
 			if (taggedIds.isEmpty()) {
 				return result;
 			}
-			defaultTemplate += " and c.id in (#bind($tagged))";
-			parameters.put("tagged", taggedIds);
-
+			expression = expression.andExp(ExpressionFactory.inDbExp(Course.ID_PK_COLUMN, taggedIds));
 		}
-		if (sort == null) {
-			sort = CourseListSortValue.ALPHABETICAL;
-		}
-
-		// random list
-		defaultTemplate += " order by rand()";
-
-		SQLTemplate q = new SQLTemplate(Course.class, defaultTemplate);
-
-		if (limit != null) {
-			q.setFetchLimit(limit);
-		}
-
-		q.setParameters(parameters);
-
+		SelectQuery query = new SelectQuery(Course.class, expression);
+		
 		// TODO: uncomment when after upgrading to newer cayenne where
 		// https://issues.apache.org/jira/browse/CAY-1585 is fixed.
 
-		// q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		// q.setCacheGroups(CacheGroup.COURSES.name());
+		// query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		// query.setCacheGroups(CacheGroup.COURSES.name());
 
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.ROOM_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.SESSIONS_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.TUTOR_ROLES_PROPERTY);
-		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.DISCOUNT_COURSE_CLASSES_PROPERTY);
+		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
+		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.ROOM_PROPERTY);
+		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.SESSIONS_PROPERTY);
+		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.TUTOR_ROLES_PROPERTY);
+		query.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.DISCOUNT_COURSE_CLASSES_PROPERTY);
 
-		result = cayenneService.sharedContext().performQuery(q);
-
+		result = cayenneService.sharedContext().performQuery(query);
+		if (sort == null) {
+			//if nothing specified use default
+			sort = CourseListSortValue.ALPHABETICAL;
+		}
 		switch (sort) {
-		case ALPHABETICAL:
-			Ordering ordering = new Ordering(Course.NAME_PROPERTY, isAscending ? SortOrder.ASCENDING
-					: SortOrder.DESCENDING);
-			ordering.orderList(result);
-			break;
 		case AVAILABILITY:
 			sortByAvailability(isAscending, result);
 			break;
 		case DATE:
 			sortByStartDate(isAscending, result);
 			break;
+		case ALPHABETICAL:
+			Ordering ordering = new Ordering(Course.NAME_PROPERTY, isAscending ? SortOrder.ASCENDING
+					: SortOrder.DESCENDING);
+			ordering.orderList(result);
+			break;
+		}
+		if (limit != null && result.size() > limit) {
+			return result.subList(0, limit);
 		}
 		return result;
 

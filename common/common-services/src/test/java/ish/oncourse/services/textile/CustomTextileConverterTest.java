@@ -7,6 +7,7 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.textile.attrs.CourseListSortValue;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.ValidationErrors;
 import org.junit.Before;
@@ -193,7 +194,7 @@ public class CustomTextileConverterTest {
 		List<Course> courses = new ArrayList<Course>();
 		courses.add(new Course());
 		String successfulResult = "successfully rendered courses block";
-		when(courseService.getCourses(null, null, false, null)).thenReturn(courses);
+		when(courseService.getCourses(null, CourseListSortValue.ALPHABETICAL, false, null)).thenReturn(courses);
 		testPageRenderParams(COURSE_LIST, TextileUtil.TEXTILE_COURSE_LIST_PAGE, successfulResult);
 	}
 

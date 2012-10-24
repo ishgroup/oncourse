@@ -59,10 +59,14 @@ public class CourseListTextileRenderer extends AbstractRenderer {
 					.getValue());
 			String tagName = tagParams.get(CourseListTextileAttributes.COURSE_LIST_PARAM_TAG
 					.getValue());
-
-			List<Course> courses = courseService.getCourses(tagName, CourseListSortValue
-					.getByName(sort), Boolean.valueOf(order),
-					limit == null ? null : Integer.valueOf(limit));
+			Boolean isAscending = order != null ? "asc".equalsIgnoreCase(order): false;
+			Integer intLimit = limit == null ? null : Integer.valueOf(limit);
+			CourseListSortValue sortOrder = CourseListSortValue.getByName(sort);
+			if (sortOrder == null) {
+				//if nothing specified use default
+				sortOrder = CourseListSortValue.ALPHABETICAL;
+			}
+			List<Course> courses = courseService.getCourses(tagName, sortOrder, isAscending, intLimit);
 
 			if (courses.isEmpty()) {
 				tag = null;
