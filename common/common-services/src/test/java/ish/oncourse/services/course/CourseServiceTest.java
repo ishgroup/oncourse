@@ -32,7 +32,7 @@ public class CourseServiceTest extends ServiceTest {
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceTestModule.class);
 		InputStream st = CourseServiceTest.class.getClassLoader().getResourceAsStream(
-			"ish/oncourse/services/courseclass/oncourseDataSet.xml");
+			"ish/oncourse/services/classes/oncourseDataSet.xml");
 
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 		builder.setColumnSensing(true);
@@ -46,7 +46,7 @@ public class CourseServiceTest extends ServiceTest {
 		service = getService(ICourseService.class);
 	}
 	
-	//@Test
+	@Test
 	public void testGetCoursesForRange() {
 		assertNotNull("Not able to init course service", service);
 		List<Course> result = service.getCourses(0, 30);
