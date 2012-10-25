@@ -1,11 +1,6 @@
 dependencies {
 	compile project(':waCommon')
-	compile ('org.apache.cxf:cxf-bundle:2.6.1') {
-		exclude group: 'org.slf4j', module: 'log4j-over-slf4j'
-		exclude group: 'org.eclipse.jetty', module: 'jetty-server'
-		exclude group: 'org.eclipse.jetty', module: 'jetty-security'
-    }
-	
+	compile 'org.apache.cxf:cxf-bundle-mini:2.6.1'
 }
 
 jar {
