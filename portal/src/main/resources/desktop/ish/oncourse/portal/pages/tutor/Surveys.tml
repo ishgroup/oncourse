@@ -4,9 +4,7 @@
 	<h1>${courseClass.course.name}</h1>
 
 	<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
-	
-	<t:form t:id="surveyForm">
-	<t:errors/>
+
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="survey-table">
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-course-b.png" alt="" /></div></td>
@@ -43,19 +41,11 @@
 			</td>
 			<td>${venueAverage}</td>
 		</tr>
-		<tr>
-			<td colspan="10" rowspan="3">
-				<p>Thank you for enrolling in {courseName}. Your feedback on your experience will help us to ensure we deliver the highest quality training.</p>
-				<label for="surveyComment">Your comment</label>
-				<input t:type="textarea" id="surveyComment" cols="1" rows="5" value=""/>
-			</td>
-		</tr>
 		
 		<t:loop source="surveys" t:value="survey">
 			<span t:type="surveyItem" survey="survey"/>
 		</t:loop>
 		
 	</table>
-	<button type="submit" class="form-submit-button btn">Submit</button>
-	</t:form>
+
 </html>
