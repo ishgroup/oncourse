@@ -47,7 +47,7 @@
 			<td colspan="10" rowspan="3">
 				<p>Thank you for enrolling in {courseName}. Your feedback on your experience will help us to ensure we deliver the highest quality training.</p>
 				<label for="surveyComment">Your comment</label>
-				<input t:type="textarea" id="surveyComment" cols="1" rows="5" value="survey.comment"/>
+				<input t:type="textarea" id="surveyComment" cols="1" rows="5" value=""/>
 			</td>
 		</tr>
 		
