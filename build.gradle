@@ -6,11 +6,6 @@ buildscript {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/ish'
 		}
-
-		ivy {
-            url "http://gradle-macappbundle.googlecode.com"
-            artifactPattern 'http://gradle-macappbundle.googlecode.com/files/[module]-[revision].[ext]'
-        }
 	}
 
 	dependencies {
