@@ -2,18 +2,18 @@ package ish.oncourse.enrol.utils;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import org.apache.cayenne.PersistenceState;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.cayenne.PersistenceState;
 
 /**
  * Utility class for validation in enrol app.
  * 
  * @author dzmitry
  */
+@Deprecated //will be removed after checkout/payemnt page will be ready
 public class EnrolmentValidationUtil {
 	
 	/**

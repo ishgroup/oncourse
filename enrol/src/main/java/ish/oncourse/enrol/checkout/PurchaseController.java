@@ -3,14 +3,14 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
-import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
-import ish.oncourse.enrol.checkout.contact.ContactCredentials;
-import ish.oncourse.enrol.checkout.contact.DefaultAddContactDelegate;
+import ish.oncourse.enrol.checkout.contact.*;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.preference.ContactFieldHelper;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.FormatUtils;
@@ -35,6 +35,7 @@ public class PurchaseController {
 	private IVoucherService voucherService;
 	private IConcessionsService concessionsService;
 	private IStudentService studentService;
+	private PreferenceController preferenceController;
 
 	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
 
@@ -48,7 +49,8 @@ public class PurchaseController {
 	private boolean illegalState = false;
 
 	private ConcessionEditorController concessionEditorController;
-	private DefaultAddContactDelegate addContactDelegate;
+	private AddContactController addContactController;
+	private ContactEditorController contactEditorController;
 
 	/**
 	 * @return the current state
@@ -202,10 +204,26 @@ public class PurchaseController {
 		}
 	}
 
+	private boolean validateENABLE_ENROLMENT(Enrolment enrolment)
+	{
+		/**
+		 * TODO add this check when we try to enable enrolment
+		 * if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
+		 */
+		if (model.isEnrolmentEnabled(enrolment))
+			return false;
+		return true;
+	}
 
 	private boolean validateADD_CONTACT(ActionParameter param)
 	{
 		ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
+
+		//todo contact already exists
+		if (getModel().containsContactWith(contactCredentials))
+		{
+			return false;
+		}
 		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
 		contactCredentialsEncoder.setContactCredentials(contactCredentials);
 		contactCredentialsEncoder.setPurchaseController(this);
@@ -238,14 +256,8 @@ public class PurchaseController {
 			case SET_VOUCHER_PRICE:
 				break;
 			case ENABLE_ENROLMENT:
-				/**
-				 * TODO add this check when we try to enable enrolment
-				 * if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
-				 */
 				Enrolment enrolment = param.getValue(Enrolment.class);
-				if (model.isEnrolmentEnabled(enrolment))
-					return false;
-				break;
+				return validateENABLE_ENROLMENT(enrolment);
 			case DISABLE_ENROLMENT:
 				enrolment = param.getValue(Enrolment.class);
 				if (!model.isEnrolmentEnabled(enrolment))
@@ -266,13 +278,11 @@ public class PurchaseController {
 			case REMOVE_CONCESSION:
 				break;
 			case ADD_DISCOUNT:
-				//todo we should adjust this code to exclude refilling parameter;
 				String discountCode = param.getValue(String.class);
 				Discount discount = discountService.getByCode(discountCode);
 				param.setValue(discount);
 				return discount != null;
 			case ADD_VOUCHER:
-				//todo we should adjust this code to exclude refilling parameter;
 				String voucherCode = param.getValue(String.class);
 				Voucher voucher = voucherService.getVoucherByCode(voucherCode);
 				param.setValue(voucher);
@@ -359,7 +369,7 @@ public class PurchaseController {
 				startAddContact();
 				break;
 			case CANCEL_ADD_CONTACT:
-				addContactDelegate = null;
+				addContactController = null;
 				state = State.EDIT_CHECKOUT;
 				break;
 			default:
@@ -369,8 +379,8 @@ public class PurchaseController {
 
 	private void startAddContact() {
 
-		addContactDelegate = new DefaultAddContactDelegate();
-		addContactDelegate.setPurchaseController(this);
+		addContactController = new AddContactController();
+		addContactController.setPurchaseController(this);
 		state = State.ADD_CONTACT;
 	}
 
@@ -398,9 +408,16 @@ public class PurchaseController {
 	}
 
 	private void addContact(Contact contact) {
-		addContactDelegate = null;
-		if (contact.getObjectId().isTemporary() && getModel().getContacts().contains(contact))
+		addContactController = null;
+		contactEditorController = null;
+
+		boolean fillRequiredProperties = new ContactFieldHelper(preferenceController).isAllRequiredFieldFilled(contact);
+		if (contact.getObjectId().isTemporary() ||
+				!fillRequiredProperties )
 		{
+			contactEditorController = new ContactEditorController();
+			contactEditorController.setContact(contact);
+			contactEditorController.setFillRequiredProperties(!fillRequiredProperties);
 			state = State.EDIT_CONTACT;
 		}
 		else
@@ -409,7 +426,8 @@ public class PurchaseController {
 			for (CourseClass cc : model.getClasses()) {
 				Enrolment enrolment = createEnrolment(cc, contact.getStudent());
 				model.addEnrolment(enrolment);
-				enableEnrolment(enrolment);
+				if (validateENABLE_ENROLMENT(enrolment))
+					enableEnrolment(enrolment);
 			}
 			state = State.EDIT_CHECKOUT;
 		}
@@ -569,6 +587,9 @@ public class PurchaseController {
 	public boolean isEditCheckout() {
 		return state == State.EDIT_CHECKOUT;
 	}
+	public boolean isEditContact() {
+		return state == State.EDIT_CONTACT;
+	}
 
 	public boolean isEditConcession() {
 		return state == State.EDIT_CONCESSION;
@@ -596,7 +617,7 @@ public class PurchaseController {
 	}
 
 	public AddContactDelegate getAddContactDelegate() {
-		return addContactDelegate;
+		return addContactController;
 	}
 
 	public void setStudentService(IStudentService studentService) {
@@ -605,6 +626,18 @@ public class PurchaseController {
 
 	public IStudentService getStudentService() {
 		return studentService;
+	}
+
+	public PreferenceController getPreferenceController() {
+		return preferenceController;
+	}
+
+	public void setPreferenceController(PreferenceController preferenceController) {
+		this.preferenceController = preferenceController;
+	}
+
+	public ContactEditorDelegate getContactEditorDelegate() {
+		return contactEditorController;
 	}
 
 

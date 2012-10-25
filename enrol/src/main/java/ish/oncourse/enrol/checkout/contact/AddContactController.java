@@ -2,7 +2,7 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
 
-public class DefaultAddContactDelegate implements AddContactDelegate{
+public class AddContactController implements AddContactDelegate{
 
 	private PurchaseController purchaseController;
 

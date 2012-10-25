@@ -17,20 +17,20 @@ import java.util.List;
 public class PreferenceController extends CommonPreferenceController {
 
 	private static final Logger LOGGER = Logger.getLogger(PreferenceController.class);
-	
-	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";	
+
+	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
 	private static final String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
 	
-	private static final String REQUIRE_CONTACT_ADDRESS_ENROLMENT = "enrolment.contact.address.required";
-	private static final String REQUIRE_CONTACT_SUBURB_ENROLMENT = "enrolment.contact.suburb.required";
-	private static final String REQUIRE_CONTACT_STATE_ENROLMENT = "enrolment.contact.state.required";
-	private static final String REQUIRE_CONTACT_POSTCODE_ENROLMENT = "enrolment.contact.postcode.required";
-	private static final String REQUIRE_CONTACT_HOME_PHONE_ENROLMENT = "enrolment.contact.homephone.required";
-	private static final String REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT = "enrolment.contact.businessphone.required";
-	private static final String REQUIRE_CONTACT_FAX_ENROLMENT = "enrolment.contact.fax.required";
-	private static final String REQUIRE_CONTACT_MOBILE_ENROLMENT = "enrolment.contact.mobile.required";
-	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT = "enrolment.contact.birth.required";
-	
+	static final String REQUIRE_CONTACT_ADDRESS_ENROLMENT = "enrolment.contact.address.required";
+	static final String REQUIRE_CONTACT_SUBURB_ENROLMENT = "enrolment.contact.suburb.required";
+	static final String REQUIRE_CONTACT_STATE_ENROLMENT = "enrolment.contact.state.required";
+	static final String REQUIRE_CONTACT_POSTCODE_ENROLMENT = "enrolment.contact.postcode.required";
+	static final String REQUIRE_CONTACT_HOME_PHONE_ENROLMENT = "enrolment.contact.homephone.required";
+	static final String REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT = "enrolment.contact.businessphone.required";
+	static final String REQUIRE_CONTACT_FAX_ENROLMENT = "enrolment.contact.fax.required";
+	static final String REQUIRE_CONTACT_MOBILE_ENROLMENT = "enrolment.contact.mobile.required";
+	static final String REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT = "enrolment.contact.birth.required";
+
 	private static final String REQUIRE_CONTACT_ADDRESS_WAITING_LIST = "waitinglist.contact.address.required";
 	private static final String REQUIRE_CONTACT_SUBURB_WAITING_LIST = "waitinglist.contact.suburb.required";
 	private static final String REQUIRE_CONTACT_STATE_WAITING_LIST = "waitinglist.contact.state.required";

@@ -16,6 +16,9 @@
 	<t:if test="purchaseController.addContact">
 		<t:delegate to="block:addContact"/>
 	</t:if>
+	<t:if test="purchaseController.editContact">
+		<t:delegate to="block:contactEditor"/>
+	</t:if>
 </t:block>
 
 <t:block t:id="payments">
@@ -48,6 +51,10 @@
 
 <t:block t:id="addContact">
 	<span t:type="checkout/contact/addcontact" delegate="purchaseController.addContactDelegate" blockToRefresh="checkoutBlock"/>
+</t:block>
+
+<t:block t:id="contactEditor">
+	<span t:type="checkout/contact/contacteditor" delegate="purchaseController.contactEditorDelegate" blockToRefresh="checkoutBlock"/>
 </t:block>
 
 </html>

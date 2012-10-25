@@ -2,12 +2,8 @@ package ish.oncourse.enrol.utils;
 
 import ish.math.Money;
 import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.*;
+
 import java.text.Format;
 import java.util.List;
 
@@ -17,6 +13,7 @@ import java.util.List;
  * @author vdavidovich
  *
  */
+@Deprecated //will be removed after checkout/payemnt page will be ready
 public class EnrolCoursesModel {
 	//EnrolCourses properties
     private List<CourseClass> classesToEnrol;

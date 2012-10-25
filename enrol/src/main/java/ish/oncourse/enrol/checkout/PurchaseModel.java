@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
@@ -266,6 +267,16 @@ public class PurchaseModel {
 			}
 		}
 		return list;
+	}
+
+	public boolean containsContactWith(ContactCredentials contactCredentials) {
+		for (Contact contact: getContacts()) {
+			if (contact.getFamilyName().equalsIgnoreCase(contactCredentials.getLastName()) &&
+					contact.getGivenName().equalsIgnoreCase(contactCredentials.getFirstName()) &&
+					contact.getEmailAddress().equalsIgnoreCase(contactCredentials.getEmail()))
+				return true;
+		}
+		return false;
 	}
 
 

@@ -5,34 +5,10 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.RealDiscountsPolicy;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.StudentConcession;
+import ish.oncourse.model.*;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.util.FormatUtils;
 import ish.util.InvoiceUtil;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
@@ -45,6 +21,10 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Session;
 import org.apache.tapestry5.util.TextStreamResponse;
 
+import java.math.BigDecimal;
+import java.util.*;
+
+@Deprecated //will be removed after checkout/payemnt page will be ready
 public class EnrolCoursesController {
 	private static final Logger LOGGER = Logger.getLogger(EnrolCoursesController.class);
 	private static final String INDEX_SEPARATOR = "_";

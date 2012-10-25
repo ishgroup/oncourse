@@ -1,5 +1,11 @@
 package ish.oncourse.services.preference;
 
+import ish.oncourse.model.Contact;
+
+import java.util.Date;
+
+import static ish.oncourse.services.preference.PreferenceController.*;
+
 /**
  * The class has been introduced to exclude duplicate code in tapestry page templates for portal and enrol applications.
  */
@@ -7,8 +13,9 @@ public class ContactFieldHelper {
 
     public static final String VALUE_Show = "Show";
     public static final String VALUE_Required = "Required";
+	public static final String VALUE_Hide = "Hide";
 
-    private PreferenceController preferenceController;
+	private PreferenceController preferenceController;
 
     public ContactFieldHelper(PreferenceController preferenceController) {
         this.preferenceController = preferenceController;
@@ -16,7 +23,7 @@ public class ContactFieldHelper {
 
     public boolean getShowAddress() {
         String require = preferenceController.getRequireContactAddressEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequireAddress() {
@@ -26,7 +33,7 @@ public class ContactFieldHelper {
 
     public boolean getShowSuburb() {
         String require = preferenceController.getRequireContactSuburbEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequireSuburb() {
@@ -36,7 +43,7 @@ public class ContactFieldHelper {
 
     public boolean getShowState() {
         String require = preferenceController.getRequireContactStateEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequireState() {
@@ -46,7 +53,7 @@ public class ContactFieldHelper {
 
     public boolean getShowPostcode() {
         String require = preferenceController.getRequireContactPostcodeEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequirePostcode() {
@@ -56,7 +63,7 @@ public class ContactFieldHelper {
 
     public boolean getShowHomePhone() {
         String require = preferenceController.getRequireContactHomePhoneEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequireHomePhone() {
@@ -66,7 +73,7 @@ public class ContactFieldHelper {
 
     public boolean getShowBusinessPhone() {
         String require = preferenceController.getRequireContactBusinessPhoneEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequireBusinessPhone() {
@@ -76,7 +83,7 @@ public class ContactFieldHelper {
 
     public boolean getShowFax() {
         String require = preferenceController.getRequireContactFaxEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequireFax() {
@@ -86,7 +93,7 @@ public class ContactFieldHelper {
 
     public boolean getShowMobile() {
         String require = preferenceController.getRequireContactMobileEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
     public boolean getRequireMobile() {
@@ -96,12 +103,69 @@ public class ContactFieldHelper {
 
     public boolean getShowDateOfBirth() {
         String require = preferenceController.getRequireContactDateOfBirthEnrolment();
-        return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+        return isShow(require);
     }
 
-    public boolean getRequireDateOfBirth() {
+	private boolean isShow(String require) {
+		return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
+	}
+
+	public boolean getRequireDateOfBirth() {
         String require = preferenceController.getRequireContactDateOfBirthEnrolment();
         return VALUE_Required.equals(require);
     }
 
+	public boolean isAllRequiredFieldFilled(Contact contact)
+	{
+
+		FieldDescriptor[] fields = FieldDescriptor.values();
+
+		for (FieldDescriptor field : fields) {
+			String preferenceValue = preferenceController.getValue(field.preferenceName, false);
+			Object propertyValue = contact.readProperty(field.propertyName);
+			if (VALUE_Required.equals(preferenceValue) && propertyValue == null)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isShowField(FieldDescriptor fieldDescriptor)
+	{
+		String preferenceValue = preferenceController.getValue(fieldDescriptor.preferenceName, false);
+		return isShow(preferenceValue);
+	}
+
+	public boolean isRequiredField(FieldDescriptor fieldDescriptor)
+	{
+		String preferenceValue = preferenceController.getValue(fieldDescriptor.preferenceName, false);
+		return VALUE_Required.equals(preferenceValue);
+	}
+
+
+
+	public static enum FieldDescriptor
+	{
+		street(REQUIRE_CONTACT_ADDRESS_ENROLMENT, Contact.STREET_PROPERTY,String.class),
+		suburb(REQUIRE_CONTACT_ADDRESS_ENROLMENT, Contact.SUBURB_PROPERTY, String.class),
+		state(REQUIRE_CONTACT_STATE_ENROLMENT, Contact.STATE_PROPERTY, String.class),
+		postcode(REQUIRE_CONTACT_POSTCODE_ENROLMENT, Contact.POSTCODE_PROPERTY, String.class),
+		homePhoneNumber(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, Contact.HOME_PHONE_NUMBER_PROPERTY,String.class),
+		businessPhoneNumber(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, Contact.BUSINESS_PHONE_NUMBER_PROPERTY,String.class),
+		faxNumber(REQUIRE_CONTACT_FAX_ENROLMENT, Contact.FAX_NUMBER_PROPERTY,String.class),
+		mobilePhoneNumber(REQUIRE_CONTACT_MOBILE_ENROLMENT, Contact.MOBILE_PHONE_NUMBER_PROPERTY,String.class),
+		dateOfBirth(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, Contact.DATE_OF_BIRTH_PROPERTY,Date.class);
+
+		public final String preferenceName;
+		public final String propertyName;
+		public final Class propertyClass;
+
+		private FieldDescriptor(String preferenceName, String propertyName, Class propertyClass)
+		{
+			this.preferenceName = preferenceName;
+			this.propertyName = propertyName;
+			this.propertyClass = propertyClass;
+		}
+	}
 }

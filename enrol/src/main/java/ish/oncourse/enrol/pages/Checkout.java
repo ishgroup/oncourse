@@ -160,6 +160,7 @@ public class Checkout {
 		purchaseController.setVoucherService(voucherService);
 		purchaseController.setConcessionsService(concessionsService);
 		purchaseController.setStudentService(studentService);
+		purchaseController.setPreferenceController(preferenceController);
 		return purchaseController;
 	}
 

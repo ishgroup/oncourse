@@ -1,0 +1,108 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<t:block t:id="message">
+		<t:if test="showAdditionalInfoMessage">
+			<div class="message">
+				<p>${message:requireAdditionalInfo}</p>
+			</div>
+		</t:if>
+		<p class="note"><strong class="alert">Note</strong>: Fields marked with a <em>*</em> are required.</p>
+	</t:block>
+
+	<t:block t:id="contactFields">
+		<fieldset id="student_enrol_details">
+			<br/>
+			<t:if test="visible('street')">
+				<p>
+					<label for="street">Address<t:if test="required('street')"><em title="${message:required}">*</em></t:if></label>
+					<t:textfield t:id="street" clientId="street" value="contact.street" class="input-fixed"/>
+				</p>
+			</t:if>
+			<t:if test="visible('suburb')">
+				<p>
+					<label for="suburb">Suburb<t:if test="required('suburb')"><em title="${message:required}">*</em></t:if></label>
+						<script type="text/javascript">
+							initSuburbAutoComplete();
+						</script>
+						<t:textfield t:id="suburb" clientId="suburb" value="contact.suburb" class="suburb-autocomplete input-fixed" default="postcode or suburb" size="18" autocomplete="off"/>
+				</p>
+			</t:if>
+			<t:if test="visible('postcode')">
+				<p>
+					<label for="postcode">Postcode<t:if test="required('postcode')"><em title="${message:required}">*</em></t:if></label>
+					<t:textfield t:id="postcode" clientId="postcode" value="contact.postcode" class="input-fixed"/>
+				</p>
+			</t:if>
+			<t:if test="visible('state')">
+				<p>
+					<label for="state">State<t:if test="required('state')"><em title="${message:required}">*</em></t:if></label>
+					<t:textfield t:id="state" clientId="state" value="contact.state" class="input-fixed"/>
+				</p>
+			</t:if>
+			<t:if test="visible('homePhoneNumber')">
+				<p>
+					<label for="homePhoneNumber">Home Phone<t:if test="required('homePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+					<t:textfield t:id="homePhoneNumber" clientId="homePhoneNumber" value="contact.homePhoneNumber" class="input-fixed"/>
+				</p>
+			</t:if>
+			<t:if test="visible('mobilePhoneNumber')">
+				<p>
+					<label for="mobilePhoneNumber">Mobile Phone<t:if test="required('mobilePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+					<t:textfield t:id="mobilePhoneNumber" clientId="mobilePhoneNumber" value="contact.mobilePhoneNumber" class="input-fixed"/>
+				</p>
+			</t:if>
+			<t:if test="visible('businessPhoneNumber')">
+				<p>
+					<label for="businessPhoneNumber">Work Phone<t:if test="required('businessPhoneNumber')"><em title="${message:required}">*</em></t:if></label>
+					<t:textfield t:id="businessPhoneNumber" clientId="businessPhoneNumber" value="contact.businessPhoneNumber" class="input-fixed"/>
+				</p>
+			</t:if>
+			<t:if test="visible('faxNumber')">
+				<p>
+					<label for="faxNumber">Fax<t:if test="required('faxNumber')"><em title="${message:required}">*</em></t:if></label>
+					<t:textfield t:id="faxNumber" clientId="faxNumber" value="contact.faxNumber" class="input-fixed"/>
+				</p>
+			</t:if>
+			<t:if test="visible('dateOfBirth')">
+				<p>
+					<label for="dateOfBirth">Date of birth<t:if test="required('dateOfBirth')"><em title="${message:required}">*</em></t:if></label>
+					<t:datefield t:id="dateOfBirth" clientId="dateOfBirth" value="contact.dateOfBirth" class="input-fixed"/>
+				</p>
+			</t:if>
+		</fieldset>
+	</t:block>
+
+	<t:block t:id="concessionsEditor">
+		<!-- todo -->
+	</t:block>
+
+	<t:block t:id="questionnaire">
+		<!-- todo -->
+	</t:block>
+
+	<t:block t:id="options">
+		<fieldset class="opt-in">
+			<p class="fieldset-intro">I would like to receive information and offers via:</p>
+			<p><label for="allowEmail">E-Mail</label><t:checkbox id="allowEmail" value="contact.isMarketingViaEmailAllowed"/></p>
+			<p><label for="allowSms">SMS</label><t:checkbox id="allowSms" value="contact.isMarketingViaSMSAllowed"/></p>
+			<p><label for="allowPost">Post</label><t:checkbox id="allowPost" value="contact.isMarketingViaPostAllowed"/></p>
+		</fieldset>
+	</t:block>
+
+
+
+	<t:form t:id="contactEditorForm">
+		<t:delegate to="block:message"/>
+		<t:delegate to="block:contactFields"/>
+		<t:delegate to="block:concessionsEditor"/>
+		<t:delegate to="block:questionnaire"/>
+		<t:delegate to="block:options"/>
+
+		<div class="form-controls" xml:space="preserve">
+			<div id="saveEditContact" class="button">Checkout</div>
+			<t:actionlink t:id="saveContactLink" style="{display:none}"/>
+			<div id="cancelEditContact" class="button">Reset</div>
+			<t:actionlink t:id="cancelContactLink" style="{display:none}"/>
+		</div>
+	</t:form>
+</t:container>

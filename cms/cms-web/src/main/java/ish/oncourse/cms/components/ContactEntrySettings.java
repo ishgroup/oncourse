@@ -6,19 +6,14 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
-
 import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.annotations.AfterRender;
-import org.apache.tapestry5.annotations.Component;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import static ish.oncourse.services.preference.ContactFieldHelper.*;
 
 public class ContactEntrySettings {
 	
@@ -148,7 +143,7 @@ public class ContactEntrySettings {
 	
 	@SetupRender
 	void beforeRender() {
-		this.stateSelectModel = new StringSelectModel(new String[] {"Show", "Hide", "Required"});
+		this.stateSelectModel = new StringSelectModel(VALUE_Show, VALUE_Hide, VALUE_Required);
 		
 		this.avetmissQuestionsEnabled = webSiteService.getCurrentCollege().getRequiresAvetmiss() != null ? 
 				webSiteService.getCurrentCollege().getRequiresAvetmiss() : false;
