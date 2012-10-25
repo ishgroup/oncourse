@@ -11,9 +11,6 @@ buildscript {
             url "http://gradle-macappbundle.googlecode.com"
             artifactPattern 'http://gradle-macappbundle.googlecode.com/files/[module]-[revision].[ext]'
         }
-		maven {
-			url 'https://raw.github.com/valkolovos/gradle_cobertura/master/repo'
-		}
 	}
 
 	dependencies {
