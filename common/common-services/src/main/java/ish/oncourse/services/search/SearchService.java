@@ -162,8 +162,7 @@ public class SearchService implements ISearchService {
             String[] terms = term.split("[\\s]+");
             for (int i = 0; i < terms.length; i++) {
                 if (!terms[i].equals("")) {
-                	//add escape for characters which part of the SOLR syntax and need to be escaped to avoid exception
-                    String t = escapeQueryChars(terms[i].toLowerCase().trim()) + "*";
+                    String t = terms[i].toLowerCase().trim() + "*";
                     coursesQuery.append(String.format("(name:%s AND collegeId:%s)", t, collegeId)).append("||");
 
                     coursesQuery.append(String.format("(course_code:%s AND collegeId:%s)",
