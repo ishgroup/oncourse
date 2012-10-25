@@ -12,6 +12,7 @@ buildscript {
 		classpath 'org.apache.cayenne:cayenne-tools:3.1B1'
 		classpath 'org.apache.maven.wagon:wagon-http:2.2'
 		classpath 'bmuschko:gradle-cargo-plugin:0.3'
+		classpath 'gradle_cobertura:gradle_cobertura:1.2'
 	}
 }
 
@@ -89,5 +90,27 @@ allprojects {
 		maxHeapSize = '1024m'
 		jvmArgs "-XX:MaxPermSize=256m"
 		ignoreFailures = true  // ignore test failures so that the test aggregate still works
+	}
+
+	apply plugin: 'cobertura'
+	cobertura {
+		coverageFormat = 'xml'
+	}
+}
+
+apply plugin: 'sonar'
+
+sonar {
+    server {
+        url = "http://sonar.ish.com.au"
+    }
+    database {
+        url = "jdbc:mysql://delish.ish.com.au:3306/sonar?useUnicode=true&amp;characterEncoding=utf8"
+        driverClassName = "com.mysql.jdbc.Driver"
+        username = "sonar"
+        password = sonarPassword
+    }
+	project {
+		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
 	}
 }
