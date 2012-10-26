@@ -75,7 +75,8 @@ public class QuickSearchView {
 		if (searchString != null) {
 			searchTerms = searchString.split("[\\s]+");
 			try {
-				SolrDocumentList suggestions = searchService.autoSuggest(searchString);
+            	//TODO: change this hardcoded value after JQuery will be able to pass this property
+				SolrDocumentList suggestions = searchService.autoSuggest(searchString, Boolean.FALSE.toString());
 
 				setupLists(suggestions);
 

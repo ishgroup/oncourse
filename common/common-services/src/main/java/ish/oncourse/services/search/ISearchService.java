@@ -4,6 +4,8 @@ import org.apache.solr.common.SolrDocumentList;
 
 public interface ISearchService {
 	SolrDocumentList autoSuggest(String term);
+	
+	SolrDocumentList autoSuggest(String term, String withDirectSearch);
 
     SolrDocumentList searchCourses(SearchParams searchParams, int start, int rows);
 
