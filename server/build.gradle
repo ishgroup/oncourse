@@ -271,35 +271,38 @@ task installer_unix(dependsOn: fatJar, type: Copy) {
 	}
 }
 
-task installer_win(dependsOn: bundle_win, type: au.com.ish.NsisTask) {
+task installer_win(dependsOn: [bundle_win, prepareKeychains], type: au.com.ish.NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourseServer.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "server-mui.nsi"
 	outputFile = file("${distsDir}/windows/onCourseServer-installer.exe")
 
-	runSigncode = project.winSigningEnabled
-	certificateFile = file(project.winSigningCertificateFile)
-	certificateFilePassword= project.winSigningCertificateFilePassword
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
 }
 
-task installer_winService(dependsOn: bundle_winService, type: au.com.ish.NsisTask) {
+task installer_winService(dependsOn: [bundle_winService, prepareKeychains], type: au.com.ish.NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourseService.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service-mui.nsi"
 	outputFile = file("${distsDir}/windows/onCourseService-installer.exe")
 
-	runSigncode = project.winSigningEnabled
-	certificateFile = file(project.winSigningCertificateFile)
-	certificateFilePassword= project.winSigningCertificateFilePassword
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
 }
 
-task installer_winService64(dependsOn: bundle_winService64, type: au.com.ish.NsisTask) {
+task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], type: au.com.ish.NsisTask) {
 	exeFile = file("${distsDir}/windows/onCourseService64.exe")
 	resourceFolder = file("${projectDir}/src/packaging/windows")
 	nsiFileName = "service64-mui.nsi"
 	outputFile = file("${distsDir}/windows/onCourseService64-installer.exe")
 
-	runSigncode = project.winSigningEnabled
-	certificateFile =file (project.winSigningCertificateFile)
-	certificateFilePassword= project.winSigningCertificateFilePassword
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
 }
