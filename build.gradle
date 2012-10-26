@@ -9,7 +9,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'edu.sc.seis:gradle-macappbundle:1.0.8-b2'
+		classpath 'edu.sc.seis:gradle-macappbundle:1.0.8-b3'
 		classpath 'gradle_cobertura:gradle_cobertura:1.2'
 		classpath 'eu.appsatori:gradle-fatjar-plugin:0.1.2'
 	}
