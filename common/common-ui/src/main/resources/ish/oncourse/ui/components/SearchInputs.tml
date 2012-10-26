@@ -33,7 +33,7 @@
 				</div>
 				<div id="adv_search_direct">
 					<label class="directSearch">
-						<input t:type="Checkbox" t:value="directSearch" name="directSearch"/> Use direct search </label>
+						<input t:type="Checkbox" t:value="directSearch" name="directSearch"/> Use direct courses search </label>
 				</div>
 				<div id="adv_search_submit">
 					<button type="submit" id="searcher">Search</button>
