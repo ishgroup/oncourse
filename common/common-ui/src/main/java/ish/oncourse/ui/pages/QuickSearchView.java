@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
@@ -7,9 +8,12 @@ import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +27,17 @@ import org.apache.tapestry5.services.Request;
 
 public class QuickSearchView {
 
+	private static final String TAG_DOCTYPE = "tag";
+
+	private static final String SUBURB_DOCTYPE = "suburb";
+
+	private static final String COURSE_DOCTYPE = "course";
+
+	private static final String SOLR_DOCUMENT_DOCTYPE_FIELD = "doctype";
+
 	private static final Logger LOGGER = Logger.getLogger(QuickSearchView.class);
+	
+	private static final String SOLR_DOCUMENT_ID_FIELD = "id";
 
 	@Inject
 	private Request request;
@@ -39,6 +53,9 @@ public class QuickSearchView {
 
 	@Inject
 	private IPostCodeDbService postCodeDbService;
+	
+	@Inject
+    private IWebSiteService webSiteService;
 
 	@Property
 	private String searchString;
@@ -68,18 +85,44 @@ public class QuickSearchView {
 
 	@Property
 	private String searchingLocationsSearchString;
+	
+	private SolrDocumentList removeDuplicatesFromSearchCoursesResults(SolrDocumentList originalResult, List<Course> directCourses) {
+		List<SolrDocument> directCoursesFromSOLR = new ArrayList<SolrDocument>();
+		for (Course directCourse: directCourses) {
+			for (Iterator<SolrDocument> iterator = originalResult.iterator(); iterator.hasNext(); ) {
+				SolrDocument document = iterator.next();
+				Long courseId = Long.valueOf((String) document.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
+				String doctype = (String) document.get(SOLR_DOCUMENT_DOCTYPE_FIELD);
+				if (COURSE_DOCTYPE.equalsIgnoreCase(doctype) && directCourse.getId().equals(courseId)) {
+					directCoursesFromSOLR.add(document);
+					break;
+				}
+			}
+		}
+		while (!directCoursesFromSOLR.isEmpty()) {
+			originalResult.remove(directCoursesFromSOLR.get(0));
+			directCoursesFromSOLR.remove(0);
+		}
+		return originalResult;
+	}
 
 	@SetupRender
 	void beforeRender() {
 		searchString = request.getParameter("text");
+		String directSearchParam = request.getParameter("directSearch");
 		if (searchString != null) {
 			searchTerms = searchString.split("[\\s]+");
 			try {
-            	//TODO: change this hardcoded value after JQuery will be able to pass this property
-				SolrDocumentList suggestions = searchService.autoSuggest(searchString, Boolean.FALSE.toString());
-
-				setupLists(suggestions);
-
+				boolean directSearch = Boolean.valueOf(directSearchParam);
+				@SuppressWarnings("unchecked")
+				List<Course> directCourses = Collections.EMPTY_LIST;
+				SolrDocumentList suggestions = searchService.autoSuggest(searchString);
+				College college = webSiteService.getCurrentCollege();
+				if (directSearch) {
+					directCourses = searchService.getDirectCourseSearchResult(searchString, college.getId());
+					removeDuplicatesFromSearchCoursesResults(suggestions, directCourses);
+				}
+				setupLists(suggestions, directCourses);
 				setupSearchingLocationsSearchString();
 				setupMatchingCourseList();
 				setupCourseList();
@@ -94,11 +137,11 @@ public class QuickSearchView {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void nullifySearch() {
 		searchString = "";
 		searchTerms = null;
-
-		setupLists(new SolrDocumentList());
+		setupLists(new SolrDocumentList(), Collections.EMPTY_LIST);
 		matchingCourseList = new ArrayList<Course>();
 		setupCourseList();
 	}
@@ -106,23 +149,24 @@ public class QuickSearchView {
 	/**
 	 * @param suggestions
 	 */
-	private void setupLists(SolrDocumentList suggestions) {
+	private void setupLists(SolrDocumentList suggestions, List<Course> directCourses) {
 		locationDetailList = new ArrayList<PostcodeDb>();
 
 		List<String> courseIds = new ArrayList<String>();
 		List<String> tagIds = new ArrayList<String>();
 		List<String> postCodes = new ArrayList<String>();
-
+		//add the direct courses in the top of the list if exist
+		for (Course directCourse : directCourses) {
+			courseIds.add(directCourse.getId().toString());
+		}
 		for (SolrDocument doc : suggestions) {
-
-			String doctype = (String) doc.get("doctype");
-
-			if ("course".equalsIgnoreCase(doctype)) {
-				courseIds.add((String) doc.get("id"));
-			} else if ("suburb".equalsIgnoreCase(doctype)) {
-				postCodes.add((String) doc.get("suburb"));
-			} else if ("tag".equals(doctype)) {
-				tagIds.add((String) doc.get("id"));
+			String doctype = (String) doc.get(SOLR_DOCUMENT_DOCTYPE_FIELD);
+			if (COURSE_DOCTYPE.equalsIgnoreCase(doctype)) {
+				courseIds.add((String) doc.get(SOLR_DOCUMENT_ID_FIELD));
+			} else if (SUBURB_DOCTYPE.equalsIgnoreCase(doctype)) {
+				postCodes.add((String) doc.get(SUBURB_DOCTYPE));
+			} else if (TAG_DOCTYPE.equals(doctype)) {
+				tagIds.add((String) doc.get(SOLR_DOCUMENT_ID_FIELD));
 			}
 		}
 

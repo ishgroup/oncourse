@@ -25,6 +25,9 @@ public class SearchInputs {
 
 	@Property
 	private String advKeyword;
+	
+	@Property
+	private boolean directSearch;
 
 	private List<Tag> subjectTagChildTags;
 
@@ -96,7 +99,8 @@ public class SearchInputs {
 					+ "&time="
 					+ (daytime ? "daytime" : (evening ? "evening" : ""))
 					+ "&day="
-					+ (weekday ? "weekday" : (weekend ? "weekend" : ""));
+					+ (weekday ? "weekday" : (weekend ? "weekend" : ""))
+					+ "&directSearch=" + (directSearch ? Boolean.TRUE.toString() : Boolean.FALSE.toString());
 			return new URL(url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
