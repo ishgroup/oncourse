@@ -129,8 +129,10 @@ macAppBundle {
 	icon = "${projectDir}/src/packaging/macosx/onCourseServer.icns"
 	jvmVersion = "${sourceCompatibility}+"
 	
-	certIdentity = 'Developer ID Application: ish group pty ltd'
-    keyChain = '/Users/build/Library/Keychains/jenkins.keychain'
+	if (project.hasProperty('osxKeychainPassword')) {
+		certIdentity = project.osxKeychainIdentity
+    	keyChain = project.osxKeychain
+    }
 	
 	//java properties
 	javaProperties.put("apple.awt.textantialiasing", "true")
@@ -161,7 +163,7 @@ task bundle_osx(dependsOn: createApp) {
 	}
 }
 
-codeSign.dependsOn(unlockKeychain)
+codeSign.dependsOn(prepareKeychains)
 
 task installer_osx(dependsOn: [codeSign, createDmg]) {
 	description "Create the OSX installer (which is just a dmg file)."
