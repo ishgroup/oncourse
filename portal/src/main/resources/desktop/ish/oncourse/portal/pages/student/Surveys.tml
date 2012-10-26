@@ -34,10 +34,10 @@
 		<tr>
 			<td width="64"><div class="book"><img src="${contextPath}/img/ico-venue-b.png" alt="" width="46" height="50"/></div></td>
 			<td>
-				<div class="light">${room}</div>
+				<label>Venue:</label><div class="light">${room}</div>
 			</td>
 			<td>
-				<label>Venue:</label><span t:type="rating" t:id="ratingVenue" delegate="venueRatingDelegate" value="survey.venueScore"/>
+				<span t:type="rating" t:id="ratingVenue" delegate="venueRatingDelegate" value="survey.venueScore"/>
 			</td>
 		</tr>
 		<tr>
