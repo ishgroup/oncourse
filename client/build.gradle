@@ -142,7 +142,7 @@ task bundle_win(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 	exeFile = file("${distsDir}/windows/onCourse.exe")
 }
 
-task bundle_webstart(dependsOn: jar, type: Copy) {
+task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	description "Create the webstart application executable."
 	doFirst {
 		logger.lifecycle("Creating the webstart application executable for $project.name")
@@ -150,16 +150,19 @@ task bundle_webstart(dependsOn: jar, type: Copy) {
 	with webstartFiles
 	into file("${distsDir}/webstart")
 	doLast {
-			ant.signjar(
-				keystore:				project.jarSigningKeystore, 
-				storepass:				project.jarSigningKeystorePassword,
-				alias:					project.jarSigningAlias, 
-				keypass:				project.jarSigningPassword,
-				lazy: 					"true",
-				preservelastmodified:	"true") {
-					fileset(dir: "${distsDir}/webstart/Libraries/") {
-						include(name: '*.jar')
-					}
+				if (project.hasProperty('osxKeychainPassword')) {
+					ant.signjar(
+						keystore:				project.codeSigningTemporaryKeystore, 
+						storetype:				'pkcs12',
+						storepass:				project.codeSigningTemporaryPassword,
+						alias:					project.osxKeychainIdentity, 
+						keypass:				project.codeSigningTemporaryPassword,
+						lazy: 					"true",
+						preservelastmodified:	"true") {
+							fileset(dir: "${distsDir}/webstart/Libraries/") {
+								include(name: '*.jar')
+							}
+						}
 				}
 	}
 }
