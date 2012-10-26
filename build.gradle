@@ -139,13 +139,22 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 		exclude 'META-INF/*.RSA'
 	}
 
-	task unlockKeychain {
+	task prepareKeychains {
 		doLast{
 			if (project.hasProperty('osxKeychainPassword')) {
-				logger.lifecycle("Attempting to unlock the keychain "+macAppBundle.keyChain)
+				logger.lifecycle("Unlocking the keychain: "+project.osxKeychain)
 				exec {
 					executable = 'security'
-					args = ['unlock-keychain', '-p', project.osxKeychainPassword, macAppBundle.keyChain]
+					args = ['unlock-keychain', '-p', project.osxKeychainPassword, project.osxKeychain]
+				}
+				logger.lifecycle("Exporting the keychain into pkcs12 format: "+project.codeSigningTemporaryKeystore)
+				exec {
+					executable= 'security'
+					args = ['export', 	'-k', project.osxKeychain,  
+							'-t', 'identities', 
+							'-f', 'pkcs12',
+							'-P', project.codeSigningTemporaryPassword, 
+							'-o', project.codeSigningTemporaryKeystore]
 				}
 			} else {
 				logger.lifecycle("Cannot unlock keychain, please provide osxKeychainPassword in gradle.properties")
