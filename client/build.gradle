@@ -155,7 +155,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 						keystore:				project.codeSigningTemporaryKeystore, 
 						storetype:				'pkcs12',
 						storepass:				project.codeSigningTemporaryPassword,
-						alias:					project.osxKeychainIdentity, 
+						alias:					'oncourse', 
 						keypass:				project.codeSigningTemporaryPassword,
 						lazy: 					"true",
 						preservelastmodified:	"true") {
