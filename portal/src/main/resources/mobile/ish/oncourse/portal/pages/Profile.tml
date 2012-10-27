@@ -114,9 +114,11 @@
 							</div>
 						</t:if>
 					</t:if>
-			
-					<t:submit  t:id="saveProfileAction" value="Save" class="btn" clientId="save-student-profile"/> 
-					<br/><br/><br/><br/><br/>
+					
+					<div class="form-row centered">
+						<t:submit  t:id="saveProfileAction" value="Save" class="btn" clientId="save-student-profile"/> 
+					</div>
+					
 				</t:form>
 			</div>
 		</div>
