@@ -36,6 +36,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Checkout {
+	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
+
 	public static final Logger LOGGER = Logger.getLogger(Checkout.class);
 
 
@@ -93,6 +95,9 @@ public class Checkout {
 	@Property
     private int studentIndex;
 
+	@Property
+	private String error;
+
 	/**
 	 * The property needs to get value after if payer has been changed
 	 */
@@ -146,6 +151,7 @@ public class Checkout {
 			model.setProducts(model.localizeObjects(products));
 			model.addContact(model.localizeObject(payer));
 			model.setPayer(model.localizeObject(payer));
+			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 
 			purchaseController = createPurchaseConroller(model);
 			purchaseController.performAction(new ActionParameter(Action.INIT));
@@ -193,6 +199,7 @@ public class Checkout {
 			model.setClasses(model.localizeObjects(courseClasses));
 			model.setProducts(model.localizeObjects(products));
 			model.setPayer(model.localizeObject(concessions.get(0).getStudent().getContact()));
+			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 			model.addContact(model.getPayer());
 
 			purchaseController = createPurchaseConroller(model);

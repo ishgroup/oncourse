@@ -1,6 +1,5 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.oncourse.enrol.components.checkout.concession.ConcessionEditor;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.ioc.MessageFormatter;
@@ -12,6 +11,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Locale;
 
+import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 import static org.junit.Assert.*;
 
 public class ConcessionValidatorTest {
@@ -61,7 +61,7 @@ public class ConcessionValidatorTest {
 		concessionType.setHasConcessionNumber(Boolean.TRUE);
 		concessionValidator.setConcessionType(concessionType);
 		concessionValidator.setMessages(createMessages());
-		concessionValidator.setDateFormat(FormatUtils.getDateFormat(ConcessionEditor.DATE_FIELD_FORMAT, null));
+		concessionValidator.setDateFormat(FormatUtils.getDateFormat(DATE_FIELD_FORMAT, null));
 		return concessionValidator;
 	}
 

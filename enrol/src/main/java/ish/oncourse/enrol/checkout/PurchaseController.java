@@ -52,6 +52,8 @@ public class PurchaseController {
 	private AddContactController addContactController;
 	private ContactEditorController contactEditorController;
 
+	private List<String> errors = new ArrayList<String>();
+
 	/**
 	 * @return the current state
 	 */
@@ -198,7 +200,7 @@ public class PurchaseController {
 				return state == State.INIT || state == State.EDIT_CHECKOUT;
 			case CANCEL_ADD_CONTACT:
 			case ADD_CONTACT:
-				return state == State.ADD_CONTACT;
+				return state == State.ADD_CONTACT || state == State.EDIT_CONTACT;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -217,20 +219,24 @@ public class PurchaseController {
 
 	private boolean validateADD_CONTACT(ActionParameter param)
 	{
-		ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
-
-		//todo contact already exists
-		if (getModel().containsContactWith(contactCredentials))
+		if (state == State.ADD_CONTACT)
 		{
-			return false;
+			ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
+
+			//todo contact already exists
+			if (getModel().containsContactWith(contactCredentials))
+			{
+				return false;
+			}
+			ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
+			contactCredentialsEncoder.setContactCredentials(contactCredentials);
+			contactCredentialsEncoder.setPurchaseController(this);
+			contactCredentialsEncoder.encode();
+			Contact contact = contactCredentialsEncoder.getContact();
+			param.setValue(contact);
+			return true;
 		}
-		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
-		contactCredentialsEncoder.setContactCredentials(contactCredentials);
-		contactCredentialsEncoder.setPurchaseController(this);
-		contactCredentialsEncoder.encode();
-		Contact contact = contactCredentialsEncoder.getContact();
-		param.setValue(contact);
-		return true;
+		else return state == State.EDIT_CONTACT;
 	}
 
 	private boolean validateINIT() {
@@ -311,12 +317,15 @@ public class PurchaseController {
 
 		illegalState = false;
 		illegalModel = false;
+		errors.clear();
 		if (!validateState(param.action)) {
+			errors.add(String.format("Invalid state:  State=%s; Action=%s.",state.name(),param.action.name()));
 			illegalState = true;
 			return;
 		}
 
 		if (!validate(param)) {
+			errors.add(String.format("Invalid param:  State=%s; Action=%s.", state.name(), param.action.name()));
 			illegalModel = true;
 			return;
 		}
@@ -370,6 +379,7 @@ public class PurchaseController {
 				break;
 			case CANCEL_ADD_CONTACT:
 				addContactController = null;
+				concessionEditorController = null;
 				state = State.EDIT_CHECKOUT;
 				break;
 			default:
@@ -411,17 +421,24 @@ public class PurchaseController {
 		addContactController = null;
 		contactEditorController = null;
 
-		boolean fillRequiredProperties = new ContactFieldHelper(preferenceController).isAllRequiredFieldFilled(contact);
-		if (contact.getObjectId().isTemporary() ||
-				!fillRequiredProperties )
+
+		if (state.equals(State.ADD_CONTACT))
 		{
-			contactEditorController = new ContactEditorController();
-			contactEditorController.setContact(contact);
-			contactEditorController.setFillRequiredProperties(!fillRequiredProperties);
-			state = State.EDIT_CONTACT;
+			boolean isAllRequiredFieldFilled = new ContactFieldHelper(preferenceController).isAllRequiredFieldFilled(contact);
+			if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled)
+			{
+				contactEditorController = new ContactEditorController();
+				contactEditorController.setPurchaseController(this);
+				contactEditorController.setContact(contact);
+				contactEditorController.setObjectContext(contact.getObjectContext());
+				if (!contact.getObjectId().isTemporary() && !isAllRequiredFieldFilled)
+					contactEditorController.setFillRequiredProperties(!isAllRequiredFieldFilled);
+				state = State.EDIT_CONTACT;
+			}
 		}
-		else
+		else if (state.equals(State.EDIT_CONTACT))
 		{
+			contact = getModel().localizeObject(contact);
 			model.addContact(contact);
 			for (CourseClass cc : model.getClasses()) {
 				Enrolment enrolment = createEnrolment(cc, contact.getStudent());
@@ -430,7 +447,8 @@ public class PurchaseController {
 					enableEnrolment(enrolment);
 			}
 			state = State.EDIT_CHECKOUT;
-		}
+		}else
+			throw new IllegalStateException();
 	}
 
 	private void enableEnrolment(Enrolment enrolment) {
@@ -638,6 +656,10 @@ public class PurchaseController {
 
 	public ContactEditorDelegate getContactEditorDelegate() {
 		return contactEditorController;
+	}
+
+	public List<String> getErrors() {
+		return errors;
 	}
 
 

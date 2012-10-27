@@ -8,7 +8,9 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class FormatUtils {
-    public final static DecimalFormat hoursFormat = new DecimalFormat("0.#");
+	public static final String EMPTY_STRING = "";
+
+	public final static DecimalFormat hoursFormat = new DecimalFormat("0.#");
 
     public final static String dateFormatString = "EEE dd MMM yyyy";
 

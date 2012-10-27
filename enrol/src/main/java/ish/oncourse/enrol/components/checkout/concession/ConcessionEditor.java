@@ -21,8 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
+
 public class ConcessionEditor {
-	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
 	private static final Logger LOGGER = Logger.getLogger(ConcessionEditor.class);
 
 	@Parameter(required = true)

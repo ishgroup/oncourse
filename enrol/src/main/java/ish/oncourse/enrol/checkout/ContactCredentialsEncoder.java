@@ -1,28 +1,36 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import org.apache.cayenne.ObjectContext;
 
 public class ContactCredentialsEncoder {
 
 	private ContactCredentials contactCredentials;
+	private PurchaseController purchaseController;
+
 	private Contact contact;
 
-	private PurchaseController purchaseController;
 
 	public void encode()
 	{
 		contact = purchaseController.getStudentService().getStudentContact(contactCredentials.getFirstName(), contactCredentials.getLastName(), contactCredentials.getEmail());
 
+		/**
+		 * The following changes can be canceled, so we needs child context to do it
+		 */
+		ObjectContext objectContext = purchaseController.getModel().getObjectContext().createChildContext();
+
 		if (contact != null) {
-			contact = purchaseController.getModel().localizeObject(contact);
+			contact = (Contact) objectContext.localObject(contact.getObjectId(), null);
 			if (contact.getStudent() == null) {
 				contact.createNewStudent();
 			}
 		} else {
-			contact = purchaseController.getModel().getObjectContext().newObject(Contact.class);
+			contact = objectContext.newObject(Contact.class);
 
-			contact.setCollege(purchaseController.getModel().getCollege());
+			contact.setCollege((College)objectContext.localObject(purchaseController.getModel().getCollege().getObjectId(),null));
 
 			contact.setGivenName(contactCredentials.getFirstName());
 			contact.setFamilyName(contactCredentials.getLastName());

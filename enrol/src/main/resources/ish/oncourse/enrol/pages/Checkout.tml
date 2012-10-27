@@ -3,6 +3,7 @@
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 <div id="checkout">
+		<t:delegate to="block:errors"/>
 		<t:delegate to="block:checkout"/>
 </div>
 
@@ -18,6 +19,17 @@
 	</t:if>
 	<t:if test="purchaseController.editContact">
 		<t:delegate to="block:contactEditor"/>
+	</t:if>
+</t:block>
+
+<t:block t:id="errors">
+	<t:if test="purchaseController.errors.isEmpty()" negate="true">
+		<div class="error">
+			<h2>ERROR</h2>
+			<t:loop source="purchaseController.errors" value="error">
+				<p>${error}</p>
+			</t:loop>
+		</div>
 	</t:if>
 </t:block>
 

@@ -23,7 +23,6 @@ public class PortalUtils {
 
     private static final String URL_CLASS_TEMPLATE = "http://%s/class/%s-%s";
     private static final String URL_COURSE_TEMPLATE = "http://%s/course/%s";
-    public static final String EMPTY_STRING = "";
 
     private static final int CLASS_DETAILS_LENGTH = 490;
     private static final int COURSE_DETAILS_LENGTH = 245;
