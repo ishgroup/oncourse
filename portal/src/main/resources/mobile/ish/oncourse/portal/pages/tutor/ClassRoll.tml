@@ -1,0 +1,43 @@
+<html t:type="pagestructure" title="literal:Student Timetable"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_classes">
+
+<t:if test="courseClass">
+    <h1>${courseClass.course.name}</h1>
+	
+	<div class="class-info-title">
+		<a href="#" class="back-class">Classes</a>
+		<span>${courseClass.course.name}</span>
+		<div class="clear"></div>
+		<span t:type="classTabs" courseClass="courseClass" selected="literal:classroll"/>
+	</div>
+
+	<div class="date-time-info">
+		<a href="#" id="prevSession"><i class="icon-chevron-left pull-left"></i></a>
+		<div class="date-time-content">
+			<ul style="display: inline-block">
+				<li>${month} ${day}, <t:if test="today"><span>today</span></t:if> ${sessionIntervalInfo}</li>
+			</ul>
+		</div>
+		<a href="#" id="nextSession"><i class="icon-chevron-right pull-right"></i></a>
+	</div>
+	
+	<h4 class="heading">Current students (5)</h4>
+	<ul class="class-roll-info">
+	
+		<t:loop source="currentSession.attendances" value="attendance" >
+			<li>
+				<span class="btn-group">
+					<a href="javascript:void(0);" value="${attended}" class="btn" id="attended_${attendance.angelId}" date-attendanceId="${attendance.angelId}"><i class="icon-ok"></i></a>
+					<a href="javascript:void(0);" value="${absent}" class="btn" id="absent_${attendance.angelId}"><i class="icon-remove" date-attendanceId="${attendance.angelId}"></i></a>
+					<t:actionLink href="#" t:id="attendance" style="display: none;"/>
+				</span>
+				${attendance.student.contact.givenName}
+				<span class="right">${attendance.student.contact.attendancepercentage}</span>
+				<i class="icon-chevron-right"></i>
+			</li>
+		</t:loop>
+
+	</ul>
+	
+</t:if>
+</html>
