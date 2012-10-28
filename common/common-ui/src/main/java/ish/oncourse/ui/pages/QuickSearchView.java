@@ -91,11 +91,14 @@ public class QuickSearchView {
 		for (Course directCourse: directCourses) {
 			for (Iterator<SolrDocument> iterator = originalResult.iterator(); iterator.hasNext(); ) {
 				SolrDocument document = iterator.next();
-				Long courseId = Long.valueOf((String) document.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
 				String doctype = (String) document.get(SOLR_DOCUMENT_DOCTYPE_FIELD);
-				if (COURSE_DOCTYPE.equalsIgnoreCase(doctype) && directCourse.getId().equals(courseId)) {
-					directCoursesFromSOLR.add(document);
-					break;
+				String id = (String) document.getFieldValue(SOLR_DOCUMENT_ID_FIELD);
+				if (COURSE_DOCTYPE.equalsIgnoreCase(doctype) && id.matches("[\\d]+")) {
+					Long courseId = Long.valueOf(id);
+					if (COURSE_DOCTYPE.equalsIgnoreCase(doctype) && directCourse.getId().equals(courseId)) {
+						directCoursesFromSOLR.add(document);
+						break;
+					}
 				}
 			}
 		}
@@ -105,7 +108,7 @@ public class QuickSearchView {
 		}
 		return originalResult;
 	}
-
+	
 	@SetupRender
 	void beforeRender() {
 		searchString = request.getParameter("text");
