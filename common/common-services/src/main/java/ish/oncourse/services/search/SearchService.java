@@ -175,7 +175,7 @@ public class SearchService implements ISearchService {
             String[] terms = term.split("[\\s]+");
             for (int i = 0; i < terms.length; i++) {
                 if (!terms[i].equals("")) {
-                    String t = terms[i].toLowerCase().trim() + "*";
+                    String t = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i].toLowerCase().trim()) + "*";
                     coursesQuery.append(String.format("(name:%s AND collegeId:%s)", t, collegeId)).append("||");
 
                     coursesQuery.append(String.format("(course_code:%s AND collegeId:%s)",
@@ -240,7 +240,7 @@ public class SearchService implements ISearchService {
             throw new SearchException("Unable to find suburbs.", e);
         }
     }
-    
+        
     @Deprecated
     private static String escapeQueryChars(String original) {
     	StringBuilder sb = new StringBuilder();

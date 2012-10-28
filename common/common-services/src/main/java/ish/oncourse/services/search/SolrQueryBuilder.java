@@ -160,7 +160,7 @@ public class SolrQueryBuilder {
 
     void appendFilterS(List<String> filters) {
         if (params.getS() != null) {
-            String value = params.getS();
+            String value = replaceSOLRSyntaxisCharacters(params.getS());
             filters.add(String.format(FILTER_TEMPLATE_s, value, value, value, value));
         }
     }
@@ -238,5 +238,10 @@ public class SolrQueryBuilder {
     String convert(List<String> filters)
     {
         return StringUtils.join(filters.toArray(), QUERY_DELIMITER);
+    }
+    
+    static String replaceSOLRSyntaxisCharacters(String original) {
+    	String resultString = original.replaceAll("[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]", StringUtils.EMPTY);
+    	return resultString;
     }
 }
