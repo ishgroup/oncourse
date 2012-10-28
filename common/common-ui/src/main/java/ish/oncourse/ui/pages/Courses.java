@@ -7,6 +7,8 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -92,7 +94,15 @@ public class Courses {
 	private String sitesParameter;
 
 	private List<Long> sitesIds;
+	
+	private List<Long> loadedCoursesIds;
 
+	public List<Long> getPreviouslyLoadedCourseIds() {
+		List<Long> loadedCourses = new ArrayList<Long>(coursesIds.size() + loadedCoursesIds.size());
+		loadedCourses.addAll(loadedCoursesIds);
+		loadedCourses.addAll(coursesIds);
+		return loadedCourses;
+	}
 
 	@SetupRender
 	public void beforeRender() {
@@ -100,8 +110,22 @@ public class Courses {
 		int rows = getIntParam(request.getParameter("rows"), ROWS_DEFAULT);
 		sitesParameter = request.getParameter("sites");
 		sitesIds = new ArrayList<Long>();
+		loadedCoursesIds = new ArrayList<Long>();
+		if (isXHR() && start != 0) {
+			String loadedCoursesIdsString = request.getParameter("loadedCoursesIds");
+			if (StringUtils.trimToNull(loadedCoursesIdsString) != null) {
+				String[] ids = loadedCoursesIdsString.split(",");
+				for (String id : ids) {
+					if (id.matches("\\d+")) {
+						loadedCoursesIds.add(Long.valueOf(id));
+					} else {
+						LOGGER.warn(String.format("Incorrect loadedCoursesIds parameter passed. Unable to convert %s to long", id));
+					}
+				}
+			}
+		}
 		if (sitesParameter == null) {
-			sitesParameter = "";
+			sitesParameter = StringUtils.EMPTY;
 		} else {
 			String[] splittedSites = sitesParameter.split(",");
 			for (String siteParam : splittedSites) {
@@ -127,16 +151,28 @@ public class Courses {
 			searchParams = null;
 			focusesForMapSites = null;
 		}
-
 		coursesIds = new ArrayList<Long>();
 		updateIdsAndIndexes();
 	}
 
 	private void updateIdsAndIndexes() {
 		itemIndex = itemIndex + courses.size();
+		List<Course> duplicatedCourses = new ArrayList<Course>();
 		for (Course course : courses) {
-			if (!coursesIds.contains(course.getId()))
-				coursesIds.add(course.getId());
+			Long courseId = course.getId();
+			if (loadedCoursesIds.contains(courseId)) {
+				duplicatedCourses.add(course);
+			}
+			if (!coursesIds.contains(courseId) && !loadedCoursesIds.contains(courseId)) {
+				coursesIds.add(courseId);
+			}
+		}
+		//remove duplicates from courses list
+		while (!duplicatedCourses.isEmpty()) {
+			Course course = duplicatedCourses.get(0);
+			courses.remove(course);
+			duplicatedCourses.remove(0);
+			itemIndex--;
 		}
 		setupMapSites();
 	}
@@ -253,7 +289,7 @@ public class Courses {
 		if (coursesCount == null) {
 			coursesCount = (isDirectSearch ? 
 				(directCourses.size() >= ROWS_DEFAULT ? directCourses.size() : (directCourses.size() + results.size())) 
-				: results.size());//((Number) results.getNumFound()).intValue();
+				: ((Number) results.getNumFound()).intValue());
 		}
 
 		List<String> ids = new ArrayList<String>(results.size());

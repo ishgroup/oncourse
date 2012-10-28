@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
 	<t:if test="XHR">
-		<span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount"
+		<span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount" loadedCoursesIds="previouslyLoadedCourseIds"
 			itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
 		<p:else>
 			<html t:type="ui/internal/pagestructure" bodyId="literal:ListPage"
@@ -30,7 +30,7 @@
 						<t:if t:test="hasAnyItems" negate="true">
 							<h2>No results</h2>
 							<p:else>
-								<span t:type="ui/CoursesList" courses="courses"
+								<span t:type="ui/CoursesList" courses="courses" loadedCoursesIds="previouslyLoadedCourseIds"
 									coursesCount="coursesCount" itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
 							</p:else>
 						</t:if>

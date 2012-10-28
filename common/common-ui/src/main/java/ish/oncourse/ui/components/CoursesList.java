@@ -8,6 +8,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CoursesList {
@@ -37,6 +38,10 @@ public class CoursesList {
     @Property
     @Parameter
     private SearchParams searchParams;
+    
+    @Parameter
+	@Property
+    private List<Long> loadedCoursesIds;
 
 
     public boolean isHasMoreItems() {
@@ -48,18 +53,33 @@ public class CoursesList {
         return CourseItemModel.createCourseItemModel(course, searchParams);
     }
 
+	@SuppressWarnings("unchecked")
 	public String getSearchParamsStr() {
 		StringBuffer result = new StringBuffer();
 		result.append("start=").append(itemIndex);
 		result.append("&sites=").append(sitesParameter);
 		for (String paramName : request.getParameterNames()) {
-			if (!paramName.equals("start") && !paramName.equals("sites")) {
+			if (!"start".equals(paramName) && !"sites".equals(paramName) && !"loadedCoursesIds".equals(paramName)) {
 				result.append("&");
 				result.append(paramName).append("=");
 				result.append(request.getParameter(paramName));
 			}
 		}
-
+		if (loadedCoursesIds == null) {
+			loadedCoursesIds = Collections.EMPTY_LIST;
+		} else {
+			result.append("&loadedCoursesIds=");
+		}
+		boolean isFirstId = true;
+		for (Long loadedCourseId : loadedCoursesIds) {
+			if (!isFirstId) {
+				result.append(",");
+			}
+			result.append(loadedCourseId);
+			if (isFirstId) {
+				isFirstId = false;
+			}
+		}
 		return result.toString();
 	}
 }
