@@ -149,7 +149,7 @@ public class WebContentService extends BaseService<WebContent> implements
 				WebContentVisibility.WEB_NODE_TYPE_PROPERTY, webNodeType));
 		q.andQualifier(ExpressionFactory.matchExp(
 				WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
-
+		q.addOrdering(WebContentVisibility.WEIGHT_PROPERTY, SortOrder.ASCENDING);
 		return new TreeSet<WebContentVisibility>(webNodeType.getObjectContext()
 				.performQuery(q));
 	}
