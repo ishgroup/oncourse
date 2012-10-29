@@ -1,16 +1,47 @@
 package ish.oncourse.portal.services.pageload;
 
+import org.apache.log4j.Logger;
+
 public enum UserAgent {
-	
-	IPHONE(true), IPOD(true), IPAD(true), ANDROID(true), BLACKBERRY(true), DESKTOP (false);
-	
+
+
+	IPHONE(true, "iphone"), IPOD(true, "ipod"), IPAD(true, "ipad"), ANDROID(true, "android"), BLACKBERRY(true, "blackBerry"), DESKTOP (false, null);
+
+	private static final Logger LOGGER = Logger.getLogger(UserAgent.class);
 	private boolean mobile;
+	private String agentId;
 	
-	private UserAgent(boolean isMobile) {
+	private UserAgent(boolean isMobile, String agentId) {
 		this.mobile = isMobile;
+		this.agentId = agentId;
 	}
 	
 	public boolean isMobile() {
 		return mobile;
+	}
+
+	public String getAgentId() {
+		return agentId;
+	}
+
+	public static UserAgent valueByAgentId(String userAgentId)
+	{
+		if (userAgentId == null)
+		{
+			LOGGER.warn("userAgentId is null");
+			return DESKTOP;
+		}
+
+
+		for (UserAgent userAgent: UserAgent.values())
+		{
+			if (userAgent.getAgentId() != null)
+			{
+				if (userAgentId.contains(userAgent.getAgentId()))
+					return userAgent;
+			}
+		}
+		LOGGER.info(String.format("UserAgent is not defined for id=%s. Use DESKTOP",userAgentId));
+		return DESKTOP;
 	}
 }
