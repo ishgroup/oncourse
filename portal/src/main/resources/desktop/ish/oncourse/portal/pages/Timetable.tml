@@ -11,9 +11,12 @@
 <div id="timetable"></div>
 
 <script type="text/javascript">
-	(function($) {
+	/*(function($) {
 		jQuery.calendar('${timetableMonthUrl}');
-	})(jQuery);
+	})(jQuery);*/
+	jQuery(document).ready(function(){
+		jQuery.calendar('${timetableMonthUrl}');
+	});
 </script>
 
 <div id="dayInfo"></div>
