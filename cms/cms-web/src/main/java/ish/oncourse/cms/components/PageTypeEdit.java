@@ -135,6 +135,8 @@ public class PageTypeEdit {
 		if (regionKey == RegionKey.unassigned) {
 			if (webContentVisibility != null) {
 				// remove assignment to this type
+				//mark as unasigned before delete to take the places
+				webContentVisibility.setRegionKey(regionKey);
 				ctx.deleteObject(webContentVisibility);
 			}
 		} else {
@@ -145,15 +147,25 @@ public class PageTypeEdit {
 				webContentVisibility.setWebContent(block);
 				webContentVisibility.setWebNodeType(editPageType);
 			}
+			RegionKey oldRegionKey = webContentVisibility.getRegionKey();
 			webContentVisibility.setRegionKey(regionKey);
-
 			webContentVisibility.setWeight(weight);
 			SortedSet<WebContentVisibility> vSet = webContentService.getBlockVisibilityForRegionKey(editPageType, regionKey);
 
 			// change weight of the items in region
 			int w = 0;
 			Iterator<WebContentVisibility> it = vSet.iterator();
-
+			if (regionKey.equals(oldRegionKey)) {
+				//this is the manipulation inside the same list, so we need to re-weight the list from 0.
+				while (it.hasNext()) {
+					WebContentVisibility v = it.next();
+					v.setWeight(w);
+					w++;
+				}
+				//reset the iterator and w as before re-weighting.
+				w = 0;
+				it = vSet.iterator();
+			}
 			while (it.hasNext()) {
 				WebContentVisibility v = it.next();
 				if (w >= weight && v.getWeight() <= w) {
