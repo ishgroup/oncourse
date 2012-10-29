@@ -11,9 +11,8 @@
 <div id="timetable"></div>
 
 <script type="text/javascript">
-	var $j = jQuery.noConflict();
-	$j(function() {
-		$j.calendar('${timetableMonthUrl}');
+	jQuery(function() {
+		jQuery.calendar('${timetableMonthUrl}');
 	});	
 </script>
 
