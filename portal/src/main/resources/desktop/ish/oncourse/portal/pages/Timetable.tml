@@ -14,8 +14,8 @@
 	/*(function($) {
 		jQuery.calendar('${timetableMonthUrl}');
 	})(jQuery);*/
-	jQuery(document).ready(function(){
-		jQuery.calendar('${timetableMonthUrl}');
+	$(document).ready(function(){
+		$.calendar('${timetableMonthUrl}');
 	});
 </script>
 
