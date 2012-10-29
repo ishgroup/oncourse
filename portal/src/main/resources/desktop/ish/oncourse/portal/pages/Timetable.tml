@@ -10,7 +10,7 @@
 
 <div id="timetable"></div>
 
-<script type="text/javascript">
+<script type="text/javascript" language="javascript">
 	jQuery(function() {
 		jQuery.calendar('${timetableMonthUrl}');
 	});	
