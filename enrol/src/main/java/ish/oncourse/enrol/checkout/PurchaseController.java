@@ -341,7 +341,7 @@ public class PurchaseController {
 				disableEnrolment(param.getValue(Enrolment.class));
 				break;
 			case ENABLE_PRODUCT_ITEM:
-				enableProduct(param.getValue(ProductItem.class));
+				enableProductItem(param.getValue(ProductItem.class));
 				break;
 			case DISABLE_PRODUCT_ITEM:
 				disableProduct(param.getValue(ProductItem.class));
@@ -402,13 +402,22 @@ public class PurchaseController {
 
 	private void changePayer(Contact contact) {
 		Contact oldPayer = model.getPayer();
-		model.setPayer(contact);
-		while (!model.getAllProductItems(oldPayer).isEmpty()) {
-			ProductItem item = model.getAllProductItems(oldPayer).get(0);
-			Product product = item.getProduct();
-			model.removeProductItem(oldPayer, item);
-			model.addProductItem(createProductItem(contact, product));
+
+		if (oldPayer != null)
+		{
+			model.removeAllProductItems(contact);
 		}
+
+		model.setPayer(contact);
+		model.getInvoice().setContact(contact);
+
+		for (Product product  : model.getProducts()) {
+			ProductItem productItem = createProductItem(contact, product);
+			model.addProductItem(productItem);
+			if (true) //todo validation should be added
+				enableProductItem(productItem);
+		}
+
 	}
 
 	private void addContact(Contact contact) {
@@ -421,31 +430,50 @@ public class PurchaseController {
 			boolean isAllRequiredFieldFilled = new ContactFieldHelper(preferenceController).isAllRequiredFieldFilled(contact);
 			if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled)
 			{
-				contactEditorController = new ContactEditorController();
-				contactEditorController.setPurchaseController(this);
-				contactEditorController.setContact(contact);
-				contactEditorController.setObjectContext(contact.getObjectContext());
-				if (!contact.getObjectId().isTemporary() && !isAllRequiredFieldFilled)
-					contactEditorController.setFillRequiredProperties(!isAllRequiredFieldFilled);
+				prepareContactEditor(contact, !isAllRequiredFieldFilled);
 				state = State.EDIT_CONTACT;
+			}
+			else
+			{
+				addContactToModel(contact);
+				state  = State.EDIT_CHECKOUT;
 			}
 		}
 		else if (state.equals(State.EDIT_CONTACT))
 		{
-			contact = getModel().localizeObject(contact);
-			//add the first contact
-			if (getModel().getPayer() == null)
-				model.setPayer(contact);
-			model.addContact(contact);
-			for (CourseClass cc : model.getClasses()) {
-				Enrolment enrolment = createEnrolment(cc, contact.getStudent());
-				model.addEnrolment(enrolment);
-				if (validateENABLE_ENROLMENT(enrolment))
-					enableEnrolment(enrolment);
-			}
+			addContactToModel(contact);
 			state = State.EDIT_CHECKOUT;
 		}else
 			throw new IllegalStateException();
+	}
+
+	/**
+	 * @param fillRequiredProperties if true we show only required properties where value is null
+	 */
+	private void prepareContactEditor(Contact contact, boolean fillRequiredProperties) {
+		contactEditorController = new ContactEditorController();
+		contactEditorController.setPurchaseController(this);
+		contactEditorController.setContact(contact);
+		contactEditorController.setObjectContext(contact.getObjectContext());
+		if (!contact.getObjectId().isTemporary() && fillRequiredProperties)
+			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
+	}
+
+	private void addContactToModel(Contact contact) {
+		contact = getModel().localizeObject(contact);
+		model.addContact(contact);
+		//add the first contact
+		if (getModel().getPayer() == null)
+		{
+			changePayer(contact);
+		}
+		for (CourseClass cc : model.getClasses()) {
+			Enrolment enrolment = createEnrolment(cc, contact.getStudent());
+			model.addEnrolment(enrolment);
+			if (validateENABLE_ENROLMENT(enrolment))
+				enableEnrolment(enrolment);
+		}
+
 	}
 
 	private void enableEnrolment(Enrolment enrolment) {
@@ -460,7 +488,7 @@ public class PurchaseController {
 
 	}
 
-	private void enableProduct(ProductItem product) {
+	private void enableProductItem(ProductItem product) {
 		if (product instanceof Voucher) {
 			Voucher voucher = (Voucher) product;
 			if (voucher.getInvoiceLine() == null) {

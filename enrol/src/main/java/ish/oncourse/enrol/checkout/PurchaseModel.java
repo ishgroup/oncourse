@@ -114,6 +114,15 @@ public class PurchaseModel {
 		objectContext.deleteObject(invoiceLine);
 	}
 
+
+	public void removeAllProductItems(Contact contact)
+	{
+		List<ProductItem> productItems = getAllProductItems(contact);
+		for (ProductItem productItem : productItems) {
+			this.removeProductItem(contact,productItem);
+		}
+	}
+
 	
 	public void addVoucherPayments(Collection<PaymentIn> vps) {
 		this.voucherPayments.addAll(vps);

@@ -3,12 +3,15 @@ package ish.oncourse.enrol.checkout;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
+import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.services.EnrolTestModule;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
+import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.utils.EnrolCoursesControllerTest;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.test.ServiceTest;
 import ish.util.InvoiceUtil;
@@ -34,6 +37,8 @@ public class PurchaseControllerTest extends ServiceTest {
 	private IVoucherService voucherService;
 	private IDiscountService discountService;
 	private ICayenneService cayenneService;
+	private IStudentService studentService;
+	private PreferenceController preferenceController;
 
 	@Before
 	public void setup() throws Exception {
@@ -53,11 +58,12 @@ public class PurchaseControllerTest extends ServiceTest {
 		this.voucherService = getService(IVoucherService.class);
 		this.discountService = getService(IDiscountService.class);
 		this.cayenneService = getService(ICayenneService.class);
+		this.studentService = getService(IStudentService.class);
+		this.preferenceController = getService(PreferenceController.class);
 	}
 
 	private PurchaseController createPurchaseController(ObjectContext context) {
 		College college = Cayenne.objectForPK(context, College.class, 1);
-		Contact contact = Cayenne.objectForPK(context, Contact.class, 1189157);
 
 		CourseClass cc1 = Cayenne.objectForPK(context, CourseClass.class, 1186958);
 		CourseClass cc2 = Cayenne.objectForPK(context, CourseClass.class, 1186959);
@@ -74,18 +80,29 @@ public class PurchaseControllerTest extends ServiceTest {
 		model.setClasses(Arrays.asList(cc1, cc2, cc3));
 		model.setProducts(Arrays.asList(p1, p2));
 		model.setCollege(college);
-		model.setPayer(contact);
-		model.addContact(contact);
 		model.addDiscount(d);
 
 		PurchaseController purchaseController = new PurchaseController();
 		purchaseController.setInvoiceProcessingService(invoiceProcessingService);
 		purchaseController.setDiscountService(discountService);
 		purchaseController.setVoucherService(voucherService);
+		purchaseController.setStudentService(studentService);
+		purchaseController.setPreferenceController(preferenceController);
 		purchaseController.setModel(model);
 
 		purchaseController.performAction(new ActionParameter(Action.INIT));
 
+		purchaseController.performAction(new ActionParameter(Action.START_ADD_CONTACT));
+
+		Contact contact = Cayenne.objectForPK(context, Contact.class, 1189157);
+		ActionParameter actionParameter = new ActionParameter(Action.ADD_CONTACT);
+		ContactCredentials contactCredentials = createContactCredentialsBy(contact);
+		actionParameter.setValue(contactCredentials);
+		purchaseController.performAction(actionParameter);
+
+		assertEquals(State.EDIT_CHECKOUT, purchaseController.getState());
+		assertEquals(1, purchaseController.getModel().getContacts().size());
+		assertNotNull(purchaseController.getModel().getPayer());
 		return purchaseController;
 	}
 
@@ -131,14 +148,12 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		Contact originalPayer = model.getPayer();
 		Contact newPayer = Cayenne.objectForPK(context, Contact.class, 1189158);
+		addContact(controller, newPayer);
 
-		PurchaseController.ActionParameter param = new ActionParameter(Action.ADD_CONTACT);
-		param.setValue(newPayer);
-		performAction(controller, param);
 		assertEquals(originalPayer, model.getPayer());
 		assertTrue(controller.getModel().getContacts().contains(newPayer));
 
-		param = new PurchaseController.ActionParameter(Action.CHANGE_PAYER);
+		ActionParameter param = new PurchaseController.ActionParameter(Action.CHANGE_PAYER);
 		param.setValue(newPayer);
 
 		performAction(controller, param);
@@ -149,6 +164,14 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(newPayer, model.getPayer());
 	}
 
+	private ContactCredentials createContactCredentialsBy(Contact newPayer) {
+		ContactCredentials contactCredentials = new ContactCredentials();
+		contactCredentials.setFirstName(newPayer.getGivenName());
+		contactCredentials.setLastName(newPayer.getFamilyName());
+		contactCredentials.setEmail(newPayer.getEmailAddress());
+		return contactCredentials;
+	}
+
 	@Test
 	public void testAddStudent() {
 		ObjectContext context = cayenneService.newContext();
@@ -157,10 +180,8 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		Contact newContact = Cayenne.objectForPK(context, Contact.class, 1189158);
 
-		ActionParameter param = new ActionParameter(Action.ADD_CONTACT);
-		param.setValue(newContact);
 
-		performAction(controller, param);
+		addContact(controller, newContact);
 
 
 		assertEquals(2, model.getContacts().size());
@@ -168,6 +189,16 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
 		assertEquals(3, model.getEnabledEnrolments(newContact).size());
+	}
+
+	private void addContact(PurchaseController controller, Contact newContact) {
+		ActionParameter param = new ActionParameter(Action.START_ADD_CONTACT);
+		performAction(controller, param);
+
+		param = new ActionParameter(Action.ADD_CONTACT);
+		param.setValue(createContactCredentialsBy(newContact));
+
+		performAction(controller, param);
 	}
 
 	@Test
@@ -389,12 +420,20 @@ public class PurchaseControllerTest extends ServiceTest {
 		ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
 		StudentConcession sc = createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
 
-		ActionParameter param = new ActionParameter(Action.ADD_CONCESSION);
-		param.setValue(sc);
-		performAction(controller, param);
+		addConcession(controller,sc);
 
 
 		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+	}
+
+	private void addConcession(PurchaseController controller, StudentConcession sc) {
+		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		param.setValue(sc.getStudent().getContact());
+		performAction(controller, param);
+
+		param = new ActionParameter(Action.ADD_CONCESSION);
+		param.setValue(sc);
+		performAction(controller, param);
 	}
 
 	@Test
@@ -408,12 +447,13 @@ public class PurchaseControllerTest extends ServiceTest {
 		ConcessionType ct = Cayenne.objectForPK(context, ConcessionType.class, 1);
 		StudentConcession sc = createStudentConcession(context, model.getPayer().getStudent(), ct, model.getPayer().getCollege());
 
-		ActionParameter param = new ActionParameter(Action.ADD_CONCESSION);
-		param.setValue(sc);
-		performAction(controller, param);
-
+		addConcession(controller,sc);
 
 		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
+
+		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		param.setValue(model.getPayer());
+		performAction(controller, param);
 
 		param = new ActionParameter(Action.REMOVE_CONCESSION);
 		param.setValue(ct);
@@ -506,7 +546,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertNull(concessionEditorController.getStudentConcession());
 
 		concessionEditorController.cancelEditing(concessionEditorController.getContact().getId());
-		assertFalse(concessionEditorController.getObjectContext().hasChanges());
+		assertNull(concessionEditorController.getObjectContext());
+		assertNull(concessionEditorController.getStudentConcession());
 		assertEquals(State.EDIT_CHECKOUT,controller.getState());
 	}
 
@@ -514,8 +555,8 @@ public class PurchaseControllerTest extends ServiceTest {
 	private void assertEDIT_CONCESSION(PurchaseController controller) {
 		assertEquals(State.EDIT_CONCESSION, controller.getState());
 		assertNotNull(controller.getConcessionDelegate());
-		assertEquals(controller.getModel().getPayer(), controller.getConcessionDelegate().getContact());
-		assertEquals(controller.getModel().getPayer().getStudent(), controller.getConcessionDelegate().getContact().getStudent());
+		assertEquals(controller.getModel().getPayer().getId(), controller.getConcessionDelegate().getContact().getId());
+		assertEquals(controller.getModel().getPayer().getStudent().getId(), controller.getConcessionDelegate().getContact().getStudent().getId());
 
 		for (Action action : Action.values()) {
 			switch (action) {
