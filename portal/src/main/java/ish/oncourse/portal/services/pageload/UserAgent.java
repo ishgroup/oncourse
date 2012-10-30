@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 public enum UserAgent {
 
 
-	IPHONE(true, "iphone"), IPOD(true, "ipod"), IPAD(true, "ipad"), ANDROID(true, "android"), BLACKBERRY(true, "blackBerry"), DESKTOP (false, null);
+	IPHONE(true, "iphone"), IPOD(true, "ipod"), IPAD(true, "ipad"), ANDROID(true, "android"), BLACKBERRY(true, "blackberry"), DESKTOP (false, null);
 
 	private static final Logger LOGGER = Logger.getLogger(UserAgent.class);
 	private boolean mobile;
@@ -29,7 +29,7 @@ public enum UserAgent {
 		if (userAgentId == null)
 		{
 			LOGGER.warn("userAgentId is null");
-			return DESKTOP;
+			return IPAD;
 		}
 
 
@@ -37,11 +37,11 @@ public enum UserAgent {
 		{
 			if (userAgent.getAgentId() != null)
 			{
-				if (userAgentId.contains(userAgent.getAgentId()))
+				if (userAgentId.toLowerCase().contains(userAgent.getAgentId()))
 					return userAgent;
 			}
 		}
 		LOGGER.info(String.format("UserAgent is not defined for id=%s. Use DESKTOP",userAgentId));
-		return DESKTOP;
+		return IPAD;
 	}
 }
