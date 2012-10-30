@@ -19,6 +19,17 @@
 					<input type="text" id="${fieldName}"  value="${value(fieldName)}" name="${fieldName}" class="input-fixed"/>
 				</p>
 			</t:loop>
+
+			<p>
+				<label>Gender</label>
+
+				<div class="radio-list">
+					<t:radiogroup t:id="isMale" t:value="contact.isMale">
+						<input type="radio" t:type="radio" t:value="true"/> Male
+						<input type="radio" t:type="radio" t:value="false"/> Female
+					</t:radiogroup>
+				</div>
+			</p>
 		</fieldset>
 	</t:block>
 
@@ -33,9 +44,9 @@
 	<t:block t:id="options">
 		<fieldset class="opt-in">
 			<p class="fieldset-intro">I would like to receive information and offers via:</p>
-			<p><label for="allowEmail">E-Mail</label><t:checkbox id="allowEmail" value="contact.isMarketingViaEmailAllowed"/></p>
-			<p><label for="allowSms">SMS</label><t:checkbox id="allowSms" value="contact.isMarketingViaSMSAllowed"/></p>
-			<p><label for="allowPost">Post</label><t:checkbox id="allowPost" value="contact.isMarketingViaPostAllowed"/></p>
+			<p><label for="isMarketingViaEmailAllowed">E-Mail</label><t:checkbox id="isMarketingViaEmailAllowed" t:id="isMarketingViaEmailAllowed" value="contact.isMarketingViaEmailAllowed"/></p>
+			<p><label for="isMarketingViaSMSAllowed">SMS</label><t:checkbox id="isMarketingViaSMSAllowed" t:id="isMarketingViaSMSAllowed" value="contact.isMarketingViaSMSAllowed"/></p>
+			<p><label for="isMarketingViaPostAllowed">Post</label><t:checkbox id="isMarketingViaPostAllowed" t:id="isMarketingViaPostAllowed" value="contact.isMarketingViaPostAllowed"/></p>
 		</fieldset>
 	</t:block>
 

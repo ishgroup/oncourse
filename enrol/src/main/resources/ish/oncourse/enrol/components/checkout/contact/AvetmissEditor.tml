@@ -1,0 +1,64 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="message">
+		<p>${message:federal-edu-quest}<strong class="collapse" id="questionnaire">${message:optional-answering}</strong></p>
+	</div>
+	<div>
+		<fieldset id="questionnaire-block">
+			<br/>
+			<p>
+				<label for="countrybirth">In which country were you born?</label>
+						<span class="${countryOfBirthInputClass}">
+							<t:textfield value="countryOfBirthName" class ="input-fixed"
+										 clientId="countrybirth" t:id="countryOfBirth" />
+							<span t:type="ui/HintComponent" validationMessage="countryOfBirthErrorMessage"/>
+						</span>
+			</p>
+			<p>
+				<label for="languagehome">What language do you normally speak at home?</label>
+						<span class="${languageHomeInputClass}">
+							<t:textfield value="languageHomeName" class ="input-fixed"
+										 clientId="languagehome" t:id="languageHome" />
+							<span t:type="ui/HintComponent" validationMessage="languageHomeErrorMessage"/>
+						</span>
+			</p>
+			<p>
+				<label for="englishproficiency">How well do you speak English?</label>
+				<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
+			</p>
+			<p>
+				<label for="indigenous">Are you of Aboriginal/Torres Strait Islander origin?</label>
+				<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
+			</p>
+			<p>
+				<label for="schoollevel">What is your highest COMPLETED school level?</label>
+				<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
+			</p>
+			<p>
+				<label for="schoolyear">In which year did you finish your highschool?</label>
+						<span class="${schoolYearInputClass}">
+							<t:textfield value="schoolYearStr" class ="input-fixed"
+										 clientId="schoolyear" t:id="schoolYear" />
+							<span t:type="ui/HintComponent" validationMessage="schoolYearErrorMessage"/>
+						</span>
+			</p>
+			<p>
+				<label for="prioreducation">Have you SUCCESSFULLY completed any of the following qualifications?</label>
+				<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
+			</p>
+			<p>
+				<label>
+					${message:extra-conditions} Please <a href="/about/contact" title="${message:contact-link-title}" class="popup">contact us</a> ${message:contact-message}
+				</label>
+				<!-- //TODO uncomment for disability type list -->
+				<!-- t:select value="contact.student.disabilityType" model="disabilityTypeSelectModel" clientId="disabilitytype" blankOption="NEVER"/-->
+				<div class="radio-list">
+					<t:radiogroup t:value="hasDisability">
+						<input type="radio" t:type="radio" t:value="true"/> Yes
+						<input type="radio" t:type="radio" t:value="false"/> No
+					</t:radiogroup>
+				</div>
+			</p>
+		</fieldset>
+	</div>
+
+</t:container>
