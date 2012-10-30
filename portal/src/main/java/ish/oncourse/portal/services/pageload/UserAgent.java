@@ -42,6 +42,6 @@ public enum UserAgent {
 			}
 		}
 		LOGGER.info(String.format("UserAgent is not defined for id=%s. Use DESKTOP",userAgentId));
-		return IPAD;
+		return DESKTOP;
 	}
 }
