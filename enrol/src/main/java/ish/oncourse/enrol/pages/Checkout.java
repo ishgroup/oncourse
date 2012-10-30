@@ -4,14 +4,12 @@ import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.checkout.PurchaseModel;
-import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
-import ish.oncourse.model.StudentConcession;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
@@ -139,18 +137,11 @@ public class Checkout {
 			List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
 			List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
 			List<Product> products = voucherService.loadByIds(productIds);
-			List<Contact> selectedContacts = studentService.getStudentsFromShortList();
-			Contact payer = selectedContacts.size() > 0 ? selectedContacts.get(0): null;
-			if (selectedContacts.size() > 1) {
-				LOGGER.warn(String.format(" %s contacts loaded from shortlist for init the purchaseController but should be 1!", selectedContacts.size()));
-			}
 
 			PurchaseModel model = new PurchaseModel();
 			model.setObjectContext(cayenneService.newContext());
 			model.setClasses(model.localizeObjects(courseClasses));
 			model.setProducts(model.localizeObjects(products));
-			model.addContact(model.localizeObject(payer));
-			model.setPayer(model.localizeObject(payer));
 			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 
 			purchaseController = createPurchaseConroller(model);
@@ -188,36 +179,14 @@ public class Checkout {
 
 			List<Product> products = voucherService.loadByIds(productIds);
 
-
-			selectQuery = new SelectQuery(StudentConcession.class);
-			selectQuery.setPageSize(3);
-			selectQuery.setFetchLimit(3);
-			List<StudentConcession> concessions = objectContext.performQuery(selectQuery);
-
 			PurchaseModel model = new PurchaseModel();
 			model.setObjectContext(cayenneService.newContext());
 			model.setClasses(model.localizeObjects(courseClasses));
 			model.setProducts(model.localizeObjects(products));
-			model.setPayer(model.localizeObject(concessions.get(0).getStudent().getContact()));
 			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
-			model.addContact(model.getPayer());
 
 			purchaseController = createPurchaseConroller(model);
 			purchaseController.performAction(new ActionParameter(Action.INIT));
-
-			for (int i=1; i < concessions.size(); i++)
-			{
-				Contact contact = concessions.get(i).getStudent().getContact();
-				purchaseController.performAction(new ActionParameter(Action.START_ADD_CONTACT));
-				ActionParameter parameter = new ActionParameter(Action.ADD_CONTACT);
-				ContactCredentials contactCredentials = new ContactCredentials();
-				contactCredentials.setEmail(contact.getEmailAddress());
-				contactCredentials.setFirstName(contact.getGivenName());
-				contactCredentials.setFirstName(contact.getFamilyName());
-				parameter.setValue(contactCredentials);
-				parameter.setValue(purchaseController.getModel().localizeObject(contact));
-				purchaseController.performAction(parameter);
-			}
 		}
 	}
 

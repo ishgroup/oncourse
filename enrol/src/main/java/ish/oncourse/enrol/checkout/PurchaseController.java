@@ -160,21 +160,7 @@ public class PurchaseController {
 	private void init() {
 
 		voucherRedemptionHelper.setInvoice(model.getInvoice());
-
-		for (CourseClass cc : model.getClasses()) {
-			Enrolment enrolment = createEnrolment(cc, model.getPayer().getStudent());
-			model.addEnrolment(enrolment);
-			enableEnrolment(enrolment);
-		}
-
-		for (Product product : model.getProducts()) {
-			ProductItem productItem = createProductItem(model.getPayer(), product);
-			model.addProductItem(productItem);
-			enableProduct(productItem);
-		}
-
-
-		state = State.EDIT_CHECKOUT;
+		performAction( new ActionParameter(Action.START_ADD_CONTACT));
 	}
 
 	public boolean validateState(Action action) {
@@ -240,7 +226,9 @@ public class PurchaseController {
 	}
 
 	private boolean validateINIT() {
-		if (model.getPayer() == null)
+		if (model.getPayer() != null)
+			return false;
+		if (model.getContacts().size() > 0)
 			return false;
 		if (model.getClasses().size() < 1 && model.getProducts().size() < 1)
 			return false;
@@ -253,6 +241,12 @@ public class PurchaseController {
 	}
 
 	public boolean validate(ActionParameter param) {
+		if (param.errors != null && param.getErrors().size() > 0)
+		{
+			errors.add(String.format("Invalid param:  State=%s; Action=%s.", state.name(), param.action.name()));
+			errors.addAll(param.errors);
+			return false;
+		}
 		switch (param.action) {
 			case INIT:
 				return validateINIT();
@@ -318,6 +312,7 @@ public class PurchaseController {
 		illegalState = false;
 		illegalModel = false;
 		errors.clear();
+
 		if (!validateState(param.action)) {
 			errors.add(String.format("Invalid state:  State=%s; Action=%s.",state.name(),param.action.name()));
 			illegalState = true;
@@ -325,7 +320,6 @@ public class PurchaseController {
 		}
 
 		if (!validate(param)) {
-			errors.add(String.format("Invalid param:  State=%s; Action=%s.", state.name(), param.action.name()));
 			illegalModel = true;
 			return;
 		}
@@ -439,6 +433,9 @@ public class PurchaseController {
 		else if (state.equals(State.EDIT_CONTACT))
 		{
 			contact = getModel().localizeObject(contact);
+			//add the first contact
+			if (getModel().getPayer() == null)
+				model.setPayer(contact);
 			model.addContact(contact);
 			for (CourseClass cc : model.getClasses()) {
 				Enrolment enrolment = createEnrolment(cc, contact.getStudent());
@@ -711,6 +708,8 @@ public class PurchaseController {
 
 		private Action action;
 
+		private List<String> errors;
+
 		private Map<Class<?>, Object> values;
 
 		public ActionParameter(Action action) {
@@ -736,6 +735,14 @@ public class PurchaseController {
 			}
 
 			throw new IllegalArgumentException("Requested value type doesn't match existing value.");
+		}
+
+		public List<String> getErrors() {
+			return errors;
+		}
+
+		public void setErrors(List<String> errors) {
+			this.errors = errors;
 		}
 	}
 

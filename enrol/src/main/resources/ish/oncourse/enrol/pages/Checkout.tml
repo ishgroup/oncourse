@@ -3,11 +3,11 @@
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 <div id="checkout">
-		<t:delegate to="block:errors"/>
 		<t:delegate to="block:checkout"/>
 </div>
 
 <t:block t:id="checkout">
+	<t:delegate to="block:errors"/>
 	<t:if test="purchaseController.editCheckout">
 		<t:delegate to="block:payments"/>
 	</t:if>

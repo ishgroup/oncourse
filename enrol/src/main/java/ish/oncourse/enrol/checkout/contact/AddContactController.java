@@ -2,6 +2,9 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.PurchaseController;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class AddContactController implements AddContactDelegate{
 
 	private PurchaseController purchaseController;
@@ -15,8 +18,9 @@ public class AddContactController implements AddContactDelegate{
 	}
 
 	@Override
-	public void saveEditing() {
+	public void saveEditing(Map<String,String> errors) {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.ADD_CONTACT);
+		actionParameter.setErrors(new ArrayList<String>(errors.values()));
 		actionParameter.setValue(contactCredentials);
 		purchaseController.performAction(actionParameter);
 	}

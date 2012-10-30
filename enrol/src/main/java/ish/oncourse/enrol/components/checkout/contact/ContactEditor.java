@@ -88,20 +88,22 @@ public class ContactEditor {
 	@OnEvent(value = "saveContactEvent")
 	public  Object save() {
 
-		ContactEditorValidator contactEditorValidator = new ContactEditorValidator();
-		contactEditorValidator.setRequest(request);
-		contactEditorValidator.setContact(delegate.getContact());
-		contactEditorValidator.setContactFieldHelper(contactFieldHelper);
-		contactEditorValidator.setMessages(messages);
-		contactEditorValidator.setVisibleFields(delegate.getVisibleFields());
-		contactEditorValidator.setDateFormat(getDateFormat());
-		contactEditorValidator.validate();
-
-		if (contactEditorValidator.getErrors().isEmpty())
+		if (!request.isXHR())
+			return null;
+		if (delegate != null)
 		{
-			delegate.saveContact();
+			ContactEditorValidator contactEditorValidator = new ContactEditorValidator();
+			contactEditorValidator.setRequest(request);
+			contactEditorValidator.setContact(delegate.getContact());
+			contactEditorValidator.setContactFieldHelper(contactFieldHelper);
+			contactEditorValidator.setMessages(messages);
+			contactEditorValidator.setVisibleFields(delegate.getVisibleFields());
+			contactEditorValidator.setDateFormat(getDateFormat());
+			contactEditorValidator.validate();
+			delegate.saveContact(contactEditorValidator.getErrors());
+			return blockToRefresh;
 		}
-		return blockToRefresh;
+		return null;
 	}
 
 	public DateFormat getDateFormat()
@@ -111,7 +113,14 @@ public class ContactEditor {
 
 	@OnEvent(value = "cancelContactEvent")
 	public Object cancel() {
-		return blockToRefresh;
+		if (!request.isXHR())
+			return null;
+		if (delegate != null)
+		{
+			delegate.cancelContact();
+			return blockToRefresh;
+		}
+		return null;
 	}
 
 

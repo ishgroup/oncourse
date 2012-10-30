@@ -41,12 +41,9 @@ public class AddContact {
 			addContactValidator.setContactCredentials(delegate.getContactCredentials());
 			addContactValidator.setRequest(request);
 			addContactValidator.validate();
-			if (addContactValidator.getErrors().isEmpty())
-			{
-				delegate.saveEditing();
-				if (blockToRefresh != null)
-					return blockToRefresh;
-			}
+			delegate.saveEditing(addContactValidator.getErrors());
+			if (blockToRefresh != null)
+				return blockToRefresh;
 		}
 		return null;
 	}

@@ -25,32 +25,24 @@ public class ContactEditorValidator {
 	private Map<String, String> errors = new HashMap<String, String>();
 
 
-
-	public void validate()
-	{
+	public void validate() {
 		for (String visibleField : visibleFields) {
 			ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(visibleField);
 			String value = StringUtils.trimToNull(request.getParameter(fieldDescriptor.propertyName));
-			if (value == null)
-			{
-				errors.put(fieldDescriptor.propertyName, messages.get("required"));
-				return;
-			}
-			if (fieldDescriptor.propertyClass == Date.class)
-			{
+			if (value == null) {
+				if (contactFieldHelper.isRequiredField(fieldDescriptor))
+					errors.put(fieldDescriptor.propertyName, messages.get("required"));
+			} else if (fieldDescriptor.propertyClass == Date.class) {
 				try {
 					Date date = dateFormat.parse(value);
-					contact.writeProperty(fieldDescriptor.propertyName,date);
+					contact.writeProperty(fieldDescriptor.propertyName, date);
 				} catch (ParseException e) {
 					errors.put(fieldDescriptor.propertyName, messages.get("birthdate-hint"));
-					return;
 				}
-			}
-			else
-				contact.writeProperty(fieldDescriptor.propertyName,value);
+			} else
+				contact.writeProperty(fieldDescriptor.propertyName, value);
 		}
 	}
-
 
 
 	public void setRequest(Request request) {

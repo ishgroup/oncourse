@@ -8,6 +8,7 @@ import org.apache.cayenne.ObjectContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ContactEditorController implements ContactEditorDelegate {
 
@@ -43,9 +44,10 @@ public class ContactEditorController implements ContactEditorDelegate {
 	}
 
 	@Override
-	public void saveContact() {
+	public void saveContact(Map<String, String> errors) {
 		objectContext.commitChangesToParent();
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.ADD_CONTACT);
+		actionParameter.setErrors(new ArrayList<String>(errors.values()));
 		actionParameter.setValue(contact);
 		purchaseController.performAction(actionParameter);
 	}
