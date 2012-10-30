@@ -19,11 +19,10 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static ish.oncourse.enrol.checkout.contact.ContactEditorValidator.LABEL_TEMPLATE;
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 
 public class ContactEditor {
-
-	private static final String LABEL_TEMPLATE = "label-%s";
 
 	@Parameter(required = true)
 	private ContactEditorDelegate delegate;
@@ -122,6 +121,4 @@ public class ContactEditor {
 		}
 		return null;
 	}
-
-
 }
