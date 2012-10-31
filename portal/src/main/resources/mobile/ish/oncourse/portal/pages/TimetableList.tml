@@ -1,7 +1,9 @@
 <html t:type="pagestructure" title="literal:Timetable List"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_timetable">
 	
-	div class="btn-tabs">
+	<h1>Timetable</h1>
+	
+	<div class="btn-tabs">
 		<div class="btn-group btn-tabs">
 			<button id="timetableMonth" page="prop:monthPageName" data-rel="#month" class="btn btn-active disabled">Month</button>
 			<button id="timetableList" page="prop:listPageName" data-rel="#list" class="btn">List</button>
