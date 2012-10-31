@@ -1,41 +1,39 @@
-<html t:type="pagestructure" title="literal:Profile page" bodyClass="literal:login-wrapper"
+<html t:type="pagestructure" title="literal:Profile"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_profile">
 	
-		<div class="content">
-			<h1>Profile</h1>
-	
-			<div class="profile">
-			
-				<t:form t:id="profileForm">
-				
-					<div class="form-row">
-						<label for="email">Email</label>
-						<t:TextField value="contact.emailAddress" t:id="email" t:validate="required,minlength=3" type="text" maxlength="200" class="input"/>
-					</div>
-					<div class="form-row">
-						<label for="street">Street</label>
-						<t:TextField value="contact.street" t:id="street" type="text" maxlength="200" class="input"/>
-					</div>
-					<div class="form-row">
-						<label for="suburb">Suburb</label>
-						<t:TextField value="contact.suburb" t:id="suburb" type="text" maxlength="200" class="input" />
-					</div>
-					<div class="form-row">
-						<label for="postcode">Postcode</label>
-						<t:TextField value="contact.postcode" t:id="postcode" type="text" maxlength="200" class="input"/>
-					</div>
-					<div class="form-row">
-						<label for="state">State</label>
-						<t:TextField value="contact.state" t:id="state" type="text" maxlength="200" class="input"/>
-					</div>
-					<div class="form-row">
-						<label for="homePhone">Home Phone</label>
-						<t:TextField value="contact.homePhoneNumber" t:id="homePhone" type="text" maxlength="200" class="input"/>
-					</div>
-					<div class="form-row">
-						<label for="mobilePhone">Mobile Phone</label>
-						<t:TextField value="contact.mobilePhoneNumber" t:id="mobilePhone" type="text" maxlength="200" class="input"/>
-					</div>
+	<h1>Profile</h1>
+	<h4 class="heading" >${contact.givenName} ${contact.familyName}</h4>
+	<div class="content">
+		<div class="profile">
+			<t:form t:id="profileForm">
+			<div class="form-row">
+				<label for="email">Email</label>
+					<t:TextField value="contact.emailAddress" t:id="email" t:validate="required,minlength=3" type="text" maxlength="200" class="input"/>
+				</div>
+				<div class="form-row">
+					<label for="street">Street</label>
+					<t:TextField value="contact.street" t:id="street" type="text" maxlength="200" class="input"/>
+				</div>
+				<div class="form-row">
+					<label for="suburb">Suburb</label>
+					<t:TextField value="contact.suburb" t:id="suburb" type="text" maxlength="200" class="input" />
+				</div>
+				<div class="form-row">
+					<label for="postcode">Postcode</label>
+					<t:TextField value="contact.postcode" t:id="postcode" type="text" maxlength="200" class="input"/>
+				</div>
+				<div class="form-row">
+					<label for="state">State</label>
+					<t:TextField value="contact.state" t:id="state" type="text" maxlength="200" class="input"/>
+				</div>
+				<div class="form-row">
+					<label for="homePhone">Home Phone</label>
+					<t:TextField value="contact.homePhoneNumber" t:id="homePhone" type="text" maxlength="200" class="input"/>
+				</div>
+				<div class="form-row">
+					<label for="mobilePhone">Mobile Phone</label>
+					<t:TextField value="contact.mobilePhoneNumber" t:id="mobilePhone" type="text" maxlength="200" class="input"/>
+				</div>
 					<div class="form-row">
 						<label for="businessPhone">Work Phone</label>
 						<t:TextField value="contact.businessPhoneNumber" t:id="businessPhone" type="text" maxlength="300" class="input"/>

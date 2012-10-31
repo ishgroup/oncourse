@@ -7,7 +7,7 @@
 			<t:errors />
 			<div class="form-row">
 				<t:label for="iscompany">As company</t:label>
-				<t:checkbox onclick="set_is_company(this.checked)" t:id="iscompany" value="iscompany"  style="float: right;" />
+				<t:checkbox onclick="set_is_company(this.checked)" t:id="iscompany" value="iscompany" />
 			</div>
 			<div style="display: none;" class="company-details collapse"> 
 				<div class="form-row">
