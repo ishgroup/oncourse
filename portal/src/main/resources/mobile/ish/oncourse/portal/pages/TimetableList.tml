@@ -13,7 +13,10 @@
 	
 	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<t:if test="hassessions">
-			<h3>test</h3>
+			<t:loop source="sessionsByDate" value="currentBucket">
+				<p>${time}.</p>
+				<strong><a href="#">${name}</a></strong>
+			</t:loop>
 		</t:if>
 	</div>
 	<!--<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
