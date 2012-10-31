@@ -1,6 +1,22 @@
 <html t:type="pagestructure" title="literal:Timetable page" bodyClass="literal:login-wrapper"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	
-	<h1>Timetable page of mobile tara.</h1>
+	<h1>Timetable</h1>
+	
+	<div class="btn-tabs">
+		<div class="btn-group btn-tabs">
+			<button id="timetableMonth" page="prop:monthPageName" data-rel="#month" class="btn btn-active disabled">Month</button>
+			<button id="timetableList" page="prop:listPageName" data-rel="#list" class="btn">List</button>
+		</div>
+	</div>
+	<div class="clear"></div>
+	
+	<div id="timetable"></div>
+	
+<script type="text/javascript">
+jQuery(function() {
+	jQuery.calendar('${timetableMonthUrl}');
+});	
+</script>
 	
 </html>
