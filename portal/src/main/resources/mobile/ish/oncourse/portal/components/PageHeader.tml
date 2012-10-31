@@ -22,5 +22,6 @@
 	<link rel="stylesheet" media="all" href="/s/portal/css/mobile.css"/>
 	<script type="text/javascript" src="/s/portal/js/scroller.js"></script>
 	<script type="text/javascript" src="/s/portal/js/main.js"></script>
+	<script type="text/javascript" src="/s/portal/js/calendar.js"></script>
 	
 </t:container>
