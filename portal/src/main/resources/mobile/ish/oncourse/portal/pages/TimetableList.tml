@@ -3,10 +3,10 @@
 	
 	<h1>Timetable</h1>
 	
-	<div class="btn-tabs">
+	<!--<div class="btn-tabs">
 		<div class="btn-group btn-tabs">
-			<button id="timetableMonth" page="prop:monthPageName" data-rel="#month" class="btn btn-active disabled">Month</button>
-			<button id="timetableList" page="prop:listPageName" data-rel="#list" class="btn">List</button>
+			<button id="timetableMonth" page="prop:monthPageName" class="btn btn-active disabled">Month</button>
+			<button id="timetableList" page="prop:listPageName" class="btn">List</button>
 		</div>
 	</div>
 	<div class="clear"></div>
@@ -35,7 +35,9 @@
 				</p:else>
 			</t:if>
 		</div>
-	</div>
+	</div>-->
+	
+	<h1>Timetable List</h1>
 	
 </html>
 	
