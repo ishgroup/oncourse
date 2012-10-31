@@ -11,6 +11,7 @@ import ish.oncourse.services.tag.ITagService;
 
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
@@ -27,6 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchService implements ISearchService {
+	static final String DIGIT_PATTERN = "(\\d)+";
+	static final String EVERY_DOCUMENT_MATCH_QUERY = "*:*";
+	static final String SOLR_ANYTHING_AFTER_CHARACTER = "*";
+	static final String SOLR_OR_STRING = "||";
+	static final String SPACE_PATTERN = "[\\s]+";
+	static final String LIKE_CHARACTER = "%";
+
 	private static final Logger logger = Logger.getLogger(SearchService.class);
 
     /**
@@ -147,7 +155,8 @@ public class SearchService implements ISearchService {
     }
     
     public List<Course> getDirectCourseSearchResult(String term, Long collegeId) {
-    	SelectQuery courseQuery = new SelectQuery(Course.class, ExpressionFactory.likeIgnoreCaseExp(Course.NAME_PROPERTY, "%"+term+"%")
+		SelectQuery courseQuery = new SelectQuery(Course.class, 
+			ExpressionFactory.likeIgnoreCaseExp(Course.NAME_PROPERTY, LIKE_CHARACTER + term + LIKE_CHARACTER)
     		.andExp(ExpressionFactory.matchDbExp(Course.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, collegeId)));
     	@SuppressWarnings("unchecked")
     	List<Course> directCourses = cayenneService.sharedContext().performQuery(courseQuery);
@@ -172,11 +181,11 @@ public class SearchService implements ISearchService {
             StringBuilder suburbsQuery = new StringBuilder();
             StringBuilder tagsQuery = new StringBuilder();
 
-            String[] terms = term.split("[\\s]+");
+            String[] terms = term.split(SPACE_PATTERN);
             for (int i = 0; i < terms.length; i++) {
-                if (!terms[i].equals("")) {
-                    String t = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i].toLowerCase().trim()) + "*";
-                    coursesQuery.append(String.format("(name:%s AND collegeId:%s)", t, collegeId)).append("||");
+                if (StringUtils.trimToNull(terms[i]) != null) {
+                    String t = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i].toLowerCase().trim()) + SOLR_ANYTHING_AFTER_CHARACTER;
+                    coursesQuery.append(String.format("(name:%s AND collegeId:%s)", t, collegeId)).append(SOLR_OR_STRING);
 
                     coursesQuery.append(String.format("(course_code:%s AND collegeId:%s)",
                             t.indexOf("\\-") < 0 ? t : t.substring(0, t.indexOf("\\-")), collegeId));
@@ -216,10 +225,10 @@ public class SearchService implements ISearchService {
 
             StringBuilder query = new StringBuilder();
 
-            String[] terms = term.split("[\\s]+");
+            String[] terms = term.split(SPACE_PATTERN);
             for (int i = 0; i < terms.length; i++) {
-                if (!terms[i].equals("")) {
-                    String t = terms[i].toLowerCase().trim() + "*";
+                if (StringUtils.trimToNull(terms[i]) != null) {
+                    String t = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i].toLowerCase().trim()) + SOLR_ANYTHING_AFTER_CHARACTER;
 
                     query.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s)) ", t, t));
 
@@ -230,8 +239,9 @@ public class SearchService implements ISearchService {
             }
 
             q.setQuery(query.toString());
-            if ("".equals(q.getQuery())) {
-                q.setQuery("*:*");
+            //in case of empty string search everything
+            if (StringUtils.trimToNull(q.getQuery()) == null) {
+            	q.setQuery(EVERY_DOCUMENT_MATCH_QUERY);
             }
             return query(q, SolrCore.suburbs);
 
@@ -263,7 +273,7 @@ public class SearchService implements ISearchService {
 
             String[] suburbParams = separator > 0 ? new String[]{location.substring(0, separator), location.substring(separator + 1)}
                     : new String[]{location, null};
-            if (suburbParams[1] != null && !suburbParams[1].matches("(\\d)+")) {
+            if (suburbParams[1] != null && !suburbParams[1].matches(DIGIT_PATTERN)) {
                 suburbParams[0] = location;
                 suburbParams[1] = null;
             }
@@ -272,7 +282,7 @@ public class SearchService implements ISearchService {
             StringBuilder query = new StringBuilder();
             query.append("(doctype:suburb");
             if (suburbParams[0] != null) {
-                String near = suburbParams[0].replaceAll("[\\s]+", "+");
+                String near = suburbParams[0].replaceAll(SPACE_PATTERN, "+");
                 query.append(" AND (suburb:").append(near);
                 query.append(" || postcode:").append(near);
                 query.append(")");

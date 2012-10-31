@@ -10,7 +10,9 @@ import java.util.List;
 
 public class SolrQueryBuilder {
 
-    static final String QUERY_TYPE_standard = "standard";
+    private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
+
+	static final String QUERY_TYPE_standard = "standard";
 
     static final String PARAMETER_fl = "fl";
     static final String PARAMETER_sfield = "sfield";
@@ -241,7 +243,7 @@ public class SolrQueryBuilder {
     }
     
     static String replaceSOLRSyntaxisCharacters(String original) {
-    	String resultString = original.replaceAll("[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]", StringUtils.EMPTY);
+    	String resultString = original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, StringUtils.EMPTY);
     	return resultString;
     }
 }
