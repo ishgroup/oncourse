@@ -3,7 +3,7 @@
 	
 	<h1>Timetable</h1>
 	
-	<!--<div class="btn-tabs">
+	<div class="btn-tabs">
 		<div class="btn-group btn-tabs">
 			<button id="timetableMonth" page="prop:monthPageName" class="btn btn-active disabled">Month</button>
 			<button id="timetableList" page="prop:listPageName" class="btn">List</button>
@@ -11,8 +11,12 @@
 	</div>
 	<div class="clear"></div>
 	
-	
 	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+		<t:if test="hassessions">
+			<h3>test</h3>
+		</t:if>
+	</div>
+	<!--<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<div class="entry-info">
 			<t:if test="hassessions">
 				<t:loop source="sessionsByDate" value="currentBucket">
