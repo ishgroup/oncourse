@@ -1,0 +1,49 @@
+<html t:type="pagestructure" title="literal:Timetable List"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_timetable">
+	
+	div class="btn-tabs">
+		<div class="btn-group btn-tabs">
+			<button id="timetableMonth" page="prop:monthPageName" data-rel="#month" class="btn btn-active disabled">Month</button>
+			<button id="timetableList" page="prop:listPageName" data-rel="#list" class="btn">List</button>
+		</div>
+	</div>
+	<div class="clear"></div>
+	
+	
+	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+		<div class="entry-info">
+		
+			<t:if test="hassessions">
+			
+				<t:loop source="sessionsByDate" value="currentBucket">
+					<div class="day-info">
+						
+					</div>
+				</t:loop>
+				
+				<p:else>
+					You have no currently scheduled classes.
+				</p:else>
+			</t:if>
+		
+			<t:loop source="calender.entrylist" value="attendance" >
+			<div class="day-info">
+				<div class="left-info">
+					<p>${time}.</p>
+					<strong><a href="#">${name}</a></strong>
+					<p class="tutor"><t:if test="hasRoomAndSite">${session.room.site.name}</t:if>, Tutor: ${tutor.fullName}</p>
+				</div>
+				<div class="right-info">
+					<i class="icon icon-user"></i><span>7/15</span>
+					<i class="icon-chevron-right"></i>
+				</div>
+				<div class="clear"></div>
+			</div>
+			</t:loop>
+		</div>
+	</div>
+	
+</html>
+	
+
+
