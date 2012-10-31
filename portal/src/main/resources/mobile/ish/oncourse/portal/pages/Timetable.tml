@@ -1,48 +1,6 @@
-<html t:type="pagestructure" title="literal:Student Timetable"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:m_timetable">
+<html t:type="pagestructure" title="literal:Timetable page" bodyClass="literal:login-wrapper"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	
-	
-	
-	<h1>Timetable</h1>
-	
-	<div class="btn-tabs">
-		<div class="btn-group btn-tabs">
-			<button data-rel="#month" class="btn btn-active disabled">Month</button>
-			<button data-rel="#list" class="btn">List</button>
-		</div>
-	</div>
-	<div class="clear"></div>
-	
-	<div class="tab-content">
-		<div id="month">
-			<div class="calendar-container"></div>
-			
-			<div class="entry-info"></div>
-		</div>
-		<div id="list">
-			<div class="entry-info">
-				<t:loop source="calender.entrylist" value="attendance" >
-				<div class="day-info">
-					<div class="left-info">
-						<p>${timeDuration}.</p>
-						<strong><a href="#">${className}</a></strong>
-						<p class="tutor">${classvenue}, Tutor: ${tutorName}</p>
-					</div>
-					<div class="right-info">
-						<i class="icon icon-user"></i><span>${tutorCounts}</span>
-						<i class="icon-chevron-right"></i>
-					</div>
-					<div class="clear"></div>
-				</div>
-				</t:loop>
-			</div>
-		</div>
-	</div>
-	
-<script type="text/javascript">
-jQuery(function() {
-	jQuery.calendar('${timetableMonthUrl}');
-});	
-</script>
+	<h1>Timetable page of mobile tara.</h1>
 	
 </html>
