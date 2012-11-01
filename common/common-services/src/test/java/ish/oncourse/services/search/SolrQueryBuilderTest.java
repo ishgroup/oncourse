@@ -15,7 +15,7 @@ import static ish.oncourse.services.search.SearchParamsParser.DATE_FORMAT_FOR_AF
 import static org.junit.Assert.assertEquals;
 
 public class SolrQueryBuilderTest {
-    private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=((detail:(%s) || tutor:(%s) || course_code:(%s) || name:(%s)) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))";
+    private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(NOW-2YEAR/DAY, startDate), 0),1.15e-8,1,1)&qq=((detail:(%s) || tutor:(%s) || course_code:(%s) || name:(%s)) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))&sort=score desc,startDate asc";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "12345678910111213141516171819";
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
 
@@ -25,7 +25,7 @@ public class SolrQueryBuilderTest {
         SearchParams searchParams = new SearchParams();
         SolrQueryBuilder solrQueryBuilder = new SolrQueryBuilder(searchParams,"1",0,100);
         String value = URLDecoder.decode(solrQueryBuilder.create().toString(), "UTF-8");
-        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)&qq=(*:*)", value);
+        assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(NOW-2YEAR/DAY, startDate), 0),1.15e-8,1,1)&qq=(*:*)&sort=score desc,startDate asc", value);
         System.out.println(value);
 
         searchParams.setAfter(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));

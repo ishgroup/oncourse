@@ -4,6 +4,7 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +60,8 @@ public class SolrQueryBuilder {
     static final String QUERY_SORT_FIELD_geodist = "geodist()";
 
     private static final String DATE_BOOST_STM = "{!boost b=$dateboost v=$qq}";
-    private static final String DATE_BOOST_FUNCTION = "recip(max(ms(startDate, NOW), 0),1.15e-8,1,1)";
-
-
-
+    //here we can use the date in format like 2008-01-01T00:00:00Z, but I hope then will no classes longs more then 2 years
+    private static final String DATE_BOOST_FUNCTION = "recip(max(ms(NOW-2YEAR/DAY, startDate), 0),1.15e-8,1,1)";
 
     private SearchParams params;
     private String collegeId;
@@ -113,7 +112,8 @@ public class SolrQueryBuilder {
             appendFilterAll(filters);
 
         setFiltersTo(q,filters);
-
+        q.addSortField(FIELD_score, ORDER.desc);
+        q.addSortField(FIELD_startDate, ORDER.asc);
         return q;
     }
 
