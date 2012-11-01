@@ -11,7 +11,7 @@
 	</div>
 	<div class="clear"></div>
 	
-	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<!--<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<t:if test="hassessions">
 			<t:loop source="sessionsByDate" value="currentBucket">
 				<t:loop source="currentBucket.value" value="session">
@@ -21,8 +21,8 @@
 				
 			</t:loop>
 		</t:if>
-	</div>
-	<!--<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	</div>-->
+	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<div class="entry-info">
 			<t:if test="hassessions">
 				<t:loop source="sessionsByDate" value="currentBucket">
@@ -45,7 +45,7 @@
 				</p:else>
 			</t:if>
 		</div>
-	</div>-->
+	</div>
 	
 	<h1>Timetable List</h1>
 	
