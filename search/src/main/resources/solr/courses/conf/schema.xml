@@ -148,6 +148,7 @@
 					catenateNumbers="1" catenateAll="0" splitOnCaseChange="0" />
 				<filter class="solr.LowerCaseFilterFactory" />
 			</analyzer>
+			
 			<analyzer type="query">
 				<tokenizer class="solr.WhitespaceTokenizerFactory" />
 				<filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt"
