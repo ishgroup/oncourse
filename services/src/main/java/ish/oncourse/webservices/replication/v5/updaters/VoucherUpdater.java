@@ -20,7 +20,7 @@ public class VoucherUpdater extends AbstractProductItemUpdater<VoucherStub, Vouc
 		entity.setContact(contact);
 		entity.setCode(stub.getCode());
 		entity.setRedeemedCoursesCount(stub.getRedeemedCoursesCount());
-		entity.setRedemptionValue(Money.valueOf(stub.getRedemptionValue()));
+		entity.setRedemptionValue( stub.getRedemptionValue() != null ? Money.valueOf(stub.getRedemptionValue()) : null);
 		PaymentSource source = TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class);
 		entity.setSource(source);
 	}
