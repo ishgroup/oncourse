@@ -40,15 +40,13 @@
 					</div>
 				</t:loop>
 				
-				<p:else>
+				<t:else>
 					You have no currently scheduled classes.
-				</p:else>
+				</t:else>
 			</t:if>
 		</div>
 	</div>
-	
-	<h1>Timetable List</h1>
-	
+
 </html>
 	
 
