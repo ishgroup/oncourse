@@ -15,8 +15,16 @@
 		<t:if test="hassessions">
 			<t:loop source="sessionsByDate" value="currentBucket">
 				<t:loop source="currentBucket.value" value="session">
-					<p>${time}.</p>
-					<strong><a href="#">${name}</a></strong>
+					<div class="day-info">
+						<div class="left-info">
+							<p>${time}.</p>
+							<strong><a href="#">${name}</a></strong>
+						</div>
+						<div class="right-info">
+							<i class="icon icon-user"></i><span>7/15</span>
+							<i class="icon-chevron-right"></i>
+						</div>
+						<div class="clear"></div>
 				</t:loop>
 				
 			</t:loop>
@@ -34,10 +42,10 @@
 						<div class="left-info">
 							<p>${time}.</p>
 							<strong><a href="#">${name}</a></strong>
-							<!--<p class="tutor"><t:if test="hasRoomAndSite">${session.room.site.name}</t:if>, Tutor: ${tutor.fullName}</p>-->
+							<p class="tutor"><t:if test="hasRoomAndSite">${session.room.site.name}</t:if>, Tutor: ${tutor.fullName}</p>
 						</div>
 						<div class="right-info">
-							<i class="icon icon-user"></i><span>7/15</span>
+							<span><i class="icon icon-user"></i><span>7/15</span>
 							<i class="icon-chevron-right"></i>
 						</div>
 						<div class="clear"></div>
