@@ -11,7 +11,7 @@
 	</div>
 	<div class="clear"></div>
 	
-	<!--<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<t:if test="hassessions">
 			<t:loop source="sessionsByDate" value="currentBucket">
 				<t:loop source="currentBucket.value" value="session">
@@ -33,8 +33,9 @@
 				You have no currently scheduled classes.
 			</p:else>
 		</t:if>
-	</div>-->
-	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	</div>
+	
+	<!--<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<div class="entry-info">
 			<t:if test="hassessions">
 				<t:loop source="sessionsByDate" value="currentBucket">
@@ -45,7 +46,7 @@
 							<p class="tutor"><t:if test="hasRoomAndSite">${session.room.site.name}</t:if>, Tutor: ${tutor.fullName}</p>
 						</div>
 						<div class="right-info">
-							<span><i class="icon icon-user"></i><span>7/15</span>
+							<i class="icon icon-user"></i><span>7/15</span>
 							<i class="icon-chevron-right"></i>
 						</div>
 						<div class="clear"></div>
@@ -57,7 +58,7 @@
 				</p:else>
 			</t:if>
 		</div>
-	</div>
+	</div>-->
 </html>
 	
 
