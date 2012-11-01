@@ -282,7 +282,7 @@ public class MergeContactTest extends ServiceTest {
 		Contact contact1 = (Contact) objectContext.performQuery(
 			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);		
 		Contact contact2 = (Contact) objectContext.performQuery(
-			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);;
+			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
 		assertNotNull("contact 1 have no link to student", contact1.getStudent());
 		assertNull("contact 1 have no link to tutor", contact1.getTutor());
 		assertNull("contact 2 have no link to student", contact2.getStudent());
@@ -297,7 +297,7 @@ public class MergeContactTest extends ServiceTest {
 		Contact contact1 = (Contact) objectContext.performQuery(
 			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 3L))).get(0);		
 		Contact contact2 = (Contact) objectContext.performQuery(
-			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 4L))).get(0);;
+			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 4L))).get(0);
 		assertNotNull("contact 1 have no link to student", contact1.getStudent());
 		assertNull("contact 1 have no link to tutor", contact1.getTutor());
 		assertNotNull("contact 2 have no link to student", contact2.getStudent());

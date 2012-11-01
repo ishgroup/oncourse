@@ -128,9 +128,9 @@ public class HaversineConstFunction extends ValueSource {
       //TODO assert that neither mv1 nor mv2 are multi-value
       return new HaversineFunction(mv1, mv2, DistanceUtils.EARTH_MEAN_RADIUS_KM, true);
     }
-  };
+  }
 
-  /** make a MultiValueSource from two non MultiValueSources */
+	/** make a MultiValueSource from two non MultiValueSources */
   private static VectorValueSource makeMV(List<ValueSource> sources, List<ValueSource> orig) throws ParseException {
     ValueSource vs1 = sources.get(0);
     ValueSource vs2 = sources.get(1);

@@ -20,7 +20,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class AssetGroupService implements IAssetGroupService {
 
-	private final Pattern groupLinePattern = Pattern.compile("^(.+):(.*)");;
+	private final Pattern groupLinePattern = Pattern.compile("^(.+):(.*)");
 
 	@Inject
 	private IResourceService resourceService;

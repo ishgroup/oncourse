@@ -192,8 +192,8 @@ public class Login {
 		} else {
 			
 			Set<College> colleges = new HashSet<College>();
-			Set<College> collegesWithDuplicates = new HashSet<College>();;
-			
+			Set<College> collegesWithDuplicates = new HashSet<College>();
+
 			// if in one college we have two or more contacts with identical login details
 			// (we show the error on the login screen)
 			for (Contact user : users) {
@@ -235,8 +235,8 @@ public class Login {
 			selectCollege.setPasswordRecover(true);
 			
 			Set<College> colleges = new HashSet<College>();
-			Set<College> collegesWithDuplicates = new HashSet<College>();;
-			
+			Set<College> collegesWithDuplicates = new HashSet<College>();
+
 			// if in one college we have two or more contacts with identical login details
 			// (we show the error on the login screen)
 			for (Contact user : users) {

@@ -48,7 +48,7 @@ public class MA {
 
 	private enum OPER {
 		n, u
-	};
+	}
 
 	/**
 	 * Invoked upon user click on 'New menu item' button.

@@ -62,6 +62,6 @@ public interface IAuthenticateService {
 		EMPTY_COMMUNICATION_KEY,
 		HALT_COMMUNICATION_KEY,
 		INVALID_COMMUNICATION_KEY,
-		NO_KEYS;
+		NO_KEYS
 	}
 }

@@ -72,7 +72,7 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	 * Call to find out the most recent version of Reference Data - note that
 	 * this is shared across tables.
 	 *
-	 * @return Map the max version
+	 * @return Map the max version
 	 */
 	public long getMaximumVersion() {
 		return referenceService.findMaxIshVersion();

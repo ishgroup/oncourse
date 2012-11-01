@@ -28,7 +28,7 @@ public class DFADedupper implements Comparable<DFADedupper> {
 	 */
 	public static enum InternalState {
 		DFA_START, DFA_CREATE, DFA_UPDATE, DFA_DELETE, DFA_NOP
-	};
+	}
 
 	/**
 	 * Current state

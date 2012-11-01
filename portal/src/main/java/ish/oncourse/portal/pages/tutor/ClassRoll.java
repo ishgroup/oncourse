@@ -114,7 +114,7 @@ public class ClassRoll {
 		Date start = currentSession.getStartDate();
 		Date end = currentSession.getEndDate();
 		DateFormat formatterWeakDay = FormatUtils.getDateFormat(DATE_FORMAT_E, currentSession.getTimeZone());
-		DateFormat formatter = FormatUtils.getDateFormat(DATE_FORMAT_HH_mm_a, currentSession.getTimeZone());;
+		DateFormat formatter = FormatUtils.getDateFormat(DATE_FORMAT_HH_mm_a, currentSession.getTimeZone());
 		String key = "%s %s - %s ";
 		if (start == null && end == null) {
 			return "";
