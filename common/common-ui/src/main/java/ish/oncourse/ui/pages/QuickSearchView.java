@@ -248,7 +248,7 @@ public class QuickSearchView {
 			for (String term : searchTerms) {
 				if (StringUtils.isNotBlank(term)) {
 					String tempTerm = term.trim();
-					tempTerm = term.indexOf("-") < 0 ? term : term.substring(0, term.indexOf("-"));
+					tempTerm = !term.contains("-") ? term : term.substring(0, term.indexOf("-"));
 					if (course.getCode().equalsIgnoreCase(tempTerm)) {
 						matchingCourseList.add(course);
 						break;

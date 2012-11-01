@@ -55,19 +55,19 @@ public class LastEditedVisitorTest {
 		when(block.getModified()).thenReturn(cal.getTime());
 		String message = visitor.visitWebContent(block);
 		assertNotNull(message);
-		assertTrue(message.indexOf("minutes") != -1);
+		assertTrue(message.contains("minutes"));
 		
 		WebNode node = mock(WebNode.class);
 		when(node.getModified()).thenReturn(cal.getTime());
 		message = visitor.visitWebNode(node);
 		assertNotNull(message);
-		assertTrue(message.indexOf("minutes") != -1);
+		assertTrue(message.contains("minutes"));
 		
 		WebNodeType webNodeType = mock(WebNodeType.class);
 		when(webNodeType.getModified()).thenReturn(cal.getTime());
 		message = visitor.visitWebNodeType(webNodeType);
 		assertNotNull(message);
-		assertTrue(message.indexOf("minutes") != -1);
+		assertTrue(message.contains("minutes"));
 	}
 
 	@Test

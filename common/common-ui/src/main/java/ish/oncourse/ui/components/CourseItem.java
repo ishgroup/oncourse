@@ -193,7 +193,7 @@ public class CourseItem {
 
 			String openedtag = tag.substring(1, tag.length() - 1);
 			// strip any attributes
-			if (openedtag.indexOf(" ") >= 0) {
+			if (openedtag.contains(" ")) {
 				openedtag = openedtag.substring(0, openedtag.indexOf(" "));
 			}
 		}

@@ -14,7 +14,7 @@ public class RequestUtil {
     }
 
     public static String getAgentAwareClass(String userAgent) {
-		if (userAgent != null && userAgent.indexOf(MSIE) > -1) {
+		if (userAgent != null && userAgent.contains(MSIE)) {
 			int versionPosition = userAgent.indexOf(MSIE) + MSIE.length() + 1;
 			Integer versionNumber;
 			try {
