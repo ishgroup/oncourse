@@ -14,31 +14,31 @@ public class AddContactValidatorTest {
 	@Test
 	public void test()
 	{
-		AddContactParser validator = new AddContactParser();
-		validator.setContactCredentials(new ContactCredentials());
-		validator.setRequest(createValidRequest());
+		AddContactParser parser = new AddContactParser();
+		parser.setContactCredentials(new ContactCredentials());
+		parser.setRequest(createValidRequest());
 
-		assertNotNull(validator.getContactCredentials());
-		assertNotNull(validator.getRequest());
-		assertNotNull(validator.getErrors());
-		validator.parse();
+		assertNotNull(parser.getContactCredentials());
+		assertNotNull(parser.getRequest());
+		assertNotNull(parser.getErrors());
+		parser.parse();
 
-		assertNotNull(validator.getContactCredentials().getFirstName());
-		assertNotNull(validator.getContactCredentials().getLastName());
-		assertNotNull(validator.getContactCredentials().getEmail());
-		assertTrue(validator.getErrors().isEmpty());
+		assertNotNull(parser.getContactCredentials().getFirstName());
+		assertNotNull(parser.getContactCredentials().getLastName());
+		assertNotNull(parser.getContactCredentials().getEmail());
+		assertTrue(parser.getErrors().isEmpty());
 
-		validator = new AddContactParser();
-		validator.setContactCredentials(new ContactCredentials());
-		validator.setRequest(createInvalidRequest());
-		assertNotNull(validator.getContactCredentials());
-		assertNotNull(validator.getRequest());
-		assertNotNull(validator.getErrors());
-		validator.parse();
-		assertNull(validator.getContactCredentials().getFirstName());
-		assertNull(validator.getContactCredentials().getLastName());
-		assertNull(validator.getContactCredentials().getEmail());
-		assertFalse(validator.getErrors().isEmpty());
+		parser = new AddContactParser();
+		parser.setContactCredentials(new ContactCredentials());
+		parser.setRequest(createInvalidRequest());
+		assertNotNull(parser.getContactCredentials());
+		assertNotNull(parser.getRequest());
+		assertNotNull(parser.getErrors());
+		parser.parse();
+		assertNull(parser.getContactCredentials().getFirstName());
+		assertNull(parser.getContactCredentials().getLastName());
+		assertNull(parser.getContactCredentials().getEmail());
+		assertFalse(parser.getErrors().isEmpty());
 
 
 	}
