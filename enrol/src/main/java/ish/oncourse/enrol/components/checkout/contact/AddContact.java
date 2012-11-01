@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
-import ish.oncourse.enrol.checkout.contact.AddContactValidator;
+import ish.oncourse.enrol.checkout.contact.AddContactParser;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -37,10 +37,10 @@ public class AddContact {
 
 		if (delegate != null)
 		{
-			AddContactValidator addContactValidator = new AddContactValidator();
+			AddContactParser addContactValidator = new AddContactParser();
 			addContactValidator.setContactCredentials(delegate.getContactCredentials());
 			addContactValidator.setRequest(request);
-			addContactValidator.validate();
+			addContactValidator.parse();
 			delegate.saveEditing(addContactValidator.getErrors());
 			if (blockToRefresh != null)
 				return blockToRefresh;

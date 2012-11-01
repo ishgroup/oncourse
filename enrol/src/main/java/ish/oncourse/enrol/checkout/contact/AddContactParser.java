@@ -6,7 +6,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddContactValidator {
+public class AddContactParser {
 
 	public static final String FIELD_NAME_firstName = "firstName";
 	public static final String FIELD_NAME_lastName = "lastName";
@@ -17,31 +17,31 @@ public class AddContactValidator {
 
 	private Map<String, String> errors = new HashMap<String, String>();
 
-	public void validate()
+	public void parse()
 	{
 		contactCredentials.setFirstName(request.getParameter(FIELD_NAME_firstName));
 		contactCredentials.setLastName(request.getParameter(FIELD_NAME_lastName));
 		contactCredentials.setEmail(request.getParameter(FIELD_NAME_email));
-		validateFirstName();
-		validateLastName();
-		validateEmail();
+		parseFirstName();
+		parseLastName();
+		parseEmail();
 	}
 
-	private void validateFirstName()
+	private void parseFirstName()
 	{
 		String message = Contact.validateGivenName("student", contactCredentials.getFirstName());
 		if (message != null)
 			errors.put(FIELD_NAME_firstName, message);
 	}
 
-	private void validateLastName()
+	private void parseLastName()
 	{
 		String message = Contact.validateFamilyName("student", contactCredentials.getLastName());
 		if (message != null)
 			errors.put(FIELD_NAME_lastName, message);
 	}
 
-	private void validateEmail()
+	private void parseEmail()
 	{
 		String message = Contact.validateEmail("student", contactCredentials.getEmail());
 		if (message != null)

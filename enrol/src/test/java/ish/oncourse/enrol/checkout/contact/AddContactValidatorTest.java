@@ -14,27 +14,27 @@ public class AddContactValidatorTest {
 	@Test
 	public void test()
 	{
-		AddContactValidator validator = new AddContactValidator();
+		AddContactParser validator = new AddContactParser();
 		validator.setContactCredentials(new ContactCredentials());
 		validator.setRequest(createValidRequest());
 
 		assertNotNull(validator.getContactCredentials());
 		assertNotNull(validator.getRequest());
 		assertNotNull(validator.getErrors());
-		validator.validate();
+		validator.parse();
 
 		assertNotNull(validator.getContactCredentials().getFirstName());
 		assertNotNull(validator.getContactCredentials().getLastName());
 		assertNotNull(validator.getContactCredentials().getEmail());
 		assertTrue(validator.getErrors().isEmpty());
 
-		validator = new AddContactValidator();
+		validator = new AddContactParser();
 		validator.setContactCredentials(new ContactCredentials());
 		validator.setRequest(createInvalidRequest());
 		assertNotNull(validator.getContactCredentials());
 		assertNotNull(validator.getRequest());
 		assertNotNull(validator.getErrors());
-		validator.validate();
+		validator.parse();
 		assertNull(validator.getContactCredentials().getFirstName());
 		assertNull(validator.getContactCredentials().getLastName());
 		assertNull(validator.getContactCredentials().getEmail());
@@ -63,11 +63,11 @@ public class AddContactValidatorTest {
 
 			@Override
 			public String getParameter(String name) {
-				if (name.equals(AddContactValidator.FIELD_NAME_firstName))
+				if (name.equals(AddContactParser.FIELD_NAME_firstName))
 					return null;
-				if (name.equals(AddContactValidator.FIELD_NAME_lastName))
+				if (name.equals(AddContactParser.FIELD_NAME_lastName))
 					return null;
-				if (name.equals(AddContactValidator.FIELD_NAME_email))
+				if (name.equals(AddContactParser.FIELD_NAME_email))
 					return null;
 				throw new IllegalArgumentException();
 			}
@@ -167,11 +167,11 @@ public class AddContactValidatorTest {
 
 			@Override
 			public String getParameter(String name) {
-				if (name.equals(AddContactValidator.FIELD_NAME_firstName))
-					return AddContactValidator.FIELD_NAME_firstName;
-				if (name.equals(AddContactValidator.FIELD_NAME_lastName))
-					return AddContactValidator.FIELD_NAME_lastName;
-				if (name.equals(AddContactValidator.FIELD_NAME_email))
+				if (name.equals(AddContactParser.FIELD_NAME_firstName))
+					return AddContactParser.FIELD_NAME_firstName;
+				if (name.equals(AddContactParser.FIELD_NAME_lastName))
+					return AddContactParser.FIELD_NAME_lastName;
+				if (name.equals(AddContactParser.FIELD_NAME_email))
 					return "test@ish.com.au";
 				throw new IllegalArgumentException();
 			}

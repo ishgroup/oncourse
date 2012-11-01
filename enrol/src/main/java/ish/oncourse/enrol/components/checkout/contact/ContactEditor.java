@@ -1,16 +1,13 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
-import ish.oncourse.enrol.checkout.contact.ContactEditorValidator;
+import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -18,13 +15,15 @@ import org.apache.tapestry5.services.Request;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import static ish.oncourse.enrol.checkout.contact.ContactEditorValidator.LABEL_TEMPLATE;
+import static ish.oncourse.enrol.checkout.contact.ContactEditorParser.LABEL_TEMPLATE;
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 
 public class ContactEditor {
 
 	@Parameter(required = true)
+	@Property
 	private ContactEditorDelegate delegate;
 
 	@Parameter
@@ -44,6 +43,11 @@ public class ContactEditor {
 
 	@Property
 	private String fieldName;
+
+	@InjectComponent
+	private AvetmissEditor avetmissEditor;
+
+	private Map<String,String> errors;
 
 
 	@SetupRender
@@ -74,6 +78,12 @@ public class ContactEditor {
 		return messages.get(String.format(LABEL_TEMPLATE, fieldName));
 	}
 
+	public String error(String fieldName)
+	{
+		return errors != null ? errors.get(fieldName):null;
+	}
+
+
 	public String value(String fieldName)
 	{
 		ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(fieldName);
@@ -91,14 +101,19 @@ public class ContactEditor {
 			return null;
 		if (delegate != null)
 		{
-			ContactEditorValidator contactEditorValidator = new ContactEditorValidator();
+			ContactEditorParser contactEditorValidator = new ContactEditorParser();
 			contactEditorValidator.setRequest(request);
 			contactEditorValidator.setContact(delegate.getContact());
 			contactEditorValidator.setContactFieldHelper(contactFieldHelper);
 			contactEditorValidator.setMessages(messages);
 			contactEditorValidator.setVisibleFields(delegate.getVisibleFields());
 			contactEditorValidator.setDateFormat(getDateFormat());
-			contactEditorValidator.validate();
+			contactEditorValidator.parse();
+			errors = contactEditorValidator.getErrors();
+
+			avetmissEditor.save();
+			errors.putAll(avetmissEditor.getErrors());
+
 			delegate.saveContact(contactEditorValidator.getErrors());
 			return blockToRefresh;
 		}

@@ -37,8 +37,8 @@
 		<!-- todo -->
 	</t:block>
 
-	<t:block t:id="questionnaire">
-		<!-- todo -->
+	<t:block t:id="avetmissEditor">
+		<span t:type="checkout/contact/avetmisseditor" contact="delegate.contact"/>
 	</t:block>
 
 	<t:block t:id="options">
@@ -57,7 +57,7 @@
 		<t:delegate to="block:contactFields"/>
 		<t:if test="fillRequiredProperties" negate="true">
 			<t:delegate to="block:concessionsEditor"/>
-			<t:delegate to="block:questionnaire"/>
+			<t:delegate to="block:avetmissEditor"/>
 			<t:delegate to="block:options"/>
 		</t:if>
 	</t:form>

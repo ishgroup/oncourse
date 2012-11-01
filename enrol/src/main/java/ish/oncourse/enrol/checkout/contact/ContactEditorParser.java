@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ContactEditorValidator {
+public class ContactEditorParser {
 	private Request request;
 	private Contact contact;
 	private ContactFieldHelper contactFieldHelper;
@@ -31,9 +31,14 @@ public class ContactEditorValidator {
 	private Map<String, String> errors = new HashMap<String, String>();
 
 
-	public void validate() {
-		validateContactFields();
+	public void parse() {
+		parseContactFields();
 		contact.writeProperty(Contact.IS_MALE_PROPERTY, parseBooleanParameter(Contact.IS_MALE_PROPERTY));
+		parseMarketingFields();
+	}
+
+
+	private void parseMarketingFields() {
 		contact.writeProperty(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY));
 		contact.writeProperty(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY));
 		contact.writeProperty(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY));
@@ -47,7 +52,7 @@ public class ContactEditorValidator {
 
 
 
-	private void validateContactFields() {
+	private void parseContactFields() {
 		for (String visibleField : visibleFields) {
 			ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(visibleField);
 			String value = StringUtils.trimToNull(request.getParameter(fieldDescriptor.propertyName));

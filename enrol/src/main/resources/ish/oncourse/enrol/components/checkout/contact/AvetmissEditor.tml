@@ -6,57 +6,38 @@
 		<fieldset id="questionnaire-block">
 			<br/>
 			<p>
-				<label for="countrybirth">In which country were you born?</label>
-						<span class="${countryOfBirthInputClass}">
-							<t:textfield value="countryOfBirthName" class ="input-fixed"
-										 clientId="countrybirth" t:id="countryOfBirth" />
-							<span t:type="ui/HintComponent" validationMessage="countryOfBirthErrorMessage"/>
-						</span>
+				<label for="countryOfBirth">In which country were you born?</label>
+				<t:textfield  t:id="countryOfBirth"  value="countryOfBirth" class ="input-fixed" />
 			</p>
 			<p>
-				<label for="languagehome">What language do you normally speak at home?</label>
-						<span class="${languageHomeInputClass}">
-							<t:textfield value="languageHomeName" class ="input-fixed"
-										 clientId="languagehome" t:id="languageHome" />
-							<span t:type="ui/HintComponent" validationMessage="languageHomeErrorMessage"/>
-						</span>
+				<label for="languageHome">What language do you normally speak at home?</label>
+				<t:textfield t:id="languageHome" value="languageHome" class ="input-fixed"/>
 			</p>
 			<p>
-				<label for="englishproficiency">How well do you speak English?</label>
-				<t:select value="contact.student.englishProficiency" model="englishProficiencySelectModel" clientId="englishproficiency" blankOption="NEVER"/>
+				<label for="englishProficiency">How well do you speak English?</label>
+				<t:select t:id="englishProficiency" value="contact.student.englishProficiency" model="englishProficiencySelectModel" blankOption="NEVER"/>
 			</p>
 			<p>
-				<label for="indigenous">Are you of Aboriginal/Torres Strait Islander origin?</label>
-				<t:select value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" clientId="indigenous" blankOption="NEVER"/>
+				<label for="indigenousStatus">Are you of Aboriginal/Torres Strait Islander origin?</label>
+				<t:select t:id="indigenousStatus" value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" blankOption="NEVER"/>
 			</p>
 			<p>
-				<label for="schoollevel">What is your highest COMPLETED school level?</label>
-				<t:select value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" clientId="schoollevel" blankOption="NEVER"/>
+				<label for="highestSchoolLevel">What is your highest COMPLETED school level?</label>
+				<t:select t:id="highestSchoolLevel" value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" blankOption="NEVER"/>
 			</p>
 			<p>
-				<label for="schoolyear">In which year did you finish your highschool?</label>
-						<span class="${schoolYearInputClass}">
-							<t:textfield value="schoolYearStr" class ="input-fixed"
-										 clientId="schoolyear" t:id="schoolYear" />
-							<span t:type="ui/HintComponent" validationMessage="schoolYearErrorMessage"/>
-						</span>
+				<label for="yearSchoolCompleted">In which year did you finish your highschool?</label>
+				<t:textfield t:id="yearSchoolCompleted"  value="yearSchoolCompleted" class ="input-fixed"/>
 			</p>
 			<p>
-				<label for="prioreducation">Have you SUCCESSFULLY completed any of the following qualifications?</label>
-				<t:select value="contact.student.priorEducationCode" model="priorEducationSelectModel" clientId="prioreducation" blankOption="NEVER"/>
+				<label for="priorEducationCode">Have you SUCCESSFULLY completed any of the following qualifications?</label>
+				<t:select t:id="priorEducationCode" value="contact.student.priorEducationCode" model="priorEducationSelectModel" blankOption="NEVER"/>
 			</p>
 			<p>
-				<label>
+				<label for="disabilityType">
 					${message:extra-conditions} Please <a href="/about/contact" title="${message:contact-link-title}" class="popup">contact us</a> ${message:contact-message}
 				</label>
-				<!-- //TODO uncomment for disability type list -->
-				<!-- t:select value="contact.student.disabilityType" model="disabilityTypeSelectModel" clientId="disabilitytype" blankOption="NEVER"/-->
-				<div class="radio-list">
-					<t:radiogroup t:value="hasDisability">
-						<input type="radio" t:type="radio" t:value="true"/> Yes
-						<input type="radio" t:type="radio" t:value="false"/> No
-					</t:radiogroup>
-				</div>
+				<t:select t:id="disabilityType" value="contact.student.disabilityType" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
 			</p>
 		</fieldset>
 	</div>
