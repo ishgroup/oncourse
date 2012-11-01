@@ -14,6 +14,7 @@
 	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<t:if test="hassessions">
 			<t:loop source="sessionsByDate" value="currentBucket">
+				<div class="entry-info">
 				<t:loop source="currentBucket.value" value="session">
 					<div class="day-info">
 						<div class="left-info">
@@ -27,7 +28,7 @@
 						<div class="clear"></div>
 					</div>
 				</t:loop>
-				
+				</div>
 			</t:loop>
 			
 			<p:else>
