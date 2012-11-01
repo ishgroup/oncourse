@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Timetable list" bodyClass="literal:login-wrapper"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 	<h1>Timetable</h1>
 	
@@ -21,9 +21,9 @@
 				
 			</t:loop>
 			
-			<t:else>
+			<p:else>
 				You have no currently scheduled classes.
-			</t:else>
+			</p:else>
 		</t:if>
 	</div>
 	<!--<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
