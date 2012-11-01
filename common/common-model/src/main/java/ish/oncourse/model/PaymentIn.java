@@ -47,7 +47,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Payment expire interval in minutes
 	 */
-	public static final int EXPIRE_INTERVAL = 1;
+	public static final int EXPIRE_INTERVAL = 20;
 
 	// In order not to query the whole paymentIn
 	// table we limit time window to 3 month
