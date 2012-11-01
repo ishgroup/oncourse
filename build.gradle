@@ -18,10 +18,11 @@ buildscript {
 		classpath 'bmuschko:gradle-cargo-plugin:0.5.6'
 		classpath 'org.codehaus.cargo:cargo-core-uberjar:1.2.2'
 		classpath 'org.codehaus.cargo:cargo-ant:1.2.2'
+        classpath 'au.com.ish.gradle:release:2.0'
 	}
 }
 
-version = 'trunk-SNAPSHOT' //TODO implement release plugin
+apply plugin: 'release'
 
 allprojects {
 	apply plugin: 'java'
