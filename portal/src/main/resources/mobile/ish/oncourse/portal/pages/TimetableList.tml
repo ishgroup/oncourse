@@ -10,9 +10,10 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<div class="entry-info">
-			<t:if test="hassessions">
+			<p:if test="hassessions">
 				<t:loop source="sessionsByDate" value="currentBucket">
 					<div class="day-info">
 						<div class="left-info">
@@ -31,7 +32,7 @@
 				<p:else>
 					You have no currently scheduled classes.
 				</p:else>
-			</t:if>
+			</p:if>
 		</div>
 	</div>
 	
