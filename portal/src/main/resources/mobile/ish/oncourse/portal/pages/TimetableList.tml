@@ -25,6 +25,7 @@
 							<i class="icon-chevron-right"></i>
 						</div>
 						<div class="clear"></div>
+					</div>
 				</t:loop>
 				
 			</t:loop>
