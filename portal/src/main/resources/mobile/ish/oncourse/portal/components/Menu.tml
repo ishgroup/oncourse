@@ -1,24 +1,35 @@
 <div id="footer" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<ul class="footer-nav">
 		<li>
-			<a href="#"><img src="img/icon/icon-clock-29x29.png" width="29" height="29" alt="time" />
-			<span>Timetable</span></a>
+			<t:pagelink page="prop:TimetablePageName" context="courseClass.id">
+				<img src="${contextPath}/img/icon/icon-clock-29x29.png" width="29" height="29" alt="time" />
+				<span>Timetable</span>
+			</t:pagelink>
 		</li>
 		<li>
-			<a href="#"><span class="cloud">29</span>
-			<span>Message</span></a>
+			<t:pagelink page="prop:MessagePageName" context="courseClass.id">
+				<span class="cloud">29</span>
+				<span>Message</span>
+			</t:pagelink>
 		</li>
 		<li class="active">
-			<a href="#"><img src="img/icon/icon-bord-29x29-active.png" width="29" height="29" alt="cloud" />
-			<span>Classes</span></a>
+			<t:pagelink page="prop:ClassesPageName" context="courseClass.id">
+				<img src="${contextPath}/img/icon/icon-bord-29x29-active.png" width="29" height="29" alt="cloud" />
+				<span>Classes</span>
+			</t:pagelink>
 		</li>
 		<li>
-			<a href="#"><img src="img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
-			<span>Surveys</span></a>
+
+			<t:pagelink page="prop:classSurveyPageName" context="courseClass.id">
+				<img src="${contextPath}/img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
+				<span>Surveys</span>
+			</t:pagelink>
 		</li>
 		<li>
-			<a href="#"><img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
-			<span>Profile</span></a>
+			<t:pagelink page="prop:ProfilePageName" context="courseClass.id">
+				<img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
+				<span>Profile</span>
+			</t:pagelink>
 		</li>
 	</ul>	
 </div>
