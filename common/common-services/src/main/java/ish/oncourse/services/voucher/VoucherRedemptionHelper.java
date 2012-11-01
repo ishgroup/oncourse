@@ -3,7 +3,7 @@ package ish.oncourse.services.voucher;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.common.types.VoucherPaymentStatus;
-import ish.common.types.VoucherStatus;
+import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
@@ -32,7 +32,7 @@ public class VoucherRedemptionHelper {
 	private static final Expression COURSE_VOUCHER_QUALIFIER = ExpressionFactory.greaterExp(Voucher.PRODUCT_PROPERTY + "." 
 		+ VoucherProduct.MAX_COURSES_REDEMPTION_PROPERTY, 0);
 	private static final Expression MONEY_VOUCHER_QUALIFIER = COURSE_VOUCHER_QUALIFIER.notExp();
-	private static final Expression ACTIVE_VOUCHER_QUALIFIER = ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, VoucherStatus.ACTIVE);
+	private static final Expression ACTIVE_VOUCHER_QUALIFIER = ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, ProductStatus.ACTIVE);
 	private List<Voucher> vouchers;
 	private Invoice invoice;
 	private List<PaymentIn> payments;
@@ -169,7 +169,7 @@ public class VoucherRedemptionHelper {
 					voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() - voucherPaymentIn.getEnrolmentsCount());
 				}
 				if (!voucher.isFullyRedeemed()) {
-					voucher.setStatus(VoucherStatus.ACTIVE);
+					voucher.setStatus(ProductStatus.ACTIVE);
 				}
 				ObjectContext context = paymentIn.getObjectContext();
 				context.deleteObject(voucherPaymentIn);
@@ -195,7 +195,7 @@ public class VoucherRedemptionHelper {
 						&& courseVoucher.isApplicableTo(invoiceLine.getEnrolment())) {
 						redeemVoucherForCourse(courseVoucher, invoiceLine);
 						redeemedInvoiceLines.add(invoiceLine);
-						if (VoucherStatus.REDEEMED.equals(courseVoucher.getStatus())) {
+						if (ProductStatus.REDEEMED.equals(courseVoucher.getStatus())) {
 							//if the voucher already redeemed we need to switch to another available voucher
 							break;
 						}
@@ -224,7 +224,7 @@ public class VoucherRedemptionHelper {
 						} else {
 							redeemedInvoiceLine.setAmount(redeemedInvoiceLine.getAmount().subtract(amount));
 						}
-						if (VoucherStatus.REDEEMED.equals(moneyVoucher.getStatus())) {
+						if (ProductStatus.REDEEMED.equals(moneyVoucher.getStatus())) {
 							//if the voucher already redeemed we need to switch to another available voucher
 							break;
 						}
@@ -266,7 +266,7 @@ public class VoucherRedemptionHelper {
 		paymentInLine.setAmount(new Money(paymentInLine.getAmount()).add(amount).toBigDecimal());
 		moneyVoucher.setRedemptionValue(moneyVoucher.getRedemptionValue().subtract(amount));
 		if (moneyVoucher.isFullyRedeemed()) {
-			moneyVoucher.setStatus(VoucherStatus.REDEEMED);
+			moneyVoucher.setStatus(ProductStatus.REDEEMED);
 		}
 		return amount;
 	}
@@ -289,7 +289,7 @@ public class VoucherRedemptionHelper {
 		courseVoucher.setRedeemedCoursesCount(courseVoucher.getRedeemedCoursesCount() + 1);
 		voucherPaymentIn.setEnrolmentsCount(voucherPaymentIn.getEnrolmentsCount() + 1);
 		if (courseVoucher.isFullyRedeemed()) {
-			courseVoucher.setStatus(VoucherStatus.REDEEMED);
+			courseVoucher.setStatus(ProductStatus.REDEEMED);
 		}
 	}
 	

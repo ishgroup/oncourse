@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import ish.common.types.PaymentSource;
-import ish.common.types.VoucherStatus;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
@@ -25,7 +24,6 @@ public abstract class _Voucher extends ProductItem {
     public static final String REDEEMED_COURSES_COUNT_PROPERTY = "redeemedCoursesCount";
     public static final String REDEMPTION_VALUE_PROPERTY = "redemptionValue";
     public static final String SOURCE_PROPERTY = "source";
-    public static final String STATUS_PROPERTY = "status";
     public static final String CONTACT_PROPERTY = "contact";
     public static final String PAYMENTS_PROPERTY = "payments";
     public static final String VOUCHER_PAYMENT_INS_PROPERTY = "voucherPaymentIns";
@@ -72,13 +70,6 @@ public abstract class _Voucher extends ProductItem {
     }
     public PaymentSource getSource() {
         return (PaymentSource)readProperty("source");
-    }
-
-    public void setStatus(VoucherStatus status) {
-        writeProperty("status", status);
-    }
-    public VoucherStatus getStatus() {
-        return (VoucherStatus)readProperty("status");
     }
 
     public void setContact(Contact contact) {

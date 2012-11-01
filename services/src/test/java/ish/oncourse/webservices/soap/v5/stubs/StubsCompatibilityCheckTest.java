@@ -874,6 +874,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		preparedParamethers.add(new ReplicationStubFieldParamether("type", Integer.class));
 		preparedParamethers.add(new ReplicationStubFieldParamether("invoiceLineId", Long.class));
 		preparedParamethers.add(new ReplicationStubFieldParamether("productId", Long.class));
+		preparedParamethers.add(new ReplicationStubFieldParamether("status", Integer.class));
 		return preparedParamethers;
 	}
 	

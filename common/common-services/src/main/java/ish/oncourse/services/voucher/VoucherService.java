@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import ish.common.types.PaymentSource;
-import ish.common.types.VoucherStatus;
+import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -116,7 +116,7 @@ public class VoucherService implements IVoucherService {
 			.andExp(ExpressionFactory.matchExp(Voucher.COLLEGE_PROPERTY, currentCollege))
 			.andExp(ExpressionFactory.greaterOrEqualExp(Voucher.EXPIRY_DATE_PROPERTY, new Date()))
 			.andExp(ExpressionFactory.greaterExp(Voucher.REDEMPTION_VALUE_PROPERTY, Money.ZERO)
-			.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, VoucherStatus.ACTIVE)));
+			.andExp(ExpressionFactory.matchExp(Voucher.STATUS_PROPERTY, ProductStatus.ACTIVE)));
 		@SuppressWarnings("unchecked")
 		List<Voucher> results = cayenneService.sharedContext().performQuery(new SelectQuery(Voucher.class, qualifier));
 		LOGGER.info(String.format("%s found for code %s for college %s", results.size(), code, currentCollege.getId()));
@@ -158,7 +158,7 @@ public class VoucherService implements IVoucherService {
 			throw new IllegalArgumentException("Voucher price can't be null, zero or negative when we purchase voucher.");
 		}
 		voucher.setSource(PaymentSource.SOURCE_WEB);
-		voucher.setStatus(VoucherStatus.NEW);
+		voucher.setStatus(ProductStatus.NEW);
 		voucher.setProduct(voucherProduct);
 		voucher.setRedeemedCoursesCount(0);
 		

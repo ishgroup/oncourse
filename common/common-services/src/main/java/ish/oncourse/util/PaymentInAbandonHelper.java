@@ -17,7 +17,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
-import ish.common.types.VoucherStatus;
+import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -121,7 +121,7 @@ public class PaymentInAbandonHelper {
 		@SuppressWarnings("unchecked")
 		List<ProductItem> productItems = paymentIn.getObjectContext().performQuery(checkQuery);
 		for (ProductItem productItem : productItems) {
-			if (productItem instanceof Voucher && VoucherStatus.NEW.equals(((Voucher) productItem).getStatus())) {
+			if (productItem instanceof Voucher && ProductStatus.NEW.equals(((Voucher) productItem).getStatus())) {
 				return true;
 			}
 			if (productItem instanceof Membership) {
@@ -253,8 +253,8 @@ public class PaymentInAbandonHelper {
 				for (Voucher voucher : vouchers) {
 					//we should change new vouchers to active in this case
 					voucher.setModified(today);
-					if (VoucherStatus.NEW.equals(voucher.getStatus())) {
-						voucher.setStatus(VoucherStatus.ACTIVE);
+					if (ProductStatus.NEW.equals(voucher.getStatus())) {
+						voucher.setStatus(ProductStatus.ACTIVE);
 					}
 				}
 				//TODO: we should also add the memberships changes here when they receive the status
@@ -276,7 +276,7 @@ public class PaymentInAbandonHelper {
 				voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() - voucherPaymentIn.getEnrolmentsCount());
 			}
 			if (!voucher.isFullyRedeemed()) {
-				voucher.setStatus(VoucherStatus.ACTIVE);
+				voucher.setStatus(ProductStatus.ACTIVE);
 			}
 		}
 	}
@@ -352,8 +352,8 @@ public class PaymentInAbandonHelper {
 			for (Voucher voucher : vouchers) {
 				//we should change new vouchers to canceled in this case
 				voucher.setModified(modifiedTime);
-				if (VoucherStatus.NEW.equals(voucher.getStatus())) {
-					voucher.setStatus(VoucherStatus.CANCELLED);
+				if (ProductStatus.NEW.equals(voucher.getStatus())) {
+					voucher.setStatus(ProductStatus.CANCELLED);
 				}
 			}
 			//TODO: we should also add the memberships changes here when they receive the status

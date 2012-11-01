@@ -5,8 +5,8 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
+import ish.common.types.ProductStatus;
 import ish.common.types.VoucherPaymentStatus;
-import ish.common.types.VoucherStatus;
 import ish.common.util.ExternalValidation;
 import ish.math.Money;
 import ish.oncourse.model.auto._PaymentIn;
@@ -47,7 +47,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 	/**
 	 * Payment expire interval in minutes
 	 */
-	public static final int EXPIRE_INTERVAL = 20;
+	public static final int EXPIRE_INTERVAL = 1;
 
 	// In order not to query the whole paymentIn
 	// table we limit time window to 3 month
@@ -413,7 +413,7 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 				voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() - voucherPaymentIn.getEnrolmentsCount());
 			}
 			if (!voucher.isFullyRedeemed()) {
-				voucher.setStatus(VoucherStatus.ACTIVE);
+				voucher.setStatus(ProductStatus.ACTIVE);
 			}
 			objectsForDelete.add(voucherPaymentIn);
 		}

@@ -147,11 +147,6 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	}
 
 	@Override
-	public void logout(long newCommKey) {
-		authenticateService.logout(newCommKey);
-	}
-
-	@Override
 	@WebMethod(operationName = "sendRecords")
 	public ReplicationResult sendRecords(ReplicationRecords replicationRecords) throws ReplicationFault {
 		try {

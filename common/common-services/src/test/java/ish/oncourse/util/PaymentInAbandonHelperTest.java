@@ -27,7 +27,7 @@ import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.common.types.VoucherPaymentStatus;
-import ish.common.types.VoucherStatus;
+import ish.common.types.ProductStatus;
 import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
@@ -268,9 +268,9 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		Voucher voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher status should be active", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
 		
-		voucher.setStatus(VoucherStatus.NEW);
+		voucher.setStatus(ProductStatus.NEW);
 		voucher.setExpiryDate(ProductUtil.calculateExpiryDate(new Date(), voucher.getVoucherProduct().getExpiryType(), 
 				voucher.getVoucherProduct().getExpiryDays()));
 		context.commitChanges();
@@ -295,7 +295,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		voucher.setStatus(VoucherStatus.ACTIVE);
+		voucher.setStatus(ProductStatus.ACTIVE);
 		context.commitChanges();
 		
 		//create helper for abandon
@@ -308,7 +308,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		voucher.setStatus(VoucherStatus.CANCELLED);
+		voucher.setStatus(ProductStatus.CANCELLED);
 		context.commitChanges();
 		
 		//create helper for abandon
@@ -321,7 +321,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		voucher.setStatus(VoucherStatus.CREDITED);
+		voucher.setStatus(ProductStatus.CREDITED);
 		context.commitChanges();
 			
 		//create helper for abandon
@@ -334,7 +334,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		voucher.setStatus(VoucherStatus.REDEEMED);
+		voucher.setStatus(ProductStatus.REDEEMED);
 		context.commitChanges();
 				
 		//create helper for abandon
@@ -473,8 +473,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		Voucher voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher status should be active", VoucherStatus.ACTIVE, voucher.getStatus());
-		voucher.setStatus(VoucherStatus.NEW);
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
+		voucher.setStatus(ProductStatus.NEW);
 		voucher.setInvoiceLine(invoiceLine);
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);
@@ -500,7 +500,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
 		voucher = invoiceLine.getVouchers().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
-		assertEquals("Voucher status should be new", VoucherStatus.NEW, voucher.getStatus());
+		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//create helper for abandon keep invoice
 		helper = new PaymentInAbandonHelper(paymentIn, true);
@@ -519,7 +519,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
 		voucher = invoiceLine.getVouchers().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
-		assertEquals("Voucher status should be active after abandon keep invoice", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("Voucher status should be active after abandon keep invoice", ProductStatus.ACTIVE, voucher.getStatus());
 		
 		context.rollbackChanges();
 	}
@@ -607,8 +607,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		Voucher voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher status should be active", VoucherStatus.ACTIVE, voucher.getStatus());
-		voucher.setStatus(VoucherStatus.NEW);
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
+		voucher.setStatus(ProductStatus.NEW);
 		voucher.setInvoiceLine(invoiceLine);
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);
@@ -634,7 +634,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
 		voucher = invoiceLine.getVouchers().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
-		assertEquals("Voucher status should be new", VoucherStatus.NEW, voucher.getStatus());
+		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//create helper for abandon 
 		helper = new PaymentInAbandonHelper(paymentIn, false);
@@ -648,7 +648,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
-		assertEquals("Voucher status after abandon should be failed", VoucherStatus.CANCELLED, voucher.getStatus());
+		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 		
 		context.rollbackChanges();
 	}
@@ -778,8 +778,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		Voucher voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher status should be active", VoucherStatus.ACTIVE, voucher.getStatus());
-		voucher.setStatus(VoucherStatus.NEW);
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
+		voucher.setStatus(ProductStatus.NEW);
 		voucher.setInvoiceLine(invoiceLine);
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);
@@ -806,7 +806,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
 		voucher = invoiceLine.getVouchers().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
-		assertEquals("Voucher status should be new", VoucherStatus.NEW, voucher.getStatus());
+		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//create helper for abandon 
 		helper = new PaymentInAbandonHelper(paymentIn, false);
@@ -820,7 +820,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
-		assertEquals("Enrollment status after abandon should be failed", VoucherStatus.CANCELLED, voucher.getStatus());
+		assertEquals("Enrollment status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 		
 		context.rollbackChanges();
 	}
@@ -852,7 +852,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		Voucher voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher status should be active", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
 		//add enough money for voucher and commit changes
 		Money voucherAmount = new Money(paymentIn.getAmount());//.add(Money.ONE);
 		voucher.setRedemptionValue(voucherAmount);
@@ -869,7 +869,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		}
 		voucher.setRedemptionValue(voucher.getRedemptionValue().subtract(new Money(paymentIn.getAmount())));
 		if (voucher.isFullyRedeemed()) {
-			voucher.setStatus(VoucherStatus.REDEEMED);
+			voucher.setStatus(ProductStatus.REDEEMED);
 		}
 		
 		context.commitChanges();
@@ -897,7 +897,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher should be redeemed", VoucherStatus.REDEEMED, voucher.getStatus());
+		assertEquals("Voucher should be redeemed", ProductStatus.REDEEMED, voucher.getStatus());
 		assertTrue("The amount on redeemed voucher should be 0", voucher.getRedemptionValue().isZero());
 		
 		//create helper for abandon keep invoice
@@ -905,7 +905,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("In transaction payment with correct structure should pass the validation", helper.validatePaymentInForAbandon());
 		assertFalse("We should not be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		helper.revertTheVoucherRedemption();
-		assertEquals("Voucher should be still active", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("Voucher should be still active", ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals("Voucher amount should be the same as before the payment attempt", voucherAmount, voucher.getRedemptionValue());
 		//clean relationship for course voucher revert
 		context.deleteObject(voucherPaymentIn);
@@ -929,7 +929,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher status should be active", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
 			
 		VoucherProductCourse voucherProductCourse = context.newObject(VoucherProductCourse.class);
 		voucherProductCourse.setCollege(paymentIn.getCollege());
@@ -948,7 +948,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		}
 		voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() + 1);
 		if (voucher.isFullyRedeemed()) {
-			voucher.setStatus(VoucherStatus.REDEEMED);
+			voucher.setStatus(ProductStatus.REDEEMED);
 		}
 		voucherPaymentIn.setEnrolmentsCount(1);
 		context.commitChanges();
@@ -977,7 +977,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Voucher status should be redeemed", VoucherStatus.REDEEMED, voucher.getStatus());
+		assertEquals("Voucher status should be redeemed", ProductStatus.REDEEMED, voucher.getStatus());
 		assertNotNull("This voucher should be the course voucher", voucher.getVoucherProduct().getRedemptionCourses());
 		assertEquals("This voucher should be the course voucher and have 1 linked course", 1, 
 			voucher.getVoucherProduct().getRedemptionCourses().size());
@@ -987,7 +987,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertTrue("In transaction payment with correct structure should pass the validation", helper.validatePaymentInForAbandon());
 		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
 		helper.revertTheVoucherRedemption();
-		assertEquals("Voucher should be still active", VoucherStatus.ACTIVE, voucher.getStatus());
+		assertEquals("Voucher should be still active", ProductStatus.ACTIVE, voucher.getStatus());
 		assertEquals("Voucher redeemed course count should be the same as before the payment attempt", Integer.valueOf(0), voucher.getRedeemedCoursesCount());
 		//clean relationship for course voucher revert
 		context.deleteObject(voucherPaymentIn);
@@ -1106,8 +1106,8 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
 		Voucher voucher = vouchers.get(0);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Payment status should be in transaction", VoucherStatus.ACTIVE, voucher.getStatus());
-		voucher.setStatus(VoucherStatus.NEW);
+		assertEquals("Payment status should be in transaction", ProductStatus.ACTIVE, voucher.getStatus());
+		voucher.setStatus(ProductStatus.NEW);
 		voucher.setInvoiceLine(invoiceLine);
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);
@@ -1133,7 +1133,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
 		voucher = invoiceLine.getVouchers().get(0);
 		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
-		assertEquals("Voucher status should be new", VoucherStatus.NEW, voucher.getStatus());
+		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
 		
 		//create helper for abandon 
 		helper = new PaymentInAbandonHelper(paymentIn, false);
@@ -1147,7 +1147,7 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		assertEquals("Reverse payment should be internal", PaymentType.INTERNAL, reversePaymentIn.getType());
 		invoice.updateAmountOwing();
 		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
-		assertEquals("Voucher status after abandon should be failed", VoucherStatus.CANCELLED, voucher.getStatus());
+		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
 		
 		context.rollbackChanges();
 	}

@@ -4,19 +4,20 @@ import ish.oncourse.model.Membership;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v5.stubs.replication.MembershipStub;
 
-public class MembershipStubBuilder extends AbstractWillowStubBuilder<Membership, MembershipStub> {
+public class MembershipStubBuilder extends AbstractProductItemStubBuilder<Membership, MembershipStub> {
 
 	@Override
 	protected MembershipStub createFullStub(Membership entity) {
-		MembershipStub stub = new MembershipStub();
+		MembershipStub stub = super.createFullStub(entity);
+		
 		stub.setContactId(entity.getContact().getId());
-		stub.setCreated(entity.getCreated());
 		stub.setExpiryDate(entity.getExpiryDate());
-		stub.setInvoiceLineId(entity.getInvoiceLine().getId());
-		stub.setModified(entity.getModified());
-		stub.setProductId(entity.getProduct().getId());
-		stub.setType(entity.getType());
 		return stub;
+	}
+	
+	@Override
+	protected MembershipStub createStub() {
+		return new MembershipStub();
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import ish.common.types.ProductStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Product;
@@ -19,6 +20,7 @@ public abstract class _ProductItem extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String STATUS_PROPERTY = "status";
     public static final String TYPE_PROPERTY = "type";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
@@ -45,6 +47,13 @@ public abstract class _ProductItem extends CayenneDataObject {
     }
     public Date getModified() {
         return (Date)readProperty("modified");
+    }
+
+    public void setStatus(ProductStatus status) {
+        writeProperty("status", status);
+    }
+    public ProductStatus getStatus() {
+        return (ProductStatus)readProperty("status");
     }
 
     public void setType(Integer type) {
