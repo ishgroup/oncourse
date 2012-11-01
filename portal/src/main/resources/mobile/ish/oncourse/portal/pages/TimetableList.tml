@@ -34,7 +34,7 @@
 						<div class="left-info">
 							<p>${time}.</p>
 							<strong><a href="#">${name}</a></strong>
-							<p class="tutor"><t:if test="hasRoomAndSite">${session.room.site.name}</t:if>, Tutor: ${tutor.fullName}</p>
+							<!--<p class="tutor"><t:if test="hasRoomAndSite">${session.room.site.name}</t:if>, Tutor: ${tutor.fullName}</p>-->
 						</div>
 						<div class="right-info">
 							<i class="icon icon-user"></i><span>7/15</span>
