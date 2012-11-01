@@ -19,15 +19,14 @@
 			</t:pagelink>
 		</li>
 		<li>
-
 			<t:pagelink page="prop:classSurveyPageName" context="courseClass.id">
-				<img src="${contextPath}/img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
+				<img src="${contextPath}/img/icon/star-icon-disable.png" width="29" height="29" alt="star" />
 				<span>Surveys</span>
 			</t:pagelink>
 		</li>
 		<li>
 			<t:pagelink page="prop:ProfilePageName" context="courseClass.id">
-				<img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
+				<img src="${contextPath}/img/icon/user-icon-29x29.png" width="29" height="29" alt="user" />
 				<span>Profile</span>
 			</t:pagelink>
 		</li>
