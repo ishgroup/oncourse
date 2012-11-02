@@ -32,7 +32,7 @@
 					<t:actionLink href="#" t:id="attendance" style="display: none;"/>
 				</span>
 				${attendance.student.contact.givenName}
-				<span class="right">${attendance.student.contact.attendancepercentage}</span>
+				<span class="right">82%</span>
 				<i class="icon-chevron-right"></i>
 			</li>
 		</t:loop>
