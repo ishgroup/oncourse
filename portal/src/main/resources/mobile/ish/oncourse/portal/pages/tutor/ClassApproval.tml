@@ -1,4 +1,4 @@
-<html t:type="pagestructure" title="literal:Class Approval"
+<html t:type="pagestructure" title="literal:Class Approval" bodyClass="literal:approval-wrapper"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 	<div class="class-info-title">
