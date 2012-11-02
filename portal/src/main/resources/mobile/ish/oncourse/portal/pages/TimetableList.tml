@@ -13,24 +13,23 @@
 	
 	<div id="list" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 		<t:if test="hassessions">
-			<t:loop source="sessionsByDate" value="currentBucket">
-				<div class="entry-info">
-				<t:loop source="currentBucket.value" value="session">
-					<div class="day-info">
-						<div class="left-info">
-							<p>${time}.</p>
-							<strong><a href="#">${name}</a></strong>
+			<div class="entry-info">
+				<t:loop source="sessionsByDate" value="currentBucket">
+					<t:loop source="currentBucket.value" value="session">
+						<div class="day-info">
+							<div class="left-info">
+								<p>${time}.</p>
+								<strong><a href="#">${name}</a></strong>
+							</div>
+							<div class="right-info">
+								<i class="icon icon-user"></i><span>7/15</span>
+								<i class="icon-chevron-right"></i>
+							</div>
+							<div class="clear"></div>
 						</div>
-						<div class="right-info">
-							<i class="icon icon-user"></i><span>7/15</span>
-							<i class="icon-chevron-right"></i>
-						</div>
-						<div class="clear"></div>
-					</div>
+					</t:loop>
 				</t:loop>
-				</div>
-			</t:loop>
-			
+			</div>
 			<p:else>
 				You have no currently scheduled classes.
 			</p:else>
