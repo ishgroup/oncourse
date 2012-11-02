@@ -1,9 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<h4 class="heading new-messages">
-		<a href="#">Messages (${totalMessage} new)</a><i class="icon-chevron-right pull-right icon-white"></i>
+		<a href="#">Messages (15 new)</a><i class="icon-chevron-right pull-right icon-white"></i>
 	</h4>
-	<ul class="message-content">
+	<!--<ul class="message-content">
 		<t:loop source="messages" value="messages">
 			<li>
 				<h6>${message}</h6>
@@ -11,6 +11,6 @@
 				<i class="icon-chevron-right pull-right"></i>
 			</li>
 		</t:loop>
-	</ul>
+	</ul>-->
 	
 </t:container>
