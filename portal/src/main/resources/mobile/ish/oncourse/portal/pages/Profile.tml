@@ -44,15 +44,6 @@
 					</div>
 					
 					<div class="form-row">
-						<label for="password">Password</label>
-						<t:passwordfield name="password" t:id="password" maxlength="200" class="input"/> 
-					</div>
-					<div class="form-row">
-						<label for="confirmpassword">Confirm password</label>
-						<t:passwordfield name="confirmpassword" t:id="confirmpassword" maxlength="200" class="input" />
-					</div>
-					
-					<div class="form-row">
 						<label for="birthDate">Date of birth</label>
 						<t:TextField value="birthDateProperty" t:id="birthDate" t:validate="required" type="text" maxlength="300" class="input"/>
 					</div>
@@ -117,6 +108,22 @@
 						<t:submit  t:id="saveProfileAction" value="Save" class="btn" clientId="save-student-profile"/> 
 					</div>
 					
+				</t:form>
+				
+				<t:form t:id="passwordForm">
+					<fieldset id="passwordBlock">
+						<div class="form-row">
+							<label for="password">Password</label>
+							<t:passwordfield name="password" t:id="password" maxlength="200" class="input"/> 
+						</div>
+						<div class="form-row">
+							<label for="confirmpassword">Confirm password</label>
+							<t:passwordfield name="confirmpassword" t:id="confirmpassword" maxlength="200" class="input" />
+						</div>
+					</fieldset>
+					<div class="actions" xml:space="preserve">
+						<t:submit t:id="savePasswordAction" value="Save" class="btn btn-primary" clientId="save-password"/>
+					</div>
 				</t:form>
 			</div>
 		</div>
