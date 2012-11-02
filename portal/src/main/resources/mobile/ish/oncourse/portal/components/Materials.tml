@@ -7,6 +7,5 @@
 				<li><a href="${material.contextPath}">${material.name} - ${material.size}kb</a><i class="icon-chevron-right pull-right"></i></li>
 			</t:loop>
 		</ul>
-	</t:if>
 	
 </html>
