@@ -105,7 +105,7 @@
 					</t:if>
 					
 					<div class="form-row centered">
-						<t:submit  t:id="saveProfileAction" value="Save" class="btn" clientId="save-student-profile"/> 
+						<t:submit  t:id="saveProfileAction" value="Save" class="btn btn-primary" clientId="save-student-profile"/> 
 					</div>
 					
 				</t:form>
@@ -121,7 +121,7 @@
 							<t:passwordfield name="confirmpassword" t:id="confirmpassword" maxlength="200" class="input" />
 						</div>
 					</fieldset>
-					<div class="actions" xml:space="preserve">
+					<div class="actions centered" xml:space="preserve">
 						<t:submit t:id="savePasswordAction" value="Save" class="btn btn-primary" clientId="save-password"/>
 					</div>
 				</t:form>
