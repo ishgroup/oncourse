@@ -5,7 +5,8 @@
 			<div class="class-coming-up">
 				<p>${month}. ${day}, <t:if test="today"><font>TODAY</font></t:if> ${time}</p>
 				<p><span>${room.site.name}</span></p>
-				<t:if test="moreSession"><t:pagelink class="btn" page="prop:classInfoMore">More</t:pagelink></t:if>
+				<!--<t:if test="moreSession"><t:pagelink class="btn" page="prop:classInfoMore">More</t:pagelink></t:if>-->
+				<a href="#" class="btn">More</a>
 			</div>
 			
 			<p:else>There's no class available.</p:else>
