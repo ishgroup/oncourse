@@ -105,10 +105,24 @@ allprojects {
 		ignoreFailures = true  // ignore test failures so that the test aggregate still works
 	}
 
-	apply plugin: 'cobertura'
-	cobertura {
-		coverageFormat = 'xml'
-	}
+    if (project.gradle.getStartParameter().getTaskNames().contains("tasks")) {
+        task cobertura << {
+            throw new IllegalStateException("Because of a bug in Gradle, you can't run cobertura and tasks together")
+        }
+
+        cobertura.description = """Generate Cobertura code coverage report
+		======================== NOTE ==========================
+		There is a workaround that has to do with gradle issue 2023 in the build file.
+		https://github.com/valkolovos/gradle_cobertura/issues/18
+		http://issues.gradle.org//browse/GRADLE-2023
+		"""
+    } else {
+        apply plugin: 'cobertura'
+        cobertura {
+            coverageFormat = 'xml'
+        }
+    }
+
 }
 
 apply plugin: 'sonar'
