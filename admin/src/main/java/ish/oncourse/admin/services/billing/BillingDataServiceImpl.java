@@ -131,7 +131,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		}
 
 		// tasmania ecommerce
-		Long tasmaniaId = new Long(15);
+		Long tasmaniaId = 15L;
 		
 		if (data.get(tasmaniaId) != null) {
 			Calendar cal = Calendar.getInstance();

@@ -188,7 +188,7 @@ public class SearchService implements ISearchService {
                     coursesQuery.append(String.format("(name:%s AND collegeId:%s)", t, collegeId)).append(SOLR_OR_STRING);
 
                     coursesQuery.append(String.format("(course_code:%s AND collegeId:%s)",
-                            t.indexOf("\\-") < 0 ? t : t.substring(0, t.indexOf("\\-")), collegeId));
+		                    !t.contains("\\-") ? t : t.substring(0, t.indexOf("\\-")), collegeId));
 
                     suburbsQuery.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s)) ", t, t));
 

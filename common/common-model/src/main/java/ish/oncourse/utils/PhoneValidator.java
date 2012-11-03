@@ -21,8 +21,7 @@ import java.util.regex.Pattern;
 public class PhoneValidator {
 
 	// FIXME: verify logic
-	private static List<String> _VALID_AREA_CODES = Arrays.asList(new String[] {
-			"02", "03", "04", "07", "08" });
+	private static List<String> _VALID_AREA_CODES = Arrays.asList("02", "03", "04", "07", "08");
 
 	public static String stripNonNumericChars(String value) {
 		if (value != null) {

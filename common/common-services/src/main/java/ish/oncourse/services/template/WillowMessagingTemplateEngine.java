@@ -134,9 +134,7 @@ public class WillowMessagingTemplateEngine {
 	public static String translatedTemplateFromValues(String template, Map<String, Object> keyValues) throws NullPointerException,
 			IllegalArgumentException {
 		String result = template;
-		Iterator<String> iter = keyValues.keySet().iterator();
-		while (iter.hasNext()) {
-			String keyPath = iter.next();
+		for (String keyPath : keyValues.keySet()) {
 			Object value = keyValues.get(keyPath);
 			String pattern = "<[ ]*" + keyPath + "[ ]*>";
 

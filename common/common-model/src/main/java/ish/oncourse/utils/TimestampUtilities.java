@@ -29,60 +29,58 @@ import java.util.TimeZone;
 public class TimestampUtilities {
 
 	private static final List<String> _DateFormats = Arrays
-			.asList(new String[] { "dMMyy", "dMMyyyy", "d/MM/yy", "d/MM/yyyy",
-					"d-MM-yy", "d-MM-yyyy", "d.MM.yy", "d.MM.yyyy" });
+			.asList("dMMyy", "dMMyyyy", "d/MM/yy", "d/MM/yyyy",
+					"d-MM-yy", "d-MM-yyyy", "d.MM.yy", "d.MM.yyyy");
 
 	private static final List<String> _TimeFormats = Arrays
-			.asList(new String[] { "hmmaaa", "hhmmaaa", "h:mmaaa", "hh:mmaaa",
-					"H:mm", "HH:mm", "Hmm", "HHmm" });
+			.asList("hmmaaa", "hhmmaaa", "h:mmaaa", "hh:mmaaa",
+					"H:mm", "HH:mm", "Hmm", "HHmm");
 
 	/**
 	 * The days of week names. e.g., Mon, Tue, Wed and so on.
 	 */
 	public static List<String> DaysOfWeekAbbreviatedNames = Arrays
-			.asList(new String[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-					"Sun" });
+			.asList("Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+					"Sun");
 
 	public static List<String> DaysOfWeekAbbreviatedNamesLowerCase = Arrays
-			.asList(new String[] { "mon", "tue", "wed", "thu", "fri", "sat",
-					"sun" });
+			.asList("mon", "tue", "wed", "thu", "fri", "sat",
+					"sun");
 
 	public static List<String> DaysOfWeekendAbbreviatedNames = Arrays
-			.asList(new String[] { "Sat", "Sun" });
+			.asList("Sat", "Sun");
 
 	public static List<String> DaysOfWeekendAbbreviatedNamesLowerCase = Arrays
-			.asList(new String[] { "sat", "sun" });
+			.asList("sat", "sun");
 
-	public static List<String> DaysOfWeekendNames = Arrays.asList(new String[] {
-			"Saturday", "Sunday" });
+	public static List<String> DaysOfWeekendNames = Arrays.asList("Saturday", "Sunday");
 
 	public static List<String> DaysOfWeekendNamesLowerCase = Arrays
-			.asList(new String[] { "saturday", "sunday" });
+			.asList("saturday", "sunday");
 
 	/**
 	 * The days of week names. e.g., Monday, Tuesday, and so on.
 	 */
-	public static List<String> DaysOfWeekNames = Arrays.asList(new String[] {
-			"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
-			"Sunday" });
+	public static List<String> DaysOfWeekNames = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+			"Sunday");
 
 	public static List<String> DaysOfWeekNamesLowerCase = Arrays
-			.asList(new String[] { "monday", "tuesday", "wednesday",
-					"thursday", "friday", "saturday", "sunday" });
+			.asList("monday", "tuesday", "wednesday",
+					"thursday", "friday", "saturday", "sunday");
 
 	public static List<String> DaysOfWorkingWeekAbbreviatedNames = Arrays
-			.asList(new String[] { "Mon", "Tue", "Wed", "Thu", "Fri" });
+			.asList("Mon", "Tue", "Wed", "Thu", "Fri");
 
 	public static List<String> DaysOfWorkingWeekAbbreviatedNamesLowerCase = Arrays
-			.asList(new String[] { "mon", "tue", "wed", "thu", "fri" });
+			.asList("mon", "tue", "wed", "thu", "fri");
 
 	public static List<String> DaysOfWorkingWeekNames = Arrays
-			.asList(new String[] { "Monday", "Tuesday", "Wednesday",
-					"Thursday", "Friday" });
+			.asList("Monday", "Tuesday", "Wednesday",
+					"Thursday", "Friday");
 
 	public static List<String> DaysOfWorkingWeekNamesLowerCase = Arrays
-			.asList(new String[] { "monday", "tuesday", "wednesday",
-					"thursday", "friday" });
+			.asList("monday", "tuesday", "wednesday",
+					"thursday", "friday");
 
 	static Calendar _dateForValueWithValidFormats(String value,
 			List<String> validFormats, TimeZone zone)
@@ -90,8 +88,8 @@ public class TimestampUtilities {
 		if (value != null) {
 			ParseException aParseException = null;
 
-			for (int i = 0, count = validFormats.size(); i < count; i++) {
-				SimpleDateFormat sdf = new SimpleDateFormat(validFormats.get(i));
+			for (String validFormat : validFormats) {
+				SimpleDateFormat sdf = new SimpleDateFormat(validFormat);
 
 				sdf.setLenient(false);
 				sdf.setTimeZone(zone);
