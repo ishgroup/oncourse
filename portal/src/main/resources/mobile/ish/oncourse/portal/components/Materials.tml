@@ -1,5 +1,4 @@
-<html t:type="pagestructure" title="literal:Mailing Lists"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_mailinglists">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	
 		<h4 class="heading">Materials</h4>
 		<ul class="material-list">
@@ -8,4 +7,4 @@
 			</t:loop>
 		</ul>
 	
-</html>
+</t:container>
