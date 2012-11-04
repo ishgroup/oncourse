@@ -13,21 +13,19 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.FormatUtils;
-import ish.oncourse.util.payment.PaymentProcessController;
-import ish.oncourse.util.payment.ProcessPaymentInvokable;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.Messages;
-import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 import java.text.Format;
 import java.util.*;
-import java.util.concurrent.Future;
+
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
+import static java.util.Arrays.asList;
 
 /**
  * Controller class for purchase page in enrol.
@@ -36,8 +34,6 @@ import java.util.concurrent.Future;
  */
 public class PurchaseController {
 	private static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
-
-	public static final String KEY_TEMPLATE_ILLEGAL_STATE = "illegal-state-%s";
 
 	private PurchaseModel model;
 
@@ -76,6 +72,10 @@ public class PurchaseController {
 	 */
 	public synchronized State getState() {
 		return state;
+	}
+
+	void setState(State state) {
+		this.state = state;
 	}
 
 	public boolean isErrorEmptyState() {
@@ -169,189 +169,6 @@ public class PurchaseController {
 		return false;
 	}
 
-	private void init() {
-
-		voucherRedemptionHelper.setInvoice(model.getInvoice());
-		performAction(new ActionParameter(Action.START_ADD_CONTACT));
-	}
-
-	public boolean validateState(Action action) {
-		switch (action) {
-			case INIT:
-				return state == State.INIT;
-			case CHANGE_PAYER:
-			case SET_VOUCHER_PRICE:
-			case ENABLE_ENROLMENT:
-			case DISABLE_ENROLMENT:
-			case ENABLE_PRODUCT_ITEM:
-			case DISABLE_PRODUCT_ITEM:
-			case ADD_DISCOUNT:
-			case ADD_VOUCHER:
-			case PROCEED_TO_PAYMENT:
-			case START_CONCESSION_EDITOR:
-				return state == State.EDIT_CHECKOUT;
-			case ADD_CONCESSION:
-			case REMOVE_CONCESSION:
-			case CANCEL_CONCESSION_EDITOR:
-				return state == State.EDIT_CONCESSION;
-			case START_ADD_CONTACT:
-				return state == State.INIT || state == State.EDIT_CHECKOUT;
-			case CANCEL_ADD_CONTACT:
-			case ADD_CONTACT:
-				return state == State.ADD_CONTACT || state == State.EDIT_CONTACT;
-			case CREDIT_ACCESS:
-				return state == State.EDIT_CHECKOUT;
-			case OWING_APPLY:
-				return state == State.EDIT_CHECKOUT;
-			default:
-				throw new IllegalArgumentException();
-		}
-	}
-
-	private boolean validateENABLE_ENROLMENT(Enrolment enrolment) {
-		/**
-		 * TODO add this check when we try to enable enrolment
-		 * if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
-		 */
-		if (model.isEnrolmentEnabled(enrolment))
-			return false;
-		return true;
-	}
-
-	private boolean validateADD_CONTACT(ActionParameter param) {
-		if (state == State.ADD_CONTACT) {
-			ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
-
-			//todo contact already exists
-			if (getModel().containsContactWith(contactCredentials)) {
-				return false;
-			}
-			ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
-			contactCredentialsEncoder.setContactCredentials(contactCredentials);
-			contactCredentialsEncoder.setPurchaseController(this);
-			contactCredentialsEncoder.encode();
-			Contact contact = contactCredentialsEncoder.getContact();
-			param.setValue(contact);
-			return true;
-		} else return state == State.EDIT_CONTACT;
-	}
-
-	private boolean validateINIT() {
-		if (model.getPayer() != null)
-			return false;
-		if (model.getContacts().size() > 0)
-			return false;
-		if (model.getClasses().size() < 1 && model.getProducts().size() < 1)
-			return false;
-		return true;
-	}
-
-	public boolean validate(ActionParameter param) {
-		if (param.errors != null && param.getErrors().size() > 0) {
-			errors.add(String.format("Invalid param:  State=%s; Action=%s.", state.name(), param.action.name()));
-			errors.addAll(param.errors);
-			return false;
-		}
-		switch (param.action) {
-			case INIT:
-				return validateINIT();
-			case CHANGE_PAYER:
-				Contact contact = param.getValue(Contact.class);
-				return model.getContacts().contains(contact);
-			case SET_VOUCHER_PRICE:
-				break;
-			case ENABLE_ENROLMENT:
-				Enrolment enrolment = param.getValue(Enrolment.class);
-				return validateENABLE_ENROLMENT(enrolment);
-			case DISABLE_ENROLMENT:
-				enrolment = param.getValue(Enrolment.class);
-				if (!model.isEnrolmentEnabled(enrolment))
-					return false;
-				break;
-			case ENABLE_PRODUCT_ITEM:
-				ProductItem productItem = param.getValue(ProductItem.class);
-				if (model.isProductItemEnabled(productItem))
-					return false;
-				break;
-			case DISABLE_PRODUCT_ITEM:
-				productItem = param.getValue(ProductItem.class);
-				if (!model.isProductItemEnabled(productItem))
-					return false;
-				break;
-			case ADD_CONCESSION:
-				break;
-			case REMOVE_CONCESSION:
-				break;
-			case ADD_DISCOUNT:
-				String discountCode = param.getValue(String.class);
-				Discount discount = discountService.getByCode(discountCode);
-				if (discount == null)
-					return false;
-				else {
-					param.setValue(discount);
-					return true;
-				}
-			case ADD_VOUCHER:
-				String voucherCode = param.getValue(String.class);
-				Voucher voucher = voucherService.getVoucherByCode(voucherCode);
-				param.setValue(voucher);
-				return voucher != null && voucher.canBeUsedBy(model.getPayer());
-			case START_CONCESSION_EDITOR:
-			case CANCEL_CONCESSION_EDITOR:
-			case START_ADD_CONTACT:
-			case CANCEL_ADD_CONTACT:
-				break;
-			case ADD_CONTACT:
-				return validateADD_CONTACT(param);
-			case CREDIT_ACCESS:
-				return validateCREDIT_ACCESS(param);
-			case PROCEED_TO_PAYMENT:
-				validateProceedToPayment();
-				return true;
-			default:
-				throw new IllegalArgumentException();
-		}
-		return true;
-	}
-
-	private void validateProceedToPayment() {
-		//todo
-	}
-
-	private void proceedToPayment() {
-
-		model.prepareToMakePayment();
-		model.getObjectContext().commitChanges();
-
-		PaymentProcessController paymentProcessController = new PaymentProcessController();
-		paymentProcessController.setObjectContext(getModel().getObjectContext());
-		paymentProcessController.setPaymentIn(getModel().getPayment());
-		paymentProcessController.setCayenneService(cayenneService);
-		paymentProcessController.setPaymentGatewayService(paymentGatewayServiceBuilder.buildService());
-		paymentProcessController.setParallelExecutor(new ParallelExecutor() {
-			@Override
-			public <T> Future<T> invoke(Invokable<T> invocable) {
-				if (invocable instanceof ProcessPaymentInvokable)
-					invocable.invoke();
-				return null;
-			}
-
-			@Override
-			public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
-				return null;
-			}
-		});
-		paymentProcessController.processAction(PaymentProcessController.PaymentAction.INIT_PAYMENT);
-		paymentEditorController = new PaymentEditorController();
-		paymentEditorController.setPaymentProcessController(paymentProcessController);
-		paymentEditorController.setPurchaseController(this);
-		state = State.EDIT_PAYMENT;
-	}
-
-	private boolean validateCREDIT_ACCESS(ActionParameter param) {
-		errors.add(messages.get(String.format(KEY_TEMPLATE_ILLEGAL_STATE, param.action.name())));
-		return false;
-	}
 
 	/**
 	 * Single entry point to perform all actions. {@link Action} and {@link ActionParameter} values should be specified.
@@ -364,142 +181,29 @@ public class PurchaseController {
 		illegalModel = false;
 		errors.clear();
 
-		if (!validateState(param.action)) {
-			errors.add(String.format("Invalid state:  State=%s; Action=%s.", state.name(), param.action.name()));
+		if (!state.allowedActions.contains(param.action)) {
+			if (LOGGER.isDebugEnabled())
+				errors.add(String.format("Invalid state:  State=%s; Action=%s.", state.name(), param.action.name()));
 			illegalState = true;
 			return;
 		}
 
-		if (!validate(param)) {
+		APurchaseAction action = param.action.createAction(this, param);
+		if (!action.action()) {
 			illegalModel = true;
-			return;
-		}
-
-		switch (param.action) {
-			case INIT:
-				init();
-				break;
-			case CHANGE_PAYER:
-				changePayer(getModel().localizeObject(param.getValue(Contact.class)));
-				break;
-			case ADD_CONTACT:
-				addContact(param.getValue(Contact.class));
-				break;
-			case ENABLE_ENROLMENT:
-				enableEnrolment(param.getValue(Enrolment.class));
-				break;
-			case DISABLE_ENROLMENT:
-				disableEnrolment(param.getValue(Enrolment.class));
-				break;
-			case ENABLE_PRODUCT_ITEM:
-				enableProductItem(param.getValue(ProductItem.class));
-				break;
-			case DISABLE_PRODUCT_ITEM:
-				disableProduct(param.getValue(ProductItem.class));
-				break;
-			case REMOVE_CONCESSION:
-				concessionRemoved(param.getValue(Contact.class), param.getValue(ConcessionType.class));
-				break;
-			case ADD_CONCESSION:
-				concessionAdded(getModel().localizeObject(param.getValue(StudentConcession.class)));
-				break;
-			case ADD_DISCOUNT:
-				addDiscount(getModel().localizeObject(param.getValue(Discount.class)));
-				break;
-			case ADD_VOUCHER:
-				addVoucher(getModel().localizeObject(param.getValue(Voucher.class)));
-				break;
-			case START_CONCESSION_EDITOR:
-				startConcessionEditor(param.getValue(Contact.class));
-				break;
-			case CANCEL_CONCESSION_EDITOR:
-				concessionEditorController = null;
-				state = State.EDIT_CHECKOUT;
-				break;
-			case START_ADD_CONTACT:
-				startAddContact();
-				break;
-			case CANCEL_ADD_CONTACT:
-				addContactController = null;
-				concessionEditorController = null;
-				state = State.EDIT_CHECKOUT;
-				break;
-			case OWING_APPLY:
-				state = State.EDIT_CHECKOUT;
-				break;
-			case CREDIT_ACCESS:
-				state = State.EDIT_CHECKOUT;
-				break;
-			case PROCEED_TO_PAYMENT:
-				proceedToPayment();
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid action.");
 		}
 	}
 
-	private void startAddContact() {
-
-		addContactController = new AddContactController();
-		addContactController.setPurchaseController(this);
-		state = State.ADD_CONTACT;
-	}
-
-	private void startConcessionEditor(Contact value) {
-		concessionEditorController = new ConcessionEditorController();
-		concessionEditorController.setObjectContext(this.getModel().getObjectContext().createChildContext());
-		concessionEditorController.setContact((Contact) concessionEditorController.getObjectContext().localObject(value.getObjectId(), null));
-		concessionEditorController.setPurchaseController(this);
-		state = State.EDIT_CONCESSION;
-	}
 
 	public PurchaseModel getModel() {
 		return model;
 	}
 
-	private void changePayer(Contact contact) {
-		Contact oldPayer = model.getPayer();
-
-		if (oldPayer != null) {
-			model.removeAllProductItems(contact);
-		}
-
-		model.setPayer(contact);
-
-		for (Product product : model.getProducts()) {
-			ProductItem productItem = createProductItem(contact, product);
-			model.addProductItem(productItem);
-			if (true) //todo validation should be added
-				enableProductItem(productItem);
-		}
-
-	}
-
-	private void addContact(Contact contact) {
-		addContactController = null;
-		contactEditorController = null;
-
-
-		if (state.equals(State.ADD_CONTACT)) {
-			boolean isAllRequiredFieldFilled = new ContactFieldHelper(preferenceController).isAllRequiredFieldFilled(contact);
-			if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled) {
-				prepareContactEditor(contact, !isAllRequiredFieldFilled);
-				state = State.EDIT_CONTACT;
-			} else {
-				addContactToModel(contact);
-				state = State.EDIT_CHECKOUT;
-			}
-		} else if (state.equals(State.EDIT_CONTACT)) {
-			addContactToModel(contact);
-			state = State.EDIT_CHECKOUT;
-		} else
-			throw new IllegalStateException();
-	}
 
 	/**
 	 * @param fillRequiredProperties if true we show only required properties where value is null
 	 */
-	private void prepareContactEditor(Contact contact, boolean fillRequiredProperties) {
+	void prepareContactEditor(Contact contact, boolean fillRequiredProperties) {
 		contactEditorController = new ContactEditorController();
 		contactEditorController.setPurchaseController(this);
 		contactEditorController.setContact(contact);
@@ -508,87 +212,28 @@ public class PurchaseController {
 			contactEditorController.setFillRequiredProperties(fillRequiredProperties);
 	}
 
-	private void addContactToModel(Contact contact) {
+	void addContactToModel(Contact contact) {
 		contact = getModel().localizeObject(contact);
 		model.addContact(contact);
 		//add the first contact
 		if (getModel().getPayer() == null) {
-			changePayer(contact);
+			ActionChangePayer actionChangePayer = CHANGE_PAYER.createAction(this);
+			actionChangePayer.setContact(contact);
+			actionChangePayer.action();
 		}
 		for (CourseClass cc : model.getClasses()) {
 			Enrolment enrolment = createEnrolment(cc, contact.getStudent());
 			model.addEnrolment(enrolment);
-			if (validateENABLE_ENROLMENT(enrolment))
-				enableEnrolment(enrolment);
+
+			ActionEnableEnrolment action = ENABLE_ENROLMENT.createAction(this);
+			action.setEnrolment(enrolment);
+			action.action();
 		}
 
 	}
 
-	private void enableEnrolment(Enrolment enrolment) {
-		model.enableEnrolment(enrolment);
-		InvoiceLine il = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, model.getDiscounts());
-		il.setInvoice(model.getInvoice());
-		enrolment.setInvoiceLine(il);
-	}
 
-	private void disableEnrolment(Enrolment enrolment) {
-		model.disableEnrolment(enrolment);
-
-	}
-
-	private void enableProductItem(ProductItem product) {
-		if (product instanceof Voucher) {
-			Voucher voucher = (Voucher) product;
-			if (voucher.getInvoiceLine() == null) {
-				InvoiceLine il = invoiceProcessingService.createInvoiceLineForVoucher(voucher, model.getPayer());
-				il.setInvoice(model.getInvoice());
-				voucher.setInvoiceLine(il);
-			}
-		} else {
-			throw new IllegalArgumentException("Unsupported product type.");
-		}
-		model.enableProductItem(product);
-	}
-
-	private void disableProduct(ProductItem product) {
-		if (product instanceof Voucher) {
-			model.disableProductItem(product);
-		} else {
-			throw new IllegalArgumentException("Unsupported product type.");
-		}
-	}
-
-	private void concessionAdded(StudentConcession studentConcession) {
-		getModel().addConcession(studentConcession);
-		recalculateEnrolmentInvoiceLines();
-		state = State.EDIT_CHECKOUT;
-	}
-
-	private void concessionRemoved(Contact contact, ConcessionType concessionType) {
-		for (StudentConcession sc : contact.getStudent().getStudentConcessions()) {
-			if (sc.getConcessionType().equals(concessionType)) {
-				model.getObjectContext().deleteObject(sc);
-				break;
-			}
-		}
-		getModel().removeConcession(contact, concessionType);
-		recalculateEnrolmentInvoiceLines();
-		state = State.EDIT_CHECKOUT;
-	}
-
-	private void addDiscount(Discount discount) {
-		model.addDiscount(discount);
-		recalculateEnrolmentInvoiceLines();
-	}
-
-	private void addVoucher(Voucher voucher) {
-		voucherRedemptionHelper.addVoucher(voucher);
-		voucherRedemptionHelper.calculateVouchersRedeemPayment();
-		model.clearVoucherPayments();
-		model.addVoucherPayments(voucherRedemptionHelper.getPayments());
-	}
-
-	private void recalculateEnrolmentInvoiceLines() {
+	void recalculateEnrolmentInvoiceLines() {
 
 		for (Contact contact : model.getContacts()) {
 			for (Enrolment enrolment : model.getEnabledEnrolments(contact)) {
@@ -624,7 +269,7 @@ public class PurchaseController {
 	}
 
 
-	private ProductItem createProductItem(Contact contact, Product product) {
+	ProductItem createProductItem(Contact contact, Product product) {
 		if (product instanceof VoucherProduct) {
 			VoucherProduct vp = (VoucherProduct) product;
 			Voucher voucher = voucherService.createVoucher(vp, contact, vp.getPriceExTax());
@@ -676,11 +321,11 @@ public class PurchaseController {
 	}
 
 	public boolean isEditCheckout() {
-		return state == State.EDIT_CHECKOUT;
+		return state == EDIT_CHECKOUT;
 	}
 
 	public boolean isEditContact() {
-		return state == State.EDIT_CONTACT;
+		return state == EDIT_CONTACT;
 	}
 
 	public boolean isEditConcession() {
@@ -696,7 +341,7 @@ public class PurchaseController {
 	}
 
 	public boolean isEditPayment() {
-		return state == State.EDIT_PAYMENT;
+		return state == EDIT_PAYMENT;
 	}
 
 	public ConcessionDelegate getConcessionDelegate() {
@@ -772,10 +417,53 @@ public class PurchaseController {
 		return paymentEditorController;
 	}
 
+	public VoucherRedemptionHelper getVoucherRedemptionHelper() {
+		return voucherRedemptionHelper;
+	}
+
+	public void setConcessionEditorController(ConcessionEditorController concessionEditorController) {
+		this.concessionEditorController = concessionEditorController;
+	}
+
+	public void setAddContactController(AddContactController addContactController) {
+		this.addContactController = addContactController;
+	}
+
+	public ICayenneService getCayenneService() {
+		return cayenneService;
+	}
+
+	public IPaymentGatewayServiceBuilder getPaymentGatewayServiceBuilder() {
+		return paymentGatewayServiceBuilder;
+	}
+
+	public void setPaymentEditorController(PaymentEditorController paymentEditorController) {
+		this.paymentEditorController = paymentEditorController;
+	}
+
 
 	static enum State {
-		INIT, EDIT_CHECKOUT, ERROR_EMPTY_LIST, EDIT_CONCESSION, ADD_CONTACT, EDIT_CONTACT, EDIT_PAYMENT, RESULT_PAYMENT, FINALIZED
+		INIT(Action.INIT, Action.START_ADD_CONTACT),
+		EDIT_CHECKOUT(CHANGE_PAYER, ENABLE_ENROLMENT, ENABLE_ENROLMENT, ENABLE_ENROLMENT, DISABLE_PRODUCT_ITEM, SET_VOUCHER_PRICE, ADD_DISCOUNT, ADD_VOUCHER, PROCEED_TO_PAYMENT, START_CONCESSION_EDITOR),
+		ERROR_EMPTY_LIST,
+		EDIT_CONCESSION(ADD_CONCESSION, REMOVE_CONCESSION, CANCEL_CONCESSION_EDITOR),
+		ADD_CONTACT(Action.ADD_CONTACT),
+		EDIT_CONTACT(Action.ADD_CONTACT, CANCEL_ADD_CONTACT),
+		EDIT_PAYMENT(CHANGE_PAYER, FINISH_PAYMENT),
+		FINALIZED;
+
+		private List<Action> allowedActions;
+
+
+		State(Action... allowedActions) {
+			this.allowedActions = Arrays.asList(allowedActions);
+		}
+
+		public List<Action> getAllowedActions() {
+			return allowedActions;
+		}
 	}
+
 
 	/**
 	 * Enumeration of all actions controller can perform.
@@ -783,35 +471,55 @@ public class PurchaseController {
 	 * @author dzmitry
 	 */
 	public static enum Action {
-		INIT,
-		CHANGE_PAYER(Contact.class),
-		SET_VOUCHER_PRICE(Money.class),
-		ADD_CONTACT(ContactCredentials.class),
-		ENABLE_ENROLMENT(Enrolment.class),
-		DISABLE_ENROLMENT(Enrolment.class),
-		ENABLE_PRODUCT_ITEM(ProductItem.class),
-		DISABLE_PRODUCT_ITEM(ProductItem.class),
-		ADD_CONCESSION(StudentConcession.class),
-		REMOVE_CONCESSION(ConcessionType.class, Contact.class),
-		ADD_DISCOUNT(String.class, Discount.class),
-		ADD_VOUCHER(String.class, Voucher.class),
-		START_CONCESSION_EDITOR(Contact.class),
-		CANCEL_CONCESSION_EDITOR(Contact.class),
-		START_ADD_CONTACT(),
-		CANCEL_ADD_CONTACT(),
-		CREDIT_ACCESS(String.class),
-		OWING_APPLY,
-		PROCEED_TO_PAYMENT;
+		INIT(ActionInit.class),
+		CHANGE_PAYER(ActionChangePayer.class, Contact.class),
+		SET_VOUCHER_PRICE(ActionSetVoucherPrice.class, Money.class),
+		ENABLE_ENROLMENT(ActionEnableEnrolment.class, Enrolment.class),
+		DISABLE_ENROLMENT(ActionDisableEnrolment.class, Enrolment.class),
+		ENABLE_PRODUCT_ITEM(ActionEnableProductItem.class, ProductItem.class),
+		DISABLE_PRODUCT_ITEM(ActionDisableProductItem.class, ProductItem.class),
+		ADD_CONTACT(ActionAddContact.class, ContactCredentials.class),
+		ADD_CONCESSION(ActionAddConcession.class, StudentConcession.class),
+		REMOVE_CONCESSION(ActionRemoveConcession.class, ConcessionType.class, Contact.class),
+		ADD_DISCOUNT(ActionAddDiscount.class, String.class, Discount.class),
+		ADD_VOUCHER(ActionAddVoucher.class, String.class, Voucher.class),
+		START_CONCESSION_EDITOR(ActionStartConcessionEditor.class, Contact.class),
+		CANCEL_CONCESSION_EDITOR(ActionCancelConcessionEditor.class, Contact.class),
+		START_ADD_CONTACT(ActionStartAddContact.class),
+		CANCEL_ADD_CONTACT(ActionCancelAddContact.class),
+		CREDIT_ACCESS(ActionCreditAccess.class, String.class),
+		OWING_APPLY(ActionOwingApply.class),
+		PROCEED_TO_PAYMENT(ActionProceedToPayment.class),
+		FINISH_PAYMENT(ActionFinishPayment.class);
 
+		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
 
-		private Action(Class<?>... paramType) {
-			this.paramTypes = new ArrayList<Class<?>>(Arrays.asList(paramType));
+		private Action(Class<? extends APurchaseAction> actionClass, Class<?>... paramType) {
+			this.actionClass = actionClass;
+			this.paramTypes = new ArrayList<Class<?>>(asList(paramType));
 		}
 
 		public Collection<Class<?>> getActionParamType() {
 			return Collections.unmodifiableCollection(paramTypes);
 		}
+
+		public <A extends APurchaseAction> A createAction(PurchaseController controller) {
+			try {
+				A action = (A) actionClass.getConstructor().newInstance();
+				action.setController(controller);
+				return action;
+			} catch (Throwable e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		public <A extends APurchaseAction> A createAction(PurchaseController controller, ActionParameter actionParameter) {
+			A action = createAction(controller);
+			action.setParameter(actionParameter);
+			return action;
+		}
+
 	}
 
 	/**

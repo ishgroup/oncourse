@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface PaymentEditorDelegate {
 	public void makePayment();
+
 	public void tryAnotherCard();
 	public void abandon();
 	public void changePayer(Contact contact);

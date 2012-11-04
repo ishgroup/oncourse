@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout.contact;
 
 import ish.common.types.*;
+import ish.oncourse.enrol.checkout.IFieldsParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
@@ -14,9 +15,9 @@ import org.apache.tapestry5.services.Request;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AvetmissEditorParser {
+public class AvetmissEditorParser  implements IFieldsParser{
 
-	public static final String KEY_FIELD_ERROR_TEMPLATE = "error-%s";
+
 
 	private ICountryService countryService;
 	private ILanguageService languageService;

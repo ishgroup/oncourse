@@ -138,7 +138,6 @@ public class PaymentEditor {
 		PaymentEditorParser paymentEditorParser = new PaymentEditorParser();
 		paymentEditorParser.setRequest(request);
 		paymentEditorParser.parse();
-
 		delegate.makePayment();
 		return checkout.getCheckoutBlock();
 	}

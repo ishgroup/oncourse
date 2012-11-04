@@ -338,9 +338,14 @@ public class PurchaseModel {
 		getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
 
 		for (Contact contact: getContacts())
+		{
 			for (Enrolment e : getEnabledEnrolments(contact)) {
 				e.setStatus(EnrolmentStatus.IN_TRANSACTION);
 			}
+
+			objectContext.deleteObjects(getDisabledEnrolments(contact));
+			objectContext.deleteObjects(getDisabledProductItems(contact));
+		}
 	}
 
 

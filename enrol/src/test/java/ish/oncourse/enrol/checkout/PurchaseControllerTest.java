@@ -563,10 +563,10 @@ public class PurchaseControllerTest extends ServiceTest {
 				case CANCEL_CONCESSION_EDITOR:
 				case ADD_CONCESSION:
 				case REMOVE_CONCESSION:
-					assertTrue(action.name(), controller.validateState(action));
+					assertTrue(State.EDIT_CONCESSION.getAllowedActions().contains(action));
 					break;
 				default:
-					assertFalse(action.name(), controller.validateState(action));
+					assertFalse(State.EDIT_CONCESSION.getAllowedActions().contains(action));
 					break;
 			}
 		}
