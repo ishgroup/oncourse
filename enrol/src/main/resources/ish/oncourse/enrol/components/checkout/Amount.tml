@@ -2,17 +2,23 @@
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 		>
 	<div class="amount-content">
-		<p><label class="first">Credit available</label><a href="enrolcourses.html#access-password-popup" id="access" class="nyroModal">Access</a></p>
+		<p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
 		<p><label>Voucher</label> <span>(${purchaseController.totalVoucherPayments})</span></p>
-		<p><label>Previous Owing </label><span>${purchaseController.previousOwing}</span> <a href="">(Remove)</a></p>
+		<p><label>Previous Owing </label><span>${purchaseController.previousOwing}</span>
+			<span id="removeOwingLink" class="action-link">(Remove)</span>
+			<t:eventlink t:id="removeOwingEvent" style="{display:none;}"/>
+		</p>
 		<p><label>Total</label>  <span>${purchaseController.totalPayment}</span></p>
 		<p><label>Minimum Payable Now</label> <span>${purchaseController.totalPayment}</span></p>
 	</div>
 
+
 	<div id="access-password-popup">
 		<div class="password-field">
-			<label>Password </label><input type="password" name="password"/><input type="button" class="btn-password" value="Submit" name=""/>
+			<label>Password </label>
+			<input type="password" name="password"/>
+			<button id="submitPassword" class="btn-password">Submit</button>
+			<t:eventlink t:id="creditAccessEvent" style="{display:none;}"/>
 		</div>
 	</div>
-	<div class="clearboth"></div>
 </t:container>

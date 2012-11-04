@@ -12,7 +12,7 @@
 				</p:else>
 				</t:if>
 				${enrolment.courseClass.course.name}
-				<t:actionLink t:id="selectEnrolment" style="{display: none;}" class="selectEnrolmentLink" context="actionContext"/>
+				<t:eventlink t:id="selectEnrolmentEvent" style="{display: none;}" class="selectEnrolmentLink" context="actionContext"/>
 			</label>
 	  		<em>
 	  			<t:if test="enrolment.courseClass.hasRoom">

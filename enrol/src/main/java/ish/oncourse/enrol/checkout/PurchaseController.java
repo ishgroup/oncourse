@@ -4,20 +4,30 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.*;
+import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
+import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.FormatUtils;
+import ish.oncourse.util.payment.PaymentProcessController;
+import ish.oncourse.util.payment.ProcessPaymentInvokable;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.Invokable;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 import java.text.Format;
 import java.util.*;
+import java.util.concurrent.Future;
 
 /**
  * Controller class for purchase page in enrol.
@@ -25,7 +35,9 @@ import java.util.*;
  * @author dzmitry
  */
 public class PurchaseController {
-	public static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
+	private static final Logger LOGGER = Logger.getLogger(PurchaseController.class);
+
+	public static final String KEY_TEMPLATE_ILLEGAL_STATE = "illegal-state-%s";
 
 	private PurchaseModel model;
 
@@ -36,6 +48,10 @@ public class PurchaseController {
 	private IConcessionsService concessionsService;
 	private IStudentService studentService;
 	private PreferenceController preferenceController;
+	private ICayenneService cayenneService;
+	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+
+	private Messages messages;
 
 	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
 
@@ -51,6 +67,7 @@ public class PurchaseController {
 	private ConcessionEditorController concessionEditorController;
 	private AddContactController addContactController;
 	private ContactEditorController contactEditorController;
+	private PaymentEditorController paymentEditorController;
 
 	private List<String> errors = new ArrayList<String>();
 
@@ -106,20 +123,11 @@ public class PurchaseController {
 	 * @return total invoice amount for all actual enrollments.
 	 */
 	public Money getTotalIncGst() {
-		Money result = Money.ZERO;
-		for (Contact contact : getModel().getContacts()) {
-			for (Enrolment enabledEnrolment : getModel().getEnabledEnrolments(contact)) {
-				InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
-				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-			}
-			for (ProductItem enabledProductItem : getModel().getEnabledProductItems(contact)) {
-				InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
-				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
-			}
-		}
+		Money result = model.updateTotalIncGst();
 		moneyFormat = FormatUtils.chooseMoneyFormat(result);
 		return result;
 	}
+
 
 	public Money getTotalPayment() {
 		return new Money(model.getPayment().getAmount());
@@ -133,6 +141,10 @@ public class PurchaseController {
 	public Money getPreviousOwing() {
 		//TODO need functionality to recalculate the value for payer
 		return Money.ZERO;
+	}
+
+	public Money getMinimumPayableNow() {
+		return getTotalPayment();
 	}
 
 
@@ -160,7 +172,7 @@ public class PurchaseController {
 	private void init() {
 
 		voucherRedemptionHelper.setInvoice(model.getInvoice());
-		performAction( new ActionParameter(Action.START_ADD_CONTACT));
+		performAction(new ActionParameter(Action.START_ADD_CONTACT));
 	}
 
 	public boolean validateState(Action action) {
@@ -187,13 +199,16 @@ public class PurchaseController {
 			case CANCEL_ADD_CONTACT:
 			case ADD_CONTACT:
 				return state == State.ADD_CONTACT || state == State.EDIT_CONTACT;
+			case CREDIT_ACCESS:
+				return state == State.EDIT_CHECKOUT;
+			case OWING_APPLY:
+				return state == State.EDIT_CHECKOUT;
 			default:
 				throw new IllegalArgumentException();
 		}
 	}
 
-	private boolean validateENABLE_ENROLMENT(Enrolment enrolment)
-	{
+	private boolean validateENABLE_ENROLMENT(Enrolment enrolment) {
 		/**
 		 * TODO add this check when we try to enable enrolment
 		 * if (!enrolment.isDuplicated() && courseClass.isHasAvailableEnrolmentPlaces() && !courseClass.hasEnded()) {
@@ -203,15 +218,12 @@ public class PurchaseController {
 		return true;
 	}
 
-	private boolean validateADD_CONTACT(ActionParameter param)
-	{
-		if (state == State.ADD_CONTACT)
-		{
+	private boolean validateADD_CONTACT(ActionParameter param) {
+		if (state == State.ADD_CONTACT) {
 			ContactCredentials contactCredentials = param.getValue(ContactCredentials.class);
 
 			//todo contact already exists
-			if (getModel().containsContactWith(contactCredentials))
-			{
+			if (getModel().containsContactWith(contactCredentials)) {
 				return false;
 			}
 			ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
@@ -221,8 +233,7 @@ public class PurchaseController {
 			Contact contact = contactCredentialsEncoder.getContact();
 			param.setValue(contact);
 			return true;
-		}
-		else return state == State.EDIT_CONTACT;
+		} else return state == State.EDIT_CONTACT;
 	}
 
 	private boolean validateINIT() {
@@ -232,17 +243,11 @@ public class PurchaseController {
 			return false;
 		if (model.getClasses().size() < 1 && model.getProducts().size() < 1)
 			return false;
-		for (CourseClass cc : model.getClasses()) {
-			if (cc.isCancelled() || !cc.isHasAvailableEnrolmentPlaces()) {
-				return false;
-			}
-		}
 		return true;
 	}
 
 	public boolean validate(ActionParameter param) {
-		if (param.errors != null && param.getErrors().size() > 0)
-		{
+		if (param.errors != null && param.getErrors().size() > 0) {
 			errors.add(String.format("Invalid param:  State=%s; Action=%s.", state.name(), param.action.name()));
 			errors.addAll(param.errors);
 			return false;
@@ -280,15 +285,17 @@ public class PurchaseController {
 			case ADD_DISCOUNT:
 				String discountCode = param.getValue(String.class);
 				Discount discount = discountService.getByCode(discountCode);
-				param.setValue(discount);
-				return discount != null;
+				if (discount == null)
+					return false;
+				else {
+					param.setValue(discount);
+					return true;
+				}
 			case ADD_VOUCHER:
 				String voucherCode = param.getValue(String.class);
 				Voucher voucher = voucherService.getVoucherByCode(voucherCode);
 				param.setValue(voucher);
 				return voucher != null && voucher.canBeUsedBy(model.getPayer());
-			case PROCEED_TO_PAYMENT:
-				break;
 			case START_CONCESSION_EDITOR:
 			case CANCEL_CONCESSION_EDITOR:
 			case START_ADD_CONTACT:
@@ -296,10 +303,54 @@ public class PurchaseController {
 				break;
 			case ADD_CONTACT:
 				return validateADD_CONTACT(param);
+			case CREDIT_ACCESS:
+				return validateCREDIT_ACCESS(param);
+			case PROCEED_TO_PAYMENT:
+				validateProceedToPayment();
+				return true;
 			default:
 				throw new IllegalArgumentException();
 		}
 		return true;
+	}
+
+	private void validateProceedToPayment() {
+		//todo
+	}
+
+	private void proceedToPayment() {
+
+		model.prepareToMakePayment();
+		model.getObjectContext().commitChanges();
+
+		PaymentProcessController paymentProcessController = new PaymentProcessController();
+		paymentProcessController.setObjectContext(getModel().getObjectContext());
+		paymentProcessController.setPaymentIn(getModel().getPayment());
+		paymentProcessController.setCayenneService(cayenneService);
+		paymentProcessController.setPaymentGatewayService(paymentGatewayServiceBuilder.buildService());
+		paymentProcessController.setParallelExecutor(new ParallelExecutor() {
+			@Override
+			public <T> Future<T> invoke(Invokable<T> invocable) {
+				if (invocable instanceof ProcessPaymentInvokable)
+					invocable.invoke();
+				return null;
+			}
+
+			@Override
+			public <T> T invoke(Class<T> proxyType, Invokable<T> invocable) {
+				return null;
+			}
+		});
+		paymentProcessController.processAction(PaymentProcessController.PaymentAction.INIT_PAYMENT);
+		paymentEditorController = new PaymentEditorController();
+		paymentEditorController.setPaymentProcessController(paymentProcessController);
+		paymentEditorController.setPurchaseController(this);
+		state = State.EDIT_PAYMENT;
+	}
+
+	private boolean validateCREDIT_ACCESS(ActionParameter param) {
+		errors.add(messages.get(String.format(KEY_TEMPLATE_ILLEGAL_STATE, param.action.name())));
+		return false;
 	}
 
 	/**
@@ -314,7 +365,7 @@ public class PurchaseController {
 		errors.clear();
 
 		if (!validateState(param.action)) {
-			errors.add(String.format("Invalid state:  State=%s; Action=%s.",state.name(),param.action.name()));
+			errors.add(String.format("Invalid state:  State=%s; Action=%s.", state.name(), param.action.name()));
 			illegalState = true;
 			return;
 		}
@@ -358,9 +409,6 @@ public class PurchaseController {
 			case ADD_VOUCHER:
 				addVoucher(getModel().localizeObject(param.getValue(Voucher.class)));
 				break;
-			case PROCEED_TO_PAYMENT:
-				state = State.FINALIZED;
-				break;
 			case START_CONCESSION_EDITOR:
 				startConcessionEditor(param.getValue(Contact.class));
 				break;
@@ -375,6 +423,15 @@ public class PurchaseController {
 				addContactController = null;
 				concessionEditorController = null;
 				state = State.EDIT_CHECKOUT;
+				break;
+			case OWING_APPLY:
+				state = State.EDIT_CHECKOUT;
+				break;
+			case CREDIT_ACCESS:
+				state = State.EDIT_CHECKOUT;
+				break;
+			case PROCEED_TO_PAYMENT:
+				proceedToPayment();
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid action.");
@@ -403,15 +460,13 @@ public class PurchaseController {
 	private void changePayer(Contact contact) {
 		Contact oldPayer = model.getPayer();
 
-		if (oldPayer != null)
-		{
+		if (oldPayer != null) {
 			model.removeAllProductItems(contact);
 		}
 
 		model.setPayer(contact);
-		model.getInvoice().setContact(contact);
 
-		for (Product product  : model.getProducts()) {
+		for (Product product : model.getProducts()) {
 			ProductItem productItem = createProductItem(contact, product);
 			model.addProductItem(productItem);
 			if (true) //todo validation should be added
@@ -425,25 +480,19 @@ public class PurchaseController {
 		contactEditorController = null;
 
 
-		if (state.equals(State.ADD_CONTACT))
-		{
+		if (state.equals(State.ADD_CONTACT)) {
 			boolean isAllRequiredFieldFilled = new ContactFieldHelper(preferenceController).isAllRequiredFieldFilled(contact);
-			if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled)
-			{
+			if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled) {
 				prepareContactEditor(contact, !isAllRequiredFieldFilled);
 				state = State.EDIT_CONTACT;
-			}
-			else
-			{
+			} else {
 				addContactToModel(contact);
-				state  = State.EDIT_CHECKOUT;
+				state = State.EDIT_CHECKOUT;
 			}
-		}
-		else if (state.equals(State.EDIT_CONTACT))
-		{
+		} else if (state.equals(State.EDIT_CONTACT)) {
 			addContactToModel(contact);
 			state = State.EDIT_CHECKOUT;
-		}else
+		} else
 			throw new IllegalStateException();
 	}
 
@@ -463,8 +512,7 @@ public class PurchaseController {
 		contact = getModel().localizeObject(contact);
 		model.addContact(contact);
 		//add the first contact
-		if (getModel().getPayer() == null)
-		{
+		if (getModel().getPayer() == null) {
 			changePayer(contact);
 		}
 		for (CourseClass cc : model.getClasses()) {
@@ -630,6 +678,7 @@ public class PurchaseController {
 	public boolean isEditCheckout() {
 		return state == State.EDIT_CHECKOUT;
 	}
+
 	public boolean isEditContact() {
 		return state == State.EDIT_CONTACT;
 	}
@@ -646,6 +695,9 @@ public class PurchaseController {
 		return concessionsService.hasActiveConcessionTypes();
 	}
 
+	public boolean isEditPayment() {
+		return state == State.EDIT_PAYMENT;
+	}
 
 	public ConcessionDelegate getConcessionDelegate() {
 		return concessionEditorController;
@@ -687,9 +739,42 @@ public class PurchaseController {
 		return errors;
 	}
 
+	public Messages getMessages() {
+		return messages;
+	}
+
+	public boolean isNeedConcessionReminder() {
+		if (getPreferenceController().getFeatureConcessionsInEnrolment()) {
+			for (Contact contact : model.getContacts())
+				if (contact.getStudent().getStudentConcessions().isEmpty()) {
+					List<Enrolment> enrolments = model.getEnabledEnrolments(contact);
+					for (Enrolment enrolment : enrolments) {
+						return !enrolment.getCourseClass().getConcessionDiscounts().isEmpty();
+					}
+				}
+		}
+		return false;
+	}
+
+	public void setMessages(Messages messages) {
+		this.messages = messages;
+	}
+
+	public void setCayenneService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService;
+	}
+
+	public void setPaymentGatewayServiceBuilder(IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder) {
+		this.paymentGatewayServiceBuilder = paymentGatewayServiceBuilder;
+	}
+
+	public PaymentEditorDelegate getPaymentEditorDelegate() {
+		return paymentEditorController;
+	}
+
 
 	static enum State {
-		INIT, EDIT_CHECKOUT, FINALIZED, ERROR_EMPTY_LIST, EDIT_CONCESSION, ADD_CONTACT, EDIT_CONTACT
+		INIT, EDIT_CHECKOUT, ERROR_EMPTY_LIST, EDIT_CONCESSION, ADD_CONTACT, EDIT_CONTACT, EDIT_PAYMENT, RESULT_PAYMENT, FINALIZED
 	}
 
 	/**
@@ -714,7 +799,9 @@ public class PurchaseController {
 		CANCEL_CONCESSION_EDITOR(Contact.class),
 		START_ADD_CONTACT(),
 		CANCEL_ADD_CONTACT(),
-		PROCEED_TO_PAYMENT();
+		CREDIT_ACCESS(String.class),
+		OWING_APPLY,
+		PROCEED_TO_PAYMENT;
 
 		private List<Class<?>> paramTypes;
 
@@ -752,7 +839,7 @@ public class PurchaseController {
 					return;
 				}
 			}
-			values.put(value.getClass(),value);
+			values.put(value.getClass(), value);
 		}
 
 		public <T> T getValue(Class<T> valueType) {

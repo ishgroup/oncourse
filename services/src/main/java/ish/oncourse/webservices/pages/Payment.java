@@ -8,10 +8,10 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.util.payment.PaymentProcessController;
+import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
 import ish.oncourse.webservices.components.PaymentForm;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
-import ish.oncourse.webservices.utils.PaymentProcessController;
-import ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
@@ -27,7 +27,7 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.List;
 
-import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS;
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS;
 
 @Import(stylesheet = "css/screen.css")
 public class Payment {

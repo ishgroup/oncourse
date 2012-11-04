@@ -5,7 +5,7 @@ import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.webservices.utils.PaymentInAbandonUtil;
+import ish.oncourse.util.payment.PaymentInAbandonUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;

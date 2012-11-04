@@ -20,16 +20,17 @@
 				</p>
 			</t:loop>
 
-			<p>
-				<label>Gender</label>
-
-				<div class="radio-list">
-					<t:radiogroup t:id="isMale" t:value="contact.isMale">
-						<input type="radio" t:type="radio" t:value="true"/> Male
-						<input type="radio" t:type="radio" t:value="false"/> Female
-					</t:radiogroup>
-				</div>
-			</p>
+			<t:if test="fillRequiredProperties" negate="true">
+				<p>
+					<label>Gender</label>
+					<div class="radio-list">
+						<t:radiogroup t:id="isMale" t:value="contact.isMale">
+							<input type="radio" t:type="radio" t:value="true"/> Male
+							<input type="radio" t:type="radio" t:value="false"/> Female
+						</t:radiogroup>
+					</div>
+				</p>
+			</t:if>
 		</fieldset>
 	</t:block>
 

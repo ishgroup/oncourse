@@ -2,8 +2,8 @@ package ish.oncourse.webservices.components;
 
 import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.pages.Payment;
-import ish.oncourse.webservices.utils.PaymentProcessController;
 import ish.persistence.CommonPreferenceController;
 import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;

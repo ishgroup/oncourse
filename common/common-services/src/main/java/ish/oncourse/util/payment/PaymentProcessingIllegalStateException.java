@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.utils;
+package ish.oncourse.util.payment;
 
 public class PaymentProcessingIllegalStateException extends RuntimeException {
     public PaymentProcessingIllegalStateException() {

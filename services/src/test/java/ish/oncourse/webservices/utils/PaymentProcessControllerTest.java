@@ -6,9 +6,12 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.payment.PaymentProcessController;
+import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
+import ish.oncourse.util.payment.ProcessPaymentInvokable;
+import ish.oncourse.util.payment.StackedPaymentMonitor;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
-import ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -26,8 +29,8 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.concurrent.Future;
 
-import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction.*;
-import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentProcessState.*;
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.*;
 import static org.junit.Assert.*;
 
 public class   PaymentProcessControllerTest extends ServiceTest {

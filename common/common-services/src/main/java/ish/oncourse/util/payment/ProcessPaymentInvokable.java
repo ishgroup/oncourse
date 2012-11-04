@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.utils;
+package ish.oncourse.util.payment;
 
 import ish.oncourse.model.PaymentIn;
 import org.apache.tapestry5.ioc.Invokable;

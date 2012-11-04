@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.utils;
+package ish.oncourse.util.payment;
 
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.*;
@@ -19,7 +19,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentProcessState.*;
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.*;
 
 public class PaymentProcessController {
 

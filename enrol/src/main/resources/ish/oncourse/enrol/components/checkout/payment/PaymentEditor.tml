@@ -1,0 +1,85 @@
+<t:container
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		xmlns:p="tapestry:parameter">
+	<t:block t:id="paymentFields">
+		<fieldset>
+			<div class="form-details">
+				<p>
+					<label for="contact">Payer<em title="${message:required}">*</em></label>
+					<t:select t:id="contact" value="paymentIn.contact" model="payersModel" encoder="payersEncoder" blankOption="NEVER"/>
+				</p>
+				<p>
+					<label for="creditCardType">Card Type<em title="${message:required}">*</em></label>
+					<t:select t:id="creditCardType" value="paymentIn.creditCardType" model="cardTypeModel" blankLabel="${message:blankSelect}"/>
+				</p>
+				<p>
+					<label for="creditCardName">Name on Card<em title="${message:required}">*</em></label>
+					<t:textfield value="paymentIn.creditCardName" class ="input-fixed" t:id="creditCardName" maxlength="80" />
+				</p>
+				<p>
+					<label for="creditCardNumber">Number<em title="${message:required}">*</em></label>
+					<t:textfield value="paymentIn.creditCardNumber" class ="input-fixed" t:id="creditCardNumber" maxlength="20" />
+				</p>
+				<p>
+					<label for="creditCardCVV">CVV<em title="${message:required}">*</em></label>
+					<t:textfield value="paymentIn.creditCardCVV" class ="input-fixed"  t:id="creditCardCVV" maxlength="4" />
+					<a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>
+				</p>
+				<p>
+					<label>Expiry<em title="${message:required}">*</em></label>
+					<t:select t:id="expiryMonth" value="expiryMonth" model="literal:01,02,03,04,05,06,07,08,09,10,11,12" blankLabel="mm"/>
+					/
+					<t:select t:id="expiryYear" value="expiryYear" model="years" blankLabel="yyyy"/>
+				</p>
+			</div>
+		</fieldset>
+	</t:block>
+
+	<t:block t:id="paymentEditor">
+		<t:form t:id="paymentform">
+			<div class="enrolmentsSelected">
+				<p>
+					<label>Amount</label>
+					<span id="cardtotalstring"><t:output value="totalPayment" format="moneyFormat"/></span>
+				</p>
+				<t:if test="zeroPayment" negate="true">
+					<t:delegate to="block:paymentFields"/>
+				</t:if>
+				<p>
+					<div>
+						<label>Conditions<em title="${message:required}">*</em></label>
+					</div>
+					<div class="conditions">
+						<t:checkbox value="userAgreed" t:id="userAgreed"/>
+						<t:if test="enrolmentDisclosure">
+							I have read and accept the <a href="${enrolmentDisclosure}?wrap=false" title="Student information" class="nyromodal" >terms and conditions</a>.
+						</t:if>
+						I understand the enrolment and refund policy.
+					</div>
+				</p>
+				<p class="note"><strong class="alert">Note</strong>: Fields marked with an <em>*</em> are required.</p>
+			</div>
+			<t:if test="delegate.needConcessionReminder">
+				<div class="message enrolment-concession-reminder">
+					<p>${message:concessionsAvailable}</p>
+				</div>
+			</t:if>
+		</t:form>
+		<div class="form-controls enrolmentsSelected">
+			<button id="paymentSubmit">${submitButtonText}</button>
+			<t:eventlink t:id="paymentSubmitEvent" style="{display:none}"/>
+		</div>
+	</t:block>
+
+	<t:block t:id="paymentResult">
+
+	</t:block>
+
+	<t:if test="delegate.resultState">
+		<t:delegate to="block:paymentResult"/>
+		<p:else>
+			<t:delegate to="block:paymentEditor"/>
+		</p:else>
+	</t:if>
+
+</t:container>

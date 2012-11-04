@@ -1,9 +1,12 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
+import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.*;
+import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 
@@ -53,6 +56,9 @@ public class PurchaseModel {
 	
 	public void setPayer(Contact payer) {
 		this.payer = payer;
+		getInvoice().setContact(payer);
+		getInvoice().setBillToAddress(payer.getAddress());
+		getPayment().setContact(payer);
 	}
 	
 	public Contact getPayer() {
@@ -73,6 +79,11 @@ public class PurchaseModel {
 		}
 		return invoice;
 	}
+
+	public void setPayment(PaymentIn payment)
+	{
+		this.payment = payment;
+	}
 	
 
 	public PaymentIn getPayment() {
@@ -82,6 +93,12 @@ public class PurchaseModel {
 			payment.setStatus(PaymentStatus.NEW);
 			payment.setSource(PaymentSource.SOURCE_WEB);
 			payment.setCollege(college);
+
+			PaymentInLine paymentInLine = getObjectContext().newObject(PaymentInLine.class);
+			paymentInLine.setInvoice(getInvoice());
+			paymentInLine.setPaymentIn(payment);
+			paymentInLine.setCollege(college);
+
 		}
 		return payment;
 	}
@@ -174,7 +191,8 @@ public class PurchaseModel {
 	public List<Enrolment> getAllEnrolments(Contact contact) {
 		return getContactNode(contact).getAllEnrolments();
 	}
-	
+
+
 	public Enrolment getEnrolmentBy(Contact contact, Integer index) {
 		return getAllEnrolments(contact).get(index);
 	}
@@ -286,6 +304,43 @@ public class PurchaseModel {
 				return true;
 		}
 		return false;
+	}
+
+
+	public Money updateTotalIncGst()
+	{
+		Money result = Money.ZERO;
+		for (Contact contact : getContacts()) {
+			for (Enrolment enabledEnrolment : getEnabledEnrolments(contact)) {
+				InvoiceLine invoiceLine = enabledEnrolment.getInvoiceLine();
+				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+			}
+			for (ProductItem enabledProductItem : getEnabledProductItems(contact)) {
+				InvoiceLine invoiceLine = enabledProductItem.getInvoiceLine();
+				result = result.add(invoiceLine.getPriceTotalIncTax().subtract(invoiceLine.getDiscountTotalIncTax()));
+			}
+		}
+		getPayment().setAmount(result.toBigDecimal());
+		return result;
+	}
+
+
+	public void prepareToMakePayment() {
+
+		updateTotalIncGst();
+
+		Money totalGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), true);
+		Money totalExGst = InvoiceUtil.sumInvoiceLines(getInvoice().getInvoiceLines(), false);
+		getInvoice().setTotalExGst(totalExGst.toBigDecimal());
+		getInvoice().setTotalGst(totalGst.toBigDecimal());
+
+		getPayment().getPaymentInLines().get(0).setAmount(getPayment().getAmount());
+		getPayment().setStatus(PaymentStatus.IN_TRANSACTION);
+
+		for (Contact contact: getContacts())
+			for (Enrolment e : getEnabledEnrolments(contact)) {
+				e.setStatus(EnrolmentStatus.IN_TRANSACTION);
+			}
 	}
 
 

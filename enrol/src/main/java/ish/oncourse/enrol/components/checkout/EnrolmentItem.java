@@ -4,6 +4,7 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.util.FormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -53,7 +54,9 @@ public class EnrolmentItem {
 		return new Integer[]{contactIndex, enrolmentIndex};
 	}
 
-	public Object onActionFromSelectEnrolment(Integer contactIndex, Integer enrolmentIndex) {
+
+	@OnEvent(value = "selectEnrolmentEvent")
+	public Object selectEnrolment(Integer contactIndex, Integer enrolmentIndex) {
 		if (!request.isXHR())
 			return null;
 		if (delegate != null) {

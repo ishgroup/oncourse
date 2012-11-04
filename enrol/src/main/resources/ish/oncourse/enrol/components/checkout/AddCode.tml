@@ -3,6 +3,9 @@
 		>
 	<div class="code-info">
 		<input type="text" name="add_code" class="code_input"/>
-		<a href="#" class="btn">Add Code</a><p>Promotional Code,Gift Certificate or Voucher</p>
+
+		<div id="addCode" class="button">Add Code</div>
+		<t:eventlink t:id="addCodeEvent" style="{display:none}"/>
+		<p>Promotional Code,Gift Certificate or Voucher</p>
 	</div>
 </t:container>

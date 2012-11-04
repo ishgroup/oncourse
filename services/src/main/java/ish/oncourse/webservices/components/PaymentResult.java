@@ -1,14 +1,14 @@
 package ish.oncourse.webservices.components;
 
+import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.pages.Payment;
-import ish.oncourse.webservices.utils.PaymentProcessController;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import static ish.oncourse.webservices.utils.PaymentProcessController.PaymentAction.*;
+import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
 
 public class PaymentResult {
 

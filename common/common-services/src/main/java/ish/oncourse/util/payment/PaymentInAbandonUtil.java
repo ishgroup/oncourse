@@ -1,16 +1,15 @@
-package ish.oncourse.webservices.utils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.cayenne.CayenneRuntimeException;
-import org.apache.log4j.Logger;
+package ish.oncourse.util.payment;
 
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import org.apache.cayenne.CayenneRuntimeException;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility which contain logic for correct default abandon action.

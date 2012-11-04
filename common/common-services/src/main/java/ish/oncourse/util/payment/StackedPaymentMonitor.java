@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.utils;
+package ish.oncourse.util.payment;
 
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Invokable;

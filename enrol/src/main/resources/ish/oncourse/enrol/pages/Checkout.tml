@@ -20,6 +20,9 @@
 	<t:if test="purchaseController.editContact">
 		<t:delegate to="block:contactEditor"/>
 	</t:if>
+	<t:if test="purchaseController.editPayment">
+		<t:delegate to="block:paymentEditor"/>
+	</t:if>
 </t:block>
 
 <t:block t:id="errors">
@@ -40,7 +43,7 @@
 		<tr>
 			<td>
 				<div id="addContact">Add another student</div>
-				<t:actionlink t:id="addContactLink" style="{display:none}"/>
+				<t:eventlink t:id="addContactEvent" style="{display:none}"/>
 			</td>
 			<td class="alignright">Total</td>
 			<td id="total" class="alignright">
@@ -53,7 +56,8 @@
 	<div class="amount-container">
 		<span t:type="checkout/addcode" purchaseController="purchaseController"/>
 		<span t:type="checkout/amount" purchaseController="purchaseController"/>
-		<a href="enrolcourses-2.html" class="btn btn-primary">Proceed to Payment</a>
+		<button id="proceedToPayment" class="btn btn-primary">Proceed to Payment</button>
+		<t:eventlink t:id="proceedToPaymentEvent" style="{display:none}"/>
 	</div>
 </t:block>
 
@@ -67,6 +71,10 @@
 
 <t:block t:id="contactEditor">
 	<span t:type="checkout/contact/contacteditor" delegate="purchaseController.contactEditorDelegate" blockToRefresh="checkoutBlock"/>
+</t:block>
+
+<t:block t:id="paymentEditor">
+	<span t:type="checkout/payment/paymenteditor" delegate="purchaseController.paymentEditorDelegate"/>
 </t:block>
 
 </html>
