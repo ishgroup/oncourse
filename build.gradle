@@ -32,9 +32,11 @@ release {
 	allowLocalModifications = project.hasProperty('allowLocalModifications') ? project.allowLocalModifications='true' : ''
 
 }
-version = release.projectVersion
+
 
 allprojects {
+	version = release.projectVersion
+	
 	apply plugin: 'java'
 	apply plugin: 'maven'
 
@@ -75,6 +77,8 @@ allprojects {
 	}
 
 	ext.sharedManifest = manifest {
+		println("--------------------------------------Release-Version "+version )
+		println("--------------------------------------SCM-Revision "+project.release.scmVersion )
 		attributes 'SCM-Revision': project.release.scmVersion,
 			'Release-Version': version,
 			'Built-Date': new Date(),
