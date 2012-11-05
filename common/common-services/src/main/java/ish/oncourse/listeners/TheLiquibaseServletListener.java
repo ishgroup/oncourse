@@ -6,7 +6,7 @@ import java.util.Enumeration;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+//import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
 import liquibase.Liquibase;
@@ -23,20 +23,19 @@ import liquibase.util.StringUtils;
 
 import org.apache.log4j.Logger;
 
-public class TheLiquibaseServletListener implements ServletContextListener {
+public class TheLiquibaseServletListener extends OverrideLog4JListener {
 
 	private static final Logger logger = Logger.getLogger(TheLiquibaseServletListener.class);
 
-	/*
-	 * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.
-	 * ServletContextEvent)
-	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO Auto-generated method stub
+		super.contextDestroyed(arg0);
 	}
 
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		//override the logger.
+		super.contextInitialized(servletContextEvent);
+		//start to init the liquibase
 		String hostName;
 		try {
 			hostName = NetUtil.getLocalHost().getHostName();

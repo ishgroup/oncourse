@@ -7,20 +7,18 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 import org.apache.commons.logging.LogFactory;
 
-public class TheLeakPreventionListener implements ServletContextListener {
+public class TheLeakPreventionListener extends OverrideLog4JListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		// TODO Auto-generated method stub
+		super.contextInitialized(sce);
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		org.apache.log4j.LogManager.shutdown();
 		LogFactory.release(classLoader);
@@ -39,4 +37,6 @@ public class TheLeakPreventionListener implements ServletContextListener {
 		ResourceBundle.clearCache(classLoader);
 		java.beans.Introspector.flushCaches();
 	}
+	
+	
 }
