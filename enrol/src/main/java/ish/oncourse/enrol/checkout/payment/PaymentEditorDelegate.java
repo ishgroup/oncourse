@@ -4,6 +4,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PaymentEditorDelegate {
 	public void makePayment();
@@ -19,5 +20,10 @@ public interface PaymentEditorDelegate {
 	public PaymentIn getPaymentIn();
 
 	public boolean isNeedConcessionReminder();
+
+	public Map<String, String> getErrors();
+
+	public void setErrors(Map<String, String> errors);
+
 
 }

@@ -5,13 +5,16 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.util.payment.PaymentProcessController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
 
 public class PaymentEditorController implements PaymentEditorDelegate{
 	private PurchaseController purchaseController;
 	private PaymentProcessController paymentProcessController;
+	private Map<String,String>  errors = new HashMap<String, String>();
 
 	@Override
 	public boolean isResultState() {
@@ -20,7 +23,8 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 
 	public void makePayment()
 	{
-		paymentProcessController.processAction(MAKE_PAYMENT);
+		if (errors.isEmpty())
+			paymentProcessController.processAction(MAKE_PAYMENT);
 	}
 
 	public void tryAnotherCard()
@@ -64,5 +68,13 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 
 	public void setPaymentProcessController(PaymentProcessController paymentProcessController) {
 		this.paymentProcessController = paymentProcessController;
+	}
+
+	public Map<String, String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(Map<String, String> errors) {
+		this.errors = errors;
 	}
 }

@@ -60,10 +60,12 @@ public class PaymentEditorParser implements IFieldsParser {
 				paymentIn.setCreditCardNumber(value);
 				String errorMessage = paymentIn.validateCCNumber();
 				if (errorMessage != null)
-					errors.put(field.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, errorMessage)));
+					errors.put(field.name(), errorMessage);
 				break;
 			case creditCardCVV:
 				paymentIn.setCreditCardCVV(value);
+				if (!paymentIn.validateCVV())
+					errors.put(field.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, field)));
 				break;
 			case expiryMonth:
 			case expiryYear:
@@ -99,6 +101,10 @@ public class PaymentEditorParser implements IFieldsParser {
 
 	public void setPaymentIn(PaymentIn paymentIn) {
 		this.paymentIn = paymentIn;
+	}
+
+	public Map<String, String> getErrors() {
+		return errors;
 	}
 
 

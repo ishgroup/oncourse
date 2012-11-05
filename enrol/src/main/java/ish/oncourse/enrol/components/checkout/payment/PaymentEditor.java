@@ -122,12 +122,24 @@ public class PaymentEditor {
 		 return StringUtils.trimToNull(preferenceController.getFeatureEnrolmentDisclosure());
 	}
 
-
-
 	public Format getMoneyFormat()
 	{
 		return FormatUtils.chooseMoneyFormat(Money.valueOf(delegate.getPaymentIn().getAmount()));
 	}
+
+	public String error(String fieldName)
+	{
+		return delegate.getErrors().get(fieldName);
+	}
+
+	public String className(String fieldName)
+	{
+		if (delegate.getErrors().containsKey(fieldName))
+			return "validate";
+		else
+			return "valid";
+	}
+
 
 	@OnEvent(value = "paymentSubmitEvent")
 	public Object makePayment()
@@ -137,7 +149,11 @@ public class PaymentEditor {
 
 		PaymentEditorParser paymentEditorParser = new PaymentEditorParser();
 		paymentEditorParser.setRequest(request);
+		paymentEditorParser.setContacts(delegate.getContacts());
+		paymentEditorParser.setMessages(messages);
+		paymentEditorParser.setPaymentIn(delegate.getPaymentIn());
 		paymentEditorParser.parse();
+		delegate.setErrors(paymentEditorParser.getErrors());
 		delegate.makePayment();
 		return checkout.getCheckoutBlock();
 	}
