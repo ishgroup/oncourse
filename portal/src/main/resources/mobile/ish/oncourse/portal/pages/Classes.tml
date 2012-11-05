@@ -3,13 +3,11 @@
 
 		<div class="content">
 		<div class="class-info-title">
-			<a href="#" class="back-class">Classes</a>
-			<span>${courseClass.course.name}</span>
+			<h1>Classes</h1>
 			<div class="clear"></div>
 			<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
 		</div>
 			<t:if test="hasClasses">
-				<h1>Classes</h1>
 				<table class="class" align="center">
 					<t:loop  source="classes" value="courseClass">
 						<tr>
