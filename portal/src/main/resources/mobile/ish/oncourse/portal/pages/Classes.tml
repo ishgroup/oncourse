@@ -3,7 +3,7 @@
 
 		<div class="content">
 			<div class="class-info-title">
-				<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
+				<span t:type="classTabs" />
 			</div>
 			<t:if test="hasClasses">
 				<h1>Classes</h1>
