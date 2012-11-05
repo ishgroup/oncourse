@@ -14,18 +14,18 @@ public class ActionAddContact extends APurchaseAction {
 
 	@Override
 	protected void makeAction() {
-		if (getController().getState().equals(ADD_CONTACT)) {
+		if (getController().getState().equals(addContact)) {
 			boolean isAllRequiredFieldFilled = new ContactFieldHelper(getController().getPreferenceController()).isAllRequiredFieldFilled(contact);
 			if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled) {
 				getController().prepareContactEditor(contact, !isAllRequiredFieldFilled);
-				getController().setState(EDIT_CONTACT);
+				getController().setState(editContact);
 			} else {
 				getController().addContactToModel(contact);
-				getController().setState(EDIT_CHECKOUT);
+				getController().setState(editCheckout);
 			}
-		} else if (getController().getState().equals(EDIT_CONTACT)) {
+		} else if (getController().getState().equals(editContact)) {
 			getController().addContactToModel(contact);
-			getController().setState(EDIT_CHECKOUT);
+			getController().setState(editCheckout);
 		} else
 			throw new IllegalStateException();
 
@@ -34,7 +34,7 @@ public class ActionAddContact extends APurchaseAction {
 	@Override
 	protected void parse() {
 		if (getParameter() != null) {
-			if (getController().getState() == ADD_CONTACT) {
+			if (getController().getState() == addContact) {
 				contactCredentials = getParameter().getValue(ContactCredentials.class);
 				ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
 				contactCredentialsEncoder.setContactCredentials(contactCredentials);
@@ -49,7 +49,7 @@ public class ActionAddContact extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
-		if (getController().getState() == ADD_CONTACT) {
+		if (getController().getState() == addContact) {
 			ContactCredentials contactCredentials = getParameter().getValue(ContactCredentials.class);
 			if (getModel().containsContactWith(contactCredentials)) {
 
@@ -59,6 +59,6 @@ public class ActionAddContact extends APurchaseAction {
 			}
 			return true;
 		} else
-			return getController().getState() == EDIT_CONTACT;
+			return getController().getState() == editContact;
 	}
 }

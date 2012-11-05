@@ -50,7 +50,7 @@ public class SelectPayer {
 		Contact selectedPayer = purchaseController.getModel().getContacts().get(contactIndex);
 		if (selectedPayer != purchaseController.getModel().getPayer())
 		{
-			ActionParameter actionParameter = new ActionParameter(Action.CHANGE_PAYER);
+			ActionParameter actionParameter = new ActionParameter(Action.changePayer);
 			actionParameter.setValue(selectedPayer);
 			purchaseController.performAction(actionParameter);
 		}

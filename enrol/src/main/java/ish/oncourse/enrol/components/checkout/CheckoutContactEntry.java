@@ -196,7 +196,7 @@ public class CheckoutContactEntry {
 					context.commitChanges();
 				}
 				if (getController() != null) {
-					ActionParameter actionParameter = new ActionParameter(Action.ADD_CONTACT);
+					ActionParameter actionParameter = new ActionParameter(Action.addContact);
 					actionParameter.setValue(contact);
 					getController().performAction(actionParameter);
 				}

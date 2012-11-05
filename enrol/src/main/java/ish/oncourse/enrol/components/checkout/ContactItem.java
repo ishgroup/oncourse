@@ -40,7 +40,7 @@ public class ContactItem {
 		if (!request.isXHR())
 			return null;
 		Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.START_CONCESSION_EDITOR);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.startConcessionEditor);
 		actionParameter.setValue(contact);
 		purchaseController.performAction(actionParameter);
 		if (blockToRefresh != null)

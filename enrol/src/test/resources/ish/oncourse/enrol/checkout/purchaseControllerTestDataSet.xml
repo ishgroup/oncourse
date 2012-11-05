@@ -99,12 +99,12 @@
 		maximumPlaces="2" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
 		feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"/>
 		
-	<Invoice id="1" source="O" amountOwing="0" contactId="1189158"
+	<Invoice id="1000" source="O" amountOwing="0" contactId="1189158"
 		collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 		invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
 		totalGst="10.91" />
 	
-	<InvoiceLine id="11111" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00"
+	<InvoiceLine id="11111" collegeId="1" invoiceId="1000" quantity="1.0" discountEachExTax="0.00"
 		priceEachExTax="99" taxEach="1" title="Test Invoice Line" />
 		
 	<Product collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" EXPIRYTYPE="4" ID="7" ISONSALE="1" 

@@ -16,11 +16,9 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
-import ish.oncourse.util.FormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.Messages;
 
-import java.text.Format;
 import java.util.*;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
@@ -52,9 +50,7 @@ public class PurchaseController {
 	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
 
 
-	private Format moneyFormat = FormatUtils.chooseMoneyFormat(Money.ZERO);
-
-	private State state = State.INIT;
+	private State state = State.init;
 
 	private boolean illegalModel = false;
 
@@ -74,12 +70,12 @@ public class PurchaseController {
 		return state;
 	}
 
-	void setState(State state) {
+	synchronized void setState(State state) {
 		this.state = state;
 	}
 
 	public boolean isErrorEmptyState() {
-		return State.ERROR_EMPTY_LIST.equals(getState());
+		return State.errorEmptyList.equals(getState());
 	}
 
 	/**
@@ -89,13 +85,6 @@ public class PurchaseController {
 	 */
 	public boolean isHasDiscount() {
 		return !getTotalDiscountAmountIncTax().isZero();
-	}
-
-	/**
-	 * @return the moneyFormat
-	 */
-	public Format getMoneyFormat() {
-		return moneyFormat;
 	}
 
 	/**
@@ -113,7 +102,6 @@ public class PurchaseController {
 				result = result.add(enabledProductItem.getInvoiceLine().getDiscountTotalIncTax());
 			}
 		}
-		moneyFormat = FormatUtils.chooseMoneyFormat(result);
 		return result;
 	}
 
@@ -123,9 +111,7 @@ public class PurchaseController {
 	 * @return total invoice amount for all actual enrollments.
 	 */
 	public Money getTotalIncGst() {
-		Money result = model.updateTotalIncGst();
-		moneyFormat = FormatUtils.chooseMoneyFormat(result);
-		return result;
+		return model.updateTotalIncGst();
 	}
 
 
@@ -172,8 +158,6 @@ public class PurchaseController {
 
 	/**
 	 * Single entry point to perform all actions. {@link Action} and {@link ActionParameter} values should be specified.
-	 *
-	 * @param param
 	 */
 	public void performAction(ActionParameter param) {
 
@@ -217,7 +201,7 @@ public class PurchaseController {
 		model.addContact(contact);
 		//add the first contact
 		if (getModel().getPayer() == null) {
-			ActionChangePayer actionChangePayer = CHANGE_PAYER.createAction(this);
+			ActionChangePayer actionChangePayer = changePayer.createAction(this);
 			actionChangePayer.setContact(contact);
 			actionChangePayer.action();
 		}
@@ -225,7 +209,7 @@ public class PurchaseController {
 			Enrolment enrolment = createEnrolment(cc, contact.getStudent());
 			model.addEnrolment(enrolment);
 
-			ActionEnableEnrolment action = ENABLE_ENROLMENT.createAction(this);
+			ActionEnableEnrolment action = enableEnrolment.createAction(this);
 			action.setEnrolment(enrolment);
 			action.action();
 		}
@@ -252,10 +236,6 @@ public class PurchaseController {
 	/**
 	 * Creates the new {@link Enrolment} entity for the given courseClass and
 	 * Student.
-	 *
-	 * @param courseClass
-	 * @param student
-	 * @return
 	 */
 	private Enrolment createEnrolment(CourseClass courseClass, Student student) {
 		Enrolment enrolment = model.getObjectContext().newObject(Enrolment.class);
@@ -321,19 +301,19 @@ public class PurchaseController {
 	}
 
 	public boolean isEditCheckout() {
-		return state == EDIT_CHECKOUT;
+		return state == editCheckout;
 	}
 
 	public boolean isEditContact() {
-		return state == EDIT_CONTACT;
+		return state == editContact;
 	}
 
 	public boolean isEditConcession() {
-		return state == State.EDIT_CONCESSION;
+		return state == State.editConcession;
 	}
 
 	public boolean isAddContact() {
-		return state == State.ADD_CONTACT;
+		return state == State.addContact;
 	}
 
 	public boolean isActiveConcessionTypes() {
@@ -341,7 +321,7 @@ public class PurchaseController {
 	}
 
 	public boolean isEditPayment() {
-		return state == EDIT_PAYMENT;
+		return state == editPayment;
 	}
 
 	public ConcessionDelegate getConcessionDelegate() {
@@ -394,7 +374,10 @@ public class PurchaseController {
 				if (contact.getStudent().getStudentConcessions().isEmpty()) {
 					List<Enrolment> enrolments = model.getEnabledEnrolments(contact);
 					for (Enrolment enrolment : enrolments) {
-						return !enrolment.getCourseClass().getConcessionDiscounts().isEmpty();
+						if (!enrolment.getCourseClass().getConcessionDiscounts().isEmpty())
+						{
+							return true;
+						}
 					}
 				}
 		}
@@ -443,14 +426,19 @@ public class PurchaseController {
 
 
 	static enum State {
-		INIT(Action.INIT, Action.START_ADD_CONTACT),
-		EDIT_CHECKOUT(CHANGE_PAYER, ENABLE_ENROLMENT, ENABLE_ENROLMENT, ENABLE_ENROLMENT, DISABLE_PRODUCT_ITEM, SET_VOUCHER_PRICE, ADD_DISCOUNT, ADD_VOUCHER, PROCEED_TO_PAYMENT, START_CONCESSION_EDITOR),
-		ERROR_EMPTY_LIST,
-		EDIT_CONCESSION(ADD_CONCESSION, REMOVE_CONCESSION, CANCEL_CONCESSION_EDITOR),
-		ADD_CONTACT(Action.ADD_CONTACT),
-		EDIT_CONTACT(Action.ADD_CONTACT, CANCEL_ADD_CONTACT),
-		EDIT_PAYMENT(CHANGE_PAYER, FINISH_PAYMENT),
-		FINALIZED;
+		init(Action.init, Action.startAddContact),
+		editCheckout(changePayer,
+				enableEnrolment, enableProductItem,
+				disableEnrolment, disableProductItem,
+				setVoucherPrice, addDiscount, addVoucher,
+				startConcessionEditor, startAddContact,
+				owingApply, creditAccess, proceedToPayment),
+		errorEmptyList,
+		editConcession(addConcession, removeConcession, cancelConcessionEditor),
+		addContact(Action.addContact),
+		editContact(Action.addContact, cancelAddContact),
+		editPayment(changePayer, finishPayment),
+		finalized;
 
 		private List<Action> allowedActions;
 
@@ -471,26 +459,26 @@ public class PurchaseController {
 	 * @author dzmitry
 	 */
 	public static enum Action {
-		INIT(ActionInit.class),
-		CHANGE_PAYER(ActionChangePayer.class, Contact.class),
-		SET_VOUCHER_PRICE(ActionSetVoucherPrice.class, Money.class),
-		ENABLE_ENROLMENT(ActionEnableEnrolment.class, Enrolment.class),
-		DISABLE_ENROLMENT(ActionDisableEnrolment.class, Enrolment.class),
-		ENABLE_PRODUCT_ITEM(ActionEnableProductItem.class, ProductItem.class),
-		DISABLE_PRODUCT_ITEM(ActionDisableProductItem.class, ProductItem.class),
-		ADD_CONTACT(ActionAddContact.class, ContactCredentials.class),
-		ADD_CONCESSION(ActionAddConcession.class, StudentConcession.class),
-		REMOVE_CONCESSION(ActionRemoveConcession.class, ConcessionType.class, Contact.class),
-		ADD_DISCOUNT(ActionAddDiscount.class, String.class, Discount.class),
-		ADD_VOUCHER(ActionAddVoucher.class, String.class, Voucher.class),
-		START_CONCESSION_EDITOR(ActionStartConcessionEditor.class, Contact.class),
-		CANCEL_CONCESSION_EDITOR(ActionCancelConcessionEditor.class, Contact.class),
-		START_ADD_CONTACT(ActionStartAddContact.class),
-		CANCEL_ADD_CONTACT(ActionCancelAddContact.class),
-		CREDIT_ACCESS(ActionCreditAccess.class, String.class),
-		OWING_APPLY(ActionOwingApply.class),
-		PROCEED_TO_PAYMENT(ActionProceedToPayment.class),
-		FINISH_PAYMENT(ActionFinishPayment.class);
+		init(ActionInit.class),
+		changePayer(ActionChangePayer.class, Contact.class),
+		setVoucherPrice(ActionSetVoucherPrice.class, Money.class),
+		enableEnrolment(ActionEnableEnrolment.class, Enrolment.class),
+		disableEnrolment(ActionDisableEnrolment.class, Enrolment.class),
+		enableProductItem(ActionEnableProductItem.class, ProductItem.class),
+		disableProductItem(ActionDisableProductItem.class, ProductItem.class),
+		addContact(ActionAddContact.class, ContactCredentials.class),
+		addConcession(ActionAddConcession.class, StudentConcession.class),
+		removeConcession(ActionRemoveConcession.class, ConcessionType.class, Contact.class),
+		addDiscount(ActionAddDiscount.class, String.class, Discount.class),
+		addVoucher(ActionAddVoucher.class, String.class, Voucher.class),
+		startConcessionEditor(ActionStartConcessionEditor.class, Contact.class),
+		cancelConcessionEditor(ActionCancelConcessionEditor.class, Contact.class),
+		startAddContact(ActionStartAddContact.class),
+		cancelAddContact(ActionCancelAddContact.class),
+		creditAccess(ActionCreditAccess.class, String.class),
+		owingApply(ActionOwingApply.class),
+		proceedToPayment(ActionProceedToPayment.class),
+		finishPayment(ActionFinishPayment.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -500,7 +488,7 @@ public class PurchaseController {
 			this.paramTypes = new ArrayList<Class<?>>(asList(paramType));
 		}
 
-		public Collection<Class<?>> getActionParamType() {
+		public Collection<Class<?>> getActionParamTypes() {
 			return Collections.unmodifiableCollection(paramTypes);
 		}
 

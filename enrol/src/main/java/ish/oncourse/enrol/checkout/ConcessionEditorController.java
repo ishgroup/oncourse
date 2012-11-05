@@ -38,7 +38,7 @@ public class ConcessionEditorController implements ConcessionDelegate {
 	public void cancelEditing(Long contactId) {
 		studentConcession = null;
 		objectContext = null;
-		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.CANCEL_CONCESSION_EDITOR));
+		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelConcessionEditor));
 	}
 
 	@Override

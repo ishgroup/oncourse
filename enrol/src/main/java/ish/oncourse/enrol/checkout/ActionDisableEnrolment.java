@@ -13,12 +13,20 @@ public class ActionDisableEnrolment extends APurchaseAction {
 	@Override
 	protected void parse() {
 
-		if (getParameter() == null)
+		if (getParameter() != null)
 			enrolment = getParameter().getValue(Enrolment.class);
 	}
 
 	@Override
 	protected boolean validate() {
 		return getModel().isEnrolmentEnabled(enrolment);
+	}
+
+	public Enrolment getEnrolment() {
+		return enrolment;
+	}
+
+	public void setEnrolment(Enrolment enrolment) {
+		this.enrolment = enrolment;
 	}
 }

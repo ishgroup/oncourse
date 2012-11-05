@@ -1,12 +1,12 @@
 package ish.oncourse.enrol.checkout;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.State.EDIT_CHECKOUT;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.editCheckout;
 
 public class ActionCancelConcessionEditor extends APurchaseAction{
 	@Override
 	protected void makeAction() {
 		getController().setConcessionEditorController(null);
-		getController().setState(EDIT_CHECKOUT);
+		getController().setState(editCheckout);
 	}
 
 	@Override

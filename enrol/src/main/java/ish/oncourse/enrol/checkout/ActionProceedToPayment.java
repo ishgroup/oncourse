@@ -8,7 +8,7 @@ import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
 import java.util.concurrent.Future;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.State.EDIT_PAYMENT;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.editPayment;
 
 public class ActionProceedToPayment extends APurchaseAction{
 
@@ -40,7 +40,7 @@ public class ActionProceedToPayment extends APurchaseAction{
 		paymentEditorController.setPaymentProcessController(paymentProcessController);
 		paymentEditorController.setPurchaseController(getController());
 		getController().setPaymentEditorController(paymentEditorController);
-		getController().setState(EDIT_PAYMENT);
+		getController().setState(editPayment);
 	}
 
 	@Override

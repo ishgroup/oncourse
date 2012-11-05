@@ -14,12 +14,12 @@ public class AddContactController implements AddContactDelegate{
 
 	@Override
 	public void cancelEditing() {
-		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.CANCEL_ADD_CONTACT));
+		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelAddContact));
 	}
 
 	@Override
 	public void saveEditing(Map<String,String> errors) {
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.ADD_CONTACT);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		actionParameter.setErrors(new ArrayList<String>(errors.values()));
 		actionParameter.setValue(contactCredentials);
 		purchaseController.performAction(actionParameter);

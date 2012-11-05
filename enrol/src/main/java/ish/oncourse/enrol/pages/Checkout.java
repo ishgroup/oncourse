@@ -151,7 +151,7 @@ public class Checkout {
 			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 
 			purchaseController = createPurchaseConroller(model);
-			purchaseController.performAction(new ActionParameter(Action.INIT));
+			purchaseController.performAction(new ActionParameter(Action.init));
 		}
 	}
 
@@ -195,15 +195,15 @@ public class Checkout {
 			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 
 			purchaseController = createPurchaseConroller(model);
-			purchaseController.performAction(new ActionParameter(Action.INIT));
+			purchaseController.performAction(new ActionParameter(Action.init));
 			ContactCredentials contactCredentials = new ContactCredentials();
 			contactCredentials.setLastName("taree3");
 			contactCredentials.setFirstName("taree3");
 			contactCredentials.setEmail("taree3@taree3.de");
-			ActionParameter actionParameter = new ActionParameter(Action.ADD_CONTACT);
+			ActionParameter actionParameter = new ActionParameter(Action.addContact);
 			actionParameter.setValue(contactCredentials);
 			purchaseController.performAction(actionParameter);
-			actionParameter = new ActionParameter(Action.PROCEED_TO_PAYMENT);
+			actionParameter = new ActionParameter(Action.proceedToPayment);
 			purchaseController.performAction(actionParameter);
 		}
 	}
@@ -237,7 +237,7 @@ public class Checkout {
 	public Object addContact() {
 		if (!request.isXHR())
 			return null;
-		purchaseController.performAction(new ActionParameter(Action.START_ADD_CONTACT));
+		purchaseController.performAction(new ActionParameter(Action.startAddContact));
 		return checkoutBlock;
 	}
 
@@ -245,7 +245,7 @@ public class Checkout {
 	public Object proceedToPayment() {
 		if (!request.isXHR())
 			return null;
-		purchaseController.performAction(new ActionParameter(Action.PROCEED_TO_PAYMENT));
+		purchaseController.performAction(new ActionParameter(Action.proceedToPayment));
 		return checkoutBlock;
 	}
 

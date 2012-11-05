@@ -32,7 +32,7 @@ public class Amount {
 		String password = StringUtils.trimToNull(request.getParameter(FIELD_PASSWORD));
 		if (password != null)
 		{
-			PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.CREDIT_ACCESS);
+			PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.creditAccess);
 			actionParameter.setValue(password);
 			purchaseController.performAction(actionParameter);
 			return checkout.getCheckoutBlock();

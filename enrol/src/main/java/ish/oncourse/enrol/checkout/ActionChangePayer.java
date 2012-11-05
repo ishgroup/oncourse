@@ -34,11 +34,9 @@ public class ActionChangePayer extends  APurchaseAction{
 		for (Product product : getController().getModel().getProducts()) {
 			ProductItem productItem = getController().createProductItem(contact, product);
 			getController().getModel().addProductItem(productItem);
-			if (true) //todo need validation
-			{
-				ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.ENABLE_PRODUCT_ITEM.createAction(getController());
-				actionEnableProductItem.action();
-			}
+			ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
+			actionEnableProductItem.setProductItem(productItem);
+			actionEnableProductItem.action();
 		}
 
 	}

@@ -9,7 +9,7 @@ public class ActionAddConcession extends APurchaseAction {
 	protected void makeAction() {
 		getModel().addConcession(studentConcession);
 		getController().recalculateEnrolmentInvoiceLines();
-		getController().setState(PurchaseController.State.EDIT_CHECKOUT);
+		getController().setState(PurchaseController.State.editCheckout);
 	}
 
 	@Override

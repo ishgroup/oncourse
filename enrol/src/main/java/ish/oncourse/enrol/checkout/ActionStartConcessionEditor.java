@@ -2,7 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.model.Contact;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.State.EDIT_CONCESSION;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.editConcession;
 
 public class ActionStartConcessionEditor extends APurchaseAction {
 	private Contact contact;
@@ -14,7 +14,7 @@ public class ActionStartConcessionEditor extends APurchaseAction {
 		concessionEditorController.setContact((Contact) concessionEditorController.getObjectContext().localObject(contact.getObjectId(), null));
 		concessionEditorController.setPurchaseController(getController());
 		getController().setConcessionEditorController(concessionEditorController);
-		getController().setState(EDIT_CONCESSION);
+		getController().setState(editConcession);
 	}
 
 	@Override

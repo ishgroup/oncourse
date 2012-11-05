@@ -10,6 +10,7 @@ import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.utils.EnrolCoursesControllerTest;
 import ish.oncourse.model.*;
 import ish.oncourse.services.discount.IDiscountService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.voucher.IVoucherService;
@@ -39,6 +40,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	private ICayenneService cayenneService;
 	private IStudentService studentService;
 	private PreferenceController preferenceController;
+	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
 
 	@Before
 	public void setup() throws Exception {
@@ -60,6 +62,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		this.cayenneService = getService(ICayenneService.class);
 		this.studentService = getService(IStudentService.class);
 		this.preferenceController = getService(PreferenceController.class);
+		this.paymentGatewayServiceBuilder = getService(IPaymentGatewayServiceBuilder.class);
 	}
 
 	private PurchaseController createPurchaseController(ObjectContext context) {
@@ -88,19 +91,21 @@ public class PurchaseControllerTest extends ServiceTest {
 		purchaseController.setVoucherService(voucherService);
 		purchaseController.setStudentService(studentService);
 		purchaseController.setPreferenceController(preferenceController);
+		purchaseController.setPaymentGatewayServiceBuilder(paymentGatewayServiceBuilder);
+		purchaseController.setCayenneService(cayenneService);
 		purchaseController.setModel(model);
 
-		purchaseController.performAction(new ActionParameter(Action.INIT));
+		purchaseController.performAction(new ActionParameter(Action.init));
 
-		purchaseController.performAction(new ActionParameter(Action.START_ADD_CONTACT));
+		purchaseController.performAction(new ActionParameter(Action.startAddContact));
 
 		Contact contact = Cayenne.objectForPK(context, Contact.class, 1189157);
-		ActionParameter actionParameter = new ActionParameter(Action.ADD_CONTACT);
+		ActionParameter actionParameter = new ActionParameter(Action.addContact);
 		ContactCredentials contactCredentials = createContactCredentialsBy(contact);
 		actionParameter.setValue(contactCredentials);
 		purchaseController.performAction(actionParameter);
 
-		assertEquals(State.EDIT_CHECKOUT, purchaseController.getState());
+		assertEquals(State.editCheckout, purchaseController.getState());
 		assertEquals(1, purchaseController.getModel().getContacts().size());
 		assertNotNull(purchaseController.getModel().getPayer());
 		return purchaseController;
@@ -136,7 +141,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(2, model.getEnabledProductItems(model.getPayer()).size());
 		assertEquals(0, model.getDisabledProductItems(model.getPayer()).size());
 
-		assertEquals(State.EDIT_CHECKOUT, controller.getState());
+		assertEquals(State.editCheckout, controller.getState());
 	}
 
 	@Test
@@ -153,7 +158,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(originalPayer, model.getPayer());
 		assertTrue(controller.getModel().getContacts().contains(newPayer));
 
-		ActionParameter param = new PurchaseController.ActionParameter(Action.CHANGE_PAYER);
+		ActionParameter param = new PurchaseController.ActionParameter(Action.changePayer);
 		param.setValue(newPayer);
 
 		performAction(controller, param);
@@ -192,10 +197,10 @@ public class PurchaseControllerTest extends ServiceTest {
 	}
 
 	private void addContact(PurchaseController controller, Contact newContact) {
-		ActionParameter param = new ActionParameter(Action.START_ADD_CONTACT);
+		ActionParameter param = new ActionParameter(Action.startAddContact);
 		performAction(controller, param);
 
-		param = new ActionParameter(Action.ADD_CONTACT);
+		param = new ActionParameter(Action.addContact);
 		param.setValue(createContactCredentialsBy(newContact));
 
 		performAction(controller, param);
@@ -214,7 +219,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		Enrolment enrolmentToDisable = model.getEnabledEnrolments(model.getPayer()).iterator().next();
 
-		ActionParameter param = new ActionParameter(Action.DISABLE_ENROLMENT);
+		ActionParameter param = new ActionParameter(Action.disableEnrolment);
 		param.setValue(enrolmentToDisable);
 
 		performAction(controller, param);
@@ -226,7 +231,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		assertEquals(enrolmentToDisable, model.getDisabledEnrolments(model.getPayer()).iterator().next());
 		assertEquals(new Money("350.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-		param = new ActionParameter(Action.ENABLE_ENROLMENT);
+		param = new ActionParameter(Action.enableEnrolment);
 		param.setValue(enrolmentToDisable);
 
 		performAction(controller, param);
@@ -251,7 +256,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		Enrolment enrolmentToDisable = model.getEnabledEnrolments(model.getPayer()).iterator().next();
 
-		ActionParameter param = new ActionParameter(Action.DISABLE_ENROLMENT);
+		ActionParameter param = new ActionParameter(Action.disableEnrolment);
 		param.setValue(enrolmentToDisable);
 
 		performAction(controller, param);
@@ -280,7 +285,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-		ActionParameter param = new ActionParameter(Action.DISABLE_PRODUCT_ITEM);
+		ActionParameter param = new ActionParameter(Action.disableProductItem);
 		param.setValue(productToDisable);
 
 		performAction(controller, param);
@@ -294,7 +299,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		assertEquals(new Money("840.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-		param = new ActionParameter(Action.ENABLE_PRODUCT_ITEM);
+		param = new ActionParameter(Action.enableProductItem);
 		param.setValue(productToDisable);
 
 		performAction(controller, param);
@@ -325,7 +330,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-		ActionParameter param = new ActionParameter(Action.DISABLE_PRODUCT_ITEM);
+		ActionParameter param = new ActionParameter(Action.disableProductItem);
 		param.setValue(productToDisable);
 
 		performAction(controller, param);
@@ -354,7 +359,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		String promocode = "code";
 
-		ActionParameter param = new ActionParameter(Action.ADD_DISCOUNT);
+		ActionParameter param = new ActionParameter(Action.addDiscount);
 		param.setValue(promocode);
 
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
@@ -385,7 +390,7 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		String voucherCode = "test";
 
-		ActionParameter param = new ActionParameter(Action.ADD_VOUCHER);
+		ActionParameter param = new ActionParameter(Action.addVoucher);
 		param.setValue(voucherCode);
 
 		assertEquals(new Money("850.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
@@ -427,11 +432,11 @@ public class PurchaseControllerTest extends ServiceTest {
 	}
 
 	private void addConcession(PurchaseController controller, StudentConcession sc) {
-		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		ActionParameter param = new ActionParameter(Action.startConcessionEditor);
 		param.setValue(sc.getStudent().getContact());
 		performAction(controller, param);
 
-		param = new ActionParameter(Action.ADD_CONCESSION);
+		param = new ActionParameter(Action.addConcession);
 		param.setValue(sc);
 		performAction(controller, param);
 	}
@@ -451,11 +456,11 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		assertEquals(new Money("740.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		ActionParameter param = new ActionParameter(Action.startConcessionEditor);
 		param.setValue(model.getPayer());
 		performAction(controller, param);
 
-		param = new ActionParameter(Action.REMOVE_CONCESSION);
+		param = new ActionParameter(Action.removeConcession);
 		param.setValue(ct);
 		param.setValue(model.getPayer());
 
@@ -476,13 +481,13 @@ public class PurchaseControllerTest extends ServiceTest {
 		ObjectContext context = cayenneService.newContext();
 		PurchaseController controller = createPurchaseController(context);
 
-		ActionParameter param = new ActionParameter(Action.PROCEED_TO_PAYMENT);
+		ActionParameter param = new ActionParameter(Action.proceedToPayment);
 		performAction(controller, param);
 
 
 		Contact newContact = Cayenne.objectForPK(context, Contact.class, 1189158);
 
-		param = new ActionParameter(Action.ADD_CONTACT);
+		param = new ActionParameter(Action.addContact);
 		param.setValue(newContact);
 
 		controller.performAction(param);
@@ -494,7 +499,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		ObjectContext context = cayenneService.newContext();
 		PurchaseController controller = createPurchaseController(context);
 
-		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		ActionParameter param = new ActionParameter(Action.startConcessionEditor);
 		param.setValue(controller.getModel().getPayer());
 		performAction(controller, param);
 
@@ -506,15 +511,15 @@ public class PurchaseControllerTest extends ServiceTest {
 		ObjectContext context = cayenneService.newContext();
 		PurchaseController controller = createPurchaseController(context);
 
-		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		ActionParameter param = new ActionParameter(Action.startConcessionEditor);
 		param.setValue(controller.getModel().getPayer());
 		performAction(controller, param);
 
-		param = new ActionParameter(Action.CANCEL_CONCESSION_EDITOR);
+		param = new ActionParameter(Action.cancelConcessionEditor);
 		param.setValue(controller.getModel().getPayer());
 		performAction(controller, param);
 
-		assertEquals(State.EDIT_CHECKOUT, controller.getState());
+		assertEquals(State.editCheckout, controller.getState());
 		assertNull(controller.getConcessionDelegate());
 	}
 
@@ -522,7 +527,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	public void test_ConcessionEditorController() {
 		ObjectContext context = cayenneService.newContext();
 		PurchaseController controller = createPurchaseController(context);
-		ActionParameter param = new ActionParameter(Action.START_CONCESSION_EDITOR);
+		ActionParameter param = new ActionParameter(Action.startConcessionEditor);
 		param.setValue(controller.getModel().getPayer());
 		performAction(controller, param);
 
@@ -548,25 +553,25 @@ public class PurchaseControllerTest extends ServiceTest {
 		concessionEditorController.cancelEditing(concessionEditorController.getContact().getId());
 		assertNull(concessionEditorController.getObjectContext());
 		assertNull(concessionEditorController.getStudentConcession());
-		assertEquals(State.EDIT_CHECKOUT,controller.getState());
+		assertEquals(State.editCheckout,controller.getState());
 	}
 
 
 	private void assertEDIT_CONCESSION(PurchaseController controller) {
-		assertEquals(State.EDIT_CONCESSION, controller.getState());
+		assertEquals(State.editConcession, controller.getState());
 		assertNotNull(controller.getConcessionDelegate());
 		assertEquals(controller.getModel().getPayer().getId(), controller.getConcessionDelegate().getContact().getId());
 		assertEquals(controller.getModel().getPayer().getStudent().getId(), controller.getConcessionDelegate().getContact().getStudent().getId());
 
 		for (Action action : Action.values()) {
 			switch (action) {
-				case CANCEL_CONCESSION_EDITOR:
-				case ADD_CONCESSION:
-				case REMOVE_CONCESSION:
-					assertTrue(State.EDIT_CONCESSION.getAllowedActions().contains(action));
+				case cancelConcessionEditor:
+				case addConcession:
+				case removeConcession:
+					assertTrue(State.editConcession.getAllowedActions().contains(action));
 					break;
 				default:
-					assertFalse(State.EDIT_CONCESSION.getAllowedActions().contains(action));
+					assertFalse(State.editConcession.getAllowedActions().contains(action));
 					break;
 			}
 		}

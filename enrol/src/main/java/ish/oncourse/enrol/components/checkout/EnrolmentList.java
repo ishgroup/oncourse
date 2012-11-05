@@ -57,7 +57,7 @@ public class EnrolmentList {
 				Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
 				Enrolment enrolment = purchaseController.getModel().getAllEnrolments(contact).get(enrolmentIndex);
 				Boolean isSelected = purchaseController.getModel().isEnrolmentEnabled(enrolment);
-				ActionParameter actionParameter = new ActionParameter(isSelected ? Action.DISABLE_ENROLMENT : Action.ENABLE_ENROLMENT);
+				ActionParameter actionParameter = new ActionParameter(isSelected ? Action.disableEnrolment : Action.enableEnrolment);
 				actionParameter.setValue(enrolment);
 				purchaseController.performAction(actionParameter);
 			}

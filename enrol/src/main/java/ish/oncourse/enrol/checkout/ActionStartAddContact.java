@@ -2,7 +2,7 @@ package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.enrol.checkout.contact.AddContactController;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.State.ADD_CONTACT;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.addContact;
 
 public class ActionStartAddContact extends APurchaseAction{
 	@Override
@@ -10,7 +10,7 @@ public class ActionStartAddContact extends APurchaseAction{
 		AddContactController addContactController = new AddContactController();
 		addContactController.setPurchaseController(getController());
 		getController().setAddContactController(addContactController);
-		getController().setState(ADD_CONTACT);
+		getController().setState(addContact);
 
 	}
 

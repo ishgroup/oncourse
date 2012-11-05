@@ -46,7 +46,7 @@ public class ContactEditorController implements ContactEditorDelegate {
 	@Override
 	public void saveContact(Map<String, String> errors) {
 		objectContext.commitChangesToParent();
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.ADD_CONTACT);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
 		actionParameter.setErrors(new ArrayList<String>(errors.values()));
 		actionParameter.setValue(contact);
 		purchaseController.performAction(actionParameter);
@@ -90,7 +90,7 @@ public class ContactEditorController implements ContactEditorDelegate {
 	@Override
 	public void cancelContact() {
 		//do nothing, just forget about the child objectContext.
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.CANCEL_ADD_CONTACT);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.cancelAddContact);
 		actionParameter.setValue(contact);
 		purchaseController.performAction(actionParameter);
 	}

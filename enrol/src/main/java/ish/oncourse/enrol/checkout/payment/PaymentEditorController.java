@@ -48,7 +48,7 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 
 	public void changePayer(Contact contact)
 	{
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.CHANGE_PAYER);
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.changePayer);
 		actionParameter.setValue(contact);
 		purchaseController.performAction(actionParameter);
 	}

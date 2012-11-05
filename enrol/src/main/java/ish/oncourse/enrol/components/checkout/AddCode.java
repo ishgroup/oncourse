@@ -30,7 +30,7 @@ public class AddCode {
 		String code = StringUtils.trimToNull(request.getParameter(FIELD_ADD_CODE));
 		if (code != null)
 		{
-			PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.ADD_DISCOUNT);
+			PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addDiscount);
 			actionParameter.setValue(code);
 			purchaseController.performAction(actionParameter);
 			return checkout.getCheckoutBlock();

@@ -4,7 +4,7 @@ public class ActionInit extends APurchaseAction {
 	@Override
 	protected void makeAction() {
 		getController().getVoucherRedemptionHelper().setInvoice(getModel().getInvoice());
-		ActionStartAddContact action = PurchaseController.Action.START_ADD_CONTACT.createAction(getController());
+		ActionStartAddContact action = PurchaseController.Action.startAddContact.createAction(getController());
 		action.action();
 	}
 

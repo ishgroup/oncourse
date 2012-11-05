@@ -3,7 +3,7 @@ package ish.oncourse.enrol.checkout;
 public class ActionFinishPayment extends APurchaseAction {
 	@Override
 	protected void makeAction() {
-		getController().setState(PurchaseController.State.FINALIZED);
+		getController().setState(PurchaseController.State.finalized);
 	}
 
 	@Override

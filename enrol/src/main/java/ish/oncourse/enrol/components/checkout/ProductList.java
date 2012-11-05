@@ -43,7 +43,7 @@ public class ProductList {
 		Integer index = new Integer(productItemIndex);
 		ProductItem productItem = purchaseController.getModel().getProductItemBy(contact, index);
 		Boolean isSelected = purchaseController.getModel().isProductItemEnabled(productItem);
-		ActionParameter actionParameter = new ActionParameter(isSelected ? Action.DISABLE_PRODUCT_ITEM : Action.ENABLE_PRODUCT_ITEM);
+		ActionParameter actionParameter = new ActionParameter(isSelected ? Action.disableProductItem : Action.enableProductItem);
 		actionParameter.setValue(productItem);
 		purchaseController.performAction(actionParameter);
         return null;

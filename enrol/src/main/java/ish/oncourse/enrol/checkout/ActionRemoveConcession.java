@@ -4,7 +4,7 @@ import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.StudentConcession;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.State.EDIT_CHECKOUT;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.editCheckout;
 
 public class ActionRemoveConcession extends APurchaseAction{
 	private Contact contact;
@@ -20,7 +20,7 @@ public class ActionRemoveConcession extends APurchaseAction{
 			}
 			getModel().removeConcession(contact, concessionType);
 			getController().recalculateEnrolmentInvoiceLines();
-			getController().setState(EDIT_CHECKOUT);
+			getController().setState(editCheckout);
 	}
 
 	@Override
@@ -34,6 +34,6 @@ public class ActionRemoveConcession extends APurchaseAction{
 
 	@Override
 	protected boolean validate() {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+		return true;
 	}
 }
