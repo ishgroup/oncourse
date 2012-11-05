@@ -9,8 +9,10 @@
 			<span>Message</span></a>
 		</li>
 		<li class="active">
-			<a href="#"><img src="img/icon/icon-bord-29x29-active.png" width="29" height="29" alt="cloud" />
-			<span>Classes</span></a>
+			<t:pagelink id="m_CurrentClasses" page="prop:classesPageName" context="current">
+				<img src="img/icon/icon-bord-29x29-active.png" width="29" height="29" alt="cloud" />
+				<span>Classes</span>
+			</t:pagelink>
 		</li>
 		<li>
 			<a href="#"><img src="img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
