@@ -77,8 +77,6 @@ allprojects {
 	}
 
 	ext.sharedManifest = manifest {
-		println("--------------------------------------Release-Version "+version )
-		println("--------------------------------------SCM-Revision "+project.release.scmVersion )
 		attributes 'SCM-Revision': project.release.scmVersion,
 			'Release-Version': version,
 			'Built-Date': new Date(),
