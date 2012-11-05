@@ -2,6 +2,9 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_classes">
 
 		<div class="content">
+			<div class="class-info-title">
+				<span t:type="classTabs" courseClass="courseClass" selected="literal:classSurvey"/>
+			</div>
 			<t:if test="hasClasses">
 				<h1>Classes</h1>
 				<table class="class" align="center">
