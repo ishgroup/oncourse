@@ -1,0 +1,62 @@
+<t:container
+		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+		xmlns:p="tapestry:parameter">
+
+	<t:if test="unexpectedException">
+		<t:delegate to="block:unexpectedException"/>
+		<p:else>
+			<t:if test="paymentSuccess">
+				<t:delegate to="block:paymentSuccess"/>
+				<p:else>
+					<t:delegate to="block:paymentFailed"/>
+				</p:else>
+			</t:if>
+			<t:delegate to="block:unexpectedException"/>
+		</p:else>
+	</t:if>
+
+
+	<t:block t:id="unexpectedException">
+		<p>Your session has been expired. Reply the checkout again.</p>
+		<script type="text/javascript">
+			refreshShortList();
+			<t:if test="coursesLink">
+					setTimeout("window.location.href='${coursesLink}'", 10000);
+			</t:if>
+		</script>
+	</t:block>
+
+	<t:block t:id="paymentSuccess">
+		<h2>Payment <span>&#187;</span> Successful</h2>
+		<p>${thxMsg}</p>
+		<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentId}</strong>.</p>
+		<p>${message:successConfirmation}</p>
+		<t:if test="successUrl">
+			<p>
+				<strong>Please press continue to view further important information with regard to this enrolment</strong>
+				<br/>
+			</p>
+		</t:if>
+		<div class="successEnrolmentContinueButton">
+			<button id="continueEnrolmentSubmit" class="btn">"${continueButtonText}"</button>
+		</div>
+		<t:AnalyticsTransaction transaction="transaction"/>
+	</t:block>
+
+	<t:block t:id="paymentFailed">
+		<t:if test="controller.enrolmentFailedNoPlaces" negate="true">
+			<h2>Enrolment <span>&#187;</span> Payment rejected</h2>
+			<p>${paymentFailedMsg}</p>
+			<p>${message:checkCreditCard}.</p>
+			<p:else>
+				<h2>Enrolment <span>&#187;</span> Failed</h2>
+				<p>${enrolmentFailedMsg}</p>
+				<p>${message:enrolmentFailedReason}</p>
+			</p:else>
+		</t:if>
+		<button id="tryAgain" value="Try again with another card or reenter details"/>.
+		<t:eventlink t:id="tryAgainEvent"/>
+		Or <button id="abandon" value="Abandon"/> this enrolment.
+		<t:eventlink t:id="abandonEvent"/>
+	</t:block>
+</t:container>

@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.payment;
 
+import ish.oncourse.enrol.checkout.ActionChangePayer;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
@@ -24,7 +25,18 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 	public void makePayment()
 	{
 		if (errors.isEmpty())
-			paymentProcessController.processAction(MAKE_PAYMENT);
+		{
+			if (! getPaymentIn().getContact().getId().equals(purchaseController.getModel().getPayer().getId()))
+			{
+				ActionChangePayer payer = PurchaseController.Action.changePayer.createAction(purchaseController);
+				payer.setContact(getPaymentIn().getContact());
+				if (payer.action())
+				{
+					purchaseController.getModel().getObjectContext().commitChanges();
+					paymentProcessController.processAction(MAKE_PAYMENT);
+				}
+			}
+		}
 	}
 
 	public void tryAnotherCard()
