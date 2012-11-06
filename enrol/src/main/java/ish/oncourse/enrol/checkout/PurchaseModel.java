@@ -348,6 +348,16 @@ public class PurchaseModel {
 		}
 	}
 
+	public List<Enrolment> getAllEnabledEnrolments() {
+
+		ArrayList<Enrolment> result = new ArrayList<Enrolment>();
+		for (Contact contact: getContacts())
+		{
+			result.addAll(getEnabledEnrolments(contact));
+		}
+		return result;
+	}
+
 
 	private class ContactNode {
 		

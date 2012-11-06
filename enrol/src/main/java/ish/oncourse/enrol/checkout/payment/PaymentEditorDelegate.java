@@ -6,24 +6,29 @@ import ish.oncourse.model.PaymentIn;
 import java.util.List;
 import java.util.Map;
 
+import static ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
+
 public interface PaymentEditorDelegate {
 	public void makePayment();
 
-	public void tryAnotherCard();
+	public void tryAgain();
 	public void abandon();
 	public void changePayer(Contact contact);
-
-	public boolean isResultState();
-
 	public List<Contact> getContacts();
 
 	public PaymentIn getPaymentIn();
 
-	public boolean isNeedConcessionReminder();
-
 	public Map<String, String> getErrors();
 
 	public void setErrors(Map<String, String> errors);
+
+	public boolean isNeedConcessionReminder();
+	public boolean isResultState();
+	public boolean isEnrolmentFailedNoPlaces();
+	public boolean isPaymentSuccess();
+
+	public Transaction getAnalyticsTransaction();
+
 
 
 }

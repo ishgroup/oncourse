@@ -1,13 +1,16 @@
 package ish.oncourse.enrol.pages;
 
+import ish.common.types.CreditCardType;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.checkout.PurchaseModel;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
+import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.enrol.utils.EnrolCoursesController;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
@@ -196,16 +199,35 @@ public class Checkout {
 
 			purchaseController = createPurchaseConroller(model);
 			purchaseController.performAction(new ActionParameter(Action.init));
-			ContactCredentials contactCredentials = new ContactCredentials();
-			contactCredentials.setLastName("taree3");
-			contactCredentials.setFirstName("taree3");
-			contactCredentials.setEmail("taree3@taree3.de");
-			ActionParameter actionParameter = new ActionParameter(Action.addContact);
-			actionParameter.setValue(contactCredentials);
-			purchaseController.performAction(actionParameter);
-			actionParameter = new ActionParameter(Action.proceedToPayment);
-			purchaseController.performAction(actionParameter);
+			testAddContact();
+			testProceedToPayment();
+			testMakePayment();
 		}
+	}
+
+	private void testMakePayment() {
+		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
+		delegate.getPaymentIn().setCreditCardCVV("1111");
+		delegate.getPaymentIn().setCreditCardExpiry("12/2020");
+		delegate.getPaymentIn().setCreditCardName("NAME NAME");
+		delegate.getPaymentIn().setCreditCardNumber("9999990000000378");
+		delegate.getPaymentIn().setCreditCardType(CreditCardType.VISA);
+		delegate.makePayment();
+	}
+
+	private void testProceedToPayment() {
+		ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
+		purchaseController.performAction(actionParameter);
+	}
+
+	private void testAddContact() {
+		ContactCredentials contactCredentials = new ContactCredentials();
+		contactCredentials.setLastName("taree3");
+		contactCredentials.setFirstName("taree3");
+		contactCredentials.setEmail("taree3@taree3.de");
+		ActionParameter actionParameter = new ActionParameter(Action.addContact);
+		actionParameter.setValue(contactCredentials);
+		purchaseController.performAction(actionParameter);
 	}
 
 	/**
@@ -232,6 +254,9 @@ public class Checkout {
 		return checkoutBlock;
 	}
 
+	public String getCoursesLink() {
+		return EnrolCoursesController.HTTP_PROTOCOL + request.getServerName() + "/"+ Courses.class.getSimpleName();
+	}
 
 	@OnEvent(value = "addContactEvent")
 	public Object addContact() {

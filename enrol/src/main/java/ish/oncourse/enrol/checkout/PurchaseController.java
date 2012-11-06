@@ -14,6 +14,8 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import org.apache.log4j.Logger;
@@ -44,6 +46,8 @@ public class PurchaseController {
 	private PreferenceController preferenceController;
 	private ICayenneService cayenneService;
 	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+	private IWebSiteService webSiteService;
+	private ITagService tagService;
 
 	private Messages messages;
 
@@ -324,6 +328,11 @@ public class PurchaseController {
 		return state == editPayment;
 	}
 
+	public boolean isFinalized() {
+		return state == finalized;
+	}
+
+
 	public ConcessionDelegate getConcessionDelegate() {
 		return concessionEditorController;
 	}
@@ -422,6 +431,22 @@ public class PurchaseController {
 
 	public void setPaymentEditorController(PaymentEditorController paymentEditorController) {
 		this.paymentEditorController = paymentEditorController;
+	}
+
+	public IWebSiteService getWebSiteService() {
+		return webSiteService;
+	}
+
+	public void setWebSiteService(IWebSiteService webSiteService) {
+		this.webSiteService = webSiteService;
+	}
+
+	public ITagService getTagService() {
+		return tagService;
+	}
+
+	public void setTagService(ITagService tagService) {
+		this.tagService = tagService;
 	}
 
 

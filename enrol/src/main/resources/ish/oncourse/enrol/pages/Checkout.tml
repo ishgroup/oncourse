@@ -23,6 +23,15 @@
 	<t:if test="purchaseController.editPayment">
 		<t:delegate to="block:paymentEditor"/>
 	</t:if>
+	<t:if test="purchaseController.finalized">
+		<p>The process was canceled. Reply the checkout again.</p>
+		<script type="text/javascript">
+			refreshShortList();
+			<t:if test="coursesLink">
+					setTimeout("window.location.href='${coursesLink}'", 10000);
+			</t:if>
+		</script>
+	</t:if>
 </t:block>
 
 <t:block t:id="errors">

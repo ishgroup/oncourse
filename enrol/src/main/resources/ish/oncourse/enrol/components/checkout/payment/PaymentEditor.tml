@@ -99,7 +99,7 @@
 
 
 	<t:block t:id="paymentResult">
-
+		<span t:type="checkout/payment/paymentresult" delegate="delegate"/>
 	</t:block>
 
 
