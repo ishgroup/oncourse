@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.components;
 
-import ish.oncourse.enrol.components.AnalyticsTransaction.Item;
-import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
+import ish.oncourse.analytics.Item;
+import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.pages.EnrolCourses;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.utils.EnrolCoursesController;
@@ -13,13 +13,8 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.ui.pages.Courses;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
