@@ -41,21 +41,14 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
-import ish.oncourse.services.reference.CountryService;
-import ish.oncourse.services.reference.ICountryService;
-import ish.oncourse.services.reference.ILanguageService;
-import ish.oncourse.services.reference.IModuleService;
-import ish.oncourse.services.reference.IQualificationService;
-import ish.oncourse.services.reference.ITrainingPackageService;
-import ish.oncourse.services.reference.LanguageService;
-import ish.oncourse.services.reference.ModuleService;
-import ish.oncourse.services.reference.QualificationService;
-import ish.oncourse.services.reference.TrainingPackageService;
+import ish.oncourse.services.reference.*;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
@@ -78,7 +71,6 @@ import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
 import ish.persistence.CommonPreferenceController;
-
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
@@ -163,6 +155,7 @@ public class ServiceTestModule {
 		binder.bind(IModuleService.class, ModuleService.class).withId("ModuleService");
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
+		binder.bind(IPaymentGatewayService.class, PaymentExpressGatewayService.class).withId("PaymentGatewayService");
 	}
 	
 	@EagerLoad

@@ -1,17 +1,13 @@
-package ish.oncourse.webservices.utils;
+package ish.oncourse.util.payment;
 
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
+import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
-import ish.oncourse.util.payment.ProcessPaymentInvokable;
-import ish.oncourse.util.payment.StackedPaymentMonitor;
-import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.Invokable;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
@@ -50,9 +46,9 @@ public class   PaymentProcessControllerTest extends ServiceTest {
 
     @Before
     public void setup() throws Exception {
-        initTest("ish.oncourse.webservices.services", "services", ReplicationTestModule.class);
+        initTest("ish.oncourse.webservices.services", "services", ServiceTestModule.class);
 
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/utils/PaymentProcessControllerTest.xml");
+        InputStream st = PaymentProcessControllerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/util/payment/PaymentProcessControllerTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
         DataSource onDataSource = getDataSource("jdbc/oncourse");
