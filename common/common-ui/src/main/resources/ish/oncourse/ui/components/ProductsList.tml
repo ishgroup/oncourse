@@ -1,7 +1,9 @@
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div t:type="ui/confirmorderdialog"/>
 	<t:loop source="products" value="product">
-		<span t:type="ui/productitem" product="product" isList="false"></span>
+		<div class="single-product">
+			<span t:type="ui/productitem" product="product" isList="false"></span>
+		</div>
 	</t:loop>
 	<t:if t:test="hasMoreItems">
 		<div id="showMore">
