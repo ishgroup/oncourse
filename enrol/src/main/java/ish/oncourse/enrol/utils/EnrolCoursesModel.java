@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.utils;
 
 import ish.math.Money;
-import ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
+import ish.oncourse.analytics.Transaction;
 import ish.oncourse.model.*;
 
 import java.text.Format;
