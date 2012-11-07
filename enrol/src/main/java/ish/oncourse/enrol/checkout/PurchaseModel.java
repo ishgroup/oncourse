@@ -22,25 +22,20 @@ public class PurchaseModel {
 
 	//input data for model
 	private College college;
-	private List<CourseClass> classes;
+	private List<CourseClass> classes = new ArrayList<CourseClass>();
 	private List<Discount> discounts = new ArrayList<Discount>();
-	private List<Product> products;
+	private List<Product> products = new ArrayList<Product>();
 
 	private ObjectContext objectContext;
 
 
-	private Map<Contact, ContactNode> contacts;
+	private Map<Contact, ContactNode> contacts = new HashMap<Contact, PurchaseModel.ContactNode>();;
 	private Contact payer;
 	private Invoice invoice;
 	
 	private PaymentIn payment;
-	private List<PaymentIn> voucherPayments;
+	private List<PaymentIn> voucherPayments = new ArrayList<PaymentIn>();
 	
-	public PurchaseModel() {
-		this.contacts = new HashMap<Contact, PurchaseModel.ContactNode>();
-		this.voucherPayments = new ArrayList<PaymentIn>();
-	}
-
 	public void addDiscount(Discount discount){
 		discounts.add(discount);
 	}
@@ -109,6 +104,9 @@ public class PurchaseModel {
 	
 	public void removeEnrolment(Enrolment e) {
 		getContactNode(e.getStudent().getContact()).removeEnrolment(e);
+		if (e.getInvoiceLine() != null)
+			objectContext.deleteObject(e.getInvoiceLine());
+		objectContext.deleteObject(e);
 	}
 	
 	public void addConcession(StudentConcession concession) {
@@ -127,8 +125,10 @@ public class PurchaseModel {
 	public void removeProductItem(Contact contact, ProductItem p) {
 		InvoiceLine invoiceLine = p.getInvoiceLine();
 		getContactNode(contact).removeProductItem(p);
+		if (invoiceLine != null)
+			objectContext.deleteObject(invoiceLine);
 		objectContext.deleteObject(p);
-		objectContext.deleteObject(invoiceLine);
+
 	}
 
 
@@ -343,8 +343,22 @@ public class PurchaseModel {
 				e.setStatus(EnrolmentStatus.IN_TRANSACTION);
 			}
 
-			objectContext.deleteObjects(getDisabledEnrolments(contact));
-			objectContext.deleteObjects(getDisabledProductItems(contact));
+			deleteDisabledEnrollments(contact);
+			deleteDisabledProductItems(contact);
+		}
+	}
+
+	private void deleteDisabledProductItems(Contact contact) {
+		List<ProductItem> productItems = new ArrayList<ProductItem>(getDisabledProductItems(contact));
+		for (ProductItem productItem : productItems) {
+			removeProductItem(contact, productItem);
+		}
+	}
+
+	private void deleteDisabledEnrollments(Contact contact) {
+		List<Enrolment> enrolments = new ArrayList<Enrolment>(getDisabledEnrolments(contact));
+		for (Enrolment enrolment : enrolments) {
+			removeEnrolment(enrolment);
 		}
 	}
 

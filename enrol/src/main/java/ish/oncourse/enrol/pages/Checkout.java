@@ -7,17 +7,12 @@ import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.enrol.checkout.PurchaseModel;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
-import ish.oncourse.enrol.services.concessions.IConcessionsService;
-import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
-import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
 import ish.oncourse.enrol.utils.EnrolCoursesController;
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import ish.oncourse.services.discount.IDiscountService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
@@ -31,7 +26,6 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 
 import java.util.Arrays;
@@ -41,25 +35,6 @@ public class Checkout {
 	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
 
 	public static final Logger LOGGER = Logger.getLogger(Checkout.class);
-
-
-	@Inject
-	private IInvoiceProcessingService invoiceProcessingService;
-
-	@Inject
-	private IDiscountService discountService;
-
-	@Inject
-	private IVoucherService voucherService;
-
-	@Inject
-	private ICayenneService cayenneService;
-
-	@Inject
-	private IWebSiteService webSiteService;
-
-	@Inject
-	private IStudentService studentService;
 
 	@Inject
 	private ICookiesService cookiesService;
@@ -71,13 +46,19 @@ public class Checkout {
 	private PreferenceController preferenceController;
 
 	@Inject
-	private IConcessionsService concessionsService;
-
-	@Inject
-	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+	private IVoucherService voucherService;
 
 	@Inject
 	private ITagService tagService;
+
+	@Inject
+	private ICayenneService cayenneService;
+
+	@Inject
+	private IWebSiteService webSiteService;
+
+	@Inject
+	private IPurchaseControllerBuilder purchaseControllerBuilder;
 
 	@Inject
 	private Request request;
@@ -87,12 +68,6 @@ public class Checkout {
 
 	@Persist
 	private PurchaseController purchaseController;
-
-	@Property
-	private Contact contact;
-
-	@Inject
-	private PropertyAccess propertyAccess;
 
 	@Inject
 	@Id("checkout")
@@ -104,39 +79,28 @@ public class Checkout {
 	private Block blockConcession;
 
 	@Property
-	private int studentIndex;
-
-	@Property
 	private String error;
 
+
 	/**
-	 * The property needs to get value after if payer has been changed
+	 * The property is true when session for the payment was expired.
 	 */
 	@Property
-	private Contact selectedPayer;
-
-	private boolean isPayerSelected() {
-		return !studentService.getStudentsFromShortList().isEmpty();
-	}
-
-
-	public String getCoursesListLink() {
-		return "http://" + request.getServerName() + "/" + Courses.class.getSimpleName().toLowerCase();
-	}
-
-	/**
-	 * Check is current contact is a payer for payment.
-	 *
-	 * @return
-	 */
-	public boolean isPayer() {
-		return getPurchaseController().getModel().getPayer().getId().equals(contact.getId());
-	}
+	private boolean expired = false;
 
 	@SetupRender
 	void beforeRender() {
 		synchronized (this) {
-			initTestPaymentController();
+			initPaymentController();
+		}
+	}
+
+	@AfterRender
+	public void afterRender()
+	{
+		if (purchaseController != null && purchaseController.isFinished())
+		{
+			purchaseController = null;
 		}
 	}
 
@@ -157,28 +121,10 @@ public class Checkout {
 			model.setProducts(model.localizeObjects(products));
 			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 
-			purchaseController = createPurchaseConroller(model);
+			purchaseController = purchaseControllerBuilder.build(model);
 			purchaseController.performAction(new ActionParameter(Action.init));
 		}
 	}
-
-	private PurchaseController createPurchaseConroller(PurchaseModel model) {
-		PurchaseController purchaseController = new PurchaseController();
-		purchaseController.setModel(model);
-		purchaseController.setDiscountService(discountService);
-		purchaseController.setInvoiceProcessingService(invoiceProcessingService);
-		purchaseController.setVoucherService(voucherService);
-		purchaseController.setConcessionsService(concessionsService);
-		purchaseController.setStudentService(studentService);
-		purchaseController.setPreferenceController(preferenceController);
-		purchaseController.setMessages(messages);
-		purchaseController.setCayenneService(cayenneService);
-		purchaseController.setPaymentGatewayServiceBuilder(paymentGatewayServiceBuilder);
-		purchaseController.setWebSiteService(webSiteService);
-		purchaseController.setTagService(tagService);
-		return purchaseController;
-	}
-
 
 	private void initTestPaymentController() {
 		if (purchaseController == null) {
@@ -203,7 +149,7 @@ public class Checkout {
 			model.setProducts(model.localizeObjects(products));
 			model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 
-			purchaseController = createPurchaseConroller(model);
+			purchaseController = purchaseControllerBuilder.build(model);
 			purchaseController.performAction(new ActionParameter(Action.init));
 			testAddContact();
 			testProceedToPayment();
@@ -248,15 +194,6 @@ public class Checkout {
 	}
 
 
-	public Object handleUnexpectedException(final Throwable cause) {
-		if (getPurchaseController() == null) {
-			LOGGER.warn("Persist properties have been cleared. User used two or more tabs", cause);
-			return this;
-		} else {
-			throw new IllegalArgumentException(cause);
-		}
-	}
-
 	public Block getCheckoutBlock() {
 		return checkoutBlock;
 	}
@@ -281,6 +218,20 @@ public class Checkout {
 		actionParameter.setValue(purchaseController.getModel().getPayment());
 		purchaseController.performAction(actionParameter);
 		return checkoutBlock;
+	}
+
+	public Object onException(Throwable cause)
+	{
+		if (purchaseController != null)
+		{
+			throw new IllegalArgumentException(cause);
+		}
+		else
+		{
+			expired = true;
+			LOGGER.warn("Persist properties have been cleared. User used two or more tabs or session was expired", cause);
+		}
+		return this;
 	}
 
 }

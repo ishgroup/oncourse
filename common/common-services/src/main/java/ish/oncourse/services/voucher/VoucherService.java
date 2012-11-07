@@ -1,29 +1,13 @@
 package ish.oncourse.services.voucher;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import ish.common.types.PaymentSource;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Product;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Voucher;
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.util.ProductUtil;
 import ish.util.SecurityUtil;
-
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -31,6 +15,8 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import java.util.*;
 
 public class VoucherService implements IVoucherService {
 	private static final String OBJECT_RELATIONSHIP_SEPARATOR_STRING = ".";
@@ -168,7 +154,7 @@ public class VoucherService implements IVoucherService {
     @SuppressWarnings("unchecked")
     @Override
 	public List<Product> loadByIds(List<Long> ids) {
-    	if ((ids == null) || (ids.isEmpty())) {
+    	if (ids == null || ids.isEmpty()) {
     		return Collections.emptyList();
     	}
     	SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(Product.ID_PK_COLUMN, ids));

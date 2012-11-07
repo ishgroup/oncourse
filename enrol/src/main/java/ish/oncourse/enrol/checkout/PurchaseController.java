@@ -51,6 +51,7 @@ public class PurchaseController {
 
 	private Messages messages;
 
+
 	private VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper();
 
 
@@ -65,7 +66,7 @@ public class PurchaseController {
 	private ContactEditorController contactEditorController;
 	private PaymentEditorController paymentEditorController;
 
-	private List<String> errors = new ArrayList<String>();
+	private Map<String, String> errors = new HashMap<String, String>();
 
 	/**
 	 * @return the current state
@@ -171,7 +172,7 @@ public class PurchaseController {
 
 		if (!state.allowedActions.contains(param.action)) {
 			if (LOGGER.isDebugEnabled())
-				errors.add(String.format("Invalid state:  State=%s; Action=%s.", state.name(), param.action.name()));
+				errors.put(Error.illegalState.name(), String.format("Invalid state:  State=%s; Action=%s.", state.name(), param.action.name()));
 			illegalState = true;
 			return;
 		}
@@ -332,6 +333,11 @@ public class PurchaseController {
 		return state == finalized;
 	}
 
+	public boolean isFinished()
+	{
+		return state == finalized && paymentEditorController.getPaymentProcessController().isProcessFinished();
+	}
+
 
 	public ConcessionDelegate getConcessionDelegate() {
 		return concessionEditorController;
@@ -369,7 +375,7 @@ public class PurchaseController {
 		return contactEditorController;
 	}
 
-	public List<String> getErrors() {
+	public Map<String, String> getErrors() {
 		return errors;
 	}
 
@@ -383,8 +389,7 @@ public class PurchaseController {
 				if (contact.getStudent().getStudentConcessions().isEmpty()) {
 					List<Enrolment> enrolments = model.getEnabledEnrolments(contact);
 					for (Enrolment enrolment : enrolments) {
-						if (!enrolment.getCourseClass().getConcessionDiscounts().isEmpty())
-						{
+						if (!enrolment.getCourseClass().getConcessionDiscounts().isEmpty()) {
 							return true;
 						}
 					}
@@ -449,8 +454,11 @@ public class PurchaseController {
 		this.tagService = tagService;
 	}
 
+	public void addError(Error error, Object... params) {
+		errors.put(error.name(), error.getMessage(messages, params));
+	}
 
-	static enum State {
+	public static enum State {
 		init(Action.init, Action.startAddContact),
 		editCheckout(changePayer,
 				enableEnrolment, enableProductItem,
@@ -544,7 +552,7 @@ public class PurchaseController {
 
 		private Action action;
 
-		private List<String> errors;
+		private Map<String, String> errors;
 
 		private Map<Class<?>, Object> values;
 
@@ -573,13 +581,32 @@ public class PurchaseController {
 			throw new IllegalArgumentException("Requested value type doesn't match existing value.");
 		}
 
-		public List<String> getErrors() {
+		public Map<String, String> getErrors() {
 			return errors;
 		}
 
-		public void setErrors(List<String> errors) {
+		public void setErrors(Map<String, String> errors) {
 			this.errors = errors;
 		}
+	}
+
+	public static enum Error {
+		noSelectedItemForPurchase,
+		contactAlreadyAdded,
+		voucherNotFound,
+		voucherCannotBeUsed,
+		discountNotFound,
+		creditAccessPasswordIsWrong,
+		duplicatedEnrolment,
+		noCourseClassPlaces,
+		courseClassEnded,
+		sessionExpired,
+		illegalState;
+
+		public String getMessage(Messages messages, Object... params) {
+			return messages.format("error-%s", name(), params);
+		}
+
 	}
 
 

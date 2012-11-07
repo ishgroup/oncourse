@@ -14,12 +14,12 @@ public class ActionInit extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
-		if (getModel().getPayer() != null)
-			return false;
-		if (getModel().getContacts().size() > 0)
-			return false;
 		if (getModel().getClasses().size() < 1 && getModel().getProducts().size() < 1)
+		{
+			getController().addError(PurchaseController.Error.noSelectedItemForPurchase);
+			getController().setState(PurchaseController.State.finalized);
 			return false;
+		}
 		return true;
 	}
 }

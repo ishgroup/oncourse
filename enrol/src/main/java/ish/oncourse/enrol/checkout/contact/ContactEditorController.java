@@ -47,7 +47,7 @@ public class ContactEditorController implements ContactEditorDelegate {
 	public void saveContact(Map<String, String> errors) {
 		objectContext.commitChangesToParent();
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
-		actionParameter.setErrors(new ArrayList<String>(errors.values()));
+		actionParameter.setErrors(errors);
 		actionParameter.setValue(contact);
 		purchaseController.performAction(actionParameter);
 	}

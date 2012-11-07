@@ -4,6 +4,8 @@ import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
+import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
+import ish.oncourse.enrol.services.payment.PurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
 import ish.oncourse.model.College;
@@ -13,11 +15,8 @@ import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.system.ICollegeService;
-
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.ServiceBuilder;
-import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
@@ -31,6 +30,7 @@ public class EnrolTestModule {
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
 		
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("testWebSiteService");
+		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
 	}
 	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {

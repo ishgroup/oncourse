@@ -2,10 +2,10 @@ package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.model.Voucher;
 
-public class ActionAddVoucher extends APurchaseAction {
+import static ish.oncourse.enrol.checkout.PurchaseController.Error.voucherCannotBeUsed;
+import static ish.oncourse.enrol.checkout.PurchaseController.Error.voucherNotFound;
 
-	public static final String ERROR_KEY_voucherNotFound = "error-voucherNotFound";
-	public static final String ERROR_KEY_voucherCannotBeUsed = "error-voucherCannotBeUsed";
+public class ActionAddVoucher extends APurchaseAction {
 
 	private String voucherCode;
 	private Voucher voucher;
@@ -29,10 +29,10 @@ public class ActionAddVoucher extends APurchaseAction {
 	@Override
 	protected boolean validate() {
 		if (voucher == null) {
-			getController().getErrors().add(getController().getMessages().format(ERROR_KEY_voucherNotFound, voucherCode));
+			getController().addError(voucherNotFound, voucherCode);
 			return false;
 		} else if (!voucher.canBeUsedBy(getModel().getPayer())) {
-			getController().getErrors().add(getController().getMessages().format(ERROR_KEY_voucherCannotBeUsed, voucherCode));
+			getController().addError(voucherCannotBeUsed, voucherCode);
 			return false;
 		} else {
 			return true;

@@ -3,8 +3,6 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.Discount;
 
 public class ActionAddDiscount extends APurchaseAction {
-	public static final String ERROR_KEY_discountNotFound = "error-discountNotFound";
-
 	private String discountCode;
 	private Discount discount;
 
@@ -25,7 +23,7 @@ public class ActionAddDiscount extends APurchaseAction {
 	@Override
 	protected boolean validate() {
 		if (discount == null) {
-			getController().getErrors().add(getController().getMessages().format(ERROR_KEY_discountNotFound, discountCode));
+			getController().addError(PurchaseController.Error.discountNotFound, discountCode);
 			return false;
 		} else
 			return true;

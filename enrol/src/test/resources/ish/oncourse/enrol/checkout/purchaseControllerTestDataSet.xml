@@ -321,5 +321,7 @@
 
 	<Preference id="1" collegeId="1" name="license.ccprocessing"
 		value_string="true" />
+	<Preference id="2" collegeId="1" name="payment.gateway.type"
+				value_string="TEST" />
 		
 </dataset>

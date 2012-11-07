@@ -4,11 +4,11 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Error.contactAlreadyAdded;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.*;
 
 public class ActionAddContact extends APurchaseAction {
 
-	public static final String ERROR_KEY_contactAlreadyAdded = "error-contactAlreadyAdded";
 	private Contact contact;
 	private ContactCredentials contactCredentials;
 
@@ -53,7 +53,7 @@ public class ActionAddContact extends APurchaseAction {
 			ContactCredentials contactCredentials = getParameter().getValue(ContactCredentials.class);
 			if (getModel().containsContactWith(contactCredentials)) {
 
-				getController().getErrors().add(getController().getMessages().get(ERROR_KEY_contactAlreadyAdded));
+				getController().addError(contactAlreadyAdded);
 
 				return false;
 			}

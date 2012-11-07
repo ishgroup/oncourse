@@ -2,9 +2,19 @@
 	  bodyClass="literal:internal-page"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-<div id="checkout">
-		<t:delegate to="block:checkout"/>
-</div>
+<t:if test="expired">
+	<div class="error">
+		<p>${message:error-sessionExpired}</p>
+		<t:if test="coursesLink">
+			setTimeout("window.location.href='${coursesLink}'", 5000);
+		</t:if>
+	</div>
+	<p:else>
+		<div id="checkout">
+			<t:delegate to="block:checkout"/>
+		</div>
+	</p:else>
+</t:if>
 
 <t:block t:id="checkout">
 	<t:delegate to="block:errors"/>
@@ -31,7 +41,7 @@
 <t:block t:id="errors">
 	<t:if test="purchaseController.errors.isEmpty()" negate="true">
 		<div class="error">
-			<h2>ERROR</h2>
+			<h2>Errors</h2>
 			<t:loop source="purchaseController.errors" value="error">
 				<p>${error}</p>
 			</t:loop>

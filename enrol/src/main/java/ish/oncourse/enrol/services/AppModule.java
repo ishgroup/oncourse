@@ -4,6 +4,8 @@ import ish.oncourse.enrol.services.concessions.ConcessionsService;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
+import ish.oncourse.enrol.services.payment.IPurchaseControllerBuilder;
+import ish.oncourse.enrol.services.payment.PurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
 import ish.oncourse.model.PaymentGatewayType;
@@ -38,6 +40,7 @@ public class AppModule {
 		binder.bind(IConcessionsService.class, ConcessionsService.class);
 		binder.bind(IStudentService.class, StudentService.class);
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
+		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
 	}
 	
 	@EagerLoad

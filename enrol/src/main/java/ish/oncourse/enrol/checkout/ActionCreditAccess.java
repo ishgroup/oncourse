@@ -2,9 +2,9 @@ package ish.oncourse.enrol.checkout;
 
 public class ActionCreditAccess extends APurchaseAction{
 
-	public static final String ERROR_KEY_creditAccessPasswordIsWrong = "error-creditAccessPasswordIsWrong";
 	@Override
 	protected void makeAction() {
+		//todo need specification
 	}
 
 	@Override
@@ -13,7 +13,7 @@ public class ActionCreditAccess extends APurchaseAction{
 
 	@Override
 	protected boolean validate() {
-		getController().getErrors().add(getController().getMessages().get(ERROR_KEY_creditAccessPasswordIsWrong));
+		getController().addError(PurchaseController.Error.creditAccessPasswordIsWrong);
 		return false;
 	}
 }

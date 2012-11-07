@@ -7,7 +7,7 @@ public abstract class APurchaseAction {
 
 	public boolean action() {
 		if (parameter != null && parameter.getErrors() != null && parameter.getErrors().size() > 0) {
-			controller.getErrors().addAll(parameter.getErrors());
+			controller.getErrors().putAll(parameter.getErrors());
 			return false;
 		}
 

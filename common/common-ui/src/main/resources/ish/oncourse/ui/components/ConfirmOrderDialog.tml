@@ -1,4 +1,4 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<t:if t:test="paymentGatewayEnabled">
 		<div class="confirmOrderDialog dialogContainer">
 			<p class="confirm-message">
@@ -7,7 +7,7 @@
 				<div class="classDate" />
 			</p>
 			<p class="confirm-proseed">
-				<a href="/enrol/EnrolCourses" class="button">Proceed to Checkout</a>
+				<a href="/enrol/checkout" class="button">Proceed to Checkout</a>
 			</p>
 			<p class="confirm-close-wrapper">
 				<a href="#" class="button closeButton">Continue browsing</a>
