@@ -8,6 +8,7 @@ import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -22,6 +23,9 @@ public class PaymentResult {
 
 	@Inject
 	private Request request;
+
+	@Inject
+	private Messages messages;
 
 	@InjectPage
 	private Checkout checkout;
@@ -61,4 +65,18 @@ public class PaymentResult {
 		return checkout.getCheckoutBlock();
 	}
 
+	public String getMessageThanksForEnrolment()
+	{
+		return messages.format("thanksForEnrolment", getPaymentIn().getCollege().getName());
+	}
+
+	public String getMessageEnrolmentFailed()
+	{
+		return messages.format("enrolmentFailed", getPaymentIn().getCollege().getName());
+	}
+
+	public String getMessagePaymentFailed()
+	{
+		return messages.format("paymentFailed", getPaymentIn().getCollege().getName());
+	}
 }

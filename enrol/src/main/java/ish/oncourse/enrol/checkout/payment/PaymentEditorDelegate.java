@@ -1,12 +1,12 @@
 package ish.oncourse.enrol.checkout.payment;
 
+import ish.oncourse.analytics.Transaction;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.enrol.components.AnalyticsTransaction.Transaction;
 
 public interface PaymentEditorDelegate {
 	public void makePayment();

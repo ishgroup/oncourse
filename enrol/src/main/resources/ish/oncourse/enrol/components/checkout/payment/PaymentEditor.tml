@@ -1,13 +1,7 @@
 <t:container
 		xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
-		xmlns:p="tapestry:parameter">
-	<t:if test="delegate.resultState">
-		<t:delegate to="block:paymentResult"/>
-		<p:else>
-			<t:delegate to="block:paymentEditor"/>
-		</p:else>
-	</t:if>
-
+		>
+	<t:delegate to="block:paymentEditor"/>
 
 	<t:block t:id="paymentEditor">
 		<t:form t:id="paymentform">
@@ -96,11 +90,4 @@
 			</div>
 		</fieldset>
 	</t:block>
-
-
-	<t:block t:id="paymentResult">
-		<span t:type="checkout/payment/paymentresult" delegate="delegate"/>
-	</t:block>
-
-
 </t:container>

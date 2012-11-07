@@ -462,8 +462,8 @@ public class PurchaseController {
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact),
 		editContact(Action.addContact, cancelAddContact),
-		editPayment(changePayer, finishPayment),
-		finalized;
+		editPayment(changePayer, showPaymentResult),
+		finalized(proceedToPayment);
 
 		private List<Action> allowedActions;
 
@@ -503,7 +503,7 @@ public class PurchaseController {
 		creditAccess(ActionCreditAccess.class, String.class),
 		owingApply(ActionOwingApply.class),
 		proceedToPayment(ActionProceedToPayment.class),
-		finishPayment(ActionFinishPayment.class);
+		showPaymentResult(ActionShowPaymentResult.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;

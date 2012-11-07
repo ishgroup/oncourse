@@ -27,7 +27,7 @@
 
 	<t:block t:id="paymentSuccess">
 		<h2>Payment <span>&#187;</span> Successful</h2>
-		<p>${message:thanksForEnrolment}</p>
+		<p>${messageThanksForEnrolment}</p>
 		<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentIn.id}</strong>.</p>
 		<p>${message:successConfirmation}</p>
 		<t:if test="successUrl">
@@ -45,12 +45,12 @@
 	<t:block t:id="paymentFailed">
 		<t:if test="delegate.enrolmentFailedNoPlaces">
 			<h2>Enrolment <span>&#187;</span> Failed</h2>
-			<p>${message:enrolmentFailed}</p>
+			<p>${messageEnrolmentFailed}</p>
 			<p>${message:enrolmentFailedReason}</p>
 			<p:else>
 				<h2>Enrolment <span>&#187;</span> Payment rejected</h2>
-				<p>${message:paymentFailed}</p>
-				<p>${message:checkCreditCard}.</p>
+				<p>${messagePaymentFailed}</p>
+				<p>${message:checkCreditCard}</p>
 			</p:else>
 		</t:if>
 		<button id="tryAgain">Try again with another card or reenter details</button>.

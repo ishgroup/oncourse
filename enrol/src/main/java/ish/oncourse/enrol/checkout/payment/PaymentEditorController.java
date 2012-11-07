@@ -1,8 +1,9 @@
 package ish.oncourse.enrol.checkout.payment;
 
+import ish.oncourse.analytics.Item;
+import ish.oncourse.analytics.Transaction;
 import ish.oncourse.enrol.checkout.ActionChangePayer;
 import ish.oncourse.enrol.checkout.PurchaseController;
-import ish.oncourse.enrol.components.AnalyticsTransaction;
 import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +17,7 @@ import java.util.Map;
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
 
 public class PaymentEditorController implements PaymentEditorDelegate{
+
 	private PurchaseController purchaseController;
 	private PaymentProcessController paymentProcessController;
 	private Map<String,String>  errors = new HashMap<String, String>();
@@ -49,26 +51,25 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 				paymentProcessController.processAction(PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS);
 			}
 		}
-		tryFinalizeProcess();
+		finalizeProcess();
 	}
 
-	private void tryFinalizeProcess() {
-		if (paymentProcessController.isProcessFinished())
-		{
-			PurchaseController.ActionParameter ap = new PurchaseController.ActionParameter(PurchaseController.Action.finishPayment);
-			purchaseController.performAction(ap);
-		}
+	private void finalizeProcess() {
+		PurchaseController.ActionParameter ap = new PurchaseController.ActionParameter(PurchaseController.Action.showPaymentResult);
+		purchaseController.performAction(ap);
 	}
 
 	public void tryAgain()
 	{
 		paymentProcessController.processAction(TRY_ANOTHER_CARD);
-		purchaseController.getModel().setPayment(paymentProcessController.getPaymentIn());
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
+		actionParameter.setValue(paymentProcessController.getPaymentIn());
+		purchaseController.performAction(actionParameter);
 	}
 
 	public void abandon(){
 		paymentProcessController.processAction(ABANDON_PAYMENT);
-		tryFinalizeProcess();
+		finalizeProcess();
 	}
 
 	public boolean isNeedConcessionReminder()
@@ -118,15 +119,15 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 	}
 
 	@Override
-	public AnalyticsTransaction.Transaction getAnalyticsTransaction() {
+	public Transaction getAnalyticsTransaction() {
 		String googleAnalyticsAccount = purchaseController.getWebSiteService().getCurrentWebSite().getGoogleAnalyticsAccount();
 
 		if (googleAnalyticsAccount != null && StringUtils.trimToNull(googleAnalyticsAccount) != null) {
 			if (isPaymentSuccess()) {
 				List<Enrolment> enrolments = purchaseController.getModel().getAllEnabledEnrolments();
-				List<AnalyticsTransaction.Item> transactionItems = new ArrayList<AnalyticsTransaction.Item>(enrolments.size());
+				List<Item> transactionItems = new ArrayList<Item>(enrolments.size());
 				for (Enrolment enrolment : enrolments) {
-					AnalyticsTransaction.Item item = new AnalyticsTransaction.Item();
+					Item item = new Item();
 
 					for (Tag tag : purchaseController.getTagService().getTagsForEntity(Course.class.getSimpleName(), enrolment.getCourseClass().getCourse().getId())) {
 						if (Tag.SUBJECTS_TAG_NAME.equalsIgnoreCase(tag.getRoot().getName())) {
@@ -140,7 +141,7 @@ public class PaymentEditorController implements PaymentEditorDelegate{
 					item.setUnitPrice(enrolment.getInvoiceLine().getDiscountedPriceTotalExTax().toBigDecimal());
 					transactionItems.add(item);
 				}
-				AnalyticsTransaction.Transaction transaction = new AnalyticsTransaction.Transaction();
+				Transaction transaction = new Transaction();
 				transaction.setAffiliation(null);
 				transaction.setCity(getPaymentIn().getContact().getSuburb());
 				transaction.setCountry("Australia");

@@ -21,6 +21,7 @@ import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.ui.pages.Courses;
 import org.apache.cayenne.ObjectContext;
@@ -74,6 +75,9 @@ public class Checkout {
 
 	@Inject
 	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+
+	@Inject
+	private ITagService tagService;
 
 	@Inject
 	private Request request;
@@ -170,6 +174,8 @@ public class Checkout {
 		purchaseController.setMessages(messages);
 		purchaseController.setCayenneService(cayenneService);
 		purchaseController.setPaymentGatewayServiceBuilder(paymentGatewayServiceBuilder);
+		purchaseController.setWebSiteService(webSiteService);
+		purchaseController.setTagService(tagService);
 		return purchaseController;
 	}
 
@@ -217,6 +223,7 @@ public class Checkout {
 
 	private void testProceedToPayment() {
 		ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
+		actionParameter.setValue(purchaseController.getModel().getPayment());
 		purchaseController.performAction(actionParameter);
 	}
 
@@ -270,7 +277,9 @@ public class Checkout {
 	public Object proceedToPayment() {
 		if (!request.isXHR())
 			return null;
-		purchaseController.performAction(new ActionParameter(Action.proceedToPayment));
+		ActionParameter actionParameter = new ActionParameter(Action.proceedToPayment);
+		actionParameter.setValue(purchaseController.getModel().getPayment());
+		purchaseController.performAction(actionParameter);
 		return checkoutBlock;
 	}
 
