@@ -200,9 +200,7 @@ public class TextileForm {
 
 							for (String name : parameterNames) {
 								if (name.endsWith("_input")) {
-									//append the parameters separated with 4 spaces instead of new line as requested in #13061
-									body.append(name.split("_")[1]).append(": ").append(request.getParameter(name))
-											.append("    ");
+									body.append(name.split("_")[1]).append(": ").append(request.getParameter(name)).append("\n");
 								}
 							}
 							//separate the parameters and break-line
