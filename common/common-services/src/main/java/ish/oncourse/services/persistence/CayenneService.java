@@ -37,7 +37,8 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		}
 		
 		DataContext context = (DataContext) cayenneRuntime.getContext();
-		context.setQueryCache(cacheService.cayenneCache());
+		//QueryCache already set in factory
+		//context.setQueryCache(cacheService.cayenneCache());
 		this.sharedContext = context;
 		
 		QueueableLifecycleListener listener = new QueueableLifecycleListener(this);
@@ -60,9 +61,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	 * @see ICayenneService#newContext()
 	 */
 	public ObjectContext newContext() {
-		DataContext newContext = (DataContext) cayenneRuntime.getContext();
-		newContext.setQueryCache(((DataContext) sharedContext).getQueryCache());
-		return newContext;
+		return cayenneRuntime.getContext();
 	}
 
 	
