@@ -12,9 +12,9 @@ import org.apache.tapestry5.services.Request;
 
 public class Amount {
 
-	public static final String FIELD_PASSWORD= "password";
+	public static final String FIELD_PASSWORD = "password";
 	@Property
-	@Parameter (required = true)
+	@Parameter(required = true)
 	private PurchaseController purchaseController;
 
 	@Inject
@@ -24,19 +24,27 @@ public class Amount {
 	private Checkout checkout;
 
 	@OnEvent(value = "creditAccessEvent")
-	public Object creditAccess()
-	{
+	public Object creditAccess() {
 		if (!request.isXHR())
 			return null;
 
 		String password = StringUtils.trimToNull(request.getParameter(FIELD_PASSWORD));
-		if (password != null)
-		{
+		if (password != null) {
 			PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.creditAccess);
 			actionParameter.setValue(password);
 			purchaseController.performAction(actionParameter);
 			return checkout.getCheckoutBlock();
 		}
 		return null;
+	}
+
+	@OnEvent(value = "removeOwingEvent")
+	public Object removeOwing() {
+		if (!request.isXHR())
+			return null;
+
+		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.owingApply);
+		purchaseController.performAction(actionParameter);
+		return checkout.getCheckoutBlock();
 	}
 }

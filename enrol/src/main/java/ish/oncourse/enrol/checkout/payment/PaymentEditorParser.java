@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,25 @@ public class PaymentEditorParser implements IFieldsParser {
 	private Map<String, String> errors = new HashMap<String, String>();
 
 	public void parse() {
-		Field[] fields = Field.values();
+		if (paymentIn.getAmount().equals(BigDecimal.ZERO))
+		{
+			parse(new Field[]{Field.userAgreed});
+		}
+		else
+		{
+			parse(Field.values());
+			String expiryMonth = StringUtils.trimToNull(request.getParameter(Field.expiryMonth.name()));
+			String expiryYear = StringUtils.trimToNull(request.getParameter(Field.expiryYear.name()));
+			if (expiryMonth == null || expiryYear == null)
+				errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
+			paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
+			if (!paymentIn.validateCCExpiry())
+				errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
+		}
+	}
+
+	private void parse(Field[] fields)
+	{
 		for (Field field : fields) {
 			if (field != Field.expiryMonth && field != Field.expiryYear) {
 				String value = StringUtils.trimToNull(request.getParameter(field.name()));
@@ -32,14 +51,6 @@ public class PaymentEditorParser implements IFieldsParser {
 				}
 			}
 		}
-
-		String expiryMonth = StringUtils.trimToNull(request.getParameter(Field.expiryMonth.name()));
-		String expiryYear = StringUtils.trimToNull(request.getParameter(Field.expiryYear.name()));
-		if (expiryMonth == null || expiryYear == null)
-			errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
-		paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
-		if (!paymentIn.validateCCExpiry())
-			errors.put(Field.expiryMonth.name(), messages.format(String.format(KEY_FIELD_ERROR_TEMPLATE, Field.expiryMonth.name())));
 	}
 
 	private void setValue(Field field, String value) {

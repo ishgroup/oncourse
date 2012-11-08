@@ -167,8 +167,7 @@ public class PurchaseController {
 		errors.clear();
 
 		if (!state.allowedActions.contains(param.action)) {
-			if (LOGGER.isDebugEnabled())
-				errors.put(Error.illegalState.name(), String.format("Invalid state:  State=%s; Action=%s.", state.name(), param.action.name()));
+			addError(Error.illegalState);
 			illegalState = true;
 			return;
 		}

@@ -32,7 +32,7 @@ public class ActionEnableProductItem extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
-		return !getModel().isProductItemEnabled(productItem);
+		return !getModel().isProductItemEnabled(productItem) && validateProductItem();
 	}
 
 	public ProductItem getProductItem() {
@@ -41,5 +41,9 @@ public class ActionEnableProductItem extends APurchaseAction {
 
 	public void setProductItem(ProductItem productItem) {
 		this.productItem = productItem;
+	}
+
+	boolean validateProductItem() {
+		return true;
 	}
 }

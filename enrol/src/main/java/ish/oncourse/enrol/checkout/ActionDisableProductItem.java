@@ -25,4 +25,12 @@ public class ActionDisableProductItem extends APurchaseAction{
 	protected boolean validate() {
 		return getModel().isProductItemEnabled(productItem);
 	}
+
+	public ProductItem getProductItem() {
+		return productItem;
+	}
+
+	public void setProductItem(ProductItem productItem) {
+		this.productItem = productItem;
+	}
 }

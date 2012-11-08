@@ -372,6 +372,15 @@ public class PurchaseModel {
 		return result;
 	}
 
+	public List<ProductItem> getAllEnabledProductItems() {
+
+		ArrayList<ProductItem> result = new ArrayList<ProductItem>();
+		for (Contact contact: getContacts())
+		{
+			result.addAll(getEnabledProductItems(contact));
+		}
+		return result;
+	}
 
 	private class ContactNode {
 		

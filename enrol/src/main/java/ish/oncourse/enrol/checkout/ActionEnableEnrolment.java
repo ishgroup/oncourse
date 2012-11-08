@@ -3,8 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.courseClassEnded;
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.duplicatedEnrolment;
+import static ish.oncourse.enrol.checkout.PurchaseController.Error.*;
 
 public class ActionEnableEnrolment extends APurchaseAction {
 
@@ -26,13 +25,18 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
 	@Override
 	protected boolean validate() {
+		return !getModel().isEnrolmentEnabled(enrolment) && validateEnrolment();
+	}
+
+	boolean validateEnrolment()
+	{
 		if (enrolment.isDuplicated()) {
 			getController().addError(duplicatedEnrolment, enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getName());
 			return false;
 		}
 
 		if (!enrolment.getCourseClass().isHasAvailableEnrolmentPlaces()) {
-			getController().addError(duplicatedEnrolment, enrolment);
+			getController().addError(noCourseClassPlaces, enrolment);
 			return false;
 		}
 
@@ -40,7 +44,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
 			getController().addError(courseClassEnded, enrolment.getCourseClass());
 			return false;
 		}
-		return !getModel().isEnrolmentEnabled(enrolment);
+		return true;
 	}
 
 	public Enrolment getEnrolment() {
