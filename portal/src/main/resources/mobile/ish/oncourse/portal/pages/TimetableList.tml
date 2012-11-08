@@ -5,8 +5,8 @@
 	
 	<div class="btn-tabs">
 		<div class="btn-group btn-tabs">
-			<t:pagelink id="timetableMonth" page="prop:monthPageName" class="btn btn-active disabled">Month</t:pagelink>
-			<t:pagelink id="timetableList" page="prop:listPageName" class="btn">List</t:pagelink>
+			<t:pagelink id="timetableMonth" page="prop:monthPageName" class="btn" >Month</t:pagelink>
+			<t:pagelink id="timetableList" page="prop:listPageName" class="btn btn-active disabled">List</t:pagelink>
 		</div>
 	</div>
 	<div class="clear"></div>
