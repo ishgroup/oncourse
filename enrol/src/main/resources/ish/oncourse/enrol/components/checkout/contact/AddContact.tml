@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div id="addstudent-block">
 		<h2>Add a student</h2>
-		<form id="addContact-form" action="">
+		<form id="addContact-form" action="" method="post">
 			<fieldset>
 				<br/>
 
@@ -27,12 +27,12 @@
 			<p class="note">
 				<strong class="alert">Note</strong>: ${message:noteSameEmail}
 			</p>
-			<div class="form-controls">
-				<button id="saveAddContact">Checkout</button>
-				<t:actionlink t:id="saveContactLink" style="{display:none}"/>
-				<button id="cancelAddContact">Reset</button>
-				<t:actionlink t:id="cancelContactLink" style="{display:none}"/>
-			</div>
 		</form>
+		<div class="form-controls">
+			<button id="saveAddContact">Checkout</button>
+			<t:eventlink t:id="saveContactEvent" style="{display:none}"/>
+			<button id="cancelAddContact">Reset</button>
+			<t:eventlink t:id="cancelContactEvent" style="{display:none}"/>
+		</div>
 	</div>
 </t:container>

@@ -465,7 +465,7 @@ public class PurchaseController {
 				startConcessionEditor, startAddContact,
 				owingApply, creditAccess, proceedToPayment),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
-		addContact(Action.addContact),
+		addContact(Action.addContact, cancelAddContact),
 		editContact(Action.addContact, cancelAddContact),
 		editPayment(changePayer, showPaymentResult),
 		finalized(proceedToPayment);
@@ -598,6 +598,7 @@ public class PurchaseController {
 		noCourseClassPlaces,
 		courseClassEnded,
 		sessionExpired,
+		payerNotDefined,
 		illegalState;
 
 		public String getMessage(Messages messages, Object... params) {

@@ -15,6 +15,11 @@ public class ActionCancelAddContact extends APurchaseAction{
 
 	@Override
 	protected boolean validate() {
+		if (getModel().getContacts().size() == 0)
+		{
+			getController().addError(PurchaseController.Error.payerNotDefined);
+			return false;
+		}
 		return true;
 	}
 }
