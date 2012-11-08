@@ -1,8 +1,10 @@
 <div id="footer" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<ul class="footer-nav">
 		<li>
-			<a href="#"><img src="img/icon/icon-clock-29x29.png" width="29" height="29" alt="time" />
-			<span>Timetable</span></a>
+			<t:pagelink id="m_timetable" page="prop:timetablePageName">
+				<img src="img/icon/icon-clock-29x29.png" width="29" height="29" alt="time" />
+				<span>Timetable</span>
+			</t:pagelink>
 		</li>
 		<li>
 			<a href="#"><span class="cloud">29</span>
@@ -19,9 +21,6 @@
 				<img src="img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
 				<span>Surveys</span>
 			</t:pagelink>
-			
-			<a href="#"><img src="img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
-			<span>Surveys</span></a>
 		</li>
 		<li>
 			<t:pagelink id="m_profile" page="prop:profilePageName">
