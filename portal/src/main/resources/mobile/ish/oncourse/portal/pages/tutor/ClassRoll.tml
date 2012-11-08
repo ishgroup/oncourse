@@ -25,8 +25,8 @@
 	<h4 class="heading">Current students (5)</h4>
 	<ul class="class-roll-info">
 		<t:loop source="sessions" value="currentSession">
-			<li>
-				<t:loop source="currentSession.attendances" value="attendance" >
+			<t:loop source="currentSession.attendances" value="attendance" >
+				<li>
 					<span class="btn-group">
 						<a href="javascript:void(0);" value="${attended}" class="btn" id="attended_${attendance.angelId}" date-attendanceId="${attendance.angelId}"><i class="icon-ok"></i></a>
 						<a href="javascript:void(0);" value="${absent}" class="btn" id="absent_${attendance.angelId}"  date-attendanceId="${attendance.angelId}"><i class="icon-remove"></i></a>
@@ -35,8 +35,8 @@
 					${attendance.student.contact.givenName} ${attendance.student.contact.familyName}
 					<span class="right">82%</span>
 					<i class="icon-chevron-right"></i>
-				</t:loop>
-			</li>
+				</li>
+			</t:loop>
 		</t:loop>
 	</ul>
 </t:if>
