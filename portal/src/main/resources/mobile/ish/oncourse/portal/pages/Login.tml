@@ -6,7 +6,7 @@
 		<t:form t:id="loginForm">
 			<t:errors />
 			<div class="form-row">
-				<t:label for="iscompany"> <t:checkbox onclick="set_is_company(this.checked)" t:id="iscompany" value="iscompany" /> As company</t:label>
+				<t:label for="iscompany" class="checkbox"><t:checkbox onclick="set_is_company(this.checked)" t:id="iscompany" value="iscompany" /> As company</t:label>
 			</div>
 			<div style="display: none;" class="company-details collapse"> 
 				<div class="form-row">
