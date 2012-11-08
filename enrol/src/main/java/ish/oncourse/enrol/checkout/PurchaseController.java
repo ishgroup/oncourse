@@ -329,13 +329,16 @@ public class PurchaseController {
 		return state == editPayment;
 	}
 
+	//return true when the payment process has a result.
 	public boolean isFinalized() {
 		return state == finalized;
 	}
 
+	//return true when the payment process was finished
 	public boolean isFinished()
 	{
-		return state == finalized && paymentEditorController.getPaymentProcessController().isProcessFinished();
+		return state == finalized && paymentEditorController.getPaymentProcessController() != null &&
+				paymentEditorController.getPaymentProcessController().isProcessFinished();
 	}
 
 
@@ -604,7 +607,7 @@ public class PurchaseController {
 		illegalState;
 
 		public String getMessage(Messages messages, Object... params) {
-			return messages.format("error-%s", name(), params);
+			return messages.format(String.format("error-%s", name()), params);
 		}
 
 	}

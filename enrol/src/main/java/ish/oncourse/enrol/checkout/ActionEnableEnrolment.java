@@ -27,7 +27,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
 	@Override
 	protected boolean validate() {
 		if (enrolment.isDuplicated()) {
-			getController().addError(duplicatedEnrolment, enrolment);
+			getController().addError(duplicatedEnrolment, enrolment.getStudent().getFullName(), enrolment.getCourseClass().getCourse().getName());
 			return false;
 		}
 
