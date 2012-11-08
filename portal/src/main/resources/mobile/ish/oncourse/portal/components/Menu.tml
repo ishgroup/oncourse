@@ -19,8 +19,14 @@
 			<span>Surveys</span></a>
 		</li>
 		<li>
-			<a href="#"><img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
-			<span>Profile</span></a>
+			<t:pagelink id="m_profile" page="prop:profilePageName">
+				<img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
+				<span>Profile</span>
+			</t:pagelink>
+			
+			
+			<!--<a href="#"><img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
+			<span>Profile</span></a>-->
 		</li>
 	</ul>	
 </div>
