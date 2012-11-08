@@ -60,11 +60,11 @@
 
 	<p>
 		<t:if test="delegate.studentConcession">
-			<div class="saveConcession button">save concession</div>
-			<t:actionlink t:id="saveConcessionLink" context="student.id" style="{display:none}"/>
+			<button id="saveConcession">save concession</button>
+			<t:eventlink t:id="saveConcessionEvent" context="student.id" style="{display:none}"/>
 		</t:if>
-		<div class="cancelConcession button">cancel</div>
-		<t:actionlink t:id="cancelConcessionLink" context="student.id" style="{display:none}"/>
+		<button id="cancelConcession">cancel</button>
+		<t:eventlink t:id="cancelConcessionEvent" context="student.id" style="{display:none}"/>
 	</p>
 
 </t:block>

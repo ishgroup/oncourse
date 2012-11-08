@@ -5,10 +5,7 @@ import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -46,7 +43,8 @@ public class ConcessionList {
 		dateFormat = FormatUtils.getDateFormat(student.getCollege().getTimeZone());
 	}
 
-	public Object onActionFromDeleteConcessionLink(Integer index) {
+	@OnEvent(value = "deleteConcessionEvent")
+	public Object deleteConcession(Integer index) {
 		if (!request.isXHR())
 			return null;
 		delegate.deleteConcessionBy(index);

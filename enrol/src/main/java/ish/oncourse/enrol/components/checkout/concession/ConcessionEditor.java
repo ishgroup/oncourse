@@ -8,10 +8,7 @@ import ish.oncourse.model.Student;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.util.FormatUtils;
 import org.apache.log4j.Logger;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -74,8 +71,8 @@ public class ConcessionEditor {
 		return getStudent().getCollege().getActiveConcessionTypes();
 	}
 
-
-	public Object onActionFromCancelConcessionLink(Long contactId) {
+	@OnEvent(value = "cancelConcessionEvent")
+	public Object cancelConcession(Long contactId) {
 		if (!request.isXHR())
 			return null;
 
@@ -86,7 +83,8 @@ public class ConcessionEditor {
 		return null;
 	}
 
-	public Object onActionFromSaveConcessionLink(Long contactId) {
+	@OnEvent(value = "saveConcessionEvent")
+	public Object saveConcession(Long contactId) {
 		if (!request.isXHR())
 			return null;
 		if (delegate != null)

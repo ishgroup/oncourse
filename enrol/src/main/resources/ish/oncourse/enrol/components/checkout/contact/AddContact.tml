@@ -28,9 +28,9 @@
 				<strong class="alert">Note</strong>: ${message:noteSameEmail}
 			</p>
 			<div class="form-controls">
-				<div id="saveAddContact" class="button">Checkout</div>
+				<button id="saveAddContact">Checkout</button>
 				<t:actionlink t:id="saveContactLink" style="{display:none}"/>
-				<div id="cancelAddContact" class="button">Reset</div>
+				<button id="cancelAddContact">Reset</button>
 				<t:actionlink t:id="cancelContactLink" style="{display:none}"/>
 			</div>
 		</form>
