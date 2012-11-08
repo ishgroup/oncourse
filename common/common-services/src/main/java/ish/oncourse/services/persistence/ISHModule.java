@@ -13,6 +13,6 @@ public class ISHModule implements Module {
 	public void configure(Binder binder) {
 		binder.bind(ObjectContextFactory.class).to(ISHObjectContextFactory.class);
 		binder.bind(QueryCache.class).to(OSQueryCache.class);
-		binder.bind(Key.get(QueryCache.class, "local")).to(OSQueryCache.class);
+		binder.bind(Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).to(OSQueryCache.class);
 	}
 }

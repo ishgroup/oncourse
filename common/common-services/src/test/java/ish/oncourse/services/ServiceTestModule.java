@@ -10,6 +10,7 @@ import ish.oncourse.services.assetgroup.IAssetGroupService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cache.ICacheService;
+import ish.oncourse.services.cache.NoopCacheService;
 import ish.oncourse.services.cache.OSCacheService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
@@ -83,7 +84,11 @@ public class ServiceTestModule {
 	public static void bind(ServiceBinder binder) {
 
 		// Tapestry and environment specific services
-		binder.bind(ICacheService.class, OSCacheService.class);
+		if (TestContextUtil.isQueryCacheEnabled()) {
+			binder.bind(ICacheService.class, OSCacheService.class);
+		} else {
+			binder.bind(ICacheService.class, NoopCacheService.class);
+		}
 		binder.bind(IAssetGroupService.class, AssetGroupService.class);
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);

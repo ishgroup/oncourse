@@ -60,7 +60,9 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	 * @see ICayenneService#newContext()
 	 */
 	public ObjectContext newContext() {
-		return cayenneRuntime.getContext();
+		DataContext newContext = (DataContext) cayenneRuntime.getContext();
+		newContext.setQueryCache(((DataContext) sharedContext).getQueryCache());
+		return newContext;
 	}
 
 	

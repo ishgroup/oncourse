@@ -3,13 +3,19 @@ package ish.oncourse.services.persistence;
 import java.security.SecureRandom;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.ObjectStore;
+import org.apache.cayenne.cache.OSQueryCache;
+import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.graph.GraphDiff;
+import org.apache.cayenne.query.Query;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -23,6 +29,10 @@ public class ISHObjectContext extends DataContext {
 	 * Property which shows whether replication enabled on the object context.
 	 */
 	private static final String REPLICATING_PROP = "replicating";
+	
+	public static final String DEFAULT_CACHE_GROUP = "defaultGroup";
+	
+	private boolean useQueryCache = false;
 	
 	/**
 	 * We use put the copy of generated transaction key into stack, because there might be nested calls of commitChanges() from callbacks on the same object
@@ -97,4 +107,51 @@ public class ISHObjectContext extends DataContext {
 		super.commitChanges();
 		transactionKeyStack.pop();
 	}
+
+	/**
+	 * This method overridden to use query cache without direct setup the cache strategy, only by defined query cache instance.
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List performQuery(Query query) {
+		updateQueryMetaDataIfCacheUsed(query);
+		return super.performQuery(query);
+	}
+	
+	final void updateQueryMetaDataIfCacheUsed(Query query) {
+		if (isUseQueryCache()) {
+			if (query instanceof SelectQuery) {
+				SelectQuery select = (SelectQuery) query;
+				if (QueryCacheStrategy.NO_CACHE.equals(select.getCacheStrategy()) && select.getCacheGroups() == null) {
+					select.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+				}
+				if (select.getCacheGroups() == null) {
+					select.setCacheGroups(DEFAULT_CACHE_GROUP);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @return the useQueryCache
+	 */
+	final boolean isUseQueryCache() {
+		return useQueryCache;
+	}
+
+	/**
+	 * @param useQueryCache the useQueryCache to set
+	 */
+	final void setUseQueryCache(boolean useQueryCache) {
+		this.useQueryCache = useQueryCache;
+	}
+
+	@Override
+	public void setQueryCache(QueryCache queryCache) {
+		super.setQueryCache(queryCache);
+		setUseQueryCache(queryCache instanceof OSQueryCache);
+	}
+	
+	
+	
 }
