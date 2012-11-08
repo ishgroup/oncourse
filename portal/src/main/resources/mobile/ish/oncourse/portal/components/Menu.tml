@@ -15,6 +15,11 @@
 			</t:pagelink>
 		</li>
 		<li>
+			<t:pagelink id="m_surveys" page="prop:surveysPageName">
+				<img src="img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
+				<span>Surveys</span>
+			</t:pagelink>
+			
 			<a href="#"><img src="img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
 			<span>Surveys</span></a>
 		</li>
@@ -23,10 +28,6 @@
 				<img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
 				<span>Profile</span>
 			</t:pagelink>
-			
-			
-			<!--<a href="#"><img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
-			<span>Profile</span></a>-->
 		</li>
 	</ul>	
 </div>
