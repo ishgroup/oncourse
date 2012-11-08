@@ -86,13 +86,14 @@ public class Checkout {
 	 * The property is true when session for the payment was expired.
 	 */
 	@Property
-	private boolean expired = false;
+	private boolean expired;
 
 	@SetupRender
 	void beforeRender() {
 		synchronized (this) {
 			initPaymentController();
 		}
+		expired = false;
 	}
 
 	@AfterRender

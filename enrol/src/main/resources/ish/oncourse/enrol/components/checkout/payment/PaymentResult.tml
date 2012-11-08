@@ -9,21 +9,8 @@
 				<t:delegate to="block:paymentFailed"/>
 			</p:else>
 		</t:if>
-		<p:else>
-			<t:delegate to="block:sessionExpired"/>
-		</p:else>
 	</t:if>
 
-
-	<t:block t:id="sessionExpired">
-		<p>Your session has been expired. Reply the checkout again.</p>
-		<script type="text/javascript">
-			refreshShortList();
-			<t:if test="coursesLink">
-					setTimeout("window.location.href='${coursesLink}'", 10000);
-			</t:if>
-		</script>
-	</t:block>
 
 	<t:block t:id="paymentSuccess">
 		<h2>Payment <span>&#187;</span> Successful</h2>

@@ -5,9 +5,7 @@
 <t:if test="expired">
 	<div class="error">
 		<p>${message:error-sessionExpired}</p>
-		<t:if test="coursesLink">
-			setTimeout("window.location.href='${coursesLink}'", 5000);
-		</t:if>
+		setTimeout("window.location.href='${coursesLink}'", 5000);
 	</div>
 	<p:else>
 		<div id="checkout">
@@ -42,7 +40,7 @@
 	<t:if test="purchaseController.errors.isEmpty()" negate="true">
 		<div class="error">
 			<h2>Errors</h2>
-			<t:loop source="purchaseController.errors" value="error">
+			<t:loop source="purchaseController.errors.values()" value="error">
 				<p>${error}</p>
 			</t:loop>
 		</div>

@@ -79,10 +79,6 @@ public class PurchaseController {
 		this.state = state;
 	}
 
-	public boolean isErrorEmptyState() {
-		return State.errorEmptyList.equals(getState());
-	}
-
 	/**
 	 * Check that invoice lines linked with the enrollments or productitems list applied some discounts
 	 *
@@ -337,7 +333,7 @@ public class PurchaseController {
 	//return true when the payment process was finished
 	public boolean isFinished()
 	{
-		return state == finalized && paymentEditorController.getPaymentProcessController() != null &&
+		return state == finalized && paymentEditorController != null &&
 				paymentEditorController.getPaymentProcessController().isProcessFinished();
 	}
 
@@ -469,7 +465,6 @@ public class PurchaseController {
 				setVoucherPrice, addDiscount, addVoucher,
 				startConcessionEditor, startAddContact,
 				owingApply, creditAccess, proceedToPayment),
-		errorEmptyList,
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact),
 		editContact(Action.addContact, cancelAddContact),
