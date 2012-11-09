@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
+import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.model.Contact;
@@ -13,6 +14,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,9 @@ public class ContactEditor {
 	@Property
 	private String fieldName;
 
+	@Property
+	private ValidateHandler validateHandler;
+
 	@InjectComponent
 	private AvetmissEditor avetmissEditor;
 
@@ -52,6 +57,8 @@ public class ContactEditor {
 
 	@SetupRender
 	void beforeRender() {
+		validateHandler = new ValidateHandler();
+		validateHandler.setErrors(delegate.getErrors());
 	}
 
 	public boolean isFillRequiredProperties() {
@@ -114,7 +121,8 @@ public class ContactEditor {
 			avetmissEditor.save();
 			errors.putAll(avetmissEditor.getErrors());
 
-			delegate.saveContact(contactEditorValidator.getErrors());
+			delegate.setErrors(errors);
+			delegate.saveContact();
 			return blockToRefresh;
 		}
 		return null;
@@ -131,6 +139,7 @@ public class ContactEditor {
 			return null;
 		if (delegate != null)
 		{
+			delegate.setErrors(Collections.EMPTY_MAP);
 			delegate.cancelContact();
 			return blockToRefresh;
 		}

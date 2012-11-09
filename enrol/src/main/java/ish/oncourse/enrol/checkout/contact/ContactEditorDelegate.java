@@ -1,17 +1,17 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.enrol.checkout.IDelegate;
 import ish.oncourse.model.Contact;
 
 import java.util.List;
-import java.util.Map;
 
-public interface ContactEditorDelegate {
+public interface ContactEditorDelegate extends IDelegate {
 
 	Contact getContact();
 
 	boolean isFillRequiredProperties();
 
-	void saveContact(Map<String, String> errors);
+	void saveContact();
 
 	List<String> getVisibleFields();
 

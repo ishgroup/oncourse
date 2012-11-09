@@ -16,7 +16,10 @@
 			<t:loop source="visibleFields" value="fieldName">
 				<p>
 					<label for="${fieldName}">${label(fieldName)}<t:if test="required(fieldName)"><em title="${message:required}">*</em></t:if></label>
-					<input type="text" id="${fieldName}"  value="${value(fieldName)}" name="${fieldName}" class="input-fixed"/>
+					<span class="${validateHandler.validateClass(fieldName)}">
+						<t:textfield value="${value(fieldName)}" class="input-fixed ${validateHandler.errorClass(fieldName)}"/>
+						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(fieldName)}"/>
+					</span>
 				</p>
 			</t:loop>
 

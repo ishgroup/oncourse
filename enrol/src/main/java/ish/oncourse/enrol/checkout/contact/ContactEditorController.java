@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.enrol.checkout.ADelegate;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.model.Contact;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -8,9 +9,8 @@ import org.apache.cayenne.ObjectContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class ContactEditorController implements ContactEditorDelegate {
+public class ContactEditorController extends ADelegate implements ContactEditorDelegate {
 
 	private Contact contact;
 
@@ -19,8 +19,6 @@ public class ContactEditorController implements ContactEditorDelegate {
 	private boolean fillRequiredProperties;
 
 	private List<String> visibleFields;
-
-	private PurchaseController purchaseController;
 
 	private ContactFieldHelper contactFieldHelper;
 
@@ -44,18 +42,14 @@ public class ContactEditorController implements ContactEditorDelegate {
 	}
 
 	@Override
-	public void saveContact(Map<String, String> errors) {
+	public void saveContact() {
 		objectContext.commitChangesToParent();
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
-		actionParameter.setErrors(errors);
+		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contact);
-		purchaseController.performAction(actionParameter);
+		getPurchaseController().performAction(actionParameter);
 	}
 
-
-	public void setPurchaseController(PurchaseController purchaseController) {
-		this.purchaseController = purchaseController;
-	}
 
 	public List<String> getVisibleFields() {
 		if (visibleFields == null) {
@@ -82,7 +76,7 @@ public class ContactEditorController implements ContactEditorDelegate {
 
 	public ContactFieldHelper getContactFieldHelper() {
 		if (contactFieldHelper == null) {
-			contactFieldHelper = new ContactFieldHelper(purchaseController.getPreferenceController());
+			contactFieldHelper = new ContactFieldHelper(getPurchaseController().getPreferenceController());
 		}
 		return contactFieldHelper;
 	}
@@ -92,7 +86,7 @@ public class ContactEditorController implements ContactEditorDelegate {
 		//do nothing, just forget about the child objectContext.
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.cancelAddContact);
 		actionParameter.setValue(contact);
-		purchaseController.performAction(actionParameter);
+		getPurchaseController().performAction(actionParameter);
 	}
 
 	public void setObjectContext(ObjectContext objectContext) {

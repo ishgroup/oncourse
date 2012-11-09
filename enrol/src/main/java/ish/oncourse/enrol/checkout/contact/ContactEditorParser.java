@@ -26,6 +26,9 @@ public class ContactEditorParser {
 	private static final String KEY_ERROR_MESSAGE_required = "required";
 	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "birthdate-hint";
 
+	private static final String DYNAMIC_FIELD_NAME_PREFIX = "textfield";
+	private static final String DYNAMIC_FIELD_NAME_TEMPLATE = "%s_%d";
+
 	private List<String> visibleFields;
 
 	private Map<String, String> errors = new HashMap<String, String>();
@@ -44,18 +47,15 @@ public class ContactEditorParser {
 		contact.writeProperty(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY, parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED_PROPERTY));
 	}
 
-	private boolean parseBooleanParameter(String parameterName)
-	{
+	private boolean parseBooleanParameter(String parameterName) {
 		return HTMLUtils.parserBooleanValue(StringUtils.trimToNull(request.getParameter(parameterName)));
 	}
-
-
 
 
 	private void parseContactFields() {
 		for (String visibleField : visibleFields) {
 			ContactFieldHelper.FieldDescriptor fieldDescriptor = ContactFieldHelper.FieldDescriptor.valueOf(visibleField);
-			String value = StringUtils.trimToNull(request.getParameter(fieldDescriptor.propertyName));
+			String value = StringUtils.trimToNull(request.getParameter(getDynamicFieldNameBy(visibleField)));
 			if (value == null) {
 				if (contactFieldHelper.isRequiredField(fieldDescriptor))
 					errors.put(fieldDescriptor.propertyName, getRequiredMessage(fieldDescriptor));
@@ -66,20 +66,20 @@ public class ContactEditorParser {
 				} catch (ParseException e) {
 					errors.put(fieldDescriptor.propertyName, messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
 				}
-			} else
-			{
+			} else {
 				contact.writeProperty(fieldDescriptor.propertyName, value);
 				String error = validate(fieldDescriptor);
-				if (error != null)
-				{
+				if (error != null) {
 					errors.put(fieldDescriptor.propertyName, error);
 				}
 			}
 		}
 	}
 
-
-
+	public String getDynamicFieldNameBy(String fieldName) {
+		int index = visibleFields.indexOf(fieldName);
+		return index == 0 ? DYNAMIC_FIELD_NAME_PREFIX : String.format(DYNAMIC_FIELD_NAME_TEMPLATE, DYNAMIC_FIELD_NAME_PREFIX, index - 1);
+	}
 
 
 	private String getRequiredMessage(ContactFieldHelper.FieldDescriptor fieldDescriptor) {
@@ -118,8 +118,7 @@ public class ContactEditorParser {
 	}
 
 
-	String validate(ContactFieldHelper.FieldDescriptor fieldDescriptor)
-	{
+	String validate(ContactFieldHelper.FieldDescriptor fieldDescriptor) {
 
 		switch (fieldDescriptor) {
 			case street:
