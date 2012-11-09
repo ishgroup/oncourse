@@ -57,9 +57,9 @@
 					<div class="form-row">
 						<label>I would like to receive marketing material via: </label> <br/>
 					
-						<label for="allowEmail"><t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> E-Mail</label>
-						<label for="allowSms"><t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> SMS</label>
-						<label for="allowPost"><t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> Post</label> 
+						<label for="allowEmail" class="checkbox-option"><t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> E-Mail</label>
+						<label for="allowSms" class="checkbox-option"><t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> SMS</label>
+						<label for="allowPost" class="checkbox-option"><t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> Post</label> 
 					</div>
 					
 					
