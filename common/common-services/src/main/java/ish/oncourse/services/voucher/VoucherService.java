@@ -171,4 +171,20 @@ public class VoucherService implements IVoucherService {
         SelectQuery q = new SelectQuery(Product.class, ExpressionFactory.inDbExp(VoucherProduct.ID_PK_COLUMN, params));
         return cayenneService.sharedContext().performQuery(q);
 	}
+    
+    @Override
+    public boolean isAbleToPurchaseProductsOnline() {
+    	String angelVersion = webSiteService.getCurrentCollege().getAngelVersion();
+    	if ("development".equalsIgnoreCase(angelVersion)) {
+    		LOGGER.info("pass the gradle development version");
+    		return true;
+    	}
+    	String [] splitedVersion = angelVersion.replaceAll("-", ".").split("\\.");
+    	if (splitedVersion.length >= 2 && splitedVersion[0].matches("\\d+") && splitedVersion[1].matches("\\d+")) {
+    		return Long.parseLong(splitedVersion[0]) >=4l;
+    	} else {
+    		LOGGER.warn(String.format("Unsupported for products web purchase angel version detected with identifier : %s", angelVersion));
+    		return false;
+    	}
+    }
 }

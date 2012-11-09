@@ -25,5 +25,7 @@ public interface IVoucherService {
 	Product loadAvailableVoucherProductBySKU(String sku);
 	
 	Product loadAvailableVoucherProductById(Long id);
+	
+	boolean isAbleToPurchaseProductsOnline();
 
 }
