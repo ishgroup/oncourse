@@ -50,16 +50,16 @@
 					<div class="form-row">
 						<label>Gender</label><br/>
 						<t:radiogroup t:value="contact.isMale"> 
-							<input type="radio" t:type="radio" t:value="true"/><label for="male"> Male </label>
-							<input type="radio" t:type="radio" t:value="false"/><label for="female"> Female </label>
+							<label for="male" class="radio-option"><input type="radio" t:type="radio" t:value="true"/> Male </label>
+							<label for="female" class="radio-option"><input type="radio" t:type="radio" t:value="false"/> Female </label>
 						</t:radiogroup>
 					</div>
 					<div class="form-row">
 						<label>I would like to receive marketing material via: </label> <br/>
 					
-						<t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> <label for="allowEmail">E-Mail</label>
-						<t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> <label for="allowSms">SMS</label>
-						<t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> <label for="allowPost">Post</label> 
+						<label for="allowEmail"><t:checkbox t:id="allowEmail" value="contact.isMarketingViaEmailAllowed"/> E-Mail</label>
+						<label for="allowSms"><t:checkbox t:id="allowSms" value="contact.isMarketingViaSMSAllowed"/> SMS</label>
+						<label for="allowPost"><t:checkbox t:id="allowPost" value="contact.isMarketingViaPostAllowed"/> Post</label> 
 					</div>
 					
 					
