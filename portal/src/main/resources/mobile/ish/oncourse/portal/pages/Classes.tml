@@ -3,7 +3,7 @@
 		<h1>Classes</h1>
 		<div class="content">
 			<t:if test="hasClasses">
-				<table class="class" align="center">
+				<table class="class" align="center" width="100%">
 					<t:loop  source="classes" value="courseClass">
 						<tr>
 							<td width="64">
