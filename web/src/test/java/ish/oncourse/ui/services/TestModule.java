@@ -128,6 +128,7 @@ public class TestModule {
 
 		when(college.getWebSites()).thenReturn(Arrays.asList(webSite));
 		when(webSite.getCollege()).thenReturn(college);
+		when(webSite.getCollege().getAngelVersion()).thenReturn(System.getProperty("oncourse.test.server.angelversion"));
 
 		WebHostName host = mock(WebHostName.class);
 		when(host.getName()).thenReturn("scc.test1.oncourse.net.au");
