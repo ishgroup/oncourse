@@ -8,6 +8,7 @@ import java.io.InputStream;
 import javax.sql.DataSource;
 
 import org.apache.tapestry5.dom.Document;
+import org.apache.tapestry5.dom.Element;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -22,6 +23,7 @@ import ish.oncourse.ui.services.TestModule;
 
 public class ProductsTest extends ServiceTest {
 	
+	private static final String PAGE_NOT_FOUND_CONTENT_BODY = "<h2>Page Not Found</h2><p>The page you are looking for was not found. You may have used an outdated link or may have typed the address (URL) incorrectly.</p>";
 	public static final String APP_PACKAGE = "ish.oncourse.website";
 	public static final String CONTEXT_PATH = "src/main/resources/ish/oncourse/ui/pages";
 	
@@ -52,12 +54,15 @@ public class ProductsTest extends ServiceTest {
 		assertFalse("3.0-SNAPSHOT is a less then required for render version", voucherService.isAbleToPurchaseProductsOnline());
 	}
 	
-	//@Test
-	public void testProductsPageLoad() throws Exception {
-		System.setProperty("oncourse.test.server.angelversion", "4.0-development");
+	@Test
+	public void testUnAvailableProductsPageLoad() throws Exception {
+		System.setProperty("oncourse.test.server.angelversion", "3.0-SNAPSHOT");
 		setup();
-		Document doc = getPageTester().renderPage("Products");
-		//assertNotNull(doc.getElementById("unsubscribeForm"));
+		Document response = getPageTester().renderPage("ui/Products");
+		assertNotNull("Response can't be null", response);
+		Element contextElement = response.getElementById("content");
+		assertNotNull("Content element should exist", contextElement);
+		assertEquals("Incorrect page not found content body", PAGE_NOT_FOUND_CONTENT_BODY, contextElement.getChildMarkup());
 	}
 	
 	@After

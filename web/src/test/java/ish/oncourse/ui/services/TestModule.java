@@ -10,25 +10,30 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
+import ish.oncourse.model.Tag;
 import ish.oncourse.model.WebHostName;
+import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebNodeType;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.jndi.ILookupService;
+import ish.oncourse.services.menu.IWebMenuService;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.ui.pages.TimelineDataTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -228,6 +233,34 @@ public class TestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local PreferenceController preferenceController) {
 		configuration.add(PreferenceController.class, preferenceController);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ITagService buildITagServiceOverride() {
+		ITagService mock = mock(ITagService.class);
+		Tag tag = mock(Tag.class);
+		when(tag.getWebVisibleTags()).thenReturn(Collections.EMPTY_LIST);
+		when(mock.getSubjectsTag()).thenReturn(tag);
+		return mock;
+	}
+	
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+		@Local ITagService tagServiceOverride) {
+		configuration.add(ITagService.class, tagServiceOverride);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public IWebMenuService buildIWebMenuServiceOverride() {
+		IWebMenuService mock = mock(IWebMenuService.class);
+		WebMenu webMenu = mock(WebMenu.class);
+		when(webMenu.getNavigableChildMenus()).thenReturn(Collections.EMPTY_LIST);
+		when(mock.getRootMenu()).thenReturn(webMenu);
+		return mock;
+	}
+	
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+		@Local IWebMenuService webMenuServiceOverride) {
+		configuration.add(IWebMenuService.class, webMenuServiceOverride);
 	}
 
 }
