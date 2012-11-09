@@ -1,9 +1,8 @@
 <html t:type="pagestructure" title="literal:Classes"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter" activeMenu="literal:m_classes">
-
+		<h1>Classes</h1>
 		<div class="content">
 			<t:if test="hasClasses">
-				<h1>Classes</h1>
 				<table class="class" align="center">
 					<t:loop  source="classes" value="courseClass">
 						<tr>
