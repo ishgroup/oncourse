@@ -13,6 +13,7 @@
 <t:block t:id="concessionEditor">
 	<p>
 		<label for="concessionTypes">New Concession</label>
+
 		<select id="concessionTypes">
 			<t:if test="delegate.studentConcession">
 				<option value="-1">no concession</option>
@@ -29,42 +30,51 @@
 				</t:if>
 			</t:loop>
 		</select>
-		<t:actionLink t:id="selectConcessionTypeLink"  style="display:none"/>
+		<t:eventlink t:id="changeConcessionTypeEvent"  style="display:none"/>
 	</p>
 
-	<t:if test="delegate.studentConcession">
-		<form name="concession-form" id="concession-form">
+	<t:if test="studentConcession">
+		<t:form t:id="concessionForm">
 				<fieldset>
 					<t:if test="studentConcession.concessionType.hasConcessionNumber">
 						<p>
-							<label for="concession-number">Concession number <em title="${message:required}">*</em></label>
-							<input id="concession-number" name="concession-number" type="text" class="required" size="15"/>
+							<label for="concessionNumber">Concession number <em title="${message:required}">*</em></label>
+							<span class="${validateHandler.validateClass('concessionNumber')}">
+								<t:textfield t:id="concessionNumber" value="studentConcession.concessionNumber" size="15" class ="input-fixed ${validateHandler.errorClass('concessionNumber')}"/>
+								<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('concessionNumber')}"/>
+							</span>
 						</p>
 					</t:if>
 					<t:if test="studentConcession.concessionType.hasExpiryDate">
 						<p>
-							<label for="concession-expiry">Expiry date <em title="${message:required}">*</em></label>
-							<input id="concession-expiry" name="concession-expiry"  type="text" class="required"/>
+							<label for="expiresOn">Expiry date <em title="${message:required}">*</em></label>
+							<span class="${validateHandler.validateClass('expiresOn')}">
+								<t:textfield t:id="expiresOn" value="expiresOn" class ="input-fixed ${validateHandler.errorClass('expiresOn')}"/>
+								<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('expiresOn')}"/>
+							</span>
 						</p>
 					</t:if>
 					<div class="conditions">
 						<label>
-							<input id="concession-agree" type="checkbox" name="concession-agree" class="required"/>
+							<span class="${validateHandler.validateClass('concessionAgree')}">
+								<t:checkbox t:id="concessionAgree" value="false"/>
+								<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('concessionAgree')}"/>
+							</span>
 							${message:concessionConfirmationMessage}
 							<em title="${message:required}">*</em>
 						</label>
 					</div>
 			</fieldset>
-		</form>
+		</t:form>
 	</t:if>
 
 	<p>
 		<t:if test="delegate.studentConcession">
 			<button id="saveConcession">save concession</button>
-			<t:eventlink t:id="saveConcessionEvent" context="student.id" style="{display:none}"/>
+			<t:eventlink t:id="saveConcessionEvent" style="{display:none}"/>
 		</t:if>
 		<button id="cancelConcession">cancel</button>
-		<t:eventlink t:id="cancelConcessionEvent" context="student.id" style="{display:none}"/>
+		<t:eventlink t:id="cancelConcessionEvent" style="{display:none}"/>
 	</p>
 
 </t:block>

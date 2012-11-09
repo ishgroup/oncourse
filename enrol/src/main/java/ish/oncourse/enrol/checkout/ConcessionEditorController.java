@@ -9,11 +9,10 @@ import org.apache.cayenne.ObjectContext;
 import java.util.Date;
 import java.util.List;
 
-public class ConcessionEditorController implements ConcessionDelegate {
+public class ConcessionEditorController extends ADelegate implements ConcessionDelegate {
 
 	private ObjectContext objectContext;
 
-	private PurchaseController purchaseController;
 	private Contact contact;
 
 	private StudentConcession studentConcession;
@@ -35,17 +34,26 @@ public class ConcessionEditorController implements ConcessionDelegate {
 	}
 
 	@Override
-	public void cancelEditing(Long contactId) {
+	public void cancelEditing() {
 		studentConcession = null;
 		objectContext = null;
-		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelConcessionEditor));
+		getPurchaseController().performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelConcessionEditor));
 	}
 
 	@Override
-	public void saveConcession(Long contactId) {
-		studentConcession.setStudent(getStudent());
-		objectContext.commitChangesToParent();
-		studentConcession = null;
+	public void saveConcession() {
+		PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addConcession);
+		parameter.setErrors(getErrors());
+		parameter.setValue(studentConcession);
+
+		if (getErrors().isEmpty())
+		{
+			studentConcession.setStudent(getStudent());
+			objectContext.commitChangesToParent();
+			studentConcession = null;
+		}
+
+		getPurchaseController().performAction(parameter);
 	}
 
 	@Override
@@ -64,7 +72,6 @@ public class ConcessionEditorController implements ConcessionDelegate {
 		{
 			if (studentConcession != null)
 			{
-				objectContext.deleteObject(studentConcession);
 				studentConcession = null;
 			}
 		}
@@ -80,7 +87,7 @@ public class ConcessionEditorController implements ConcessionDelegate {
 	}
 
 	@Override
-	public void fieldsChanged(String number, Date expiry) {
+	public void  fieldsChanged(String number, Date expiry) {
 		ConcessionType type = studentConcession.getConcessionType();
 		if (type.getHasConcessionNumber())
 			studentConcession.setConcessionNumber(number);
@@ -88,10 +95,6 @@ public class ConcessionEditorController implements ConcessionDelegate {
 		{
 			studentConcession.setExpiresOn(expiry);
 		}
-	}
-
-	public void setPurchaseController(PurchaseController purchaseController) {
-		this.purchaseController = purchaseController;
 	}
 
 	public void setContact(Contact contact) {

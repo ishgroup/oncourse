@@ -8,7 +8,7 @@ import ish.oncourse.model.StudentConcession;
 import java.util.Date;
 import java.util.List;
 
-public interface ConcessionDelegate {
+public interface ConcessionDelegate extends IDelegate{
 
 	Contact getContact();
 
@@ -16,7 +16,7 @@ public interface ConcessionDelegate {
 
 	void deleteConcessionBy(Integer index);
 
-	void cancelEditing(Long contactId);
+	void cancelEditing();
 
 	public List<ConcessionType> getConcessionTypes();
 
@@ -29,5 +29,5 @@ public interface ConcessionDelegate {
 
 	public void fieldsChanged(String number, Date expiry);
 
-	public void saveConcession(Long contactId);
+	public void saveConcession();
 }

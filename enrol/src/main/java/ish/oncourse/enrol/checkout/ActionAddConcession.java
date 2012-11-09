@@ -7,7 +7,7 @@ public class ActionAddConcession extends APurchaseAction {
 
 	@Override
 	protected void makeAction() {
-		getModel().addConcession(studentConcession);
+		getModel().addConcession(getModel().localizeObject(studentConcession));
 		getController().recalculateEnrolmentInvoiceLines();
 		getController().setState(PurchaseController.State.editCheckout);
 	}

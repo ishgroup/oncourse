@@ -1,7 +1,8 @@
 package ish.oncourse.enrol.components.checkout.concession;
 
 import ish.oncourse.enrol.checkout.ConcessionDelegate;
-import ish.oncourse.enrol.checkout.ConcessionValidator;
+import ish.oncourse.enrol.checkout.ConcessionParser;
+import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.model.ConcessionType;
 import ish.oncourse.model.Student;
@@ -14,9 +15,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 
@@ -44,12 +44,13 @@ public class ConcessionEditor {
 	@Property
 	private DateFormat dateFormat;
 
-	private Map<String,String> errors;
+	@Property
+	private ValidateHandler validateHandler = new ValidateHandler();
+
 
 	@SetupRender
 	void beforeRender() {
 		dateFormat = FormatUtils.getDateFormat(DATE_FIELD_FORMAT,getStudent().getCollege().getTimeZone());
-		errors = new HashMap<String, String>();
 	}
 
 	public ConcessionDelegate getDelegate()
@@ -71,56 +72,65 @@ public class ConcessionEditor {
 		return getStudent().getCollege().getActiveConcessionTypes();
 	}
 
+	/**
+	 * It is workaround to exclude exception when studentConcession.expiresOn is null
+	 */
+	public String getExpiresOn()
+	{
+		if (getStudentConcession().getExpiresOn() == null)
+			return FormatUtils.EMPTY_STRING;
+		else
+			return dateFormat.format(getStudentConcession().getExpiresOn());
+	}
+
 	@OnEvent(value = "cancelConcessionEvent")
-	public Object cancelConcession(Long contactId) {
+	public Object cancelConcession() {
 		if (!request.isXHR())
 			return null;
 
+		validateHandler.setErrors(Collections.EMPTY_MAP);
+
 		if (delegate != null)
-			delegate.cancelEditing(contactId);
+			delegate.cancelEditing();
 		if (checkout.getCheckoutBlock() != null)
 			return checkout.getCheckoutBlock();
 		return null;
 	}
 
 	@OnEvent(value = "saveConcessionEvent")
-	public Object saveConcession(Long contactId) {
+	public Object saveConcession() {
 		if (!request.isXHR())
 			return null;
 		if (delegate != null)
 		{
-			ConcessionValidator validator = createValidator();
-			validator.validate();
+			ConcessionParser parser = createParser();
+			parser.parse();
+			delegate.setErrors(parser.getErrors());
+			validateHandler.setErrors(parser.getErrors());
 
-			errors = validator.getErrors();
-
-			if (errors.isEmpty())
-			{
-				delegate.fieldsChanged(validator.getNumber(), validator.getExpiry());
-				delegate.saveConcession(contactId);
-			}
+			delegate.saveConcession();
 		}
 		if (checkout.getCheckoutBlock() != null)
 			return checkout.getCheckoutBlock();
 		return null;
 	}
 
-	private ConcessionValidator createValidator() {
-		ConcessionValidator validator = new ConcessionValidator();
-		validator.setConcessionType(delegate.getStudentConcession().getConcessionType());
-		validator.setMessages(messages);
-		validator.setRequest(request);
-		validator.setDateFormat(FormatUtils.getDateFormat(DATE_FIELD_FORMAT,getStudent().getCollege().getTimeZone()));
-		return validator;
+	private ConcessionParser createParser() {
+		ConcessionParser parser = new ConcessionParser();
+		parser.setStudentConcession(delegate.getStudentConcession());
+		parser.setMessages(messages);
+		parser.setRequest(request);
+		parser.setDateFormat(FormatUtils.getDateFormat(DATE_FIELD_FORMAT,getStudent().getCollege().getTimeZone()));
+		return parser;
 	}
-
 
 	public boolean isSelectedConcessionType()
 	{
 		return delegate.getStudentConcession() != null && delegate.getStudentConcession().getConcessionType().getId().equals(concessionType.getId());
 	}
 
-	public Object onActionFromSelectConcessionTypeLink(Integer concessionTypeIndex)
+	@OnEvent(value = "changeConcessionTypeEvent")
+	public Object changeConcessionType(Integer concessionTypeIndex)
 	{
 		if (!request.isXHR())
 			return null;

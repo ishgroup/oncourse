@@ -655,7 +655,7 @@ public class PurchaseControllerTest extends ServiceTest {
 		concessionEditorController.changeConcessionTypeBy(-1);
 		assertNull(concessionEditorController.getStudentConcession());
 
-		concessionEditorController.cancelEditing(concessionEditorController.getContact().getId());
+		concessionEditorController.cancelEditing();
 		assertNull(concessionEditorController.getObjectContext());
 		assertNull(concessionEditorController.getStudentConcession());
 		assertEquals(State.editCheckout,controller.getState());
