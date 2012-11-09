@@ -18,5 +18,6 @@ jQuery(function() {
 	jQuery.calendar('${timetableMonthUrl}');
 });	
 </script>
+<div id="dayInfo"></div>
 	
 </html>
