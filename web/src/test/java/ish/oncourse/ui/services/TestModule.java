@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Product;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
@@ -27,6 +28,8 @@ import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.ui.pages.TimelineDataTest;
 
@@ -50,6 +53,8 @@ import org.apache.tapestry5.services.Response;
 
 @SubModule({ ServiceModule.class, UIModule.class })
 public class TestModule {
+	
+	public static final String TEST_COLLEGE_ANGEL_VERSION_PROPERTY = "oncourse.test.server.angelversion";
 
 	public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
 		return new RequestFilter() {
@@ -133,7 +138,7 @@ public class TestModule {
 
 		when(college.getWebSites()).thenReturn(Arrays.asList(webSite));
 		when(webSite.getCollege()).thenReturn(college);
-		when(webSite.getCollege().getAngelVersion()).thenReturn(System.getProperty("oncourse.test.server.angelversion"));
+		when(webSite.getCollege().getAngelVersion()).thenReturn(System.getProperty(TEST_COLLEGE_ANGEL_VERSION_PROPERTY));
 
 		WebHostName host = mock(WebHostName.class);
 		when(host.getName()).thenReturn("scc.test1.oncourse.net.au");
@@ -261,6 +266,32 @@ public class TestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 		@Local IWebMenuService webMenuServiceOverride) {
 		configuration.add(IWebMenuService.class, webMenuServiceOverride);
+	}
+	
+	public IVoucherService buildIVoucherServiceOverride(IWebSiteService webSiteService, ICayenneService cayenneService) {
+		IVoucherService service = new VoucherServiceOverride(webSiteService, cayenneService);
+		return service;
+	}
+	
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+		@Local IVoucherService voucherService) {
+		configuration.add(IVoucherService.class, voucherService);
+	}
+	
+	private class VoucherServiceOverride extends VoucherService {
+		private VoucherServiceOverride() {
+			super();
+		}
+
+		private VoucherServiceOverride(IWebSiteService webSiteService, ICayenneService cayenneService) {
+			super(webSiteService, cayenneService);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public List<Product> getAvailableProducts(Integer startDefault, Integer rowsDefault) {
+			return Collections.EMPTY_LIST;
+		}
 	}
 
 }

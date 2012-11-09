@@ -14,7 +14,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import ish.oncourse.services.voucher.IVoucherService;
@@ -22,12 +21,15 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.ui.services.TestModule;
 
 public class ProductsTest extends ServiceTest {
-	
+	private static final String NO_PRODUCTS_AVAILABLE_CONTENT_BODY = "<h2>No products available</h2>";
+	private static final String CONTENT_ELEMENT_ID = "content";
+	private static final String PRODUCTS_PAGE = "ui/Products";
+	private static final String AVAILABLE_FOR_PRODUCT_RENDER_VERSION = "4.0-development";
+	private static final String UNAVAILABLE_FOR_PRODUCT_RENDER_VERSION = "3.0-SNAPSHOT";
 	private static final String PAGE_NOT_FOUND_CONTENT_BODY = "<h2>Page Not Found</h2><p>The page you are looking for was not found. You may have used an outdated link or may have typed the address (URL) incorrectly.</p>";
 	public static final String APP_PACKAGE = "ish.oncourse.website";
 	public static final String CONTEXT_PATH = "src/main/resources/ish/oncourse/ui/pages";
 	
-	//@Before
 	public void setup() throws Exception {
 		initTest(APP_PACKAGE, "", CONTEXT_PATH, TestModule.class);
 		InputStream st = ProductsTest.class.getClassLoader().getResourceAsStream("ish/oncourse/ui/pages/products/voucherDataSet.xml");
@@ -38,31 +40,42 @@ public class ProductsTest extends ServiceTest {
 	
 	@Test
 	public void testAvailableForProductsRenderVersion() throws Exception {
-		System.setProperty("oncourse.test.server.angelversion", "4.0-development");
+		System.setProperty(TestModule.TEST_COLLEGE_ANGEL_VERSION_PROPERTY, AVAILABLE_FOR_PRODUCT_RENDER_VERSION);
 		setup();
-		IVoucherService voucherService = getService(IVoucherService.class);
+		IVoucherService voucherService = getService("IVoucherServiceOverride", IVoucherService.class);
 		assertNotNull("Voucher service should be inited", voucherService);
 		assertTrue("4.0-development is a correct for render version", voucherService.isAbleToPurchaseProductsOnline());
 	}
 	
 	@Test
 	public void testUnAvailableForProductsRenderVersion() throws Exception {
-		System.setProperty("oncourse.test.server.angelversion", "3.0-SNAPSHOT");
+		System.setProperty(TestModule.TEST_COLLEGE_ANGEL_VERSION_PROPERTY, UNAVAILABLE_FOR_PRODUCT_RENDER_VERSION);
 		setup();
-		IVoucherService voucherService = getService(IVoucherService.class);
+		IVoucherService voucherService = getService("IVoucherServiceOverride", IVoucherService.class);
 		assertNotNull("Voucher service should be inited", voucherService);
 		assertFalse("3.0-SNAPSHOT is a less then required for render version", voucherService.isAbleToPurchaseProductsOnline());
 	}
 	
 	@Test
 	public void testUnAvailableProductsPageLoad() throws Exception {
-		System.setProperty("oncourse.test.server.angelversion", "3.0-SNAPSHOT");
+		System.setProperty(TestModule.TEST_COLLEGE_ANGEL_VERSION_PROPERTY, UNAVAILABLE_FOR_PRODUCT_RENDER_VERSION);
 		setup();
-		Document response = getPageTester().renderPage("ui/Products");
+		Document response = getPageTester().renderPage(PRODUCTS_PAGE);
 		assertNotNull("Response can't be null", response);
-		Element contextElement = response.getElementById("content");
+		Element contextElement = response.getElementById(CONTENT_ELEMENT_ID);
 		assertNotNull("Content element should exist", contextElement);
 		assertEquals("Incorrect page not found content body", PAGE_NOT_FOUND_CONTENT_BODY, contextElement.getChildMarkup());
+	}
+	
+	@Test
+	public void testAvailableProductsPageLoad() throws Exception {
+		System.setProperty(TestModule.TEST_COLLEGE_ANGEL_VERSION_PROPERTY, AVAILABLE_FOR_PRODUCT_RENDER_VERSION);
+		setup();
+		Document response = getPageTester().renderPage(PRODUCTS_PAGE);
+		assertNotNull("Response can't be null", response);
+		Element contextElement = response.getElementById(CONTENT_ELEMENT_ID);
+		assertNotNull("Content element should exist", contextElement);
+		assertEquals("Correct no products available content body", NO_PRODUCTS_AVAILABLE_CONTENT_BODY, contextElement.getChildMarkup());
 	}
 	
 	@After
