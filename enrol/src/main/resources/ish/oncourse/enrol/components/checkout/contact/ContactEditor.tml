@@ -61,11 +61,13 @@
 		<t:delegate to="block:contactFields"/>
 		<t:if test="fillRequiredProperties" negate="true">
 			<t:delegate to="block:concessionsEditor"/>
-			<t:delegate to="block:avetmissEditor"/>
+			<!--<t:if test = "delegate.contact.college.requiresAvetmiss">-->
+				<t:delegate to="block:avetmissEditor"/>
+			<!--</t:if>-->
 			<t:delegate to="block:options"/>
 		</t:if>
 	</t:form>
-	<div class="form-controls" xml:space="preserve">
+	<div class="form-controls">
 			<div id="saveEditContact" class="button">Checkout</div>
 			<t:eventlink t:id="saveContactEvent" style="{display:none}"/>
 			<div id="cancelEditContact" class="button">Reset</div>

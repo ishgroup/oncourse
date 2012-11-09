@@ -15,7 +15,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AvetmissEditorParser  implements IFieldsParser{
+public class AvetmissEditorParser implements IFieldsParser{
 
 
 

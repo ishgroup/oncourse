@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.common.types.*;
+import ish.oncourse.enrol.checkout.ValidateHandler;
 import ish.oncourse.enrol.checkout.contact.AvetmissEditorParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
@@ -10,6 +11,7 @@ import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -34,7 +36,13 @@ public class AvetmissEditor {
 	@Inject
 	private Request request;
 
-	private Map<String,String> errors;
+	@Property
+	private ValidateHandler validateHandler = new ValidateHandler();
+
+	@SetupRender
+	void beforeRender() {
+	}
+
 
 	public String getCountryOfBirth() {
 		Country countryOfBirth = contact.getStudent().getCountryOfBirth();
@@ -99,10 +107,11 @@ public class AvetmissEditor {
 		avetmissEditorParser.setMessages(messages);
 		avetmissEditorParser.setRequest(request);
 		avetmissEditorParser.parse();
-		errors = avetmissEditorParser.getErrors();
+		validateHandler.setErrors(avetmissEditorParser.getErrors());
 	}
 
-	public Map<String, String> getErrors() {
-		return errors;
+	public Map<String,String> getErrors()
+	{
+		return validateHandler.getErrors();
 	}
 }

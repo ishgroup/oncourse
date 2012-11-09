@@ -7,37 +7,61 @@
 			<br/>
 			<p>
 				<label for="countryOfBirth">In which country were you born?</label>
-				<t:textfield  t:id="countryOfBirth"  value="countryOfBirth" class ="input-fixed" />
+				<span class="${validateHandler.validateClass('countryOfBirth')}">
+					<t:textfield  t:id="countryOfBirth"  value="countryOfBirth" class ="input-fixed ${validateHandler.errorClass('countryOfBirth')}" />
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('countryOfBirth')}"/>
+				</span>
 			</p>
 			<p>
 				<label for="languageHome">What language do you normally speak at home?</label>
-				<t:textfield t:id="languageHome" value="languageHome" class ="input-fixed"/>
+				<span class="${validateHandler.validateClass('languageHome')}">
+				<t:textfield t:id="languageHome" value="languageHome" class ="input-fixed ${validateHandler.errorClass('languageHome')}"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('languageHome')}"/>
+				</span>
 			</p>
 			<p>
 				<label for="englishProficiency">How well do you speak English?</label>
-				<t:select t:id="englishProficiency" value="contact.student.englishProficiency" model="englishProficiencySelectModel" blankOption="NEVER"/>
+				<span class="${validateHandler.validateClass('englishProficiency')}">
+					<t:select t:id="englishProficiency" value="contact.student.englishProficiency" model="englishProficiencySelectModel" blankOption="NEVER"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('englishProficiency')}"/>
+				</span>
 			</p>
 			<p>
 				<label for="indigenousStatus">Are you of Aboriginal/Torres Strait Islander origin?</label>
-				<t:select t:id="indigenousStatus" value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" blankOption="NEVER"/>
+				<span class="${validateHandler.validateClass('indigenousStatus')}">
+					<t:select t:id="indigenousStatus" value="contact.student.indigenousStatus" model="indigenousStatusSelectModel" blankOption="NEVER"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('indigenousStatus')}"/>
+				</span>
 			</p>
 			<p>
 				<label for="highestSchoolLevel">What is your highest COMPLETED school level?</label>
-				<t:select t:id="highestSchoolLevel" value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" blankOption="NEVER"/>
+				<span class="${validateHandler.validateClass('highestSchoolLevel')}">
+					<t:select t:id="highestSchoolLevel" value="contact.student.highestSchoolLevel" model="schoolLevelSelectModel" blankOption="NEVER"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('highestSchoolLevel')}"/>
+				</span>
 			</p>
 			<p>
 				<label for="yearSchoolCompleted">In which year did you finish your highschool?</label>
-				<t:textfield t:id="yearSchoolCompleted"  value="yearSchoolCompleted" class ="input-fixed"/>
+				<span class="${validateHandler.validateClass('yearSchoolCompleted')}">
+					<t:textfield t:id="yearSchoolCompleted"  value="yearSchoolCompleted" class ="input-fixed ${validateHandler.errorClass('yearSchoolCompleted')}"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('yearSchoolCompleted')}"/>
+				</span>
 			</p>
 			<p>
 				<label for="priorEducationCode">Have you SUCCESSFULLY completed any of the following qualifications?</label>
-				<t:select t:id="priorEducationCode" value="contact.student.priorEducationCode" model="priorEducationSelectModel" blankOption="NEVER"/>
+				<span class="${validateHandler.validateClass('priorEducationCode')}">
+					<t:select t:id="priorEducationCode" value="contact.student.priorEducationCode" model="priorEducationSelectModel" blankOption="NEVER"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('priorEducationCode')}"/>
+				</span>
 			</p>
 			<p>
 				<label for="disabilityType">
 					${message:extra-conditions} Please <a href="/about/contact" title="${message:contact-link-title}" class="popup">contact us</a> ${message:contact-message}
 				</label>
-				<t:select t:id="disabilityType" value="contact.student.disabilityType" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
+				<span class="${validateHandler.validateClass('disabilityType')}">
+					<t:select t:id="disabilityType" value="contact.student.disabilityType" model="disabilityTypeSelectModel"  blankOption="NEVER"/>
+					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('disabilityType')}"/>
+				</span>
 			</p>
 		</fieldset>
 	</div>

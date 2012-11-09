@@ -14,10 +14,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.text.DateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ish.oncourse.enrol.checkout.contact.ContactEditorParser.LABEL_TEMPLATE;
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
@@ -52,8 +49,6 @@ public class ContactEditor {
 	@InjectComponent
 	private AvetmissEditor avetmissEditor;
 
-	private Map<String,String> errors;
-
 
 	@SetupRender
 	void beforeRender() {
@@ -87,7 +82,7 @@ public class ContactEditor {
 
 	public String error(String fieldName)
 	{
-		return errors != null ? errors.get(fieldName):null;
+		return validateHandler.error(fieldName);
 	}
 
 
@@ -116,7 +111,7 @@ public class ContactEditor {
 			contactEditorValidator.setVisibleFields(delegate.getVisibleFields());
 			contactEditorValidator.setDateFormat(getDateFormat());
 			contactEditorValidator.parse();
-			errors = contactEditorValidator.getErrors();
+			Map<String,String> errors = new HashMap<String, String>(contactEditorValidator.getErrors());
 
 			avetmissEditor.save();
 			errors.putAll(avetmissEditor.getErrors());
