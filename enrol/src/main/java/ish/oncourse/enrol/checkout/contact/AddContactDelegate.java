@@ -1,10 +1,10 @@
 package ish.oncourse.enrol.checkout.contact;
 
-import java.util.Map;
+import ish.oncourse.enrol.checkout.IDelegate;
 
-public interface AddContactDelegate
+public interface AddContactDelegate extends IDelegate
 {
 	void cancelEditing();
-	void saveEditing(Map<String,String> errors);
+	void saveEditing();
 	ContactCredentials getContactCredentials();
 }

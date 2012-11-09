@@ -1,35 +1,25 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.enrol.checkout.ADelegate;
 import ish.oncourse.enrol.checkout.PurchaseController;
 
-import java.util.Map;
+public class AddContactController extends ADelegate implements AddContactDelegate{
 
-public class AddContactController implements AddContactDelegate{
-
-	private PurchaseController purchaseController;
 
 	private ContactCredentials contactCredentials = new ContactCredentials();
 
 
 	@Override
 	public void cancelEditing() {
-		purchaseController.performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelAddContact));
+		getPurchaseController().performAction(new PurchaseController.ActionParameter(PurchaseController.Action.cancelAddContact));
 	}
 
 	@Override
-	public void saveEditing(Map<String,String> errors) {
+	public void saveEditing() {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
-		actionParameter.setErrors(errors);
+		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contactCredentials);
-		purchaseController.performAction(actionParameter);
-	}
-
-	public PurchaseController getPurchaseController() {
-		return purchaseController;
-	}
-
-	public void setPurchaseController(PurchaseController purchaseController) {
-		this.purchaseController = purchaseController;
+		getPurchaseController().performAction(actionParameter);
 	}
 
 	public ContactCredentials getContactCredentials() {

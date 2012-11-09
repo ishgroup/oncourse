@@ -38,11 +38,13 @@
 
 <t:block t:id="errors">
 	<t:if test="purchaseController.errors.isEmpty()" negate="true">
-		<div class="error">
-			<h2>Errors</h2>
-			<t:loop source="purchaseController.errors.values()" value="error">
-				<p>${error}</p>
-			</t:loop>
+		<div class="validation">
+			<div>${message:error-commonHeader}</div>
+			<ul>
+				<t:loop source="purchaseController.errors.values()" value="error">
+					<li>${error}</li>
+				</t:loop>
+			</ul>
 		</div>
 	</t:if>
 </t:block>
