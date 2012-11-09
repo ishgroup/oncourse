@@ -3,6 +3,7 @@ package ish.oncourse.ui.pages;
 import java.util.ArrayList;
 import java.util.List;
 
+import ish.oncourse.linktransform.PageIdentifier;
 import ish.oncourse.model.Product;
 import ish.oncourse.services.voucher.IVoucherService;
 
@@ -48,6 +49,10 @@ public class Products {
 	
 	private static int getIntParam(String s, int def) {
 		return (s != null && s.matches("\\d+")) ? Integer.parseInt(s) : def;
+	}
+	
+	Object onActivate() {
+		return voucherService.isAbleToPurchaseProductsOnline() ? null : PageIdentifier.PageNotFound.getPageName();
 	}
 	
 	@SetupRender

@@ -1,6 +1,7 @@
 package ish.oncourse.ui.pages;
 
 import ish.oncourse.model.Product;
+import ish.oncourse.services.voucher.IVoucherService;
 
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -13,8 +14,13 @@ public class ProductDetails {
 	@Property
 	private Product product;
 	
+	@Inject
+	private IVoucherService voucherService;
+	
 	void beginRender() {
-		product = (Product) request.getAttribute(Product.class.getSimpleName());
+		if (voucherService.isAbleToPurchaseProductsOnline()) {
+			product = (Product) request.getAttribute(Product.class.getSimpleName());
+		}
 	}
 
     public String getProductDetailsTitle(){
