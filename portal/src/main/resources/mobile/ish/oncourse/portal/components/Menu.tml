@@ -2,7 +2,7 @@
 	<ul class="footer-nav">
 		<li>
 			<t:pagelink id="m_timetable" page="prop:timetablePageName">
-				<img src="img/icon/icon-clock-29x29.png" width="29" height="29" alt="time" />
+				<img src="/img/icon/icon-clock-29x29.png" width="29" height="29" alt="time" />
 				<span>Timetable</span>
 			</t:pagelink>
 		</li>
@@ -12,19 +12,19 @@
 		</li>
 		<li class="active">
 			<t:pagelink id="m_CurrentClasses" page="prop:classesPageName" context="current">
-				<img src="img/icon/icon-bord-29x29-active.png" width="29" height="29" alt="cloud" />
+				<img src="/img/icon/icon-bord-29x29-active.png" width="29" height="29" alt="cloud" />
 				<span>Classes</span>
 			</t:pagelink>
 		</li>
 		<li>
 			<t:pagelink id="m_surveys" page="prop:surveysPageName">
-				<img src="img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
+				<img src="/img/icon/star-icon-disable.png" width="29" height="29" alt="cloud" />
 				<span>Surveys</span>
 			</t:pagelink>
 		</li>
 		<li>
 			<t:pagelink id="m_profile" page="prop:profilePageName">
-				<img src="img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
+				<img src="${contextPath}/img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
 				<span>Profile</span>
 			</t:pagelink>
 		</li>
