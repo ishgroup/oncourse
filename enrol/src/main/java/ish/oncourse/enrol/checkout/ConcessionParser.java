@@ -53,8 +53,7 @@ public class ConcessionParser implements IFieldsParser {
 					if (new Date().compareTo(expiry) > 0) {
 						error =  getErrorMessageWithSuffixBy(Field.expiresOn, "pastDate");
 					}
-					else
-						studentConcession.setExpiresOn(expiry);
+					studentConcession.setExpiresOn(expiry);
 				} catch (ParseException e) {
 					error =  getErrorMessageWithSuffixBy(Field.expiresOn, "invalidFormat");
 				}

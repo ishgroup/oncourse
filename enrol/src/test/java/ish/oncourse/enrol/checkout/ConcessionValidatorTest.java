@@ -8,21 +8,27 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 import java.util.Locale;
 
 import static ish.oncourse.enrol.pages.Checkout.DATE_FIELD_FORMAT;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ConcessionValidatorTest {
 
 	@Test
 	public void test() {
 
+
 		ConcessionParser parser = createParser();
 
-		parser.setRequest(createRequest("NUMBER", "12/10/2073","on"));
+		parser.setRequest(createRequest("NUMBER", "12/10/2073", "on"));
 
 		parser.parse();
 
@@ -39,14 +45,14 @@ public class ConcessionValidatorTest {
 		assertFalse(parser.getErrors().isEmpty());
 
 		parser = createParser();
-		parser.setRequest(createRequest(null,"01/01/2001",null));
+		parser.setRequest(createRequest(null, "01/01/2001", null));
 		parser.parse();
 		assertNull(parser.getStudentConcession().getConcessionNumber());
 		assertNotNull(parser.getStudentConcession().getExpiresOn());
 		assertFalse(parser.getErrors().isEmpty());
 
 		parser = createParser();
-		parser.setRequest(createRequest(null,"Sun Jan 12 00:00:00 FET 2003",null));
+		parser.setRequest(createRequest(null, "Sun Jan 12 00:00:00 FET 2003", null));
 		parser.parse();
 		assertNull(parser.getStudentConcession().getConcessionNumber());
 		assertNull(parser.getStudentConcession().getExpiresOn());
@@ -60,7 +66,9 @@ public class ConcessionValidatorTest {
 		concessionType.setName("concessionType");
 		concessionType.setHasExpiryDate(Boolean.TRUE);
 		concessionType.setHasConcessionNumber(Boolean.TRUE);
-		parser.setStudentConcession(new StudentConcession());
+		StudentConcession studentConcession = spy(new StudentConcession());
+		when(studentConcession.getConcessionType()).thenReturn(concessionType);
+		parser.setStudentConcession(studentConcession);
 		parser.setMessages(createMessages());
 		parser.setDateFormat(FormatUtils.getDateFormat(DATE_FIELD_FORMAT, null));
 		return parser;
