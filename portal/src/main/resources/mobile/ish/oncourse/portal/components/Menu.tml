@@ -24,7 +24,7 @@
 		</li>
 		<li>
 			<t:pagelink id="m_profile" page="prop:profilePageName">
-				<img src="${contextPath}/img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
+				<img src="/s/img/icon/user-icon-29x29.png" width="29" height="29" alt="cloud" />
 				<span>Profile</span>
 			</t:pagelink>
 		</li>
