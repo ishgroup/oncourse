@@ -162,7 +162,14 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		//here can be only valid status = in transaction, 
 		//all other cases already checked before 
 		when(paymentIn.getStatus()).thenReturn(PaymentStatus.IN_TRANSACTION);
-		helper = new PaymentInAbandonHelper(paymentIn, false);
+		helper = new PaymentInAbandonHelper(paymentIn, false) {
+			@Override
+			boolean canMakeRevertInvoice() {
+				//should be false for this case
+				return false;
+			}
+			
+		};
 		assertFalse("Payment without invoice amount owing should not pass the validation", helper.validatePaymentInForAbandon());
 	}
 	
