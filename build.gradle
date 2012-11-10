@@ -201,11 +201,29 @@ sonar {
     }
 	project {
 		coberturaReportPath = file("$buildDir/reports/cobertura/coverage.xml")
-	}
+        dynamicAnalysis  = "reuseReports"
+        withProjectProperties { props ->
+            props["sonar.core.codeCoveragePlugin"] = "jacoco"
+            props["sonar.jacoco.reportPath"]  = "${buildDir}/jacoco.exec"
+        }
+    }
+
 }
 
 subprojects { 
 	version = project.parent.version
+
+    configurations {
+        jacoco //Configuration Group used by Sonar to provide Code Coverage using JaCoCo
+    }
+
+    dependencies {
+        jacoco group: "org.jacoco", name: "org.jacoco.agent", version: "0.6.0.201210061924", classifier: "runtime"
+    }
+ 
+    test {
+        jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec"
+    }
 }
 
 /*
