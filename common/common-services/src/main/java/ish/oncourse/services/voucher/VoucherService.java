@@ -174,7 +174,7 @@ public class VoucherService implements IVoucherService {
     
     @Override
     public boolean isAbleToPurchaseProductsOnline() {
-    	String angelVersion = webSiteService.getCurrentCollege().getAngelVersion();
+    	String angelVersion = takeWebSiteService().getCurrentCollege().getAngelVersion();
     	if ("development".equalsIgnoreCase(angelVersion)) {
     		LOGGER.info("pass the gradle development version");
     		return true;
