@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
+import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -146,40 +147,44 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			//we also should check that this payment not linked with any invoices which also linked with another in transaction payments.
 			boolean isConflictPayment = isHaveConflictedInInvoices(paymentIn, updatedPayments);
 			if (!isConflictPayment) {
-				// check places
-				boolean isPlacesAvailable = true;
+				//check that payment not contain incorrect enrollments
+				if (!isEnrolmentsCorrect(enrolments)) {
+					// check places
+					boolean isPlacesAvailable = true;
 
-				for (Enrolment enrolment : enrolments) {
-					CourseClass clazz = enrolment.getCourseClass();
-					int availPlaces = clazz.getMaximumPlaces() - clazz.getValidEnrolments().size();
-					if (availPlaces < 0) {
-						logger.info(String.format("No places available for courseClass:%s.", clazz.getId()));
-						isPlacesAvailable = false;
-						break;
+					for (Enrolment enrolment : enrolments) {
+						CourseClass clazz = enrolment.getCourseClass();
+						int availPlaces = clazz.getMaximumPlaces() - clazz.getValidEnrolments().size();
+						if (availPlaces < 0) {
+							logger.info(String.format("No places available for courseClass:%s.", clazz.getId()));
+							isPlacesAvailable = false;
+							break;
+						}
 					}
-				}
 			
-				PreferenceController prefsController = prefsFactory.getPreferenceController(paymentIn.getCollege());
+					PreferenceController prefsController = prefsFactory.getPreferenceController(paymentIn.getCollege());
 			
-				if (isCreditCardPayment && !prefsController.getLicenseCCProcessing()) {
-					updatedPayments.add(paymentIn.abandonPayment());
-				} else if (!isPlacesAvailable) {
-					paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
-					updatedPayments.add(paymentIn.abandonPayment());
-				} else {
-					// if credit card and not-zero payment, generate sessionId.
-					if (isCreditCardPayment && paymentIn.getAmount().compareTo(BigDecimal.ZERO) != 0) {
-						paymentIn.setSessionId(idGenerator.generateSessionId());
+					if (isCreditCardPayment && !prefsController.getLicenseCCProcessing()) {
+						updatedPayments.add(paymentIn.abandonPayment());
+					} else if (!isPlacesAvailable) {
+						paymentIn.setStatus(PaymentStatus.FAILED_NO_PLACES);
+						updatedPayments.add(paymentIn.abandonPayment());
 					} else {
-						paymentIn.succeed();
+						// if credit card and not-zero payment, generate sessionId.
+						if (isCreditCardPayment && paymentIn.getAmount().compareTo(BigDecimal.ZERO) != 0) {
+							paymentIn.setSessionId(idGenerator.generateSessionId());
+						} else {
+							paymentIn.succeed();
+						}
 					}
+				} else {
+					//we should fail the payments if they are for incorrect invoices
+					updatedPayments.add(paymentIn.abandonPayment());
 				}
 			}
 			
 			newContext.commitChanges();
 			
-			//Set<ReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments);
-			//response.getAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
 			Set<GenericReplicationStub> updatedStubs = transactionBuilder.createPaymentInTransaction(updatedPayments, PortHelper.getVersionByTransactionGroup(transaction));
 			response.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(updatedStubs);
 			return response;
@@ -188,6 +193,21 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			logger.error(String.format("Exception happened after paymentIn:%s was saved. ", paymentIn.getId()), e);
 			return plainPaymentEnrolmentResponse(paymentIn, enrolments, PortHelper.getVersionByTransactionGroup(transaction));
 		}
+	}
+	
+	public boolean isEnrolmentsCorrect(List<Enrolment> enrolments) {
+		for (Enrolment enrolment : enrolments) {
+			boolean isZeroOwing = true;
+			if (enrolment.getInvoiceLine() != null && enrolment.getInvoiceLine().getInvoice() != null) {
+				Invoice invoice = enrolment.getInvoiceLine().getInvoice();
+				invoice.updateAmountOwing();
+				isZeroOwing = Money.isZeroOrEmpty(new Money(invoice.getAmountOwing()));
+			}
+			if (isZeroOwing && EnrolmentStatus.FAILED.equals(enrolment.getStatus())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public boolean isHaveConflictedInInvoices(PaymentIn paymentIn, List<PaymentIn> updatedPayments) {
