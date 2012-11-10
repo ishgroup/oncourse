@@ -87,6 +87,11 @@ public class PaymentInAbandonHelper {
 			if (!new Money(invoice.getAmountOwing()).isZero()) {
 				haveAnyInvoiceWithAmountOwing = true;
 				break;
+			} else {
+				if (canMakeRevertInvoice()) {
+					haveAnyInvoiceWithAmountOwing = true;
+					break;
+				}
 			}
 		}
 		if (!haveAnyInvoiceWithAmountOwing) {
@@ -312,25 +317,31 @@ public class PaymentInAbandonHelper {
 		// Creating internal payment, with zero amount which will be
 		// linked to invoiceToRefund, and refundInvoice.
 		Invoice invoiceToRefund = paymentInLineToRefund.getInvoice();
-		PaymentIn internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
-		internalPayment.setAmount(BigDecimal.ZERO);
-		internalPayment.setType(PaymentType.INTERNAL);
-		internalPayment.setStatus(PaymentStatus.SUCCESS);
+		invoiceToRefund.updateAmountOwing();
+		PaymentIn internalPayment = null;
+		//if the owing already balanced, no reason to create any refund invoice
+		if (!Money.isZeroOrEmpty(new Money(invoiceToRefund.getAmountOwing()))){
+			internalPayment = paymentInLineToRefund.getPaymentIn().makeShallowCopy();
+			internalPayment.setAmount(BigDecimal.ZERO);
+			internalPayment.setType(PaymentType.INTERNAL);
+			internalPayment.setStatus(PaymentStatus.SUCCESS);
 
-		// Creating refund invoice
-		Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
-		logger.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
+			// Creating refund invoice
+			Invoice refundInvoice = invoiceToRefund.createRefundInvoice();
+			logger.info(String.format("Created refund invoice with amount:%s for invoice:%s.", refundInvoice.getAmountOwing(),
 				invoiceToRefund.getId()));
 
-		PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
-		refundPL.setAmount(BigDecimal.ZERO.subtract(paymentInLineToRefund.getAmount()));
-		refundPL.setCollege(paymentInLineToRefund.getCollege());
-		refundPL.setInvoice(refundInvoice);
-		refundPL.setPaymentIn(internalPayment);
+			PaymentInLine refundPL = paymentInLineToRefund.getObjectContext().newObject(PaymentInLine.class);
+			refundPL.setAmount(BigDecimal.ZERO.subtract(paymentInLineToRefund.getAmount()));
+			refundPL.setCollege(paymentInLineToRefund.getCollege());
+			refundPL.setInvoice(refundInvoice);
+			refundPL.setPaymentIn(internalPayment);
 
-		PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
-		paymentInLineToRefundCopy.setPaymentIn(internalPayment);
-
+			PaymentInLine paymentInLineToRefundCopy = paymentInLineToRefund.makeCopy();
+			paymentInLineToRefundCopy.setPaymentIn(internalPayment);
+		} else {
+			internalPayment = paymentInLineToRefund.getPaymentIn();
+		}
 		invoiceToRefund.setModified(modifiedTime);
 		paymentInLineToRefund.setModified(modifiedTime);
 		

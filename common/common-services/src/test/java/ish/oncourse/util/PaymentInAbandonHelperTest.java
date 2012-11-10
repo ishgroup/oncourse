@@ -1151,4 +1151,142 @@ public class PaymentInAbandonHelperTest extends ServiceTest {
 		
 		context.rollbackChanges();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testAbandonFreeInvoice() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		List<PaymentIn> paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		PaymentIn paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
+		//set the zero payment amount
+		paymentIn.setAmount(Money.ZERO.toBigDecimal());
+		paymentIn.getPaymentInLines().get(0).setAmount(Money.ZERO.toBigDecimal());
+		
+		Invoice invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
+		//set the zero invoice price
+		invoice.setTotalExGst(Money.ZERO.toBigDecimal());
+		invoice.setTotalGst(Money.ZERO.toBigDecimal());
+		
+		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
+		InvoiceLine invoiceLine = invoice.getInvoiceLines().get(0);
+		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+		invoiceLine.setPriceEachExTax(Money.ZERO);
+		invoiceLine.setDiscountEachExTax(Money.ZERO);
+		invoiceLine.setTaxEach(Money.ZERO);
+		
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing for invoice should be 0$", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
+		Enrolment enrolment = invoiceLine.getEnrolment();
+		assertNull("No enrollment should be linked to invoice line", enrolment);
+		
+		//link enrollment to the invoice line
+		//load courseclass for enrolment
+		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
+			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
+		//prepare and add the enrollment to the invoiceLine
+		enrolment = paymentIn.getObjectContext().newObject(Enrolment.class);
+		enrolment.setCollege(paymentIn.getCollege());
+		enrolment.setCourseClass(courseClass);
+		enrolment.setInvoiceLine(invoiceLine);
+		enrolment.setSource(paymentIn.getSource());
+		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
+		enrolment.setStudent(paymentIn.getStudent());
+		enrolment.setReasonForStudy(1);
+		
+		context.commitChanges();
+		
+		//create helper for abandon 
+		PaymentInAbandonHelper helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("In transaction payment with correct structure should pass the validation", helper.validatePaymentInForAbandon());
+		assertTrue("We can make reverse invoice for this payment because no linked enrollments or productItems!", helper.canMakeRevertInvoice());
+		//re-load data
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
+		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing for invoice should be 0$", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
+		invoiceLine = invoice.getInvoiceLines().get(0);
+		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+		enrolment = invoiceLine.getEnrolment();
+		assertNotNull("Now enrollment should be linked to invoice line", enrolment);
+		assertEquals("Initial enrollment status should be in transaction", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
+		
+		//create helper for abandon 
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("In transaction payment with correct structure should pass the validation", helper.validatePaymentInForAbandon());
+		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
+		PaymentIn reversePaymentIn = helper.abandonPayment();
+		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
+		assertEquals("Reverse payment should be the same as original", paymentIn, reversePaymentIn);
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Enrollment status after abandon should be failed", EnrolmentStatus.FAILED, enrolment.getStatus());
+		//rollback the changes to check also the abandon for product items
+		context.rollbackChanges();
+		
+		//link voucher for invoiceline
+		List<Voucher> vouchers = context.performQuery(new SelectQuery(Voucher.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Vouchers list should not be empty", vouchers.isEmpty());
+		assertEquals("Vouchers list should have 1 record", 1, vouchers.size());
+		Voucher voucher = vouchers.get(0);
+		assertNotNull("Voucher for test should not be empty", voucher);
+		assertEquals("Voucher status should be active", ProductStatus.ACTIVE, voucher.getStatus());
+		voucher.setStatus(ProductStatus.NEW);
+		voucher.setInvoiceLine(invoiceLine);
+		//unlink the enrollment
+		invoiceLine.setEnrolment(null);
+		context.commitChanges();
+		
+		//re-load data
+		paymentIns = context.performQuery(new SelectQuery(PaymentIn.class, 
+			ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, 2L)));
+		assertFalse("Payments list should not be empty", paymentIns.isEmpty());
+		assertEquals("Payments list should have 1 record", 1, paymentIns.size());
+		paymentIn = paymentIns.get(0);
+		assertNotNull("Payment for test should not be empty", paymentIn);
+		assertEquals("Payment status should be in transaction", PaymentStatus.IN_TRANSACTION, paymentIn.getStatus());
+		assertEquals("Only one paymentInline should exist", 1, paymentIn.getPaymentInLines().size());
+		invoice = paymentIn.getPaymentInLines().get(0).getInvoice();
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing for invoice should be 0$", Money.ZERO.toBigDecimal(),invoice.getAmountOwing());
+		assertEquals("InvoiceLines list should have 1 record", 1, invoice.getInvoiceLines().size());
+		invoiceLine = invoice.getInvoiceLines().get(0);
+		assertNotNull("InvoiceLine for test should not be empty", invoiceLine);
+		enrolment = invoiceLine.getEnrolment();
+		assertNull("No enrollment should be linked to invoice line", enrolment);
+		assertEquals("Only 1 voucher should be linked with this invoiceline", 1, invoiceLine.getVouchers().size());
+		voucher = invoiceLine.getVouchers().get(0);
+		assertNotNull("Voucher should be linked with this invoiceLine", voucher);
+		assertEquals("Voucher status should be new", ProductStatus.NEW, voucher.getStatus());
+		
+		//create helper for abandon 
+		helper = new PaymentInAbandonHelper(paymentIn, false);
+		assertTrue("In transaction payment with correct structure should pass the validation", helper.validatePaymentInForAbandon());
+		assertTrue("We should be able to make reverse invoice for this payment!", helper.canMakeRevertInvoice());
+		reversePaymentIn = helper.abandonPayment();
+		assertNotNull("Reverse invoice should not be null", reversePaymentIn);
+		assertEquals("Payment should be failed", PaymentStatus.FAILED, paymentIn.getStatus());
+		assertEquals("Reverse payment should be the same as original", paymentIn, reversePaymentIn);
+		invoice.updateAmountOwing();
+		assertEquals("Amount owing after abandon should be 0", Money.ZERO.toBigDecimal(), invoice.getAmountOwing());
+		assertEquals("Voucher status after abandon should be failed", ProductStatus.CANCELLED, voucher.getStatus());
+		
+		context.rollbackChanges();
+	}
+	
 }
