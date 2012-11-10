@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -543,6 +544,89 @@ public class PaymentServiceImplTest extends ServiceTest {
 		result = port.isHaveConflictedInInvoices(p1, updatedPayments);
 		assertFalse("Payment should have no conflict invoices", result);
 		assertTrue("No payments should be updated", updatedPayments.isEmpty());
+	}
+	
+	@Test
+	public void isEnrolmentsCorrect() {
+		ObjectContext context = service.newContext();
+		Contact contact = context.newObject(Contact.class);
+		
+		PaymentIn p1 = context.newObject(PaymentIn.class);
+		p1.setAmount(Money.ZERO.toBigDecimal());
+		p1.setAngelId(1l);
+		p1.setContact(contact);
+		p1.setCreated(new Date());
+		p1.setModified(new Date());
+		p1.setSource(PaymentSource.SOURCE_ONCOURSE);
+		p1.setStatus(PaymentStatus.IN_TRANSACTION);
+		p1.setType(PaymentType.CREDIT_CARD);
+		p1.setCollege(localizeCollege(context));
+		contact.setCollege(p1.getCollege());
+		
+		Invoice i2 = context.newObject(Invoice.class);
+		i2.setAngelId(1l);
+		i2.setAmountOwing(new BigDecimal(110l));
+		i2.setBillToAddress("Test billing address");
+		i2.setContact(contact);
+		i2.setCreated(new Date());
+		i2.setCustomerPO("PO");
+		i2.setCustomerReference("ref123");
+		i2.setDateDue(new Date());
+		i2.setDescription("Invoice for accounting course");
+		i2.setInvoiceDate(new Date());
+		i2.setInvoiceNumber(1234l);
+		i2.setModified(new Date());
+		i2.setTotalExGst(Money.ZERO.toBigDecimal());
+		i2.setTotalGst(Money.ZERO.toBigDecimal());
+		i2.setSource(PaymentSource.SOURCE_ONCOURSE);
+		i2.setCollege(p1.getCollege());
+		
+		InvoiceLine il2 = context.newObject(InvoiceLine.class);
+		il2.setInvoice(i2);
+		il2.setAngelId(1l);
+		il2.setCreated(new Date());
+		il2.setDescription("Invoice line item  for accounting course");
+		il2.setDiscountEachExTax(Money.ZERO);
+		il2.setModified(new Date());
+		il2.setPriceEachExTax(Money.ZERO);
+		il2.setQuantity(new BigDecimal(1));
+		il2.setTaxEach(Money.ZERO);
+		il2.setTitle("Accouting course item");
+		il2.setUnit("unit");
+		il2.setCollege(p1.getCollege());
+		
+		Enrolment e1 = context.newObject(Enrolment.class);
+		e1.setAngelId(1l);
+		@SuppressWarnings("unchecked")
+		List<CourseClass> courseClasses = context.performQuery(new SelectQuery(CourseClass.class, 
+			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1186958L)));
+		e1.setCourseClass((CourseClass) context.localObject(courseClasses.get(0).getObjectId(), null));
+		e1.setCreated(new Date());
+		e1.setInvoiceLine(il2);
+		e1.setModified(new Date());
+		e1.setReasonForStudy(1);
+		e1.setSource(PaymentSource.SOURCE_WEB);
+		e1.setStatus(EnrolmentStatus.FAILED);
+		@SuppressWarnings("unchecked")
+		List<Student> students = context.performQuery(new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 1189147L)));
+		e1.setStudent((Student) context.localObject(students.get(0).getObjectId(), null));
+		e1.setCollege(p1.getCollege());
+		
+		PaymentInLine pil3 = context.newObject(PaymentInLine.class);
+		pil3.setPaymentIn(p1);
+		pil3.setAngelId(1l);
+		pil3.setCreated(new Date());
+		pil3.setAmount(Money.ZERO.toBigDecimal());
+		pil3.setInvoice(i2);
+		pil3.setCollege(p1.getCollege());
+		
+		context.commitChanges();
+		
+		InternalPaymentService port = getService(InternalPaymentService.class);
+		assertFalse("Failed enrolment for zero owing invoice isn't a  correct enrollment", port.isEnrolmentsCorrect(Arrays.asList(e1)));
+		e1.setStatus(EnrolmentStatus.SUCCESS);
+		context.commitChanges();
+		assertTrue("Success enrolment for zero owing invoice should return true ", port.isEnrolmentsCorrect(Arrays.asList(e1)));
 	}
 
 }

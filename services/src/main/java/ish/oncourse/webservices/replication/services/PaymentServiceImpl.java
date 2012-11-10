@@ -148,7 +148,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
 			boolean isConflictPayment = isHaveConflictedInInvoices(paymentIn, updatedPayments);
 			if (!isConflictPayment) {
 				//check that payment not contain incorrect enrollments
-				if (!isEnrolmentsCorrect(enrolments)) {
+				if (isEnrolmentsCorrect(enrolments)) {
 					// check places
 					boolean isPlacesAvailable = true;
 
@@ -204,10 +204,10 @@ public class PaymentServiceImpl implements InternalPaymentService {
 				isZeroOwing = Money.isZeroOrEmpty(new Money(invoice.getAmountOwing()));
 			}
 			if (isZeroOwing && EnrolmentStatus.FAILED.equals(enrolment.getStatus())) {
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	public boolean isHaveConflictedInInvoices(PaymentIn paymentIn, List<PaymentIn> updatedPayments) {
