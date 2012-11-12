@@ -1,6 +1,11 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div id="addstudent-block">
 		<h2>Add a student</h2>
+		<t:if test="${delegate.errors.isEmpty()}">
+		<div class="message">
+			<p>To continue, please enter the details of a person to enrol.</p>
+		</div>
+		</t:if>
 		<t:form t:id="addContactForm">
 			<fieldset>
 				<br/>
