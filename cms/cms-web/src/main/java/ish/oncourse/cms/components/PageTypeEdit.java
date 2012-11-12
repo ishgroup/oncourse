@@ -13,7 +13,6 @@ import ish.oncourse.ui.pages.internal.Page;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.cayenne.ObjectContext;
@@ -114,68 +113,40 @@ public class PageTypeEdit {
 	 * @return
 	 */
 	StreamResponse onActionFromSort() {
-
 		if (request.getSession(false) == null) {
 			return new TextStreamResponse("text/json","{status: 'session timeout'}");
 		}
-		
 		String id = request.getParameter("id");
 		String region = request.getParameter("region");
 		RegionKey regionKey = RegionKey.valueOf(region);
-		int weight = Integer.parseInt(request.getParameter("w"));
+		int regionPosition = Integer.parseInt(request.getParameter("w"));
 
 		ObjectContext ctx = editPageType.getObjectContext();
-
 		WebContent block = webContentService.findById(Long.valueOf(id));
-
 		block = (WebContent) ctx.localObject(block.getObjectId(), null);
-
-		WebContentVisibility webContentVisibility = block.getWebContentVisibility(editPageType);
-
+		sort(editPageType, block, regionKey, regionPosition);
+		return new TextStreamResponse("text/json", "{status: 'OK'}");
+	}
+	
+	final void sort(WebNodeType webNodeType, WebContent block, RegionKey regionKey, int regionPosition) {
+		ObjectContext context = webNodeType.getObjectContext();
+		WebContentVisibility webContentVisibility = block.getWebContentVisibility(webNodeType);
 		if (regionKey == RegionKey.unassigned) {
 			if (webContentVisibility != null) {
 				// remove assignment to this type
 				//mark as unasigned before delete to take the places
 				webContentVisibility.setRegionKey(regionKey);
-				ctx.deleteObject(webContentVisibility);
+				context.deleteObject(webContentVisibility);
 			}
 		} else {
-
 			if (webContentVisibility == null) {
 				// create new visibility if it is moved from unassigned blocks
-				webContentVisibility = ctx.newObject(WebContentVisibility.class);
+				webContentVisibility = context.newObject(WebContentVisibility.class);
 				webContentVisibility.setWebContent(block);
-				webContentVisibility.setWebNodeType(editPageType);
+				webContentVisibility.setWebNodeType(webNodeType);
 			}
-			RegionKey oldRegionKey = webContentVisibility.getRegionKey();
-			webContentVisibility.setRegionKey(regionKey);
-			webContentVisibility.setWeight(weight);
-			SortedSet<WebContentVisibility> vSet = webContentService.getBlockVisibilityForRegionKey(editPageType, regionKey);
-
-			// change weight of the items in region
-			int w = 0;
-			Iterator<WebContentVisibility> it = vSet.iterator();
-			if (regionKey.equals(oldRegionKey)) {
-				//this is the manipulation inside the same list, so we need to re-weight the list from 0.
-				while (it.hasNext()) {
-					WebContentVisibility v = it.next();
-					v.setWeight(w);
-					w++;
-				}
-				//reset the iterator and w as before re-weighting.
-				w = 0;
-				it = vSet.iterator();
-			}
-			while (it.hasNext()) {
-				WebContentVisibility v = it.next();
-				if (w >= weight && v.getWeight() <= w) {
-					v.setWeight(w + 1);
-				}
-				w++;
-			}
-
+			webContentService.putWebContentVisibilityToPosition(webNodeType, regionKey, webContentVisibility, regionPosition);
 		}
-		return new TextStreamResponse("text/json", "{status: 'OK'}");
 	}
 
 	private String[] readAvailableLayouts() {
