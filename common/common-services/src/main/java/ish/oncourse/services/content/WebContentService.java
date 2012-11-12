@@ -177,7 +177,7 @@ public class WebContentService extends BaseService<WebContent> implements
 	
 	@Override
 	public List<WebContentVisibility> getBlockVisibilityForRegionKey(WebNodeType webNodeType, RegionKey regionKey) {
-		if (regionKey == null && regionKey == RegionKey.unassigned) {
+		if (regionKey == null || regionKey == RegionKey.unassigned) {
 			// there con't be visibility for the unassigned block
 			return null;
 		}
