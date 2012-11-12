@@ -31,6 +31,9 @@ import org.apache.tapestry5.services.Request;
 import java.util.Arrays;
 import java.util.List;
 
+@Import(library={"context:js/jquery.blockUI.js","context:js/checkout.js"},
+		stylesheet="context:css/checkout.css")
+
 public class Checkout {
 	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
 
