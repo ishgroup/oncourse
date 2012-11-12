@@ -128,6 +128,10 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             {
                 propertyName = Certificate.IS_QUALIFICATION_PROPERTY;
             }
+        } else if (entity instanceof Invoice) {
+        	if (propertyName.equals("corporatePassId")) {
+        		return ((Invoice) entity).getCorporatePassUsed().getId();
+        	}
         }
 
 
