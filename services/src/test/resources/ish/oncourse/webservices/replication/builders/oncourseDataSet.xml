@@ -149,13 +149,19 @@
     <Enrolment id="1" angelId="2" source="W" collegeId="3" courseClassId="1"
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="2" reasonForStudy="1"/>
+               
+	<CorporatePass id="1" angelId="2" collegeId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" expiryDate="2112-02-03 09:18:09"
+				invoiceEmail="test@test.test" password="test" contactId="1"/>
+				
+	<CorporatePass_CourseClass id="1" angelId="2" collegeId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+				corporatePassId="1" courseClassId="1"/>
 
     <Invoice id="1" angelId="2" billToAddress="billToAddress" source="W" amountOwing="100.00" contactId="1"
              collegeId="3" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
              totalGst="10.91" created="2011-09-10 11:14:54" customerPO="customerPO"
              customerReference="customerReference" modified="2011-09-10 11:14:54"
-             publicNotes="publicNotes" shippingAddress="shippingAddress"/>
+             publicNotes="publicNotes" shippingAddress="shippingAddress" corporatePassId="1"/>
 
 
     <InvoiceLine id="1" angelId="2000" collegeId="3" enrolmentId="1"
@@ -166,8 +172,7 @@
 
     <InvoiceLine_Discount
             id="1" collegeId="3" angelId="2" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" discountId="1" invoiceLineId="1"/>
-
-
+            
     <Message
         angelId="2"
         collegeId="3"

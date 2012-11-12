@@ -4,6 +4,8 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.v4.builders.*;
+import ish.oncourse.webservices.replication.v5.builders.CorporatePassCourseClassStubBuilder;
+import ish.oncourse.webservices.replication.v5.builders.CorporatePassStubBuilder;
 import ish.oncourse.webservices.replication.v5.builders.SurveyStubBuilder;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -383,6 +385,16 @@ public class AllStubBuildersTest extends ServiceTest {
     @Test
     public void testSurvey() {
         this.testStubBuilder(Survey.class, new SurveyStubBuilder());
+    }
+    
+    @Test
+    public void testCorporatePass() {
+    	this.testStubBuilder(CorporatePass.class, new CorporatePassStubBuilder());
+    }
+    
+    @Test
+    public void testCorporatePassCourseClass() {
+    	this.testStubBuilder(CorporatePassCourseClass.class, new CorporatePassCourseClassStubBuilder());
     }
 
 }
