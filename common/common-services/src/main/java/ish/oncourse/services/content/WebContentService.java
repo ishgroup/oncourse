@@ -10,6 +10,7 @@ import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.SortedSet;
@@ -37,6 +38,7 @@ public class WebContentService extends BaseService<WebContent> implements
 	@Inject
 	private ICayenneService cayenneService;
 
+	@Override
 	public WebContent getWebContent(String searchProperty, Object value) {
 		WebSite currentSite = webSiteService.getCurrentWebSite();
 		Expression qualifier = ExpressionFactory.matchExp(
@@ -51,6 +53,7 @@ public class WebContentService extends BaseService<WebContent> implements
 		return result;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public SortedSet<WebContent> getBlocksForRegionKey(WebNodeType webNodeType,
 			RegionKey regionKey) {
@@ -102,6 +105,7 @@ public class WebContentService extends BaseService<WebContent> implements
 		return treeSet;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<WebContent> getBlocks() {
 
@@ -125,33 +129,68 @@ public class WebContentService extends BaseService<WebContent> implements
 		return cayenneService.sharedContext().performQuery(q);
 
 	}
-
-	@SuppressWarnings("unchecked")
-	public SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(
-			WebNodeType webNodeType, RegionKey regionKey) {
-
+	
+	@Override
+	public void putWebContentVisibilityToPosition(WebNodeType webNodeType, RegionKey regionKey, WebContentVisibility webContentVisibility, 
+		int position) {
+		if (regionKey == null && regionKey == RegionKey.unassigned) {
+			//unassigned region have no ordering
+			return;
+		}
+		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
+			//as we can't receive the ordered list for temporary webNodeType just set the weight equal to position.
+			webContentVisibility.setWeight(position);
+			return;
+		}
+		List<WebContentVisibility> contentVisibilities = getBlockVisibilityForRegionKey(webNodeType, regionKey);
+		if (contentVisibilities.isEmpty()) {
+			webContentVisibility.setRegionKey(regionKey);
+			webContentVisibility.setWeight(position);
+			return;
+		}
+		int oldVisibilityPosition = contentVisibilities.indexOf(webContentVisibility);
+		if (oldVisibilityPosition == -1) {
+			//not linked before
+			webContentVisibility.setRegionKey(regionKey);
+			contentVisibilities.add(position, webContentVisibility);
+		} else {
+			if (position == oldVisibilityPosition) {
+				//nothing to do
+				return;
+			}
+			if (position > oldVisibilityPosition) {
+				//shift down
+				contentVisibilities.add(position + 1, webContentVisibility);
+				contentVisibilities.remove(oldVisibilityPosition);
+			} else {
+				//shift up
+				contentVisibilities.remove(oldVisibilityPosition);
+				contentVisibilities.add(position, webContentVisibility);
+			}
+		}
+		//re-weight the elements
+		for (int i = 0; i < contentVisibilities.size() ; i++) {
+			WebContentVisibility visibility = contentVisibilities.get(i);
+			visibility.setWeight(i);
+		}
+	}
+	
+	@Override
+	public List<WebContentVisibility> getBlockVisibilityForRegionKey(WebNodeType webNodeType, RegionKey regionKey) {
 		if (regionKey == null && regionKey == RegionKey.unassigned) {
 			// there con't be visibility for the unassigned block
 			return null;
 		}
-		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
-			//return no visible content for temporary webNodeType
-			return new TreeSet<WebContentVisibility>();
+		List<WebContentVisibility> result = new ArrayList<WebContentVisibility>();
+		WebSite currentWebSite = webSiteService.getCurrentWebSite();
+		//fill the list of corresponding results
+		for (WebContentVisibility visibility : webNodeType.getWebContentVisibilities()) {
+			if (currentWebSite.getId().equals(visibility.getWebContent().getWebSite().getId()) && regionKey.equals(visibility.getRegionKey())) {
+				result.add(visibility);
+			}
 		}
-		SelectQuery q = new SelectQuery(WebContentVisibility.class);
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContentVisibility.WEB_CONTENT_PROPERTY + "."
-						+ WebContent.WEB_SITE_PROPERTY,
-				webSiteService.getCurrentWebSite()));
-
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContentVisibility.WEB_NODE_TYPE_PROPERTY, webNodeType));
-		q.andQualifier(ExpressionFactory.matchExp(
-				WebContentVisibility.REGION_KEY_PROPERTY, regionKey));
-		q.addOrdering(WebContentVisibility.WEIGHT_PROPERTY, SortOrder.ASCENDING);
-		return new TreeSet<WebContentVisibility>(webNodeType.getObjectContext()
-				.performQuery(q));
+		Collections.sort(result);
+		return result;
 	}
 
 	public WebContent findRandomWebContentByQualifier(Expression qualifier) {

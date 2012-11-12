@@ -42,7 +42,16 @@ public interface IWebContentService {
 	 * @param regionKey
 	 * @return web content visibility
 	 */
-	SortedSet<WebContentVisibility> getBlockVisibilityForRegionKey(WebNodeType webNodeType, RegionKey regionKey);
+	List<WebContentVisibility> getBlockVisibilityForRegionKey(WebNodeType webNodeType, RegionKey regionKey);
+	
+	/**
+	 * Set the correct weight for visibility to match the required position
+	 * @param webNodeType
+	 * @param regionKey
+	 * @param webContentVisibility
+	 * @param position
+	 */
+	void putWebContentVisibilityToPosition(WebNodeType webNodeType, RegionKey regionKey, WebContentVisibility webContentVisibility, int position);
 	
 	List<WebContent> getBlocks();
 }
