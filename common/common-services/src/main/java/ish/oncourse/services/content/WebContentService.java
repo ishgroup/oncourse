@@ -26,10 +26,8 @@ import org.apache.cayenne.query.SortOrder;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-public class WebContentService extends BaseService<WebContent> implements
-		IWebContentService {
+public class WebContentService extends BaseService<WebContent> implements IWebContentService {
 
-	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(BaseService.class);
 
 	@Inject
@@ -133,13 +131,14 @@ public class WebContentService extends BaseService<WebContent> implements
 	@Override
 	public void putWebContentVisibilityToPosition(WebNodeType webNodeType, RegionKey regionKey, WebContentVisibility webContentVisibility, 
 		int position) {
-		if (regionKey == null && regionKey == RegionKey.unassigned) {
+		if (regionKey == null || regionKey == RegionKey.unassigned) {
 			//unassigned region have no ordering
 			return;
 		}
 		if (webNodeType != null && webNodeType.getObjectId().isTemporary()) {
 			//as we can't receive the ordered list for temporary webNodeType just set the weight equal to position.
 			webContentVisibility.setWeight(position);
+			webContentVisibility.setRegionKey(regionKey);
 			return;
 		}
 		List<WebContentVisibility> contentVisibilities = getBlockVisibilityForRegionKey(webNodeType, regionKey);
@@ -148,6 +147,12 @@ public class WebContentService extends BaseService<WebContent> implements
 			webContentVisibility.setWeight(position);
 			return;
 		}
+		if (position > contentVisibilities.size()) {
+			LOGGER.error(String.format("JS try to set the higher position %s to visibility then list contains %s. Changed to last available position %s.", 
+				position, contentVisibilities.size(), contentVisibilities.size()), new Exception());
+			position = contentVisibilities.size();
+		}
+		
 		int oldVisibilityPosition = contentVisibilities.indexOf(webContentVisibility);
 		if (oldVisibilityPosition == -1) {
 			//not linked before
