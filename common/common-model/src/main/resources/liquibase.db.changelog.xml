@@ -1332,6 +1332,133 @@
 		<addAutoIncrement tableName="VoucherProductCourse" columnName="id" columnDataType="BIGINT"/>
     </changeSet>
     
+    <changeSet id="85" author="dzmitry" context="production" runOnChange="true">
+    	    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<tableExists tableName="EntityRelation"/>
+    		</not>
+    	</preConditions>
+    	<createTable tableName="EntityRelation">
+    		<column name="id" type="BIGINT">
+    			<constraints nullable="false" primaryKey="true"/>
+    		</column>
+    		<column name="angelId" type="BIGINT"/>
+    		<column name="collegeId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="fromEntityIdentifier" type="SMALLINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="toEntityIdentifier" type="SMALLINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="fromRecordId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="toRecordId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="modified" type="DATETIME"/>
+    	</createTable>
+    	
+    	<addForeignKeyConstraint constraintName="fk_EntityRelation_College" referencedTableName="College" baseColumnNames="collegeId" baseTableName="EntityRelation" referencedColumnNames="id"/>
+    	
+    	<createIndex tableName="EntityRelation" indexName="EntityRelation_angelId">
+    		<column name="angelId"/>
+    	</createIndex>
+    	<createIndex tableName="EntityRelation" indexName="EntityRelation_fromEntityIdentifier">
+    		<column name="fromEntityIdentifier"/>
+    	</createIndex>
+    	<createIndex tableName="EntityRelation" indexName="EntityRelation_toEntityIdentifier">
+    		<column name="toEntityIdentifier"/>
+    	</createIndex>
+    	<createIndex tableName="EntityRelation" indexName="EntityRelation_fromRecordId">
+    		<column name="fromRecordId"/>
+    	</createIndex>
+    	<createIndex tableName="EntityRelation" indexName="EntityRelation_toRecordId">
+    		<column name="toRecordId"/>
+    	</createIndex>
+    	
+    	<addAutoIncrement tableName="EntityRelation" columnName="id" columnDataType="BIGINT"/>
+    </changeSet>
+    
+    <changeSet id="86" author="dzmitry" context="production" runOnChange="true">
+    	    	<preConditions onFail="MARK_RAN">
+    		<not>
+    			<tableExists tableName="CorporatePass"/>
+    		</not>
+    	</preConditions>
+    	
+    	<!-- CorporatePass table -->
+    	<createTable tableName="CorporatePass">
+    		<column name="id" type="BIGINT">
+    			<constraints nullable="false" primaryKey="true"/>
+    		</column>
+    		<column name="contactId" type="BIGINT"/>
+    		<column name="expiryDate" type="DATETIME"/>
+    		<column name="invoiceEmail" type="VARCHAR(100)"/>
+    		<column name="password" type="VARCHAR(100)">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="angelId" type="BIGINT"/>
+    		<column name="collegeId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="modified" type="DATETIME"/>
+    	</createTable>
+    	
+    	<addForeignKeyConstraint constraintName="fk_CorporatePass_Contact" referencedTableName="Contact" baseColumnNames="contactId" baseTableName="CorporatePass" referencedColumnNames="id"/>
+    	<addForeignKeyConstraint constraintName="fk_CorporatePass_College" referencedTableName="College" baseColumnNames="collegeId" baseTableName="CorporatePass" referencedColumnNames="id"/>
+    	
+    	<createIndex tableName="CorporatePass" indexName="CorporatePass_angelId">
+    		<column name="angelId"/>
+    	</createIndex>
+    	<createIndex tableName="CorporatePass" indexName="CorporatePass_password">
+    		<column name="password"/>
+    	</createIndex>
+    	<createIndex tableName="CorporatePass" indexName="CorporatePass_invoiceEmail">
+    		<column name="invoiceEmail"/>
+    	</createIndex>
+    	
+    	<!-- CorporatePass_CourseClass table -->
+    	<createTable tableName="CorporatePass_CourseClass">
+    		<column name="id" type="BIGINT">
+    			<constraints nullable="false" primaryKey="true"/>
+    		</column>
+    		<column name="corporatePassId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="courseClassId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="angelId" type="BIGINT"/>
+    		<column name="collegeId" type="BIGINT">
+    			<constraints nullable="false"/>
+    		</column>
+    		<column name="created" type="DATETIME"/>
+    		<column name="modified" type="DATETIME"/>
+    	</createTable>
+    	
+    	<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_CorporatePass" referencedTableName="CorporatePass" baseColumnNames="corporatePassId" baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
+    	<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_CourseClass" referencedTableName="CourseClass" baseColumnNames="courseClassId" baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
+    	<addForeignKeyConstraint constraintName="fk_CorporatePassCourseClass_College" referencedTableName="College" baseColumnNames="collegeId" baseTableName="CorporatePass_CourseClass" referencedColumnNames="id"/>
+    	
+    	<createIndex tableName="CorporatePass_CourseClass" indexName="CorporatePassCourseClass_angelId">
+    		<column name="angelId"/>
+    	</createIndex>
+    	
+    	<!-- Invoice table modifications -->
+    	<addColumn tableName="Invoice">
+    		<column name="corporatePassId" type="BIGINT"/>
+    	</addColumn>
+    	<addForeignKeyConstraint constraintName="fk_Invoice_CorporatePass" referencedTableName="CorporatePass" baseColumnNames="corporatePassId" baseTableName="Invoice" referencedColumnNames="id"/>
+    	
+    	<addAutoIncrement tableName="CorporatePass" columnName="id" columnDataType="BIGINT"/>
+    	<addAutoIncrement tableName="CorporatePass_CourseClass" columnName="id" columnDataType="BIGINT"/>
+    </changeSet>
+    
     <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
     	uncomment this changeset after all applications re-deployment. Especially the services and enrol.
     	<preConditions>

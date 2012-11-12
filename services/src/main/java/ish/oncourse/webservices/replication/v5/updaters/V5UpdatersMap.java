@@ -68,6 +68,9 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(getEntityName(VoucherProductCourse.class), new VoucherProductCourseUpdater());
         updaterMap.put(getEntityName(Survey.class), new SurveyUpdater());
         updaterMap.put(getEntityName(SessionModule.class), new SessionModuleUpdater());
+        updaterMap.put(getEntityName(EntityRelation.class), new EntityRelationUpdater());
+        updaterMap.put(getEntityName(CorporatePass.class), new CorporatePassUpdater());
+        updaterMap.put(getEntityName(CorporatePassCourseClass.class), new CorporatePassCourseClassUpdater());
     }
 
 	/**

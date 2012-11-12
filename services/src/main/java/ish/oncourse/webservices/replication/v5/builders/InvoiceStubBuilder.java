@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v5.builders;
 
+import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.webservices.replication.v4.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v5.stubs.replication.InvoiceStub;
@@ -26,6 +27,9 @@ public class InvoiceStubBuilder extends AbstractWillowStubBuilder<Invoice, Invoi
 		stub.setSource(entity.getSource().getDatabaseValue());
 		stub.setTotalExGst(entity.getTotalExGst());
 		stub.setTotalGst(entity.getTotalGst());
+		
+		CorporatePass corporatePass = entity.getCorporatePassUsed();
+		stub.setCorporatePassId(corporatePass != null ? entity.getCorporatePassUsed().getId() : null);
 		
 		return stub;
 	}

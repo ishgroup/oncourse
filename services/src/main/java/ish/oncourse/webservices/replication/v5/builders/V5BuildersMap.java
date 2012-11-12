@@ -59,5 +59,9 @@ private Map<String, IWillowStubBuilder> builderMap;
         builderMap.put(getEntityName(Membership.class), new MembershipStubBuilder());
         builderMap.put(getEntityName(MembershipProduct.class), new MembershipProductStubBuilder());
         builderMap.put(getEntityName(SessionModule.class), new SessionModuleStubBuilder());
+        builderMap.put(getEntityName(EntityRelation.class), new EntityRelationStubBuilder());
+        builderMap.put(getEntityName(CourseProductRelation.class), new EntityRelationStubBuilder());
+        builderMap.put(getEntityName(CorporatePass.class), new CorporatePassStubBuilder());
+        builderMap.put(getEntityName(CorporatePassCourseClass.class), new CorporatePassCourseClassStubBuilder());
     }
 }

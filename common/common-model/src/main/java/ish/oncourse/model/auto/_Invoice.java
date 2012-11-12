@@ -9,6 +9,7 @@ import org.apache.cayenne.CayenneDataObject;
 import ish.common.types.PaymentSource;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentInLine;
 
@@ -38,6 +39,7 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String TOTAL_GST_PROPERTY = "totalGst";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
+    public static final String CORPORATE_PASS_USED_PROPERTY = "corporatePassUsed";
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
 
@@ -170,6 +172,15 @@ public abstract class _Invoice extends CayenneDataObject {
 
     public Contact getContact() {
         return (Contact)readProperty("contact");
+    }
+
+
+    public void setCorporatePassUsed(CorporatePass corporatePassUsed) {
+        setToOneTarget("corporatePassUsed", corporatePassUsed, true);
+    }
+
+    public CorporatePass getCorporatePassUsed() {
+        return (CorporatePass)readProperty("corporatePassUsed");
     }
 
 

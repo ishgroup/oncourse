@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.v5.updaters;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.webservices.replication.v4.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.v4.updaters.RelationShipCallback;
@@ -33,6 +34,8 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		//entity.setSource(PaymentSource.getSourceForValue(stub.getSource()));
 
 		entity.setTotalGst(stub.getTotalGst());
+		
+		entity.setCorporatePassUsed(callback.updateRelationShip(stub.getCorporatePassId(), CorporatePass.class));
 	}
 
 }
