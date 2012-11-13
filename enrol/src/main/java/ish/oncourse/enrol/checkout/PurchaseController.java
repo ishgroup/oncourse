@@ -590,8 +590,6 @@ public class PurchaseController {
 	public static enum Error {
 		noSelectedItemForPurchase,
 		contactAlreadyAdded,
-		voucherNotFound,
-		voucherCannotBeUsed,
 		discountNotFound,
 		creditAccessPasswordIsWrong,
 		duplicatedEnrolment,
@@ -599,7 +597,11 @@ public class PurchaseController {
 		courseClassEnded,
 		sessionExpired,
 		payerNotDefined,
-		illegalState;
+		illegalState,
+		voucherNotMatch,
+		voucherExpired,
+		voucherRedeemed,
+		voucherLockedAnotherUser;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("error-%s", name()), params);

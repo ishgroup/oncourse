@@ -1,9 +1,14 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.PaymentStatus;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Voucher;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.voucherCannotBeUsed;
-import static ish.oncourse.enrol.checkout.PurchaseController.Error.voucherNotFound;
+import java.util.Date;
+import java.util.List;
+
+import static ish.oncourse.enrol.checkout.PurchaseController.Error.*;
 
 public class ActionAddVoucher extends APurchaseAction {
 
@@ -29,13 +34,37 @@ public class ActionAddVoucher extends APurchaseAction {
 	@Override
 	protected boolean validate() {
 		if (voucher == null) {
-			getController().addError(voucherNotFound, voucherCode);
+			getController().addError(voucherNotMatch, voucherCode);
 			return false;
-		} else if (!voucher.canBeUsedBy(getModel().getPayer())) {
-			getController().addError(voucherCannotBeUsed, voucherCode);
-			return false;
-		} else {
-			return true;
 		}
+		if (!voucher.canBeUsedBy(getModel().getPayer())) {
+			getController().addError(voucherNotMatch, voucherCode);
+			return false;
+		}
+		if (voucher.isFullyRedeemed()) {
+			getController().addError(voucherRedeemed, voucherCode);
+			return false;
+		}
+
+		if (voucher.isInUse()) {
+			Contact contact = getLockedContact();
+			getController().addError(voucherLockedAnotherUser, contact.getFamilyName(), contact.getGivenName());
+			return false;
+		}
+
+		if (voucher.getExpiryDate().before(new Date())) {
+			getController().addError(voucherExpired);
+			return false;
+		}
+		return true;
+	}
+
+	private Contact getLockedContact() {
+		List<PaymentIn> payments = voucher.getPayments();
+		for (PaymentIn paymentIn : payments) {
+			if (!PaymentStatus.isFinalState(paymentIn.getStatus()))
+				return paymentIn.getContact();
+		}
+		return null;
 	}
 }
