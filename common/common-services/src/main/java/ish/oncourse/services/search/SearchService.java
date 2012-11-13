@@ -1,7 +1,6 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.Course;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.property.IPropertyService;
@@ -9,8 +8,6 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -24,7 +21,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SearchService implements ISearchService {
@@ -152,15 +148,6 @@ public class SearchService implements ISearchService {
         } catch (Exception e) {
             throw new SearchException("Unable to find courses.", e);
         }
-    }
-    
-    public List<Course> getDirectCourseSearchResult(String term, Long collegeId) {
-		SelectQuery courseQuery = new SelectQuery(Course.class, 
-			ExpressionFactory.likeIgnoreCaseExp(Course.NAME_PROPERTY, LIKE_CHARACTER + term + LIKE_CHARACTER)
-    		.andExp(ExpressionFactory.matchDbExp(Course.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, collegeId)));
-    	@SuppressWarnings("unchecked")
-    	List<Course> directCourses = cayenneService.sharedContext().performQuery(courseQuery);
-    	return directCourses;
     }
     
     private String solrQueryToString(SolrQuery q) {

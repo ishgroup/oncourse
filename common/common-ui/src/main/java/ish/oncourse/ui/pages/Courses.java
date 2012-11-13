@@ -3,7 +3,6 @@ package ish.oncourse.ui.pages;
 import ish.oncourse.model.*;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.*;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
@@ -19,9 +18,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +48,6 @@ public class Courses {
 	private ICourseService courseService;
 	@Inject
 	private ISearchService searchService;
-	@Inject
-    private IWebSiteService webSiteService;
 	@Inject
 	private ITagService tagService;
 	@Inject
@@ -254,53 +249,16 @@ public class Courses {
         return searchCourses(start, rows);
 	}
 	
-	private SolrDocumentList removeDuplicatesFromSearchCoursesResults(SolrDocumentList originalResult, List<Course> directCourses) {
-		List<SolrDocument> directCoursesFromSOLR = new ArrayList<SolrDocument>();
-		for (Course directCourse: directCourses) {
-			for (Iterator<SolrDocument> iterator = originalResult.iterator(); iterator.hasNext(); ) {
-				SolrDocument document = iterator.next();
-				Long courseId = Long.valueOf((String) document.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
-				if (directCourse.getId().equals(courseId)) {
-					directCoursesFromSOLR.add(document);
-					break;
-				}
-			}
-		}
-		while (!directCoursesFromSOLR.isEmpty()) {
-			originalResult.remove(directCoursesFromSOLR.get(0));
-			directCoursesFromSOLR.remove(0);
-		}
-		return originalResult;
-	}
-
 	private List<Course> searchCourses(int start, int rows) {
-		boolean isDirectSearch = searchParams.getWithDirectSearch();
-		SolrDocumentList results = searchService.searchCourses(searchParams, isDirectSearch? START_DEFAULT : start, isDirectSearch? ROWS_DEFAULT : rows);
-		@SuppressWarnings("unchecked")
-		List<Course> directCourses = Collections.EMPTY_LIST;
-		if (isDirectSearch) {
-			College college = webSiteService.getCurrentCollege();
-			directCourses = searchService.getDirectCourseSearchResult(searchParams.getS(), college.getId());
-			if (!directCourses.isEmpty()) {
-				removeDuplicatesFromSearchCoursesResults(results, directCourses);
-			}
-		}
+		SolrDocumentList results = searchService.searchCourses(searchParams, start, rows);
 		LOGGER.info(String.format("The number of courses found: %s", results.size()));
 		if (coursesCount == null) {
-			coursesCount = (isDirectSearch ? 
-				(directCourses.size() >= ROWS_DEFAULT ? directCourses.size() : (directCourses.size() + results.size())) 
-				: ((Number) results.getNumFound()).intValue());
+			coursesCount = ((Number) results.getNumFound()).intValue();
 		}
-
 		List<String> ids = new ArrayList<String>(results.size());
-		//add the direct courses in the top of the list if exist
-		for (Course directCourse : directCourses) {
-			ids.add(directCourse.getId().toString());
-		}
 		for (SolrDocument doc : results) {
 			ids.add((String) doc.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
 		}
-
 		return courseService.loadByIds(ids.toArray());
 	}
 
