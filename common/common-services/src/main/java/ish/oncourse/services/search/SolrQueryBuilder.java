@@ -13,7 +13,7 @@ public class SolrQueryBuilder {
 
     private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
 
-	static final String QUERY_TYPE_standard = "standard";
+	static final String QUERY_TYPE = "standard";
 
     static final String PARAMETER_fl = "fl";
     static final String PARAMETER_sfield = "sfield";
@@ -135,7 +135,7 @@ public class SolrQueryBuilder {
     }
 
     void fillCommons(SolrQuery q) {
-        q.setQueryType(QUERY_TYPE_standard);
+        q.setQueryType(QUERY_TYPE);
         q.setParam(PARAMETER_fl, PARAMETER_VALUE_fl);
         q.setStart(start);
         q.setRows(rows);
@@ -243,7 +243,7 @@ public class SolrQueryBuilder {
     }
     
     static String replaceSOLRSyntaxisCharacters(String original) {
-    	String resultString = original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, StringUtils.EMPTY);
+    	String resultString = original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, " ");
     	return resultString;
     }
 }
