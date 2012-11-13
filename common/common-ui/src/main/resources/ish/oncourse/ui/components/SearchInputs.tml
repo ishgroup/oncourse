@@ -31,10 +31,6 @@
 					<label class="day">
 						<input t:type="Checkbox" t:value="weekend" name="day" class="parent" clientId="weekend-parent" /> Weekends </label>
 				</div>
-				<div id="adv_search_direct">
-					<label class="directSearch">
-						<input t:type="Checkbox" t:value="directSearch" name="directSearch"/> Use direct courses search </label>
-				</div>
 				<div id="adv_search_submit">
 					<button type="submit" id="searcher">Search</button>
 					<a id="cancel-search" onClick="clearAdvancedSearch();">Clear</a>

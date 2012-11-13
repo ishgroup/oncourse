@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -26,9 +27,6 @@ public class SearchInputs {
 	@Property
 	private String advKeyword;
 	
-	@Property
-	private boolean directSearch;
-
 	private List<Tag> subjectTagChildTags;
 
 	@Property
@@ -89,18 +87,13 @@ public class SearchInputs {
 			}
 		}
 		try {
-			String url = "http://"
-					+ request.getServerName()
-					+ "/courses?s="
-					+ (advKeyword == null ? "" : advKeyword)
+			String url = "http://" + request.getServerName()
+					+ "/courses?s=" + (advKeyword == null ? StringUtils.EMPTY : advKeyword)
 					+ "&subject=" + subject
-					+ "&near=" + (searchNear == null ? "" : searchNear)
-					+ "&price=" + (searchPrice == null ? "" : searchPrice)
-					+ "&time="
-					+ (daytime ? "daytime" : (evening ? "evening" : ""))
-					+ "&day="
-					+ (weekday ? "weekday" : (weekend ? "weekend" : ""))
-					+ "&directSearch=" + (directSearch ? Boolean.TRUE.toString() : Boolean.FALSE.toString());
+					+ "&near=" + (searchNear == null ? StringUtils.EMPTY : searchNear)
+					+ "&price=" + (searchPrice == null ? StringUtils.EMPTY : searchPrice)
+					+ "&time=" + (daytime ? "daytime" : (evening ? "evening" : StringUtils.EMPTY))
+					+ "&day=" + (weekday ? "weekday" : (weekend ? "weekend" : StringUtils.EMPTY));
 			return new URL(url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
