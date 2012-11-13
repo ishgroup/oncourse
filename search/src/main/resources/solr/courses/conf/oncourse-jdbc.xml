@@ -20,12 +20,8 @@
 			<field name="startDate" column="startDate" />
 
 			<entity name="courseClass" pk="id" dataSource="onCourseDS"  transformer="TemplateTransformer"
-				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end, cc.startDate as start from CourseClass cc
-							where cc.isWebVisible=1 
-									and cc.courseid='${course.id}'
-                       				and cc.isCancelled=0 and cc.endDate &gt; CURDATE()"
-				deltaImportQuery="select cc.id as id, cc.feeExGst as pr, cc.code as code, cc.endDate as end, cc.startDate as start from CourseClass cc
-				            where cc.id='${dataimporter.delta.id}'"
+				query="select cc.id as id, cc.feeExGst as pr, cc.code as code, IFNULL(cc.endDate, DATE('2625-12-31')) as end, IFNULL(cc.startDate, CURDATE()) as start from CourseClass cc where cc.isWebVisible=1 and cc.courseid='${course.id}' and cc.isCancelled=0 and ((cc.endDate &gt; CURDATE() and cc.isDistantLearningCourse=0) or cc.isDistantLearningCourse=1)"
+				deltaImportQuery="select cc.id as id, cc.feeExGst as pr, cc.code as code, IFNULL(cc.endDate, DATE('2625-12-31')) as end, IFNULL(cc.startDate, CURDATE()) as start from CourseClass cc where cc.id='${dataimporter.delta.id}'"
 				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}' or endDate &lt; CURDATE()"
 				parentDeltaQuery="select id from Course where id='{courseClass.courseId}'"
 				deletedPkQuery="select id from CourseClass where endDate &lt; CURDATE()">
