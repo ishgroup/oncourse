@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SearchService implements ISearchService {
+	private static final String TERMS_SEPARATOR_STRING = " || ";
 	static final String DIGIT_PATTERN = "(\\d)+";
 	static final String EVERY_DOCUMENT_MATCH_QUERY = "*:*";
 	static final String SOLR_ANYTHING_AFTER_CHARACTER = "*";
@@ -170,8 +171,8 @@ public class SearchService implements ISearchService {
 
             String[] terms = term.split(SPACE_PATTERN);
             for (int i = 0; i < terms.length; i++) {
-                if (StringUtils.trimToNull(terms[i]) != null) {
-                    String t = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i].toLowerCase().trim()) + SOLR_ANYTHING_AFTER_CHARACTER;
+                if (StringUtils.trimToNull(SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i])) != null) {
+                    String t = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i].toLowerCase()).trim() + SOLR_ANYTHING_AFTER_CHARACTER;
                     coursesQuery.append(String.format("(name:%s AND collegeId:%s)", t, collegeId)).append(SOLR_OR_STRING);
 
                     coursesQuery.append(String.format("(course_code:%s AND collegeId:%s)",
@@ -182,11 +183,25 @@ public class SearchService implements ISearchService {
                     tagsQuery.append(String.format("(doctype:tag AND collegeId:%s AND name:%s)", collegeId, t));
 
                     if (i + 1 != terms.length) {
-                        coursesQuery.append(" || ");
-                        suburbsQuery.append(" || ");
-                        tagsQuery.append(" || ");
+                        coursesQuery.append(TERMS_SEPARATOR_STRING);
+                        suburbsQuery.append(TERMS_SEPARATOR_STRING);
+                        tagsQuery.append(TERMS_SEPARATOR_STRING);
                     }
                 }
+            }
+            int lastOrStringIndex = coursesQuery.lastIndexOf(TERMS_SEPARATOR_STRING);
+            if (lastOrStringIndex == coursesQuery.length() - TERMS_SEPARATOR_STRING.length()) {
+            	//this mean that some terms not passed the validation and we need to remove last term separator
+            	coursesQuery.replace(lastOrStringIndex, coursesQuery.length(), StringUtils.EMPTY);
+            	lastOrStringIndex = suburbsQuery.lastIndexOf(TERMS_SEPARATOR_STRING);
+            	if (lastOrStringIndex == suburbsQuery.length() - TERMS_SEPARATOR_STRING.length()) {
+            		suburbsQuery.replace(lastOrStringIndex, suburbsQuery.length(), StringUtils.EMPTY);
+            	}
+            	lastOrStringIndex = tagsQuery.lastIndexOf(TERMS_SEPARATOR_STRING);
+            	if (lastOrStringIndex == tagsQuery.length() - TERMS_SEPARATOR_STRING.length()) {
+            		tagsQuery.replace(lastOrStringIndex, tagsQuery.length(), StringUtils.EMPTY);
+            	}
+            	
             }
 
             SolrDocumentList results = new SolrDocumentList();
@@ -220,7 +235,7 @@ public class SearchService implements ISearchService {
                     query.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s)) ", t, t));
 
                     if (i + 1 != terms.length) {
-                        query.append(" || ");
+                        query.append(TERMS_SEPARATOR_STRING);
                     }
                 }
             }
