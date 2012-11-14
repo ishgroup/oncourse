@@ -190,7 +190,7 @@
 
        <!-- Query settings -->
        <str name="defType">edismax</str>
-       <str name="qf">name^20 course_code^10 class_code^10 suburb^5 postcode^5 tutor^5 when^5 detail^1</str>
+       <str name="qf">name^20 course_code^30 class_code^10 suburb^5 postcode^5 tutor^5 when^5 detail^1</str>
        <str name="q.alt">*:*</str>
        <str name="rows">10</str>
        <str name="fl">*,score</str>
@@ -227,9 +227,9 @@
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
-     <str name="qf">name^20 course_code^10 class_code^10 suburb^5
+     <str name="qf">name^20 course_code^30 class_code^10 suburb^5
 				postcode^5 tutor^5 when^5 detail^1</str>
-	 <str name="pf">name^20 course_code^10 class_code^10 suburb^5
+	 <str name="pf">name^20 course_code^30 class_code^10 suburb^5
 				postcode^5 tutor^5 when^5 detail^1</str>
 	<str name="bf"></str>
 	<str name="fl">name course_code class_code suburb postcode
@@ -253,9 +253,9 @@
      <str name="defType">edismax</str>
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
-     <str name="qf">name^20 course_code^10 class_code^10 suburb^5
+     <str name="qf">name^20 course_code^30 class_code^10 suburb^5
 				postcode^5 tutor^5 when^5 detail^1</str>
-	 <str name="pf">name^20 course_code^10 class_code^10 suburb^5
+	 <str name="pf">name^20 course_code^30 class_code^10 suburb^5
 				postcode^5 tutor^5 when^5 detail^1</str>
 	<str name="bf"></str>
 	<str name="fl">name course_code class_code suburb postcode
