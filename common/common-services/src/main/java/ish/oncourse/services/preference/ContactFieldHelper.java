@@ -143,6 +143,9 @@ public class ContactFieldHelper {
 		return VALUE_Required.equals(preferenceValue);
 	}
 
+	public PreferenceController getPreferenceController() {
+		return preferenceController;
+	}
 
 
 	public static enum FieldDescriptor

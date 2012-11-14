@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import static org.junit.Assert.*;
 
-public class AddContactValidatorTest {
+public class AddContactParserTest {
 
 	@Test
 	public void test()

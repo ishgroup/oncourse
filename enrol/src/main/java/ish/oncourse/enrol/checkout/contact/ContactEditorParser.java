@@ -6,6 +6,8 @@ import ish.oncourse.services.preference.ContactFieldHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -25,6 +27,8 @@ public class ContactEditorParser {
 
 	private static final String KEY_ERROR_MESSAGE_required = "required";
 	private static final String KEY_ERROR_MESSAGE_birthdate_hint = "birthdate-hint";
+
+	static final String KEY_ERROR_dateOfBirth_youngAge = "error-dateOfBirth-youngAge";
 
 	private static final String DYNAMIC_FIELD_NAME_PREFIX = "textfield";
 	private static final String DYNAMIC_FIELD_NAME_TEMPLATE = "%s_%d";
@@ -138,7 +142,19 @@ public class ContactEditorParser {
 			case mobilePhoneNumber:
 				return contact.validateMobilePhone();
 			case dateOfBirth:
-				return contact.validateBirthDate();
+				String error = contact.validateBirthDate();
+				if (error == null)
+				{
+					Date date  = contact.getDateOfBirth();
+
+					Integer minAge = contactFieldHelper.getPreferenceController().getEnrolmentMinAge();
+
+					Integer age = Years.yearsBetween(new DateTime(date.getTime()), new DateTime(new Date().getTime())).getYears();
+					if (minAge > age)
+						return messages.get(KEY_ERROR_dateOfBirth_youngAge);
+
+				}
+				return error;
 			default:
 				throw new IllegalArgumentException();
 		}

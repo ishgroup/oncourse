@@ -9,6 +9,7 @@ import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -20,7 +21,7 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
 	private static final String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
-	
+
 	static final String REQUIRE_CONTACT_ADDRESS_ENROLMENT = "enrolment.contact.address.required";
 	static final String REQUIRE_CONTACT_SUBURB_ENROLMENT = "enrolment.contact.suburb.required";
 	static final String REQUIRE_CONTACT_STATE_ENROLMENT = "enrolment.contact.state.required";
@@ -30,6 +31,7 @@ public class PreferenceController extends CommonPreferenceController {
 	static final String REQUIRE_CONTACT_FAX_ENROLMENT = "enrolment.contact.fax.required";
 	static final String REQUIRE_CONTACT_MOBILE_ENROLMENT = "enrolment.contact.mobile.required";
 	static final String REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT = "enrolment.contact.birth.required";
+	static final String ENROLMENT_MIN_AGE = "enrolment.min.age";
 
 	private static final String REQUIRE_CONTACT_ADDRESS_WAITING_LIST = "waitinglist.contact.address.required";
 	private static final String REQUIRE_CONTACT_SUBURB_WAITING_LIST = "waitinglist.contact.suburb.required";
@@ -40,7 +42,7 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String REQUIRE_CONTACT_FAX_WAITING_LIST = "waitinglist.contact.fax.required";
 	private static final String REQUIRE_CONTACT_MOBILE_WAITING_LIST = "waitinglist.contact.mobile.required";
 	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST = "waitinglist.contact.birthdate.required";
-	
+
 	private static final String REQUIRE_CONTACT_ADDRESS_MAILING_LIST = "mailinglist.contact.address.required";
 	private static final String REQUIRE_CONTACT_SUBURB_MAILING_LIST = "mailinglist.contact.suburb.required";
 	private static final String REQUIRE_CONTACT_STATE_MAILING_LIST = "mailinglist.contact.state.required";
@@ -50,16 +52,16 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String REQUIRE_CONTACT_FAX_MAILING_LIST = "mailinglist.contact.fax.required";
 	private static final String REQUIRE_CONTACT_MOBILE_MAILING_LIST = "mailinglist.contact.mobile.required";
 	private static final String REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST = "mailinglist.contact.birth.required";
-	
+
 	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
 	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS = "website.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
 	private static final String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
-	
+
 	private static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
-	
+
 	//deprecated part
 	@Deprecated
 	public static final String LICENSE_AVETMISS_UPDATES = "license.avetmiss.updates";
@@ -75,10 +77,10 @@ public class PreferenceController extends CommonPreferenceController {
 	public static final String LICENSE_SUPPORT_PLAN_NAME = "license.support.plan.name";
 	@Deprecated
 	public static final String LICENSE_SUPPORT_PLAN_EXPIRY = "license.support.plan.expiry";
-	
+
 	@Inject
 	private ICayenneService cayenneService;
-	
+
 	@Inject
 	private IWebSiteService webSiteService;
 
@@ -86,9 +88,9 @@ public class PreferenceController extends CommonPreferenceController {
 	 * Default constructor used for auto injection
 	 */
 	public PreferenceController() {
-	
+
 	}
-	
+
 	public PreferenceController(ICayenneService cayenneService, IWebSiteService webSiteService) {
 		this.cayenneService = cayenneService;
 		this.webSiteService = webSiteService;
@@ -106,7 +108,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	/**
-	 * Deprecated now should use {@link PreferenceController#getValue(String, boolean)} instead 
+	 * Deprecated now should use {@link PreferenceController#getValue(String, boolean)} instead
 	 */
 	@Deprecated
 	protected Object getBinaryValue(String key, boolean isUserPref) {
@@ -128,17 +130,16 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 
 		Preference pref = getPreferenceByKey(key);
-		
+
 		ObjectContext context = null;
 		College college = null;
-		
+
 		if (webSiteService.getCurrentCollege() != null) {
 			context = cayenneService.newContext();
 
 			college = webSiteService.getCurrentCollege();
 			college = (College) context.localObject(college.getObjectId(), null);
-		}
-		else {
+		} else {
 			context = cayenneService.newNonReplicatingContext();
 		}
 
@@ -162,6 +163,7 @@ public class PreferenceController extends CommonPreferenceController {
 
 	/**
 	 * Deprecated now should use {@link PreferenceController#setValue(String, boolean, String)} instead
+	 *
 	 * @param key
 	 * @param isUserPref
 	 * @param value
@@ -207,7 +209,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setLicenseAvetmissUpdates(boolean value) {
 		setValue(LICENSE_AVETMISS_UPDATES, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized boolean getLicenseAvetmissUpdates() {
 		return Boolean.valueOf(getValue(LICENSE_AVETMISS_UPDATES, false));
 	}
@@ -235,7 +237,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setLicenseEmail(boolean value) {
 		setValue(LICENSE_EMAIL, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized boolean getLicenseEmail() {
 		return Boolean.valueOf(getValue(LICENSE_EMAIL, false));
 	}
@@ -259,7 +261,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setLicenseWebsiteOnlineEnrolments(boolean value) {
 		setValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized boolean getLicenseWebsiteOnlineEnrolments() {
 		return Boolean.valueOf(getValue(LICENSE_WEBSITE_ONLINE_ENROLMENTS, false));
 	}
@@ -267,7 +269,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setLicenseWebsiteTutorPortal(boolean value) {
 		setValue(LICENSE_WEBSITE_TUTOR_PORTAL, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized boolean getLicenseWebsiteTutorPortal() {
 		return Boolean.valueOf(getValue(LICENSE_WEBSITE_TUTOR_PORTAL, false));
 	}
@@ -275,7 +277,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setWebsitePlanName(String value) {
 		setValue(LICENSE_WEBSITE_PLAN_NAME, false, value);
 	}
-	
+
 	public synchronized boolean getWebsitePlanName() {
 		return Boolean.valueOf(getValue(LICENSE_WEBSITE_PLAN_NAME, false));
 	}
@@ -283,7 +285,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setSupportPlanName(String value) {
 		setValue(LICENSE_SUPPORT_PLAN_NAME, false, value);
 	}
-	
+
 	public synchronized boolean getSupportPlanName() {
 		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_NAME, false));
 	}
@@ -291,23 +293,23 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized void setSupportPlanExpiry(String value) {
 		setValue(LICENSE_SUPPORT_PLAN_EXPIRY, false, value);
 	}
-	
+
 	public synchronized boolean getSupportPlanExpiry() {
 		return Boolean.valueOf(getValue(LICENSE_SUPPORT_PLAN_EXPIRY, false));
 	}
-	
+
 	public synchronized String getNTISLastUpdate() {
 		return getValue(NTIS_LAST_UPDATE, false);
 	}
-	
+
 	public synchronized void setNTISLastUpdate(String value) {
 		setValue(NTIS_LAST_UPDATE, false, value);
 	}
-	
+
 	public synchronized String getPostcodesLastUpdate() {
 		return getValue(POSTCODES_LAST_UPDATE, false);
 	}
-	
+
 	public synchronized void setPostcodesLastUpdate(String value) {
 		setValue(POSTCODES_LAST_UPDATE, false, value);
 	}
@@ -315,215 +317,215 @@ public class PreferenceController extends CommonPreferenceController {
 	public synchronized String getRequireContactAddressWaitingList() {
 		return getValue(REQUIRE_CONTACT_ADDRESS_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactAddressWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_ADDRESS_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactSuburbWaitingList() {
 		return getValue(REQUIRE_CONTACT_SUBURB_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactSuburbWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_SUBURB_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactStateWaitingList() {
 		return getValue(REQUIRE_CONTACT_STATE_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactStateWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_STATE_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactPostcodeWaitingList() {
 		return getValue(REQUIRE_CONTACT_POSTCODE_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactPostcodeWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_POSTCODE_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactHomePhoneWaitingList() {
 		return getValue(REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactHomePhoneWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_HOME_PHONE_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactBusinessPhoneWaitingList() {
 		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactBusinessPhoneWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactFaxWaitingList() {
 		return getValue(REQUIRE_CONTACT_FAX_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactFaxWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_FAX_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactMobileWaitingList() {
 		return getValue(REQUIRE_CONTACT_MOBILE_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactMobileWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_MOBILE_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactDateOfBirthWaitingList() {
 		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactDateOfBirthWaitingList(String value) {
 		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_WAITING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactAddressMailingList() {
 		return getValue(REQUIRE_CONTACT_ADDRESS_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactAddressMailingList(String value) {
 		setValue(REQUIRE_CONTACT_ADDRESS_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactSuburbMailingList() {
 		return getValue(REQUIRE_CONTACT_SUBURB_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactSuburbMailingList(String value) {
 		setValue(REQUIRE_CONTACT_SUBURB_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactStateMailingList() {
 		return getValue(REQUIRE_CONTACT_STATE_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactStateMailingList(String value) {
 		setValue(REQUIRE_CONTACT_STATE_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactPostcodeMailingList() {
 		return getValue(REQUIRE_CONTACT_POSTCODE_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactPostcodeMailingList(String value) {
 		setValue(REQUIRE_CONTACT_POSTCODE_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactHomePhoneMailingList() {
 		return getValue(REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactHomePhoneMailingList(String value) {
 		setValue(REQUIRE_CONTACT_HOME_PHONE_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactBusinessPhoneMailingList() {
 		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactBusinessPhoneMailingList(String value) {
 		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactFaxMailingList() {
 		return getValue(REQUIRE_CONTACT_FAX_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactFaxMailingList(String value) {
 		setValue(REQUIRE_CONTACT_FAX_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactMobileMailingList() {
 		return getValue(REQUIRE_CONTACT_MOBILE_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactMobileMailingList(String value) {
 		setValue(REQUIRE_CONTACT_MOBILE_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactDateOfBirthMailingList() {
 		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST, false);
 	}
-	
+
 	public synchronized void setRequireContactDateOfBirthMailingList(String value) {
 		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_MAILING_LIST, false, value);
 	}
-	
+
 	public synchronized String getRequireContactAddressEnrolment() {
 		return getValue(REQUIRE_CONTACT_ADDRESS_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactAddressEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_ADDRESS_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactSuburbEnrolment() {
 		return getValue(REQUIRE_CONTACT_SUBURB_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactSuburbEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_SUBURB_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactStateEnrolment() {
 		return getValue(REQUIRE_CONTACT_STATE_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactStateEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_STATE_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactPostcodeEnrolment() {
 		return getValue(REQUIRE_CONTACT_POSTCODE_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactPostcodeEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_POSTCODE_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactHomePhoneEnrolment() {
 		return getValue(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactHomePhoneEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_HOME_PHONE_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactBusinessPhoneEnrolment() {
 		return getValue(REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactBusinessPhoneEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_BUSINESS_PHONE_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactFaxEnrolment() {
 		return getValue(REQUIRE_CONTACT_FAX_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactFaxEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_FAX_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactMobileEnrolment() {
 		return getValue(REQUIRE_CONTACT_MOBILE_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactMobileEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_MOBILE_ENROLMENT, false, value);
 	}
-	
+
 	public synchronized String getRequireContactDateOfBirthEnrolment() {
 		return getValue(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, false);
 	}
-	
+
 	public synchronized void setRequireContactDateOfBirthEnrolment(String value) {
 		setValue(REQUIRE_CONTACT_DATE_OF_BIRTH_ENROLMENT, false, value);
 	}
@@ -532,84 +534,100 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));
 		} catch (Exception e) {
-            LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
-            return false;
+			LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
+			return false;
 		}
 	}
-	
+
 	public synchronized void setHideStudentDetailsFromTutor(boolean value) {
 		setValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized String getTutorFeedbackEmail() {
 		return getValue(TUTOR_FEEDBACK_EMAIL, false);
 	}
-	
+
 	public synchronized void setTutorFeedbackEmail(String value) {
 		setValue(TUTOR_FEEDBACK_EMAIL, false, value);
 	}
-	
+
 	public synchronized boolean getEnableSocialMediaLinks() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS, false));
 		} catch (Exception e) {
-            LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS), e);
-            return false;
+			LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS), e);
+			return false;
 		}
 	}
-	
+
 	public synchronized void setEnableSocialMediaLinks(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized boolean getEnableSocialMediaLinksCourse() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false));
 		} catch (Exception e) {
-            LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_COURSE), e);
-            return false;
+			LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_COURSE), e);
+			return false;
 		}
 	}
-	
+
 	public synchronized void setEnableSocialMediaLinksCourse(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized boolean getEnableSocialMediaLinksWebPage() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false));
 		} catch (Exception e) {
-            LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE), e);
-            return false;
+			LOGGER.error(String.format("Cannot get property %s", ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE), e);
+			return false;
 		}
 	}
-	
+
 	public synchronized void setEnableSocialMediaLinksWebPage(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false, Boolean.toString(value));
 	}
-	
+
 	public synchronized String getAddThisProfileId() {
 		return getValue(ADDTHIS_PROFILE_ID, false);
 	}
-	
+
 	public synchronized void setAddThisProfileId(String value) {
 		setValue(ADDTHIS_PROFILE_ID, false, value);
 	}
-	
+
 	public synchronized PaymentGatewayType getPaymentGatewayType() {
 		try {
 			return PaymentGatewayType.valueOf(getValue(PAYMENT_GATEWAY_TYPE, false));
-		} catch(Exception e) {
-            LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
+		} catch (Exception e) {
+			LOGGER.error(String.format("Cannot get property %s", PAYMENT_GATEWAY_TYPE), e);
 			return PaymentGatewayType.DISABLED;
 		}
 	}
-	
+
 	public synchronized void setPaymentGatewayType(PaymentGatewayType value) {
 		setValue(PAYMENT_GATEWAY_TYPE, false, value.toString());
 	}
 
-    public synchronized boolean isPaymentGatewayEnabled() {
-        return !PaymentGatewayType.DISABLED.equals(this.getPaymentGatewayType());
-    }
+	public synchronized boolean isPaymentGatewayEnabled() {
+		return !PaymentGatewayType.DISABLED.equals(this.getPaymentGatewayType());
+	}
+
+	public synchronized Integer getEnrolmentMinAge() {
+		String value = getValue(ENROLMENT_MIN_AGE, false);
+
+		if (value != null && StringUtils.isNumeric(value)) {
+			return Integer.valueOf(value);
+		}
+		else{
+			LOGGER.warn(String.format("Cannot get property %s", ENROLMENT_MIN_AGE));
+			return 0;
+		}
+	}
+
+	public synchronized void setEnrolmentMinAge(Integer age) {
+		setValue(ENROLMENT_MIN_AGE, false, age.toString());
+	}
 }

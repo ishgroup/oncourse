@@ -7,6 +7,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -114,7 +115,10 @@ public class ContactEntrySettings {
 	
 	@Property
 	private String mailingListDateOfBirthState;
-	
+
+	@Property
+	private String enrolmentMinAge;
+
 	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
@@ -157,7 +161,8 @@ public class ContactEntrySettings {
 		this.enrolmentFaxState = preferenceController.getRequireContactFaxEnrolment();
 		this.enrolmentMobileState = preferenceController.getRequireContactMobileEnrolment();
 		this.enrolmentDateOfBirthState = preferenceController.getRequireContactDateOfBirthEnrolment();
-		
+		this.enrolmentMinAge = preferenceController.getEnrolmentMinAge().toString();
+
 		this.waitingListAddressState = preferenceController.getRequireContactAddressWaitingList();
 		this.waitingListSuburbState = preferenceController.getRequireContactSuburbWaitingList();
 		this.waitingListStateState = preferenceController.getRequireContactStateWaitingList();
@@ -218,7 +223,12 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactFaxEnrolment(this.enrolmentFaxState);
 		preferenceController.setRequireContactMobileEnrolment(this.enrolmentMobileState);
 		preferenceController.setRequireContactDateOfBirthEnrolment(this.enrolmentDateOfBirthState);
-		
+
+
+		if (!StringUtils.isNumeric(this.enrolmentMinAge))
+			this.enrolmentMinAge = "0";
+		preferenceController.setEnrolmentMinAge(Integer.valueOf(this.enrolmentMinAge));
+
 		preferenceController.setRequireContactAddressWaitingList(this.waitingListAddressState);
 		preferenceController.setRequireContactSuburbWaitingList(this.waitingListSuburbState);
 		preferenceController.setRequireContactStateWaitingList(this.waitingListStateState);
