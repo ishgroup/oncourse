@@ -448,38 +448,38 @@
 			<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-solrj</artifactId>
-				<version>3.5.0</version>
+				<version>${solr-version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-test-framework</artifactId>
-				<version>3.5.0</version>
+				<version>${solr-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-test-framework</artifactId>
-				<version>3.5.0</version>
+				<version>${solr-version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr</artifactId>
-				<version>3.5.0</version>
+				<version>${solr-version}</version>
 				<type>war</type>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-core</artifactId>
-				<version>3.5.0</version>
+				<version>${solr-version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-dataimporthandler</artifactId>
-				<version>3.5.0</version>
+				<version>${solr-version}</version>
 			</dependency>
 
 			<dependency>
@@ -633,9 +633,9 @@
 		<tapestry5version>5.2.6</tapestry5version>
 		<servlet-api.version>3.0</servlet-api.version>
 		<cxf.version>2.6.1</cxf.version>
+		<solr-version>3.5.0</solr-version>
 		<jetty.version>7.0.1.v20091125</jetty.version>
 		<cayenne.version>3.1M3-b1</cayenne.version>
-
 		<!-- define source java version-->
 		<compileSource>1.6</compileSource>
 	</properties>
