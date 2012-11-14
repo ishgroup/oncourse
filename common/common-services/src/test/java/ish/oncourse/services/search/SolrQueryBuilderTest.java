@@ -14,7 +14,7 @@ import static ish.oncourse.services.search.SearchParamsParser.DATE_FORMAT_FOR_AF
 import static org.junit.Assert.assertEquals;
 
 public class SolrQueryBuilderTest {
-    private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(NOW-1YEAR/DAY, startDate), 0),1.15e-8,1,1)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^10 || name:(%s)^20) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))&sort=score desc,startDate asc";
+    private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]&q={!boost b=$dateboost v=$qq}&dateboost=recip(max(ms(NOW-1YEAR/DAY, startDate), 0),1.15e-8,1,1)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) AND price:[* TO 1999.99] AND when:DAY AND when:TIME AND class_start:[2012-01-01T12:00:00Z TO *] AND end:[NOW TO 2012-01-01T12:00:00Z] AND (tagId:0 || tagId:1 || tagId:2 || tagId:3 || tagId:4 || tagId:5))&sort=score desc,startDate asc";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
 
