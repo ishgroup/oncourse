@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>ish.oncourse.willow</groupId>
-		<version>1.29b</version>
+		<version>1.31-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
@@ -47,6 +47,19 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-test-framework</artifactId>
 			<scope>test</scope>
+		</dependency>
+		
+		<!-- required fir 4.0.0 version because solr "miss" this artifact from dependencies-->
+		<!--dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.1</version>
+		</dependency-->
+		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${solr-version}</version>
 		</dependency>
 
 		<dependency>
