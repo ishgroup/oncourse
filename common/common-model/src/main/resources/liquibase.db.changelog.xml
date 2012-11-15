@@ -1458,18 +1458,32 @@
     	<addAutoIncrement tableName="CorporatePass" columnName="id" columnDataType="BIGINT"/>
     	<addAutoIncrement tableName="CorporatePass_CourseClass" columnName="id" columnDataType="BIGINT"/>
     </changeSet>
-    
-    <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
-    	uncomment this changeset after all applications re-deployment. Especially the services and enrol.
-    	<preConditions>
-    		<columnExists tableName="ProductItem" columnName="paymentInId"/>
-    		<columnExists tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
-    	</preConditions>
-    	
-    	<dropForeignKeyConstraint baseTableName="ProductItem" constraintName="fk_Voucher_PaymentIn"/>
-    	<dropColumn tableName="ProductItem" columnName="paymentInId"/>
-    	<dropColumn tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
-    </changeSet-->
+
+	<changeSet id="87" author="akoyro" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Invoice" columnName="webSiteId"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Invoice">
+			<column name="webSiteId" type="BIGINT"/>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_Invoice_WebSite" referencedTableName="WebSite" referencedColumnNames="id" baseColumnNames="webSiteId"
+								 baseTableName="Invoice"/>
+	</changeSet>
+
+
+	<!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
+			uncomment this changeset after all applications re-deployment. Especially the services and enrol.
+			<preConditions>
+				<columnExists tableName="ProductItem" columnName="paymentInId"/>
+				<columnExists tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
+			</preConditions>
+
+			<dropForeignKeyConstraint baseTableName="ProductItem" constraintName="fk_Voucher_PaymentIn"/>
+			<dropColumn tableName="ProductItem" columnName="paymentInId"/>
+			<dropColumn tableName="ProductItem" columnName="redeemedInvoiceLineId"/>
+		</changeSet-->
     
     <!--changeSet id="XXX" author="viacheslav" context="production" runOnChange="true">
     	uncomment this changesets after all application redeployment

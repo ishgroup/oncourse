@@ -394,6 +394,7 @@
 		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="totalExGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="totalGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
+		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="InvoiceLine" catalog="willow_college">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -2446,6 +2447,9 @@
 	<db-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" toMany="true">
 		<db-attribute-pair source="id" target="invoiceId"/>
 	</db-relationship>
+	<db-relationship name="webSite" source="Invoice" target="WebSite" toMany="false">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="InvoiceLine" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -2917,6 +2921,9 @@
 	<db-relationship name="contents" source="WebSite" target="WebContent" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
+	<db-relationship name="invoices" source="WebSite" target="Invoice" toMany="true">
+		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
 	<db-relationship name="toWebHostName" source="WebSite" target="WebHostName" toMany="false">
 		<db-attribute-pair source="SSLhostNameId" target="id"/>
 	</db-relationship>
@@ -3099,6 +3106,7 @@
 	<obj-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
 	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
+	<obj-relationship name="webSite" source="Invoice" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="InvoiceLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
@@ -3257,6 +3265,7 @@
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="contents" source="WebSite" target="WebContent" deleteRule="Deny" db-relationship-path="contents"/>
+	<obj-relationship name="invoices" source="WebSite" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
 	<obj-relationship name="toWebHostName" source="WebSite" target="WebHostName" deleteRule="Nullify" db-relationship-path="toWebHostName"/>
 	<obj-relationship name="webMenus" source="WebSite" target="WebMenu" deleteRule="Deny" db-relationship-path="webMenus"/>
 	<obj-relationship name="webNodeTypes" source="WebSite" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>

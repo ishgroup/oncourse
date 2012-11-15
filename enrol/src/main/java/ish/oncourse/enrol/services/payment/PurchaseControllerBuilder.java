@@ -6,6 +6,8 @@ import ish.oncourse.enrol.pages.Checkout;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
 import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.enrol.services.student.IStudentService;
+import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Product;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.discount.IDiscountService;
@@ -17,6 +19,8 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
+
+import java.util.List;
 
 public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 	@Inject
@@ -71,5 +75,22 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		purchaseController.setWebSiteService(webSiteService);
 		purchaseController.setTagService(tagService);
 		return purchaseController;
+	}
+
+
+	@Override
+	public PurchaseModel build() {
+		List<Long> orderedClassesIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
+		List<Long> productIds = cookiesService.getCookieCollectionValue(Product.SHORTLIST_COOKIE_KEY, Long.class);
+		List<CourseClass> courseClasses = courseClassService.loadByIds(orderedClassesIds);
+		List<Product> products = voucherService.loadByIds(productIds);
+
+		PurchaseModel model = new PurchaseModel();
+		model.setObjectContext(cayenneService.newContext());
+		model.setClasses(model.localizeObjects(courseClasses));
+		model.setProducts(model.localizeObjects(products));
+		model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
+		model.setWebSite(model.localizeObject(webSiteService.getCurrentWebSite()));
+		return model;
 	}
 }

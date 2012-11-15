@@ -5,16 +5,16 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Invoice;
 import ish.oncourse.utils.QueueableObjectUtils;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 public class Invoice extends _Invoice implements Queueable {
 
@@ -155,5 +155,16 @@ public class Invoice extends _Invoice implements Queueable {
 		}
 		
 		return true;
+	}
+
+	/**
+	 * Validation to prevent saving unbalanced PaymentIn into database.
+	 */
+	@Override
+	public void validateForSave(ValidationResult result) {
+		super.validateForSave(result);
+		if (getSource() == PaymentSource.SOURCE_WEB && getWebSite() == null)
+			result.addFailure(ValidationFailure.validationFailure(this, Invoice.WEB_SITE_PROPERTY,
+					"WebSite should be set for web invoices"));
 	}
 }

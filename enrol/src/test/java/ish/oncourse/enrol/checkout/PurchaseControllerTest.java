@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.CreditCardType;
+import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
@@ -26,6 +27,8 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.State;
 import static org.junit.Assert.*;
@@ -184,13 +187,24 @@ public class PurchaseControllerTest extends ServiceTest {
 	public void testErrorNoSelectedItemForPurchase() {
 		ObjectContext context = cayenneService.newContext();
 		College college = Cayenne.objectForPK(context, College.class, 1);
-		PurchaseModel model = new PurchaseModel();
-		model.setObjectContext(context);
-		model.setCollege(college);
+		PurchaseModel model = createModel(context, college, Collections.EMPTY_LIST, Collections.EMPTY_LIST, null, null);
 		PurchaseController purchaseController = purchaseControllerBuilder.build(model);
 		purchaseController.performAction(new ActionParameter(Action.init));
 		assertEquals(State.finalized, purchaseController.getState());
 		assertNotNull(purchaseController.getErrors().get(PurchaseController.Error.noSelectedItemForPurchase.name()));
+	}
+
+	private PurchaseModel createModel(ObjectContext context, College college,
+									  List<CourseClass> classes, List<Product> products,
+									  Discount discount, WebSite webSite) {
+		PurchaseModel model = new PurchaseModel();
+		model.setObjectContext(context);
+		model.setCollege(college);
+		model.setClasses(classes);
+		model.setProducts(products);
+		model.setWebSite(webSite);
+		model.addDiscount(discount);
+		return model;
 	}
 
 	private PurchaseController init()
@@ -201,6 +215,7 @@ public class PurchaseControllerTest extends ServiceTest {
 	private PurchaseController init(boolean addPayer) {
 		ObjectContext context = cayenneService.newContext();
 		College college = Cayenne.objectForPK(context, College.class, 1);
+		WebSite webSite = Cayenne.objectForPK(context,WebSite.class, 1);
 
 		CourseClass cc1 = Cayenne.objectForPK(context, CourseClass.class, 1186958);
 		CourseClass cc2 = Cayenne.objectForPK(context, CourseClass.class, 1186959);
@@ -212,7 +227,11 @@ public class PurchaseControllerTest extends ServiceTest {
 
 		Discount d = Cayenne.objectForPK(context, Discount.class, 2);
 
-		PurchaseModel model = new PurchaseModel();
+		PurchaseModel model = createModel(context, college,
+				Arrays.asList(cc1,cc2,cc3),
+				Arrays.asList(p1, p1),
+				d,
+				webSite);
 		model.setObjectContext(context);
 		model.setClasses(Arrays.asList(cc1, cc2, cc3));
 		model.setProducts(Arrays.asList(p1, p2));
@@ -220,6 +239,8 @@ public class PurchaseControllerTest extends ServiceTest {
 		model.addDiscount(d);
 
 		PurchaseController purchaseController = purchaseControllerBuilder.build(model);
+
+		assertPurchaseController(purchaseController);
 
 		purchaseController.performAction(new ActionParameter(Action.init));
 
@@ -248,6 +269,17 @@ public class PurchaseControllerTest extends ServiceTest {
 		}
 
 		return purchaseController;
+	}
+
+	private void assertPurchaseController(PurchaseController purchaseController) {
+		assertNotNull(purchaseController.getModel().getInvoice());
+		assertNotNull(purchaseController.getModel().getInvoice().getWebSite());
+		assertNotNull(purchaseController.getModel().getInvoice().getCollege());
+		assertEquals(PaymentSource.SOURCE_WEB, purchaseController.getModel().getInvoice().getSource());
+
+		assertNotNull(purchaseController.getModel().getPayment());
+		assertNotNull(purchaseController.getModel().getPayment().getCollege());
+		assertEquals(PaymentSource.SOURCE_WEB, purchaseController.getModel().getPayment().getSource());
 	}
 
 

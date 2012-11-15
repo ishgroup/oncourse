@@ -22,6 +22,7 @@ public class PurchaseModel {
 
 	//input data for model
 	private College college;
+	private WebSite webSite;
 	private List<CourseClass> classes = new ArrayList<CourseClass>();
 	private List<Discount> discounts = new ArrayList<Discount>();
 	private List<Product> products = new ArrayList<Product>();
@@ -71,6 +72,7 @@ public class PurchaseModel {
 			invoice.setSource(PaymentSource.SOURCE_WEB);
 			invoice.setCollege(college);
 			invoice.setContact(payer);
+			invoice.setWebSite(getWebSite());
 		}
 		return invoice;
 	}
@@ -380,6 +382,14 @@ public class PurchaseModel {
 			result.addAll(getEnabledProductItems(contact));
 		}
 		return result;
+	}
+
+	public WebSite getWebSite() {
+		return webSite;
+	}
+
+	public void setWebSite(WebSite webSite) {
+		this.webSite = webSite;
 	}
 
 	private class ContactNode {

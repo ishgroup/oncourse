@@ -6,4 +6,5 @@ import ish.oncourse.enrol.checkout.PurchaseModel;
 public interface IPurchaseControllerBuilder {
 
 	public PurchaseController build(PurchaseModel model);
+	public PurchaseModel build();
 }
