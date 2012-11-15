@@ -180,14 +180,6 @@ public class BillingDataServiceImpl implements IBillingDataService {
 
     public String getBillingDataExport(List<College> colleges, Date month) {
 		String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\n";
-		for (College college : colleges) {
-			exportData += buildMWExport(college, month);
-		}
-		
-		return exportData;
-	}
-
-	private String buildMWExport(College college, Date month) {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(month);
@@ -202,6 +194,15 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		Map<Long, Map<String, Object>> billingData = getBillingData(from, to);
 		Map<Long, Map<String, Object>> licenseData = getLicenseFeeData();
 		
+		for (College college : colleges) {
+			exportData += buildMWExport(college, from, billingData, licenseData);
+		}
+		
+		return exportData;
+	}
+
+	private String buildMWExport(College college, Date from, Map<Long, Map<String, Object>> billingData, Map<Long, Map<String, Object>> licenseData) {
+		
 		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_MONTH_FORMAT);
 		String monthAndYear = dateFormat.format(from);
 		String description = "onCourse " + monthAndYear;
@@ -209,18 +210,14 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		
 		NumberFormat moneyFormat = NumberFormat.getCurrencyInstance(Country.AUSTRALIA.locale());
 		moneyFormat.setMinimumFractionDigits(2);
-		
-		SimpleDateFormat formatter = new SimpleDateFormat(DATE_MONTH_FORMAT);
-		
+
 		if (isSupportBillingMonth(college, from, licenseData)) {
-			Date paidUntil = (Date) licenseData.get(college.getId()).get("support-paidUntil");
 			Date renewalDate = (Date) licenseData.get(college.getId()).get("support-renewalDate");
 			
 			text += MWExportFormat.SupportFormat.format(licenseData, college, from, renewalDate, description);
 		}
 		
 		if (isWebHostingBillingMonth(college, from, licenseData)) {
-			Date paidUntil = (Date) licenseData.get(college.getId()).get("hosting-paidUntil");
 			Date renewalDate = (Date) licenseData.get(college.getId()).get("hosting-renewalDate");
 			
 			text += MWExportFormat.HostingFormat.format(licenseData, college, from, renewalDate, description);
