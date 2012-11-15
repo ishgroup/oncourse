@@ -17,8 +17,10 @@ public class MBeanRegisterUtil {
 	public static void registerMbeanService(final Object mBean, final ObjectName name) {
 		final MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		try {
+			LOGGER.info(String.format("Register MBean with name %s started.", name.getCanonicalName()));
 			if (!isRegisteredMBean(name)) {
 				mBeanServer.registerMBean(mBean, name);
+				LOGGER.info(String.format("Register MBean with name %s done.", name.getCanonicalName()));
 			} else {
 				throw new Exception(String.format("Instance with the same name %s already registered!" , name.getCanonicalName()));
 			}

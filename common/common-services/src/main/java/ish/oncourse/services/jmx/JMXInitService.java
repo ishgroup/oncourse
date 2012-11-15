@@ -22,6 +22,7 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 	private ObjectName applicationDataInstance;
 		
 	public JMXInitService(final ApplicationGlobals applicationGlobals, final String appName, final String objectName) {
+		LOGGER.info("JMX service init started.");
 		DataSource datasource = null;
 		try {
 			datasource = getDataSource();
@@ -47,6 +48,7 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 			}
 		}
 		MBeanRegisterUtil.registerMbeanService(new ApplicationData(appName, applicationGlobals, datasource), applicationDataInstance);
+		LOGGER.info("JMX service init finished.");
 	}
 	
 	private DataSource getDataSource() throws NamingException, SQLException {
