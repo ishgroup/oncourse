@@ -17,7 +17,11 @@ public class MBeanRegisterUtil {
 	public static void registerMbeanService(final Object mBean, final ObjectName name) {
 		final MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		try {
-			mBeanServer.registerMBean(mBean, name);
+			if (!isRegisteredMBean(name)) {
+				mBeanServer.registerMBean(mBean, name);
+			} else {
+				throw new Exception(String.format("Instance with the same name %s already registered!" , name.getCanonicalName()));
+			}
 		} catch (InstanceAlreadyExistsException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (MBeanRegistrationException e) {
@@ -26,16 +30,28 @@ public class MBeanRegisterUtil {
 			LOGGER.error(e.getMessage(), e);
 		} catch (NullPointerException e) {
 			LOGGER.error(e.getMessage(), e);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
 		}
+	}
+	
+	public static boolean isRegisteredMBean(final ObjectName name) {
+		return ManagementFactory.getPlatformMBeanServer().isRegistered(name);
 	}
 	
 	public static void unregisterMBeanService(final ObjectName name) {
 		final MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		try {
-			mBeanServer.unregisterMBean(name);
+			if (isRegisteredMBean(name)) {
+				mBeanServer.unregisterMBean(name);
+			} else {
+				throw new Exception(String.format("Instance with the same name %s already unregistered!" , name.getCanonicalName()));
+			}
 		} catch (MBeanRegistrationException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (InstanceNotFoundException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 	}

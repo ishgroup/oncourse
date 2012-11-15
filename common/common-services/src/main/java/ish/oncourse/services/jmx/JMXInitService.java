@@ -40,11 +40,11 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 		} catch (NullPointerException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
-		if (applicationDataInstance == null) {
+		if (newApplicationDataInstance != null) {
 			applicationDataInstance = newApplicationDataInstance;
-		} else if (applicationDataInstance != null && newApplicationDataInstance != null) {
-			registryDidShutdown();
-			applicationDataInstance = newApplicationDataInstance;
+			if (isObjectNameRegistered(newApplicationDataInstance)) {
+				unregisterObjectName(newApplicationDataInstance);
+			}
 		}
 		MBeanRegisterUtil.registerMbeanService(new ApplicationData(appName, applicationGlobals, datasource), applicationDataInstance);
 	}
@@ -58,15 +58,24 @@ public class JMXInitService implements IJMXInitService, RegistryShutdownListener
 		}
 		return null;
 	}
+	
+	private void unregisterObjectName(final ObjectName name) {
+		MBeanRegisterUtil.unregisterMBeanService(name);
+	}
+	
+	private boolean isObjectNameRegistered(final ObjectName name) {
+		return MBeanRegisterUtil.isRegisteredMBean(name);
+	}
 
 	@Override
 	public void registryDidShutdown() {
-		LOGGER.info("Shutdown requested");
-		if (applicationDataInstance != null) {
-			LOGGER.info("unregister" + applicationDataInstance.getCanonicalName());
-			MBeanRegisterUtil.unregisterMBeanService(applicationDataInstance);
-			LOGGER.info("unregister" + applicationDataInstance.getCanonicalName() + "complete");
+		LOGGER.info("JMX service shutdown requested.");
+		if (applicationDataInstance != null && isObjectNameRegistered(applicationDataInstance)) {
+			LOGGER.info("Unregister " + applicationDataInstance.getCanonicalName());
+			unregisterObjectName(applicationDataInstance);
+			LOGGER.info("Unregister " + applicationDataInstance.getCanonicalName() + " complete.");
 		}
+		LOGGER.info("JMX service shutdown complete.");
 	}
 	
 }
