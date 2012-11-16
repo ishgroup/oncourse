@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import ish.oncourse.admin.pages.college.Billing;
 import ish.oncourse.model.College;
 import ish.oncourse.model.LicenseFee;
+import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.system.ICollegeService;
 
 import org.apache.cayenne.ObjectContext;
@@ -53,7 +55,7 @@ public class AddCollege {
 	
 	@OnEvent(component="newCollegeForm", value="success")
 	Object newCollege() {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = cayenneService.newContext();
 		
 		College college = (College) context.localObject(collegeService.findById(collegeId).getObjectId(), null);
 		if (college != null) {
@@ -62,12 +64,8 @@ public class AddCollege {
 			college.setRequiresAvetmiss(true);
 		}
 		
-		createFee(context, college, "sms");
-		createFee(context, college, "cc-office");
-		createFee(context, college, "cc-web");
-		createFee(context, college, "ecommerce");
-		createFee(context, college, "support");
-		createFee(context, college, "hosting");
+		initializeLicenseFees(context, college);
+		initializeLicensePreferences(context, college);
 		
 		context.commitChanges();
 		
@@ -81,5 +79,37 @@ public class AddCollege {
 		fee.setFreeTransactions(0);
 		fee.setFee(new BigDecimal(0));
 		return fee;
+	}
+	
+	private Preference createPreference(ObjectContext context, College college, String name, String value) {
+		Preference pref = context.newObject(Preference.class);
+		
+		pref.setCollege(college);
+		pref.setName(name);
+		pref.setValueString(value);
+		
+		return pref;
+	}
+	
+	private void initializeLicenseFees(ObjectContext context, College college) {
+		createFee(context, college, "sms");
+		createFee(context, college, "cc-office");
+		createFee(context, college, "cc-web");
+		createFee(context, college, "ecommerce");
+		createFee(context, college, "support");
+		createFee(context, college, "hosting");
+	}
+	
+	private void initializeLicensePreferences(ObjectContext context, College college) {
+		createPreference(context, college, PreferenceController.LICENSE_ACCESS_CONTROL, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_LDAP, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_BUDGET, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_EXTENRNAL_DB, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_SSL, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_SMS, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_CC_PROCESSING, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_PAYROLL, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_WEBSITE, String.valueOf(false));
+		createPreference(context, college, PreferenceController.LICENSE_VOUCHER, String.valueOf(false));
 	}
 }
