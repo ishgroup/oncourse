@@ -86,6 +86,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		
 		ObjectContext context = cayenneService.newContext();
 		College college = Cayenne.objectForPK(context, College.class, 1);
+		WebSite webSite = Cayenne.objectForPK(context, WebSite.class, 1);
 		CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1186958);
 		CourseClass courseClass2 = Cayenne.objectForPK(context, CourseClass.class, 1186959);
 		Calendar calendar = Calendar.getInstance();
@@ -128,6 +129,7 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		invoice1.setDateDue(calendar.getTime());
 		invoice1.setContact(contact1);
 		invoice1.setSource(PaymentSource.SOURCE_WEB);
+		invoice1.setWebSite(webSite);
 
 		Enrolment enrol1 = new Enrolment();
 		enrol1.setCourseClass(courseClass);

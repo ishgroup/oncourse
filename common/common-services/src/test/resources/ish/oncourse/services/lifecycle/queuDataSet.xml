@@ -6,8 +6,10 @@
 	<Qualification id="1" ishVersion="333" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13" 
 		reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
 	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	<WebSite id="1" collegeId="2" name="Sydney Community College" siteKey="scc" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 	<College id="2" name="Tasmania Adult Education"  webServicesSecurityCode="147ttn44$%9" communication_key_status="HALT" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
-	
+	<WebSite id="2" collegeId="2" name="Tasmania Adult Education" siteKey="tss" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
 	<Course id="3" collegeId="1" code="BNN-453" angelId="1" detail="Course Basic New Test" name="Course Basic New Test"/>
 	<Course id="4" collegeId="1" code="CNN-876" angelId="1" detail="Basic Art Work" name="Basic Art Work"/>
 	<Course id="5" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills"/>

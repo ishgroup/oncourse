@@ -1,17 +1,20 @@
 package ish.oncourse.model;
-import static org.junit.Assert.*;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.validation.ValidationException;
-import org.junit.Before;
-import org.junit.Test;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.validation.ValidationException;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class PaymentInLineTest {
 	
@@ -20,6 +23,7 @@ public class PaymentInLineTest {
 	private College college;
 	private Course course;	
 	private CourseClass courseClass;
+	private WebSite webSite;
 	private Invoice invoice;
 
 	@Before
@@ -42,7 +46,13 @@ public class PaymentInLineTest {
 		courseClass.setCollege(college);
 		courseClass.setMaximumPlaces(3);
 		courseClass.setIsDistantLearningCourse(false);
-		
+
+		webSite = context.newObject(WebSite.class);
+		webSite.setCollege(college);
+		webSite.setName("Sydney Community College");
+		webSite.setSiteKey("scc");
+		webSite.setCreated(new Date());
+		webSite.setModified(new Date());
 		context.commitChanges();
 	}
 	
@@ -80,6 +90,7 @@ public class PaymentInLineTest {
 		invoice.setTotalGst(new BigDecimal(75));
 		invoice.setDateDue(calendar.getTime());
 		invoice.setContact(contact);
+		invoice.setWebSite(webSite);
 		
 		final InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setTitle("Test_invLine");
@@ -107,7 +118,9 @@ public class PaymentInLineTest {
 		invoice2.setTotalGst(new BigDecimal(100));
 		invoice2.setDateDue(calendar.getTime());
 		invoice2.setContact(contact);
-		
+		invoice.setWebSite(webSite);
+
+
 		final InvoiceLine invoiceLine2 = context.newObject(InvoiceLine.class);
 		invoiceLine2.setTitle("Test_invLine");
 		invoiceLine2.setCollege(college);

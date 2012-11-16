@@ -44,6 +44,7 @@ public class Invoice extends _Invoice implements Queueable {
 		refundInvoice.setTotalGst(BigDecimal.ZERO.subtract(getTotalGst()));
 		refundInvoice.setAmountOwing(BigDecimal.ZERO.subtract(getAmountOwing()));
 		refundInvoice.setSource(this.getSource());
+		refundInvoice.setWebSite(this.getWebSite());
 
 		final ValidationResult vr = new ValidationResult();
 		// Mark all the enrolments as refunded.

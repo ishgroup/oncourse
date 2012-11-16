@@ -1,30 +1,13 @@
 package ish.oncourse.services.lifecycle;
 
-import ish.common.types.AvetmissStudentDisabilityType;
-import ish.common.types.AvetmissStudentEnglishProficiency;
-import ish.common.types.AvetmissStudentIndigenousStatus;
-import ish.common.types.AvetmissStudentPriorEducation;
-import ish.common.types.AvetmissStudentSchoolLevel;
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
+import ish.common.types.*;
 import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Country;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Language;
-import ish.oncourse.model.Qualification;
-import ish.oncourse.model.Student;
+import ish.oncourse.model.*;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
 
 public class SampleEntityBuilder {
 
@@ -120,6 +103,7 @@ public class SampleEntityBuilder {
 		inv.setAmountOwing(new BigDecimal(10));
 
 		College college = Cayenne.objectForPK(ctx, College.class, 1l);
+		WebSite webSite = Cayenne.objectForPK(ctx, WebSite.class, 1l);
 		inv.setCollege(college);
 
 		inv.setContact(contact);
@@ -133,6 +117,7 @@ public class SampleEntityBuilder {
 		inv.setSource(PaymentSource.SOURCE_WEB);
 		inv.setTotalGst(new BigDecimal(25));
 		inv.setTotalExGst(new BigDecimal(20));
+		inv.setWebSite(webSite);
 
 		return inv;
 	}
