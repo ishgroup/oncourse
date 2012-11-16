@@ -56,7 +56,7 @@ public class AvetmissEditor {
 	public String getCountryOfBirth() {
 		Country countryOfBirth = contact.getStudent().getCountryOfBirth();
 		if (countryOfBirth == null) {
-			return null;
+			return "Australia";
 		}
 		return countryOfBirth.getName();
 	}
