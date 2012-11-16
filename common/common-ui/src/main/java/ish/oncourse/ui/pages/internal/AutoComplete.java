@@ -1,6 +1,12 @@
 package ish.oncourse.ui.pages.internal;
 
+import ish.oncourse.model.Country;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -10,6 +16,8 @@ import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.util.List;
 
 import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_postcode;
 import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_suburb;
@@ -22,6 +30,9 @@ public class AutoComplete {
 
     @Inject
     private ISearchService searchService;
+
+	@Inject
+	private ICayenneService cayenneService;
 
     StreamResponse onActionFromSub() {
         String term = StringUtils.trimToNull(request.getParameter(REQUEST_PARAM_term));
@@ -54,4 +65,26 @@ public class AutoComplete {
         }
         return new TextStreamResponse("text/json", array.toString());
     }
+
+	StreamResponse onActionFromCountry() {
+		String term = StringUtils.trimToNull(request.getParameter(REQUEST_PARAM_term));
+		final JSONArray array = new JSONArray();
+
+		if (term != null)
+		{
+			ObjectContext context = cayenneService.sharedContext();
+			SelectQuery query = new SelectQuery(Country.class);
+			Expression exp = ExpressionFactory.likeExp(Country.NAME_PROPERTY,"%"+term+"%");
+			query.setQualifier(exp);
+			List<Country> countries = context.performQuery(query);
+			for (Country country : countries) {
+				JSONObject obj = new JSONObject();
+				obj.put("id", country.getName());
+				obj.put("label", country.getName());
+				obj.put("value", country.getName());
+				array.put(obj);
+			}
+		}
+		return new TextStreamResponse("text/json", array.toString());
+	}
 }

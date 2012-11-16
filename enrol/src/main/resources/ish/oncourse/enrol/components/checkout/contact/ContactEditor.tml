@@ -17,7 +17,7 @@
 				<p>
 					<label for="${fieldName}">${label(fieldName)}<t:if test="required(fieldName)"><em title="${message:required}">*</em></t:if></label>
 					<span class="${validateHandler.validateClass(fieldName)}">
-						<t:textfield value="${value(fieldName)}" class="input-fixed ${validateHandler.errorClass(fieldName)}"/>
+						<t:textfield value="${value(fieldName)}" class="${fieldName} input-fixed ${validateHandler.errorClass(fieldName)}"/>
 						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error(fieldName)}"/>
 					</span>
 				</p>
@@ -61,9 +61,9 @@
 		<t:delegate to="block:contactFields"/>
 		<t:if test="fillRequiredProperties" negate="true">
 			<t:delegate to="block:concessionsEditor"/>
-			<t:if test = "delegate.contact.college.requiresAvetmiss">
+			<!--<t:if test = "delegate.contact.college.requiresAvetmiss">-->
 				<t:delegate to="block:avetmissEditor"/>
-			</t:if>
+			<!--</t:if>-->
 			<t:delegate to="block:options"/>
 		</t:if>
 	</t:form>

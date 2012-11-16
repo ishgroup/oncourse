@@ -1,5 +1,7 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.util.FormatUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ public class ValidateHandler {
 
 	public String errorClass(String fieldName)
 	{
-		return errors.containsKey(fieldName) ? HTML_CLASS_error: null;
+		return errors.containsKey(fieldName) ? HTML_CLASS_error: FormatUtils.EMPTY_STRING;
 	}
 
 
