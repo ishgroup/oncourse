@@ -157,15 +157,4 @@ public class Invoice extends _Invoice implements Queueable {
 		
 		return true;
 	}
-
-	/**
-	 * Validation to prevent saving unbalanced PaymentIn into database.
-	 */
-	@Override
-	public void validateForSave(ValidationResult result) {
-		super.validateForSave(result);
-		if (getSource() == PaymentSource.SOURCE_WEB && getWebSite() == null)
-			result.addFailure(ValidationFailure.validationFailure(this, Invoice.WEB_SITE_PROPERTY,
-					"WebSite should be set for web invoices"));
-	}
 }

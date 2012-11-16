@@ -1,21 +1,15 @@
 package ish.oncourse.services.voucher;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentSource;
+import ish.common.types.ProductStatus;
+import ish.math.Money;
+import ish.oncourse.model.*;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.WebSiteService;
+import ish.oncourse.test.ServiceTest;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -27,29 +21,21 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.ProductStatus;
-import ish.math.Money;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Voucher;
-import ish.oncourse.model.VoucherProduct;
-import ish.oncourse.model.VoucherProductCourse;
-import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.site.WebSiteService;
-import ish.oncourse.test.ServiceTest;
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class VoucherServiceTest extends ServiceTest {
 	
 	private ICayenneService cayenneService;
-		
+
 	@Before
 	public void setup() throws Exception {
 		initTest("ish.oncourse.services", "service", ServiceModule.class);
@@ -124,7 +110,7 @@ public class VoucherServiceTest extends ServiceTest {
 	public void testVoucherRedemptionHelperForSingleMoneyVoucher() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		//load contact
-		Contact contact = (Contact) context.performQuery(new SelectQuery(Contact.class, 
+		Contact contact = (Contact) context.performQuery(new SelectQuery(Contact.class,
 			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
 		assertNotNull("Contact with id=1 should exist", contact);
 		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
@@ -138,14 +124,7 @@ public class VoucherServiceTest extends ServiceTest {
 		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
 			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
+		Invoice invoice = createInvoice(context);
 		
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
@@ -208,14 +187,7 @@ public class VoucherServiceTest extends ServiceTest {
 		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
 			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
+		Invoice invoice = createInvoice(context);
 		
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
@@ -289,15 +261,8 @@ public class VoucherServiceTest extends ServiceTest {
 		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
 			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
-		
+		Invoice invoice = createInvoice(context);
+
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
 		invoiceLine.setInvoice(invoice);
@@ -385,6 +350,8 @@ public class VoucherServiceTest extends ServiceTest {
 		//load contacts
 		Contact contact = (Contact) context.performQuery(new SelectQuery(Contact.class, 
 			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
+		WebSite webSite = Cayenne.objectForPK(context,WebSite.class, 1);
+
 		assertNotNull("Contact with id=1 should exist", contact);
 		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
 		Contact contact2 = (Contact) context.performQuery(new SelectQuery(Contact.class, 
@@ -407,15 +374,8 @@ public class VoucherServiceTest extends ServiceTest {
 		CourseClass courseClass = (CourseClass) context.performQuery(new SelectQuery(CourseClass.class, 
 			ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, 1L))).get(0);
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
-		
+		Invoice invoice = createInvoice(context);
+
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
 		invoiceLine.setInvoice(invoice);
@@ -531,15 +491,8 @@ public class VoucherServiceTest extends ServiceTest {
 		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher.getContact());
 		
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
-		
+		Invoice invoice = createInvoice(context);
+
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
 		invoiceLine.setInvoice(invoice);
@@ -590,7 +543,23 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("Amount owing should be 0 for course voucher", Money.ZERO.toBigDecimal(), 
 			invoice.getAmountOwing().subtract(helper.getPayments().get(0).getAmount()));
 	}
-	
+
+	private Invoice createInvoice(ObjectContext context) {
+		Contact contact = Cayenne.objectForPK(context,Contact.class, 1);
+		WebSite webSite = Cayenne.objectForPK(context,WebSite.class, 1);
+
+		Invoice invoice = context.newObject(Invoice.class);
+		context.registerNewObject(invoice);
+		invoice.setSource(PaymentSource.SOURCE_WEB);
+		invoice.setCollege(contact.getCollege());
+		invoice.setContact(contact);
+		invoice.setAmountOwing(BigDecimal.ZERO);
+		invoice.setDateDue(new Date());
+		invoice.setInvoiceDate(invoice.getDateDue());
+		invoice.setWebSite(webSite);
+		return invoice;
+	}
+
 	@Test
 	public void testVoucherRedemptionHelperForSingleCourseVoucherWithManyEnrolments() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -626,14 +595,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher.getContact());
 		
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
+		Invoice invoice = createInvoice(context);
 		
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
@@ -762,15 +724,8 @@ public class VoucherServiceTest extends ServiceTest {
 		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher2.getContact());
 		
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
-		
+		Invoice invoice = createInvoice(context);
+
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
 		invoiceLine.setInvoice(invoice);
@@ -857,6 +812,7 @@ public class VoucherServiceTest extends ServiceTest {
 		//load contact
 		Contact contact = (Contact) context.performQuery(new SelectQuery(Contact.class, 
 			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
+
 		assertNotNull("Contact with id=1 should exist", contact);
 		assertNotNull("Contact with id=1 should have linked student", contact.getStudent());
 		Contact contact2 = (Contact) context.performQuery(new SelectQuery(Contact.class, 
@@ -904,15 +860,8 @@ public class VoucherServiceTest extends ServiceTest {
 		assertNull("Voucher should not be linked to any contact because the payer and owner equal", voucher2.getContact());
 		
 		//prepare invoice for helper
-		Invoice invoice = context.newObject(Invoice.class);
-		context.registerNewObject(invoice);
-		invoice.setSource(PaymentSource.SOURCE_WEB);
-		invoice.setCollege(contact.getCollege());
-		invoice.setContact(contact);
-		invoice.setAmountOwing(BigDecimal.ZERO);
-		invoice.setDateDue(new Date());
-		invoice.setInvoiceDate(invoice.getDateDue());
-		
+		Invoice invoice = createInvoice(context);
+
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 		invoiceLine.setCollege(invoice.getCollege());
 		invoiceLine.setInvoice(invoice);
