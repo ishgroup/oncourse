@@ -88,12 +88,12 @@ public class NTISUpdaterImpl implements INTISUpdater {
 	@Inject
 	private ICayenneService cayenneService;
 
-	/*
+	/**
 	 * 
 	 * @see ish.oncourse.admin.services.ntis.INTISUpdateService#doUpdate()
 	 */
 	@Override
-	public NTISResult doUpdate(Date from, Date to, Class<?> type) throws NTISException {
+	public synchronized NTISResult doUpdate(Date from, Date to, Class<?> type) throws NTISException {
 
 		try {
 
