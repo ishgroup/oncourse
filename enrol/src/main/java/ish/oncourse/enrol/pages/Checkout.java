@@ -94,10 +94,9 @@ public class Checkout {
 
 	private void handleUnexpectedThrowable() {
 		IllegalArgumentException exception = new IllegalArgumentException(unexpectedThrowable);
-		unexpectedThrowable = null;
 		if (purchaseController != null) {
 			purchaseController.getModel().getObjectContext().rollbackChanges();
-			purchaseController = null;
+			resetPersistProperties();
 		}
 		throw exception;
 	}
@@ -105,17 +104,20 @@ public class Checkout {
 
 	@AfterRender
 	public void afterRender() {
-		unexpectedThrowable = null;
-		expired = false;
 		if (purchaseController != null && purchaseController.isFinished()) {
-			purchaseController = null;
+			resetPersistProperties();
 		}
-
-
 	}
 
 	public PurchaseController getPurchaseController() {
 		return purchaseController;
+	}
+
+	public void resetPersistProperties()
+	{
+		expired = false;
+		unexpectedThrowable = null;
+		purchaseController = null;
 	}
 
 	private void initPaymentController() {

@@ -56,6 +56,16 @@ function initEnrolmentListHandle()
 	});
 }
 
+function initProductItemListHandle()
+{
+	$j('.productItemCheckbox').click(function()
+	{
+		var $actionLink = $j(this).next('a')[0].pathname;
+		sendAjax($actionLink);
+	});
+}
+
+
 function initAddConcessionHandle()
 {
 	$j('.add-concession').click(function()
@@ -290,6 +300,7 @@ function initHandles()
 	initCheckoutHandle();
 	initAddContactHandle();
 	initContactEditorHandle();
+	initProductItemListHandle();
 	initAddCodeHandle();
 	initCreditAccessHandle();
 	initProceedToPaymentHandle();

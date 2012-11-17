@@ -6,9 +6,15 @@
 		<td>
 			<form>
 				<label>
-					<input type="checkbox" class="productItemCheckbox" value="isEnabled"/>
+					<t:if test="checked">
+						<input type="checkbox" class="productItemCheckbox" checked="${checked}"/>
+						<p:else>
+							<input type="checkbox" class="productItemCheckbox"/>
+						</p:else>
+					</t:if>
 					${productItem.product.name}
-	  			</label>
+					<t:eventlink t:id="selectProductEvent" style="{display: none;}"/>
+				</label>
 	  		</form>
 	  		<em>
 	  			<t:if test="voucherWithPrice">

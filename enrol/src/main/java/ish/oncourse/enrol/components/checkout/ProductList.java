@@ -4,9 +4,7 @@ import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.ProductItem;
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -23,29 +21,46 @@ public class ProductList {
 	@Parameter(required = true)
 	@Property
 	private Contact contact;
+
+	@Property
+	@Parameter(required = false)
+	private Block blockToRefresh;
+
 	
 	@Inject
 	private Request request;
 	
 	@Property
-	private ProductItem productItem;
-	
-	public List<ProductItem> getProductItems() {
+	private ish.oncourse.model.ProductItem productItem;
+
+	@Property
+	private Integer index;
+
+	public Boolean getChecked()
+	{
+		return  purchaseController.getModel().isProductItemEnabled(productItem);
+	}
+
+	public ProductItem.ProductItemDelegate getProductItemDelegate() {
+		return new ProductItem.ProductItemDelegate() {
+			@Override
+			public void onChange(Integer contactIndex, Integer productItemIndex) {
+				Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
+				ish.oncourse.model.ProductItem productItem = purchaseController.getModel().getProductItemBy(contact, productItemIndex);
+				Boolean isSelected = purchaseController.getModel().isProductItemEnabled(productItem);
+				ActionParameter actionParameter = new ActionParameter(isSelected ? Action.disableProductItem : Action.enableProductItem);
+				actionParameter.setValue(productItem);
+				purchaseController.performAction(actionParameter);
+			}
+		};
+	}
+
+	public Integer getContactIndex()
+	{
+		return purchaseController.getModel().getContacts().indexOf(contact);
+	}
+
+	public List<ish.oncourse.model.ProductItem> getProductItems() {
 		return purchaseController.getModel().getAllProductItems(contact);
 	}
-	
-	public StreamResponse onActionFromTick(String productItemIndex) {
-		if (!request.isXHR())
-			return null;
-		if (!StringUtils.isNumeric(productItemIndex))
-			return null;
-
-		Integer index = new Integer(productItemIndex);
-		ProductItem productItem = purchaseController.getModel().getProductItemBy(contact, index);
-		Boolean isSelected = purchaseController.getModel().isProductItemEnabled(productItem);
-		ActionParameter actionParameter = new ActionParameter(isSelected ? Action.disableProductItem : Action.enableProductItem);
-		actionParameter.setValue(productItem);
-		purchaseController.performAction(actionParameter);
-        return null;
-    }
 }

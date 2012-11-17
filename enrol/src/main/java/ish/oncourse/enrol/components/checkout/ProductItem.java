@@ -7,9 +7,13 @@ import ish.oncourse.model.Product;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.util.FormatUtils;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
 import java.util.ArrayList;
@@ -24,10 +28,25 @@ public class ProductItem {
 	@Property
 	@Parameter(required = true)
 	private ish.oncourse.model.ProductItem productItem;
-	
+
+	@Parameter(required = true)
 	@Property
-	private boolean isEnabled;
-	
+	private Integer contactIndex;
+
+	@Parameter(required = true)
+	@Property
+	private Integer productItemIndex;
+
+	@Parameter(required = false)
+	private ProductItemDelegate delegate;
+
+	@Property
+	@Parameter(required = true)
+	private Boolean checked;
+
+	@Parameter
+	private Block blockToRefresh;
+
 	@Property
 	private Format feeFormat;
 	
@@ -36,10 +55,14 @@ public class ProductItem {
 	
 	@Property
 	private Money priceValue;
-	
+
+	@Inject
+	private Request request;
+
+
 	@SetupRender
 	void beforeRender() {
-		isEnabled = purchaseController.getModel().isProductItemEnabled(productItem);
+		checked = purchaseController.getModel().isProductItemEnabled(productItem);
 		Money definedPrice = getPrice();
 		if (priceValue == null && definedPrice.isZero()) {
 			priceValue = definedPrice;
@@ -89,4 +112,24 @@ public class ProductItem {
 		this.feeFormat = FormatUtils.chooseMoneyFormat(priceExTax);
 		return priceExTax;
 	}
+
+
+	@OnEvent(value = "selectProductEvent")
+	public Object selectProductItem(Integer contactIndex, Integer productItemIndex) {
+		if (!request.isXHR())
+			return null;
+
+		if (delegate != null) {
+			delegate.onChange(contactIndex, productItemIndex);
+			if (blockToRefresh != null)
+				return blockToRefresh;
+		}
+		return null;
+	}
+
+
+	public static interface ProductItemDelegate {
+		public void onChange(Integer contactIndex, Integer productItemIndex);
+	}
+
 }
