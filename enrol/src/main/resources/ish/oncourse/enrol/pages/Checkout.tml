@@ -93,12 +93,14 @@
 		<div class="error">
 			<p>${message:error-sessionExpired}</p>
 			<script type="text/javascript">
+				refreshShortList();
 				setTimeout("window.location.href='${coursesLink}'", 5000);
 			</script>
 		</div>
 	</t:if>
 	<t:if test="unexpectedThrowable">
 		<script type="text/javascript">
+			refreshShortList();
 			setTimeout("window.location.href='/enrol/checkout'", 100);
 		</script>
 	</t:if>

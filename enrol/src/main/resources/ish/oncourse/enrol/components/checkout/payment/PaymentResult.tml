@@ -13,6 +13,9 @@
 
 
 	<t:block t:id="paymentSuccess">
+		<script type="text/javascript">
+			refreshShortList();
+		</script>
 		<h2>Payment <span>&#187;</span> Successful</h2>
 		<p>${messageThanksForEnrolment}</p>
 		<p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W${paymentIn.id}</strong>.</p>
@@ -24,7 +27,7 @@
 			</p>
 		</t:if>
 		<div class="successEnrolmentContinueButton">
-			<a href="${successUrl}">${message:continue.button.text}"</a>
+			<a href="${successUrl}">${message:continue.button.text}</a>
 		</div>
 		<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
 	</t:block>
