@@ -130,6 +130,8 @@ public class ContactEditor {
 
 	@OnEvent(value = "cancelContactEvent")
 	public Object cancel() {
+		if (true)
+		throw new IllegalArgumentException();
 		if (!request.isXHR())
 			return null;
 		if (delegate != null)

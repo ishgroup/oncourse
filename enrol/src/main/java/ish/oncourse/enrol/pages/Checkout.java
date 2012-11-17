@@ -21,9 +21,6 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-//@Import(library={"context:js/jquery.blockUI.js","context:js/checkout.js"},
-//		stylesheet="context:css/checkout.css")
-
 public class Checkout {
 	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
 
@@ -62,6 +59,7 @@ public class Checkout {
 	@Persist
 	private PurchaseController purchaseController;
 
+
 	@Inject
 	@Id("checkout")
 	private Block checkoutBlock;
@@ -78,24 +76,42 @@ public class Checkout {
 	/**
 	 * The property is true when session for the payment was expired.
 	 */
-	@Property
 	private boolean expired;
+
+	@Persist
+	private Throwable unexpectedThrowable;
 
 	@SetupRender
 	void beforeRender() {
+		if (unexpectedThrowable != null) {
+			handleUnexpectedThrowable();
+		}
+
 		synchronized (this) {
 			initPaymentController();
 		}
-		expired = false;
 	}
 
-	@AfterRender
-	public void afterRender()
-	{
-		if (purchaseController != null && purchaseController.isFinished())
-		{
+	private void handleUnexpectedThrowable() {
+		IllegalArgumentException exception = new IllegalArgumentException(unexpectedThrowable);
+		unexpectedThrowable = null;
+		if (purchaseController != null) {
+			purchaseController.getModel().getObjectContext().rollbackChanges();
 			purchaseController = null;
 		}
+		throw exception;
+	}
+
+
+	@AfterRender
+	public void afterRender() {
+		unexpectedThrowable = null;
+		expired = false;
+		if (purchaseController != null && purchaseController.isFinished()) {
+			purchaseController = null;
+		}
+
+
 	}
 
 	public PurchaseController getPurchaseController() {
@@ -147,18 +163,22 @@ public class Checkout {
 		return checkoutBlock;
 	}
 
-	public Object onException(Throwable cause)
-	{
-		if (purchaseController != null)
-		{
-			throw new IllegalArgumentException(cause);
-		}
-		else
-		{
+	public Object onException(Throwable cause) {
+		if (purchaseController != null) {
+			unexpectedThrowable = cause;
+		} else {
 			expired = true;
 			LOGGER.warn("Persist properties have been cleared. User used two or more tabs or session was expired", cause);
 		}
-		return this;
+		return checkoutBlock;
+	}
+
+	public boolean isExpired() {
+		return expired;
+	}
+
+	public Throwable getUnexpectedThrowable() {
+		return unexpectedThrowable;
 	}
 
 }

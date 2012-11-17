@@ -1,20 +1,14 @@
 <html t:type="ui/internal/pagestructure" bodyId="literal:EnrolmentEntry"
 	  bodyClass="literal:internal-page"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-<t:if test="expired">
-	<div class="error">
-		<p>${message:error-sessionExpired}</p>
-		setTimeout("window.location.href='${coursesLink}'", 5000);
-	</div>
-	<p:else>
-		<div id="checkout">
-			<t:delegate to="block:checkout"/>
-		</div>
-	</p:else>
-</t:if>
+<div id="checkout">
+	<t:delegate to="block:checkout"/>
+</div>
+
 
 <t:block t:id="checkout">
+	<t:delegate to="block:exceptionHandling"/>
 	<t:delegate to="block:errors"/>
 	<t:if test="purchaseController.editCheckout">
 		<t:delegate to="block:payments"/>
@@ -93,6 +87,23 @@
 <t:block t:id="paymentResult">
 	<span t:type="checkout/payment/paymentresult" delegate="purchaseController.paymentEditorDelegate"/>
 </t:block>
+
+<t:block t:id="exceptionHandling">
+	<t:if test="expired">
+		<div class="error">
+			<p>${message:error-sessionExpired}</p>
+			<script type="text/javascript">
+				setTimeout("window.location.href='${coursesLink}'", 5000);
+			</script>
+		</div>
+	</t:if>
+	<t:if test="unexpectedThrowable">
+		<script type="text/javascript">
+			setTimeout("window.location.href='/enrol/checkout'", 100);
+		</script>
+	</t:if>
+</t:block>
+
 
 
 <!--<link href="${asset:context:css/_bootstrap-responsive.css}" media="screen, print" rel="stylesheet" />-->
