@@ -424,7 +424,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 
 		List<Discount> discounts = new ArrayList<Discount>(availableDiscountsWithoutCode.size());
 		for (Discount discount : availableDiscountsWithoutCode) {
-			if (discount.getDiscountConcessionTypes() != null) {
+			if (discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) {
 				discounts.add(discount);
 			}
 		}
