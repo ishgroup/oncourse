@@ -258,7 +258,7 @@ div.amount-container .amount-content p {
 	margin: 0 0 5px 0;
 }
 
-div.amount-container .amount-content label {
+#checkout div.amount-container .amount-content label {
 	width: 127px;
 	float: left;
 	text-align: right;
