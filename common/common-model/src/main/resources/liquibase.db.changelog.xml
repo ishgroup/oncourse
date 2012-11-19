@@ -1449,17 +1449,24 @@
     		<column name="angelId"/>
     	</createIndex>
     	
-    	<!-- Invoice table modifications -->
-    	<addColumn tableName="Invoice">
-    		<column name="corporatePassId" type="BIGINT"/>
-    	</addColumn>
-    	<addForeignKeyConstraint constraintName="fk_Invoice_CorporatePass" referencedTableName="CorporatePass" baseColumnNames="corporatePassId" baseTableName="Invoice" referencedColumnNames="id"/>
-    	
     	<addAutoIncrement tableName="CorporatePass" columnName="id" columnDataType="BIGINT"/>
     	<addAutoIncrement tableName="CorporatePass_CourseClass" columnName="id" columnDataType="BIGINT"/>
     </changeSet>
 
-	<changeSet id="87" author="akoyro" context="production" runOnChange="true">
+	<changeSet id="88" author="akoyro" context="production" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Invoice" columnName="corporatePassId"/>
+			</not>
+		</preConditions>
+		<!-- Invoice table modifications -->
+		<addColumn tableName="Invoice">
+			<column name="corporatePassId" type="BIGINT"/>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_Invoice_CorporatePass" referencedTableName="CorporatePass" baseColumnNames="corporatePassId" baseTableName="Invoice" referencedColumnNames="id"/>
+	</changeSet>
+
+	<changeSet id="89" author="akoyro" context="production" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="Invoice" columnName="webSiteId"/>
