@@ -28,7 +28,7 @@
 					<td><t:passwordfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
 					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
 					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
-					<td><t:submit t:id="addNewUser" value="Add"/></td>
+					<td><t:submit t:id="addNewUser" class="btn btn-primary" value="Add"/></td>
 				</tr>
 			</t:form>
 		</tbody>

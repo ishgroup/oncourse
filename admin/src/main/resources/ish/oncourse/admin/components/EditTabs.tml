@@ -1,9 +1,9 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="tabs">
-       	<t:pagelink id="overview" page="prop:overviewPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Overview</span></t:pagelink>
-       	<t:pagelink id="web" page="prop:webPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Web</span></t:pagelink>
-       	<t:pagelink id="preferences" page="prop:preferencesPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Preferences</span></t:pagelink>
-       	<t:pagelink id="billing" page="prop:billingPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Billing</span></t:pagelink>
-       	<t:pagelink id="instructions" page="prop:instructionsPageName" context="college.id"><img src="${contextPath}/img/tabs-arrow.gif" alt="" /><span>Instructions</span></t:pagelink>
+       	<t:pagelink id="overview" page="prop:overviewPageName" context="college.id"><span>Overview</span></t:pagelink>
+       	<t:pagelink id="web" page="prop:webPageName" context="college.id"><span>Web</span></t:pagelink>
+       	<t:pagelink id="preferences" page="prop:preferencesPageName" context="college.id"><span>Preferences</span></t:pagelink>
+       	<t:pagelink id="billing" page="prop:billingPageName" context="college.id"><span>Billing</span></t:pagelink>
+       	<t:pagelink id="instructions" page="prop:instructionsPageName" context="college.id"><span>Instructions</span></t:pagelink>
     </div>
 </t:container>

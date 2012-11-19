@@ -68,7 +68,7 @@
 		</tbody>
 	</table>
 	
-	<t:submit t:id="save" value="Save"/>
+	<t:submit t:id="save" class="btn btn-primary" value="Save"/>
 </t:form>
 
 	<script type="text/javascript">

@@ -8,7 +8,7 @@
 	
 	<div>
 		<t:form t:id="resetAngelQueueForm">
-			<t:submit t:id="resetAngelQueue" value="Reset Angel Queue"/>
+			<t:submit t:id="resetAngelQueue" class="btn btn-primary" value="Reset Angel Queue"/>
 		</t:form>
 	</div>
 	
@@ -16,7 +16,7 @@
 	<div>
 		<t:form t:id="queueEntityForm">
 			<span><t:select t:id="entitySelect" model="entitySelectModel" blankOption="never" value="selectedEntity"/></span>
-			<span><t:submit t:id="queueEntity" value="Queue"/></span>
+			<span><t:submit t:id="queueEntity" class="btn btn-primary" value="Queue"/></span>
 		</t:form>
 	</div>
 	
@@ -24,7 +24,7 @@
 	<div>
 		<t:form t:id="addInstructionForm">
 			<span><t:textfield t:id="instructionMessage" t:validate="required" value="instructionMessage"/></span>
-			<span><t:submit t:id="addInstruction" value="Add"/></span>
+			<span><t:submit t:id="addInstruction" class="btn btn-primary" value="Add"/></span>
 		</t:form>
 	</div>
 	

@@ -7,7 +7,7 @@
 				<td><input id="serviceKey" type="text"/></td>
 			</tr>
 			<tr>
-				<td><button id="find">Find</button></td>
+				<td><button id="find" class="btn btn-primary">Find</button></td>
 			</tr>
 		</table>
 	
@@ -23,7 +23,7 @@
 					<td><t:textfield t:id="billingCode" t:validate="required" value="billingCode"/></td>
 				</tr>
 			</table>
-			<t:submit t:id="addNewCollege" value="Next"/>
+			<t:submit t:id="addNewCollege" class="btn btn-primary" value="Next"/>
 		</t:form>
 	</div>
 	

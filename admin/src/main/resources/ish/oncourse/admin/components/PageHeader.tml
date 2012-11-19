@@ -7,10 +7,13 @@
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/master.css"/>
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/index.css"/>
 	<link rel="stylesheet" type="text/css" href="${contextPath}/css/jquery-ui-1.8.16.custom.css"/>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-responsive.css"/>
 	
 	<script type="text/javascript" src="${contextPath}/js/jquery-1.6.2.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.ui.datepicker.js"></script>
 	<script type="text/javascript" src="${contextPath}/js/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="${contextPath}/js/bootstrap.js"></script>
 	
 	<script type="text/javascript">jQuery.noConflict()</script>
 	

@@ -2,7 +2,7 @@
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:form t:id="billingForm">
 		<t:select t:id="month" model="monthModel" value="month" onChange="javascript:this.form.elements['refresh'].click();"/>
-		<t:submit t:id="export" value="Export to Moneyworks" />
+		<t:submit t:id="export" class="btn btn-primary" value="Export to Moneyworks" />
 		<t:submit t:id="refresh" value="Refresh" style="visibility:hidden"/>
 		<table>
 			<thead>

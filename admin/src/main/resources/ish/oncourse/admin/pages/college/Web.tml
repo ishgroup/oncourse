@@ -27,7 +27,7 @@
 					<tr>
 						<td><t:textfield t:id="newDomain" t:validate="required" value="newDomainValue"/></td>
 						<td><t:select t:id="newDomainSiteSelect" model="siteSelectModel" blankOption="never" value="newDomainSite"/></td>
-						<td><t:submit t:id="addNewDomain" value="Add"/></td>
+						<td><t:submit t:id="addNewDomain" class="btn btn-primary" value="Add"/></td>
 					</tr>
 				</t:form>
 			</tbody>
@@ -58,7 +58,7 @@
 					</t:loop>
 					<tr>
 						<td></td><td></td><td></td>
-						<td><t:submit t:id="saveSites" value="Save"/></td>
+						<td><t:submit t:id="saveSites" class="btn btn-primary" value="Save"/></td>
 					</tr>
 				</t:form>
 				<t:form t:id="sitesForm">
@@ -66,7 +66,7 @@
 					<td><t:textfield t:id="newSiteName" t:validate="required" value="newSiteNameValue"/></td>
 					<td><t:textfield t:id="newSiteKey" t:validate="required" value="newSiteKeyValue"/></td>
 					<td><t:textfield t:id="newSiteGoogeAnalytics" value="newSiteGoogleAnalyticsValue"/></td>
-					<td><t:submit t:id="addNewSite" value="Add"/></td>
+					<td><t:submit t:id="addNewSite" class="btn btn-primary" value="Add"/></td>
 				</tr>
 				</t:form>
 			</tbody>
@@ -98,7 +98,7 @@
 					<td><t:passwordfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
 					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
 					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
-					<td><t:submit t:id="addNewUser" value="Add"/></td>
+					<td><t:submit t:id="addNewUser" class="btn btn-primary" value="Add"/></td>
 				</tr>
 				</t:form>
 			</tbody>

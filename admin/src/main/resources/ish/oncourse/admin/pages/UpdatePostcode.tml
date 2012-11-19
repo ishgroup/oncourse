@@ -3,7 +3,7 @@
 	<h4>Postcodes last updated on <span id="lastUpdate">${lastUpdateDate}</span></h4>
 	<div id="updatePostcodes">
 		<t:form t:id="updateForm">
-			<t:submit t:id="update" value="Update" />
+			<t:submit t:id="update" class="btn btn-primary" value="Update" />
 		</t:form>
 	</div>
 	

@@ -1028,6 +1028,8 @@ input.find {
 	background: #fff url(../img/search-arrow.gif) no-repeat 4px 50%;
 	border: 1px solid #bbb;
 	}
+	
+/*
 input.btn {
 	margin: 0;
 	padding: 0 0.2em;
@@ -1036,6 +1038,8 @@ input.btn {
 	background: #fff;
 	border: 3px double #ccc;
 	}
+*/
+
 #search-block-form input {
 	vertical-align: middle;
 	}

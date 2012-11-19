@@ -13,7 +13,7 @@
 					<td><t:textfield t:id="dateTo" size = "10" t:validate="required"/></td>
 				</tr>
 				<tr>
-					<td><t:submit t:id="update" value="Update" /></td>
+					<td><t:submit t:id="update" class="btn btn-primary" value="Update" /></td>
 				</tr>
 			</table>
 		</t:form>
