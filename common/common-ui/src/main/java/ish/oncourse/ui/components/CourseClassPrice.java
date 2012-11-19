@@ -8,6 +8,9 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.utils.DiscountUtils;
+
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.Parameter;
@@ -89,8 +92,10 @@ public class CourseClassPrice {
 			}
 			appliedDiscountsTitle = appliedDiscountsTitleBuf.toString();
 		}
+		
+		Expression notHiddenDiscounts = ExpressionFactory.matchExp(Discount.HIDE_ON_WEB_PROPERTY, false);
 
-		discountsWithConcessions = courseClass.getConcessionDiscounts();
+		discountsWithConcessions = notHiddenDiscounts.filterObjects(courseClass.getConcessionDiscounts());
 
 		Ordering ordering = new Ordering(Discount.NAME_PROPERTY, SortOrder.ASCENDING);
 		ordering.orderList(discountsWithConcessions);
