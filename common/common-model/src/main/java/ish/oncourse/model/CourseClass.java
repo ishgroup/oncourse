@@ -424,24 +424,13 @@ public class CourseClass extends _CourseClass implements Queueable {
 
 		List<Discount> discounts = new ArrayList<Discount>(availableDiscountsWithoutCode.size());
 		for (Discount discount : availableDiscountsWithoutCode) {
-			if (discount.getDiscountConcessionTypes() != null && 
-				checkDiscountConcessionsContainsActiveConcession(discount.getDiscountConcessionTypes())) {
+			if (discount.getDiscountConcessionTypes() != null) {
 				discounts.add(discount);
 			}
 		}
 		return discounts;
 	}
 	
-	private boolean checkDiscountConcessionsContainsActiveConcession(List<DiscountConcessionType> discountConcessions) {
-		for (DiscountConcessionType discountConcession : discountConcessions) {
-			final ConcessionType concession = discountConcession.getConcessionType();
-			if (concession != null && concession.getIsEnabled()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	/**
 	 * Retrieves the discounts that should be applied to this class prices by
 	 * the given policy.
