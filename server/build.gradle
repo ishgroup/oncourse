@@ -184,6 +184,11 @@ task bundle_win(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${distsDir}/windows/onCourseServer.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
 }
 
 task bundle_winService(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
@@ -191,6 +196,11 @@ task bundle_winService(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${distsDir}/windows/onCourseService.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
 }
 
 task bundle_winService64(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
@@ -198,6 +208,11 @@ task bundle_winService64(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourseServer.ico")
 	exeFile = file("${distsDir}/windows/onCourseService64.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
 }
 
 task installer_freebsd(dependsOn: fatJar, type: Copy) {

@@ -129,6 +129,11 @@ task bundle_win(dependsOn: fatJar, type: au.com.ish.Exe4JTask) {
 	jarFile = file("${libsDir}/${project.name}-${project.version}-all.jar")
 	resourceFiles = files("${projectDir}/src/packaging/windows/onCourse.ico")
 	exeFile = file("${distsDir}/windows/onCourse.exe")
+
+	if (project.hasProperty('osxKeychainPassword')) {
+		certificateFile = file (project.codeSigningTemporaryKeystore)
+		certificateFilePassword= project.codeSigningTemporaryPassword
+	}
 }
 
 task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
