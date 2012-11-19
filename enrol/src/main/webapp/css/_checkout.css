@@ -27,11 +27,16 @@
 #checkout tbody td {
 	border: none;
 	border-bottom: 1px solid #D6D6D6;
+	vertical-align: middle;
+}
+
+#checkout tbody td#total {
+	width: 124px;
 }
 
 #checkout .button {
 	float: left;
-	margin-left: 30%;
+	margin: 1px 0 1px 10px;
 	border: 1px solid #D1D1D1;
 	padding: 3px 10px;
 	color: black;
@@ -108,23 +113,60 @@ table.payments div.drop-down .drop-down-content {
 	padding: 5px 0;
 }
 
+table.payments tr div.drop-down > span b.caret {
+	margin-top: 8px;
+	border-top-color: white;
+	border-bottom-color: white;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	vertical-align: top;
+	border-top: 4px solid white;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	content: "";
+}
+
 table.payments div.drop-down .drop-down-content li div.payer {
 	text-decoration: none;
 	color: white;
 	background: black;
 	cursor: default;
+	padding: 5px;
 }
 
 table.payments div.drop-down .drop-down-content li
 {
-	height: 18px;
 	font-size: 12px;
+}
+
+table.payments div.drop-down .drop-down-content li a{
+	display:block;
+	padding:5px;
+	text-decoration: none;
+	color:#333;
+}
+
+table.payments div.drop-down .drop-down-content li:hover{
+	background-color: #006DCC;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
+	background-image: -webkit-linear-gradient(top, #08C, #04C);
+	background-image: -o-linear-gradient(top, #08C, #04C);
+	background-image: linear-gradient(to bottom, #08C, #04C);
+	background-image: -moz-linear-gradient(top, #08C, #04C);
+	background-repeat: repeat-x;
+	border-color: #04C #04C #002A80;
 }
 
 table.payments div.drop-down .drop-down-content li div.contact {
 	font-size: 12px;
 	color: #333;
 	cursor:pointer;
+	padding: 5px;
+}
+
+table.payments div.drop-down .drop-down-content li:hover div.contact, table.payments div.drop-down .drop-down-content li:hover div.payer {
+	color:#fff;
 }
 
 table.payments div.drop-down .drop-down-content.visible {
@@ -171,7 +213,7 @@ div.amount-container {
 
 div.amount-container div.code-info {
 	float: left;
-	width: 250px;
+	width: 270px;
 	margin: 0;
 	font-size: 11px;
 }
@@ -181,6 +223,8 @@ div.amount-container input.code_input {
 	background-color: #FAFAFA;
 	border: 1px solid #DDD;
 	width: 120px;
+	font-size: 11px;
+	float: left;
 }
 
 
@@ -191,11 +235,23 @@ div.amount-container div.code-info .button {
 
 div.amount-container div.code-info p {
 	margin-bottom: 0px;
+	clear: both;
 }
 
 div.amount-container .amount-content {
 	width: 265px;
 	float: right;
+}
+
+div.amount-container .amount-content span#creditAccessLink {
+	text-align: left;
+	color: #125687;
+}
+
+div.amount-container .amount-content span#removeOwingLink {
+	width: auto;
+	margin: 0 0 0 5px;
+	color: #125687;
 }
 
 div.amount-container .amount-content p {
@@ -207,6 +263,8 @@ div.amount-container .amount-content label {
 	float: left;
 	text-align: right;
 	margin-right: 10px;
+	font-weight: normal;
+	padding-right: 0px;
 }
 
 
@@ -274,6 +332,14 @@ div.amount-container .btn-primary {
 	border-width: 1px;
 	border-color: #04C #04C #002A80;
 	border-style: solid;
+	margin-top: 40px;
+	cursor: pointer;
+}
+
+.payments tbody td.alignright span.fullPrice, .payments tbody td.alignright span.totalPrice {
+	float: right;
+	width: 62px;
+	margin-right: 65px;
 }
 
 /*EnrolmentItem component*/
