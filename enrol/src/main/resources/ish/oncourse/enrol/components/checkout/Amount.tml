@@ -3,13 +3,21 @@
 		>
 	<div class="amount-content">
 		<p><label class="first">Credit available</label><span id="creditAccessLink" class="action-link">Access</span></p>
-		<p><label>Voucher</label> <span>(${purchaseController.totalVoucherPayments})</span></p>
-		<p><label>Previous Owing </label><span>${purchaseController.previousOwing}</span>
+		<p><label>Voucher</label> <span>
+			(<t:output value="purchaseController.totalVoucherPayments" format="moneyFormat(purchaseController.totalVoucherPayments)"/>)
+		</span></p>
+		<p><label>Previous Owing </label><span>
+			<t:output value="purchaseController.previousOwing" format="moneyFormat(purchaseController.previousOwing)"/>
+		</span>
 			<span id="removeOwingLink" class="action-link">(Remove)</span>
 			<t:eventlink t:id="removeOwingEvent" style="{display:none;}"/>
 		</p>
-		<p><label>Total</label>  <span>${purchaseController.totalPayment}</span></p>
-		<p><label>Minimum Payable Now</label> <span>${purchaseController.totalPayment}</span></p>
+		<p><label>Total</label>  <span>
+			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
+		</span></p>
+		<p><label>Minimum Payable Now</label> <span>
+			<t:output value="purchaseController.totalPayment" format="moneyFormat(purchaseController.totalPayment)"/>
+		</span></p>
 	</div>
 
 

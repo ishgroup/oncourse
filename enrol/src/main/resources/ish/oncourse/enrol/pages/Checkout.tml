@@ -9,24 +9,26 @@
 
 <t:block t:id="checkout">
 	<t:delegate to="block:exceptionHandling"/>
-	<t:delegate to="block:errors"/>
-	<t:if test="purchaseController.editCheckout">
-		<t:delegate to="block:payments"/>
-	</t:if>
-	<t:if test="purchaseController.editConcession">
-		<t:delegate to="block:concessionEditor"/>
-	</t:if>
-	<t:if test="purchaseController.addContact">
-		<t:delegate to="block:addContact"/>
-	</t:if>
-	<t:if test="purchaseController.editContact">
-		<t:delegate to="block:contactEditor"/>
-	</t:if>
-	<t:if test="purchaseController.editPayment">
-		<t:delegate to="block:paymentEditor"/>
-	</t:if>
-	<t:if test="purchaseController.finalized">
-		<t:delegate to="block:paymentResult"/>
+	<t:if test="purchaseController">
+		<t:delegate to="block:errors"/>
+		<t:if test="purchaseController.editCheckout">
+			<t:delegate to="block:payments"/>
+		</t:if>
+		<t:if test="purchaseController.editConcession">
+			<t:delegate to="block:concessionEditor"/>
+		</t:if>
+		<t:if test="purchaseController.addContact">
+			<t:delegate to="block:addContact"/>
+		</t:if>
+		<t:if test="purchaseController.editContact">
+			<t:delegate to="block:contactEditor"/>
+		</t:if>
+		<t:if test="purchaseController.editPayment">
+			<t:delegate to="block:paymentEditor"/>
+		</t:if>
+		<t:if test="purchaseController.finalized">
+			<t:delegate to="block:paymentResult"/>
+		</t:if>
 	</t:if>
 </t:block>
 
@@ -54,7 +56,9 @@
 			</td>
 			<td class="alignright">Total</td>
 			<td id="total" class="alignright">
-				<span class="totalPrice">${purchaseController.totalIncGst}</span>
+				<span class="totalPrice">
+					<t:output value="purchaseController.totalIncGst" format="moneyFormat(purchaseController.totalIncGst)"/>
+				</span>
 			</td>
 		</tr>
 		</tbody>

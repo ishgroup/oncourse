@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.pages;
 
+import ish.math.Money;
 import ish.oncourse.enrol.checkout.HTMLUtils;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
@@ -14,12 +15,15 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.ui.pages.Courses;
+import ish.oncourse.util.FormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.text.Format;
 
 public class Checkout {
 	public static final String DATE_FIELD_FORMAT = "MM/dd/yyyy";
@@ -183,4 +187,8 @@ public class Checkout {
 		return unexpectedThrowable;
 	}
 
+	public Format moneyFormat(Money money)
+	{
+		return FormatUtils.chooseMoneyFormat(money);
+	}
 }

@@ -1,7 +1,9 @@
 package ish.oncourse.enrol.components.checkout;
 
+import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.pages.Checkout;
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -9,6 +11,8 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import java.text.Format;
 
 public class Amount {
 
@@ -46,5 +50,10 @@ public class Amount {
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.owingApply);
 		purchaseController.performAction(actionParameter);
 		return checkout.getCheckoutBlock();
+	}
+
+	public Format moneyFormat(Money money)
+	{
+		return FormatUtils.chooseMoneyFormat(money);
 	}
 }
