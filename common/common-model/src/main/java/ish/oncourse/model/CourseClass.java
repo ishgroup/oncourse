@@ -405,6 +405,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	public List<Discount> getDiscounts() {
 		SelectQuery query = new SelectQuery(Discount.class, ExpressionFactory.matchExp(
 				Discount.DISCOUNT_COURSE_CLASSES_PROPERTY + "." + DiscountCourseClass.COURSE_CLASS_PROPERTY, this)
+				.andExp(ExpressionFactory.matchExp(Discount.IS_AVAILABLE_ON_WEB_PROPERTY, true))
 				.andExp(Discount.getCurrentDateFilter()));
 
 		return getObjectContext().performQuery(query);
