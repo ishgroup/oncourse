@@ -33,7 +33,7 @@ label+input {
 
 .content {
 	width: 80%;
-	float: right;
+	padding-left: 10%;
 }
 
 .alert {

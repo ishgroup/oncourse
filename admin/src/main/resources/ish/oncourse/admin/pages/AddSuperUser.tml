@@ -19,7 +19,7 @@
 					<td>********</td>
 					<td>${currentUser.firstName}</td>
 					<td>${currentUser.lastName}</td>
-					<td><t:actionlink t:id="deleteUser" class="btn" context="currentUser.email">Remove</t:actionlink></td>
+					<td><t:actionlink t:id="deleteUser" class="btn btn-block" context="currentUser.email">Remove</t:actionlink></td>
 				</tr>
 			</t:loop>
 			<t:form t:id="cmsUsersForm">
@@ -28,7 +28,7 @@
 					<td><t:passwordfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
 					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
 					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
-					<td><t:submit t:id="addNewUser" class="btn btn-primary" value="Add"/></td>
+					<td><t:submit t:id="addNewUser" class="btn btn-block btn-success" value="Add"/></td>
 				</tr>
 			</t:form>
 		</tbody>

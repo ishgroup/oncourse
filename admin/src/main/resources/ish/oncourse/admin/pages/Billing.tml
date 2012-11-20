@@ -1,9 +1,12 @@
 <html t:type="pagestructure" title="literal:Billing"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<t:form t:id="billingForm">
-		<t:select t:id="month" model="monthModel" value="month" onChange="javascript:this.form.elements['refresh'].click();"/>
-		<t:submit t:id="export" class="btn btn-primary" value="Export to Moneyworks" />
-		<t:submit t:id="refresh" value="Refresh" style="visibility:hidden"/>
+		<span class="form-inline">
+			<t:select t:id="month" model="monthModel" value="month" onChange="javascript:this.form.elements['refresh'].click();"/>
+			<t:submit t:id="export" class="btn btn-primary" value="Export to Moneyworks" />
+			<t:submit t:id="refresh" value="Refresh" style="visibility:hidden"/>
+		</span>
+		
 		<table class="table table-striped table-condensed">
 			<thead>
 				<tr>
@@ -17,7 +20,7 @@
 			<tbody>
 				<t:loop source="colleges" value="college" volatile="true">
 						<tr>
-							<td colspan="5"><h3><a t:type="pagelink" t:page="college/edit" t:context="college.id">${college.name} <small>${college.billingCode}:${college.id}</small></a></h3></td>
+							<td colspan="5"><h3><a t:type="pagelink" t:page="college/overview" t:context="college.id">${college.name} <small>${college.billingCode}:${college.id}</small></a></h3></td>
 						</tr>
 						<tr>
 							<td>Support (paid until ${supportPaidUntil})</td>

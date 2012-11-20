@@ -12,15 +12,8 @@
 </head>
 <body class="admin">
 	<div class="wrapper">
-		<div class="head">
-			<div class="logged">
-				<a href="#" t:type="ActionLink" t:id="logout">Logout</a>
-			</div>
-		</div>
 		<div class="center">
-			<div class="sidebar">
-				<div t:type="menu"/>
-			</div>
+			<div t:type="menu" selected="currentPage"/>
 			<div class="content">
 				<t:body />
 			</div>

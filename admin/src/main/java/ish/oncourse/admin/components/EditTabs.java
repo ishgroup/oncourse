@@ -30,7 +30,7 @@ public class EditTabs {
 	
 	@AfterRender
 	void afterRender() {
-		javaScriptSupport.addScript("jQuery('#%s').addClass('act');", selected);
+		javaScriptSupport.addScript("jQuery('#%s').parent().addClass('active');", selected);
 	}
 	
 	public String getOverviewPageName() {
