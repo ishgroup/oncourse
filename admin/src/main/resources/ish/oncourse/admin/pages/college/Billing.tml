@@ -24,14 +24,15 @@
 		</tr>
 	</table>
 	
-	<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>
-	<label for="webPaymentCheckbox">web payment gateway enabled</label>
-	<br/>
-	<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>
-	<label for="qePaymentCheckbox">onCourse QuickEnrol payments enabled</label>
-	<br/>
-	<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>
-	<label for="amexCheckbox">Amex card type enabled</label>
+	<label class="checkbox">
+		<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>web payment gateway enabled
+	</label>
+	<label class="checkbox">
+		<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>onCourse QuickEnrol payments enabled
+	</label>
+	<label class="checkbox">
+		<t:checkbox t:id="amexCheckbox" value="amexEnabled"/>Amex card type enabled
+	</label>
 
 	<h2>License Fees</h2>
 
@@ -68,7 +69,9 @@
 		</tbody>
 	</table>
 	
-	<t:submit t:id="save" class="btn btn-primary" value="Save"/>
+	<div class="form-actions">
+		<t:submit t:id="save" class="btn btn-primary" value="Save"/>
+	</div>
 </t:form>
 
 	<script type="text/javascript">

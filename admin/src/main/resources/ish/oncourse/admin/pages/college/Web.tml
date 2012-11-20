@@ -19,7 +19,7 @@
 						<tr id="${currentDomain.name}">
 							<td>${currentDomain.name}</td>
 							<td><t:select t:id="siteSelect" class="siteSelect" model="siteSelectModel" blankOption="never" context="currentDomain.name" value="selectedSite"/></td>
-							<td><t:actionlink t:id="deleteDomain" class="btn" context="currentDomain.getName()">Remove</t:actionlink></td>
+							<td><t:actionlink t:id="deleteDomain" class="btn btn-danger" context="currentDomain.getName()">Remove</t:actionlink></td>
 						</tr>
 					</t:loop>
 				</t:form>
@@ -27,7 +27,7 @@
 					<tr>
 						<td><t:textfield t:id="newDomain" t:validate="required" value="newDomainValue"/></td>
 						<td><t:select t:id="newDomainSiteSelect" model="siteSelectModel" blankOption="never" value="newDomainSite"/></td>
-						<td><t:submit t:id="addNewDomain" class="btn btn-primary" value="Add"/></td>
+						<td><t:submit t:id="addNewDomain" class="btn btn-block btn-success" value="Add"/></td>
 					</tr>
 				</t:form>
 			</tbody>
@@ -53,7 +53,7 @@
 							<td>${currentWebSite.name}</td>
 							<td>${currentWebSite.siteKey}</td>
 							<td><t:textfield t:id="currentWebSiteKey" value="currentWebSite.googleAnalyticsAccount"/></td>
-							<td><t:actionlink t:id="deleteSite" class="btn" context="currentWebSite.siteKey">Remove</t:actionlink></td>
+							<td><t:actionlink t:id="deleteSite" class="btn btn-danger" context="currentWebSite.siteKey">Remove</t:actionlink></td>
 						</tr>
 					</t:loop>
 					<tr>
@@ -66,7 +66,7 @@
 					<td><t:textfield t:id="newSiteName" t:validate="required" value="newSiteNameValue"/></td>
 					<td><t:textfield t:id="newSiteKey" t:validate="required" value="newSiteKeyValue"/></td>
 					<td><t:textfield t:id="newSiteGoogeAnalytics" value="newSiteGoogleAnalyticsValue"/></td>
-					<td><t:submit t:id="addNewSite" class="btn btn-primary" value="Add"/></td>
+					<td><t:submit t:id="addNewSite" class="btn btn-block btn-success" value="Add"/></td>
 				</tr>
 				</t:form>
 			</tbody>
@@ -89,7 +89,7 @@
 						<td>********</td>
 						<td>${currentUser.firstName}</td>
 						<td>${currentUser.lastName}</td>
-						<td><t:actionlink t:id="deleteUser" class="btn" context="currentUser.email">Remove</t:actionlink></td>
+						<td><t:actionlink t:id="deleteUser" class="btn btn-danger" context="currentUser.email">Remove</t:actionlink></td>
 					</tr>
 				</t:loop>
 				<t:form t:id="cmsUsersForm">
@@ -98,7 +98,7 @@
 					<td><t:passwordfield t:id="newUserPassword" t:validate="required" value="newUserPasswordValue"/></td>
 					<td><t:textfield t:id="newUserFirstName" t:validate="required" value="newUserFirstNameValue"/></td>
 					<td><t:textfield t:id="newUserLastName" t:validate="required" value="newUserLastNameValue"/></td>
-					<td><t:submit t:id="addNewUser" class="btn btn-primary" value="Add"/></td>
+					<td><t:submit t:id="addNewUser" class="btn btn-block btn-success" value="Add"/></td>
 				</tr>
 				</t:form>
 			</tbody>

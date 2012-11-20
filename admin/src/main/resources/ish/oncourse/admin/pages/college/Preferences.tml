@@ -23,13 +23,18 @@
 				<tr>
 					<td><t:textfield t:id="newPrefKey" value="newPreferenceKey"/></td>
 					<td>
-						<t:textfield t:id="newPrefValue" value="newPreferenceValue"/>
-						<t:submit t:id="add" class="btn btn-primary" value="Add"/>
+						<div class="input-append">
+							<t:textfield t:id="newPrefValue" value="newPreferenceValue"/>
+							<t:submit t:id="add" class="btn btn-success" value="Add"/>
+						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<t:submit t:id="save" class="btn btn-primary" value="Save"/>
+		
+		<div class="form-actions">
+			<t:submit t:id="save" class="btn btn-primary" value="Save"/>
+		</div>
 	</t:form>
 
 </html>

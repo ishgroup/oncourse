@@ -14,17 +14,19 @@
 	
 	<h2>Queue Entity</h2>
 	<div>
-		<t:form t:id="queueEntityForm">
-			<span><t:select t:id="entitySelect" model="entitySelectModel" blankOption="never" value="selectedEntity"/></span>
-			<span><t:submit t:id="queueEntity" class="btn btn-primary" value="Queue"/></span>
+		<t:form t:id="queueEntityForm" class="form-inline">
+			<t:select t:id="entitySelect" model="entitySelectModel" blankOption="never" value="selectedEntity"/>
+			<t:submit t:id="queueEntity" class="btn btn-primary" value="Queue"/>
 		</t:form>
 	</div>
 	
 	<h2>Add Instruction</h2>
 	<div>
 		<t:form t:id="addInstructionForm">
-			<span><t:textfield t:id="instructionMessage" t:validate="required" value="instructionMessage"/></span>
-			<span><t:submit t:id="addInstruction" class="btn btn-primary" value="Add"/></span>
+			<div class="input-append">
+				<t:textfield t:id="instructionMessage" t:validate="required" value="instructionMessage"/>
+				<t:submit t:id="addInstruction" class="btn btn-primary" value="Add"/>
+			</div>
 		</t:form>
 	</div>
 	
