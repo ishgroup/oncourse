@@ -1,8 +1,25 @@
 <html t:type="pagestructure" title="literal:Willow Admin Home"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<table t:type="grid" t:source="colleges" t:row="college" t:model="collegeModel">
-		<p:actionCell>
-			<a t:type="pagelink" t:page="college/overview" t:context="college.id" href="#">Edit</a>
-		</p:actionCell>
+
+ 	<table class="table table-striped table-condensed table-bordered table-hover">
+ 		<thead>
+ 			<tr>
+ 				<th>ID</th>
+ 				<th>Name</th>
+ 				<th>Last Remote Authentication</th>
+ 				<th>Angel Version</th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ 			<t:loop source="colleges" value="college">
+ 				<tr>
+ 					<td>${college.id}</td>
+ 					<td><a t:type="pagelink" t:page="college/overview" t:context="college.id" href="#">${college.name}</a></td>
+ 					<td><code>${lastRemoteAuthentication}</code></td>
+ 					<td>${college.angelVersion}</td>
+ 				</tr>
+ 			</t:loop>
+ 		</tbody>
  	</table>
+ 	
 </html>

@@ -3,8 +3,13 @@ package ish.oncourse.admin.pages;
 import ish.oncourse.model.College;
 import ish.oncourse.services.system.ICollegeService;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -14,6 +19,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
 
 public class Index {
+	
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
 	
 	@Inject
 	private ICollegeService collegeService;
@@ -43,5 +50,11 @@ public class Index {
 			collegeModel.add("action", null);
 		}
 		this.colleges = collegeService.allColleges();
+		Ordering.orderList(this.colleges, Arrays.asList(new Ordering(College.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE)));
+	}
+	
+	public String getLastRemoteAuthentication() {
+		Date lastRemoteAuth = college.getLastRemoteAuthentication();
+		return lastRemoteAuth != null ? DATE_FORMAT.format(lastRemoteAuth) : "";
 	}
 }
