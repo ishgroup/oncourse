@@ -30,7 +30,7 @@
 	
 	<h2>Last Instructions</h2>
 	<div>
-		<table>
+		<table class="table table-striped table-condensed">
 			<thead>
 				<tr>
 					<td>Message</td>

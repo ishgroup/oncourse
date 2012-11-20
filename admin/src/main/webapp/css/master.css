@@ -453,128 +453,6 @@ ul#splash-feature a:hover strong span {
 /* Main
 --------------------------------------- */
 
-/* lists */
-
-#main ul {
-	margin: 1em 0;
-	padding: 0;
-	list-style: none;
-	}
-#main ul li {
-	padding: 0 0 4px 15px;
-	list-style: none;
-	background: url(../img/pointer.gif) no-repeat 0 0.5em;
-	}
-#main ul li.win {
-	padding: 3px 0 4px 28px;
-	background: url(../img/icon-win.gif) no-repeat 0 50%;
-	}
-#main ul li.mac {
-	padding: 3px 0 4px 28px;
-	background: url(../img/icon-mac.gif) no-repeat 0 50%;
-	}
-#main ul li.linux {
-	padding: 3px 0 4px 28px;
-	background: url(../img/icon-linux.gif) no-repeat 0 50%;
-	}
-#main ul li.freebsd {
-	padding: 3px 0 4px 28px;
-	background: url(../img/icon-freebsd.gif) no-repeat 0 50%;
-	}
-#main ul li.solaris {
-	padding: 3px 0 4px 28px;
-	background: url(../img/icon-solaris.gif) no-repeat 0 50%;
-	}
-#main ul.download {
-	padding: 10px 0;
-	font-family: "Lucida Grande", Verdana, sans-serif;
-	font-size: 95%;
-	border: solid #ddd;
-	border-width: 1px 0;
-	}
-#main ul.download li {
-	padding: 0 0 4px 0;
-	}
-#main ul.download li a { 
-	padding-left: 20px;
-	color: #455;
-	background: url(../img/icon-file.gif) no-repeat 0 50%;
-	}
-#main ul.download a:hover {
-	color: #011;
-	}
-#main ul.download li span {
-	margin-left: 1em;
-	font-size: 90%;
-	font-weight: normal;
-	color: #788;
-	}
-#main ul.download li.application-pdf a {
-	background: url(../img/icon-pdf.gif) no-repeat 0 50%;
-	}
-#main ul.download li.application-x-diskcopy a,
-#main ul.download li.application-x-compressed a,
-#main ul.download li.application-x-gtar a,
-#main ul.download li.application-binhex a,
-#main ul.download li.application-binhex4 a,
-#main ul.download li.application-mac-binhex a,
-#main ul.download li.application-mac-binhex40 a,
-#main ul.download li.application-x-binhex40 a,
-#main ul.download li.application-x-mac-binhex40 a {
-	background: url(../img/icon-dmg.gif) no-repeat 0 50%;
-	}
-#main ul.download li.application-zip a,
-#main ul.download li.application-x-gzip a {
-	background: url(../img/icon-zip.gif) no-repeat 0 50%;
-	}
-#main ul.download li.text-plain a {
-	background: url(../img/icon-txt.gif) no-repeat 0 50%;
-	}
-#main ul.download li.application-msword a {
-	background: url(../img/icon-doc.gif) no-repeat 0 50%;
-	}
-#main ul.download li.application-excel a,
-#main ul.download li.application-x-excel a,
-#main ul.download li.application-x-msexcel a {
-	background: url(../img/icon-xls.gif) no-repeat 0 50%;
-	}
-	
-/* tabs */
-	
-#main ul.primary {
-	margin: 1em 0;
-	padding: 4px 10px;
-	white-space: nowrap;
-	font-family: "Lucida Grande", Verdana, sans-serif;
-	font-size: 80%;
-	line-height: normal;
-	border-bottom: 1px solid #bbb;
-	list-style: none;
-	}
-#main ul.primary li {
-	display: inline;
-	list-style: none;
-	margin: 0 10px 0 0;
-	padding: 4px 6px 4px 0;
-	background: url(../img/tabs.gif) no-repeat 100% 0;
-	}
-#main ul.primary li a {
-	margin: 0;
-	padding: 4px 6px 4px 12px;
-	text-decoration: none;
-	background: url(../img/tabs.gif) no-repeat 0 0;
-	border-width: 0;
-	border-bottom: 1px solid #bbb;
-	}
-#main ul.primary li.active,
-#main ul.primary li.active a {
-	border-bottom: 1px solid #fff;
-	}
-#main ul.primary li.active a,
-#main ul.primary li a:hover {
-	color: #000;
-	}
-	
 	
 #main dl {
 	margin: 1em 0;
@@ -690,28 +568,6 @@ img.float-right {
 	margin: 0 0 5px 12px;
 	}
 	
-/* attachments table */
-
-table {
-	width: 100%;
-	margin: 0 0 1em;
-	border-collapse: collapse;
-	border: solid #ddd;
-	border-width: 1px 0;
-	}
-table tr th,
-table tr td {
-	padding: 3px 6px;
-	text-align: left;
-	vertical-align: top;
-	border-bottom: 1px solid #ddd;
-	}
-table tr th {
-	border-bottom: 1px solid #ddd;
-	}
-table tr.odd { background: #fff; }
-table tr.even { background: #eef; }
-
 /* Extra
 --------------------------------------- */	
 
@@ -805,9 +661,10 @@ ul.menu {
 /* Sidebar
 --------------------------------------- */	
 	
-#sidebar {
+.sidebar {
 	font-family: "Lucida Grande", Verdana, sans-serif;
 	color: #888;
+	padding-right: 50px;
 	}
 /* feature nav */
 	

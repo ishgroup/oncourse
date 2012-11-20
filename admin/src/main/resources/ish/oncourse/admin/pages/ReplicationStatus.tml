@@ -3,7 +3,7 @@
 	
 	<h2>Replication Status</h2>
 	
-	<table>
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 				<td><strong>College</strong></td>

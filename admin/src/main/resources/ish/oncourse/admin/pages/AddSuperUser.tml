@@ -3,7 +3,7 @@
 	
 	<h3>CMS Super Users</h3>
 	
-	<table>
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 				<td>email</td>
@@ -19,7 +19,7 @@
 					<td>********</td>
 					<td>${currentUser.firstName}</td>
 					<td>${currentUser.lastName}</td>
-					<td><t:actionlink t:id="deleteUser" context="currentUser.email">[x]</t:actionlink></td>
+					<td><t:actionlink t:id="deleteUser" class="btn" context="currentUser.email">Remove</t:actionlink></td>
 				</tr>
 			</t:loop>
 			<t:form t:id="cmsUsersForm">

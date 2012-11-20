@@ -4,7 +4,7 @@
 		<t:select t:id="month" model="monthModel" value="month" onChange="javascript:this.form.elements['refresh'].click();"/>
 		<t:submit t:id="export" class="btn btn-primary" value="Export to Moneyworks" />
 		<t:submit t:id="refresh" value="Refresh" style="visibility:hidden"/>
-		<table>
+		<table class="table table-striped table-condensed">
 			<thead>
 				<tr>
 					<td>Description</td>
