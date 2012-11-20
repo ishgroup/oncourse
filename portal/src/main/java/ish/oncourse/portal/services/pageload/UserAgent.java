@@ -29,7 +29,7 @@ public enum UserAgent {
 		if (userAgentId == null)
 		{
 			LOGGER.warn("userAgentId is null");
-			return IPAD;
+			return DESKTOP;
 		}
 
 
@@ -42,6 +42,6 @@ public enum UserAgent {
 			}
 		}
 		LOGGER.info(String.format("UserAgent is not defined for id=%s. Use DESKTOP",userAgentId));
-		return IPAD;
+		return DESKTOP;
 	}
 }
