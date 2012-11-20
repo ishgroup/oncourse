@@ -23,4 +23,21 @@
 			<td>${lastReplication}</td>
 		</tr>
 	</table>
+
+	<a href="#disableModal" role="button" class="btn btn-danger" data-toggle="modal" data-target="#disableModal">Disable College</a>
+	
+	<div id="disableModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="diableLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="disableLabel">Disable College</h3>
+		</div>
+		<div class="modal-body">
+			<p>This is pretty catastrophic... Are you sure you want to proceed?</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			<t:actionlink t:id="disableCollege" class="btn btn-primary btn-danger">Disable College</t:actionlink>
+		</div>
+	</div>	
+
 </html>
