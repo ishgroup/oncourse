@@ -2,6 +2,7 @@ package ish.oncourse.admin.pages;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import ish.oncourse.model.College;
@@ -41,6 +42,8 @@ public class ReplicationStatus {
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		
 		this.colleges = collegeService.allColleges();
+		
+		Ordering.orderList(colleges, Arrays.asList(new Ordering(College.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE)));
 	}
 	
 	public String getLastReplicationDate() {

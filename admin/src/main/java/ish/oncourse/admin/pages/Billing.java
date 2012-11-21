@@ -8,14 +8,16 @@ import ish.oncourse.services.system.ICollegeService;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -84,6 +86,8 @@ public class Billing {
 		this.dateFormat = new SimpleDateFormat(DATE_MONTH_FORMAT);
 
 		colleges = collegeService.allColleges();
+		
+		Ordering.orderList(colleges, Arrays.asList(new Ordering(College.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE)));
 
 		SimpleDateFormat formatter = new SimpleDateFormat(DATE_MONTH_FORMAT);
 		fromMonth = formatter.parse(month);
