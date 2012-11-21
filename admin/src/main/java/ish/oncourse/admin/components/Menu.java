@@ -15,6 +15,6 @@ public class Menu {
 	
 	@AfterRender
 	void afterRender() {
-		jsSupport.addScript("jQuery('#%s').parent().addClass('active');", selected);
+		jsSupport.addScript("jQuery('#%s').parents('li.selectable').addClass('active');", selected);
 	}
 }

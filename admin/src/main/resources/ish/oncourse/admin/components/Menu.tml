@@ -1,18 +1,28 @@
 <t:container
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
-	<div class="navbar">
+	<div class="navbar navbar-inverse">
 		<div class="navbar-inner">
 			<a class="brand" href="#">onCourse admin</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
-				<li><t:pagelink id="Index" page="Index">College list</t:pagelink><div></div></li>
-				<li><t:pagelink id="NTIS" page="NTIS">Reference Data</t:pagelink><div></div></li>
-				<li><t:pagelink id="Billing" page="Billing">Billing</t:pagelink><div></div></li>
-				<li><t:pagelink id="AddCollege" page="AddCollege">Add College</t:pagelink><div></div></li>
-				<li><t:pagelink id="AddSuperUser" page="AddSuperUser">Add Super User</t:pagelink><div></div></li>
-				<li><t:pagelink id="UpdatePostcode" page="UpdatePostcode">Update postcodes</t:pagelink><div></div></li>
-				<li><t:pagelink id="ReplicationStatus" page="ReplicationStatus">Replication Status</t:pagelink></li>
+				<li class="dropdown selectable">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Colleges<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><t:pagelink id="Index" page="Index">List</t:pagelink></li>
+						<li><t:pagelink id="AddCollege" page="AddCollege">Add College</t:pagelink></li>
+					</ul>
+				</li>
+				<li class="dropdown selectable">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference data<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><t:pagelink id="NTIS" page="NTIS">NTIS</t:pagelink></li>
+						<li><t:pagelink id="UpdatePostcode" page="UpdatePostcode">Postcodes</t:pagelink></li>		
+					</ul>
+				</li>
+				<li class="selectable"><t:pagelink id="Billing" page="Billing">Billing</t:pagelink><div></div></li>
+				<li class="selectable"><t:pagelink id="AddSuperUser" page="AddSuperUser">Super users</t:pagelink><div></div></li>
+				<li class="selectable"><t:pagelink id="ReplicationStatus" page="ReplicationStatus">Replication status</t:pagelink></li>
 			</ul>
 			<ul class="nav pull-right">
 				<li class="pull-right"><a href="#" t:type="ActionLink" t:id="logout">Logout</a></li>
