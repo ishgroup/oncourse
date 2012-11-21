@@ -14,9 +14,11 @@
 	
 	<h2>Queue Entity</h2>
 	<div>
-		<t:form t:id="queueEntityForm" class="form-inline">
-			<t:select t:id="entitySelect" model="entitySelectModel" blankOption="never" value="selectedEntity"/>
-			<t:submit t:id="queueEntity" class="btn btn-primary" value="Queue"/>
+		<t:form t:id="queueEntityForm">
+			<div class="input-append">
+				<t:select t:id="entitySelect" model="entitySelectModel" blankOption="never" value="selectedEntity"/>
+				<t:submit t:id="queueEntity" class="btn btn-primary" value="Queue"/>
+			</div>
 		</t:form>
 	</div>
 	
