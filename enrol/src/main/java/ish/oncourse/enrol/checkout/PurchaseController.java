@@ -601,7 +601,8 @@ public class PurchaseController {
 		voucherNotMatch,
 		voucherExpired,
 		voucherRedeemed,
-		voucherLockedAnotherUser;
+		voucherLockedAnotherUser,
+		concessionAlreadyAdded;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("error-%s", name()), params);
